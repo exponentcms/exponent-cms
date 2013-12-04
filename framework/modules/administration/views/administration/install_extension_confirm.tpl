@@ -67,7 +67,8 @@
 {*		<hr size="1" />*}
 		{if $failed == 0}
 			{if $warn == 1}{'<strong>Note:</strong> Continuing with the installation will overwrite existing files.  It is <strong>highly recommended</strong> that you ensure that you want to do this.'|gettext}<br /><br />{/if}
-			<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link action=install_extension_finish patch=$patch}">{'Continue with Installation'|gettext}</a>
+			{*<a class="{button_style}" href="{link action=install_extension_finish patch=$patch}">{'Continue with Installation'|gettext}</a>*}
+            {icon button=true action=install_extension_finish patch=$patch text='Continue with Installation'|gettext}
 		{else}
 			{'Permissions on the webserver are preventing the installation of this extension.  Please make the necessary directories writable, and then reload this page to continue.'|gettext}
 		{/if}

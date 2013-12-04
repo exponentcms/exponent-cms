@@ -14,7 +14,8 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><strong>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</strong></a>
+ 	{*<a class="{button_style}" href="{link module=migration action=manage_users}"><strong>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_users text='Skip to Next Step -> Migrate Users & Groups'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">

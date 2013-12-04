@@ -28,4 +28,4 @@
 {control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="title,title DESC,rank" value=$config.order|default:rank}
 {control type="checkbox" name="only_featured" label="Only show featured Portfolio Pieces"|gettext value=1 checked=$config.only_featured}
 {control type="radiogroup" name="usebody" label="Display Description in List"|gettext value=$config.usebody|default:0 items="Full,Summary,Page,None"|gettxtlist values="0,1,3,2"}
-{control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional dompdf add-on"|gettext value=1 checked=$config.printlink}
+{control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional pdf engine add-on"|gettext value=1 checked=$config.printlink}

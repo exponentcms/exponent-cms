@@ -216,19 +216,19 @@ class form extends baseform {
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
-        if(expSession::get('framework')!='bootstrap'){
+        if (expSession::get('framework') != 'bootstrap') {
             expCSS::pushToHead(array(
 //                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
-            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
+            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
         } else {
             expCSS::pushToHead(array(
 //                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
-        };
+        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',

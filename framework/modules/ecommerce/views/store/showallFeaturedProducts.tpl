@@ -45,14 +45,14 @@
             {/if}
             <div class="product">
                 {if $listing->availability_type != 3 && $listing->active_type == 0}
-                  <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>
+                  <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style}">{"View Item"|gettext}</a>
                   {*if $listing->hasChildren()}
-                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"View Item"|gettext}</a>
+                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style}">{"View Item"|gettext}</a>
                   {else}
                       {form id="addtocart`$listing->id`" controller=cart action=addItem}
                           {control type="hidden" name="product_id" value="`$listing->id`"}
                           {control type="hidden" name="product_type" value="`$listing->product_type`"}
-                          <button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Add to Cart"|gettext}</button>
+                          <button type="submit" class="{button_style}">{"Add to Cart"|gettext}</button>
                           {if $listing->parent_id == 0}
                               {control name="qty" type="text" value="`$listing->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"}
                           {/if}
@@ -60,9 +60,9 @@
                   {/if*}
               {else}
                   {if $listing->active_type == 1}
-                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} grey">{"View Item"|gettext}</a>
+                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=grey}">{"View Item"|gettext}</a>
                   {elseif $listing->active_type == 2 && $user->isAdmin()}
-                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link awesome {$smarty.const.BTN_SIZE} red">{"View Item"|gettext}</a>
+                      <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=red}">{"View Item"|gettext}</a>
                   {/if}
               {/if}
               <div class="prod-price">

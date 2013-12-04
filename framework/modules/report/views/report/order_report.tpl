@@ -163,7 +163,8 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>Generate Report</em></strong></a>
+                            {*<a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="{button_style}"><strong><em>{'Generate Report'|gettext}</em></strong></a>*}
+                            {control type="buttongroup" submit="Generate Report"|gettext}
                         </td>
                     </tr>
                 </tbody>

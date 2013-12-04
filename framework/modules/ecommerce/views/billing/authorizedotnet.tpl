@@ -21,7 +21,8 @@
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}
-        <button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{'Continue Checkout'|gettext}</button>
+        {*<button id="continue-checkout" type="submit" class="{button_style}">{'Continue Checkout'|gettext}</button>*}
+        {control type="buttongroup" id="continue-checkout" class="add-to-cart-btn" submit="Continue Checkout"|gettext}
     {/form}
 </div>
 

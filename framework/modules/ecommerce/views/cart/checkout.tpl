@@ -214,8 +214,8 @@
                             </div>
 
                             <div class="bracket{if !$shipping->address->id} hide{/if}">
-                                <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-                                   href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
+                                {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
+                                {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
                             </div>
                         </div>
                         {clear}
@@ -228,7 +228,7 @@
                         {foreach from=$shipping->splitmethods item=method}
                             <div class="splitaddress">
                                 <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
-                                <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
+                                <!--a class="ordermessage {button_style}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
                                 <address>
                                     {$method->firstname} {$method->middlename} {$method->lastname}{br}
                                     {$method->address1}{br}
@@ -265,8 +265,8 @@
                     {/if}
                 </div>
                 <div class="bracket">
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-                       href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
+                    {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
+                    {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
                 </div>
             </div>
             <div style="clear: both;"></div>
@@ -295,7 +295,7 @@
                     {form name="free" controller=cart action=preprocess}
                         {control type="hidden" name="billingcalculator_id" value=-1}
                         {control type="hidden" name="cash_amount" value=0}
-                        <button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>
+                        <button id="continue-checkout" type="submit" class="{button_style}">{"Continue Checkout"|gettext}</button>
                     {/form}
                 </div>
             {/if}

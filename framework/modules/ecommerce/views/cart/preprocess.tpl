@@ -32,10 +32,10 @@
 {br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="awesome {$smarty.const.BTN_SIZE} green next">
+           class="{button_style color=green} next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
@@ -222,10 +222,10 @@
 {clear}{br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="awesome {$smarty.const.BTN_SIZE} green next">
+           class="{button_style color=green} next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="awesome {$smarty.const.BTN_SIZE} yellow back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>

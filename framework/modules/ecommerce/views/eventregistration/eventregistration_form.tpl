@@ -147,7 +147,7 @@
 		<tr>
 			<td style="width: 143px;"></td>
 			<td>
-				<input type="submit" class="awesome medium yellow" value="Next Page"/>
+				<input type="submit" class="{button_style color=yellow size=medium}" value="Next Page"/>
 			</td>
 		</tr>
 			

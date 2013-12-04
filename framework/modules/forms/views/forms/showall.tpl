@@ -80,7 +80,7 @@
             </table>
         </div>
         {$page->links}
-        {*<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>*}
+        {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}
 

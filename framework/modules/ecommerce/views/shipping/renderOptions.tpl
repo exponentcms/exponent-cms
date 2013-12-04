@@ -28,7 +28,7 @@
                         {$oc=$option.cost|number_format:2}
                         {control type=radio name="option" value=$option.id label="`$option.title` - `$oc|currency`" checked=$selected}
                     {/foreach}
-                    <button type="submit" class="awesome small blue">{"Update Shipping Option"|gettext}</button>
+                    <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                     {/form}
                 </div>
                 {/group}

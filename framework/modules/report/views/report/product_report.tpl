@@ -46,7 +46,7 @@
                         <td>
                         <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>
                             <div class="control">
-                                <a href="#showcats" id="showcats"class=" awesome small black">{'Select Categories'|gettext}</a>
+                                <a href="#showcats" id="showcats" class="{button_style color=black size=small}">{'Select Categories'|gettext}</a>
                             </div>
                             <div>
                                 <div id="catpicker" class="exp-skin-panel hide">
@@ -132,7 +132,8 @@
 
                     <tr class="odd">
                         <td>
-                            <a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"><strong><em>{'Generate Report'|gettext}</em></strong></a>
+                            {*<a id="submit-report" href="#" onclick="document.reportform.submit(); return false;" class="{button_style}"><strong><em>{'Generate Report'|gettext}</em></strong></a>*}
+                            {control type="buttongroup" submit="Generate Report"|gettext}
                         </td>
                     </tr>
                 </tbody>

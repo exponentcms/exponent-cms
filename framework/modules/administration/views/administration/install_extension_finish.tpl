@@ -82,6 +82,7 @@
               {/foreach}
           </tbody>
         </table>
-		<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$redirect}">{'Back'|gettext}</a>
+		{*<a class="{button_style}" href="{$redirect}">{'Back'|gettext}</a>*}
+        {icon button=true link$redirect text='Back'|gettext}
 	{/if}
 </div>

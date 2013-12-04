@@ -61,7 +61,7 @@
                 </td>
             </tr>
         </table>
-    {*<p><a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"*}
+    {*<p><a class="{button_style}"*}
     {*href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>*}
 
     {*{script unique="viewform"}*}
@@ -75,8 +75,8 @@
             <em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>
         </blockquote>
         <p>
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-               href="{$backlink}">{'Done'|gettext}</a>
+            {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
+            {icon button=true link=$backlink text='Done'|gettext}
         </p>
     {/if}
 </div>
