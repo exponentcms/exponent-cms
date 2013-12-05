@@ -14,7 +14,11 @@
  *}
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor" || $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}
-    {include file="picker_cke.tpl"}
+    {if $smarty.const.SITE_FILE_MANAGER=="elfinder"}
+        {include file="elfinder.tpl"}
+    {else}
+        {include file="picker_cke.tpl"}
+    {/if}
 {else}
     {"Uh... yeah, we\'re not supporting that editor. Feel free to integrate it yourself though."|gettext}
 {/if}

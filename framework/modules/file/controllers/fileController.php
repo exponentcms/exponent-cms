@@ -81,6 +81,7 @@ class fileController extends expController {
         }
         assign_to_template(array(
             'update'=>$this->params['update'],
+            'filter'=>$this->params['filter'],
             'cats'=>$catarray,
             'jscats'=>json_encode($jscatarray)
         ));
@@ -172,14 +173,23 @@ class fileController extends expController {
         $ar->send();
     }
 
+    /**
+     * Get a file record by id or pathname and return it as JSON via Ajax
+     */
     public function getFile() {
-        $file = new expFile($this->params['id']);
+        if (is_integer($this->params['id'])) {
+            $file = new expFile($this->params['id']);
+        } else {
+            $efile = new expFile();
+            $path = str_replace(BASE, '', $this->params['id']);
+            $path = str_replace('\\', '/', $path);
+            $file = $efile->find('first','directory="'.dirname($path).'/'.'" AND filename="'.basename($path).'"');
+        }
         $ar = new expAjaxReply(200, 'ok', $file);
         $ar->send();
-    } 
+    }
 
     public function getFilesByJSON() {
-//        global $db,$user;
         global $user;
 
         $modelname = $this->basemodel_name;
@@ -220,7 +230,7 @@ class fileController extends expController {
         $totalrecords = 0;
 
         if (isset($this->params['query'])) {
-
+            $filter = '';
             if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
