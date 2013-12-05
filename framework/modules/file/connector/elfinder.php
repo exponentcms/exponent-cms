@@ -77,7 +77,8 @@ function logger($cmd, $result, $args, $elfinder)
 {
 
     $log = sprintf("[%s] %s: %s \n", date('r'), strtoupper($cmd), var_export($result, true));
-    $logfile = '../files/temp/log.txt';
+//    $logfile = '../files/temp/log.txt';
+    $logfile = BASE.'tmp/elfinder.txt';
     $dir = dirname($logfile);
     if (!is_dir($dir) && !mkdir($dir)) {
         return;
@@ -109,7 +110,8 @@ function logger($cmd, $result, $args, $elfinder)
     }
     $log .= "\n";
 
-    $logfile = '../files/temp/log.txt';
+//    $logfile = '../files/temp/log.txt';
+    $logfile = BASE.'tmp/elfinder.txt';
     $dir = dirname($logfile);
     if (!is_dir($dir) && !mkdir($dir)) {
         return;
@@ -276,7 +278,7 @@ function validName($name)
     return strpos($name, '.') !== 0;
 }
 
-//$logger = new elFinderSimpleLogger('../files/temp/log.txt');
+//$logger = new elFinderSimpleLogger(BASE.'tmp/elfinder.txt');
 
 $opts = array(
     'locale' => 'en_US.UTF-8',
