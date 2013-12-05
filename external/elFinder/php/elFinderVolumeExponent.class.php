@@ -38,7 +38,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem {
    	 **/
    	protected function stat($path) {
         $result = parent::stat($path);
-        return false;//FIXME
+
         if ($result && $result['mime'] != 'directory') $newfile = self::_get_expFile($path);
 
         return $result;

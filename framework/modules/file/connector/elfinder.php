@@ -276,7 +276,7 @@ function validName($name)
     return strpos($name, '.') !== 0;
 }
 
-$logger = new elFinderSimpleLogger('../files/temp/log.txt');
+//$logger = new elFinderSimpleLogger('../files/temp/log.txt');
 
 $opts = array(
     'locale' => 'en_US.UTF-8',
