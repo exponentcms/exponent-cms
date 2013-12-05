@@ -221,7 +221,7 @@ class fileController extends expController {
 
         if (isset($this->params['query'])) {
 
-            if (!$user->isActingAdmin()) {
+            if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
 //            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
