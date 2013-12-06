@@ -9,7 +9,8 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / changed for 2.2.4
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
-  - initial support for alternate WYSIWYG editor, TinyMCE (works on Android devices)
+  - initial support for alternate/optional WYSIWYG editor, TinyMCE (works on Android devices)
+  - initial support for alternate/optional file manager, elFinder (doesn't follow user file permissions)
   - vastly improved SEO for events, eventregistrations, & products
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines

@@ -81,7 +81,7 @@ class fileController extends expController {
         }
         assign_to_template(array(
             'update'=>$this->params['update'],
-            'filter'=>$this->params['filter'],
+            'filter'=>!empty($this->params['filter'])?$this->params['filter']:null,
             'cats'=>$catarray,
             'jscats'=>json_encode($jscatarray)
         ));
