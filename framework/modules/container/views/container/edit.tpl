@@ -177,7 +177,7 @@
         modpicker.on('change',function(e){
             EXPONENT.disableSave();
             EXPONENT.clearRecycledSource();
-            if (modpicker.get("value")!=-1) {
+            if (modpicker.get("value")!='') {
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
@@ -204,7 +204,7 @@
         EXPONENT.handleActionChange = function(){
             EXPONENT.disableSave();
             EXPONENT.setCurAction();
-            if (actionpicker.get("value")!=-1) {
+            if (actionpicker.get("value")!='0') {
                 EXPONENT.writeViews();
             }else{
                 EXPONENT.resetViews();
