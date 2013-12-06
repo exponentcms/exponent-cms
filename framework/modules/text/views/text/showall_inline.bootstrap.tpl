@@ -18,7 +18,7 @@
 
 <div id="textmodule-{$name}" class="module text showall showall-inline">
     <div id="textcontent-{$name}">
-        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
         {permissions}
             <div class="module-actions">
                 {if $permissions.create}
@@ -49,7 +49,7 @@
                 {$make_edit = ''}
             {/if}
             <div id="text-{$text->id}" class="item">
-                {if $text->title}<h2><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></h2>{/if}
+                {if $text->title}<{$config.item_level|default:'h2'}><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></{$config.item_level|default:'h2'}>{/if}
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
@@ -210,7 +210,7 @@
 //            success:function(data) {
             success:function(msg) {
 //                var msg = $.parseJSON(data);
-                newItem = '<div id="text-' + msg.data + '" class="item"><h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
+                newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                 newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '"> {/literal}{'Edit'|gettext}{literal}</a>';
                 newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#"> {/literal}{'Delete'|gettext}{literal}</a>';
                 newItem +='<a class="delete-title btn icon-remove-sign btn-danger {/literal}{$btn_size} {$icon_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
@@ -235,7 +235,7 @@
 //            success: function(data) {
             success: function(msg) {
 //                msg = $.parseJSON(data);
-                newItem = '<h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
+                newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                 $('#text-' + msg.data).prepend(newItem);
                 $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('title placeholder');
                 startEditor($('#title-' + msg.data)[0]);

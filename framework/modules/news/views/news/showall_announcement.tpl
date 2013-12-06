@@ -18,9 +18,9 @@
 {/css}
 
 <div class="module news announcement">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
     {rss_link}
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 
     {permissions}
     <div class="module-actions">
@@ -47,7 +47,7 @@
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
         <div class="item announcement">
-            <h2>{$item->title}</h2>
+            <{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>
             {if $item->isRss != true}
                 {permissions}
                     <div class="item-actions">

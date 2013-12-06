@@ -18,7 +18,7 @@
 
     {/css}
     <div class="module forms showall">
-        <h2>{$title}</h2>
+        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
             {$description}
         {/if}

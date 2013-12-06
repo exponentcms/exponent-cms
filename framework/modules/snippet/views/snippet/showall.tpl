@@ -14,7 +14,7 @@
  *}
 
 <div class="module snippet showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
@@ -30,7 +30,7 @@
     {/if}
     {$myloc=serialize($__loc)}
     {foreach from=$items item=text name=items}
-        {if $text->title}<h2>{$text->title}</h2>{/if}
+        {if $text->title}<{$config.item_level|default:'h2'}>{$text->title}</{$config.item_level|default:'h2'}>{/if}
         {permissions}
 			<div class="item-actions">
 				{if $permissions.edit || ($permissions.create && $text->poster == $user->id)}

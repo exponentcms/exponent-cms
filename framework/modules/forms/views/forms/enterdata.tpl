@@ -42,10 +42,10 @@
             </div>
         {/permissions}
         {if $edit_mode}
-            <h1>{'Edit Form Record'|gettext}</h1>
+            <{$config.heading_level|default:'h1'}>{'Edit Form Record'|gettext}</{$config.heading_level|default:'h1'}>
         {else}
             {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-                <h1>{$moduletitle}</h1>{/if}
+                <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
             {if $config.moduledescription != ""}
                 {$config.moduledescription}
             {/if}

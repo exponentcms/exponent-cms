@@ -41,6 +41,7 @@
     {*{else}*}
     {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
     {*{/if}*}
+    {control type=radiogroup columns=6 name="heading_level" label='Module Title Heading Level'|gettext items="1,2,3,4,5,6"|gettxtlist values="h1,h2,h3,h4,h5,h6" default=$config.heading_level|default:'h1'}
     {if $smarty.const.INVERT_HIDE_TITLE}
         {$title_str = 'Show Module Title?'|gettext}
         {$desc_str = 'The Module Title is hidden by default.'|gettext}

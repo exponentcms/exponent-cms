@@ -14,7 +14,7 @@
  *}
 
 <div class="module navigation children-only">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -34,7 +34,7 @@
         {/foreach}
     {/capture}
     {if $islastdepth == 'true'}
-        <h2>{$current->name}</h2>
+        <{$config.item_level|default:'h2'}>{$current->name}</{$config.item_level|default:'h2'}>
     {/if}
     <ul>
         {$display}

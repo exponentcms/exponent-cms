@@ -14,7 +14,7 @@
  *}
 
 <div class="module rss showall">
-    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle|default:"RSS Feeds"|gettext}</h1>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle|default:"RSS Feeds"|gettext}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}

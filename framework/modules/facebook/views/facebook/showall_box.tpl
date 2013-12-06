@@ -15,7 +15,7 @@
 
 <div class="module facebook showall">
     <div id="fb-root"></div>
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}

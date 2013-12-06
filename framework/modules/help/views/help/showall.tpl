@@ -14,7 +14,7 @@
  *}
 
 <div class="module help showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
         {if $permissions.create}
             {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
@@ -36,9 +36,9 @@
     {foreach from=$page->records item=doc name=docs}
         <div class="item">
             <dt>
-                <h2>
+                <{$config.item_level|default:'h2'}>
                     <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a>
-                </h2>
+                </{$config.item_level|default:'h2'}>
             </dt>
             
             <dd>

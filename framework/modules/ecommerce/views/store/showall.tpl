@@ -18,9 +18,9 @@
 {/css}
  
 <div class="module store showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
     {else}
-        <h1>{$current_category->title}</h1>
+        <{$config.heading_level|default:'h1'}>{$current_category->title}</{$config.heading_level|default:'h1'}>
     {/if}
     {permissions}
     <div class="module-actions">
@@ -134,7 +134,7 @@
             {/if}
         </div>
     {else}
-        <h2>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</h2>
+        <{$config.item_level|default:'h2'}>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</{$config.item_level|default:'h2'}>
         {pagelinks paginate=$page top=1}
         {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
 

@@ -21,7 +21,7 @@
 
 {/css}
 <div class="module store show-top-level">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
@@ -38,7 +38,7 @@
    	{/if}
     {$myloc=serialize($__loc)}
 
-    {if $current_category->title}<h1>{$current_category->title}</h1>{/if}
+    {if $current_category->title}<{$config.heading_level|default:'h1'}>{$current_category->title}</{$config.heading_level|default:'h1'}>{/if}
 
     {if $current_category->id}
         {permissions}
@@ -61,7 +61,7 @@
 
     {if $categories|@count > 0}
         <div class="cats">
-        <h2>{'Browse Our Store'|gettext}:</h2>
+        <{$config.item_level|default:'h2'}>{'Browse Our Store'|gettext}:</{$config.item_level|default:'h2'}>
         {counter assign="ipcr" name="ipcr" start=1}
         {foreach name="cats" from=$categories item="cat"}
             {if $cat->is_active==1 || $user->isAdmin()}
@@ -111,7 +111,7 @@
     </div>
     {else}
     <!--hr/-->
-    <h2>{'All Products Under'|gettext} {$current_category->title}</h2>
+    <{$config.item_level|default:'h2'}>{'All Products Under'|gettext} {$current_category->title}</{$config.item_level|default:'h2'}>
 
     {$page->links}
     {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
