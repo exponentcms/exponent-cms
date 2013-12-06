@@ -1,6 +1,6 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
 CKEditor,4.3,ckeditor.com,4.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
-Swift,5.0.2,swiftmailer.org,5.0.2,we add  eDebugLogger plugin
+Swift,5.0.3,swiftmailer.org,5.0.3,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
@@ -22,8 +22,8 @@ iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
 jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
 jQueryUI,1.10.3,jqueryui.com,1.10.3,
-Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.2,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.2+2,
+Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.3,"patched bootstrap.less for & includes swatches, fontawesome"
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.3,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,3.7.1,www.adminer.org,3.7.1,
 html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
@@ -39,3 +39,4 @@ Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.0,https://github.com/scottjehl/Respond,1.4.0,
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
 TinyMCE,4.0.11,http://www.tinymce.com/,4.0.11,add xenmce skin
+elFinder,2.1x,http://elfinder.org/,2.1x,use https://github.com/nao-pon/elFinder and added Exponent class
