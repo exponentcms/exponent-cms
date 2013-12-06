@@ -216,8 +216,13 @@ if (!function_exists('smarty_function_icon')) {
         $button = !empty($params['button']) ? $params['button'] : false;
         unset($params['button']);
         //eDebug($params);
+        if (!empty($params['name'])) {
+            $name = ' id="'.$params['name'].'"';
+        } else {
+            $name = '';
+        }
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
-            echo '<a href="#" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            echo '<a'.$name.' href="#" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
@@ -231,7 +236,7 @@ if (!function_exists('smarty_function_icon')) {
             } else {
                 $link = makeLink($params,$secure);
             }
-            echo '<a href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
             if (($params['action'] == "delete" || $params['action'] == "merge" || $icon->class == "delete" || $icon->class == "merge") && empty($onclick))
                 echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
