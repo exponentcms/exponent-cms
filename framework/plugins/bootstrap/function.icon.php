@@ -207,12 +207,17 @@ if (!function_exists('smarty_function_icon')) {
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         //eDebug($params);
+        if (!empty($params['name'])) {
+            $name = ' id="'.$params['name'].'"';
+        } else {
+            $name = '';
+        }
         if (!empty($params['action']) && $params['action'] != 'scriptaction') {
             if ($params['action'] == 'copy') {
                 $params['copy'] = true;
                 $params['action'] = 'edit';
             }
-            echo '<a href="' . expCore::makeLink($params) . '" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
+            echo '<a'.$name.' href="' . expCore::makeLink($params) . '" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
             if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
                 echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
@@ -221,7 +226,7 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
         } elseif(!empty($params['action']) && $params['action'] == 'scriptaction') {
-           echo '<a href="#" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
+           echo '<a'.$name.' href="#" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
            if (!empty($onclick))
                echo ' onclick="' . $onclick . '"';
            echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
