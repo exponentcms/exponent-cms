@@ -27,6 +27,28 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 {
 
     /**
+     * Get expFile Owner
+     *
+     * @param      $target
+     * @param null $newowner
+     *
+     * @return null
+     */
+    public function owner($target, $newowner = null)
+    {
+        $path = $this->decode($target);
+        $file = self::_get_expFile($path);
+        $user = user::getUserById($file->poster);
+        $username = user::getUserAttribution($user->id);
+//        if ($newowner != null) {
+//            $file->update(array('id' => $newowner));
+//        } else {
+//            return $username;
+//        }
+        return $username;
+    }
+
+    /**
      * Get/Set expFile Title
      *
      * @param      $target

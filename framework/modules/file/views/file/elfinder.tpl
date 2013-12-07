@@ -192,6 +192,42 @@
                 // dateFormat : '{/literal}{$smarty.const.DISPLAY_DATE_FORMAT}{literal}',
                 {/literal}
               	ui : ['toolbar', 'places', 'tree', 'path', 'stat'],
+                uiOptions : {
+                    // toolbar configuration
+                    toolbar : [
+                        ['back', 'forward'],
+                        //['netmount'],
+                        ['reload'],
+                        ['home', 'up'],
+                        ['mkdir', 'mkfile', 'upload'],
+                        ['open', 'download', 'getfile'],
+                        ['info'],
+                        ['quicklook'],
+                        ['copy', 'cut', 'paste'],
+                        ['rm'],
+                        ['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
+                        ['extract', 'archive'],
+                        ['search'],
+                        ['view', 'sort'],
+                        ['help']
+                    ],
+                    // directories tree options
+                    tree : {
+                        // expand current root on init
+                        openRootOnLoad : true,
+                        // auto load current dir parents
+                        syncTree : true
+                    },
+                    // navbar options
+                    navbar : {
+                        minWidth : 150,
+                        maxWidth : 500
+                    },
+                    cwd : {
+                        // display parent folder with ".." name :)
+                        oldSchool : false
+                    }
+                },
                 {if $update=='ck'}
                     {$w = 38}
                     {$h = 112}
@@ -200,8 +236,10 @@
                     {$h = 20}
                 {/if}
                 {literal}
-                width : {/literal}{$smarty.const.FM_WIDTH - $w}{literal},
+//                width : {/literal}{$smarty.const.FM_WIDTH - $w}{literal},
                 height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
+                width : 'auto',
+//                height : 'auto',
                 resizable: false,
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
@@ -227,6 +265,13 @@
                 },
                 {/literal}{/if}{literal}
             }).elfinder('instance');
+
+            $(window).resize(function(){
+                var h = ($(window).height()) - 18;
+                if($('#elfinder').height() != h){
+                    $('#elfinder').height(h).resize();
+                }
+            });
         });
     {/literal}
 {/script}

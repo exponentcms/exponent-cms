@@ -30,8 +30,34 @@ class elFinderExponent extends elFinder
     {
         parent::__construct($opts);
         /* Adding new commands */
+        $this->commands['owner'] = array('target' => true, 'content' => false);
         $this->commands['title'] = array('target' => true, 'content' => false);
         $this->commands['alt'] = array('target' => true, 'content' => false);
+    }
+
+    protected function owner($args)
+    {
+        $target = $args['target'];
+        $title = $args['content'];
+        $error = array(self::ERROR_UNKNOWN, '#' . $target);
+
+        if (($volume = $this->volume($target)) == false
+            || ($file = $volume->file($target)) == false
+        ) {
+            return array('error' => $this->error($error, self::ERROR_FILE_NOT_FOUND));
+        }
+
+        $error[1] = $file['name'];
+
+        if ($volume->commandDisabled('owner')) {
+            return array('error' => $this->error($error, self::ERROR_ACCESS_DENIED));
+        }
+
+        if (($title = $volume->owner($target, $title)) == -1) {
+            return array('error' => $this->error($error, $volume->error()));
+        }
+
+        return array('owner' => $title);
     }
 
     protected function title($args)
