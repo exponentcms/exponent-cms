@@ -79,7 +79,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/duplicate.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rename.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>
@@ -237,9 +238,8 @@
                 {/if}
                 {literal}
 //                width : {/literal}{$smarty.const.FM_WIDTH - $w}{literal},
-                height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
                 width : 'auto',
-//                height : 'auto',
+                height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
                 resizable: false,
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {

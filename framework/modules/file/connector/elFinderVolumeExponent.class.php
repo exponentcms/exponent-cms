@@ -26,6 +26,8 @@
 class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 {
 
+    /*********************** expFile operations *********************/
+
     /**
      * Get expFile Owner
      *
@@ -39,13 +41,28 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $user = user::getUserById($file->poster);
-        $username = user::getUserAttribution($user->id);
-//        if ($newowner != null) {
-//            $file->update(array('id' => $newowner));
-//        } else {
-//            return $username;
-//        }
-        return $username;
+        return user::getUserAttribution($user->id);
+    }
+
+    /**
+     * Get/Set expFile shared status
+     *
+     * @param      $target
+     * @param null $newshared
+     *
+     * @return null
+     */
+    public function shared($target, $newshared = null)
+    {
+        $path = $this->decode($target);
+        $file = self::_get_expFile($path);
+        $shared = $file->shared;
+        if ($newshared != null) {
+            $file->update(array('shared' => $newshared));
+        } else {
+            return $shared;
+        }
+        return $newshared;
     }
 
     /**
@@ -90,10 +107,35 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         return $newalt;
     }
 
+    /**
+     * Return the expFile for the given path or create new expFile
+     *
+     * @param $path
+     *
+     * @return \expFile
+     * @author Dave Leffler
+     */
+    protected static function _get_expFile($path)
+    {
+        $efile = new expFile();
+        $path = str_replace(BASE, '', $path);
+        $path = str_replace('\\', '/', $path);
+        $thefile = $efile->find(
+            'first',
+            'directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"'
+        );
+        if (empty($thefile->id)) {
+            $thefile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
+            $thefile->posted = $thefile->last_accessed = filemtime(BASE . $path);
+            $thefile->save();
+        }
+        return $thefile;
+    }
+
     /*********************** file stat *********************/
 
     /**
-     * Return fileinfo, also check if in expFiles table
+     * Return fileinfo, also check if in expFiles table and add if missing
      *
      * @param  string $path file cache
      *
@@ -102,9 +144,16 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      **/
     protected function stat($path)
     {
+        global $user;
+
         $result = parent::stat($path);
+        // we don't include directories nor dot files in expFiles
         if ($result && $result['mime'] != 'directory' && substr($result['name'], 0) != '.') {
-            self::_get_expFile($path);
+            $file = self::_get_expFile($path);
+            if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
+                $result['locked'] = true;
+                $result['hidden'] = true;
+            }
         }
         return $result;
     }
@@ -216,31 +265,6 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = parent::_save($fp, $dir, $name, $stat);
         self::_get_expFile($path);
         return $path;
-    }
-
-    /**
-     * Return the expFile for the given path or create new expFile
-     *
-     * @param $path
-     *
-     * @return array|\expFile
-     * @author Dave Leffler
-     */
-    protected static function _get_expFile($path)
-    {
-        $efile = new expFile();
-        $path = str_replace(BASE, '', $path);
-        $path = str_replace('\\', '/', $path);
-        $thefile = $efile->find(
-            'first',
-            'directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"'
-        );
-        if (empty($thefile->id)) {
-            $thefile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
-            $thefile->posted = $thefile->last_accessed = filemtime(BASE . $path);
-            $thefile->save();
-        }
-        return $thefile;
     }
 
 }

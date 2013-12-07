@@ -16,28 +16,26 @@
 #
 ##################################################
 
-set_time_limit(0); // just in case it too long, not recommended for production
-//error_reporting(E_ALL | E_STRICT); // Set E_ALL for debuging
-// error_reporting(0);
-ini_set('max_file_uploads', 50); // allow uploading up to 50 files at once
+require_once("../../../../exponent.php");
+
+if (DEVELOPMENT) set_time_limit(0);  // just in case it too long, not recommended for production
+
+ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT files at once
 
 // needed for case insensitive search to work, due to broken UTF-8 support in PHP
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('mbstring.func_overload', 2);
 
-//if (function_exists('date_default_timezone_set')) {
-//	date_default_timezone_set('Europe/Moscow');
-//}
-
-require_once("../../../../exponent.php");
 include_once BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include_once BASE . 'external/elFinder/php/elFinder.class.php';
-include_once BASE . 'external/elFinder/php/elFinderExponent.class.php';
+//include_once BASE . 'external/elFinder/php/elFinderExponent.class.php';  // our custom elFinder object
+include_once BASE . 'framework/modules/file/connector/elFinderExponent.class.php';  // our custom elFinder object
 include_once BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
-include_once BASE . 'external/elFinder/php/elFinderVolumeExponent.class.php';
+//include_once BASE . 'external/elFinder/php/elFinderVolumeExponent.class.php';  // our custom elFInder volume driver
+include_once BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php';  // our custom elFInder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
 
@@ -488,7 +486,6 @@ $opts = array(
 
 // sleep(3);
 header('Access-Control-Allow-Origin: *');
-//$connector = new elFinderConnector(new elFinder($opts), true);
 $connector = new elFinderConnector(new elFinderExponent($opts), true);
 $connector->run();
 

@@ -1,7 +1,7 @@
 <?php
 
 set_time_limit(0); // just in case it too long, not recommended for production
-//error_reporting(E_ALL | E_STRICT); // Set E_ALL for debuging
+error_reporting(E_ALL | E_STRICT); // Set E_ALL for debuging
 // error_reporting(0);
 ini_set('max_file_uploads', 50);   // allow uploading up to 50 files at once
 
@@ -9,9 +9,9 @@ ini_set('max_file_uploads', 50);   // allow uploading up to 50 files at once
 ini_set('mbstring.internal_encoding', 'UTF-8');
 ini_set('mbstring.func_overload', 2);
 
-//if (function_exists('date_default_timezone_set')) {
-//	date_default_timezone_set('Europe/Moscow');
-//}
+if (function_exists('date_default_timezone_set')) {
+	date_default_timezone_set('Europe/Moscow');
+}
 
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderConnector.class.php';
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinder.class.php';
@@ -19,9 +19,6 @@ include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeDriver.class.p
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeLocalFileSystem.class.php';
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeMySQL.class.php';
 include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeFTP.class.php';
-include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeExponent.class.php';
-
-define('ELFINDER_IMG_PARENT_URL', '/exp2/external/elFinder/');
 
 /**
  * # Dropbox volume driver need "dropbox-php's Dropbox" and "PHP OAuth extension" or "PEAR's HTTP_OAUTH package"
@@ -258,78 +255,38 @@ $opts = array(
 		'mkdir mkfile rename duplicate upload rm paste' => 'logger'
 	),
 	'debug' => true,
-//	'netVolumesSessionKey' => 'netVolumes',
+	'netVolumesSessionKey' => 'netVolumes',
 	'roots' => array(
-//		array(
-//			'driver'     => 'LocalFileSystem',
-//			'path'       => '../files/',
-//			'startPath'  => '../files/test/',
-//			'URL'        => dirname($_SERVER['PHP_SELF']) . '/../files/',
-//			// 'treeDeep'   => 3,
-//			// 'alias'      => 'File system',
-//			'mimeDetect' => 'internal',
-//			'tmbPath'    => '.tmb',
-//			'utf8fix'    => true,
-//			'tmbCrop'    => false,
-//			'tmbBgColor' => 'transparent',
-//			'accessControl' => 'access',
-//			'acceptedName'    => '/^[^\.].*$/',
-//			// 'disabled' => array('extract', 'archive'),
-//			// 'tmbSize' => 128,
-//			'attributes' => array(
-//				array(
-//					'pattern' => '/\.js$/',
-//					'read' => true,
-//					'write' => false
-//				),
-//				array(
-//					'pattern' => '/^\/icons$/',
-//					'read' => true,
-//					'write' => false
-//				)
-//			)
-//			// 'uploadDeny' => array('application', 'text/xml')
-//		),
-        array(
-            // 'id' => 'x5',
-            'driver' => 'LocalFileSystem',
-            'path'   => '../../../files/',
-            'URL'    => dirname($_SERVER['PHP_SELF']) . '/../../../files/',
-            'alias'  => 'Exponent Files',
-            'disabled' => array(),
-            'maxArcFilesSize' => 100,
-            // 'accessControl' => array($acl, 'fsAccess'),
-            // 'accessControlData' => array('uid' => 1),
-            // 'acceptedName' => 'validName',
-            'uploadAllow' => array('all'),
-            'uploadDeny'  => array('all'),
-            'uploadOrder' => 'deny,allow',
-            'uploadOverwrite' => true,
-            'uploadMaxSize' => '128m',
-            // 'copyOverwrite' => false,
-            'copyJoin' => true,
-            'mimeDetect' => 'internal',
-            'tmbCrop' => false,
-            'imgLib' => 'gd',
-#            'tmbURL'    => '.tmb/',
-//            'tmbPath'    => '.tmb',
-            'tmbBgColor' => 'transparent',
-            'accessControl' => 'access',
-            'acceptedName'    => '/^[^\.].*$/',
-            // 'disabled' => array('extract', 'archive'),
-            // 'tmbSize' => 128,
-            'utf8fix' => false,
-            // 'acceptedName'    => '/^[\W]*$/',
-            'attributes' => array(
-                array(
-                    'pattern' => '/^\/\./',
-                    'read' => false,
-                    'write' => false,
-                    'hidden' => true,
-                    'locked' => true
-                )
-            ),
-        ),
+		array(
+			'driver'     => 'LocalFileSystem',
+			'path'       => '../files/',
+			'startPath'  => '../files/test/',
+			'URL'        => dirname($_SERVER['PHP_SELF']) . '/../files/',
+			// 'treeDeep'   => 3,
+			// 'alias'      => 'File system',
+			'mimeDetect' => 'internal',
+			'tmbPath'    => '.tmb',
+			'utf8fix'    => true,
+			'tmbCrop'    => false,
+			'tmbBgColor' => 'transparent',
+			'accessControl' => 'access',
+			'acceptedName'    => '/^[^\.].*$/',
+			// 'disabled' => array('extract', 'archive'),
+			// 'tmbSize' => 128,
+			'attributes' => array(
+				array(
+					'pattern' => '/\.js$/',
+					'read' => true,
+					'write' => false
+				),
+				array(
+					'pattern' => '/^\/icons$/',
+					'read' => true,
+					'write' => false
+				)
+			)
+			// 'uploadDeny' => array('application', 'text/xml')
+		),
 		// array(
 		// 	'driver'     => 'LocalFileSystem',
 		// 	'path'       => '../files2/',
@@ -381,14 +338,14 @@ $opts = array(
 		// 		
 		// 	)
 		// ),
-//		array(
-//			'driver' => 'FTP',
-//			'host' => 'work.std42.ru',
-//			'user' => 'dio',
-//			'pass' => 'wallrus',
-//			'path' => '/',
-//			'tmpPath' => '../files/ftp',
-//		),
+		array(
+			'driver' => 'FTP',
+			'host' => 'work.std42.ru',
+			'user' => 'dio',
+			'pass' => 'wallrus',
+			'path' => '/',
+			'tmpPath' => '../files/ftp',
+		),
 		// array(
 		// 	'driver' => 'FTP',
 		// 	'host' => '10.0.1.3',

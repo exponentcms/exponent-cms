@@ -35,6 +35,13 @@ class elFinderExponent extends elFinder
         $this->commands['alt'] = array('target' => true, 'content' => false);
     }
 
+    /**
+     * Command to get file owner
+     *
+     * @param $args
+     *
+     * @return array
+     */
     protected function owner($args)
     {
         $target = $args['target'];
@@ -60,6 +67,45 @@ class elFinderExponent extends elFinder
         return array('owner' => $title);
     }
 
+    /**
+     * Command to get/set file shared status
+     *
+     * @param $args
+     *
+     * @return array
+     */
+    protected function shared($args)
+    {
+        $target = $args['target'];
+        $shared = $args['content'];
+        $error = array(self::ERROR_UNKNOWN, '#' . $target);
+
+        if (($volume = $this->volume($target)) == false
+            || ($file = $volume->file($target)) == false
+        ) {
+            return array('error' => $this->error($error, self::ERROR_FILE_NOT_FOUND));
+        }
+
+        $error[1] = $file['name'];
+
+        if ($volume->commandDisabled('shared')) {
+            return array('error' => $this->error($error, self::ERROR_ACCESS_DENIED));
+        }
+
+        if (($shared = $volume->shared($target, $shared)) == -1) {
+            return array('error' => $this->error($error, $volume->error()));
+        }
+
+        return array('shared' => $shared);
+    }
+
+    /**
+     * Command to get/set file title, NOT the filename
+     *
+     * @param $args
+     *
+     * @return array
+     */
     protected function title($args)
     {
         $target = $args['target'];
@@ -85,6 +131,13 @@ class elFinderExponent extends elFinder
         return array('title' => $title);
     }
 
+    /**
+     * Command to get file Alt
+     *
+     * @param $args
+     *
+     * @return array
+     */
     protected function alt($args)
     {
         $target = $args['target'];
