@@ -176,11 +176,13 @@
                         autoplay : false,
                     },
                     // help dialog tabs
-                    help : { view : ['about', 'shortcuts'] }
+                    help : {
+                        view : ['about', 'shortcuts']
+                    }
                 },
                 handlers : {
 					getfile : function(e) {
-						console.log(e.data.files)  //FIXME by adding expFile->id, etc to each file?
+						console.log(e.data.files)
 					}
 				},
                 {/literal}{if $filter=='image'}{literal}
@@ -189,6 +191,7 @@
                 defaultView : '{/literal}{if $smarty.const.FM_THUMBNAILS}icons{else}list{/if}{literal}',
                 // dateFormat : '{/literal}{$smarty.const.DISPLAY_DATE_FORMAT}{literal}',
                 {/literal}
+              	ui : ['toolbar', 'places', 'tree', 'path', 'stat'],
                 {if $update=='ck'}
                     {$w = 38}
                     {$h = 112}
@@ -206,14 +209,11 @@
                     window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     window.close();
                     {/literal}{elseif $update=='tiny'}{literal}
-                    // actually file.url - doesnt work for me, but file does. (elfinder 2.0-rc1)
                     FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
                     {/literal}{else}{literal}
-                    // single file sent back as expFile->id
-                    // mulitple files sent back as array of expFile records
                     if ((file.length) == 1) {
                         myfile = file[0];
-                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.path);  //FIXME with real return
+                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.path);
                     } else {
                         var batchIDs = {};
                         for (var i=0; i<file.length; i++) {

@@ -33,7 +33,10 @@ class fileController extends expController {
     );
     public $requires_login = array(
         'picker'=>'must be logged in',
-        'edit_alt'=>'must be logged in'
+        'editAlt'=>'must be logged in',
+        'editCat'=>'must be logged in',
+        'editShare'=>'must be logged in',
+        'editTitle'=>'must be logged in',
     );
 
     static function displayname() { return gt("File Manager"); }

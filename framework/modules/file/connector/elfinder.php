@@ -32,6 +32,7 @@ ini_set('mbstring.func_overload', 2);
 require_once("../../../../exponent.php");
 include_once BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include_once BASE . 'external/elFinder/php/elFinder.class.php';
+include_once BASE . 'external/elFinder/php/elFinderExponent.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
@@ -78,7 +79,7 @@ function logger($cmd, $result, $args, $elfinder)
 
     $log = sprintf("[%s] %s: %s \n", date('r'), strtoupper($cmd), var_export($result, true));
 //    $logfile = '../files/temp/log.txt';
-    $logfile = BASE.'tmp/elfinder.txt';
+    $logfile = BASE . 'tmp/elfinder.txt';
     $dir = dirname($logfile);
     if (!is_dir($dir) && !mkdir($dir)) {
         return;
@@ -111,7 +112,7 @@ function logger($cmd, $result, $args, $elfinder)
     $log .= "\n";
 
 //    $logfile = '../files/temp/log.txt';
-    $logfile = BASE.'tmp/elfinder.txt';
+    $logfile = BASE . 'tmp/elfinder.txt';
     $dir = dirname($logfile);
     if (!is_dir($dir) && !mkdir($dir)) {
         return;
@@ -325,8 +326,7 @@ $opts = array(
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
             'alias'           => 'files',
-            'disabled'        => array(),
-             // 'disabled' => array('extract', 'archive'),
+            'disabled'        => array('netmount'),
             'maxArcFilesSize' => 100,
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
@@ -340,14 +340,14 @@ $opts = array(
             'copyJoin'        => true,
 //            'mimeDetect' => 'internal',
             'tmbCrop'         => false,
-            'imgLib' => 'gd',  // 'auto' doesn't seem to work on some servers
-            'tmbPath'         => '../tmp/thumbs',  // relative to root 'path' above
+//            'imgLib' => 'gd',  // 'auto' doesn't seem to work on some servers
+            'tmbPath'         => '../tmp/thumbs', // relative to root 'path' above
             'tmbURL'          => URL_FULL . 'tmp/thumbs/',
             'tmbBgColor'      => 'transparent',
             'tmbSize'         => FM_THUMB_SIZE,
             'acceptedName'    => '/^[^\.].*$/',
-             // 'acceptedName'    => '/^[\W]*$/',
-             // 'acceptedName' => 'validName',
+            // 'acceptedName'    => '/^[\W]*$/',
+            // 'acceptedName' => 'validName',
             'utf8fix'         => false,
             'attributes'      => array(
                 array(
@@ -488,7 +488,8 @@ $opts = array(
 
 // sleep(3);
 header('Access-Control-Allow-Origin: *');
-$connector = new elFinderConnector(new elFinder($opts), true);
+//$connector = new elFinderConnector(new elFinder($opts), true);
+$connector = new elFinderConnector(new elFinderExponent($opts), true);
 $connector->run();
 
 // echo '<pre>';
