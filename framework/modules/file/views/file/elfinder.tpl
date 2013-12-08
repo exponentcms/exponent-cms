@@ -13,6 +13,10 @@
  *
  *}
 
+{*
+ * The main 'html' file to instantiate elFinder
+*}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,11 +45,13 @@
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.history.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.command.js"></script>
 
@@ -55,7 +61,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/button.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/uploadButton.js"></script>
@@ -96,7 +103,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/archive.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/view.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/resize.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/resize.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/resize.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/netmount.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>
@@ -122,7 +130,7 @@
 
 {script unique="picker" jquery=jqueryui}
     {literal}
-        // Helper function to get parameters from the query string for CKEditor.
+        // Helper function to get parameters from the query string for CKEditor
         function getUrlParam(paramName) {
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
@@ -130,7 +138,7 @@
             return (match && match.length > 1) ? match[1] : '' ;
         }
 
-        // Helper function to get parameters from the query string for TinyMCE.
+        // Helper function to get parameters from the query string for TinyMCE
         var FileBrowserDialogue = {
             init: function() {
                 // Here goes your code for setting your custom things onLoad.
@@ -142,6 +150,12 @@
                 // close popup window
                 top.tinymce.activeEditor.windowManager.close();
             }
+        }
+
+        // Helper function to kill console logging so it won't kill IE7-9
+        if (typeof console == "undefined" || typeof console.log == "undefined")
+        {
+           var console = { log: function() {} };
         }
 
         $().ready(function() {
@@ -181,25 +195,25 @@
                         view : ['about', 'shortcuts']
                     }
                 },
-                handlers : {
-					getfile : function(e) {
-						console.log(e.data.files)
-					}
-				},
+//                handlers : {
+//					getfile : function(e) {
+//						console.log(e.data.files)
+//					}
+//				  },
                 {/literal}{if $filter=='image'}{literal}
                 onlyMimes : ['image'],
                 {/literal}{/if}{literal}
                 defaultView : '{/literal}{if $smarty.const.FM_THUMBNAILS}icons{else}list{/if}{literal}',
                 // dateFormat : '{/literal}{$smarty.const.DISPLAY_DATE_FORMAT}{literal}',
                 {/literal}
-              	ui : ['toolbar', 'places', 'tree', 'path', 'stat'],
+              	ui : ['toolbar', 'places', 'tree', 'path', 'stat'],  // we add the places/favorites
                 uiOptions : {
                     // toolbar configuration
                     toolbar : [
                         ['back', 'forward'],
-                        //['netmount'],
-                        ['reload'],
-                        ['home', 'up'],
+                        //['netmount'],       // removed
+                        ['reload'],           // added
+                        ['home', 'up'],       // added
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
                         ['info'],
@@ -226,7 +240,19 @@
                     },
                     cwd : {
                         // display parent folder with ".." name :)
-                        oldSchool : false
+                        oldSchool : false,
+                        listView : {
+                            // columns to be displayed
+                            // default settings are:
+                            // columns : ['perm', 'date', 'size', 'kind'],
+                            // extra columns can be displayed if your connector supports it:
+                            columns : ['date', 'size', 'kind', 'owner', 'shared'],
+                            // custom columns labels:
+                            columnsCustomName : {
+                                owner : 'Owner',
+                                shared : 'Shared',
+                            }
+                        }
                     }
                 },
                 {if $update=='ck'}
@@ -266,6 +292,7 @@
                 {/literal}{/if}{literal}
             }).elfinder('instance');
 
+            // auto resize elFinder height based on window size
             $(window).resize(function(){
                 var h = ($(window).height()) - 18;
                 if($('#elfinder').height() != h){

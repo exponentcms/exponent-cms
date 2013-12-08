@@ -17,7 +17,7 @@
 
 /**
  * This is the class elFinderExponent
- * elFinder extension for Exponent CMS expFile filesystem.
+ * elFinder object subclass for Exponent CMS expFile filesystem.
  *
  * @author     Dave Leffler
  * @package    Connectors
@@ -31,6 +31,7 @@ class elFinderExponent extends elFinder
         parent::__construct($opts);
         /* Adding new commands */
         $this->commands['owner'] = array('target' => true, 'content' => false);
+        $this->commands['shared'] = array('target' => true, 'content' => false);
         $this->commands['title'] = array('target' => true, 'content' => false);
         $this->commands['alt'] = array('target' => true, 'content' => false);
     }
@@ -92,11 +93,9 @@ class elFinderExponent extends elFinder
             return array('error' => $this->error($error, self::ERROR_ACCESS_DENIED));
         }
 
-        if (($shared = $volume->shared($target, $shared)) == -1) {
-            return array('error' => $this->error($error, $volume->error()));
-        }
-
-        return array('shared' => $shared);
+        return (($shared = $volume->shared($target, $shared)))
+            ? array('changed' => array($shared))
+            : array('error' => $this->error($error, $volume->error()));
     }
 
     /**
@@ -124,11 +123,9 @@ class elFinderExponent extends elFinder
             return array('error' => $this->error($error, self::ERROR_ACCESS_DENIED));
         }
 
-        if (($title = $volume->title($target, $title)) == -1) {
-            return array('error' => $this->error($error, $volume->error()));
-        }
-
-        return array('title' => $title);
+        return ($title = $volume->title($target, $title))
+            ? array('changed' => array($title))
+            : array('error' => $this->error($error, $volume->error()));
     }
 
     /**
@@ -156,11 +153,9 @@ class elFinderExponent extends elFinder
             return array('error' => $this->error($error, self::ERROR_ACCESS_DENIED));
         }
 
-        if (($alt = $volume->alt($target, $alt)) == -1) {
-            return array('error' => $this->error($error, $volume->error()));
-        }
-
-        return array('alt' => $alt);
+        return (($alt = $volume->alt($target, $alt)))
+            ? array('changed' => array($alt))
+            : array('error' => $this->error($error, $volume->error()));
     }
 
 }

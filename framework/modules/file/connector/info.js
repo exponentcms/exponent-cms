@@ -1,6 +1,21 @@
+/*
+ * Copyright (c) 2004-2013 OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
+
 "use strict";
 /**
- * @class elFinder command "info".
+ * @class elFinder command "info" updated for Exponent CMS
  * Display dialog with file properties.
  *
  * @author Dmitry (dio) Levashov, dio@std42.ru
@@ -27,8 +42,9 @@ elFinder.prototype.commands.info = function () {
             no : fm.i18n('no') ,
             link : fm.i18n('link') ,
             owner : fm.i18n('owner') ,
+            shared : fm.i18n('shared') ,
             title : fm.i18n('title') ,
-            alt : fm.i18n('alt') ,
+            alt : fm.i18n('alt')
         };
 
     this.tpl = {
@@ -158,73 +174,29 @@ elFinder.prototype.commands.info = function () {
             content.push(row.replace(l , msg.perms).replace(v , fm.formatPermissions(file)));
             content.push(row.replace(l , msg.locked).replace(v , file.locked ? msg.yes : msg.no));
 
-
             // Exponent specific attributes
-            content.push(row.replace(l , 'Owner').replace(v , tpl.spinner.replace('{text}' , msg.calc).replace('{id}' , 'owner')));
-            fm.request({
-                data : {
-                    cmd : 'owner' ,
-                    target : file.hash
-                } ,
-                preventDefault : true
-            })
-                .fail(function () {
-                    replSpinnerById(msg.unknown , 'owner');
-                })
-                .done(function (data) {
-                    replSpinnerById(data.owner || msg.unknown , 'owner');
-                });
+            var editDesc = true;
+            if (file.mime != 'directory') {
+                content.push(row.replace(l , 'Owner').replace(v , file.owner));
 
-            if (file.mime.indexOf('image') !== -1) {
-                var editDesc = true;
-                var filetitle = '<div id="elfinder-fm-file-title"></div>';
-                var filealt = '<div id="elfinder-fm-file-alt"></div>';
-                if (editDesc) {
-                    filetitle = '<input size="23" id="elfinder-fm-file-title" class="ui-widget ui-widget-content" disabled="true" value="' + msg.calc + '" /> <input type="button" id="elfinder-fm-file-title-btn-save" value="' + 'Update' + '" />';
-                    filealt = '<textarea cols="20" rows="2" id="elfinder-fm-file-alt" class="ui-widget ui-widget-content" disabled="true">' + msg.calc + '</textarea> <input type="button" id="elfinder-fm-file-alt-btn-save" value="' + 'Update' + '" />';
-                }
-
-                content.push(row.replace(l , 'Title').replace(v , filetitle));
-                content.push(row.replace(l , 'Alt').replace(v , filealt));
-
-                fm.request({
-                    data : {
-                        cmd : 'title' ,
-                        target : file.hash
-                    } ,
-                    preventDefault : true
-                })
-                    .done(function (data) {
-                        var fieldTitle = dialog.find('#elfinder-fm-file-title');
-
-                        if (editDesc) {
-                            fieldTitle.val(data.title || '');
-                            fieldTitle.removeAttr('disabled');
-                        } else {
-                            fieldTitle.empty();
-                            fieldTitle.html(data.title || '');
-                        }
-                    });
-                fm.request({
-                    data : {
-                        cmd : 'alt' ,
-                        target : file.hash
-                    } ,
-                    preventDefault : true
-                })
-                    .done(function (data) {
-                        var fieldalt = dialog.find('#elfinder-fm-file-alt');
-
-                        if (editDesc) {
-                            fieldalt.val(data.alt || '');
-                            fieldalt.removeAttr('disabled');
-                        } else {
-                            fieldalt.empty();
-                            fieldalt.html(data.alt || '');
-                        }
-                    });
+                var shared = '';
+                if (file.shared) shared = ' checked="true"';
+                var disableshared = '';
+                if (!editDesc) disableshared = ' disabled="true"';
+                var fileshared = '<input type="checkbox" id="elfinder-fm-file-shared" class="ui-widget ui-widget-content" title="Change the file\'s Shared status" value="1"' + shared + disableshared + '" />';
+                content.push(row.replace(l , 'Shared').replace(v , fileshared));
             }
 
+            if (file.mime.indexOf('image') !== -1) {
+                var filetitle = '<div id="elfinder-fm-file-title">' + file.title + '</div>';
+                var filealt = '<div id="elfinder-fm-file-alt">' + file.alt + '</div>';
+                if (editDesc) {
+                    filetitle = '<input size="23" id="elfinder-fm-file-title" class="ui-widget ui-widget-content" value="' + file.title + '" /> <input type="button" id="elfinder-fm-file-title-btn-save" title="Update the file\'s Title" value="' + 'Update' + '" />';
+                    filealt = '<textarea cols="20" rows="2" id="elfinder-fm-file-alt" class="ui-widget ui-widget-content">' + file.alt + '</textarea> <input type="button" id="elfinder-fm-file-alt-btn-save" title="Update the file\'s Alt" value="' + 'Update' + '" />';
+                }
+                content.push(row.replace(l , 'Title').replace(v , filetitle));
+                content.push(row.replace(l , 'Alt').replace(v , filealt));
+            }
 
         } else {
             view = view.replace('{class}' , 'elfinder-cwd-icon-group');
@@ -261,48 +233,71 @@ elFinder.prototype.commands.info = function () {
         dialog.attr('id' , id)
 
         // Exponent specific commands
-        if (editDesc && (file.mime.indexOf('image') !== -1)) {
-            var inputTitle = $('#elfinder-fm-file-title' , dialog);
-            var btnTitleSave = $('#elfinder-fm-file-title-btn-save' , dialog).button();
-            var inputAlt = $('#elfinder-fm-file-alt' , dialog);
-            var btnAltSave = $('#elfinder-fm-file-alt-btn-save' , dialog).button();
+        if (editDesc) {
+            var checkShared = $('#elfinder-fm-file-shared' , dialog);
+            checkShared.click(function () {
+                fm.lockfiles({files : [file.hash]});
+                fm.request({
+                    data : {
+                        cmd : 'shared' ,
+                        target : file.hash ,
+                        content : checkShared[0].checked
+                    } ,
+//                    notify : {
+//                        type : 'save' ,
+//                        cnt : 1
+//                    }
+                })
+                    .always(function () {
+                        fm.unlockfiles({files : [file.hash]});
+                        file.shared = checkShared[0].checked;
+                    });
+            });
 
-            btnTitleSave.click(function () {
-                fm.lockfiles({files : [file.hash]});
-                fm.request({
-                    data : {
-                        cmd : 'title' ,
-                        target : file.hash ,
-                        content : inputTitle.val()
-                    } ,
-//                    notify : {
-//                        type : 'save' ,
-//                        cnt : 1
-//                    }
-                })
-                    .always(function () {
-                        fm.unlockfiles({files : [file.hash]})
-                    });
-            });
-            btnAltSave.click(function () {
-                fm.lockfiles({files : [file.hash]});
-                fm.request({
-                    data : {
-                        cmd : 'alt' ,
-                        target : file.hash ,
-                        content : inputAlt.val()
-                    } ,
-//                    notify : {
-//                        type : 'save' ,
-//                        cnt : 1
-//                    }
-                })
-                    .always(function () {
-                        fm.unlockfiles({files : [file.hash]})
-                    });
-            });
+            if (file.mime.indexOf('image') !== -1) {
+                var inputTitle = $('#elfinder-fm-file-title' , dialog);
+                var btnTitleSave = $('#elfinder-fm-file-title-btn-save' , dialog).button();
+                var inputAlt = $('#elfinder-fm-file-alt' , dialog);
+                var btnAltSave = $('#elfinder-fm-file-alt-btn-save' , dialog).button();
+
+                btnTitleSave.click(function () {
+                    fm.lockfiles({files : [file.hash]});
+                    fm.request({
+                        data : {
+                            cmd : 'title' ,
+                            target : file.hash ,
+                            content : inputTitle.val()
+                        } ,
+                        //                    notify : {
+                        //                        type : 'save' ,
+                        //                        cnt : 1
+                        //                    }
+                    })
+                        .always(function () {
+                            fm.unlockfiles({files : [file.hash]})
+                            file.title = inputTitle.val();
+                        });
+                });
+                btnAltSave.click(function () {
+                    fm.lockfiles({files : [file.hash]});
+                    fm.request({
+                        data : {
+                            cmd : 'alt' ,
+                            target : file.hash ,
+                            content : inputAlt.val()
+                        } ,
+                        //                    notify : {
+                        //                        type : 'save' ,
+                        //                        cnt : 1
+                        //                    }
+                    })
+                        .always(function () {
+                            fm.unlockfiles({files : [file.hash]})
+                            file.alt = inputAlt.val();
+                        });
+                });
+            }
         }
-
 
         // load thumbnail
         if (tmb) {

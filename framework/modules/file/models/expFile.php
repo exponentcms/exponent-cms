@@ -812,7 +812,8 @@ class expFile extends expRecord {
         /* Get the file extension,
          * FYI: this is *really* hax.
          */
-        $extension = strtolower(array_pop(explode('.',$filename)));
+        $fileparts = explode('.',$filename);
+        $extension = strtolower(array_pop($fileparts));
         if(array_key_exists($extension, $types)) {
             /* If we can *guess* the mimetype based on the filename, do that for standardization */
             return $types[$extension];

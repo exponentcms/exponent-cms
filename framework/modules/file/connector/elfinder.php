@@ -16,9 +16,15 @@
 #
 ##################################################
 
+/**
+ * Implements elFinder as the 'connector' referenced by 'url' param in elfinder.tpl
+ */
+
 require_once("../../../../exponent.php");
 
-if (DEVELOPMENT) set_time_limit(0);  // just in case it too long, not recommended for production
+if (DEVELOPMENT) {
+    set_time_limit(0);
+} // just in case it too long, not recommended for production
 
 ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT files at once
 
@@ -29,13 +35,13 @@ ini_set('mbstring.func_overload', 2);
 include_once BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include_once BASE . 'external/elFinder/php/elFinder.class.php';
 //include_once BASE . 'external/elFinder/php/elFinderExponent.class.php';  // our custom elFinder object
-include_once BASE . 'framework/modules/file/connector/elFinderExponent.class.php';  // our custom elFinder object
+include_once BASE . 'framework/modules/file/connector/elFinderExponent.class.php'; // our custom elFinder object
 include_once BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
 include_once BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
 //include_once BASE . 'external/elFinder/php/elFinderVolumeExponent.class.php';  // our custom elFInder volume driver
-include_once BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php';  // our custom elFInder volume driver
+include_once BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
 
@@ -272,6 +278,7 @@ class elFinderTestACL
 
 $acl = new elFinderTestACL();
 
+// example acceptedName function
 function validName($name)
 {
     return strpos($name, '.') !== 0;
@@ -283,7 +290,37 @@ $opts = array(
     'locale' => 'en_US.UTF-8',
     'bind'   => array(
         // '*' => 'logger',
-        'mkdir mkfile rename duplicate upload rm paste' => 'logger'
+        'mkdir mkfile rename duplicate upload rm paste' => 'logger',
+        'upload.presave'                                => array(
+            'Plugin.AutoResize.onUpLoadPreSave',
+            //        'Plugin.Watermark.onUpLoadPreSave'
+            //        'Plugin.Normalizer.onUpLoadPreSave'
+        )
+    ),
+    // global plugin configure (optional)
+    'plugin' => array(
+        'AutoResize' => array(
+            'enable'     => QUICK_UPLOAD_WIDTH, // For control by volume driver
+            'maxWidth'   => QUICK_UPLOAD_WIDTH,
+            'maxHeight'  => QUICK_UPLOAD_WIDTH,
+            'quality'    => THUMB_QUALITY, // JPEG image save quality
+            'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP // Target image formats ( bit-field )
+        ),
+//        'Watermark' => array(
+//            'enable'         => true,       // For control by volume driver
+//            'source'         => 'logo.png', // Path to Water mark image
+//            'marginRight'    => 5,          // Margin right pixel
+//            'marginBottom'   => 5,          // Margin bottom pixel
+//            'quality'        => 95,         // JPEG image save quality
+//            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
+//            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
+//            'targetMinPixel' => 200         // Target image minimum pixel size
+//        ),
+//        'Normalizer' => array(
+//            'enable' => true,
+//            'nfc'    => true,
+//            'nfkc'   => true
+//        )
     ),
     'debug'  => true,
 //	'netVolumesSessionKey' => 'netVolumes',
@@ -337,6 +374,7 @@ $opts = array(
             // 'copyOverwrite' => false,
             'copyJoin'        => true,
 //            'mimeDetect' => 'internal',
+            'tmpPath'         => '/../tmp',
             'tmbCrop'         => false,
 //            'imgLib' => 'gd',  // 'auto' doesn't seem to work on some servers
             'tmbPath'         => '../tmp/thumbs', // relative to root 'path' above
@@ -349,7 +387,7 @@ $opts = array(
             'utf8fix'         => false,
             'attributes'      => array(
                 array(
-                    'pattern' => '/^\/\./',
+                    'pattern' => '/^\/\./', // dot files are hidden
                     'read'    => false,
                     'write'   => false,
                     'hidden'  => true,

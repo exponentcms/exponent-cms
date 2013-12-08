@@ -17,7 +17,7 @@
 
 /**
  * This is the class elFinderVolumeExponent
- * elFinder driver for Exponent CMS expFile filesystem.
+ * elFinder volume driver for the Exponent CMS expFile filesystem.
  *
  * @author     Dave Leffler
  * @package    Connectors
@@ -56,13 +56,13 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     {
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
-        $shared = $file->shared;
-        if ($newshared != null) {
+        $newshared = mb_strtoupper(trim($newshared)) === mb_strtoupper("true") ? true : false;
+        $shared = !empty($file->shared);
+        if ($newshared != $shared) {
             $file->update(array('shared' => $newshared));
-        } else {
-            return $shared;
+            $this->clearcache();
         }
-        return $newshared;
+        return $this->stat($path);
     }
 
     /**
@@ -78,12 +78,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $title = $file->title;
-        if ($newtitle != null) {
+        if ($newtitle != $title) {
             $file->update(array('title' => $newtitle));
-        } else {
-            return $title;
+            $this->clearcache();
         }
-        return $newtitle;
+        return $this->stat($path);
     }
 
     /**
@@ -99,12 +98,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $path = $this->decode($target);
         $file = self::_get_expFile($path);
         $alt = $file->alt;
-        if ($newalt != null) {
+        if ($newalt != $alt) {
             $file->update(array('alt' => $newalt));
-        } else {
-            return $alt;
+            $this->clearcache();
         }
-        return $newalt;
+        return $this->stat($path);
     }
 
     /**
@@ -153,6 +151,15 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
             if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
                 $result['locked'] = true;
                 $result['hidden'] = true;
+            }
+            $fileuser = user::getUserById($file->poster);
+            $result['owner'] = user::getUserAttribution($fileuser->id);
+            $result['title'] = $file->title;
+            $result['alt'] = $file->alt;
+            $result['shared'] = !empty($file->shared);
+            if ($file->is_image) {
+                $result['width'] = $file->image_width;
+                $result['height'] = $file->image_height;
             }
         }
         return $result;
