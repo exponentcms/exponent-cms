@@ -24,11 +24,11 @@
                     <span class="year">{$item->publish_date|format_date:"%Y"}</span>
                 </p>
             {/if}
-            <h2>
-            <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
-            {$item->title}
+            <{$config.item_level|default:'h2'}>
+                <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
+                {$item->title}
             </a>
-            </h2>
+            </{$config.item_level|default:'h2'}>
             <div class="post-info">
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}

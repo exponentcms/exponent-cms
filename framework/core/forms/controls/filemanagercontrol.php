@@ -96,7 +96,7 @@ class filemanagercontrol extends formcontrol {
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
-                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
                         alert('".gt('Please disable your popup blocker')."!!');
@@ -379,10 +379,16 @@ class filemanagercontrol extends formcontrol {
                     // Y.log(ids);
                 }
 
+                 EXPONENT.passBackBatch".$name." = function(ids) {
+                    Y.each(ids, function(id,k){
+                        EXPONENT.passBackFile".$name."(id);
+                    });
+                 }
+
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
                     if (Y.Lang.isArray(id)) {
-                        EXPONENT.batchAddFiles.".$name."();
+                        EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
 

@@ -1,0 +1,10 @@
+.exp-container.edit #recyclebin {
+    padding:5px;
+    padding:3px 0 13px 5px;
+    text-align:left;
+}
+
+#moduleViewConfig h2 {
+    margin-top: 0;
+    margin-bottom: 0.5em;
+}

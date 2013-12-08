@@ -33,7 +33,7 @@
 <div class="module container flyout{$side} thetop" style="display: none;">
     {if !empty($moduletitle) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
         {$tag = $moduletitle}
-        <h4>{$moduletitle}</h4>
+        <{$config.heading_level|default:'h4'}>{$moduletitle}</{$config.heading_level|default:'h4'}>
     {else}
         {$tag = 'View Panel'|gettext}
     {/if}

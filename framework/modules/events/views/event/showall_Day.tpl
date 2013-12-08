@@ -41,10 +41,10 @@
 		{*{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}*}
         {*{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}*}
 	</div>
-	<h1>
+	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
-	</h1>
+	</{$config.heading_level|default:'h1'}>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}

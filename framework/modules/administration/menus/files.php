@@ -34,7 +34,7 @@ $items = array(
         'id'        => 'filemanager-toolbar',
     ),
 );
-if (!$user->globalPerm('prevent_uploads')) {
+if (!$user->globalPerm('prevent_uploads') && SITE_FILE_MANAGER != 'elfinder') {
     $items[] = array(
         'text'      => gt("Upload Files"),
         'url'       => '#',

@@ -14,7 +14,7 @@
  *}
 
 <div class="module help showall childview">
-    <h2>{'Additional Help Topics'|gettext}</h2>
+    <{$config.item_level|default:'h2'}>{'Additional Help Topics'|gettext}</{$config.item_level|default:'h2'}>
     <dl>
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=doc name=docs}

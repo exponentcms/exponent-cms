@@ -807,9 +807,8 @@ class usersController extends expController {
     }
 
     public function getUsersByJSON() {
-//        global $db, $user;
         $modelname = $this->basemodel_name;
-        $results = 25; // default get all
+        $results = 25; // default get 25
         $startIndex = 0; // default start at 0
         $sort = null; // default don't sort
         $dir = 'asc'; // default sort dir is asc
@@ -844,18 +843,18 @@ class usersController extends expController {
             }
         }
 
-        if (!empty($_GET['filter'])) {
-            switch ($_GET['filter']) {
-                case '1' :
-                    $filter = '';
-                    break;
-                case '2' :
-                    $filter = "id != 1";
-                    break;
-                case '3' :
-                    $filter = "is_admin != 1";
-            }
-        }
+//        if (!empty($_GET['filter'])) {
+//            switch ($_GET['filter']) {
+//                case '1' :
+//                    $filter = '';
+//                    break;
+//                case '2' :
+//                    $filter = "is_system_user != 1";
+//                    break;
+//                case '3' :
+//                    $filter = "is_admin != 1";
+//            }
+//        }
 
         // Sort dir?
         if ((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {

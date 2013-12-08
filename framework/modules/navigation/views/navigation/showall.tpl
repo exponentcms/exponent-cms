@@ -14,13 +14,13 @@
  *}
 
 <div class="module navigation default">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
 	<ul>
         {if $config.showcurrent}
-            <h2>{$current->name}</h2>
+            <{$config.item_level|default:'h2'}>{$current->name}</{$config.item_level|default:'h2'}>
         {/if}
         {$startdepth=$current->depth}
         {if $config.showparents && $current->depth}

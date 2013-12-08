@@ -308,10 +308,10 @@ class expFile extends expRecord {
             // File info
             $_fileInfo = self::getImageInfo($this->path);
             // Assign info back to class
-            $this->is_image = $_fileInfo['is_image'];
-            $this->filesize = $_fileInfo['fileSize'];
+            $this->is_image = !empty($_fileInfo['is_image']) ? $_fileInfo['is_image'] : false;
+            $this->filesize = !empty($_fileInfo['fileSize']) ? $_fileInfo['fileSize'] : 0;
             if (!empty($_fileInfo['mime'])) $this->mimetype = $_fileInfo['mime'];
-            if ($_fileInfo['is_image']) {
+            if (!empty($_fileInfo['is_image'])) {
                 $this->image_width = $_fileInfo[0];
                 $this->image_height = $_fileInfo[1];
             }
@@ -812,7 +812,8 @@ class expFile extends expRecord {
         /* Get the file extension,
          * FYI: this is *really* hax.
          */
-        $extension = strtolower(array_pop(explode('.',$filename)));
+        $fileparts = explode('.',$filename);
+        $extension = strtolower(array_pop($fileparts));
         if(array_key_exists($extension, $types)) {
             /* If we can *guess* the mimetype based on the filename, do that for standardization */
             return $types[$extension];

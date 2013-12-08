@@ -14,7 +14,7 @@
  *}
 
 <div class="module blog showall-authors">
-    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle|default:"Authors"|gettext}</h2>{/if}
+    {if !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle|default:"Authors"|gettext}</{$config.heading_level|default:'h2'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}

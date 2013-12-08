@@ -26,10 +26,8 @@
     {/css}
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <script src="{$smarty.const.JQUERY_SCRIPT}">
-    </script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js">
-    </script>
+    <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js"></script>
 </head>
 <body class=" exp-skin">
 <div id="filemanager">

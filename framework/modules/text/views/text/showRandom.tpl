@@ -14,7 +14,7 @@
  *}
 
 <div class="module text show-random">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {$myloc=serialize($__loc)}
     {permissions}
         <div class="module-actions">
@@ -28,7 +28,7 @@
     {/permissions}
     {foreach from=$items item=item}
         <div class="item">
-            {if $item->title}<h2>{$item->title}</h2>{/if}
+            {if $item->title}<{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>{/if}
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}

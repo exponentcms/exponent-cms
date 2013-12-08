@@ -25,11 +25,11 @@
                 </p>
             {$pp = ''}
             {/if}
-            <h2>
+            <{$config.heading_item|default:'h2'}>
                 <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
-            </h2>
+            </{$config.heading_item|default:'h2'}>
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|format_date}</span>
             {$pp = '&#160;&#160;|&#160;&#160;'}

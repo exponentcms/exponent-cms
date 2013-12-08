@@ -29,7 +29,7 @@
 
 <div class="module store show product">
 <div itemscope itemtype="http://data-vocabulary.org/Product">
-    <h1><span itemprop="name">{$product->title}</span></h1>
+    <{$config.heading_level|default:'h1'}><span itemprop="name">{$product->title}</span></{$config.heading_level|default:'h1'}>
     {if !empty($product->storeCategory[0]->title)}<span itemprop="category" content="{$product->storeCategory[0]->title}"></span>{/if}
     {permissions}
     <div class="item-actions">
@@ -595,7 +595,7 @@
 
     {if $product->crosssellItem|@count >= 1}
          <div class="products ipr{$config.images_per_row} related-products">
-             <h2>{"Related Items"|gettext}</h2>
+             <{$config.item_level|default:'h2'}>{"Related Items"|gettext}</{$config.item_level|default:'h2'}>
 
              {counter assign="ipr" name="ipr" start=1}
 

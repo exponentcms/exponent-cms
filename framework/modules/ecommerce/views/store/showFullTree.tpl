@@ -15,7 +15,7 @@
 
 <div class="module store show-top-level">
     {$depth=0}
-        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
         {permissions}
         <div class="module-actions">
             {if $permissions.create}
@@ -32,7 +32,7 @@
         {/if}
         {$myloc=serialize($__loc)}
 
-        {if $current_category->title}<h2>{$current_category->title}</h2>{/if}
+        {if $current_category->title}<{$config.item_level|default:'h2'}>{$current_category->title}</{$config.item_level|default:'h2'}>{/if}
         {if $current_category->id}
             {permissions}
                 {if $permissions.edit}

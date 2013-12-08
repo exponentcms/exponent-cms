@@ -70,7 +70,7 @@ class facebookController extends expController {
     public static function postStatus($params=array()) {
         if (!empty($params)) {
             // Include facebook class
-            require_once(BASE . "external/facebook-php-sdk-3.2.2/src/facebook.php");
+            require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';
@@ -124,7 +124,7 @@ class facebookController extends expController {
     public static function postEvent($params=array()) {
         if (!empty($params)) {
             // Include facebook class
-            require_once(BASE . "external/facebook-php-sdk-3.2.2/src/facebook.php");
+            require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';

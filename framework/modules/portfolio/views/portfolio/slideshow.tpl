@@ -20,7 +20,7 @@
 {/css}
 
 <div class="module photoalbum portfolio slideshow">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create}
@@ -71,11 +71,11 @@
                 {/permissions}
                 {if !$config.hidetext}
                     <div class="bodycopy">
-                        <h2>
+                        <{$config.item_level|default:'h2'}>
                             <a href="{link action="show" title=$slide->sef_url}" title="{$slide->body|summarize:"html":"para"}">
                                 {$slide->title}
                             </a>
-                        </h2>
+                        </{$config.item_level|default:'h2'}>
                         {$slide->body}
                     </div>
                 {/if}

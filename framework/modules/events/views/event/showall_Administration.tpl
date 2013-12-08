@@ -40,10 +40,10 @@
         &#160;&#160;|&#160;&#160;
 		{icon class="listviewlink" action=showall view='showall_Past Events' time=$time text='Past Events View'|gettext}{br}
 	</div>
-	<h1>
+	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle} - {'Administration View'|gettext}{/if}
-	</h1>
+	</{$config.heading_level|default:'h1'}>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}

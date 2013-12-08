@@ -16,8 +16,8 @@
 <div class="module navigation site-map">
     {$titlepresent=0}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-        <h1>{$moduletitle}</h1>
-        {$titlepresente=1}
+        <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
+        {$titlepresent=1}
     {/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}

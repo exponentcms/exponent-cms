@@ -40,7 +40,7 @@
                 <thead>
                     <tr>
                         <th colspan="2">
-                            <h2>{$title}</h2>
+                            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
                         </th>
                     </tr>
                 </thead>
@@ -60,7 +60,7 @@
                 </tbody>
             </table>
         {else}
-            <h2>{$title}</h2>
+            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
             {eval var=$config.report_def}
             {clear}{br}
         {/if}

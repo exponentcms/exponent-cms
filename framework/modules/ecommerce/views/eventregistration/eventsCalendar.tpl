@@ -28,7 +28,7 @@
 {*{/css}*}
 
 <div class="store events_calendar events default">
-    <h1>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</h1>
+    <{$config.heading_level|default:'h1'}>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</{$config.heading_level|default:'h1'}>
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
