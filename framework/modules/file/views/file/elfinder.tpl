@@ -107,7 +107,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/resize.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/sort.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/netmount.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
 
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elfinder.min.js"></script>*}
 
