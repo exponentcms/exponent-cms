@@ -30,18 +30,18 @@
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/jquery/css/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">*}
     <link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">
 
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">*}
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">*}
 
-    {*<link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/elfinder.min.css">*}
+    <link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/elfinder.min.css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
@@ -110,16 +110,14 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
 
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elfinder.min.js"></script>*}
-
     <!-- elfinder languages -->
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.en.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
 
     <!-- elfinder dialog -->
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.dialogelfinder.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.dialogelfinder.js"></script>*}
 
     <!-- elfinder 1.x connector API support -->
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/proxy/elFinderSupportVer1.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/proxy/elFinderSupportVer1.js"></script>*}
 
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->

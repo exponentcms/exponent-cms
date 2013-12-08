@@ -45,7 +45,7 @@ if (!function_exists('__realpath')) {
 	 */
 	function __realpath($path) {
 		$path = str_replace('\\','/',realpath($path));
-		if ($path{1} == ':') {
+		if (!empty($path{1}) && $path{1} == ':') {
 			// We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
 			$path = substr($path,2);
 		}

@@ -31,10 +31,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     /**
      * Get expFile Owner
      *
-     * @param      $target
-     * @param null $newowner
+     * @param string $target
+     * @param string $newowner
      *
-     * @return null
+     * @return string
      */
     public function owner($target, $newowner = null)
     {
@@ -47,10 +47,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     /**
      * Get/Set expFile shared status
      *
-     * @param      $target
-     * @param null $newshared
+     * @param string $target
+     * @param string $newshared
      *
-     * @return null
+     * @return array/null
      */
     public function shared($target, $newshared = null)
     {
@@ -68,10 +68,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     /**
      * Get/Set expFile Title
      *
-     * @param      $target
-     * @param null $newtitle
+     * @param string $target
+     * @param string $newtitle
      *
-     * @return null
+     * @return array/null
      */
     public function title($target, $newtitle = null)
     {
@@ -88,10 +88,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     /**
      * Get/Set expFile Alt
      *
-     * @param      $target
-     * @param null $newalt
+     * @param string $target
+     * @param string $newalt
      *
-     * @return null
+     * @return array/null
      */
     public function alt($target, $newalt = null)
     {
@@ -108,7 +108,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     /**
      * Return the expFile for the given path or create new expFile
      *
-     * @param $path
+     * @param string $path
      *
      * @return \expFile
      * @author Dave Leffler
@@ -130,6 +130,130 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         return $thefile;
     }
 
+    /**
+     * Move an expFile to the given path
+     *
+     * @param string $oldpath source file hash or path
+     * @param string $newpath dest dir hash or path
+     *
+     * @return \expFile
+     * @author Dave Leffler
+     */
+    protected function _move_expFile($oldpath, $newpath)
+    {
+        $opath = $this->decode($oldpath);
+        if (empty($opath)) {
+            $opath = $oldpath;
+        }
+        $opath = str_replace(BASE, '', $opath);
+        $opath = str_replace('\\', '/', $opath);
+
+        $npath = $this->decode($newpath);
+        if (empty($npath)) {
+            $npath = $newpath;
+        }
+        $npath = str_replace(BASE, '', $npath);
+        $npath = str_replace('\\', '/', $npath);
+
+        $efile = new expFile();
+        $thefile = $efile->find(
+            'first',
+            'directory="' . dirname($opath) . '/' . '" AND filename="' . basename($opath) . '"'
+        );
+        if (empty($thefile->id)) {
+            $thefile = $efile->find(
+                'first',
+                'directory="' . dirname($npath) . '/' . '" AND filename="' . basename($npath) . '"'
+            );
+        }
+        if (!is_dir(BASE. $npath)) {
+            $n1path = dirname($npath);
+            $fname = basename($npath);
+        } else {
+            $n1path = $npath;
+            $fname = basename($opath);
+        }
+        if (!empty($thefile->id)) {
+            $thefile->update(
+                array(
+                    'directory'     => $n1path . '/',
+                    'filename'      => $fname,
+                    'last_accessed' => @filemtime(BASE . $n1path . $fname)
+                )
+            );
+        }
+        return $thefile;
+    }
+
+    /**
+     * Delete an expFile record based on the given path
+     *
+     * @param string $oldpath source file hash
+     *
+     * @return \expFile
+     * @author   Dave Leffler
+     */
+    protected function _remove_expFile($oldpath)
+    {
+        $opath = $this->decode($oldpath);
+        $opath = str_replace(BASE, '', $opath);
+        $opath = str_replace('\\', '/', $opath);
+
+        $efile = new expFile();
+        $thefile = $efile->find(
+            'first',
+            'directory="' . dirname($opath) . '/' . '" AND filename="' . basename($opath) . '"'
+        );
+        if (!empty($thefile->id)) {
+            $thefile->delete();
+        }
+    }
+
+    /**
+     * Paste files
+     *
+     * @param  Object $volume source volume
+     * @param         $src
+     * @param  string $dst    destination dir hash
+     * @param  bool   $rmSrc  remove source after copy?
+     *
+     * @return array|false
+     * @author Dave Leffler
+     */
+    public function paste($volume, $src, $dst, $rmSrc = false)
+    {
+        $this->_move_expFile($src, $dst);
+        $result = parent::paste($volume, $src, $dst, $rmSrc);
+        $this->_remove_expFile($src); // remove the duplicate expFile record pointing to old location
+
+        //FIXME move recursively through new folder location looking for old expFiles and updating them using _move_expFile
+        $opath = $this->decode($src);
+        $opath = str_replace(BASE, '', $opath);
+        $opath = str_replace('\\', '/', $opath);
+
+        $npath = $this->decode($dst);
+//        $npath = str_replace(BASE, '', $npath);
+        $npath = str_replace('\\', '/', $npath);
+
+        $this->scan_folder($npath, $opath);
+
+        return $result;
+    }
+
+    function scan_folder($npath, $opath) {
+        if (is_dir($npath)) {
+            $dir = opendir($npath);
+            while(false !== ( $file = readdir($dir)) ) {
+                if ($file != "." && $file != ".." && is_dir("$npath/$file")) {
+                    $this->scan_folder("$npath/$file", "$opath");
+                } elseif (substr($file, 0, 1) != '.') {
+                    if (file_exists($npath . '/' . $file)) $this->_move_expFile(BASE . $opath . "/" . $file, $npath);
+                }
+            }
+            closedir($dir);
+        }
+    }
+
     /*********************** file stat *********************/
 
     /**
@@ -146,7 +270,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
-        if ($result && $result['mime'] != 'directory' && substr($result['name'], 0) != '.') {
+        if ($result && !empty($result['mime']) && $result['mime'] != 'directory' && substr(
+                $result['name'],
+                0,
+                1
+            ) != '.'
+        ) {
             $file = self::_get_expFile($path);
             if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
                 $result['locked'] = true;
@@ -220,14 +349,16 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
      */
     protected function _move($source, $targetDir, $name)
     {
+        $target = $targetDir . DIRECTORY_SEPARATOR . $name;
+//        $src = (is_file($source)) ? dirname($source) : $source;
+        $this->_move_expFile($source, $target);
         $result = parent::_move($source, $targetDir, $name);
-        if ($result) {
-            $target = $targetDir . DIRECTORY_SEPARATOR . $name;
-            $movefile = self::_get_expFile($source);
-            $movefile->update(
-                array('directory' => dirname($target) . DIRECTORY_SEPARATOR, 'filename' => basename($target))
-            );
-        }
+//        if ($result && !is_dir($result)) {
+//            $movefile = self::_get_expFile($source);
+//            if ($movefile) $movefile->update(
+//                array('directory' => dirname($target) . DIRECTORY_SEPARATOR, 'filename' => basename($target))
+//            );
+//        }
         return $result;
     }
 
