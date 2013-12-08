@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module photoalbum show">
-    <h1>{$record->title}</h1>
+    <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
     {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">

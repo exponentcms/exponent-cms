@@ -14,9 +14,9 @@
  *}
 
 <div class="module news showall-recent">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
     {rss_link}
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent'|gettext} {$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent'|gettext} {$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 
     {permissions}
     <div class="module-actions">
@@ -53,11 +53,11 @@
                 </p>
                 {$pp = ''}
             {/if}
-            <h2>
+            <{$config.item_level|default:'h2'}>
                 <a href="{if $item->isRss}{$item->rss_link}{else}{link action=show title=$item->sef_url}{/if}" title="{$item->body|summarize:"html":"para"}">
                 {$item->title}
                 </a>
-            </h2>
+            </{$config.item_level|default:'h2'}>
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|format_date}</span>
                 {$pp = '&#160;&#160;|&#160;&#160;'}

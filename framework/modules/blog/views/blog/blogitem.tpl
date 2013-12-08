@@ -45,7 +45,7 @@
                 <span class="year">{$record->publish_date|format_date:"%Y"}</span>
             </p>
         {/if}
-        <h1>{$record->title}</h1>
+        <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
         {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
         {subscribe_link prepend='<br/>'}
         {$myloc=serialize($__loc)}

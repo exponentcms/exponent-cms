@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module blog showall">
-    {if $moduletitle && !$config.hidemoduletitle}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !$config.hidemoduletitle}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     
     {permissions}
 		<div class="module-actions">
@@ -28,7 +28,7 @@
 
 		</div>
     {/permissions}
-    <h2>{'API Key'|gettext}</h2>
+    <{$config.item_level|default:'h2'}>{'API Key'|gettext}</{$config.item_level|default:'h2'}>
     <textarea style="width:100%; height:200px;">{$info.apikey}</textarea>
     {*edebug var=$info*}
 

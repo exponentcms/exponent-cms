@@ -18,7 +18,7 @@
     {foreach from=$page->records item=media key=key}
         {$filetype=$media->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
         <div class="item">
-            <h2>{$media->title}</h2>
+            <{$config.item_level|default:'h2'}>{$media->title}</{$config.item_level|default:'h2'}>
             {tags_assigned record=$media}
             {permissions}
                 <div class="item-actions">

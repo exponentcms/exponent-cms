@@ -15,7 +15,7 @@
 
 <div class="module text headline headline-show">
     <div class="item">
-        {if $items[0]->title}<h1>{$items[0]->title}</h1>{/if}
+        {if $items[0]->title}<{$config.heading_level|default:'h1'}>{$items[0]->title}</{$config.heading_level|default:'h1'}>{/if}
     </div>
     {permissions}
         <div class="module-actions">

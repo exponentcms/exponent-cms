@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module ealerts showall">
-    <h1>{$moduletitle|default:"Sign Up for E-Alerts"|gettext}</h1>
+    <{$config.heading_level|default:'h1'}>{$moduletitle|default:"Sign Up for E-Alerts"|gettext}</{$config.heading_level|default:'h1'}>
     <blockquote>
         {'If you would like to stay up to date with email alerts, simply provide your email address and select what you would like to be alerted about.'|gettext}
     </blockquote>
@@ -44,7 +44,7 @@
                             {control type="checkbox" name="ealerts[]" label=" " value=$ealert->id checked=$subscriptions}
                         </td>
                         <td>
-                            <h2>{$ealert->ealert_title}</h2>
+                            <{$config.item_level|default:'h2'}>{$ealert->ealert_title}</{$config.item_level|default:'h2'}>
                             <p>{$ealert->ealert_desc}</p>
                         </td>
                     </tr>

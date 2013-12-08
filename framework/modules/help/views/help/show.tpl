@@ -16,7 +16,7 @@
 {uniqueid assign="id"}
 
 <div id="showhelp" class="module help show">
-    <h1>{$doc->title}</h1>
+    <{$config.heading_level|default:'h1'}>{$doc->title}</{$config.heading_level|default:'h1'}>
     {$myloc=serialize($__loc)}
     {permissions}
     <div class="item-actions">
@@ -84,7 +84,7 @@
 {elseif $doc->parent}
     {get_object object=help param=$doc->parent assign=parent}
     <div class="item childview">
-        <h2>{'Parent Help Topic'|gettext}</h2>
+        <{$config.item_level|default:'h2'}>{'Parent Help Topic'|gettext}</{$config.item_level|default:'h2'}>
         <dl>
             <dt>
                 <h3>

@@ -18,10 +18,10 @@
 {/css}
 
 <div class="module events upcoming-events-headlines">
-    <h2>
+    <{$config.heading_level|default:'h2'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
-    </h2>
+    </{$config.heading_level|default:'h2'}>
     {$myloc=serialize($__loc)}
 	{permissions}
 		<div class="module-actions">

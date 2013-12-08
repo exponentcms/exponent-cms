@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module navigation collapsing top-down-collapsing">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -40,9 +40,9 @@
                 {/foreach}
             </ul>
         {/capture}
-        <h2>{$top}</h2>
+        <{$config.item_level|default:'h2'}>{$top}</{$config.item_level|default:'h2'}>
         {$list}
     {else}
-        <h2>{$current->name}</h2>
+        <{$config.item_level|default:'h2'}>{$current->name}</{$config.item_level|default:'h2'}>
     {/if}
 </div>

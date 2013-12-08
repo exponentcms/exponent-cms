@@ -18,7 +18,7 @@
 
     {/css}
     <div class="module forms showall">
-        <h2>{$title}</h2>
+        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
             {$description}
         {/if}
@@ -87,7 +87,10 @@
 {script unique="form-showall" jquery='jquery.dataTables'}
 {literal}
     $(document).ready(function() {
-        $('#forms-showall').dataTable();
+        $('#forms-showall').dataTable({
+            "sPaginationType": "full_numbers",
+            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">'
+        });
     } );
 {/literal}
 {/script}

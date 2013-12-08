@@ -24,7 +24,7 @@
 {/css}
 
 <div class="module links showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create}
@@ -85,7 +85,7 @@
     {else}
         {foreach name=items from=$items item=item}
             <div class="item">
-                <h2><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></h2>
+                <{$config.item_level|default:'h2'}><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></{$config.item_level|default:'h2'}>
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}

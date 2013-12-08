@@ -114,14 +114,14 @@ class expHTMLEditorController extends expController
     function edit()
     {
         expHistory::set('editable', $this->params);
-        $tool = self::getEditorSettings($this->params['id'], $this->params['editor']);
+        $tool = self::getEditorSettings(!empty($this->params['id'])?$this->params['id']:null, $this->params['editor']);
         $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
         $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';
         $tool->formattags = !empty($tool->formattags) ? @stripSlashes($tool->formattags) : '';
         $tool->fontnames = !empty($tool->fontnames) ? @stripSlashes($tool->fontnames) : '';
-//        $skins_dir = opendir(BASE . 'external/editors/ckeditor/skins');
         $skins_dir = opendir(BASE . 'external/editors/' . $this->params['editor'] . '/skins');
+        $skins = array();
         while (($skin = readdir($skins_dir)) !== false) {
             if ($skin != '.' && $skin != '..') {
                 $skins[] = $skin;

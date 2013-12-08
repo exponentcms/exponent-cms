@@ -14,13 +14,13 @@
  *}
 
 <div class="module simplepoll default">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
 	{if $question->simplepoll_answer|@count != 0}
 		{form action="vote"}
-			<h2>{$question->question}</h2>
+			<{$config.item_level|default:'h2'}>{$question->question}</{$config.item_level|default:'h2'}>
             {permissions}
                 {if $permissions.edit || ($permissions.create && $question->poster == $user->id)}
                     <div class="item-actions">

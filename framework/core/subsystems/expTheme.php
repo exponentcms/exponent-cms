@@ -1317,18 +1317,26 @@ class expTheme
 
     public static function is_mobile()
     {
-        //point the mobile browser to the right page
+        $tablet_browser = 0;
         $mobile_browser = 0;
 
         if (preg_match(
-            '/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|opera m|kindle|webos)/i',
+            '/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i',
+            strtolower($_SERVER['HTTP_USER_AGENT'])
+        )
+        ) {
+            $tablet_browser++;
+        }
+
+        if (preg_match(
+            '/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|iemobile)/i',
             strtolower($_SERVER['HTTP_USER_AGENT'])
         )
         ) {
             $mobile_browser++;
         }
 
-        if (isset($_SERVER['HTTP_ACCEPT']) && (strpos(
+        if ((strpos(
                     strtolower($_SERVER['HTTP_ACCEPT']),
                     'application/vnd.wap.xhtml+xml'
                 ) > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))
@@ -1358,7 +1366,6 @@ class expTheme
             'eric',
             'hipt',
             'inno',
-            'ipad',
             'ipaq',
             'java',
             'jigs',
@@ -1380,7 +1387,7 @@ class expTheme
             'mwbp',
             'nec-',
             'newt',
-            'noki', /*'oper',*/
+            'noki',
             'palm',
             'pana',
             'pant',
@@ -1430,12 +1437,30 @@ class expTheme
             $mobile_browser++;
         }
 
-        //if (strpos(strtolower($_SERVER['ALL_HTTP']),'operamini') > 0) {
-        //    $mobile_browser++;
-        //}
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'opera mini') > 0) {
+            $mobile_browser++;
+            //Check for tablets on opera mini alternative headers
+            $stock_ua = strtolower(
+                isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE_UA'] : (isset($_SERVER['HTTP_DEVICE_STOCK_UA']) ? $_SERVER['HTTP_DEVICE_STOCK_UA'] : '')
+            );
+            if (preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $stock_ua)) {
+                $tablet_browser++;
+            }
+        }
 
         if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') > 0) {
             $mobile_browser = 0;
+        }
+
+        if ($tablet_browser > 0) {
+            // do something for tablet devices
+//           print 'is tablet';
+        } elseif ($mobile_browser > 0) {
+            // do something for mobile devices
+//            print 'is mobile';
+        } else {
+            // do something for everything else
+//            print 'is desktop';
         }
 
         return $mobile_browser;

@@ -101,7 +101,7 @@
         var actionpicker = Y.one('#actions'); // the actions dropdown
         var viewpicker = Y.one('#views'); // the views dropdown
         var recyclebin = Y.one('#browse-bin'); // the recyclebin link
-        var recyclebinwrap = Y.one('#recyclebin'); // the recyclebin link
+        var recyclebinwrap = Y.one('#recyclebin'); // the recyclebin div
 
         // moving this func to here for now. Was in exponent.js.php, but this is the only place using it.
         EXPONENT.forms = {
@@ -177,7 +177,7 @@
         modpicker.on('change',function(e){
             EXPONENT.disableSave();
             EXPONENT.clearRecycledSource();
-            if (modpicker.get("value")!=-1) {
+            if (modpicker.get("value")!='') {
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
@@ -204,7 +204,7 @@
         EXPONENT.handleActionChange = function(){
             EXPONENT.disableSave();
             EXPONENT.setCurAction();
-            if (actionpicker.get("value")!=-1) {
+            if (actionpicker.get("value")!='0') {
                 EXPONENT.writeViews();
             }else{
                 EXPONENT.resetViews();
