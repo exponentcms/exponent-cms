@@ -61,32 +61,35 @@ class usersController extends expController {
 //        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 //        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         if ($user->is_system_user == 1) {
-            $filter = 1; //'1';
+//            $filter = 1; //'1';
+            $where = '';
         } elseif ($user->isSuperAdmin()) {
-            $filter = 2; //"is_system_user != 1";
+//            $filter = 2; //"is_system_user != 1";
+            $where = "is_system_user != 1";
         } else {
-            $filter = 3; //"is_admin != 1";
+//            $filter = 3; //"is_admin != 1";
+            $where = "is_admin != 1";
         }
-//        $page = new expPaginator(array(
-//                    'model'=>'user',
-//                    'where'=>$where,
+        $page = new expPaginator(array(
+                    'model'=>'user',
+                    'where'=>$where,
 //                    'limit'=>$limit,
 //                    'order'=>$order,
-//                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
-//                    'controller'=>$this->baseclassname,
-//                    'action'=>$this->params['action'],
-//                    'columns'=>array(
-//                        gt('Username')=>'username',
-//                        gt('First Name')=>'firstname',
-//                        gt('Last Name')=>'lastname',
-//                        gt('Is Admin')=>'is_acting_admin',
-//                    )
-//                ));
-//
-//        assign_to_template(array('page'=>$page));
-        assign_to_template(array(
-            'filter' => $filter
-        ));
+                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(
+                        gt('Username')=>'username',
+                        gt('First Name')=>'firstname',
+                        gt('Last Name')=>'lastname',
+                        gt('Is Admin')=>'is_acting_admin',
+                    )
+                ));
+
+        assign_to_template(array('page'=>$page));
+//        assign_to_template(array(
+//            'filter' => $filter
+//        ));
     }
 
     public function create() {
@@ -114,7 +117,6 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension', 'active=1', 'rank');
 
         //If there is no image uploaded, use the default avatar
-//        if(empty($u->image)) $u->image = DEFAULT_AVATAR;  //FIXME constant does NOT resolve
         if (empty($u->image)) $u->image = PATH_RELATIVE . "framework/modules/users/assets/images/avatar_not_found.jpg";
 
         assign_to_template(array(
@@ -454,7 +456,7 @@ class usersController extends expController {
         $page = new expPaginator(array(
             'model'      => 'group',
             'where'      => 1,
-            'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+//            'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'      => empty($this->config['order']) ? 'name' : $this->config['order'],
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'    => array(

@@ -26,35 +26,56 @@
     </div>
 
     {form action="update_memberships"}
-    <input type="hidden" name="id" value="{$group->id}"/>
-    {pagelinks paginate=$page top=1}
-	<table class="exp-skin-table">
-		<thead>
-			<tr>
-				{$page->header_columns}
-			</tr>
-		</thead>
-		<tbody>
-			{foreach from=$page->records item=user name=listings}
-				<tr class="{cycle values="odd,even"}">
-					<td>{$user->username}</td>
-					<td>{$user->firstname}</td>
-					<td>{$user->lastname}</td>
-					<td>
-						{control type=checkbox name="memdata[`$user->id`][is_member]" value=1 checked=$user->is_member}
-					</td>
-					<td>
-						{control type=checkbox name="memdata[`$user->id`][is_admin]" value=1 checked=$user->is_admin}
-					</td>
-				</tr>
-			{foreachelse}
-				<td colspan="{$page->columns|count}">{'No Data'|gettext}.</td>
-			{/foreach}
-		</tbody>
-	</table>
-    {pagelinks paginate=$page bottom=1}
-    {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
+        <input type="hidden" name="id" value="{$group->id}"/>
+        {*{pagelinks paginate=$page top=1}*}
+        <table id="groups-manage">
+            <thead>
+                <tr>
+                    {*{$page->header_columns}*}
+                    <th>{'Username'|gettext}</th>
+                    <th>{'First Name'|gettext}</th>
+                    <th>{'Last Name'|gettext}</th>
+                    <th>{'Is Member'|gettext}</th>
+                    <th>{'Is Admin'|gettext}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {foreach from=$page->records item=user name=listings}
+                    <tr>
+                        <td>{$user->username}</td>
+                        <td>{$user->firstname}</td>
+                        <td>{$user->lastname}</td>
+                        <td>
+                            {control type=checkbox name="memdata[`$user->id`][is_member]" value=1 checked=$user->is_member}
+                        </td>
+                        <td>
+                            {control type=checkbox name="memdata[`$user->id`][is_admin]" value=1 checked=$user->is_admin}
+                        </td>
+                    </tr>
+                {foreachelse}
+                    <td colspan="5">{'No Data'|gettext}.</td>
+                {/foreach}
+            </tbody>
+        </table>
+        {*{pagelinks paginate=$page bottom=1}*}
+        {control type="buttongroup" submit="Save Memberships"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 
-
+{script unique="groups-showall" jquery='jquery.dataTables'}
+{literal}
+    $(document).ready(function() {
+        $('#groups-manage').dataTable({
+            "sPaginationType": "full_numbers",
+            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            "aoColumns": [
+                null,
+                null,
+                null,
+                { "bSearchable": false, "bSortable": false },
+                { "bSearchable": false, "bSortable": false },
+            ]
+        });
+    } );
+{/literal}
+{/script}

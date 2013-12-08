@@ -13,9 +13,9 @@
  *
  *}
  
-{css unique="manage_groups" corecss="tables"}
+{*{css unique="manage_groups" corecss="tables"}*}
 
-{/css}
+{*{/css}*}
 
 <div class="module users manage-group">
     <div class="info-header">
@@ -32,17 +32,20 @@
 	<div class="module-actions">
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
-    {pagelinks paginate=$page top=1}
-	<table class="exp-skin-table">
+    {*{pagelinks paginate=$page top=1}*}
+	<table id="groups-manage">
 	    <thead>
 			<tr>
-				{$page->header_columns}
+				{*{$page->header_columns}*}
+                <th>{'Group Name'|gettext}</th>
+                <th>{'Description'|gettext}</th>
+                <th>{'Type'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=group name=listings}
-                <tr class="{cycle values="odd,even"}">
+                <tr>
                     <td>{$group->name}</td>
                     <td>{$group->description}</td>
                     <td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
@@ -61,5 +64,22 @@
 			{/foreach}
 		</tbody>
 	</table>
-    {pagelinks paginate=$page bottom=1}
+    {*{pagelinks paginate=$page bottom=1}*}
 </div>
+
+{script unique="groups-showall" jquery='jquery.dataTables'}
+{literal}
+    $(document).ready(function() {
+        $('#groups-manage').dataTable({
+            "sPaginationType": "full_numbers",
+            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            "aoColumns": [
+                null,
+                null,
+                null,
+                { "bSearchable": false, "bSortable": false },
+            ]
+        });
+    } );
+{/literal}
+{/script}
