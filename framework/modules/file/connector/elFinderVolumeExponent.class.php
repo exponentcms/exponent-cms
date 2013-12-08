@@ -226,7 +226,6 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $result = parent::paste($volume, $src, $dst, $rmSrc);
         $this->_remove_expFile($src); // remove the duplicate expFile record pointing to old location
 
-        //FIXME move recursively through new folder location looking for old expFiles and updating them using _move_expFile
         $opath = $this->decode($src);
         $opath = str_replace(BASE, '', $opath);
         $opath = str_replace('\\', '/', $opath);
@@ -240,6 +239,12 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         return $result;
     }
 
+    /**
+     * Recursive method to move expFile record directories
+     *
+     * @param $npath
+     * @param $opath
+     */
     function scan_folder($npath, $opath) {
         if (is_dir($npath)) {
             $dir = opendir($npath);
