@@ -14,7 +14,7 @@
  *}
 
 {if !$error}
-    {css unique="data-view" corecss="button, tables"}
+    {css unique="data-view" corecss="button"}
 
     {/css}
     <div class="module forms showall">
@@ -37,13 +37,17 @@
                     {icon action=manage text="Manage Forms"|gettext}
                 {/if}
             </div>
+            {br}
         {/permissions}
-        {$page->links}
+        {*{$page->links}*}
         <div style="overflow: auto; overflow-y: hidden;">
-            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        {$page->header_columns}
+                        {*{$page->header_columns}*}
+                        {foreach  from=$page->columns item=column key=name name=column}
+                            <th>{$name}</th>
+                        {/foreach}
                         <div class="item-actions">
                             <th>{'Actions'|gettext}</th>
                         </div>
@@ -51,7 +55,7 @@
                 </thead>
                 <tbody>
                     {foreach from=$page->records item=fields key=ukey name=fields}
-                        <tr class="{cycle values="even,odd"}">
+                        <tr>
                             {foreach from=$page->columns item=column key=field name=column}
                                 <td>
                                     {if $smarty.foreach.column.iteration == 1}
@@ -79,18 +83,31 @@
                 </tbody>
             </table>
         </div>
-        {$page->links}
+        {*{$page->links}*}
         {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}
 
-{*{script unique="form-showall" jquery='jquery.dataTables'}*}
-{*{literal}*}
-    {*$(document).ready(function() {*}
-        {*$('#forms-showall').dataTable({*}
-            {*"sPaginationType": "full_numbers",*}
-            {*"sDom": '<"top"lfip>rt<"bottom"ip<"clear">'  // pagination location*}
-        {*});*}
-    {*} );*}
-{*{/literal}*}
-{*{/script}*}
+{if $config.pagelinks == 'Top Only'}
+    {$pageit = '<"top"lfip>rt<"bottom"<"clear">'}
+{elseif $config.pagelinks == 'Top and Bottom'}
+    {$pageit = '<"top"lfip>rt<"bottom"ip<"clear">'}
+{elseif $config.pagelinks == 'Bottom Only'}
+    {$pageit = '<"top"lf>rt<"bottom"ip<"clear">'}
+{elseif $config.pagelinks == 'Disable page links'}
+    {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
+{/if}
+{script unique="form-showall" jquery='jquery.dataTables'}
+{literal}
+    $(document).ready(function() {
+        $('#forms-showall').dataTable({
+            "sPaginationType": "full_numbers",
+            "sDom": '{/literal}{$pageit}{literal}',  // pagination location
+            "aoColumnDefs": [
+                { "bSearchable": false, "aTargets": [ -1 ] },
+                { "bSortable": false, "aTargets": [ -1 ] },
+            ],
+        });
+    } );
+{/literal}
+{/script}

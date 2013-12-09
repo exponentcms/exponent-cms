@@ -151,7 +151,7 @@ class formsController extends expController {
             $page = new expPaginator(array(
                 'records' => $items,
                 'where'   => 1,
-                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
+//                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
                 'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : 'id',
                 'dir'     => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
                 'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
