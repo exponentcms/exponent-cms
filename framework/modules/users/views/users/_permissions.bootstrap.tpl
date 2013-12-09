@@ -13,14 +13,14 @@
  *
  *}
  
-{css unique="permissions" corecss="tables"}
-{literal}
-.exp-skin-table thead th {
-    white-space:nowrap;
-    border-right:1px solid #D4CBBA;
-}
-{/literal}
-{/css}
+{*{css unique="permissions" corecss="tables"}*}
+{*{literal}*}
+{*.exp-skin-table thead th {*}
+    {*white-space:nowrap;*}
+    {*border-right:1px solid #D4CBBA;*}
+{*}*}
+{*{/literal}*}
+{*{/css}*}
 
 <form method="post">
     <input type="hidden" name="module" value="{$page->controller}" />
@@ -59,7 +59,7 @@
                             </td>
                         {/if}
                         {foreach from=$perms item=perm key=pkey name=perms}
-                            <td>
+                            <td class="checks">
                                 <input class="{$pkey}" type="checkbox"{if $user->$pkey==1||$user->$pkey==2} checked{/if} name="permdata[{$user->id}][{$pkey}]" value="1"{if $user->$pkey==2} disabled=1{/if} id="permdata[{$user->id}][{$pkey}]">
                             </td>
                         {/foreach}
@@ -74,10 +74,7 @@
 
 {script unique="permission-checking" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-    var manage = Y.all('input.manage');
-//    var create = Y.all('input.create');
-
+YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y) {
     var checkSubs = function(row) {
         row.each(function(n,k){
             if (!n.hasClass('manage')) {
@@ -96,51 +93,26 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     };
     var toggleChecks = function(target,start) {
         var row = target.ancestor('tr').all('input[type=checkbox]');
+        var row1 = target.ancestor('tr').next('tr.row-detail');
+        if (row1 != null) checks1 = row1.all('input[type=checkbox]');
         if(target.get('checked')&&!target.get('disabled')){
             checkSubs(row);
+            if (checks1 != null) checkSubs(checks1);;
         } else {
             if (!start) {
                 unCheckSubs(row);
+                if (checks1 != null) unCheckSubs(checks1);;
             }
         }
     };
-    manage.on('click',function(e){
+    Y.one('#permissions').delegate('click',function(e){
         toggleChecks(e.target);
-    });
-    manage.each(function(n){
+    }, 'input.manage');
+    Y.one('#permissions').delegate(function(n){
         toggleChecks(n,1);
-    });
+    }, 'input.manage');
 
-//    create.on('click',function(e){
-//        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-//        if(e.target.get('checked')&&!e.target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        } else {
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.get('previousSibling').remove();
-//                    n.setAttrs({'checked':0,'disabled':0});
-//                };
-//            });
-//        }
-//    });
-//    create.each(function(target){
-//        var row = target.ancestor('tr').all('input[type=checkbox]');
-//        if(target.get('checked')&&!target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        }
-//    });
-});
+    });
 {/literal}
 {/script}
 

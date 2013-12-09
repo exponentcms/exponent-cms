@@ -13,14 +13,14 @@
  *
  *}
  
-{css unique="permissions" corecss="tables"}
-{literal}
-.exp-skin-table thead th {
-    white-space:nowrap;
-    border-right:1px solid #D4CBBA;
-}
-{/literal}
-{/css}
+{*{css unique="permissions" corecss="tables"}*}
+{*{literal}*}
+{*.exp-skin-table thead th {*}
+    {*white-space:nowrap;*}
+    {*border-right:1px solid #D4CBBA;*}
+{*}*}
+{*{/literal}*}
+{*{/css}*}
 
 <form method="post">
     <input type="hidden" name="module" value="{$page->controller}" />
@@ -76,7 +76,6 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var manage = Y.all('input.manage');
-//    var create = Y.all('input.create');
 
     var checkSubs = function(row) {
         row.each(function(n,k){
@@ -111,35 +110,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         toggleChecks(n,1);
     });
 
-//    create.on('click',function(e){
-//        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-//        if(e.target.get('checked')&&!e.target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        } else {
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.get('previousSibling').remove();
-//                    n.setAttrs({'checked':0,'disabled':0});
-//                };
-//            });
-//        }
-//    });
-//    create.each(function(target){
-//        var row = target.ancestor('tr').all('input[type=checkbox]');
-//        if(target.get('checked')&&!target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        }
-//    });
 });
 {/literal}
 {/script}
