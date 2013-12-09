@@ -10,8 +10,8 @@ Added / Fixed / changed for 2.2.4
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
   - module and item heading levels are now selectable within module configuration settings
-  - initial support for alternate/optional WYSIWYG editor, TinyMCE (works on Android devices)
-  - initial support for alternate/optional file manager, elFinder (doesn't follow user file permissions)
+  - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
+  - initial support for alternate/optional file manager - elFinder
   - vastly improved SEO for events, eventregistrations, & products
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
@@ -19,6 +19,7 @@ Added / Fixed / changed for 2.2.4
   - includes all fixes from v2.2.3 patches
 ### Known Issues
   - TinyMCE is not as robust as CKEditor and doesn't allow editing products
+  - elFinder may not create thumbnails in some server scenarios
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing

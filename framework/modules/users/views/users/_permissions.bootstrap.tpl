@@ -35,7 +35,7 @@
                 <tr>
                     {*{$page->header_columns}*}
                     {foreach  from=$page->columns item=column key=name name=column}
-                        <th>{$name}</th>
+                        <th{if $column@first} data-class="expand"{elseif !$is_group && ($column@iteration == 2 || $column@iteration == 3)} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 4) || !$is_group && ($column@iteration > 6))} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 2) || !$is_group && ($column@iteration > 4))} data-hide="phone"{/if}>{$name}</th>
                     {/foreach}
                 </tr>
             </thead>
@@ -144,18 +144,41 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {/literal}
 {/script}
 
-{script unique="permissions" jquery='jquery.dataTables'}
+{script unique="permissions" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        $('#permissions').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+        var responsiveHelper = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
+        var tableElement = $('#permissions');
+
+        tableElement.dataTable({
+            sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
+            sPaginationType: 'bootstrap',
             "aoColumnDefs": [
                 { "bSearchable": false, "aTargets": [ '_all' ] },
                 { "bSortable": false, "aTargets": [ '_all' ] },
                 { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
                 { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
             ],
+            oLanguage      : {
+                sLengthMenu: '_MENU_ records per page'
+            },
+            bAutoWidth     : false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                }
+            },
+            fnRowCallback  : function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback : function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
     } );
 {/literal}
