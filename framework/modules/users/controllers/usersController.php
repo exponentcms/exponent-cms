@@ -1011,7 +1011,7 @@ class usersController extends expController {
             if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
@@ -1024,7 +1024,7 @@ class usersController extends expController {
             } else {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
@@ -1108,7 +1108,7 @@ class usersController extends expController {
             if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
@@ -1121,7 +1121,7 @@ class usersController extends expController {
             } else {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
