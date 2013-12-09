@@ -40,13 +40,13 @@
             {br}
         {/permissions}
         {*{$page->links}*}
-        <div style="overflow: auto; overflow-y: hidden;">
+        <div>
             <table id="forms-showall" border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
                         {*{$page->header_columns}*}
                         {foreach  from=$page->columns item=column key=name name=column}
-                            <th>{$name}</th>
+                            <th{if $column@first} data-class="expand"{elseif $column@iteration < 6} data-hide="phone"{else} data-hide="phone,tablet"{/if}>{$name}</th>
                         {/foreach}
                         <div class="item-actions">
                             <th>{'Actions'|gettext}</th>
@@ -88,25 +88,39 @@
     </div>
 {/if}
 
-{if $config.pagelinks == 'Top Only'}
-    {$pageit = '<"top"lfip>rt<"bottom"<"clear">'}
-{elseif $config.pagelinks == 'Top and Bottom'}
-    {$pageit = '<"top"lfip>rt<"bottom"ip<"clear">'}
-{elseif $config.pagelinks == 'Bottom Only'}
-    {$pageit = '<"top"lf>rt<"bottom"ip<"clear">'}
-{elseif $config.pagelinks == 'Disable page links'}
-    {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
-{/if}
-{script unique="form-showall" jquery='jquery.dataTables'}
+{script unique="form-showall" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        $('#forms-showall').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '{/literal}{$pageit}{literal}',  // pagination location
+        var responsiveHelper = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
+        var tableElement = $('#forms-showall');
+
+        tableElement.dataTable({
+            sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
+            sPaginationType: 'bootstrap',
             "aoColumnDefs": [
                 { "bSearchable": false, "aTargets": [ -1 ] },
                 { "bSortable": false, "aTargets": [ -1 ] },
             ],
+            oLanguage      : {
+                sLengthMenu: '_MENU_ records per page'
+            },
+            bAutoWidth     : false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                }
+            },
+            fnRowCallback  : function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback : function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
     } );
 {/literal}

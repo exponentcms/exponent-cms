@@ -42,14 +42,12 @@
         <div style="overflow: auto; overflow-y: hidden;">
             {foreach from=$page->records item=fields key=key name=fields}
                 <div class="item-actions">
-                    <td>
-                        {if $permissions.edit}
-                            {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
-                        {/if}
-                        {if $permissions.delete}
-                            {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
-                        {/if}
-                    </td>
+                    {if $permissions.edit}
+                        {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
+                    {/if}
+                    {if $permissions.delete}
+                        {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
+                    {/if}
                 </div>
                 {if empty($config.report_def)}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

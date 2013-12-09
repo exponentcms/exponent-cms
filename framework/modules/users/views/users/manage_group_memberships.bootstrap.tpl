@@ -32,11 +32,11 @@
             <thead>
                 <tr>
                     {*{$page->header_columns}*}
-                    <th>{'Username'|gettext}</th>
-                    <th>{'First Name'|gettext}</th>
-                    <th>{'Last Name'|gettext}</th>
+                    <th data-class="expand">{'Username'|gettext}</th>
+                    <th data-hide="phone">{'First Name'|gettext}</th>
+                    <th data-hide="phone">{'Last Name'|gettext}</th>
                     <th>{'Is Member'|gettext}</th>
-                    <th>{'Is Admin'|gettext}</th>
+                    <th data-hide="phone">{'Is Admin'|gettext}</th>
                 </tr>
             </thead>
             <tbody>
@@ -62,19 +62,42 @@
     {/form}
 </div>
 
-{script unique="groups-showall" jquery='jquery.dataTables'}
+{script unique="manage-groups" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        $('#groups-manage').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+        var responsiveHelper = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
+        var tableElement = $('#groups-manage');
+
+        tableElement.dataTable({
+            sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
+            sPaginationType: 'bootstrap',
             "aoColumns": [
                 null,
                 null,
                 null,
                 { "bSearchable": false, "bSortable": false },
                 { "bSearchable": false, "bSortable": false },
-            ]
+            ],
+            oLanguage      : {
+                sLengthMenu: '_MENU_ records per page'
+            },
+            bAutoWidth     : false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                }
+            },
+            fnRowCallback  : function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback : function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
     } );
 {/literal}

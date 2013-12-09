@@ -37,9 +37,9 @@
 	    <thead>
 			<tr>
 				{*{$page->header_columns}*}
-                <th>{'Group Name'|gettext}</th>
-                <th>{'Description'|gettext}</th>
-                <th>{'Type'|gettext}</th>
+                <th data-class="expand">{'Group Name'|gettext}</th>
+                <th data-hide="phone">{'Description'|gettext}</th>
+                <th data-hide="phone">{'Type'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
 			</tr>
 		</thead>
@@ -67,18 +67,41 @@
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
-{script unique="groups-showall" jquery='jquery.dataTables'}
+{script unique="manage-groups" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        $('#groups-manage').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+        var responsiveHelper = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
+        var tableElement = $('#groups-manage');
+
+        tableElement.dataTable({
+            sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
+            sPaginationType: 'bootstrap',
             "aoColumns": [
                 null,
                 null,
                 null,
                 { "bSearchable": false, "bSortable": false },
-            ]
+            ],
+            oLanguage      : {
+                sLengthMenu: '_MENU_ records per page'
+            },
+            bAutoWidth     : false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                }
+            },
+            fnRowCallback  : function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback : function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
     } );
 {/literal}
