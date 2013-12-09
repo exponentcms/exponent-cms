@@ -179,7 +179,7 @@ class expJavascript {
                 $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
                 $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), $head_config['lessvars']);
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     expCSS::pushToHead(array(
                		    "unique"=>'bootstrap1',
                		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
