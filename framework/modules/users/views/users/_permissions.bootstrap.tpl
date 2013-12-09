@@ -158,10 +158,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             sDom           : '<"row"<"span6"l><"span6"f>r>t<"row"<"span6"i><"span6"p>>',
             sPaginationType: 'bootstrap',
             "aoColumnDefs": [
+                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
                 { "bSearchable": false, "aTargets": [ '_all' ] },
                 { "bSortable": false, "aTargets": [ '_all' ] },
-                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
-                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
             ],
             oLanguage      : {
                 sLengthMenu: '_MENU_ records per page'

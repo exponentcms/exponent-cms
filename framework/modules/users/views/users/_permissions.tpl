@@ -151,10 +151,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             "sPaginationType": "full_numbers",
             "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
             "aoColumnDefs": [
+                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
                 { "bSearchable": false, "aTargets": [ '_all' ] },
                 { "bSortable": false, "aTargets": [ '_all' ] },
-                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
-                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
             ],
         });
     } );
