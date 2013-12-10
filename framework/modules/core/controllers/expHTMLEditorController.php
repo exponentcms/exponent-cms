@@ -115,6 +115,7 @@ class expHTMLEditorController extends expController
     {
         expHistory::set('editable', $this->params);
         $tool = self::getEditorSettings(!empty($this->params['id'])?$this->params['id']:null, $this->params['editor']);
+        if ($tool == null) $tool = new stdClass();
         $tool->data = !empty($tool->data) ? @stripSlashes($tool->data) : '';
         $tool->plugins = !empty($tool->plugins) ? @stripSlashes($tool->plugins) : '';
         $tool->stylesset = !empty($tool->stylesset) ? @stripSlashes($tool->stylesset) : '';

@@ -53,14 +53,14 @@
             <!-- optional flyout sidebar container -->
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
-                <!-- left column -->
-                <aside id="sidebar" class="span3 well">
-                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
-                </aside>
-                <!-- main column -->
-                <section id="content" class="span8">
+                <!-- main column wanted on top if collapsed -->
+                <section id="content" class="span8 pull-right">
                     <?php expTheme::main(); ?>
                 </section>
+                <!-- left column -->
+                <aside id="sidebar" class="span3 well pull-left">
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
+                </aside>
             </section>
             <!-- footer -->
             <footer class="row">

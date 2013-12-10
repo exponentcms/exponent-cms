@@ -32,6 +32,7 @@
 	<div class="module-actions">
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
+    {br}
     {*{pagelinks paginate=$page top=1}*}
 	<table id="groups-manage">
 	    <thead>
