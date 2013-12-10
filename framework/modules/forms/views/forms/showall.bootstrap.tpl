@@ -49,7 +49,7 @@
                     <tr>
                         {*{$page->header_columns}*}
                         {foreach  from=$page->columns item=column key=name name=column}
-                            <th{if $column@first} data-class="expand"{elseif $column@iteration < 6} data-hide="phone"{elseif $column@iteration > 10} data-hide="always"{else} data-hide="phone,tablet"{/if}>{$name}</th>
+                            <th{if $column@first} data-class="expand"{elseif $column@iteration < 4} data-hide="phone"{elseif $column@iteration > 7} data-hide="always,tablet,phone"{else} data-hide="phone,tablet"{/if}>{$name}</th>
                         {/foreach}
                         <div class="item-actions">
                             <th>{'Actions'|gettext}</th>
