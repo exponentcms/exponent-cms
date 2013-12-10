@@ -16,11 +16,13 @@
 {css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
 {if $top}
     {if (!$smarty.const.MENU_LOCATION || $smarty.const.MENU_LOCATION == 'fixed-top')}
-        .navbar-fixed-top {
-            margin-top: 30px;
-        }
-        .navbar-spacer {
-            height: 74px;
+        @media (min-width: {$smarty.const.MENU_WIDTH}px) {
+            .navbar-fixed-top {
+                margin-top: 30px;
+            }
+            .navbar-spacer {
+                height: 74px;
+            }
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
         .navbar-static-top {
