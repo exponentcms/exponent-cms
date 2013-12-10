@@ -36,7 +36,7 @@
                     &#160;&#160;|&#160;&#160;
                     {icon action=manage text="Manage Forms"|gettext}
                     {if !empty($filtered)}
-                        &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Filtered'|gettext}: '{$filtered}'</span>
+                        &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
                     {/if}
                 {/if}
             </div>
