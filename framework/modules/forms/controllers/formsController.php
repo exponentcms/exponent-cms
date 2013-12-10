@@ -168,6 +168,7 @@ class formsController extends expController {
                 "page"        => $page,
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
                 "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
+                "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
             ));
         } else {
             assign_to_template(array(
