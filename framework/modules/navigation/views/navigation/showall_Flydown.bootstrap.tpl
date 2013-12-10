@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="z-dropdown-bootstrap" link="`$asset_path`css/dropdown-bootstrap.css"}
+{css unique="z-dropdown-bootstrap" lesscss="`$asset_path`less/dropdown-bootstrap.less"}
 
 {/css}
 

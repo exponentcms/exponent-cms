@@ -85,8 +85,16 @@ class ckeditorcontrol extends formcontrol {
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
         }
-
+        // clean up (custom) plugins list from missing plugins
+        if (!empty($plugins)) {
+            $plugs = explode(',',trim($plugins));
+            foreach ($plugs as $key=>$plug) {
+                if (empty($plug) || !is_dir(BASE . 'external/editors/ckeditor/plugins/' . $plug)) unset($plugs[$key]);
+            }
+            $plugins = implode(',',$plugs);
+        }
         // set defaults
+        // make sure the (custom) skin exists
         if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
               if ($this->toolbar === 'basic') {
@@ -116,6 +124,12 @@ class ckeditorcontrol extends formcontrol {
             }
         } else {
             $tb = "toolbar : [".$tb."],";
+        }
+        if (MOBILE) {
+            $tb .= "
+            toolbarStartupExpanded : false,
+            removePlugins : 'elementspath',
+            resize_enabled : false,";
         }
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
@@ -156,7 +170,7 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
+                    extraPlugins : 'stylesheetparser,tableresize,widget,image2" . $plugins . "',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,

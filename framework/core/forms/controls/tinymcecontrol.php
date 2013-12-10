@@ -82,6 +82,7 @@ class tinymcecontrol extends formcontrol
                 if (!empty($tbr)) $tb .= "toolbar" . ($key + 1) . ": \"" . trim($tbr) . "\",\n";
             }
             $skin = $settings->skin;
+            $sc_brw_off   = $settings->scayt_on ? 'false' : 'true';
 //            $plugins    = stripSlashes($settings->plugins);
             $stylesset = stripSlashes($settings->stylesset);
             $formattags = stripSlashes($settings->formattags);
@@ -93,6 +94,14 @@ class tinymcecontrol extends formcontrol
         }
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
+        }
+        // clean up (custom) plugins list from missing plugins
+        if (!empty($plugins)) {
+            $plugs = explode(',',trim($plugins));
+            foreach ($plugs as $key=>$plug) {
+                if (empty($plug) || !is_dir(BASE . 'external/editors/tinymce//plugins/' . $plug)) unset($plugs[$key]);
+            }
+            $plugins = implode(',',$plugs);
         }
 
         // set defaults
@@ -106,9 +115,16 @@ class tinymcecontrol extends formcontrol
                     toolbar2: 'print preview visualblocks media | forecolor backcolor emoticons',";
             }
         }
+        if (MOBILE) {
+            $tb = "menubar: false,
+                   toolbar_items_size: 'small',
+                   statusbar: false,";
+        }
+
         if (empty($skin) || !is_dir(BASE . 'external/editors/tinymce/skins/' . $skin)) {
             $skin = 'lightgray';
         }
+        if (empty($sc_brw_off)) $sc_brw_off = 'true';
         if (empty($stylesset)) {
             $stylesset = "'default'";
         }
@@ -149,6 +165,7 @@ class tinymcecontrol extends formcontrol
                     " . $tb . "
                     skin: '" . $skin . "',
                     image_advtab: true,
+                    browser_spellcheck : " . $sc_brw_off . " ,
                     style_formats: [
                         {title: 'Image Left', selector: 'img', styles: {
                             'float' : 'left',
@@ -188,7 +205,7 @@ class tinymcecontrol extends formcontrol
                             file: '" . makelink(
                                     array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
                                 ) . "?filter='+type,
-                            title: 'File Manager',
+                            title: '".gt('File Manager')."',
                             width: " . FM_WIDTH . ",
                             height: " . FM_HEIGHT . ",
                             resizable: 'yes'

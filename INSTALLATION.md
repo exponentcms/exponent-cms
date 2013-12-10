@@ -1,6 +1,7 @@
 #Exponent Content Management System
 
 ----------
+
 Copyright (c) 2004-2013 OIC Group, Inc.
 
 Installation of Exponent CMS 2.0

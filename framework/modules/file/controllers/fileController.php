@@ -180,7 +180,7 @@ class fileController extends expController {
      * Get a file record by id or pathname and return it as JSON via Ajax
      */
     public function getFile() {
-        if (is_integer($this->params['id'])) {
+        if (is_numeric($this->params['id'])) {
             $file = new expFile($this->params['id']);
         } else {
             $efile = new expFile();

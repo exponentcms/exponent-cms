@@ -433,7 +433,7 @@ class expFile extends expRecord {
         $resized = false;
         $maxwidth = intval($_max_width);
         if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . $_destFile;
+            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . '_' . $_destFile;
             move_uploaded_file($_FILES[$_postName]['tmp_name'], $tempFile);
             require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
             $handle = new upload($tempFile);
@@ -550,8 +550,9 @@ class expFile extends expRecord {
         $resized = false;
         $maxwidth = intval($_max_width);
         if (!empty($maxwidth)) {
-            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . $_destFile;
-            move_uploaded_file($_FILES[$fileName]['tmp_name'], $tempFile);
+            $tempFile = tempnam(sys_get_temp_dir(), 'exp_upload_') . '_' . $_destFile;
+//            move_uploaded_file($_FILES[$fileName]['tmp_name'], $tempFile);
+            file_put_contents($tempFile, file_get_contents('php://input'));
             require_once(BASE . 'framework/modules/pixidou/includes/class.upload/class.upload.php');
             $handle = new upload($tempFile);
             if ($handle->uploaded) {

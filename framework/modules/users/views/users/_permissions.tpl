@@ -13,14 +13,14 @@
  *
  *}
  
-{css unique="permissions" corecss="tables"}
-{literal}
-.exp-skin-table thead th {
-    white-space:nowrap;
-    border-right:1px solid #D4CBBA;
-}
-{/literal}
-{/css}
+{*{css unique="permissions" corecss="tables"}*}
+{*{literal}*}
+{*.exp-skin-table thead th {*}
+    {*white-space:nowrap;*}
+    {*border-right:1px solid #D4CBBA;*}
+{*}*}
+{*{/literal}*}
+{*{/css}*}
 
 <form method="post">
     <input type="hidden" name="module" value="{$page->controller}" />
@@ -28,7 +28,7 @@
     <input type="hidden" name="mod" value="{$loc->mod}" />
     <input type="hidden" name="src" value="{$loc->src}" />
     <input type="hidden" name="int" value="{$loc->int}" />
-    {$page->links}
+    {*{$page->links}*}
     <div style="overflow : auto; overflow-y : hidden;">
         <table id="permissions" border="0" cellspacing="0" cellpadding="0">
             <thead>
@@ -68,7 +68,7 @@
             </tbody>
         </table>
     </div>
-    {$page->links}
+    {*{$page->links}*}
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 </form>
 
@@ -76,7 +76,6 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var manage = Y.all('input.manage');
-//    var create = Y.all('input.create');
 
     var checkSubs = function(row) {
         row.each(function(n,k){
@@ -111,35 +110,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         toggleChecks(n,1);
     });
 
-//    create.on('click',function(e){
-//        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-//        if(e.target.get('checked')&&!e.target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        } else {
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.get('previousSibling').remove();
-//                    n.setAttrs({'checked':0,'disabled':0});
-//                };
-//            });
-//        }
-//    });
-//    create.each(function(target){
-//        var row = target.ancestor('tr').all('input[type=checkbox]');
-//        if(target.get('checked')&&!target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        }
-//    });
 });
 {/literal}
 {/script}
@@ -151,10 +121,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             "sPaginationType": "full_numbers",
             "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
             "aoColumnDefs": [
+                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
                 { "bSearchable": false, "aTargets": [ '_all' ] },
                 { "bSortable": false, "aTargets": [ '_all' ] },
-                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
-                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}1, 2, 3{else}1{/if}{literal} ] },
             ],
         });
     } );

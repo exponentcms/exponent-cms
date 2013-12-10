@@ -35,6 +35,7 @@
 	<div class="module-actions">
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
+    {br}
     {*{pagelinks paginate=$page top=1}*}
 	<table id="users-manage">
 	    <thead>
