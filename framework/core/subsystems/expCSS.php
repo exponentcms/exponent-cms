@@ -47,12 +47,11 @@ class expCSS {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
-                $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                 $css_path = str_replace("/less/","/css/",$less_path);
                 $css_path = substr($css_path,0,strlen($css_path)-4)."css";
-                if (self::auto_compile_less($less_path,$css_path,$less_vars))
                 //indexing the array by the filename
-                $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+                if (self::auto_compile_less($less_path,$css_path,$less_vars))
+                    $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
             }
         }
 
@@ -64,10 +63,10 @@ class expCSS {
                 $filename = trim($filename);
                 $css_path = "framework/core/assets/css/".$filename.".css";
                 $less_path = "framework/core/assets/less/".$filename.".less";
-                if (file_exists(BASE.$less_path)) self::auto_compile_less($less_path,$css_path,$less_vars);
-                if (is_file(BASE.$css_path)) {
+                if (file_exists(BASE.$less_path))
+                    self::auto_compile_less($less_path,$css_path,$less_vars);
+                if (is_file(BASE.$css_path))
                     $css_core[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
-                }
             }
         }
         
