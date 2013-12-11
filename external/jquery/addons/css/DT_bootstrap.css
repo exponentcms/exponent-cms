@@ -8,6 +8,7 @@ div.dataTables_length select {
 	width: 75px;
 }
 
+/*div.dataTables_filter label {*/
 div.dataTables_filter label {
 	float: right;
 }
