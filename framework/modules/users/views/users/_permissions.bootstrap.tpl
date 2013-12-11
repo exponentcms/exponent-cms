@@ -35,7 +35,7 @@
                 <tr>
                     {*{$page->header_columns}*}
                     {foreach  from=$page->columns item=column key=name name=column}
-                        <th{if $column@first} data-class="expand"{elseif !$is_group && ($column@iteration == 2 || $column@iteration == 3)} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 4) || !$is_group && ($column@iteration > 6))} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 2) || !$is_group && ($column@iteration > 4))} data-hide="phone"{/if}>{$name}</th>
+                        <th{if ($is_group && $column@first) || (!$is_group && $column@iteration < 4)} class="sortme"{else} class="nosort"{/if}{if $column@first} data-class="expand"{elseif !$is_group && ($column@iteration == 2 || $column@iteration == 3)} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 4) || !$is_group && ($column@iteration > 6))} data-hide="phone,tablet"{elseif ($is_group && ($column@iteration > 2) || !$is_group && ($column@iteration > 4))} data-hide="phone"{/if}>{$name}</th>
                     {/foreach}
                 </tr>
             </thead>
@@ -130,10 +130,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
             sDom           : '<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
             sPaginationType: 'bootstrap',
             "aoColumnDefs": [
-                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-                { "bSearchable": false, "aTargets": [ '_all' ] },
-                { "bSortable": false, "aTargets": [ '_all' ] },
+//                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { "bSearchable": false, "aTargets": [ '_all' ] },
+//                { "bSortable": false, "aTargets": [ '_all' ] },
+                {"aTargets": [ "sortme"], "bSortable": true },
+                {"aTargets": [ 'nosort' ], "bSortable": false }
             ],
             oLanguage      : {
                 sLengthMenu: '_MENU_ records per page'
