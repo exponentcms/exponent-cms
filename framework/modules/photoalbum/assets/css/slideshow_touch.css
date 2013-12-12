@@ -2,6 +2,10 @@
 	list-style: none;
 }
 
+.slideshow-container ul {
+	margin : 0;
+}
+
 .slideshow-frame .item-actions {
     position:absolute;
     left:5px;
