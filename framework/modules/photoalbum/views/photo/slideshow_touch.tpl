@@ -87,27 +87,6 @@
             {/foreach}
             </div>
         </ul>
-        {*{if !$config.hidecontrols}*}
-            {*<div class="slideshow-buttons{if $config.dimcontrols} buttons-dim{/if}">*}
-                {*<a id="prev{$name}" href="javascript:void(0);" class="prev_slide" title="Previous Slide">*}
-                    {*&lt;&lt; {'Previous'|gettext}*}
-                {*</a>*}
-                {*<span class="slideshow-pagination">*}
-                    {*{foreach key=key from=$slides item=slide name=slides}*}
-                        {*<a class="slide-page-link" href="#" rel="{$key}">{$smarty.foreach.slides.iteration}</a>*}
-                    {*{/foreach}*}
-                {*</span>*}
-                {*<a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow"|gettext>*}
-                    {*{'Pause'|gettext}*}
-                {*</a>*}
-                {*<a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow"|gettext>*}
-                    {*{'Play'|gettext}*}
-                {*</a>*}
-                {*<a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide"|gettext>*}
-                    {*{'Next'|gettext} &gt;&gt;*}
-                {*</a>*}
-            {*</div>*}
-        {*{/if}*}
     </div>
 </div>
 
