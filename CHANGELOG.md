@@ -12,6 +12,7 @@ Added / Fixed / Changed for 2.2.4
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive)
+  - adds new touch enabled, responsive photo album slideshow view
   - module and item heading levels are now selectable within module configuration settings
   - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
   - initial support for alternate/optional file manager - elFinder
