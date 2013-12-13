@@ -95,13 +95,14 @@ class expTheme
 
     public static function headerInfo($config)
     {
-        global $sectionObj, $validateTheme, $head_config, $auto_dirs;
+        global $sectionObj, $validateTheme, $head_config, $auto_dirs, $less_vars;
 
         $validateTheme['headerinfo'] = true;
         // end checking for headerInfo
 
         // globalize header configuration
         $head_config = $config;
+        $less_vars = $config['lessvars'];
 
         // check to see if we're in XHTML or HTML mode
         if (isset($config['xhtml']) && $config['xhtml'] == true) {
