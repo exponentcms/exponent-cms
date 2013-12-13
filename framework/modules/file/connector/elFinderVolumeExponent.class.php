@@ -287,7 +287,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                 $result['hidden'] = true;
             }
             $fileuser = user::getUserById($file->poster);
-            $result['owner'] = user::getUserAttribution($fileuser->id);
+            if (!empty($fileuser->id)) {
+                $result['owner'] = user::getUserAttribution($fileuser->id);
+            } else {
+                $result['owner'] = gt('Unknown');
+            }
             $result['title'] = $file->title;
             $result['alt'] = $file->alt;
             $result['shared'] = !empty($file->shared);
