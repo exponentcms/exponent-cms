@@ -47,13 +47,17 @@ class expCSS {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
-                if (strlen(PATH_RELATIVE) != 1)
+                if (strlen(PATH_RELATIVE) != 1) {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '';
+                }
                 $css_path = str_replace("/less/","/css/",$less_path);
                 $css_path = substr($css_path,0,strlen($css_path)-4)."css";
                 //indexing the array by the filename
                 if (self::auto_compile_less($less_path,$css_path,$lless_vars))
-                    $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+                    $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
 
