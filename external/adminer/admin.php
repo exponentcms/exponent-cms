@@ -17,7 +17,7 @@ function adminer_object() {
         new AdminerDumpZip,
         new AdminerEditCalendar,
         new AdminerCKeditor,
-//        new AdminerEditTextarea,
+        new AdminerEditTextarea,
         new AdminerEnumOption,
         new AdminerTablesFilter,
         new AdminerEditTextSerializedarea,

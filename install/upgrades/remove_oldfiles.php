@@ -384,7 +384,6 @@ class remove_oldfiles extends upgradescript {
             "external/ckeditor/",
             "external/editors/connector/",
             "external/editors/FCKeditor/",
-//            "external/editors/ckeditor/adapters",
             "external/editors/ckeditor/images",
             "external/editors/ckeditor/skins/office2003",
             "external/editors/ckeditor/skins/v2",
@@ -438,6 +437,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-5.0.1/",
             "external/Swift-5.0.2/",
             "external/Respond-1.3.0/",
+            "external/Respond-1.4.0/",
             "external/facebook-php-sdk-3.2.2/",
         );
         foreach ($olddirs as $dir) {
