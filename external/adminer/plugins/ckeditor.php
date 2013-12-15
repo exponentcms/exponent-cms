@@ -60,8 +60,11 @@ class AdminerCKeditor {
 			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
 CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
         height : '80',
+        toolbarCanCollapse : true,
         toolbarStartupExpanded : false,
         scayt_autoStartup : true,
+        removePlugins : 'elementspath',
+        resize_enabled : false,
     });
 </script>";
 		}

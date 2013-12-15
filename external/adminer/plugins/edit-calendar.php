@@ -37,14 +37,14 @@ class AdminerEditCalendar {
 
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg("date|time", $field["type"])) {
-		if (ereg("date|_at|publish|_accessed|posted|timestamp", $field["field"])) {
+		if (ereg("date|_at|publish|_accessed|posted|timestamp|eventstart|eventend", $field["field"])) {
 			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@', showOn: 'both', buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) / 1000);}";
 			$timeFormat = "showSecond: true,timeFormat: 'hh:mm:ss',showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()));},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) );}";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
                     . ((ereg("eventstart", $field["field"]) || ereg("eventend", $field["field"])) ? "timepicker({ $timeFormat })"
-                    : (ereg("time", $field["type"]) ? "datetimepicker({ $dateFormat, $timeFormat })"
+                    : (ereg("_at|publish|_accessed|posted|timestamp", $field["field"]) ? "datetimepicker({ $dateFormat, $timeFormat })"
                     : "datepicker({ $dateFormat })"
                 )) . ";</script>";
 		}

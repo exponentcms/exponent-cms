@@ -37,7 +37,7 @@
 			{if $counts[$ts] != 0}
 				<dt>
 					<strong>
-						<a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle{if !empty($item->color)} {$item->color}{/if}" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong>
 				</dt>
 				{foreach from=$events item=event}

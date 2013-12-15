@@ -793,7 +793,7 @@ $.fn.elfindercwd = function(fm, options) {
 				.delegate(fileSelector, 'scrolltoview', function() {
 					scrollToView($(this));
 				})
-				.delegate(fileSelector, 'mouseenter mouseleave', function(e) {
+				.delegate(fileSelector, 'mouseenter.'+fm.namespace+' mouseleave.'+fm.namespace, function(e) {
 					fm.trigger('hover', {hash : $(this).attr('id'), type : e.type});
 					$(this).toggleClass('ui-state-hover');
 				})
@@ -829,6 +829,7 @@ $.fn.elfindercwd = function(fm, options) {
 				.selectable({
 					filter     : fileSelector,
 					stop       : trigger,
+					delay      : 250,
 					selected   : function(e, ui) { $(ui.selected).trigger(evtSelect); },
 					unselected : function(e, ui) { $(ui.unselected).trigger(evtUnselect); }
 				})
