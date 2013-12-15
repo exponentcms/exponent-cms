@@ -600,12 +600,14 @@ class formsController extends expController {
                     $mail = new expMail();
                     if (!empty($attachments)) {
                         foreach ($attachments as $attachment) {
-                            if (file_exists(BASE.$attachment)) {
-                                $relpath = str_replace(PATH_RELATIVE, '', BASE);
+                            if (strlen(PATH_RELATIVE) != 1)
+                                $attachment = str_replace(PATH_RELATIVE, '', $attachment);  // strip relative path for links coming from templates
+                            if (file_exists(BASE . $attachment)) {
+//                                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                            $ftype = finfo_file($finfo, $relpath . $attachment);
 //                            finfo_close($finfo);
-                                $mail->attach_file_on_disk($relpath . $attachment, expFile::getMimeType($attachment));
+                                $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
                             }
                         }
                     }
