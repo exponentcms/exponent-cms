@@ -25,7 +25,7 @@
 class expCSS {
 
     public static function pushToHead($params) {
-        global $css_primer, $css_core, $css_links, $css_theme, $css_inline;
+        global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
         
         // normalize.css is always at the top
         if (!empty($params['normalize'])){
@@ -42,18 +42,22 @@ class expCSS {
         }
         
          // less files to compile to css
-        $less_vars =!empty($params['lessvars']) ? $params['lessvars'] : array();
+        $lless_vars = array_merge($less_vars, !empty($params['lessvars']) ? $params['lessvars'] : array());
         if (!empty($params['lesscss'])) {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
             foreach ($less_array as $less_path) {
-//                if (is_file(BASE.$less_path)) {
-                    $css_path = str_replace("/less/","/css/",$less_path);
-                    $css_path = substr($css_path,0,strlen($css_path)-4)."css";
-                    if (self::auto_compile_less($less_path,$css_path,$less_vars))
-                        //indexing the array by the filename
-                        $css_links[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
-//                } else flash('notice',$less_path. ' ' . gt('does not exist!'));
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '';
+                }
+                $css_path = str_replace("/less/","/css/",$less_path);
+                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
+                    $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
 
@@ -65,10 +69,10 @@ class expCSS {
                 $filename = trim($filename);
                 $css_path = "framework/core/assets/css/".$filename.".css";
                 $less_path = "framework/core/assets/less/".$filename.".less";
-                if (file_exists(BASE.$less_path)) self::auto_compile_less($less_path,$css_path,$less_vars);
-                if (is_file(BASE.$css_path)) {
+                if (file_exists(BASE.$less_path))
+                    self::auto_compile_less($less_path,$css_path,$lless_vars);
+                if (is_file(BASE.$css_path))
                     $css_core[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
-                }
             }
         }
         
