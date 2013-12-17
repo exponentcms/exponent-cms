@@ -497,15 +497,15 @@ class fileController extends expController {
 
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
-            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
-            $file->poster = $user->id;
-            $file->posted = $file->last_accessed = time();
-            $file->save();
-            if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '') {
+            if (SITE_FILE_MANAGER == 'picker' && defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '') {
                 $quikFolder = QUICK_UPLOAD_FOLDER;
             } else {
                 $quikFolder = null;
             }
+            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+            $file->poster = $user->id;
+            $file->posted = $file->last_accessed = time();
+            $file->save();
             if (!empty($quikFolder)) {
                 $expcat = new expCat($quikFolder);
                 $params['expCat'][0] = $expcat->id;
