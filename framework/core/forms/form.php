@@ -228,6 +228,14 @@ class form extends baseform {
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
+            if (BTN_SIZE != 'large') {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } else {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            }
+            $btn_class .= ' ' . $btn_size;
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
