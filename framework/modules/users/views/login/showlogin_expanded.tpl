@@ -39,7 +39,8 @@
             {icon class="password" controller=users action=change_password text='Change Password'|gettext}
         {/if}
         &#160;|&#160;
-        <a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>
+        {*<a class="logout" href="{link action=logout}">{'Logout'|gettext}</a>*}
+        {icon button=true action=logout text='Logout'|gettext}
         {if $smarty.const.ECOM && $oicount}
             &#160;|&#160;{icon class=cart controller=cart action=show text="Shopping Cart"|gettext} ({$oicount} {'item'|plural:$oicount})
         {/if}
