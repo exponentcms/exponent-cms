@@ -578,16 +578,14 @@ class expCore {
             } else {
                 $found = 'btn-default';
             }
-            if ($size != null) {
-                if (BTN_SIZE != 'large' || (!empty($size) && $size != 'large')) {
-                    $btn_size = 'btn-mini';
-                    $icon_size = '';
-                } else {
-                    $btn_size = 'btn-small';
-                    $icon_size = 'icon-large';
-                }
-                $found .= ' ' . $btn_size;
+            if (BTN_SIZE != 'large' || (!empty($size) && $size != 'large')) {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } else {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
             }
+            $found .= ' ' . $btn_size;
             return $found;
         } else {
             return array_search($color, $colors);  // bootstrap to awesome button conversion
