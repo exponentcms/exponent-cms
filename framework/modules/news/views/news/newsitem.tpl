@@ -38,7 +38,7 @@
         </div>
     {/if}
     <div class="item">
-        {if $config.datetag}
+        {if !empty($config.datetag)}
             <p class="post-date">
                 <span class="month">{$record->publish_date|format_date:"%b"}</span>
                 <span class="day">{$record->publish_date|format_date:"%e"}</span>
@@ -49,7 +49,7 @@
         {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
         {subscribe_link prepend='<br />'}
         {$myloc=serialize($__loc)}
-        {if !$config.datetag}
+        {if empty($config.datetag)}
             <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>
         {/if}
         {tags_assigned record=$record}
@@ -79,7 +79,7 @@
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
         </div>
-        {if $config.enable_tweet}
+        {if !empty($config.enable_tweet)}
             <a href="https://twitter.com/share" class="twitter-share-button" data-url="{link action=show title=$record->sef_url}" data-text="{$record->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
             {script unique='tweet_src'}
             {literal}

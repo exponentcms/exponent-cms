@@ -14,7 +14,7 @@
  *}
 
 <div class="module text single">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
+    {if $moduletitle && !(!empty($config.hidemoduletitle) xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {$myloc=serialize($__loc)}
     <div class="item">
         {if $items[0]->title}<{$config.item_level|default:'h2'}>{$items[0]->title}</{$config.item_level|default:'h2'}>{/if}

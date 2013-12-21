@@ -43,8 +43,7 @@ function smarty_function_export_pdf_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
-    $pdf = new expHtmlToPDF(null);
-    if ($print && !PRINTER_FRIENDLY && $pdf->pdf != null) {
+    if ($print && !PRINTER_FRIENDLY && expHtmlToPDF::installed()) {
         // initialize a couple of variables
         $text = isset($params['text']) ? $params['text'] : gt('Export as PDF');
         $view = isset($params['view']) ? $params['view'] : null;

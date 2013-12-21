@@ -32,6 +32,7 @@
 {script unique="prodedit" yui3mods=1}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {
+    var YAHOO=Y.YUI2;
     switchMethods = function() {
         var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
         var methdd = YAHOO.util.Dom.get('dd-'+dd.value);

@@ -102,7 +102,11 @@ class expTheme
 
         // globalize header configuration
         $head_config = $config;
-        $less_vars = $config['lessvars'];
+        if (!empty($config['lessvars'])) {
+            $less_vars = $config['lessvars'];
+        } else {
+            $less_vars = array();
+        }
 
         // check to see if we're in XHTML or HTML mode
         if (isset($config['xhtml']) && $config['xhtml'] == true) {
