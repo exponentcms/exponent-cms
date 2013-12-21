@@ -4,11 +4,11 @@ Swift,5.0.3,swiftmailer.org,5.0.3,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
-Smarty,3.1.15,smarty.net,3.1.15,
+Smarty,3.1.15,smarty.net,3.1.16,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.7,github.com/mrclay/minify,2.1.7,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.14.0,developer.yahoo.com/yui/3,3.14.0,
+YUI3,3.14.0,developer.yahoo.com/yui/3,3.14.1,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
@@ -36,9 +36,9 @@ Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.3,http://trentrichardson.com/examples/timepicker/,1.4.3,used by adminer
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
-Respond,1.4.0,https://github.com/scottjehl/Respond,1.4.0,
+Respond,1.4.0,https://github.com/scottjehl/Respond,1.4.1,
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
-TinyMCE,4.0.11,http://www.tinymce.com/,4.0.11,add xenmce skin
+TinyMCE,4.0.11,http://www.tinymce.com/,4.0.12,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 DataTables,1.9.4,http://www.datatables.net,1.9.4,
 Responsive DataTables,1.4.1,https://github.com/Comanche/datatables-responsive,1.4.1,includes lodash & DT_bootstrap
