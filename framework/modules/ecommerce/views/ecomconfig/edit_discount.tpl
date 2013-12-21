@@ -45,10 +45,10 @@
                         {* control type="checkbox" name="allow_other_coupons" label="All Use of Other Coupons"|gettext value=$discount->allow_other_coupons *}
                         {* control type="radiogroup?" name="apply_before_after_tax" label="All Use of Other Coupons"|gettext value=$discount->allow_other_coupons *}
                         {'If the discount is related to free or discounted shipping, or you simply want to force the shipping method used when this discount is applied, you may force the shipping method used here:'|gettext}
-                        {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service" includeblank="-- Select a shipping service --"|gettext items=$shipping_services value=$discount->required_shipping_calculator_id onchange="switchMethods();"}
+                        {control type="dropdown" name="required_shipping_calculator_id" id="required_shipping_calculator_id" label="Required Shipping Service" includeblank="-- Select a shipping service --"|gettext items=$shipping_services value=$discount->required_shipping_calculator_id}
                         {foreach from=$shipping_methods key=calcid item=methods name=sm}
-                            <div id="dd-{$calcid}" class="hide methods">
-                            {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Required Shipping Method" items=$methods value=$discount->required_shippng_method}
+                            <div id="dd-{$calcid}" class="methods" style="display:none;">
+                                {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Required Shipping Method" items=$methods value=$discount->required_shippng_method}
                             </div>
                         {/foreach}
                     </div>
@@ -75,37 +75,42 @@
     </div>
 </div>
 
-{*FIXME convert to yui3*}
 {script unique="discountedit" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        var switchMethods = function () {
+            var dd = Y.one('#required_shipping_calculator_id');
+            var ddval = dd.get('value');
+            if (ddval != '') {
+                var methdd = Y.one('#dd-'+ddval);
+            }
+            var otherdds = Y.all('.methods');
+
+            otherdds.each(function (odds) {
+                if (odds.get('id') == 'dd-'+ddval) {
+                    odds.setStyle('display', 'block');
+                } else {
+                    odds.setStyle('display', 'none');
+                }
+            });
+        }
+        switchMethods();
+        Y.one('#required_shipping_calculator_id').on('change', switchMethods);
+    });
+{/literal}
+{/script}
+
+{script unique="authtabs" yui3mods=1}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element','exptabs', function(Y) {
-        var YAHOO=Y.YUI2;
+	 YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs", "node-load","event-simulate", function(Y) {
         Y.expTabs({srcNode: '#discounttabs'});
 		Y.one('#discounttabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-
-        function switchMethods() {
-            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
-            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-
-            for(i=0; i<otherdds.length; i++) {
-                if (otherdds[i].id == 'dd-'+dd.value) {
-                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-                } else {
-                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
-                }
-            }
-            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-            //Y.log(methdd);
-            //Y.log(dd.value);
-        }
-        YAHOO.util.Event.onDOMReady(switchMethods);
+        Y.one('.loadingdiv').remove();
     });
 {/literal}
 {/script}
