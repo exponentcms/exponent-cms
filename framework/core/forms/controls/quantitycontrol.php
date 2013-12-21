@@ -1,5 +1,5 @@
 <?php
-
+//FIXME Deprecated! Not used replaced by generic html5 'number' control
 ##################################################
 #
 # Copyright (c) 2004-2013 OIC Group, Inc.
