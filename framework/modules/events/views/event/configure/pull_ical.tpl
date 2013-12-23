@@ -25,89 +25,88 @@
     <h2>{"Add External iCal/ics Feeds"|gettext}</h2>
     {*{control type="text" id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}*}
     {control type=url id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}
-    <a class="addtoicallist add" href="#">{'Add to list'|gettext}</a>{br}{br}
+    <a id="addtoicallist" class="add" href="#">{'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>
     <ul id="icalpull-feeds">
         {foreach from=$config.pull_ical item=feed name=feed}
             {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{control type=color label=$feed name="pull_ical_color[]" id="pull_ical_color`$smarty.foreach.feed.index`" value=$config.pull_ical_color[$smarty.foreach.feed.index] hide=1 flip=1}<a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
-        {foreachelse}
-            <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}
+        <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
     </ul>
 
-    {*FIXME convert to yui3*}
-    {script unique="icalfeedpicker" yui3mods=1}
+    {script unique="icalfeedpicker3" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-get', function(Y) {
-        var YAHOO=Y.YUI2;
-        var add = YAHOO.util.Dom.getElementsByClassName('addtoicallist', 'a');
-        YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Event.stopEvent(e);
-            var feedtoadd = YAHOO.util.Dom.get("icalfeedmaker");
-            if (feedtoadd.value == '') return;
-            YAHOO.util.Dom.setStyle('noicalfeeds', 'display', 'none');
+    YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+        if (Y.one('#icalpull-feeds').get('children').size() > 1) Y.one('#noicalfeeds').setStyle('display','none');
+        Y.one('#addtoicallist').on('click', function(e){
+            e.halt();
+            var feedtoadd = Y.one("#icalfeedmaker").get('value');
+            if (feedtoadd == '') return;
+            Y.one('#noicalfeeds').setStyle('display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = '<input type="hidden" name="pull_ical[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = '<input type="hidden" name="pull_ical[]" value="'+feedtoadd+'" />';
             newLabel.innerHTML = newLabel.innerHTML + '<span id="placeholder" style="display:inline-block"></span>';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removeical";
             newRemove.innerHTML = " {/literal}{'Remove'|gettext}{literal}";
-            newli.innerHTML = newLabel.innerHTML;
+            newli.appendChild(newLabel);
             newli.appendChild(newRemove);
-            var list = YAHOO.util.Dom.get('icalpull-feeds');
+            var list = Y.one('#icalpull-feeds');
             list.appendChild(newli);
-            YAHOO.util.Event.on(newRemove, 'click', function(e,o){
-                if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                    var list = YAHOO.util.Dom.get('icalpull-feeds');
-                    list.removeChild(this)
-                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('noicalfeeds', 'display', '');;
-                } else return false;
-            },newli,true);
 
-            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd.value)+"&name=pull_ical_color[]&id=pull_ical_color"+list.children.length+"&hide=1&flip=1&value=000";
-            var callback = {
-                success: function(oResponse) {
-                    placeholder = YAHOO.util.Dom.get("placeholder");
-                    placeholder.innerHTML = oResponse.responseText;
-                    var scripts = placeholder.getElementsByTagName('script');
-                    for (var scrpt, i = scripts.length; i-- && (scrpt = scripts[i]);) {
-                        if(!YAHOO.util.Dom.getAttribute (scrpt,'src')){
-                            eval(scrpt.innerHTML);
+            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd)+"&name=pull_ical_color[]&id=pull_ical_color"+list.get('children').size()+"&hide=1&flip=1&value=000";
+            var cfg = {
+                    method: "POST",
+                    headers: { 'X-Transaction': 'Load URL'},
+                    arguments : { 'X-Transaction': 'Load URL'}
+                };
+            var handleSuccess = function(ioId, o){
+                if(o.responseText){
+                    placeholder = Y.one("#placeholder");
+                    placeholder.setContent(o.responseText);
+                    placeholder.setAttribute('id','inplace');
+                    placeholder.all('script').each(function(n){
+                        if(!n.get('src')){
+                            eval(n.get('innerHTML'));
                         } else {
-                            var url = scrpt.get('src');
+                            var url = n.get('src');
                             if (url.indexOf("ckeditor")) {
-                                YAHOO.util.Get.script(url);
+                                Y.Get.script(url);
                             };
                         };
-                    };
-                    var csslinks = placeholder.getElementsByTagName('link');
-                    for (var link, i = csslinks.length; i-- && (link = csslinks[i]);) {
-                        var url = YAHOO.util.Dom.getAttribute (link,'href');
-                        YAHOO.util.Get.css(url);
-                    };
-                    YAHOO.util.Dom.setAttribute(placeholder,'id','inplace');
-                },
-                timeout: 7000,
-                scope: callback,
+                    });
+                        placeholder.all('link').each(function(n){
+                        var url = n.get('href');
+                        Y.Get.css(url);
+                    });
+               }
             };
-            YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
 
-            feedtoadd.value = '';
+            //A function handler to use for failed requests:
+            var handleFailure = function(ioId, o){
+                Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "load url");
+            };
+
+            //Subscribe our handlers to IO's global custom events:
+            Y.on('io:success', handleSuccess);
+            Y.on('io:failure', handleFailure);
+            var request = Y.io(sUrl, cfg);
+            feedtoadd = '';
         });
     
-        var existingRems = YAHOO.util.Dom.getElementsByClassName('removeical', 'a');
-        YAHOO.util.Event.on(existingRems, 'click', function(e,o){
+        var remClick = function(e){
            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                YAHOO.util.Event.stopEvent(e);
-                var targ = YAHOO.util.Event.getTarget(e);
-                var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
-                var list = YAHOO.util.Dom.get('icalpull-feeds');
+                e.halt();
+                var lItem = e.target.ancestor('li');
+                var list = Y.one('#icalpull-feeds');
                 list.removeChild(lItem);
-                if (list.children.length == 1) YAHOO.util.Dom.setStyle('noicalfeeds', 'display', '');;
+                if (list.get('children').size() == 1) Y.one('#noicalfeeds').setStyle('display', '');
            } else return false;
-        });
+        };
+
+        Y.one('#config').delegate('click',remClick,'a.removeical');
     });
     {/literal}
     {/script}

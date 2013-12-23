@@ -880,6 +880,7 @@ class cartController extends expController {
 
         $shipping_items = array();
         foreach ($shippingmethod_id as $id) {
+            $shipping_items[$id] = new stdClass();
             $shipping_items[$id]->method    = new shippingmethod($id);
             $shipping_items[$id]->orderitem = $order->getOrderitemsByShippingmethod($id);
             foreach ($shipping_items[$id]->orderitem as $key=> $item) {

@@ -32,7 +32,7 @@
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
     {/if}
-    <a class="addtogooglelist btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a id="addtogooglelist" class="btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>
     <ul id="googlepull-feeds">
         {foreach from=$config.pull_gcal item=feed name=feed}
@@ -43,82 +43,83 @@
                     <a class="removegoogle btn {$btn_size} btn-danger" href="#"><i class="icon-remove-sign {$icon_size}"></i> {"Remove"|gettext}</a>
                 </li>
             {/if}
-        {foreachelse}
-            <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
+        <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
     </ul>
 
-    {*FIXME convert to yui3*}
-    {script unique="googlefeedpicker" yui3mods=1}
+    {script unique="googlefeedpicker3" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-get', function(Y) {
-        var YAHOO=Y.YUI2;
-        var add = YAHOO.util.Dom.getElementsByClassName('addtogooglelist', 'a');
-        YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Event.stopEvent(e);
-            var feedtoadd = YAHOO.util.Dom.get("googlefeedmaker");
-            if (feedtoadd.value == '') return;
-            YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', 'none');
+    YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+        if (Y.one('#googlepull-feeds').get('children').size() > 1) Y.one('#nogooglefeeds').setStyle('display','none');
+        Y.one('#addtogooglelist').on('click', function(e){
+            e.halt();
+            var feedtoadd = Y.one("#googlefeedmaker").get('value');
+            if (feedtoadd == '') return;
+            Y.one('#nogooglefeeds').setStyle('display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = '<input type="hidden" name="pull_gcal[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = '<input type="hidden" name="pull_gcal[]" value="'+feedtoadd+'" />';
             newLabel.innerHTML = newLabel.innerHTML + '<span id="placeholder" style="display:inline-block"></span>';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removegoogle btn {/literal}{$btn_size}{literal} btn-danger";
             newRemove.innerHTML = " {/literal}<i class='icon-remove-sign {$icon_size}'></i> {'Remove'|gettext}{literal}";
-            newli.innerHTML = newLabel.innerHTML;
+            newli.appendChild(newLabel);
             newli.appendChild(newRemove);
-            var list = YAHOO.util.Dom.get('googlepull-feeds');
+            var list = Y.one('#googlepull-feeds');
             list.appendChild(newli);
-            YAHOO.util.Event.on(newRemove, 'click', function(e,o){
-                if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                    var list = YAHOO.util.Dom.get('googlepull-feeds');
-                    list.removeChild(this)
-                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', '');;
-                } else return false;
-            },newli,true);
-            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd.value)+"&name=pull_gcal_color[]&id=pull_gcal_color"+list.children.length+"&hide=1&flip=1&value=000";
-            var callback = {
-                success: function(oResponse) {
-                    placeholder = YAHOO.util.Dom.get("placeholder");
-                    placeholder.innerHTML = oResponse.responseText;
-                    var scripts = placeholder.getElementsByTagName('script');
-                    for (var scrpt, i = scripts.length; i-- && (scrpt = scripts[i]);) {
-                        if(!YAHOO.util.Dom.getAttribute (scrpt,'src')){
-                            eval(scrpt.innerHTML);
+
+            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd)+"&name=pull_gcal_color[]&id=pull_gcal_color"+list.get('children').size()+"&hide=1&flip=1&value=000";
+            var cfg = {
+                    method: "POST",
+                    headers: { 'X-Transaction': 'Load URL'},
+                    arguments : { 'X-Transaction': 'Load URL'}
+                };
+            var handleSuccess = function(ioId, o){
+                if(o.responseText){
+                    placeholder = Y.one("#placeholder");
+                    placeholder.setContent(o.responseText);
+                    placeholder.setAttribute('id','inplace');
+                    placeholder.all('script').each(function(n){
+                        if(!n.get('src')){
+                            eval(n.get('innerHTML'));
                         } else {
-                            var url = scrpt.get('src');
+                            var url = n.get('src');
                             if (url.indexOf("ckeditor")) {
-                                YAHOO.util.Get.script(url);
+                                Y.Get.script(url);
                             };
                         };
-                    };
-                    var csslinks = placeholder.getElementsByTagName('link');
-                    for (var link, i = csslinks.length; i-- && (link = csslinks[i]);) {
-                        var url = YAHOO.util.Dom.getAttribute (link,'href');
-                        YAHOO.util.Get.css(url);
-                    };
-                    YAHOO.util.Dom.setAttribute(placeholder,'id','inplace');
-                },
-                timeout: 7000,
-                scope: callback,
+                    });
+                        placeholder.all('link').each(function(n){
+                        var url = n.get('href');
+                        Y.Get.css(url);
+                    });
+               }
             };
-            YAHOO.util.Connect.asyncRequest('GET', sUrl, callback);
-            feedtoadd.value = '';
+
+            //A function handler to use for failed requests:
+            var handleFailure = function(ioId, o){
+                Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "load url");
+            };
+
+            //Subscribe our handlers to IO's global custom events:
+            Y.on('io:success', handleSuccess);
+            Y.on('io:failure', handleFailure);
+            var request = Y.io(sUrl, cfg);
+            feedtoadd = '';
         });
-    
-        var existingRems = YAHOO.util.Dom.getElementsByClassName('removegoogle', 'a');
-        YAHOO.util.Event.on(existingRems, 'click', function(e,o){
-            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                YAHOO.util.Event.stopEvent(e);
-                var targ = YAHOO.util.Event.getTarget(e);
-                var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
-                var list = YAHOO.util.Dom.get('googlepull-feeds');
+
+        var remClick = function(e){
+           if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                e.halt();
+                var lItem = e.target.ancestor('li');
+                var list = Y.one('#googlepull-feeds');
                 list.removeChild(lItem);
-                if (list.children.length == 1) YAHOO.util.Dom.setStyle('nogooglefeeds', 'display', '');;
-            } else return false;
-        });
+                if (list.get('children').size() == 1) Y.one('#nogooglefeeds').setStyle('display', '');
+           } else return false;
+        };
+
+        Y.one('#config').delegate('click',remClick,'a.removegoogle');
     });
     {/literal}
     {/script}
