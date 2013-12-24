@@ -410,6 +410,7 @@ class remove_oldfiles extends upgradescript {
             "external/yui/3.11.0/",
             "external/yui/3.12.0/",
             "external/yui/3.13.0/",
+            "external/yui/3.14.0/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
@@ -419,6 +420,7 @@ class remove_oldfiles extends upgradescript {
             "external/Smarty-3.1.12/",
             "external/Smarty-3.1.13/",
             "external/Smarty-3.1.14/",
+            "external/Smarty-3.1.15/",
             "external/Swift/",
             "external/Swift-4/",
             "external/Swift-4.0.5/",
@@ -438,6 +440,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-5.0.2/",
             "external/Respond-1.3.0/",
             "external/Respond-1.4.0/",
+            "external/Respond-1.4.1/",
             "external/facebook-php-sdk-3.2.2/",
         );
         foreach ($olddirs as $dir) {
