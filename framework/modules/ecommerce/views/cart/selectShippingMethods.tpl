@@ -54,12 +54,11 @@
                         {foreach from=$pricelist item=option}
                             <tr class="{cycle values="odd,even"} opts opt{$calcid}">
                                 <td>
-                                <div>
-                                    {control type=hidden name="cost[`$option.id`]" value=$option.cost}
-                                    {control type=hidden name="title[`$option.id`]" value=$option.title}
-                                    {control type="radio" name="methods[`$shippingitem->method->id`]" label="`$option.title` (`$option.cost|currency`)" value=$option.id}
-                                </div>
-
+                                    <div>
+                                        {control type=hidden name="cost[`$option.id`]" value=$option.cost}
+                                        {control type=hidden name="title[`$option.id`]" value=$option.title}
+                                        {control type="radio" name="methods[`$shippingitem->method->id`]" label="`$option.title` (`$option.cost|currency`)" value=$option.id}
+                                    </div>
                                 </td?
                             </tr>
                         {/foreach}
@@ -70,19 +69,22 @@
             {*FIXME convert to yui3*}
             {script unique="shippingopts`$shippingitem->method->id`"}
             {literal}
-            YAHOO.util.Event.onDOMReady(function(){
-                var smc = YAHOO.util.Dom.getElementsByClassName('{/literal}smc{$shippingitem->method->id}{literal}', 'select');
-                YAHOO.util.Event.on(smc, 'change', function(e){
-                    var targ = YAHOO.util.Event.getTarget(e);
-                    var vals = YAHOO.util.Dom.getElementsByClassName('opt'+targ.value, 'tr', 'tb-{/literal}{$shippingitem->method->id}{literal}');
-                    var hvals = YAHOO.util.Dom.getElementsByClassName('opts', 'tr', 'tb-{/literal}{$shippingitem->method->id}{literal}');
-                    YAHOO.util.Dom.setStyle(hvals, 'display', 'none');
-                    if (YAHOO.env.ua.ie > 0) {
-                        YAHOO.util.Dom.setStyle(vals, 'display', 'block');
-                    } else {
-                        YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
-                    }
+            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+                var YAHOO=Y.YUI2;
+                YAHOO.util.Event.onDOMReady(function(){
+                    var smc = YAHOO.util.Dom.getElementsByClassName('{/literal}smc{$shippingitem->method->id}{literal}', 'select');
+                    YAHOO.util.Event.on(smc, 'change', function(e){
+                        var targ = YAHOO.util.Event.getTarget(e);
+                        var vals = YAHOO.util.Dom.getElementsByClassName('opt'+targ.value, 'tr', 'tb-{/literal}{$shippingitem->method->id}{literal}');
+                        var hvals = YAHOO.util.Dom.getElementsByClassName('opts', 'tr', 'tb-{/literal}{$shippingitem->method->id}{literal}');
+                        YAHOO.util.Dom.setStyle(hvals, 'display', 'none');
+                        if (YAHOO.env.ua.ie > 0) {
+                            YAHOO.util.Dom.setStyle(vals, 'display', 'block');
+                        } else {
+                            YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
+                        }
 
+                    });
                 });
             });
             {/literal}
@@ -95,18 +97,21 @@
 
 {script unique="shippingopts"}
 {literal}
-YAHOO.util.Event.onDOMReady(function(){
-    var hvals = YAHOO.util.Dom.getElementsByClassName('opts', 'tr');
-    var vals = YAHOO.util.Dom.getElementsByClassName('opt1', 'tr');
-    
-    YAHOO.util.Dom.setStyle(hvals, 'display', 'none');
-    
-    if (YAHOO.env.ua.ie > 0) {
-        YAHOO.util.Dom.setStyle(vals, 'display', 'block');
-    } else {
-        YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
-    }
-    //YAHOO.util.Dom.setStyle(vals, 'display', 'block');
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+    var YAHOO=Y.YUI2;
+    YAHOO.util.Event.onDOMReady(function(){
+        var hvals = YAHOO.util.Dom.getElementsByClassName('opts', 'tr');
+        var vals = YAHOO.util.Dom.getElementsByClassName('opt1', 'tr');
+
+        YAHOO.util.Dom.setStyle(hvals, 'display', 'none');
+
+        if (YAHOO.env.ua.ie > 0) {
+            YAHOO.util.Dom.setStyle(vals, 'display', 'block');
+        } else {
+            YAHOO.util.Dom.setStyle(vals, 'display', 'table-row');
+        }
+        //YAHOO.util.Dom.setStyle(vals, 'display', 'block');
+    });
 });
 {/literal}
 {/script}

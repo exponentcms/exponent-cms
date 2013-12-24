@@ -485,7 +485,7 @@ if (!defined('YUI3_RELATIVE')) {
 	 * YUI 3 Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-    define('YUI3_VERSION', '3.14.0');
+    define('YUI3_VERSION', '3.14.1');
     define('YUI3_RELATIVE', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');
 //	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
 	define('YUI3_URL', URL_FULL.'external/yui/'.YUI3_VERSION.'/build/');
@@ -522,7 +522,7 @@ if (!defined('SMARTY_PATH')) {
 	 * Smarty Version Constant
 	 * Changing the version here lets Exponent adjust where to look
 	 */
-	define('SMARTY_VERSION', '3.1.15');
+	define('SMARTY_VERSION', '3.1.16');
 	define('SMARTY_PATH', BASE.'external/Smarty-'.SMARTY_VERSION.'/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }

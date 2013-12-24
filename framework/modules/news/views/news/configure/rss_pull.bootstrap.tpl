@@ -32,7 +32,7 @@
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
     {/if}
-    <a class="addtolist btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
+    <a id="addtolist" class="btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Feeds"|gettext}</h4>
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
@@ -42,49 +42,40 @@
         {/foreach}
     </ul>
 
-    {*FIXME convert to yui3*}
-    {script unique="rssfeedpicker" yui3mods=1}
+    {script unique="rssfeedpicker3" yui3mods=1}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
-        var YAHOO=Y.YUI2;
-        var add = YAHOO.util.Dom.getElementsByClassName('addtolist', 'a');
-        YAHOO.util.Event.on(add, 'click', function(e,o){
-            YAHOO.util.Event.stopEvent(e);
-            var feedtoadd = YAHOO.util.Dom.get("feedmaker");
-            if (feedtoadd.value == '') return;
-            YAHOO.util.Dom.setStyle('norssfeeds', 'display', 'none');
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        if (Y.one('#rsspull-feeds').get('children').size() > 1) Y.one('#norssfeeds').setStyle('display','none');
+        Y.one('#addtolist').on('click', function(e){
+            e.halt();
+            var feedtoadd = Y.one("#feedmaker").get('value');
+            if (feedtoadd == '') return;
+            Y.one('#norssfeeds').setStyle('display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd.value+'" />';
+            newLabel.innerHTML = feedtoadd + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd+'" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "removerss btn {/literal}{$btn_size}{literal} btn-danger";
             newRemove.innerHTML = " {/literal}<i class='icon-remove-sign {$icon_size}'></i> {'Remove'|gettext}{literal}";
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
-            var list = YAHOO.util.Dom.get('rsspull-feeds');
+            var list = Y.one('#rsspull-feeds');
             list.appendChild(newli);
-            YAHOO.util.Event.on(newRemove, 'click', function(e,o){
-                if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                    var list = YAHOO.util.Dom.get('rsspull-feeds');
-                    list.removeChild(this)
-                    if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
-                } else return false;
-            },newli,true);
-            feedtoadd.value = '';
+            feedtoadd = '';
         });
-    
-        var existingRems = YAHOO.util.Dom.getElementsByClassName('removerss', 'a');
-        YAHOO.util.Event.on(existingRems, 'click', function(e,o){
-            if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
-                YAHOO.util.Event.stopEvent(e);
-                var targ = YAHOO.util.Event.getTarget(e);
-                var lItem = YAHOO.util.Dom. getAncestorByTagName(targ,'li');
-                var list = YAHOO.util.Dom.get('rsspull-feeds');
+
+        var remClick = function(e){
+           if (confirm("{/literal}{'Are you sure you want to delete this url?'|gettext}{literal}")) {
+                e.halt();
+                var lItem = e.target.ancestor('li');
+                var list = Y.one('#rsspull-feeds');
                 list.removeChild(lItem);
-                if (list.children.length == 1) YAHOO.util.Dom.setStyle('norssfeeds', 'display', '');;
-            } else return false;
-        });
+                if (list.get('children').size() == 1) Y.one('#norssfeeds').setStyle('display', '');
+           } else return false;
+        };
+
+        Y.one('#config').delegate('click',remClick,'a.removerss');
     });
     {/literal}
     {/script}

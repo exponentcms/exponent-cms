@@ -67,30 +67,3 @@
         </div>
     </div>
 {/if}
-
-{*{script unique=jWizard jquery='jqueryui,jquery.jWizard'}*}
-    {*$("#test").jWizard();*}
-{*{/script}*}
-
-{*{script unique=quickWizard jquery='jqueryui,jquery.validate,jquery.quickWizard'}*}
-    {*$(document).ready(function() {*}
-        {*$('#test').quickWizard();*}
-    {*});*}
-{*{/script}*}
-
-{*{if $paged}*}
-{*{script unique=$name jquery='jquery.validate,jquery.stepy'}*}
-{*{literal}*}
-    {*$("#{/literal}{$form->sef_url}{literal}").stepy({*}
-        {*validate: true,*}
-        {*block: true,*}
-        {*errorImage: true,*}
-{*//        finishButton: false,  // otherwise crashes because we can't find submit button*}
-        {*btnClass: 'awesome {/literal}{$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}{literal}',*}
-{*//        description: false,*}
-{*//        legend: false,*}
-        {*titleClick: true,*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
-{*{/if}*}

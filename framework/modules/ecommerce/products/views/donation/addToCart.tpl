@@ -36,7 +36,6 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
     var YAHOO=Y.YUI2;
-
     YAHOO.util.Event.onDOMReady(function(){
         var links = YAHOO.util.Dom.getElementsByClassName('rc-link', 'a');
 

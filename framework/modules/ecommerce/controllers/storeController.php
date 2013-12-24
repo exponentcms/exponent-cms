@@ -1339,7 +1339,7 @@ class storeController extends expController {
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? '' : strip_tags($prod->meta_noindex);
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? '' : strip_tags($prod->meta_nofollow);
-                    if (file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
+                    if (!empty($prod->expFile['mainimage'][0]) && file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
                         $metainfo['rich'] = '<!--
         <PageMap>
             <DataObject type="thumbnail">

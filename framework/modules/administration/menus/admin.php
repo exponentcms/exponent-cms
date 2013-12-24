@@ -148,50 +148,56 @@ if ($user->isAdmin()) {
                         'action'     => 'manage'
                     ))
                 ),
-                array(
-                    'text'      => gt('Manage File Folders'),
-                    'classname' => 'manage',
-                    'url'       => makeLink(array(
-                        'controller' => 'expCat',
-                        'action'     => 'manage',
-                        'model'      => 'file'
-                    ))
-                ),
-                array(
-                    'text'      => gt('Manage Site Forms'),
-                    'classname' => 'manage',
-                    'url'       => makeLink(array(
-                        'controller' => 'forms',
-                        'action'     => 'manage',
-                    ))
-                ),
-                array(
-                    'text'      => gt('View Top Searches'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'topSearchReport'
-                    ))
-                ),
-                array(
-                    'text'      => gt('View Search Queries'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'searchQueryReport'
-                    ))
-                ),
-                array(
-                    'text'      => gt('Regenerate Search Index'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'spider'
-                    ))
-                ),
             )
         )
     );
+
+    if (SITE_FILE_MANAGER == 'picker') {
+        $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'][] = array(
+            'text'      => gt('Manage File Folders'),
+            'classname' => 'manage',
+            'url'       => makeLink(array(
+                'controller' => 'expCat',
+                'action'     => 'manage',
+                'model'      => 'file'
+            ))
+        );
+    }
+
+    $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'] = array_merge($expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'],array(
+        array(
+            'text'      => gt('Manage Site Forms'),
+            'classname' => 'manage',
+            'url'       => makeLink(array(
+                'controller' => 'forms',
+                'action'     => 'manage',
+            ))
+        ),
+        array(
+            'text'      => gt('View Top Searches'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'topSearchReport'
+            ))
+        ),
+        array(
+            'text'      => gt('View Search Queries'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'searchQueryReport'
+            ))
+        ),
+        array(
+            'text'      => gt('Regenerate Search Index'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'spider'
+            ))
+        ),
+    ));
 }
 
 $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND is_admin=1');

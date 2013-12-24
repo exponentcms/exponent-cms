@@ -554,27 +554,41 @@ class expCore {
      * default is to convert a standard button color to the bootstrap button color
      *
      * @param        $color
+     * @param        $size
      * @param string $returntype
      *
      * @return mixed|string
      */
-    public static function buttonColor($color, $returntype='bootstrap') {
+    public static function buttonColor($color, $size=null, $returntype='bootstrap') {
         $colors = array(
+            'green' => 'btn-success',
+            'blue' => 'btn-primary',
             'red' => 'btn-danger',
+            'magenta' => 'btn-danger',
+            'orange' => 'btn-warning',
             'yellow' => 'btn-warning',
             'grey' => 'btn-default',
-            'green' => 'btn-success',
-            'blue' => 'btn-primary'
+            'purple' => 'btn-info',
+            'black' => 'btn-inverse',
+            'pink' => 'btn-danger',
         );
         if ($returntype == 'bootstrap') {
-            if (!empty($colors[$color])) {
+            if (!empty($colors[$color])) {  // awesome to bootstrap button conversion
                 $found = $colors[$color];
             } else {
                 $found = 'btn-default';
             }
+            if (BTN_SIZE != 'large' || (!empty($size) && $size != 'large')) {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } else {
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            }
+            $found .= ' ' . $btn_size;
             return $found;
         } else {
-            return array_search($color, $colors);
+            return array_search($color, $colors);  // bootstrap to awesome button conversion
         }
     }
 

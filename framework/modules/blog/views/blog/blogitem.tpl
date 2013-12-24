@@ -61,7 +61,7 @@
                     <a href="{link action=showall_by_author author=$record->poster|username}" title='{"View all posts by"|gettext} {attribution user_id=$record->poster}'>{attribution user_id=$record->poster}</a>
                     {$prepend = '&#160;&#160;|&#160;&#160;'}
                 {/if}
-                {if $config.usecategories}
+                {if !empty($config.usecategories)}
                     {'in'|gettext} <a href="{link action=showall src=$record->src cat=$record->expCat[0]->id}" title='{"View all posts filed under"|gettext} {$item->expCat[0]->title}'>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</a>
                 {/if}
                 {if !$config.datetag}
@@ -103,7 +103,7 @@
                 {filedisplayer view="`$config.filedisplay`" files=$record->expFile record=$record}
             {/if}
         </div>
-        {if $config.enable_facebook_like}
+        {if !empty($config.enable_facebook_like)}
             <div id="fb-root"></div>
             <div class="fb-like" data-href="{$smarty.const.URL_FULL}{$record->sef_url}" data-send="false" data-width="{$config.fblwidth|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}"{if $config.color_scheme} data-colorscheme="{$config.color_scheme}"{/if}{if $config.verb} data-action="{$config.verb}"{/if}"></div>
             {script unique='facebook_src'}
@@ -118,7 +118,7 @@
             {/literal}
             {/script}
         {/if}
-        {if $config.enable_tweet}
+        {if !empty($config.enable_tweet)}
             <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$smarty.const.URL_FULL}{$record->sef_url}" data-text="{$record->title}"{if $config.layout} data-count="{$config.layout}"{/if}{if $config.size} data-size="{$config.size}"{/if} data-lang="en">{'Tweet'|gettext}</a>
             {script unique='tweet_src'}
             {literal}
