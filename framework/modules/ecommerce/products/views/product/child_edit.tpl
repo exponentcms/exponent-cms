@@ -153,11 +153,11 @@
                     </div>
                     <div id="shipping">
                         {control type="hidden" name="tab_loaded[shipping]" value=1}
-                        {control type="checkbox" name="shipping[no_shipping]" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
-                        {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id onchange="switchMethods();"}
+                        {control type="checkbox" name="shipping[no_shipping]" label='This item doesn\'t require shipping'|gettext value=1 checked=$record->no_shipping}
+                        {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id}
                         {foreach from=$shipping_methods key=calcid item=methods name=sm}
-                            <div id="dd-{$calcid}" class="hide methods">
-                            {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shippng_method}
+                            <div id="dd-{$calcid}" class="methods" style="display:none;">
+                                {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shippng_method}
                             </div>
                         {/foreach}
                         {icon controller="shipping" action="manage" text="Manage Shipping Options"|gettext}
@@ -238,28 +238,27 @@
     </div>
 </div>
 
-{*FIXME convert to yui3*}
 {script unique="editform" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-element', function(Y) {
-        var YAHOO=Y.YUI2;
-        function switchMethods() {
-            var dd = YAHOO.util.Dom.get('required_shipping_calculator_id');
-            var methdd = YAHOO.util.Dom.get('dd-'+dd.value);
-            var otherdds = YAHOO.util.Dom.getElementsByClassName('methods', 'div');
-
-            for(i=0; i<otherdds.length; i++) {
-                if (otherdds[i].id == 'dd-'+dd.value) {
-                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'block');
-                } else {
-                    YAHOO.util.Dom.setStyle(otherdds[i].id, 'display', 'none');
-                }
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        var switchMethods = function () {
+            var dd = Y.one('#required_shipping_calculator_id');
+            var ddval = dd.get('value');
+            if (ddval != '') {
+                var methdd = Y.one('#dd-'+ddval);
             }
-            YAHOO.util.Dom.setStyle(methdd, 'display', 'block');
-            //Y.log(methdd);
-            //Y.log(dd.value);
+            var otherdds = Y.all('.methods');
+
+            otherdds.each(function (odds) {
+                if (odds.get('id') == 'dd-'+ddval) {
+                    odds.setStyle('display', 'block');
+                } else {
+                    odds.setStyle('display', 'none');
+                }
+            });
         }
-        YAHOO.util.Event.onDOMReady(switchMethods);
+        switchMethods();
+        Y.one('#required_shipping_calculator_id').on('change', switchMethods);
     });
 {/literal}
 {/script}

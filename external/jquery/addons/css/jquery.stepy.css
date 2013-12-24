@@ -82,21 +82,21 @@
 	float : right
 }
 
-.button-back,
-.button-next,
-.stepy-navigator input[type="submit"] {
-	border                : 1px solid #CCC;
-	color                 : #7F0055;
-	cursor                : pointer;
-	font                  : 1.2em verdana;
-	padding               : 7px 15px 8px;
-	text-decoration       : none;
-	-khtml-border-radius  : 3px;
-	-moz-border-radius    : 3px;
-	-opera-border-radius  : 3px;
-	-webkit-border-radius : 3px;
-	border-radius         : 3px
-}
+/*.button-back,*/
+/*.button-next,*/
+/*.stepy-navigator input[type="submit"] {*/
+	/*border                : 1px solid #CCC;*/
+	/*color                 : #7F0055;*/
+	/*cursor                : pointer;*/
+	/*font                  : 1.2em verdana;*/
+	/*padding               : 7px 15px 8px;*/
+	/*text-decoration       : none;*/
+	/*-khtml-border-radius  : 3px;*/
+	/*-moz-border-radius    : 3px;*/
+	/*-opera-border-radius  : 3px;*/
+	/*-webkit-border-radius : 3px;*/
+	/*border-radius         : 3px*/
+/*}*/
 
 .stepy-navigator input[type="submit"] {
 	background-color : transparent;

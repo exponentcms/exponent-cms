@@ -116,7 +116,7 @@ class tinymcecontrol extends formcontrol
             }
         }
         if (MOBILE) {
-            $tb = "menubar: false,
+            $tb .= "menubar: false,
                    toolbar_items_size: 'small',
                    statusbar: false,";
         }

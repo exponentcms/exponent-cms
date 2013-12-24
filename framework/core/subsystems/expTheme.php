@@ -102,7 +102,11 @@ class expTheme
 
         // globalize header configuration
         $head_config = $config;
-        $less_vars = $config['lessvars'];
+        if (!empty($config['lessvars'])) {
+            $less_vars = $config['lessvars'];
+        } else {
+            $less_vars = array();
+        }
 
         // check to see if we're in XHTML or HTML mode
         if (isset($config['xhtml']) && $config['xhtml'] == true) {
@@ -287,7 +291,7 @@ class expTheme
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->' . "\n";
 
             // media css support for IE 6-8
-            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.4.1/dest/respond.min.js"></script><![endif]-->' . "\n";
+            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.4.2/dest/respond.min.js"></script><![endif]-->' . "\n";
         }
 
         // when minification is used, the comment below gets replaced when the buffer is dumped

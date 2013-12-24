@@ -43,8 +43,7 @@ function smarty_function_export_pdf_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
-    $pdf = new expHtmlToPDF(null);
-    if ($print && !PRINTER_FRIENDLY && $pdf->pdf != null) {
+    if ($print && !PRINTER_FRIENDLY && expHtmlToPDF::installed()) {
         // initialize a couple of variables
         if (BTN_SIZE == 'large') {
             $btn_size = 'btn-small';

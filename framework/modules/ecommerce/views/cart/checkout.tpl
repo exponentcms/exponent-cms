@@ -13,47 +13,48 @@
  *
  *}
 
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels,button"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="button"}
 
 {/css}
 {uniqueid assign="id"}
 {messagequeue}
 
-<div id="expresscheckout" class="cart checkout exp-skin">
+<div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
 
     {if ecomconfig::getConfig('policy')!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
-        <div id="storepolicies" class="exp-form">
-            <div class="hd">
+        <div id="storepolicies" style="z-index:9999">
+            <div class="yui3-widget-hd">
                 {"Store Policies"|gettext}
             </div>
-            <div class="bd" style="overflow-y:scroll">
+            <div class="yui3-widget-bd" style="overflow-y:scroll">
                 {ecomconfig var='policy' default=""}
             </div>
         </div>
-        {*FIXME convert to yui3*}
         {script unique="policypop" yui3mods=1}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-dragdrop','event', function(Y) {
-                var YAHOO=Y.YUI2;
-
-                var policies = new YAHOO.widget.Panel("storepolicies", {
+            YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
+                var policies = new Y.Panel({
+                    srcNode : '#storepolicies',
+                    headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
                     width:"400px",
                     height:"350px",
+                    centered:true,
                     modal:true,
                     visible:false,
-                    zindex:57,
-                    constraintoviewport:true,
-                    close:true,
-                    draggable:false
+                    zIndex:999,
+                    constrain:true,
+//                    close:true,
+                    render:true,
                 });
-                policies.render();
-
-                YAHOO.util.Event.on('review-policy', 'click', function(e){
-                    YAHOO.util.Event.stopEvent(e);
+                policies.plug(Y.Plugin.Drag, {
+                    handles: ['.yui3-widget-hd']
+                });
+                var showpanel = function(e){
                     policies.show();
-                }, policies, false);
+                };
+                Y.one("#review-policy").on('click',showpanel);
             });
             {/literal}
         {/script}

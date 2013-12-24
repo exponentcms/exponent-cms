@@ -66,8 +66,8 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
         expJavascript::pushToFoot(array(
             "unique"=>$params['unique'],
             //"yui2mods"=>$params['yui2mods']?$params['yui2mods']:$params['yuimodules'],
-            "yui3mods"=>$params['yui3mods'],
-            "jquery"=>$params['jquery'],
+            "yui3mods"=>!empty($params['yui3mods']) ? $params['yui3mods'] : null,
+            "jquery"=>!empty($params['jquery']) ? $params['jquery'] : null,
             "content"=>$content,
             "src"=>!empty($params['src']) ? $params['src'] : ''
          ));

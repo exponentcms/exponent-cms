@@ -229,9 +229,9 @@ function smarty_function_control($params, &$smarty) {
                 $control = new listbuildercontrol($default, $source);
 			    $control->process  = isset($params['process']) ? $params['process'] : null;
                 break;
-            case "list":
-                $control = new listcontrol();
-                break;
+//            case "list":
+//                $control = new listcontrol();
+//                break;
             case "user":
                 $control                = new dropdowncontrol();
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
@@ -318,12 +318,6 @@ function smarty_function_control($params, &$smarty) {
                     exit();
                 }
                 break;
-            case "quantity":
-                $value   = isset($params['value']) ? $params['value'] : null;
-                $min     = isset($params['min']) ? $params['min'] : 0;
-                $max     = isset($params['max']) ? $params['max'] : 99999;
-                $control = new quantitycontrol($value, $min, $max);
-                break;
             case "tagtree":
                 $control = new tagtreecontrol($params);
                 break;
@@ -363,16 +357,23 @@ function smarty_function_control($params, &$smarty) {
                 $control->searchoncol = empty($params['searchoncol']) ? "title" : $params['searchoncol'];
                 $control->jsinject    = empty($params['jsinject']) ? "" : $params['jsinject'];
                 break;
-            case "massmail":
-                $control = new massmailcontrol();
-                if (!empty($params['var'])) $control->type = 1;
-                if (!empty($params['default'])) $control->default = $params['default'];
-                break;
-            case "contact":
-                $control = new contactcontrol();
-                if (!empty($params['var'])) $control->type = 1;
-                if (!empty($params['default'])) $control->default = $params['default'];
-                break;
+//            case "massmail":
+//                $control = new massmailcontrol();
+//                if (!empty($params['var'])) $control->type = 1;
+//                if (!empty($params['default'])) $control->default = $params['default'];
+//                break;
+//            case "contact":
+//                $control = new contactcontrol();
+//                if (!empty($params['var'])) $control->type = 1;
+//                if (!empty($params['default'])) $control->default = $params['default'];
+//                break;
+            case "quantity":
+//                $value   = isset($params['value']) ? $params['value'] : null;
+//                $min     = isset($params['min']) ? $params['min'] : 0;
+//                $max     = isset($params['max']) ? $params['max'] : 99999;
+//                $control = new quantitycontrol($value, $min, $max);
+//                break;
+                $params['type'] = 'number';
             case "text":
             case "search":
             case "email":

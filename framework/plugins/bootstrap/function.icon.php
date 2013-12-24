@@ -96,7 +96,7 @@ if (!function_exists('smarty_function_icon')) {
 
         // figure out whether to use the edit icon or text, alt tags, etc.
         $alt = (empty($params['alt'])) ? '' : $params['alt'];
-        $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : $params['class'];
+        $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : (!empty($params['class']) ? $params['class'] : '');
         $text = (empty($params['text'])) ? '' : $params['text'];
         $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text) : $params['title'];
         if (!empty($params['hash'])) {
