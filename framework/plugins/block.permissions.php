@@ -41,10 +41,10 @@ function smarty_block_permissions($params,$content,&$smarty, &$repeat) {
         if (empty($_GET['recymod'])) {
             $uilevel = 99;
             if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
-            if (empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
             if ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) {
                 $cntnt = "";
             } else {
+                if (empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
                 $cntnt = ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) ? "" : $content;
             }
     		return $cntnt;
