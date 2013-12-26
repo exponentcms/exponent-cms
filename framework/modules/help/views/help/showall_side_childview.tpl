@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2013 OIC Group, Inc.
+ * Copyright (c) 2007-2014 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
