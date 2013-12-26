@@ -89,7 +89,7 @@ class textController extends expController {
 	
 	public function showRandom() {
 	    expHistory::set('viewable', $this->params);
-		//This is a better way to do showRandom, you can pull in random text from all over the site if you need to.
+		//This is a better way to do showRandom, you can pull in random text from all over the site (if aggregated) if you need to.
 		$where = $this->aggregateWhereClause();
 		$limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
 		$order = 'RAND()';
