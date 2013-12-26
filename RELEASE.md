@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2013 OIC Group, Inc.
+Copyright (c) 2004-2014 OIC Group, Inc.
 
 Release Notes for Exponent Content Management System
 

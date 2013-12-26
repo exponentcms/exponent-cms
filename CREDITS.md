@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2013 OIC Group, Inc.
+Copyright (c) 2004-2014 OIC Group, Inc.
 
 Exponent CMS, Credits
 
@@ -84,4 +84,4 @@ generare
 wilko_76
 chrisjlocke
 
-(Last updated 2013.12.08, release 2.2.4)
+(Last updated 2014.01.31, release 2.2.4)
