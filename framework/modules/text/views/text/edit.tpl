@@ -46,11 +46,15 @@
                 {$label = $label|cat:(' - '|cat:$revision->title)}
                 {group label=$label class=$class}
                     {if $revision->revision_id != $record->revision_id}
-                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Restore this version'|gettext}">
+                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Click to Restore this revision'|gettext}">
+                    {else}
+                    <span title="{'Editing this revision'|gettext}">
                     {/if}
                         {$revision->body|summarize:"html":"parahtml"}
                     {if $revision->revision_id != $record->revision_id}
                     </a>
+                    {else}
+                    </span>
                     {/if}
                 {/group}
             {/foreach}

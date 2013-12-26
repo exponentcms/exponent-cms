@@ -292,8 +292,14 @@ function renderAction(array $parms=array()) {
     foreach ($controller->getModels() as $model) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
         // flag for needing approval check
-        if ($controller->$model->supports_revisions && !expPermissions::check('approve', $controller->loc)) {
-            $controller->$model->needs_approval = true;
+        if ($controller->$model->supports_revisions) {
+            $uilevel = 99;
+            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
+            if (!expPermissions::check('approve', $controller->loc)) {
+                $controller->$model->needs_approval = true;
+            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+                $controller->$model->needs_approval = true;
+            }
         }
     }
     

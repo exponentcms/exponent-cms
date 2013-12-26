@@ -112,8 +112,14 @@ abstract class expController {
         $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
 
         // flag for needing approval check
-        if ($this->$modelname->supports_revisions && !expPermissions::check('approve', $this->loc)) {
-            $this->$modelname->needs_approval = true;
+        if ($this->$modelname->supports_revisions) {
+            $uilevel = 99;
+            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
+            if (!expPermissions::check('approve', $this->loc)) {
+                $this->$modelname->needs_approval = true;
+            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+                $this->$modelname->needs_approval = true;
+            }
         }
 
         // get this controllers config data if there is any
