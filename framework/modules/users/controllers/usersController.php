@@ -1008,7 +1008,7 @@ class usersController extends expController {
                 $p[gt($value)] = 'no-sort';
             }
 
-            if (SEF_URLS == 1) {
+//            if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
 //                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
@@ -1021,20 +1021,20 @@ class usersController extends expController {
                     'action'     => $this->params['action'],
                     'columns'    => $p,
                 ));
-            } else {
-                $page = new expPaginator(array(
-                    //'model'=>'user',
-//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
-                    'records'    => $users,
-                    //'sql'=>$sql,
-                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
-                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
-                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-                    'controller' => $this->params['module'],
-                    'action'     => $this->params['action'],
-                    'columns'    => $p,
-                ));
-            }
+//            } else {
+//                $page = new expPaginator(array(
+//                    //'model'=>'user',
+////                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'records'    => $users,
+//                    //'sql'=>$sql,
+//                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
+//                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+//                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+//                    'controller' => $this->params['module'],
+//                    'action'     => $this->params['action'],
+//                    'columns'    => $p,
+//                ));
+//            }
 
             assign_to_template(array(
                 'user_form'  => 1,
@@ -1105,7 +1105,7 @@ class usersController extends expController {
                 $p[gt($value)] = 'no-sort';
             }
 
-            if (SEF_URLS == 1) {
+//            if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
 //                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
@@ -1118,20 +1118,20 @@ class usersController extends expController {
                     'action'     => $this->params['action'],
                     'columns'    => $p,
                 ));
-            } else {
-                $page = new expPaginator(array(
-                    //'model'=>'user',
-//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
-                    'records'    => $users,
-                    //'sql'=>$sql,
-                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
-                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
-                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-                    'controller' => $this->params['module'],
-                    'action'     => $this->params['action'],
-                    'columns'    => $p,
-                ));
-            }
+//            } else {
+//                $page = new expPaginator(array(
+//                    //'model'=>'user',
+////                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'records'    => $users,
+//                    //'sql'=>$sql,
+//                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
+//                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+//                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+//                    'controller' => $this->params['module'],
+//                    'action'     => $this->params['action'],
+//                    'columns'    => $p,
+//                ));
+//            }
 
             assign_to_template(array(
                 'user_form'  => 0,

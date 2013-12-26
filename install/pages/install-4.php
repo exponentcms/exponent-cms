@@ -52,11 +52,18 @@ if (!defined('EXPONENT')) exit('');
       <tbody>
         <tr>
           <td class="input">
+              <?php
+              if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
+                  $sefurl = true;
+              } else {
+                  $sefurl = false;
+              }
+              ?>
             <input type="hidden" name="sc[SEF_URLS]" value="0">
-            <input type="checkbox" name="sc[SEF_URLS]" value="1" checked="checked" class="checkbox">
+            <input type="checkbox" name="sc[SEF_URLS]" value="1"<?php if ($sefurl) echo ' checked="checked"'; ?> class="checkbox">
           </td>
           <td>
-            <label class="label "><?php echo gt('Enable Search Engine Friendly URLs'); ?></label>
+            <label class="label "><?php echo gt('Enable Search Engine Friendly URLs'); if ($sefurl) echo gt('Your web server doesn\'t support SEF URLs'); ?></label>
           </td>
         </tr>
       </tbody>
