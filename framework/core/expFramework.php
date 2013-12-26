@@ -291,6 +291,10 @@ function renderAction(array $parms=array()) {
     //setup some default models for this controller's actions to use
     foreach ($controller->getModels() as $model) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
+        // flag for needing approval check
+        if ($controller->$model->supports_revisions && !expPermissions::check('approve', $controller->loc)) {
+            $controller->$model->needs_approval = true;
+        }
     }
     
     // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above

@@ -700,10 +700,11 @@ abstract class database {
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
      * @param bool   $is_revisioned
+     * @param bool   $needs_approval
      *
      * @return int
      */
-	abstract function countObjects($table, $where = null, $is_revisioned=false);
+	abstract function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false);
 
 	/**
 	* Count Objects matching a given criteria using raw sql
@@ -1053,23 +1054,24 @@ abstract class database {
 	*/
 	abstract function selectArraysBySql($sql);
 
-	/**
-	* Select a record from the database as an array
-	*
-	* Selects a set of arrays from the database.  Because of the way
-	* Exponent handles objects and database tables, this is akin to
-	* SELECTing a set of records from a database table.  Returns an
-	* array of arrays, in any random order.
-	*
-	* @param string $table The name of the table/object to look at
-	* @param string $where Criteria used to narrow the result set.  If this
-	*   is specified as null, then no criteria is applied, and all objects are
-	*   returned
-	* @param null $orderby
-	* @param bool $is_revisioned
-	* @return array|void
-	*/
-	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false);
+    /**
+     * Select a record from the database as an array
+     * Selects a set of arrays from the database.  Because of the way
+     * Exponent handles objects and database tables, this is akin to
+     * SELECTing a set of records from a database table.  Returns an
+     * array of arrays, in any random order.
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param null   $orderby
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
+     * @return array|void
+     */
+	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false);
 
     /**
      * Select a records from the database
@@ -1086,10 +1088,11 @@ abstract class database {
      * @param null   $order
      * @param null   $limitsql
      * @param bool   $is_revisioned
+     * @param bool   $needs_approval
      *
      * @return array
      */
-	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false);
+	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false);
 
 	/**
 	* @param string $sql The sql statement to run on the model/classname

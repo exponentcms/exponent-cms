@@ -450,7 +450,11 @@ class eaasController extends expController {
             
             $sql .= ')';
         }       
-        
+        $model = $this->basemodel_name;
+        if ($this->$model->needs_approval) {
+            $sql .= ' AND approved=1';
+        }
+
         return $sql;
     }
 }

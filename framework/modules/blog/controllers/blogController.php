@@ -300,6 +300,7 @@ class blogController extends expController {
             }
             $sql .= "private = 0 AND (publish = 0 OR publish <= " . time() . ")";
         }
+
         return $sql;
     }
 

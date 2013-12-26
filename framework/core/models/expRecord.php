@@ -64,7 +64,8 @@ class expRecord {
     public $validate = array();
     public $do_not_validate = array();
 
-    public $supports_revisions = false;
+    public $supports_revisions = false;  // simple flag to turn on revisions/approval support for module
+    public $needs_approval = false;  // flag for no approval authority
 
     /**
      * is model content searchable?
@@ -111,9 +112,9 @@ class expRecord {
                 $params     = array($identifier=> $params); // Convert $params (given number value) into an key/value pair
             } else {
                 // try to look up by sef_url
-                $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", null, $this->supports_revisions);
+                $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", null, $this->supports_revisions, $this->needs_approval);
                 // if we didn't find it via sef_url then we should check by title
-                if (empty($values)) $values = $db->selectArray($this->tablename, "title='" . expString::sanitize($params) . "'", null, $this->supports_revisions);
+                if (empty($values)) $values = $db->selectArray($this->tablename, "title='" . expString::sanitize($params) . "'", null, $this->supports_revisions, $this->needs_approval);
                 $this->build($values);
                 $params = array('title'=> $params);
             }
@@ -169,25 +170,25 @@ class expRecord {
 //        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
 
-        if (strcasecmp($range, 'all') == 0) {  // return all items matching request
+        if (strcasecmp($range, 'all') == 0) {  // return all items matching request, most current revision
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
             $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
-            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
-        } elseif (strcasecmp($range, 'revisions') == 0) {  // return all items matching request
+            return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions, $this->needs_approval);
+        } elseif (strcasecmp($range, 'revisions') == 0) {  // return all items matching request, all revisions
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
             $limitsql = empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
             return $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql);
         } elseif (strcasecmp($range, 'first') == 0) {  // return the first item matching request
 //            $sql .= ' LIMIT 0,1';
             $limitsql = ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
+            $records = $db->selectExpObjects($this->tablename, $sql, $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions, $this->needs_approval);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'bytitle') == 0) {  // return items requested by title/sef_url (will there be more than one?)
             $limitsql = ' LIMIT 0,1';
-            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions);
+            $records = $db->selectExpObjects($this->tablename, "title='" . $where . "' OR sef_url='" . $where . "'", $this->classname, $get_assoc, $get_attached, $except, $cascade_except, $order, $limitsql, $this->supports_revisions, $this->needs_approval);
             return empty($records) ? null : $records[0];
         } elseif (strcasecmp($range, 'count') == 0) {  // return count of items
-            return $db->countObjects($this->tablename, $sql, $this->supports_revisions);
+            return $db->countObjects($this->tablename, $sql, $this->supports_revisions, $this->needs_approval);
         } elseif (strcasecmp($range, 'in') == 0) {  // return items requested by array of id#
             if (!is_array($where)) return array();
             foreach ($where as $id)
@@ -448,6 +449,9 @@ class expRecord {
             $saveObj->$col = empty($this->$col) ? null : $this->$col;
         }
 
+        if ($this->supports_revisions && !$this->approved && expPermissions::check('approve', serialize($this->location_data))) {
+            $saveObj->approved = true;  // auto-approve item if use has approve perm
+        }
         $identifier = $this->identifier;
         if (!empty($saveObj->$identifier)) {
             $revise = $force_no_revisions ? false : $this->supports_revisions;

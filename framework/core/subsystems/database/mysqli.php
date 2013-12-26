@@ -613,13 +613,15 @@ class mysqli_database extends database {
      *
      * @return int
      */
-    function countObjects($table, $where = null, $is_revisioned=false) {
+    function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false) {
         if ($where == null)
             $where = "1";
         $as = '';
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
-            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id )";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
             $as = ' AS rev';
         }
         $res = @mysqli_query($this->connection, "SELECT COUNT(*) as c FROM `" . $this->prefix . "$table`" . $as . " WHERE $where");
@@ -1119,13 +1121,15 @@ class mysqli_database extends database {
      * @param bool $is_revisioned
      * @return array|void
      */
-    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
+    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false) {
         if ($where == null)
             $where = "1";
         $as = '';
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
-            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id )";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
             $as = ' AS rev';
         }
         $orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
@@ -1154,13 +1158,15 @@ class mysqli_database extends database {
      *
      * @return array
      */
-    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false) {
+    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false) {
         if ($where == null)
             $where = "1";
         $as = '';
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
-            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id )";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
             $as = ' AS rev';
         }
         $sql = "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where";

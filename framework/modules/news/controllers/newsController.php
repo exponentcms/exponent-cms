@@ -287,6 +287,7 @@ class newsController extends expController {
         $sql = parent::aggregateWhereClause();
         $sql = "(publish = 0 or publish <= " . time() . ") AND (unpublish=0 OR unpublish > ".time().") AND ".$sql;
         if (isset($this->config['only_featured'])) $sql .= ' AND is_featured=1';
+
         return $sql;
     }
 

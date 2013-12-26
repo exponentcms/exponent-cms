@@ -108,7 +108,8 @@ a.import,
 a.manage,
 a.merge,
 a.reranklink,
-a.revisions {
+a.revisions,
+a.approve {
 	padding        : 3px 3px 3px 20px;
 	display        : inline-block;
 	*display       : inline;
@@ -159,6 +160,10 @@ a.reranklink, .container-chrome ul li a.reranklink {
 
 a.revisions {
 	background : url(../images/revisions.png) no-repeat 0 50%;
+}
+
+a.approve {
+	background : url(../images/action_check.png) no-repeat 0 50%;
 }
 
 a.ajax {
@@ -396,13 +401,13 @@ div.item.unapproved:hover, li.item.unapproved:hover {
 	background-color : inherit !important;
 }
 
-div.item.unapproved:hover .revisionnum, li.item.unapproved:hover .revisionnum {
-	background-color : #ffe990 !important;
-}
-
 .current-revision, .current-revision a {
 	color            : black;
-	background-color : #ffe990;
+	background-color : rgba(151, 255, 141, 0.29);
+}
+
+div.item.unapproved:hover .revisionnum, li.item.unapproved:hover .revisionnum, .unapproved.revision, .unapproved.revision a {
+	background-color : #ffe990 !important;
 }
 
 .revision a {
@@ -412,6 +417,6 @@ div.item.unapproved:hover .revisionnum, li.item.unapproved:hover .revisionnum {
 
 .revision a:hover, div.revision:hover {
 	color            : black !important;
-	background-color : #fff8b7 !important;
+	background-color : rgba(255, 248, 183, 0.55) !important;
 	text-decoration : none;
 }

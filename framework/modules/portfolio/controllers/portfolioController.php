@@ -113,6 +113,7 @@ class portfolioController extends expController {
    	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         $sql .= (!empty($this->config['only_featured']))?"AND featured=1":"";
+
         return $sql;
     }
 
