@@ -597,5 +597,5 @@
 
 #yuilogger .yui3-console-separate {
 	top     : 32px;
-	z-index : 10;
+	z-index : 100;
 }
