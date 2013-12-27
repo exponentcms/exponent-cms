@@ -652,7 +652,6 @@ class expRouter {
     
     private function buildSEFPath () {
         // Apache
-//        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
         if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
             switch(php_sapi_name()) {
                 case "cgi":
@@ -671,8 +670,7 @@ class expRouter {
                     $this->sefPath = !empty($_SERVER['REDIRECT_URL']) ? urldecode($_SERVER['REDIRECT_URL']) : null;
                     break;
             }
-        // Lighty
-//        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') === 0) {
+        // Lighty ???
         } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'lighttpd') !== false) {
             //FIXME, we still need a good lighttpd.conf rewrite config for sef_urls to work
             if (isset($_SERVER['ORIG_PATH_INFO'])) {
@@ -682,6 +680,9 @@ class expRouter {
             } elseif (isset($_SERVER['REQUEST_URI'])){
                 $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
             }
+        // Nginx ???
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'nginx') !== false) {
+            $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         } else {
             $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         }

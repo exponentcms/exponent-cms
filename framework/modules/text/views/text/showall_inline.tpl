@@ -163,14 +163,17 @@
             {/literal}{$ckeditor->paste_word}{literal}
             pasteFromWordPromptCleanup : true,
             filebrowserBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
-            filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',
+            filebrowserImageBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck" filter="image"}{literal}',
+            filebrowserFlashBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
+            {/literal}{if (!$user->globalPerm('prevent_uploads'))}filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',{/if}{literal}
             filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},
             filebrowserWindowHeight : {/literal}{$smarty.const.FM_HEIGHT}{literal},
+            filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             filebrowserLinkWindowWidth : 320,
             filebrowserLinkWindowHeight : 600,
-            filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             extraPlugins : 'stylesheetparser,tableresize,sourcedialog,{/literal}{stripSlashes($ckeditor->plugins)}{literal}',
+            {/literal}{$ckeditor->additionalConfig}{literal}
             height : 200,
             autoGrow_minHeight : 200,
             autoGrow_maxHeight : 400,

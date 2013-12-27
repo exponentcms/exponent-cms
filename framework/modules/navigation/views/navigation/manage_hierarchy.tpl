@@ -313,20 +313,16 @@ var YAHOO = Y.YUI2;
 
 	function editUserPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-//			window.location=eXp.PATH_RELATIVE+"navigation/userperms/int/"+currentMenuNode.data.id+"/_common/1";
             window.location=eXp.PATH_RELATIVE+"users/userperms/mod/navigation/int/"+currentMenuNode.data.id;
 		{/literal} {else} {literal}
-//			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
             window.location=eXp.PATH_RELATIVE+"index.php?controller=users&action=userperms&mod=navigation&int="+currentMenuNode.data.id;
 		{/literal} {/if} {literal}
 	}
 
 	function editGroupPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-//			window.location=eXp.PATH_RELATIVE+"navigation/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
             window.location=eXp.PATH_RELATIVE+"users/groupperms/mod/navigation/int/"+currentMenuNode.data.id;
 		{/literal} {else} {literal}
-//			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
             window.location=eXp.PATH_RELATIVE+"index.php?controller=users&action=groupperms&mod=navigation&int="+currentMenuNode.data.id;
 		{/literal} {/if} {literal}
 	}
