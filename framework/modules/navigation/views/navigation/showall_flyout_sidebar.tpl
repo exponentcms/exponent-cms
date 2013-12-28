@@ -22,10 +22,11 @@
 {/if}
 {if $config.view_scope == 'sectional' || $config.view_scope == 'top-sectional'}{$scope=$config.view_scope}{else}{$scope='global'}{/if}
 
+{if empty($config.top_mx)}{$topmx = 'auto'}{else}{$topmx = $config.top_mx}{/if}
 {css unique="flyout" link="`$asset_path`css/flyout`$side`.css"}
 {literal}
 .thetop {
-    top : {/literal}{$config.top_mx}{literal}px
+    top : {/literal}{$topmx}{literal}px
 }
 {/literal}
 {/css}
