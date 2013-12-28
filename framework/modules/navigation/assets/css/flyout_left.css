@@ -1,7 +1,7 @@
 .flyout_left {
 	/*float: left;*/
 	position                           : fixed;
-	z-index                            : 999;
+	z-index                            : 9999;
 	/*top                               : 30px;*/
 	left                               : 0;
 	min-width                          : 160px;
@@ -37,7 +37,7 @@
 a.triggerlogin {
 	/*float: left;*/
 	position                          : fixed;
-	z-index                           : 999;
+	z-index                           : 9999;
 	text-decoration                   : none;
 	/*top                                : 30px;*/
 	/*left                              : 0;*/
