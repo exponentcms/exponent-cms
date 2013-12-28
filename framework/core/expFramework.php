@@ -281,7 +281,6 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
         $title = new stdClass();
-//        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
         $title->mod = $controller->loc->mod;
         $title->src = $controller->loc->src;
         $title->int = '';
@@ -506,24 +505,26 @@ function get_common_template($view, $loc, $controllername='') {
 
     $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-//    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;  //FIXME this don't make sense?
     $controller->loc = $loc;
     
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
-        if ($framework == "bootstrap") {
-            $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
-            $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
-        } elseif ($framework == "bootstrap3") {
-            $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
-            $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
+        if ($framework == "bootstrap3") {
+            $bstrap3basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
+            $bstrap3themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
         }
-        if (file_exists($bstrapthemepath)) {
+        $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+        $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+        if ($framework == "bootstrap3" && file_exists($bstrap3themepath)) {
+            return new controllertemplate($controller, $bstrap3themepath);
+        } elseif (file_exists($bstrapthemepath)) {
             return new controllertemplate($controller, $bstrapthemepath);
         } elseif (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
+        } elseif ($framework == "bootstrap3" && file_exists($bstrap3basepath)) {
+            return new controllertemplate($controller, $bstrap3basepath);
         } elseif (file_exists($bstrapbasepath)) {
             return new controllertemplate($controller, $bstrapbasepath);
         } elseif (file_exists($basepath)) {
@@ -629,10 +630,10 @@ function find_config_views($paths=array(), $excludes=array()) {
                         $fileparts = explode('_', $filename);
                         $views[$filename]['name'] = ucwords(implode(' ', $fileparts));
                         $views[$filename]['file'] = $path.'/'.$file;
-                        if ($framework == 'bootstrap' && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
-                            $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
-                        } elseif ($framework == 'bootstrap3' && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
+                        if ($framework == 'bootstrap3' && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
                             $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap3.tpl';
+                        } elseif (($framework == 'bootstrap' || $framework == 'bootstrap3') && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
+                            $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
                         }
                     }
                 }
@@ -658,17 +659,20 @@ function get_template_for_action($controller, $action, $loc=null) {
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
-        if ($framework == "bootstrap") {
-            $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
-            $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap.tpl';
-        } elseif ($framework == "bootstrap3") {
-            $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap3.tpl';
-            $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap3.tpl';
+        if ($framework == "bootstrap3") {
+            $bstrap3basepath = $controller->viewpath.'/'.$action.'.bootstrap3.tpl';
+            $bstrap3themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap3.tpl';
         }
-        if (file_exists($bstrapthemepath)) {
+        $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
+        $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap.tpl';
+        if ($framework == "bootstrap3" && file_exists($bstrap3themepath)) {
+            return new controllertemplate($controller, $bstrap3themepath);
+        } elseif (file_exists($bstrapthemepath)) {
             return new controllertemplate($controller, $bstrapthemepath);
         } elseif (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
+        } elseif ($framework == "bootstrap3" && file_exists($bstrap3basepath)) {
+            return new controllertemplate($controller, $bstrap3basepath);
         } elseif (file_exists($bstrapbasepath)) {
             return new controllertemplate($controller, $bstrapbasepath);
         } elseif (file_exists($basepath)) {

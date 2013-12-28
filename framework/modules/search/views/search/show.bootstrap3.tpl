@@ -13,7 +13,7 @@
  *
  *}
  
-{css unique="searchform" link="`$asset_path`css/show-form.css"}
+{css unique="searchform" link="`$asset_path`css/show-form.bootstrap3.css"}
     
 {/css}
  
@@ -32,9 +32,7 @@
         {*</div>*}
         <div class="input-group">
             <input type="text" name="search_string" id="search_string" class="form-control" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
-            <div class="input-group-btn">
-                <button type="submit" class="btn btn-default input-group-addon"><i class="fa fa-search"></i></button>
-            </div>
+            <button type="submit" class="btn btn-default input-group-addon input-group-btn"><i class="fa fa-search"></i></button>
         </div>
     {/form}
 </div>

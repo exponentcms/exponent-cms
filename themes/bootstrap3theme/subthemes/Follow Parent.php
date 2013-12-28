@@ -30,7 +30,6 @@
                     </a>
                     <a class="brand" href="<?php echo URL_FULL ?>"><?php echo ORGANIZATION_NAME ?></a>
                     <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-                    <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Responsive Nav")); ?>
                 </div>
             </div>
         </div>
