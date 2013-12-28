@@ -159,16 +159,22 @@ class expTheme
         if (empty($head_config['framework'])) {
             $head_config['framework'] = '';
         }
-        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
+        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/jquery'
             );
         }
-        if ($head_config['framework'] == 'bootstrap') {
+        if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap'
+            );
+        }
+        if ($head_config['framework'] == 'bootstrap3') {
+            array_unshift(
+                $auto_dirs,
+                BASE . 'framework/core/forms/controls/bootstrap3'
             );
         }
         array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');

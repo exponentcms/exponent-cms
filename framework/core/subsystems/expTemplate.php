@@ -178,7 +178,7 @@ class expTemplate {
      *
      * @return array
      */
-    //FIXME we need to also look for custom & jquery controls
+    //FIXME we need to also look for custom & jquery & bootstrap controls
 	public static function listControlTypes($include_static = true) {
 		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
@@ -194,7 +194,7 @@ class expTemplate {
 		return $list;
 	}
 
-    //FIXME we need to also look for custom & jquery controls
+    //FIXME we need to also look for custom & jquery & bootstrap controls
 	public static function listSimilarControlTypes($type) {
         $oldctl = new $type();
 		$cdh = opendir(BASE."framework/core/forms/controls");

@@ -114,7 +114,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
             // set up controls search order based on framework
             $framework = expSession::get('framework');
             if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
-            if ($framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
+            if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
             if ($framework == 'bootstrap3') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap3');
             array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
 
