@@ -175,7 +175,7 @@
 {/literal}
 {/script}
 
-{if $smarty.const.LOGGER}
+{if $smarty.const.LOGGER && $smarty.const.DEVELOPMENT}
 <div id="yuilogger" class="yui3-skin-sam">
 
 </div>
