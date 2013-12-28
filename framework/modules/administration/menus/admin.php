@@ -286,7 +286,7 @@ if ($user->isSuperAdmin()) {
                     ))
                 ),
                 array(
-                    'text'      => (LOGGER) ? gt('Turn YUI Log Display off') : gt('Turn YUI Log Display on'),
+                    'text'      => (LOGGER) ? gt('Turn Logger off') : gt('Turn Logger on'),
                     'classname' => (LOGGER) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(array(
                         'controller' => 'administration',

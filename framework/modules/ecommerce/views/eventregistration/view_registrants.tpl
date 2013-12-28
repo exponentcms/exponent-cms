@@ -29,7 +29,7 @@
                     {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
                 {/if}
                 {if $permissions.manage}
-                     {icon action=manage text="Manage Events"|gettext}
+                     {icon action=manage text="Manage Active Events"|gettext}
                 {/if}
             </div>
         {/permissions}

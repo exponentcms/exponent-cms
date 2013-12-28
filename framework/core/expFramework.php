@@ -853,7 +853,14 @@ function curPageURL() {
     return $pageURL;
 }
 
-// this function is called from exponent.php as the ajax error handler
+/**
+ * called from exponent.php as the ajax error handler
+ *
+ * @param $errno
+ * @param $errstr
+ * @param $errfile
+ * @param $errline
+ */
 function handleErrors($errno, $errstr, $errfile, $errline) {
     if (DEVELOPMENT > 0) {
         switch ($errno) {
@@ -874,7 +881,8 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
         $msg .= $errstr;
         $msg .= !empty($errfile) ? ' in file '.$errfile : "";
         $msg .= !empty($errline) ? ' on line '.$errline : "";
-        // currently we are doing nothing with these error messages..we could in the future however.
+        // send to the debug output
+        eDebug($msg);
     }
 }
 
@@ -900,16 +908,27 @@ function glist($s){
 }
 
 /**
- * dumps the passed variable to screen, but only if in development mode
+ * dumps the passed variable to screen/log, but only if in development mode
+ *
  * @param mixed $var the variable to dump
  * @param bool $halt if set to true will halt execution
  * @return void
  */
 function eDebug($var, $halt=false){
 	if (DEVELOPMENT) {
-        echo "<pre>";
-		print_r($var);
-        echo "</pre>";
+        if (LOGGER) {
+            if(is_array($var) || is_object($var)) {
+                $pvar = print_r($var, true);
+            } else {
+                $pvar = $var;
+            }
+            echo("<script>YUI().use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
+            eLog($var, gt('DEBUG'));
+        } else {
+            echo "<pre>";
+  		    print_r($var);
+            echo "</pre>";
+        }
 
 		if ($halt) die();
 	}
@@ -917,6 +936,7 @@ function eDebug($var, $halt=false){
 
 /**
  * dumps the passed variable to a log, but only if in development mode
+ *
  * @param mixed $var the variable to log
  * @param string $type the type of entry to record
  * @param string $path the pathname for the log file
@@ -931,7 +951,12 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 			if (!$log = fopen ($path, "ab")) {
 				eDebug(gt("Error opening log file for writing."));
 			} else {
-				if (fwrite ($log, $type . ": " . $var . "\r\n") === FALSE) {
+                if(is_array($var) || is_object($var)) {
+                    $pvar = print_r($var, true);
+                } else {
+                    $pvar = $var;
+                }
+				if (fwrite ($log, $type . ": " . $pvar . "\r\n") === FALSE) {
 					eDebug(gt("Error writing to log file")." (".$path.").");
 				}
 				fclose ($log);
