@@ -32,7 +32,9 @@
         {*</div>*}
         <div class="input-group">
             <input type="text" name="search_string" id="search_string" class="form-control" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
-            <button type="submit" class="btn btn-default input-group-addon"><i class="fa fa-search"></i></button>
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-default input-group-addon"><i class="fa fa-search"></i></button>
+            </div>
         </div>
     {/form}
 </div>

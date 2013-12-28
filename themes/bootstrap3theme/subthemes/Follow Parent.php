@@ -40,12 +40,12 @@
             <!-- optional flyout sidebar container -->
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
-                <aside id="sidebar" class="col-sm-3">
-                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
-                </aside>
-                <section id="content" class="col-sm-9">
+                <section id="content" class="col-sm-8 pull-right">
                     <?php expTheme::main(); ?>
                 </section>
+                <aside id="sidebar" class="col-sm-3 well pull-left">
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"top-sectional")); ?>
+                </aside>
             </section>
             <footer class="row">
                 <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>
