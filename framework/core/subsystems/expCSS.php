@@ -32,9 +32,32 @@ class expCSS {
             $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
         }
 
+         // set up less variables
+        $lless_vars = array_merge($less_vars, !empty($params['lessvars']) ? $params['lessvars'] : array());
+
+        // primer less to compile to css
+        if (!empty($params['lessprimer'])) {
+            $less_array = $params['lessprimer'];
+            if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
+            foreach ($less_array as $less_path) {
+                if (strlen(PATH_RELATIVE) != 1) {
+                    $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
+                    $path_rel = PATH_RELATIVE;
+                } else {
+                    $path_rel = '';
+                }
+                $css_path = str_replace("/less/","/css/",$less_path);
+                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                //indexing the array by the filename
+                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
+                    $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
+            }
+        }
+
         // primer css
         if (!empty($params['css_primer'])){
             $primer_array = $params['css_primer'];
+            if (!empty($primer_array) && !is_array($primer_array)) $primer_array = array($primer_array);
             foreach ($primer_array as $path) {
                 //indexing the array by the filename
                 $css_primer[$path] = $path;
@@ -42,7 +65,6 @@ class expCSS {
         }
         
          // less files to compile to css
-        $lless_vars = array_merge($less_vars, !empty($params['lessvars']) ? $params['lessvars'] : array());
         if (!empty($params['lesscss'])) {
             $less_array = $params['lesscss'];
             if (!empty($less_array) && !is_array($less_array)) $less_array = array($less_array);
@@ -61,7 +83,7 @@ class expCSS {
             }
         }
 
-        // files in framework/core/assets/css that is general to many views and the system overall
+        // files in framework/core/assets/less that are general to many views and the system overall
         // add .less support to corecss
         if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
@@ -102,20 +124,32 @@ class expCSS {
     }    
 
     public static function parseCSSFiles() {
-        global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;
+        global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;  // these are all used via $$key below
 
         $html = "";
         
         // gather up all .css files in themes/mytheme/css/
         self::themeCSS();
-        
+
+        // at this point these params have already been processed
         unset($head_config['xhtml']);
+        unset($head_config['lessprimer']);
         unset($head_config['lesscss']);
         unset($head_config['lessvars']);
         unset($head_config['normalize']);
         unset($head_config['framework']);
         unset($head_config['viewport']);
         unset($head_config['meta']);
+
+        // we ALWAYS need the core and primer css
+        if (!isset($head_config['css_core'])) {
+            $core = array('css_core' => true);
+            $head_config = array_merge($core, $head_config);
+        }
+        if (!isset($head_config['css_primer'])) {
+            $primer = array('css_primer' => true);
+            $head_config = array_merge($primer, $head_config);
+        }
 
         $css_files = array();
         foreach($head_config as $key=>$value) {

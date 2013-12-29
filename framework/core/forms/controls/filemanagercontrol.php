@@ -464,17 +464,11 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
-//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
                 "content"=>$js,
              ));
-    //         expJavascript::pushToFoot(array(
-    //             "unique"=>"quickupload",
-    //             "jquery"=>"1",
-    //             "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
-    //          ));
         return $html;
     }
     
