@@ -778,7 +778,7 @@ function object2Array($object=null) {
 
 function expUnserialize($serial_str) {
     if ($serial_str === 'Array') return null;  // empty array string??
-    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
+//    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out = preg_replace_callback(
         '!s:(\d+):"(.*?)";!s',
         create_function ('$m',
@@ -786,9 +786,9 @@ function expUnserialize($serial_str) {
             return "s:".strlen($m_new).\':"\'.$m_new.\'";\';'
         ),
         $serial_str );
-    if ($out1 !== $out) {
-        eDebug('problem:<br>'.$out.'<br>'.$out1);
-    }
+//    if ($out1 !== $out) {
+//        eDebug('problem:<br>'.$out.'<br>'.$out1);
+//    }
     $out2 = unserialize($out);
     if (is_array($out2)) {
         if (!empty($out2['moduledescription'])) {  // work-around for links in module descriptions
