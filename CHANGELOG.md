@@ -20,6 +20,7 @@ Added / Fixed / Changed for 2.2.4
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
+  - adds new 'reset.php' file to allow easily clearing all caches if the site crashes
   - includes all fixes from v2.2.3 patches
 ### Known Issues
   - TinyMCE is not as robust as CKEditor and doesn't allow editing products
