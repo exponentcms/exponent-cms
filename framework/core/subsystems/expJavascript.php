@@ -92,23 +92,23 @@ class expJavascript {
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "unique"=>'bootstrap1',
-                   		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
+                   		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                             "lessvars"=>$lessvars,
                         ));
                         expCSS::pushToHead(array(
                             "unique"=>'bootstrap2',
-                            "lesscss"=>"external/bootstrap/less/responsive.less",
+                            "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
                     } elseif ($head_config['framework'] == 'bootstrap3') {
                         expCSS::pushToHead(array(
                    		    "unique"=>'bootstrap1',
-                   		    "lesscss"=>"external/bootstrap3/less/bootstrap.less",
+                   		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
                         ));
                         expCSS::pushToHead(array(
                             "unique"=>'bootstrap2',
-                            "lesscss"=>"external/font-awesome4/less/font-awesome.less",
+                            "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
                         ));
                     }
@@ -124,7 +124,7 @@ class expJavascript {
                         }
                         expCSS::pushToHead(array(
                             "unique"=>'jqueryui',
-                            'link'=>JQUERYUI_CSS
+                            'css_primer'=>JQUERYUI_CSS
                         ));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
@@ -160,13 +160,13 @@ class expJavascript {
                             if (file_exists(JQUERY_PATH.'addons/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
-                           		    "lesscss"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
+                           		    "lessprimer"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
-                           		    "link"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
+                           		    "css_primer"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
                            		    )
                            		);
                             }
@@ -196,23 +196,23 @@ class expJavascript {
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "unique"=>'bootstrap1',
-                   		    "lesscss"=>"external/bootstrap/less/bootstrap.less",
+                   		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                             "lessvars"=>$lessvars,
                         ));
                         expCSS::pushToHead(array(
                             "unique"=>'bootstrap2',
-                            "lesscss"=>"external/bootstrap/less/responsive.less",
+                            "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
                     } elseif ($head_config['framework'] == 'bootstrap3') {
                         expCSS::pushToHead(array(
                    		    "unique"=>'bootstrap1',
-                   		    "lesscss"=>"external/bootstrap3/less/bootstrap.less",
+                   		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
                         ));
                         expCSS::pushToHead(array(
                             "unique"=>'bootstrap2',
-                            "lesscss"=>"external/font-awesome4/less/font-awesome.less",
+                            "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
                         ));
                     }
@@ -222,7 +222,7 @@ class expJavascript {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
                         expCSS::pushToHead(array(
                             "unique"=>'jqueryui',
-                            'link'=>JQUERYUI_CSS
+                            'css_primer'=>JQUERYUI_CSS
                         ));
                     } else {
                         if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
@@ -245,13 +245,13 @@ class expJavascript {
                             if (file_exists(JQUERY_PATH.'addons/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
-                           		    "lesscss"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
+                           		    "lessprimer"=>JQUERY_RELATIVE.'addons/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(JQUERY_PATH.'addons/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
                            		    "unique"=>$mod,
-                           		    "link"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
+                           		    "css_primer"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
                            		    )
                            		);
                             }
