@@ -27,7 +27,7 @@ Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.3,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,3.7.1,www.adminer.org,3.7.1,
 html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
-SimpleAjaxUploader,1.8.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.8.2,converted to yui module
+SimpleAjaxUploader,1.8.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.9,converted to yui module
 normalize.css,2.1.3,necolas.github.com/normalize.css/,2.1.3,
 MediaElement.js,2.13.1,mediaelementjs.com/,2.13.1,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
