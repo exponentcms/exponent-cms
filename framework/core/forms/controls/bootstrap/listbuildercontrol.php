@@ -19,6 +19,7 @@
 
 if (!defined('EXPONENT')) exit('');
 
+//FIXME this is NOT a bootstrap control, but jQuery
 /**
  * List Builder Control
  *

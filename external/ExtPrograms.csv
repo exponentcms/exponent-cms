@@ -42,3 +42,7 @@ TinyMCE,4.0.12,http://www.tinymce.com/,4.0.12,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 DataTables,1.9.4,http://www.datatables.net,1.9.4,
 Responsive DataTables,1.4.1,https://github.com/Comanche/datatables-responsive,1.4.1,includes lodash & DT_bootstrap
+spectrum,1.2.0,http://bgrins.github.io/spectrum/,1.2.0,
+tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
+multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
+excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
