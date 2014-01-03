@@ -163,39 +163,23 @@
 	</table>
 
 {if $config.lightbox}
-
-{*FIXME convert to yui3*}
-{script unique="shadowbox-`$__loc->src`" yui3mods=1}
+{script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules = {
-        'yui2-lightbox' : {
-            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/js/lightbox.js',
-            requires : ['yui2-dom','yui2-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-animation','yui2-lightbox-css']
-        },
-        'yui2-lightbox-css' : {
-            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/lightbox.css',
-            type: 'css'
-        }
-    }
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-container','yui2-yahoo-dom-event','yui2-lightbox', function(Y) {
-        var YAHOO = Y.YUI2;
-        var lb2 = new this.EXPONENT.Lightbox({
-            animate: true,
+    $('a.calpopevent').click(function(e) {
+        target = e.target;
+        $.colorbox({
+            href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
             maxWidth: 500
         });
-        YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
-            target = YAHOO.util.Event.getTarget(e);
-            lb2.cfg.contentString = null;
-            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}";
-            lb2.show(e);
-        }, lb2, true);
-        YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.icalpopevent"), "click", function (e) {
-            target = YAHOO.util.Event.getTarget(e);
-            lb2.cfg.contentURL = null;
-            popuptxt = '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>';
-            lb2.cfg.contentString = popuptxt;
-            lb2.show(e);
-        }, lb2, true);
+        e.preventDefault();
+    });
+    $('a.icalpopevent').click(function(e) {
+        target = e.target;
+        $.colorbox({
+            inline: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
+            maxWidth: 500
+        });
+        e.preventDefault();
     });
 
     function Linkify(inputText) {
