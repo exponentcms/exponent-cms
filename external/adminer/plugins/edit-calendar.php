@@ -18,7 +18,7 @@ class AdminerEditCalendar {
 	*/
 	function AdminerEditCalendar($prepend = null, $langPath = null) {
         $prepend = "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n";
-        $langPath = JQUERY_RELATIVE."development-bundle/ui/i18n/jquery.ui.datepicker-%s.js";
+        $langPath = JQUERY_RELATIVE."js/ui/i18n/jquery.ui.datepicker-%s.js";
         $this->prepend = $prepend;
 		$this->langPath = $langPath;
 	}
@@ -38,13 +38,39 @@ class AdminerEditCalendar {
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg("date|time", $field["type"])) {
 		if (ereg("date|_at|publish|_accessed|posted|timestamp|eventstart|eventend", $field["field"])) {
-			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@', showOn: 'both', buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) / 1000);}";
-			$timeFormat = "showSecond: true,timeFormat: 'hh:mm:ss',showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif', buttonImageOnly: true,beforeShow: function(input,inst){jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()));},onClose: function() {jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) );}";
+			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
+			    beforeShow: function(input,inst){
+			        jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);
+                },
+                onClose: function(){
+                    jQuery('#fields-" . js_escape($field['field']) . "').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) / 1000);
+                }";
+			$timeFormat = "timeFormat: 'HH:mm:ss',showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
+			    beforeShow: function(input,inst){
+			        var d = new Date(jQuery('#fields-" . js_escape($field['field']) . "').val() * 1000);
+			        jQuery('#fields-" . js_escape($field['field']) . "c').val(jQuery.datepicker.formatTime('HH:mm:ss',{hour:d.getHours(),minute:d.getMinutes(),second:d.getSeconds()},{}));
+                },
+			    onClose: function(){
+			        var d = new Date('01 January, 1970 ' + jQuery('#fields-" . js_escape($field['field']) . "c').val());
+			        jQuery('#fields-" . js_escape($field['field']) . "').val(d.getTime() / 1000);
+			    }";
+            $datetimeFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',timeFormat: 'HH:mm:ss',separator: ' @ ',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
+                beforeShow: function(input,inst){
+                    var d = new Date(jQuery('#fields-" . js_escape($field['field']) . "').val() * 1000);
+                    jQuery('#fields-" . js_escape($field['field']) . "c').val((parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000) + ' @ ' + jQuery.datepicker.formatTime('HH:mm:ss',{hour:d.getHours(),minute:d.getMinutes(),second:d.getSeconds()},{}));
+                },
+                onClose: function(){
+                    var d = parseInt(jQuery('#fields-" . js_escape($field['field']) . "c').val()) / 1000;
+                    var tm = jQuery('#fields-" . js_escape($field['field']) . "c').val().split(' @ ');
+                    var t = new Date('01 January, 1970 ' + tm[1] + ' +0000');
+                    var dt = d + (t.getTime() / 1000);
+                    jQuery('#fields-" . js_escape($field['field']) . "').val(dt);
+                }";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
-                "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
+                "<input id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
                     . ((ereg("eventstart", $field["field"]) || ereg("eventend", $field["field"])) ? "timepicker({ $timeFormat })"
-                    : (ereg("_at|publish|_accessed|posted|timestamp", $field["field"]) ? "datetimepicker({ $dateFormat, $timeFormat })"
+                    : (ereg("_at|publish|_accessed|posted|timestamp", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
                     : "datepicker({ $dateFormat })"
                 )) . ";</script>";
 		}

@@ -45,7 +45,7 @@ class yuicalendarcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
-    function __construct($default = null, $disable_text = "", $showtime = true) {
+    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
         $this->disable_text = $disable_text;
         $this->default      = $default;
 //        $this->showtime     = $showtime;
