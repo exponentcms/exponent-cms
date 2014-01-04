@@ -71,16 +71,16 @@ class expTheme
         }
         if (!defined('BTN_SIZE')) {
             define('BTN_SIZE', 'medium');
-        }
+        } // Awesome Button theme
         if (!defined('BTN_COLOR')) {
             define('BTN_COLOR', 'black');
-        }
+        } // Awesome Button theme
         if (!defined('SWATCH')) {
             define('SWATCH', "''");
         } // Twitter Bootstrap theme
         if (!defined('JQUERYUI_THEME')) {
             define('JQUERYUI_THEME', 'exponent');
-        }
+        } // jQueryUI theme
         define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
 
         // add our theme folder into autoload to prioritize custom (theme) modules

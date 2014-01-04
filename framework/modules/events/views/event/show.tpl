@@ -32,7 +32,7 @@
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}
 	</div>
-    {if $item->expFile[0]->url != ""}
+    {if !empty($item->expFile[0]->url)}
         <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
             {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
             {clear}

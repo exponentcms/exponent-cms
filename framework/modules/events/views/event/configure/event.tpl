@@ -36,5 +36,6 @@
 {control type="checkbox" name="ajax_paging" label="Use ajax paging if available"|gettext value=1 checked=$config.ajax_paging description='Can decrease paging loading time, but may cause SEO issues'|gettext}
 {if $smarty.const.ECOM}
 {control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
-{control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color hide=1 flip=1}
+{*{control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color hide=1 flip=1}*}
+{control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color}
 {/if}

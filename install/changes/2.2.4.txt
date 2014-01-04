@@ -11,3 +11,4 @@ Implement revisions/workflow/approval, multi-day events and event caching, integ
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
+  - adds new 'reset.php' file to allow easily clearing all caches if the site crashes

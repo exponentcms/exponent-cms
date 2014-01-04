@@ -69,8 +69,7 @@ class fakeform extends form {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
-            "jquery"=> 'jqueryui,jquery.placeholder',
+            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";

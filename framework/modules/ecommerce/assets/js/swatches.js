@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME DEPRECATED/UNUSED!
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
     // set up the images with correct z-indexes to put the first image on top
     var imgs = Y.all('.ecom-images img.large-img');

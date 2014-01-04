@@ -33,7 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_br($params,&$smarty) {
-	if (XHTML==1){
+	if (defined('XHTML') && XHTML==1){
 		echo "<br />";
 	} else {
 		echo "<br>";
