@@ -76,7 +76,8 @@ class yuidatetimecontrol extends formcontrol {
 
     function controlToHTML($name, $label = null) {
         $idname = str_replace(array('[',']',']['),'_',$name);
-        $datectl  = new yuicalendarcontrol($this->default, '', false);
+//        $datectl  = new yuicalendarcontrol($this->default, '', false);
+        $datectl  = new yuicalendarcontrol($this->default);
         $timectl  = new datetimecontrol($this->default, false);
         $datetime = date('l, F d, o g:i a', $this->default);
 

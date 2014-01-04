@@ -443,6 +443,9 @@ class administrationController extends expController {
 	public function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
+        expSession::un_set('framework');
+        expSession::un_set('display_theme');
+        expSession::un_set('theme_style');
 		expTheme::removeCss();
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');

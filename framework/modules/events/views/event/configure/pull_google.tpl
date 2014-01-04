@@ -45,55 +45,24 @@
             if (feedtoadd == '') return;
             Y.one('#nogooglefeeds').setStyle('display', 'none');
             var newli = document.createElement('li');
+
             var newLabel = document.createElement('span');
             newLabel.innerHTML = '<input type="hidden" name="pull_gcal[]" value="'+feedtoadd+'" />';
-            newLabel.innerHTML = newLabel.innerHTML + '<span id="placeholder" style="display:inline-block"></span>';
+            newLabel.innerHTML = newLabel.innerHTML + '<input type="color" name="pull_gcal_color[]" value="#000" />&#160;';
+            newLabel.innerHTML = newLabel.innerHTML + '<label style="display:inline-block">'+feedtoadd+'</label>&#160;';
+
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removegoogle";
             newRemove.innerHTML = " {/literal}{'Remove'|gettext}{literal}";
+
             newli.appendChild(newLabel);
             newli.appendChild(newRemove);
             var list = Y.one('#googlepull-feeds');
             list.appendChild(newli);
 
-            var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&json=1&controller=event&action=buildControl&label="+encodeURIComponent(feedtoadd)+"&name=pull_gcal_color[]&id=pull_gcal_color"+list.get('children').size()+"&hide=1&flip=1&value=000";
-            var cfg = {
-                    method: "POST",
-                    headers: { 'X-Transaction': 'Load URL'},
-                    arguments : { 'X-Transaction': 'Load URL'}
-                };
-            var handleSuccess = function(ioId, o){
-                if(o.responseText){
-                    placeholder = Y.one("#placeholder");
-                    placeholder.setContent(o.responseText);
-                    placeholder.setAttribute('id','inplace');
-                    placeholder.all('script').each(function(n){
-                        if(!n.get('src')){
-                            eval(n.get('innerHTML'));
-                        } else {
-                            var url = n.get('src');
-                            if (url.indexOf("ckeditor")) {
-                                Y.Get.script(url);
-                            };
-                        };
-                    });
-                        placeholder.all('link').each(function(n){
-                        var url = n.get('href');
-                        Y.Get.css(url);
-                    });
-               }
-            };
+            $("input[type=color]").spectrum();
 
-            //A function handler to use for failed requests:
-            var handleFailure = function(ioId, o){
-                Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "load url");
-            };
-
-            //Subscribe our handlers to IO's global custom events:
-            Y.on('io:success', handleSuccess);
-            Y.on('io:failure', handleFailure);
-            var request = Y.io(sUrl, cfg);
             feedtoadd = '';
         });
 

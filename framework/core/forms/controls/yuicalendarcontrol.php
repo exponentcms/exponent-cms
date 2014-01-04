@@ -29,8 +29,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class yuicalendarcontrol extends formcontrol {
 
-    var $disable_text = "";
-    var $showtime = true;
+//    var $disable_text = "";
+//    var $showtime = true;
 
     static function name() {
         return "Date / Time - YUI Calendar";
@@ -45,17 +45,19 @@ class yuicalendarcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
-    function __construct($default = null, $disable_text = "", $showtime = true) {
-        $this->disable_text = $disable_text;
+//    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
+    function __construct($default = null) {
+//        $this->disable_text = $disable_text;
+        if (empty($default)) $default = time();
         $this->default      = $default;
 //        $this->showtime     = $showtime;
 
-        if ($this->default == null) {
-            if ($this->disable_text == "") $this->default = time();
-            else $this->disabled = true;
-        } elseif ($this->default == 0) {
-            $this->default = time();
-        }
+//        if ($this->default == null) {
+//            if ($this->disable_text == "") $this->default = time();
+//            else $this->disabled = true;
+//        } elseif ($this->default == 0) {
+//            $this->default = time();
+//        }
     }
 
     function onRegister(&$form) {
