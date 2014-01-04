@@ -57,6 +57,7 @@
 					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
                     <h2>{'Signup Cutoff'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
+                    {* FIXME yuicalendarcontrol does NOT display time *}
                 </div>
                 <div id="tab3">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
@@ -81,6 +82,7 @@
                             </tr>
                             <tr>
                                 <td>{control type="yuicalendarcontrol" name="earlydiscountdate" label="" value=$record->earlydiscountdate showtime = true}</td>
+                                {* FIXME yuicalendarcontrol does NOT display time *}
                             <tr>
                                 <td>{control type="text" name="special_price" label="then discount the price to"|gettext value=$record->special_price filter=money}</td>
                                 {*<td>{control type="text" name="early_discount_amount" label=" " value=$record->early_discount_amount size=3 filter=decimal}</td>*}

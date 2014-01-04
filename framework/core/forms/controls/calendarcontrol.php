@@ -28,7 +28,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class calendarcontrol extends formcontrol {
 
-    var $disable_text = "";
+//    var $disable_text = "";
     var $showtime = true;
     var $default_date = '';
     var $default_hour = '';

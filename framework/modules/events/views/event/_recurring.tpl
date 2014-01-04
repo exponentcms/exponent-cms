@@ -79,6 +79,7 @@
         {$until = $record->eventdate->date}
     {/if}
     {control type=yuicalendarcontrol name=untildate label='Until'|gettext value=$until+365*86400 showtime=false}
+    {* FIXME yuicalendarcontrol does NOT display time *}
 </div>
 
 {script unique="recurring"}
