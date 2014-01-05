@@ -1146,7 +1146,7 @@ class administrationController extends expController {
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
-        $section_dropdown = navigationController::levelDropdownControlArray(0);
+        $section_dropdown = navigationController::levelDropdownControlArray(0, 0, array(), false, 'view', true);
 
         // Timezone Dropdown
         $list = DateTimeZone::listAbbreviations();
