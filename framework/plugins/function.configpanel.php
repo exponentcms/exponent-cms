@@ -1,5 +1,5 @@
 <?php
-
+//FIXME Deprecated! Not used
 ##################################################
 #
 # Copyright (c) 2004-2014 OIC Group, Inc.
