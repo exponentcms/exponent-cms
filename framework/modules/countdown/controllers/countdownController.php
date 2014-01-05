@@ -46,11 +46,27 @@ class countdownController extends expController {
    	 * default view for individual item
    	 */
    	function show() {
-       assign_to_template(array(
-           'config'=>$this->config
-       ));
-   }
+        if (!empty($this->config['count'])) {
+            // parse out date into calendarcontrol fields 'date-count' 'time-h-count' 'time-m-count' 'ampm-count'
+            $this->config['date-count'] = date('m/d/Y', $this->config['count']);
+            $this->config['time-h-count'] = date('h', $this->config['count']);
+            $this->config['time-m-count'] = date('i', $this->config['count']);
+            $this->config['ampm-count'] = date('a', $this->config['count']);
+        }
+        assign_to_template(array(
+            'config'=>$this->config
+        ));
+    }
 
+    function saveconfig() {
+        // get parsed data and unset calendarcontrol fields
+        $this->params['count'] = calendarcontrol::parseData('count',$this->params);
+        unset($this->params['date-count']);
+        unset($this->params['time-h-count']);
+        unset($this->params['time-m-count']);
+        unset($this->params['ampm-count']);
+        parent::saveconfig();
+    }
 }
 
 ?>

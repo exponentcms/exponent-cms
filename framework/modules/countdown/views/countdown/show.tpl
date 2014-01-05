@@ -49,17 +49,8 @@
 {script unique="`$name`" jquery="jquery.countdown"}
 {literal}
     $(function(){
-
     	var note = $('#note'),
     		ts = new Date("{/literal}{$config['date-count']} {$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}");
-
-//    	if((new Date()) > ts){
-    		// The new year is here! Count towards something else.
-    		// Notice the *1000 at the end - time must be in milliseconds
-    //		ts = (new Date()).getTime() + 10*24*60*60*1000;
-//    		ts = (new Date()).getTime() + 20*1000;
-//    		newYear = false;
-//    	}
 
     	$('#countdown').countdown({
     		timestamp	: ts,
