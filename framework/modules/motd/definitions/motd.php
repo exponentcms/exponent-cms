@@ -36,6 +36,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'created_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'editor'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_INTEGER),
 	'edited_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
 	'location_data'=>array(
