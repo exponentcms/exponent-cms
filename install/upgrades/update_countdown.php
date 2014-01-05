@@ -26,7 +26,7 @@
  */
 class update_countdown extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.2.0';  // config date was changed in 2.2.0
+	protected $to_version = '2.2.4';  // config date was changed in 2.2.0 and again in 2.2.4
 
 	/**
 	 * name/title of upgrade script
@@ -38,7 +38,7 @@ class update_countdown extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In v2.2.0, the countdown module was revised.  This Script updates those entries."; }
+	function description() { return "In v2.2.0 and v2.2.4, the countdown module was revised.  This Script updates those entries."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -64,13 +64,15 @@ class update_countdown extends upgradescript {
         foreach ($db->selectObjects('expConfigs',"location_data LIKE '%countdown%'") as $config) {
             $cfg = expUnserialize($config->config);
             if (!empty($cfg['count'])) {
-                $date = explode(' ',$cfg['count']);
-                $cfg['date-count'] = $date[0];
-                $time = explode(':',$date[1]);
-                $cfg['time-h-count'] = $time[0];
-                $cfg['time-m-count'] = $time[1];
-                $cfg['ampm-count'] = $date[2];
-                unset ($cfg['count']);
+                if (!empty($cfg['date-count'])) {  // v2.2.0 to v2.2.3 format
+                    $cfg['count'] = calendarcontrol::parseData('count', $cfg);
+                    unset($cfg['date-count']);
+                    unset($cfg['time-h-count']);
+                    unset($cfg['time-m-count']);
+                    unset($cfg['ampm-count']);
+                } elseif (strpos($cfg['count'], ' ') !== 0) {  // pre v2.2.0 format
+                    $cfg['count'] = strtotime($cfg['count']);
+                }
                 $config->config = serialize($cfg);
                 $db->updateObject($config,'expConfigs');
                 $fixed++;

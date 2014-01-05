@@ -13,20 +13,25 @@ function adminer_object() {
     $plugins = array(
         // specify enabled plugins here
 //        new AdminerDumpAlter,
+//        new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
-        new AdminerDumpZip,
-        new AdminerEditCalendar,
-        new AdminerCKeditor,
-        new AdminerEditTextarea,
-        new AdminerEnumOption,
-        new AdminerTablesFilter,
-        new AdminerEditTextSerializedarea,
+        new AdminerDumpZip,  // adds zip option to export
+        new AdminerEditCalendar,  // add calendar popup for date/time fileds
+        new AdminerEnumOption,  // turns enum fields into select input
+        new AdminerTablesFilter,  // adds filter input to tables list
+        new AdminerEditTextSerializedarea,  // displays unserialized data as a tooltip
         //new AdminerEmailTable,
         //new AdminerEditForeign,
         //new AdminerForeignSystem,
-        new AdminerVersionNoverify,
+        new AdminerVersionNoverify,  // disable adminer version check/notifiy
     );
-    
+    if (SITE_WYSIWYG_EDITOR == 'tinymce') {
+        $plugins[] = new AdminerTinymce;  // inserts wysiwyg editor for 'body' fields
+    } else {
+        $plugins[] = new AdminerCKeditor;  // inserts wysiwyg editor for 'body' fields
+    }
+    $plugins[] = new AdminerEditTextarea;  // adjusts box size smaller, MUST be last in chain for textarea widgets
+
     /* It is possible to combine customization and plugins: */
     class AdminerCustomization extends AdminerPlugin { 
 		function name() { // custom name in title and heading 

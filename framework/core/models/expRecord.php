@@ -355,6 +355,7 @@ class expRecord {
             } elseif ($colDef[0] == DB_DEF_BOOLEAN) {
                 $this->$col = empty($this->$col) ? 0 : $this->$col;
             } elseif ($colDef[0] == DB_DEF_TIMESTAMP) {
+                // yuidatetimecontrol sends in a checkbox and a date e.g., publish & publishdate
                 $datename = $col . 'date';
                 if (is_array($params) && isset($params[$datename])) {
                     $this->$col = yuidatetimecontrol::parseData($col, $params);
