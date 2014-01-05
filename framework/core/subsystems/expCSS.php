@@ -296,6 +296,7 @@ class expCSS {
     public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
         if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
             include_once(BASE.'external/lessphp/lessc.inc.php');
+//            include_once(BASE.'external/phpless/Less.php');
             // load the cache
             $less_cname = str_replace("/","_",$less_pname);
             $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
@@ -307,7 +308,16 @@ class expCSS {
                 }
             }
             $less = new lessc;
+//            $less = new Less_Parser();
+//            $less->SetCacheDir(BASE.'tmp/css/');
             $less->setVariables($vars);
+            // we need to convert $vars array to a less string
+//            $lvars = '';
+//            foreach ($vars as $key=>$param) {
+//                $lvars .= '@' . $key . ":" . $param . ";";
+//            }
+//            $less->parse($lvars);
+
             $new_cache = $less->cachedCompile($cache, false);
             if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
                 if (!empty($new_cache['compiled'])) {
@@ -318,6 +328,13 @@ class expCSS {
                     file_put_contents($cache_fname, serialize($new_cache));
                 }
             }
+
+//            $less->parseFile($cache);
+//            $new_cache = $less->getCss();
+//            $css_loc = pathinfo(BASE.$css_fname);
+//            if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
+//            file_put_contents(BASE.$css_fname, $new_cache);
+
             return true;
         } else {
             flash('notice',$less_pname. ' ' . gt('does not exist!'));
