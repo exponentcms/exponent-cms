@@ -162,13 +162,19 @@ $expJS = array();
 
 // expCSS
 /**
- * Stores the user's css files
+ * Stores the user's less global variables
+ * @var array $less_vars
+ * @name $less_vars
+ */
+$less_vars = array();
+/**
+ * Stores the user's css files to load first
  * @var array $css_primer
  * @name $css_primer
  */
 $css_primer = array();
 /**
- * Stores the user's css files
+ * Stores the user's css core/system files
  * @var array $css_core
  * @name $css_core
  */
