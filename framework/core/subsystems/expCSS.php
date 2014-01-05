@@ -27,9 +27,11 @@ class expCSS {
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
         
-        // normalize.css is always at the top
+        // normalize.css is always at the top, but already included with bootstrap v3
         if (!empty($params['normalize'])){
-            $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+            if (!(!empty($params['framework']) && $params['framework'] == 'bootstrap3')) {
+                $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+            }
         }
 
          // set up less variables

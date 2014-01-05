@@ -1,8 +1,8 @@
-// Yeti 3.0.2
+// Yeti 3.0.3
 // Bootswatch
 // -----------------------------------------------------
 
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
+@import url("//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,700");
 
 // Navbar =====================================================================
 
@@ -20,24 +20,58 @@
 		.box-shadow(none);
 	}
 
-	.dropdown-menu {
-		padding: 0;
-		border: none;
-		background-color: @navbar-default-bg;
+	.dropdown {
 
-		> li > a,
-		> li > a:focus {
-			padding: 12px 15px;
-			background-color: transparent;
-			font-size: 13px;
-			font-weight: 300;
-			color: @navbar-default-color;
+		&-menu {
+			border: none;
+
+			> li > a,
+			> li > a:focus {
+				background-color: transparent;
+				font-size: 13px;
+				font-weight: 300;
+			}
 		}
 
-		> li > a:hover,
-		> .active > a,
-		> .active > a:hover {
-			background-color: @navbar-default-link-hover-bg;
+		&-header {
+			color: rgba(255, 255, 255, 0.5);
+		}
+
+	}
+
+	&-default {
+
+		.dropdown-menu {
+			background-color: @navbar-default-bg;
+
+			> li > a,
+			> li > a:focus {
+				color: @navbar-default-color;
+			}
+
+			> li > a:hover,
+			> .active > a,
+			> .active > a:hover {
+				background-color: @navbar-default-link-hover-bg;
+			}
+		}
+	}
+
+	&-inverse {
+
+		.dropdown-menu {
+			background-color: @navbar-inverse-bg;
+
+			> li > a,
+			> li > a:focus {
+				color: @navbar-inverse-color;
+			}
+
+			> li > a:hover,
+			> .active > a,
+			> .active > a:hover {
+				background-color: @navbar-inverse-link-hover-bg;
+			}
 		}
 	}
 }
@@ -58,10 +92,104 @@
 	&-xs {
 		padding: 4px 8px;
 	}
+}
 
-	&-group > .btn + .dropdown-toggle {
+.btn-group {
+
+	.btn ~ .dropdown-toggle {
 		padding-left: 16px;
 		padding-right: 16px;
+	}
+
+	.dropdown-menu {
+		border-top-width: 0;
+	}
+
+	&.dropup .dropdown-menu {
+		border-top-width: 1px;
+		border-bottom-width: 0;
+		margin-bottom: 0;
+	}
+
+	.dropdown-toggle {
+
+		&.btn-default ~ .dropdown-menu {
+			background-color: @btn-default-bg;
+			border-color: @btn-default-border;
+
+			> li > a {
+				color: @btn-default-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-default-bg, 8%);
+			}
+		}
+
+		&.btn-primary ~ .dropdown-menu {
+			background-color: @btn-primary-bg;
+			border-color: @btn-primary-border;
+
+			> li > a {
+				color: @btn-primary-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-primary-bg, 8%);
+			}
+		}
+
+		&.btn-success ~ .dropdown-menu {
+			background-color: @btn-success-bg;
+			border-color: @btn-success-border;
+
+			> li > a {
+				color: @btn-success-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-success-bg, 8%);
+			}
+		}
+
+		&.btn-info ~ .dropdown-menu {
+			background-color: @btn-info-bg;
+			border-color: @btn-info-border;
+
+			> li > a {
+				color: @btn-info-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-info-bg, 8%);
+			}
+		}
+
+		&.btn-warning ~ .dropdown-menu {
+			background-color: @btn-warning-bg;
+			border-color: @btn-warning-border;
+
+			> li > a {
+				color: @btn-warning-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-warning-bg, 8%);
+			}
+		}
+
+		&.btn-danger ~ .dropdown-menu {
+			background-color: @btn-danger-bg;
+			border-color: @btn-danger-border;
+
+			> li > a {
+				color: @btn-danger-color;
+			}
+
+			> li > a:hover {
+				background-color: darken(@btn-danger-bg, 8%);
+			}
+		}
 	}
 }
 
@@ -121,6 +249,14 @@ label,
 
 // Navs =======================================================================
 
+.nav {
+	.open > a,
+	.open > a:hover,
+	.open > a:focus {
+		border-color: transparent;
+	}
+}
+
 .nav-tabs {
 	> li > a {
 		background-color: @btn-default-bg;
@@ -150,15 +286,27 @@ label,
 	font-weight: 300;
 	color: @gray-light;
 
-	> li,
+	> li {
+		> a,
+		> span {
+			margin-left: 4px;
+			color: @gray-light;
+		}
+	}
+
+	> .active {
+		> a,
+		> span {
+			color: #fff;
+		}
+	}
+
 	> li,
 	> li:first-child,
 	> li:last-child {
 		> a,
 		> span {
-			margin-left: 4px;
 			border-radius: 3px;
-			color: @gray-light;
 		}
 	}
 
@@ -225,8 +373,24 @@ label,
 
 // Containers =================================================================
 
-.dropdown-menu {
-	font-size: @font-size-small;
+.dropdown {
+
+	&-menu {
+		padding: 0;
+		margin-top: 0;
+		font-size: @font-size-small;
+
+		> li > a {
+			padding: 12px 15px;
+		}
+	}
+
+	&-header {
+		padding-left: 15px;
+		padding-right: 15px;
+		font-size: 9px;
+		text-transform: uppercase;
+	}
 }
 
 .popover {
