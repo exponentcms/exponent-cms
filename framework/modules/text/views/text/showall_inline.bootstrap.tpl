@@ -34,11 +34,14 @@
         {/if}
         {$myloc=serialize($__loc)}
         {if $smarty.const.BTN_SIZE == 'large'}
-            {$btn_size = 'btn-small'}
+            {$btn_size = ''}
             {$icon_size = 'icon-large'}
-        {else}
+        {elseif $smarty.const.BTN_SIZE == 'small'}
             {$btn_size = 'btn-mini'}
             {$icon_size = ''}
+        {else}
+            {$btn_size = 'btn-small'}
+            {$icon_size = 'icon-large'}
         {/if}
 
         {foreach from=$items item=text name=items}
@@ -67,9 +70,9 @@
                         {/if}
                         {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                             {if $text->title}
-                                <a class="delete-title btn icon-remove-sign btn-danger {$btn_size} {$icon_size}" id="deletetitle-{$text->id}" href="#" title="{'Delete Title'|gettext}"> {'Delete Title'|gettext}</a>
+                                <a class="delete-title btn btn-danger {$btn_size}" id="deletetitle-{$text->id}" href="#" title="{'Delete Title'|gettext}"><i class="icon-remove-sign {$icon_size}"></i> {'Delete Title'|gettext}</a>
                             {else}
-                                <a class="add-title btn icon-plus-sign btn-success {$btn_size} {$icon_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"> {'Add Title'|gettext}</a>
+                                <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"><i class="icon-plus-sign {$icon_size}"></i> {'Add Title'|gettext}</a>
                             {/if}
                         {/if}
                     </div>
@@ -216,7 +219,7 @@
                 newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                 newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '"> {/literal}{'Edit'|gettext}{literal}</a>';
                 newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#"> {/literal}{'Delete'|gettext}{literal}</a>';
-                newItem +='<a class="delete-title btn icon-remove-sign btn-danger {/literal}{$btn_size} {$icon_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
+                newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
                 newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                 $('#textcontent-{/literal}{$name}{literal}').append(newItem);
                 startEditor($('#title-' + msg.data)[0]);
@@ -242,7 +245,7 @@
                 $('#text-' + msg.data).prepend(newItem);
                 $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('title placeholder');
                 startEditor($('#title-' + msg.data)[0]);
-                chgItem ='<a class="delete-title btn icon-remove-sign btn-danger {/literal}{$btn_size} {$icon_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"> {/literal}{'Delete Title'|gettext}{literal}</a>';
+                chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
                 addparent = $('#addtitle-' + msg.data).parent();
                 $('#addtitle-' + msg.data).remove();
                 addparent.append(chgItem);
@@ -285,7 +288,7 @@
     //                msg = $.parseJSON(data);
                     $('#title-' + msg.data).parent().remove();
                     $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
-                    chgItem ='<a class="add-title btn icon-plus-sign btn-success {/literal}{$btn_size} {$icon_size}{literal}" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"> {/literal}{'Add Title'|gettext}{literal}</a>';
+                    chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="icon-plus-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
                     delparent = $('#deletetitle-' + msg.data).parent();
                     CKEDITOR.instances['title-' + msg.data].destroy();
                     $('#deletetitle-' + msg.data).remove();

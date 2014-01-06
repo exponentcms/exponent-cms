@@ -228,10 +228,13 @@ class form extends baseform {
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
-            if (BTN_SIZE != 'large') {
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+                $icon_size = 'icon-large';
+            } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-mini';
                 $icon_size = '';
-            } else {
+            } else { // medium
                 $btn_size = 'btn-small';
                 $icon_size = 'icon-large';
             }

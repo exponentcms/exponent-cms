@@ -33,20 +33,12 @@
  * @param \Smarty $smarty
  */
 function smarty_function_button_style($params,&$smarty) {
-    if (expSession::get('framework') == 'bootstrap3') {
-        if (BTN_SIZE != 'large' || (!empty($params['size']) && $params['size'] != 'large')) {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        } else {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        }
-        $btn_type = expCore::buttonColor($params['color']);
-        $btn_class = 'btn ' . $btn_size . ' ' . $btn_type;
+    $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+    $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
+    if (expSession::get('framework') == 'bootstrap') {
+        $btn_class = 'btn ' . ' ' . expTheme::buttonColor($btn_color) . ' ' . expTheme::buttonSize($btn_size);
     } else {
-        $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
-        $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
-        $btn_class = "awesome " . $btn_size . " " . $btn_color;
+        $btn_class = "awesome " . $btn_color . " " . $btn_size;
     }
     echo $btn_class;
 }

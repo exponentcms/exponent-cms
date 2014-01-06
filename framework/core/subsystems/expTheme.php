@@ -21,8 +21,8 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
+/** @define "BASE" "../../.." */
 class expTheme
 {
 
@@ -1317,6 +1317,197 @@ class expTheme
             } else {
                 echo sprintf(gt('The module "%s" was not found in the system.'), $module);
             }
+        }
+    }
+
+    /**
+     * Return the color style for the current framework
+     *
+     * @param        $color
+     *
+     * @return mixed|string
+     */
+    public static function buttonColor($color = null)
+    {
+        $colors = array(
+            'green'   => 'btn-success',
+            'blue'    => 'btn-primary',
+            'red'     => 'btn-danger',
+            'magenta' => 'btn-danger',
+            'orange'  => 'btn-warning',
+            'yellow'  => 'btn-warning',
+            'grey'    => 'btn-default',
+            'purple'  => 'btn-info',
+            'black'   => 'btn-inverse',
+            'pink'    => 'btn-danger',
+        );
+        if (expSession::get('framework') == 'bootstrap') {
+            if (!empty($colors[$color])) { // awesome to bootstrap button conversion
+                $found = $colors[$color];
+            } else {
+                $found = 'btn-default';
+            }
+        } else {
+            $found = array_search($color, $colors); // bootstrap to awesome button conversion?
+            if (empty($found)) {
+                $found = $color;
+            }
+        }
+        return $found;
+    }
+
+    /**
+     * Return the button size for the current framework
+     *
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function buttonSize($size = null)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $btn_size = ''; // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $btn_size = 'btn-mini';
+            } else { // medium
+                $btn_size = 'btn-small';
+            }
+            return $btn_size;
+        } else {
+            if (empty($size)) {
+                $size = BTN_SIZE;
+            }
+            return $size;
+        }
+    }
+
+    /**
+     * Return the button color and size style for the current framework
+     *
+     * @param null   $color
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function buttonStyle($color = null, $size = null)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            $btn_class = 'btn ' . ' ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
+        } else {
+            $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
+            $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+            $btn_class = "awesome " . $btn_size . " " . $btn_color;
+        }
+        return $btn_class;
+    }
+
+    /**
+     * Return the icon associated for the current frameowrk
+     *
+     * @param        $class
+     *
+     * @return stdClass|string
+     */
+    public static function buttonIcon($class)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            $btn_type = '';
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "remove-sign";
+                    $btn_type = "btn-danger"; // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus-sign add";
+                    $btn_type = "btn-success"; // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download-alt";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload-alt";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "signin";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class = 'double-angle-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'double-angle-left';
+                    break;
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Return the icon size for the current framework
+     *
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function iconSize($size = null)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $icon_size = 'icon-large';
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $icon_size = '';
+            } else { // medium
+                $icon_size = 'icon-large';
+            }
+            return $icon_size;
+        } else {
+            return BTN_SIZE;
         }
     }
 
