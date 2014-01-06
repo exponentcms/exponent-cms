@@ -30,6 +30,7 @@ class calendarcontrol extends formcontrol {
 
 //    var $disable_text = "";
     var $showtime = true;
+    var $default = '';
     var $default_date = '';
     var $default_hour = '';
     var $default_min = '';
@@ -48,19 +49,11 @@ class calendarcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
-    // function yuicalendarcontrol($default = null, $disable_text = "",$showtime = true) {
-    //     $this->disable_text = $disable_text;
-    //     $this->default = $default;
-    //     $this->showtime = $showtime;
-    // 
-    //     if ($this->default == null) {
-    //         if ($this->disable_text == "") $this->default = time();
-    //         else $this->disabled = true;
-    //     }
-    //     elseif ($this->default == 0) {
-    //         $this->default = time();
-    //     }
-    // }
+    function __construct($default = null,$showtime = true) {
+        if (empty($default)) $default = time();
+        $this->default      = $default;
+        $this->showtime = $showtime;
+    }
 
 //    function toHTML($label, $name) {
 //        if (!empty($this->id)) {
@@ -88,6 +81,13 @@ class calendarcontrol extends formcontrol {
 //    }
 
     function controlToHTML($name, $label = null) {
+        if (empty($this->default_date) && !empty($this->default)) {
+            // parse out date into calendarcontrol fields
+            $this->default_date = date('m/d/Y', $this->default);
+            $this->default_hour = date('h', $this->default);
+            $this->default_min = date('i', $this->default);
+            $this->default_ampm = date('a', $this->default);
+        }
         $idname = str_replace(array('[',']',']['),'_',$name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
