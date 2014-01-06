@@ -97,10 +97,10 @@ class datetimecontrol extends formcontrol {
                 $html .= '<br /><label class="label spacer"> </label>';
             }
             $html .= '<div class="datetime date time"><label style="display:inline;float:none;">' . gt('Time') . ': </label>';
-            $html .= '<input class="text" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
+            $html .= '<input class="text timebox" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" maxlength="2" value="' . $minute . '"';
+            $html .= '<input class="text timebox" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '<select class="select" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';

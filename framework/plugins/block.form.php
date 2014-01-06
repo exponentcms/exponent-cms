@@ -51,22 +51,23 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		if (expSession::get('framework') != 'bootstrap') {
 			expCSS::pushToHead(array(
-//                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
             $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
 		} else {
             expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
-            if (BTN_SIZE != 'large') {
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+//                $icon_size = 'icon-2x';
+            } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-mini';
-                $icon_size = '';
-            } else {
+//                $icon_size = '';
+            } else { // medium
                 $btn_size = 'btn-small';
-                $icon_size = 'icon-large';
+//                $icon_size = 'icon-large';
             }
             $btn_class .= ' ' . $btn_size;
         }

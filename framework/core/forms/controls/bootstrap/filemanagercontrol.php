@@ -58,13 +58,15 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
+//        if (BTN_SIZE == 'large') {
+//            $btn_size = 'btn-small';
+//            $icon_size = 'icon-large';
+//        } else {
+//            $btn_size = 'btn-mini';
+//            $icon_size = '';
+//        }
+        $btn_size = expTheme::buttonSize();
+        $icon_size = expTheme::iconSize();
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
         if (!$user->globalPerm('prevent_uploads')) {
         $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';

@@ -45,20 +45,22 @@ function smarty_function_export_pdf_link($params,&$smarty) {
     }
     if ($print && !PRINTER_FRIENDLY && expHtmlToPDF::installed()) {
         // initialize a couple of variables
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
-
+//        if (BTN_SIZE == 'large') {
+//            $btn_size = '';  // actually default size, NOT true boostrap large
+//            $icon_size = 'icon-2x';
+//        } elseif (BTN_SIZE == 'small') {
+//            $btn_size = 'btn-mini';
+//            $icon_size = '';
+//        } else { // medium
+//            $btn_size = 'btn-small';
+//            $icon_size = 'icon-large';
+//        }
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
         $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
         $limit = isset($params['limit']) ? $params['limit'] : '';
-        $class = isset($params['class']) ? $params['class'] : 'btn '.$btn_size;
-        $text = '<i class="icon-book '.$icon_size.'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
+        $class = isset($params['class']) ? $params['class'] : 'btn '.expTheme::buttonStyle();
+        $text = '<i class="icon-book '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 
         // spit out the link
         echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);

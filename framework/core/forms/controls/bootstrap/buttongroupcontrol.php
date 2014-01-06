@@ -60,13 +60,15 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-            if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-small';
-                $icon_size = 'icon-large';
-            } else {
-                $btn_size = 'btn-mini';
-                $icon_size = '';
-            }
+//            if (BTN_SIZE == 'large') {
+//                $btn_size = 'btn-small';
+//                $icon_size = 'icon-large';
+//            } else {
+//                $btn_size = 'btn-mini';
+//                $icon_size = '';
+//            }
+            $btn_size = expTheme::buttonSize();
+            $icon_size = expTheme::iconSize();
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'icon-save';
             } elseif (stripos($this->submit, 'log') !== false) {

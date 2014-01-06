@@ -65,28 +65,30 @@ input.password {
 	vertical-align : top;
 }
 
+.datetime.date input[type="text"] {
+	width : 60px;
+}
+
+.datetime.date select {
+	width : 120px;
+}
+
+.datetime.date.time select {
+	width : 80px;
+}
+
 .control.calendar-control input.text {
 	width : 120px;
 }
 
-.control.calendar-control input.timebox {
+.control.calendar-control input.timebox,
+.control .datetime input.timebox {
 	width : 30px;
 }
 
-.control.calendar-control select {
+.control.calendar-control select,
+.control .datetime select {
 	width : 60px;
-}
-
-.datetime.date input[type="text"] {
-	width : 60px !important;
-}
-
-.datetime.date select {
-	width : 120px !important;
-}
-
-.datetime.date.time select {
-	width : 80px !important;
 }
 
 .radio input[type="radio"], .checkbox input[type="checkbox"] {
@@ -122,27 +124,29 @@ a.icon-sort, .container-chrome ul li a.icon-sort {
 	background : none;
 }
 
-.awesome, .awesome:visited {
-	/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
-	color : inherit;
-}
+//.awesome, .awesome:visited {
+/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
+//	color : inherit;
+//}
 
 .control .radio label, .control .checkbox label {
 	margin-bottom : 0px !important;
 }
 
-.awesome.add-to-cart-btn,
-.awesome.add-to-cart-btn a {
-	line-height : 2.4 !important;
+.add-to-cart-btn,
+.add-to-cart-btn a,
+.add-to-cart-btn button {
+	line-height : 2.4;
+}
+
+.add-to-cart-btn.input button {
+	padding-left : 60px;
 }
 
 .add-to-cart-btn input[type="text"] {
-	width : 24px !important;
-}
-
-.add-to-cart-btn .awesome {
-	padding-left : 60px !important;
-
+	width   : 24px;
+	z-index : 999;
+	color   : #000000;
 }
 
 .alt-body {
