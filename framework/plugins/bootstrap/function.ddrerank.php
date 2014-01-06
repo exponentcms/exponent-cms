@@ -95,13 +95,18 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!empty($params['label'])) {
                 $params['label'] = gt($params['label']);
             }
-            if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-small';
-                $icon_size = 'icon-large';
-            } else {
-                $btn_size = 'btn-mini';
-                $icon_size = '';
-            }
+//            if (BTN_SIZE == 'large') {
+//                $btn_size = '';  // actually default size, NOT true boostrap large
+//                $icon_size = 'icon-2x';
+//            } elseif (BTN_SIZE == 'small') {
+//                $btn_size = 'btn-mini';
+//                $icon_size = '';
+//            } else { // medium
+//                $btn_size = 'btn-small';
+//                $icon_size = 'icon-large';
+//            }
+            $btn_size = expTheme::buttonStyle();
+            $icon_size = expTheme::iconSize();
 //            if (empty($params['uniqueid'])) {  // make a button
             if ($model != 'container') {  // make a button
                 echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="icon-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';

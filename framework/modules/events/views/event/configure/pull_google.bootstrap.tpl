@@ -26,11 +26,14 @@
     {*{control type="text" id="googlefeedmaker" name="googlefeedmaker" label="Google Calendar XML Feed Link/URL"|gettext}*}
     {control type=url id="googlefeedmaker" name="googlefeedmaker" label="Google Calendar XML Feed Link/URL"|gettext}
     {if (BTN_SIZE == 'large')}
-        {$btn_size = 'btn-small'}
+        {$btn_size = ''}
         {$icon_size = 'icon-large'}
-    {else}
+    {elseif (BTN_SIZE == 'small')}
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
+    {else}
+        {$btn_size = 'btn-small'}
+        {$icon_size = 'icon-large'}
     {/if}
     <a id="addtogooglelist" class="btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current Google Calendar Feeds"|gettext}</h4>

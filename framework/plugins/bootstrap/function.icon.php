@@ -118,10 +118,13 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
         
-        if (BTN_SIZE != 'large' || (!empty($params['size']) && $params['size'] != 'large')) {
+        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
+            $btn_size = '';  // actually default size, NOT true boostrap large
+            $icon_size = 'icon-large';
+        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
             $btn_size = 'btn-mini';
             $icon_size = '';
-        } else {
+        } else { // medium
             $btn_size = 'btn-small';
             $icon_size = 'icon-large';
         }
@@ -193,10 +196,10 @@ if (!function_exists('smarty_function_icon')) {
 //                $class = 'cogs';
 //                break;
 //        }
-        $icon = expCore::buttonIcon($class);
+        $icon = expTheme::buttonIcon($class);
         if (!empty($params['style']) ) $icon->type = $params['style'];
         if (!empty($params['icon']) ) $icon->class = $params['icon'];
-        if (!empty($params['color']) ) $icon->type = expCore::buttonColor($params['color']);
+        if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
 
         // we need to unset these vars before we pass the params array off to makeLink
         unset($params['alt']);

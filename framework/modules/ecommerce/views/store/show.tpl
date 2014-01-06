@@ -397,7 +397,7 @@
                      {*</div>*}
                  {*{/if}*}
 
-                <div class="add-to-cart-btn">
+                <div class="add-to-cart-btn input">
                     {if $product->availability_type == 0 && $product->active_type == 0}
                         <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                         <button type="submit" class="add-to-cart-btn {button_style}" rel="nofollow">

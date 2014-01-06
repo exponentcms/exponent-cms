@@ -71,13 +71,15 @@ class tagtreecontrol extends formcontrol {
         if ($this->menu == "true") {
             $framework = expSession::get('framework');
             if ($framework == 'bootstrap') {
-                if (BTN_SIZE == 'large') {
-                    $btn_size = 'btn-small';
-                    $icon_size = 'icon-large';
-                } else {
-                    $btn_size = 'btn-mini';
-                    $icon_size = '';
-                }
+//                if (BTN_SIZE == 'large') {
+//                    $btn_size = 'btn-small';
+//                    $icon_size = 'icon-large';
+//                } else {
+//                    $btn_size = 'btn-mini';
+//                    $icon_size = '';
+//                }
+                $btn_size = expTheme::buttonSize();
+                $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="icon-plus-sign '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
                 $html .= '<a class="btn '.$btn_size.'" href="#" id="expandall"><i class="icon-resize-full '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
                 $html .= '<a class="btn '.$btn_size.'" href="#" id="collapseall"><i class="icon-resize-small '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';

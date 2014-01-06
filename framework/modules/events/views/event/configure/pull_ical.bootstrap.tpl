@@ -26,11 +26,14 @@
     {*{control type="text" id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}*}
     {control type=url id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}
     {if (BTN_SIZE == 'large')}
-        {$btn_size = 'btn-small'}
+        {$btn_size = ''}
         {$icon_size = 'icon-large'}
-    {else}
+    {elseif (BTN_SIZE == 'small')}
         {$btn_size = 'btn-mini'}
         {$icon_size = ''}
+    {else}
+        {$btn_size = 'btn-small'}
+        {$icon_size = 'icon-large'}
     {/if}
     <a id="addtoicallist" class="btn btn-success {$btn_size}" href="#"><i class="icon-plus-sign {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}
     <h4>{"Current iCal Feeds"|gettext}</h4>

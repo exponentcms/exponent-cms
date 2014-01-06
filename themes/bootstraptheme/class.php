@@ -40,6 +40,7 @@ class bootstraptheme extends theme {
        	}
 		// Button Sizes
         $icon_sizes = array(
+            "small"=>'Small',
             "medium"=>'Medium',
 			"large"=>'Large',
 		);
