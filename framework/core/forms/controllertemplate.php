@@ -47,7 +47,6 @@ class controllertemplate extends basetemplate {
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-//        if (empty($head_config['framework'])) $head_config['framework'] = '';
         if ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',

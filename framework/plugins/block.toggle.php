@@ -188,7 +188,6 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
             "content" => $script,
         ));
         expCSS::pushToHead(array(
-//            "unique"=>'toggle',
             "corecss"=>"toggle",
 //            "css"=>$css,
         ));
