@@ -287,7 +287,6 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $parms['moduletitle']);
     } else {
         $title = new stdClass();
-//        $title->mod = $controller->loc->mod.'Controller';  //FIXME do we process modules also needing this?
         $title->mod = $controller->loc->mod;
         $title->src = $controller->loc->src;
         $title->int = '';
@@ -512,7 +511,6 @@ function get_common_template($view, $loc, $controllername='') {
 
     $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
-//    $controller->relative_viewpath = 'framework/modules-1/common/views'.$controller->baseclassname;  //FIXME this don't make sense?
     $controller->loc = $loc;
     
     $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
