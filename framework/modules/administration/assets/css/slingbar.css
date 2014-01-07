@@ -597,5 +597,11 @@
 
 #yuilogger .yui3-console-separate {
 	top     : 32px;
-	z-index : 100;
+	z-index : 9999;
+}
+
+#admintoolbar *,
+#admintoolbar *:before,
+#admintoolbar *:after {
+    -moz-box-sizing: content-box;
 }

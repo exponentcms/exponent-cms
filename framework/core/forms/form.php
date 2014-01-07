@@ -218,13 +218,11 @@ class form extends baseform {
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         if (expSession::get('framework') != 'bootstrap') {
             expCSS::pushToHead(array(
-//                "unique"  => 'forms',
                 "corecss"=>"forms"
             ));
             $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
         } else {
             expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
