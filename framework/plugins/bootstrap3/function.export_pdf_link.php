@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,20 +45,19 @@ function smarty_function_export_pdf_link($params,&$smarty) {
     }
     if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF && file_exists(BASE.'external/dompdf/dompdf.php')) {
         // initialize a couple of variables
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-sm';
-            $icon_size = 'fa-lg';
-        } else {
-            $btn_size = 'btn-xs';
-            $icon_size = '';
-        }
-
+//        if (BTN_SIZE == 'large') {
+//            $btn_size = 'btn-sm';
+//            $icon_size = 'fa-lg';
+//        } else {
+//            $btn_size = 'btn-xs';
+//            $icon_size = '';
+//        }
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
         $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
         $limit = isset($params['limit']) ? $params['limit'] : '';
-        $class = isset($params['class']) ? $params['class'] : 'btn btn-default '.$btn_size;
-        $text = '<i class="fa fa-book '.$icon_size.'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
+        $class = isset($params['class']) ? $params['class'] : 'btn btn-default '.expTheme::buttonStyle();
+        $text = '<i class="fa fa-book '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 
         // spit out the link
         echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);

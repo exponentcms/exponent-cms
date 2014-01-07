@@ -1347,7 +1347,7 @@ class expTheme
             'black'   => 'btn-inverse',
             'pink'    => 'btn-danger',
         );
-        if (expSession::get('framework') == 'bootstrap') {
+        if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             if (!empty($colors[$color])) { // awesome to bootstrap button conversion
                 $found = $colors[$color];
             } else {
@@ -1380,6 +1380,15 @@ class expTheme
                 $btn_size = 'btn-small';
             }
             return $btn_size;
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $btn_size = ''; // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $btn_size = 'btn-xs';
+            } else { // medium
+                $btn_size = 'btn-sm';
+            }
+            return $btn_size;
         } else {
             if (empty($size)) {
                 $size = BTN_SIZE;
@@ -1398,7 +1407,7 @@ class expTheme
      */
     public static function buttonStyle($color = null, $size = null)
     {
-        if (expSession::get('framework') == 'bootstrap') {
+        if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             $btn_class = 'btn ' . ' ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
         } else {
             $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
@@ -1408,6 +1417,7 @@ class expTheme
         return $btn_class;
     }
 
+    //FIXME needs to be updated to include bootstrap3 icons
     /**
      * Return the icon associated for the current frameowrk
      *
@@ -1417,8 +1427,8 @@ class expTheme
      */
     public static function buttonIcon($class)
     {
+        $btn_type = '';
         if (expSession::get('framework') == 'bootstrap') {
-            $btn_type = '';
             switch ($class) {
                 case 'delete' :
                 case 'deletetitle' :
@@ -1489,6 +1499,77 @@ class expTheme
             $found->type = $btn_type;
             $found->class = $class;
             return $found;
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "times-circle";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus-circle";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "files-o";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "sign-in";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class ='angle-double-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'angle-double-left';
+                    break;
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check-square-o';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
         } else {
             return $class;
         }
@@ -1510,6 +1591,15 @@ class expTheme
                 $icon_size = '';
             } else { // medium
                 $icon_size = 'icon-large';
+            }
+            return $icon_size;
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $icon_size = 'fa-lg';
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $icon_size = '';
+            } else { // medium
+                $icon_size = 'fa-lg';
             }
             return $icon_size;
         } else {

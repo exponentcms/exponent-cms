@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,13 +58,15 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-sm';
-            $icon_size = 'fa-lg';
-        } else {
-            $btn_size = 'btn-xs';
-            $icon_size = '';
-        }
+//        if (BTN_SIZE == 'large') {
+//            $btn_size = 'btn-sm';
+//            $icon_size = 'fa-lg';
+//        } else {
+//            $btn_size = 'btn-xs';
+//            $icon_size = '';
+//        }
+        $btn_size = expTheme::buttonSize();
+        $icon_size = expTheme::iconSize();
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="fa fa-plus-circle '.$icon_size.'"></i> '.gt('Add Files').'</a>';
         if (!$user->globalPerm('prevent_uploads')) {
         $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="fa fa-plus-circle '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
@@ -103,7 +105,7 @@ class filemanagercontrol extends formcontrol {
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
-                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
                         alert('".gt('Please disable your popup blocker')."!!');
@@ -386,10 +388,16 @@ class filemanagercontrol extends formcontrol {
                     // Y.log(ids);
                 }
 
+                EXPONENT.passBackBatch".$name." = function(ids) {
+                    Y.each(ids, function(id,k){
+                        EXPONENT.passBackFile".$name."(id);
+                    });
+                }
+
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
                     if (Y.Lang.isArray(id)) {
-                        EXPONENT.batchAddFiles.".$name."();
+                        EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
 
@@ -471,17 +479,11 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
-//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
                 "content"=>$js,
              ));
-    //         expJavascript::pushToFoot(array(
-    //             "unique"=>"quickupload",
-    //             "jquery"=>"1",
-    //             "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
-    //          ));
         return $html;
     }
     

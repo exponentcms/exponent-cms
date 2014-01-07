@@ -31,8 +31,9 @@
         {foreach from=$config.pull_gcal item=feed name=feed}
             {*{if $feed!=""}<li>{control type="hidden" name="pull_google[]" value=$feed}{$feed} <a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}*}
             {if $feed!=""}<li>{control type="hidden" name="pull_gcal[]" value=$feed}{control type=color label=$feed name="pull_gcal_color[]" id="pull_gcal_color`$smarty.foreach.feed.index`" value=$config.pull_gcal_color[$smarty.foreach.feed.index] hide=1 flip=1}<a class="delete removegoogle" href="#">{"Remove"|gettext}</a></li>{/if}
+        {foreachelse}
+            <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
-        <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
     </ul>
 
     {script unique="googlefeedpicker3" yui3mods=1}

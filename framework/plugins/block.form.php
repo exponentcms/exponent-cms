@@ -51,19 +51,32 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		if (expSession::get('framework') == 'bootstrap') {
             expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-mini';
+            } else { // medium
+                $btn_size = 'btn-small';
+            }
+            $btn_class .= ' ' . $btn_size;
         } elseif (expSession::get('framework') == 'bootstrap3') {
             expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap3"
             ));
             $btn_class = 'btn btn-default';
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-xs';
+            } else { // medium
+                $btn_size = 'btn-sm';
+            }
+            $btn_class .= ' ' . $btn_size;
 		} else {
             expCSS::pushToHead(array(
-     //                "unique"  => 'forms',
                      "corecss"=>"forms"
                  ));
                  $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';

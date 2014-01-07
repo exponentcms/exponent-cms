@@ -35,7 +35,7 @@
 function smarty_function_button_style($params,&$smarty) {
     $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
     $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
-    if (expSession::get('framework') == 'bootstrap') {
+    if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
         $btn_class = 'btn ' . ' ' . expTheme::buttonColor($btn_color) . ' ' . expTheme::buttonSize($btn_size);
     } else {
         $btn_class = "awesome " . $btn_color . " " . $btn_size;

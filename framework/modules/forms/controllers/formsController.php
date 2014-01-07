@@ -883,11 +883,19 @@ class formsController extends expController {
     public function edit_control() {
         $f = new forms($this->params['forms_id']);
         if ($f) {
-            expCSS::pushToHead(array(
-//                    "unique"  => "forms",
+            if (expSession::get('framework') == 'bootstrap') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap"
+                ));
+            } elseif (expSession::get('framework') == 'bootstrap3') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap3"
+                ));
+            } else {
+                expCSS::pushToHead(array(
                     "corecss" => "forms",
-                )
-            );
+                ));
+            }
 
             if (isset($this->params['control_type']) && $this->params['control_type']{0} == ".") {
                 // there is nothing to edit for these type controls, so add it then return

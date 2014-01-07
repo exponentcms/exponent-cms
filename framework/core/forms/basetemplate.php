@@ -78,6 +78,7 @@ abstract class basetemplate {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap3',
+                BASE.'framework/plugins/bootstrap',
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',

@@ -79,27 +79,39 @@ class fakeform extends form {
 		$rank = 0;
 		$even = "odd";
         $edit_class = '';
+        $edit_icon_class = '';
         $delete_class = '';
+        $delete_icon_class = '';
         if ($head_config['framework'] == 'bootstrap') {
             if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-small';
+                $btn_size = '';  // actually default size, NOT true boostrap large
                 $icon_size = 'icon-large';
-            } else {
+            } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-mini';
                 $icon_size = '';
+            } else { // medium
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
             }
-            $edit_class = ' class="btn '.$btn_size.' icon-edit'.$icon_size.'"';
-            $delete_class = ' class="btn btn-danger '.$btn_size.' icon-remove-sign'.$icon_size.'"';
+            $edit_class = ' class="btn '.$btn_size.'"';
+            $edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
+            $delete_class = ' class="btn btn-danger '.$btn_size.'"';
+            $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif ($head_config['framework'] == 'bootstrap3') {
             if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-sm';
+                $btn_size = '';
                 $icon_size = 'fa-lg';
-            } else {
+            } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-xs';
                 $icon_size = '';
+            } else {
+                $btn_size = 'btn-sm';
+                $icon_size = 'fa-lg';
             }
-            $edit_class = ' class="btn btn-default '.$btn_size.' fa fa-pencil-square-o'.$icon_size.'"';
-            $delete_class = ' class="btn btn-danger '.$btn_size.' fa fa-times-circle'.$icon_size.'"';
+            $edit_class = ' class="btn btn-default '.$btn_size.'"';
+            $edit_icon_class = '<i class="fa fa-pencil-square-o '.$icon_size.'"></i>';
+            $delete_class = ' class="btn btn-danger '.$btn_size.'"';
+            $delete_icon_class = '<i class="fa fa-times-circle '.$icon_size.'"></i>';
         }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
@@ -108,13 +120,15 @@ class fakeform extends form {
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if ($head_config['framework'] != 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                    $html .= $edit_icon_class;
+                } else {
+                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                }
 				$html .= '</a>';
 			} else {
-                if ($head_config['framework'] == 'bootstrap') {
-                    $html .= '<div class="btn disabled '.$btn_size.' icon-edit'.$icon_size.'"> </div>';
-                } elseif ($head_config['framework'] == 'bootstrap3') {
-                    $html .= '<div class="btn btn-default disabled '.$btn_size.' fa fa-pencil-square-o'.$icon_size.'"> </div>';
+                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                    $html .= '<div class="btn btn-default disabled ' . $btn_size . '">'.$edit_icon_class.'</div>';
                 } else {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
                 }
@@ -128,7 +142,11 @@ class fakeform extends form {
 			else {
 				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-            if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                $html .= $delete_icon_class;
+            } else {
+                $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            }
 			$html .= '</a>';
             $html .= "</div>";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {

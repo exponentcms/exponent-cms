@@ -42,7 +42,7 @@ class rangecontrol extends textcontrol {
         } else {
             $extra_class = '';
         }
-        $html  = '<input' . $inputID . ' class="text' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
+        $html  = '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= ($this->size?" size=\"".$this->size."\"":"");
         $html .= ($this->disabled?" disabled ":"");

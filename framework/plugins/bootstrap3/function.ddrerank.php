@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -95,13 +95,15 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!empty($params['label'])) {
                 $params['label'] = gt($params['label']);
             }
-            if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-sm';
-                $icon_size = 'fa-lg';
-            } else {
-                $btn_size = 'btn-xs';
-                $icon_size = '';
-            }
+//            if (BTN_SIZE == 'large') {
+//                $btn_size = 'btn-sm';
+//                $icon_size = 'fa-lg';
+//            } else {
+//                $btn_size = 'btn-xs';
+//                $icon_size = '';
+//            }
+            $btn_size = expTheme::buttonStyle();
+            $icon_size = expTheme::iconSize();
 //            if (empty($params['uniqueid'])) {  // make a button
             if ($model != 'container') {  // make a button
                 echo '<a id="rerank' . $uniqueid . '" class="btn btn-default '.$btn_size.'" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 
 <div id="textmodule-{$name}" class="module text showall showall-inline">
     <div id="textcontent-{$name}">
-        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
         {permissions}
             <div class="module-actions">
                 {if $permissions.create}
@@ -34,11 +34,14 @@
         {/if}
         {$myloc=serialize($__loc)}
         {if $smarty.const.BTN_SIZE == 'large'}
-            {$btn_size = 'btn-sm'}
+            {$btn_size = ''}
             {$icon_size = 'fa-lg'}
-        {else}
+        {elseif $smarty.const.BTN_SIZE == 'small'}
             {$btn_size = 'btn-xs'}
             {$icon_size = ''}
+        {else}
+            {$btn_size = 'btn-sm'}
+            {$icon_size = 'fa-lg'}
         {/if}
 
         {foreach from=$items item=text name=items}
@@ -49,7 +52,7 @@
                 {$make_edit = ''}
             {/if}
             <div id="text-{$text->id}" class="item">
-                {if $text->title}<h2><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></h2>{/if}
+                {if $text->title}<{$config.item_level|default:'h2'}><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></{$config.item_level|default:'h2'}>{/if}
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
@@ -67,9 +70,9 @@
                         {/if}
                         {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
                             {if $text->title}
-                                <a class="delete-title btn fa fa-times-circle btn-danger {$btn_size} {$icon_size}" id="deletetitle-{$text->id}" href="#" title="{'Delete Title'|gettext}"> {'Delete Title'|gettext}</a>
+                                <a class="delete-title btn btn-danger {$btn_size}" id="deletetitle-{$text->id}" href="#" title="{'Delete Title'|gettext}"><i class="fa fa-times-circle {$icon_size}"></i> {'Delete Title'|gettext}</a>
                             {else}
-                                <a class="add-title btn fa fa-plus-circle btn-success {$btn_size} {$icon_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"> {'Add Title'|gettext}</a>
+                                <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add Title'|gettext}</a>
                             {/if}
                         {/if}
                     </div>
@@ -171,14 +174,17 @@
             {/literal}{$ckeditor->paste_word}{literal}
             pasteFromWordPromptCleanup : true,
             filebrowserBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
-            filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',
+            filebrowserImageBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck" filter="image"}{literal}',
+            filebrowserFlashBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
+            {/literal}{if (!$user->globalPerm('prevent_uploads'))}filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',{/if}{literal}
             filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},
             filebrowserWindowHeight : {/literal}{$smarty.const.FM_HEIGHT}{literal},
+            filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             filebrowserLinkWindowWidth : 320,
             filebrowserLinkWindowHeight : 600,
-            filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
             extraPlugins : 'stylesheetparser,tableresize,sourcedialog,{/literal}{stripSlashes($ckeditor->plugins)}{literal}',
+            {/literal}{$ckeditor->additionalConfig}{literal}
             height : 200,
             autoGrow_minHeight : 200,
             autoGrow_maxHeight : 400,
@@ -210,10 +216,10 @@
 //            success:function(data) {
             success:function(msg) {
 //                var msg = $.parseJSON(data);
-                newItem = '<div id="text-' + msg.data + '" class="item"><h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
+                newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                 newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '"> {/literal}{'Edit'|gettext}{literal}</a>';
                 newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#"> {/literal}{'Delete'|gettext}{literal}</a>';
-                newItem +='<a class="delete-title btn fa fa-times-circle btn-danger {/literal}{$btn_size} {$icon_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
+                newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fa fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
                 newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                 $('#textcontent-{/literal}{$name}{literal}').append(newItem);
                 startEditor($('#title-' + msg.data)[0]);
@@ -235,11 +241,11 @@
 //            success: function(data) {
             success: function(msg) {
 //                msg = $.parseJSON(data);
-                newItem = '<h2><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></h2>';
+                newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                 $('#text-' + msg.data).prepend(newItem);
                 $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('title placeholder');
                 startEditor($('#title-' + msg.data)[0]);
-                chgItem ='<a class="delete-title btn fa fa-times-circle btn-danger {/literal}{$btn_size} {$icon_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"> {/literal}{'Delete Title'|gettext}{literal}</a>';
+                chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="fa fa-times-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
                 addparent = $('#addtitle-' + msg.data).parent();
                 $('#addtitle-' + msg.data).remove();
                 addparent.append(chgItem);
@@ -282,7 +288,7 @@
     //                msg = $.parseJSON(data);
                     $('#title-' + msg.data).parent().remove();
                     $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
-                    chgItem ='<a class="add-title btn fa fa-plus-circle btn-success {/literal}{$btn_size} {$icon_size}{literal}" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"> {/literal}{'Add Title'|gettext}{literal}</a>';
+                    chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="fa fa-plus-circle {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
                     delparent = $('#deletetitle-' + msg.data).parent();
                     CKEDITOR.instances['title-' + msg.data].destroy();
                     $('#deletetitle-' + msg.data).remove();

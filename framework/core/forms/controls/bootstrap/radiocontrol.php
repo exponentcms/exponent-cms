@@ -75,7 +75,8 @@ class radiocontrol extends formcontrol {
     
     function controlToHTML($name,$label=null) {
         //echo "Here";
-        $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
+//        $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
+        $html = '<input class="radiobutton form-control" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->onclick != "") {
             $html .= ' onclick="'.$this->onclick.'"';
@@ -92,7 +93,8 @@ class radiocontrol extends formcontrol {
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked)) $html .= ' checked="checked"';
         $this->class = !empty($this->class) ? $this->class : "";
-        $html .= ' class="radio ' . $this->class . '"';
+//        $html .= ' class="radio ' . $this->class . '"';
+        $html .= ' class="radio ' . $this->class . ' form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
         if (!empty($this->filter)) {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,6 +40,7 @@ class bootstrap3theme extends theme {
        	}
 		// Button Sizes
         $icon_sizes = array(
+            "small"=>'Small',
             "medium"=>'Medium',
 			"large"=>'Large',
 		);

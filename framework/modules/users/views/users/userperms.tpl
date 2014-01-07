@@ -23,7 +23,7 @@
 		</div>
 		<blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 	</div>
-    {if expSession::get('framework') == 'bootstrap'}
+    {if expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'}
         {include file="_permissions.bootstrap.tpl"}
     {else}
         {include file="_permissions.tpl"}
