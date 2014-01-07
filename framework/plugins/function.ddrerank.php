@@ -81,7 +81,6 @@ function smarty_function_ddrerank($params, &$smarty) {
 
     if (count($params['items']) >= 2) {
         expCSS::pushToHead(array(
-                //"corecss"=>"rerankpanel,panels",
                 "corecss" => "rerank,panel",
             )
         );

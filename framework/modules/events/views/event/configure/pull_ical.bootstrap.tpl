@@ -45,8 +45,9 @@
                     <a class="removeical btn {$btn_size} btn-danger" href="#"><i class="icon-remove-sign {$icon_size}"></i> {"Remove"|gettext}</a>
                 </li>
             {/if}
+        {foreachelse}
+            <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}
-        <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
     </ul>
 
     {script unique="icalfeedpicker3" yui3mods=1}

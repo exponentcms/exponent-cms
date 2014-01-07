@@ -91,7 +91,6 @@ class buttongroupcontrol extends formcontrol {
 		}
 		
 		expCSS::pushToHead(array(
-//		    "unique"=>"button",
 		    "corecss"=>"button",
 		    )
 		);
