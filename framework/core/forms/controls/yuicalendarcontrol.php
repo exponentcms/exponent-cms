@@ -33,7 +33,7 @@ class yuicalendarcontrol extends formcontrol {
 //    var $showtime = true;
 
     static function name() {
-        return "Date / Time - YUI Calendar";
+        return "Date / Time - Calendar";
     }
 
     static function isSimpleControl() {

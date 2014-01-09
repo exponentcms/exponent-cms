@@ -37,7 +37,7 @@ class calendarcontrol extends formcontrol {
     var $default_ampm = '';
 
     static function name() {
-        return "Date / Time - YUI Popup w/ Text Time";
+        return "Date / Time - Popup w/ Text Time";
     }
 
     static function isSimpleControl() {

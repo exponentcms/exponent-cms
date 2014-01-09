@@ -33,7 +33,7 @@ class yuidatetimecontrol extends formcontrol {
     var $showtime = true;
 
     static function name() {
-        return "YAHOO! UI Date / Time";
+        return "Date / Time - Calendar w/ Text Time";
     }
 
     static function getFieldDefinition() {
