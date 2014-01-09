@@ -93,6 +93,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var batchIDs = {};
 
         function getUrlParam(paramName) {
+            if (paramName == 'update' || paramName == 'filter') {
+               // need to parse sef url also
+                var pathArray = window.location.pathname.split( '/' );
+                if (paramName == 'update') {
+                    var parmu = pathArray.indexOf('update');
+                    if (parmu > 0) return pathArray[parmu+1];
+                } else if (paramName == 'filter') {
+                    var parmf = pathArray.indexOf('filter');
+                    if (parmf > 0) return pathArray[parmf+1];
+                }
+            }
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
 

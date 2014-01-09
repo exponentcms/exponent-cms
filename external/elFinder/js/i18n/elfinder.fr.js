@@ -91,7 +91,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errFtpMkdir'          : 'Impossible de créer un répertoire distant sur l\'accès FTP :"$1"',
 			'errArchiveExec'       : 'Erreur lors de l\'archivage des fichiers : "$1"',
 			'errExtractExec'       : 'Erreur lors de l\'extraction des fichiers : "$1"',
-			
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Créer une archive',
 			'cmdback'      : 'Précédent',
@@ -121,7 +122,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdresize'    : 'Redimensionner l\'image',
 			'cmdsort'      : 'Trier',
 			'cmdnetmount'  : 'Monter un volume réseau',
-			
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
+
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Fermer',
 			'btnSave'   : 'Sauvegarder',

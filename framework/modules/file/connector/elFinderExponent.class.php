@@ -34,6 +34,7 @@ class elFinderExponent extends elFinder
         $this->commands['shared'] = array('target' => true, 'content' => false);
         $this->commands['title'] = array('target' => true, 'content' => false);
         $this->commands['alt'] = array('target' => true, 'content' => false);
+        $this->commands['links'] = array('target' => false, 'node' => false, 'image' => false, 'type' => false, 'title' => false);
     }
 
     /**

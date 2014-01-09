@@ -30,18 +30,21 @@
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/jquery/css/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">*}
     <link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">
 
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">*}
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">*}
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}framework/modules/file/assets/css/elfinder.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/navbar.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/places.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/statusbar.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/contextmenu.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">
 
-    <link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/elfinder.min.css">
+    {*<link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/elfinder.min.css">*}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
@@ -109,6 +112,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/netmount.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/links.js"></script>
 
     <!-- elfinder languages -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
@@ -131,9 +135,19 @@
     {literal}
         // Helper function to get parameters from the query string for CKEditor
         function getUrlParam(paramName) {
+            if (paramName == 'update' || paramName == 'filter') {
+               // need to parse sef url also
+                var pathArray = window.location.pathname.split( '/' );
+                if (paramName == 'update') {
+                    var parmu = pathArray.indexOf('update');
+                    if (parmu > 0) return pathArray[parmu+1];
+                } else if (paramName == 'filter') {
+                    var parmf = pathArray.indexOf('filter');
+                    if (parmf > 0) return pathArray[parmf+1];
+                }
+            }
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
-
             return (match && match.length > 1) ? match[1] : '' ;
         }
 
@@ -145,7 +159,6 @@
             mySubmit: function (URL) {
                 // pass selected file path to TinyMCE
                 top.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
-
                 // close popup window
                 top.tinymce.activeEditor.windowManager.close();
             }
@@ -223,6 +236,7 @@
                         ['extract', 'archive'],
                         ['search'],
                         ['view', 'sort'],
+                        ['links'],
                         ['help']
                     ],
                     // directories tree options

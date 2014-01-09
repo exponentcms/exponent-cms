@@ -65,7 +65,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errArcType'           : 'akriv-typen er ikke støttet.',
 			'errNoArchive'         : 'Filen er ikke et arkiv eller et arkiv som ikke er støttet.',
 			'errCmdNoSupport'      : 'Backend støtter ikke denne kommandoen.',
-			
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Opprett arkiv',
 			'cmdback'      : 'Tilbake',
@@ -92,7 +93,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdup'        : 'Opp et nivå',
 			'cmdupload'    : 'Last opp filer',
 			'cmdview'      : 'Vis',
-			
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
+
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Lukk',
 			'btnSave'   : 'Lagre',
