@@ -106,7 +106,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
             }
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
-
             return (match && match.length > 1) ? match[1] : '' ;
         }
 
