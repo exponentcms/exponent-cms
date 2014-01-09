@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="faq" assign="name"}
+
 {if $config.usecategories}
 {css unique="categories" corecss="categories"}
 
@@ -46,6 +48,7 @@
 		{icon class="helplink" action="ask_question" text='Ask a Question'|gettext}
     {/if}
     {if $config.use_toc}
+        <div class="toc">
         {if $config.usecategories}
             {foreach name=c from=$cats key=catid item=cat}
                 {if $cat->name!=""}<a href="#cat{$catid}"><h4>{$cat->name}</a></h4>{/if}
@@ -62,7 +65,11 @@
                 {/foreach}
             </ol>
         {/if}
+        </div>
         <hr/>
+    {/if}
+    {if $config.show_search}
+        {control type=text name="faqsearchinput" label='Limit items to those including:'|gettext}
     {/if}
     {if $config.usecategories && $cats|@count>0}
         {foreach name=c from=$cats key=catid item=cat}
@@ -105,7 +112,7 @@
         {/foreach}
     {else}
         {foreach name=a from=$items item=question}
-            <div>
+            <div class="item">
                 <a name="faq_{$question->id}"></a>
                 <h3>Q{$smarty.foreach.a.iteration}. {$question->question}</h3>
                 {tags_assigned record=$question}
@@ -135,3 +142,22 @@
         {/foreach}
     {/if}
 </div>
+
+{if $config.show_search}
+{script unique="`$name`search" jquery='jquery.searcher'}
+{literal}
+    $(".faq.showall").searcher({
+        itemSelector: ".item",
+        textSelector: "h4{/literal}{if !$config.search_title_only},.bodycopy{/if}{literal}",
+        inputSelector: "#faqsearchinput",
+        toggle: function(item, containsText) {
+            // use a typically jQuery effect instead of simply showing/hiding the item element
+            if (containsText)
+                $(item).fadeIn();
+            else
+                $(item).fadeOut();
+        }
+    });
+{/literal}
+{/script}
+{/if}
