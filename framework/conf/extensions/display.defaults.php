@@ -29,5 +29,6 @@ if (!defined('DISPLAY_START_OF_WEEK')) define('DISPLAY_START_OF_WEEK','0');
 if (!defined('DISPLAY_DEFAULT_TIMEZONE')) define('DISPLAY_DEFAULT_TIMEZONE','UTC');
 if (!defined('THUMB_QUALITY')) define('THUMB_QUALITY','75');
 if (!defined('INVERT_HIDE_TITLE')) define('INVERT_HIDE_TITLE','0');
+if (!defined('NEWUI')) define('NEWUI','0');
 
 ?>

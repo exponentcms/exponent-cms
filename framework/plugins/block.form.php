@@ -36,7 +36,7 @@
  */
 function smarty_block_form($params,$content,&$smarty, &$repeat) {
 	if(empty($content)){
-		$name = isset($params['name']) ? $params['name'] : 'form';
+        $name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
 		$module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
 		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;  //FIXME there is no 'con' property
@@ -49,45 +49,44 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		if (expSession::get('framework') != 'bootstrap') {
-			expCSS::pushToHead(array(
-                "corecss"=>"forms"
-            ));
-            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
-		} else {
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap"
-            ));
-            $btn_class = 'btn btn-default';
-            if (BTN_SIZE == 'large') {
-                $btn_size = '';  // actually default size, NOT true boostrap large
-//                $icon_size = 'icon-2x';
-            } elseif (BTN_SIZE == 'small') {
-                $btn_size = 'btn-mini';
-//                $icon_size = '';
-            } else { // medium
-                $btn_size = 'btn-small';
-//                $icon_size = 'icon-large';
+        if (!NEWUI) {
+            if (expSession::get('framework') != 'bootstrap') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms"
+                ));
+                $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
+            } else {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap"
+                ));
+                $btn_class = 'btn btn-default';
+                if (BTN_SIZE == 'large') {
+                    $btn_size = '';  // actually default size, NOT true boostrap large
+                } elseif (BTN_SIZE == 'small') {
+                    $btn_size = 'btn-mini';
+                } else { // medium
+                    $btn_size = 'btn-small';
+                }
+                $btn_class .= ' ' . $btn_size;
             }
-            $btn_class .= ' ' . $btn_size;
         }
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms1',
-            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms2',
-            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms3',
-            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms4',
-            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
-            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
-        ));
+        // expJavascript::pushToFoot(array(
+        //     "unique"  => 'html5forms1',
+        //     "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
+        // ));
+        // expJavascript::pushToFoot(array(
+        //     "unique"  => 'html5forms2',
+        //     "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
+        // ));
+        // expJavascript::pushToFoot(array(
+        //     "unique"  => 'html5forms3',
+        //     "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
+        // ));
+        // expJavascript::pushToFoot(array(
+        //     "unique"  => 'html5forms4',
+        //     "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
+        //     "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+        // ));
         if (!empty($params['paged'])) {
             if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>".gt("The 'name' or 'id parameter is required for the paged {form} plugin.")."</strong>");
             $content = "
@@ -108,7 +107,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             ));
         }
 
-		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'].''. (NEWUI ? ' exp-skin bootstrap3' : '') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {

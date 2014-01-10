@@ -156,6 +156,7 @@ class expTheme
         }
 
         // set up controls search order based on framework
+
         if (empty($head_config['framework'])) {
             $head_config['framework'] = '';
         }
@@ -180,6 +181,13 @@ class expTheme
         }
 
         $metainfo = self::pageMetaInfo();
+        
+        if (NEWUI) {
+            expCSS::pushToHead(array(
+                "corecss"=>"newui"
+            ));
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/bootstrap3');            
+        }
 
         // default to showing all meta tags unless specifically set to false
         if (!isset($config['meta']['content_type'])) {
