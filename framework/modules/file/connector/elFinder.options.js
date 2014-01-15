@@ -183,7 +183,9 @@ elFinder.prototype._options = {
 				// }
 			]
 		},
-		
+		// "info" command options.
+		info : {nullUrlDirLinkSelf : true},
+
 		netmount: {
 			ftp: {
 				inputs: {
@@ -430,7 +432,15 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	rememberLastDir : true,
-	
+
+	/**
+	 * Use browser native history with supported browsers
+	 *
+	 * @type Boolean
+	 * @default  true
+	 */
+	useBrowserHistory : true,
+
 	/**
 	 * Lazy load config.
 	 * How many files display at once?
