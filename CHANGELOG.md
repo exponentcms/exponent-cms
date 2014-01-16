@@ -25,7 +25,6 @@ Added / Fixed / Changed for 2.2.4
   - adds new 'reset.php' file to allow easily clearing all caches if the site crashes
   - includes all fixes from v2.2.3 patches
 ### Known Issues
-  - TinyMCE is not as robust as CKEditor and doesn't allow editing products
   - elFinder may not create thumbnails in some server scenarios
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
