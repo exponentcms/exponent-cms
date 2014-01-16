@@ -30,7 +30,8 @@ if (!defined('EXPONENT')) exit('');
 class yuicalendarcontrol extends formcontrol {
 
 //    var $disable_text = "";
-//    var $showtime = true;
+//    var $showdate = true;
+//    var $showtime = false;
 
     static function name() {
         return "Date / Time - Calendar Display";
@@ -46,10 +47,12 @@ class yuicalendarcontrol extends formcontrol {
     }
 
 //    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
-    function __construct($default = null) {
+    function __construct($default = null, $showdate = true, $showtime = false)
+    {
 //        $this->disable_text = $disable_text;
         if (empty($default)) $default = time();
         $this->default      = $default;
+//        $this->showdate     = $showdate;
 //        $this->showtime     = $showtime;
 
 //        if ($this->default == null) {

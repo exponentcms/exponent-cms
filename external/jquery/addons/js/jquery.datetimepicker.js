@@ -1045,6 +1045,11 @@
 							if(!this.value || !datetimepicker.data('xdsoft_datetime').isValidDate(Date.parseDate(this.value, options.format)))
 								datetimepicker.data('changed',false);
 							datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+                            break;
+                        case 'update':
+                            this.value = this.defaultValue;
+                            datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+                            datetimepicker.trigger('afterOpen.xdsoft');
 						break;
 					}
 				}else{
