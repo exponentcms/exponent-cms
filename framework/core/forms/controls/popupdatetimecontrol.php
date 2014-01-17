@@ -30,7 +30,7 @@ class popupdatetimecontrol extends formcontrol {
 	var $disable_text = "";
 	var $showtime = true;
 
-	static function name() { return "Date / Time - YUI Popup"; }
+	static function name() { return "Date / Time - Popup w/ Static Text"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
 		return array(

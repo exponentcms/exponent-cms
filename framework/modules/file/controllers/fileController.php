@@ -267,6 +267,7 @@ class fileController extends expController {
                             $groupedfiles[$key]->catid = $file->expCat[0]->id;
                         }
                         $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user = new stdClass();
                         $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
                         $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
                         $groupedfiles[$key]->user->username = $tmpusr->username;
@@ -308,6 +309,7 @@ class fileController extends expController {
     //                    $files[$key]->cat = $file->expCat[0]->title;
     //                    $files[$key]->catid = $file->expCat[0]->id;
                         $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user = new stdClass();
                         $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
                         $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
                         $groupedfiles[$key]->user->username = $tmpusr->username;
@@ -407,19 +409,43 @@ class fileController extends expController {
     public function batchDelete() {
         global $user;
 
-        $files = json_decode($this->params['files']);
         $error = false;
-        foreach ($files as $file) {
+        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);
+        $files = json_decode($this->params['files']);
+        switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+            break;
+            case JSON_ERROR_DEPTH:
+                $error = 'JSON - Maximum stack depth exceeded';
+            break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $error = 'JSON - Underflow or the modes mismatch';
+            break;
+            case JSON_ERROR_CTRL_CHAR:
+                $error = 'JSON - Unexpected control character found';
+            break;
+            case JSON_ERROR_SYNTAX:
+                $error = 'JSON - Syntax error, malformed JSON';
+            break;
+            case JSON_ERROR_UTF8:
+                $error = 'JSON - Malformed UTF-8 characters, possibly incorrectly encoded';
+            break;
+            default:
+                $error = 'JSON - Unknown error';
+            break;
+        }
+
+        if (empty($error)) foreach ($files as $file) {
             $delfile = new expFile($file->id);
             if ($user->id==$delfile->poster || $user->isActingAdmin()) {
                 $delfile->delete();
                 unlink($delfile->directory.$delfile->filename);
             } else {
-                $error = true;
+                $error = gt("you didn't have permission");
             }
         }
-        if ($error) {
-            $ar = new expAjaxReply(300, gt("Some files were NOT deleted because you didn't have permission."));
+        if (!empty($error)) {
+            $ar = new expAjaxReply(300, gt("Some files were NOT deleted because") . ' ' . $error);
         } else {
             $ar = new expAjaxReply(200, gt('Your files were deleted successfully'), $file);
         }

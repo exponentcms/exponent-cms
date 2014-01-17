@@ -14,6 +14,9 @@
  *}
  
     {$myloc=serialize($__loc)}
+    {if $config.show_search}
+        {control type=text name="portfoliosearchinput" label='Limit items to those including:'|gettext}
+    {/if}
     {pagelinks paginate=$page top=1}
     {$cat="bad"}
     {foreach from=$page->records item=record}
@@ -25,3 +28,22 @@
     {/foreach}
     {clear}
     {pagelinks paginate=$page bottom=1}
+
+{if $config.show_search}
+{script unique="`$name`search" jquery='jquery.searcher'}
+{literal}
+    $(".portfolio.showall").searcher({
+        itemSelector: ".item",
+        textSelector: "h3{/literal}{if !$config.search_title_only},.bodycopy{/if}{literal}",
+        inputSelector: "#portfoliosearchinput",
+        toggle: function(item, containsText) {
+            // use a typically jQuery effect instead of simply showing/hiding the item element
+            if (containsText)
+                $(item).fadeIn();
+            else
+                $(item).fadeOut();
+        }
+    });
+{/literal}
+{/script}
+{/if}

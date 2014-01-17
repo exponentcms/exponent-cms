@@ -37,7 +37,7 @@ class calendarcontrol extends formcontrol {
     var $default_ampm = '';
 
     static function name() {
-        return "Date / Time - YUI Popup w/ Text Time";
+        return "Date / Time - Popup w/ Text Time";
     }
 
     static function isSimpleControl() {
@@ -99,7 +99,6 @@ class calendarcontrol extends formcontrol {
             $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
                 : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
                 <select id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
-
             if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
             else $html .= "<option>am</option><option selected>pm</option>";
             $html .= "

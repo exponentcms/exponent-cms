@@ -1,4 +1,19 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2014 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
 
 /** Edit all fields containing "_html" by HTML editor TinyMCE and display the HTML in select
 * @link http://www.adminer.org/plugins/#use
@@ -45,7 +60,7 @@ tinyMCE.init({
 	}
 	
 	function selectVal(&$val, $link, $field) {
-		if (ereg("_html", $field["field"]) && $val != '&nbsp;') {
+        if (ereg("body", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");
 			if ($shortened) {
 				$val = substr($val, 0, -10);

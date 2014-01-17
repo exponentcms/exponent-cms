@@ -35,29 +35,57 @@
   		<script type="text/javascript">
 
 			function getUrlParam(paramName) {
+                if (paramName == 'update' || paramName == 'filter') {
+                   // need to parse sef url also
+                    var pathArray = window.location.pathname.split( '/' );
+                    if (paramName == 'update') {
+                        var parmu = pathArray.indexOf('update');
+                        if (parmu > 0) return pathArray[parmu+1];
+                    } else if (paramName == 'filter') {
+                        var parmf = pathArray.indexOf('filter');
+                        if (parmf > 0) return pathArray[parmf+1];
+                    }
+                }
 				var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
 				var match = window.location.search.match(reParam) ;
-
 				return (match && match.length > 1) ? match[1] : '' ;
 			}
 			
 			function onPageSelect(section) {
-				
-				// CKeditor integration
-				var funcNum = getUrlParam('CKEditorFuncNum');
-				var fileUrl = EXPONENT.PATH_RELATIVE+section;
-				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
-		
+                var update = getUrlParam('update');
+                if (update !== 'noupdate' && typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
+                var fileUrl = EXPONENT.PATH_RELATIVE+section;
+                if (update == 'ck') {
+       				// CKEditor integration
+                    var funcNum = getUrlParam('CKEditorFuncNum');
+                    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                } else if (update == 'tiny') {
+       				// TinyMCE integration
+                    // pass selected file path to TinyMCE
+                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+                    // close popup window
+                    top.tinymce.activeEditor.windowManager.close();
+                }
+
 				window.close();
 				return false;
 			};
 
 			function onOK() {
-				
-				// CKeditor integration
-				var funcNum = getUrlParam('CKEditorFuncNum');
-				var fileUrl = EXPONENT.PATH_RELATIVE+document.getElementById("f_href").value;
-				window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                var update = getUrlParam('update');
+                if (update !== 'noupdate' && typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
+                var fileUrl = EXPONENT.PATH_RELATIVE+document.getElementById("f_href").value;
+                if (update == 'ck') {
+       				// CKEditor integration
+                    var funcNum = getUrlParam('CKEditorFuncNum');
+                    window.opener.CKEDITOR.tools.callFunction(funcNum, fileUrl);
+                } else if (update == 'tiny') {
+       				// TinyMCE integration
+                    // pass selected file path to TinyMCE
+                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+                    // close popup window
+                    top.tinymce.activeEditor.windowManager.close();
+                }
 
 				window.close();
 				return false;
@@ -73,9 +101,15 @@
             }
 
             function openFileManager() {
-                var funcNum = getUrlParam('CKEditorFuncNum');
-                var partNum = getUrlParam('CKEditor');
-                window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                var update = getUrlParam('update');
+                if (typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
+                if (update == 'ck') {
+                    var funcNum = getUrlParam('CKEditorFuncNum');
+                    var partNum = getUrlParam('CKEditor');
+                    window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                } else if (update == 'tiny') {
+                    window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=tiny';
+                }
             }
 
 			function openContentLinker() {

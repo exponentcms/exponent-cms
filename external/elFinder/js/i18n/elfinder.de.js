@@ -88,6 +88,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errFtpMkdir'          : 'Erstellung des Remote-Ordners auf FTP nicht möglich: "$1"',
 			'errArchiveExec'       : 'Fehler bei der Archivierung der Dateien: "$1"',
 			'errExtractExec'       : 'Fehler beim Extrahieren der Dateien: "$1"',
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Archiv erstellen',
@@ -118,7 +119,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdresize'    : 'Größe ändern & drehen',
 			'cmdsort'      : 'Sortieren',
 			'cmdnetmount'  : 'Verbinde mit Netzwerkspeicher',
-			
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
+
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Schließen',
 			'btnSave'   : 'Speichern',
