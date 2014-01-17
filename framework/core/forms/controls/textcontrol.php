@@ -63,7 +63,7 @@ class textcontrol extends formcontrol {
         $html  = '<input' . $inputID . ' class="text' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= ($this->size?" size=\"".$this->size."\"":"");
-        $html .= ($this->disabled?" disabled ":"");
+        $html .= ($this->disabled?" disabled='disabled' ":"");
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
         $html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\"":"");
         $html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\"":"");
@@ -78,7 +78,7 @@ class textcontrol extends formcontrol {
 
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
-        $html .= "/>";
+        $html .= " />";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }

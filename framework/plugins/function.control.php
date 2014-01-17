@@ -70,7 +70,7 @@ function smarty_function_control($params, &$smarty) {
                 if (empty($params['value'])) $params['value'] = time();
 //                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
 //                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
-                $control = new yuicalendarcontrol($params['value']);
+                $control = new yuicalendarcontrol($params['value'], $showdate, $showtime);
                 break;
             case "datetimecontrol":
             case "datetime":
@@ -520,7 +520,7 @@ function smarty_function_control($params, &$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo gt("Both the 'type' and 'name' parameters are required for the control plugin to function");
+        echo '<h2 style="color:red">' . gt("Both the 'type' and 'name' parameters are required for the control plugin to function") . '</h2>';
     }
 }
 

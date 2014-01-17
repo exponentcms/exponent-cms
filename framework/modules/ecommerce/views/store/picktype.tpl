@@ -19,6 +19,6 @@
     {form controller=store action=edit}
         {control type="hidden" name="id" value=0}
         {control type="dropdown" name="product_type" label="Select Product Type"|gettext items=$product_types default="product"}
-        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
+        {control type="buttongroup" submit="Next"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

@@ -111,7 +111,7 @@ elFinder.prototype._options = {
 	commands : [
 		'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook', 
 		'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy', 
-		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help', 'resize', 'sort', 'netmount', 'netunmount', 'pixlr'
+		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help', 'resize', 'sort', 'netmount', 'netunmount', 'pixlr', 'links'
 	],
 	
 	/**
@@ -183,7 +183,9 @@ elFinder.prototype._options = {
 				// }
 			]
 		},
-		
+		// "info" command options.
+		info : {nullUrlDirLinkSelf : true},
+
 		netmount: {
 			ftp: {
 				inputs: {
@@ -430,7 +432,15 @@ elFinder.prototype._options = {
 	 * @default  true
 	 */
 	rememberLastDir : true,
-	
+
+	/**
+	 * Use browser native history with supported browsers
+	 *
+	 * @type Boolean
+	 * @default  true
+	 */
+	useBrowserHistory : true,
+
 	/**
 	 * Lazy load config.
 	 * How many files display at once?

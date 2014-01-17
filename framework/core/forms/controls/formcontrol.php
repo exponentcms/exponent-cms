@@ -85,7 +85,7 @@ abstract class formcontrol {
 		    $for = '';
 		}
 		
-		$disabled = $this->disabled != 0 ? "disabled" : "";
+		$disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
 		$class = empty($this->class) ? '' : $this->class;
 		 
 		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;

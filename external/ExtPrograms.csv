@@ -1,5 +1,4 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-CKEditor,4.3.1,ckeditor.com,4.3.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
 Swift,5.0.3,swiftmailer.org,5.0.3,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
@@ -17,24 +16,25 @@ Twitter model,2.3.1,classes.verkoyen.eu/twitter_oauth,2.3.1,placed in Twitter mo
 SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1exp,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
-dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,"optional, patched to display our images"
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
-jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
-jQueryUI,1.10.3,jqueryui.com,1.10.3,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.3,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.3,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
-Adminer,3.7.1,www.adminer.org,3.7.1,
-html5shiv,v3.7.0,https://github.com/aFarkas/html5shiv,v3.7.0,
+Adminer,4.0.2,www.adminer.org,4.0.2,
+html5shiv,v4.0.2,https://github.com/aFarkas/html5shiv,v4.0.2,
 SimpleAjaxUploader,1.8.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.9,converted to yui module
 normalize.css,2.1.3,necolas.github.com/normalize.css/,2.1.3,
 MediaElement.js,2.13.1,mediaelementjs.com/,2.13.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.1,https://github.com/scottjehl/Respond,1.4.1,
+dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,"optional, patched to display our images"
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
+CKEditor,4.3.1,ckeditor.com,4.3.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
 TinyMCE,4.0.12,http://www.tinymce.com/,4.0.12,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
+jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
+jQueryUI,1.10.3,jqueryui.com,1.10.3,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
 validate,1.11.1,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.11.1,"used by stepy, edit for 'undefined' in 'min'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
@@ -47,3 +47,5 @@ tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file f
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
 colorbox,1.4.33,http://www.jacklmoore.com/colorbox,1.4.33,
+Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
+DateTimePicker,2.1.8,http://xdsoft.net/jqplugins/datetimepicker/,2.1.8,added additional 'update' method
