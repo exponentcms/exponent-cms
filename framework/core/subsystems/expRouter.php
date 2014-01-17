@@ -617,7 +617,7 @@ class expRouter {
         } elseif ($this->url_type == 'post') {
             if (isset($_REQUEST['PHPSESSID'])) unset($_REQUEST['PHPSESSID']);
             foreach($_REQUEST as $name=>$val) {
-                if (get_magic_quotes_gpc()) $val = stripslashes($val);
+                if (get_magic_quotes_gpc()) $val = stripslashes($val);  // magic quotes fix??
                 $params[$name] = $val;
             }
         }

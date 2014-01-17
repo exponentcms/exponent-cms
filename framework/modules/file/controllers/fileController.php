@@ -404,9 +404,9 @@ class fileController extends expController {
         global $user;
 
         $error = false;
-        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);
+        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
         $files = json_decode($this->params['files']);
-        switch (json_last_error()) {
+        switch (json_last_error()) {  //FIXME json error checking/reporting, may no longer be needed
             case JSON_ERROR_NONE:
             break;
             case JSON_ERROR_DEPTH:
