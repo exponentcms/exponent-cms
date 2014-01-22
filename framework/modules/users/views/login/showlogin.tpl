@@ -13,59 +13,68 @@
  *
  *}
 
-{css unique="showlogin" link="`$asset_path`css/login.css" corecss="button"}
-
-{/css}
-
 {messagequeue}
-<div class="login default">
+
+<div class="exp-skin module login show-login">
+
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-        <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one"{/if}>
-            {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
-                {$usertype="Customers"|gettext}
-                {$label="Email Address"|gettext|cat:":"}
-            {else}
-                {$usertype="Users"|gettext}
-                {$label="Username"|gettext|cat:":"}
-            {/if}
-            <h2>{"Existing"|gettext} {$usertype}</h2>
-            <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
-            {form action=login}
-                {control type="text" name="username" label=$label size=25 required=1 prepend="user"}
-                {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
-                {control type="buttongroup" submit="Log In"|gettext}
-                {br}
-                {icon controller=users action=reset_password text='Forgot Your Password?'|gettext}
-            {/form}
-            {*{br}<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>*}
-        </div>
-        {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
-            <div class="box new-user two">
-                <h2>{"New"|gettext} {$usertype}</h2>
-                <p>
-                    {if $smarty.const.ECOM}
-                        {if $oicount>0}
-                            {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
-                            {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
-                            {icon button=true module=cart action=customerSignup text="Continue Checking Out"|gettext}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div>
+                        {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
+                            {$usertype="Customers"|gettext}
+                            {$label="Email Address"|gettext|cat:":"}
                         {else}
-                            {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
-                            {*<a class="{button_style}" href="{backlink}">{"Keep Shopping"|gettext}</a>*}
-                            {$backlink = makeLink(expHistory::getBack(1))}
-                            {icon button=true link=$backlink text="Keep Shopping"|gettext}
+                            {$usertype="Users"|gettext}
+                            {$label="Username"|gettext|cat:":"}
                         {/if}
-                    {else}
-                        {"Create a new account here."|gettext}{br}{br}
-                        {*<a class="{button_style}" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>*}
-                        {icon button=true controller=users action=create text="Create an Account"|gettext}
+                        <h2>{"Existing"|gettext} {$usertype}</h2>
+                        <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
+                        {form action=login}
+                            {control type="text" name="username" label=$label size=25 required=1 prepend="user"}
+                            {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
+
+                            {control type="buttongroup" submit="Log In"|gettext}
+
+                            <a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>
+                        {/form}
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
+                    <div>
+                        <h2>{"New"|gettext} {$usertype}</h2>
+                        <p>
+                            {if $smarty.const.ECOM}
+                                {if $oicount>0}
+                                
+                                    {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
+                                    {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
+
+                                    {icon button=true module=cart action=customerSignup text="Continue Checking Out"|gettext}
+                                {else}
+                                    {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
+                                    
+                                    {$backlink = makeLink(expHistory::getBack(1))}
+                                    <a class="btn btn-primary" href="{$backlink}">{"Keep Shopping"|gettext}</a>
+                                {/if}
+                            {else}
+                                {"Create a new account here."|gettext}
+                                
+                                <a class="btn btn-primary" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>
+                                
+                            {/if}
+                        </p>
+                    </div>
                     {/if}
-                </p>
+                </div>
             </div>
-        {/if}
+        </div>
     {else}
         {if !$smarty.const.ECOM}
             <div class=" logout">
-                {*<a class="{button_style}" href="{link action=logout}">{'Logout'|gettext}</a>*}
                 {icon button=true action=logout text='Logout'|gettext}
             </div>
         {/if}
