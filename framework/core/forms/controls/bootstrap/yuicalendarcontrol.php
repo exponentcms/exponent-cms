@@ -34,7 +34,8 @@ class yuicalendarcontrol extends formcontrol
 {
 
 //    var $disable_text = "";
-//    var $showtime = true;
+    var $showdate = true;
+    var $showtime = false;
 
     static function name()
     {
@@ -54,14 +55,15 @@ class yuicalendarcontrol extends formcontrol
     }
 
 //    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
-    function __construct($default = null)
+    function __construct($default = null, $showdate = true, $showtime = false)
     {
 //        $this->disable_text = $disable_text;
         if (empty($default)) {
             $default = time();
         }
         $this->default = $default;
-//        $this->showtime     = $showtime;
+        $this->showdate     = $showdate;
+        $this->showtime     = $showtime;
 
 //        if ($this->default == null) {
 //            if ($this->disable_text == "") $this->default = time();
@@ -75,35 +77,57 @@ class yuicalendarcontrol extends formcontrol
 //    {
 //    }
 
+    function toHTML($label, $name)
+    {
+        if (!$this->showdate && !$this->showtime) {
+            return "";
+        }
+        $html = parent::toHTML($label, $name);
+        return $html;
+    }
+
     function controlToHTML($name, $label = null)
     {
         $idname = str_replace(array('[', ']', ']['), '_', $name);
         if (is_numeric($this->default)) {
-            $default = date('m/d/Y', $this->default);
+            if ($this->showdate && !$this->showtime) {
+                $default = date('n/j/Y', $this->default);
+            } elseif (!$this->showdate && $this->showtime) {
+                $default = date('H:i', $this->default);
+            } else {
+                $default = date('n/j/Y H:i', $this->default);
+            }
         } else {
             $default = $this->default;
         }
 
         $date_input = new textcontrol($default);
-        $date_input->id = $idname;
-        $date_input->name = $idname;
+//        $date_input->id = $idname;
+//        $date_input->name = $idname;
+//        $date_input->disabled = 'disabled';
         $html = $date_input->toHTML(null, $name);
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
 
         $script = "
-            $('#" . $idname . "').datetimepicker({
-            	timepicker: false,
-            	format: 'm/d/Y',
-            	dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
-                inline: true
+            $(document).ready(function() {
+                $('#" . $idname . "').datetimepicker({
+                    datepicker: " . ($this->showdate ? 'true' : 'false') .",
+                    timepicker: " . ($this->showtime ? 'true' : 'false') .",
+                    format: '" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."',
+                    formatTime:'g:i a',
+                    step: 15,
+                    dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
+                    inline: true,
+                    value: '".$default."'
+                });
             });
         ";
 
         expJavascript::pushToFoot(
             array(
-                "unique"  => 'zzyuical-' . $idname,
+                "unique"  => '00yuical-' . $idname,
                 "jquery"  => "jquery.datetimepicker",
                 "content" => $script,
             )

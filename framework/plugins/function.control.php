@@ -70,7 +70,7 @@ function smarty_function_control($params, &$smarty) {
                 if (empty($params['value'])) $params['value'] = time();
 //                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
 //                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
-                $control = new yuicalendarcontrol($params['value']);
+                $control = new yuicalendarcontrol($params['value'], $showdate, $showtime);
                 break;
             case "datetimecontrol":
             case "datetime":

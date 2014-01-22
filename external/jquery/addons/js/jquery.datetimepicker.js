@@ -1,5 +1,5 @@
 /**
- * @preserve jQuery DateTimePicker plugin v2.1.5
+ * @preserve jQuery DateTimePicker plugin v2.1.8
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
@@ -69,6 +69,14 @@
 				],
 				dayOfWeek:[
 					'อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'
+				]
+			},
+			pl:{ // Polish
+				months: [
+					"styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", "lipiec", "sierpień", "wrzesień", "październik", "listopad", "grudzień"
+				],
+				dayOfWeek: [
+					"nd", "pn", "wt", "śr", "cz", "pt", "sb"
 				]
 			}
 		},
@@ -148,7 +156,7 @@
 					},
 					move = 0,
 					timebox = timeboxparent.children().eq(0),
-					parentHeight = timeboxparent[0].offsetHeight-2,
+					parentHeight = timeboxparent[0].clientHeight,
 					height = timebox[0].offsetHeight,
 					scrollbar = $('<div class="xdsoft_scrollbar"></div>'),
 					scroller = $('<div class="xdsoft_scroller"></div>'),
@@ -159,6 +167,8 @@
 
 				timeboxparent.addClass('xdsoft_scroller_box').append(scrollbar);
 				scroller.on('mousedown.xdsoft_scroller',function ( event ) {
+					if( !parentHeight )
+						timeboxparent.trigger('resize_scroll.xdsoft_scroller',[_percent]);
 					var pageY = event.pageY,
 						top = parseInt(scroller.css('margin-top')),
 						h1 = scrollbar[0].offsetHeight;
@@ -180,12 +190,14 @@
 
 				timeboxparent
 					.on('scroll_element.xdsoft_scroller',function( event,percent ) {
+						if( !parentHeight )
+							timeboxparent.trigger('resize_scroll.xdsoft_scroller',[percent,true]);
 						percent = percent>1?1:(percent<0||isNaN(percent))?0:percent;
 						scroller.css('margin-top',maximumOffset*percent);
 						timebox.css('marginTop',-parseInt((height-parentHeight)*percent))
 					})
-					.on('resize_scroll.xdsoft_scroller',function( event,_percent ) {
-						parentHeight = timeboxparent[0].offsetHeight-2;
+					.on('resize_scroll.xdsoft_scroller',function( event,_percent,noTriggerScroll ) {
+						parentHeight = timeboxparent[0].clientHeight;
 						height = timebox[0].offsetHeight;
 						var percent = parentHeight/height,
 							sh = percent*scrollbar[0].offsetHeight;
@@ -195,7 +207,8 @@
 							scroller.show();
 							scroller.css('height',parseInt(sh>10?sh:10));
 							maximumOffset = scrollbar[0].offsetHeight-scroller[0].offsetHeight;
-							timeboxparent.trigger('scroll_element.xdsoft_scroller',[_percent?_percent:Math.abs(parseInt(timebox.css('marginTop')))/(height-parentHeight)]);
+							if( noTriggerScroll!==true )
+								timeboxparent.trigger('scroll_element.xdsoft_scroller',[_percent?_percent:Math.abs(parseInt(timebox.css('marginTop')))/(height-parentHeight)]);
 						}
 					});
 				timeboxparent.mousewheel&&timeboxparent.mousewheel(function(event, delta, deltaX, deltaY) {
@@ -287,7 +300,7 @@
 								}else top+=items[0].offsetHeight;
 							}
 
-							select.xdsoftScroller(top/(select.children()[0].offsetHeight-(select[0].offsetHeight-2)));
+							select.xdsoftScroller(top/(select.children()[0].offsetHeight-(select[0].clientHeight)));
 							event.stopPropagation();
 							return false;
 						});
@@ -632,7 +645,7 @@
 								stop = false,
 								period = 110;
 							(function arguments_callee4(v) {
-								var pheight = timeboxparent[0].offsetHeight-2,
+								var pheight = timeboxparent[0].clientHeight,
 									height = timebox[0].offsetHeight,
 									top = Math.abs(parseInt(timebox.css('marginTop')));
 								if( $this.hasClass(options.next) && (height-pheight)- options.timeHeightInTimePicker>=top ) {
@@ -708,7 +721,7 @@
 								classes.push('xdsoft_weekend');
 							}
 
-							table+='<td data-date="'+d+'" data-month="'+m+'" data-year="'+y+'"'+' class="xdsoft_date '+ classes.join(' ')+'">'+
+							table+='<td data-date="'+d+'" data-month="'+m+'" data-year="'+y+'"'+' class="xdsoft_date xdsoft_day_of_week'+start.getDay()+' '+ classes.join(' ')+'">'+
 										'<div>'+d+'</div>'+
 									'</td>';
 
@@ -782,7 +795,7 @@
 					})
 					.on('afterOpen.xdsoft',function() {
 						if( options.timepicker && timebox.find('.xdsoft_current').length ) {
-							var pheight = timeboxparent[0].offsetHeight-2,
+							var pheight = timeboxparent[0].clientHeight,
 								height = timebox[0].offsetHeight,
 								top = timebox.find('.xdsoft_current').index()*options.timeHeightInTimePicker+1;
 							if( (height-pheight)<top )
@@ -857,7 +870,7 @@
 				datetimepicker.mousewheel&&timeboxparent.unmousewheel().mousewheel(function(event, delta, deltaX, deltaY) {
 					if( !options.scrollTime )
 						return true;
-					var pheight = timeboxparent[0].offsetHeight-2,
+					var pheight = timeboxparent[0].clientHeight,
 						height = timebox[0].offsetHeight,
 						top = Math.abs(parseInt(timebox.css('marginTop'))),
 						fl = true;
@@ -902,9 +915,9 @@
 				});
 				var setPos = function() {
 					var offset = datetimepicker.data('input').offset(), top = offset.top+datetimepicker.data('input')[0].offsetHeight-1, left = offset.left;
-					if( top+datetimepicker[0].offsetHeight>$('body').height() )
+					if( top+datetimepicker[0].offsetHeight>$(window).height() )
 						top = offset.top-datetimepicker[0].offsetHeight+1;
-					if( left+datetimepicker[0].offsetWidth>$('body').width() )
+					if( left+datetimepicker[0].offsetWidth>$(window).width() )
 						left = offset.left-datetimepicker[0].offsetWidth+datetimepicker.data('input')[0].offsetWidth;
 					datetimepicker.css({
 						left:left,
@@ -988,12 +1001,6 @@
 							return true;
 						}
 					});
-					/*.on('focusout.xdsoft',function(event) {
-						clearTimeout(timer1);
-						timer1 = setTimeout(function() {
-							//datetimepicker.trigger('close.xdsoft');
-						},100);
-					});*/
 			},
 			destroyDateTimePicker = function( input ) {
 				var datetimepicker = input.data('xdsoft_datetimepicker');
@@ -1038,6 +1045,11 @@
 							if(!this.value || !datetimepicker.data('xdsoft_datetime').isValidDate(Date.parseDate(this.value, options.format)))
 								datetimepicker.data('changed',false);
 							datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+                            break;
+                        case 'update':
+                            this.value = this.defaultValue;
+                            datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+                            datetimepicker.trigger('afterOpen.xdsoft');
 						break;
 					}
 				}else{
