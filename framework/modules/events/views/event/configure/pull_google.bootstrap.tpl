@@ -46,9 +46,8 @@
                     <a class="removegoogle btn {$btn_size} btn-danger" href="#"><i class="icon-remove-sign {$icon_size}"></i> {"Remove"|gettext}</a>
                 </li>
             {/if}
-        {foreachelse}
-            <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
         {/foreach}
+        <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
     </ul>
 
     {script unique="googlefeedpicker3" yui3mods=1}

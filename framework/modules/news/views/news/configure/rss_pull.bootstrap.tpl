@@ -40,9 +40,8 @@
     <ul id="rsspull-feeds">
         {foreach from=$config.pull_rss item=feed}
             {if $feed!=""}<li>{control type="hidden" name="pull_rss[]" value=$feed}{$feed} <a class="removerss btn {$btn_size} btn-danger" href="#"><i class="icon-remove-sign {$icon_size}"></i> {"Remove"|gettext}</a></li>{/if}
-        {foreachelse}
-            <li id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</li>
         {/foreach}
+        <li id="norssfeeds">{'You don\'t have any RSS feeds configured'|gettext}</li>
     </ul>
 
     {script unique="rssfeedpicker3" yui3mods=1}
