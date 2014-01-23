@@ -30,11 +30,11 @@ Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,"optional, patched to display our images"
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
-CKEditor,4.3.1,ckeditor.com,4.3.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
+CKEditor,4.3.1,ckeditor.com,4.3.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
 TinyMCE,4.0.12,http://www.tinymce.com/,4.0.12,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
-jQueryUI,1.10.3,jqueryui.com,1.10.3,
+jQueryUI,1.10.3,jqueryui.com,1.10.4,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
 validate,1.11.1,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.11.1,"used by stepy, edit for 'undefined' in 'min'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,

@@ -1218,7 +1218,7 @@ class eventController extends expController {
                             //FIXME we must have the real timezone offset for the date by this point
 
                             //FIXME this is for the google ical feed which is bad!
-                            if ($dtstart['value']['day'] != intval($thisday2) &&
+                            if ($dtstart['value']['day'] != intval($thisday2) && (isset($dtstart['value']['day']) && isset($dtend['value']['hour']))&&
                                 !(intval($dtstart['value']['hour']) == 0 && intval($dtstart['value']['min']) == 0  && intval($dtstart['value']['sec']) == 0
                                     && intval($dtend['value']['hour']) == 0 && intval($dtend['value']['min']) == 0  && intval($dtend['value']['sec']) == 0
                                     && (((intval($dtstart['value']['day']) - intval($dtend['value']['day'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -11)))) {
