@@ -513,6 +513,9 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
     
+    $newuibasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+    $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+
     $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
     $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
     $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
@@ -622,7 +625,7 @@ function find_config_views($paths=array(), $excludes=array()) {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -10) != '.newui.tpl') {
                     $filename = substr($file, 0, -4);
                     if (!in_array($filename, $excludes)) {
                         $fileparts = explode('_', $filename);
@@ -630,6 +633,9 @@ function find_config_views($paths=array(), $excludes=array()) {
                         $views[$filename]['file'] = $path.'/'.$file;
                         if ($framework == 'bootstrap' && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
                             $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
+                        }
+                        if (NEWUI && file_exists($path.'/'.$filename.'.newui.tpl')) {
+                            $views[$filename]['file'] = $path.'/'.$filename.'.newui.tpl';
                         }
                     }
                 }
@@ -644,10 +650,13 @@ function get_template_for_action($controller, $action, $loc=null) {
     $framework = expSession::get('framework');
 
     // set paths we will search in for the view
+    $newuibasepath = $controller->viewpath.'/'.$action.'.newui.tpl';
     $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
+    $newuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.newui.tpl';
     $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
+
 
     // the root action will be used if we don't find a view for this action and it is a derivative of
     // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
@@ -656,20 +665,12 @@ function get_template_for_action($controller, $action, $loc=null) {
     $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
     $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
 
-    if ($framework!="bootstrap") {
-        if (file_exists($themepath)) {
-            return new controllertemplate($controller, $themepath);
-        } elseif (file_exists($basepath)) {     
-            return new controllertemplate($controller, $basepath);
-        } elseif ($root_action[0] != $action) {
-            if (file_exists($rootthemepath)) {
-                return new controllertemplate($controller, $rootthemepath);
-            } elseif (file_exists($rootbasepath)) {
-                return new controllertemplate($controller, $rootbasepath);
-            }
-        }
-    } else {
-        if (file_exists($bstrapthemepath)) {
+    if (NEWUI) {
+        if (file_exists($newuithemepath)) {
+            return new controllertemplate($controller, $newuithemepath);
+        } elseif (file_exists($newuibasepath)) {   
+            return new controllertemplate($controller, $newuibasepath);
+        } elseif (file_exists($bstrapthemepath)) {     
             return new controllertemplate($controller, $bstrapthemepath);
         } elseif (file_exists($themepath)) {   
             return new controllertemplate($controller, $themepath);
@@ -684,6 +685,37 @@ function get_template_for_action($controller, $action, $loc=null) {
                 return new controllertemplate($controller, $rootbasepath);
             }
         }
+    } else {
+        if ($framework!="bootstrap") {
+            if (file_exists($themepath)) {
+                return new controllertemplate($controller, $themepath);
+            } elseif (file_exists($basepath)) {     
+                return new controllertemplate($controller, $basepath);
+            } elseif ($root_action[0] != $action) {
+                if (file_exists($rootthemepath)) {
+                    return new controllertemplate($controller, $rootthemepath);
+                } elseif (file_exists($rootbasepath)) {
+                    return new controllertemplate($controller, $rootbasepath);
+                }
+            }
+        } else {
+            if (file_exists($bstrapthemepath)) {
+                return new controllertemplate($controller, $bstrapthemepath);
+            } elseif (file_exists($themepath)) {   
+                return new controllertemplate($controller, $themepath);
+            } elseif (file_exists($bstrapbasepath)) {     
+                return new controllertemplate($controller, $bstrapbasepath);
+            } elseif (file_exists($basepath)) {     
+                return new controllertemplate($controller, $basepath);
+            } elseif ($root_action[0] != $action) {
+                if (file_exists($rootthemepath)) {
+                    return new controllertemplate($controller, $rootthemepath);
+                } elseif (file_exists($rootbasepath)) {
+                    return new controllertemplate($controller, $rootbasepath);
+                }
+            }
+        }
+
     }
 
     // if we get here it means there were no views for the this action to be found.
