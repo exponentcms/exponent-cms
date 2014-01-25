@@ -32,7 +32,7 @@ $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BU
 
 if ($user->isAdmin()) {
     $expAdminMenu = array(
-        'text'      => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
+        'text'      => 'Admin',
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',

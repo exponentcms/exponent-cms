@@ -264,6 +264,7 @@ class administrationController extends expController {
 			BASE.'framework/modules/administration/menus',
 			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
 		);
+
 		foreach ($dirs as $dir) {
 		    if (is_readable($dir)) {
 			    $dh = opendir($dir);
@@ -289,7 +290,7 @@ class administrationController extends expController {
         }
         
 		assign_to_template(array(
-            'menu'=>json_encode($sorted),
+            'menu'=>(NEWUI) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }
