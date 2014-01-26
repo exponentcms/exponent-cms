@@ -1422,7 +1422,83 @@ class expTheme
      */
     public static function buttonIcon($class)
     {
-        if (expSession::get('framework') == 'bootstrap') {
+        if (NEWUI) {
+            $btn_type = '';
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "times";
+                    $btn_type = "btn-danger btn-sm"; // red
+                    break;
+                case 'edit' :
+                    $class = "edit";
+                    $btn_type = "btn-warning btn-sm"; // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus add";
+                    $btn_type = "btn-success btn-sm"; // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download-alt";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload-alt";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "signin";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class = 'double-angle-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'double-angle-left';
+                    break;
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } elseif (expSession::get('framework') == 'bootstrap') {
             $btn_type = '';
             switch ($class) {
                 case 'delete' :

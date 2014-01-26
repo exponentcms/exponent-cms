@@ -66,7 +66,16 @@ abstract class basetemplate {
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-        if ($framework == 'bootstrap') {
+        if (NEWUI) {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/newui',
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
+//        } elseif ($head_config['framework'] == 'jquery') {
+        } elseif ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap',
