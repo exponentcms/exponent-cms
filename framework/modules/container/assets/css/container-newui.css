@@ -1,0 +1,24 @@
+.exp-container-chrome {
+  border: 1px solid #999;
+  border-width: 1px 0;
+  padding: 0;
+}
+.exp-container-chrome .exp-trigger {
+  text-transform: uppercase;
+  color: #fff;
+  font-size: .8em;
+  display: inline-block;
+  padding: 4px 8px;
+}
+.exp-container-chrome .exp-trigger:hover,
+.exp-container-chrome .exp-trigger:focus,
+.exp-container-chrome .exp-trigger:active {
+  background: #3298cf;
+  color: #fff;
+}
+.exp-container-chrome.exp-container-chrome-container {
+  background: #3ab3f4;
+}
+.exp-container-chrome.exp-container-chrome-module {
+  background: green;
+}
