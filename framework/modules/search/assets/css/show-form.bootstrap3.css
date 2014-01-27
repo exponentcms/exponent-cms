@@ -5,19 +5,20 @@
 }
 
 .search.show-form input {
-    width:87%!important;
+    width:80%;
     margin-top:0;
 	padding: 7px 12px;
-	height: 87%;
+	/*height: 87%;*/
 }
 
-.search.show-form .button {
-/*    position:absolute;
-    top:4px; */
-    right:0;
-    /*width:30%;*/
-    padding:5px;
-    margin-right:0;
+.search.show-form button {
+    /*position:absolute;*/
+    /*top:4px; */
+    /*right:0;*/
+    /*padding:5px;*/
+    /*margin-right:0;*/
+    width: auto;
+    line-height: inherit;
 }
 
 .search.show-form .control {
