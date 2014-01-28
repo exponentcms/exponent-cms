@@ -64,11 +64,11 @@
 </nav>
 </div>
 
-{script unique="z-admin" jquery=1 src="/external/bootstrap3/js/dropdown.js"}
+{script unique="z-admin" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/bootstrap3/js/dropdown.js"}
 
 {/script}
 
-{script unique="z-admin2" jquery=1 src="/external/bootstrap3/js/collapse.js"}
+{script unique="z-admin2" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/bootstrap3/js/collapse.js"}
 {literal}
 jQuery(document).ready(function($) {
 

@@ -187,7 +187,7 @@ class expTheme
                 "corecss"=>"newui"
             ));
             expCSS::pushToHead(array(
-                "link"=>"/external/font-awesome-4/css/font-awesome.min.css"
+                "link"=>PATH_RELATIVE . "external/font-awesome-4/css/font-awesome.min.css"
             ));
             array_unshift($auto_dirs, BASE . 'framework/core/forms/bootstrap3');            
         }
