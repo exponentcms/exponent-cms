@@ -30,9 +30,8 @@
     <ul id="icalpull-feeds">
         {foreach from=$config.pull_ical item=feed name=feed}
             {if $feed!=""}<li>{control type="hidden" name="pull_ical[]" value=$feed}{control type=color label=$feed name="pull_ical_color[]" id="pull_ical_color`$smarty.foreach.feed.index`" value=$config.pull_ical_color[$smarty.foreach.feed.index] hide=1 flip=1}<a class="delete removeical" href="#">{"Remove"|gettext}</a></li>{/if}
-        {foreachelse}
-            <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
         {/foreach}
+        <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
     </ul>
 
     {script unique="icalfeedpicker3" yui3mods=1}

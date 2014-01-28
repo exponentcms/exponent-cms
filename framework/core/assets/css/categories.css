@@ -1,0 +1,9 @@
+.showall .item {
+  margin-left: 10px;
+  padding-left: 10px;
+}
+.showall .category {
+  border-width: 1px;
+  border-color: black;
+  border-style: solid none;
+}
