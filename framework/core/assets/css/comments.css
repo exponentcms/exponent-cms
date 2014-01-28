@@ -1,0 +1,71 @@
+.exp-comments h3 {
+  border-bottom: 1px solid #777777;
+}
+.exp-comments .avatar {
+  float: left;
+  border: none;
+  margin: 5px;
+}
+.exp-comments ol.commentlist {
+  margin: 0;
+  padding: 0;
+}
+.exp-comments .commentlist li {
+  position: relative;
+  margin: 0;
+  padding: 1px;
+  list-style: none;
+  border: 1px solid #CCD1DD;
+  margin-bottom: 5px;
+  overflow: auto;
+}
+.exp-comments .commentlist li cite {
+  display: block;
+  font-style: normal;
+  font-weight: bold;
+  padding: 1px;
+}
+.exp-comments .commentlist li cite .comment-date {
+  position: absolute;
+  right: 5px;
+  top: 3px;
+  font-size: 85%;
+  padding-top: 1px;
+}
+.exp-comments .commentlist li cite .attribution {
+  display: block;
+  background: #CCD1DD;
+  padding: 1px 5px;
+}
+.exp-comments .commentlist li cite .date {
+  font-size: .8em;
+  font-weight: normal;
+  position: absolute;
+  top: 2px;
+  right: 10px;
+}
+.exp-comments .commentlist li cite img {
+  float: left;
+  margin-right: 10px;
+}
+.exp-comments .commentlist li .comment-text {
+  clear: both;
+  margin: 0;
+}
+.exp-comments .commentlist li.alt {
+  background: #FAF7F5;
+}
+.exp-comments a.comment-reply {
+  text-decoration: none;
+  font-size: 85%;
+}
+.exp-comments .commentlist ul {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.exp-comments .bodycopy {
+  display: table-cell;
+}
+div.comment-block {
+  margin-left: -2em;
+}

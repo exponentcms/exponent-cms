@@ -1,0 +1,113 @@
+input[type="color"] {
+  height: 24px;
+  width: 20px;
+  padding: 0;
+}
+textarea {
+  width: auto;
+}
+input[type="search"] {
+  width: 160px;
+}
+input.password {
+  width: 200px;
+  vertical-align: top;
+}
+.datetime.date input[type="text"] {
+  width: 60px;
+}
+.datetime.date select {
+  width: 120px;
+}
+.datetime.date.time select {
+  width: 80px;
+}
+.control.calendar-control input.text {
+  width: 120px;
+}
+.control.calendar-control input.timebox,
+.control .datetime input.timebox {
+  width: 30px;
+}
+.control.calendar-control select,
+.control .datetime select {
+  width: 60px;
+}
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] {
+  margin-left: 0;
+  margin-right: 5px;
+}
+.radio,
+.checkbox {
+  padding-left: 0px;
+}
+input.radio,
+input.checkbox {
+  float: none;
+  margin-right: 2px;
+}
+input[type="number"] {
+  margin-bottom: 2px !important;
+  width: 60px;
+}
+.range-control.control {
+  width: 214px;
+}
+li [class^="fa-"],
+li [class*=" fa-"],
+li .fa-lg[class^="fa-"],
+li .fa-lg[class*=" fa-"] {
+  width: auto;
+}
+a.fa-sort,
+.container-chrome ul li a.fa-sort {
+  background: url("../images/rerank.png") no-repeat scroll 0 50% transparent;
+  background: none;
+}
+.control .radio label,
+.control .checkbox label {
+  margin-bottom: 0px !important;
+}
+.add-to-cart-btn,
+.add-to-cart-btn a,
+.add-to-cart-btn button {
+  line-height: 2.4;
+}
+.add-to-cart-btn.input button {
+  padding-left: 60px;
+}
+.add-to-cart-btn input[type="text"] {
+  width: 24px;
+  z-index: 999;
+  color: #000000;
+}
+.alt-body {
+  padding: 4px;
+  border: 1px solid #999;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.alt-item {
+  padding: 8px;
+  border: 1px solid #999;
+  background: #dedede;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+}
+.alt-control .control {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.text-control select[multiple] {
+  height: 200px;
+  width: 500px;
+}
+.text-control {
+  margin-bottom: 5px;
+}
+.label {
+  color: #000000;
+}
