@@ -1,7 +1,16 @@
 .exp-container-chrome {
-  border: 1px solid #999;
-  border-width: 1px 0;
-  padding: 0;
+  border: 1px solid #0061a0;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0YmMxZmUiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwNjFhMCIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
+  background-image: -webkit-linear-gradient(top, #4bc1fe 0%, #0061a0 100%);
+  background-image: -moz-linear-gradient(top, #4bc1fe 0%, #0061a0 100%);
+  background-image: -o-linear-gradient(top, #4bc1fe 0%, #0061a0 100%);
+  background-image: linear-gradient(to bottom, #4bc1fe 0%, #0061a0 100%);
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
 }
 .exp-container-chrome .exp-trigger {
   text-transform: uppercase;
@@ -9,16 +18,69 @@
   font-size: .8em;
   display: inline-block;
   padding: 4px 8px;
+  text-shadow: 1px 1px 0px #000;
 }
 .exp-container-chrome .exp-trigger:hover,
 .exp-container-chrome .exp-trigger:focus,
 .exp-container-chrome .exp-trigger:active {
-  background: #3298cf;
   color: #fff;
 }
-.exp-container-chrome.exp-container-chrome-container {
-  background: #3ab3f4;
+.exp-container-chrome .exp-trigger:focus,
+.exp-container-chrome .exp-trigger:active {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMzMGFkZWMiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAxODBjYSIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
+  background-image: -webkit-linear-gradient(top, #30adec 0%, #0180ca 100%);
+  background-image: -moz-linear-gradient(top, #30adec 0%, #0180ca 100%);
+  background-image: -o-linear-gradient(top, #30adec 0%, #0180ca 100%);
+  background-image: linear-gradient(to bottom, #30adec 0%, #0180ca 100%);
 }
 .exp-container-chrome.exp-container-chrome-module {
-  background: green;
+  border: 1px solid #2b7328;
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0ZmM2NGEiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzJiNzMyOCIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
+  background-image: -webkit-linear-gradient(top, #4fc64a 0%, #2b7328 100%);
+  background-image: -moz-linear-gradient(top, #4fc64a 0%, #2b7328 100%);
+  background-image: -o-linear-gradient(top, #4fc64a 0%, #2b7328 100%);
+  background-image: linear-gradient(to bottom, #4fc64a 0%, #2b7328 100%);
+}
+.exp-container-chrome.exp-container-chrome-module .exp-trigger:hover,
+.exp-container-chrome.exp-container-chrome-module .exp-trigger:focus,
+.exp-container-chrome.exp-container-chrome-module .exp-trigger:active {
+  background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMSAxIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJub25lIj48bGluZWFyR3JhZGllbnQgaWQ9Imxlc3NoYXQtZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM0OGI2NDQiIHN0b3Atb3BhY2l0eT0iMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzM4OTMzNSIgc3RvcC1vcGFjaXR5PSIxIi8+PC9saW5lYXJHcmFkaWVudD48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iMSIgaGVpZ2h0PSIxIiBmaWxsPSJ1cmwoI2xlc3NoYXQtZ2VuZXJhdGVkKSIgLz48L3N2Zz4=);
+  background-image: -webkit-linear-gradient(top, #48b644 0%, #389335 100%);
+  background-image: -moz-linear-gradient(top, #48b644 0%, #389335 100%);
+  background-image: -o-linear-gradient(top, #48b644 0%, #389335 100%);
+  background-image: linear-gradient(to bottom, #48b644 0%, #389335 100%);
+}
+.exp-addmodule-link {
+  text-align: center;
+  display: block;
+  color: #3d5c39;
+  font-weight: bold;
+  padding: 5px;
+  border: 1px dashed #64855f;
+  margin: 5px;
+  background: #c1d9bf;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-shadow: 1px 1px 0px #fff;
+  -webkit-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  -webkit-border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-border-radius: 5px;
+  -moz-background-clip: padding;
+  border-radius: 5px;
+  background-clip: padding-box;
+  -webkit-transition: background 0.5s ease-out, color 0.5s ease-out, text-shadow 0.5s ease-out, opacity 0.5s ease-out;
+  -moz-transition: background 0.5s ease-out, color 0.5s ease-out, text-shadow 0.5s ease-out, opacity 0.5s ease-out;
+  -o-transition: background 0.5s ease-out, color 0.5s ease-out, text-shadow 0.5s ease-out, opacity 0.5s ease-out;
+  transition: background 0.5s ease-out, color 0.5s ease-out, text-shadow 0.5s ease-out, opacity 0.5s ease-out;
+}
+.exp-addmodule-link:hover {
+  -webkit-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  background: #50804c;
+  color: #fff;
+  text-shadow: 1px 1px 0px #555;
 }

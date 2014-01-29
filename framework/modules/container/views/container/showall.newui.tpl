@@ -22,7 +22,7 @@
             {css unique="admin-container" link="`$asset_path`css/container-newui.css"}
 
             {/css}
-            {script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
+            {script unique="container-chrome" jquery=1 }
 
             {/script}
             <div id="cont{$top->id}" class="exp-container-module-wrapper">
@@ -58,7 +58,7 @@
         {/if}
     {/if}
 	{if $permissions.create && empty($hidebox)}
-		<a class="addmodule" href="{link action=edit rerank=1 rank=1}"><span class="addtext">{"Add Module"|gettext}</span></a>
+		<a class="exp-addmodule-link" href="{link action=edit rerank=1 rank=1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
 	{/if}
 {/permissions}
 
@@ -75,12 +75,9 @@
                  || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
                 
                 {* repeating css and JS calls in case they only have module management, and are not admins *}
-                {css unique="admin-container" link="`$asset_path`css/admin-container.css"}
+                {css unique="admin-container" link="`$asset_path`css/container-newui.css"}
 
                 {/css}
-            	{script yui3mods="1" unique="container-chrome" src="`$smarty.const.JS_RELATIVE`exp-container.js"}
-
-            	{/script}
 				<div id="module{$container->id}" class="exp-container-module-wrapper"{if !empty($container->hasParent)} style="border: 1px dashed darkgray; padding: 0.25em;"{/if}>
                     {if $i == $containers|@count}
                         {$last=true}
@@ -97,7 +94,7 @@
             {/if}
         {/permissions}
 
-                    {$container->output}
+        {$container->output}
 
         {permissions}
                 {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
@@ -108,7 +105,7 @@
 
 		{permissions}
 			{if $permissions.create && $hidebox == 0}
-				<a class="addmodule" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration+1}"><span class="addtext">{"Add Module"|gettext}</span></a>
+				<a class="exp-addmodule-link" href="{link action=edit rerank=1 rank=$smarty.foreach.c.iteration+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
 			{/if}
 		{/permissions}
 	{/if}
