@@ -33,6 +33,7 @@ $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BU
 if ($user->isAdmin()) {
     $expAdminMenu = array(
         'text'      => 'Admin',
+        'icon'      => 'fa-star',
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',

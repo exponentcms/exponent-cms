@@ -32,7 +32,8 @@ if ($new_orders > 0) {
 };
 
 $ecom = array(
-    'text'      => gt('e-Commerce'),
+    'text'      => gt('E-commerce'),
+    'icon' => 'fa-dollar',
     'classname' => 'ecom',
     'submenu'   => array(
         'id'       => 'ecomm',

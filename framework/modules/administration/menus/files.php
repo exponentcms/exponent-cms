@@ -58,6 +58,7 @@ if ($user->isSuperAdmin()) {
 return array(
     'text'      => gt('Files'),
     'classname' => 'files',
+    'icon' => 'fa-camera-retro',
     'submenu'   => array(
         'id'       => 'events',
         'itemdata' => $items,

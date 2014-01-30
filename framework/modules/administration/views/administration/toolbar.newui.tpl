@@ -14,11 +14,15 @@
  *}
 
 
+{css unique="slingbar" link="`$asset_path`css/exp-toolbar.css"}
+
+{/css}
+
 {* define the function *}
 {function name=menu level=0}
 {if is_array($data.submenu)}
     <li class="dropdown-submenu">
-        <a href="#">{$data.text}</a>
+        <a href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{else}<i class="fa fa-fw"></i>{/if} {$data.text}</a>
         <ul class="dropdown-menu">
             {foreach from=$data.submenu.itemdata item=mitem name=sbmenutwo}
                 {menu data=$mitem}
@@ -27,7 +31,7 @@
     </li>
 {else}
     <li>
-        <a id="{$data.id}" href="{$data.url|default:'#'}">{$data.text}</a>
+        <a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{else}<i class="fa fa-fw"></i>{/if} {$data.text}</a>
    </li>
 {/if}
 {/function}
@@ -51,7 +55,7 @@
         {foreach from=$menu item=topnav name=tbmenu}
         <ul class="nav navbar-nav{if $topnav.alignright} navbar-right{/if}">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{$topnav.text} <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{if $topnav.icon}<i class="fa {$topnav.icon} fa-fw"></i>{/if} {$topnav.text} <b class="caret"></b></a>
                 <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
                     {foreach from=$topnav.submenu.itemdata item=subitem name=sbmenu}
                         {menu data=$subitem}

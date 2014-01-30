@@ -35,24 +35,27 @@ if (expSession::is_set('uilevel')) {
 $items = array();
 if (!$user->globalPerm('prevent_profile_change')) {
     $items[] = array(
-        'text'      => '<i class="fa fa-edit"></i>&nbsp;' . gt("Edit My Profile"),
+        'text'      => gt("Edit My Profile"),
         'url'       => makeLink(array('controller' => 'users', 'action' => 'edituser', 'id' => $user->id)),
         'classname' => 'edit',
+        'icon'   => 'fa-edit'
     );
 }
 
 if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(
-        'text'      => '<i class="fa fa-lock"></i>&nbsp;' . gt("Change My Password"),
+        'text'      => gt("Change My Password"),
         'url'       => makeLink(array('controller' => 'users', 'action' => 'change_password')),
         'classname' => 'password',
+        'icon'   => 'fa-lock'
     );
 }
 
 $items[] = array(
-    'text'      => '<i class="fa fa-sign-out"></i>&nbsp;' . gt("Log Out"),
+    'text'      => gt("Log Out"),
     'url'       => makeLink(array('controller' => 'login', 'action' => 'logout')),
     'classname' => 'logout',
+    'icon'   => 'fa-sign-out'
 );
 
 if (!$user->isAdmin()) {
@@ -71,16 +74,18 @@ if (!$user->isAdmin()) {
 
 if ($previewperms) { // must be an admin user to use toggle_preview method
     $items[] = array(
-        'text'      => ($level == UILEVEL_PREVIEW) ? '<i class="fa fa-eye-slash"></i>&nbsp;' . gt('Turn Preview Mode off') : '<i class="fa fa-eye"></i>&nbsp;' . gt('Turn Preview Mode on'),
+        'text'      => ($level == UILEVEL_PREVIEW) ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'),
         'classname' => ($level == UILEVEL_PREVIEW) ? 'preview_on' : 'preview_off',
-        'url'       => makeLink(array('controller' => 'administration', 'action' => 'toggle_preview'))
+        'url'       => makeLink(array('controller' => 'administration', 'action' => 'toggle_preview')),
+        'icon'   => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash' : 'fa-eye'
     );
 }
 
 return array(
-    'text'       => '<i class="fa fa-user"></i>&nbsp;' . $user->firstname . ' ' . $user->lastname,
+    'text'       => $user->firstname . ' ' . $user->lastname,
     'classname'  => 'quicklink user',
     'alignright' => 1,
+    'icon'   => 'fa-user',
     'submenu'    => array(
         'id'       => 'events',
         'itemdata' => $items,

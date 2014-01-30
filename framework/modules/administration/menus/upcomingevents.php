@@ -69,6 +69,7 @@ foreach ($events as $event) {
 
 return array(
     'text'      => gt('Upcoming Events'),
+    'icon' => 'fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'events',

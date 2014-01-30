@@ -90,6 +90,7 @@ if ($manageperms) {
 
 return array(
     'text'      => gt('Pages'),
+    'icon' => 'fa-file-text-o',
     'classname' => 'thispage',
     'submenu'   => $info
 );
