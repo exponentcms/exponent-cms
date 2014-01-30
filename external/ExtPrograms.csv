@@ -18,7 +18,7 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1exp,"placed in Pixidou module, heavi
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
-Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.0.3,"patched bootstrap.less for & includes swatches, fontawesome"
+Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.1.0,"patched bootstrap.less for & includes swatches, fontawesome"
 Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.3,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,4.0.2,www.adminer.org,4.0.2,
@@ -30,22 +30,22 @@ Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,"optional, patched to display our images"
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
-CKEditor,4.3.1,ckeditor.com,4.3.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
-TinyMCE,4.0.12,http://www.tinymce.com/,4.0.12,add xenmce skin
+CKEditor,4.3.2,ckeditor.com,4.3.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
+TinyMCE,4.0.14,http://www.tinymce.com/,4.0.14,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
-jQuery,1.10.2,jquery.com,1.10.2/2.0.3,
-jQueryUI,1.10.3,jqueryui.com,1.10.4,
+jQuery,1.11.0,jquery.com,1.11.0/2.0.3,
+jQueryUI,1.10.4,jqueryui.com,1.10.4,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
 validate,1.11.1,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.11.1,"used by stepy, edit for 'undefined' in 'min'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.3,http://trentrichardson.com/examples/timepicker/,1.4.3,used by adminer
 DataTables,1.9.4,http://www.datatables.net,1.9.4,
-Responsive DataTables,1.4.1,https://github.com/Comanche/datatables-responsive,1.4.1,includes lodash & DT_bootstrap
+Responsive DataTables,0.1.3,https://github.com/Comanche/datatables-responsive,0.1.3,includes lodash & DT_bootstrap
 spectrum,1.2.0,http://bgrins.github.io/spectrum/,1.2.0,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
-colorbox,1.4.33,http://www.jacklmoore.com/colorbox,1.4.33,
+colorbox,1.4.35,http://www.jacklmoore.com/colorbox,1.4.35,
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
 DateTimePicker,2.1.8,http://xdsoft.net/jqplugins/datetimepicker/,2.1.8,added additional 'update' method
