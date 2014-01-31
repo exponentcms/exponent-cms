@@ -87,7 +87,8 @@ a.import,
 a.manage,
 a.merge,
 a.reranklink,
-a.revisions {
+a.revisions,
+a.approve {
   padding: 3px 3px 3px 20px;
   display: inline-block;
   *display: inline;
@@ -130,6 +131,9 @@ a.reranklink,
 }
 a.revisions {
   background: url(../images/revisions.png) no-repeat 0 50%;
+}
+a.approve {
+  background: url(../images/action_check.png) no-repeat 0 50%;
 }
 a.ajax {
   background: url(../images/ajax-loader.gif) no-repeat 0 50%;
@@ -291,4 +295,55 @@ div.editable {
 }
 div.editable:hover {
   border-color: #ff8938;
+}
+div.item.unapproved,
+li.item.unapproved {
+  border-color: #ff0000;
+  border-width: thin;
+  border-style: dotted;
+  background-color: #ffe990 !important;
+}
+div.item .revisionnum {
+  margin-right: 2px;
+  padding: 2px;
+  color: black;
+  background-color: #ffe990 !important;
+  border-color: darkgrey;
+  border-width: thin;
+  border-style: solid;
+  cursor: pointer;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+}
+div.item.unapproved .revisionnum,
+li.item.unapproved .revisionnum {
+  color: #ff0000;
+  background-color: white;
+}
+div.item.unapproved:hover,
+li.item.unapproved:hover {
+  border-color: transparent;
+  background-color: inherit !important;
+}
+.current-revision,
+.current-revision a {
+  color: black;
+  background-color: rgba(151,255,141,0.29);
+}
+div.item.unapproved:hover .revisionnum,
+li.item.unapproved:hover .revisionnum,
+.unapproved.revision,
+.unapproved.revision a {
+  background-color: #ffe990 !important;
+}
+.revision a {
+  color: inherit;
+  text-decoration: none;
+}
+.revision a:hover,
+div.revision:hover {
+  color: black !important;
+  background-color: rgba(255,248,183,0.55) !important;
+  text-decoration: none;
 }
