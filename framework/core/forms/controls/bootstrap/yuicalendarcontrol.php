@@ -105,7 +105,8 @@ class yuicalendarcontrol extends formcontrol
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
-        $html = $date_input->toHTML(null, $name);
+        $html = "<!-- cke lazy -->";
+        $html .= $date_input->toHTML(null, $name);
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
@@ -121,6 +122,12 @@ class yuicalendarcontrol extends formcontrol
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
                     inline: true,
                     value: '".$default."'
+                });
+                $('#" . $idname . "').datetimepicker('update');
+            });
+            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                Y.Global.on('lazyload:cke', function() {
+                    $('#" . $idname . "').datetimepicker('update');
                 });
             });
         ";
