@@ -168,7 +168,7 @@ class expCSS {
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (!empty($file)) {
+                if (!empty($file) && file_exists($_SERVER['DOCUMENT_ROOT'].$file)) {
                     if (strlen($srt[$i])+strlen($file) <= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file.",";
                     } else {

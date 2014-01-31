@@ -157,12 +157,14 @@ class expJavascript {
                 }
             }
             foreach ($expJS as $file) {
-                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
-                    $srt[$i] .= $file['fullpath'].",";
-                } else {
-                    $i++;
-//                    $srt[$i] = "";
-                    $srt[$i] = $file['fullpath'].",";
+                if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
+                    if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
+                        $srt[$i] .= $file['fullpath'].",";
+                    } else {
+                        $i++;
+    //                    $srt[$i] = "";
+                        $srt[$i] = $file['fullpath'].",";
+                    }
                 }
             }
             foreach ($srt as $link) {
