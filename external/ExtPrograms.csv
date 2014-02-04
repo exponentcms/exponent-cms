@@ -19,7 +19,7 @@ class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou modu
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
 Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.1.0,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.0.3,
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.1.0,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,4.0.2,www.adminer.org,4.0.2,
 html5shiv,v4.0.2,https://github.com/aFarkas/html5shiv,v4.0.2,
@@ -31,7 +31,7 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6.0b3,"optional, patched to display our images"
 mPDF,5.7.1,http://mpdf1.com/,5.7.1,optional
 CKEditor,4.3.2,ckeditor.com,4.3.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
-TinyMCE,4.0.14,http://www.tinymce.com/,4.0.14,add xenmce skin
+TinyMCE,4.0.16,http://www.tinymce.com/,4.0.16,add xenmce skin
 elFinder,2.1xn,http://elfinder.org/,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 jQuery,1.11.0,jquery.com,1.11.0/2.0.3,
 jQueryUI,1.10.4,jqueryui.com,1.10.4,

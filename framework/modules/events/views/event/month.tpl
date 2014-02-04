@@ -176,7 +176,7 @@
     $('a.icalpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
-            inline: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
+            html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
             maxWidth: 500
         });
         e.preventDefault();
