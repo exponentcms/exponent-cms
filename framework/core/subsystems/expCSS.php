@@ -46,10 +46,11 @@ class expCSS {
                 } else {
                     $path_rel = '';
                 }
-                $css_path = str_replace("/less/","/css/",$less_path);
-                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                $less_path = ltrim($less_path, '/');
+                $css_path = str_replace("/less/", "/css/", $less_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
                 //indexing the array by the filename
-                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
+                if (self::auto_compile_less($less_path, $css_path, $lless_vars))
                     $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
@@ -75,10 +76,11 @@ class expCSS {
                 } else {
                     $path_rel = '';
                 }
-                $css_path = str_replace("/less/","/css/",$less_path);
-                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                $less_path = ltrim($less_path, '/');
+                $css_path = str_replace("/less/", "/css/", $less_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
                 //indexing the array by the filename
-                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
+                if (self::auto_compile_less($less_path, $css_path, $lless_vars))
                     $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
@@ -166,7 +168,7 @@ class expCSS {
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (!empty($file)) {
+                if (!empty($file) && file_exists($_SERVER['DOCUMENT_ROOT'].$file)) {
                     if (strlen($srt[$i])+strlen($file) <= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file.",";
                     } else {
