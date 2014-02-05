@@ -88,7 +88,7 @@ class expJavascript {
 ////                        $srt[$i] = "";
 //                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
 //                    }
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), $head_config['lessvars']);
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     expCSS::pushToHead(array(
                		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                         "lessvars"=>$lessvars,
@@ -157,12 +157,14 @@ class expJavascript {
                 }
             }
             foreach ($expJS as $file) {
-                if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
-                    $srt[$i] .= $file['fullpath'].",";
-                } else {
-                    $i++;
-//                    $srt[$i] = "";
-                    $srt[$i] = $file['fullpath'].",";
+                if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
+                    if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
+                        $srt[$i] .= $file['fullpath'].",";
+                    } else {
+                        $i++;
+    //                    $srt[$i] = "";
+                        $srt[$i] = $file['fullpath'].",";
+                    }
                 }
             }
             foreach ($srt as $link) {
@@ -176,11 +178,11 @@ class expJavascript {
                 if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     expCSS::pushToHead(array(
-               		    "lessprimer"=>"/external/bootstrap/less/bootstrap.less",
+               		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                         "lessvars"=>$lessvars,
                     ));
                     expCSS::pushToHead(array(
-               		    "lessprimer"=>"/external/bootstrap/less/responsive.less",
+               		    "lessprimer"=>"external/bootstrap/less/responsive.less",
                         "lessvars"=>$lessvars,
                     ));
                 }
