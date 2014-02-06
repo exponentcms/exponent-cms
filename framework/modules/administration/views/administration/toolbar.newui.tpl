@@ -18,11 +18,11 @@
 
 {/css}
 
-{* define the function *}
+{* define the function to draw out the menus *}
 {function name=menu level=0}
 {if is_array($data.submenu)}
     <li class="dropdown-submenu">
-        <a href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{else}<i class="fa fa-fw"></i>{/if} {$data.text}</a>
+        <a href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
         <ul class="dropdown-menu">
             {foreach from=$data.submenu.itemdata item=mitem name=sbmenutwo}
                 {menu data=$mitem}
@@ -30,15 +30,21 @@
         </ul>
     </li>
 {else}
-    <li>
-        <a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{else}<i class="fa fa-fw"></i>{/if} {$data.text}</a>
-   </li>
+    {if $data.info}
+     <li role="presentation" class="dropdown-header">
+        {$data.text}
+    </li>
+    {else}
+     <li>
+         <a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
+    </li>
+    {/if}
 {/if}
 {/function}
 
 <div class="exp-skin">  
 
-<nav id="toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+<nav id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -47,7 +53,9 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <!-- <a class="navbar-brand" href="#"><img src="{$asset_path}images/admintoolbar/expbar.png"></a> -->
+    <a class="navbar-brand" href="{$smarty.const.URL_FULL}">
+        {include file="logo.tpl"}
+    </a>
   </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -76,7 +84,7 @@
 {literal}
 jQuery(document).ready(function($) {
 
-    $('body').css('margin-top', $('#toolbar').height()+10);
+    $('body').css('margin-top', $('#admin-toolbar').height()+10);
 
     var adminerwindow = function (){
         var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');

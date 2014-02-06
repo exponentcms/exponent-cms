@@ -46,11 +46,12 @@ $info = array(
     'itemdata' => array(
         array(
             'classname' => 'info',
+            'icon' => 'fa-info-circle',
             'text'      => gt('Information'),
             "submenu"   => array(
                 'id'       => 'pginfo',
                 'itemdata' => array(
-                    array('classname' => 'moreinfo', 'text' => gt("Name") . " : " . $page->name . "<br />ID : " . $page->id . "<br />" . gt("SEF Name") . " : " . $page->sef_name . "<br />" . gt("Subtheme") . " : " . $subtheme, "disabled" => true)
+                    array('classname' => 'moreinfo', 'info' => '1', 'text' => gt("Name") . " : " . $page->name . "<br />ID : " . $page->id . "<br />" . gt("SEF Name") . " : " . $page->sef_name . "<br />" . gt("Subtheme") . " : " . $subtheme, "disabled" => true)
                 )
             )
         )
@@ -58,12 +59,12 @@ $info = array(
 );
 
 if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $section))) {
-    $info['itemdata'][] = array('text' => gt('Edit this page'), 'classname' => 'edit', 'url' => makeLink(array('module' => 'navigation', 'action' => 'edit_contentpage', 'id' => $page->id)));
+    $info['itemdata'][] = array('text' => gt('Edit this page'), 'classname' => 'edit', 'icon' => 'fa-edit', 'url' => makeLink(array('module' => 'navigation', 'action' => 'edit_contentpage', 'id' => $page->id)));
 }
 
 if ($user->isAdmin()) {
-    $info['itemdata'][] = array('text' => gt('Manage User Permissions'), 'classname' => 'user', 'url' => makeLink(array('controller' => 'users', 'action' => 'userperms', 'mod' => 'navigation', "int" => $page->id)));
-    $info['itemdata'][] = array('text' => gt('Manage Group Permissions'), 'classname' => 'group', 'url' => makeLink(array('controller' => 'users', 'action' => 'groupperms', 'mod' => 'navigation', "int" => $page->id)));
+    $info['itemdata'][] = array('text' => gt('Manage User Permissions'), 'classname' => 'user', 'icon' => 'fa-user', 'url' => makeLink(array('controller' => 'users', 'action' => 'userperms', 'mod' => 'navigation', "int" => $page->id)));
+    $info['itemdata'][] = array('text' => gt('Manage Group Permissions'), 'classname' => 'group', 'icon' => 'fa-group', 'url' => makeLink(array('controller' => 'users', 'action' => 'groupperms', 'mod' => 'navigation', "int" => $page->id)));
 }
 
 //FIXME do we just need to let any user w/ manage page perms to get to the manage menu hierarchy and let it decide perms from there?
@@ -85,7 +86,7 @@ if ($user->isAdmin()) {
 }
 
 if ($manageperms) {
-    $info['itemdata'][] = array('text' => gt('Manage all pages'), 'classname' => 'sitetree', 'url' => makeLink(array('module' => 'navigation', 'action' => 'manage')));
+    $info['itemdata'][] = array('text' => gt('Manage all pages'), 'icon' => 'fa-leaf', 'classname' => 'sitetree', 'url' => makeLink(array('module' => 'navigation', 'action' => 'manage')));
 }
 
 return array(
