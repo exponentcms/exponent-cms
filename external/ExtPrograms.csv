@@ -18,11 +18,11 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1exp,"placed in Pixidou module, heavi
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,
-Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.1.0,"patched bootstrap.less for & includes swatches, fontawesome"
-Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.1.0+1,
+Twitter-Bootstrap,2.3.2,twitter.github.com/bootstrap,2.3.2/3.1.1,"patched bootstrap.less for & includes swatches, fontawesome"
+Bootswatch,2.3.2,bootswatch.com/,2.3.2/3.1.1,
 Font-Awesome,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1/4.0.3,updated FontAwesomePath in variables.less
 Adminer,4.0.3,www.adminer.org,4.0.3,
-html5shiv,v4.0.2,https://github.com/aFarkas/html5shiv,v4.0.2,
+html5shiv,4.0.2,https://github.com/aFarkas/html5shiv,4.0.2,
 SimpleAjaxUploader,1.8.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.9.1,converted to yui module
 normalize.css,3.0.0,necolas.github.com/normalize.css/,3.0.0,
 MediaElement.js,2.13.2,mediaelementjs.com/,2.13.2,
@@ -42,10 +42,10 @@ placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.3,http://trentrichardson.com/examples/timepicker/,1.4.3,used by adminer
 DataTables,1.9.4,http://www.datatables.net,1.9.4,
 Responsive DataTables,0.1.3,https://github.com/Comanche/datatables-responsive,0.1.3,includes lodash & DT_bootstrap
-spectrum,1.3.0,http://bgrins.github.io/spectrum/,1.3.0,
+spectrum,1.3.1,http://bgrins.github.io/spectrum/,1.3.1,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
-colorbox,1.4.36,http://www.jacklmoore.com/colorbox,1.4.36,
+colorbox,1.4.37,http://www.jacklmoore.com/colorbox,1.4.37,using style #5
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
-DateTimePicker,2.1.9,http://xdsoft.net/jqplugins/datetimepicker/,2.1.9,added additional 'update' method
+DateTimePicker,2.1.9,http://xdsoft.net/jqplugins/datetimepicker/,2.1.9exp,added additional 'update' method
