@@ -88,7 +88,7 @@ class expJavascript {
 ////                        $srt[$i] = "";
 //                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
 //                    }
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), $head_config['lessvars']);
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",

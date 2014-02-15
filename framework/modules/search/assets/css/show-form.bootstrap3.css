@@ -5,7 +5,7 @@
 }
 
 .search.show-form input {
-    width:80%;
+    width:74%;
     margin-top:0;
 	padding: 7px 12px;
 	/*height: 87%;*/
@@ -19,6 +19,7 @@
     /*margin-right:0;*/
     width: auto;
     line-height: inherit;
+	font-size: 100%;
 }
 
 .search.show-form .control {

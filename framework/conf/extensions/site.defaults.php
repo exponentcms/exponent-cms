@@ -50,4 +50,6 @@ if (!defined('FORCE_ECOM')) define('FORCE_ECOM','0');
 if (!defined('ECOM_CURRENCY')) define('ECOM_CURRENCY','USD');
 if (!defined('SKIP_VERSION_CHECK')) define('SKIP_VERSION_CHECK','0');
 
+if (!defined('LESS_COMPILER')) define('LESS_COMPILER','less.php');
+
 ?>
