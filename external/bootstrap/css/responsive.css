@@ -920,7 +920,7 @@
     position: static;
   }
 }
-@media (max-width: 979px) {
+@media (max-width: 769px) {
   body {
     padding-top: 0;
   }
@@ -1071,7 +1071,7 @@
     padding-right: 10px;
   }
 }
-@media (min-width: 979px1) {
+@media (min-width: 770px) {
   .nav-collapse.collapse {
     height: auto !important;
     overflow: visible !important;
