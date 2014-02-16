@@ -17,6 +17,10 @@
     {*{css unique="data-view" corecss="button"}*}
 
     {*{/css}*}
+    {css unique="showall-forms" link="`$asset_path`css/datatables-tools.css"}
+
+    {/css}
+
     <div class="module forms showall">
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
@@ -91,7 +95,7 @@
     </div>
 {/if}
 
-{script unique="form-showall" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
+{script unique="form-showall" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -101,30 +105,28 @@
         };
         var tableElement = $('#forms-showall');
 
-        tableElement.dataTable({
-            sDom           : '<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
-            sPaginationType: 'bootstrap',
-            "aoColumnDefs": [
+        var table = tableElement.dataTable({
+//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
+            aoColumnDefs: [
                 { "bSearchable": false, "aTargets": [ -1 ] },
                 { "bSortable": false, "aTargets": [ -1 ] },
             ],
-            oLanguage      : {
-                sLengthMenu: '_MENU_ records per page'
-            },
-            bAutoWidth     : false,
+            bAutoWidth: false,
             fnPreDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {
                     responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
                 }
             },
-            fnRowCallback  : function (nRow) {
+            fnRowCallback: function (nRow) {
                 responsiveHelper.createExpandIcon(nRow);
             },
-            fnDrawCallback : function (oSettings) {
+            fnDrawCallback: function (oSettings) {
                 responsiveHelper.respond();
             }
         });
+        var tt = new $.fn.dataTable.TableTools( table );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

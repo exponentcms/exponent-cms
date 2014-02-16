@@ -352,7 +352,7 @@ class expCSS {
             case 'lessphp':
             default :
                 if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
-                    include_once(BASE.'external/lessphp/lessc.inc.php');
+                    include_once(BASE.'external/' . $less_compiler . '/lessc.inc.php');
                     // load the cache
                     $less_cname = str_replace("/","_",$less_pname);
                     $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";

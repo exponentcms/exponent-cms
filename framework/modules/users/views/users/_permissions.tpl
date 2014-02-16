@@ -21,6 +21,9 @@
 {*}*}
 {*{/literal}*}
 {*{/css}*}
+{css unique="manage-perms" link="`$asset_path`css/datatables-tools.css"}
+
+{/css}
 
 <form method="post">
     <input type="hidden" name="module" value="{$page->controller}" />
@@ -114,13 +117,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {/literal}
 {/script}
 
-{script unique="permissions" jquery='jquery.dataTables'}
+{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
         $('#permissions').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            "aoColumnDefs": [
+            sPaginationType: "full_numbers",
+//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            aoColumnDefs: [
 //                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSearchable": false, "aTargets": [ '_all' ] },
