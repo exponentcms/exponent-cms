@@ -6177,7 +6177,7 @@ a.badge:focus {
   margin-bottom: 3px;
   border: 1px solid #97310e;
 }
-@media (max-width: 979px) {
+@media (max-width: 769px) {
   .navbar .nav-collapse .nav li > a {
     color: #fff;
     border-left: 0px solid #DD4814;

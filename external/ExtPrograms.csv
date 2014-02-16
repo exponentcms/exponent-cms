@@ -14,7 +14,7 @@ barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 Twitter model,2.3.1,classes.verkoyen.eu/twitter_oauth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
-pixidou,0.1exp,github.com/asvinb/pixidou,0.1exp,"placed in Pixidou module, heavily modified at this point"
+pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,Won't compile boostrap v3.0.3+
@@ -44,12 +44,13 @@ validate,1.11.1,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.11.1,"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.3,http://trentrichardson.com/examples/timepicker/,1.4.3,used by adminer
-DataTables,1.9.4,http://www.datatables.net,1.9.4,
-Responsive DataTables,0.1.3,https://github.com/Comanche/datatables-responsive,0.1.3,includes lodash & DT_bootstrap
+DataTables,1.10.0b1,http://www.datatables.net,1.10.0b1,includes boostrap integration w/ renamed bootstrap3 versions
+DataTables Tabletools,2.2.0,http://www.datatables.net,2.2.0,
+Responsive DataTables,0.1.4,https://github.com/Comanche/datatables-responsive,0.1.4,includes lodash
 spectrum,1.3.1,http://bgrins.github.io/spectrum/,1.3.1,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
 colorbox,1.4.37,http://www.jacklmoore.com/colorbox,1.4.37,using style #5
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
-DateTimePicker,2.1.9,http://xdsoft.net/jqplugins/datetimepicker/,2.1.9exp,added additional 'update' method
+DateTimePicker,2.1.9exp,http://xdsoft.net/jqplugins/datetimepicker/,2.1.9,added additional 'update' method

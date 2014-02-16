@@ -20,6 +20,9 @@
     {*height:20px;*}
 {*}*}
 {*{/css}*}
+{css unique="manage-users" link="`$asset_path`css/datatables-tools.css"}
+
+{/css}
 
 <div class="module users manage">
     <div class="info-header">
@@ -77,13 +80,14 @@
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
-{script unique="users-showall" jquery='jquery.dataTables'}
+{script unique="users-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
         $('#users-manage').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            "aoColumns": [
+            sPaginationType: "full_numbers",
+//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            aoColumns: [
                 null,
                 null,
                 null,
