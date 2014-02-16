@@ -13,7 +13,10 @@
  *
  *}
  
-{css unique="group" corecss="tables"}
+{*{css unique="group" corecss="tables"}*}
+
+{*{/css}*}
+{css unique="manage-groups" link="`$asset_path`css/datatables-tools.css"}
 
 {/css}
 
@@ -62,7 +65,7 @@
     {/form}
 </div>
 
-{script unique="manage-groups" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
+{script unique="manage-groups" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -72,33 +75,31 @@
         };
         var tableElement = $('#groups-manage');
 
-        tableElement.dataTable({
-            sDom           : '<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
-            sPaginationType: 'bootstrap',
-            "aoColumns": [
+        var table = tableElement.dataTable({
+//            sDom: "T<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+            aoColumns: [
                 null,
                 null,
                 null,
                 { "bSearchable": false, "bSortable": false },
                 { "bSearchable": false, "bSortable": false },
             ],
-            oLanguage      : {
-                sLengthMenu: '_MENU_ records per page'
-            },
-            bAutoWidth     : false,
+            bAutoWidth: false,
             fnPreDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {
                     responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
                 }
             },
-            fnRowCallback  : function (nRow) {
+            fnRowCallback: function (nRow) {
                 responsiveHelper.createExpandIcon(nRow);
             },
-            fnDrawCallback : function (oSettings) {
+            fnDrawCallback: function (oSettings) {
                 responsiveHelper.respond();
             }
         });
+        var tt = new $.fn.dataTable.TableTools( table );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}

@@ -17,6 +17,10 @@
     {*{css unique="data-view" corecss="button"}*}
 
     {*{/css}*}
+    {css unique="showall-forms" link="`$asset_path`css/datatables-tools.css"}
+
+    {/css}
+
     <div class="module forms showall">
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
@@ -100,13 +104,14 @@
 {elseif $config.pagelinks == 'Disable page links'}
     {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
 {/if}
-{script unique="form-showall" jquery='jquery.dataTables'}
+{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
         $('#forms-showall').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '{/literal}{$pageit}{literal}',  // pagination location
-            "aoColumnDefs": [
+            sPaginationType: "full_numbers",
+//            sDom: '{/literal}{$pageit}{literal}',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            aoColumnDefs: [
                 { "bSearchable": false, "aTargets": [ -1 ] },
                 { "bSortable": false, "aTargets": [ -1 ] },
             ],

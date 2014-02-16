@@ -13,7 +13,10 @@
  *
  *}
  
-{css unique="group" corecss="tables"}
+{*{css unique="group" corecss="tables"}*}
+
+{*{/css}*}
+{css unique="manage-groups" link="`$asset_path`css/datatables-tools.css"}
 
 {/css}
 
@@ -62,13 +65,14 @@
     {/form}
 </div>
 
-{script unique="groups-showall" jquery='jquery.dataTables'}
+{script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
         $('#groups-manage').dataTable({
-            "sPaginationType": "full_numbers",
-            "sDom": '<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            "aoColumns": [
+            sPaginationType: "full_numbers",
+//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            aoColumns: [
                 null,
                 null,
                 null,

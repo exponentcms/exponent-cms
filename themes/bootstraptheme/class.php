@@ -70,7 +70,7 @@ class bootstraptheme extends theme {
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));
         if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 1;
         $form->register('menu_height',gt('Fixed Menu Height Adjustment').': ',new textcontrol($settings['MENU_HEIGHT'],3,false,'integer'));
-        if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 979;
+        if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 769;
         $form->register('menu_width',gt('Mobile Menu Collapse Width').': ',new textcontrol($settings['MENU_WIDTH'],4,false,'integer'));
         $form->register('menu_align',gt('Menu Alignment').': ',new dropdowncontrol($settings['MENU_ALIGN'],$menu_alignments));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));

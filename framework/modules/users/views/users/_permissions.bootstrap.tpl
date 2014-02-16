@@ -21,6 +21,9 @@
 {*}*}
 {*{/literal}*}
 {*{/css}*}
+{css unique="manage-perms" link="`$asset_path`css/datatables-tools.css"}
+
+{/css}
 
 <form method="post">
     <input type="hidden" name="module" value="{$page->controller}" />
@@ -116,7 +119,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
 {/literal}
 {/script}
 
-{script unique="permissions" jquery='lodash.min,jquery.dataTables,DT_bootstrap,datatables.responsive'}
+{script unique="permissions" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -126,10 +129,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
         };
         var tableElement = $('#permissions');
 
-        tableElement.dataTable({
-            sDom           : '<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
-            sPaginationType: 'bootstrap',
-            "aoColumnDefs": [
+        var table = tableElement.dataTable({
+//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
+            aoColumnDefs: [
 //                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSearchable": false, "aTargets": [ '_all' ] },
@@ -137,23 +139,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
                 {"aTargets": [ "sortme"], "bSortable": true },
                 {"aTargets": [ 'nosort' ], "bSortable": false }
             ],
-            oLanguage      : {
-                sLengthMenu: '_MENU_ records per page'
-            },
-            bAutoWidth     : false,
+            bAutoWidth: false,
             fnPreDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {
                     responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
                 }
             },
-            fnRowCallback  : function (nRow) {
+            fnRowCallback: function (nRow) {
                 responsiveHelper.createExpandIcon(nRow);
             },
-            fnDrawCallback : function (oSettings) {
+            fnDrawCallback: function (oSettings) {
                 responsiveHelper.respond();
             }
         });
+        var tt = new $.fn.dataTable.TableTools( table );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}
