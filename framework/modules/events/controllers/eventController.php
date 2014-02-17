@@ -824,7 +824,7 @@ class eventController extends expController {
 
                     $msg .= "BEGIN:VEVENT\n";
                     $msg .= $dtstart . $dtend;
-                    $msg .= "UID:" . $items[$i]->eventdate->id . "\n";
+                    $msg .= "UID:" . $items[$i]->id . "\n";
                     $msg .= "DTSTAMP:" . date("Ymd\THis", time()) . "Z\n";
                     if ($title) {
                         $msg .= "SUMMARY:$title\n";
