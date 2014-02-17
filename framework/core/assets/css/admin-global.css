@@ -1,3 +1,33 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/****************  header styles  ***********************/
 .info-header {
   border-bottom: 2px dotted #19396C;
   margin: 10px 0;
@@ -9,6 +39,7 @@
 .info-header .related-actions {
   float: right;
 }
+/**************** various icon links in the chrome  ***********************/
 a.helplink {
   display: inline-block;
   zoom: 1;
@@ -57,6 +88,7 @@ a.import {
   padding: 4px 5px 4px 25px;
   background: url(../images/upload.png) no-repeat 3px 5px;
 }
+/****************  active / inactive  ***********************/
 a.inactive,
 span.active {
   display: block;
@@ -74,6 +106,7 @@ span.active {
   overflow: hidden;
   background: url(../images/exp-admin-sprite.png) no-repeat 0px -570px;
 }
+/****************  administrative action links  ***********************/
 a.add,
 a.addtitle,
 a.ajax,
@@ -134,6 +167,7 @@ a.revisions {
 a.ajax {
   background: url(../images/ajax-loader.gif) no-repeat 0 50%;
 }
+/****************  tags style  ***********************/
 .tag-list li {
   list-style: disc outside none;
 }
@@ -142,6 +176,7 @@ ul,
 dl {
   margin-left: 1em;
 }
+/****************  loading div style  ***********************/
 .loadingdiv {
   text-align: center;
   padding: 20px 0 60px 0;
@@ -150,6 +185,7 @@ dl {
   font-style: italic;
   background: url(../images/loading1.gif) no-repeat 50% 50%;
 }
+/****************  tabview admin  ***********************/
 .exp-skin-tabview .yui-navset-top .yui-nav li,
 ul.exp-ajax-tabs,
 ul.exp-ajax-tabs li {
@@ -237,6 +273,7 @@ ul.exp-ajax-tabs li {
 .exp-skin-tabview .yui-hidden {
   display: none;
 }
+/* YUI3 Tabview */
 .exp-skin-tabview .yui3-tab-label,
 ul.exp-ajax-tabs li a {
   display: inline-block;
@@ -281,6 +318,7 @@ ul.exp-ajax-tabs li a.current {
   -moz-border-radius: 5px;
   border-radius: 5px;
 }
+/****************  some form stuff  ***********************/
 .control input.title {
   width: 98%;
 }

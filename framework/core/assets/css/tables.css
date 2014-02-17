@@ -1,3 +1,33 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/**************    TABLE SKIN   *********************************/
 .exp-skin-table table,
 table.exp-skin-table {
   border-collapse: separate;
@@ -64,7 +94,7 @@ table.exp-skin-table {
   border-style: dotted;
 }
 .exp-skin-table caption {
-  font-family: Georgia, Times, serif;
+  font-family: Georgia,Times,serif;
   font-weight: normal;
   font-size: 1.4em;
   text-align: left;
@@ -136,7 +166,7 @@ table.exp-skin-table {
   border-style: dotted;
 }
 #manage_user_dynamicdata caption {
-  font-family: Georgia, Times, serif;
+  font-family: Georgia,Times,serif;
   font-weight: normal;
   font-size: 1.4em;
   text-align: left;

@@ -1,3 +1,33 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/****************  clearfix. allows for vertical expansion when children are floating without an extra element  ***********************/
 .clearfix:before,
 .clearfix:after {
   content: ".";
@@ -11,9 +41,11 @@
 .clearfix {
   zoom: 1;
 }
+/* IE < 8 */
 .clear {
   clear: both;
 }
+/****************  common style rules  ***********************/
 a img {
   border: none;
 }
@@ -21,6 +53,7 @@ a img {
 .hide a {
   display: none !important;
 }
+/****************  common visitor-facing styles  ***********************/
 a.ajax,
 a.rsslink,
 a.printer-friendly-link,
@@ -44,6 +77,7 @@ a.view {
 a.rsslink {
   background: url(../images/feed-icon.png) no-repeat 3px 50%;
   display: inline;
+  /*padding-left:22px;*/
 }
 a.printer-friendly-link {
   padding: 2px 0 2px 20px;
@@ -99,6 +133,7 @@ a.view {
 a.ajax {
   background: url(../images/ajax-loader.gif) no-repeat 0 50%;
 }
+/* other standard styling */
 .date,
 .attribution,
 .tags {
@@ -124,28 +159,32 @@ img.border {
 .address span {
   display: block;
 }
+/* item date badge */
 .show .post-date,
 .showall .post-date {
   float: left;
+  /*width: 52px;*/
   width: 45px;
   text-align: center;
+  /*margin: 0 12px 5px 0;*/
   margin: 0 8px 3px 0;
   border: solid 1px #bebebe;
   background: #fff;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',endColorstr='#ecebeb');
-  background: -webkit-gradient(linear,left top,left bottom,from(#ffffff),to(#ecebeb));
-  background: -moz-linear-gradient(top,#ffffff,#ecebeb);
-  background: linear-gradient(-90deg,#ffffff,#ecebeb);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#ecebeb');
+  background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#ecebeb));
+  background: -moz-linear-gradient(top, #ffffff, #ecebeb);
+  background: linear-gradient(-90deg, #ffffff, #ecebeb);
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
   border-radius: 0px;
-  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0 1px 1px rgba(0,0,0,0.15);
-  box-shadow: 0 1px 1px rgba(0,0,0,0.15);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
 }
 .show .post-date .month,
 .showall .post-date .month {
   color: #fff;
+  /*font: 11px/100% Arial, Helvetica, sans-serif;*/
   font: 10px/100% Arial, Helvetica, sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -157,13 +196,13 @@ img.border {
   top: -1px;
   border: solid 1px #a11216;
   background: #cb151b;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eb1c24',endColorstr='#a30c10');
-  background: -webkit-gradient(linear,left top,left bottom,from(#eb1c24),to(#a30c10));
-  background: -moz-linear-gradient(top,#eb1c24,#a30c10);
-  background: linear-gradient(-90deg,#eb1c24,#a30c10);
-  -webkit-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-  -moz-box-shadow: 0 1px 0 rgba(0,0,0,0.2);
-  box-shadow: 0 1px 0 rgba(0,0,0,0.2);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eb1c24', endColorstr='#a30c10');
+  background: -webkit-gradient(linear, left top, left bottom, from(#eb1c24), to(#a30c10));
+  background: -moz-linear-gradient(top, #eb1c24, #a30c10);
+  background: linear-gradient(-90deg, #eb1c24, #a30c10);
+  -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   -webkit-border-top-left-radius: 0px;
   -webkit-border-top-right-radius: 0px;
   -moz-border-radius-topleft: 0px;
@@ -175,15 +214,19 @@ img.border {
 .showall .post-date .day {
   color: #666;
   padding: 2px 0 1px;
+  /*font: bold 18px/100% Arial, Helvetica, sans-serif;*/
   font: bold 16px/100% Arial, Helvetica, sans-serif;
   display: block;
 }
 .show .post-date .year,
 .showall .post-date .year {
   color: #999;
+  /*padding: 0 0 4px;*/
+  /*font: 10px/100% Arial, Helvetica, sans-serif;*/
   font: 9px/100% Arial, Helvetica, sans-serif;
   display: block;
 }
+/****************  group block formatting  ***********************/
 .group-controls {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -193,6 +236,7 @@ img.border {
   padding: 10px;
   margin: 0 0 5px;
 }
+/****************  prevent slideshow offset before display  ***********************/
 .slideshow-frame ul,
 .slideshow-frame .slide li {
   list-style-type: none;

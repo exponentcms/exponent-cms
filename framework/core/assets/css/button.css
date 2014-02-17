@@ -1,6 +1,35 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
 .awesome,
 .awesome:visited {
-  background: #222 url(../images/button/gradient.png) repeat-x;
+  background: #222222 url(../images/button/gradient.png) repeat-x;
   display: inline-block;
   padding: 5px 10px 6px;
   color: #fff;
@@ -8,12 +37,12 @@
   -webkit-border-radius: 22px;
   -moz-border-radius: 22px;
   border-radius: 22px;
-  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
   border: 1px solid #999;
-  border: 1px solid rgba(0,0,0,0.25);
+  border: 1px solid rgba(0, 0, 0, 0.25);
   *border: 0;
   position: relative;
   cursor: pointer;
@@ -28,6 +57,7 @@
 .small.awesome,
 .small.awesome:visited {
   font-size: 10px;
+  /*padding: ;*/
 }
 .awesome,
 .awesome:visited,
@@ -36,13 +66,14 @@
   font-size: 13px;
   font-weight: bold;
   line-height: 1;
-  text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
+  text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25);
 }
 .large.awesome,
 .large.awesome:visited {
   font-size: 14px;
   padding: 8px 14px 9px;
 }
+/**************** colors  ***********************/
 .green.awesome,
 .green.awesome:visited {
   background-color: #91bd09;
@@ -116,14 +147,15 @@
 .pink.awesome:hover {
   background-color: #cc0099;
 }
+/****************  dissabled  ***********************/
 .disabled.awesome,
 .disabled.awesome:visited {
   background-color: #999999;
   color: #525252;
   text-shadow: none;
-  -webkit-box-shadow: 0 0 0 rgba(0,0,0,0);
-  -moz-box-shadow: 0 0 0 rgba(0,0,0,0);
-  box-shadow: 0 0 0 rgba(0,0,0,0);
+  -webkit-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  -moz-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
   border: 1px solid #aaa;
 }
 .disabled.awesome:hover {
