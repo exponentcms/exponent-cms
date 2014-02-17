@@ -2,20 +2,35 @@
 <html>
 	<head>
 	    <?php
-            expTheme::head(array(
-                "xhtml"=>false,
-                "normalize"=>true,
-                "framework"=>"bootstrap3",
-                "css_core"=>array(
-                    "common"
-                ),
-                "lessvars"=>array(
-                    'menu_height'=>MENU_HEIGHT,
-                    'menu_width'=>MENU_WIDTH,
-                ),
-                "css_links"=>true,
-                "css_theme"=>true
-            ));
+        if (ENHANCED_STYLE == 1) {
+            $enhanced = "external/bootstrap3/less/theme.less";
+        } else {
+            $enhanced = "";
+        }
+        expTheme::head(array(
+            "xhtml"=>false,
+            "framework"=>"bootstrap3",
+            "lesscss"=>$enhanced,
+            // these viewport settings are the defaults so they are not really needed except to customize
+            "viewport"=>array(
+                "width"=>"device-width",
+                "height"=>"device-height",
+                "initial_scale"=>1,
+                "minimum_scale"=>0.25,
+                "maximum_scale"=>5.0,
+                "user_scalable"=>true,
+            ),
+            "css_core"=>array(
+                "common"
+            ),
+            // bootstrap (system) variables are overridden in the /less/variables.less file
+            "lessvars"=>array(
+                'menu_height'=>MENU_HEIGHT,
+                'menu_width'=>MENU_WIDTH,
+            ),
+            "css_links"=>true,
+            "css_theme"=>true
+        ));
 	    ?>
 	</head>
 	<body>

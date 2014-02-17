@@ -1,3 +1,32 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
 .yui-overlay,
 .yui-panel-container {
   position: absolute;
@@ -244,6 +273,8 @@
   filter: alpha(opacity=12);
   opacity: .12;
 }
+/*exponent specific panels*/
+/*  info styles  */
 .exp-info .hd,
 .exp-info .bd,
 .exp-info .ft,
@@ -295,6 +326,7 @@
 .exp-info .ft {
   background: #d8e5f7;
 }
+/*  error styles  */
 .exp-error .hd,
 .exp-error .bd,
 .exp-error .ft,
@@ -358,6 +390,7 @@
 .exp-error .ft {
   background: #f7dbdb;
 }
+/*  alert styles  */
 .exp-alert .hd,
 .exp-alert .bd,
 .exp-alert .ft,
@@ -409,6 +442,7 @@
 .exp-alert .ft {
   background: #f7e4a7;
 }
+/*  form panel styles  */
 .exp-form .hd,
 .exp-form .bd,
 .exp-form .ft,
@@ -459,6 +493,7 @@
 .exp-form .ft {
   background: #e0e4e7;
 }
+/*  image panel styles  */
 .exp-image .yui-panel {
   border: none;
 }
@@ -489,6 +524,7 @@
   overflow: hidden;
   border: 1px solid #000;
 }
+/****************  drop for options  ***********************/
 .exp-dropmenu {
   border: none;
 }
@@ -520,6 +556,7 @@
   border-bottom: 1px solid #dedede;
 }
 .exp-dropmenu .bd {
+  /*margin:none;*/
   background: #ffffff;
   color: #444;
   padding-top: 0;

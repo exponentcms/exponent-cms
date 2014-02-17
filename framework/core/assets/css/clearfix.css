@@ -1,3 +1,33 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/****************  clearfix. allows for vertical expansion when children are floating without an extra element  ***********************/
 .clearfix:before,
 .clearfix:after {
   content: ".";
@@ -11,6 +41,7 @@
 .clearfix {
   zoom: 1;
 }
+/* IE < 8 */
 .clear {
   clear: both;
 }

@@ -1,8 +1,43 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* override standard bootstrap styling for use in Exponent */
+/* forms controls */
+/*input[type="number"],*/
 input[type="color"] {
   height: 24px;
   width: 20px;
   padding: 0;
 }
+/*input[type="image"] {*/
+/*width : 16px;*/
+/*}*/
 textarea {
   width: auto;
 }
@@ -37,6 +72,8 @@ input.password {
 .checkbox input[type="checkbox"] {
   margin-left: 0;
   margin-right: 5px;
+  height: inherit;
+  width: inherit;
 }
 .radio,
 .checkbox {
@@ -60,11 +97,13 @@ li .fa-lg[class^="fa-"],
 li .fa-lg[class*=" fa-"] {
   width: auto;
 }
+/* buttons */
 a.fa-sort,
 .container-chrome ul li a.fa-sort {
   background: url("../images/rerank.png") no-repeat scroll 0 50% transparent;
   background: none;
 }
+/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
 .control .radio label,
 .control .checkbox label {
   margin-bottom: 0px !important;

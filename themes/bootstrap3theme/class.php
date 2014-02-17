@@ -66,6 +66,7 @@ class bootstrap3theme extends theme {
    		$form->meta('theme',$_GET['theme']);
         $form->meta('BTN_COLOR','btn');
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
+        $form->register('enhanced_style',gt('Enhance Styles'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE'])?$settings['ENHANCED_STYLE']:0)));
         $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));
         if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 1;
@@ -82,6 +83,7 @@ class bootstrap3theme extends theme {
 
     function saveThemeConfig ($params) {
    		if (empty($params['swatch'])) $params['swatch'] = "''";
+        if (empty($params['enhanced_style'])) $params['enhanced_style'] = false;
         if (empty($params['btn_size'])) $params['btn_size'] = "''";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
         parent::saveThemeConfig($params);

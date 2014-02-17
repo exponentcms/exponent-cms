@@ -1,3 +1,32 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
 .pagination-links {
   padding: 3px 0;
   margin: 10px 0;
@@ -9,6 +38,7 @@
 }
 #pagelinks {
   margin: 0;
+  /*padding: 15px 0px;*/
 }
 #pagelinks .yui-pg-first,
 #pagelinks .yui-pg-previous,
@@ -18,7 +48,7 @@
 #pagelinks .yui-pg-pages,
 #pagelinks .yui-pg-page {
   display: inline-block;
-  font-family: arial, helvetica, clean, sans-serif;
+  font-family: arial,helvetica,clean,sans-serif;
   padding: 3px 6px;
 }
 #pagelinks .yui-pg-pages {

@@ -1,3 +1,32 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
 .star-stats strong {
   display: block;
 }
@@ -48,6 +77,7 @@
 }
 .star-bar .u-star.st2 {
   width: 70px;
+  /*    border-left:1px solid red;*/
 }
 .star-bar .u-star.st3 {
   width: 51px;

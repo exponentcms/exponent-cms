@@ -2,10 +2,15 @@
 <html>
     <head>
         <?php
+        if (ENHANCED_STYLE == 1) {
+            $enhanced = "external/bootstrap3/less/theme.less";
+        } else {
+            $enhanced = "";
+        }
         expTheme::head(array(
             "xhtml"=>false,
-            "normalize"=>true,
             "framework"=>"bootstrap3",
+            "lesscss"=>$enhanced,
             // these viewport settings are the defaults so they are not really needed except to customize
             "viewport"=>array(
                 "width"=>"device-width",
@@ -25,7 +30,7 @@
             ),
             "css_links"=>true,
             "css_theme"=>true
-            ));
+        ));
         ?>
     </head>
     <body>

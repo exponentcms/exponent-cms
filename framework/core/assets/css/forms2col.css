@@ -1,3 +1,33 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* 2 column forms...horizontal label - control */
 .control {
   overflow: auto;
 }
@@ -6,6 +36,7 @@
   display: block;
   float: left;
   width: 150px;
+  /* non-flexible part truncates label */
   text-align: right;
   padding-right: 5px;
   white-space: normal;
@@ -20,7 +51,11 @@
 }
 .control.radio .label {
   width: auto;
+  /* make radio buttons look normal */
 }
+/*.control.checkbox .label {*/
+/*width: auto;  make checkboxes look normal*/
+/*}*/
 .datetime.date,
 .control table,
 .control.radiogroup table,
@@ -30,6 +65,7 @@
 }
 .control-desc {
   margin-left: 160px;
+  /* make description fall under input */
 }
 .control.checkbox .control-desc {
   margin-left: 175px;

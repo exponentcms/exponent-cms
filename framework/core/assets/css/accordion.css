@@ -1,3 +1,32 @@
+/* simple mixins for exponent core style sheets */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Implementation */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
+/* Mixin */
 .showall-accordion .piece {
   overflow: hidden;
   margin-left: 25px;
@@ -50,9 +79,13 @@ a:visited {
 }
 .showall-accordion .dashboard ul li {
   padding: 8px 2px;
+  /*border-bottom:1px dashed #555;*/
 }
 .showall-accordion .dashboard ul li strong {
   display: block;
+}
+.showall-accordion .dashboard ul li a {
+  /*color:#035fbc;*/
 }
 .showall-accordion .dashboard .control .label {
   float: left;
