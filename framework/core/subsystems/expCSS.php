@@ -303,8 +303,6 @@ class expCSS {
         }
         switch ($less_compiler) {
             case 'iless':
-//                break;
-            case 'less.php':
 //                if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
 ////                    include_once(BASE.'external/lessphp/lessc.inc.php');
 //                    include_once(BASE.'external/phpless/Less.php');
@@ -351,6 +349,7 @@ class expCSS {
 //                    return false;
 //                }
 //                break;
+            case 'less.php':
             case 'lessphp':
             default :
                 if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {

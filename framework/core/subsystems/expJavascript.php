@@ -40,7 +40,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs, $head_config;
+        global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config;
 
         $scripts = '';
         // remove duplicate scripts since it's inefficient and crashes minify
@@ -72,22 +72,14 @@ class expJavascript {
             $srt = array();
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
-            if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+            if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
                 if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
                     $srt[$i] .= JQUERY_SCRIPT.",";
                 } else {
                     $i++;
-//                    $srt[$i] = "";
                     $srt[$i] = JQUERY_SCRIPT.",";
                 }
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
-//                    if (strlen($srt[$i])+strlen(PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
-//                        $srt[$i] .= PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js'.",";
-//                    } else {
-//                        $i++;
-////                        $srt[$i] = "";
-//                        $srt[$i] = 'external/bootstrap/js/bootstrap.min.js'.",";
-//                    }
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
@@ -109,13 +101,13 @@ class expJavascript {
                         ));
                     }
                 }
+
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
                             $srt[$i] .= JQUERYUI_SCRIPT.",";
                         } else {
                             $i++;
-//                            $srt[$i] = "";
                             $srt[$i] = JQUERYUI_SCRIPT.",";
                         }
                         expCSS::pushToHead(array(
@@ -127,7 +119,6 @@ class expJavascript {
                                 $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
                             } else {
                                 $i++;
-//                                $srt[$i] = "";
                                 $srt[$i] = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
                             }
                             if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
@@ -144,12 +135,10 @@ class expJavascript {
                            		);
                             }
                         } elseif (file_exists(JQUERY_PATH.'addons/js/'.$mod.'.js')) {
-//                            $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_RELATIVE.'addons/js/'.$mod.'.js"></script>'."\r\n";
                             if (strlen($srt[$i])+strlen(JQUERY_RELATIVE.'addons/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
                                 $srt[$i] .= JQUERY_RELATIVE.'addons/js/'.$mod.'.js'.",";
                             } else {
                                 $i++;
-//                                $srt[$i] = "";
                                 $srt[$i] = JQUERY_RELATIVE.'addons/js/'.$mod.'.js'.",";
                             }
                             if (file_exists(JQUERY_PATH.'addons/less/'.$mod.'.less')) {
@@ -166,24 +155,50 @@ class expJavascript {
                         }
                     }
                 }
+
+                if (!empty($bootstrapjs)) {
+                    if ($head_config['framework'] == 'bootstrap') {
+                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                    } else {
+                        $bootstrappath = 'external/bootstrap3/js/';
+                    }
+                    foreach ($bootstrapjs as $mod) {
+                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
+                            if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
+                                $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
+                            } else {
+                                $i++;
+                                $srt[$i] = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
+                            }
+                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                            if (strlen($srt[$i])+strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                            } else {
+                                $i++;
+                                $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                            }
+                        }
+                    }
+                }
             }
+
             foreach ($expJS as $file) {
                 if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
                     if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file['fullpath'].",";
                     } else {
                         $i++;
-    //                    $srt[$i] = "";
                         $srt[$i] = $file['fullpath'].",";
                     }
                 }
             }
+
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
                 $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
             }
         } else {
-            if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+            if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
                 $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
                 $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
@@ -208,6 +223,7 @@ class expJavascript {
                         ));
                     }
                 }
+
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
@@ -246,8 +262,26 @@ class expJavascript {
                         }
                     }
                 }
+
+                if (!empty($bootstrapjs)) {
+                    $scripts .= "\t"."<!-- Twitter Bootstrap Scripts -->"."\r\n";
+                    if ($head_config['framework'] == 'bootstrap') {
+                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                    } else {
+                        $bootstrappath = 'external/bootstrap3/js/';
+                    }
+                    foreach ($bootstrapjs as $mod) {
+                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
+                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                        }
+                    }
+                }
             }
+
             $scripts .= (!empty($yui3js)) ? "\t"."<!-- YUI3 Script -->"."\r\n\t".'<script type="text/javascript" src="'.YUI3_RELATIVE.'yui/yui-min.js"></script>'."\r\n" : "";
+
             if (!empty($expJS)) {
                 $scripts .= "\t"."<!-- Other Scripts -->"."\r\n";
                 foreach ($expJS as $mod) {
@@ -279,9 +313,9 @@ class expJavascript {
 	}
 	
     public static function pushToFoot($params) {
-    	global $js2foot,$yui2js,$yui3js,$jqueryjs,$expJS;
+        global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
-    	if (self::inAjaxAction()) {
+    	if (self::inAjaxAction()) { //FIXME do we also need to deal with yui3, jquery, or boostrap scripts within an ajax call?
 		    echo "<div class=\"io-execute-response\">";
 		    
     	    if ($params['src']) {
@@ -311,16 +345,6 @@ class expJavascript {
             // }
     	}
 
-        // if(!empty($params['yui2mods'])){
-        //             $toreplace = array('"',"'"," ");
-        //             $stripmodquotes = str_replace($toreplace, "", $params['yui2mods']);               
-        //             $splitmods = explode(",",$stripmodquotes);
-        // 
-        //             foreach ($splitmods as $key=>$val){
-        //                 $yui2js[$val] = $val;
-        //             }
-        //         }
-
 		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js["yui"] = "yui";
@@ -343,6 +367,16 @@ class expJavascript {
 
             foreach ($splitmods as $val){
                 $jqueryjs[$val] = $val;
+            }
+        }
+
+        if(!empty($params['bootstrap'])){
+            $toreplace = array('"',"'"," ");
+            $stripmodquotes = str_replace($toreplace, "", $params['bootstrap']);
+            $splitmods = explode(",",$stripmodquotes);
+
+            foreach ($splitmods as $val){
+                $bootstrapjs[$val] = $val;
             }
         }
 
