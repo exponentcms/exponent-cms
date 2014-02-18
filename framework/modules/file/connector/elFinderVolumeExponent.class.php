@@ -26,6 +26,18 @@
 class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 {
 
+    /**
+   	 * Return debug info for client
+   	 *
+   	 * @return array
+   	 * @author Dmitry (dio) Levashov
+   	 **/
+   	public function debug() {
+        $debug = parent::debug();
+        $debug['tmbWrite'] = $this->tmbPathWritable;
+   		return $debug;
+   	}
+
     /*********************** expFile operations *********************/
 
     /**
