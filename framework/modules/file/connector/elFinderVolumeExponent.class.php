@@ -37,7 +37,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         $debug['tmbPath'] = $this->tmbPath;
         $debug['tmbPathDir'] = is_dir($this->tmbPath);
         $debug['tmbPathRead'] = is_readable($this->tmbPath);
-        $debug['tmbWrite'] = $this->tmbPathWritable;
+        $debug['tmbPathWrite'] = $this->tmbPathWritable;
    		return $debug;
    	}
 
