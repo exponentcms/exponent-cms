@@ -44,7 +44,7 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
@@ -74,7 +74,7 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
