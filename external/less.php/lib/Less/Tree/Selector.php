@@ -17,6 +17,7 @@ class Less_Tree_Selector extends Less_Tree{
 	public $type = 'Selector';
 	public $currentFileInfo = array();
 	public $isReferenced;
+	public $mediaEmpty;
 
 	public $elements_len = 0;
 
@@ -57,7 +58,7 @@ class Less_Tree_Selector extends Less_Tree{
 	}
 
 	function createDerived( $elements, $extendList = null, $evaldCondition = null ){
-		$newSelector = new Less_Tree_Selector( $elements, ($extendList ? $extendList : $this->extendList), $this->condition, $this->index, $this->currentFileInfo, $this->isReferenced);
+		$newSelector = new Less_Tree_Selector( $elements, ($extendList ? $extendList : $this->extendList), null, $this->index, $this->currentFileInfo, $this->isReferenced);
 		$newSelector->evaldCondition = $evaldCondition ? $evaldCondition : $this->evaldCondition;
 		return $newSelector;
 	}
@@ -110,6 +111,12 @@ class Less_Tree_Selector extends Less_Tree{
 		}
 	}
 
+	public function isJustParentSelector(){
+		return !$this->mediaEmpty &&
+			count($this->elements) === 1 &&
+			$this->elements[0]->value === '&' &&
+			($this->elements[0]->combinator === ' ' || $this->elements[0]->combinator === '');
+	}
 
 	public function compile($env) {
 

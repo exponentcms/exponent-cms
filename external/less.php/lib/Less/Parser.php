@@ -20,6 +20,8 @@ class Less_Parser{
 		'strictUnits'			=> false,			// whether units need to evaluate correctly
 		'strictMath'			=> false,			// whether math has to be within parenthesis
 		'relativeUrls'			=> true,			// option - whether to adjust URL's to be relative
+		'urlArgs'				=> array(),			// whether to add args into url tokens
+		'numPrecision'			=> 8,
 
 		'import_dirs'			=> array(),
 		'import_callback'		=> null,
@@ -32,6 +34,7 @@ class Less_Parser{
 		'sourceMapURL'			=> null,
 
 		'plugins'				=> array(),
+
 	);
 
 	public static $options = array();
@@ -162,6 +165,8 @@ class Less_Parser{
 		self::$has_extends = false;
 		$evaldRoot = $root->compile($this->env);
 
+
+
 		$this->PostVisitors($evaldRoot);
 
 		if( Less_Parser::$options['sourceMap'] ){
@@ -245,12 +250,30 @@ class Less_Parser{
 	 * Parse a Less string into css
 	 *
 	 * @param string $str The string to convert
+	 * @param string $uri_root The url of the file
 	 * @return Less_Tree_Ruleset|Less_Parser
 	 */
-	public function parse($str){
+	public function parse( $str, $file_uri = null ){
+
+		if( !$file_uri ){
+			$uri_root = '';
+			$filename = 'anonymous-file-'.Less_Parser::$next_id++.'.less';
+		}else{
+			$file_uri = self::WinPath($file_uri);
+			$filename = basename($file_uri);
+			$uri_root = dirname($uri_root);
+		}
+
+		$previousFileInfo = $this->env->currentFileInfo;
+		$uri_root = self::WinPath($uri_root);
+		$this->SetFileInfo($filename, $uri_root);
 
 		$this->input = $str;
 		$this->_parse();
+
+		if( $previousFileInfo ){
+			$this->env->currentFileInfo = $previousFileInfo;
+		}
 
 		return $this;
 	}
@@ -847,6 +870,8 @@ class Less_Parser{
 
 	// duplicate of Less_Tree_Color::FromKeyword
 	private function FromKeyword( $keyword ){
+		$keyword = strtolower($keyword);
+
 		if( Less_Colors::hasOwnProperty($keyword) ){
 			// detect named color
 			return $this->NewObj1('Less_Tree_Color',substr(Less_Colors::color($keyword), 1));
@@ -1678,9 +1703,11 @@ class Less_Parser{
 			$important = $this->parseImportant();
 
 			// a name returned by this.ruleProperty() is always an array of the form:
-			// ["", "string-1", ..., "string-n", ""] or ["", "string-1", ..., "string-n", "+"]
+			// [string-1, ..., string-n, ""] or [string-1, ..., string-n, "+"]
+			// where each item is a tree.Keyword or tree.Variable
 			if( is_array($name) ){
-				$merge = (array_pop($name) === '+');
+				$nm = array_pop($name);
+				$merge = ($nm->value === '+');
 			}
 
 			if( $value && $this->parseEnd() ){
@@ -2055,7 +2082,7 @@ class Less_Parser{
 	private function parseCondition() {
 		$index = $this->pos;
 		$negate = false;
-
+		$c = null;
 
 		if ($this->MatchReg('/\\Gnot/')) $negate = true;
 		$this->expectChar('(');
@@ -2165,12 +2192,14 @@ class Less_Parser{
 		$index = array();
 		$length = 0;
 
+
 		$this->rulePropertyMatch('/\\G(\*?)/', $offset, $length, $index, $name );
 		while( $this->rulePropertyMatch('/\\G((?:[\w-]+)|(?:@\{[\w-]+\}))/', $offset, $length, $index, $name )); // !
 
+		/*
 		if( (count($name) > 1) && $this->rulePropertyMatch('/\\G\s*(\+?)\s*:/', $offset, $length, $index, $name) ){
 			// at last, we have the complete match now. move forward,
-			// convert @{var}s to tree.Variable(s) and return:
+			// convert name particles to tree objects and return:
 			$this->skipWhitespace($length);
 
 			foreach($name as $k => $name_k ){
@@ -2181,6 +2210,30 @@ class Less_Parser{
 
 			return $name;
 		}
+		*/
+
+
+
+		if( (count($name) > 1) && $this->rulePropertyMatch('/\\G\s*(\+?)\s*:/', $offset, $length, $index, $name) ){
+			// at last, we have the complete match now. move forward,
+			// convert name particles to tree objects and return:
+			$this->skipWhitespace($length);
+
+			if( $name[0] === '' ){
+				array_shift($name);
+				array_shift($index);
+			}
+			foreach($name as $k => $s ){
+				if( !$s || $s[0] !== '@' ){
+					$name[$k] = $this->NewObj1('Less_Tree_Keyword',$s);
+				}else{
+					$name[$k] = $this->NewObj3('Less_Tree_Variable',array('@' . substr($s,2,-1), $index[$k], $this->env->currentFileInfo));
+				}
+			}
+			return $name;
+		}
+
+
 	}
 
 	private function rulePropertyMatch( $re, &$offset, &$length,  &$index, &$name ){
