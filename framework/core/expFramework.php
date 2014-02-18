@@ -845,6 +845,27 @@ function curPageURL() {
     return $pageURL;
 }
 
+function gt($s){
+    return expLang::gettext($s);
+}
+
+function glist($s){
+    if (is_array($s)) {
+        $list = array();
+        foreach ($s as $key=>$phrase) {
+            $list[$key] = expLang::gettext(trim($phrase));
+        }
+    } else {
+        $list = '';
+        $phrases = explode(",",$s);
+        foreach ($phrases as $key=>$phrase) {
+            if ($key) $list .= ',';
+            $list .= expLang::gettext(trim($phrase));
+        }
+    }
+    return $list;
+}
+
 /**
  * called from exponent.php as the ajax error handler
  *
@@ -867,6 +888,7 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
                     $msg = 'PHP Notice('.$errno.'): ';
                     break;
                 default:
+                    return;  // we don't want issues printed
                     $msg = 'PHP Issue('.$errno.'): ';
                 break;
             }
@@ -876,27 +898,6 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
         // send to the debug output
         eDebug($msg);
     }
-}
-
-function gt($s){
-    return expLang::gettext($s);
-}
-
-function glist($s){
-    if (is_array($s)) {
-        $list = array();
-        foreach ($s as $key=>$phrase) {
-            $list[$key] = expLang::gettext(trim($phrase));
-        }
-    } else {
-        $list = '';
-        $phrases = explode(",",$s);
-        foreach ($phrases as $key=>$phrase) {
-            if ($key) $list .= ',';
-            $list .= expLang::gettext(trim($phrase));
-        }
-    }
-    return $list;
 }
 
 /**
