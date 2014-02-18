@@ -40,7 +40,7 @@ validate,1.11.1,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.11.1,"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.3,http://trentrichardson.com/examples/timepicker/,1.4.3,used by adminer
-DataTables,1.10.0b1,http://www.datatables.net,1.10.0b1,includes boostrap integration w/ renamed bootstrap3 versions
+DataTables,1.10.0b2,http://www.datatables.net,1.10.0b2,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.0,http://www.datatables.net,2.2.0,
 Responsive DataTables,0.1.4,https://github.com/Comanche/datatables-responsive,0.1.4,includes lodash
 spectrum,1.3.1,http://bgrins.github.io/spectrum/,1.3.1,

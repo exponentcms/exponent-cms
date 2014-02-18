@@ -44,7 +44,7 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
@@ -74,7 +74,7 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
                 $less_path = ltrim($less_path, '/');
                 $css_path = str_replace("/less/", "/css/", $less_path);
@@ -368,7 +368,7 @@ class expCSS {
 
                     $new_cache = $less->cachedCompile($cache, false);
                     if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-                        if (!empty($new_cache['compiled'])) {
+                        if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
                             $new_cache['vars'] = !empty($vars)?$vars:null;
                             $css_loc = pathinfo(BASE.$css_fname);
                             if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
