@@ -877,26 +877,28 @@ function glist($s){
 function handleErrors($errno, $errstr, $errfile, $errline) {
     if (DEVELOPMENT > 0) {
         switch ($errno) {
-                case E_USER_ERROR:
-                    $msg = 'PHP Error('.$errno.'): ';
+            case E_ERROR:
+            case E_USER_ERROR:
+                $msg = 'PHP Error('.$errno.'): ';
+            break;
+            case E_WARNING:
+            case E_USER_WARNING:
+                $msg = 'PHP Warning('.$errno.'): ';
+            break;
+            case E_NOTICE:
+            case E_USER_NOTICE:
+                $msg = 'PHP Notice('.$errno.'): ';
                 break;
-                case E_USER_WARNING:
-                    $msg = 'PHP Warning('.$errno.'): ';
-                break;
-                case E_USER_NOTICE:
-                case E_NOTICE:
-                    $msg = 'PHP Notice('.$errno.'): ';
-                    break;
-                default:
-                    return;  // we don't want issues printed
-                    $msg = 'PHP Issue('.$errno.'): ';
-                break;
-            }
+            default:
+                return;  // we really don't want other issues printed
+                $msg = 'PHP Issue('.$errno.'): ';
+            break;
+        }
         $msg .= $errstr;
         $msg .= !empty($errfile) ? ' in file '.$errfile : "";
         $msg .= !empty($errline) ? ' on line '.$errline : "";
         // send to the debug output
-        eDebug($msg);
+        if (AJAX_ERROR_REPORTING == 1) eDebug($msg);
     }
 }
 
