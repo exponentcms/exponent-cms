@@ -1,6 +1,6 @@
 <?php
 define("BTN_COLOR",'btn');
-define("SWATCH",'custom');
+define("SWATCH",'');
 define("BTN_SIZE",'small');
 define("MENU_LOCATION",'fixed-top');
 define("MENU_HEIGHT",'1');
