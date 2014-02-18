@@ -11,21 +11,21 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 Added / Fixed / Changed for 2.2.4
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
-  - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive)
+  - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
   - module and item heading levels are now selectable within module configuration settings
+  - updates several 'widgets' from YUI to jQuery variants (tag picker, calendar, list builder color picker, lightbox)
   - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
-  - initial support for alternate/optional file manager - elFinder
+  - initial support for alternate/optional file manager - elFinder (uses an OS file manager paradigm)
   - vastly improved SEO for events, eventregistrations, & products
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
-  - adds new search/filter to manage permissions, users, & groups views
+  - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
   - adds new 'reset.php' file to allow easily clearing all caches if the site crashes
   - includes all fixes from v2.2.3 patches
 ### Known Issues
-  - elFinder may not create thumbnails in some server scenarios
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing

@@ -746,7 +746,7 @@ class expMPDF extends expHtmlToPDF
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
-            error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+            ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
             $this->orient = strtoupper(substr($orientation, 0, 1));
@@ -760,7 +760,7 @@ class expMPDF extends expHtmlToPDF
                     $this->pdf->WriteHTML($html);
                 }
             }
-            if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
         } else {
             return null;
         }
@@ -777,7 +777,7 @@ class expMPDF extends expHtmlToPDF
     public function createpdf($mode, $file)
     {
 //        $this->pdf->render();
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         switch ($mode) {
             case self::$PDF_SAVEFILE:
                 return file_put_contents($file, $this->pdf->Output('S'));
@@ -788,7 +788,7 @@ class expMPDF extends expHtmlToPDF
             default:
                 $this->pdf->Output($file, $mode);
         }
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
         return true;
     }
 
@@ -800,9 +800,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_orientation($orientation)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($this->size,$orientation);
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -813,9 +813,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_page_size($size)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($size,$this->orient);
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -827,9 +827,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_paper($size, $orientation = 'portrait')
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($size,$orientation);
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -840,9 +840,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_html($html, $encoding = null)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->WriteHTML($html, $encoding);
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -852,9 +852,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_html_file($htmlfile)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->WriteHTML(file_get_contents($htmlfile));
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -875,9 +875,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function stream($filename, $options = null)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->Output($filename, 'D');
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -889,21 +889,21 @@ class expMPDF extends expHtmlToPDF
      */
     public function output($compress = null)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         return $this->pdf->Output(null, 'S');
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     public function set_grayscale($mode)
     {
-        error_reporting(E_ALL ^ E_NOTICE);  // warnings must be turned off for mPDF to work
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         if ($mode) {
             $this->pdf->restrictColorSpace = 1;
         } else {
             $this->pdf->restrictColorSpace = 0;
 
         }
-        if (DEVELOPMENT) error_reporting(E_ALL);  // warnings must be turned back on
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
 }

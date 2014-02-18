@@ -869,39 +869,6 @@ function curPageURL() {
     return $pageURL;
 }
 
-/**
- * called from exponent.php as the ajax error handler
- *
- * @param $errno
- * @param $errstr
- * @param $errfile
- * @param $errline
- */
-function handleErrors($errno, $errstr, $errfile, $errline) {
-    if (DEVELOPMENT > 0) {
-        switch ($errno) {
-                case E_USER_ERROR:
-                    $msg = 'PHP Error('.$errno.'): ';
-                break;
-                case E_USER_WARNING:
-                    $msg = 'PHP Warning('.$errno.'): ';
-                break;
-                case E_USER_NOTICE:
-                case E_NOTICE:
-                    $msg = 'PHP Notice('.$errno.'): ';
-                    break;
-                default:
-                    $msg = 'PHP Issue('.$errno.'): ';
-                break;
-            }
-        $msg .= $errstr;
-        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
-        $msg .= !empty($errline) ? ' on line '.$errline : "";
-        // send to the debug output
-        eDebug($msg);
-    }
-}
-
 function gt($s){
     return expLang::gettext($s);
 }
@@ -921,6 +888,42 @@ function glist($s){
         }
     }
     return $list;
+}
+
+/**
+ * called from exponent.php as the ajax error handler
+ *
+ * @param $errno
+ * @param $errstr
+ * @param $errfile
+ * @param $errline
+ */
+function handleErrors($errno, $errstr, $errfile, $errline) {
+    if (DEVELOPMENT > 0) {
+        switch ($errno) {
+            case E_ERROR:
+            case E_USER_ERROR:
+                $msg = 'PHP Error('.$errno.'): ';
+            break;
+            case E_WARNING:
+            case E_USER_WARNING:
+                $msg = 'PHP Warning('.$errno.'): ';
+            break;
+            case E_NOTICE:
+            case E_USER_NOTICE:
+                $msg = 'PHP Notice('.$errno.'): ';
+                break;
+            default:
+                return;  // we really don't want other issues printed
+                $msg = 'PHP Issue('.$errno.'): ';
+            break;
+        }
+        $msg .= $errstr;
+        $msg .= !empty($errfile) ? ' in file '.$errfile : "";
+        $msg .= !empty($errline) ? ' on line '.$errline : "";
+        // send to the debug output
+        if (AJAX_ERROR_REPORTING == 1) eDebug($msg);
+    }
 }
 
 /**
