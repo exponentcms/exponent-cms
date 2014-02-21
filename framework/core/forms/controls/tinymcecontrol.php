@@ -233,9 +233,15 @@ class tinymcecontrol extends formcontrol
                 //"src"=>PATH_RELATIVE."external/tinymce/tinymce.min.js"
             )
         );
-        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "tinymce",
+                "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
+            )
+        );
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-        $html .= "<!-- cke lazy -->";
+        $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         if ($this->accesskey != "") {
