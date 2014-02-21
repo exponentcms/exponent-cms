@@ -62,7 +62,7 @@ class expJavascript {
         } else {
             $scripts .= "<!-- EXPONENT namespace setup -->"."\r\n";
         }
-        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>'."\r\n";
+        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>';
 
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
@@ -73,13 +73,20 @@ class expJavascript {
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
             if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
-                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
-                    $srt[$i] .= JQUERY_SCRIPT.",";
-                } else {
-                    $i++;
-//                    $srt[$i] = "";
-                    $srt[$i] = JQUERY_SCRIPT.",";
-                }
+//                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
+//                    $srt[$i] .= JQUERY_SCRIPT.",";
+//                } else {
+//                    $i++;
+////                    $srt[$i] = "";
+//                    $srt[$i] = JQUERY_SCRIPT.",";
+//                }
+                $scripts .= "\r\n" . '
+    <!--[if lt IE 9]>
+        <script src="'.JQUERY_SCRIPT.'"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="'.JQUERY2_SCRIPT.'"><</script>
+    <!--<![endif]-->';
                 if ($head_config['framework'] == 'bootstrap') {
 //                    if (strlen($srt[$i])+strlen(PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                        $srt[$i] .= PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js'.",";
@@ -167,14 +174,23 @@ class expJavascript {
                     }
                 }
             }
+            $scripts .= "\r\n";
             foreach ($srt as $link) {
                 $link = rtrim($link,",");
-                $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
+                $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>';
             }
         } else {
             if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
-                $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
-                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
+                $scripts .= "\r\n";
+                $scripts .= "\t"."<!-- jQuery Scripts -->";
+//                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
+                $scripts .= '
+    <!--[if lt IE 9]>
+        <script src="'.JQUERY_SCRIPT.'"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="'.JQUERY2_SCRIPT.'"><</script>
+    <!--<![endif]-->' . "\r\n";
                 if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     expCSS::pushToHead(array(

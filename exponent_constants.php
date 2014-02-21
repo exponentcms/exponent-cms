@@ -508,11 +508,13 @@ if (!defined('JQUERY_RELATIVE')) {
 	 * Changing the version here lets Exponent adjust where to look
 	 */
 	define('JQUERY_VERSION', '1.11.0');
+    define('JQUERY2_VERSION', '2.1.0');
     define('JQUERYUI_VERSION', '1.10.4');
 	define('JQUERY_RELATIVE', PATH_RELATIVE.'external/jquery/');
     define('JQUERY_PATH', BASE.'external/jquery/');
 	define('JQUERY_URL', URL_FULL.'external/jquery/');
     define('JQUERY_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY_VERSION.'.min.js');
+    define('JQUERY2_SCRIPT', JQUERY_RELATIVE.'js/jquery-'.JQUERY2_VERSION.'.min.js');
 //    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
     define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui.min.js');
 }
