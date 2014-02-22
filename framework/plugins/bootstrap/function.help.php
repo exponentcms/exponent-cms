@@ -50,7 +50,6 @@ function smarty_function_help($params,&$smarty) {
         }
 
         echo '<a class="' . $class. '" title="'.$title.'" href="'.$link.'" target="_blank"><i class="icon-question-sign '.expTheme::iconSize().'"></i> '.$text.'</a>';
-
         expCSS::pushToHead(array(
 		    "csscore"=>"admin-global",
         ));
