@@ -20,7 +20,7 @@
 <div class="module administration htmleditor">
     <div class="info-header">
         <div class="related-actions">
-			<a class="add" href="{link module="expHTMLEditor" action=edit editor=$editor}">{"Create New Configuration"|gettext}</a>
+            {icon class="add" controller=expHTMLEditor action=edit editor=$editor text="Create a new configuration"|gettext}
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Editor Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
         </div>
         <h2>

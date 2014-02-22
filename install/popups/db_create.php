@@ -66,7 +66,8 @@ function buildHelp(dbname,username,password,target) {
 	<td><input class="text" type="text" name="username" value="" /></td>
 </tr><tr>
 	<td><?php echo gt('Password'); ?>:&#160;</td>
-	<td><input class="text" type="text" name="password" value="" /></td>
+<!--	<td><input class="text" type="text" name="password" value="" /></td>-->
+    <td><input class="password" type="text" name="password" value="" /></td>
 </tr><tr>
 	<td></td>
 	<td><input class="text" type="button" value="<?php echo gt('For MySQL...'); ?>" onclick="buildHelp(this.form.dbname.value,this.form.username.value,this.form.password.value,'mysql'); return false" /></td>

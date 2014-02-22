@@ -17,8 +17,10 @@
 
 {/css}
 
-<script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
-<script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>
+{script unique="ckeditor" src=$smarty.const.PATH_RELATIVE"external/editors/ckeditor/ckeditor.js"}
+{/script}
+{script unique="tinymce" src=$smarty.const.PATH_RELATIVE"external/editors/tinymce/tinymce.min.js"}
+{/script}
 
 <div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}

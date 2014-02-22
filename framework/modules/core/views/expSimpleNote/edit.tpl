@@ -40,8 +40,8 @@
 	    <div class="form_header">
     	<h1>{$formtitle}</h1>
 		<p>
-			<a href="{link controller=login action=loginredirect}">{'You need to be logged in to add notes'|gettext}.</a>
-		</p> 
+            {icon class="login" controller=login action=loginredirect text="You need to be logged in to add notes"|gettext}
+		</p>
 	</div>
 	{/if}
 </div>

@@ -62,7 +62,7 @@ class expJavascript {
         } else {
             $scripts .= "<!-- EXPONENT namespace setup -->"."\r\n";
         }
-        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>'."\r\n";
+        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>';
 
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
@@ -73,12 +73,19 @@ class expJavascript {
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
             if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
-                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
-                    $srt[$i] .= JQUERY_SCRIPT.",";
-                } else {
-                    $i++;
-                    $srt[$i] = JQUERY_SCRIPT.",";
-                }
+//                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
+//                    $srt[$i] .= JQUERY_SCRIPT.",";
+//                } else {
+//                    $i++;
+//                    $srt[$i] = JQUERY_SCRIPT.",";
+//                }
+                $scripts .= "\r\n" . '
+    <!--[if lt IE 9]>
+        <script src="'.JQUERY_SCRIPT.'"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="'.JQUERY2_SCRIPT.'"><</script>
+    <!--<![endif]-->';
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
@@ -199,8 +206,15 @@ class expJavascript {
             }
         } else {
             if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
-                $scripts .= "\t"."<!-- jQuery Scripts -->"."\r\n";
-                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
+                $scripts .= "\t"."<!-- jQuery Scripts -->";
+//                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
+                $scripts .= '
+    <!--[if lt IE 9]>
+        <script src="'.JQUERY_SCRIPT.'"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="'.JQUERY2_SCRIPT.'"><</script>
+    <!--<![endif]-->' . "\r\n";
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {

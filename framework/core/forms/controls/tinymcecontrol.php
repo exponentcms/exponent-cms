@@ -71,7 +71,7 @@ class tinymcecontrol extends formcontrol
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'tinymce');
         }
         $plugins = "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" .
-                ",searchreplace wordcount visualblocks visualchars code fullscreen" .
+                ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                 ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" .
                 ",emoticons,paste,textcolor,visualblocks,importcss";
         if (!empty($settings)) {
@@ -99,7 +99,7 @@ class tinymcecontrol extends formcontrol
         if (!empty($plugins)) {
             $plugs = explode(',',trim($plugins));
             foreach ($plugs as $key=>$plug) {
-                if (empty($plug) || !is_dir(BASE . 'external/editors/tinymce//plugins/' . $plug)) unset($plugs[$key]);
+                if (empty($plug) || !is_dir(BASE . 'external/editors/tinymce/plugins/' . $plug)) unset($plugs[$key]);
             }
             $plugins = implode(',',$plugs);
         }
@@ -111,8 +111,8 @@ class tinymcecontrol extends formcontrol
                 toolbar: 'bold italic underline removeformat | bullist numlist | link unlink',";
             } else {
                 $tb = "
-                    toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    toolbar2: 'print preview visualblocks media | forecolor backcolor emoticons',";
+                    toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+                    toolbar2: 'link unlink image | print preview visualblocks fullscreen code media | forecolor backcolor emoticons',";
             }
         }
         if (MOBILE) {
@@ -166,6 +166,7 @@ class tinymcecontrol extends formcontrol
                     skin: '" . $skin . "',
                     image_advtab: true,
                     browser_spellcheck : " . $sc_brw_off . " ,
+                    importcss_append: true,
                     style_formats: [
                         {title: 'Image Left', selector: 'img', styles: {
                             'float' : 'left',
@@ -233,9 +234,15 @@ class tinymcecontrol extends formcontrol
                 //"src"=>PATH_RELATIVE."external/tinymce/tinymce.min.js"
             )
         );
-        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "tinymce",
+                "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
+            )
+        );
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-        $html .= "<!-- cke lazy -->";
+        $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         if ($this->accesskey != "") {
