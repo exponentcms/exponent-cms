@@ -175,25 +175,25 @@
 {/literal}
 {/script}
 
-{if $smarty.const.LOGGER && $smarty.const.DEVELOPMENT}
-<div id="yuilogger" class="yui3-skin-sam">
+{*{if $smarty.const.LOGGER && $smarty.const.DEVELOPMENT}*}
+{*<div id="yuilogger" class="yui3-skin-sam">*}
 
-</div>
-{script unique="ylogger99" yui3mods="yui"}
-{literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {
-        var yconsole = new Y.Console({
-            /* any other configuration */
-            logSource: Y.Global,
-            newestOnTop : false,
-            style: 'separate',
-            plugins: [
-                Y.Plugin.ConsoleFilters,
-                Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }
-            ]
-        }).render("#yuilogger");
-        yconsole.collapse();
-    });
-{/literal}
-{/script}
-{/if}
+{*</div>*}
+{*{script unique="ylogger99" yui3mods="yui"}*}
+{*{literal}*}
+    {*YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {*}
+        {*var yconsole = new Y.Console({*}
+            {*/* any other configuration */*}
+            {*logSource: Y.Global,*}
+            {*newestOnTop : false,*}
+            {*style: 'separate',*}
+            {*plugins: [*}
+                {*Y.Plugin.ConsoleFilters,*}
+                {*Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }*}
+            {*]*}
+        {*}).render("#yuilogger");*}
+        {*yconsole.collapse();*}
+    {*});*}
+{*{/literal}*}
+{*{/script}*}
+{*{/if}*}

@@ -62,7 +62,7 @@ class expJavascript {
         } else {
             $scripts .= "<!-- EXPONENT namespace setup -->"."\r\n";
         }
-        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>';
+        $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>' . "\r\n";
 
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
@@ -79,12 +79,12 @@ class expJavascript {
 //                    $i++;
 //                    $srt[$i] = JQUERY_SCRIPT.",";
 //                }
-                $scripts .= "\r\n" . '
+                $scripts .= '
     <!--[if lt IE 9]>
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="'.JQUERY2_SCRIPT.'"><</script>
+        <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->';
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
@@ -213,7 +213,7 @@ class expJavascript {
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="'.JQUERY2_SCRIPT.'"><</script>
+        <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->' . "\r\n";
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
