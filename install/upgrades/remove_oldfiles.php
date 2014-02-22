@@ -141,6 +141,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-ui-1.10.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.min.js',
+            'external/png-opacity.htc',
             'framework/modules/text/views/text/showall_merge.tpl',
             'framework/modules/text/views/text/showall_tabview.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
@@ -340,6 +341,17 @@ class remove_oldfiles extends upgradescript {
             'framework/core/assets/js/exp-slideshow.js',
             'framework/core/assets/js/exp-upload.js',
             'framework/modules/photoalbum/assets/js/slideshow.js',
+            // obsolete widgets
+            'framework/core/forms/controls/antispamcontrol.php',
+            'framework/core/forms/controls/configcontrol.php',
+            'framework/core/forms/controls/contactcontrol.php',
+            'framework/core/forms/controls/listcontrol.php',
+            'framework/core/forms/controls/massmailcontrol.php',
+            'framework/core/forms/controls/nextbackcontrol.php',
+            'framework/core/forms/controls/quantitycontrol.php',
+            'framework/core/forms/controls/yuieditorcontrol.php',
+            'framework/plugins/function.configpanel.php',
+            'framework/plugins/function.yuilogger.php',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -399,6 +411,7 @@ class remove_oldfiles extends upgradescript {
             "external/flowplayer-3.2.12/",
             "external/flowplayer-3.2.15/",
             "external/flowplayer-3.2.16/",
+            "external/iepndfix2/",
             "external/magpierss/",
             "external/yui3/",
             "external/lissa/",
