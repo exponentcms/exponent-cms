@@ -46,7 +46,7 @@
     	{/form}
 	{else}
 		<p>
-			<a href="{link controller=login action=loginredirect}">{"Log In to leave a comment"|gettext}</a>
-		</p> 
+            {icon class="login" controller=login action=loginredirect text="Log In to leave a comment"|gettext}
+		</p>
 	{/if}
 </div>
