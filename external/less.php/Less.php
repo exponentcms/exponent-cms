@@ -448,43 +448,31 @@ class Less_Parser{
 	 */
 	private function GetRules( $file_path ){
 
-		$cache_file = false;
-		if( $file_path ){
-			if( Less_Parser::$options['cache_method'] ){
-				$cache_file = $this->CacheFile( $file_path );
+		$this->SetInput($file_path);
 
-				if( $cache_file && file_exists($cache_file) ){
-					switch(Less_Parser::$options['cache_method']){
+		$cache_file = $this->CacheFile( $file_path );
+		if( $cache_file && file_exists($cache_file) ){
+			switch(Less_Parser::$options['cache_method']){
 
-						// Using serialize
-						// Faster but uses more memory
-						case 'serialize':
-							$cache = unserialize(file_get_contents($cache_file));
-							if( $cache ){
-								touch($cache_file);
-								return $cache;
-							}
-						break;
-
-
-						// Using generated php code
-						case 'var_export':
-						case 'php':
-						return include($cache_file);
+				// Using serialize
+				// Faster but uses more memory
+				case 'serialize':
+					$cache = unserialize(file_get_contents($cache_file));
+					if( $cache ){
+						touch($cache_file);
+						$this->UnsetInput();
+						return $cache;
 					}
-				}
+				break;
+
+
+				// Using generated php code
+				case 'var_export':
+				case 'php':
+				$this->UnsetInput();
+				return include($cache_file);
 			}
-
-			$this->input = file_get_contents( $file_path );
 		}
-
-		$this->pos = $this->farthest = 0;
-
-		// Remove potential UTF Byte Order Mark
-		$this->input = preg_replace('/\\G\xEF\xBB\xBF/', '', $this->input);
-		$this->input_len = strlen($this->input);
-
-		$this->setFileContent();
 
 		$rules = $this->parsePrimary();
 
@@ -492,8 +480,7 @@ class Less_Parser{
 			throw new Less_Exception_Chunk($this->input, null, $this->farthest, $this->env->currentFileInfo);
 		}
 
-		// free up a little memory
-		unset($this->input, $this->pos);
+		$this->UnsetInput();
 
 
 		//save the cache
@@ -520,9 +507,43 @@ class Less_Parser{
 	}
 
 
+	/**
+	 * Set up the input buffer
+	 *
+	 */
+	public function SetInput( $file_path ){
+
+		if( $file_path ){
+			$this->input = file_get_contents( $file_path );
+		}
+
+		$this->pos = $this->farthest = 0;
+
+		// Remove potential UTF Byte Order Mark
+		$this->input = preg_replace('/\\G\xEF\xBB\xBF/', '', $this->input);
+		$this->input_len = strlen($this->input);
+
+
+		if( Less_Parser::$options['sourceMap'] && $this->env->currentFileInfo ){
+			$uri = $this->env->currentFileInfo['currentUri'];
+			Less_Parser::$contentsMap[$uri] = $this->input;
+		}
+
+	}
+
+
+	/**
+	 * Free up some memory
+	 *
+	 */
+	public function UnsetInput(){
+		unset($this->input, $this->pos, $this->input_len, $this->memo, $this->farthest);
+	}
+
+
 	public function CacheFile( $file_path ){
 
-		if( $file_path && Less_Cache::$cache_dir ){
+		if( $file_path && Less_Parser::$options['cache_method'] && Less_Cache::$cache_dir ){
 
 			$env = get_object_vars($this->env);
 			unset($env['frames']);
@@ -2394,21 +2415,6 @@ class Less_Parser{
 
 	public function Error($msg){
 		throw new Less_Exception_Parser($msg, null, $this->farthest, $this->env->currentFileInfo);
-	}
-
-
-
-	/**
-	 * Sets file contents to the map
-	 *
-	 * @param string $filePath
-	 */
-	public function setFileContent(){
-
-		if( Less_Parser::$options['sourceMap'] && $this->env->currentFileInfo ){
-			$uri = $this->env->currentFileInfo['currentUri'];
-			Less_Parser::$contentsMap[$uri] = $this->input;
-		}
 	}
 
 	public static function WinPath($path){
@@ -5795,427 +5801,6 @@ class Less_Tree_Media extends Less_Tree{
 }
  
 
-
-class Less_Tree_Mixin_Call extends Less_Tree{
-
-	public $selector;
-	public $arguments;
-	public $index;
-	public $currentFileInfo;
-
-	public $important;
-	public $type = 'MixinCall';
-
-	/**
-	 * less.js: tree.mixin.Call
-	 *
-	 */
-	public function __construct($elements, $args, $index, $currentFileInfo, $important = false){
-		$this->selector = new Less_Tree_Selector($elements);
-		$this->arguments = $args;
-		$this->index = $index;
-		$this->currentFileInfo = $currentFileInfo;
-		$this->important = $important;
-	}
-
-	//function accept($visitor){
-	//	$this->selector = $visitor->visit($this->selector);
-	//	$this->arguments = $visitor->visit($this->arguments);
-	//}
-
-
-	public function compile($env){
-
-		$rules = array();
-		$match = false;
-		$isOneFound = false;
-		$candidates = array();
-		$defaultUsed = false;
-		$conditionResult = array();
-
-		$args = array();
-		foreach($this->arguments as $a){
-			$args[] = array('name'=> $a['name'], 'value' => $a['value']->compile($env) );
-		}
-
-		foreach($env->frames as $frame){
-
-			$mixins = $frame->find($this->selector);
-
-			if( !$mixins ){
-				continue;
-			}
-
-			$isOneFound = true;
-			$defNone = 0;
-			$defTrue = 1;
-			$defFalse = 2;
-
-			// To make `default()` function independent of definition order we have two "subpasses" here.
-			// At first we evaluate each guard *twice* (with `default() == true` and `default() == false`),
-			// and build candidate list with corresponding flags. Then, when we know all possible matches,
-			// we make a final decision.
-
-			$mixins_len = count($mixins);
-			for( $m = 0; $m < $mixins_len; $m++ ){
-				$mixin = $mixins[$m];
-
-				if( $this->IsRecursive( $env, $mixin ) ){
-					continue;
-				}
-
-				if( $mixin->matchArgs($args, $env) ){
-
-					$candidate = array('mixin' => $mixin, 'group' => $defNone);
-
-					if( $mixin instanceof Less_Tree_Ruleset ){
-
-						for( $f = 0; $f < 2; $f++ ){
-							Less_Tree_DefaultFunc::value($f);
-							$conditionResult[$f] = $mixin->matchCondition( $args, $env);
-						}
-						if( $conditionResult[0] || $conditionResult[1] ){
-							if( $conditionResult[0] != $conditionResult[1] ){
-								$candidate['group'] = $conditionResult[1] ? $defTrue : $defFalse;
-							}
-
-							$candidates[] = $candidate;
-						}
-					}else{
-						$candidates[] = $candidate;
-					}
-
-					$match = true;
-				}
-			}
-
-			Less_Tree_DefaultFunc::reset();
-
-
-			$count = array(0, 0, 0);
-			for( $m = 0; $m < count($candidates); $m++ ){
-				$count[ $candidates[$m]['group'] ]++;
-			}
-
-			if( $count[$defNone] > 0 ){
-				$defaultResult = $defFalse;
-			} else {
-				$defaultResult = $defTrue;
-				if( ($count[$defTrue] + $count[$defFalse]) > 1 ){
-					throw Exception( 'Ambiguous use of `default()` found when matching for `'. $this->format($args) + '`' );
-				}
-			}
-
-
-			$candidates_length = count($candidates);
-			$length_1 = ($candidates_length == 1);
-
-			for( $m = 0; $m < $candidates_length; $m++){
-				$candidate = $candidates[$m]['group'];
-				if( ($candidate === $defNone) || ($candidate === $defaultResult) ){
-					try{
-						$mixin = $candidates[$m]['mixin'];
-						if( !($mixin instanceof Less_Tree_Mixin_Definition) ){
-							$mixin = new Less_Tree_Mixin_Definition('', array(), $mixin->rules, null, false);
-							$mixin->originalRuleset = $mixins[$m]->originalRuleset;
-						}
-						$rules = array_merge($rules, $mixin->compile($env, $args, $this->important)->rules);
-					} catch (Exception $e) {
-						//throw new Less_Exception_Compiler($e->getMessage(), $e->index, null, $this->currentFileInfo['filename']);
-						throw new Less_Exception_Compiler($e->getMessage(), null, null, $this->currentFileInfo);
-					}
-				}
-			}
-
-			if( $match ){
-				if( !$this->currentFileInfo || !isset($this->currentFileInfo['reference']) || !$this->currentFileInfo['reference'] ){
-					Less_Tree::ReferencedArray($rules);
-				}
-
-				return $rules;
-			}
-		}
-
-		if( $isOneFound ){
-			throw new Less_Exception_Compiler('No matching definition was found for `'.$this->Format( $args ).'`', null, $this->index, $this->currentFileInfo);
-
-		}else{
-			throw new Less_Exception_Compiler(trim($this->selector->toCSS()) . " is undefined", null, $this->index);
-		}
-
-	}
-
-	/**
-	 * Format the args for use in exception messages
-	 *
-	 */
-	private function Format($args){
-		$message = array();
-		if( $args ){
-			foreach($args as $a){
-				$argValue = '';
-				if( $a['name'] ){
-					$argValue += $a['name']+':';
-				}
-				if( is_object($a['value']) ){
-					$argValue += $a['value']->toCSS();
-				}else{
-					$argValue += '???';
-				}
-				$message[] = $argValue;
-			}
-		}
-		return implode(', ',$message);
-	}
-
-
-	/**
-	 * Are we in a recursive mixin call?
-	 *
-	 * @return bool
-	 */
-	private function IsRecursive( $env, $mixin ){
-
-		foreach($env->frames as $recur_frame){
-			if( !($mixin instanceof Less_Tree_Mixin_Definition) ){
-
-				if( $mixin === $recur_frame ){
-					return true;
-				}
-
-				if( isset($recur_frame->originalRuleset) && $mixin->ruleset_id === $recur_frame->originalRuleset ){
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-}
-
-
- 
-
-class Less_Tree_Mixin_Definition extends Less_Tree_Ruleset{
-	public $name;
-	public $selectors;
-	public $params;
-	public $arity		= 0;
-	public $rules;
-	public $lookups		= array();
-	public $required	= 0;
-	public $frames		= array();
-	public $condition;
-	public $variadic;
-	public $type		= 'MixinDefinition';
-
-
-	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition
-	public function __construct($name, $params, $rules, $condition, $variadic = false){
-		$this->name = $name;
-		$this->selectors = array(new Less_Tree_Selector(array( new Less_Tree_Element(null, $name))));
-
-		$this->params = $params;
-		$this->condition = $condition;
-		$this->variadic = $variadic;
-		$this->rules = $rules;
-
-		if( $params ){
-			$this->arity = count($params);
-			foreach( $params as $p ){
-				if (! isset($p['name']) || ($p['name'] && !isset($p['value']))) {
-					$this->required++;
-				}
-			}
-		}
-
-		$this->SetRulesetIndex();
-	}
-
-
-
-	//function accept( $visitor ){
-	//	$this->params = $visitor->visit($this->params);
-	//	$this->rules = $visitor->visit($this->rules);
-	//	$this->condition = $visitor->visit($this->condition);
-	//}
-
-
-	public function toCSS(){
-		return '';
-	}
-
-	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition.evalParams
-	public function compileParams($env, $mixinFrames, $args = array() , &$evaldArguments = array() ){
-		$frame = new Less_Tree_Ruleset(null, array());
-		$params = $this->params;
-		$mixinEnv = null;
-
-		$args_len = count($args);
-		for($i = 0; $i < $args_len; $i++ ){
-			$arg = $args[$i];
-
-			if( $arg && $arg['name'] ){
-				$isNamedFound = false;
-
-				foreach($params as $j => $param){
-					if( !isset($evaldArguments[$j]) && $arg['name'] === $params[$j]['name']) {
-						$evaldArguments[$j] = $arg['value']->compile($env);
-						array_unshift($frame->rules, new Less_Tree_Rule( $arg['name'], $arg['value']->compile($env) ) );
-						$isNamedFound = true;
-						break;
-					}
-				}
-				if ($isNamedFound) {
-					array_splice($args, $i, 1);
-					$i--;
-					$args_len--;
-					continue;
-				} else {
-					throw new Less_Exception_Compiler("Named argument for " . $this->name .' '.$args[$i]['name'] . ' not found');
-				}
-			}
-		}
-
-		$argIndex = 0;
-		foreach($params as $i => $param){
-
-			if ( isset($evaldArguments[$i]) ){ continue; }
-
-			$arg = null;
-			if( isset($args[$argIndex]) ){
-				$arg = $args[$argIndex];
-			}
-
-			if (isset($param['name']) && $param['name']) {
-
-				if( isset($param['variadic']) && $args ){
-					$varargs = array();
-					for ($j = $argIndex; $j < $args_len; $j++) {
-						$varargs[] = $args[$j]['value']->compile($env);
-					}
-					$expression = new Less_Tree_Expression($varargs);
-					array_unshift($frame->rules, new Less_Tree_Rule($param['name'], $expression->compile($env)));
-				}else{
-					$val = ($arg && $arg['value']) ? $arg['value'] : false;
-
-					if ($val) {
-						$val = $val->compile($env);
-					} else if ( isset($param['value']) ) {
-
-						if( !$mixinEnv ){
-							$mixinEnv = new Less_Environment();
-							$mixinEnv->frames = array_merge( array($frame), $mixinFrames);
-						}
-
-						$val = $param['value']->compile($mixinEnv);
-						$frame->resetCache();
-					} else {
-						throw new Less_Exception_Compiler("Wrong number of arguments for " . $this->name . " (" . count($args) . ' for ' . $this->arity . ")");
-					}
-
-					array_unshift($frame->rules, new Less_Tree_Rule($param['name'], $val));
-					$evaldArguments[$i] = $val;
-				}
-			}
-
-			if ( isset($param['variadic']) && $args) {
-				for ($j = $argIndex; $j < $args_len; $j++) {
-					$evaldArguments[$j] = $args[$j]['value']->compile($env);
-				}
-			}
-			$argIndex++;
-		}
-
-		ksort($evaldArguments);
-		$evaldArguments = array_values($evaldArguments);
-
-		return $frame;
-	}
-
-	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition.eval
-	public function compile($env, $args = NULL, $important = NULL) {
-
-		Less_Environment::$mixin_stack++;
-
-		$_arguments = array();
-
-		$mixinFrames = array_merge($this->frames, $env->frames);
-		$frame = $this->compileParams($env, $mixinFrames, $args, $_arguments);
-
-		$ex = new Less_Tree_Expression($_arguments);
-		array_unshift($frame->rules, new Less_Tree_Rule('@arguments', $ex->compile($env)));
-
-
-		$ruleset = new Less_Tree_Ruleset(null, $this->rules);
-		$ruleset->originalRuleset = $this->ruleset_id;
-
-
-		$ruleSetEnv = new Less_Environment();
-		$ruleSetEnv->frames = array_merge( array($this, $frame), $mixinFrames );
-		$ruleset = $ruleset->compile( $ruleSetEnv );
-
-		if( $important ){
-			$ruleset = $ruleset->makeImportant();
-		}
-
-		Less_Environment::$mixin_stack--;
-
-		return $ruleset;
-	}
-
-
-	public function matchCondition($args, $env) {
-
-		if( !$this->condition ){
-			return true;
-		}
-
-		$frame = $this->compileParams($env, array_merge($this->frames,$env->frames), $args );
-
-		$compile_env = new Less_Environment();
-		$compile_env->frames = array_merge(
-				array($frame)		// the parameter variables
-				, $this->frames		// the parent namespace/mixin frames
-				, $env->frames		// the current environment frames
-			);
-
-		return (bool)$this->condition->compile($compile_env);
-	}
-
-	public function matchArgs($args, $env = NULL){
-		$argsLength = count($args);
-
-		if( !$this->variadic ){
-			if( $argsLength < $this->required ){
-				return false;
-			}
-			if( $argsLength > count($this->params) ){
-				return false;
-			}
-		}else{
-			if( $argsLength < ($this->required - 1)){
-				return false;
-			}
-		}
-
-		$len = min($argsLength, $this->arity);
-
-		for( $i = 0; $i < $len; $i++ ){
-			if( !isset($this->params[$i]['name']) && !isset($this->params[$i]['variadic']) ){
-				if( $args[$i]['value']->compile($env)->toCSS() != $this->params[$i]['value']->compile($env)->toCSS() ){
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-}
- 
-
 /**
  * A simple css name-value pair
  * ex: width:100px;
@@ -7737,6 +7322,427 @@ class Less_Tree_Variable extends Less_Tree{
 }
  
 
+
+class Less_Tree_Mixin_Call extends Less_Tree{
+
+	public $selector;
+	public $arguments;
+	public $index;
+	public $currentFileInfo;
+
+	public $important;
+	public $type = 'MixinCall';
+
+	/**
+	 * less.js: tree.mixin.Call
+	 *
+	 */
+	public function __construct($elements, $args, $index, $currentFileInfo, $important = false){
+		$this->selector = new Less_Tree_Selector($elements);
+		$this->arguments = $args;
+		$this->index = $index;
+		$this->currentFileInfo = $currentFileInfo;
+		$this->important = $important;
+	}
+
+	//function accept($visitor){
+	//	$this->selector = $visitor->visit($this->selector);
+	//	$this->arguments = $visitor->visit($this->arguments);
+	//}
+
+
+	public function compile($env){
+
+		$rules = array();
+		$match = false;
+		$isOneFound = false;
+		$candidates = array();
+		$defaultUsed = false;
+		$conditionResult = array();
+
+		$args = array();
+		foreach($this->arguments as $a){
+			$args[] = array('name'=> $a['name'], 'value' => $a['value']->compile($env) );
+		}
+
+		foreach($env->frames as $frame){
+
+			$mixins = $frame->find($this->selector);
+
+			if( !$mixins ){
+				continue;
+			}
+
+			$isOneFound = true;
+			$defNone = 0;
+			$defTrue = 1;
+			$defFalse = 2;
+
+			// To make `default()` function independent of definition order we have two "subpasses" here.
+			// At first we evaluate each guard *twice* (with `default() == true` and `default() == false`),
+			// and build candidate list with corresponding flags. Then, when we know all possible matches,
+			// we make a final decision.
+
+			$mixins_len = count($mixins);
+			for( $m = 0; $m < $mixins_len; $m++ ){
+				$mixin = $mixins[$m];
+
+				if( $this->IsRecursive( $env, $mixin ) ){
+					continue;
+				}
+
+				if( $mixin->matchArgs($args, $env) ){
+
+					$candidate = array('mixin' => $mixin, 'group' => $defNone);
+
+					if( $mixin instanceof Less_Tree_Ruleset ){
+
+						for( $f = 0; $f < 2; $f++ ){
+							Less_Tree_DefaultFunc::value($f);
+							$conditionResult[$f] = $mixin->matchCondition( $args, $env);
+						}
+						if( $conditionResult[0] || $conditionResult[1] ){
+							if( $conditionResult[0] != $conditionResult[1] ){
+								$candidate['group'] = $conditionResult[1] ? $defTrue : $defFalse;
+							}
+
+							$candidates[] = $candidate;
+						}
+					}else{
+						$candidates[] = $candidate;
+					}
+
+					$match = true;
+				}
+			}
+
+			Less_Tree_DefaultFunc::reset();
+
+
+			$count = array(0, 0, 0);
+			for( $m = 0; $m < count($candidates); $m++ ){
+				$count[ $candidates[$m]['group'] ]++;
+			}
+
+			if( $count[$defNone] > 0 ){
+				$defaultResult = $defFalse;
+			} else {
+				$defaultResult = $defTrue;
+				if( ($count[$defTrue] + $count[$defFalse]) > 1 ){
+					throw Exception( 'Ambiguous use of `default()` found when matching for `'. $this->format($args) + '`' );
+				}
+			}
+
+
+			$candidates_length = count($candidates);
+			$length_1 = ($candidates_length == 1);
+
+			for( $m = 0; $m < $candidates_length; $m++){
+				$candidate = $candidates[$m]['group'];
+				if( ($candidate === $defNone) || ($candidate === $defaultResult) ){
+					try{
+						$mixin = $candidates[$m]['mixin'];
+						if( !($mixin instanceof Less_Tree_Mixin_Definition) ){
+							$mixin = new Less_Tree_Mixin_Definition('', array(), $mixin->rules, null, false);
+							$mixin->originalRuleset = $mixins[$m]->originalRuleset;
+						}
+						$rules = array_merge($rules, $mixin->compile($env, $args, $this->important)->rules);
+					} catch (Exception $e) {
+						//throw new Less_Exception_Compiler($e->getMessage(), $e->index, null, $this->currentFileInfo['filename']);
+						throw new Less_Exception_Compiler($e->getMessage(), null, null, $this->currentFileInfo);
+					}
+				}
+			}
+
+			if( $match ){
+				if( !$this->currentFileInfo || !isset($this->currentFileInfo['reference']) || !$this->currentFileInfo['reference'] ){
+					Less_Tree::ReferencedArray($rules);
+				}
+
+				return $rules;
+			}
+		}
+
+		if( $isOneFound ){
+			throw new Less_Exception_Compiler('No matching definition was found for `'.$this->Format( $args ).'`', null, $this->index, $this->currentFileInfo);
+
+		}else{
+			throw new Less_Exception_Compiler(trim($this->selector->toCSS()) . " is undefined", null, $this->index);
+		}
+
+	}
+
+	/**
+	 * Format the args for use in exception messages
+	 *
+	 */
+	private function Format($args){
+		$message = array();
+		if( $args ){
+			foreach($args as $a){
+				$argValue = '';
+				if( $a['name'] ){
+					$argValue += $a['name']+':';
+				}
+				if( is_object($a['value']) ){
+					$argValue += $a['value']->toCSS();
+				}else{
+					$argValue += '???';
+				}
+				$message[] = $argValue;
+			}
+		}
+		return implode(', ',$message);
+	}
+
+
+	/**
+	 * Are we in a recursive mixin call?
+	 *
+	 * @return bool
+	 */
+	private function IsRecursive( $env, $mixin ){
+
+		foreach($env->frames as $recur_frame){
+			if( !($mixin instanceof Less_Tree_Mixin_Definition) ){
+
+				if( $mixin === $recur_frame ){
+					return true;
+				}
+
+				if( isset($recur_frame->originalRuleset) && $mixin->ruleset_id === $recur_frame->originalRuleset ){
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+}
+
+
+ 
+
+class Less_Tree_Mixin_Definition extends Less_Tree_Ruleset{
+	public $name;
+	public $selectors;
+	public $params;
+	public $arity		= 0;
+	public $rules;
+	public $lookups		= array();
+	public $required	= 0;
+	public $frames		= array();
+	public $condition;
+	public $variadic;
+	public $type		= 'MixinDefinition';
+
+
+	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition
+	public function __construct($name, $params, $rules, $condition, $variadic = false){
+		$this->name = $name;
+		$this->selectors = array(new Less_Tree_Selector(array( new Less_Tree_Element(null, $name))));
+
+		$this->params = $params;
+		$this->condition = $condition;
+		$this->variadic = $variadic;
+		$this->rules = $rules;
+
+		if( $params ){
+			$this->arity = count($params);
+			foreach( $params as $p ){
+				if (! isset($p['name']) || ($p['name'] && !isset($p['value']))) {
+					$this->required++;
+				}
+			}
+		}
+
+		$this->SetRulesetIndex();
+	}
+
+
+
+	//function accept( $visitor ){
+	//	$this->params = $visitor->visit($this->params);
+	//	$this->rules = $visitor->visit($this->rules);
+	//	$this->condition = $visitor->visit($this->condition);
+	//}
+
+
+	public function toCSS(){
+		return '';
+	}
+
+	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition.evalParams
+	public function compileParams($env, $mixinFrames, $args = array() , &$evaldArguments = array() ){
+		$frame = new Less_Tree_Ruleset(null, array());
+		$params = $this->params;
+		$mixinEnv = null;
+
+		$args_len = count($args);
+		for($i = 0; $i < $args_len; $i++ ){
+			$arg = $args[$i];
+
+			if( $arg && $arg['name'] ){
+				$isNamedFound = false;
+
+				foreach($params as $j => $param){
+					if( !isset($evaldArguments[$j]) && $arg['name'] === $params[$j]['name']) {
+						$evaldArguments[$j] = $arg['value']->compile($env);
+						array_unshift($frame->rules, new Less_Tree_Rule( $arg['name'], $arg['value']->compile($env) ) );
+						$isNamedFound = true;
+						break;
+					}
+				}
+				if ($isNamedFound) {
+					array_splice($args, $i, 1);
+					$i--;
+					$args_len--;
+					continue;
+				} else {
+					throw new Less_Exception_Compiler("Named argument for " . $this->name .' '.$args[$i]['name'] . ' not found');
+				}
+			}
+		}
+
+		$argIndex = 0;
+		foreach($params as $i => $param){
+
+			if ( isset($evaldArguments[$i]) ){ continue; }
+
+			$arg = null;
+			if( isset($args[$argIndex]) ){
+				$arg = $args[$argIndex];
+			}
+
+			if (isset($param['name']) && $param['name']) {
+
+				if( isset($param['variadic']) && $args ){
+					$varargs = array();
+					for ($j = $argIndex; $j < $args_len; $j++) {
+						$varargs[] = $args[$j]['value']->compile($env);
+					}
+					$expression = new Less_Tree_Expression($varargs);
+					array_unshift($frame->rules, new Less_Tree_Rule($param['name'], $expression->compile($env)));
+				}else{
+					$val = ($arg && $arg['value']) ? $arg['value'] : false;
+
+					if ($val) {
+						$val = $val->compile($env);
+					} else if ( isset($param['value']) ) {
+
+						if( !$mixinEnv ){
+							$mixinEnv = new Less_Environment();
+							$mixinEnv->frames = array_merge( array($frame), $mixinFrames);
+						}
+
+						$val = $param['value']->compile($mixinEnv);
+						$frame->resetCache();
+					} else {
+						throw new Less_Exception_Compiler("Wrong number of arguments for " . $this->name . " (" . count($args) . ' for ' . $this->arity . ")");
+					}
+
+					array_unshift($frame->rules, new Less_Tree_Rule($param['name'], $val));
+					$evaldArguments[$i] = $val;
+				}
+			}
+
+			if ( isset($param['variadic']) && $args) {
+				for ($j = $argIndex; $j < $args_len; $j++) {
+					$evaldArguments[$j] = $args[$j]['value']->compile($env);
+				}
+			}
+			$argIndex++;
+		}
+
+		ksort($evaldArguments);
+		$evaldArguments = array_values($evaldArguments);
+
+		return $frame;
+	}
+
+	// less.js : /lib/less/tree/mixin.js : tree.mixin.Definition.eval
+	public function compile($env, $args = NULL, $important = NULL) {
+
+		Less_Environment::$mixin_stack++;
+
+		$_arguments = array();
+
+		$mixinFrames = array_merge($this->frames, $env->frames);
+		$frame = $this->compileParams($env, $mixinFrames, $args, $_arguments);
+
+		$ex = new Less_Tree_Expression($_arguments);
+		array_unshift($frame->rules, new Less_Tree_Rule('@arguments', $ex->compile($env)));
+
+
+		$ruleset = new Less_Tree_Ruleset(null, $this->rules);
+		$ruleset->originalRuleset = $this->ruleset_id;
+
+
+		$ruleSetEnv = new Less_Environment();
+		$ruleSetEnv->frames = array_merge( array($this, $frame), $mixinFrames );
+		$ruleset = $ruleset->compile( $ruleSetEnv );
+
+		if( $important ){
+			$ruleset = $ruleset->makeImportant();
+		}
+
+		Less_Environment::$mixin_stack--;
+
+		return $ruleset;
+	}
+
+
+	public function matchCondition($args, $env) {
+
+		if( !$this->condition ){
+			return true;
+		}
+
+		$frame = $this->compileParams($env, array_merge($this->frames,$env->frames), $args );
+
+		$compile_env = new Less_Environment();
+		$compile_env->frames = array_merge(
+				array($frame)		// the parameter variables
+				, $this->frames		// the parent namespace/mixin frames
+				, $env->frames		// the current environment frames
+			);
+
+		return (bool)$this->condition->compile($compile_env);
+	}
+
+	public function matchArgs($args, $env = NULL){
+		$argsLength = count($args);
+
+		if( !$this->variadic ){
+			if( $argsLength < $this->required ){
+				return false;
+			}
+			if( $argsLength > count($this->params) ){
+				return false;
+			}
+		}else{
+			if( $argsLength < ($this->required - 1)){
+				return false;
+			}
+		}
+
+		$len = min($argsLength, $this->arity);
+
+		for( $i = 0; $i < $len; $i++ ){
+			if( !isset($this->params[$i]['name']) && !isset($this->params[$i]['variadic']) ){
+				if( $args[$i]['value']->compile($env)->toCSS() != $this->params[$i]['value']->compile($env)->toCSS() ){
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+}
+ 
+
 /**
  * Extend Finder Visitor
  *
@@ -8787,6 +8793,125 @@ class Less_Visitor_toCSS extends Less_VisitorReplacing{
  
 
 /**
+ * Parser Exception
+ *
+ * @package Less
+ * @subpackage exception
+ */
+class Less_Exception_Parser extends Exception{
+
+	/**
+	 * The current file
+	 *
+	 * @var Less_ImportedFile
+	 */
+	protected $currentFile;
+
+	/**
+	 * The current parser index
+	 *
+	 * @var integer
+	 */
+	protected $index;
+
+	protected $input;
+
+	protected $details = array();
+
+
+	/**
+	 * Constructor
+	 *
+	 * @param string $message
+	 * @param Exception $previous Previous exception
+	 * @param integer $index The current parser index
+	 * @param Less_FileInfo|string $currentFile The file
+	 * @param integer $code The exception code
+	 */
+	public function __construct($message = null, Exception $previous = null, $index = null, $currentFile = null, $code = 0){
+
+		if (PHP_VERSION_ID < 50300) {
+			$this->previous = $previous;
+			parent::__construct($message, $code);
+		} else {
+			parent::__construct($message, $code, $previous);
+		}
+
+		$this->currentFile = $currentFile;
+		$this->index = $index;
+
+		$this->genMessage();
+	}
+
+
+	protected function getInput(){
+
+		if( !$this->input && $this->currentFile && $this->currentFile['filename'] ){
+			$this->input = file_get_contents( $this->currentFile['filename'] );
+		}
+	}
+
+
+
+	/**
+	 * Converts the exception to string
+	 *
+	 * @return string
+	 */
+	public function genMessage(){
+
+		if( $this->currentFile && $this->currentFile['filename'] ){
+			$this->message .= ' in '.basename($this->currentFile['filename']);
+		}
+
+		if( $this->index !== null ){
+			$this->getInput();
+			if( $this->input ){
+				$line = self::getLineNumber();
+				$this->message .= ' on line '.$line.', column '.self::getColumn();
+
+				$lines = explode("\n",$this->input);
+
+				$count = count($lines);
+				$start_line = max(0, $line-3);
+				$last_line = min($count, $start_line+6);
+				for( $i = $start_line; $i < $last_line; $i++ ){
+					$this->message .= "\n".($i+1).') '.$lines[$i];
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Returns the line number the error was encountered
+	 *
+	 * @return integer
+	 */
+	public function getLineNumber(){
+		if( $this->index ){
+			return substr_count($this->input, "\n", 0, $this->index) + 1;
+		}
+		return 1;
+	}
+
+
+	/**
+	 * Returns the column the error was encountered
+	 *
+	 * @return integer
+	 */
+	public function getColumn(){
+
+		$part = substr($this->input, 0, $this->index);
+		$pos = strrpos($part,"\n");
+		return $this->index - $pos;
+	}
+
+}
+ 
+
+/**
  * Chunk Exception
  *
  * @package Less
@@ -8993,125 +9118,6 @@ class Less_Exception_Chunk extends Less_Exception_Parser{
 class Less_Exception_Compiler extends Less_Exception_Parser{
 
 } 
-
-/**
- * Parser Exception
- *
- * @package Less
- * @subpackage exception
- */
-class Less_Exception_Parser extends Exception{
-
-	/**
-	 * The current file
-	 *
-	 * @var Less_ImportedFile
-	 */
-	protected $currentFile;
-
-	/**
-	 * The current parser index
-	 *
-	 * @var integer
-	 */
-	protected $index;
-
-	protected $input;
-
-	protected $details = array();
-
-
-	/**
-	 * Constructor
-	 *
-	 * @param string $message
-	 * @param Exception $previous Previous exception
-	 * @param integer $index The current parser index
-	 * @param Less_FileInfo|string $currentFile The file
-	 * @param integer $code The exception code
-	 */
-	public function __construct($message = null, Exception $previous = null, $index = null, $currentFile = null, $code = 0){
-
-		if (PHP_VERSION_ID < 50300) {
-			$this->previous = $previous;
-			parent::__construct($message, $code);
-		} else {
-			parent::__construct($message, $code, $previous);
-		}
-
-		$this->currentFile = $currentFile;
-		$this->index = $index;
-
-		$this->genMessage();
-	}
-
-
-	protected function getInput(){
-
-		if( !$this->input && $this->currentFile && $this->currentFile['filename'] ){
-			$this->input = file_get_contents( $this->currentFile['filename'] );
-		}
-	}
-
-
-
-	/**
-	 * Converts the exception to string
-	 *
-	 * @return string
-	 */
-	public function genMessage(){
-
-		if( $this->currentFile && $this->currentFile['filename'] ){
-			$this->message .= ' in '.basename($this->currentFile['filename']);
-		}
-
-		if( $this->index !== null ){
-			$this->getInput();
-			if( $this->input ){
-				$line = self::getLineNumber();
-				$this->message .= ' on line '.$line.', column '.self::getColumn();
-
-				$lines = explode("\n",$this->input);
-
-				$count = count($lines);
-				$start_line = max(0, $line-3);
-				$last_line = min($count, $start_line+6);
-				for( $i = $start_line; $i < $last_line; $i++ ){
-					$this->message .= "\n".($i+1).') '.$lines[$i];
-				}
-			}
-		}
-
-	}
-
-	/**
-	 * Returns the line number the error was encountered
-	 *
-	 * @return integer
-	 */
-	public function getLineNumber(){
-		if( $this->index ){
-			return substr_count($this->input, "\n", 0, $this->index) + 1;
-		}
-		return 1;
-	}
-
-
-	/**
-	 * Returns the column the error was encountered
-	 *
-	 * @return integer
-	 */
-	public function getColumn(){
-
-		$part = substr($this->input, 0, $this->index);
-		$pos = strrpos($part,"\n");
-		return $this->index - $pos;
-	}
-
-}
- 
 
 /**
  * Parser output with source map
