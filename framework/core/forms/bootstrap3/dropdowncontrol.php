@@ -53,11 +53,14 @@ class dropdowncontrol extends formcontrol {
     function controlToHTML($name,$label=null) {
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
-        $html = '<select'.$inputID.' name="' . $name;
+
+        $html = ($this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div>';
+
+        $html .= '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';
-        $html .= '" size="' . $this->size . '"';
-        $html .= ' class="'.$this->class.' select control '.$disabled.'"';
-        if ($this->disabled) $html .= ' disabled';
+        $html .= ($this->size > 1) ? '" size="' . $this->size . '"' : '"';
+        $html .= ' class="form-control '.$this->class.' '.$disabled.'"';
+        if ($this->disabled) $html .= ' disabled="1"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         foreach ($this->jsHooks as $hook=>$action) {
             $html .= " $hook=\"$action\"";
@@ -86,6 +89,8 @@ class dropdowncontrol extends formcontrol {
         }
         $html .= '</select>';             
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
+        $html .= '</div>';
+
         return $html;
     }
     

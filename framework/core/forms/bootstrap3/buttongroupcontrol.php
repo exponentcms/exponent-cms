@@ -49,9 +49,11 @@ class buttongroupcontrol extends formcontrol {
 	function toHTML($label,$name) {
 	    $disabled = $this->disabled != false ? " disabled" : "";
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
-		$html = "<div id=\"".$name."Control\" class=\"control buttongroup".$disabled."\">";
+		$html = "<div id=\"".$name."Control\" class=\"form-group".$disabled."\">";
+		$html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 		$html .= $this->controlToHTML($name);
-		$html .= "</div>";			
+		$html .= ($this->horizontal == 1 ) ? '</div>' : '';
+		$html .= "</div>";
 		return $html;
 	}
 
@@ -90,21 +92,15 @@ class buttongroupcontrol extends formcontrol {
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
 			if ($this->returntype == "") {
-				$html .= '<button type="cancel" class="cancel btn '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
+				$html .= '<button type="cancel" class="cancel btn btn-default '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			} else {
-			    $html .= '<button type="cancel" class="cancel btn '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
+			    $html .= '<button type="cancel" class="cancel btn btn-default '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
             $html .= ' ><i class="icon-ban-circle '.$icon_size.'"></i> ';
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
-		
-		expCSS::pushToHead(array(
-//		    "unique"=>"button",
-		    "corecss"=>"button",
-		    )
-		);
-		
+				
 		return $html;
 	}
 

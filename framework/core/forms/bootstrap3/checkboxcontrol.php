@@ -62,27 +62,23 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
             $for   = ' for="' . $name . '"';
         }
-        $html = "<div" . $divID . " class=\"checkbox";
+        $html = "<div" . $divID . " class=\"form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        if (!empty($this->flip)) {
-            $html .= "<label>".$label;
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            $html .= "</label>";
+        $html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 
-            $flip = '';
-        } else {
-            $html .= "<label>";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            $html .= $label."</label>";
-        }
+        $html .= "<div class=\"checkbox\"><label>".$label;
+        $html .= $this->controlToHTML($name, $label);
+        $html .= "</label></div>";
+
         if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
+        $html .= ($this->horizontal == 1 ) ? '</div>' : '';
         $html .= "</div>";
         return $html;
     }
 
     //FIXME:  this is just here until we completely deprecate the old school checkbox
     //control calls in the old school forms
-    function controlToHTML_newschool($name, $label) {
+    function controlToHTML($name, $label) {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $inputID    = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";

@@ -87,8 +87,8 @@ abstract class formcontrol {
 		
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
-		 
-		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
+
+		$html = "<div".$divID." class=\"".$this->type."-control form-group ".$class.$disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
@@ -96,13 +96,12 @@ abstract class formcontrol {
         } else {
             $labeltag = $label;
         }
-		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"\">".$labeltag."</label>" : "";
-			$html .= $this->controlToHTML($name, $label);
-		} else {
-			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "<label".$for." class=\"\">".$labeltag."</label>" : "";
-		}
+
+
+
+        $html .= (!empty($label)) ? "<label".$for." class=\"control-label" . (($this->horizontal == 1 ) ? ' col-sm-2' : '') . "\">".$labeltag."</label>" : "";
+        $html .= $this->controlToHTML($name, $label);
+
 		//$html .= "</label>";
 		$html .= "</div>";			
 		return $html;

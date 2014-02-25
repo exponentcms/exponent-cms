@@ -65,20 +65,15 @@ class genericcontrol extends formcontrol {
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
             $html = '<div'.$divID.' class="form-group"'.$disabled;
-            $html .= (!empty($this->required)) ? ' required">' : '">';
+            $html .= (!empty($this->required)) ? ' required="1">' : '>';
       		//$html .= "<label>";
             if($this->required) {
                 $labeltag = '<span class="required" title="'.gt('This entry is required').'">*</span>' . $label;
             } else {
                 $labeltag = $label;
             }
-            if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for.">". $labeltag."</label>";
-                    $html .= $this->controlToHTML($name, $label);
-            } else {
-                    $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for.">". $labeltag."</label>";
-            }
+            $html .= empty($label) ? "" : "<label".$for." class=\"" . (($this->horizontal) ? "col-sm-2 control-label" : "" ). "\">". $labeltag."</label>";
+            $html .= $this->controlToHTML($name, $label);
             $html .= "</div>";
         } else {
             $html = $this->controlToHTML($name, $label);
@@ -91,13 +86,9 @@ class genericcontrol extends formcontrol {
         $this->name = empty($this->name) ? $name : $this->name;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
-        $framework = expSession::get('framework');
-        if ($framework == 'bootstrap') {
-            if (!empty($this->prepend)) {
-                $html .= '<div class="input-prepend">';
-                $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            }
-        }
+
+        $html .= ($this->type != 'hidden' && $this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div>';
+
         $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
@@ -124,15 +115,15 @@ class genericcontrol extends formcontrol {
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = !empty($this->caption) ? $this->caption : '';
-        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
+        if (!empty($this->required)) $html .= ' required="required"';
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
-        if ($framework == 'bootstrap' && !empty($this->prepend)) {
-            $html .= '</div>';
-        }
+
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
+
+        $html .= '</div>';
         return $html;
     }
     
