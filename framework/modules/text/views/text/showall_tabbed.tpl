@@ -55,10 +55,11 @@
         </ul>
         <div class="yui-content">
             {foreach from=$items item=text name=items}
-                <div id="tab{$smarty.foreach.items.iteration}" class="item">
+                <div id="tab{$smarty.foreach.items.iteration}" class="item{if !$text->approved} unapproved{/if}">
                     {permissions}
 						<div class="item-actions">
-						   {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+						    {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+                                {if $text->revision_id > 1}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$text->revision_id}">{$text->revision_id}</span>{/if}
                                 {if $myloc != $text->location_data}
                                     {if $permissions.manage}
                                         {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}

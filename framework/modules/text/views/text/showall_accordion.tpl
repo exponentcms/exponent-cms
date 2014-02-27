@@ -37,14 +37,15 @@
     {$myloc=serialize($__loc)}
     <div id="text-{$id}" class="dashboard">
         {foreach from=$items item=text name=items}
-            <div id="item{$text->id}" class="panel item">
+            <div id="item{$text->id}" class="panel item{if !$text->approved} unapproved{/if}">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $text->title ==""}&#160;{else}{$text->title}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
                     <ul>
                         <li>
                             {permissions}
         						<div class="item-actions">
-        						   {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+        						    {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+                                        {if $text->revision_id > 1}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$text->revision_id}">{$text->revision_id}</span>{/if}
                                         {if $myloc != $text->location_data}
                                             {if $permissions.manage}
                                                 {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
