@@ -65,6 +65,9 @@
                                 <a class="addtitle" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}">{'Add Title'|gettext}</a>
                             {/if}
                         {/if}
+                        {if !$text->approved && $permissions.approve && $permissions.edit}
+                            {icon action=approve record=$text}
+                        {/if}
                     </div>
                 {/permissions}
                 <div class="bodycopy">

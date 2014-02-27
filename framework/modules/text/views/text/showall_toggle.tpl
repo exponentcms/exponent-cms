@@ -47,6 +47,9 @@
                     {if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
                         {icon action=delete record=$text}
                     {/if}
+                    {if !$text->approved && $permissions.approve && $permissions.edit}
+                        {icon action=approve record=$text}
+                    {/if}
                 </div>
             {/permissions}
             {if $config.show_summary}

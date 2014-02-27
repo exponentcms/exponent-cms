@@ -76,6 +76,9 @@
                                 <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"><i class="icon-plus-sign {$icon_size}"></i> {'Add Title'|gettext}</a>
                             {/if}
                         {/if}
+                        {if !$text->approved && $permissions.approve && $permissions.edit}
+                            {icon action=approve record=$text}
+                        {/if}
                     </div>
                 {/permissions}
                 <div class="bodycopy">

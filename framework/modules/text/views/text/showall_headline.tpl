@@ -26,6 +26,9 @@
             {if $permissions.delete || ($permissions.create && $items[0]->poster == $user->id)}
                 {icon action=delete record=$items[0]}
             {/if}
+            {if !$items[0]->approved && $permissions.approve && $permissions.edit}
+                {icon action=approve record=$items[0]}
+            {/if}
         </div>
     {/permissions}
 </div>
