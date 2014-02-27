@@ -14,7 +14,7 @@
 	var DRAG_HANDLER_SIZE = 15;
 
 	CKEDITOR.plugins.add( 'widget', {
-		lang: 'ca,cs,cy,de,el,en,en-gb,es,fa,fi,hu,ja,km,ko,nb,nl,no,pl,pt,ru,sv,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
+		lang: 'ca,cs,cy,de,el,en,en-gb,es,fa,fi,fr,gl,hu,ja,km,ko,nb,nl,no,pl,pt,pt-br,ru,sl,sv,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
 		requires: 'lineutils,clipboard',
 		onLoad: function() {
 			CKEDITOR.addCss(
@@ -928,7 +928,7 @@
 				that = this;
 
 			// Edit event was blocked, but there's no dialog to be automatically opened.
-			if ( !this.fire( 'edit', evtData ) || !evtData.dialog )
+			if ( this.fire( 'edit', evtData ) === false || !evtData.dialog )
 				return;
 
 			this.editor.openDialog( evtData.dialog, function( dialog ) {
@@ -936,7 +936,7 @@
 					okListener;
 
 				// Allow to add a custom dialog handler.
-				if ( !that.fire( 'dialog', dialog ) )
+				if ( that.fire( 'dialog', dialog ) === false )
 					return;
 
 				showListener = dialog.on( 'show', function() {
@@ -1051,6 +1051,8 @@
 		focus: function() {
 			var sel = this.editor.getSelection();
 
+			// Fake the selection before focusing editor, to avoid unpreventable viewports scrolling
+			// on Webkit/Blink/IE which is done because there's no selection or selection was somewhere else than widget.
 			if ( sel )
 				sel.fake( this.wrapper );
 
@@ -1150,12 +1152,16 @@
 			if ( oldPos && newPos.x == oldPos.x && newPos.y == oldPos.y )
 				return;
 
+			// We need to make sure that dirty state is not changed (#11487).
+			var initialDirty = editor.checkDirty();
+
 			editor.fire( 'lockSnapshot' );
 			this.dragHandlerContainer.setStyles( {
 				top: newPos.y + 'px',
 				left: newPos.x + 'px'
 			} );
 			editor.fire( 'unlockSnapshot' );
+			!initialDirty && editor.resetDirty();
 
 			this._.dragHandlerOffset = newPos;
 		}
@@ -1656,6 +1662,11 @@
 					return false;
 				}
 				else if ( ( upcastsLength = upcasts.length ) ) {
+					// Ignore elements with data-cke-widget-upcasted to avoid multiple upcasts (#11533).
+					// Do not iterate over descendants.
+					if ( element.attributes[ 'data-cke-widget-upcasted' ] )
+						return false;
+
 					// Check element with upcast callbacks first.
 					// If any of them return false abort upcasting.
 					for ( i = 0, upcastCallbacksLength = upcastCallbacks.length; i < upcastCallbacksLength; ++i ) {
@@ -1677,6 +1688,7 @@
 
 							// Set initial data attr with data from upcast method.
 							element.attributes[ 'data-cke-widget-data' ] = JSON.stringify( data );
+							element.attributes[ 'data-cke-widget-upcasted' ] = 1;
 
 							toBeWrapped.push( [ element, upcast[ 1 ] ] );
 
@@ -2818,7 +2830,6 @@
 
 		widget.on( 'doubleclick', function( evt ) {
 			widget.edit();
-			evt.cancel();
 		} );
 
 		if ( widgetDef.data )
