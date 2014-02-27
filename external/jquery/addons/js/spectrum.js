@@ -1,4 +1,4 @@
-// Spectrum Colorpicker v1.3.1
+// Spectrum Colorpicker v1.3.2
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
@@ -34,7 +34,7 @@
         className: "",
         showAlpha: false,
         theme: "sp-light",
-        palette: ['fff', '000'],
+        palette: [["#ffffff", "#000000", "#ff0000", "#ff8000", "#ffff00", "#008000", "#0000ff", "#4b0082", "#9400d3"]],
         selectionPalette: [],
         disabled: false
     },
@@ -173,6 +173,7 @@
             currentAlpha = 1,
             palette = [],
             paletteArray = [],
+            paletteLookup = {},
             selectionPalette = opts.selectionPalette.slice(0),
             maxSelectionSize = opts.maxSelectionSize,
             draggingClass = "sp-dragging",
@@ -219,6 +220,13 @@
             if (opts.palette) {
                 palette = opts.palette.slice(0);
                 paletteArray = $.isArray(palette[0]) ? palette : [palette];
+                paletteLookup = {};
+                for (var i = 0; i < paletteArray.length; i++) {
+                    for (var j = 0; j < paletteArray[i].length; j++) {
+                        var rgb = tinycolor(paletteArray[i][j]).toRgbString();
+                        paletteLookup[rgb] = true;
+                    }
+                }
             }
 
             container.toggleClass("sp-flat", flat);
@@ -263,25 +271,7 @@
                 appendTo.append(container);
             }
 
-            if (localStorageKey && window.localStorage) {
-
-                // Migrate old palettes over to new format.  May want to remove this eventually.
-                try {
-                    var oldPalette = window.localStorage[localStorageKey].split(",#");
-                    if (oldPalette.length > 1) {
-                        delete window.localStorage[localStorageKey];
-                        $.each(oldPalette, function(i, c) {
-                             addColorToSelectionPalette(c);
-                        });
-                    }
-                }
-                catch(e) { }
-
-                try {
-                    selectionPalette = window.localStorage[localStorageKey].split(";");
-                }
-                catch (e) { }
-            }
+            updateSelectionPaletteFromStorage();
 
             offsetElement.bind("click.spectrum touchstart.spectrum", function (e) {
                 if (!disabled) {
@@ -417,8 +407,8 @@
                 }
                 else {
                     set($(this).data("color"));
-                    updateOriginalInput(true);
                     move();
+                    updateOriginalInput(true);
                     hide();
                 }
 
@@ -430,11 +420,34 @@
             initialColorContainer.delegate(".sp-thumb-el:nth-child(1)", paletteEvent, { ignore: true }, palletElementClick);
         }
 
+        function updateSelectionPaletteFromStorage() {
+
+            if (localStorageKey && window.localStorage) {
+
+                // Migrate old palettes over to new format.  May want to remove this eventually.
+                try {
+                    var oldPalette = window.localStorage[localStorageKey].split(",#");
+                    if (oldPalette.length > 1) {
+                        delete window.localStorage[localStorageKey];
+                        $.each(oldPalette, function(i, c) {
+                             addColorToSelectionPalette(c);
+                        });
+                    }
+                }
+                catch(e) { }
+
+                try {
+                    selectionPalette = window.localStorage[localStorageKey].split(";");
+                }
+                catch (e) { }
+            }
+        }
+
         function addColorToSelectionPalette(color) {
             if (showSelectionPalette) {
-                var colorRgb = tinycolor(color).toRgbString();
-                if ($.inArray(colorRgb, selectionPalette) === -1) {
-                    selectionPalette.push(colorRgb);
+                var rgb = tinycolor(color).toRgbString();
+                if (!paletteLookup[rgb] && selectionPalette.indexOf(rgb) === -1) {
+                    selectionPalette.push(rgb);
                     while(selectionPalette.length > maxSelectionSize) {
                         selectionPalette.shift();
                     }
@@ -451,25 +464,12 @@
 
         function getUniqueSelectionPalette() {
             var unique = [];
-            var p = selectionPalette;
-            var paletteLookup = {};
-            var rgb;
-
             if (opts.showPalette) {
+                for (i = 0; i < selectionPalette.length; i++) {
+                    var rgb = tinycolor(selectionPalette[i]).toRgbString();
 
-                for (var i = 0; i < paletteArray.length; i++) {
-                    for (var j = 0; j < paletteArray[i].length; j++) {
-                        rgb = tinycolor(paletteArray[i][j]).toRgbString();
-                        paletteLookup[rgb] = true;
-                    }
-                }
-
-                for (i = 0; i < p.length; i++) {
-                    rgb = tinycolor(p[i]).toRgbString();
-
-                    if (!paletteLookup.hasOwnProperty(rgb)) {
-                        unique.push(p[i]);
-                        paletteLookup[rgb] = true;
+                    if (!paletteLookup[rgb]) {
+                        unique.push(selectionPalette[i]);
                     }
                 }
             }
@@ -484,6 +484,8 @@
             var html = $.map(paletteArray, function (palette, i) {
                 return paletteTemplate(palette, currentColor, "sp-palette-row sp-palette-row-" + i);
             });
+
+            updateSelectionPaletteFromStorage();
 
             if (selectionPalette) {
                 html.push(paletteTemplate(getUniqueSelectionPalette(), currentColor, "sp-palette-row sp-palette-row-selection"));
@@ -718,7 +720,9 @@
                         alphaSliderInner.css("background", "-webkit-" + gradient);
                         alphaSliderInner.css("background", "-moz-" + gradient);
                         alphaSliderInner.css("background", "-ms-" + gradient);
-                        alphaSliderInner.css("background", gradient);
+                        // Use current syntax gradient on unprefixed property.
+                        alphaSliderInner.css("background",
+                            "linear-gradient(to right, " + realAlpha + ", " + realHex + ")");
                     }
                 }
 
