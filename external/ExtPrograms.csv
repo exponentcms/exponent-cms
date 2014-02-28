@@ -7,7 +7,7 @@ Smarty,3.1.16,smarty.net,3.1.16,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.1.7,github.com/mrclay/minify,2.1.7,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.14.1,developer.yahoo.com/yui/3,3.14.1,
+YUI3,3.15.0,developer.yahoo.com/yui/3,3.15.0,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11,code.google.com/p/recaptcha,1.11,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
@@ -35,7 +35,7 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,6,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.1,optional
 CKEditor,4.3.3,ckeditor.com,4.3.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
-TinyMCE,4.0.17,tinymce.com,4.0.17,add xenmce skin
+TinyMCE,4.0.18,tinymce.com,4.0.18,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 jQuery1,1.11.0,jquery.com,1.11.0,
 jQuery,2.1.0,jquery.com,2.1.0,
