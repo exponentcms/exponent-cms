@@ -78,7 +78,6 @@ class ckeditorcontrol extends formcontrol {
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
-//            $plugins .= ',fieldinsert';
         } else {
             $additionalConfig = '';
         }

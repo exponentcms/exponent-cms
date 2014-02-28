@@ -37,7 +37,7 @@ class tinymcecontrol extends formcontrol
 
     static function name()
     {
-        return "CKEditor";
+        return "TinyMCE Editor";
     }
 
     function __construct($default = "", $rows = 5, $cols = 45)
@@ -90,7 +90,6 @@ class tinymcecontrol extends formcontrol
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
-//            $plugins .= ',fieldinsert';
         }
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
@@ -111,8 +110,16 @@ class tinymcecontrol extends formcontrol
                 toolbar: 'bold italic underline removeformat | bullist numlist | link unlink',";
             } else {
                 $tb = "
-                    toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-                    toolbar2: 'link unlink image | print preview visualblocks fullscreen code media | forecolor backcolor emoticons',";
+                toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+                toolbar2: 'link unlink image | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
+                if (!empty($this->plugin)) {
+                    $plugs = explode(',',trim($this->plugin));
+                    $tb .= ' |';
+                    foreach ($plugs as $key=>$plug) {
+                       $tb .= ' ' . $plug;
+                   }
+                }
+                $tb .= "',";
             }
         }
         if (MOBILE) {
@@ -160,6 +167,7 @@ class tinymcecontrol extends formcontrol
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
                     plugins : ['" . $plugins . "'],
+                    " . $additionalConfig . "
                     " . $contentCSS . "
                     document_base_url : '" . PATH_RELATIVE . "',
                     " . $tb . "
