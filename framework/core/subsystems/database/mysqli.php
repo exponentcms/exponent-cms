@@ -169,8 +169,39 @@ class mysqli_database extends database {
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 
+        // collect any indexes & keys to the table
+        $primary = array();
+        $fulltext = array();
+        $unique = array();
+        $index = array();
+        foreach ($newdatadef as $name=>$def) {
+            if ($def != null) {
+                if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+                if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
+                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
+                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
+                        $index[$name] = $def[DB_INDEX];
+                      } else {
+                          $index[$name] = 0;
+                      }
+                  }
+                  if (isset($def[DB_UNIQUE])) {
+                      if (!isset($unique[$def[DB_UNIQUE]]))
+                          $unique[$def[DB_UNIQUE]] = array();
+                      $unique[$def[DB_UNIQUE]][] = $name;
+                }
+            }
+        }
+
         //Drop any old columns from the table if aggressive mode is set.
         if ($aggressive) {
+            //update primary keys to 'release' columns
+            $sql = "ALTER IGNORE TABLE `" . $this->prefix . "$tablename` ";
+            if (count($primary)) {
+                $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+            }
+            @mysqli_query($this->connection, $sql);
+
             if (is_array($newdatadef) && is_array($dd)) {
                 $oldcols = @array_diff_assoc($dd, $newdatadef);
                 if (count($oldcols)) {
@@ -199,29 +230,7 @@ class mysqli_database extends database {
             }
         }
 
-        //Add any new indexes & keys to the table.
-        $primary = array();
-        $fulltext = array();
-        $unique = array();
-        $index = array();
-        foreach ($newdatadef as $name=>$def) {
-            if ($def != null) {
-                if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
-                if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
-                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
-                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                        $index[$name] = $def[DB_INDEX];
-                      } else {
-                          $index[$name] = 0;
-                      }
-                  }
-                  if (isset($def[DB_UNIQUE])) {
-                      if (!isset($unique[$def[DB_UNIQUE]]))
-                          $unique[$def[DB_UNIQUE]] = array();
-                      $unique[$def[DB_UNIQUE]][] = $name;
-                }
-            }
-        }
+        //Add any new indexes & keys to the table
         $sql = "ALTER" . (empty($aggressive) ? "" : " IGNORE") . " TABLE `" . $this->prefix . "$tablename` ";
 
         $sep = false;
@@ -610,6 +619,7 @@ class mysqli_database extends database {
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
      * @param bool   $is_revisioned
+     * @param bool   $needs_approval
      *
      * @return int
      */
@@ -773,6 +783,7 @@ class mysqli_database extends database {
             //if ($table=="text") eDebug($object);
             $res = $this->insertObject($object, $table);
             //if ($table=="text") eDebug($object,true); 
+            $this->trim_revisions($table, $object->$identifier, WORKFLOW_REVISION_LIMIT);
             return $res;
         }
         $sql = "UPDATE " . $this->prefix . "$table SET ";
@@ -946,7 +957,7 @@ class mysqli_database extends database {
      * @return array
      */
     function databaseInfo() {
-        $sql = "SHOW TABLE STATUS";
+//        $sql = "SHOW TABLE STATUS";
         $res = @mysqli_query($this->connection, "SHOW TABLE STATUS LIKE '" . $this->prefix . "%'");
         $info = array();
         for ($i = 0; $res && $i < mysqli_num_rows($res); $i++) {
@@ -1107,7 +1118,6 @@ class mysqli_database extends database {
 
     /**
      * Select a record from the database as an array
-     *
      * Selects a set of arrays from the database.  Because of the way
      * Exponent handles objects and database tables, this is akin to
      * SELECTing a set of records from a database table.  Returns an
@@ -1115,10 +1125,12 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.  If this
-     *   is specified as null, then no criteria is applied, and all objects are
-     *   returned
-     * @param null $orderby
-     * @param bool $is_revisioned
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param null   $orderby
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
      * @return array|void
      */
     function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false) {
@@ -1155,6 +1167,7 @@ class mysqli_database extends database {
      * @param null   $order
      * @param null   $limitsql
      * @param bool   $is_revisioned
+     * @param bool   $needs_approval
      *
      * @return array
      */

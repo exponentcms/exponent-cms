@@ -14,7 +14,7 @@
  *}
 
 <div class="module text headline headline-show">
-    <div class="item{if !$items[0]->approved} unapproved{/if}">
+    <div class="item{if !$items[0]->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
         {if $items[0]->title}<{$config.heading_level|default:'h1'}>{$items[0]->title}</{$config.heading_level|default:'h1'}>{/if}
     </div>
     {permissions}
@@ -26,7 +26,7 @@
             {if $permissions.delete || ($permissions.create && $items[0]->poster == $user->id)}
                 {icon action=delete record=$items[0]}
             {/if}
-            {if !$items[0]->approved && $permissions.approve && $permissions.edit}
+            {if !$items[0]->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
                 {icon action=approve record=$items[0]}
             {/if}
         </div>

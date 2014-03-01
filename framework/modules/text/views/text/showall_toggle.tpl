@@ -30,7 +30,7 @@
     {/if}
     {$myloc=serialize($__loc)}
     {foreach from=$items item=text name=items}
-        <div class="item{if !$text->approved} unapproved{/if}">
+        <div class="item{if !$text->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
@@ -47,7 +47,7 @@
                     {if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
                         {icon action=delete record=$text}
                     {/if}
-                    {if !$text->approved && $permissions.approve && $permissions.edit}
+                    {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
                         {icon action=approve record=$text}
                     {/if}
                 </div>

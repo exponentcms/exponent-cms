@@ -364,34 +364,67 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-    	$value = (MINIFY == 1) ? 0 : 1;
-    	expSettings::change('MINIFY', $value);
-    	$message = (MINIFY != 1) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
+        $newvalue = (MINIFY == 1) ? 0 : 1;
+    	expSettings::change('MINIFY', $newvalue);
+    	$message = ($newvalue) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
     	flash('message',$message);
     	expHistory::back();
     }
     
 	public function toggle_dev() {
-	    $value = (DEVELOPMENT == 1) ? 0 : 1;
-	    expSettings::change('DEVELOPMENT', $value);
+        $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
+	    expSettings::change('DEVELOPMENT', $newvalue);
 	    expTheme::removeCss();
-		$message = (DEVELOPMENT != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
+		$message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
     public function toggle_log() {
-  	    $value = (LOGGER == 1) ? 0 : 1;
-  	    expSettings::change('LOGGER', $value);
+        $newvalue = (LOGGER == 1) ? 0 : 1;
+  	    expSettings::change('LOGGER', $newvalue);
   		expHistory::back();
   	}
 
 	public function toggle_maintenance() {
-		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
-		expSettings::change('MAINTENANCE_MODE', $value);
+        $newvalue = (MAINTENANCE_MODE == 1) ? 0 : 1;
+		expSettings::change('MAINTENANCE_MODE', $newvalue);
 		MAINTENANCE_MODE == 1 ? flash('message',gt("Exponent is no longer in 'Maintenance' mode")) : "" ;
 		expHistory::back();
 	}
+
+    public function toggle_workflow() {
+        global $db;
+
+   	    $newvalue = (ENABLE_WORKFLOW == 1) ? 0 : 1;
+   	    expSettings::change('ENABLE_WORKFLOW', $newvalue);
+        $models = expModules::initializeModels();
+        if ($newvalue) {
+            // workflow is now turned on, initialize by approving all items
+            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to add workflow columns
+            foreach ($models as $modelname=>$modelpath) {
+                $model = new $modelname();
+                if ($model->supports_revisions) {
+                    $db->columnUpdate($model->tablename, 'approved', 1, 'approved=0');
+                }
+            }
+        } else {
+            // workflow is now turned off, remove older revisions
+            foreach ($models as $modelname=>$modelpath) {
+                $model = new $modelname();
+                if ($model->supports_revisions) {
+                    $items = $model->find();
+                    foreach ($items as $item) {
+                        $db->trim_revisions($model->tablename, $item->id, 1, $newvalue);
+                    }
+                }
+            }
+            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to remove workflow columns
+        }
+   		$message = ($newvalue) ? gt("Exponent 'Workflow' is now ON") : gt("Exponent 'Workflow' is now OFF") ;
+   		flash('message',$message);
+   		expHistory::back();
+   	}
 
 	public function toggle_preview() {
 		$level = 99;

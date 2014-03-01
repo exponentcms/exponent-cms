@@ -112,7 +112,7 @@ abstract class expController {
         $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
 
         // flag for needing approval check
-        if ($this->$modelname->supports_revisions) {
+        if ($this->$modelname->supports_revisions && ENABLE_WORKFLOW) {
             $uilevel = 99;
             if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $this->loc)) {
@@ -1407,7 +1407,7 @@ abstract class expController {
             $sql .= ')';
         }
         $model = $this->basemodel_name;
-        if ($this->$model->needs_approval) {
+        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
             $sql .= ' AND approved=1';
         }
 

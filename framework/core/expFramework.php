@@ -297,7 +297,7 @@ function renderAction(array $parms=array()) {
     foreach ($controller->getModels() as $model) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
         // flag for needing approval check
-        if ($controller->$model->supports_revisions) {
+        if ($controller->$model->supports_revisions && ENABLE_WORKFLOW) {
             $uilevel = 99;
             if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $controller->loc)) {

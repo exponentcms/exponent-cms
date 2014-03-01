@@ -40,7 +40,7 @@
             {else}
                 {$make_edit = ''}
             {/if}
-            <div id="text-{$text->id}" class="item{if !$text->approved} unapproved{/if}">
+            <div id="text-{$text->id}" class="item{if !$text->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                 {if $text->title}<{$config.item_level|default:'h2'}><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></{$config.item_level|default:'h2'}>{/if}
                 {permissions}
                     <div class="item-actions">
@@ -65,7 +65,7 @@
                                 <a class="addtitle" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}">{'Add Title'|gettext}</a>
                             {/if}
                         {/if}
-                        {if !$text->approved && $permissions.approve && $permissions.edit}
+                        {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
                             {icon action=approve record=$text}
                         {/if}
                     </div>

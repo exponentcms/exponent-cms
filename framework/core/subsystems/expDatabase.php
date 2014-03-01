@@ -127,7 +127,7 @@ class expDatabase {
         return $renamed;
     }
 
-    public static function install_dbtables($aggressive=false) {
+    public static function install_dbtables($aggressive=false, $workflow=ENABLE_WORKFLOW) {
    	    global $db;
 
    		expSession::clearAllUsersSessionCache();
@@ -188,7 +188,7 @@ class expDatabase {
                                     if (!empty($models[substr($def,0,-4)])) {
                                         $modelname = substr($def,0,-4);
                                         $model = new $modelname();
-                                        if ($model->supports_revisions) {
+                                        if ($model->supports_revisions && $workflow) {
                                             $dd['revision_id'] = array(
                                                 DB_FIELD_TYPE=>DB_DEF_INTEGER,
                                                 DB_PRIMARY=>true,
@@ -791,6 +791,26 @@ abstract class database {
 	* @return bool|int|void
 	*/
 	abstract function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false);
+
+    /**
+     * Reduces table item revisions to a passed total
+     *
+     * @param string  $table The name of the table to trim
+     * @param integer $id The item id
+     * @param integer $num The number of revisions to retain
+     */
+    public function trim_revisions($table, $id, $num, $workflow=ENABLE_WORKFLOW) {
+        if ($workflow && $num) {
+            $max_revision = $this->max($table, 'revision_id', null, 'id='.$id);
+            $min_revision = $this->min($table, 'revision_id', null, 'id='.$id);
+            if ($max_revision == null) {
+                return;
+            }
+            if ($max_revision - $min_revision >= $num) {
+                $this->delete($table, 'id=' . $id . ' AND revision_id <= ' . ($max_revision - $num));
+            }
+        }
+    }
 
 	/**
 	 * Find the maximum value of a field.  This is similar to a standard

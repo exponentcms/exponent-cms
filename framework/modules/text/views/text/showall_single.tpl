@@ -16,7 +16,7 @@
 <div class="module text single">
     {if $moduletitle && !(!empty($config.hidemoduletitle) xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {$myloc=serialize($__loc)}
-    <div class="item{if !$items[0]->approved} unapproved{/if}">
+    <div class="item{if !$items[0]->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
         {if $items[0]->title}<{$config.item_level|default:'h2'}>{$items[0]->title}</{$config.item_level|default:'h2'}>{/if}
         {permissions}
            <div class="item-actions">
@@ -34,7 +34,7 @@
                 {if $permissions.delete || ($permissions.create && $items[0]->poster == $user->id)}
                     {icon action=delete record=$items[0]}
                 {/if}
-               {if !$items[0]->approved && $permissions.approve && $permissions.edit}
+               {if !$items[0]->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
                    {icon action=approve record=$items[0]}
                {/if}
             </div>

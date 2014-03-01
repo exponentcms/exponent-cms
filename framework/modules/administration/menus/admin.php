@@ -495,6 +495,14 @@ if ($user->isSuperAdmin()) {
                     ))
                 ),
                 array(
+                    'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
+                    'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
+                    'url'       => makeLink(array(
+                        'controller' => 'administration',
+                        'action'     => 'toggle_workflow'
+                    ))
+                ),
+                array(
                     'text'      => (MAINTENANCE_MODE) ? gt('Turn Maintenance Mode off') : gt('Turn Maintenance Mode on'),
                     'classname' => (MAINTENANCE_MODE) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(array(
