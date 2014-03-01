@@ -192,10 +192,26 @@ class tinymcecontrol extends formcontrol
                             {title: 'h5', block: 'h5'},
                             {title: 'h6', block: 'h6'}
                         ]},
+                        {title: 'Inline', items: [
+                            {title: 'Bold', inline: 'b', icon: 'bold'},
+                            {title: 'Italic', inline: 'i', icon: 'italic'},
+                            {title: 'Underline', inline: 'span', styles : {textDecoration : 'underline'}, icon: 'underline'},
+                            {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
+                            {title: 'Superscript', inline: 'sup', icon: 'superscript'},
+                            {title: 'Subscript', inline: 'sub', icon: 'subscript'},
+                            {title: 'Code', inline: 'code', icon: 'code'},
+                        ]},
                         {title: 'Blocks', items: [
-                            {title: 'p', block: 'p'},
-                            {title: 'div', block: 'div'},
-                            {title: 'pre', block: 'pre'}
+                            {title: 'Paragraph', block: 'p'},
+                            {title: 'Blockquote', block: 'blockquote'},
+                            {title: 'Div', block: 'div'},
+                            {title: 'Pre', block: 'pre'}
+                        ]},
+                        {title: 'Alignment', items: [
+                            {title: 'Left', block: 'div', styles : {textAlign : 'left'}, icon: 'alignleft'},
+                            {title: 'Center', block: 'div', styles : {textAlign : 'center'}, icon: 'aligncenter'},
+                            {title: 'Right', block: 'div', styles : {textAlign : 'right'}, icon: 'alignright'},
+                            {title: 'Justify', block: 'div', styles : {textAlign : 'justify'}, icon: 'alignjustify'}
                         ]},
                         {title: 'Containers', items: [
                             {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
