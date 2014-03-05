@@ -79,7 +79,7 @@ class tinymcecontrol extends formcontrol
             $tb_raw = explode("\n", $settings->data);
             $tb = '';
             foreach ($tb_raw as $key=>$tbr) {
-                if (!empty($tbr)) $tb .= "toolbar" . ($key + 1) . ": \"" . trim($tbr) . "\",\n";
+                if (!empty($tbr)) $tb .= "toolbar" . (count($tb_raw) > 1 ? $key + 1 : '') . ": \"" . trim($tbr) . "\",\n";
             }
             $skin = $settings->skin;
             $sc_brw_off   = $settings->scayt_on ? 'false' : 'true';

@@ -72,6 +72,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errArcMaxSize'        : 'Soubory archívu překračují maximální povolenou velikost.',
 			'errResize'            : 'Nepodařilo se změnit velikost obrázku "$1".',
 			'errUsupportType'      : 'Nepodporovaný typ souboru.',
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Vytvořit archív',
@@ -101,6 +102,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdview'      : 'Zobrazit',
 			'cmdresize'    : 'Změnit velikost',
 			'cmdsort'      : 'Seřadit',
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Zavřít',
