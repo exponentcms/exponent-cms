@@ -18,10 +18,10 @@
 {/css}
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
-{script unique="ckeditor" src=$smarty.const.PATH_RELATIVE"external/editors/ckeditor/ckeditor.js"}
+{script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
 {/script}
 {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
-{script unique="tinymce" src=$smarty.const.PATH_RELATIVE"external/editors/tinymce/tinymce.min.js"}
+{script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
 {/script}
 {/if}
 
