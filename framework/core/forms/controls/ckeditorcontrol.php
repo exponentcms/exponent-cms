@@ -187,6 +187,7 @@ class ckeditorcontrol extends formcontrol {
                     baseHref : '" . PATH_RELATIVE . "',
                 });
 
+                // set formatting rules - CKEditor rules defaults are all true for these block tags
                 CKEDITOR.on( 'instanceReady', function( ev ) {
                     var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
                     var rules =  {

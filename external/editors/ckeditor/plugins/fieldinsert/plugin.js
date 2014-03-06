@@ -25,12 +25,12 @@ CKEDITOR.plugins.add('fieldinsert' ,
                 {
                     label : 'Fields' ,
                     title : 'Fields' ,
-                    voiceLabel : 'Fields' ,
-                    className : 'cke_format' ,
+//                    voiceLabel : 'Fields' ,
+//                    className : 'cke_format' ,
                     multiSelect : false ,
                     panel : {
                         css : [ editor.config.contentsCss, CKEDITOR.skin.getPath('editor') ] ,
-                        voiceLabel : editor.lang.panelVoiceLabel
+//                        voiceLabel : editor.lang.panelVoiceLabel
                     } ,
 
                     init : function () {
