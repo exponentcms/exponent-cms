@@ -53,7 +53,6 @@ class textController extends expController {
         if (expSession::is_set('uilevel')) {
         	$level = expSession::get('uilevel');
         }
-//        $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
         $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
 //        if (empty($settings->data)) {
@@ -83,7 +82,7 @@ class textController extends expController {
 		assign_to_template(array(
             'items'=>$items,
             'preview'=>($level == UILEVEL_PREVIEW),  // needed for inline edit to work
-            'ckeditor'=>$settings,
+            'editor'=>$settings,
         ));
 	}
 	
