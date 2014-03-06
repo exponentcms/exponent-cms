@@ -79,13 +79,19 @@ class expJavascript {
 //                    $i++;
 //                    $srt[$i] = JQUERY_SCRIPT.",";
 //                }
-                $scripts .= '
+                $browser = expUtil::browser_info();
+                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                    $scripts .= '
+    <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
+                } else {
+                    $scripts .= "\r\n" . '
     <!--[if lt IE 9]>
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->';
+                }
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
@@ -208,13 +214,19 @@ class expJavascript {
             if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
                 $scripts .= "\t"."<!-- jQuery Scripts -->";
 //                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
-                $scripts .= '
+                $browser = expUtil::browser_info();
+                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                    $scripts .= '
+    <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
+                } else {
+                    $scripts .= '
     <!--[if lt IE 9]>
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->' . "\r\n";
+                }
                 if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {

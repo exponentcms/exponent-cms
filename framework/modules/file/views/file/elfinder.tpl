@@ -115,7 +115,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/links.js"></script>
 
     <!-- elfinder languages -->
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
 
     <!-- elfinder dialog -->
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.dialogelfinder.js"></script>*}
