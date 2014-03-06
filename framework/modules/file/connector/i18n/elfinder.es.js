@@ -84,7 +84,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'sortdate'             : 'por fecha',
 			'sortFoldersFirst'     : 'Las carpetas en primer lugar',
 			'errUploadFile'        : 'No se ha podido cargar "$1".',
-			
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Crear archivo',
 			'cmdback'      : 'Atrás',
@@ -111,7 +112,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdup'        : 'Ir a la carpeta raíz',
 			'cmdupload'    : 'Subir archivos',
 			'cmdview'      : 'Ver',
-			
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
+
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Cerrar',
 			'btnSave'   : 'Guardar',

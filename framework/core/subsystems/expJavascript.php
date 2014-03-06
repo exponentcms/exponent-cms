@@ -80,13 +80,19 @@ class expJavascript {
 ////                    $srt[$i] = "";
 //                    $srt[$i] = JQUERY_SCRIPT.",";
 //                }
-                $scripts .= "\r\n" . '
+                $browser = expUtil::browser_info();
+                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                    $scripts .= '
+    <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
+                } else {
+                    $scripts .= "\r\n" . '
     <!--[if lt IE 9]>
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
         <script src="'.JQUERY2_SCRIPT.'"><</script>
     <!--<![endif]-->';
+                }
                 if ($head_config['framework'] == 'bootstrap') {
 //                    if (strlen($srt[$i])+strlen(PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                        $srt[$i] .= PATH_RELATIVE.'external/bootstrap/js/bootstrap.min.js'.",";
@@ -184,13 +190,19 @@ class expJavascript {
                 $scripts .= "\r\n";
                 $scripts .= "\t"."<!-- jQuery Scripts -->";
 //                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
-                $scripts .= '
+                $browser = expUtil::browser_info();
+                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                    $scripts .= '
+    <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
+                } else {
+                    $scripts .= '
     <!--[if lt IE 9]>
         <script src="'.JQUERY_SCRIPT.'"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
         <script src="'.JQUERY2_SCRIPT.'"><</script>
     <!--<![endif]-->' . "\r\n";
+                }
                 if (!empty($head_config['framework']) && $head_config['framework'] == 'bootstrap') {
                     $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     expCSS::pushToHead(array(
