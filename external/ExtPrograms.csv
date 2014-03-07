@@ -52,6 +52,6 @@ spectrum,1.3.3,http://bgrins.github.io/spectrum/,1.3.3,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.0.5,http://excolo.github.io/Excolo-Slider/,1.0.5,
-colorbox,1.5.3,http://www.jacklmoore.com/colorbox,1.5.3,using style #5 renamed to jquery.colorbox.css
+colorbox,1.5.4,http://www.jacklmoore.com/colorbox,1.5.4,using style #5 renamed to jquery.colorbox.css
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
 DateTimePicker,2.1.9exp,http://xdsoft.net/jqplugins/datetimepicker/,2.1.9,added additional 'update' method
