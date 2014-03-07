@@ -55,28 +55,32 @@ class textController extends expController {
         }
         $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
-//        if (empty($settings->data)) {
-//            $settings->data = "
-//                ['htmlsource','Source','-','Preview','-','Templates'],
-//                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-//                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-//                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
-//                '/',
-//                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-//                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-//                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-//                ['Link','Unlink','Anchor'],
-//                '/',
-//                ['Styles','Format','Font','FontSize'],
-//                ['TextColor','BGColor'],
-//                ['Maximize', 'ShowBlocks','-','About']";
-//        }
-        if (empty($settings->skin)) $settings->skin = 'kama';
-        if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
-        if (empty($settings->paste_word)) {
-            $settings->paste_word = 'forcePasteAsPlainText : true,';
-        } else {
-            $settings->paste_word = '';
+        if (SITE_WYSIWYG_EDITOR == 'ckeditor') {
+    //        if (empty($settings->data)) {
+    //            $settings->data = "
+    //                ['htmlsource','Source','-','Preview','-','Templates'],
+    //                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+    //                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+    //                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+    //                '/',
+    //                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    //                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+    //                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+    //                ['Link','Unlink','Anchor'],
+    //                '/',
+    //                ['Styles','Format','Font','FontSize'],
+    //                ['TextColor','BGColor'],
+    //                ['Maximize', 'ShowBlocks','-','About']";
+    //        }
+            if (empty($settings->skin)) $settings->skin = 'kama';
+            if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
+            if (empty($settings->paste_word)) {
+                $settings->paste_word = 'forcePasteAsPlainText : true,';
+            } else {
+                $settings->paste_word = '';
+            }
+        } elseif (SITE_WYSIWYG_EDITOR == 'tinymce') {
+            if (empty($settings->skin)) $settings->skin = 'lightgray';
         }
 
 		assign_to_template(array(

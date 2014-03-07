@@ -115,12 +115,12 @@
         src = '{/literal}{$__loc->src}{literal}';
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-            CKEDITOR.disableAutoInline = true;
-            var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
-            var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
+        CKEDITOR.disableAutoInline = true;
+        var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
-            var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
-            var titleToolbar = 'cut copy paste pastetext | undo redo | find replace selectall scayt';
+        var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var titleToolbar = 'cut copy paste pastetext | undo redo | find replace selectall scayt';
         {/literal}{/if}{literal}
 
         var setContent = function(item, data) {
@@ -239,6 +239,7 @@
                 menubar: false,
                 toolbar_items_size: 'small',
                 image_advtab: true,
+                skin : '{/literal}{$editor->skin}{literal}',
                 importcss_append: true,
                 end_container_on_empty_block: true,
                 file_browser_callback: function expBrowser (field_name, url, type, win) {

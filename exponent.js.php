@@ -15,7 +15,7 @@
 #
 ##################################################
 ?>
-// Exponent Javascript Support Systems
+// Exponent Javascript Support System
 EXPONENT = {};
 
 // map certain php CONSTANTS to JS vars
@@ -26,8 +26,8 @@ EXPONENT.BASE = "<?php echo BASE; ?>";
 EXPONENT.THEME_RELATIVE = "<?php echo THEME_RELATIVE; ?>";
 EXPONENT.ICON_RELATIVE = "<?php echo ICON_RELATIVE; ?>";
 EXPONENT.MIMEICON_RELATIVE = "<?php echo MIMEICON_RELATIVE; ?>";
-EXPONENT.JS_URL = '<?php echo JS_URL; ?>';
 EXPONENT.JS_RELATIVE = '<?php echo JS_RELATIVE; ?>';
+EXPONENT.JS_URL = '<?php echo JS_URL; ?>';
 EXPONENT.JQUERY_RELATIVE = '<?php echo JQUERY_RELATIVE; ?>';
 EXPONENT.JQUERY_PATH = '<?php echo JQUERY_PATH; ?>';
 EXPONENT.JQUERY_URL = '<?php echo JQUERY_URL; ?>';
