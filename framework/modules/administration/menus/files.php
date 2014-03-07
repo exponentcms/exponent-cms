@@ -29,6 +29,7 @@ if ($user->globalPerm('hide_files_menu')) return array();
 $items = array(
     array(
         'text'      => gt("File Manager"),
+        'icon'      => 'fa-archive',
         'url'       => '#',
         'classname' => 'filemanager',
         'id'        => 'filemanager-toolbar',
@@ -37,6 +38,7 @@ $items = array(
 if (!$user->globalPerm('prevent_uploads') && SITE_FILE_MANAGER != 'elfinder') {
     $items[] = array(
         'text'      => gt("Upload Files"),
+        'icon'      => 'fa-upload',
         'url'       => '#',
         'classname' => 'fileuploader',
         'id'        => 'fileuploader-toolbar',
@@ -45,11 +47,13 @@ if (!$user->globalPerm('prevent_uploads') && SITE_FILE_MANAGER != 'elfinder') {
 if ($user->isSuperAdmin()) {
     $items[] = array(
         'text'      => gt('Import Files'),
+        'icon'      => 'fa-sign-in',
         'url'       => makeLink(array('controller' => 'file', 'action' => 'import_files')),
         'classname' => 'import',
     );
     $items[] = array(
         'text'      => gt('Export Files'),
+        'icon'      => 'fa-sign-out',
         'url'       => makeLink(array('controller' => 'file', 'action' => 'export_files')),
         'classname' => 'export',
     );
@@ -58,6 +62,7 @@ if ($user->isSuperAdmin()) {
 return array(
     'text'      => gt('Files'),
     'classname' => 'files',
+    'icon' => 'fa-camera-retro',
     'submenu'   => array(
         'id'       => 'events',
         'itemdata' => $items,

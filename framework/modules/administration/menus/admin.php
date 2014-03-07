@@ -32,19 +32,22 @@ $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BU
 
 if ($user->isAdmin()) {
     $expAdminMenu = array(
-        'text'      => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
+        'text'      => 'Admin',
+        'icon'      => 'fa-star',
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',
             'itemdata' => array(
                 array(
                     'classname' => 'info',
+                    'icon'      => 'fa-info-circle',
                     'text'      => gt('About ExponentCMS'),
                     "submenu"   => array(
                         'id'       => 'ver',
                         'itemdata' => array(
                             array(
                                 'classname' => 'moreinfo',
+                                'info' => '1',
                                 'text'      => $my_version . $my_type . $my_releasedate . "<br />" . gt("PHP Version") . " : " . phpversion(), "disabled" => true
                             ),
                             array(
@@ -74,6 +77,7 @@ if ($user->isAdmin()) {
 
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text' => gt("Configure Website"),
+        'icon'      => 'fa-gears',
         'classname' => 'configure',
         'url'  => makeLink(array(
             'controller' => 'administration',
@@ -120,6 +124,7 @@ if ($user->isAdmin()) {
 if ($user->isAdmin()) {
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt("Site Management"),
+        'icon'      => 'fa-cog',
         'classname' => 'manage',
         'submenu'   => array(
             'id'       => 'manage',
@@ -205,6 +210,7 @@ $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND
 if ($user->isAdmin() || !empty($groups)) {
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt('User Management'),
+        'icon'      => 'fa-group',
         'classname' => 'users',
         'submenu'   => array(
             'id'       => 'usermanagement',
@@ -273,6 +279,7 @@ if ($user->isSuperAdmin()) {
     );
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt('Super-Admin Tools'),
+        'icon'      => 'fa-asterisk',
         'classname' => 'development',
         'submenu'   => array(
             'id'       => 'development',

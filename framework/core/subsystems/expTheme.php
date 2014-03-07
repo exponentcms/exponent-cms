@@ -186,6 +186,16 @@ class expTheme
         }
 
         $metainfo = self::pageMetaInfo();
+        
+        if (NEWUI) {
+            expCSS::pushToHead(array(
+                "corecss"=>"newui"
+            ));
+            expCSS::pushToHead(array(
+                "link"=>PATH_RELATIVE . "external/font-awesome-4/css/font-awesome.min.css"
+            ));
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/bootstrap3');            
+        }
 
         // default to showing all meta tags unless specifically set to false
         if (!isset($config['meta']['content_type'])) {
@@ -1347,7 +1357,7 @@ class expTheme
             'black'   => 'btn-inverse',
             'pink'    => 'btn-danger',
         );
-        if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
+        if (expSession::get('framework') == 'bootstrap') {
             if (!empty($colors[$color])) { // awesome to bootstrap button conversion
                 $found = $colors[$color];
             } else {
@@ -1428,7 +1438,82 @@ class expTheme
     public static function buttonIcon($class)
     {
         $btn_type = '';
-        if (expSession::get('framework') == 'bootstrap') {
+        if (NEWUI) {
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "times";
+                    $btn_type = "btn-danger btn-sm"; // red
+                    break;
+                case 'edit' :
+                    $class = "edit";
+                    $btn_type = "btn-warning btn-sm"; // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus add";
+                    $btn_type = "btn-success btn-sm"; // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download-alt";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload-alt";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "signin";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class = 'double-angle-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'double-angle-left';
+                    break;
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } elseif (expSession::get('framework') == 'bootstrap') {
             switch ($class) {
                 case 'delete' :
                 case 'deletetitle' :

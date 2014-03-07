@@ -49,37 +49,39 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		if (expSession::get('framework') == 'bootstrap') {
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap"
-            ));
-            $btn_class = 'btn btn-default';
-            if (BTN_SIZE == 'large') {
-                $btn_size = '';  // actually default size, NOT true boostrap large
-            } elseif (BTN_SIZE == 'small') {
-                $btn_size = 'btn-mini';
-            } else { // medium
-                $btn_size = 'btn-small';
+        if (!NEWUI) {
+            if (expSession::get('framework') == 'bootstrap') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap"
+                ));
+                $btn_class = 'btn btn-default';
+                if (BTN_SIZE == 'large') {
+                    $btn_size = '';  // actually default size, NOT true boostrap large
+                } elseif (BTN_SIZE == 'small') {
+                    $btn_size = 'btn-mini';
+                } else { // medium
+                    $btn_size = 'btn-small';
+                }
+                $btn_class .= ' ' . $btn_size;
+            } elseif (expSession::get('framework') == 'bootstrap3') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap3"
+                ));
+                $btn_class = 'btn btn-default';
+                if (BTN_SIZE == 'large') {
+                    $btn_size = '';  // actually default size, NOT true boostrap large
+                } elseif (BTN_SIZE == 'small') {
+                    $btn_size = 'btn-xs';
+                } else { // medium
+                    $btn_size = 'btn-sm';
+                }
+                $btn_class .= ' ' . $btn_size;
+            } else {
+                expCSS::pushToHead(array(
+                         "corecss"=>"forms"
+                     ));
+                     $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
-            $btn_class .= ' ' . $btn_size;
-        } elseif (expSession::get('framework') == 'bootstrap3') {
-            expCSS::pushToHead(array(
-                "corecss"=>"forms-bootstrap3"
-            ));
-            $btn_class = 'btn btn-default';
-            if (BTN_SIZE == 'large') {
-                $btn_size = '';  // actually default size, NOT true boostrap large
-            } elseif (BTN_SIZE == 'small') {
-                $btn_size = 'btn-xs';
-            } else { // medium
-                $btn_size = 'btn-sm';
-            }
-            $btn_class .= ' ' . $btn_size;
-		} else {
-            expCSS::pushToHead(array(
-                     "corecss"=>"forms"
-                 ));
-                 $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
@@ -118,7 +120,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             ));
         }
 
-		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'].''. (NEWUI ? ' exp-skin bootstrap3' : '') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {
