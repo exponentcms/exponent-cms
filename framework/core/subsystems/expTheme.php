@@ -192,7 +192,7 @@ class expTheme
                 "corecss"=>"newui"
             ));
             expCSS::pushToHead(array(
-                "link"=>PATH_RELATIVE . "external/font-awesome-4/css/font-awesome.min.css"
+                "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
             ));
             array_unshift($auto_dirs, BASE . 'framework/core/forms/bootstrap3');            
         }

@@ -102,7 +102,8 @@
 </div>
 
 {if $inline && !$preview}
-<script src="{$smarty.const.PATH_RELATIVE}external/editors/ckeditor/ckeditor.js"></script>
+{script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+{/script}
 {script unique=$name jquery="jqueryui"}
 {literal}
     src = '{/literal}{$__loc->src}{literal}';
