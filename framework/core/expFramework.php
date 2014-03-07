@@ -524,6 +524,8 @@ function get_common_template($view, $loc, $controllername='') {
     if ($framework!="bootstrap") {
         if (file_exists($themepath)) {
             return new controllertemplate($controller,$themepath);
+        } elseif(file_exists($newuibasepath)) {
+            return new controllertemplate($controller,$newuibasepath);
         } elseif(file_exists($basepath)) {
             return new controllertemplate($controller,$basepath);
         } else {
@@ -536,6 +538,8 @@ function get_common_template($view, $loc, $controllername='') {
             return new controllertemplate($controller, $themepath);
         } elseif (file_exists($bstrapbasepath)) {
             return new controllertemplate($controller, $bstrapbasepath);
+        } elseif(file_exists($newuibasepath)) {
+            return new controllertemplate($controller,$newuibasepath);
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } else {
@@ -720,8 +724,8 @@ function get_template_for_action($controller, $action, $loc=null) {
 
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
-    if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl')) {
-        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.'.tpl');
+    if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.(NEWUI?'.newui':'').'.tpl')) {
+        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.(NEWUI?'.newui':'').'.tpl');
     } else {
         return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
     }
