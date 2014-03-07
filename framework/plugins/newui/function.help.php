@@ -49,10 +49,6 @@ function smarty_function_help($params,&$smarty) {
             $link = help::makeHelpLink($doc);
         }
         echo '<a title="'.$title.'" href="'.$link.'" target="_blank"><i class="fa fa-question-circle fa-fw"></i> '.$text.'</a>';
-
-        expCSS::pushToHead(array(
-		    "csscore"=>"admin-global",
-        ));
     }
 }
 
