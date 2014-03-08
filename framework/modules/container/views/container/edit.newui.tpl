@@ -13,9 +13,9 @@
  *
  *}
 
-{css unique="edit-container" link="`$asset_path`css/add-content.newui.css"}
+{*{css unique="edit-container" link="`$asset_path`css/add-content-bootstrap.css" corecss="admin-global"}*}
 
-{/css}
+{*{/css}*}
 <div class="exp-skin">
     
     <div class="exp-container edit">

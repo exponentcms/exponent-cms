@@ -19,7 +19,7 @@
           || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
             {$mainNeedsClosing=1}
 
-            {css unique="admin-container" link="`$asset_path`css/container-newui.css"}
+            {css unique="container-newui" lesscss="`$asset_path`less/container-newui.less"}
 
             {/css}
             {script unique="container-chrome" jquery=1 }
@@ -75,7 +75,7 @@
                  || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
                 
                 {* repeating css and JS calls in case they only have module management, and are not admins *}
-                {css unique="admin-container" link="`$asset_path`css/container-newui.css"}
+                {css unique="container-newui" lesscss="`$asset_path`less/container-newui.less"}
 
                 {/css}
 				<div id="module{$container->id}" class="exp-container-module-wrapper"{if !empty($container->hasParent)} style="border: 1px dashed darkgray; padding: 0.25em;"{/if}>

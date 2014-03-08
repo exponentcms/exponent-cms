@@ -170,7 +170,7 @@ class expJavascript {
                 }
 
                 if (!empty($bootstrapjs)) {
-                    if ($head_config['framework'] == 'bootstrap') {
+                    if ($head_config['framework'] == 'bootstrap' && !NEWUI) {
                         $bootstrappath = 'external/bootstrap/js/bootstrap-';
                     } else {
                         $bootstrappath = 'external/bootstrap3/js/';
@@ -291,7 +291,7 @@ class expJavascript {
 
                 if (!empty($bootstrapjs)) {
                     $scripts .= "\t"."<!-- Twitter Bootstrap Scripts -->"."\r\n";
-                    if ($head_config['framework'] == 'bootstrap') {
+                    if ($head_config['framework'] == 'bootstrap' && !NEWUI) {
                         $bootstrappath = 'external/bootstrap/js/bootstrap-';
                     } else {
                         $bootstrappath = 'external/bootstrap3/js/';

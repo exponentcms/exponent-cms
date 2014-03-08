@@ -14,7 +14,7 @@
  *}
 
 
-{css unique="slingbar" link="`$asset_path`css/exp-toolbar.css"}
+{css unique="slingbar" link="`$asset_path`less/exp-toolbar.less"}
 
 {/css}
 
@@ -76,11 +76,7 @@
 </nav>
 </div>
 
-{script unique="z-admin" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/bootstrap3/js/dropdown.js"}
-
-{/script}
-
-{script unique="z-admin2" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/bootstrap3/js/collapse.js"}
+{script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
 {literal}
 jQuery(document).ready(function($) {
 
