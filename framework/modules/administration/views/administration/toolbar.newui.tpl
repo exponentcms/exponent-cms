@@ -14,7 +14,7 @@
  *}
 
 
-{css unique="slingbar" link="`$asset_path`less/exp-toolbar.less"}
+{css unique="slingbar" lesscss="`$asset_path`less/exp-toolbar.less"}
 
 {/css}
 
