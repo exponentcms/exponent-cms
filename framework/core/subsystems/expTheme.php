@@ -1471,7 +1471,7 @@ class expTheme
                     break;
                 case 'merge' :
                 case 'arrow_merge' :
-                    $class = "signin";
+                    $class = "sign-in";
                     break;
                 case 'reranklink' :
                 case 'alphasort' :
