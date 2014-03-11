@@ -336,8 +336,9 @@ function renderAction(array $parms=array()) {
     }
 
     if (!DISABLE_PRIVACY) {
-    // check to see if it's on a private page and we shouldn't see it
+        // check to see if it's on a private page and we shouldn't see it
         if ($perm_action == 'showall' || $perm_action == 'show' || $perm_action == 'downloadfile' || $common_action == 'showall' || $common_action == 'show' || $common_action == 'downloadfile') {
+            $loc = null;
             if (!empty($parms['src'])) {
                 $loc = expCore::makeLocation($parms['controller'], $parms['src']);
             } elseif (!empty($parms['id']) || !empty($parms['title']) || !empty($parms['sef_url'])) {
@@ -356,9 +357,10 @@ function renderAction(array $parms=array()) {
                 $container = new container();
                 $secref = $sectionref->find('first',"module='".$parms['controller']."' AND source='" . $loc->src . "'");
                 if (!empty($secref->section)) {
-                    $page = $section->find('first','id=' . $secref->section);
-                    $module = $container->find('first',"internal='" . serialize($loc) . "'");
-                    if ($page !== null && $module !== null && (empty($page->public) || !empty($module->is_private))) {
+                    $page = $section->find('first','id=' . $secref->section);  // only one page can have the section id#
+                    $module = $container->find('first',"internal='" . serialize($loc) . "'");  // only one container can have the internal == location
+                    if ($page !== null && $module !== null && !empty($page->id) && (empty($page->public) || !empty($module->is_private))) {
+                        // we've found the page and module/container and it's either a private page or private module
                         if (!expPermissions::check('view',expCore::makeLocation('navigation', $page->id))) {
                             if (expTheme::inAction()) {
                                 flash('error', gt("You don't have permission to view that item"));
