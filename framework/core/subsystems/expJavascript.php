@@ -81,7 +81,7 @@ class expJavascript {
 //                    $srt[$i] = JQUERY_SCRIPT.",";
 //                }
                 $browser = expUtil::browser_info();
-                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                if (isset($browser['firefox']) && $browser['firefox'] < 3.7) {
                     $scripts .= '
     <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
                 } else {
@@ -191,7 +191,7 @@ class expJavascript {
                 $scripts .= "\t"."<!-- jQuery Scripts -->";
 //                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 $browser = expUtil::browser_info();
-                if ($browser['firefox'] && $browser['firefox'] < 3.7) {
+                if (isset($browser['firefox']) && $browser['firefox'] < 3.7) {
                     $scripts .= '
     <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
                 } else {
