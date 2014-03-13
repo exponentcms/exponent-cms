@@ -55,7 +55,7 @@
                 {permissions}
                     <div class="module-actions">
                         <div class="msg-queue notice" style="text-align:center">
-                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage"}</p></div>
+                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage" select=true}</p></div>
                     </div>
                 {/permissions}
             {else}
