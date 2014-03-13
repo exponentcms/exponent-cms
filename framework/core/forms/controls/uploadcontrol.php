@@ -48,12 +48,13 @@ class uploadcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
         $html = '';
         if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
-		$html .= "<input type=\"file\" name=\"$name\" ";
-		if(isset($this->class)) $html .=  'class="' . $this->class . '"';
+		$html .= "<input type=\"file\" name=\"$name\"";
+		if (isset($this->class)) $html .= ' class="' . $this->class . '"';
         if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
-		$html .= ($this->disabled?" disabled ":"");
-		$html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\" ":"");
-		$html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\" ":"");
+		$html .= $this->disabled ? " disabled " : "";
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+		$html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\" " : "";
+		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
 		$html .= "/>";
         if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";

@@ -43,7 +43,7 @@ class autocompletecontrol extends formcontrol {
             $html .= '<div class="input-prepend">';
             $html .= '<span class="add-on"><i class="icon-search"></i></span>';
         }
-        $html .= '<input type="search" class="text " size="20" value="'.$this->value.'" name="'.$name.'" id="'.$name.'"/>';
+        $html .= '<input type="search" class="text " size="20" value="' . $this->value . '" name="' . $name . '" id="' . $name . ($this->focus?' autofocus=\"autofocus\"':'') . '"/>';
         if ($framework == 'bootstrap') {
             $html .= '</div>';
         }

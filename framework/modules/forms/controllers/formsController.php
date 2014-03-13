@@ -308,7 +308,7 @@ class formsController extends expController {
                     $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
 //                $paged = false;
-                foreach ($controls as $c) {
+                foreach ($controls as $key=>$c) {
 //                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
                     $ctl->_id = $c->id;
@@ -323,6 +323,7 @@ class formsController extends expController {
                     } else {
                         if (!empty($data[$c->name])) $ctl->default = $data[$c->name];
                     }
+                    if ($key == 0) $ctl->focus = true;  // first control gets the focus
                     $form->register($c->name, $c->caption, $ctl);
 //                    if (get_class($ctl) == 'pagecontrol') $paged = true;
                 }
