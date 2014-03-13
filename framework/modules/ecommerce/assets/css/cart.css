@@ -139,15 +139,26 @@ table#cart table td {
 
 #cart .options:hover .exp-dropmenu {
 	display : block;
+	background:#ffffff;
 }
 
 #cart .exp-dropmenu .bd {
 	padding : 2px 8px;
 }
 
-.exp-dropmenu ul, .extra-data ul {
+#cart .exp-dropmenu ul, .extra-data ul {
 	margin-top : 0;
 	margin-bottom: 0;
+}
+
+#cart .exp-dropmenu .type-icon {
+    display:block;
+    width:14px;
+    height:7px;
+    position:absolute;
+    left:10px;
+    top:-7px;
+    background: url(../../../framework/core/assets/images/panel/point.gif) no-repeat;
 }
 
 #cart .exp-dropmenu ul li {
