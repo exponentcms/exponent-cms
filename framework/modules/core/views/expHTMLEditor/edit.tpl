@@ -16,7 +16,7 @@
 <div class="module text edit">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="`$editor`-toolbar-configuration"}
         </div>
         {if $record->id != ""}
             <h1>{'Editing'|gettext}
