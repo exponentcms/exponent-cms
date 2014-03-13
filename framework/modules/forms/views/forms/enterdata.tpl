@@ -37,7 +37,7 @@
                         {icon class=configure action=design_form id=$form->id text="Design Form"|gettext}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
             </div>
         {/permissions}

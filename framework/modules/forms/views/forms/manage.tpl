@@ -32,7 +32,7 @@
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
-                {if $__loc->src}
+                {if $select}
                     <th>
                         {"Assigned"|gettext}
                     </th>
@@ -51,7 +51,7 @@
         <tbody>
             {foreach from=$forms item=form}
                 <tr class="{cycle values="odd,even"}">
-                    {if $__loc->src}
+                    {if $select}
                        <td>
                            {if $config.forms_id == $form->id}
                                <span class="active">{'Active'|gettext}</span>

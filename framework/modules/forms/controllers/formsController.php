@@ -698,6 +698,7 @@ class formsController extends expController {
         }
 
         assign_to_template(array(
+            'select' => !empty($this->params['select']),
             'forms' => $forms
         ));
     }
