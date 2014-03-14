@@ -16,6 +16,8 @@
 #
 ##################################################
 
-if (!defined('SEF_URLS')) define('SEF_URLS','0');
+if (!defined('FORCE_ECOM')) define('FORCE_ECOM','0');
+if (!defined('DISABLE_SSL_WARNING')) define('DISABLE_SSL_WARNING','0');
+if (!defined('ECOM_CURRENCY')) define('ECOM_CURRENCY','USD');
 
 ?>

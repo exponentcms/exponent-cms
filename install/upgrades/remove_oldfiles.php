@@ -142,6 +142,8 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-ui-1.10.2.custom.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.min.js',
             'external/png-opacity.htc',
+            'framework/conf/extensions/ldap.defaults.php',
+            'framework/conf/extensions/sef.defaults.php',
             'framework/modules/text/views/text/showall_merge.tpl',
             'framework/modules/text/views/text/showall_tabview.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',

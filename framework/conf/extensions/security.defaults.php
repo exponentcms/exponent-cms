@@ -16,11 +16,11 @@
 #
 ##################################################
 
-if (!defined('MAINTENANCE_MODE')) define('MAINTENANCE_MODE','0');
-if (!defined('MAINTENANCE_MSG_HTML')) define('MAINTENANCE_MSG_HTML',exponent_unhtmlentities('This site is currently down for maintenance.'));
-
-if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
-if (!defined('LOGGER')) define('LOGGER','0');
-if (!defined('AJAX_ERROR_REPORTING')) define('AJAX_ERROR_REPORTING','0');
+if (!defined('SESSION_TIMEOUT_ENABLE')) define('SESSION_TIMEOUT_ENABLE','1');
+if (!defined('SESSION_TIMEOUT')) define('SESSION_TIMEOUT','7200');
+if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
+if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
+if (!defined('ENABLE_SSL')) define('ENABLE_SSL','0');
+if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','1');
 
 ?>

@@ -318,9 +318,12 @@
             clone.all('input').each(function(ctrl) {
                 ctrl.set('value','');
             });
-            clone.all('option').each(function(ctrl) {
-                ctrl.removeAttribute('selected');
-            });
+//            clone.all('option').each(function(ctrl) {
+//                ctrl.removeAttribute('selected');
+//            });
+//            clone.all('input[type=file]').each(function(ctrl) {
+//                ctrl.set('value','');
+//            });
 			table.appendChild(clone); // add new row to end of table
         }
 

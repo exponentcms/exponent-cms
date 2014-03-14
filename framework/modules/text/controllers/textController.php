@@ -53,37 +53,40 @@ class textController extends expController {
         if (expSession::is_set('uilevel')) {
         	$level = expSession::get('uilevel');
         }
-//        $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
         $settings = expHTMLEditorController::getActiveEditorSettings(SITE_WYSIWYG_EDITOR);
         if (empty($settings->name)) $settings = new stdClass();
-//        if (empty($settings->data)) {
-//            $settings->data = "
-//                ['htmlsource','Source','-','Preview','-','Templates'],
-//                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
-//                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-//                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
-//                '/',
-//                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-//                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-//                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-//                ['Link','Unlink','Anchor'],
-//                '/',
-//                ['Styles','Format','Font','FontSize'],
-//                ['TextColor','BGColor'],
-//                ['Maximize', 'ShowBlocks','-','About']";
-//        }
-        if (empty($settings->skin)) $settings->skin = 'kama';
-        if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
-        if (empty($settings->paste_word)) {
-            $settings->paste_word = 'forcePasteAsPlainText : true,';
-        } else {
-            $settings->paste_word = '';
+        if (SITE_WYSIWYG_EDITOR == 'ckeditor') {
+    //        if (empty($settings->data)) {
+    //            $settings->data = "
+    //                ['htmlsource','Source','-','Preview','-','Templates'],
+    //                ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print','SpellChecker','Scayt'],
+    //                ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+    //                ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+    //                '/',
+    //                ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+    //                ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+    //                ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+    //                ['Link','Unlink','Anchor'],
+    //                '/',
+    //                ['Styles','Format','Font','FontSize'],
+    //                ['TextColor','BGColor'],
+    //                ['Maximize', 'ShowBlocks','-','About']";
+    //        }
+            if (empty($settings->skin)) $settings->skin = 'kama';
+            if (empty($settings->scayt_on)) $settings->scayt_on = 'true';
+            if (empty($settings->paste_word)) {
+                $settings->paste_word = 'forcePasteAsPlainText : true,';
+            } else {
+                $settings->paste_word = '';
+            }
+        } elseif (SITE_WYSIWYG_EDITOR == 'tinymce') {
+            if (empty($settings->skin)) $settings->skin = 'lightgray';
         }
 
 		assign_to_template(array(
             'items'=>$items,
             'preview'=>($level == UILEVEL_PREVIEW),  // needed for inline edit to work
-            'ckeditor'=>$settings,
+            'editor'=>$settings,
         ));
 	}
 	

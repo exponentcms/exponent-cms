@@ -16,7 +16,7 @@
 <div class="module text edit">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="`$editor`-toolbar-configuration"}
         </div>
         {if $record->id != ""}
             <h1>{'Editing'|gettext}
@@ -33,6 +33,7 @@
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
+        {control type=hidden name=editor value=$editor}
         {control type=text name=name label="Configuration Name"|gettext value=$record->name}
 	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?"|gettext checked=$record->active value=1}
         {if $editor == 'ckeditor'}
