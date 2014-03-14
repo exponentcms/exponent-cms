@@ -431,6 +431,7 @@ class remove_oldfiles extends upgradescript {
             "external/yui/3.12.0/",
             "external/yui/3.13.0/",
             "external/yui/3.14.0/",
+            "external/yui/3.14.1/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
