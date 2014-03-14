@@ -302,7 +302,8 @@ class form extends baseform {
                 $html .= '</fieldset>';
             }
 //            if ($this->tabs[$name] != 'base') {
-    			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
+            if ($rank == 0) $this->controls[$name]->focus = true;  // first control gets the focus
+            $html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
 //                $oldname = $this->tabs[$name];
 //            } else {
 //                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";

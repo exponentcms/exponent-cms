@@ -459,6 +459,7 @@ function smarty_function_control($params, &$smarty) {
         if (isset($params['nowrap'])) $control->nowrap = "nowrap";
         if (isset($params['flip'])) $control->flip = $params['flip'];
         if (isset($params['disabled']) && $params['disabled'] != false) $control->disabled = true;
+        if (isset($params['focus']) && $params['focus'] != false) $control->focus = true;
         if (isset($params['maxlength'])) $control->maxlength = $params['maxlength'];
         if (isset($params['tabindex'])) $control->tabindex = $params['tabindex'];
         if (isset($params['accesskey'])) $control->accesskey = $params['accesskey'];

@@ -42,11 +42,12 @@ class passwordcontrol extends formcontrol {
 	
 	function controlToHTML($name,$label) {
 		$html = "<input type=\"password\" name=\"$name\" value=\"" . $this->default . "\"";
-		$html .= ($this->size?" size=\"".$this->size."\"":"");
-		$html .= ($this->disabled?" disabled ":"");
-		$html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
-		$html .= ($this->tabindex >= 0?" tabindex=\"".$this->tabindex."\"":"");
-		$html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\"":"");
+		$html .= $this->size ? " size=\"".$this->size."\"" : "";
+		$html .= $this->disabled ? " disabled " : "" ;
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+		$html .= $this->maxlength ? " maxlength=\"".$this->maxlength."\"" : "";
+		$html .= ($this->tabindex >= 0) ? " tabindex=\"".$this->tabindex."\"" : "";
+		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\"" : "";
 		$html .= "/>";
 		return $html;
 	}

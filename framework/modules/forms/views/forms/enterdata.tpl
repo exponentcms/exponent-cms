@@ -37,7 +37,7 @@
                         {icon class=configure action=design_form id=$form->id text="Design Form"|gettext}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
             </div>
         {/permissions}
@@ -55,7 +55,7 @@
                 {permissions}
                     <div class="module-actions">
                         <div class="msg-queue notice" style="text-align:center">
-                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage"}</p></div>
+                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage" select=true}</p></div>
                     </div>
                 {/permissions}
             {else}

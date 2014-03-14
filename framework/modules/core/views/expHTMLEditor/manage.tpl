@@ -21,7 +21,7 @@
     <div class="info-header">
         <div class="related-actions">
             {icon class="add" controller=expHTMLEditor action=edit editor=$editor text="Create a new configuration"|gettext}
-            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Editor Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Managing Editor Toolbars"|gettext) module="`$editor`-toolbar-configuration"}
         </div>
         <h2>
             {if $editor == 'ckeditor'}
