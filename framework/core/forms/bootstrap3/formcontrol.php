@@ -33,6 +33,7 @@ abstract class formcontrol {
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
+    var $horizontal = 0;
 
 	static function name() { return "formcontrol"; }
 
