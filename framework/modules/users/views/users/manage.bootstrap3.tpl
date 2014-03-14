@@ -80,7 +80,7 @@
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
-{script unique="manage-users" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
+{script unique="manage-users" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -113,7 +113,7 @@
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table );
+        var tt = new $.fn.dataTable.TableTools( table, { "sSwfPath": EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
