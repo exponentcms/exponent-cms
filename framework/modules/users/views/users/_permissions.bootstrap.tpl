@@ -119,7 +119,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
 {/literal}
 {/script}
 
-{script unique="permissions" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
+{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -153,7 +153,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table );
+        var tt = new $.fn.dataTable.TableTools( table, { "sSwfPath": EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
