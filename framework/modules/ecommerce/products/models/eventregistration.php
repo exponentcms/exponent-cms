@@ -364,13 +364,14 @@ class eventregistration extends expRecord {
             if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
             $fc = new forms_control();
             $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
-            foreach ($registrants as $registrant) {
+            foreach ($registrants as $key=>$registrant) {
                 $db_data = new stdClass();
                 foreach ($controls as $c) {
                     $ctl = expUnserialize($c->data);
                     $control_type = get_class($ctl);
                     $def = call_user_func(array($control_type, "getFieldDefinition"));
                     if ($def != null) {
+                        if ($control_type == 'uploadcontrol') $registrant['registration'] = $key + 1;
                         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
                         $value = stripslashes($db->escapeString($emailValue));
                         $varname = $c->name;
@@ -721,10 +722,18 @@ class eventregistration extends expRecord {
         // build list of registrants with completed orders
         if (!empty($order_ids)) {
             if (!empty($f->is_saved)) {  // is there user input data
+                $fc = new forms_control();
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
                 $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
                 foreach ($registrants as $key=>$registrant) {
                     $order_data = expUnserialize($registrant->location_data);
                     if (in_array($order_data->order_id, $order_ids)) {
+                        foreach ($controls as $c) {
+                            $ctl = expUnserialize($c->data);
+                            $control_type = get_class($ctl);
+                            $name = $c->name;
+                            $registrant->$name = call_user_func(array($control_type, 'templateFormat'), $registrant->$name, $ctl);
+                        }
                         $registered[$key] = $registrant;
                         if (is_numeric($order_data->order_id)) {
                             $registered[$key]->order_id = $order_data->order_id;
