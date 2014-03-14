@@ -11,7 +11,7 @@ include_once(dirname(__FILE__) .'/../../../exponent_bootstrap.php');
 
 /**
  * Allow use of the Minify URI Builder app. Only set this to true while you need it.
- **/
+ */
 $min_enableBuilder = true;
 
 /**
@@ -19,6 +19,7 @@ $min_enableBuilder = true;
  * The username is "admin".
  */
 $min_builderPassword = 'admin';
+
 
 /**
  * Set to true to log messages to FirePHP (Firefox Firebug addon).
@@ -109,6 +110,12 @@ $min_serveOptions['bubbleCssImports'] = false;
 $ma = MINIFY_MAXAGE;
 $ma = empty($ma)?0:$ma;
 $min_serveOptions['maxAge'] = $ma;
+
+
+/**
+ * To use CSSmin (Túbal Martín's port of the YUI CSS compressor), uncomment the following line:
+ */
+//$min_serveOptions['minifiers']['text/css'] = array('Minify_CSSmin', 'minify');
 
 
 /**
