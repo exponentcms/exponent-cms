@@ -110,9 +110,9 @@ Separate group keys with commas:
 FAR-FUTURE EXPIRES HEADERS
 
 Minify can send far-future (one year) Expires headers. To enable this you must
-add a number to the querystring (e.g. /min/?g=js&1234 or /min/f=file.js&1234)
-and alter it whenever a source file is changed. If you have a build process you
-can use a build/source control revision number.
+add a number or the parameter "v" to the querystring (e.g. /min/?g=js&1234 or
+/min/?g=js&v=1234) and alter it whenever a source file is changed. If you have a
+build process you can use a build/source control revision number.
 
 You can alternately use the utility function Minify_getUri() to get a "versioned"
 Minify URI for use in your HTML. E.g.:
@@ -128,6 +128,42 @@ $cssUri = Minify_getUri(array(
     ,'//css/styles2.css'
 )); // a list of files
 echo "<link rel=stylesheet href='{$cssUri}'>";
+
+
+STORING CONFIG FILES OUTSIDE THE MINIFY DIRECTORY
+
+It is possible to store config files (min/config.php, min/config-test.php,
+min/groupsConfig.php) in a custom directory outside the Minify directory. This is
+useful if you wish to include Minify as an external dependency inside another
+project via SVN external or Git submodule inclusion.
+
+For example, let's assume you have a Minify directory "min" in your site root. Then
+you could create a new directory called "min-configs" in the site root. Copy any
+config files you wish to modify to "min-configs", and modify as desired.
+
+Then create a new file, for example "min.php" in your site root. The contents of
+this file could look like this:
+
+<?php
+$customConfigDirectory = dirname(__FILE__) . '/min-configs';
+$min_customConfigPaths = array(
+    'base'   => $customConfigDirectory . '/config.php',
+    'test'   => $customConfigDirectory . '/config-test.php',
+    'groups' => $customConfigDirectory . '/groupsConfig.php'
+);
+
+include_once 'min/index.php';
+
+You would then reference min.php in your JS and CSS links instead of min/index.php.
+
+This method will affect those using the Minify_getUri() function. You will need
+to add options to calls to that function, e.g.:
+
+<?php
+require $_SERVER['DOCUMENT_ROOT'] . '/min/utils.php';
+
+$jsUri = Minify_getUri('//js/file.js', array('minAppUri' => '/min.php'));
+echo "<script src='{$jsUri}'></script>";
 
 
 DEBUG MODE

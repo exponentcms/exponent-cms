@@ -38,7 +38,7 @@
                     &#160;&#160;|&#160;&#160;
                     {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
                     &#160;&#160;|&#160;&#160;
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                     {if !empty($filtered)}
                         &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
                     {/if}
@@ -95,7 +95,7 @@
     </div>
 {/if}
 
-{script unique="form-showall" jquery='lodash.min,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
+{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
         var responsiveHelper = undefined;
@@ -125,7 +125,7 @@
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table );
+        var tt = new $.fn.dataTable.TableTools( table, { "sSwfPath": EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}

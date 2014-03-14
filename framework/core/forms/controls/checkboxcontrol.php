@@ -121,6 +121,7 @@ class checkboxcontrol extends formcontrol {
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
         if ($this->disabled) $html .= ' disabled';
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
         foreach ($this->jsHooks as $type=> $val) {
             $html .= ' ' . $type . '="' . $val . '"';
         }
@@ -161,6 +162,7 @@ class checkboxcontrol extends formcontrol {
             $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
         if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
         foreach ($this->jsHooks as $type=> $val) {
             $html .= ' ' . $type . '="' . $val . '"';
         }

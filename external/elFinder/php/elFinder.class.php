@@ -78,8 +78,9 @@ class elFinder {
 		'resize'    => array('target' => true, 'width' => true, 'height' => true, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false),
 		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => true, 'pass' => true, 'alias' => false, 'options' => false),
 		'url'       => array('target' => true, 'options' => false),
+		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
 		'pixlr'     => array('target' => false, 'node' => false, 'image' => false, 'type' => false, 'title' => false)
-		);
+	);
 	
 	/**
 	 * Plugins instance
@@ -134,6 +135,14 @@ class elFinder {
 	 * @var array
 	 **/
 	public $mountErrors = array();
+	
+	/**
+	 * URL for callback output window for CORS
+	 * redirect to this URL when callback output
+	 * 
+	 * @var string URL
+	 */
+	protected $callbackWindowURL = '';
 	
 	// Errors messages
 	const ERROR_UNKNOWN           = 'errUnknown';
@@ -212,6 +221,7 @@ class elFinder {
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
+		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
 		
 		setlocale(LC_ALL, !empty($opts['locale']) ? $opts['locale'] : 'en_US.UTF-8');
 
@@ -602,7 +612,7 @@ class elFinder {
 				$key = $args['host'];
 				$volume = $this->volume($args['user']);
 				if (method_exists($volume, 'netunmount')) {
-					$res = $volume->netunmount($netVolumes[$key]);
+					$res = $volume->netunmount($netVolumes, $key);
 				}
 				if ($res) {
 					unset($netVolumes[$key]);
@@ -641,6 +651,9 @@ class elFinder {
 		if (method_exists($volume, 'netmountPrepare')) {
 			$options = $volume->netmountPrepare($options);
 			if (isset($options['exit'])) {
+				if ($options['exit'] === 'callback') {
+					$this->callback($options['out']);
+				}
 				return $options;
 			}
 		}
@@ -1575,44 +1588,93 @@ class elFinder {
 	}
 
 	/**
-	 * Edit on Pixlr.com
-	 *
+	 * Output callback result with JavaScript that control elFinder
+	 * or HTTP redirect to callbackWindowURL
+	 * 
 	 * @param  array  command arguments
-	 * @return array
 	 * @author Naoki Sawada
-	 **/
-	 protected function pixlr($args) {
+	 */
+	protected function callback($args) {
+		$checkReg = '/[^a-zA-Z0-9;._-]/';
+		$node = (isset($args['node']) && !preg_match($checkReg, $args['node']))? $args['node'] : '';
+		$json = (isset($args['json']) && @json_decode($args['json']))? $args['json'] : '{}';
+		$bind  = (isset($args['bind']) && !preg_match($checkReg, $args['bind']))? $args['bind'] : '';
+		$done = (!empty($args['done']));
 		
-	 	if (! empty($args['target'])) {
-		 	$args['upload'] = array( $args['image'] );
-			$args['name']   = array( preg_replace('/\.[a-z]{1,4}$/i', '', $args['title']).'.'.$args['type'] );
-		
-			$res = $this->upload($args);
-			$script = '
-				var elf=window.opener.document.getElementById(\''.htmlspecialchars($args['node'], ENT_QUOTES, 'UTF-8').'\').elfinder;
-				var data = '.json_encode($res).';
-				data.warning && elf.error(data.warning);
-				data.added && data.added.length && elf.add(data);
-				elf.trigger(\'upload\', data);
-				window.close();';
-	 	} else {
-	 		$script = 'window.close();';
-	 	}
-	 	$out = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><script>'.$script.'</script></head><body><a href="#" onlick="window.close();return false;">Close this window</a></body></html>';
-	 	
-	 	while( ob_get_level() ) {
+		while( ob_get_level() ) {
 			if (! ob_end_clean()) {
 				break;
 			}
 		}
-	 	
-	 	header('Content-Type: text/html; charset=utf-8');
-	 	header('Content-Length: '.strlen($out));
-	 	header('Cache-Control: private');
-	 	header('Pragma: no-cache');
-	 	echo $out;
-	 	
+		
+		if ($done || ! $this->callbackWindowURL) {
+			$script = '';
+			if ($node) {
+				$script .= '
+					var w = window.opener || weindow.parent || window
+					var elf = w.document.getElementById(\''.$node.'\').elfinder;
+					if (elf) {
+						var data = '.$json.';
+						data.warning && elf.error(data.warning);
+						data.removed && data.removed.length && elf.remove(data);
+						data.added   && data.added.length   && elf.add(data);
+						data.changed && data.changed.length && elf.change(data);';
+				if ($bind) {
+					$script .= '
+						elf.trigger(\''.$bind.'\', data);';
+				}
+				$script .= '
+						data.sync && elf.sync();
+					}';
+			}
+			$script .= 'window.close();';
+			
+			$out = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><script>'.$script.'</script></head><body><a href="#" onlick="window.close();return false;">Close this window</a></body></html>';
+			
+			header('Content-Type: text/html; charset=utf-8');
+			header('Content-Length: '.strlen($out));
+			header('Cache-Control: private');
+			header('Pragma: no-cache');
+			
+			echo $out;
+			
+		} else {
+			$url = $this->callbackWindowURL;
+			$url .= ((strpos($url, '?') === false)? '?' : '&')
+				 . '&node=' . rawurlencode($node)
+				 . (($json !== '{}')? ('&json=' . rawurlencode($json)) : '')
+				 . ($bind? ('&bind=' .  rawurlencode($bind)) : '')
+				 . '&done=1';
+			
+			header('Location: ' . $url);
+			
+		}
 		exit();
+	}
+
+	/**
+	 * Edit on Pixlr.com
+	 *
+	 * @param  array  command arguments
+	 * @author Naoki Sawada
+	 **/
+	 protected function pixlr($args) {
+		
+		$out = array();
+		if (! empty($args['target'])) {
+			$args['upload'] = array( $args['image'] );
+			$args['name']   = array( preg_replace('/\.[a-z]{1,4}$/i', '', $args['title']).'.'.$args['type'] );
+			
+			$res = $this->upload($args);
+			
+			$out = array(
+				'node' => $args['node'],
+				'json' => json_encode($res),
+				'bind' => 'upload'
+			);
+		}
+		
+		return $this->callback($out);
 	}
 
 	/***************************************************************************/

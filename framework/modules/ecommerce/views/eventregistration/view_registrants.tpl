@@ -102,6 +102,7 @@
                 </thead>
                 <tbody>
                     {if $registrants|count > 0}
+                        {$is_email = false}
                         {foreach from=$registrants item=registrant key=id}
                             {*{get_user user=$user assign=registrant}*}
                             <tr class="{cycle values="odd,even"}">
@@ -111,7 +112,6 @@
                                     {*<a href="mailto:{$registrant->email}">{$registrant->email}</a>*}
                                 {*</td>*}
                                 {*<td>{$registrant->phone} </td>*}
-                                {$is_email = false}
                                 {foreach $controls as $control}
                                     {$ctlname = $control->name}
                                     <td>

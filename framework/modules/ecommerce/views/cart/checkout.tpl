@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="button"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="button,panels"}
 
 {/css}
 {uniqueid assign="id"}

@@ -63,8 +63,8 @@ class yuicalendarcontrol extends formcontrol {
 //        }
     }
 
-    function onRegister(&$form) {
-    }
+//    function onRegister(&$form) {
+//    }
 
     function controlToHTML($name, $label = null) {
         $idname = str_replace(array('[',']',']['),'_',$name);
@@ -77,7 +77,7 @@ class yuicalendarcontrol extends formcontrol {
         <div class=\"yui3-skin-sam\">
             <div id=\"cal" . $idname . "Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . "\" value=\"" . $default . "\"/>
+                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . ($this->focus?' autofocus=\"autofocus\"':'') . "\" value=\"" . $default . "\"/>
                 <button class=\"button\" type=\"button\" id=\"update-" . $idname . "\">" . gt('Update Calendar') . "</button>
             </div>
         </div>
