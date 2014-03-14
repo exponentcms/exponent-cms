@@ -70,10 +70,11 @@ class uploadcontrol extends formcontrol {
      */
     static function templateFormat($db_data, $ctl) {
         $base = str_replace(PATH_RELATIVE, '', BASE);
-        if (file_exists($base . $db_data))
+        if (file_exists($base . $db_data)) {
             // if the file exists return a link
-    		return isset($db_data)?'<a href="'.$db_data.'">'.basename($db_data).'</a>':"";
-        else
+            $baseurl = str_replace(PATH_RELATIVE, '', URL_BASE);
+            return isset($db_data) ? ('<a href="' . $baseurl . $db_data . '">' . basename($db_data) . '</a>') : "";
+        } else
             // file missing return filename
             return basename($db_data);
 	}
