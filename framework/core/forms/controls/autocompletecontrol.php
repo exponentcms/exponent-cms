@@ -47,8 +47,6 @@ class autocompletecontrol extends formcontrol {
             $html .= '<span class="input-group-addon"><i class="fa fa-search"></i></span>';
         }
         $html .= '<input type="search" class="text " size="20" value="' . $this->value . '" name="' . $name . '" id="' . $name . ($this->focus?' autofocus=\"autofocus\"':'') . '"/>';
-        if ($framework == 'bootstrap') {
-        $html .= '<input type="search" class="text " size="20" value="'.$this->value.'" name="'.$name.'" id="'.$name.'"/>';
         if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
             $html .= '</div>';
         }
