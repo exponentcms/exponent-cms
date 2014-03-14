@@ -175,7 +175,7 @@
             var funcNum = getUrlParam('CKEditorFuncNum');
 
             var elf = $('#elfinder').elfinder({
-                url: '{/literal}{$smarty.const.PATH_RELATIVE}{literal}framework/modules/file/connector/elfinder.php',  // connector URL
+                url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 commandsOptions : {
                     edit : {
                         mimes : ['text/plain', 'text/html', 'text/javascript'],
