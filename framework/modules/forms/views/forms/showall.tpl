@@ -38,7 +38,7 @@
                     &#160;&#160;|&#160;&#160;
                     {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
                     &#160;&#160;|&#160;&#160;
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                     {if !empty($filtered)}
                         &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
                     {/if}

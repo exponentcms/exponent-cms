@@ -44,15 +44,16 @@ class rangecontrol extends textcontrol {
         }
         $html  = '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
-        $html .= ($this->size?" size=\"".$this->size."\"":"");
-        $html .= ($this->disabled?" disabled ":"");
-        $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
-        $html .= ($this->min?" min=\"".$this->min."\"":" min=\"0\"");
-        $html .= ($this->max?" max=\"".$this->max."\"":" max=\"100\"");
-        $html .= ($this->step?" step=\"".$this->step."\"":" step=\"1\"");
-        $html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\"":"");
-        $html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\"":"");
-        $html .= ($this->placeholder?" placeholder=\"".$this->placeholder."\"":"");
+        $html .= $this->size ? " size=\"".$this->size."\"" : "";
+        $html .= $this->disabled ? " disabled " : "";
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->maxlength ? " maxlength=\"".$this->maxlength."\"" : "";
+        $html .= $this->min ? " min=\"".$this->min."\"" : " min=\"0\"";
+        $html .= $this->max ? " max=\"".$this->max."\"" : " max=\"100\"";
+        $html .= $this->step ? " step=\"".$this->step."\"" : " step=\"1\"";
+        $html .= ($this->tabindex >= 0) ? " tabindex=\"".$this->tabindex."\"" : "";
+        $html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\"" : "";
+        $html .= $this->placeholder ? " placeholder=\"".$this->placeholder."\"" : "";
         if (!empty($this->pattern)) $html .= " pattern=\"".$this->pattern."\"";
         if ($this->filter != "") {
             $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\"";

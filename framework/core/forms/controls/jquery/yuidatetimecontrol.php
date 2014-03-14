@@ -148,10 +148,10 @@ class yuidatetimecontrol extends formcontrol
         return $html;
     }
 
-    function onRegister(&$form)
-    {
+//    function onRegister(&$form)
+//    {
         //$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
-    }
+//    }
 
     static function parseData($original_name, $formvalues)
     {

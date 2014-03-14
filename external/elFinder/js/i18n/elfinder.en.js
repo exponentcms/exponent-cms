@@ -123,7 +123,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdsort'      : 'Sort',
 			'cmdnetmount'  : 'Mount network volume', // added 18.04.2012
 			'cmdnetunmount': 'Unmount', // added 30.04.2012
-
+			
 			'cmdpixlr'     : 'Edit on Pixlr',
 			
 			/*********************************** buttons ***********************************/ 
@@ -161,6 +161,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfnetunmount': 'Unmounting network volume', // added 30.04.2012
 			'ntfdim'      : 'Acquiring image dimension', // added 20.05.2013
 			'ntfreaddir'  : 'Reading folder infomation', // added 01.07.2013
+			'ntfurl'      : 'Getting URL of link', // added 11.03.2014
 			
 			/************************************ dates **********************************/
 			'dateUnknown' : 'unknown',

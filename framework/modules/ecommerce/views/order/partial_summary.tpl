@@ -28,13 +28,13 @@
             {foreach from=$items item=oi}
                 <tr class={cycle values="even,odd"}>
                     <td>
-                        {if $oi->product_type == "product" || $oi->product_type == "childProduct"}
+                        {*{if $oi->product_type == "product" || $oi->product_type == "childProduct"}*}
                             <a href='{link action="show" controller="store" title="`$oi->product->getSEFURL()`"}'>
                                 {$oi->products_name}
                             </a>
-                        {else}
-                            {$oi->products_name}
-                        {/if}
+                        {*{else}*}
+                            {*{$oi->products_name}*}
+                        {*{/if}*}
 
                         {if $oi->opts[0]}
                             <ul class="prod-opts-summary">
