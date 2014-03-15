@@ -89,8 +89,8 @@
                         {*<th>{'Registrant Name'|gettext}</th>*}
                         {*<th>{'Registrant Email'|gettext}</th>*}
                         {*<th>{'Registrant Phone'|gettext}</th>*}
-                        {foreach $controls as $control}
-                            <th>
+                        {foreach from=$controls item=control key=name name=control}
+                            <th{if $control@first} data-class="expand"{elseif $control@iteration < 4} data-hide="phone"{elseif $control@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>
                                 <span>{$control->caption}</span>
                             </th>
                         {foreachelse}
@@ -169,22 +169,38 @@
     {/form}
 </div>
 
-{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools'}
+{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        $('#view-registrants').dataTable({
-            sPaginationType: "full_numbers",
-//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            sDom: 'T<"clear">lfrtip',
-//            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
+        var responsiveHelper = undefined;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
+        var tableElement = $('#view-registrants');
+
+        var table = tableElement.dataTable({
+//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
             aoColumnDefs: [
                 { bSearchable: false, aTargets: [ -2 ] },
                 { bSortable: false, aTargets: [ -2 ] },
             ],
+            bAutoWidth: false,
+            fnPreDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                }
+            },
+            fnRowCallback: function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            fnDrawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
+        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}
 {/script}
