@@ -118,6 +118,113 @@ class forms extends expRecord {
         return $this->table_name;
     }
 
+    /**
+     * Check to see if forms table exists
+     *
+     * @return bool
+     */
+    public function tableExists() {
+        global $db;
+
+        return $db->tableExists("forms_" . $this->table_name);
+    }
+
+    /**
+     * Returns form records as objects
+     *
+     * @param string $where
+     *
+     * @return array
+     */
+    public function getRecords($where="1") {
+        global $db;
+
+        return $db->selectObjects('forms_' . $this->table_name, $where);
+    }
+
+    /**
+     * Returns form records as an array
+     *
+     * @param string $where
+     *
+     * @return array
+     */
+    public function selectRecordsArray($where="1") {
+        global $db;
+
+        return $db->selectArrays('forms_' . $this->table_name, $where);
+    }
+
+    /**
+     * Returns single forms record as object
+     *
+     * @param null $id
+     *
+     * @return null|object|void
+     */
+    public function getRecord( $id=null) {
+        global $db;
+
+        if ($id == null) return null;
+        return $db->selectObject('forms_' . $this->table_name, "id ='{$id}'");
+    }
+
+    /**
+     * Count of form records
+     *
+     * @param string $where
+     *
+     * @return int
+     */
+    public function countRecords($where="1") {
+        global $db;
+
+        return $db->countObjects("forms_" . $this->table_name, $where);
+    }
+
+    /**
+     * Insert a form record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function insertRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->insertObject($record, 'forms_' . $this->table_name);
+    }
+
+    /**
+     * Update a form record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function updateRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->updateObject($record, 'forms_' . $this->table_name);
+    }
+
+    /**
+     * Delete a form record
+     *
+     * @param null $id
+     */
+    public function deleteRecord($id=null) {
+        global $db;
+
+        if ($id == null) return;
+        $db->delete('forms_' . $this->table_name, "id='{$id}'");
+    }
+
+    /**
+     * is run after deleting form
+     */
     public function afterDelete() {
         global $db;
 

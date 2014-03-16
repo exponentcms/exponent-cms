@@ -49,6 +49,32 @@ class forms_control extends expRecord {
     }
 
     /**
+     * Gets a form control
+     *
+     * @param string $where
+     *
+     * @return null|object|void
+     */
+    public function getControl($where="1") {
+        global $db;
+
+        return $db->selectObject('forms_control', $where);
+    }
+
+    /**
+     * Counts form controls
+     *
+     * @param string $where
+     *
+     * @return int
+     */
+    public function countControls($where="1") {
+        global $db;
+
+        return $db->countObjects('forms_control', $where);
+    }
+
+    /**
      * beforeValidation we can have duplicate forms_control across modules
      */
     public function beforeValidation() {

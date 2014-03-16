@@ -69,7 +69,7 @@ if (isset($_POST['install_sample'])) {
     if (!file_exists($eql)) $eql = BASE . "install/samples/" . $_POST['install_sample'] . ".eql";
 	if (file_exists($eql)) {
 		$errors = array();
-		expFile::restoreDatabase($db,$eql,$errors);
+        expFile::restoreDatabase($eql, $errors);
         $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" .  $_POST['install_sample'] . ".tar.gz";
         if (!file_exists($files)) $files = BASE . "install/samples/" . $_POST['install_sample'] . ".tar.gz";
 		if (file_exists($files)) {  // only install if there was an archive

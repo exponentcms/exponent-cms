@@ -243,7 +243,7 @@ class administrationController extends expController {
         $eql = BASE . "install/samples/ecommerce.eql";
         if (file_exists($eql)) {
             $errors = array();
-            expFile::restoreDatabase($db,$eql,$errors);
+            expFile::restoreDatabase($eql,$errors);
         }
         if (DEVELOPMENT && count($errors)) {
             $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
