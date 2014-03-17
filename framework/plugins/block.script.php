@@ -68,7 +68,7 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
             //"yui2mods"=>$params['yui2mods']?$params['yui2mods']:$params['yuimodules'],
             "yui3mods"=>!empty($params['yui3mods']) ? $params['yui3mods'] : null,
             "jquery"=>!empty($params['jquery']) ? $params['jquery'] : null,
-            "content"=>$content,
+            "content"=>trim($content),
             "src"=>!empty($params['src']) ? $params['src'] : ''
          ));
 	}
