@@ -308,7 +308,7 @@ class expTheme
     public static function footerInfo($params = array())
     {
         // checks to see if the theme is calling footerInfo.
-        global $validateTheme, $user;
+        global $validateTheme, $user, $jsForHead;
 
         $validateTheme['footerinfo'] = true;
 
@@ -325,14 +325,15 @@ class expTheme
                     array('module' => 'administration', 'action' => 'togglemobile')
                 ) . '">View site in ' . (MOBILE ? "Classic" : "Mobile") . ' mode</a></div>');
         }
-        //echo expJavascript::parseJSFiles();
         self::processCSSandJS();
         echo expJavascript::footJavascriptOutput();
 
         expSession::deleteVar(
             "last_POST"
         ); //ADK - putting this here so one form doesn't unset it before another form needs it.
-        expSession::deleteVar('last_post_errors');
+        expSession::deleteVar(
+            'last_post_errors'
+        );
     }
 
     public static function pageMetaInfo()

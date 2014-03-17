@@ -260,13 +260,14 @@ class expJavascript {
                     $scripts .= "\t".'<script type="text/javascript" src="'.$mod['fullpath'].'"></script>'."\r\n";
                 }
             }
+            $scripts .= "\t"."<!-- Inline Code -->";
         }
 
         return $scripts;
 	}
 	
 	public static function footJavascriptOutput() {
-        global $js2foot;
+        global $jsForHead, $js2foot;
 
         $html = "";
         // need to have some control over which scripts execute first.
@@ -274,14 +275,14 @@ class expJavascript {
         if(!empty($js2foot)){
             ksort($js2foot);
             foreach($js2foot as $file){
-                $html.= $file."\r\n";
+                $html .= $file."\r\n";
             }            
         } 
         if (MINIFY==1&&MINIFY_INLINE_JS==1) {
             include_once(BASE.'external/minify/min/lib/JSMin.php');
             $html = JSMin::minify($html);
         }
-        return '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>';
+        return "\r\n" . $jsForHead . "\r\n" . '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>' . "\r\n";
 	}
 	
     public static function pushToFoot($params) {
