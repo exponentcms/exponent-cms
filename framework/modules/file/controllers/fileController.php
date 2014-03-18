@@ -661,7 +661,7 @@ class fileController extends expController {
             closedir($dir);
         }
 
-        expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+        expFile::restoreDatabase($_FILES['file']['tmp_name'],$errors);
 
         // now remove deprecated definitions files
         $src = BASE."install/old_definitions";
@@ -712,7 +712,7 @@ class fileController extends expController {
     }
 
     public function export_eql_process() {
-        global $db;
+//        global $db;
 
         if (!isset($this->params['tables'])) { // No checkboxes clicked, and got past the JS check
         	echo gt('You must choose at least one table to export.');
@@ -731,7 +731,7 @@ class fileController extends expController {
         		if (!$eql = fopen ($path, "w")) {
         			flash('error',gt("Error opening eql file for writing")." ".$path);
         		} else {
-        			$eqlfile = expFile::dumpDatabase($db,array_keys($this->params['tables']));
+                    $eqlfile = expFile::dumpDatabase(array_keys($this->params['tables']));
         			if (fwrite ($eql, $eqlfile)  === FALSE) {
         				flash('error',gt("Error writing to eql file")." ".$path);
         			}
@@ -757,7 +757,7 @@ class fileController extends expController {
         			header('Content-Disposition: attachment; filename="' . $filename . '"');
         			header('Pragma: no-cache');
         		}
-        		echo expFile::dumpDatabase($db,array_keys($this->params['tables']));
+                echo expFile::dumpDatabase(array_keys($this->params['tables']));
         		exit; // Exit, since we are exporting
         	}
         }

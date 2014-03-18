@@ -100,7 +100,8 @@ class formsController extends expController {
             }
 
             // pre-process records
-            $items = $db->selectArrays('forms_' . $f->table_name, $where);
+//            $items = $db->selectArrays('forms_' . $f->table_name, $where);
+            $items = $f->selectRecordsArray($where);
             $columns = array();
             foreach ($this->config['column_names_list'] as $column_name) {
                 if ($column_name == "ip") {
@@ -195,7 +196,8 @@ class formsController extends expController {
 
             $fc = new forms_control();
             $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-            $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
+//            $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
+            $data = $f->getRecord($this->params['id']);
 
             $fields = array();
             $captions = array();
@@ -263,7 +265,8 @@ class formsController extends expController {
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-                    $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
+//                    $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
+                    $data = $f->getRecord($this->params['id']);
                     //            $data = $forms_record->find('first','id='.$this->params['id']);
                 } else {
                     if (!empty($f->forms_control)) {
@@ -379,7 +382,8 @@ class formsController extends expController {
                     $form->controls['submit']->disabled = true;
                     $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
                 }
-                $count = $db->countObjects("forms_" . $f->table_name);
+//                $count = $db->countObjects("forms_" . $f->table_name);
+                $count = $f->countRecords();
                 if ($formmsg) {
                     flash('notice', $formmsg);
                 }
@@ -508,13 +512,15 @@ class formsController extends expController {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one.
-                    $olddata = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
+//                    $olddata = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
+                    $olddata = $f->getRecord($this->params['data_id']);
                     $db_data->ip = $olddata->ip;
                     $db_data->user_id = $olddata->user_id;
                     $db_data->timestamp = $olddata->timestamp;
                     $db_data->referrer = $olddata->referrer;
                     $db_data->location_data = $olddata->location_data;
-                    $db->delete('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
+//                    $db->delete('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
+                    $f->deleteRecord($this->params['data_id']);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
                     if (expSession::loggedIn()) {
@@ -533,7 +539,8 @@ class formsController extends expController {
                     }
                     $db_data->location_data = $location_data;
                 }
-                $db->insertObject($db_data, 'forms_' . $f->table_name);
+//                $db->insertObject($db_data, 'forms_' . $f->table_name);
+                $f->insertRecord($db_data);
             } else {
                 $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
             }
@@ -677,7 +684,8 @@ class formsController extends expController {
         }
 
         $f = new forms($this->params['forms_id']);
-        $db->delete('forms_' . $f->table_name, 'id=' . $this->params['id']);
+//        $db->delete('forms_' . $f->table_name, 'id=' . $this->params['id']);
+        $f->deleteRecord($this->params['id']);
 
         expHistory::back();
     }
@@ -692,8 +700,10 @@ class formsController extends expController {
         expHistory::set('manageable', $this->params);
         $forms = $this->forms->find('all', 1);
         foreach($forms as $key=>$f) {
-            if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
-                $forms[$key]->count = $db->countObjects("forms_" . $f->table_name);
+//            if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
+            if (!empty($f->table_name) && $f->tableExists() ) {
+//                $forms[$key]->count = $db->countObjects("forms_" . $f->table_name);
+                $forms[$key]->count = $f->countRecords();
             }
             $forms[$key]->control_count = count($f->forms_control);
         }
@@ -1000,7 +1010,8 @@ class formsController extends expController {
             //lets make sure the name submitted by the user is not a duplicate. if so we will fail back to the form
             if (!empty($control->id)) {
                 //FIXME change this to an expValidator call
-                $check = $db->selectObject('forms_control', 'name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
+//                $check = $db->selectObject('forms_control', 'name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
+                $check = $control->getControl('name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 if (!empty($check) && empty($this->params['id'])) {
                     //expValidator::failAndReturnToForm(gt('A field with the same name already exists for this form'), $_$this->params
                     flash('error', gt('A field by the name")." "' . $ctl1->identifier . '" ".gt("already exists on this form'));
@@ -1010,7 +1021,8 @@ class formsController extends expController {
 
             if ($ctl1 != null) {
                 $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl1->identifier), 0, 20);
-                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
+//                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
+                if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
@@ -1163,11 +1175,12 @@ class formsController extends expController {
     }
 
     public function export_csv() {
-        global $db;
+//        global $db;
 
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
-            $items = $db->selectObjects("forms_" . $f->table_name);
+//            $items = $db->selectObjects("forms_" . $f->table_name);
+            $items = $f->getRecords();
 
             $fc = new forms_control();
             //FIXME should we defaul to only 5 columns or all columns?
@@ -1353,8 +1366,6 @@ class formsController extends expController {
      *
      */
     public function export_eql_process() {
-        global $db;
-
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
 
@@ -1387,7 +1398,7 @@ class formsController extends expController {
             if (!empty($this->params['include_data'])) {
                 $tables[] = 'forms_'.$f->table_name;
             }
-            echo expFile::dumpDatabase($db,$tables,'Form',$this->params['id']);
+            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);
             exit; // Exit, since we are exporting
         }
 //        expHistory::back();
@@ -1405,12 +1416,10 @@ class formsController extends expController {
      *
      */
     public function import_eql_process() {
-        global $db;
-
         $errors = array();
 
         //FIXME check for duplicate form data table name before import?
-        expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors,'Form');
+        expFile::restoreDatabase($_FILES['file']['tmp_name'],$errors,'Form');
 
         if (empty($errors)) {
             flash('message',gt('Form was successfully imported'));
@@ -1822,7 +1831,8 @@ class formsController extends expController {
                     }
                     $i++;
                 }
-                $db->insertObject($db_data, 'forms_' . $f->table_name);
+//                $db->insertObject($db_data, 'forms_' . $f->table_name);
+                $f->insertRecord($db_data);
                 $recordsdone++;
             }
             $linenum++;

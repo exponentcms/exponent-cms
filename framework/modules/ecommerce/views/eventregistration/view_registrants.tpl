@@ -77,12 +77,13 @@
                         {if $permissions.create}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
+                        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
                     </div>
                 {/if}
             {/permissions}
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
-            <table class="exp-skin-table">
+            <table id="view-registrants">
                 <thead>
                     <tr>
                         {*<th>{'Registrant Name'|gettext}</th>*}
@@ -105,7 +106,7 @@
                         {$is_email = false}
                         {foreach from=$registrants item=registrant key=id}
                             {*{get_user user=$user assign=registrant}*}
-                            <tr class="{cycle values="odd,even"}">
+                            <tr>
                                 {*<td>{$registrant->name}</td>*}
                                 {*<td>*}
                                     {*{if !empty($registrant->email)}{control type="hidden" name="email_addresses[]" value={$registrant->email}}{/if}*}
@@ -157,7 +158,6 @@
             </table>
             </div>
         </div>
-        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
         {if $registrants|count > 0 && $is_email}
             {group label='Send an Email to All Registrants'|gettext}
                 {control type="text" name="email_subject" label="Subject"|gettext}
@@ -168,3 +168,23 @@
         {/if}
     {/form}
 </div>
+
+{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools'}
+{literal}
+    $(document).ready(function() {
+        $('#view-registrants').dataTable({
+            sPaginationType: "full_numbers",
+//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            sDom: 'T<"clear">lfrtip',
+//            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            aoColumnDefs: [
+                { bSearchable: false, aTargets: [ -2 ] },
+                { bSortable: false, aTargets: [ -2 ] },
+            ],
+        });
+    } );
+{/literal}
+{/script}

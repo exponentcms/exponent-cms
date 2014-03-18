@@ -799,6 +799,73 @@ class eventregistration extends expRecord {
         return false;
     }
 
+    /**
+     * Returns registrant records as objects
+     *
+     * @param string $where
+     *
+     * @return array
+     */
+    public function getRecords($where="1") {
+        global $db;
+
+        return $db->selectObjects('eventregistration_registrants', $where);
+    }
+
+    /**
+     * Returns single registrant record
+     *
+     * @param null $id
+     *
+     * @return null|object|void
+     */
+    public function getRecord($id=null) {
+        global $db;
+
+        if ($id == null) return null;
+        return $db->selectObject('eventregistration_registrants', "id ='{$id}'");
+    }
+
+    /**
+     * Inserts a registrant record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function insertRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->insertObject($record, 'eventregistration_registrants');
+    }
+
+    /**
+     * Updates a registrant record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function updateRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->updateObject($record, 'eventregistration_registrants');
+    }
+
+    /**
+     * Deletes a registrant record
+     *
+     * @param null $id
+     */
+    public function deleteRecord($id=null) {
+        global $db;
+
+        if ($id == null) return;
+        $db->delete('eventregistration_registrants', "id='{$id}'");
+    }
+
 }
 
 ?>

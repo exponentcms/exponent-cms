@@ -30,7 +30,7 @@ $min_builderPassword = 'admin';
  * instance. Your object should have a method log(string $message).
  */
 //$min_errorLogger = false;
-$min_errorLogger = MINIFY_ERROR_LOGGER;
+$min_errorLogger = MINIFY_ERROR_LOGGER == 1;
 
 
 /**
@@ -45,7 +45,8 @@ $min_errorLogger = MINIFY_ERROR_LOGGER;
  * In 'debug' mode, Minify combines files with no minification and adds comments
  * to indicate line #s of the original files.
  */
-$min_allowDebugFlag = false;
+//$min_allowDebugFlag = false;
+$min_allowDebugFlag = MINIFY_ERROR_LOGGER == 1;
 
 
 /**
