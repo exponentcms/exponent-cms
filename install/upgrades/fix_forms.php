@@ -78,7 +78,8 @@ class fix_forms extends upgradescript {
             if (is_int($form->table_name)) {
                 $table_name = preg_replace('/[^A-Za-z0-9]/', '_', $form->title);
                 // rename an existing table
-                if ($db->tableExists('forms_' . $form->table_name)) {
+//                if ($db->tableExists('forms_' . $form->table_name)) {
+                if ($form->tableExists()) {
                     $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_forms_'.$form->table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$$table_name);
                 }
                 $form->table_name = $table_name;

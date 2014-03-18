@@ -2266,7 +2266,8 @@ class migrationController extends expController {
                         $records = $old_db->selectObjects('formbuilder_'.$oldform->table_name, 1);
                         foreach($records as $record) {
                             //FIXME do we want to add a forms_id field?
-                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+//                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+                            $oldform->insertRecord($record);
                         }
                     }
 

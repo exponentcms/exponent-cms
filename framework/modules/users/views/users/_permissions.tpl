@@ -123,14 +123,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         $('#permissions').dataTable({
             sPaginationType: "full_numbers",
 //            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
+            sDom: 'T<"clear">lfrtip',
+//            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
             aoColumnDefs: [
 //                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSearchable": false, "aTargets": [ '_all' ] },
 //                { "bSortable": false, "aTargets": [ '_all' ] },
-                {"aTargets": [ "sortme"], "bSortable": true },
-                {"aTargets": [ 'nosort' ], "bSortable": false }
+                {aTargets: [ "sortme"], bSortable: true },
+                {aTargets: [ 'nosort' ], bSortable: false }
             ],
         });
     } );

@@ -77,12 +77,16 @@
         $('#groups-manage').dataTable({
             sPaginationType: "full_numbers",
 //            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
+            sDom: 'T<"clear">lfrtip',
+//            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
             aoColumns: [
                 null,
                 null,
                 null,
-                { "bSearchable": false, "bSortable": false },
+                { bSearchable: false, bSortable: false },
             ]
         });
     } );

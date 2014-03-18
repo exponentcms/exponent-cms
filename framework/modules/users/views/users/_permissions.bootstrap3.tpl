@@ -136,8 +136,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
 //                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { "bSearchable": false, "aTargets": [ '_all' ] },
 //                { "bSortable": false, "aTargets": [ '_all' ] },
-                {"aTargets": [ "sortme"], "bSortable": true },
-                {"aTargets": [ 'nosort' ], "bSortable": false }
+                {aTargets: [ "sortme"], bSortable: true },
+                {aTargets: [ 'nosort' ], bSortable: false }
             ],
             bAutoWidth: false,
             fnPreDrawCallback: function () {
@@ -153,7 +153,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { "sSwfPath": EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}

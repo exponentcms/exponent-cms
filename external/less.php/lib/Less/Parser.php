@@ -195,14 +195,9 @@ class Less_Parser{
 	 */
 	private function PreVisitors($root){
 
-		$preEvalVisitors = array();
-		for($i = 0; $i < count($preEvalVisitors); $i++ ){
-			$preEvalVisitors[$i]->run($root);
-		}
-
 		if( Less_Parser::$options['plugins'] ){
 			foreach(Less_Parser::$options['plugins'] as $plugin){
-				if( property_exists($plugin,'isPreEvalVisitor') && $plugin->isPreEvalVisitor ){
+				if( !empty($plugin->isPreEvalVisitor) ){
 					$plugin->run($root);
 				}
 			}
@@ -261,7 +256,7 @@ class Less_Parser{
 		}else{
 			$file_uri = self::WinPath($file_uri);
 			$filename = basename($file_uri);
-			$uri_root = dirname($uri_root);
+			$uri_root = dirname($file_uri);
 		}
 
 		$previousFileInfo = $this->env->currentFileInfo;
@@ -1018,7 +1013,7 @@ class Less_Parser{
 			return;
 		}
 
-		$value = $this->match( array('parseEntitiesQuoted','parseEntitiesVariable','/\\G(?:(?:\\\\[\(\)\'"])|[^\(\)\'"])+/') );
+		$value = $this->match( array('parseEntitiesQuoted','parseEntitiesVariable','/\\Gdata\:.*?[^\)]+/','/\\G(?:(?:\\\\[\(\)\'"])|[^\(\)\'"])+/') );
 		if( !$value ){
 			$value = '';
 		}

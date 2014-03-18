@@ -32,6 +32,7 @@ class controllertemplate extends basetemplate {
 
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
+
         if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
         $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
@@ -89,6 +90,7 @@ class controllertemplate extends basetemplate {
 
 		//autoload filters
 //		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
+        $this->tpl->loadFilter('output', 'trim');
         $this->tpl->loadPlugin('smarty_compiler_switch');
 
 		$this->viewfile = $viewfile;
