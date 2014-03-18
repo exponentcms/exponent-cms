@@ -110,10 +110,14 @@
         $('#forms-showall').dataTable({
             sPaginationType: "full_numbers",
 //            sDom: '{/literal}{$pageit}{literal}',  // pagination location
-            dom: 'T<"clear">lfrtip',
+            sDom: 'T<"clear">lfrtip',
+//            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
             aoColumnDefs: [
-                { "bSearchable": false, "aTargets": [ -1 ] },
-                { "bSortable": false, "aTargets": [ -1 ] },
+                { bSearchable: false, aTargets: [ -1 ] },
+                { bSortable: false, aTargets: [ -1 ] },
             ],
         });
     } );

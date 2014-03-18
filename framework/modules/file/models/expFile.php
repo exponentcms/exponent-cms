@@ -1660,7 +1660,9 @@ class expFile extends expRecord {
      * @return string
      * @node     Model:expFile
      */
-    public static function dumpDatabase($db, $tables = null, $type = null, $record = null) {
+    public static function dumpDatabase($tables = null, $type = null, $record = null) {
+        global $db;
+
         $dump = EQL_HEADER . "\r\n";
         if ($type == null) {
             $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
@@ -1718,7 +1720,9 @@ class expFile extends expRecord {
      * @return bool
      * @node     Model:expFile
      */
-    public static function restoreDatabase($db, $file, &$errors, $type = null) {
+    public static function restoreDatabase($file, &$errors, $type = null) {
+        global $db;
+
         $errors = array();
 
         if (is_readable($file)) {
@@ -1896,7 +1900,8 @@ class expFile extends expRecord {
                             $object = @unserialize($record);
                             if (!$object) $object = unserialize(stripslashes($record));
                             if (is_object($object)) {
-                                $db->insertObject($object, 'forms_' . $table);
+//                                $db->insertObject($object, 'forms_' . $table);
+                                $form->insertRecord($object);
                             }
                         }
                         $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);

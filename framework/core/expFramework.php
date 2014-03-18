@@ -837,7 +837,8 @@ function expUnserialize($serial_str) {
  */
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
-     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
+//     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
+    return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }
 
 function createValidId ($id) {

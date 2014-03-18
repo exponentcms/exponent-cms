@@ -96,8 +96,8 @@
                 null,
                 null,
                 null,
-                { "bSearchable": false, "bSortable": false },
-                { "bSearchable": false, "bSortable": false },
+                { bSearchable: false, bSortable: false },
+                { bSearchable: false, bSortable: false },
             ],
             bAutoWidth: false,
             fnPreDrawCallback: function () {
@@ -113,7 +113,7 @@
                 responsiveHelper.respond();
             }
         });
-        var tt = new $.fn.dataTable.TableTools( table, { "sSwfPath": EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
     } );
 {/literal}

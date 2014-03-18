@@ -29,7 +29,7 @@
 class update_corecss extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '1.99.2';
-    public $priority = 94; // set this to a very low priority BUT before clear_cache
+    public $priority = 95; // set this to a very low priority BUT after clear_cache
 
 	/**
 	 * name/title of upgrade script
