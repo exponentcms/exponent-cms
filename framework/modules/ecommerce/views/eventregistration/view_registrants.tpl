@@ -181,8 +181,8 @@
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
             aoColumnDefs: [
-                { bSearchable: false, aTargets: [ -2 ] },
-                { bSortable: false, aTargets: [ -2 ] },
+                { bSearchable: false, aTargets: [ -1 ] },
+                { bSortable: false, aTargets: [ -1 ] },
             ],
         });
     } );

@@ -39,10 +39,8 @@ class controllertemplate extends basetemplate {
 
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-//		  $this->tpl->caching = false;
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-//		  $this->tpl->cache_dir = BASE.'tmp/cache';
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
@@ -71,10 +69,9 @@ class controllertemplate extends basetemplate {
             ));
         }
 
-		//autoload filters
-//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-        $this->tpl->loadFilter('output', 'trim');
-        $this->tpl->loadPlugin('smarty_compiler_switch');
+		//autoload filters & compiler plugins
+        $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
+        $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
 		$this->viewfile = $viewfile;
 		$this->viewdir = realpath(dirname($this->viewfile));
@@ -86,10 +83,8 @@ class controllertemplate extends basetemplate {
             $this->view = substr(basename($this->viewfile),0,-7);
         } else $this->view = substr(basename($this->viewfile),0,-4);
 
-//		$this->tpl->template_dir = $this->viewdir;
         $this->tpl->setTemplateDir($this->viewdir);
 
-//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
