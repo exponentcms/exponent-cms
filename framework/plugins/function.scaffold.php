@@ -53,7 +53,7 @@ function smarty_function_scaffold($params,&$smarty) {
 		        if ($key == 'id') {
 			        $ctl['type'] = 'hidden';
 		        } else {
-			        $ctl['type'] = expTemplate::guessControlType($col, $default_value, $key);
+			        $ctl['type'] = expTemplate::guessControlType($col, $default_value, $key);  //FIXME $default_value is NOT set
 		        }
 
 		        //format the values if needed
