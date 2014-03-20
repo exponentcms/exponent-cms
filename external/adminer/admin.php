@@ -28,7 +28,7 @@ function adminer_object() {
     $plugins = array(
         // specify enabled plugins here
 //        new AdminerDumpAlter,
-//        new AdminerDumpBz2,  // adds bz2 option to export
+        new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
         new AdminerDumpZip,  // adds zip option to export
         new AdminerEditCalendar,  // add calendar popup for date/time fileds
