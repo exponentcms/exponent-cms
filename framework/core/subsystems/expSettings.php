@@ -629,6 +629,6 @@ class expSettings
 
 }
 
-self::initialize();  // auto-initialize when loaded
+expSettings::initialize();  // auto-initialize when loaded
 
 ?>
