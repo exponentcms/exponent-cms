@@ -23,12 +23,12 @@
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
-    public $add_permissions = array(
+    protected $add_permissions = array(
 //        'picker'=>'Manage Files',
         'import'=>'Import',
         'export'=>'Export',
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'delete'
     );
     public $requires_login = array(
@@ -661,7 +661,7 @@ class fileController extends expController {
             closedir($dir);
         }
 
-        expFile::restoreDatabase($_FILES['file']['tmp_name'],$errors);
+        expFile::restoreDatabase($_FILES['file']['tmp_name'], $errors);
 
         // now remove deprecated definitions files
         $src = BASE."install/old_definitions";

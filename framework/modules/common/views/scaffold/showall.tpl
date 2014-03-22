@@ -14,15 +14,20 @@
  *}
 
 <div class="scaffold showall">
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
 	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
 	{permissions}
+        <div class="module-actions">
         	{if $permissions.create}
         		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
         	{/if}
-        {/permissions}
+        </div>
+    {/permissions}
 	<ul>
         {foreach from=$page->records item=listing}
-		<li class="listing">
+		<li class="item listing">
 			<h3>
 				<a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
 				{permissions}
@@ -36,13 +41,11 @@
 					</div>
 				{/permissions}
 			</h3>
-			<p>{$listing->body}</p>
+            <div class="bodycopy">
+    			<p>{$listing->body}</p>
+            </div>
 			{clear}
 		</li>
         {/foreach}
 	</ul>
 </div>
-
-
-	
-

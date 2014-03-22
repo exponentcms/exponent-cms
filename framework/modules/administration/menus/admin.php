@@ -322,6 +322,11 @@ if ($user->isSuperAdmin()) {
                                 'classname' => 'export',
                             ),
                             array(
+                               'text'      => gt("Import/Export Data"),
+                               'classname' => 'import',
+                               'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+                           ),
+                            array(
                                 'text' => gt('Update Tables'),
                                 'url'  => makeLink(array(
                                     'controller' => 'administration',

@@ -14,6 +14,9 @@
  *}
 
 <div class="scaffold browseTags">
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
 	<h1>{$moduletitle|default:""}</h1>
 
     {foreach from=$tags item=tag names=tags}

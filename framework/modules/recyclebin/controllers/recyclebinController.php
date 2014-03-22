@@ -22,8 +22,8 @@
  */
 
 class recyclebinController extends expController {
-    public $add_permissions = array('show'=>'View Recycle Bin');
-    //public $remove_permissions = array('edit');
+    protected $add_permissions = array('show'=>'View Recycle Bin');
+    //protected $remove_permissions = array('edit');
 
     static function displayname() { return gt("Recycle Bin Manager"); }
     static function description() { return gt("Manage modules that have been deleted from your web pages"); }

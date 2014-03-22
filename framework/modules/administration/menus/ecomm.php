@@ -250,12 +250,14 @@ $ecom = array(
                         array(
                             'text'      => gt("Import Products"),
                             'classname' => 'import',
-                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+//                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import')),
                         ),
                         array(
                             'text'      => gt("Import External Addresses"),
                             'classname' => 'import',
-                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
+//                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
+                            'url'       => makeLink(array('controller' => 'address', 'action' => 'import')),
                         ),
                     ),
                 ),

@@ -22,7 +22,7 @@
  */
 
 class billingController extends expController {
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'activate'=>'Activate Payment Options'
     );
     

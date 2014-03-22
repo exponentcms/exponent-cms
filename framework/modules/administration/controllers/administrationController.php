@@ -24,7 +24,7 @@
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
-    public $add_permissions = array(
+    protected $add_permissions = array(
 //	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
 	    'clear'=>'Clear Caches',
 	    "fix"=>"Fix Database",
@@ -769,17 +769,17 @@ class administrationController extends expController {
 			$mail = new expMail();
             if (!empty($_FILES['attach']['size'])) {
                 $dir = 'tmp';
-                $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
-                $dest = $dir.'/'.$filename;
+                $filename = expFile::fixName(time() . '_' . $_FILES['attach']['name']);
+                $dest = $dir . '/' . $filename;
                 //Check to see if the directory exists.  If not, create the directory structure.
-                if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+                if (!file_exists(BASE . $dir)) expFile::makeDirectory($dir);
                 // Move the temporary uploaded file into the destination directory, and change the name.
-                expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+                $file = expFile::moveUploadedFile($_FILES['attach']['tmp_name'], BASE . $dest);
 //                $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                $ftype = finfo_file($finfo, BASE.$dest);
 //                finfo_close($finfo);
-                $mail->attach_file_on_disk(BASE.$dest, expFile::getMimeType(BASE.$dest));
+                if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
             }
             if ($this->params['batchsend']) {
                 $mail->quickBatchSend(array(
@@ -800,7 +800,7 @@ class administrationController extends expController {
                         'subject'=>$subject,
                 ));
             }
-            if (!empty($dest)) unlink(BASE.$dest);  // delete temp file attachment
+            if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment
             flash('message',gt('Mass Email was sent'));
             expHistory::back();
         }

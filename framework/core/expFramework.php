@@ -521,28 +521,20 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
     
-    $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-    $newuibasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.newui.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
+    $newuibasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.newui.tpl';
+    $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
 
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
-        if ($framework == "bootstrap3") {
-            $bstrap3basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
-            $bstrap3themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
-        }
-        $bstrapbasepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
-        $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
-        if ($framework == "bootstrap3" && file_exists($bstrap3themepath)) {
-            return new controllertemplate($controller, $bstrap3themepath);
-        } elseif (file_exists($bstrapthemepath)) {
-            return new controllertemplate($controller, $bstrapthemepath);
-        } elseif (file_exists($themepath)) {
+        $basebstrap3path = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
+        $basebstrappath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+        if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
-        } elseif ($framework == "bootstrap3" && file_exists($bstrap3basepath)) {
-            return new controllertemplate($controller, $bstrap3basepath);
-        } elseif (file_exists($bstrapbasepath)) {
-            return new controllertemplate($controller, $bstrapbasepath);
-        } elseif(file_exists($newuibasepath)) {
+        } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+            return new controllertemplate($controller, $basebstrap3path);
+        } elseif (file_exists($basebstrappath)) {
+            return new controllertemplate($controller, $basebstrappath);
+        } elseif(NEWUI && file_exists($newuibasepath)) {  //FIXME is this the correct sequence?
             return new controllertemplate($controller,$newuibasepath);
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
@@ -552,9 +544,9 @@ function get_common_template($view, $loc, $controllername='') {
     } else {
         if (file_exists($themepath)) {
             return new controllertemplate($controller,$themepath);
-        } elseif (file_exists($newuibasepath)) {
+        } elseif (NEWUI && file_exists($newuibasepath)) {
             return new controllertemplate($controller,$newuibasepath);
-        } elseif (file_exists($basepath)) {
+        } elseif(file_exists($basepath)) {
             return new controllertemplate($controller,$basepath);
         } else {
             return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
@@ -670,17 +662,17 @@ function get_template_for_action($controller, $action, $loc=null) {
     $framework = expSession::get('framework');
 
     // set paths we will search in for the view
-    $basepath = $controller->viewpath.'/'.$action.'.tpl';
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
-    $newuibasepath = $controller->viewpath.'/'.$action.'.newui.tpl';
+    $basepath = $controller->viewpath.'/'.$action.'.tpl';
     $newuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.newui.tpl';
+    $newuibasepath = $controller->viewpath.'/'.$action.'.newui.tpl';
 
     // the root action will be used if we don't find a view for this action and it is a derivative of
     // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
     // showall_by_tags.tpl
     $root_action = explode('_', $action);
-    $rootbasepath = $controller->viewpath.'/'.$root_action[0].'.tpl';
-    $rootthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.tpl';
+    $rootthemepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/' . $controller->relative_viewpath . '/' . $root_action[0] . '.tpl';
+    $rootbasepath = $controller->viewpath . '/' . $root_action[0] . '.tpl';
 
     if (NEWUI) {
         if (file_exists($newuithemepath)) {
@@ -690,27 +682,25 @@ function get_template_for_action($controller, $action, $loc=null) {
         }
     }
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
-        if ($framework == "bootstrap3") {
-            $bstrap3basepath = $controller->viewpath.'/'.$action.'.bootstrap3.tpl';
-            $bstrap3themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap3.tpl';
-        }
-        $bstrapbasepath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
-        $bstrapthemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.bootstrap.tpl';
-        if ($framework == "bootstrap3" && file_exists($bstrap3themepath)) {
-            return new controllertemplate($controller, $bstrap3themepath);
-        } elseif (file_exists($bstrapthemepath)) {
-            return new controllertemplate($controller, $bstrapthemepath);
-        } elseif (file_exists($themepath)) {
+        $rootbstrap3path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap3.tpl';
+        $basebstrap3path = $controller->viewpath.'/'.$action.'.bootstrap3.tpl';
+        $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
+        $basebstrappath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
+        if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
-        } elseif ($framework == "bootstrap3" && file_exists($bstrap3basepath)) {
-            return new controllertemplate($controller, $bstrap3basepath);
-        } elseif (file_exists($bstrapbasepath)) {
-            return new controllertemplate($controller, $bstrapbasepath);
+        } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+            return new controllertemplate($controller, $basebstrap3path);
+        } elseif (file_exists($basebstrappath)) {
+            return new controllertemplate($controller, $basebstrappath);
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } elseif ($root_action[0] != $action) {
             if (file_exists($rootthemepath)) {
                 return new controllertemplate($controller, $rootthemepath);
+            } elseif (file_exists($framework == "bootstrap3" && file_exists($rootbstrap3path))) {
+                return new controllertemplate($controller, $rootbstrap3path);
+            } elseif (file_exists($rootbstrappath)) {
+                return new controllertemplate($controller, $rootbstrappath);
             } elseif (file_exists($rootbasepath)) {
                 return new controllertemplate($controller, $rootbasepath);
             }
@@ -732,9 +722,9 @@ function get_template_for_action($controller, $action, $loc=null) {
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
     if (file_exists(BASE.'framework/modules/common/views/scaffold/'.$action.(NEWUI?'.newui':'').'.tpl')) {
-        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/'.$action.(NEWUI?'.newui':'').'.tpl');
+        return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . (NEWUI?'.newui':'') . '.tpl');
     } else {
-        return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+        return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
     }
 }
 

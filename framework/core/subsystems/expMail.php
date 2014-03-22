@@ -343,14 +343,17 @@ class expMail {
 //		return $batch->getFailedRecipients();
 	}
 
-	/**
-	 *  quickBatchSend() - a quick way to send a batch of emails one at a time
-	 * This function is similar to quickSend, but sends each email separately to protect others identity in the mailing
-	 *
-	 * @author Tyler Smart <tyleresmart@gmail.com>
-	 * @return array
-	 */
-	public function quickBatchSend() {
+    /**
+     *  quickBatchSend() - a quick way to send a batch of emails one at a time
+     * This function is similar to quickSend, but sends each email separately to protect others identity in the mailing
+     *
+     * @author Tyler Smart <tyleresmart@gmail.com>
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+	public function quickBatchSend($params = array()) {
 		if (empty($params['html_message']) && empty($params['text_message'])) {
 			return false;
 		}

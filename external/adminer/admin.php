@@ -28,7 +28,7 @@ function adminer_object() {
     $plugins = array(
         // specify enabled plugins here
 //        new AdminerDumpAlter,
-//        new AdminerDumpBz2,  // adds bz2 option to export
+        new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
         new AdminerDumpZip,  // adds zip option to export
         new AdminerEditCalendar,  // add calendar popup for date/time fileds
@@ -48,19 +48,41 @@ function adminer_object() {
     $plugins[] = new AdminerEditTextarea;  // adjusts box size smaller, MUST be last in chain for textarea widgets
 
     /* It is possible to combine customization and plugins: */
-    class AdminerCustomization extends AdminerPlugin { 
+    class AdminerCustomization extends AdminerPlugin {
+        /** Name in title and navigation
+         * @return string HTML code
+         */
 		function name() { // custom name in title and heading 
 			return gt('Exponent CMS Database');
-		} 
+		}
+
+        /** Get key used for permanent login
+         * @param bool
+         * @return string cryptic string which gets combined with password or false in case of an error
+         */
 		function permanentLogin() { // key used for permanent login 
 			return ""; 
-		} 
+		}
+
+        /** Connection parameters
+         * @return array ($server, $username, $password)
+         */
 		function credentials() { // server, username and password for connecting to database 
 			return array(DB_HOST, DB_USER , DB_PASS);
 		}
+
+        /** Identifier of selected database
+         * @return string
+         */
 		function database() { // database name, will be escaped by Adminer 
 			return DB_NAME;
 		}
+
+        /** Authorize the user
+         * @param string
+         * @param string
+         * @return bool
+         */
 		function login($login, $password) { // validate user submitted credentials
             global $user;
 
@@ -70,9 +92,18 @@ function adminer_object() {
                 return ($user->isLoggedIn() && $user->isSuperAdmin());
             }
 		}
+
+        /** Get cached list of databases
+         * @param bool
+         * @return array
+         */
 		function databases($flush = true) {
 			return array(DB_NAME);
 		}
+
+        /** Print login form
+         * @return null
+         */
         function loginForm() {
        		?>
         <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
