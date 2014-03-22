@@ -49,7 +49,7 @@
                     {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
                     {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
                     {if ($permissions.configure || $container->permissions.configure)}
-                   		<li><a href="{link module=container src=$module->info['source'] hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
+                   		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
                    	{/if}
                     {if $smarty.const.HELP_ACTIVE}<li>{help text="Get Help with"|gettext|cat:" "|cat:("Containers"|gettext)}</li>{/if}
                 </ul>

@@ -49,7 +49,7 @@ class controllertemplate extends basetemplate {
         if (NEWUI) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/newui',
+                BASE.'framework/plugins/newui',  //FIXME we leave out bootstrap3 & bootstrap chain?
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
