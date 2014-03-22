@@ -24,7 +24,7 @@
 
 class usersController extends expController {
     public $basemodel_name = 'user';
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'toggle_extension' => 'Activate Extensions',
         'kill_session'     => 'End Sessions',
         'boot_user'        => 'Boot Users',
@@ -33,7 +33,7 @@ class usersController extends expController {
         'import'           => 'Import Users',
         'export'           => 'Export Users',
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'create',
         'edit'
     );
@@ -52,6 +52,10 @@ class usersController extends expController {
 
     static function hasContent() {
         return false;
+    }
+
+    static function canImportData() {
+        return true;
     }
 
     public function manage() {
@@ -1166,7 +1170,7 @@ class usersController extends expController {
         expHistory::back();
     }
 
-    public function import_users() {
+    public function import() {
         if (expFile::canCreate(BASE . "tmp/test") != SYS_FILES_SUCCESS) {
             assign_to_template(array(
                 "error" => "The /tmp directory is not writable.  Please contact your administrator.",
@@ -1215,7 +1219,7 @@ class usersController extends expController {
         //Get the file save it to the temp directory
         if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
             //	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
-            $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/'); //FIXME quick hack to remove file model
+            $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/');
             if ($file == null) {
                 switch ($_FILES["upload"]["error"]) {
                     case UPLOAD_ERR_INI_SIZE:

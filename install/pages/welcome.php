@@ -54,7 +54,8 @@ if (!defined('LANGUAGE')) {
 </form>
 
 <?php
-// build core css files from .less
+// build core css files from .less after clearing the less compiler cache
+expFile::removeFilesInDirectory(BASE.'tmp/css');
 expCSS::updateCoreCss();
 
 // profiles

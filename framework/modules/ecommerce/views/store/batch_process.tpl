@@ -16,7 +16,8 @@
 <div class="module importexport manage">
     <h1>{'Upload Your CSV File'|gettext}</h1>
     {form action=process_orders}
-        <input type="file" name="batch_upload_file" size="50">
+        {*<input type="file" name="batch_upload_file" size="50">*}
+        {control type=uploader name=batch_upload_file size="50"}
         {control type="dropdown" name="order_status_success" label="Set Status of Successfully Captured and Non-Authorized Orders (PayPal, Phone, etc) To:"|gettext size=4 multiple=false items=$order_status default=-1}
         {* control type="dropdown" name="order_status_fail" label="Set Status of Orders That Fail Capture To:"|gettext size=4 multiple=false items=$order_status default=-1 *}
         {control type="radiogroup" name="email_customer" label="Email Status to Customer?"|gettext flip=true items="No,Yes"|gettxtlist}

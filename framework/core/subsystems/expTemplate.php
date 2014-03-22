@@ -156,7 +156,7 @@ class expTemplate {
 	 * @return array
 	 * @node Subsystems:Template
 	 */
-	public static function listModuleViews($module) {  //FIXME only used by container 2.0 edit action for OS modules
+	public static function listModuleViews($module) {  //FIXME only used by container 2.0 edit action
 		return expCore::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 
@@ -178,7 +178,7 @@ class expTemplate {
      *
      * @return array
      */
-    //FIXME we need to also look for custom & jquery & bootstrap controls
+    //FIXME we need to also look for custom & jquery & bootstrap controls and NOT assume we only subclass basic controls?
 	public static function listControlTypes($include_static = true) {
 		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
@@ -194,7 +194,7 @@ class expTemplate {
 		return $list;
 	}
 
-    //FIXME we need to also look for custom & jquery & bootstrap controls
+    //FIXME we need to also look for custom & jquery & bootstrap controls and NOT assume we only subclass basic controls?
 	public static function listSimilarControlTypes($type) {
         $oldctl = new $type();
 		$cdh = opendir(BASE."framework/core/forms/controls");

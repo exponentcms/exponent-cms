@@ -14,6 +14,9 @@
  *}
 
 <div class="scaffold showall-by-tags">
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
 	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
 
 	{permissions}
@@ -25,11 +28,11 @@
     {/permissions}
 	<ul>
         {foreach from=$items item=listing}
-		<li class="listing">
+		<li class="item listing">
 			<h3><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h3>
-			<p>
-				{$listing->body}
-			</p>
+            <div class="bodycopy">
+                <p>{$listing->body}</p>
+            </div>
 			{permissions}
 				<div class="item-actions">
 					{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
