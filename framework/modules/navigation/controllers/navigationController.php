@@ -37,10 +37,10 @@ class navigationController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'view' => "View Page"
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'configure',
         'create',
         'delete',

@@ -26,7 +26,7 @@ class searchController extends expController {
         'show'=>'Show Search Form',
         'cloud'=>'Show Tag Cloud'
     );
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'spider'=>'Spider Site'
     );
 

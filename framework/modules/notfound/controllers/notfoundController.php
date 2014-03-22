@@ -22,7 +22,7 @@
  */
 
 class notfoundController extends expController {
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'showall'=>'Showall',
         'show'=>'Show'
     );

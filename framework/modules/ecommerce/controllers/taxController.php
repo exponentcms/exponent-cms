@@ -39,13 +39,13 @@ class taxController extends expController {
         return gt("Manage tax classes for your e-Commerce store");
     }
 
-    static function canImportData() {
-        return true;
-    }
-
-    static function canExportData() {
-        return true;
-    }
+//    static function canImportData() {
+//        return true;
+//    }
+//
+//    static function canExportData() {
+//        return true;
+//    }
 
     function manage() {
         expHistory::set('manageable', $this->params);

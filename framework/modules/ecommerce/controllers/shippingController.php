@@ -22,7 +22,7 @@
  */
 
 class shippingController extends expController {
-	public $add_permissions = array(
+    protected $add_permissions = array(
         'toggle'=>'Enable/Disable Options'
     );
 
