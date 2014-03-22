@@ -33,7 +33,7 @@ class blogController extends expController {
 //        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'approve'=>"Approve Comments"
     );
 

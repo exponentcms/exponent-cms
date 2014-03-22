@@ -182,8 +182,8 @@
         var table = tableElement.dataTable({
 //            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
             aoColumnDefs: [
-                { bSearchable: false, aTargets: [ -2 ] },
-                { bSortable: false, aTargets: [ -2 ] },
+                { bSearchable: false, aTargets: [ -1 ] },
+                { bSortable: false, aTargets: [ -1 ] },
             ],
             bAutoWidth: false,
             fnPreDrawCallback: function () {

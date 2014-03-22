@@ -23,7 +23,7 @@
 /** @define "BASE" "../../../.." */
 
 class ecomconfigController extends expController {
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'show'=>'View Admin Options'
     );
 	

@@ -52,7 +52,7 @@ class eventregistrationController extends expController {
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'view_registrants'=> 'View Registrants',
     );
 
@@ -1131,17 +1131,17 @@ class eventregistrationController extends expController {
 //        }
         if (!empty($_FILES['attach']['size'])) {
             $dir = 'tmp';
-            $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
-            $dest = $dir.'/'.$filename;
+            $filename = expFile::fixName(time() . '_' . $_FILES['attach']['name']);
+            $dest = $dir . '/' . $filename;
             //Check to see if the directory exists.  If not, create the directory structure.
             if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
             // Move the temporary uploaded file into the destination directory, and change the name.
-            expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+            $file = expFile::moveUploadedFile($_FILES['attach']['tmp_name'], BASE . $dest);
 //            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //            $ftype = finfo_file($finfo, BASE.$dest);
 //            finfo_close($finfo);
-            $mail->attach_file_on_disk(BASE.$dest, expFile::getMimeType(BASE.$dest));
+            if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
         }
 
         $mail->quickBatchSend(array(
@@ -1152,7 +1152,7 @@ class eventregistrationController extends expController {
                 'from'        => ecomconfig::getConfig('from_address'),
                 'subject'     => $this->params['email_subject']
         ));
-
+        if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment
         flash('message', gt("You're email to event registrants has been sent."));
         expHistory::back();
     }

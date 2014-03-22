@@ -33,15 +33,25 @@ class newsController extends expController {
 //        'facebook',
 //        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
-        'showUnpublished'=>'View Unpublished News'
+    protected $add_permissions = array(
+        'showUnpublished'=>'View Unpublished News',
+        'import'=>'Import News Items',
+        'export'=>'Export News Items'
     );
 
     static function displayname() { return gt("News"); }
     static function description() { return gt("Display & manage news type content on your site."); }
     static function isSearchable() { return true; }
-    
-    public function showall() { 
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
+
+    public function showall() {
         expHistory::set('viewable', $this->params);
         // figure out if should limit the results
         if (isset($this->params['limit'])) {
@@ -290,6 +300,147 @@ class newsController extends expController {
 
         return $sql;
     }
+
+//    function import() {
+//        $pullable_modules = expModules::listInstalledControllers('news');
+//        $modules = new expPaginator(array(
+//            'records' => $pullable_modules,
+//            'controller' => $this->loc->mod,
+//            'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
+//            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
+//            'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+//            'columns' => array(
+//                gt('Title') => 'title',
+//                gt('Page')  => 'section'
+//            ),
+//        ));
+//
+//        assign_to_template(array(
+//            'modules'              => $modules,
+//        ));
+//    }
+//
+//    function import_select() {
+//        //Get the temp directory to put the uploaded file
+//        $directory = "tmp";
+//
+//        //Get the file save it to the temp directory
+//        if ($_FILES["import_file"]["error"] == UPLOAD_ERR_OK) {
+//            $file = expFile::fileUpload("import_file", false, false, time() . "_" . $_FILES['import_file']['name'], $directory.'/');
+//            if ($file == null) {
+//                switch ($_FILES["import_file"]["error"]) {
+//                    case UPLOAD_ERR_INI_SIZE:
+//                    case UPLOAD_ERR_FORM_SIZE:
+//                        $this->params['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+//                        break;
+//                    case UPLOAD_ERR_PARTIAL:
+//                        $this->params['_formError'] = gt('The file was only partially uploaded.');
+//                        break;
+//                    case UPLOAD_ERR_NO_FILE:
+//                        $this->params['_formError'] = gt('No file was uploaded.');
+//                        break;
+//                    default:
+//                        $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+//                        break;
+//                }
+//                expSession::set("last_POST", $this->params);
+//                header("Location: " . $_SERVER['HTTP_REFERER']);
+//                exit("");
+//            } else {
+//                $errors = array();
+//                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, 'news');
+//                if (!empty($errors)) {
+//                    $message = gt('Importing encountered the following errors') . ':<br>';
+//                    foreach ($errors as $error) {
+//                        $message .= '* ' . $error . '<br>';
+//                    }
+//                    flash('error', $message);
+//                }
+//
+//                assign_to_template(array(
+//                   'items' => $data['news']->records,
+//                   'filename' => $directory . "/" . $file->filename,
+//                   'source' => $this->params['aggregate'][0]
+//               ));
+//            }
+//        }
+//    }
+//
+//    function import_process() {
+//        $filename = $this->params['filename'];
+//        $src = $this->params['source'];
+//        $selected = $this->params['items'];
+//        $errors = array();
+//        $data = expFile::parseDatabase(BASE . $filename, $errors, 'news');
+//        foreach ($selected as $select) {
+//            $item = new news();
+//            foreach ($data['news']->records[$select] as $key => $value) {
+//                if ($key != 'id' && $key != 'location_data') {
+//                    $item->$key = $value;
+//                }
+//            }
+//            $item->id = null;
+//            $item->rank = null;
+//            $item->location_data = serialize(expCore::makeLocation('news', $src));
+//            $item->save();
+//        }
+//        flash('message', count($selected) . ' ' . gt('News items were imported.'));
+//        expHistory::back();
+//    }
+//
+//    function export() {
+//        $pullable_modules = expModules::listInstalledControllers('news');
+//        $modules = new expPaginator(array(
+//            'records' => $pullable_modules,
+//            'controller' => $this->loc->mod,
+//            'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
+//            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
+//            'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+//            'columns' => array(
+//                gt('Title') => 'title',
+//                gt('Page')  => 'section'
+//            ),
+//        ));
+//        assign_to_template(array(
+//            'modules'              => $modules,
+//        ));
+//    }
+//
+//    function export_process() {
+//        if (!empty($this->params['aggregate'])) {
+//            $selected = $this->params['aggregate'];
+//            $where = '(';
+//            foreach ($selected as $key=>$src) {
+//                if ($key) $where .= ' OR ';
+//                $where .= "location_data='" . serialize(expCore::makeLocation('news', $src)) . "'";
+//            }
+//            $where .= ')';
+//
+//            $filename = 'news.eql';
+//
+//            ob_end_clean();
+//            ob_start("ob_gzhandler");
+//
+//            // 'application/octet-stream' is the registered IANA type but
+//            //        MSIE and Opera seems to prefer 'application/octetstream'
+//            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+//
+//            header('Content-Type: ' . $mime_type);
+//            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+//            // IE need specific headers
+//            if (EXPONENT_USER_BROWSER == 'IE') {
+//                header('Content-Disposition: inline; filename="' . $filename . '"');
+//                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+//                header('Pragma: public');
+//            } else {
+//                header('Content-Disposition: attachment; filename="' . $filename . '"');
+//                header('Pragma: no-cache');
+//            }
+//            echo expFile::dumpDatabase('news', 'export', $where);
+//            exit; // Exit, since we are exporting
+//        }
+//        expHistory::back();
+//    }
 
 }
 

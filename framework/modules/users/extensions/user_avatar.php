@@ -60,7 +60,7 @@ class user_avatar extends expRecord {
                 $avatar_name = $this->user_id.'.'.$extension;
                 
                 // save the file to the filesystem
-                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'files/avatars/');
+                $file = expFile::fileUpload('avatar', true, false, $avatar_name, 'files/avatars/');  // overwrite an exiting user avatar
 
                 //save the file to the database                
                 $this->image = $file->url;

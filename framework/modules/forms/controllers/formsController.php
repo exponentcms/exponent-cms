@@ -39,7 +39,7 @@ class formsController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'viewdata'  => "View Data",
         'enter_data' => "Enter Data"  // slight naming variation to not fully restrict enterdata method
     );
@@ -1415,7 +1415,7 @@ class formsController extends expController {
         $errors = array();
 
         //FIXME check for duplicate form data table name before import?
-        expFile::restoreDatabase($_FILES['file']['tmp_name'],$errors,'Form');
+        expFile::restoreDatabase($_FILES['file']['tmp_name'], $errors, 'Form');
 
         if (empty($errors)) {
             flash('message',gt('Form was successfully imported'));

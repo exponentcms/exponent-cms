@@ -58,10 +58,8 @@ abstract class basetemplate {
 
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-//		  $this->tpl->caching = false;
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-//		  $this->tpl->cache_dir = BASE.'tmp/cache';
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
@@ -75,7 +73,6 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-//        } elseif ($head_config['framework'] == 'jquery') {
         } elseif ($framework == 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -91,10 +88,9 @@ abstract class basetemplate {
             ));
         }
 
-		//autoload filters
-//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-        $this->tpl->loadFilter('output', 'trim');
-        $this->tpl->loadPlugin('smarty_compiler_switch');
+		//autoload filters & compiler plugins
+        $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
+        $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
 		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
         if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
@@ -106,10 +102,8 @@ abstract class basetemplate {
 
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-//		$this->tpl->template_dir = $this->viewdir;
         $this->tpl->setTemplateDir($this->viewdir);
 		
-//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
