@@ -40,7 +40,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $userjsfiles,$expJS,$yui2js,$yui3js,$jqueryjs, $head_config;
+        global $expJS,$yui3js,$jqueryjs, $head_config;
 
         $scripts = '';
         // remove duplicate scripts since it's inefficient and crashes minify
@@ -286,7 +286,7 @@ class expJavascript {
 	}
 	
     public static function pushToFoot($params) {
-    	global $js2foot,$yui2js,$yui3js,$jqueryjs,$expJS;
+    	global $js2foot,$yui3js,$jqueryjs,$expJS;
 
     	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";

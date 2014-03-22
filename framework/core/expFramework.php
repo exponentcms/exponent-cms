@@ -129,32 +129,25 @@ $exponent_permissions_r = array();
 
 // expJavascript
 /**
- * Stores the user's javascript files
- * @var array $userjsfiles
- * @name $userjsfiles
- */
-$userjsfiles = array();
-/**
- * Stores the user's javascript files
+ * Stores the page's inline javascript code
  * @var array $js2foot
  * @name $js2foot
  */
 $js2foot = array();
-//$yui2js = array();
 /**
- * Stores the user's javascript files
+ * Stores the yui3 javascript files list
  * @var array $yui3js
  * @name $yui3js
  */
 $yui3js = array();
 /**
- * Stores the user's javascript files
+ * Stores the jquery javascript files list
  * @var array $jqueryjs
  * @name $jqueryjs
  */
 $jqueryjs = array();
 /**
- * Stores the user's javascript files
+ * Stores the 'other' javascript files list
  * @var array $expJS
  * @name $expJS
  */
