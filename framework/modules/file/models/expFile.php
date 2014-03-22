@@ -328,7 +328,7 @@ class expFile extends expRecord {
     }
 
     /**
-     * File ($_POST) UPLOAD that also inserts File info into database.
+     * File ($_POST) UPLOAD that also optionally inserts File info into database.
      *
      * File UPLOAD is a straight forward uploader and processor. It can accept
      * filename and destination directory overrides as well. It has an additional
@@ -1503,6 +1503,7 @@ class expFile extends expRecord {
      * @param string $tmp_name The temporary path of the uploaded file.
      * @param string $dest     The full path to the destination file (including the destination filename).
      *
+     * @return null|string     The destination file if it exists, otherwise null
      * @node Model:expFile
      */
     public static function moveUploadedFile($tmp_name, $dest) {
@@ -1511,7 +1512,8 @@ class expFile extends expRecord {
             $__oldumask = umask(0);
             chmod($dest, octdec(FILE_DEFAULT_MODE_STR + 0));
             umask($__oldumask);
-        }
+            return str_replace(BASE, '', $dest);
+        } else return null;
     }
 
     /** exdoc
@@ -1607,6 +1609,20 @@ class expFile extends expRecord {
         }
     }
 
+    /**
+     * Test if file can be uploaded using tmp folder
+     *
+     * @param string $tmp
+     * @param string $dest
+     *
+     * @return bool
+     */
+    public static function canUpload($tmp = 'tmp', $dest = 'files/uploads') {
+        $result = expFile::canCreate(BASE . $tmp . '/TEST') != SYS_FILES_SUCCESS;
+        $result |= expFile::canCreate(BASE . $dest . '/TEST') != SYS_FILES_SUCCESS;
+        return $result;
+    }
+
     /** exdoc
      * Copies just the directory structure (including subdirectories) of a given directory.
      * Any files in the source directory are ignore, and duplicate copies are made (no symlinks).
@@ -1652,24 +1668,24 @@ class expFile extends expRecord {
      * the EQL format naively handled by the current
      * implementation.
      *
-     * @param Database $db The database object to dump to EQL.
-     * @param null     $tables
-     * @param null     $type
-     * @param null     $record
+     * @param null/array            $tables
+     * @param null/string           $type       The type of dump
+     * @param null/string/array     $opts       Record descimiator
      *
-     * @return string
+     * @return string                           The content of export file
      * @node     Model:expFile
      */
-    public static function dumpDatabase($tables = null, $type = null, $record = null) {
+    public static function dumpDatabase($tables = null, $type = null, $opts = null) {
         global $db;
 
         $dump = EQL_HEADER . "\r\n";
-        if ($type == null) {
+        if ($type == null || $type == 'export') {
             $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
         } else {
             $dump .= 'VERSION:' . EXPONENT . ':' . $type . "\r\n\r\n";
         }
 
+        if (is_string($tables)) $tables = array($tables);
         if (!is_array($tables)) {  // dump all the tables
             $tables = $db->getTables();
             if (!function_exists('tmp_removePrefix')) {
@@ -1682,19 +1698,24 @@ class expFile extends expRecord {
             $tables = array_map('tmp_removePrefix', $tables);
         }
         usort($tables, 'strnatcmp');
-        foreach ($tables as $table) {
+        foreach ($tables as $key=>$table) {
             $tabledef = $db->getDataDefinition($table);
             $dump .= 'TABLE:' . $table . "\r\n";
             $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             $where = '1';
             if ($type == 'Form') {
                 if ($table == 'forms') {
-                    $where = 'id=' . $record;
+                    $where = 'id=' . $opts;
                 } elseif ($table == 'forms_control') {
-                    $where = 'forms_id=' . $record;
+                    $where = 'forms_id=' . $opts;
                 }
+            } elseif ($type == 'export') {
+                if (is_string($opts))
+                    $where = $opts;
+                elseif (is_array($opts))
+                    $where = $opts[$key];
             }
-            foreach ($db->selectObjects($table,$where) as $obj) {
+            foreach ($db->selectObjects($table, $where) as $obj) {
                 $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
             }
             $dump .= "\r\n";
@@ -1710,12 +1731,11 @@ class expFile extends expRecord {
      * that some errors were encountered.  Check $errors to be sure everything
      * was fine.
      *
-     * @param Database $db     The database to restore to
-     * @param string   $file   The filename of the EQL file to restore from
-     * @param array    $errors A referenced array that stores errors.  Whatever
-     *                         variable is passed in this argument will contain all errors encountered
-     *                         during the parse/restore.
-     * @param null     $type
+     * @param string        $file   The filename of the EQL file to restore from
+     * @param array         $errors A referenced array that stores errors.  Whatever
+     *                              variable is passed in this argument will contain all errors encountered
+     *                              during the parse/restore.
+     * @param null/string   $type   The type of eql file to restore
      *
      * @return bool
      * @node     Model:expFile
@@ -1723,7 +1743,7 @@ class expFile extends expRecord {
     public static function restoreDatabase($file, &$errors, $type = null) {
         global $db;
 
-        $errors = array();
+//        $errors = array();
 
         if (is_readable($file)) {
             $lines = @file($file);
@@ -1744,7 +1764,6 @@ class expFile extends expRecord {
 //            $clear_function = '';
             $fprefix = '';
             // Check version and include necessary converters
-            //FIXME We reject v1.0 eql files
             if ($eql_version != $current_version) {
                 $errors[] = gt('EQL file was Not a valid EQL version');
                 return false;
@@ -1786,15 +1805,15 @@ class expFile extends expRecord {
 //                                $clear_function($db, $table);
 //                            }
                         } else {
-                            if (substr($table,0,12) == 'formbuilder_') {
+                            if (substr($table, 0, 12) == 'formbuilder_') {
                                 $formbuildertypes = array(
                                     'address',
                                     'control',
                                     'form',
                                     'report'
                                 );
-                                $type = substr($table,12);
-                                if (!in_array($type,$formbuildertypes)) {
+                                $ttype = substr($table, 12);
+                                if (!in_array($ttype, $formbuildertypes)) {
                                     $itsoldformdata = true;
                                 }
                             } elseif (substr($table,0,6) == 'forms_' && $table != 'forms_control') {
@@ -1926,6 +1945,97 @@ class expFile extends expRecord {
 //                return false;
 //            }
             return true;
+        } else {
+            $errors[] = gt('Unable to read EQL file');
+            return false;
+        }
+    }
+
+    /** exdoc
+     * This function reads a database EQL object dump file and returns an array of the
+     * database tables and records, or false if something went horribly wrong
+     * (unable to read file, etc.)  Even if an array is returned, there is a chance
+     * that some errors were encountered.  Check $errors to be sure everything
+     * was fine.
+     *
+     * @param string            $file   The filename of the EQL file to parse
+     * @param array             $errors A referenced array that stores errors.  Whatever
+     *                                  variable is passed in this argument will contain all errors encountered
+     *                                  during the parse/restore.
+     * @param null/string/array $type   The list of tables to return, empty = entire file
+     * @return array/bool
+     * @node     Model:expFile
+     */
+    public static function parseDatabase($file, &$errors, $type = null) {
+//        $errors = array();
+        $data = array();
+
+        if (is_readable($file)) {
+            $lines = @file($file);
+
+            // Sanity check
+            if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {
+                $errors[] = gt('Not a valid EQL file');
+                return false;
+            }
+
+            $version = explode(':', trim($lines[1]));
+            $eql_version = $version[1] + 0;
+            $current_version = EXPONENT + 0;
+            if ((array_key_exists(2, $version) && $type == null) || (array_key_exists(2, $version) && $version[2] != $type)) {
+                $eql_version = 0;  // trying to import wrong eql type
+            }
+
+            // Check version and include necessary converters
+            if ($eql_version != $current_version) {
+                $errors[] = gt('EQL file was Not a valid EQL version');
+                return false;
+            }
+
+            $table = '';
+            for ($i = 2; $i < count($lines); $i++) {
+                $line_number = $i;
+                $line = trim($lines[$i]);
+                if ($line != '') {
+                    $pair = explode(':', $line);
+                    $pair[1] = implode(':', array_slice($pair, 1));
+                    $pair = array_slice($pair, 0, 2);
+
+                    if ($pair[0] == 'TABLE') {
+                        $table = $pair[1];
+                        $data[$table] = new stdClass();
+                        $data[$table]->name = $table;
+                        $data[$table]->records = array();
+                    } else if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
+                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                        $tabledef = @unserialize($pair[1]);
+                        $data[$table]->tabledef = $tabledef;
+                    } else if ($pair[0] == 'RECORD') {
+                        // Here we need to check the conversion scripts.
+                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+//						$object = expUnserialize($pair[1]);
+                        $object = @unserialize($pair[1]);
+                        if (!$object) $object = unserialize(stripslashes($pair[1]));
+                        if (is_object($object)) {
+                            $data[$table]->records[] = $object;
+                        } else {
+                            $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'), $pair[0], $line_number);
+                        }
+                    } else {
+                        $errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'), $pair[0], $line_number);
+                    }
+                }
+            }
+
+            if (!empty($type)) {
+                if (!is_array($type)) $type = array($type);
+                foreach ($data as $key=>$tbl) {
+                    if (!in_array($key, $type)) {
+                        unset($data[$key]);
+                    }
+                }
+            }
+            return $data;
         } else {
             $errors[] = gt('Unable to read EQL file');
             return false;

@@ -21,6 +21,7 @@ Added / Fixed / Changed for 2.2.4
   - vastly improved SEO for events, eventregistrations, & products
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
+  - enhances the import/export abilities for transferring site content/data from other sites or in other formats
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
   - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
   - adds new 'reset.php' file to allow easily clearing all caches if the site crashes

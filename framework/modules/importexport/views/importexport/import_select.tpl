@@ -17,45 +17,52 @@
 
 {/css}
 
-<h2>{"Export"|gettext} {$import_type} {"Data"|gettext}</h2>
+<h2>{"Import news items"|gettext}</h2>
 <blockquote>
-    {'Select the the module to export from.'|gettext}
+    {'Select the'|gettext}"|gettext} {$import_type} {'items to import.'|gettext}
 </blockquote>
-{form action="export_process"}
-    {control type=hidden name=export_type value=$export_type}
+{form action="import_process"}
+    {control type=hidden name=import_type value=$import_type}
+    {control type=hidden name=filename value=$filename}
+    {control type=hidden name=source value=$source}
     <table class="exp-skin-table">
         <thead>
             <tr>
                 <th><input type='checkbox' name='checkall' title="{'Select All/None'|gettext}" style="margin-left: 1px;" onchange="selectAll(this.checked)"></th>
-                {$modules->header_columns}
+                <th>{'Title'|gettext}</th>
+                <th>{'Dated'|gettext}</th>
             </tr>
         </thead>
         <tbody>
-        {foreach from=$modules->records item=mod}
+        {foreach $items as $key=>$item}
             <tr class="{cycle values="even,odd"}">
                 <td width="20">
-                    {control type="checkbox" name="aggregate[]" value=$mod->src}
+                    {control type="checkbox" name="items[`$key`]" value=$key}
+                </td>
+                <td title="{$item->body|summarize:'html':'para'}">
+                    {$item->title}
                 </td>
                 <td>
-                    {$mod->title}
-                </td>
-                <td>
-                    {$mod->section}
+                    {if !empty($item->publish)}
+                        {$item->publish|format_date}
+                    {else}
+                        {$item->created_at|format_date}
+                    {/if}
                 </td>
             </tr>
         {foreachelse}
-            <tr><td colspan=3>{'There doesn\'t appear to be any modules installed to export from'|gettext}</td></tr>
+            <tr><td colspan=3>{'There doesn\'t appear to be any items you can import'|gettext}</td></tr>
         {/foreach}
         </tbody>
     </table>
-    {if count($modules->records)}
-        {control type="buttongroup" submit='Export the Selected Module\'s Items'|gettext cancel="Cancel"|gettext}
+    {if count($items)}
+        {control type="buttongroup" submit="Import Selected Items"|gettext cancel="Cancel"|gettext}
     {/if}
 {/form}
 
 {script unique="aggregation"}
     function selectAll(val) {
-        var checks = document.getElementsByName("aggregate[]");
+        var checks = document.getElementsByName("news[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }

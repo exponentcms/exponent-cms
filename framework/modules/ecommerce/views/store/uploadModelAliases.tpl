@@ -19,6 +19,7 @@
 	{/if}
 	<h4>{"Upload model aliases"|gettext}</h4>
 	<blockquote>{"Excel File for the model/skus aliases"|gettext}</blockquote>
-	<input type="file" name="modelaliases" size="50">{br}{br}
+	{*<input type="file" name="modelaliases" size="50">{br}{br}*}
+    {control type=uploader name=modelaliases size="50"}
 	{control type="buttongroup" submit="Upload Aliases"|gettext cancel="Cancel"|gettext}
 {/form}

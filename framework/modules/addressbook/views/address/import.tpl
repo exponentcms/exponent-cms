@@ -13,7 +13,7 @@
  *
  *}
  
-<div class="module importexport manage">
+<div class="module importexport import-external-addresses">
     <h1>{'Upload Your CSV File of External Addresses (MilitaryClothing.com, NameTapes.com, or Amazon)'|gettext}</h1>
     <blockquote>{'This will clear any existing external addresses for this source and replace with the addresses you upload.'|gettext}</blockquote>
     {form action=process_external_addresses}

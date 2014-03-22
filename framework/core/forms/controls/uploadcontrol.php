@@ -115,26 +115,24 @@ class uploadcontrol extends formcontrol {
         return $object;
     }
 
-	static function moveFile($original_name,$formvalues) {
+	static function moveFile($original_name, $formvalues) {
 		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
-		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
-		$dest = $dir.'/'.$filename;
+		$filename = expFile::fixName(time() . '_' . $formvalues[$original_name]['name']);
+		$dest = $dir . '/' . $filename;
         //Check to see if the directory exists.  If not, create the directory structure.
         if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
         // Move the temporary uploaded file into the destination directory, and change the name.
-        expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'],BASE.$dest);
-		return $dest;
+        return expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'], BASE . $dest);
 	}
 
-    static function moveRegistrationFile($original_name,$formvalues,$index) {
+    static function moveRegistrationFile($original_name, $formvalues, $index) {
    		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
-   		$filename = expFile::fixName(time().'_'.$formvalues['name'][$original_name][$index-1]);
-   		$dest = $dir.'/'.$filename;
+   		$filename = expFile::fixName(time() . '_' . $formvalues['name'][$original_name][$index-1]);
+   		$dest = $dir . '/' . $filename;
         //Check to see if the directory exists.  If not, create the directory structure.
         if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
         // Move the temporary uploaded file into the destination directory, and change the name.
-        expFile::moveUploadedFile($formvalues['tmp_name'][$original_name][$index-1],BASE.$dest);
-   		return $dest;
+        return expFile::moveUploadedFile($formvalues['tmp_name'][$original_name][$index-1], BASE . $dest);
    	}
 
 //    static function buildDownloadLink($control_name,$file_name,$mode) {
@@ -142,7 +140,15 @@ class uploadcontrol extends formcontrol {
 //   		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
 //   	}
 
-	static function parseData($original_name,$formvalues) {
+    /**
+     * Moves the uploaded file into our file system, NOT the database
+     *
+     * @param $original_name
+     * @param $formvalues
+     *
+     * @return string   The full directory and filename of the uploaded file
+     */
+    static function parseData($original_name,$formvalues) {
         if (is_array($formvalues[$original_name])) {
             $file = $formvalues[$original_name]['name'];
 //            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
