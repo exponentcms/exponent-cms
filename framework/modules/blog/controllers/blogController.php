@@ -34,7 +34,9 @@ class blogController extends expController {
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
     protected $add_permissions = array(
-        'approve'=>"Approve Comments"
+        'approve'=>"Approve Comments",
+        'import'=>'Import Blog Items',
+        'export'=>'Export Blog Items'
     );
 
     static function displayname() { return gt("Blog"); }
@@ -42,6 +44,14 @@ class blogController extends expController {
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     static function isSearchable() { return true; }
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
