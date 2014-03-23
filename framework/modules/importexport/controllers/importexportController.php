@@ -80,7 +80,7 @@ class importexportController extends expController {
     }
 
     function import() {
-        $type = new $this->params['import_type'];
+        $type = expModules::getController($this->params['import_type']);
         if (method_exists($type, 'import')) {  // controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
         }
@@ -105,7 +105,7 @@ class importexportController extends expController {
     }
 
     function import_select() {
-        $type = new $this->params['import_type'];
+        $type = expModules::getController($this->params['import_type']);
         if (method_exists($type, 'import_select')) {  // controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_select'));
         }
@@ -137,7 +137,7 @@ class importexportController extends expController {
                 exit("");
             } else {
                 $errors = array();
-                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->$model_table);
+                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);
                 if (!empty($errors)) {
                     $message = gt('Importing encountered the following errors') . ':<br>';
                     foreach ($errors as $error) {
@@ -147,7 +147,7 @@ class importexportController extends expController {
                 }
 
                 assign_to_template(array(
-                   'items' => $data[$type->$model_table]->records,
+                   'items' => $data[$type->model_table]->records,
                    'filename' => $directory . "/" . $file->filename,
                    'source' => $this->params['aggregate'][0]
                ));
@@ -156,7 +156,7 @@ class importexportController extends expController {
     }
 
     function import_process() {
-        $type = new $this->params['import_type'];
+        $type = expModules::getController($this->params['import_type']);
         if (method_exists($type, 'import_process')) {  // controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_process'));
         }
@@ -165,10 +165,10 @@ class importexportController extends expController {
         $src = $this->params['source'];
         $selected = $this->params['items'];
         $errors = array();
-        $data = expFile::parseDatabase(BASE . $filename, $errors, $type->$model_table);
+        $data = expFile::parseDatabase(BASE . $filename, $errors, $type->model_table);
         foreach ($selected as $select) {
             $item = new $type->basemodel_name;
-            foreach ($data[$type->$model_table]->records[$select] as $key => $value) {
+            foreach ($data[$type->model_table]->records[$select] as $key => $value) {
                 if ($key != 'id' && $key != 'location_data') {
                     $item->$key = $value;
                 }
@@ -183,7 +183,7 @@ class importexportController extends expController {
     }
 
     function export() {
-        $type = new $this->params['export_type'];
+        $type = expModules::getController($this->params['export_type']);
         if (method_exists($type, 'export')) {  // controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
         }
@@ -207,7 +207,7 @@ class importexportController extends expController {
     }
 
     function export_process() {
-        $type = new $this->params['export_type'];
+        $type = expModules::getController($this->params['export_type']);
         if (method_exists($type, 'export_process')) {  // controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export_process'));
         }
@@ -241,7 +241,7 @@ class importexportController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($type->$model_table, 'export', $where);
+            echo expFile::dumpDatabase($type->model_table, 'export', $where);
             exit; // Exit, since we are exporting
         }
         expHistory::back();
