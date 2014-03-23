@@ -15,7 +15,7 @@ YUI.add('SimpleAjaxUploader', function (Y) {
   // (except for JSON regex, which only IE6 and IE7 use)
 
   // Y.ss.trim()
-  rLWhitespace = /^\s+/,
+  var rLWhitespace = /^\s+/,
   rTWhitespace = /\s+$/,
 
   // Y.ss.getUID
