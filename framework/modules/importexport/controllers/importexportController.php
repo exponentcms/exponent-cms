@@ -276,15 +276,6 @@ class importexportController extends expController {
 
         if (!empty($this->params['aggregate'])) {
             $tables = array($type->model_table);
-            if ($this->params['export_attached']) {
-                $model = new $type->basemodel_name;
-                foreach ($model->getAttachableItemTables() as $link=>$model) {
-                    $tables[] = $link;
-                    $attach = new $model;
-                    $tables[] = $attach->tablename;
-                }
-            }
-
             $selected = $this->params['aggregate'];
             $where = '(';
             foreach ($selected as $key=>$src) {
@@ -293,6 +284,17 @@ class importexportController extends expController {
             }
             $where .= ')';
             $awhere[] = $where;
+
+            if ($this->params['export_attached']) {
+                $model = new $type->basemodel_name;
+                foreach ($model->getAttachableItemTables() as $link=>$model) {
+                    $tables[] = $link;
+                    $awhere[] = "content_type='" . $type->baseclassname . "'";
+                    $attach = new $model;
+                    $tables[] = $attach->tablename;
+                    $awhere[] = '';
+                }
+            }
 
             $filename = $type->baseclassname . '.eql';
 

@@ -1699,9 +1699,6 @@ class expFile extends expRecord {
         }
         usort($tables, 'strnatcmp');
         foreach ($tables as $key=>$table) {
-            $tabledef = $db->getDataDefinition($table);
-            $dump .= 'TABLE:' . $table . "\r\n";
-            $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             $where = '1';
             if ($type == 'Form') {
                 if ($table == 'forms') {
@@ -1715,10 +1712,16 @@ class expFile extends expRecord {
                 elseif (is_array($opts) && !empty($opts[$key]))
                     $where = $opts[$key];
             }
-            foreach ($db->selectObjects($table, $where) as $obj) {
-                $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
+            $tmp = $db->countObjects($table,$where);
+            if ($type != 'export' || $db->countObjects($table, $where)) {
+                $tabledef = $db->getDataDefinition($table);
+                $dump .= 'TABLE:' . $table . "\r\n";
+                $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
+                foreach ($db->selectObjects($table, $where) as $obj) {
+                    $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
+                }
+                $dump .= "\r\n";
             }
-            $dump .= "\r\n";
         }
         return $dump;
     }
