@@ -508,8 +508,8 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
     
-    $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view .'.tpl';
-    $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view.' . bootstrap.tpl';
+    $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.tpl';
+    $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
     $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
     if ($framework != "bootstrap") {
@@ -518,7 +518,7 @@ function get_common_template($view, $loc, $controllername='') {
         } elseif(file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } else {
-            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
         }
     } else {
         if (file_exists($themepath)) {
@@ -528,7 +528,7 @@ function get_common_template($view, $loc, $controllername='') {
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } else {
-            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
         }
     }
 }
