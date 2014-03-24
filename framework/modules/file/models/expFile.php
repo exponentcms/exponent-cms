@@ -1712,7 +1712,7 @@ class expFile extends expRecord {
             } elseif ($type == 'export') {
                 if (is_string($opts))
                     $where = $opts;
-                elseif (is_array($opts))
+                elseif (is_array($opts) && !empty($opts[$key]))
                     $where = $opts[$key];
             }
             foreach ($db->selectObjects($table, $where) as $obj) {

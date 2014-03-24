@@ -81,7 +81,7 @@ class importexportController extends expController {
 
     function import() {
         $type = expModules::getController($this->params['import_type']);
-        if (method_exists($type, 'import')) {  // controller specific method
+        if (method_exists($type, 'import')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
         }
 
@@ -106,7 +106,7 @@ class importexportController extends expController {
 
     function import_select() {
         $type = expModules::getController($this->params['import_type']);
-        if (method_exists($type, 'import_select')) {  // controller specific method
+        if (method_exists($type, 'import_select')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_select'));
         }
 
@@ -158,7 +158,7 @@ class importexportController extends expController {
 
     function import_process() {
         $type = expModules::getController($this->params['import_type']);
-        if (method_exists($type, 'import_process')) {  // controller specific method
+        if (method_exists($type, 'import_process')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_process'));
         }
 
@@ -246,7 +246,7 @@ class importexportController extends expController {
 
     function export() {
         $type = expModules::getController($this->params['export_type']);
-        if (method_exists($type, 'export')) {  // controller specific method
+        if (method_exists($type, 'export')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
         }
 
@@ -270,11 +270,21 @@ class importexportController extends expController {
 
     function export_process() {
         $type = expModules::getController($this->params['export_type']);
-        if (method_exists($type, 'export_process')) {  // controller specific method
+        if (method_exists($type, 'export_process')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export_process'));
         }
 
         if (!empty($this->params['aggregate'])) {
+            $tables = array($type->model_table);
+            if ($this->params['export_attached']) {
+                $model = new $type->basemodel_name;
+                foreach ($model->getAttachableItemTables() as $link=>$model) {
+                    $tables[] = $link;
+                    $attach = new $model;
+                    $tables[] = $attach->tablename;
+                }
+            }
+
             $selected = $this->params['aggregate'];
             $where = '(';
             foreach ($selected as $key=>$src) {
@@ -282,6 +292,7 @@ class importexportController extends expController {
                 $where .= "location_data='" . serialize(expCore::makeLocation($type->baseclassname, $src)) . "'";
             }
             $where .= ')';
+            $awhere[] = $where;
 
             $filename = $type->baseclassname . '.eql';
 
@@ -303,7 +314,7 @@ class importexportController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($type->model_table, 'export', $where);
+            echo expFile::dumpDatabase($tables, 'export', $awhere);
             exit; // Exit, since we are exporting
         }
         expHistory::back();
