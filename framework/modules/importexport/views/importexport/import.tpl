@@ -55,13 +55,11 @@
     {/if}
 {/form}
 
-<div class="module importexport import">
-    <h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>
-    {form action=validate}
-        {control type="hidden" name="import_type" value=$type->baseclassname}
-        {* control type=files name=import_file label="Upload .csv File to Import"|gettext limit=1 subtype="import_file" *}
-        {*<input type="file" name="import_file" size="50">*}
-        {control type=uploader name=import_file label=gt('File to Import')}
-        {control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}
-    {/form}
-</div>
+{*<div class="module importexport import">*}
+    {*<h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>*}
+    {*{form action=validate}*}
+        {*{control type="hidden" name="import_type" value=$type->baseclassname}*}
+        {*{control type=uploader name=import_file label=gt('File to Import')}*}
+        {*{control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}*}
+    {*{/form}*}
+{*</div>*}

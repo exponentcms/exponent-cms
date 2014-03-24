@@ -2017,7 +2017,7 @@ class expFile extends expRecord {
                         $object = @unserialize($pair[1]);
                         if (!$object) $object = unserialize(stripslashes($pair[1]));
                         if (is_object($object)) {
-                            $data[$table]->records[] = $object;
+                            $data[$table]->records[] = object2Array($object);  //FIXME should we convert this? object2array?
                         } else {
                             $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'), $pair[0], $line_number);
                         }

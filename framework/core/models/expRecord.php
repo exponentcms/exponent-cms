@@ -845,6 +845,10 @@ class expRecord {
         }
     }
 
+    function getAttachableItemTables() {
+        return $this->attachable_item_types;
+    }
+
     /**
      * get attached objects for this item
      */

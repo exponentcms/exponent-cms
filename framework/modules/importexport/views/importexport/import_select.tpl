@@ -19,7 +19,7 @@
 
 <h2>{"Import news items"|gettext}</h2>
 <blockquote>
-    {'Select the'|gettext}"|gettext} {$import_type} {'items to import.'|gettext}
+    {'Select the'|gettext} {$import_type} {'items to import.'|gettext}
 </blockquote>
 {form action="import_process"}
     {control type=hidden name=import_type value=$import_type}
@@ -39,14 +39,14 @@
                 <td width="20">
                     {control type="checkbox" name="items[`$key`]" value=$key}
                 </td>
-                <td title="{$item->body|summarize:'html':'para'}">
-                    {$item->title}
+                <td title="{$item.body|summarize:'html':'para'}">
+                    {$item.title}
                 </td>
                 <td>
-                    {if !empty($item->publish)}
-                        {$item->publish|format_date}
+                    {if !empty($item.publish)}
+                        {$item.publish|format_date}
                     {else}
-                        {$item->created_at|format_date}
+                        {$item.created_at|format_date}
                     {/if}
                 </td>
             </tr>
@@ -56,6 +56,7 @@
         </tbody>
     </table>
     {if count($items)}
+        {control type="checkbox" name="import_attached" label="Import item attachments?"|gettext checked=true value="1" description='Will also import any category, comments, or tags attached to item'|gettext}
         {control type="buttongroup" submit="Import Selected Items"|gettext cancel="Cancel"|gettext}
     {/if}
 {/form}
