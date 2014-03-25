@@ -521,14 +521,24 @@ class fileController extends expController {
     public function quickUpload(){
         global $user;
 
+        if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0) {
+            if (SITE_FILE_MANAGER == 'picker') {
+                $quikFolder = QUICK_UPLOAD_FOLDER;
+                $destDir = null;
+            } elseif (SITE_FILE_MANAGER == 'elfinder') {
+                $quikFolder = null;
+                $destDir = UPLOAD_DIRECTORY_RELATIVE . QUICK_UPLOAD_FOLDER . '/';
+                // create folder if non-existant
+                expFile::makeDirectory($destDir);
+            }
+        } else {
+            $quikFolder = null;
+            $destDir = null;
+        }
+
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
-            if (SITE_FILE_MANAGER == 'picker' && defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '') {
-                $quikFolder = QUICK_UPLOAD_FOLDER;
-            } else {
-                $quikFolder = null;
-            }
-            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
@@ -550,7 +560,7 @@ class fileController extends expController {
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('uploadfile',false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+                $file = expFile::fileUpload('uploadfile',false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
