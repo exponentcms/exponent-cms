@@ -150,7 +150,7 @@ class importexportController extends expController {
                     'import_type' => $this->params['import_type'],
                     'items' => $data[$type->model_table]->records,
                     'filename' => $directory . "/" . $file->filename,
-                    'source' => $this->params['aggregate'][0]
+                    'source' => $this->params['import_aggregate'][0]
                ));
             }
         }
@@ -274,9 +274,9 @@ class importexportController extends expController {
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export_process'));
         }
 
-        if (!empty($this->params['aggregate'])) {
+        if (!empty($this->params['export_aggregate'])) {
             $tables = array($type->model_table);
-            $selected = $this->params['aggregate'];
+            $selected = $this->params['export_aggregate'];
             $where = '(';
             foreach ($selected as $key=>$src) {
                 if ($key) $where .= ' OR ';

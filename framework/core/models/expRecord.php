@@ -822,7 +822,7 @@ class expRecord {
 //            $assocs = $db->selectObjects($this->attachable_table, $this->classname.'s_id='.$this->id.' AND content_type="'.$content_type.'"');  //FIXME is it plural where others are single?
             $assocs = $db->selectObjects($this->attachable_table, strtolower($this->tablename) . '_id=' . $this->id . ' AND content_type="' . $content_type . '"');
             foreach ($assocs as $assoc) {
-                $objarray[] = new $assoc->content_type($assoc->content_id);
+                if (class_exists($assoc->content_type)) $objarray[] = new $assoc->content_type($assoc->content_id);
             }
         }
 

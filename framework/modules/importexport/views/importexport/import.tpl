@@ -17,43 +17,45 @@
 
 {/css}
 
-<h2>{"Import"|gettext} {$import_type} {"Data"|gettext}</h2>
-<blockquote>
-    {'Select the import file and the module to import into.'|gettext}
-</blockquote>
-{form action="import_select"}
-    {control type=hidden name=import_type value=$import_type}
-    {control type=uploader name=import_file accept=".eql" label=gt('EQL File to Import')}
-    <label>{'Module to import into'|gettext}</label>
-    <table class="exp-skin-table">
-        <thead>
-            <tr>
-                <th></th>
-                {$modules->header_columns}
-            </tr>
-        </thead>
-        <tbody>
-        {foreach from=$modules->records item=mod}
-            <tr class="{cycle values="even,odd"}">
-                <td width="20">
-                    {control type="checkbox" name="aggregate[]" value=$mod->src}
-                </td>
-                <td>
-                    {$mod->title}
-                </td>
-                <td>
-                    {$mod->section}
-                </td>
-            </tr>
-        {foreachelse}
-            <tr><td colspan=3>{'There doesn\'t appear to be any news modules installed to import news'|gettext}</td></tr>
-        {/foreach}
-        </tbody>
-    </table>
-    {if count($modules->records)}
-        {control type="buttongroup" submit="Import into Selected Module"|gettext cancel="Cancel"|gettext}
-    {/if}
-{/form}
+<div class="module importexport import">
+    <h2>{"Import"|gettext} {$import_type} {"Data"|gettext}</h2>
+    <blockquote>
+        {'Select the import file and the module to import into.'|gettext}
+    </blockquote>
+    {form action="import_select"}
+        {control type=hidden name=import_type value=$import_type}
+        {control type=uploader name=import_file accept=".eql" label=gt('EQL File to Import')}
+        <label>{'Module to import into'|gettext}</label>
+        <table class="exp-skin-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    {$modules->header_columns}
+                </tr>
+            </thead>
+            <tbody>
+            {foreach from=$modules->records item=mod}
+                <tr class="{cycle values="even,odd"}">
+                    <td width="20">
+                        {control type="checkbox" name="import_aggregate[]" value=$mod->src}
+                    </td>
+                    <td>
+                        {$mod->title}
+                    </td>
+                    <td>
+                        {$mod->section}
+                    </td>
+                </tr>
+            {foreachelse}
+                <tr><td colspan=3>{'There doesn\'t appear to be any news modules installed to import news'|gettext}</td></tr>
+            {/foreach}
+            </tbody>
+        </table>
+        {if count($modules->records)}
+            {control type="buttongroup" submit="Import into Selected Module"|gettext cancel="Cancel"|gettext}
+        {/if}
+    {/form}
+</div>
 
 {*<div class="module importexport import">*}
     {*<h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>*}
