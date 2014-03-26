@@ -36,8 +36,6 @@
  */
 function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
-//		global $userjsfiles;
-		
 		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {script} plugin.")."</strong>");
 
         if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {

@@ -1699,9 +1699,6 @@ class expFile extends expRecord {
         }
         usort($tables, 'strnatcmp');
         foreach ($tables as $key=>$table) {
-            $tabledef = $db->getDataDefinition($table);
-            $dump .= 'TABLE:' . $table . "\r\n";
-            $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
             $where = '1';
             if ($type == 'Form') {
                 if ($table == 'forms') {
@@ -1712,13 +1709,19 @@ class expFile extends expRecord {
             } elseif ($type == 'export') {
                 if (is_string($opts))
                     $where = $opts;
-                elseif (is_array($opts))
+                elseif (is_array($opts) && !empty($opts[$key]))
                     $where = $opts[$key];
             }
-            foreach ($db->selectObjects($table, $where) as $obj) {
-                $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
+            $tmp = $db->countObjects($table,$where);
+            if ($type != 'export' || $db->countObjects($table, $where)) {
+                $tabledef = $db->getDataDefinition($table);
+                $dump .= 'TABLE:' . $table . "\r\n";
+                $dump .= 'TABLEDEF:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($tabledef)) . "\r\n";
+                foreach ($db->selectObjects($table, $where) as $obj) {
+                    $dump .= 'RECORD:' . str_replace(array("\r", "\n"), array('\r', '\n'), serialize($obj)) . "\r\n";
+                }
+                $dump .= "\r\n";
             }
-            $dump .= "\r\n";
         }
         return $dump;
     }
@@ -2017,7 +2020,7 @@ class expFile extends expRecord {
                         $object = @unserialize($pair[1]);
                         if (!$object) $object = unserialize(stripslashes($pair[1]));
                         if (is_object($object)) {
-                            $data[$table]->records[] = $object;
+                            $data[$table]->records[] = object2Array($object);  //FIXME should we convert this? object2array?
                         } else {
                             $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'), $pair[0], $line_number);
                         }
