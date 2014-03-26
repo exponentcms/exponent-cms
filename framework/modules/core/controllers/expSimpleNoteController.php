@@ -203,6 +203,7 @@ class expSimpleNoteController extends expController {
         $this->expSimpleNote->update($this->params);
         
         // attach the note to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
         $obj->content_type = $this->params['content_type'];
         $obj->content_id = $this->params['content_id'];
         $obj->expsimplenote_id = $this->expSimpleNote->id;

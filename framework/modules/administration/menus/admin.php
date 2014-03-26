@@ -312,12 +312,12 @@ if ($user->isSuperAdmin()) {
                                 'classname' => 'manage',
                             ),
                             array(
-                                'text'      => gt('Import Database'),
+                                'text'      => gt('Restore Database'),
                                 'url'       => makeLink(array('controller' => 'file', 'action' => 'import_eql')),
                                 'classname' => 'import',
                             ),
                             array(
-                                'text'      => gt('Export Database'),
+                                'text'      => gt('Backup Database'),
                                 'url'       => makeLink(array('controller' => 'file', 'action' => 'export_eql')),
                                 'classname' => 'export',
                             ),

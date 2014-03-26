@@ -205,7 +205,7 @@
                     },
                     // help dialog tabs
                     help : {
-                        view : ['about', 'shortcuts']
+                        view : ['about', 'shortcuts'],
                     }
                 },
 //                handlers : {
@@ -281,6 +281,7 @@
                 width : 'auto',
                 height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
                 resizable: false,
+                showFiles: {/literal}{$smarty.const.FM_LIMIT}{literal},
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
                     {/literal}{if $update=='ck'}{literal}

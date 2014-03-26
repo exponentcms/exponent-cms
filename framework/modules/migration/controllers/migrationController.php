@@ -1192,7 +1192,8 @@ class migrationController extends expController {
                                     $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
                                     $tag = new expTag($tagtitle);
     //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-                                    if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                    if (empty($tag->id))
+                                        $tag->update(array('title'=>$tagtitle));
                                     $params['expTag'][] = $tag->id;
                                 }
                             }
@@ -1572,7 +1573,8 @@ class migrationController extends expController {
 								$tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
 								$tag = new expTag($tagtitle);
 //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-								if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+								if (empty($tag->id))
+                                    $tag->update(array('title'=>$tagtitle));
 								$params['expTag'][] = $tag->id;
 							}
 							$post->update($params);
@@ -1587,12 +1589,13 @@ class migrationController extends expController {
                             $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
-                            $obj = new stdClass();
-							$obj->content_type = 'blog';
-							$obj->content_id = $post->id;
-							$obj->expcomments_id = $newcomment->id;
-							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
-							$db->insertObject($obj, $newcomment->attachable_table);
+//                            $obj = new stdClass();
+//							$obj->content_type = 'blog';
+//							$obj->content_id = $post->id;
+//							$obj->expcomments_id = $newcomment->id;
+//							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+//							$db->insertObject($obj, $newcomment->attachable_table);
+                            $newcomment->attachComment('blog', $post->id);
 						}
                     }
                 }
@@ -2131,7 +2134,8 @@ class migrationController extends expController {
                                 $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
                                 $tag = new expTag($tagtitle);
 //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-                                if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                if (empty($tag->id))
+                                    $tag->update(array('title'=>$tagtitle));
                                 $params['expTag'][] = $tag->id;
                             }
                         }
