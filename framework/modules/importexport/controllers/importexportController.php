@@ -80,8 +80,8 @@ class importexportController extends expController {
     }
 
     function import() {
-        $type = new $this->params['import_type'];
-        if (method_exists($type, 'import')) {  // controller specific method
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
         }
 
@@ -105,8 +105,8 @@ class importexportController extends expController {
     }
 
     function import_select() {
-        $type = new $this->params['import_type'];
-        if (method_exists($type, 'import_select')) {  // controller specific method
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import_select')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_select'));
         }
 
@@ -137,7 +137,7 @@ class importexportController extends expController {
                 exit("");
             } else {
                 $errors = array();
-                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->$model_table);
+                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);
                 if (!empty($errors)) {
                     $message = gt('Importing encountered the following errors') . ':<br>';
                     foreach ($errors as $error) {
@@ -147,17 +147,18 @@ class importexportController extends expController {
                 }
 
                 assign_to_template(array(
-                   'items' => $data[$type->$model_table]->records,
-                   'filename' => $directory . "/" . $file->filename,
-                   'source' => $this->params['aggregate'][0]
+                    'import_type' => $this->params['import_type'],
+                    'items' => $data[$type->model_table]->records,
+                    'filename' => $directory . "/" . $file->filename,
+                    'source' => $this->params['import_aggregate'][0]
                ));
             }
         }
     }
 
     function import_process() {
-        $type = new $this->params['import_type'];
-        if (method_exists($type, 'import_process')) {  // controller specific method
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import_process')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_process'));
         }
 
@@ -165,26 +166,87 @@ class importexportController extends expController {
         $src = $this->params['source'];
         $selected = $this->params['items'];
         $errors = array();
-        $data = expFile::parseDatabase(BASE . $filename, $errors, $type->$model_table);
-        foreach ($selected as $select) {
-            $item = new $type->basemodel_name;
-            foreach ($data[$type->$model_table]->records[$select] as $key => $value) {
-                if ($key != 'id' && $key != 'location_data') {
-                    $item->$key = $value;
+        $model = new $type->basemodel_name;
+        $tables = array();
+        $attached = $model->getAttachableItemTables();
+        foreach ($attached as $link=>$model) {
+            $tables[] = $link;
+            $attach = new $model;
+            $tables[] = $attach->tablename;
+        }
+        array_unshift($tables, $type->model_table);
+        $data = expFile::parseDatabase(BASE . $filename, $errors, $tables);
+
+        // parse out attachments data using the content_id for easier access
+        $attachments = array();
+        foreach ($attached as $link=>$model) {
+            if (!empty($data[$link]->records)) {
+                $attachments[$link] = array();
+                foreach ($data[$link]->records as $item) {
+                    $attachments[$link][$item['content_id']] = $item;
+                }
+                $attach = new $model;
+                foreach ($data[$attach->tablename]->records as $item) {
+                    $attachments[$link][$item['id']]['content'] = $item;
                 }
             }
-            $item->id = null;
-            $item->rank = null;
-            $item->location_data = serialize(expCore::makeLocation($type->baseclassname, $src));
+        }
+
+        foreach ($selected as $select) {
+            $current_id = $data[$type->model_table]->records[$select]['id'];
+            unset($data[$type->model_table]->records[$select]['id']);
+            unset($data[$type->model_table]->records[$select]['sef_url']);
+            unset($data[$type->model_table]->records[$select]['rank']);
+            $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
+            $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
             $item->save();
+
+            if ($this->params['import_attached']) {
+                $params = null;;
+                foreach ($attached as $link=>$model) {
+                    foreach ($attachments[$link] as $aitem) {
+                        if ($aitem['content_id'] == $current_id) {
+                            //$item is content_ record
+                            //$item['content'] is the attachment
+                            switch ($model) {
+                                case 'expCat':
+                                    $cat = new expCat($aitem['content']['title']);
+                                    if (empty($cat->id)) {
+                                        $cat->title = $aitem['content']['title'];
+                                        $cat->module = $type->baseclassname;
+                                        $cat->save();
+                                    }
+                                    $params['expCat'][] = $cat->id;
+                                    break;
+                                case 'expComment':
+                                    unset($aitem['content']['id']);
+                                    $comment = new expComment($aitem['content']);
+                                    $comment->update();  // create and attach the comment
+                                    $comment->attachComment($type->baseclassname, $item->id, $aitem['subtype']);
+                                    break;
+                                case 'expFile':
+                                    //FIXME we can't handle file attachments since this is only a db import
+                                    break;
+                                case 'expTag':
+                                    $tag = new expTag($aitem['content']['title']);
+                                    if (empty($tag->id))
+                                        $tag->update(array('title'=>$aitem['content']['title']));
+                                    $params['expTag'][] = $tag->id;
+                                    break;
+                            }
+                        }
+                    }
+                }
+                $item->update($params);  // add expCat & expTag attachments to item
+            }
         }
         flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
         expHistory::back();
     }
 
     function export() {
-        $type = new $this->params['export_type'];
-        if (method_exists($type, 'export')) {  // controller specific method
+        $type = expModules::getController($this->params['export_type']);
+        if (method_exists($type, 'export')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
         }
 
@@ -207,19 +269,32 @@ class importexportController extends expController {
     }
 
     function export_process() {
-        $type = new $this->params['export_type'];
-        if (method_exists($type, 'export_process')) {  // controller specific method
+        $type = expModules::getController($this->params['export_type']);
+        if (method_exists($type, 'export_process')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export_process'));
         }
 
-        if (!empty($this->params['aggregate'])) {
-            $selected = $this->params['aggregate'];
+        if (!empty($this->params['export_aggregate'])) {
+            $tables = array($type->model_table);
+            $selected = $this->params['export_aggregate'];
             $where = '(';
             foreach ($selected as $key=>$src) {
                 if ($key) $where .= ' OR ';
                 $where .= "location_data='" . serialize(expCore::makeLocation($type->baseclassname, $src)) . "'";
             }
             $where .= ')';
+            $awhere[] = $where;
+
+            if ($this->params['export_attached']) {
+                $model = new $type->basemodel_name;
+                foreach ($model->getAttachableItemTables() as $link=>$model) {
+                    $tables[] = $link;
+                    $awhere[] = "content_type='" . $type->baseclassname . "'";
+                    $attach = new $model;
+                    $tables[] = $attach->tablename;
+                    $awhere[] = '';
+                }
+            }
 
             $filename = $type->baseclassname . '.eql';
 
@@ -241,7 +316,7 @@ class importexportController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($type->$model_table, 'export', $where);
+            echo expFile::dumpDatabase($tables, 'export', $awhere);
             exit; // Exit, since we are exporting
         }
         expHistory::back();

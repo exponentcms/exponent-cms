@@ -129,32 +129,25 @@ $exponent_permissions_r = array();
 
 // expJavascript
 /**
- * Stores the user's javascript files
- * @var array $userjsfiles
- * @name $userjsfiles
- */
-$userjsfiles = array();
-/**
- * Stores the user's javascript files
+ * Stores the page's inline javascript code
  * @var array $js2foot
  * @name $js2foot
  */
 $js2foot = array();
-//$yui2js = array();
 /**
- * Stores the user's javascript files
+ * Stores the yui3 javascript files list
  * @var array $yui3js
  * @name $yui3js
  */
 $yui3js = array();
 /**
- * Stores the user's javascript files
+ * Stores the jquery javascript files list
  * @var array $jqueryjs
  * @name $jqueryjs
  */
 $jqueryjs = array();
 /**
- * Stores the user's javascript files
+ * Stores the 'other' javascript files list
  * @var array $expJS
  * @name $expJS
  */
@@ -525,8 +518,8 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
     
-    $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view .'.tpl';
-    $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view.' . bootstrap.tpl';
+    $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.tpl';
+    $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
     $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
     if ($framework != "bootstrap") {
@@ -535,7 +528,7 @@ function get_common_template($view, $loc, $controllername='') {
         } elseif(file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } else {
-            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
         }
     } else {
         if (file_exists($themepath)) {
@@ -545,7 +538,7 @@ function get_common_template($view, $loc, $controllername='') {
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
         } else {
-            return new controllertemplate($controller, BASE.'framework/modules/common/views/scaffold/blank.tpl');
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
         }
     }
 }

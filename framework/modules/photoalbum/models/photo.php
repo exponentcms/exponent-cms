@@ -23,16 +23,17 @@
 
 class photo extends expRecord {
     //public $table = 'photo';
+    protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
+        'content_expFiles'=>'expFile',
+    	'content_expTags'=>'expTag'
+    );
+
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),
             //'body'=>array('message'=>'Body is a required field.'),
         ));
-    protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile',
-	    'content_expCats'=>'expCat',
-    	'content_expTags'=>'expTag'
-    );
 
     function __construct($params = null, $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);

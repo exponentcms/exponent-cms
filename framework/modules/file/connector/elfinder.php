@@ -40,6 +40,7 @@ include_once BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.p
 //include_once BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
 //include_once BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
 //include_once BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
+//include_once BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
 include_once BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
@@ -288,18 +289,23 @@ $opts = array(
     'bind'   => array(
         // '*' => 'logger',
         'mkdir mkfile rename duplicate upload rm paste' => 'logger',
+//        'mkdir.pre mkfile.pre rename.pre' => array(
+//            'Plugin.Normalizer.cmdPreprocess',
+//            'Plugin.Sanitizer.cmdPreprocess',
+//        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
-            //        'Plugin.Watermark.onUpLoadPreSave'
+            //        'Plugin.Watermark.onUpLoadPreSave',
+            //        'Plugin.Normalizer.onUpLoadPreSave',
             //        'Plugin.Normalizer.onUpLoadPreSave'
         )
     ),
     // global plugin configure (optional)
     'plugin' => array(
         'AutoResize' => array(
-            'enable'     => QUICK_UPLOAD_WIDTH, // For control by volume driver
-            'maxWidth'   => QUICK_UPLOAD_WIDTH,
-            'maxHeight'  => QUICK_UPLOAD_WIDTH,
+            'enable'     => UPLOAD_WIDTH, // For control by volume driver
+            'maxWidth'   => UPLOAD_WIDTH,
+            'maxHeight'  => UPLOAD_WIDTH,
             'quality'    => THUMB_QUALITY, // JPEG image save quality
             'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP // Target image formats ( bit-field )
         ),
@@ -308,7 +314,7 @@ $opts = array(
 //            'source'         => 'logo.png', // Path to Water mark image
 //            'marginRight'    => 5,          // Margin right pixel
 //            'marginBottom'   => 5,          // Margin bottom pixel
-//            'quality'        => 95,         // JPEG image save quality
+//            'quality'        => THUMB_QUALITY,         // JPEG image save quality
 //            'transparency'   => 70,         // Water mark image transparency ( other than PNG )
 //            'targetType'     => IMG_GIF|IMG_JPG|IMG_PNG|IMG_WBMP, // Target image formats ( bit-field )
 //            'targetMinPixel' => 200         // Target image minimum pixel size
@@ -317,6 +323,11 @@ $opts = array(
 //            'enable' => true,
 //            'nfc'    => true,
 //            'nfkc'   => true
+//        ),
+//       'Sanitizer' => array(
+//           'enable' => true,
+//           'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
+//           'replace'  => '_'    // replace to this
 //        )
     ),
     'debug'  => DEVELOPMENT,

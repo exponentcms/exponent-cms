@@ -34,10 +34,22 @@ class portfolioController extends expController {
         'rss',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
+    protected $add_permissions = array(
+        'import'=>'Import Portfolio Items',
+        'export'=>'Export Portfolio Items'
+    );
 
     static function displayname() { return gt("Portfolio"); }
     static function description() { return gt("Display a portfolio or listing."); }
     static function isSearchable() { return true; }
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
 
     public function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
