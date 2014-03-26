@@ -147,14 +147,13 @@ $yui3js = array();
  */
 $jqueryjs = array();
 /**
- * Stores the 'other' javascript files list
  * Stores the twitter bootstrap javascript file list
  * @var array $bootstrapjs
  * @name $bootstrapjs
  */
 $bootstrapjs = array();
 /**
- * Stores the javascript (not yui3, jquery nor twitter bootstrap) file lists
+ * Stores the 'other' javascript files list
  * @var array $expJS
  * @name $expJS
  */
@@ -515,13 +514,13 @@ function get_common_template($view, $loc, $controllername='') {
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
     
-    $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/'.$controllername.'/'.$view.'.tpl';
-    $basenewuipath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.newui.tpl';
-    $basepath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.tpl';
+    $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.tpl';
+    $basenewuipath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.newui.tpl';
+    $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
-        $basebstrap3path = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap3.tpl';
-        $basebstrappath = BASE.'framework/modules/common/views/'.$controllername.'/'.$view.'.bootstrap.tpl';
+        $basebstrap3path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap3.tpl';
+        $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
         if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
         } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
@@ -677,9 +676,9 @@ function get_template_for_action($controller, $action, $loc=null) {
     }
     if ($framework == "bootstrap" || $framework == "bootstrap3") {
         $rootbstrap3path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap3.tpl';
-        $basebstrap3path = $controller->viewpath.'/'.$action.'.bootstrap3.tpl';
+        $basebstrap3path = $controller->viewpath . '/' . $action . '.bootstrap3.tpl';
         $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
-        $basebstrappath = $controller->viewpath.'/'.$action.'.bootstrap.tpl';
+        $basebstrappath = $controller->viewpath . '/' . $action . '.bootstrap.tpl';
         if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
         } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
