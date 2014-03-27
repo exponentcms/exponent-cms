@@ -15,6 +15,8 @@ Added / Fixed / Changed for 2.2.4
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
   - module and item heading levels are now selectable within module configuration settings
+  - adds optional websnapr link thumbnail support to links module
+  - adds module specific quick upload folder selection
   - updates several 'widgets' from YUI to jQuery variants (tag picker, calendar, list builder color picker, lightbox)
   - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
   - initial support for alternate/optional file manager - elFinder (uses an OS file manager paradigm)
