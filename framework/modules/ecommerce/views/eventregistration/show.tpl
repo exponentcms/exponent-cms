@@ -94,11 +94,16 @@
                     <span class="label">{'Registration Closes:'|gettext} </span>
                     <span class="value pricevaliduntil">{$product->signup_cutoff|format_date}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
-                    <span class="value"><span class="quantity">{$product->spacesLeft()}</span> {'of'|gettext} {$product->quantity}</span>{br}
+                    <span class="value">{if $product->spacesLeft() == -1}{'Yes'|gettext}{else}<span class="quantity">{$product->spacesLeft()}</span> {'of'|gettext} {$product->quantity}{/if}</span>{br}
                     {if $product->multi_registrant}
                         <div class="seatsContainer">
                             <div class="seatStatus">
-                                {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
+                                {if $product->spacesLeft() == -1}
+                                    {$remain = 12}
+                                {else}
+                                    {$remain = $product->spacesLeft()}
+                                {/if}
+                                {$seats = implode(',',range(1, min($remain ,12)))}
                                 {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=$count}
                             </div>
                     {else}
