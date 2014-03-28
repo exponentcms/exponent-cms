@@ -302,7 +302,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/models/vendor.php',
             'framework/modules/ecommerce/models/childProduct.php',
             'framework/modules/ecommerce/definitions/external_addresses.php',
-            'framework/modules/ecommerce/models/external_addresses.php',
+            'framework/modules/ecommerce/models/external_address.php',
              // ecommerce renamed views
             'framework/modules/ecommerce/views/store/showall_featured_products.tpl',
             'framework/modules/ecommerce/views/store/events_calendar.tpl',
@@ -462,6 +462,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-5.0.0/",
             "external/Swift-5.0.1/",
 //            "external/Swift-5.0.2/",
+//            "external/Swift-5.0.3/",
             "external/Respond-1.3.0/",
 //            "external/Respond-1.4.0/",
 //            "external/Respond-1.4.1/",

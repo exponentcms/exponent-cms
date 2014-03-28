@@ -52,7 +52,7 @@ class uploadcontrol extends formcontrol {
 		if (isset($this->class)) $html .= ' class="' . $this->class . '"';
         if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
 		$html .= $this->disabled ? " disabled " : "";
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
 		$html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\" " : "";
 		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
 		$html .= "/>";

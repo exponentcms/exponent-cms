@@ -258,7 +258,10 @@ class eventregistration extends expRecord {
 //        return $this->quantity - $this->number_of_registrants;
 //        $f = new forms($this->forms_id);
 //        return $this->quantity - $db->countObjects('forms_' . $f->table_name, "referrer='" . $this->id . "'");
-        return $this->quantity - $this->countRegistrants();
+        if ($this->quantity == 0)
+            return -1;
+        else
+            return $this->quantity - $this->countRegistrants();
     }
 
     public function cartSummary($item) {

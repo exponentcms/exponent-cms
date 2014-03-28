@@ -46,7 +46,7 @@ class rangecontrol extends textcontrol {
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= $this->size ? " size=\"".$this->size."\"" : "";
         $html .= $this->disabled ? " disabled " : "";
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
         $html .= $this->maxlength ? " maxlength=\"".$this->maxlength."\"" : "";
         $html .= $this->min ? " min=\"".$this->min."\"" : " min=\"0\"";
         $html .= $this->max ? " max=\"".$this->max."\"" : " max=\"100\"";

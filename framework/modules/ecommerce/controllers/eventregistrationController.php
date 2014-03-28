@@ -909,7 +909,7 @@ class eventregistrationController extends expController {
 
         // new method to check for guests/registrants
 //        if (!empty($event->num_guest_allowed)) {
-        if (!empty($event->quantity)) {
+//        if (!empty($event->quantity)) {
 //            $registered = array();
 //            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
 //                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
@@ -1002,8 +1002,7 @@ class eventregistrationController extends expController {
 //            foreach ($controls as $control) {
 //                $header[] = $control->caption;
 //            }
-
-        }
+//        }
 
         if (LANG_CHARSET == 'UTF-8') {
             $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...

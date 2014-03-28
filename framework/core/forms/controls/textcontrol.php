@@ -64,7 +64,7 @@ class textcontrol extends formcontrol {
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= $this->size ? " size=\"".$this->size."\"" : "";
         $html .= $this->disabled ? " disabled='disabled' " : "";
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
         $html .= $this->maxlength ? " maxlength=\"".$this->maxlength."\"" : "";
         $html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\"" : "";
         $html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\"" : "";

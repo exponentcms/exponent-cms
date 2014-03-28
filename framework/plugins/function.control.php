@@ -104,6 +104,7 @@ function smarty_function_control($params, &$smarty) {
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
                     if (!empty($params['value'])) $control->value = $params['value'];
                 }
+                if (!empty($params['folder'])) $control->folder = $params['folder'];
                 if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "filedisplay-types":

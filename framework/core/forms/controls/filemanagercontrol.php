@@ -30,6 +30,7 @@ class filemanagercontrol extends formcontrol {
     var $html;
     var $span;
     var $description = "";
+    var $folder = "";
     var $accept = "";
 
     static function name() { return "Manage Files"; }
@@ -106,8 +107,8 @@ class filemanagercontrol extends formcontrol {
                 if (Y.one('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new Y.ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
-                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
-                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1, "folder"=> $this->folder)) . "',
+                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',

@@ -62,7 +62,7 @@ foreach ($allevents as $event) {
 foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();
-        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . '/' . $event->quantity . ')';
+        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . ($event->quantity ? '/' . $event->quantity : '' . ')');
         $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $event->id));
         $thisitem['classname'] = 'event';
         $thisitem['icon'] = 'fa-info';

@@ -123,7 +123,7 @@ class genericcontrol extends formcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
         foreach ($this->jsHooks as $type=>$val) {
             $html .= ' '.$type.'="'.$val.'"';
         }

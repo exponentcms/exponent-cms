@@ -1179,10 +1179,10 @@ class administrationController extends expController {
 
         $expcat = new expCat();
         $cats = $expcat->find('all','module="file"');
-        $catarray = array();
-        $catarray[] = 'Root Folder';
+        $folders = array();
+        $folders[] = 'Root Folder';
         foreach ($cats as $cat) {
-            $catarray[$cat->id] = $cat->title;
+            $folders[$cat->id] = $cat->title;
         }
 
         // profiles
@@ -1207,7 +1207,7 @@ class administrationController extends expController {
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
             'section_dropdown'=>$section_dropdown,
-            'folders'=>$catarray,
+            'folders'=>$folders,
             'profiles'=>$profiles
         ));
     }

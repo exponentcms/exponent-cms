@@ -43,6 +43,12 @@
     {/if}
 </div>
 
+{if $smarty.const.SITE_FILE_MANAGER == 'picker'}
+    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
+{elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+    {control type="text" name="upload_folder" label="Quick Add Upload Subfolder"|gettext value=$config.upload_folder}
+{/if}
+
 {script unique="fileviewconfig" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {

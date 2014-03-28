@@ -26,7 +26,7 @@
  */
 class update_countdown extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.2.4';  // config date was changed in 2.2.0 and again in 2.2.4
+	protected $to_version = '2.3.0';  // config date was changed in 2.2.0 and again in 2.3.0
 
 	/**
 	 * name/title of upgrade script
