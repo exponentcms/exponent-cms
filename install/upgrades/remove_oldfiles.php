@@ -462,6 +462,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-5.0.0/",
             "external/Swift-5.0.1/",
 //            "external/Swift-5.0.2/",
+//            "external/Swift-5.0.3/",
             "external/Respond-1.3.0/",
 //            "external/Respond-1.4.0/",
 //            "external/Respond-1.4.1/",
