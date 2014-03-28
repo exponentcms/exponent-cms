@@ -26,15 +26,15 @@ Bootswatch,3.1.1,bootswatch.com/,3.1.1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.0.3,fortawesome.github.com/Font-Awesome,4.0.3,updated FontAwesomePath in variables.less
 Adminer,4.0.3,www.adminer.org,4.0.3,
-html5shiv,4.0.2,https://github.com/aFarkas/html5shiv,4.0.2,
+html5shiv,3.7.0,https://github.com/aFarkas/html5shiv,3.7.0,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
-normalize.css,3.0.0,necolas.github.com/normalize.css/,3.0.0,auto included w/ bootstrap 3
+normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
 MediaElement.js,2.13.2,mediaelementjs.com/,2.13.2,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.1,optional
-CKEditor,4.3.3,ckeditor.com,4.3.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, & kama skin"
+CKEditor,4.3.4,ckeditor.com,4.3.4,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.0.20,tinymce.com,4.0.20,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,use https://github.com/nao-pon/elFinder and added Exponent classes
 jQuery1,1.11.0,jquery.com,1.11.0,
