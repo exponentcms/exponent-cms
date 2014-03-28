@@ -21,7 +21,7 @@
         {permissions}
            <div class="item-actions">
                 {if $permissions.edit || ($permissions.create && $items[0]->poster == $user->id)}
-                    {if $items[0]->revision_id > 1}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$items[0]->revision_id}">{$items[0]->revision_id}</span>{/if}
+                    {if $items[0]->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$items[0]->revision_id}">{$items[0]->revision_id}</span>{/if}
                     {if $myloc != $items[0]->location_data}
                         {if $permissions.manage}
                             {icon action=merge id=$items[0]->id title="Merge Aggregated Content"|gettext}
