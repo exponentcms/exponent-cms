@@ -837,6 +837,14 @@ abstract class expController {
             ));
         }
 
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $folders = array();
+        $folders[] = 'Root Folder';
+        foreach ($cats as $cat) {
+            $folders[$cat->id] = $cat->title;
+        }
+
         assign_to_template(array(
             'config'            => $this->config,
             'page'              => $page, // needed for aggregation list
@@ -846,6 +854,7 @@ abstract class expController {
             'classname'         => $this->classname,
             'viewpath'          => $this->viewpath,
             'relative_viewpath' => $this->relative_viewpath,
+            'folders'           => $folders,
         ));
 
     }

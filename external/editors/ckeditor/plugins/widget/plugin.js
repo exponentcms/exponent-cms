@@ -14,7 +14,7 @@
 	var DRAG_HANDLER_SIZE = 15;
 
 	CKEDITOR.plugins.add( 'widget', {
-		lang: 'ca,cs,cy,de,el,en,en-gb,es,fa,fi,fr,gl,hu,ja,km,ko,nb,nl,no,pl,pt,pt-br,ru,sl,sv,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
+		lang: 'ar,ca,cs,cy,de,el,en,en-gb,es,fa,fi,fr,gl,hr,hu,ja,km,ko,nb,nl,no,pl,pt,pt-br,ru,sl,sv,uk,zh,zh-cn', // %REMOVE_LINE_CORE%
 		requires: 'lineutils,clipboard',
 		onLoad: function() {
 			CKEDITOR.addCss(
@@ -715,6 +715,10 @@
 			/**
 			 * Whether this widget is an inline widget (based on an inline element unless
 			 * forced otherwise by {@link CKEDITOR.plugins.widget.definition#inline}).
+			 *
+			 * **Note:** This option does not allow to turn a block element into an inline widget.
+			 * However, it makes it possible to turn an inline element into a block widget or to
+			 * force a correct type in case when automatic recognition fails.
 			 *
 			 * @readonly
 			 * @property {Boolean}

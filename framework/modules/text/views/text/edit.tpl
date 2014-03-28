@@ -30,7 +30,7 @@
         {control type=text name=title label="Title"|gettext value=$record->title|escape:"html"}
         {control type=html name=body label="Text Block"|gettext value=$record->body}
         {if $config.filedisplay}
-            {control type="files" name="files" label="Files"|gettext value=$record->expFile}
+            {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
         {/if}
         {control type=buttongroup submit="Save Text"|gettext cancel="Cancel"|gettext}
     {/form}

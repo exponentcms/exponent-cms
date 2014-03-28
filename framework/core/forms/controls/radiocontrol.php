@@ -77,7 +77,7 @@ class radiocontrol extends formcontrol {
         //echo "Here";
         $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
-        if ($this->focus) $html .= " autofocus=\"autofocus\"";
+        if ($this->focus) $html .= " autofocus";
         if ($this->onclick != "") {
             $html .= ' onclick="'.$this->onclick.'"';
         }
@@ -103,13 +103,13 @@ class radiocontrol extends formcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
 
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
-        if ($this->focus) $html .= " autofocus=\"autofocus\"";
+        if ($this->focus) $html .= " autofocus";
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 

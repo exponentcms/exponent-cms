@@ -81,7 +81,7 @@
                 {/if}
                 {if $config.enable_images}
                     <div id="tab4">
-                        {control type=files name=images label="Attached Images"|gettext accept="image/*" value=$record->expFile}
+                        {control type=files name=images label="Attached Images"|gettext accept="image/*" value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
             </div>

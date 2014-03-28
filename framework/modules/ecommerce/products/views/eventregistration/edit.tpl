@@ -43,7 +43,7 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type="text" name="title" label="Event Title"|gettext value=$record->title}
-                    {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity}
+                    {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity description='Zero or empty means unlimited or undefined'|gettext}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
                     {*{control type="editor" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     {*{control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
@@ -154,11 +154,11 @@
                       {control type="radiogroup" name="multi_registrant" label="Simultaneous Registration"|gettext items="Single Registration,Multiple Registration"|gettxtlist values="0,1" default=$record->multi_registrant|default:0 description='Should we allow multiple similar (same basic cost) registrations at one time?'|gettext}
                   </div>
                 <div id="tab6">
-                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" accept="image/*" value=$record->expFile description="Images to show for your event"|gettext}
+                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Images to show for your event"|gettext}
                     <div class="additional-images">
-                        {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile description="Additional images to show for your event"|gettext}
+                        {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Additional images to show for your event"|gettext}
                     </div>
-					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
+					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile folder=$config.upload_folder description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                 </div>
                 <div id="tab7">
                     <h2>{'SEO Settings'|gettext}</h2>
