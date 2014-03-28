@@ -8,7 +8,7 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 
 ----------
 
-Added / Fixed / Changed for 2.2.4
+Added / Fixed / Changed for 2.3.0
 -----------------------
 ### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables

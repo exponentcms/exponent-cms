@@ -84,4 +84,4 @@ generare
 wilko_76
 chrisjlocke
 
-(Last updated 2014.01.31, release 2.2.4)
+(Last updated 2014.01.31, release 2.3.0)
