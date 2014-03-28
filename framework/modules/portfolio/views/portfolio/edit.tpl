@@ -41,7 +41,7 @@
                 </div>
                 {if $config.filedisplay}
                     <div id="tab2">
-                        {control type="files" name="files" label="Files"|gettext value=$record->expFile}
+                        {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
                 <div id="tab3">

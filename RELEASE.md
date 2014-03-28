@@ -8,7 +8,7 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the CHANGELOG.md
 
-##2.2.4 - January 2014
+##2.3.0 - April 2014
 
 ----------
 

@@ -41,7 +41,7 @@
             <div class="alt-body">
                 {control type=radiogroup columns=2 name="media_type" items="File,YouTube"|gettxtlist values="file,youtube" default=$record->media_type|default:"file"}
                 <div id="file-div" class="alt-item" style="display:none;">
-                    {control type="files" name="files" label="Media File"|gettext|cat:" (.flv, .f4v, .mp4, m4v, or .mp3)" subtype=media accept="audio/*,video/*" value=$record->expFile limit=1}
+                    {control type="files" name="files" label="Media File"|gettext|cat:" (.flv, .f4v, .mp4, m4v, or .mp3)" subtype=media accept="audio/*,video/*" value=$record->expFile limit=1 folder=$config.upload_folder}
                 </div>
                 <div id="youtube-div" class="alt-item" style="display:none;">
                     {control type=url name=url label="YouTube Video URL"|gettext value=$record->url size=100 description='A link to a YouTube video.'|gettext}
@@ -49,7 +49,7 @@
             </div>
         </div>
 
-        {control type="files" name="splash" label="Video Splash Image"|gettext subtype=splash accept="image/*" value=$record->expFile limit=1 description='Initial image to display behind a video'|gettext}
+        {control type="files" name="splash" label="Video Splash Image"|gettext subtype=splash accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder description='Initial image to display behind a video'|gettext}
         {if !$config.disabletags}
              {control type="tags" value=$record}
          {/if}

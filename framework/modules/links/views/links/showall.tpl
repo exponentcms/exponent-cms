@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="links" assign="name"}
+
 {if $config.usecategories}
 {css unique="categories" corecss="categories"}
 
@@ -85,7 +87,7 @@
     {else}
         {foreach name=items from=$items item=item}
             <div class="item">
-                <{$config.item_level|default:'h2'}><a class="li-link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></{$config.item_level|default:'h2'}>
+                <{$config.item_level|default:'h2'}><a class="li-link{if !empty($config.websnapr_key)} websnapr{/if}" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></{$config.item_level|default:'h2'}>
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -116,3 +118,9 @@
         {/foreach}
     {/if}
 </div>
+
+{if !empty($config.websnapr_key)}
+    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}
+
+    {/script}
+{/if}

@@ -127,7 +127,6 @@ class yuidatetimecontrol extends formcontrol
                 }
                 $('#" . $idname . "date').datetimepicker('update');
             };
-
             Y.Global.on('lazyload:cke', function() {
                 Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
                 Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");

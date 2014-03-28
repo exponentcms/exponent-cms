@@ -527,13 +527,13 @@ class fileController extends expController {
     public function quickUpload(){
         global $user;
 
-        if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0) {
+        if (!empty($this->params['folder']) || (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0)) {
             if (SITE_FILE_MANAGER == 'picker') {
-                $quikFolder = QUICK_UPLOAD_FOLDER;
+                $quikFolder = !empty($this->params['folder']) ? $this->params['folder'] :QUICK_UPLOAD_FOLDER;
                 $destDir = null;
             } elseif (SITE_FILE_MANAGER == 'elfinder') {
                 $quikFolder = null;
-                $destDir = UPLOAD_DIRECTORY_RELATIVE . QUICK_UPLOAD_FOLDER . '/';
+                $destDir = UPLOAD_DIRECTORY_RELATIVE . (!empty($this->params['folder']) ? $this->params['folder'] :QUICK_UPLOAD_FOLDER) . '/';
                 // create folder if non-existant
                 expFile::makeDirectory($destDir);
             }
