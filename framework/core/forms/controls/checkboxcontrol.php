@@ -162,7 +162,7 @@ class checkboxcontrol extends formcontrol {
             $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
         if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
         foreach ($this->jsHooks as $type=> $val) {
             $html .= ' ' . $type . '="' . $val . '"';
         }

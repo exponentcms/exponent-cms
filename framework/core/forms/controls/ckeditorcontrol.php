@@ -223,7 +223,7 @@ class ckeditorcontrol extends formcontrol {
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
         $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
-        if ($this->focus) $html .= " autofocus=\"autofocus\"";
+        if ($this->focus) $html .= " autofocus";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
         if (!empty($this->class)) $html .= " class=\"" . $this->class . "\"";

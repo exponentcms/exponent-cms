@@ -29,7 +29,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'News Item'|gettext}</h2>
-                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this News Post?"|gettext value=1 checked=$record->is_featured}
                     {if !$config.disabletags}

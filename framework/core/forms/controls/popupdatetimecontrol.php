@@ -77,7 +77,7 @@ class popupdatetimecontrol extends formcontrol {
         $img .= "\n";
 
         $html = "";
-		$html .= '<input type="hidden" name="' . $name . '" id="' . $idname . ($this->focus?' autofocus=\"autofocus\"':'') . '" value="' . ($this->default) . '" />';
+		$html .= '<input type="hidden" name="' . $name . '" id="' . $idname . ($this->focus?' autofocus':'') . '" value="' . ($this->default) . '" />';
 		$html .= "\n";
 		$html .= '<span class="';
 		if ($this->disabled) $html .= 'datefield_disabled';

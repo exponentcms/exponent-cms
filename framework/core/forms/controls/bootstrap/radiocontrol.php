@@ -103,7 +103,7 @@ class radiocontrol extends formcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
-        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
+        $html .= $this->focus ? " autofocus" : "";
 
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
