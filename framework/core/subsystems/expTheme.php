@@ -1270,7 +1270,7 @@ class expTheme
 ////							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 ////                            $template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
 //                            $c2 = new containerController();
-//                            $template = get_template_for_action($c2,'_hardcoded_module_menu');
+//                            $template = expTemplate::get_template_for_action($c2,'_hardcoded_module_menu');
 //							$template->assign('container', $container);
 //							$template->output();
 //						}
@@ -1299,7 +1299,7 @@ class expTheme
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 //							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
                         $c2 = new containerController();
-                        $template = get_template_for_action($c2, '_hardcoded_module_menu');
+                        $template = expTemplate::get_template_for_action($c2, '_hardcoded_module_menu');
                         $template->assign('container', $hccontainer);
                         $template->output();
                     }

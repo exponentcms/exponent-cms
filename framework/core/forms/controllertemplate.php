@@ -77,7 +77,8 @@ class controllertemplate extends basetemplate {
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $controller->baseclassname;
-				
+
+        // strip file type
         if (substr($viewfile, -7) == '.config') {
             $this->file_is_a_config = true;
             $this->view = substr(basename($this->viewfile),0,-7);

@@ -100,6 +100,7 @@ abstract class basetemplate {
 
 		$this->module = $item_dir;
 
+        // strip file type
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
         $this->tpl->setTemplateDir($this->viewdir);
@@ -126,7 +127,6 @@ abstract class basetemplate {
 	 */
 	function output() {
 		// javascript registration
-		
         if (empty($this->file_is_a_config)) {
             $this->tpl->display($this->view.'.tpl');
         }
