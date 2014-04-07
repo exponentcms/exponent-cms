@@ -681,9 +681,21 @@ class eventregistration extends expRecord {
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
             BASE . 'framework/modules/ecommerce/products/views/product/',
         );
+        if (expSession::get('framework') == 'bootstrap') {
+            $vars = array(
+                '.bootstrap',
+                '',
+            );
+        } else {
+            $vars = array(
+                '',
+            );
+        }
 
-        foreach ($dirs as $dir) {
-            if (file_exists($dir . $form . '.tpl')) return $dir . $form . '.tpl';
+        foreach ($vars as $var) {
+            foreach ($dirs as $dir) {
+                if (file_exists($dir . $form . $var . '.tpl')) return $dir . $form . $var . '.tpl';
+            }
         }
 
         return false;

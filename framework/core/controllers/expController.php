@@ -755,7 +755,7 @@ abstract class expController {
         global $db;
 
         expHistory::set('editable', $this->params);
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
 
         // needed for aggregation list
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
@@ -820,7 +820,7 @@ abstract class expController {
                 foreach ($actions as $key => $value) {
                     $actions[$key] = gt($value);
                 }
-                $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
+                $mod_views = expTemplate::get_action_views($this->classname, $container->action, $actions[$container->action]);
                 if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
             }
 

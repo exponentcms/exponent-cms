@@ -405,7 +405,7 @@ class expPaginator {
 			$this->pages[$i] = $router->makeLink($page_params, false, false, true);
 		} 	
 
-		$links_template = get_common_template('pagination_links', null, 'common');
+		$links_template = expTemplate::get_common_template('pagination_links', null, 'common');
 		$links_template->assign('page', $this);
 		$this->links = $links_template->render();
 		
@@ -420,7 +420,7 @@ class expPaginator {
 
 		$this->makeSortDropdown($sortparams);  // used on non-table views
        
-        $table_template = get_common_template('pagination_table', null, 'common');
+        $table_template = expTemplate::get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
         $this->table = $table_template->render();  // table view
         

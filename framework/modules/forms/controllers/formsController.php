@@ -579,10 +579,10 @@ class formsController extends expController {
                 $emaillist = array_map('trim', $emaillist);
 
                 if (empty($this->config['report_def'])) {
-                    $msgtemplate = get_template_for_action($this, 'email/default_report', $this->loc);
+                    $msgtemplate = expTemplate::get_template_for_action($this, 'email/default_report', $this->loc);
 
                 } else {
-                    $msgtemplate = get_template_for_action($this, 'email/custom_report', $this->loc);
+                    $msgtemplate = expTemplate::get_template_for_action($this, 'email/custom_report', $this->loc);
                     $msgtemplate->assign('template', $this->config['report_def']);
                 }
                 $msgtemplate->assign("fields", $emailFields);
@@ -895,13 +895,13 @@ class formsController extends expController {
     public function edit_control() {
         $f = new forms($this->params['forms_id']);
         if ($f) {
-            if (expSession::get('framework') != 'bootstrap') {
+            if (expSession::get('framework') == 'bootstrap') {
                 expCSS::pushToHead(array(
-                    "corecss"=>"forms"
+                    "corecss"=>"forms-bootstrap"
                 ));
             } else {
                 expCSS::pushToHead(array(
-                    "corecss"=>"forms-bootstrap"
+                    "corecss"=>"forms"
                 ));
             }
 

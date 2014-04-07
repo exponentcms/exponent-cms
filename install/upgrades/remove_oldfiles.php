@@ -80,6 +80,7 @@ class remove_oldfiles extends upgradescript {
             'package.xml',
             'phpdoc.ini',
             'podcast.php',
+            'popup.php',
             'send_reminders.php',
             'site_podcast.php',
             'rss.php',

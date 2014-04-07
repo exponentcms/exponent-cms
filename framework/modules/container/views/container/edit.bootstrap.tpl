@@ -94,7 +94,7 @@
 
     YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connection","yui2-json",function(Y){
         var YAHOO=Y.YUI2;
-        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
+//        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var is_edit = {/literal}{$is_edit}{literal} //are we editing?
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
@@ -190,11 +190,11 @@
                 }
 
                 //decide what to do weather it's a controller or module
-                if (EXPONENT.isController()) {
+//                if (EXPONENT.isController()) {
                     EXPONENT.writeActions();
-                } else {
-                    EXPONENT.writeViews();
-                }
+//                } else {
+//                    EXPONENT.writeViews();
+//                }
             }else{
                 //else, they clicked back on "select a module", so we reset everything
                 EXPONENT.disableRecycleBin();
@@ -261,18 +261,18 @@
         };
 
         //decides if its a controller or old school module
-        EXPONENT.isController = function(){
+//        EXPONENT.isController = function(){
 //            if (EXPONENT.curMod.indexOf('Controller')!=-1) {
 //                return true;
 //            } else {
 //                return false;
 //            };
-            if (EXPONENT.curMod.indexOf('module')!=-1) {
-                return false;
-            } else {
-                return true;
-            };
-        }
+//            if (EXPONENT.curMod.indexOf('module')!=-1) {
+//                return false;
+//            } else {
+//                return true;
+//            };
+//        }
         //enables the save button once the view is selected
         EXPONENT.enableSave = function() {
             var svbtn = Y.one('#buttonsSubmit')
@@ -329,7 +329,7 @@
         }
 
         EXPONENT.writeActions = function() {
-            if (EXPONENT.isController()) {
+//            if (EXPONENT.isController()) {
                 actionpicker.set('disabled',1);
                 EXPONENT.resetViews();
                 var uri = EXPONENT.PATH_RELATIVE+'index.php';
@@ -355,14 +355,14 @@
 //                    }}, 'module=containermodule&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
                     }}, 'controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
                 );
-            } else {
-                actionpicker.set('disabled',1).set('innerHTML','<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
-            };
+//            } else {
+//                actionpicker.set('disabled',1).set('innerHTML','<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
+//            };
         }
 
         EXPONENT.writeViews = function() {
             viewpicker.removeAttribute('disabled');
-            if (EXPONENT.isController()) {
+//            if (EXPONENT.isController()) {
                 var uri = EXPONENT.PATH_RELATIVE+'index.php'
                 YAHOO.util.Connect.asyncRequest('POST', uri,
                     {success: function(o) {
@@ -387,30 +387,30 @@
                     }}, 'controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
                 );
 
-            } else {
-                //set the actions drop to something a little more informational
-                var nas = Y.Node.create('<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
-                actionpicker.appendChild(nas);
-                actionpicker.ancestor('div.control').addClass('disabled');
-                actionpicker.set('disabled',1);
-
-                //load up the views dropdown with the legacy views for the oldschool mods
-                viewpicker.set('innerHTML','');
-                el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
-                viewpicker.appendChild(el);
-                for(var view in osmv[EXPONENT.curMod].views) {
-                    el = document.createElement('option');
-                    el.appendChild(document.createTextNode(view));
-                    el.setAttribute('value', view);
-                    viewpicker.appendChild(el);
-                }
-                viewpicker.ancestor('div.control').removeClass('disabled');
-                viewpicker.removeAttribute('disabled');
-                if (is_edit) {
-                    EXPONENT.forms.setSelectValue(viewpicker.get("id"),current_view);
-                    EXPONENT.handleViewChange();
-                }
-            };
+//            } else {
+//                //set the actions drop to something a little more informational
+//                var nas = Y.Node.create('<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
+//                actionpicker.appendChild(nas);
+//                actionpicker.ancestor('div.control').addClass('disabled');
+//                actionpicker.set('disabled',1);
+//
+//                //load up the views dropdown with the legacy views for the oldschool mods
+//                viewpicker.set('innerHTML','');
+//                el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
+//                viewpicker.appendChild(el);
+//                for(var view in osmv[EXPONENT.curMod].views) {
+//                    el = document.createElement('option');
+//                    el.appendChild(document.createTextNode(view));
+//                    el.setAttribute('value', view);
+//                    viewpicker.appendChild(el);
+//                }
+//                viewpicker.ancestor('div.control').removeClass('disabled');
+//                viewpicker.removeAttribute('disabled');
+//                if (is_edit) {
+//                    EXPONENT.forms.setSelectValue(viewpicker.get("id"),current_view);
+//                    EXPONENT.handleViewChange();
+//                }
+//            };
         }
 
         if (!is_edit) {
@@ -419,11 +419,11 @@
         }else{
             //set the current module
             EXPONENT.setCurMod();
-            if (EXPONENT.isController()) {
+//            if (EXPONENT.isController()) {
                 EXPONENT.writeActions();
-            } else {
-                EXPONENT.writeViews();
-            }
+//            } else {
+//                EXPONENT.writeViews();
+//            }
         };
 
         Y.one('.loadingdiv').setStyle('display','none');

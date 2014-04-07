@@ -105,6 +105,7 @@ class eventController extends expController {
                 $viewtype = "byday";
                 $viewrange = "day";
                 break;
+            case 'showall_announcement':
             case 'showall_Upcoming Events':
             case 'showall_Upcoming Events - Headlines':
                 $viewrange = "upcoming";
@@ -498,7 +499,7 @@ class eventController extends expController {
        	}
 
         assign_to_template(array(
-            'allforms'     => array_merge($allforms, expCore::buildNameList("forms", "event/email", "tpl", "[!_]*")),
+            'allforms'     => array_merge($allforms, expTemplate::buildNameList("forms", "event/email", "tpl", "[!_]*")),
             'checked_date' => !empty($this->params['date_id']) ? $this->params['date_id'] : null,
             'event_key'    => $event_key,
         ));
@@ -609,7 +610,7 @@ class eventController extends expController {
             $ed = new eventdate($this->params['id']);
 //            $email_addrs = array();
             if ($ed->event->feedback_email != '') {
-                $msgtemplate = get_template_for_action($this, 'email/_' . $this->params['formname'], $this->loc);
+                $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . $this->params['formname'], $this->loc);
                 $msgtemplate->assign('params', $this->params);
                 $msgtemplate->assign('event', $ed);
                 $email_addrs = explode(',', $ed->event->feedback_email);
@@ -915,7 +916,7 @@ class eventController extends expController {
                 $view = "send_reminders"; // default reminder view
             }
 
-            $template = get_template_for_action($this, $view, $this->loc);
+            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
 
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);

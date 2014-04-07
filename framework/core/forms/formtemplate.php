@@ -17,6 +17,7 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
+//FIXME DEPRECATED
 /**
  * Form Template Wrapper
  *

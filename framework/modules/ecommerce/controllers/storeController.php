@@ -1720,7 +1720,7 @@ class storeController extends expController {
         ###########
 
         global $db;
-        $template = get_template_for_action(new orderController(), 'setStatus', $this->loc);
+        $template = expTemplate::get_template_for_action(new orderController(), 'setStatus', $this->loc);
 
         //eDebug($_FILES);
         //eDebug($this->params,true); 

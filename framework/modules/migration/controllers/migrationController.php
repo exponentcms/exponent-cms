@@ -2591,10 +2591,10 @@ class migrationController extends expController {
       		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-        if(expSession::get('framework')!='bootstrap'){
-            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
-        } else {
+        if(expSession::get('framework') == 'bootstrap'){
             $btn_class = 'btn btn-default';
+        } else {
+            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
         };
 		echo "<a class=\"".$btn_class."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
     }

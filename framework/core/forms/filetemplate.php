@@ -23,7 +23,7 @@
  * @package Subsystems-Forms
  * @subpackage Template
  */
-class filetemplate extends basetemplate {  //FIXME Not used???
+class filetemplate extends basetemplate {  //FIXME Never used???
 
 	function __construct($file) {
 		parent::__construct("", "", $file);
