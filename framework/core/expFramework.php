@@ -493,6 +493,7 @@ function assign_to_template(array $vars=array()) {
 }
 
 function get_model_for_controller($controller_name) {
+    //FIXME this works by making assumptions
     $start_pos = stripos($controller_name, 'controller');
     if ($start_pos === false) {
         return false;

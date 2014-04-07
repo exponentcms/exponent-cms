@@ -488,6 +488,7 @@ class product extends expRecord {
         );
 
         foreach ($dirs as $dir) {
+            //FIXME we shoud also loop through framework variations
             if (file_exists($dir . $form . '.tpl')) return $dir . $form . '.tpl';
         }
 

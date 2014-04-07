@@ -290,29 +290,35 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
 
         $result = parent::stat($path);
         // we don't include directories nor dot files in expFiles
-        if ($result && !empty($result['mime']) && $result['mime'] != 'directory' && substr(
-                $result['name'],
-                0,
-                1
-            ) != '.'
-        ) {
-            $file = self::_get_expFile($path);
-            if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
+        if ($result && !empty($result['mime'])) {
+            if ($result['mime'] != 'directory' && substr(
+                    $result['name'],
+                    0,
+                    1
+                ) != '.'
+            ) {
+                $file = self::_get_expFile($path);
+                if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
+                    $result['locked'] = true;
+                    $result['hidden'] = true;
+                }
+                $fileuser = user::getUserById($file->poster);
+                if (!empty($fileuser->id)) {
+                    $result['owner'] = user::getUserAttribution($fileuser->id);
+                } else {
+                    $result['owner'] = gt('Unknown');
+                }
+                $result['title'] = $file->title;
+                $result['alt'] = $file->alt;
+                $result['shared'] = !empty($file->shared);
+                if ($file->is_image) {
+                    $result['width'] = $file->image_width;
+                    $result['height'] = $file->image_height;
+                }
+            } elseif($result['mime'] == 'directory' && (strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads') && !$user->isAdmin()) {
+                // only admins can see the avatars and uploads subfolders and their contents
                 $result['locked'] = true;
                 $result['hidden'] = true;
-            }
-            $fileuser = user::getUserById($file->poster);
-            if (!empty($fileuser->id)) {
-                $result['owner'] = user::getUserAttribution($fileuser->id);
-            } else {
-                $result['owner'] = gt('Unknown');
-            }
-            $result['title'] = $file->title;
-            $result['alt'] = $file->alt;
-            $result['shared'] = !empty($file->shared);
-            if ($file->is_image) {
-                $result['width'] = $file->image_width;
-                $result['height'] = $file->image_height;
             }
         }
         return $result;

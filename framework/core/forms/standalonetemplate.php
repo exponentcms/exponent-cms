@@ -20,9 +20,8 @@
 /**
  * Standalone Template Class
  *
- * A standalone template is a template (tpl) file found in either
- * THEME_ABSOLUTE/views or BASE/views, which uses
- * the corresponding views_c directory for compilation.
+ * A standalone template is a global view template (tpl) file found in either
+ * THEME_ABSOLUTE/views or /framework/core/views.
  *
  * @package Subsystems-Forms
  * @subpackage Template

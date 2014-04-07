@@ -92,7 +92,7 @@ abstract class basetemplate {
         $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
         $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
-		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
+		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);  //FIXME only place we call this method
         if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
             $this->tpl->assign("badview", $view);
         }
