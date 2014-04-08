@@ -93,7 +93,7 @@ class datetimecontrol extends formcontrol {
         }
         if ($this->showtime) {
             $framework = expSession::get('framework');
-            if ($framework != 'bootstrap') {
+            if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
                 $html .= '<br /><label class="label spacer"> </label>';
             }
             $html .= '<div class="datetime date time"><label style="display:inline;float:none;">' . gt('Time') . ': </label>';

@@ -290,7 +290,7 @@ class orderController extends expController {
         global $template, $user;
 
         // setup a template suitable for emailing
-        $template = get_template_for_action($this, 'email_invoice', $this->loc);
+        $template = expTemplate::get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
         $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');

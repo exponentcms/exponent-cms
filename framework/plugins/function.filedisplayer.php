@@ -70,7 +70,7 @@ function smarty_function_filedisplayer($params,&$smarty) {
     }
     
     $html = '<div class="display-files" style="'.$float.'width:'.$width.'px;'.$margin.'">';
-    $template = get_common_template($view, $smarty->getTemplateVars('__loc'), 'file');
+    $template = expTemplate::get_common_template($view, $smarty->getTemplateVars('__loc'), 'file');
 	$template->assign('files', $params['files']);
 	$template->assign('style', $params['style']);
 	$template->assign('config', $config);

@@ -115,21 +115,34 @@ class fileController extends expController {
     }
     
     /**
-     * Locates appropriate attached file view template
+     * Returns attached file view template configuration settings template
      *
      */
-     public function get_view_config() {
+    public function get_view_config() {
         global $template;
         
+        $framework = expSession::get('framework');
         // set paths we will search in for the view
         $paths = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
             BASE.'framework/modules/common/views/file/configure',
-        );        
-        
+        );
+
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
+                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-3).'bootstrap.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if ($framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-3).'bootstrap3.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
                 $template = new controllertemplate($this, $view);
                 $ar = new expAjaxReply(200, 'ok');
 		        $ar->send();
@@ -138,7 +151,7 @@ class fileController extends expController {
     }
     
     /**
-     * Locates appropriate attached file view template
+     * Returns view template configuration settings view template
      *
      */
     public function get_module_view_config() {
@@ -176,7 +189,7 @@ class fileController extends expController {
         }
         if (!$config_found) {
             echo "<p>".gt('There Are No View Specific Settings')."</p>";
-            $template = get_common_template('blank',null);
+            $template = expTemplate::get_common_template('blank', null);
         }
         $ar = new expAjaxReply(200, 'ok');
         $ar->send();
