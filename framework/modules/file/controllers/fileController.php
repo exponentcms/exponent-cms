@@ -131,8 +131,14 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
-                if ($framework == 'bootstrap') {
+                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
                     $bstrapview = substr($view,0,-3).'bootstrap.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if ($framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-3).'bootstrap3.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }

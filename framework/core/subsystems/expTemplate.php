@@ -479,25 +479,31 @@ class expTemplate {
         $controller->loc = $loc;
 
         $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.tpl';
-        $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
         $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
-        if ($framework == "bootstrap") {
+        if ($framework == "bootstrap" || $framework == "bootstrap3") {
+            $basebstrap3path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap3.tpl';
+            $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
             if (file_exists($themepath)) {
                 return new controllertemplate($controller, $themepath);
+            } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+                return new controllertemplate($controller, $basebstrap3path);
             } elseif (file_exists($basebstrappath)) {
                 return new controllertemplate($controller, $basebstrappath);
             } elseif (file_exists($basepath)) {
                 return new controllertemplate($controller, $basepath);
+            } else {
+                return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
             }
         } else {
             if (file_exists($themepath)) {
-                return new controllertemplate($controller, $themepath);
+                return new controllertemplate($controller,$themepath);
             } elseif(file_exists($basepath)) {
-                return new controllertemplate($controller, $basepath);
+                return new controllertemplate($controller,$basepath);
+            } else {
+                return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
             }
         }
-        return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
     }
 
     /**
@@ -581,14 +587,17 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl') {
                         $filename = substr($file, 0, -4);
                         if (!in_array($filename, $excludes)) {
                             $fileparts = explode('_', $filename);
                             $views[$filename]['name'] = ucwords(implode(' ', $fileparts));
                             $views[$filename]['file'] = $path.'/'.$file;
-                            if ($framework == 'bootstrap' && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
-                                $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
+                            if (($framework == 'bootstrap' || $framework == 'bootstrap3') && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
+                                $views[$filename]['file'] = $path . '/' . $filename . '.bootstrap.tpl';
+                            }
+                            if ($framework == 'bootstrap3' && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
+                                $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap3.tpl';
                             }
                         }
                     }
@@ -603,21 +612,25 @@ class expTemplate {
         $framework = expSession::get('framework');
 
         // set paths we will search in for the view
-        $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/' . $controller->relative_viewpath . '/' . $action . '.tpl';
-        $basebstrappath = $controller->viewpath . '/' . $action . '.bootstrap.tpl';
-        $basepath = $controller->viewpath . '/' . $action . '.tpl';
+        $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
+        $basepath = $controller->viewpath.'/'.$action.'.tpl';
 
         // the root action will be used if we don't find a view for this action and it is a derivative of
         // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
         // showall_by_tags.tpl
         $root_action = explode('_', $action);
         $rootthemepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/' . $controller->relative_viewpath . '/' . $root_action[0] . '.tpl';
-        $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
         $rootbasepath = $controller->viewpath . '/' . $root_action[0] . '.tpl';
 
-        if ($framework == "bootstrap") {
+        if ($framework == "bootstrap" || $framework == "bootstrap3") {
+            $rootbstrap3path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap3.tpl';
+            $basebstrap3path = $controller->viewpath . '/' . $action . '.bootstrap3.tpl';
+            $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
+            $basebstrappath = $controller->viewpath . '/' . $action . '.bootstrap.tpl';
             if (file_exists($themepath)) {
                 return new controllertemplate($controller, $themepath);
+            } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+                return new controllertemplate($controller, $basebstrap3path);
             } elseif (file_exists($basebstrappath)) {
                 return new controllertemplate($controller, $basebstrappath);
             } elseif (file_exists($basepath)) {
@@ -625,6 +638,8 @@ class expTemplate {
             } elseif ($root_action[0] != $action) {
                 if (file_exists($rootthemepath)) {
                     return new controllertemplate($controller, $rootthemepath);
+                } elseif (file_exists($framework == "bootstrap3" && file_exists($rootbstrap3path))) {
+                    return new controllertemplate($controller, $rootbstrap3path);
                 } elseif (file_exists($rootbstrappath)) {
                     return new controllertemplate($controller, $rootbstrappath);
                 } elseif (file_exists($rootbasepath)) {

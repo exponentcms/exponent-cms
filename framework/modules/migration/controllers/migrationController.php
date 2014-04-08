@@ -2591,7 +2591,7 @@ class migrationController extends expController {
       		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-        if(expSession::get('framework') == 'bootstrap'){
+        if(expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'){
             $btn_class = 'btn btn-default';
         } else {
             $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;

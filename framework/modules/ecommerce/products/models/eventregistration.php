@@ -686,6 +686,12 @@ class eventregistration extends expRecord {
                 '.bootstrap',
                 '',
             );
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            $vars = array(
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
         } else {
             $vars = array(
                 '',

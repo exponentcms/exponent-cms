@@ -33,8 +33,15 @@ class standalonetemplate extends basetemplate {
 	function __construct($view) {
 		parent::__construct("globalviews", "", $view);
         // substitute a framework variation if available
-        if (expSession::get('framework') == 'bootstrap') {
+        if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap.tpl';
+            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+                $this->viewfile = $bstrpview;
+                $this->view = substr(basename($this->viewfile), 0, -4);
+            }
+        }
+        if (expSession::get('framework') == 'bootstrap3') {
+            $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap3.tpl';
             if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($this->viewfile), 0, -4);

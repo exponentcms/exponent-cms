@@ -627,10 +627,11 @@ function find_config_views($paths=array(), $excludes=array()) {
                         $fileparts = explode('_', $filename);
                         $views[$filename]['name'] = ucwords(implode(' ', $fileparts));
                         $views[$filename]['file'] = $path.'/'.$file;
+                        if (($framework == 'bootstrap' || $framework == 'bootstrap3') && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
+                            $views[$filename]['file'] = $path . '/' . $filename . '.bootstrap.tpl';
+                        }
                         if ($framework == 'bootstrap3' && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
                             $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap3.tpl';
-                        } elseif (($framework == 'bootstrap' || $framework == 'bootstrap3') && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
-                            $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap.tpl';
                         }
                     }
                 }
