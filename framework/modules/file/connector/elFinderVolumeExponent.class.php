@@ -322,8 +322,10 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
             } elseif($result['mime'] == 'directory') {
                 if ((strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads')) {
                      // only admins can see the avatars and uploads subfolders and their contents
-                    $result['write'] = false;
                     $result['locked'] = true;
+                    if (!$user->isSuperAdmin()) {
+                        $result['write'] = false;
+                    }
                     if (!$user->isAdmin()) {
                         $result['hidden'] = true;
                     }
