@@ -505,6 +505,7 @@ function get_model_for_controller($controller_name) {
     }
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function get_common_template($view, $loc, $controllername='') {
     return expTemplate::get_common_template($view, $loc, $controllername);
 
@@ -539,6 +540,7 @@ function get_common_template($view, $loc, $controllername='') {
     }
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function get_config_templates($controller, $loc) {
     return expTemplate::get_config_templates($controller, $loc);
 
@@ -602,6 +604,7 @@ function get_config_templates($controller, $loc) {
     return $views;
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function find_config_views($paths=array(), $excludes=array()) {
     return expTemplate::find_config_views($paths, $excludes);
 
@@ -629,6 +632,7 @@ function find_config_views($paths=array(), $excludes=array()) {
     return $views;
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function get_template_for_action($controller, $action, $loc=null) {
     expTemplate::get_template_for_action($controller, $action, $loc);
 
@@ -686,6 +690,7 @@ function get_template_for_action($controller, $action, $loc=null) {
     }
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function get_action_views($ctl, $action, $human_readable) {
     expTemplate::get_action_views($ctl, $action, $human_readable);
 
@@ -729,6 +734,7 @@ function get_action_views($ctl, $action, $human_readable) {
     return $views;
 }
 
+//FIXME DEPRECATED, moved to expTemplate subsystem
 function get_filedisplay_views() {
     expTemplate::get_filedisplay_views();
 
