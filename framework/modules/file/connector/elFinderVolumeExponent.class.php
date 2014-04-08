@@ -315,10 +315,24 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                     $result['width'] = $file->image_width;
                     $result['height'] = $file->image_height;
                 }
-            } elseif($result['mime'] == 'directory' && (strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads') && !$user->isAdmin()) {
-                // only admins can see the avatars and uploads subfolders and their contents
-                $result['locked'] = true;
-                $result['hidden'] = true;
+                if ((strpos($path, substr(UPLOAD_DIRECTORY, 0, -1) . DIRECTORY_SEPARATOR . 'avatars') !== false || strpos($path, substr(UPLOAD_DIRECTORY, 0, -1) . DIRECTORY_SEPARATOR . 'uploads') !== false) && !$user->isSuperAdmin()) {
+                    $result['write'] = false;
+                    $result['locked'] = true;
+                }
+            } elseif($result['mime'] == 'directory') {
+                if ((strtolower($result['name']) == 'avatars' || strtolower($result['name']) == 'uploads')) {
+                     // only admins can see the avatars and uploads subfolders and their contents
+                    $result['write'] = false;
+                    $result['locked'] = true;
+                    if (!$user->isAdmin()) {
+                        $result['hidden'] = true;
+                    }
+                } else {
+                    if (!$user->isAdmin()) {
+                        $result['write'] = false;
+                        $result['locked'] = true;
+                    }
+                }
             }
         }
         return $result;
