@@ -691,7 +691,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl') {
                         $filename = substr($file, 0, -4);
                         $fileparts = explode('_', $filename);
                         if ($fileparts[0] == $action) {
@@ -730,7 +730,7 @@ class expTemplate {
             if (is_readable($path)) {
                 $dh = opendir($path);
                 while (($file = readdir($dh)) !== false) {
-                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl') {
+                    if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl') {
                         $filename = substr($file, 0, -4);
                         $views[$filename] = gt($filename);
                     }
