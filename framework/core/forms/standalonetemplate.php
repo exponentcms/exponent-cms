@@ -47,6 +47,13 @@ class standalonetemplate extends basetemplate {
                 $this->view = substr(basename($this->viewfile), 0, -4);
             }
         }
+        if (NEWUI) {
+            $bstrpview = substr($this->viewfile, 0, -4) . '.newui.tpl';
+            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+                $this->viewfile = $bstrpview;
+                $this->view = substr(basename($this->viewfile), 0, -4);
+            }
+        }
 	}
 
 }

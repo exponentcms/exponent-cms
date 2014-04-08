@@ -740,7 +740,7 @@ function get_action_views($ctl, $action, $human_readable) {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -10) != '.newui.tpl') {
                     $filename = substr($file, 0, -4);
                     $fileparts = explode('_', $filename);
                     if ($fileparts[0] == $action) {
@@ -777,7 +777,7 @@ function get_filedisplay_views() {
         if (is_readable($path)) {
             $dh = opendir($path);
             while (($file = readdir($dh)) !== false) {
-                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl') {
+                if (is_readable($path.'/'.$file) && substr($file, -4) == '.tpl' && substr($file, -14) != '.bootstrap.tpl' && substr($file, -15) != '.bootstrap3.tpl' && substr($file, -10) != '.newui.tpl') {
                     $filename = substr($file, 0, -4);
                     $views[$filename] = gt($filename);
                 }
