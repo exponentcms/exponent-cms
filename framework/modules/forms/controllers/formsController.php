@@ -579,10 +579,10 @@ class formsController extends expController {
                 $emaillist = array_map('trim', $emaillist);
 
                 if (empty($this->config['report_def'])) {
-                    $msgtemplate = get_template_for_action($this, 'email/default_report', $this->loc);
+                    $msgtemplate = expTemplate::get_template_for_action($this, 'email/default_report', $this->loc);
 
                 } else {
-                    $msgtemplate = get_template_for_action($this, 'email/custom_report', $this->loc);
+                    $msgtemplate = expTemplate::get_template_for_action($this, 'email/custom_report', $this->loc);
                     $msgtemplate->assign('template', $this->config['report_def']);
                 }
                 $msgtemplate->assign("fields", $emailFields);

@@ -276,7 +276,7 @@ function renderAction(array $parms=array()) {
     //Set up the template to use for this action
     global $template;
     $view = !empty($parms['view']) ? $parms['view'] : $action;
-    $template = get_template_for_action($controller, $view, $controller->loc);
+    $template = expTemplate::get_template_for_action($controller, $view, $controller->loc);
     
     // have the controller assign knowledge about itself to the template.
     // this has to be done after the controller gets the template for its actions
@@ -440,6 +440,7 @@ function renderAction(array $parms=array()) {
 function hotspot($source = null) {
     if (!empty($source)) {
         global $sectionObj;
+
 	    //FIXME there is NO 'page' object and section has no _construct method
         $page = new section($sectionObj->id);
         $modules = $page->getModulesBySource($source);  //FIXME there is no getModulesBySource method anywhere
@@ -453,6 +454,7 @@ function hotspot($source = null) {
 
 function makeLink($params=array(), $secure=false) {
     global $router;
+
     if(!is_array($params) || count($params) == 0) return false;
     $secure = empty($secure) ? false : true;
     return $router->makeLink($params, false, $secure);
@@ -460,6 +462,7 @@ function makeLink($params=array(), $secure=false) {
 
 function redirect_to($params=array(), $secure=false) {
     global $router;
+
     $secure = empty($secure) ? false : true;
     $link = (!is_array($params)) ? $params : $router->makeLink($params, false, $secure);
     header("Location: " . $link);
@@ -500,6 +503,7 @@ function assign_to_template(array $vars=array()) {
 }
 
 function get_model_for_controller($controller_name) {
+    //FIXME this works by making assumptions
     $start_pos = stripos($controller_name, 'controller');
     if ($start_pos === false) {
         return false;
@@ -509,6 +513,8 @@ function get_model_for_controller($controller_name) {
 }
 
 function get_common_template($view, $loc, $controllername='') {
+    return expTemplate::get_common_template($view, $loc, $controllername);
+
     $framework = expSession::get('framework');
 
     $controller = new stdClass();
@@ -543,14 +549,9 @@ function get_common_template($view, $loc, $controllername='') {
     }
 }
 
-/**
- * Return entire list of all controller configuration views available
- *
- * @param $controller
- * @param $loc
- * @return array
- */
 function get_config_templates($controller, $loc) {
+    return expTemplate::get_config_templates($controller, $loc);
+
 //    global $db;
     
     // set paths we will search in for the view
@@ -565,7 +566,7 @@ function get_config_templates($controller, $loc) {
     );
     
     // get the common configuration files    
-    $common_views = find_config_views($commonpaths, $controller->remove_configs);
+    $common_views = expTemplate::find_config_views($commonpaths, $controller->remove_configs);
     foreach ($common_views as $key=>$value) {
         $common_views[$key]['name'] = gt($value['name']);
     }
@@ -574,7 +575,7 @@ function get_config_templates($controller, $loc) {
     unset($common_views['module']);
 
     // get the config views for the module
-    $module_views = find_config_views($modpaths);
+    $module_views = expTemplate::find_config_views($modpaths);
     foreach ($module_views as $key=>$value) {
         $module_views[$key]['name'] = gt($value['name']);
     }
@@ -611,13 +612,9 @@ function get_config_templates($controller, $loc) {
     return $views;
 }
 
-/**
- * Return list of controller configuration views
- * @param array $paths
- * @param array $excludes
- * @return array
- */
 function find_config_views($paths=array(), $excludes=array()) {
+    return expTemplate::find_config_views($paths, $excludes);
+
     $framework = expSession::get('framework');
     $views = array();
     foreach ($paths as $path) {
@@ -645,6 +642,8 @@ function find_config_views($paths=array(), $excludes=array()) {
 }
 
 function get_template_for_action($controller, $action, $loc=null) {
+    expTemplate::get_template_for_action($controller, $action, $loc);
+
     $framework = expSession::get('framework');
 
     // set paths we will search in for the view
@@ -705,14 +704,9 @@ function get_template_for_action($controller, $action, $loc=null) {
     }
 }
 
-/**
- * Return list of controller display views available
- * @param $ctl
- * @param $action
- * @param $human_readable
- * @return array
- */
 function get_action_views($ctl, $action, $human_readable) {
+    expTemplate::get_action_views($ctl, $action, $human_readable);
+
     // setup the controller
 //    $controllerName = expModules::getControllerClassName($ctl);
 //    $controller = new $controllerName();
@@ -753,11 +747,9 @@ function get_action_views($ctl, $action, $human_readable) {
     return $views;
 }
 
-/**
- * Return list of attached file display views available
- * @return array
- */
 function get_filedisplay_views() {
+    expTemplate::get_filedisplay_views();
+
     $paths = array(
         BASE.'framework/modules/common/views/file/',
         BASE.'themes/'.DISPLAY_THEME.'modules/common/views/file/',
@@ -835,6 +827,7 @@ function expUnserialize($serial_str) {
  */
 function expProcessBuffer($buffer, $mode=null) {
      global $jsForHead, $cssForHead;
+
 //     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead.$jsForHead, $buffer));
     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }

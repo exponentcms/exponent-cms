@@ -311,7 +311,7 @@ class ecomconfigController extends expController {
         $config = new expConfig($this->loc);
         $this->config = $config->config;
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
         
         $gc = new geoCountry();             
         $countries = $gc->find('all');

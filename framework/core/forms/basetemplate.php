@@ -101,7 +101,7 @@ abstract class basetemplate {
         $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
         $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
-		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
+		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);  //FIXME only place we call this method
         if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
             $this->tpl->assign("badview", $view);
         }
@@ -109,6 +109,7 @@ abstract class basetemplate {
 
 		$this->module = $item_dir;
 
+        // strip file type
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
         $this->tpl->setTemplateDir($this->viewdir);
@@ -135,7 +136,6 @@ abstract class basetemplate {
 	 */
 	function output() {
 		// javascript registration
-		
         if (empty($this->file_is_a_config)) {
             $this->tpl->display($this->view.'.tpl');
         }

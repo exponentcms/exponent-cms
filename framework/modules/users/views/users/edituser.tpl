@@ -121,10 +121,10 @@
                 {/if}
 	            {foreach from=$extensions item=extension}
                     <div id="tab{$extension->id+2}" >
-                        {if file_exists("`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl")}
-                            {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
-                        {elseif file_exists("`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl")}
+                        {if file_exists("`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl")}
                             {include file="`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl"}
+                        {elseif file_exists("`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl")}
+                            {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
                         {/if}
                     </div>
 	            {/foreach}

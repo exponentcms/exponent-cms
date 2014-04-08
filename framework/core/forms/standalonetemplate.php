@@ -20,9 +20,8 @@
 /**
  * Standalone Template Class
  *
- * A standalone template is a template (tpl) file found in either
- * THEME_ABSOLUTE/views or BASE/views, which uses
- * the corresponding views_c directory for compilation.
+ * A standalone template is a global view template (tpl) file found in either
+ * THEME_ABSOLUTE/views or /framework/core/views.
  *
  * @package Subsystems-Forms
  * @subpackage Template
@@ -33,6 +32,14 @@ class standalonetemplate extends basetemplate {
 
 	function __construct($view) {
 		parent::__construct("globalviews", "", $view);
+        // substitute a framework variation if available
+        if (expSession::get('framework') == 'bootstrap') {
+            $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap.tpl';
+            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+                $this->viewfile = $bstrpview;
+                $this->view = substr(basename($this->viewfile), 0, -4);
+            }
+        }
 	}
 
 }

@@ -240,6 +240,7 @@ class importexportController extends expController {
                 $item->update($params);  // add expCat & expTag attachments to item
             }
         }
+        unlink($this->params['filename']);
         flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
         expHistory::back();
     }

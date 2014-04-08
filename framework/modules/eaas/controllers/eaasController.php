@@ -395,7 +395,7 @@ class eaasController extends expController {
         $order = isset($this->params['order']) ? $this->params['order'] : 'section';
         $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
         $pullable = array();
         $page = array();
 
