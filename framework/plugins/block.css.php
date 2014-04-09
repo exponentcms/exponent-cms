@@ -43,6 +43,8 @@ function smarty_block_css($params,$content,&$smarty, &$repeat) {
 		    "css"=>trim($content),
 		    "link"=>!empty($params['link']) ? $params['link'] : '',
 		    "corecss"=>!empty($params['corecss']) ? $params['corecss'] : '',
+            "css_primer"=>!empty($params['css_primer']) ? $params['css_primer'] : '',
+            "lessprimer"=>!empty($params['lessprimer']) ? $params['lessprimer'] : '',
             "lesscss"=>!empty($params['lesscss']) ? $params['lesscss'] : '',
             "lessvars"=>!empty($params['lessvars']) ? $params['lessvars'] : '',
 		    )
