@@ -32,7 +32,7 @@
         <!-- navigation bar/menu -->
         <div class="navigation navbar <?php echo (MENU_LOCATION) ? 'navbar-'.MENU_LOCATION : '' ?>">
             <div class="navbar-inner">
-                <div class="container">
+                <div class="nav-container">
                     <!-- toggle for collapsed/mobile navbar content -->
                     <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
                         <span class="icon-bar"></span>
