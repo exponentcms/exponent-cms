@@ -44,6 +44,7 @@
                 <th>{'Group Name'|gettext}</th>
                 <th>{'Description'|gettext}</th>
                 <th>{'Type'|gettext}</th>
+                <th>{'Members'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
 			</tr>
 		</thead>
@@ -53,6 +54,7 @@
                     <td>{$group->name}</td>
                     <td>{$group->description}</td>
                     <td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
+                    <td>{count($group->members)}</td>
                     <td>
                         {permissions}
                             <div class="item-actions">
