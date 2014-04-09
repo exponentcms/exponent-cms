@@ -47,7 +47,7 @@ class convert_permissions extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-		return true;  // we'll just do it ine very instance instead of testing if user profile extensions are active
+		return true;  // we'll just do it in every instance instead of testing
 	}
 
 	/**
