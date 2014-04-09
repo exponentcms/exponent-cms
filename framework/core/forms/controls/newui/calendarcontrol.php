@@ -89,7 +89,7 @@ class calendarcontrol extends formcontrol {
 
     function controlToHTML($name, $label = null) {
         $idname = str_replace(array('[',']',']['),'_',$name);
-        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
+        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/newui/assets/';
         $html        = "
             <div id=\"calendar-container-" . $idname . "\" class=\"yui3-skin-sam\"> </div>
             <div id=\"cal-container-" . $idname . "\" class=\"control calendar-control\">";

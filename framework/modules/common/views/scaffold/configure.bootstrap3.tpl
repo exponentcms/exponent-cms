@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="config" class="module scaffold configure exp-skin">
+<div id="config" class="module scaffold configure exp-skin bootstrap3">
     <div class="form_header">
         <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
 

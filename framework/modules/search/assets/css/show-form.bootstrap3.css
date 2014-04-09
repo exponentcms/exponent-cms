@@ -4,7 +4,7 @@
     margin-bottom: .5em;
 }
 
-.search.show-form input {
+.search.show-form .input-group input.form-control {
     width:74%;
     margin-top:0;
 	padding: 7px 12px;

@@ -32,7 +32,7 @@
     </div>
 {/foreach}
 
-{script unique="alert" jquery=1 src="`$smarty.const.PATH_RELATIVE`external/bootstrap/js/bootstrap-alert.js"}
+{script unique="alert" jquery=1 bootstrap="alert"}
 {literal}
     $(".alert").alert()
 {/literal}

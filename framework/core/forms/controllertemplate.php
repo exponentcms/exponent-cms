@@ -46,13 +46,14 @@ class controllertemplate extends basetemplate {
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-        if (NEWUI) {
+        if ($framework == 'bootstrap3') {
             $this->tpl->setPluginsDir(array(
-                BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/newui',  //FIXME we leave out bootstrap3 & bootstrap chain?
-                BASE.'framework/plugins/jquery',
-                BASE.'framework/plugins',
-                SMARTY_PATH.'plugins',
+                BASE . 'themes/' . DISPLAY_THEME . '/plugins',
+                BASE . 'framework/plugins/bootstrap3',
+                BASE . 'framework/plugins/bootstrap',
+                BASE . 'framework/plugins/jquery',
+                BASE . 'framework/plugins',
+                SMARTY_PATH . 'plugins',
             ));
         } elseif ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
@@ -62,11 +63,10 @@ class controllertemplate extends basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif ($framework == 'bootstrap3') {
+        } elseif (NEWUI) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/bootstrap3',
-                BASE.'framework/plugins/bootstrap',
+                BASE.'framework/plugins/newui',  // we leave out bootstrap3 & bootstrap chain on purpose
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',

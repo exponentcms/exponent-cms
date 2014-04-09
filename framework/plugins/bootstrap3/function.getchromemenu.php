@@ -40,6 +40,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
 
         $list = '<ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">';
 
+        if (!empty($params['hcview'])) $list .= '<li role="presentation" class="dropdown-header">('.ucwords(gt($module->info['scope'])).')</li>';
         $list .= '<li role="presentation" class="dropdown-header">'.gt($module->action).' / '.gt(str_replace($module->action.'_','',$module->view)).'</li>';
         $list .= '<li class="divider"></li>';
 

@@ -1,4 +1,4 @@
-@import "../../../../core/assets/less/lesshat";
+@import "../../../../../external/lesshat/lesshat";
 
 .exp-container-chrome { 
 	border:1px solid #0061a0;
@@ -28,7 +28,16 @@
 		.background-image(linear-gradient(to bottom, #4fc64a 0%,#2b7328 100%));
 		.exp-trigger {
 			&:hover, &:focus, &:active {
-				.background-image(linear-gradient(to bottom, #48b644 0%,#389335 100%));
+				.background-image(linear-gradient(to bottom, #4fc64a 0%,#389335 100%));
+			}
+		}
+	}
+	&.exp-container-chrome-module.hardcoded-chrome {
+		border:1px solid #74151e;
+		.background-image(linear-gradient(to bottom, #e27c86 0%,#74151e 100%));
+		.exp-trigger {
+			&:hover, &:focus, &:active {
+				.background-image(linear-gradient(to bottom, #e27c86 0%,#74151e 100%));
 			}
 		}
 	}
@@ -55,7 +64,14 @@
 		color: #fff;
 		text-shadow: 1px 1px 4px rgba(0,0,0,0.15);
 		border:1px solid #64855f;
-
-
 	}
+}
+
+.exp-container-chrome ul.dropdown-menu li {
+	list-style: none;
+}
+
+.exp-container-chrome.hardcoded-chrome ul.dropdown-menu {
+	top: 45px;
+	left: 20px;
 }

@@ -33,22 +33,28 @@
  * @param \Smarty $smarty
  * @return bool
  */
-function smarty_function_help($params,&$smarty) {
+if (!function_exists('smarty_function_help')) {
+    function smarty_function_help($params, &$smarty)
+    {
+        if (HELP_ACTIVE) {
+            // figure out the params
+            $doc = !empty($params['doc']) ? $params['doc'] : (!empty($params['module']) ? $params['module'] : $smarty->getTemplateVars(
+                '__loc'
+            )->mod);
+            $text = empty($params['text']) ? '&#160;' : $params['text'];
+            $title = empty($params['title']) ? $text : (empty($params['text']) ? gt('Get Help with') . ' ' . ucwords(
+                    $doc
+                ) : $params['title']);
+            $class = 'helplink';
+            $class .= empty($params['class']) ? '' : $params['class'];
 
-    if (HELP_ACTIVE) {
-        // figure out the params
-        $doc = !empty($params['doc']) ? $params['doc'] : (!empty($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod);
-        $text = empty($params['text']) ? '&#160;' : $params['text'];
-        $title = empty($params['title']) ? $text : (empty($params['text']) ? gt('Get Help with').' '.ucwords($doc) : $params['title']);
-        $class  = 'helplink';
-        $class .= empty($params['class']) ? '' : $params['class'];
-
-        if (!empty($params['page'])) {
-            $link = HELP_URL.$params['page'];
-        } else {
-            $link = help::makeHelpLink($doc);
+            if (!empty($params['page'])) {
+                $link = HELP_URL . $params['page'];
+            } else {
+                $link = help::makeHelpLink($doc);
+            }
+            echo '<a title="' . $title . '" href="' . $link . '" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ' . $text . '</a>';
         }
-        echo '<a title="'.$title.'" href="'.$link.'" target="_blank"><i class="fa fa-question-circle fa-fw"></i> '.$text.'</a>';
     }
 }
 

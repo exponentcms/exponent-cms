@@ -44,36 +44,38 @@ abstract class basetemplate {
 //	var $langdir = "";
 	//	
 	
-	function __construct($item_type, $item_dir, $view = "Default") {
+	function __construct($item_type, $item_dir, $view = "Default")
+    {
 //        global $head_config;
 
-		include_once(SMARTY_PATH.'Smarty.class.php');
+        include_once(SMARTY_PATH . 'Smarty.class.php');
 
-		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
+        // Set up the Smarty template variable we wrap around.
+        $this->tpl = new Smarty();
 
-		if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
-        $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
-        $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
+        if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting(
+            ) & ~E_NOTICE & ~E_WARNING; //FIXME this disables bad template code reporting 3.x
+        $this->tpl->debugging = SMARTY_DEVELOPMENT; // Opens up the debug console
+        $this->tpl->error_unassigned = true; // display notice when accessing unassigned variable, if warnings turned on
 
-		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
+        $this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-        $this->tpl->setCacheDir(BASE.'tmp/cache');
+        $this->tpl->setCacheDir(BASE . 'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-        if (NEWUI) {
+        if ($framework == 'bootstrap3') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/newui',  //FIXME we leave out bootstrap3 & bootstrap chain?
+                BASE.'framework/plugins/bootstrap3',
+                BASE.'framework/plugins/bootstrap',
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-//        } elseif ($head_config['framework'] == 'jquery') {
         } elseif ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -82,11 +84,10 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif ($framework == 'bootstrap3') {
+        } elseif (NEWUI) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
-                BASE.'framework/plugins/bootstrap3',
-                BASE.'framework/plugins/bootstrap',
+                BASE.'framework/plugins/newui',  // we leave out bootstrap3 & bootstrap on purpose
                 BASE.'framework/plugins/jquery',
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',

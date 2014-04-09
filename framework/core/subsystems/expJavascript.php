@@ -92,8 +92,8 @@ class expJavascript {
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->';
                 }
-                if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?SWATCH:'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
@@ -103,7 +103,7 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3') {
+                    } elseif ($head_config['framework'] == 'bootstrap3' || NEWUI) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -227,8 +227,8 @@ class expJavascript {
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->' . "\r\n";
                 }
-                if (!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"../../../themes/'.DISPLAY_THEME.'/less"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?SWATCH:'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
@@ -238,7 +238,7 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3') {
+                    } elseif ($head_config['framework'] == 'bootstrap3' || NEWUI) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,

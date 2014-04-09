@@ -290,7 +290,7 @@ class administrationController extends expController {
         }
         
 		assign_to_template(array(
-            'menu'=>(NEWUI) ? $sorted : json_encode($sorted),
+            'menu'=>(expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }

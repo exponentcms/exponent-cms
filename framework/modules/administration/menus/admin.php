@@ -30,7 +30,7 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BUILDDATE);
 
-if (NEWUI) {
+if (expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) {
     $admin_text = 'Admin';
 } else {
     $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">';

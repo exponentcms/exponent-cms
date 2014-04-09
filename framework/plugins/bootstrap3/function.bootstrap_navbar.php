@@ -68,15 +68,15 @@ function build_menu($page,$params) {
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$page->text.'</a></li>'."\n";
     } elseif ($page->type != 3) {                                                // this is a submenu item
-        if ($page->depth) {
+        if (!empty($page->depth)) {
             $menu = '<li class="dropdown-submenu';
         } else {
             $menu = '<li class="dropdown';
         }
         if ($sectionObj->id == $page->id) $menu .= ' active';
         $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$page->text;
-        if (!$page->depth) $menu .= '<b class="caret"></b>';
-        $menu .= '</a>'."\n".'<ul class="dropdown-menu pull-'.$params['menualign'].'">'."\n";
+        if (empty($page->depth)) $menu .= '<b class="caret"></b>';
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu pull-'.(!empty($params['menualign'])?$params['menualign']:'').'">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;

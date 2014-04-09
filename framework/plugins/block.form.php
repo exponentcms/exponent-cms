@@ -49,7 +49,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-        if (!NEWUI) {
+//        if (!NEWUI) {
             if (expSession::get('framework') == 'bootstrap') {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
@@ -63,7 +63,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (expSession::get('framework') == 'bootstrap3') {
+            } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -82,7 +82,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                      ));
                      $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
-        }
+//        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',

@@ -14,7 +14,7 @@
  *}
 
 
-{css unique="slingbar" lesscss="`$asset_path`less/exp-toolbar.less"}
+{css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
 
 {/css}
 
@@ -122,4 +122,3 @@ jQuery(document).ready(function($) {
 });
 {/literal}
 {/script}
-

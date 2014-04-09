@@ -33,40 +33,48 @@
  * @param \Smarty $smarty
  * @return string
  */
-function smarty_function_bootstrap_navbar($params,&$smarty) {
-    $menu = '';
+if (!function_exists('smarty_function_bootstrap_navbar')) {
+    function smarty_function_bootstrap_navbar($params, &$smarty)
+    {
+        $menu = '';
 
-    if (empty($params['menu'])) {
-        return $menu;
-    } else {
-        foreach ($params['menu'] as $page) {
-            $menu .= build_menu($page,$params);
+        if (empty($params['menu'])) {
+            return $menu;
+        } else {
+            foreach ($params['menu'] as $page) {
+                $menu .= build_menu($page, $params);
+            }
+            expJavascript::pushToFoot(
+                array(
+                    "unique"    => 'bootstrap-dropdown',
+//            "jquery"=> '1',
+//            "src"=> PATH_RELATIVE . 'external/bootstrap3/js/dropdown.js',
+                    "bootstrap" => 'dropdown',
+                )
+            );
+            expJavascript::pushToFoot(
+                array(
+                    "unique"    => 'bootstrap-collapse',
+//            "jquery"=> '1',
+//            "src"=> PATH_RELATIVE . 'external/bootstrap3/js/collapse.js',
+                    "bootstrap" => 'collapse',
+                )
+            );
+            return $menu;
         }
-        expJavascript::pushToFoot(array(
-            "unique"  => 'bootstrap-dropdown',
-            "jquery"=> '1',
-//            "src"=> PATH_RELATIVE . 'external/bootstrap/js/bootstrap-dropdown.js',
-            "bootstrap"=> 'dropdown',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'bootstrap-collapse',
-            "jquery"=> '1',
-//            "src"=> PATH_RELATIVE . 'external/bootstrap/js/bootstrap-collapse.js',
-            "bootstrap"=> 'collapse',
-        ));
-        return $menu;
     }
 }
 
 function build_menu($page,$params) {
     global $sectionObj;
 
-    if (empty($page->itemdata) && empty($page->submenu) && (empty($page->type) || (!empty($page->type) && $page->type != 3))) {  // this is a menu item
+//    $menu = '';
+    if (empty($page->itemdata) && empty($page->submenu) && $page->type != 3) {  // this is a menu item
         $menu = '<li tabindex="-1"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$page->text.'</a></li>'."\n";
-    } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
+    } elseif ($page->type != 3) {                                                // this is a submenu item
         if (!empty($page->depth)) {
             $menu = '<li class="dropdown-submenu';
         } else {
@@ -94,7 +102,7 @@ function build_menu($page,$params) {
         }
         $menu .= '</ul>'."\n".'</li>'."\n";
     } else {
-    $menu = '';
+        $menu = '';
     }
 
     return $menu;

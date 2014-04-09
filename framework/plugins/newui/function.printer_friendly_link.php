@@ -32,19 +32,21 @@
  * @param         $params
  * @param \Smarty $smarty
  */
-function smarty_function_printer_friendly_link($params,&$smarty) {
-	global $router;
+if (!function_exists('smarty_function_printer_friendly_link')) {
+    function smarty_function_printer_friendly_link($params, &$smarty)
+    {
+        global $router;
 
-    $config = $smarty->getTemplateVars('config');
-    if (is_object($config)) {
-        $print = !empty($config->printlink);
-    } elseif (is_array($config)) {
-        $print = !empty($config['printlink']);
-    } elseif (isset($params['show'])) {  // force display of link
-        $print = isset($params['show']) ? $params['show'] : null;
-    }
-    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
-        // initialize a couple of variables
+        $config = $smarty->getTemplateVars('config');
+        if (is_object($config)) {
+            $print = !empty($config->printlink);
+        } elseif (is_array($config)) {
+            $print = !empty($config['printlink']);
+        } elseif (isset($params['show'])) { // force display of link
+            $print = isset($params['show']) ? $params['show'] : null;
+        }
+        if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
+            // initialize a couple of variables
 //        if (BTN_SIZE == 'large') {
 //            $btn_size = '';  // actually default size, NOT true boostrap large
 //            $icon_size = 'icon-2x';
@@ -55,13 +57,15 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
 //            $btn_size = 'btn-small';
 //            $icon_size = 'icon-large';
 //        }
-        $view = isset($params['view']) ? $params['view'] : null;
-        $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-        $class = isset($params['class']) ? $params['class'] : 'btn '.expTheme::buttonStyle();
-        $text = '<i class="icon-print '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
+            $view = isset($params['view']) ? $params['view'] : null;
+            $prepend = isset($params['prepend']) ? $params['prepend'] : '';
+            $class = isset($params['class']) ? $params['class'] : 'btn ' . expTheme::buttonStyle();
+            $text = '<i class="icon-print ' . expTheme::iconSize(
+                ) . '"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 
-        // spit out the link
-        echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);
+            // spit out the link
+            echo $prepend . $router->printerFriendlyLink($text, $class, 800, 600, $view);
+        }
     }
 }
 

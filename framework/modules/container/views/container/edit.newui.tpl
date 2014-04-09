@@ -17,7 +17,6 @@
 
 {*{/css}*}
 <div class="exp-skin">
-    
     <div class="exp-container edit">
         <div class="info-header">
             <div class="related-actions">
@@ -316,5 +315,4 @@
         {/literal}
         {/script}
     {/if}
-
 </div>
