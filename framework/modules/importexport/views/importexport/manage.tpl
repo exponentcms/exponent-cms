@@ -14,13 +14,23 @@
  *}
  
 <div class="module importexport manage">
-    <h1>{"Import Data"|gettext}</h1>
-    {form action=import}        
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-data"}
+        </div>
+        <h1>{"Import Data"|gettext}</h1>
+    </div>
+    {form action=import}
         {control type="dropdown" name="import_type" label="Select Module Data to Import"|gettext items=$importDD}
         {control type="buttongroup" submit="Begin Import"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}
-    <h1>{'Export Data'|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Exporting Data"|gettext) module="export-data"}
+        </div>
+        <h1>{"Export Data"|gettext}</h1>
+    </div>
     {form action=export}
         {control type="dropdown" name="export_type" label="Select Module Data to Export"|gettext items=$exportDD}
         {control type="buttongroup" submit="Begin Export"|gettext cancel="Cancel"|gettext}

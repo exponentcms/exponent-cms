@@ -51,7 +51,7 @@ $auto_dirs = array(
 	BASE.'framework/core/forms/controls',
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
-	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
+//	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
 	BASE.'framework/modules/ecommerce/products/models',  // models
 );
 /**

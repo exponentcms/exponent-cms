@@ -109,6 +109,14 @@ if (!defined('UPLOAD_DIRECTORY_RELATIVE')) {
     define('UPLOAD_DIRECTORY_RELATIVE', 'files/');
 }
 
+// iconset base
+if (!defined('ICON_RELATIVE')) {
+    define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
+}
+if (!defined('MIMEICON_RELATIVE')) {
+    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
+}
+
 if (defined('SCRIPT_EXP_RELATIVE')) {
     define('SCRIPT_RELATIVE', PATH_RELATIVE . SCRIPT_EXP_RELATIVE);
     define('SCRIPT_ABSOLUTE', BASE . SCRIPT_EXP_RELATIVE);
@@ -486,14 +494,6 @@ if (!defined('JS_RELATIVE')) {
      */
     define('JS_URL', URL_FULL . 'framework/core/assets/js/');
 //   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
-}
-
-// iconset base
-if (!defined('ICON_RELATIVE')) {
-    define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
-}
-if (!defined('MIMEICON_RELATIVE')) {
-    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
 }
 
 /**

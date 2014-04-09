@@ -3,7 +3,7 @@ Swift,5.1.0,swiftmailer.org,5.1.0,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 swfobject,2.2,code.google.com/p/swfobject,2.2,
-Smarty,3.1.17,smarty.net,3.1.18,
+Smarty,3.1.18,smarty.net,3.1.18,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.2.0,github.com/mrclay/minify,2.2.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -19,10 +19,11 @@ class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou modu
 iCalCreator,2.18,kigkonsult.se/iCalcreator,2.18,
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,will not compile bootstrap v3+
 less.php,1.7.0.1,lessphp.gpeasy.com/,1.7.0.1,
+lesshat,2.0.15,https://github.com/csshat/lesshat,2.0.15,
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.1.1,twitter.github.com/bootstrap,3.1.1,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.1.1,bootswatch.com/,3.1.1,
+Bootswatch,3.1.1+1,bootswatch.com/,3.1.1+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.0.3,fortawesome.github.com/Font-Awesome,4.0.3,updated FontAwesomePath in variables.less
 Adminer,4.0.3,www.adminer.org,4.0.3,
