@@ -179,8 +179,7 @@ class expTheme
         }
         if (NEWUI && $head_config['framework'] != 'bootstrap' && $head_config['framework'] != 'bootstrap3') {
             expCSS::pushToHead(array(
-//                "corecss"=>"newui"  //FIXME ths is precompiled with the 'exp-skin' wrapper
-                "lesscss"=>"external/bootstrap3/less/newui.less",
+                "lessprimer"=>"external/bootstrap3/less/newui.less",
                 "lessvars"=>array(
                     'swatch'=>'cerulean',  // newui uses this swatch
                     'themepath'=>'cerulean',  // hack to prevent crash

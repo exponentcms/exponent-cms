@@ -13,7 +13,15 @@
  *
  *}
 
-{css unique="newui" css_primer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/css/newui.css"}
+{assocarray}
+    lessvars: [
+        swatch: "cerulean"
+        themepath: "cerulean"
+        btn_size: "small"
+    ]
+{/assocarray}
+
+{css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}
 
 {/css}
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
