@@ -148,5 +148,6 @@ if (EXPORT_AS_PDF == 1) {
 } else {
     ob_end_flush();
 }
+expSession::un_set('force_less_compile');  // remove flag at when page finishes
 
 ?>
