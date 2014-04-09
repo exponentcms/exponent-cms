@@ -109,6 +109,14 @@ if (!defined('UPLOAD_DIRECTORY_RELATIVE')) {
     define('UPLOAD_DIRECTORY_RELATIVE', 'files/');
 }
 
+// iconset base
+if (!defined('ICON_RELATIVE')) {
+    define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
+}
+if (!defined('MIMEICON_RELATIVE')) {
+    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
+}
+
 if (defined('SCRIPT_EXP_RELATIVE')) {
     define('SCRIPT_RELATIVE', PATH_RELATIVE . SCRIPT_EXP_RELATIVE);
     define('SCRIPT_ABSOLUTE', BASE . SCRIPT_EXP_RELATIVE);
@@ -488,14 +496,6 @@ if (!defined('JS_RELATIVE')) {
 //   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
 }
 
-// iconset base
-if (!defined('ICON_RELATIVE')) {
-    define('ICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/');
-}
-if (!defined('MIMEICON_RELATIVE')) {
-    define('MIMEICON_RELATIVE', PATH_RELATIVE . 'framework/core/assets/images/mimetypes/');
-}
-
 /**
  * YUI 3 Version Constants
  * Changing the version here lets Exponent adjust where to look
@@ -540,7 +540,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.17');
+    define('SMARTY_VERSION', '3.1.18');
     define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
