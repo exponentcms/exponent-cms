@@ -22,6 +22,10 @@
 
   &-inverse {
     .btn-shadow(@navbar-inverse-bg);
+
+    .badge {
+      background-color: @navbar-inverse-link-active-bg;
+    }
   }
 
   &-nav > li > a {
@@ -144,9 +148,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .table {
 
-  tr.success,
-  tr.warning,
-  tr.danger {
+  a {
+    text-decoration: underline;
+  }
+
+  .success,
+  .warning,
+  .danger,
+  .info {
     color: #fff;
   }
 
@@ -310,6 +319,11 @@ legend {
     color: #fff;
     text-decoration: underline;
   }
+
+  .close {
+    color: @close-color;
+    text-decoration: none;
+  }
 }
 
 // Progress bars ==============================================================
@@ -318,10 +332,6 @@ legend {
 
 .jumbotron {
   border: 1px solid rgba(0, 0, 0, 0.6);
-}
-
-.list-group-item {
-  background-color: lighten(@body-bg, 5%);
 }
 
 .panel-primary,

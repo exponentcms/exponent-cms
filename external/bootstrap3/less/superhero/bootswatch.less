@@ -11,8 +11,20 @@
   border: none;
   font-size: 12px;
 
-  &-default .navbar-nav {
+  &-default {
 
+    .badge {
+      background-color: #fff;
+      color: @navbar-default-bg;
+    }
+  }
+
+  &-inverse {
+
+    .badge {
+      background-color: #fff;
+      color: @navbar-inverse-bg;
+    }
   }
 }
 
@@ -94,6 +106,11 @@ body {
 table,
 .table {
   font-size: 12px;
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
 
   > thead > tr > th,
   > tbody > tr > th,
@@ -182,6 +199,15 @@ label,
 }
 
 // Indicators =================================================================
+
+.close {
+  opacity: 0.4;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
+  }
+}
 
 .label {
   font-weight: 300;

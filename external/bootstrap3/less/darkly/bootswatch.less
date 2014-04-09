@@ -1,4 +1,4 @@
-// Flatly 3.1.1
+// Darkly 3.1.1
 // Bootswatch
 // -----------------------------------------------------
 
@@ -28,6 +28,16 @@
   &-brand {
     padding: 18.5px 15px 20.5px;
   }
+
+  &-form {
+    .form-control {
+      background-color: white;
+
+      &:focus {
+        border-color: white;
+      }
+    }
+  }
 }
 
 // Buttons ====================================================================
@@ -44,7 +54,7 @@
 
 .text-primary,
 .text-primary:hover {
-  color: @brand-primary;
+  color: lighten(@brand-primary, 10%);
 }
 
 .text-success,
@@ -109,8 +119,8 @@ table,
 // Forms ======================================================================
 
 .form-control,
-input, {
-  border-width: 2px;
+input {
+  border: none;
   .box-shadow(none);
 
   &:focus {
@@ -126,7 +136,7 @@ input, {
 
   .form-control,
   .form-control:focus {
-    border: 2px solid @brand-warning;
+    .box-shadow(none);
   }
 }
 
@@ -138,7 +148,7 @@ input, {
 
   .form-control,
   .form-control:focus {
-    border: 2px solid @brand-danger;
+    .box-shadow(none);
   }
 }
 
@@ -150,8 +160,12 @@ input, {
 
   .form-control,
   .form-control:focus {
-    border: 2px solid @brand-success;
+    .box-shadow(none);
   }
+}
+
+.input-group-addon {
+  color: @text-color;
 }
 
 // Navs =======================================================================
@@ -160,8 +174,13 @@ input, {
   .open > a,
   .open > a:hover,
   .open > a:focus {
-    border-color: transparent;
+    border-color: @nav-tabs-border-color;
   }
+}
+
+.nav-tabs > li > a,
+.nav-pills > li > a {
+  color: #fff;
 }
 
 .pager {
@@ -189,18 +208,6 @@ input, {
     color: #fff;
     text-decoration: underline;
   }
-
-  .close {
-    color: #fff;
-    text-decoration: none;
-    opacity: 0.4;
-
-    &:hover,
-    &:focus {
-      color: #fff;
-      opacity: 1;
-    }
-  }
 }
 
 // Progress bars ==============================================================
@@ -218,4 +225,30 @@ input, {
 
 .well {
   .box-shadow(none);
+}
+
+.popover,
+.modal {
+  color: @gray-dark;
+}
+
+.breadcrumb a {
+  color: #fff;
+}
+
+.panel-default > .panel-heading {
+  background-color: @panel-footer-bg;
+}
+
+.modal {
+  color: @text-color;
+
+  &-header,
+  &-footer {
+    border-color: @gray;
+  }
+}
+
+.popover {
+  color: @text-color;
 }
