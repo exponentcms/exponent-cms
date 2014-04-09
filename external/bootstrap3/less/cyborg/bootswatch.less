@@ -42,12 +42,13 @@
 
 // Tables =====================================================================
 
+table,
 .table {
+  color: #fff;
 
-  tr.success,
-  tr.warning,
-  tr.danger {
+  a {
     color: #fff;
+    text-decoration: underline;
   }
 }
 
@@ -130,6 +131,18 @@ legend {
   a {
     color: @alert-warning-text;
     text-decoration: underline;
+  }
+
+  .close {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.4;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      opacity: 1;
+    }
   }
 }
 

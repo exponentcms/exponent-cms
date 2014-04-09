@@ -17,6 +17,7 @@
 // Buttons ====================================================================
 
 .btn {
+  padding: 8px @padding-base-horizontal 7px;
   .shadow();
   font-size: 12px;
   font-weight: bold;
@@ -31,6 +32,22 @@
     margin-top: 2px;
     border-bottom-width: 2px;
     .box-shadow(none);
+  }
+
+  &-lg,
+  &-group-lg > .btn {
+    padding: 14px @padding-large-horizontal 13px;
+    line-height: 15px;
+  }
+
+  &-sm,
+  &-group-sm > .btn {
+    padding: 4px @padding-small-horizontal;
+  }
+
+  &-xs,
+  &-group-xs > .btn {
+    padding: @padding-xs-vertical @padding-xs-horizontal;
   }
 
   &-default:hover,
@@ -112,10 +129,19 @@
 table,
 .table {
 
-  tr.success,
-  tr.warning,
-  tr.danger {
+  a {
+    text-decoration: underline;
+  }
+
+  .success,
+  .warning,
+  .danger,
+  .info {
     color: #fff;
+
+    a {
+      color: #fff;
+    }
   }
 
   > thead > tr > th,
@@ -238,8 +264,11 @@ label {
 
 .pagination,
 .pager {
+
   > li > a,
   > li > span {
+    position: relative;
+    top: 0;
     .shadow();
     color: @pagination-color;
     font-size: 12px;
@@ -247,28 +276,43 @@ label {
     text-transform: uppercase;
 
     &:hover {
-      margin-top: 1px;
+      top: 1px;
       border-bottom-width: 3px;
     }
 
     &:active {
-      margin-top: 2px;
+      top: 2px;
       border-bottom-width: 2px;
     }
   }
-
 
   > .disabled > a,
   > .disabled > span {
 
     &:hover {
-      margin-top: 0;
+      top: 0;
       .shadow();
     }
 
     &:active {
-      margin-top: 0;
+      top: 0;
       .shadow();
+    }
+  }
+}
+
+.pager {
+
+  > li > a,
+  > li > span,
+  > .disabled > a,
+  > .disabled > span {
+
+    &,
+    &:hover,
+    &:active {
+      border-left-width: 2px;
+      border-right-width: 2px;
     }
   }
 }
@@ -283,6 +327,18 @@ label {
     font-weight: normal;
     color: #fff;
     text-decoration: underline;
+  }
+
+  .close {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.4;
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      opacity: 1;
+    }
   }
 }
 
@@ -315,6 +371,5 @@ label {
 
 .panel {
   border: 1px solid @navbar-default-border;
-  .box-shadow(0 4px 0 rgba(0, 0, 0, 0.15));
-
+  .shadow();
 }
