@@ -44,6 +44,7 @@
                 <th data-class="expand">{'Group Name'|gettext}</th>
                 <th data-hide="phone">{'Description'|gettext}</th>
                 <th data-hide="phone">{'Type'|gettext}</th>
+                <th data-hide="phone">{'Members'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
 			</tr>
 		</thead>
@@ -53,6 +54,7 @@
                     <td>{$group->name}</td>
                     <td>{$group->description}</td>
                     <td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
+                    <td>{count($group->members)}</td>
                     <td>
                         {permissions}
                             <div class="item-actions">
@@ -87,6 +89,7 @@
                 null,
                 null,
                 null,
+                { bSearchable: false },
                 { bSearchable: false, bSortable: false },
             ],
             bAutoWidth: false,
