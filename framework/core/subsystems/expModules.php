@@ -172,6 +172,8 @@ class expModules {
     			$moduleInfo[$module]->author = $mod->author();
     			$moduleInfo[$module]->description = $mod->description();
     			$moduleInfo[$module]->codequality = isset($mod->codequality) ? $mod->codequality : 'alpha';
+                $model = $mod->basemodel_name;
+                if (!empty($model) && $model != 'expRecord') $moduleInfo[$module]->workflow = $mod->$model->supports_revisions;
     			$moduleInfo[$module]->active = ($modstate != null ? $modstate->active : 0);
     		}
     	}
