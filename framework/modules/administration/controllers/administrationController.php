@@ -1013,6 +1013,7 @@ class administrationController extends expController {
 	    }
 	    flash('message',$message);
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
@@ -1033,6 +1034,7 @@ class administrationController extends expController {
 			flash('notice',$message);
 		}
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
 		expHistory::back();
@@ -1053,6 +1055,7 @@ class administrationController extends expController {
             $themeclass = $this->params['theme'];
 			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
+            expSession::set('force_less_compile', 1);
             expTheme::removeSmartyCache();
             expSession::clearAllUsersSessionCache();
 		}
@@ -1102,6 +1105,7 @@ class administrationController extends expController {
 			expSession::set('mobile',MOBILE);
 		}
 		expSession::set('mobile',!expSession::get('mobile'));
+        expSession::set('force_less_compile', 1);
 		expTheme::removeSmartyCache();
 		expHistory::back();
 	}
@@ -1276,6 +1280,7 @@ class administrationController extends expController {
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();

@@ -472,8 +472,13 @@ class usersController extends expController {
             'action'     => $this->params['action'],
         ));
 
+        foreach ($page->records as $key=>$group) {
+            $page->records[$key]->members = group::getUsersInGroup($group->id);
+        }
+
         assign_to_template(array(
-            'page' => $page
+            'page' => $page,
+            'groups' => $groups
         ));
     }
 
