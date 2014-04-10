@@ -375,6 +375,14 @@ class expCSS {
                             }
                         }
                         $less = new lessc;
+                        if (DEVELOPMENT && $less_compiler == 'less.php') {
+                            $less->setOptions(array(
+                                'sourceMap'         => true,
+                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                )
+                            );
+                        }
                         $less->setVariables($vars);
 
                         $new_cache = $less->cachedCompile($cache, false);

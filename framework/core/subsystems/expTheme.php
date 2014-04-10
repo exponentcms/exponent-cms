@@ -1567,6 +1567,7 @@ class expTheme
                 case 'page_prev' :
                     $class = 'double-angle-left';
                     break;
+                case 'password' :
                 case 'change_password' :
                     $class = 'key';
                     break;
@@ -1638,6 +1639,7 @@ class expTheme
                 case 'page_prev' :
                     $class = 'angle-double-left';
                     break;
+                case 'password' :
                 case 'change_password' :
                     $class = 'key';
                     break;

@@ -155,7 +155,7 @@ class upgrade_container2 extends upgradescript {
         foreach ($db->selectObjects('grouppermission',"module LIKE '%Controller%'") as $gp) {
             $old_gp_mod = $gp->module;
             $gp->module = expModules::getModuleName($gp->module);  // convert module name to 2.0 style
-            $db->updateObject($gp,'grouppermission',"module = '". $old_gp_mod . "' AND source = '".$gp->source."' AND permission = '".$gp->permission."'",'gid');
+            $db->updateObject($gp,'grouppermission',"module = '". $old_gp_mod . "' AND source = '".$gp->source."' AND permission = '".$gp->permission."' AND internal = '".$gp->internal."'",'gid');
             $count++;
 	    }
         foreach ($db->selectObjects('grouppermission',"module = 'container2'") as $gp) {  // fix pre-release 2.2.0
@@ -171,7 +171,7 @@ class upgrade_container2 extends upgradescript {
         foreach ($db->selectObjects('userpermission',"module LIKE '%Controller%'") as $up) {
             $old_up_mod = $up->module;
             $up->module = expModules::getModuleName($up->module);  // convert module name to 2.0 style
-            $db->updateObject($up,'userpermission',"module = '". $old_up_mod . "' AND source = '".$up->source."' AND permission = '".$up->permission."' AND internal = '".$up->internal."'",'gid');
+            $db->updateObject($up,'userpermission',"module = '". $old_up_mod . "' AND source = '".$up->source."' AND permission = '".$up->permission."' AND internal = '".$up->internal."'",'uid');
             $count++;
 	    }
         foreach ($db->selectObjects('userpermission',"module = 'container2'") as $up) {  // fix pre-release 2.2.0
