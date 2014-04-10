@@ -37,6 +37,8 @@ class blog extends expRecord {
         )
     );
 
+    public $supports_revisions = true;
+
 //    public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 //        parent::__construct($params, $get_assoc, $get_attached);
 //

@@ -17,6 +17,10 @@
     {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
+        {control type=hidden name=revision_id value=$record->revision_id}
+        {if !empty($record->current_revision_id)}
+            {control type=hidden name=current_revision_id value=$record->current_revision_id}
+        {/if}
         <div id="editnews-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Post'|gettext}</em></a></li>
@@ -68,7 +72,33 @@
         </div>
 	    <div class="loadingdiv">{"Loading News Item"|gettext}</div>
         {control type=buttongroup submit="Save News Post"|gettext cancel="Cancel"|gettext}
-     {/form}
+    {/form}
+    {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
+    {if count($revisions) > 1}
+        {toggle unique='text-edit' label='Revisons'|gettext collapsed=true}
+            {foreach from=$revisions item=revision name=revision}
+                {$class = ''}
+                {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}
+                {$label = 'Revision'|gettext|cat:(' #'|cat:($revision->revision_id|cat:(' '|cat:('from'|gettext|cat:(' '|cat:($revision->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT|cat:(' '|cat:('by'|gettext|cat:(' '|cat:($revision->editor|username))))))))))}
+                {if $revision->revision_id == $record->revision_id}{$label = 'Editing'|gettext|cat:(' '|cat:$label)}{/if}
+                {if !$revision->approved && $smarty.const.ENABLE_WORKFLOW}{$class = 'unapproved '|cat:$class}{/if}
+                {$label = $label|cat:(' - '|cat:$revision->title)}
+                {group label=$label class=$class}
+                    {if $revision->revision_id != $record->revision_id}
+                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Click to Restore this revision'|gettext}">
+                    {else}
+                    <span title="{'Editing this revision'|gettext}">
+                    {/if}
+                        {$revision->body|summarize:"html":"parahtml"}
+                    {if $revision->revision_id != $record->revision_id}
+                    </a>
+                    {else}
+                    </span>
+                    {/if}
+                {/group}
+            {/foreach}
+        {/toggle}
+    {/if}
 </div>
 
 {script unique="editform" yui3mods=1}
