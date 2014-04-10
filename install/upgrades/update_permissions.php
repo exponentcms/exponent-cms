@@ -22,9 +22,9 @@
  */
 
 /**
- * This is the class convert_permissions
+ * This is the class update_permissions
  */
-class convert_permissions extends upgradescript {
+class update_permissions extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 	protected $to_version = '2.3.0';  // controller names were changed in 2.2.0
     public $priority = 4; // set this to a high priority

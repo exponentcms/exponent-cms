@@ -28,14 +28,14 @@
  * Type:     block<br>
  * Name:     assocarray<br>
  * Purpose:  Set up a associatvie array
+ * Version:  1.1
+ * Author:    boots
  *
  * @param         $params
  * @param         $content
  * @param \Smarty $smarty
  * @param         $repeat
  *
- *           Version:  1.1
- *           Author:   boots
  *           Purpose:  make assignnents from within a template with a simple syntax
  *           supporting multiple assignments and allowing for simple
  *           assignments as well as arrays and keyed arrays.

@@ -377,9 +377,13 @@ class expCSS {
                         $less = new lessc;
                         if (DEVELOPMENT && $less_compiler == 'less.php') {
                             $less->setOptions(array(
+//                                'outputSourceFiles' => true,
                                 'sourceMap'         => true,
-                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
-                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",
+                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",
+                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,
+//                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,
+//                                'sourceMapBasepath' => dirname(PATH_RELATIVE . $less_pname),
                                 )
                             );
                         }
