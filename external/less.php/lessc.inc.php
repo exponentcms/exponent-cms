@@ -22,6 +22,7 @@ class lessc{
 	protected $allParsedFiles = array();
 	protected $registeredVars = array();
 	private $formatterName;
+    protected $options = array();
 
 	public function __construct($lessc=null, $sourceName=null) {}
 
@@ -43,6 +44,12 @@ class lessc{
 	public function registerFunction($name, $func) {}
 	public function unregisterFunction($name) {}
 
+    public function setOptions($options){
+   		foreach( $options as $name => $value ){
+   			$this->options[$name] = $value;
+   		}
+   	}
+
 	public function setVariables($variables){
 		foreach( $variables as $name => $value ){
 			$this->setVariable( $name, $value );
@@ -58,16 +65,16 @@ class lessc{
 	}
 
 	public function parse($buffer, $presets = array()){
-		$options = array();
+//		$options = array();
 		$this->setVariables($presets);
 		
 		switch($this->formatterName){
 			case 'compressed':
-				$options['compress'] = true;
+				$this->options['compress'] = true;
 				break;
 		}
 
-		$parser = new Less_Parser($options);
+		$parser = new Less_Parser($this->options);
 		$parser->setImportDirs($this->getImportDirs());
 		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
 		$parser->parse($buffer);
@@ -91,7 +98,7 @@ class lessc{
 
 		$this->allParsedFiles = array();
 
-		$parser = new Less_Parser();
+		$parser = new Less_Parser($this->options);
 		$parser->SetImportDirs($this->getImportDirs());
 		if( count( $this->registeredVars ) ){
 			$parser->ModifyVars( $this->registeredVars );
@@ -124,7 +131,7 @@ class lessc{
 		$this->allParsedFiles = array();
 		$this->addParsedFile($fname);
 
-		$parser = new Less_Parser();
+		$parser = new Less_Parser($this->options);
 		$parser->SetImportDirs($this->getImportDirs());
 		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
 		$parser->parseFile($fname);
