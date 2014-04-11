@@ -22,9 +22,9 @@
  * @subpackage Compiler
  */
 
-/*
- * Smarty plugin
- * -------------------------------------------------------------
+/**
+ * Smarty {exp_include} compiler plugin
+ *
  * Author: Liu Song - loosen.copen@gmail.com
  * File: compiler.include_if_exists.php
  * Type: compiler
@@ -32,12 +32,16 @@
  * Version: 1.0.0 
  * Source: http://code.google.com/p/smartyplugin-include-if-exists/downloads/list
  * Purpose: Similar with "include" function, but only include the
- 	template file when it exists. Otherwise, a default file passed
-	by parameter "else" will be included.
+ *	template file when it exists. Otherwise, a default file passed
+ *	by parameter "else" will be included.
+ *
+ * Updates
+ *    Version 2.0:
+ *       Updated to work with Smarty v3 and added Exponent framework template detection/selection
+ *
  * Example:
-	1	{include_if_exists file="foo.tpl" assign="foo"}
-	2	{include_if_exists file="foo.tpl" else="default.tpl"}
- * -------------------------------------------------------------
+ *	1	{exp_include file="foo" assign="foo"}
+ *	2	{exp_include file="foo" else="default"}
  */
 
 /**
