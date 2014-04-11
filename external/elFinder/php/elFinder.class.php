@@ -68,7 +68,7 @@ class elFinder {
 		'duplicate' => array('targets' => true, 'suffix' => false),
 		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false),
 		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false),
-		'get'       => array('target' => true),
+		'get'       => array('target' => true, 'conv' => false),
 		'put'       => array('target' => true, 'content' => '', 'mimes' => false),
 		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false),
 		'extract'   => array('target' => true, 'mimes' => false),
@@ -190,6 +190,7 @@ class elFinder {
 	const ERROR_ARC_MAXSIZE       = 'errArcMaxSize';
 	const ERROR_RESIZE            = 'errResize';
 	const ERROR_UNSUPPORT_TYPE    = 'errUsupportType';
+	const ERROR_CONV_UTF8         = 'errConvUTF8';
 	const ERROR_NOT_UTF8_CONTENT  = 'errNotUTF8Content';
 	const ERROR_NETMOUNT          = 'errNetMount';
 	const ERROR_NETUNMOUNT        = 'errNetUnMount';
@@ -1233,6 +1234,66 @@ class elFinder {
 	}
 	
 	/**
+	 * Detect file type extension by local path
+	 * 
+	 * @param  string $path Local path
+	 * @return string file type extension with dot
+	 * @author Naoki Sawada
+	 */
+	protected function detectFileExtension($path) {
+		static $type, $finfo, $extTable;
+		if (!$type) {
+			$keys = array_keys($this->volumes);
+			$volume = $this->volumes[$keys[0]];
+			$extTable = array_flip(array_unique($volume->getMimeTable()));
+			
+			if (class_exists('finfo')) {
+				$tmpFileInfo = @explode(';', @finfo_file(finfo_open(FILEINFO_MIME), __FILE__));
+			} else {
+				$tmpFileInfo = false;
+			}
+			$regexp = '/text\/x\-(php|c\+\+)/';
+			if ($tmpFileInfo && preg_match($regexp, array_shift($tmpFileInfo))) {
+				$type = 'finfo';
+				$finfo = finfo_open(FILEINFO_MIME);
+			} elseif (function_exists('mime_content_type')
+					&& preg_match($regexp, array_shift(explode(';', mime_content_type(__FILE__))))) {
+				$type = 'mime_content_type';
+			} elseif (function_exists('getimagesize')) {
+				$type = 'getimagesize';
+			} else {
+				$type = 'none';
+			}
+		}
+		
+		$mime = '';
+		if ($type === 'finfo') {
+			$mime = @finfo_file($finfo, $path);
+		} elseif ($type === 'mime_content_type') {
+			$mime = mime_content_type($path);
+		} elseif ($type === 'getimagesize') {
+			if ($img = @getimagesize($path)) {
+				$mime = $img['mime'];
+			}
+		}
+		
+		if ($mime) {
+			$mime = explode(';', $mime);
+			$mime = trim($mime[0]);
+			
+			if (in_array($mime, array('application/x-empty', 'inode/x-empty'))) {
+				// finfo return this mime for empty files
+				$mime = 'text/plain';
+			} elseif ($mime == 'application/x-zip') {
+				// http://elrte.org/redmine/issues/163
+				$mime = 'application/zip';
+			}
+		}
+		
+		return ($mime && isset($extTable[$mime]))? ('.' . $extTable[$mime]) : '';
+	}
+	
+	/**
 	 * Save uploaded files
 	 *
 	 * @param  array
@@ -1251,11 +1312,12 @@ class elFinder {
 		}
 		
 		// file extentions table by MIME
-		$extTable = array_flip($volume->getMimeTable());
+		$extTable = array_flip(array_unique($volume->getMimeTable()));
 		
 		$non_uploads = array();
 		if (empty($files)) {
 			if (isset($args['upload']) && is_array($args['upload'])) {
+				$names = array();
 				foreach($args['upload'] as $i => $url) {
 					// check is data:
 					if (substr($url, 0, 5) === 'data:') {
@@ -1284,8 +1346,21 @@ class elFinder {
 							if ($tmpfname) {
 								if (file_put_contents($tmpfname, $data)) {
 									$non_uploads[$tmpfname] = true;
+									$_name = preg_replace('/[\/\\?*:|"<>]/', '_', $_name);
+									list($_a, $_b) = array_pad(explode('.', $_name, 2), 2, '');
+									if ($_b === '') {
+										$_b = $this->detectFileExtension($tmpfname);
+										$_name = $_a.$_b;
+									} else {
+										$_b = '.'.$_b;
+									}
+									if (isset($names[$_name])) {
+										$_name = $_a.'_'.$names[$_name]++.$_b;
+									} else {
+										$names[$_name] = 1;
+									}
 									$files['tmp_name'][$i] = $tmpfname;
-									$files['name'][$i] = preg_replace('/[\/\\?*:|"<>]/', '_', $_name);
+									$files['name'][$i] = $_name;
 									$files['error'][$i] = 0;
 								} else {
 									@ unlink($tmpfname);
@@ -1412,10 +1487,25 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_OPEN, $volume->path($target), $volume->error()));
 		}
 		
+		if ($args['conv'] && function_exists('mb_detect_encoding') && function_exists('mb_convert_encoding')) {
+			$mime = isset($file['mime'])? $file['mime'] : '';
+			if ($mime && strtolower(substr($mime, 0, 4)) === 'text') {
+				if ($enc = mb_detect_encoding ( $content , mb_detect_order(), true)) {
+					if (strtolower($enc) !== 'utf-8') {
+						$content = mb_convert_encoding($content, 'UTF-8', $enc);
+					}
+				}
+			}
+		}
+		
 		$json = json_encode($content);
 
-		if ($json == 'null' && strlen($json) < strlen($content)) {
-			return array('error' => $this->error(self::ERROR_NOT_UTF8_CONTENT, $volume->path($target)));
+		if ($json === false || strlen($json) < strlen($content)) {
+			if ($args['conv']) {
+				return array('error' => $this->error(self::ERROR_CONV_UTF8,self::ERROR_NOT_UTF8_CONTENT, $volume->path($target)));
+			} else {
+				return array('doconv' => true);
+			}
 		}
 		
 		return array('content' => $content);
