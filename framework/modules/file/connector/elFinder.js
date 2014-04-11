@@ -2175,30 +2175,31 @@ elFinder.prototype = {
 				}, 10);
 				
 				return dfrd.promise();
-			} else {
-				var ret = [];
-				var regex;
-				var str = data.files[0];
-				if (data.type == 'html') {
-					regex = /<img[^>]+src=["']?([^"'> ]+)/ig;
-					var m = [];
-					var url = '';
-					var links;
-					while (m = regex.exec(str)) {
-						url = m[1].replace(/&amp;/g, '&');
-						if (url.match(/^http|data:/) && $.inArray(url, ret) == -1) ret.push(url);
-					}
-					links = str.match(/<\/a>/i);
-					if (links && links.length == 1) {
-						regex = /<a[^>]+href=["']?([^"'> ]+)((?:.|\s)+)<\/a>/i;
-						if (m = regex.exec(str)) {
-							if (! m[2].match(/<img/i)) {
-								url = m[1].replace(/&amp;/g, '&');
-								if (url.match(/^http/) && $.inArray(url, ret) == -1) ret.push(url);
-							}
-						}
-					}
-				} else {
+            } else {
+         				var ret = [];
+         				var str = data.files[0];
+         				if (data.type == 'html') {
+         					var tmp = $("<html/>").append($.parseHTML(str));
+         					$('img[src]', tmp).each(function(){
+         						var url = $(this).attr('src');
+         						if (url && $.inArray(url, ret) == -1) ret.push(url);
+         					});
+         					$('a[href]', tmp).each(function(){
+         						var loc,
+         							parseUrl = function(url) {
+         							    var a = document.createElement('a');
+         							    a.href = url;
+         							    return a;
+         							};
+         						if ($(this).text()) {
+         							loc = parseUrl($(this).attr('href'));
+         							if (loc.href && ! loc.pathname.match(/(?:\.html?|\/[^\/.]*)$/i)) {
+         								if ($.inArray(loc.href, ret) == -1) ret.push(loc.href);
+         							}
+         						}
+         					});
+         				} else {
+         					var regex, m, url;
 					regex = /(http[^<>"{}|\\^\[\]`\s]+)/ig;
 					while (m = regex.exec(str)) {
 						url = m[1].replace(/&amp;/g, '&');
@@ -2323,7 +2324,7 @@ elFinder.prototype = {
 				isDataType  = (data.type == 'data'),
 				files       = data.input ? data.input.files : self.uploads.checkFile(data, self), 
 				cnt         = data.checked? (isDataType? files[0].length : files.length) : files.length,
-				loaded      = 5,
+				loaded      = 5, prev,
 				notify      = false,
 				startNotify = function() {
 					return setTimeout(function() {
@@ -2333,8 +2334,10 @@ elFinder.prototype = {
 				},
 				notifyto, notifyto2;
 			
+			prev = loaded;
+
 			if (!isDataType && !cnt) {
-				return dfrd.reject();
+				return dfrd.reject(['errUploadNoFiles']);
 			}
 			
 			xhr.addEventListener('error', function() {
@@ -2346,8 +2349,15 @@ elFinder.prototype = {
 			}, false);
 			
 			xhr.addEventListener('load', function() {
-				var status = xhr.status, data;
+				var status = xhr.status, res;
 				
+				if ((data.checked || notify) && prev == loaded) {
+					loaded = 100;
+					if (loaded - prev > 0) {
+						self.notify({type : 'upload', cnt : 0, progress : (loaded - prev)*cnt});
+					}
+				}
+
 				if (status > 500) {
 					return dfrd.reject('errResponse');
 				}
@@ -2361,12 +2371,14 @@ elFinder.prototype = {
 					return dfrd.reject(['errResponse', 'errDataEmpty']);
 				}
 
-				data = self.parseUploadData(xhr.responseText);
-				data.error ? dfrd.reject(data.error) : dfrd.resolve(data);
+				res = self.parseUploadData(xhr.responseText);
+				res._multiupload = data.multiupload? true : false;
+				res.error ? dfrd.reject(res.error) : dfrd.resolve(res);
 			}, false);
 			
 			xhr.upload.addEventListener('progress', function(e) {
-				var prev = loaded, curr;
+				var curr;
+				prev = loaded;
 
 				if (e.lengthComputable) {
 					
@@ -2391,11 +2403,13 @@ elFinder.prototype = {
 			
 			var send = function(files, paths){
 				var size = 0, fcnt = 1, sfiles = [], c = 0, total = cnt, maxFileSize;
-				if (! data.checked) {
+				if (! data.checked && (isDataType || data.type == 'files')) {
 					maxFileSize = fm.option('uploadMaxSize')? fm.option('uploadMaxSize') : fm.uplMaxSize;
 					for (var i=0; i < files.length; i++) {
 						if (maxFileSize && files[i].size >= maxFileSize) {
 							self.error(self.i18n('errUploadFile', files[i].name) + ' ' + self.i18n('errUploadFileSize'));
+							cnt--;
+							total--;
 							continue;
 						}
 						if ((fm.uplMaxSize && size + files[i].size >= fm.uplMaxSize) || fcnt > fm.uplMaxFile) {
@@ -2426,20 +2440,21 @@ elFinder.prototype = {
 					}
 					
 					if (sfiles.length > 1) {
-						notifyto = startNotify();
-						for (var i=0; i < sfiles.length; i++) {
-							fm.exec('upload', {type: data.type, files: sfiles[i], checked: true}).always(function() {
-								if (notify) {
-									var _cnt = (isDataType? this[0] : this).length;
-									total -= _cnt;
-									if (total < 1) {
-										notifyto && clearTimeout(notifyto);
-										self.notify({type : 'upload', cnt : -cnt, progress : 100 * cnt});
-									}
-								}
-							}.bind(sfiles[i]));
-						}
-						return false;
+                        if (!notifyto) notifyto = startNotify();
+                  						var added = [];
+                  						for (var i=0; i < sfiles.length; i++) {
+                  							fm.exec('upload', {type: data.type, files: sfiles[i], checked: true, multiupload: true})
+                  							.always(function(e) {
+                  								if (e.added) added = $.merge(added, e.added);
+                  								added && fm.trigger('multiupload', {added: added});
+                  								total -= (isDataType? this[0] : this).length;
+                  								if (notify && total < 1) {
+                  									notifyto && clearTimeout(notifyto);
+                  									self.notify({type : 'upload', cnt : -cnt, progress : 100*cnt});
+                  								}
+                  							}.bind(sfiles[i]));
+                  						}
+                  						return false;
 					}
 					
 					if (isDataType) {
@@ -2450,6 +2465,10 @@ elFinder.prototype = {
 					}
 				}
 				
+				if (! files.length) {
+					dfrd.reject(['errUploadNoFiles']);
+				}
+
 				xhr.open('POST', self.uploadURL, true);
 
 				// set request headers
@@ -2515,9 +2534,13 @@ elFinder.prototype = {
 						notifyto2 && clearTimeout(notifyto2);
 						self.notify({type : 'readdir', cnt : -1});
 						cnt = result[0].length;
+						if (cnt) {
 						send(result[0], result[1]);
+						} else {
+							dfrd.reject(['errUploadNoFiles']);
+						}
 					}).fail(function(){
-						dfrd.reject();
+						dfrd.reject(['errUploadNoFiles']);
 					});
 				}
 			}

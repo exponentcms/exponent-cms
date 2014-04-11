@@ -357,7 +357,7 @@ class expCommentController extends expController {
 		if ($require_notification && !$user->isAdmin()) {
 		    $this->sendNotification($this->expComment,$this->params);
 		}
-        if ($require_approval==1 && $this->params['approved']==1) {
+        if ($require_approval==1 && $this->params['approved']==1 && $this->expComment->poster != $user->id) {
 		    $this->sendApprovalNotification($this->expComment,$this->params);
         }
 
