@@ -147,7 +147,12 @@ abstract class basetemplate {
 	function output() {
 		// javascript registration
         if (empty($this->file_is_a_config)) {
-            $this->tpl->display($this->view.'.tpl');
+            try {
+                $this->tpl->display($this->view.'.tpl');
+            } catch(SmartyException $e) {
+              echo "Smarty reported: ". $e->getMessage();
+//              exit;
+            }
         }
 	}
 	
@@ -169,10 +174,14 @@ abstract class basetemplate {
 	 * @return bool|mixed|string
 	 */
 	function render() { // Caching support?
-        if (empty($this->file_is_a_config)) {
-            return $this->tpl->fetch($this->view.'.tpl');
-        } else {
-            return $this->tpl->fetch($this->view.'.config');
+        try {
+            if (empty($this->file_is_a_config)) {
+                return $this->tpl->fetch($this->view.'.tpl');
+            } else {
+                return $this->tpl->fetch($this->view.'.config');
+            }
+        } catch(SmartyException $e) {
+            return "Smarty reported: " . $e->getMessage();
         }
 	}
 

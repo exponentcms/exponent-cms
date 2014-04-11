@@ -60,9 +60,6 @@
  * 
  * - Bugs/Notes:
  *
- * @package Smarty
- * @subpackage plugins
- *
  * Sample usage:
  * <code>
  * {foreach item=$debugItem from=$debugData}

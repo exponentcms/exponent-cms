@@ -89,6 +89,7 @@ class importexportController extends expController {
         $modules = new expPaginator(array(
             'records' => $pullable_modules,
             'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
             'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
             'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
             'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -199,7 +200,7 @@ class importexportController extends expController {
             unset($data[$type->model_table]->records[$select]['rank']);
             $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
             $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
-            $item->save();
+            $item->update();
 
             if ($this->params['import_attached']) {
                 $params = null;;
@@ -255,6 +256,7 @@ class importexportController extends expController {
         $modules = new expPaginator(array(
             'records' => $pullable_modules,
             'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
             'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
             'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
             'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
