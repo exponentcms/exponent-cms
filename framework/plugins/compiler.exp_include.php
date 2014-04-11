@@ -40,7 +40,6 @@
  * -------------------------------------------------------------
  */
 
-
 /**
  * Smarty {exp_include} compiler plugin
  * Type:     compiler<br>
@@ -53,10 +52,9 @@
  * @return string
  */
 function smarty_compiler_exp_include($_params, &$compiler) {
-//	$_params = $compiler->_parse_attrs($tag_attrs);
 	$arg_list = array();
 	if(!isset($_params['file'])) {
-		$compiler->_syntax_error("missing 'file' attribute in include_if_exists tag", E_USER_ERROR, __FILE__, __LINE__);
+		trigger_error("missing 'file' attribute in exp_include tag in " . __FILE__ . " on line " . __LINE__, E_COMPILE_WARNING);
 		return;
 	}
 	foreach($_params as $arg_name => $arg_value) {
