@@ -83,7 +83,15 @@ function smarty_compiler_exp_include($_params, &$compiler) {
                     $include_file = $include_file . '.' . $type;
                 }
             } else {
-                $include_file = $include_file . '.' . $type;
+                if (NEWUI) {
+                    if (file_exists(BASE . $path . $include_file . '.newui.' . $type)) {
+                        $include_file = $include_file . '.newui.' . $type;
+                    } else {
+                        $include_file = $include_file . '.' . $type;
+                    }
+                } else {
+                    $include_file = $include_file . '.' . $type;
+                }
             }
             $include_file = '"' . $include_file . '"';
 			continue;
