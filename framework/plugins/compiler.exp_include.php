@@ -74,10 +74,11 @@ function smarty_compiler_exp_include($_params, &$compiler) {
             $include_file = implode($fileparts);
             // see if there's an framework appropriate template variation
             $framework =  expSession::get('framework');
-            if ($framework == 'bootstrap') {
-                $tinclude_file = $include_file . '.bootstrap.' . $type;
-                if (file_exists(BASE . $path . $tinclude_file)) {
-                    $include_file = $tinclude_file;
+            if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
+                    $include_file = $include_file . '.bootstrap.' . $type;
+                } elseif ($framework == 'bootstrap3' && file_exists(BASE . $path . $include_file . '.bootstrap3.' . $type)) {
+                    $include_file = $include_file . '.bootstrap3.' . $type;
                 } else {
                     $include_file = $include_file . '.' . $type;
                 }
