@@ -405,6 +405,7 @@ class eaasController extends expController {
                 $pullable[$tab] = expModules::listInstalledControllers($tab, $this->loc);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',
+                    'action' => $this->params['action'],
                     'records'=>$pullable[$tab],
                     'limit'=>count($pullable[$tab]),
                     'order'=>$order,

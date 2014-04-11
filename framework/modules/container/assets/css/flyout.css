@@ -100,38 +100,38 @@ a.active.triggerlogin, a.active.triggerlogin:visited {
     padding    : 10px 15px 10px 0px;
 }
 
-.columns {
+.flyout .columns {
     clear       : both;
     width       : 330px;
     padding     : 0 0 20px 0;
     line-height : 22px;
 }
 
-.colleft {
+.flyout .colleft {
     float       : left;
     width       : 130px;
     line-height : 22px;
 }
 
-.colright {
+.flyout .colright {
     float       : right;
     width       : 130px;
     line-height : 22px;
 }
 
-ul {
+.flyout ul {
     padding         : 0;
     margin          : 0;
     list-style-type : none;
 }
 
-ul li {
+.flyout ul li {
     padding         : 0;
     margin          : 0;
     list-style-type : none;
 }
 
-hr {
+.flyout hr {
     background-color : #333333;
     height           : 1px;
 }
