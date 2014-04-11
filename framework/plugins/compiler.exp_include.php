@@ -62,32 +62,43 @@ function smarty_compiler_exp_include($_params, &$compiler) {
 		return;
 	}
 	foreach($_params as $arg_name => $arg_value) {
+        // look for specific arguments: file, else, or assign
 		if($arg_name == 'file') {
 			$include_file = str_replace(array('\'', '"'), '', $arg_value); ;
             $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['modelname']->value . '/';  // strip relative path for links coming from templates
-            if (substr($include_file, -4) == '.tpl') {
-                $include_file = substr($include_file, 0, -5);
-            }
+            // store/strip template file type
+            $fileparts = explode('.', $include_file);
+            if (count($fileparts) > 1) {
+                $type = array_pop($fileparts);
+            } else $type = '.tpl';
+            $include_file = implode($fileparts);
+            // see if there's an framework appropriate template variation
             $framework =  expSession::get('framework');
             if ($framework == 'bootstrap') {
-                $tinclude_file = $include_file . '.bootstrap.tpl';
+                $tinclude_file = $include_file . '.bootstrap.' . $type;
                 if (file_exists(BASE . $path . $tinclude_file)) {
                     $include_file = $tinclude_file;
                 } else {
-                    $include_file = $include_file . '.tpl';
+                    $include_file = $include_file . '.' . $type;
                 }
             } else {
-                $include_file = $include_file . '.tpl';
+                $include_file = $include_file . '.' . $type;
             }
             $include_file = '"' . $include_file . '"';
 			continue;
 		} else if($arg_name == 'else') {
-			$include_file_else = $arg_value . '.tpl';
+			$include_file_else = $arg_value;
+            // tack on a default file type if one is missing
+            $fileparts = explode('.', $include_file_else);
+            if (count($fileparts) == 1) {
+                $include_file_else .= '.tpl';
+            }
 			continue;
 		} else if($arg_name == 'assign') {
 			$assign_var = $arg_value;
 			continue;
 		}
+        // all other arguments are (additional) variables to pass to template
 		if(is_bool($arg_value)) {
 			$arg_value = $arg_value ? 'true' : 'false';
 		}
