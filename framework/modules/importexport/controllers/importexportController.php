@@ -199,7 +199,7 @@ class importexportController extends expController {
             unset($data[$type->model_table]->records[$select]['rank']);
             $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
             $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
-            $item->save();
+            $item->update();
 
             if ($this->params['import_attached']) {
                 $params = null;;
