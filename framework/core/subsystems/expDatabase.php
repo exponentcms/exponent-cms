@@ -795,19 +795,30 @@ abstract class database {
     /**
      * Reduces table item revisions to a passed total
      *
-     * @param string  $table The name of the table to trim
-     * @param integer $id The item id
-     * @param integer $num The number of revisions to retain
+     * @param string  $table     The name of the table to trim
+     * @param integer $id        The item id
+     * @param integer $num       The number of revisions to retain
+     * @param int     $workflow  is workflow turned on (or force)
      */
     public function trim_revisions($table, $id, $num, $workflow=ENABLE_WORKFLOW) {
         if ($workflow && $num) {
             $max_revision = $this->max($table, 'revision_id', null, 'id='.$id);
+            $max_approved = $this->max($table, 'revision_id', null, 'id='.$id.' AND approved=1');
             $min_revision = $this->min($table, 'revision_id', null, 'id='.$id);
             if ($max_revision == null) {
                 return;
             }
+            if (($max_revision - $num) > $max_approved) {
+                $approved_max = ' AND revision_id < ' . $max_approved;  // never delete most recent approved item
+            } else {
+                $approved_max = '';
+            }
             if ($max_revision - $min_revision >= $num) {
-                $this->delete($table, 'id=' . $id . ' AND revision_id <= ' . ($max_revision - $num));
+                $this->delete($table, 'id=' . $id . ' AND revision_id <= ' . ($max_revision - $num) . $approved_max);
+            }
+            if (!empty($approved_max)) {
+                // we've trimmed all the fat below the newest approved item, now trim the dead wood above it
+                $this->delete($table, 'id=' . $id . ' AND revision_id <= ' . ($max_revision - $num + 1) . ' AND revision_id > ' . $max_approved);
             }
         }
     }

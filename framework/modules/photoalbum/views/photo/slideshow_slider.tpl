@@ -76,31 +76,31 @@
 
         <ul class="sliderlist dpd-slidetab tab-nav">
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
-            {foreach key=key from=$slides item=slide name=slides}
+            {foreach key=key from=$slides item=item name=slides}
                 <li class="slider{if $smarty.foreach.slides.first} on{/if}">
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit || ($permissions.create && $slide->poster == $user->id)}
-                                {if $myloc != $slide->location_data}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {if $myloc != $item->location_data}
                                     {if $permissions.manage}
-                                        {icon img='arrow_merge.png' action=merge id=$slide->id title="Merge Aggregated Content"|gettext}
+                                        {icon img='arrow_merge.png' action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}
                                 {/if}
-                                {icon img="edit.png" action=edit record=$slide title="Edit"|gettext|cat:" `$slide->title`"}
+                                {icon img="edit.png" action=edit record=$item title="Edit"|gettext|cat:" `$item->title`"}
                             {/if}
-                            {if $permissions.delete || ($permissions.create && $slide->poster == $user->id)}
-                                {icon img="delete.png" action=delete record=$slide title="Delete"|gettext|cat:" `$slide->title`"}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                                {icon img="delete.png" action=delete record=$item title="Delete"|gettext|cat:" `$item->title`"}
                             {/if}
                         </div>
                     {/permissions}
-                    <a title="{$slide->title}" href="{link action=show title=$slide->sef_url}">
-                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$slide->title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" far=TL f=jpeg q=$quality|default:75}
+                    <a title="{$item->title}" href="{link action=show title=$item->sef_url}">
+                        {img file_id=$item->expFile[0]->id  title="View"|gettext|cat:" `$item->title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" far=TL f=jpeg q=$quality|default:75}
                     </a>
                     <div class="thumb-text">
-                        {if !$config.hidetext}<strong>{$slide->title}</strong>{/if}
-                        {if $slide->body}{$slide->body}{/if}
+                        {if !$config.hidetext}<strong>{$item->title}</strong>{/if}
+                        {if $item->body}{$item->body}{/if}
                     </div>
                 </li>
             {foreachelse}
@@ -111,9 +111,9 @@
         <div class="sliderbox dpd-slidecontent tab-content">
             {foreach key=key from=$slides item=slide name=slides}
                 <div class="tab-pannel">
-                    {if $slide->link}<a href="{$slide->link}">{/if}
-                        <img src="{$slide->expFile[0]->url}" class="slide-image" width="{$config.width|default:600}px" height="{$config.height|default:375}px" />
-                    {if $slide->link}</a>{/if}
+                    {if $item->link}<a href="{$item->link}">{/if}
+                        <img src="{$item->expFile[0]->url}" class="slide-image" width="{$config.width|default:600}px" height="{$config.height|default:375}px" />
+                    {if $item->link}</a>{/if}
                 </div>
             {foreachelse}
                 <li>{"No slides yet"|gettext}</li>

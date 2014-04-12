@@ -43,32 +43,32 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <ul>
-        {foreach from=$page->records item=record name="blogs"}
+        {foreach from=$page->records item=item name="blogs"}
             {if $smarty.foreach.blogs.iteration <= $config.headcount}
-                <li class="item{if !$record->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
-                    <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
+                <li class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+                    <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {if !$config.displayauthor}
                         <span class="label posted"> {'by'|gettext} </span>
-                        <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
                     {/if}
                     {permissions}
                         <div class="item-actions">
-                            {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
-                                {if $record->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$record->revision_id}">{$record->revision_id}</span>{/if}
-                                {if $myloc != $record->location_data}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
+                                {if $myloc != $item->location_data}
                                     {if $permissions.manage}
-                                        {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                                        {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}
                                 {/if}
-                                {icon action=edit record=$record}
+                                {icon action=edit record=$item}
                             {/if}
-                            {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
-                                {icon action=delete record=$record}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                                {icon action=delete record=$item}
                             {/if}
-                            {if !$record->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
-                                {icon action=approve record=$record}
+                            {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $item->poster == $user->id))}
+                                {icon action=approve record=$item}
                             {/if}
                         </div>
                     {/permissions}

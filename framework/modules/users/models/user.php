@@ -377,7 +377,6 @@ class user extends expRecord {
             $tmpu = $db->selectObject('user', 'id=' . $uid);
             if ($tmpu && $tmpu->is_admin == 1) {
                 // User is an admin.  Update is_acting_admin, just in case.
-                // This can be removed as soon as 0.95 is deprecated.
                 $tmpu->is_acting_admin = 1;
             }
             $SYS_USERS_CACHE[$uid] = $tmpu;

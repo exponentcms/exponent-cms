@@ -15,59 +15,59 @@
 
     {pagelinks paginate=$page top=1}
     {$myloc=serialize($__loc)}
-    {foreach from=$page->records item=media key=key}
-        {$filetype=$media->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
+    {foreach from=$page->records item=item key=key}
+        {$filetype=$item->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
         <div class="item">
-            <{$config.item_level|default:'h2'}>{$media->title}</{$config.item_level|default:'h2'}>
-            {tags_assigned record=$media}
+            <{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>
+            {tags_assigned record=$item}
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit || ($permissions.create && $media->poster == $user->id)}
-                        {if $myloc != $media->location_data}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                        {if $myloc != $item->location_data}
                             {if $permissions.manage}
-                                {icon action=merge id=$media->id title="Merge Aggregated Content"|gettext}
+                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
                             {/if}
                         {/if}
-                        {icon action=edit record=$media title="Edit"|gettext|cat:" "|cat:$media->title|cat:" "|cat:("media piece"|gettext)}
+                        {icon action=edit record=$item title="Edit"|gettext|cat:" "|cat:$item->title|cat:" "|cat:("media piece"|gettext)}
                     {/if}
-                    {if $permissions.delete || ($permissions.create && $media->poster == $user->id)}
-                        {icon action=delete record=$media title="Delete"|gettext|cat:" "|cat:$media->title|cat:" "|cat:("media piece"|gettext)}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                        {icon action=delete record=$item title="Delete"|gettext|cat:" "|cat:$item->title|cat:" "|cat:("media piece"|gettext)}
                     {/if}
                 </div>
             {/permissions}
             <div class="video media">
                 {if $filetype == "mp3"}
-                    <audio class="{$config.video_style}" id="{$media->expFile.media[0]->filename}" controls="controls" preload="none"
-                        src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" type="audio/mp3"{if $config.autoplay} autoplay="true" {/if}>
+                    <audio class="{$config.video_style}" id="{$item->expFile.media[0]->filename}" controls="controls" preload="none"
+                        src="{$smarty.const.PATH_RELATIVE}{$item->expFile.media[0]->directory}{$item->expFile.media[0]->filename}" type="audio/mp3"{if $config.autoplay} autoplay="true" {/if}>
                     </audio>
-                {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v" || $media->url != ""}
-                    <video class="{$config.video_style}" width="{$media->width|default:$config.video_width}" height="{$media->height|default:$config.video_height}"
-                        id="player{$media->expFile.media[0]->id}"
+                {elseif $filetype == "mp4" || $filetype == "m4v" || $filetype == "webm" || $filetype == "ogv" || $filetype == "flv" || $filetype == "f4v" || $item->url != ""}
+                    <video class="{$config.video_style}" width="{$item->width|default:$config.video_width}" height="{$item->height|default:$config.video_height}"
+                        id="player{$item->expFile.media[0]->id}"
                         {if $config.autoplay}
                             autoplay="true"
                         {/if}
-                        {if $media->expFile.splash[0]->id}
-                            poster="{$smarty.const.PATH_RELATIVE}{$media->expFile.splash[0]->directory}{$media->expFile.splash[0]->filename}"
+                        {if $item->expFile.splash[0]->id}
+                            poster="{$smarty.const.PATH_RELATIVE}{$item->expFile.splash[0]->directory}{$item->expFile.splash[0]->filename}"
                         {/if}
                         controls="controls" preload="none">
-                        {if $media->media_type == "file"}
-                            <source type="{$media->expFile.media[0]->mimetype}" src="{$smarty.const.PATH_RELATIVE}{$media->expFile.media[0]->directory}{$media->expFile.media[0]->filename}" />
+                        {if $item->media_type == "file"}
+                            <source type="{$item->expFile.media[0]->mimetype}" src="{$smarty.const.PATH_RELATIVE}{$item->expFile.media[0]->directory}{$item->expFile.media[0]->filename}" />
                         {else}
-                            <source type="video/youtube" src="{$media->url}" />
+                            <source type="video/youtube" src="{$item->url}" />
                         {/if}
                     </video>
                 {/if}
             </div>
             <div class="bodycopy">
-                {$media->body}
+                {$item->body}
             </div>            
         </div>
 		{permissions}
 			<div class="module-actions">		
 				{if $permissions.create}
-					{icon class=add action=edit rank=$media->rank+1 title="Add a Media piece Here"|gettext text="Add a Media piece"|gettext}
+					{icon class=add action=edit rank=$item->rank+1 title="Add a Media piece Here"|gettext text="Add a Media piece"|gettext}
 				{/if}
 			</div>
 		{/permissions}

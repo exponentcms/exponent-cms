@@ -18,40 +18,40 @@
     {pagelinks paginate=$page top=1}
     <ul class="image-list">
     {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
-    {foreach from=$page->records item=record name=items}
-        {if $cat !== $record->expCat[0]->id && $config.usecategories}
-            <a href="{link action=$config.landing|default:showall src=$page->src gallery=$record->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
+    {foreach from=$page->records item=item name=items}
+        {if $cat !== $item->expCat[0]->id && $config.usecategories}
+            <a href="{link action=$config.landing|default:showall src=$page->src gallery=$item->expCat[0]->id}" title='View this gallery'|gettext><h2 class="category">{if $item->expCat[0]->title!= ""}{$item->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
         {/if}
         <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
             {if $config.lightbox}
-                {if $record->expCat[0]->title!= ""}
-                    {$group = $record->expCat[0]->title}
+                {if $item->expCat[0]->title!= ""}
+                    {$group = $item->expCat[0]->title}
                 {elseif $config.uncat!=''}
                     {$group = $config.uncat}
                 {else}
                     {$group = 'Uncategorized'|gettext}
                 {/if}
-                {if $record->expFile[0]->image_width >= $record->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
-                <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->alt|default:$record->title}">
+                {if $item->expFile[0]->image_width >= $item->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
+                <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
             {else}
-                <a href="{link action=show title=$record->sef_url}" title="{$record->alt|default:$record->title}">
+                <a href="{link action=show title=$item->sef_url}" title="{$item->alt|default:$item->title}">
             {/if}
-                {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                {img class="img-small" alt=$item->alt|default:$item->expFile[0]->alt file_id=$item->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
             </a>
             {permissions}
                 <div class="item-actions">
-                    {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
-                        {if $myloc != $record->location_data}
+                    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                        {if $myloc != $item->location_data}
                             {if $permissions.manage}
-                                {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
+                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                             {else}
                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
                             {/if}
                         {/if}
-                        {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
+                        {icon action=edit record=$item title="Edit"|gettext|cat:" `$model_name`"}
                     {/if}
-                    {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
-                        {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
+                    {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                        {icon action=delete record=$item title="Delete"|gettext|cat:" `$model_name`"}
                     {/if}
                     {if $permissions.create}
                         {icon class=add action=edit rank=$slide->rank+1 title="Add another here"|gettext  text="Add After"|gettext}
@@ -59,7 +59,7 @@
                 </div>
             {/permissions}
         </li>
-        {$cat=$record->expCat[0]->id}
+        {$cat=$item->expCat[0]->id}
     {/foreach}
     </ul>
     {pagelinks paginate=$page bottom=1}

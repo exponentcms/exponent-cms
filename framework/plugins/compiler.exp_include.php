@@ -57,21 +57,25 @@
  */
 function smarty_compiler_exp_include($_params, &$compiler) {
 	$arg_list = array();
+
 	if(!isset($_params['file'])) {
 		trigger_error("missing 'file' attribute in exp_include tag in " . __FILE__ . " on line " . __LINE__, E_COMPILE_WARNING);
 		return;
 	}
+
 	foreach($_params as $arg_name => $arg_value) {
         // look for specific arguments: file, else, or assign
 		if($arg_name == 'file') {
 			$include_file = str_replace(array('\'', '"'), '', $arg_value); ;
-            $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['modelname']->value . '/';  // strip relative path for links coming from templates
             // store/strip template file type
             $fileparts = explode('.', $include_file);
             if (count($fileparts) > 1) {
                 $type = array_pop($fileparts);
             } else $type = '.tpl';
             $include_file = implode($fileparts);
+            //FIXME we assume the file is only a filename and NOT a path?
+            $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['model_name']->value . '/';  // strip relative path for links coming from templates
+
             // see if there's an framework appropriate template variation
             $framework =  expSession::get('framework');
             if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
@@ -85,9 +89,11 @@ function smarty_compiler_exp_include($_params, &$compiler) {
             } else {
                 $include_file = $include_file . '.' . $type;
             }
+
             $include_file = '"' . $include_file . '"';
 			continue;
 		} else if($arg_name == 'else') {
+            // the fallback view
 			$include_file_else = $arg_value;
             // tack on a default file type if one is missing
             $fileparts = explode('.', $include_file_else);
@@ -96,6 +102,7 @@ function smarty_compiler_exp_include($_params, &$compiler) {
             }
 			continue;
 		} else if($arg_name == 'assign') {
+            // assign the output to a variable instead of displaying
 			$assign_var = $arg_value;
 			continue;
 		}
@@ -106,13 +113,14 @@ function smarty_compiler_exp_include($_params, &$compiler) {
 		$arg_list[] = "'$arg_name' => $arg_value";
 	}
 
+    // output compiler code; php code in the compiled file
 	if($include_file_else) {
 		$output = "\n<?php \$_include_file = (\$_smarty_tpl->templateExists({$include_file})) ? {$include_file} : {$include_file_else};\n";
 	} else {
 		$output = "\n<?php if(\$_smarty_tpl->templateExists({$include_file})) {\n";
 	}
 
-	if(isset($assign_var)) {
+	if(isset($assign_var)) {  // capture output for var assignment
 		$output .= "ob_start();\n";
 	}
 
@@ -126,7 +134,7 @@ function smarty_compiler_exp_include($_params, &$compiler) {
 	$output .= "\$_smarty_tpl->tpl_vars = \$_smarty_tpl_vars;\n" .
 		"unset(\$_smarty_tpl_vars);\n";
 
-	if(isset($assign_var)) {
+	if(isset($assign_var)) {  // clean up capture output for var assignment
 		$output .= "\$_smarty_tpl->assign(" . $assign_var . ", ob_get_contents()); ob_end_clean();\n";
 	}
 

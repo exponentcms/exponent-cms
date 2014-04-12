@@ -14,7 +14,7 @@
  *}
 
 <div id="editevent" class="events calendar edit">
-    {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$modelname|capitalize}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$model_name|capitalize}</h1>{/if}
     <div class="form_header">
         <blockquote>{'Enter the information about the calendar event (the date and times) below.'|gettext}</blockquote>
         <blockquote>{'Note: multiple day events are not supported.'|gettext}</blockquote>
@@ -43,7 +43,7 @@
                         {control type="tags" value=$record}
                     {/if}
                     {if $config.usecategories}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$model_name`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}

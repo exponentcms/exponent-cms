@@ -15,9 +15,9 @@
 
 <div id="editproduct" class="module store edit">
     {if $record->id != ""}
-        <h1>{"Edit Information for"|gettext} {'Child'|gettext} {$modelname}</h1>
+        <h1>{"Edit Information for"|gettext} {'Child'|gettext} {$model_name}</h1>
     {else}
-        <h1>{"New"|gettext} {$modelname}</h1>
+        <h1>{"New"|gettext} {$model_name}</h1>
     {/if}
     <div id="mainform">
         {form action=update}
