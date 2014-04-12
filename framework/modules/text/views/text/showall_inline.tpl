@@ -65,7 +65,7 @@
                                 <a class="addtitle" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}">{'Add Title'|gettext}</a>
                             {/if}
                         {/if}
-                        {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                        {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $text->poster == $user->id))}
                             {icon action=approve record=$text}
                         {/if}
                     </div>
