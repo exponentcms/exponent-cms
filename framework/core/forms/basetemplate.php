@@ -131,7 +131,7 @@ abstract class basetemplate {
             try {
                 $this->tpl->display($this->view.'.tpl');
             } catch(SmartyException $e) {
-              echo "Smarty reported: ". $e->getMessage();
+                echo "Smarty reported: ". $e->getMessage();
 //              exit;
             }
         }
