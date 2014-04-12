@@ -17,38 +17,38 @@
     <{$config.item_level|default:'h2'}>{'Additional Help Topics'|gettext}</{$config.item_level|default:'h2'}>
     <dl>
     {$myloc=serialize($__loc)}
-    {foreach from=$page->records item=doc name=docs}
+    {foreach from=$page->records item=item name=docs}
         <div class="item">
             <dt>
                 <h3>
-                    <a href={link controller=help action=show version=$doc->help_version->version title=$doc->sef_url} title="{$doc->body|summarize:"html":"para"}">{$doc->title}</a>
+                    <a href={link controller=help action=show version=$item->help_version->version title=$item->sef_url} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                 </h3>
             </dt>
             
             <dd>
             {permissions}
             <div class="item-actions">
-                {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
-                    {if $myloc != $doc->location_data}
+                {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                    {if $myloc != $item->location_data}
                         {if $permissions.manage}
-                            {icon action=merge id=$doc->id title="Merge Aggregated Content"|gettext}
+                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
                         {/if}
                     {/if}
-                    {icon action=edit record=$doc}
-                    {icon action=copy record=$doc}
+                    {icon action=edit record=$item}
+                    {icon action=copy record=$item}
                 {/if}
-                {if $permissions.delete || ($permissions.create && $doc->poster == $user->id)}
-                    {icon action=delete record=$doc}
+                {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                    {icon action=delete record=$item}
                 {/if}
             </div>
             {/permissions}
             
             <div class="bodycopy">
-                {*{$doc->summary}*}
-                {*{$doc->body|summarize:"html":"paralinks"}*}
-                {$doc->body|summarize:"html":"parahtml"}
+                {*{$item->summary}*}
+                {*{$item->body|summarize:"html":"paralinks"}*}
+                {$item->body|summarize:"html":"parahtml"}
             </div>
             
         </div>

@@ -36,40 +36,40 @@
     {/if}
     {$myloc=serialize($__loc)}
     <div id="text-{$id}" class="dashboard">
-        {foreach from=$items item=text name=items}
-            <div id="item{$text->id}" class="panel item{if !$text->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
-                <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $text->title ==""}&#160;{else}{$text->title}{/if}</h2></a></div>
+        {foreach from=$items item=item name=items}
+            <div id="item{$item->id}" class="panel item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+                <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $item->title ==""}&#160;{else}{$item->title}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
                     <ul>
                         <li>
                             {permissions}
         						<div class="item-actions">
-        						    {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
-                                        {if $text->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$text->revision_id}">{$text->revision_id}</span>{/if}
-                                        {if $myloc != $text->location_data}
+        						    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                        {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
+                                        {if $myloc != $item->location_data}
                                             {if $permissions.manage}
-                                                {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                                                {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                             {else}
                                                 {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                             {/if}
                                         {/if}
-        								{icon action=edit record=$text}
+        								{icon action=edit record=$item}
         							{/if}
-        							{if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
-        								{icon action=delete record=$text}
+        							{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+        								{icon action=delete record=$item}
         							{/if}
-                                    {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $text->poster == $user->id))}
-                                        {icon action=approve record=$text}
+                                    {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $item->poster == $user->id))}
+                                        {icon action=approve record=$item}
                                     {/if}
         						</div>
                             {/permissions}
                             <div class="bodycopy">
                                 {if $config.ffloat != "Below"}
-                                    {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item}
                                 {/if}
-                                {$text->body}
+                                {$item->body}
                                 {if $config.ffloat == "Below"}
-                                    {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                                    {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item}
                                 {/if}
                             </div>
                             {clear}
@@ -80,7 +80,7 @@
             {permissions}
                 <div class="module-actions">
                     {if $permissions.create}
-                        {icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
+                        {icon class=add action=edit rank=$item->rank+1 text="Add more text here"|gettext}
                     {/if}
                 </div>
             {/permissions}
