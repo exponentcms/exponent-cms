@@ -201,14 +201,14 @@ class photosController extends expController {
 //        foreach ($tags as $tag) {
 //            $taglist .= "'" . $tag->title . "',";
 //        }
-        $taglist = expTag::getAllTags();
-        $modelname = $this->basemodel_name;
-        assign_to_template(array(
+//        $taglist = expTag::getAllTags();
+//        $modelname = $this->basemodel_name;
+//        assign_to_template(array(
 //            'record'     => $record,
-            'table'      => $this->$modelname->tablename,
+//            'table'      => $this->$modelname->tablename,
 //            'controller' => $this->params['controller'],
-            'taglist'    => $taglist
-        ));
+//            'taglist'    => $taglist
+//        ));
     }
 
     public function multi_update() {

@@ -94,12 +94,13 @@ class controllertemplate extends basetemplate {
 		
 		$this->tpl->assign("__loc",$controller->loc);
 		$this->tpl->assign("__name", $controller->baseclassname);  //FIXME probably not used in 2.0?
-
-        $this->tpl->assign("asset_path", $controller->asset_path);
-        $this->tpl->assign("model_name", $controller->basemodel_name);
-        $this->tpl->assign("model_table", $controller->model_table);
         $this->tpl->assign("controller", $controller->baseclassname);
-        $this->tpl->assign("config", $controller->config);
+        if ($controller->baseclassname != 'common') {
+            $this->tpl->assign("asset_path", $controller->asset_path);
+            $this->tpl->assign("model_name", $controller->basemodel_name);
+            $this->tpl->assign("model_table", $controller->model_table);
+            $this->tpl->assign("config", $controller->config);
+        }
 	}
 
 }

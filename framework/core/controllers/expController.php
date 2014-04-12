@@ -572,8 +572,8 @@ abstract class expController {
         }
         assign_to_template(array(
             'record'     => $record,
-            'table'      => $this->$modelname->tablename,
-            'controller' => $this->params['controller'],
+//            'table'      => $this->$modelname->tablename,
+//            'controller' => $this->params['controller'],
             'taglist'    => $taglist
         ));
     }
