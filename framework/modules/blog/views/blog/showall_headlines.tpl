@@ -45,7 +45,7 @@
     <ul>
         {foreach from=$page->records item=record name="blogs"}
             {if $smarty.foreach.blogs.iteration <= $config.headcount}
-                <li class="item">
+                <li class="item{if !$record->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                     <a href="{link action=show title=$record->sef_url}" title="{$record->body|summarize:"html":"para"}">{$record->title}</a>
                     {if !$config.displayauthor}
                         <span class="label posted"> {'by'|gettext} </span>
@@ -54,6 +54,7 @@
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
+                                {if $record->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$record->revision_id}">{$record->revision_id}</span>{/if}
                                 {if $myloc != $record->location_data}
                                     {if $permissions.manage}
                                         {icon action=merge id=$record->id title="Merge Aggregated Content"|gettext}
@@ -65,6 +66,9 @@
                             {/if}
                             {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                                 {icon action=delete record=$record}
+                            {/if}
+                            {if !$record->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                                {icon action=approve record=$record}
                             {/if}
                         </div>
                     {/permissions}

@@ -46,12 +46,13 @@
    	{/if}
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
-        <div class="item announcement">
+        <div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             <{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>
             {if $item->isRss != true}
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                            {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
                             {if $myloc != $item->location_data}
                                 {if $permissions.manage}
                                     {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
@@ -63,6 +64,9 @@
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                             {icon action=delete record=$item}
+                        {/if}
+                        {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                            {icon action=approve record=$item}
                         {/if}
                     </div>
                 {/permissions}

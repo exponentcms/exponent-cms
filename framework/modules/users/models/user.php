@@ -52,7 +52,7 @@ class user extends expRecord {
         parent::update($params);
     }
 
-    public function save($overrideUsername = false) {
+    public function save($overrideUsername = false, $force_no_revisions = false) {
         global $user;
 
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.

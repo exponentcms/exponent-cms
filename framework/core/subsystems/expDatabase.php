@@ -127,13 +127,13 @@ class expDatabase {
         return $renamed;
     }
 
-    public static function install_dbtables($aggressive=false) {
+    public static function install_dbtables($aggressive=false, $workflow=ENABLE_WORKFLOW) {
    	    global $db;
 
    		expSession::clearAllUsersSessionCache();
    		$tables = array();
 
-   		// first the core and 1.0 definitions
+   		// first the core definitions
    		$coredefs = BASE.'framework/core/definitions';
    		if (is_readable($coredefs)) {
    			$dh = opendir($coredefs);
@@ -144,11 +144,11 @@ class expDatabase {
    					$info = null;
    					if (is_readable("$coredefs/$tablename.info.php")) $info = include("$coredefs/$tablename.info.php");
    					if (!$db->tableExists($tablename)) {
-   						foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+   						foreach ($db->createTable($tablename, $dd, $info) as $key=>$status) {
    							$tables[$key] = $status;
    						}
    					} else {
-   						foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
+   						foreach ($db->alterTable($tablename, $dd, $info, $aggressive) as $key=>$status) {
 //							if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
    							if ($status == TABLE_ALTER_FAILED){
    								$tables[$key] = $status;
@@ -167,6 +167,7 @@ class expDatabase {
    			BASE.'themes/'.DISPLAY_THEME.'/modules',
    			BASE."framework/modules",
    			);
+        $models = expModules::initializeModels();
    		foreach ($moddefs as $moddef) {
    			if (is_readable($moddef)) {
    				$dh = opendir($moddef);
@@ -181,13 +182,31 @@ class expDatabase {
    									$tablename = substr($def,0,-4);
    									$dd = include("$dirpath/$def");
    									$info = null;
+//                                    foreach ($models as $modelname=>$modelpath) {
+                                    $rev_aggressive = $aggressive;
+                                    // add workflow fields
+                                    if (!empty($models[substr($def,0,-4)])) {
+                                        $modelname = substr($def,0,-4);
+                                        $model = new $modelname();
+                                        if ($model->supports_revisions && $workflow) {
+                                            $dd['revision_id'] = array(
+                                                DB_FIELD_TYPE=>DB_DEF_INTEGER,
+                                                DB_PRIMARY=>true,
+                                                DB_DEFAULT=>1,
+                                            );
+                                            $dd['approved'] = array(
+                                                DB_FIELD_TYPE=>DB_DEF_BOOLEAN
+                                            );
+                                            $rev_aggressive = true;
+                                        }
+                                    }
    									if (is_readable("$dirpath/$tablename.info.php")) $info = include("$dirpath/$tablename.info.php");
    									if (!$db->tableExists($tablename)) {
-   										foreach ($db->createTable($tablename,$dd,$info) as $key=>$status) {
+   										foreach ($db->createTable($tablename, $dd, $info) as $key=>$status) {
    											$tables[$key] = $status;
    										}
    									} else {
-   										foreach ($db->alterTable($tablename,$dd,$info,$aggressive) as $key=>$status) {
+   										foreach ($db->alterTable($tablename, $dd, $info, $rev_aggressive) as $key=>$status) {
 //											if (isset($tables[$key])) echo "$tablename, $key<br>";  //FIXME we shouldn't echo this, already installed?
    											if ($status == TABLE_ALTER_FAILED){
    												$tables[$key] = $status;
@@ -265,7 +284,7 @@ abstract class database {
 	    * @param array $info Information about the table itself.
 	    * @return array
 	 */
-	abstract function createTable($tablename,$datadef,$info);
+	abstract function createTable($tablename, $datadef, $info);
 
 	/**
 	* This is an internal function for use only within the database class
@@ -675,14 +694,17 @@ abstract class database {
 	*/
 	abstract function selectObjectsIndexedArray($table, $where = null, $orderby = null);
 
-	/**
-	* Count Objects matching a given criteria
-	*
-	* @param string $table The name of the table to count objects in.
-	* @param string $where Criteria for counting.
-	* @return int
-	*/
-	abstract function countObjects($table, $where = null);
+    /**
+     * Count Objects matching a given criteria
+     *
+     * @param string $table The name of the table to count objects in.
+     * @param string $where Criteria for counting.
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
+     * @return int
+     */
+	abstract function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false);
 
 	/**
 	* Count Objects matching a given criteria using raw sql
@@ -769,6 +791,26 @@ abstract class database {
 	* @return bool|int|void
 	*/
 	abstract function updateObject($object, $table, $where=null, $identifier='id', $is_revisioned=false);
+
+    /**
+     * Reduces table item revisions to a passed total
+     *
+     * @param string  $table The name of the table to trim
+     * @param integer $id The item id
+     * @param integer $num The number of revisions to retain
+     */
+    public function trim_revisions($table, $id, $num, $workflow=ENABLE_WORKFLOW) {
+        if ($workflow && $num) {
+            $max_revision = $this->max($table, 'revision_id', null, 'id='.$id);
+            $min_revision = $this->min($table, 'revision_id', null, 'id='.$id);
+            if ($max_revision == null) {
+                return;
+            }
+            if ($max_revision - $min_revision >= $num) {
+                $this->delete($table, 'id=' . $id . ' AND revision_id <= ' . ($max_revision - $num));
+            }
+        }
+    }
 
 	/**
 	 * Find the maximum value of a field.  This is similar to a standard
@@ -1032,39 +1074,45 @@ abstract class database {
 	*/
 	abstract function selectArraysBySql($sql);
 
-	/**
-	* Select a record from the database as an array
-	*
-	* Selects a set of arrays from the database.  Because of the way
-	* Exponent handles objects and database tables, this is akin to
-	* SELECTing a set of records from a database table.  Returns an
-	* array of arrays, in any random order.
-	*
-	* @param string $table The name of the table/object to look at
-	* @param string $where Criteria used to narrow the result set.  If this
-	*   is specified as null, then no criteria is applied, and all objects are
-	*   returned
-	* @param null $orderby
-	* @param bool $is_revisioned
-	* @return array|void
-	*/
-	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false);
+    /**
+     * Select a record from the database as an array
+     * Selects a set of arrays from the database.  Because of the way
+     * Exponent handles objects and database tables, this is akin to
+     * SELECTing a set of records from a database table.  Returns an
+     * array of arrays, in any random order.
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param null   $orderby
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
+     * @return array|void
+     */
+	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false);
 
-	/**
-	 * Select a records from the database
-	 * @param string $table The name of the table/object to look at
-	 * @param string $where Criteria used to narrow the result set.  If this
-	 *   is specified as null, then no criteria is applied, and all objects are
-	 *   returned
-	 * @param  $classname
-	 * @param bool $get_assoc
-	 * @param bool $get_attached
-	 * @param array $except
-	 * @param bool $cascade_except
-
-	 * @return array
-	 */
-	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false);
+    /**
+     * Select a records from the database
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param        $classname
+     * @param bool   $get_assoc
+     * @param bool   $get_attached
+     * @param array  $except
+     * @param bool   $cascade_except
+     * @param null   $order
+     * @param null   $limitsql
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
+     * @return array
+     */
+	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false);
 
 	/**
 	* @param string $sql The sql statement to run on the model/classname

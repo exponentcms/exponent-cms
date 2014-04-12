@@ -1587,6 +1587,10 @@ class expTheme
                 case 'adminviewlink' :
                     $class = 'cogs';
                     break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
             }
             $found = new stdClass();
             $found->type = $btn_type;

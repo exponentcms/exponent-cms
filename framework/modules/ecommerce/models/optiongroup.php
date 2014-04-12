@@ -50,7 +50,7 @@ class optiongroup extends expRecord {
         }
     }
     
-    public function save($validate=false)
+    public function save($validate=false, $force_no_revisions = false)
     {
         global $db;
         $obj = new stdClass();

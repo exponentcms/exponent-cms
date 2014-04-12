@@ -43,10 +43,10 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 	'created_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'editor'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_ID),
 	'edited_at'=>array(
 		DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-	'editor'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
     'parent_id'=>array(
    		DB_FIELD_TYPE=>DB_DEF_ID)
 );

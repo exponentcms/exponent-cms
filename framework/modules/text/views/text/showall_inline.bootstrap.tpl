@@ -51,11 +51,12 @@
             {else}
                 {$make_edit = ''}
             {/if}
-            <div id="text-{$text->id}" class="item">
+            <div id="text-{$text->id}" class="item{if !$text->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                 {if $text->title}<{$config.item_level|default:'h2'}><div id="title-{$text->id}"{$make_edit}>{$text->title}</div></{$config.item_level|default:'h2'}>{/if}
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
+                            {if $text->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$text->revision_id}">{$text->revision_id}</span>{/if}
                             {if $myloc != $text->location_data}
                                 {if $permissions.manage}
                                     {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
@@ -74,6 +75,9 @@
                             {else}
                                 <a class="add-title btn btn-success {$btn_size}" id="addtitle-{$text->id}" href="#" title="{'Add Title'|gettext}"><i class="icon-plus-sign {$icon_size}"></i> {'Add Title'|gettext}</a>
                             {/if}
+                        {/if}
+                        {if !$text->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                            {icon action=approve record=$text}
                         {/if}
                     </div>
                 {/permissions}

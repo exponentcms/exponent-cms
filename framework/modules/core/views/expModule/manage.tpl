@@ -89,6 +89,9 @@
                                 <span class="{$module->codequality}">
                                     {$module->codequality}
                                 </span>
+                                {if !empty($module->workflow)}
+                                    <span class="workflow" title="{'Workflow enabled module'|gettext}"></span>
+                                {/if}
                                 {br}
                                 <em>
                                     {$module->description}
