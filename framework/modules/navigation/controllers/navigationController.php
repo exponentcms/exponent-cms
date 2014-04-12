@@ -493,7 +493,8 @@ class navigationController extends expController {
      *
      * @return array
      */
-    public static function getTemplateHierarchyFlat($parent, $depth = 1) { //FIXME is this only for deprecated templates?
+ 	//FIXME DEPRECATED: this only for deprecated templates
+    public static function getTemplateHierarchyFlat($parent, $depth = 1) {
         global $db;
 
         $arr  = array();
@@ -510,7 +511,8 @@ class navigationController extends expController {
         return $arr;
     }
 
-    public static function process_section($section, $template) { //FIXME is this only for deprecated templates?
+	//FIXME DEPRECATED: this only for deprecated templates
+    public static function process_section($section, $template) {
         global $db;
 
         if (!is_object($template)) {

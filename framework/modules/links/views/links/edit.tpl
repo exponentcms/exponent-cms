@@ -15,10 +15,10 @@
 
 <div class="module links edit">
     {if $record->id != ""}
-    	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
+    	<h1>{'Edit Information for'|gettext} {$model_name}</h1>
         {$newwin = $record->new_window}
     {else}
-    	<h1>{'New'|gettext} {$modelname}</h1>
+    	<h1>{'New'|gettext} {$model_name}</h1>
         {$newwin = $config.opennewwindow}
     {/if}
     {form action=update}
@@ -30,7 +30,7 @@
         {control type="files" name="image" label="Image"|gettext accept="image/*" value=$record->expFile limit=2 folder=$config.upload_folder}
         {control type="editor" name="body" label="URL Description"|gettext value=$record->body}
         {if $config.usecategories}
-            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+            {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$model_name`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
         {/if}
         {control type="buttongroup" submit="Save Link"|gettext cancel="Cancel"|gettext}
     {/form}

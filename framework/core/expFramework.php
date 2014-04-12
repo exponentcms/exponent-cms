@@ -271,22 +271,7 @@ function renderAction(array $parms=array()) {
     $view = !empty($parms['view']) ? $parms['view'] : $action;
     $template = expTemplate::get_template_for_action($controller, $view, $controller->loc);
     
-    // have the controller assign knowledge about itself to the template.
-    // this has to be done after the controller gets the template for its actions
-    $controller->moduleSelfAwareness();
-
-    //if this controller is being called by a container then we should have a module title.
-    if (isset($parms['moduletitle'])) {
-        $template->assign('moduletitle', $parms['moduletitle']);
-    } else {
-        $title = new stdClass();
-        $title->mod = $controller->loc->mod;
-        $title->src = $controller->loc->src;
-        $title->int = '';
-        $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
-    }
-
-    //setup some default models for this controller's actions to use
+     //setup some default models for this controller's actions to use
     foreach ($controller->getModels() as $model) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
         // flag for needing approval check
@@ -300,7 +285,22 @@ function renderAction(array $parms=array()) {
             }
         }
     }
-    
+
+    // have the controller assign knowledge about itself to the template.
+    // this has to be done after the controller gets the template for its actions
+//    $controller->moduleSelfAwareness();  // FIXME this is now handled by the template class during get_template_for_action
+
+    //if this controller is being called by a container then we should have a module title.
+    if (isset($parms['moduletitle'])) {
+        $template->assign('moduletitle', $parms['moduletitle']);
+    } else {
+        $title = new stdClass();
+        $title->mod = $controller->loc->mod;
+        $title->src = $controller->loc->src;
+        $title->int = '';
+        $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
+    }
+
     // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
     //$controller->params = $parms;
     // check the perms for this action
@@ -421,13 +421,12 @@ function renderAction(array $parms=array()) {
     $template->register_permissions(array_keys($perms), $controller->loc);
     
     // pass this controllers config to the view
-    $template->assign('config', $controller->config);
-    
+//    $template->assign('config', $controller->config);
+    // assign the controllers basemodel to the view
+//    $template->assign('modelname', $controller->basemodel_name);
+
     // globalizing $user inside all templates
     $template->assign('user', $user);
-    
-    // assign the controllers basemodel to the view
-    $template->assign('modelname', $controller->basemodel_name);
 
     // lastly, run the action which can also override the above assignments
     $controller->$action();

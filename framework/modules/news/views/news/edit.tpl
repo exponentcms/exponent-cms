@@ -14,7 +14,7 @@
  *}
 
 <div id="editnews" class="module news edit">
-    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$model_name}</h1>{/if}
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
         {control type=hidden name=revision_id value=$record->revision_id}

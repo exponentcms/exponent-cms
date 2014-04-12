@@ -239,14 +239,15 @@ abstract class expController {
     }
 
     /**
-     * glue to make module aware of itself
+     * glue to make the view template aware of the module
      */
     function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path' => $this->asset_path,
             'model_name' => $this->basemodel_name,
             'table'      => $this->model_table,
-            'controller' => $this->baseclassname
+            'controller' => $this->baseclassname,
+            'config'     => $this->config
         ));
     }
 
@@ -536,7 +537,7 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module (deprecated in favor of edit w/o id param
+     * create an item in this module (deprecated in favor of edit w/o id param)
      */
     function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
