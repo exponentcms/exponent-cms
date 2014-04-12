@@ -39,6 +39,7 @@ abstract class expController {
         'create'    => 'Create',
         'edit'      => 'Edit',
         'delete'    => 'Delete',
+        'approve'  => 'Approval',
     );
     protected $remove_permissions = array();  // $permissions not applicable for this module from above list
     protected $add_permissions = array();  // additional $permissions for this module
@@ -109,6 +110,17 @@ abstract class expController {
 
         // set the location data
         $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
+
+        // flag for needing approval check
+        if ($this->$modelname->supports_revisions && ENABLE_WORKFLOW) {
+            $uilevel = 99;
+            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
+            if (!expPermissions::check('approve', $this->loc)) {
+                $this->$modelname->needs_approval = true;
+            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+                $this->$modelname->needs_approval = true;
+            }
+        }
 
         // get this controllers config data if there is any
         $config = new expConfig($this->loc);
@@ -540,7 +552,19 @@ abstract class expController {
         expHistory::set('editable', $this->params);
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
-        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+//        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+        if (isset($this->params['id'])) {
+            if (!isset($this->params['revision_id'])) {
+                $record = $this->$modelname->find($this->params['id']);
+            } else {
+                $currentrecord = $this->$modelname->find($this->params['id']);
+                $records = $this->$modelname->find('revisions', $this->$modelname->identifier . '=' . intval($this->params['id']) . ' AND revision_id=' . intval($this->params['revision_id']));
+                $record = $records[0];
+                $record->current_revision_id = $currentrecord->revision_id;
+            }
+        } else {
+            $record = new $modelname($this->params);
+        }
         if (!empty($this->params['copy'])) {
             $record->id = null;
             if (isset($record->sef_url)) $record->sef_url = null;
@@ -717,7 +741,7 @@ abstract class expController {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
-            $obj->save();
+            $obj->save(false, true);
             $rank += 1;
         }
 
@@ -1356,6 +1380,18 @@ abstract class expController {
     }
 
     /**
+     * approve module item
+     */
+    function approve() {
+        $modelname = $this->basemodel_name;
+        $lookup = isset($this->params['id']) ? $this->params['id'] : $this->params['title'];
+        $object = new $modelname($lookup);
+        $object->approved = true;
+        $object->save(false, true);  // we don't want to add this approval as a new revision
+        expHistory::back();
+    }
+
+    /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
      * @param string $type
@@ -1380,6 +1416,10 @@ abstract class expController {
             }
 
             $sql .= ')';
+        }
+        $model = $this->basemodel_name;
+        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
+            $sql .= ' AND approved=1';
         }
 
         return $sql;

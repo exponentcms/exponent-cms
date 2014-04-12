@@ -451,7 +451,11 @@ class eaasController extends expController {
             
             $sql .= ')';
         }       
-        
+        $model = $this->basemodel_name;
+        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
+            $sql .= ' AND approved=1';
+        }
+
         return $sql;
     }
 }

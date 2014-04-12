@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique='simplepoll' corecss='admin-global,tables'}
+{css unique='simplepoll' corecss='tables'}
 
 {/css}
 

@@ -25,6 +25,8 @@
 
 class expValidator {
 	/**
+     * Checks if object field contains a value (not empty)
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -40,6 +42,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field contains an numeric value
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -54,6 +58,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field contains an alphanumeric value
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -71,6 +77,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field value is between two limits
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -87,6 +95,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field is set (boolean true)
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -119,6 +129,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field is minimum length
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -133,6 +145,8 @@ class expValidator {
     }
 
 	/**
+     * Check for uniqueness of object field amongst all items in table
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -140,6 +154,7 @@ class expValidator {
 	 */
 	public static function uniqueness_of($field, $object, $opts) {
         global $db;
+
         $sql = "`".$field."`='".$object->$field."'";
         if (!empty($object->id)) $sql .= ' AND id != '.$object->id;
         if (array_key_exists('grouping_sql', $opts)) $sql .= $opts['grouping_sql'];  // allow grouping sql parameter to be passed
@@ -152,6 +167,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object files contains a valid zipcode
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -170,6 +187,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field contains a valid phone number
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -185,16 +204,27 @@ class expValidator {
 		}
     }
 
+    /**
+     * Checks if object field contains a valid state abbreviation
+     *
+     * @param $field
+     * @param $object
+     * @param $opts
+     *
+     * @return bool|string
+     */
     public static function is_valid_state($field, $object, $opts) {        
         if(($object->state == -2 && !empty($object->non_us_state)) || $object->state > 0)
         {
             return true; //supplied a non-us state/province, so we're OK
         } else {
-            return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US zip code.";
+            return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US state abbreviation.";
         }
     }
     
 	/**
+     * Checks if object field contains a valude email address
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -242,10 +272,11 @@ class expValidator {
     }
 
 	/**
-	Validate an email address.
-	Provide email address (raw input)
-	Returns true if the email address has the email
-	address format and the domain exists.
+     * Validate an email address.
+     * Provide email address (raw input)
+     * Returns true if the email address has the email
+     * address format and the domain exists.
+     *
 	 * @param $email
 	 * @return bool
 	 */
@@ -312,6 +343,8 @@ class expValidator {
     }
 
 	/**
+     * Checks if object field contains a valid sef name
+     *
 	 * @param $field
 	 * @param $object
 	 * @param $opts
@@ -328,12 +361,15 @@ class expValidator {
     }
 
 	/**
+     * Checks validity of recaptcha antispam entry
+     *
 	 * @param $params
 	 * @param string $msg
 	 * @return bool
 	 */
 	public static function check_antispam($params, $msg="") {
 		global $user;
+
 		if (SITE_USE_ANTI_SPAM == 0 || ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1)) {
 			return true;
 		}
@@ -371,6 +407,8 @@ class expValidator {
     }
 
 	/**
+     * All purpose validation method
+     *
 	 * @param $vars
 	 * @param $post
 	 * @return bool
@@ -409,6 +447,8 @@ class expValidator {
     }
 
 	/**
+     * Routine to note error and return to the filled out form with messages
+     *
 	 * @param string $msg
 	 * @param null $post
 	 */
@@ -421,6 +461,8 @@ class expValidator {
     }
 
 	/**
+     * Routine to establish error fields
+     *
 	 * @param $field
 	 */
 	public static function setErrorField($field) {
@@ -430,6 +472,8 @@ class expValidator {
     }
 
 	/**
+     * Routine to  error and return to the filled out form with flash message
+     *
 	 * @param string $queue
 	 * @param $msg
 	 * @param null $post
@@ -443,6 +487,8 @@ class expValidator {
     }
 
 	/**
+     * Wrapper function to validate email address
+     *
 	 * @param $email
 	 * @return bool
 	 */
@@ -478,11 +524,15 @@ class expValidator {
     }
 
 	/**
+     * Determines if upload was successfully inserted into 'file' table
+     *
 	 * @param $file
 	 * @return mixed
 	 */
+    //FIXME Deprecated
 	public static function uploadSuccessful($file) {
         global $db;
+
         if (is_object($file)) {
             return $db->insertObject($file,'file');
         } else {
@@ -495,7 +545,15 @@ class expValidator {
         }
     }
 
-	public static function checkPasswordStrength($username,$password) {
+    /**
+     * Method to determine password strength
+     *   e.g., does not match username and is greater than 8 characters
+     * @param $username
+     * @param $password
+     *
+     * @return string
+     */
+    public static function checkPasswordStrength($username,$password) {
 		// Return blank string on success, error message on failure.
 		// The error message should let the user know why their password is wrong.
 		if (strcasecmp($username,$password) == 0) {
@@ -509,7 +567,14 @@ class expValidator {
 		return ""; // by default, accept any passwords
 	}
 
-	public static function checkUsername($username) {
+    /**
+     * Routine to check that username is longer than 3 characters
+     *
+     * @param $username
+     *
+     * @return string
+     */
+    public static function checkUsername($username) {
 		// Return blank string on success, error message on failure.
 		// The error message should let the user know why their username is wrong.
 		if (strlen($username) < 3) {

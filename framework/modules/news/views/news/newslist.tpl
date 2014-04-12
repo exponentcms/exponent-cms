@@ -16,7 +16,7 @@
     {$myloc=serialize($__loc)}
     {pagelinks paginate=$page top=1}
     {foreach from=$page->records item=item}
-        <div class="item">
+        <div class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {if $config.datetag}
                 <p class="post-date">
                     <span class="month">{$item->publish_date|format_date:"%b"}</span>
@@ -39,6 +39,7 @@
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                            {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
                             {if $myloc != $item->location_data}
                                 {if $permissions.manage}
                                     {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
@@ -50,6 +51,9 @@
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                             {icon action=delete record=$item}
+                        {/if}
+                        {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                            {icon action=approve record=$item}
                         {/if}
                     </div>
                 {/permissions}

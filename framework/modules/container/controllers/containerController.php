@@ -39,7 +39,7 @@ class containerController extends expController {
 		'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Container"); }
     static function description() { return gt("Encapsulates other modules within a formatted container (e.g. columns, tabs, etc...)"); }
@@ -237,7 +237,7 @@ class containerController extends expController {
         $haveclass = false;
         $mods = array();
 
-        $modules_list = expModules::getActiveModulesAndControllersList();
+        $modules_list = expModules::getActiveControllersList();
 
         if (!count($modules_list)) { // No active modules
 //            $template->assign('nomodules',1);

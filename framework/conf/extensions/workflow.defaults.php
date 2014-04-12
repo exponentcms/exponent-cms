@@ -16,25 +16,7 @@
 #
 ##################################################
 
-/**
- * @subpackage Models
- * @package Modules
- */
-
-class text extends expRecord {
-//	public $table = 'text';
-
-    protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile'
-    );
-
-#	public $validates = array(
-#		'presence_of'=>array(
-#			'body'=>array('message'=>'Body is a required field.'),
-#		));
-
-    public $supports_revisions = true;
-
-}
+if (!defined('ENABLE_WORKFLOW')) define('ENABLE_WORKFLOW',0);
+if (!defined('WORKFLOW_REVISION_LIMIT')) define('WORKFLOW_REVISION_LIMIT',0);
 
 ?>

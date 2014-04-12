@@ -753,7 +753,7 @@ class mysqlid_database extends mysqli_database {
 	 * @param string $where Criteria for counting.
 	 * @return int
 	 */
-	function countObjects($table,$where = null) {
+	function countObjects($table,$where = null, $is_revisioned=false) {
 		if ($where == null) $where = "1";
 		$res = @mysqli_query($this->connection,"SELECT COUNT(*) as c FROM `" . $this->prefix . "$table` WHERE $where");
 		if ($res == null) return 0;
@@ -1299,7 +1299,7 @@ class mysqlid_database extends mysqli_database {
 		return mysqli_fetch_assoc($res);
 	}
 	
-	function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
+    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false) {
 		if ($where == null) $where = "1";
         $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
         /*$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
