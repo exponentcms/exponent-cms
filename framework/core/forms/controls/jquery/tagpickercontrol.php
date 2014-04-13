@@ -97,6 +97,7 @@ class tagpickercontrol extends formcontrol {
         $script = "
             $('#expTag').tagit({
                 availableTags: [".$this->taglist."],
+                allowSpaces: true
             });
         ";
 

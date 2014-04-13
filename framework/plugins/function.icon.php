@@ -85,7 +85,7 @@ function smarty_function_icon($params, &$smarty) {
                 $params['img'] = $params['action'] . '.png';
             }
             if (empty($params['title'])) {
-                $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text);
+                $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
             }
         } else $params['text'] = gt($params['text']);
     }
@@ -97,7 +97,7 @@ function smarty_function_icon($params, &$smarty) {
     $alt = (empty($params['alt'])) ? '' : $params['alt'];
     $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : (!empty($params['class']) ? $params['class'] : '');
     $text = (empty($params['text'])) ? '' : $params['text'];
-    $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text) : $params['title'];
+    $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text) : $params['title'];
     if (!empty($params['hash'])) {
 //	    $hash = $params['hash'];
         unset($params['hash']);
@@ -158,9 +158,9 @@ function smarty_function_icon($params, &$smarty) {
         }
         echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class="' . $class . '"';
         if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
-            echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
+            echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
 //        if ($params['action']=="merge" && empty($onclick))
-//            echo ' onclick="return confirm(\''.gt('Are you sure you want to merge this').' '.$smarty->getTemplateVars('modelname').' '.gt('item').'?\');"';
+//            echo ' onclick="return confirm(\''.gt('Are you sure you want to merge this').' '.$smarty->getTemplateVars('model_name').' '.gt('item').'?\');"';
         if (!empty($onclick))
             echo ' onclick="' . $onclick . '"';
         echo '>' . $linktext . '</a>';

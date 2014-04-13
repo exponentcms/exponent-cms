@@ -50,25 +50,25 @@
         {/script}
     {/if}
 	<dl>
-		{foreach from=$items item=tweet}
+		{foreach from=$items item=item}
 			<div class="item">
                 {if $config.showimage}
                     <div style="float:left;">
-                        {img src="`$tweet.image`" style="margin:2px 5px 100% 0px;"}
-                        {if $tweet.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
+                        {img src="`$item.image`" style="margin:2px 5px 100% 0px;"}
+                        {if $item.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
                     </div>
-                {elseif $tweet.retweetedbyme}
+                {elseif $item.retweetedbyme}
                     {img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="float:left; margin:2px 5px 100% 0px;"}
                 {/if}
-                <dt><em class="date">{$tweet.created_at|relative_date}{if $config.showattrib} {'via'|gettext} {$tweet.via}, {$tweet.screen_name} {'wrote'|gettext}:{/if}</em></dt>
+                <dt><em class="date">{$item.created_at|relative_date}{if $config.showattrib} {'via'|gettext} {$item.via}, {$item.screen_name} {'wrote'|gettext}:{/if}</em></dt>
                 <dd>
-                    {$tweet.text}
+                    {$item.text}
                     {permissions}
-                        {if $permissions.create && !$tweet.ours && !$tweet.retweetedbyme}
-                            &#160;{icon img='retweet.png' id=$tweet.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
+                        {if $permissions.create && !$item.ours && !$item.retweetedbyme}
+                            &#160;{icon img='retweet.png' id=$item.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
                         {/if}
-                        {if $permissions.delete && $tweet.ours && !$tweet.retweeted_status}
-                            &#160;{icon class=delete id=$tweet.id action=delete_tweet}
+                        {if $permissions.delete && $item.ours && !$item.retweeted_status}
+                            &#160;{icon class=delete id=$item.id action=delete_tweet}
                         {/if}
                     {/permissions}
                 </dd>

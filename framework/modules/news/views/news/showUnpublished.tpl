@@ -29,32 +29,32 @@
 		</tr>
 		</thead>
 		<tbody>
-			{foreach from=$page->records item=listing name=listings}
+			{foreach from=$page->records item=item name=listings}
 			<tr class="{cycle values="odd,even"}">
-				<td><a href="{link controller=news action=show id=$listing->id}" title="{$listing->body|summarize:"html":"para"}">{$listing->title}</a></td>
-				<td>{$listing->publish_date|format_date:"%B %e, %Y"}</td>
+				<td><a href="{link controller=news action=show id=$item->id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td>{$item->publish_date|format_date:"%B %e, %Y"}</td>
 				<td>
-				    {if $listing->unpublish == 0}
+				    {if $item->unpublish == 0}
 				        {'Unpublished'|gettext}
 				    {else}
-				        {'Expired'|gettext} - {$listing->unpublish|format_date:"%B %e, %Y"}
+				        {'Expired'|gettext} - {$item->unpublish|format_date:"%B %e, %Y"}
 				    {/if}
 				</td>
 				<td>
 				    {permissions}
 						<div class="item-actions">
-							{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-                                {if $myloc != $listing->location_data}
+							{if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {if $myloc != $item->location_data}
                                     {if $permissions.manage}
-                                        {icon action=merge id=$listing->id title="Merge Aggregated Content"|gettext}
+                                        {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}
                                 {/if}
-								{icon action=edit record=$listing}
+								{icon action=edit record=$item}
 							{/if}
-							{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
-								{icon action=delete record=$listing}
+							{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+								{icon action=delete record=$item}
 							{/if}
 						</div>
                     {/permissions}

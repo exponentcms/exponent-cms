@@ -69,7 +69,7 @@
                 {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                     {icon action=delete record=$record}
                 {/if}
-                {if !$record->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && $permissions.edit}
+                {if !$record->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $record->poster == $user->id))}
                     {icon action=approve record=$record}
                 {/if}
             </div>

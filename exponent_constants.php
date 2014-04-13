@@ -501,7 +501,7 @@ if (!defined('JS_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('YUI3_RELATIVE')) {
-    define('YUI3_VERSION', '3.15.0');
+    define('YUI3_VERSION', '3.16.0');
     define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
 //	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
     define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');

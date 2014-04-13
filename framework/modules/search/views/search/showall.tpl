@@ -28,7 +28,6 @@
         {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext}*}
         {*{control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}*}
     {*</form>*}
-    <form id="form" name="form" method="POST" action="{$smarty.const.PATH_RELATIVE}index.php">
     {form action=search}
         {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext}
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}

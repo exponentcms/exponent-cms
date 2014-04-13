@@ -81,10 +81,10 @@
                                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                                 {/if}
                                             {/if}
-                                            {icon action=edit record=$record title="Edit"|gettext|cat:" `$modelname`"}
+                                            {icon action=edit record=$record title="Edit"|gettext|cat:" `$model_name`"}
                                         {/if}
                                         {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
-                                            {icon action=delete record=$record title="Delete"|gettext|cat:" `$modelname`"}
+                                            {icon action=delete record=$record title="Delete"|gettext|cat:" `$model_name`"}
                                         {/if}
                                         {if $permissions.create}
                                             {icon class=add action=edit rank=$record->rank+1 title="Add another here"|gettext  text="Add After"|gettext}

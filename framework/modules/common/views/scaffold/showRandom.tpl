@@ -17,11 +17,11 @@
     {if $smarty.const.DEVLEOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
-	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
+	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$model_name`"}</h1>
 	{permissions}
         <div class="module-actions">
         	{if $permissions.create}
-        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
+        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$model_name`"}{br}
         	{/if}
         </div>
     {/permissions}

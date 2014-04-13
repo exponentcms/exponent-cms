@@ -14,7 +14,7 @@
  *}
 
 <div id="editgallery" class="module photoalbum edit">
-    {if $record->id}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
+    {if $record->id}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$model_name}</h1>{/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
@@ -36,7 +36,7 @@
                         {control type="tags" value=$record}
                     {/if}
                     {if $config.usecategories}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$model_name`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 </div>
                 <div id="tab2">
