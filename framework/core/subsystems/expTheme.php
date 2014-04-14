@@ -29,7 +29,6 @@ class expTheme
     public static function initialize()
     {
         global $auto_dirs2;
-//        global $user;
         // Initialize the theme subsystem 1.0 compatibility layer
 //		require_once(BASE.'framework/core/compat/theme.php');
 
@@ -339,7 +338,6 @@ class expTheme
     public static function pageMetaInfo()
     {
         global $sectionObj, $router;
-//        global $db;
 
         $metainfo = array();
         if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists(
@@ -403,6 +401,7 @@ class expTheme
     public static function processCSSandJS()
     {
         global $jsForHead, $cssForHead;
+
         // returns string, either minified combo url or multiple link and script tags
         $jsForHead = expJavascript::parseJSFiles();
         $cssForHead = expCSS::parseCSSFiles();
@@ -469,6 +468,7 @@ class expTheme
     public static function satisfyThemeRequirements()
     {
         global $validateTheme;
+
         if ($validateTheme['headerinfo'] == false) {
             echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::head() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
 			<a href=\"http://docs.exponentcms.org/docs/current/header-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
@@ -487,6 +487,7 @@ class expTheme
     public static function getTheme()
     {
         global $sectionObj, $router;
+
         // Grabs the action maps files for theme overrides
         $action_maps = self::loadActionMaps();
 
@@ -549,8 +550,8 @@ class expTheme
         }
         if (!is_readable($theme)) {
             if (is_readable(BASE . 'themes/basetheme/index.php')) {
-                $theme = BASE . 'themes/basetheme/index.php';
-            } else {
+//                $theme = BASE . 'themes/basetheme/index.php';
+//            } else {
                 $theme = BASE . 'framework/core/index.php';
             }
         }
@@ -732,7 +733,6 @@ class expTheme
 
     public static function showAction($module, $action, $src = "", $params = array())
     { //FIXME only used by smarty functions, old school?
-//   		global $db, $user;
 
         $loc = expCore::makeLocation($module, (isset($src) ? $src : ""), (isset($int) ? $int : ""));
 
@@ -774,6 +774,7 @@ class expTheme
             exit();
         } else {
             global $db;
+
             $section = $db->selectObject("section", "public = 1 AND active = 1"); // grab first section, go there
             if ($section) {
                 header("Location: " . URL_FULL . "index.php?section=" . $section->id);
@@ -793,7 +794,6 @@ class expTheme
     public static function main()
     {
         global $db;
-//        global $user;
 
         echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
@@ -886,7 +886,6 @@ class expTheme
         $pickable = false,
         $hide_menu = false
     ) {
-//		global $db;
         global $module_scope;
 
         self::deprecated('expTheme::module()', $module, $view);
@@ -904,6 +903,7 @@ class expTheme
 //			$section = null;
 //		} else {
         global $sectionObj;
+
         //$last_section = expSession::get("last_section");
         //$section = $db->selectObject("section","id=".$last_section);
         $src .= $sectionObj->id;
@@ -1181,6 +1181,7 @@ class expTheme
         }
 
         global $db, $sectionObj, $module_scope;
+
         // Ensure that we have a section
         //FJD - changed to $sectionObj
         if ($sectionObj == null) {
