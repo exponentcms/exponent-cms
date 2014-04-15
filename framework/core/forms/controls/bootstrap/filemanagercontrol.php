@@ -475,7 +475,7 @@ class filemanagercontrol extends formcontrol {
             "; // END PHP STRING LITERAL
 
             expCSS::pushToHead(array(
-        	    "unique"=>"attachable-files",
+//        	    "unique"=>"attachable-files",
         	    "link"=>$assets_path."files/attachable-files.css"
         	    )
         	);

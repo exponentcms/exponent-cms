@@ -51,7 +51,7 @@ class searchController extends expController {
         // include CSS for results
         // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
-		    "unique"=>"search-results",
+//		    "unique"=>"search-results",
 		    "link"=>$this->asset_path."css/results.css",
 		    )
 		);

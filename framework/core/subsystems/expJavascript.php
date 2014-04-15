@@ -72,7 +72,7 @@ class expJavascript {
             $srt = array();
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
-            if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+            if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
 //                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                    $srt[$i] .= JQUERY_SCRIPT.",";
 //                } else {
@@ -136,13 +136,13 @@ class expJavascript {
                             }
                             if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
                            		    )
                            		);
@@ -261,13 +261,13 @@ class expJavascript {
                             $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
                             if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
                            		    )
                            		);
@@ -342,13 +342,13 @@ class expJavascript {
     public static function pushToFoot($params) {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
-    	if (self::inAjaxAction()) { //FIXME do we also need to deal with yui3, jquery, or boostrap scripts within an ajax call?
+        // if within an ajax call, immediately output the javascript
+        //FIXME we only output straight javascript code and links, no jquery/yui module wrapper/loading
+    	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";
-		    
     	    if ($params['src']) {
                 echo '<script type="text/javascript" src="'.$params['src'].'"></script>';
     	    }
-    	    
 		    echo "
 		    <script id=\"".$params['unique']."\" type=\"text/javascript\" charset=\"utf-8\">
 		      ".$params['content']."
@@ -376,12 +376,12 @@ class expJavascript {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js["yui"] = "yui";
 		}
+        if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
 
     	if(!empty($params['yui3mods'])){
             $toreplace = array('"',"'"," ");
             $stripmodquotes = str_replace($toreplace, "", $params['yui3mods']);               
             $splitmods = explode(",",$stripmodquotes);
-
             foreach ($splitmods as $val){
                 $yui3js[$val] = $val;
             }
@@ -391,7 +391,6 @@ class expJavascript {
             $toreplace = array('"',"'"," ");
             $stripmodquotes = str_replace($toreplace, "", $params['jquery']);
             $splitmods = explode(",",$stripmodquotes);
-
             foreach ($splitmods as $val){
                 $jqueryjs[$val] = $val;
             }
@@ -406,8 +405,6 @@ class expJavascript {
                 $bootstrapjs[$val] = $val;
             }
         }
-
-    	if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
     }
 
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
