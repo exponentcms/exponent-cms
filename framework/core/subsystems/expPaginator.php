@@ -138,7 +138,7 @@ class expPaginator {
 	
 	    // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
-		    "unique"=>"pagination",
+//		    "unique"=>"pagination",
 		    "link"=>PATH_RELATIVE."framework/core/assets/css/pagination.css",
 		    )
 		);

@@ -27,7 +27,23 @@ class expCSS {
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
         
-        // normalize.css is always at the top, but already included with bootstrap v3
+        // if within an ajax call, immediately output the css
+        //FIXME we ONLY output links, NO inline styles in $params['css'], nor any less, etc... processing
+        if (expJavascript::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+            if (isset($params['corecss'])&&!empty($css_core)){
+                foreach ($css_core as $path) {
+                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
+                }
+            }
+            if (!empty($params['link'])){
+                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            }
+		    echo "</div>";
+            return true;
+        }
+
+        // normalize.css is always at the top
         if (!empty($params['normalize'])){
             if (!(!empty($params['framework']) && $params['framework'] == 'bootstrap3')) {
                 $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
@@ -90,7 +106,6 @@ class expCSS {
         }
 
         // files in framework/core/assets/less that are general to many views and the system overall
-        // add .less support to corecss
         if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
             foreach ($core_array as $filename) {
@@ -106,30 +121,17 @@ class expCSS {
             }
         }
         
-        // css linked in through the css plugin
+        // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
             $css_links[$params['link']] = $params['link'];
         };
         
-        // CSS hard coded in a view
+        // css hard coded in a view
         if (!empty($params['css'])){
             $tcss = trim($params['css']);
             if (!empty($tcss)) $css_inline[$params['unique']] = $params['css'];
         }
-
-        if (expJavascript::inAjaxAction()) {
-		    echo "<div class=\"io-execute-response\">";
-            if (isset($params['corecss'])&&!empty($css_core)){
-                foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
-                }
-            }
-            if (!empty($params['link'])){
-                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
-            }
-		    echo "</div>";
-        }
-    }    
+    }
 
     public static function parseCSSFiles() {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;  // these are all used via $$key below
@@ -378,12 +380,15 @@ class expCSS {
                         if (DEVELOPMENT && $less_compiler == 'less.php') {
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,
-                                'sourceMap'         => true,
-                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",
-                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",
-                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,
+//                                'sourceMap'         => true,  // include css source in .map file
+//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
+//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
+                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
+                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations
+//                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,
-//                                'sourceMapBasepath' => dirname(PATH_RELATIVE . $less_pname),
                                 )
                             );
                         }

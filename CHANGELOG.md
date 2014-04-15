@@ -10,10 +10,11 @@ For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/
 
 Added / Fixed / Changed for 2.3.0
 -----------------------
-### Implement revisions/workflow/approval, multi-day events and event caching, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
+### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
+  - adds new optional workflow features (revisions and approval) to blog, news, & text modules
   - module and item heading levels are now selectable within module configuration settings
   - adds optional websnapr link thumbnail support to links module
   - adds module specific quick upload folder selection
