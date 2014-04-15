@@ -40,7 +40,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $expJS,$yui3js,$jqueryjs, $head_config;
+        global $expJS, $yui3js, $jqueryjs, $head_config;
 
         $scripts = '';
         // remove duplicate scripts since it's inefficient and crashes minify
@@ -134,13 +134,13 @@ class expJavascript {
                             }
                             if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
                            		    )
                            		);
@@ -225,13 +225,13 @@ class expJavascript {
                             $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
                             if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
                            		    )
                            		);
                             } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
-                           		    "unique"=>$mod,
+//                           		    "unique"=>$mod,
                            		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
                            		    )
                            		);
@@ -286,15 +286,15 @@ class expJavascript {
 	}
 	
     public static function pushToFoot($params) {
-    	global $js2foot,$yui3js,$jqueryjs,$expJS;
+    	global $js2foot, $yui3js, $jqueryjs, $expJS;
 
+        // if within an ajax call, immediately output the javascript
+        //FIXME we only output straight javascript code and links, no jquery/yui module wrapper/loading
     	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";
-		    
     	    if ($params['src']) {
                 echo '<script type="text/javascript" src="'.$params['src'].'"></script>';
     	    }
-    	    
 		    echo "
 		    <script id=\"".$params['unique']."\" type=\"text/javascript\" charset=\"utf-8\">
 		      ".$params['content']."
@@ -332,12 +332,12 @@ class expJavascript {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js["yui"] = "yui";
 		}
+        if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
 
     	if(!empty($params['yui3mods'])){
             $toreplace = array('"',"'"," ");
             $stripmodquotes = str_replace($toreplace, "", $params['yui3mods']);               
             $splitmods = explode(",",$stripmodquotes);
-
             foreach ($splitmods as $val){
                 $yui3js[$val] = $val;
             }
@@ -347,13 +347,10 @@ class expJavascript {
             $toreplace = array('"',"'"," ");
             $stripmodquotes = str_replace($toreplace, "", $params['jquery']);
             $splitmods = explode(",",$stripmodquotes);
-
             foreach ($splitmods as $val){
                 $jqueryjs[$val] = $val;
             }
         }
-
-    	if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
     }
 
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {

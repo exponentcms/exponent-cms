@@ -88,7 +88,7 @@ class autocompletecontrol extends formcontrol {
         
         // css
         expCSS::pushToHead(array(
-    	    "unique"=>"autocomplete",
+//    	    "unique"=>"autocomplete",
     	    "link"=>$assets_path."autocomplete/autocomplete.css"
     	    )
     	);

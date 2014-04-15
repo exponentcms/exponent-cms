@@ -31,6 +31,22 @@
             }
             #ft {
                 z-index:1;
+            }
+            #main {
+                width:70%;
+                float:right;
+                margin:5px;
+            }
+            #sidebar {
+                width:25%;
+                float:left;
+                margin:5px;
+            }
+            .themeerror {
+                font-weight:bold;
+                color:red;
+                text-align:center;
+                background-color:black;
             }'
         ));
         ?>
@@ -44,10 +60,10 @@
                 <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"Flydown")); ?>
 			</div>
 			<div id="bd">
-				<div style="width:25%;float:left;margin:5px;">
+				<div id="sidebar">
 	                <?php expTheme::module(array("controller"=>"container","action"=>"showall","source"=>"@left")); ?>
 				</div>
-				<div style="width:70%;float:right;margin:5px;">
+				<div id="main">
                     <?php expTheme::main(); ?>
 				</div>
 			</div>
@@ -55,8 +71,8 @@
 	            <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"single","source"=>"@footer","chrome"=>1)) ?>
 			</div>
 		</div>
-        <div style="font-weight:bold;color:red;text-align:center;background-color:black;">
-        <?php echo gt('There is a problem using the current theme').'('.DISPLAY_THEME.'), '.gt('this is the system fallback theme!'); ?>
+        <div class="themeerror">
+            <?php echo gt('There is a problem using the current theme').'('.DISPLAY_THEME.'), '.gt('this is the system fallback theme!'); ?>
         </div>
 	    <?php expTheme::foot(); ?>
 	</body>
