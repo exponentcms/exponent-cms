@@ -116,13 +116,13 @@ class expTheme
             define('XHTML_CLOSING', "");
         }
 
-        // load primer, lesscss, & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lesscss']) || !empty($config['normalize'])) {
+        // load primer, lessprimer, & normalize CSS files
+        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
-        // default primer CSS files to false if not set.
-        if (empty($config['css_primer'])) {
+        // set default primer CSS files to false if not set.
+        if (empty($config['css_primer']) && empty($config['lessprimer'])) {
             $config['css_primer'] = false;
         }
 
