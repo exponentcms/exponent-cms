@@ -124,7 +124,7 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
-        var titleToolbar = 'cut copy paste pastetext | undo redo | find replace selectall scayt';
+        var titleToolbar = 'cut copy paste pastetext | undo redo | searchreplace selectall';
         {/literal}{/if}{literal}
 
         var setContent = function(item, data) {
@@ -236,7 +236,7 @@
             {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
-                plugins : ['image,searchreplace,contextmenu,paste'],
+                plugins : ['image,searchreplace,contextmenu,paste,link'],
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
