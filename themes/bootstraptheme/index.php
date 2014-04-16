@@ -30,28 +30,11 @@
     </head>
     <body>
         <!-- navigation bar/menu -->
-        <div class="navigation navbar <?php echo (MENU_LOCATION) ? 'navbar-'.MENU_LOCATION : '' ?>">
-            <div class="navbar-inner">
-                <div class="container">
-                    <!-- toggle for collapsed/mobile navbar content -->
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <!-- menu header -->
-                    <a class="brand" href="<?php echo URL_FULL ?>"><?php echo ORGANIZATION_NAME ?></a>
-                    <!-- menu -->
-                    <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-                </div>
-            </div>
-        </div>
-        <div class="navbar-spacer"></div>
-        <div class="navbar-spacer-bottom"></div>
+        <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
         <!-- main page body -->
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
-            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
+            <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
                 <!-- main column wanted on top if collapsed -->
                 <section id="content" class="span8 pull-right">
