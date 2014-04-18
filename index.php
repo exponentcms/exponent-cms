@@ -110,7 +110,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 		if (!expJavascript::inAjaxAction()) {
 			include_once($page);
 			expTheme::satisfyThemeRequirements();
-		} else {
+		} else {  // ajax request
             // set up controls search order based on framework
             $framework = expSession::get('framework');
             if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');

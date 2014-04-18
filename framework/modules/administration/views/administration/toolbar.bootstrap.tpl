@@ -16,34 +16,39 @@
 {css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
 {if $top}
     {if (!$smarty.const.MENU_LOCATION || $smarty.const.MENU_LOCATION == 'fixed-top')}
-        @media (min-width: {$smarty.const.MENU_WIDTH}px) {
+        {*@media (min-width: {$smarty.const.MENU_WIDTH}px) {*}
             .navbar-fixed-top {
                 margin-top: 30px;
             }
-            .navbar-spacer {
-                height: 74px;
+            {*.navbar-spacer {*}
+                {*height: 74px;*}
+            {*}*}
+        {*}*}
+        @media (max-width: {$smarty.const.MENU_WIDTH}px) {
+            .navbar-fixed-top {
+                margin-bottom: 0;
             }
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
-        .navbar-static-top {
-            margin-top: 30px;
-        }
-        .navbar-spacer {
-            height: 0;
+        {*.navbar-static-top {*}
+            {*margin-top: 30px;*}
+        {*}*}
+        {*.navbar-spacer {*}
+            {*height: 0;*}
         }
     {elseif $smarty.const.MENU_LOCATION == 'fixed-bottom'}
-        .navbar-spacer {
-            height: 30px;
-        }
+        {*.navbar-spacer {*}
+            {*height: 30px;*}
+        {*}*}
     {/if}
 {else}
     {if $smarty.const.MENU_LOCATION == 'fixed-bottom'}
         .navbar-fixed-bottom {
             bottom: 30px;
         }
-        .navbar-spacer {
-            height: 0;
-        }
+        {*.navbar-spacer {*}
+            {*height: 0;*}
+        {*}*}
         .navbar-spacer-bottom {
             height: 30px;
         }
@@ -51,6 +56,9 @@
         	height : 75px;
         }
     {/if}
+    .container.fixedmenu {
+        padding-bottom : 30px;
+    }
 {/if}
 {/css}
 
