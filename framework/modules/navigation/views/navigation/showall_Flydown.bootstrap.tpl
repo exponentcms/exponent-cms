@@ -60,7 +60,7 @@
     $(document).ready(function(){
         function setTopPadding(admin) {
 
-            if ({/literal}{$user->getsToolbar && $smarty.const.SLINGBAR_TOP == 1}{literal}) {
+            if ({/literal}{($user->getsToolbar && $smarty.const.SLINGBAR_TOP == 1) == 1}{literal}) {
                 $adminbar = $('#admintoolbar').height();
                 if ($adminbar == 0) $adminbar = 30;
             } else {
