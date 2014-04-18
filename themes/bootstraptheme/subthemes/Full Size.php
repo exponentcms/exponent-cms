@@ -19,26 +19,10 @@
 	    ?>
 	</head>
 	<body>
-        <div class="navigation navbar <?php echo (MENU_LOCATION) ? 'navbar-'.MENU_LOCATION : '' ?>">
-            <div class="navbar-inner">
-                <div class="container">
-                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="<?php echo URL_FULL ?>"><?php echo ORGANIZATION_NAME ?></a>
-                    <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-                    <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Responsive Nav")); ?>
-                </div>
-            </div>
-        </div>
-        <div class="navbar-spacer"></div>
-        <div class="navbar-spacer-bottom"></div>
+        <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
-            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
+            <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
                 <section id="content" class="span12">
                     <?php expTheme::main(); ?>

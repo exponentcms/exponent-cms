@@ -578,27 +578,27 @@
 }
 
 /******** YUI Logger Styles **********/
-#yuilogger .yui3-console .yui3-console-title {
+/*#yuilogger .yui3-console .yui3-console-title {*/
 	/*border: 0 none;*/
 	/*color: #000;*/
-	font-size   : 12px;
-	font-weight : normal;
+	/*font-size   : 12px;*/
+	/*font-weight : normal;*/
 	/*margin: 0;*/
 	/*text-transform: none;*/
-}
+/*}*/
 
-#yuilogger .yui3-console-hd {
-	padding : 0;
-}
+/*#yuilogger .yui3-console-hd {*/
+	/*padding : 0;*/
+/*}*/
 
-#yuilogger .yui3-console .yui3-console-entry-meta {
-	margin : 0;
-}
+/*#yuilogger .yui3-console .yui3-console-entry-meta {*/
+	/*margin : 0;*/
+/*}*/
 
-#yuilogger .yui3-console-separate {
-	top     : 32px;
-	z-index : 9999;
-}
+/*#yuilogger .yui3-console-separate {*/
+	/*top     : 32px;*/
+	/*z-index : 9999;*/
+/*}*/
 
 #admintoolbar *,
 #admintoolbar *:before,

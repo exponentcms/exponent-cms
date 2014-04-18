@@ -89,6 +89,7 @@ class expRouter {
             if (isset($params['section']) && !isset($params['action'])) {                
                 if (empty($params['sef_name'])) {
                     global $db;
+
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
                 return self::cleanLink($linkbase.$params['sef_name']);
@@ -219,8 +220,10 @@ class expRouter {
         }
     }
 
+    //FIXME what are we doing with this history?
     public function updateHistory($section=null) {
         global $db,$user;
+
         // if its not already set
         // configurable tracking length
         setcookie('UserUID',expSession::getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
@@ -516,6 +519,7 @@ class expRouter {
     public function getSefUrlByPageId($id=null) {  //FIXME this method is never called and doesn't do anything as written
         if (!empty($id)) {
             global $db;
+
             $section = $db->selectObject('section', 'id='.intval($id));
             $url = URL_FULL;
             $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
@@ -729,6 +733,7 @@ class expRouter {
 
     public function getSectionObj($section) {
         global $db;
+
         if ($section == "*") {
             $controller = expModules::getModuleClassName($this->params['controller']);
             $sectionObj = call_user_func($controller."::getSection",$this->params);
