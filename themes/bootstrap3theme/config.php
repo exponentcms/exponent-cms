@@ -2,9 +2,10 @@
 define("BTN_COLOR",'btn');
 define("SWATCH",'');
 define("BTN_SIZE",'small');
-define("MENU_LOCATION",'fixed-top');
+define("ENHANCED_STYLE",'');
+define("MENU_LOCATION",'fixed-bottom');
 define("MENU_HEIGHT",'1');
 define("MENU_WIDTH",'769');
 define("MENU_ALIGN",'left');
-define("ENHANCED_STYLE",'');
+define("FLYOUT_SIDEBAR",'1');
 ?>

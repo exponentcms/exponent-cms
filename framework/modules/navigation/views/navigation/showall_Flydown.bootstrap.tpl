@@ -13,12 +13,8 @@
  *
  *}
 
-{css unique="bootstrap-top-nav"  lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less"}
-{*{if $smarty.const.MENU_LOCATION == 'static-top'}*}
-    {*.navbar-spacer {*}
-        {*height: 0;*}
-    {*}*}
-{*{/if}*}
+{css unique="z-dropdown-bootstrap" lesscss="`$asset_path`less/dropdown-bootstrap.less"}
+
 {/css}
 
 <!-- navigation bar/menu -->

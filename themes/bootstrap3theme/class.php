@@ -74,6 +74,7 @@ class bootstrap3theme extends theme {
         if (empty($settings['MENU_WIDTH'])) $settings['MENU_WIDTH'] = 979;
         $form->register('menu_width',gt('Mobile Menu Collapse Width').': ',new textcontrol($settings['MENU_WIDTH'],4,false,'integer'));
         $form->register('menu_align',gt('Menu Alignment').': ',new dropdowncontrol($settings['MENU_ALIGN'],$menu_alignments));
+        $form->register('flyout_sidebar',gt('Enable Sidebar Flyout Container'),new checkboxcontrol((!empty($settings['FLYOUT_SIDEBAR'])?$settings['FLYOUT_SIDEBAR']:0)));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
             'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
