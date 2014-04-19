@@ -13,7 +13,6 @@
  *
  *}
 
-
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
 
 {/css}
@@ -79,7 +78,6 @@
 {script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
 {literal}
 jQuery(document).ready(function($) {
-
     $('body').css('margin-top', $('#admin-toolbar').height()+10);
 
     var adminerwindow = function (){
@@ -118,7 +116,6 @@ jQuery(document).ready(function($) {
     $('#forums-toolbar').on('click',forumswindow);
     $('#filemanager-toolbar').on('click',filepickerwindow);
     $('#fileuploader-toolbar').on('click',fileuploaderwindow);
-
 });
 {/literal}
 {/script}
