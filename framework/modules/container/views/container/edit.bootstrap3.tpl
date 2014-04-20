@@ -94,7 +94,7 @@
 
     YUI(EXPONENT.YUI_CONFIG).use("node","event","yui2-yahoo-dom-event","yui2-connection","yui2-json",function(Y){
         var YAHOO=Y.YUI2;
-        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
+//        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var is_edit = {/literal}{$is_edit}{literal} //are we editing?
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
