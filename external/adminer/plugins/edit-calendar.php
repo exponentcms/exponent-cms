@@ -52,7 +52,7 @@ class AdminerEditCalendar {
 
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg("date|time", $field["type"])) {
-		if (ereg("date|_at|publish|_accessed|posted|timestamp|eventstart|eventend", $field["field"])) {
+		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
 			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
 			    beforeShow: function(input,inst){
 			        jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);
@@ -84,8 +84,8 @@ class AdminerEditCalendar {
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<input id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
-                    . ((ereg("eventstart", $field["field"]) || ereg("eventend", $field["field"])) ? "timepicker({ $timeFormat })"
-                    : (ereg("_at|publish|_accessed|posted|timestamp", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
+                    . ((preg_match("~eventstart~", $field["field"]) || preg_match("~eventend~", $field["field"])) ? "timepicker({ $timeFormat })"
+                    : (preg_match("~_at|publish|_accessed|posted|timestamp~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
                     : "datepicker({ $dateFormat })"
                 )) . ";</script>";
 		}
