@@ -55,37 +55,44 @@
     $(document).ready(function(){
         function setTopPadding(admin) {
             if ({/literal}{($user->getsToolbar == 1 && $smarty.const.SLINGBAR_TOP == 1)?1:0}{literal}) {
-                $adminbar = $('#admintoolbar').height();
-                if ($adminbar == 0) $adminbar = 30;
+                $adminbar = $('#admin-toolbar').height();
+                if ($adminbar == 0) $adminbar = 50;
             } else {
                 $adminbar = 0;
             }
             if ($(document.body).width() >= {/literal}{$smarty.const.MENU_WIDTH}{literal} - 15) {  // non-collapsed navbar
-                if ($('.navbar-fixed-top').length != 0) {  // fixed top menu
-                    $(document.body).css('padding-top', $('#topnavbar').height() + 10 + $adminbar);
-                } else if ($('.navbar-fixed-bottom').length != 0) {  // fixed bottom menu
-                    $(document.body).css('padding-top', $adminbar);
-                    $('.navbar-fixed-bottom').css('margin-top', 0);
-                    $(document.body).css('padding-bottom', $('#topnavbar').height() - 45);
-                } else {  // static top menu
+                if ($('#topnavbar.navbar-fixed-top').length != 0) {  // fixed top menu
+////                    $(document.body).css('padding-top', $('#topnavbar').height() + 10 + $adminbar);
+                    if (admin) {
+                        $('#topnavbar.navbar-fixed-top').css('margin-top', $adminbar);
+                        $(document.body).css('margin-top', $('#topnavbar').height() + $adminbar);
+                    }
+                } else if ($('#topnavbar.navbar-static-top').length != 0) {  // static top menu
                     $(document.body).css('padding-top', 0);
+                    $('#topnavbar.navbar-static-top').css('margin-top', $adminbar);
+                } else if ($('#topnavbar.navbar-fixed-bottom').length != 0) {  // fixed bottom menu
+                    $(document.body).css('padding-top', $adminbar);
+                    $('#topnavbar.navbar-fixed-bottom').css('margin-top', 0);
+                    $(document.body).css('padding-bottom', $('#topnavbar').height() - 45);
                 }
-                if (admin) $('.navbar-fixed-top').css('margin-top', $adminbar);
-                $('.navbar-static-top').css('margin-top', $adminbar);
             } else {  // collapsed navbar
-                if ($('.navbar-fixed-top').length != 0) {  // fixed top menu
-                    $(document.body).css('padding-top', $adminbar + $('#topnavbar').height());
-                    if (admin) $('.navbar-fixed-top').css('margin-top', $adminbar);
-                } else if ($('.navbar-static-top').length != 0) {  // static top menu
+                if ($('#topnavbar.navbar-fixed-top').length != 0) {  // fixed top menu
+//                    $(document.body).css('padding-top', $adminbar + $('#topnavbar').height());
+//                    if (admin) {
+                        $('#topnavbar.navbar-fixed-top').css('margin-top', $adminbar);
+                        $(document.body).css('margin-top', $('#topnavbar').height() + $adminbar);
+//                    }
+                } else if ($('#topnavbar.navbar-static-top').length != 0) {  // static top menu
 //                    $(document.body).css('padding-top', $adminbar);
-                    $('.navbar-static-top').css('margin-top', $adminbar);
-                } else if ($('.navbar-fixed-bottom').length != 0) {  // fixed bottom menu
+                    $('#topnavbar.navbar-static-top').css('margin-top', $adminbar);
+                } else if ($('#topnavbar.navbar-fixed-bottom').length != 0) {  // fixed bottom menu
                     $(document.body).css('padding-top', $adminbar);
                     $(document.body).css('padding-bottom', 0);
                 }
             }
         };
-        setTopPadding();
+
+        setTopPadding(true);
         $(window).resize(function(){
             setTopPadding(true);
         });
