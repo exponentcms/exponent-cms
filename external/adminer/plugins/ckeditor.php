@@ -44,7 +44,7 @@ class AdminerCKeditor {
 	function selectVal(&$val, $link, $field) {
 		// copied from tinymce.php
 //		if (ereg("_html", $field["field"]) && $val != '&nbsp;') {
-        if (ereg("body", $field["field"]) && $val != '&nbsp;') {
+        if (preg_match("~body~", $field["field"]) && $val != '&nbsp;') {
 			$shortened = (substr($val, -10) == "<i>...</i>");
 			if ($shortened) {
 				$val = substr($val, 0, -10);
@@ -66,7 +66,7 @@ class AdminerCKeditor {
 	function editInput($table, $field, $attrs, $value) {
 		static $lang = "";
 //		if (!$lang && ereg("text", $field["type"]) && ereg("_html", $field["field"])) {
-		if (!$lang && ereg("text", $field["type"]) && ereg("body", $field["field"])) {
+		if (!$lang && preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
 			$lang = "en";
 			if (function_exists('get_lang')) { // since Adminer 3.2.0
 				$lang = get_lang();

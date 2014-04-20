@@ -24,8 +24,8 @@
 class AdminerEditTextarea {
 	
 	function editInput($table, $field, $attrs, $value) {
-		if (ereg('char|text', $field["type"])) {
-			return "<textarea cols='30' rows='2'$attrs>" . h($value) . '</textarea>';
+		if (preg_match('~char|text~', $field["type"])) {
+			return "<textarea cols='30' rows='2' style='height: 1.2em;'$attrs>" . h($value) . '</textarea>';
 		}
 	}
 	
