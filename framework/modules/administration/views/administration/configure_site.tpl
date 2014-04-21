@@ -21,7 +21,7 @@
 			<div class="related-actions">
 			    {help text="Get Help with"|gettext|cat:" "|cat:("configuring your website"|gettext) page="site-configuration"}
 			</div>
-			<h1>{'Configure Website'|gettext}</h1>
+			<h2>{'Configure Website'|gettext}</h2>
 		</div>
 	</div>
     {form controller="administration" action=update_siteconfig}

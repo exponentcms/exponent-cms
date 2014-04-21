@@ -19,7 +19,7 @@
    			<div class="related-actions">
    			    {help text="Get Help with"|gettext|cat:" "|cat:("mass mailing"|gettext) module="mass-mailer"}
    			</div>
-   			<h1>{'Mass Mailer'|gettext}</h1>
+   			<h2>{'Mass Mailer'|gettext}</h2>
    		</div>
    	</div>
     <blockquote>

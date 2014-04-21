@@ -19,7 +19,7 @@
 			<div class="related-actions">
 				{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Permissions"|gettext) module="manage-user-permissions"}
 			</div>
-        	<h1>{'Assign User Permissions for this'|gettext} {$title}</h1>
+        	<h2>{'Assign User Permissions for this'|gettext} {$title}</h2>
 		</div>
 		<blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 	</div>

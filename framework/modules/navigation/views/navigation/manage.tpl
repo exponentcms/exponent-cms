@@ -19,7 +19,7 @@
 			<div class="related-actions">
 				{help text="Get Help with"|gettext|cat:" "|cat:("Managing Pages"|gettext) module="manage-all-pages"}
 			</div>
-			<h1>{'Manage Pages'|gettext}</h1>
+			<h2>{'Manage Pages'|gettext}</h2>
 		</div>
 	</div>
 	<div id="navmanager-tabs" class="yui-navset exp-skin-tabview hide">

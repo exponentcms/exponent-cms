@@ -33,8 +33,8 @@
                 {/if}
             </div>
         {/permissions}
-        <h1>{'Event Information'|gettext}</h1>
-        <h2>{$event->title}</h2>
+        <h2>{'Event Information'|gettext}</h2>
+        <h3>{$event->title}</h3>
         {permissions}
             <div class="item-actions">
                 {if $permissions.edit || ($permissions.create && $event->poster == $user->id)}

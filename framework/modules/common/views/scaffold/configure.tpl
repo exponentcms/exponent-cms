@@ -19,7 +19,7 @@
     		<div class="related-actions">
     		    {help text="Get Help with"|gettext|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
     		</div>
-            <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
+            <h2>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h2>
     	</div>
     	<blockquote>{'Use this form to configure the behavior of the module.'|gettext}</blockquote>
     </div>

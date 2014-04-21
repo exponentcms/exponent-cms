@@ -16,10 +16,10 @@
 <div class="exptag edit">
 	<div class="form_header">
         {if $record->id == ""}
-            <h1>{'Create Tag'|gettext}</h1>
+            <h2>{'Create Tag'|gettext}</h2>
             <blockquote>{'Create a new tag to add to the list of available tags'|gettext}</blockquote>
         {else}
-            <h1>{'Edit Tag'|gettext}</h1>
+            <h2>{'Edit Tag'|gettext}</h2>
             <blockquote>{'Edit this tag to update all associated tagged items'|gettext}</blockquote>
         {/if}
     </div>
