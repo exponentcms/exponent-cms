@@ -90,6 +90,7 @@ function smarty_function_control($params, &$smarty) {
                 $cancel     = isset($params['cancel']) ? $params['cancel'] : null;
                 $returntype = isset($params['returntype']) ? $params['returntype'] : null;
                 $control    = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
+                if (!empty($params['wide'])) $control->wide = $params['wide'];
                 break;
             case "uploader":
                 $control = new uploadcontrol();

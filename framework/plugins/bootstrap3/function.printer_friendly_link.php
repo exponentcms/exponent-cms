@@ -54,7 +54,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
 //        }
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-        $class = isset($params['class']) ? $params['class'] : 'btn btn-default '.expTheme::buttonStyle();
+        $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle();
         $text = '<i class="fa fa-print '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 
         // spit out the link

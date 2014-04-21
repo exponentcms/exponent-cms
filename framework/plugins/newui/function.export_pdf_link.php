@@ -61,7 +61,7 @@ if (!function_exists('smarty_function_export_pdf_link')) {
             $prepend = isset($params['prepend']) ? $params['prepend'] : '';
             $orientation = isset($params['landscapepdf']) ? $params['landscapepdf'] : false;
             $limit = isset($params['limit']) ? $params['limit'] : '';
-            $class = isset($params['class']) ? $params['class'] : 'btn ' . expTheme::buttonStyle();
+            $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle();
             $text = '<i class="icon-book ' . expTheme::iconSize(
                 ) . '"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 

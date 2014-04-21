@@ -35,6 +35,7 @@ class buttongroupcontrol extends formcontrol {
 	var $returntype = "";
 	var $class = "";
 	var $validateJS = "";
+    var $wide = false;
 
 	static function name() { return "Button Group"; }
 
@@ -68,6 +69,9 @@ class buttongroupcontrol extends formcontrol {
 //                $icon_size = '';
 //            }
             $btn_size = expTheme::buttonSize();
+            if ($this->wide) {
+                $btn_size .= ' btn-block';
+            }
             $icon_size = expTheme::iconSize();
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'fa fa-floppy-o';

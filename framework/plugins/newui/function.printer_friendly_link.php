@@ -59,7 +59,7 @@ if (!function_exists('smarty_function_printer_friendly_link')) {
 //        }
             $view = isset($params['view']) ? $params['view'] : null;
             $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-            $class = isset($params['class']) ? $params['class'] : 'btn ' . expTheme::buttonStyle();
+            $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle();
             $text = '<i class="icon-print ' . expTheme::iconSize(
                 ) . '"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 

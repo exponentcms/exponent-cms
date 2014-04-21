@@ -201,6 +201,7 @@ if (!function_exists('smarty_function_icon')) {
         if (!empty($params['icon']) ) $icon->class = $params['icon'];
         if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
         if (empty($icon->type)) $icon->type = 'btn-default';
+        if (!empty($params['wide']) ) $icon->type .= ' btn-block';
 
         // we need to unset these vars before we pass the params array off to makeLink
         unset($params['alt']);
@@ -213,6 +214,7 @@ if (!function_exists('smarty_function_icon')) {
         unset($params['icon']);
         unset($params['size']);
         unset($params['color']);
+        unset($params['wide']);
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         $secure = !empty($params['secure']) ? $params['secure'] : false;

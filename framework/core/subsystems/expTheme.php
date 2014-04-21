@@ -1426,7 +1426,7 @@ class expTheme
     public static function buttonStyle($color = null, $size = null)
     {
         if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
-            $btn_class = 'btn ' . ' ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
+            $btn_class = 'btn ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
         } else {
             $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
             $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
