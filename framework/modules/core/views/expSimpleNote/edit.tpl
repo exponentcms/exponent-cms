@@ -16,7 +16,7 @@
 <div class="module simplenote edit">
     {if ($require_login == 1 && $user->id != 0) || $require_login == 0}
 	<div class="form_header">
-    	<h1>{$formtitle}</h1>
+    	<h2>{$formtitle}</h2>
 	</div>
 	{form action=update}
 		{control type=hidden name=id value=$simplenote->id}
@@ -38,7 +38,7 @@
 	{/form}
 	{else}
 	    <div class="form_header">
-    	<h1>{$formtitle}</h1>
+    	<h2>{$formtitle}</h2>
 		<p>
             {icon class="login" controller=login action=loginredirect text="You need to be logged in to add notes"|gettext}
 		</p>

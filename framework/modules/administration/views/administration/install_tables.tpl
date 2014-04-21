@@ -18,7 +18,7 @@
 {/css}
 
  <div class="form_header">
- 	<h1>{'Installing and Upgrading Database Tables'|gettext}</h1>
+ 	<h2>{'Installing and Upgrading Database Tables'|gettext}</h2>
  	<blockquote>
  		{'Exponent is currently updating existing tables in its database, and installing new tables that it needs.  Shown below is a summary of the actions that occurred.'|gettext}
  	</blockquote>

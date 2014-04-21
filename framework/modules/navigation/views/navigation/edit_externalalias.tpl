@@ -14,14 +14,14 @@
  *}
 
 <div class="module navigation edit_externalalias">
-    <div class="info-header">
-        <div class="related-actions">
-			{help text="Get Help with"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
-        </div>
-	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h1>
-	</div>
 	<div class="form_header">
-        {'Below, enter the web address you want this section to link to.'|gettext}
+        <div class="info-header">
+            <div class="related-actions">
+  			    {help text="Get Help with"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
+            </div>
+            <h2>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h2>
+        </div>
+        <blockquote>{'Below, enter the web address you want this section to link to.'|gettext}</blockquote>
 	</div>
     {form action=update}
         {control type=hidden name=id value=$section->id}

@@ -14,15 +14,14 @@
  *}
 
 <div class="module navigation move_standalonepage">
-    <div class="info-header">
-        <div class="related-actions">
-			{help text="Get Help with"|gettext|cat:" "|cat:("Moving Standalone Pages"|gettext) module="move-standalone-page"}
+    <div class="form_header">
+        <div class="info-header">
+            <div class="related-actions">
+                {help text="Get Help with"|gettext|cat:" "|cat:("Moving Standalone Pages"|gettext) module="move-standalone-page"}
+            </div>
+            <h2>{'Move Standalone Page'|gettext}</h2>
+            <blockquote>{'Select the standalone page you wish to move into the Site Hierarchy, and click \'Save\''|gettext}</blockquote>
         </div>
-	    <h1>{'Move Standalone Page'|gettext}</h1>
-	</div>
-
-	<div class="form_header">
-		{'Select the standalone page you wish to move into the Site Hierarchy, and click \'Save\''|gettext}
 	</div>
 
     {form action=reparent_standalone}

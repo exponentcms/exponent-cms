@@ -18,7 +18,7 @@
 {/css}
 
 <div class="form_header">
- 	<h1>{'Deleting Unneeded Database Columns'|gettext}</h1>
+ 	<h2>{'Deleting Unneeded Database Columns'|gettext}</h2>
  	<blockquote>
  		{'Exponent has deleted unneeded database columns from existing tables.  Shown below is a summary of the actions that occurred.'|gettext}
     </blockquote>

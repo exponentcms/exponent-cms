@@ -19,7 +19,7 @@
 
 <div class="storeCategory manage-categories">
 	<div class="form_header">
-        <h1>{'Manage Store Categories'|gettext}</h1>
+        <h2>{'Manage Store Categories'|gettext}</h2>
         <blockquote>
             {'This is where you can add, edit and rearrange categories.'|gettext}
             {'Right-click on the category to display the command menu.'|gettext}

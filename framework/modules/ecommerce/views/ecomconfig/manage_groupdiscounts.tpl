@@ -19,12 +19,12 @@
 
 <div class="module storeadmin groupdiscounts">
 	<div class="form_header">
-        <h1>{'Group Discounts'|gettext}</h1>
+        <h2>{'Group Discounts'|gettext}</h2>
         <blockquote>{'You can configure certain user groups to get a discount applied to their carts when they checkout.'|gettext}</blockquote>
 	</div>
     {icon class=add controller=user action=edit_group id=0 text='Add a new group'|gettext}
     {icon class=manage controller=ecomconfig action=manage_discounts text='Manage Discount Rules'|gettext}
-	<h2>{'Add a new group discount'|gettext}</h2>
+	<h3>{'Add a new group discount'|gettext}</h3>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>
