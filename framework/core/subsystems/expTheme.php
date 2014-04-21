@@ -158,7 +158,7 @@ class expTheme
         if (empty($head_config['framework'])) {
             $head_config['framework'] = '';
         }
-        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+        if (NEWUI || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/jquery'
@@ -1365,7 +1365,7 @@ class expTheme
             'black'   => 'btn-inverse',
             'pink'    => 'btn-danger',
         );
-        if (expSession::get('framework') == 'bootstrap') {
+        if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             if (!empty($colors[$color])) { // awesome to bootstrap button conversion
                 $found = $colors[$color];
             } else {
@@ -1398,7 +1398,7 @@ class expTheme
                 $btn_size = 'btn-small';
             }
             return $btn_size;
-        } elseif (expSession::get('framework') == 'bootstrap3') {
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $btn_size = ''; // actually default size, NOT true boostrap large
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
@@ -1425,7 +1425,7 @@ class expTheme
      */
     public static function buttonStyle($color = null, $size = null)
     {
-        if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
+        if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             $btn_class = 'btn ' . ' ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
         } else {
             $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
@@ -1435,7 +1435,6 @@ class expTheme
         return $btn_class;
     }
 
-    //FIXME needs to be updated to include bootstrap3 icons
     /**
      * Return the icon associated for the current frameowrk
      *
@@ -1696,7 +1695,7 @@ class expTheme
                 $icon_size = 'icon-large';
             }
             return $icon_size;
-        } elseif (expSession::get('framework') == 'bootstrap3') {
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
