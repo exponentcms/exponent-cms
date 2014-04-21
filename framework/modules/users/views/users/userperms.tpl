@@ -20,8 +20,8 @@
 				{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Permissions"|gettext) module="manage-user-permissions"}
 			</div>
         	<h2>{'Assign User Permissions for this'|gettext} {$title}</h2>
+            <blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 		</div>
-		<blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 	</div>
     {if expSession::get('framework') == 'bootstrap'}
         {include file="_permissions.bootstrap.tpl"}

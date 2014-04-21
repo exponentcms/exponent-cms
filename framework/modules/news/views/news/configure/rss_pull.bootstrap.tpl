@@ -22,7 +22,7 @@
             <h2>{"RSS Pull Settings"|gettext}</h2>
     	</div>
     </div>
-    <h2>{"Add RSS Feeds"|gettext}</h2>
+    <h3>{"Add RSS Feeds"|gettext}</h3>
     {*{control type="text" id="feedmaker" name="feedmaker" label="RSS Feed URL"|gettext}*}
     {control type=url id="feedmaker" name="feedmaker" label="RSS Feed URL"|gettext}
     {if (BTN_SIZE == 'large')}

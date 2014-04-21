@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("iCalendar Feed Settings"|gettext) module="icalendar"}
 		</div>
         <h2>{'iCalendar Feed Settings'|gettext}</h2>
+        <blockquote>
+            {'These settings allow you to syndicate your calendar via iCal publishing.'|gettext}&#160;&#160;
+            {'To start syndicating, all you have to do is enable iCal and give this calendar a title!'|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'These settings allow you to syndicate your calendar via iCal publishing.'|gettext}&#160;&#160;
-    {'To start syndicating, all you have to do is enable iCal and give this calendar a title!'|gettext}
-</blockquote>
 {control type="checkbox" name="enable_ical" label="Enable iCal"|gettext value=1 checked=$config.enable_ical}
 {*{control type="checkbox" name="advertise" label="Advertise RSS"|gettext value=1 checked=$config.advertise}*}
 {*{control type="textarea" name="feed_desc" label="iCal Feed Description"|gettext value=$config.feed_desc}*}

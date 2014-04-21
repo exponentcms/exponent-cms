@@ -19,16 +19,16 @@
             {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="`$editor`-toolbar-configuration"}
         </div>
         {if $record->id != ""}
-            <h1>{'Editing'|gettext}
+            <h2>{'Editing'|gettext}
         {else}
-            <h1>{'New'|gettext}
+            <h2>{'New'|gettext}
         {/if}
         {if $editor == 'ckeditor'}
             CKEditor
         {elseif $editor == 'tinymce'}
             TinyMCE
         {/if}
-        {'Toolbar Configuration'|gettext}</h1>
+        {'Toolbar Configuration'|gettext}</h2>
     </div>
 
     {form action=update}

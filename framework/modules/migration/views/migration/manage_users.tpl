@@ -25,13 +25,13 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Users and Groups"|gettext) module="migrate-users"}
         </div>
-		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
+		<h2>{"Migrate Users and Groups"|gettext}</h2>
+        <blockquote>
+            {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
+            {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
+ 	 	    {'User and group permissions will NOT be migrated.'|gettext}
+        </blockquote>
     </div>
-    <blockquote>
-        {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
-        {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
-		{'User and group permissions will NOT be migrated.'|gettext}
-    </blockquote>
     {form action="migrate_users"}
         <table class="exp-skin-table">
 			<thead>

@@ -18,7 +18,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-data"}
         </div>
-        <h1>{"Import Data"|gettext}</h1>
+        <h2>{"Import Data"|gettext}</h2>
     </div>
     {form action=import}
         {control type="dropdown" name="import_type" label="Select Module Data to Import"|gettext items=$importDD}
@@ -29,7 +29,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Exporting Data"|gettext) module="export-data"}
         </div>
-        <h1>{"Export Data"|gettext}</h1>
+        <h2>{"Export Data"|gettext}</h2>
     </div>
     {form action=export}
         {control type="dropdown" name="export_type" label="Select Module Data to Export"|gettext items=$exportDD}

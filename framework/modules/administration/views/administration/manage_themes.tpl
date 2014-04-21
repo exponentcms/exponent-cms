@@ -23,7 +23,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Themes"|gettext) module="manage-themes"}
         </div>
-		<h1>{"Theme Manager"|gettext}</h1>
+		<h2>{"Theme Manager"|gettext}</h2>
     </div>
 
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

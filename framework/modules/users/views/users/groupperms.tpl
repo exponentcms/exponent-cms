@@ -20,8 +20,8 @@
 				{help text="Get Help with"|gettext|cat:" "|cat:("Managing Group Permissions"|gettext) module="manage-group-permissions"}
 			</div>
 			<h2>{'Assign Group Permissions for this'|gettext} {$title}</h2>
+            <blockquote>{'This form allows you to assign permissions to an entire group of users.'|gettext}</blockquote>
 		</div>
-        <blockquote>{'This form allows you to assign permissions to an entire group of users.'|gettext}</blockquote>
     </div>
     {if expSession::get('framework') == 'bootstrap'}
         {include file="_permissions.bootstrap.tpl"}

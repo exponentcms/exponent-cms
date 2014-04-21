@@ -20,10 +20,10 @@
    			    {help text="Get Help with"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-menu"}
             </div>
             <h2>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Free-form Menu Item'|gettext}</h2>
+            <blockquote><strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong>{br}
+             {'On other views it will appear as an inactive menu item with its children.'|gettext}
+             {'Use it to embed a module/container within a top-level menu item.'|gettext}</blockquote>
         </div>
-		<blockquote><strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong>{br}
-        {'On other views it will appear as an inactive menu item with its children.'|gettext}
-        {'Use it to embed a module/container within a top-level menu item.'|gettext}</blockquote>
     </div>
     {form action=update}
         {control type=hidden name=id value=$section->id}
