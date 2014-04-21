@@ -15,14 +15,13 @@
 
 <div id="config" class="module scaffold configure exp-skin">
     <div class="form_header">
-        <h1>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h1>
-
-        <div class="subtext">
-            {'Use this form to configure the behavior of the module.'|gettext}
+        <div class="info-header">
+            <div class="related-actions">
+                {help text="Get Help with"|gettext|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
+            </div>
         </div>
-        <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("module configuration"|gettext) page="module-configuration"}
-        </div>
+        <h2>{'Configure Settings for this'|gettext} {$title} {'Module'|gettext}</h2>
+        <blockquote>{'Use this form to configure the behavior of the module.'|gettext}</blockquote>
     </div>
     {form action=saveconfig}
         <div id="config-tabs" class="">
