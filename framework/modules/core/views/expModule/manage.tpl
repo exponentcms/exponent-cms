@@ -59,7 +59,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Modules"|gettext) module="manage-modules"}
         </div>
-        <h1>{"Module Manager"|gettext}</h1>
+        <h2>{"Module Manager"|gettext}</h2>
     </div>
     {form action="update"}
     <div id="mod-manager-tabs" class="yui-navset exp-skin-tabview">

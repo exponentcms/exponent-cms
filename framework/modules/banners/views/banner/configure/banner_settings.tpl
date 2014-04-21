@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Banner Settings"|gettext) module="banner"}
 		</div>
         <h2>{'Banner Settings'|gettext}</h2>
+        <blockquote>
+            {'This is where you can configure the settings used by this Banner module.'|gettext}&#160;&#160;
+            {'These settings only apply to this particular banner module.'|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'This is where you can configure the settings used by this Banner module.'|gettext}&#160;&#160;
-    {'These settings only apply to this particular banner module.'|gettext}
-</blockquote>
 <h2>{'Number of Banners to Display'|gettext}</h2>
 {control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit}
 <h2>{'Banner Size'|gettext}</h2>

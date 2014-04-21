@@ -20,8 +20,8 @@
   			    {help text="Get Help with"|gettext|cat:" "|cat:("Editing External Alias Pages"|gettext) module="edit-external-page"}
             </div>
             <h2>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'External Alias'|gettext}</h2>
+            <blockquote>{'Below, enter the web address you want this section to link to.'|gettext}</blockquote>
         </div>
-        <blockquote>{'Below, enter the web address you want this section to link to.'|gettext}</blockquote>
 	</div>
     {form action=update}
         {control type=hidden name=id value=$section->id}

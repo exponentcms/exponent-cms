@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Media Player Settings"|gettext) module="mediaplayer"}
 		</div>
         <h2>{"Media Player Settings"|gettext}</h2>
+        <blockquote>
+            {"This is where you can configure the settings used by this Media Player module."|gettext}&#160;&#160;
+            {"These settings only apply to this particular module."|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {"This is where you can configure the settings used by this Media Player module."|gettext}&#160;&#160;
-    {"These settings only apply to this particular module."|gettext}
-</blockquote>
 {*{control type="checkbox" name="autoplay" label="Automatically Play Media Files"|gettext value=1 checked=$config.autoplay}*}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}

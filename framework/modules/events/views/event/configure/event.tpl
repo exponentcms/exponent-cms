@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Calendar Settings"|gettext) module="events"}
 		</div>
         <h2>{"Calendar Settings"|gettext}</h2>
+        <blockquote>
+            {"This is where you can configure the settings used by this Events module."|gettext}&#160;&#160;
+            {"These settings only apply to this particular module."|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {"This is where you can configure the settings used by this Events module."|gettext}&#160;&#160;
-    {"These settings only apply to this particular module."|gettext}
-</blockquote>
 {control type="text" name="feed_title" label="Calendar Title"|gettext description="Used for iCal publishing and email reminders"|gettext value=$config.feed_title}
 {control type="text" name="feed_sef_url" label="Calendar SEF URL"|gettext description="Auto-generated from title if left blank"|gettext value=$config.feed_sef_url}
 {*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}

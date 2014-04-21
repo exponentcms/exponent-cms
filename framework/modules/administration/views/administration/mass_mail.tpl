@@ -20,11 +20,11 @@
    			    {help text="Get Help with"|gettext|cat:" "|cat:("mass mailing"|gettext) module="mass-mailer"}
    			</div>
    			<h2>{'Mass Mailer'|gettext}</h2>
+            <blockquote>
+                {'This form allows you to send an email with an optional attachment to site users.'|gettext}
+            </blockquote>
    		</div>
    	</div>
-    <blockquote>
-        {'This form allows you to send an email with an optional attachment to site users.'|gettext}
-    </blockquote>
     {form action=mass_mail_out}
         {group label="Send this Message To"|gettext}
             {control type="checkbox" class="emailall" postfalse=1 name="allusers" label="All Site Users?"|gettext value=1 description='Uncheck to allow user/group/freeform selection'|gettext}

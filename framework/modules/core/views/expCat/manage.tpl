@@ -33,7 +33,7 @@
                 {help text="Get Help with"|gettext|cat:" "|cat:("Managing"|gettext|cat:" `$catnames`") module="manage-site-categories"}
             {/if}
         </div>
-        <h1>{"Manage"|gettext|cat:" `$catnames`"}</h1>
+        <h2>{"Manage"|gettext|cat:" `$catnames`"}</h2>
     </div>
 	{permissions}
     	{if $permissions.create}

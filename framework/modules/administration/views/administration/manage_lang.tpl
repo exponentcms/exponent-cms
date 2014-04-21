@@ -18,7 +18,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Translations"|gettext) module="manage-translations"}
         </div>
-        <h1>{"Manage Translations"|gettext}</h1>
+        <h2>{"Manage Translations"|gettext}</h2>
     </div>
     {form action=update_language}
         {control type="dropdown" name="newlang" label="Select Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
