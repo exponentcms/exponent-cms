@@ -22,7 +22,7 @@
             <h2>{"iCal Pull Settings"|gettext}</h2>
     	</div>
     </div>
-    <h2>{"Add External iCal/ics Feeds"|gettext}</h2>
+    <h3>{"Add External iCal/ics Feeds"|gettext}</h3>
     {*{control type="text" id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}*}
     {control type=url id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}
     {if (BTN_SIZE == 'large')}
