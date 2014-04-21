@@ -47,9 +47,8 @@
     {/form}
 </div>
 
-{script unique="conf" jquery=1 bootstrap="tab,transition"}
+{script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
-//    $('#config-tabs').removeClass('hide');
     $('.loadingdiv').remove();
 {/literal}
 {/script}

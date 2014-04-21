@@ -539,7 +539,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
 {/literal}
 {/script}
 
-{script unique="conf" jquery=1 bootstrap="tab,transition"}
+{script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
     $('.loadingdiv').remove();
 {/literal}

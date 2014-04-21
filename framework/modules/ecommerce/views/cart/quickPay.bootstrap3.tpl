@@ -47,15 +47,15 @@
                 <div class="separate">
                    <h2>{"Payment Information"|gettext}</h2>
                    <h3>{"Available Payment Methods"|gettext}</h3>
-                   <div id="{$id}" class="yui-navset exp-skin-tabview hide">
-                       <ul class="yui-nav">
+                   <div id="{$id}" class="">
+                       <ul class="nav nav-tabs">
                            {foreach from=$billing->calculator_views item=cviews name=tabs}
-                               <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                               <li{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
                            {/foreach}
                        </ul>
-                       <div class="yui-content">
+                       <div class="tab-content">
                            {foreach from=$billing->calculator_views item=cviews name=items}
-                               <div id="tab{$smarty.foreach.items.iteration}">
+                               <div id="tab{$smarty.foreach.items.iteration}" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                                    {include file=$cviews.view calcid=$cviews.id}
                                </div>
                            {/foreach}
@@ -85,17 +85,23 @@
 
 {/script}
 
-{script unique="`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
+{*{script unique="`$id`" yui3mods="1"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
+        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
+        {*requires: ['history','tabview','event-custom']*}
+    {*};*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
+	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
+        {*Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});*}
+		{*Y.one('#{/literal}{$id}{literal}').removeClass('hide');*}
+		{*Y.one('.loadingdiv').remove();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="tabload" jquery=1 bootstrap="tab,transition"}
+{literal}
+    $('.loadingdiv').remove();
 {/literal}
 {/script}
