@@ -50,6 +50,6 @@
 
 {script unique="conf" jquery=1 bootstrap="tab"}
 {literal}
-
+    $('.loadingdiv').remove();
 {/literal}
 {/script}

@@ -26,10 +26,10 @@
     </div>
     {form action=saveconfig}
         <div id="config-tabs" class="">
-            <ul class="nav nav-pills">
+            <ul class="nav nav-tabs">
                 {foreach from=$views item=tab name=tabs}
                     <li{if $smarty.foreach.tabs.first} class="active"{/if}>
-                        <a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="pill">
+                        <a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">
                             {$tab.name}
                         </a>
                     </li>
@@ -37,7 +37,7 @@
             </ul>            
             <div class="tab-content">
                 {foreach from=$views item=body name=body}
-                    <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane{if $smarty.foreach.body.first} active{/if}">
+                    <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane fade{if $smarty.foreach.body.first} in active{/if}">
                         {include file=$body.file}
                     </div>
                 {/foreach}
@@ -48,8 +48,9 @@
     {/form}
 </div>
 
-{script unique="conf" jquery=1 bootstrap="tab"}
+{script unique="conf" jquery=1 bootstrap="tab,transition"}
 {literal}
-
+//    $('#config-tabs').removeClass('hide');
+    $('.loadingdiv').remove();
 {/literal}
 {/script}

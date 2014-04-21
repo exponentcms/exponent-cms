@@ -45,7 +45,6 @@
                 
                 {control type=text size=31 horizontal="1" label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
 
-
                 {if $smarty.const.INVERT_HIDE_TITLE}
                     {$title_str = 'Show Module Title?'|gettext}
                     {$desc_str = 'The Module Title is hidden by default.'|gettext}
@@ -73,7 +72,6 @@
                     
                     </div>
                 {/if}
-
 
                 {control type="dropdown" horizontal="1" id="actions" name=actions includeblank="No Module Selected"|gettext disabled=1 label="Content Action"|gettext}
 
@@ -268,7 +266,6 @@
                 };
             }
 
-
             EXPONENT.writeViews = function() {
                 viewpicker.removeAttr('disabled');
                 if (EXPONENT.isController()) {
@@ -309,7 +306,6 @@
                     EXPONENT.writeViews();
                 }
             };
-
 
         });
         {/literal}
