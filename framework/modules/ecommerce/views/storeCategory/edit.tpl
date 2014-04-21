@@ -15,7 +15,7 @@
 
 <div id="editcategory" class="storecategory edit">
 	<div class="form_header">
-        <h1>{'Edit Store Category'|gettext}</h1>
+        <h2>{'Edit Store Category'|gettext}</h2>
         <blockquote>{'Complete and save the form below to configure this store category'|gettext}</blockquote>
 	</div>
 	{if $node->id == ""}

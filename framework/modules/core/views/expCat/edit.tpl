@@ -24,10 +24,10 @@
 <div class="expcat edit">
 	<div class="form_header">
         {if $record->id == ""}
-            <h1>{'Create'|gettext}{if $model == 'expFile'}{else}{if !empty($model)} {$model|capitalize}{/if}{/if} {$catname}</h1>
+            <h2>{'Create'|gettext}{if $model == 'expFile'}{else}{if !empty($model)} {$model|capitalize}{/if}{/if} {$catname}</h2>
             <blockquote>{'Create a new item to add to the list of available'|gettext} {$catnames}</blockquote>
         {else}
-            <h1>{'Edit'|gettext}{if !empty($model)} {$model|capitalize}{/if} {$catname}</h1>
+            <h2>{'Edit'|gettext}{if !empty($model)} {$model|capitalize}{/if} {$catname}</h2>
             <blockquote>{'Edit this item to update all associated items'|gettext}</blockquote>
         {/if}
 	</div>

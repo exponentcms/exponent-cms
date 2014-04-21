@@ -18,7 +18,7 @@
 {/css}
 
  <div class="form_header">
- 	<h1>{$await|count} {'Phrases Still Awaiting Translation in'|gettext} {$smarty.const.LANG}</h1>
+ 	<h2>{$await|count} {'Phrases Still Awaiting Translation in'|gettext} {$smarty.const.LANG}</h2>
  </div>
  <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">
 	 <thead>
