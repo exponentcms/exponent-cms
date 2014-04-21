@@ -25,12 +25,12 @@
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Files"|gettext module="post-file-migration"}
         </div>
-		<h1>{"File Migration Report"|gettext}</h1>	    
+		<h2>{"File Migration Report"|gettext}</h2>
+        <blockquote>
+            {'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
+            {'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
+        </blockquote>
     </div>
-    <blockquote>
-		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
-		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
-    </blockquote>
         <ul>
 			<li class=\"mig-msg\">
 				{'Emptied the expFiles table before the file import'|gettext}

@@ -25,13 +25,13 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Groups"|gettext) module="manage-groups"}
         </div>
-        <h1>{$moduletitle|default:"Manage User Groups"|gettext}</h1>
+        <h2>{$moduletitle|default:"Manage User Groups"|gettext}</h2>
+        <blockquote>
+             {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&#160;&#160;
+             {'This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.'|gettext}{br}
+             {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
+         </blockquote>
     </div>
-	<blockquote>
-        {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&#160;&#160;
-        {'This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.'|gettext}{br}
-        {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
-    </blockquote>
 	<div class="module-actions">
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>

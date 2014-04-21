@@ -25,7 +25,7 @@
             {/if}
             {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="adding-modules-to-a-page"}
         </div>
-        <h1>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h1>
+        <h2>{if $is_edit}{'Edit Module'|gettext}{else}{'Add New Content'|gettext}{/if}</h2>
     </div>
     
     {if $error}

@@ -24,9 +24,9 @@
                 {help text="Get Help with"|gettext|cat:" "|cat:("Editing User Accounts"|gettext) module="edit-user"}
 	        </div>
 			{if $edit_user->id == ""}
-				<h1>{'Create a New User Account'|gettext}</h1>
+				<h2>{'Create a New User Account'|gettext}</h2>
 			{else}
-				<h1>{'Edit User'|gettext} - '{$edit_user->username}'</h1> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
+				<h2>{'Edit User'|gettext} - '{$edit_user->username}'</h2> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
 			{/if}
 	    </div>
 	    <div id="edituser-tabs" class="yui-navset exp-skin-tabview hide">

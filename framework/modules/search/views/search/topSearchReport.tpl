@@ -38,7 +38,7 @@
 
 <div class="module topsearchquery report">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h1>
+        <h2>{$moduletitle|default:"Top"|gettext|cat:" `$limit` "|cat:"Search Queries Report"|gettext}</h2>
     </div>
     {permissions}
         <div class="module-actions">

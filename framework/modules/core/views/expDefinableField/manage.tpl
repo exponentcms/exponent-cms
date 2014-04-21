@@ -20,7 +20,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Definable Fields"|gettext) module="manage-definable-fields"}
         </div>
-        <h1>{"Manage Definable Fields"|gettext}</h1>
+        <h2>{"Manage Definable Fields"|gettext}</h2>
     </div>
 	{*{permissions}*}
     	{*{if $permissions.create}*}

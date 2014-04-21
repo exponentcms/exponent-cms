@@ -18,11 +18,11 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Changing User Passwords"|gettext) module="change-my-password"}
         </div>
-        <h1>{'Change'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h1>
+        <h2>{'Change'|gettext} {if $isuser}{'your'|gettext}{else}{$u->username}'s{/if} {'password'|gettext}</h2>
+        {if $isuser}
+            <blockquote>{'To change your password enter your current password and then enter what you would like your new password to be'|gettext}.</blockquote>
+        {/if}
     </div>
-    {if $isuser}
-        <blockquote>{'To change your password enter your current password and then enter what you would like your new password to be'|gettext}.</blockquote>
-    {/if}
     {form action=save_change_password}
         {control type="hidden" name="uid" value=$u->id}
         {if $isuser}

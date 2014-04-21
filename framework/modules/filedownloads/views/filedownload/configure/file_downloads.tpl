@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("File Download Settings"|gettext) module="filedownload"}
 		</div>
         <h2>{"File Download Settings"|gettext}</h2>
+        <blockquote>
+            {'This is where you can configure the settings used by this File Download module.'|gettext}&#160;&#160;
+            {'These settings only apply to this particular module.'|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'This is where you can configure the settings used by this File Download module.'|gettext}&#160;&#160;
-    {'These settings only apply to this particular module.'|gettext}
-</blockquote>
 {control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Number Downloads, Number Downloads Descending, Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,downloads,downloads DESC,title,title DESC,rank" value=$config.order|default:'created_at DESC'}
 {control type="radiogroup" name="usebody" label="Display File Description in List"|gettext value=$config.usebody|default:0 items="Full,Summary,Page,None"|gettxtlist values="0,1,3,2"}
 {control type="checkbox" name="datetag" label="Display Item Date as Badge"|gettext value=1 checked=$config.datetag}

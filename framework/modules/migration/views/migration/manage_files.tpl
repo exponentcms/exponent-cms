@@ -25,17 +25,17 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Files"|gettext) module="migrate-files"}
         </div>
-		<h1>{"Migrate Files"|gettext}</h1>	    
+		<h2>{"Migrate Files"|gettext}</h2>
+        <blockquote>
+            {'This copies the list of files found in the database'|gettext} ({$config.database}).&#160;&#160;
+            {'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
+            {'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
+            <span class="warning">
+                {br}{'WARNING: This process will wipe out all current file records in the database'|gettext}.
+            </span>
+        </blockquote>
     </div>
 
-    <blockquote>
-		{'This copies the list of files found in the database'|gettext} ({$config.database}).&#160;&#160;
-        {'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
-        {'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
-        <span class="warning">
-            {br}{'WARNING: This process will wipe out all current file records in the database'|gettext}.
-        </span>
-    </blockquote>
     <h3>{if $count > 0}{$count}{else}{'No'|gettext}{/if} {'files found in the database'|gettext} '{$config.database}'</h3>
     {br}<a class="{button_style}" href="{link module=migration action=migrate_files}"><strong>{'Migrate Files'|gettext}</strong></a>{br}
 </div>

@@ -25,13 +25,13 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
         </div>
-		<h1>{"Migrate Pages"|gettext}</h1>	    
+		<h2>{"Migrate Pages"|gettext}</h2>
+        <blockquote>
+            {'The following is a list of pages we found in the database'|gettext} {$config.database}.
+            {'Select the pages you would like to pull over from'|gettext} {$config.database}.
+        </blockquote>
     </div>
 
-    <blockquote>
-        {'The following is a list of pages we found in the database'|gettext} {$config.database}.
-        {'Select the pages you would like to pull over from'|gettext} {$config.database}.
-    </blockquote>
     {form action="migrate_pages"}
         <table class="exp-skin-table">
         <thead>

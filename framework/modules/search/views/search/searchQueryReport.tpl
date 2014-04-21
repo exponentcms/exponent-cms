@@ -19,7 +19,7 @@
 
 <div class="module searchquery report">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
+        <h2>{$moduletitle|default:"Search Queries Report"|gettext}</h2>
     </div>
     {permissions}
     <div class="module-actions">
