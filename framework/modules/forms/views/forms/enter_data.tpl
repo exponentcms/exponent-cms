@@ -13,4 +13,4 @@
  *
  *}
 
-{include file="enterdata.tpl"}
+{exp_include file="enterdata.tpl"}

@@ -23,9 +23,10 @@
             <blockquote>{'This form allows you to assign permissions to an entire group of users.'|gettext}</blockquote>
 		</div>
     </div>
-    {if expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'}
-        {include file="_permissions.bootstrap.tpl"}
-    {else}
-        {include file="_permissions.tpl"}
-    {/if}
+    {*{if expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'}*}
+        {*{exp_include file="_permissions.bootstrap.tpl"}*}
+    {*{else}*}
+        {*{exp_include file="_permissions.tpl"}*}
+    {*{/if}*}
+    {exp_include file="_permissions.tpl"}
 </div>

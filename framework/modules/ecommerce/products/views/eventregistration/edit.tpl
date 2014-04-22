@@ -127,7 +127,7 @@
                         </ul>
                         {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.  Click on the \'More\' link to enter the option\s weight.'|gettext}{br}
                     </blockquote>
-                    {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
+                    {exp_include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
                 </div>
                 <div id="tab5">
   			        <h2>{'User Input'|gettext}</h2>

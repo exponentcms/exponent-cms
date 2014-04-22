@@ -70,13 +70,13 @@
         {$bstrapmodulefileview="`$viewpath`/configure/`$containerview`.bootstrap.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}
         {if file_exists($bstrapthemefileview)}
-            {include file=$bstrapthemefileview}
+            {exp_include file=$bstrapthemefileview}
         {elseif file_exists($themefileview)}
-            {include file=$themefileview}
+            {exp_include file=$themefileview}
         {elseif file_exists($bstrapmodulefileview)}
-            {include file=$bstrapmodulefileview}
+            {exp_include file=$bstrapmodulefileview}
         {elseif file_exists($modulefileview)}
-            {include file=$modulefileview}
+            {exp_include file=$modulefileview}
         {else}
             <p>{'There Are No Display Specific Settings'|gettext}</p>
         {/if}

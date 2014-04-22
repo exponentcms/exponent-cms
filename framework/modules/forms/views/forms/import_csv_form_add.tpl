@@ -13,4 +13,4 @@
  *
  *}
 
-{include file="import_csv_data_display.tpl"}
+{exp_include file="import_csv_data_display.tpl"}

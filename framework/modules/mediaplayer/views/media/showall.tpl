@@ -38,7 +38,7 @@
    		{$config.moduledescription}
    	{/if}
     <div id="{$name}list">
-        {include 'medialist.tpl'}
+        {exp_include 'medialist.tpl'}
     </div>
 </div>
 

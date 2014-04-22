@@ -37,7 +37,7 @@
             <div class="tab-content">
                 {foreach from=$views item=body name=body}
                     <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane{if $smarty.foreach.body.first} active{/if}">
-                        {include file=$body.file}
+                        {exp_include file=$body.file}
                     </div>
                 {/foreach}
             </div>

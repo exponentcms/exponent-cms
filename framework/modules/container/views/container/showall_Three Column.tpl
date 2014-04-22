@@ -23,20 +23,20 @@
     	{$container=$containers.1}
     	{$i=0}
 		{$rerank=0}
-    	{include file=$viewfile}
+    	{exp_include file=$viewfile}
         {clear}
     </div>
     <div class="col2">
     	{$container=$containers.2}
     	{$i=1}
 		{$rerank=0}
-    	{include file=$viewfile}
+    	{exp_include file=$viewfile}
         {clear}
     </div>
     <div class="col3">
     	{$container=$containers.3}
     	{$i=2}
-    	{include file=$viewfile}
+    	{exp_include file=$viewfile}
         {clear}
     </div>
     {clear}

@@ -13,5 +13,5 @@
  *
  *}
 
-{include file="myaddressbook.tpl"}
+{exp_include file="myaddressbook.tpl"}
 

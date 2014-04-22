@@ -13,4 +13,4 @@
  *
  *}
 
-{include file=$form}
+{exp_include file=$form}

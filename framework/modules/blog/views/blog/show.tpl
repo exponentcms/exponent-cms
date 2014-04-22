@@ -21,7 +21,7 @@
 
 <div class="module blog show">
     <div id="{$name}item">
-        {include 'blogitem.tpl'}
+        {exp_include 'blogitem.tpl'}
     </div>
 </div>
 

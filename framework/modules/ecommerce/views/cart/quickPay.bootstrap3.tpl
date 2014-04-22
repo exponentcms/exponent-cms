@@ -56,7 +56,7 @@
                        <div class="tab-content">
                            {foreach from=$billing->calculator_views item=cviews name=items}
                                <div id="tab{$smarty.foreach.items.iteration}" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
-                                   {include file=$cviews.view calcid=$cviews.id}
+                                   {exp_include file=$cviews.view calcid=$cviews.id}
                                </div>
                            {/foreach}
                        </div>

@@ -54,7 +54,7 @@
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                      {foreach from=$cat->records item=record}
-                        {include 'portfolioitem.tpl'}
+                        {exp_include 'portfolioitem.tpl'}
                     {/foreach}
                 </div>
             {/foreach}

@@ -62,7 +62,7 @@
         <div id="lb-bg" style="display:none;">
         </div>
         <div id="month-{$name}">
-            {include 'month.tpl'}
+            {exp_include 'month.tpl'}
         </div>
     </div>
 </div>

@@ -35,7 +35,7 @@
             <div class="yui-content">
                 {foreach from=$views item=body name=body}
                     <div id="tab{$smarty.foreach.body.iteration}">
-                        {include file=$body.file}
+                        {exp_include file=$body.file}
                     </div>
                 {/foreach}
 			</div>

@@ -21,7 +21,7 @@
 
 <div class="module events mini-cal">
     <div id="mini-{$name}">
-        {include 'minical.tpl'}
+        {exp_include 'minical.tpl'}
     </div>
     {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
 	{br}

@@ -43,7 +43,7 @@
 			</div>
 		</div>
         
-		{include file="show_cart_only.tpl"}
+		{exp_include file="show_cart_only.tpl"}
         
         {if $items|@count gt 0}
             <table width="100%" id="cart-totals" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

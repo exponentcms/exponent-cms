@@ -46,7 +46,7 @@
                         {/if}
                     {/permissions} 
                 </div>               
-                {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/order/invoice.tpl"}
+                {exp_include file="`$smarty.const.BASE`framework/modules/ecommerce/views/order/invoice.tpl"}
             </div>
             <div id="ordhistory" class="tab-pane fade">
                 <h2>{'Order History'|gettext}</h2>

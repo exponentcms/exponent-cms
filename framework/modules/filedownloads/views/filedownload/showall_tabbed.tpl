@@ -62,7 +62,7 @@
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}">
                     {foreach from=$cat->records item=file}
-                        {include 'filedownloaditem.tpl'}
+                        {exp_include 'filedownloaditem.tpl'}
                     {/foreach}
                 </div>
             {/foreach}

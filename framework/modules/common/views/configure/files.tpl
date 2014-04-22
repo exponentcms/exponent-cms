@@ -34,9 +34,9 @@
         {$presaved=1}
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {if file_exists($themefileview)}
-            {include file=$themefileview}
+            {exp_include file=$themefileview}
         {else}
-            {include file="`$smarty.const.BASE`framework/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
+            {exp_include file="`$smarty.const.BASE`framework/modules/common/views/file/configure/`$config.filedisplay`.tpl"}
         {/if}
     {else}
         <p></p>

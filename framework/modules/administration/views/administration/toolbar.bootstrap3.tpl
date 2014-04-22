@@ -113,7 +113,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{$smarty.const.URL_FULL}">
-                {include file="logo.tpl"}
+                {exp_include file="logo.tpl"}
             </a>
         </div>
 

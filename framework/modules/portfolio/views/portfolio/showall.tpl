@@ -50,7 +50,7 @@
    		{$config.moduledescription}
    	{/if}
     <div id="{$name}list">
-        {include 'portfoliolist.tpl'}
+        {exp_include 'portfoliolist.tpl'}
     </div>
 </div>
 

@@ -13,4 +13,4 @@
  *
  *}
 
-{include file="edit.tpl"}
+{exp_include file="edit.tpl"}

@@ -56,7 +56,7 @@
                        <div class="yui-content">
                            {foreach from=$billing->calculator_views item=cviews name=items}
                                <div id="tab{$smarty.foreach.items.iteration}">
-                                   {include file=$cviews.view calcid=$cviews.id}
+                                   {exp_include file=$cviews.view calcid=$cviews.id}
                                </div>
                            {/foreach}
                        </div>

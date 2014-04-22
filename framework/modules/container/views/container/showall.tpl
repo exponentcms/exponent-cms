@@ -63,7 +63,7 @@
 {foreach key=key name=c from=$containers item=container}
     {$i=$smarty.foreach.c.iteration}
 	{if $smarty.const.SELECTOR == 1}
-		{include file=$viewfile}
+		{exp_include file=$viewfile}
 	{else}
 		<div name="mod_{$container->id}" id="mod_{$container->id}"></div>
 		{permissions}

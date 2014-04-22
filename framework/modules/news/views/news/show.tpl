@@ -17,7 +17,7 @@
 
 <div class="module news show">
     <div id="{$name}item">
-        {include 'newsitem.tpl'}
+        {exp_include 'newsitem.tpl'}
     </div>
 </div>
 

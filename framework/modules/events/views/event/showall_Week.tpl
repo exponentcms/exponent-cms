@@ -56,7 +56,7 @@
     <div id="popup">
         <a href="javascript:void(0);" class="evnav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="week-{$name}">
-            {include 'week.tpl'}
+            {exp_include 'week.tpl'}
         </div>
     </div>
 </div>

@@ -133,7 +133,7 @@
             {else}
                 {$positioninfo=""}
             {/if}
-            <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
+            <div class="product{$positioninfo}">{exp_include file=$listing->getForm('storeListing')}</div>
 
             {if $positioninfo!="" || $smarty.foreach.listings.last==true}
                 <div class="break">&#160;</div>

@@ -13,4 +13,4 @@
  *
  *}
 
-{include file="showall_by_tags.tpl"}
+{exp_include file="showall_by_tags.tpl"}

@@ -13,7 +13,7 @@
  *
  *}
 
-{include file='menu.tpl'}
+{exp_include file='menu.tpl'}
 
 {css unique="carts_accordion" link="`$asset_path`css/accordion.css" corecss="tables"}
 

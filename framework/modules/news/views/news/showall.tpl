@@ -44,7 +44,7 @@
    	{/if}
     {subscribe_link}
     <div id="{$name}list">
-        {include 'newslist.tpl'}
+        {exp_include 'newslist.tpl'}
     </div>
 </div>
 

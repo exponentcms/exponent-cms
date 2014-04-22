@@ -103,7 +103,7 @@
     	{*$comments->links <-- We need to fix pagination*}
 	{/if}
 	{if !$hideform && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
-	    {include file="edit.tpl"}
+	    {exp_include file="edit.tpl"}
     {else}
     <p></p>
 	{/if}

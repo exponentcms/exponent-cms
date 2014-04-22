@@ -13,7 +13,7 @@
  *
  *}
 
-{include file='menu.tpl'}
+{exp_include file='menu.tpl'}
 
 	<div class="rightcol">
 	    <div id="dashboard-tabs" class="yui-navset exp-skin-tabview hide">

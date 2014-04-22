@@ -30,12 +30,12 @@
             {$i=$i+1}
             {if $section->active == 1}
                 {if $section->id == $current->id}
-                    <li class="active"></li>"
+                    <li class="active">{$section->name}</li>
                 {else}
-                    <li><a class="trail" href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a>&#160;
+                    <li><a href="{$section->link}"{if $section->new_window} target="_blank"{/if}>{$section->name}</a></li>
                 {/if}
             {else}
-                <span>{$section->name}</span>&#160;
+                <span>{$section->name}</span>
             {/if}
             {*{if $section->id != $current->id}&raquo;&#160;{/if}*}
         {/if}

@@ -18,4 +18,4 @@
         {*{$css}*}
     {*{/css}*}
 {*{/if}*}
-{include file="invoice.tpl"}
+{exp_include file="invoice.tpl"}
