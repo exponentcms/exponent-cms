@@ -49,6 +49,7 @@
 {if $config.control_time}{{$control = "`$control`'duration',"}}{/if}
 {if $config.control_volume}{$control = "`$control`'volume',"}{/if}
 {if $config.control_fullscreen}{{$control = "`$control`'fullscreen'"}}{/if}
+{if $control == ''}{$control = "'playpause','progress','current','duration','tracks','volume','fullscreen'"}{/if}
 
 {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
 {/script}
