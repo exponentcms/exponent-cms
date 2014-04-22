@@ -56,7 +56,7 @@
                     <ul>
                         {foreach from=$cat->records item=record}
                             <li>
-                                {exp_include 'portfolioitem.tpl'}
+                                {exp_include file='portfolioitem.tpl'}
                             </li>
                         {/foreach}
                     </ul>

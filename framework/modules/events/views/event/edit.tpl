@@ -62,13 +62,13 @@
                     {control type="datetimecontrol" name="eventstart" label="Start Time"|gettext showdate=false value=$record->eventstart+$record->eventdate[0]->date disabled=$record->is_allday}
                     {control type="datetimecontrol" name="eventend" label="End Time"|gettext showdate=false value=$record->eventend+$record->eventdate[0]->date disabled=$record->is_allday}
                     {if (empty($record->id)) }
-                        {exp_include "_recurring.tpl"}
+                        {exp_include file="_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }
                         {$dates=$record->eventdate}
                         {control type=hidden name=is_recurring value=$record->is_recurring}
                         {'This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.'|gettext}
                         <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-                            {exp_include '_recur_dates.tpl'}
+                            {exp_include 'file=_recur_dates.tpl'}
                         </table>
                     {/if}
                 </div>

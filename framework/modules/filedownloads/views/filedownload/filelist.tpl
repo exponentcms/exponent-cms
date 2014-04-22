@@ -20,7 +20,7 @@
         {if $cat !== $item->expCat[0]->id && $config.usecategories}
             <a href="{link action=showall src=$page->src group=$item->expCat[0]->id}" title='View this group'|gettext><h2 class="category">{if $item->expCat[0]->title!= ""}{$item->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2></a>
         {/if}
-        {exp_include 'filedownloaditem.tpl'}
+        {exp_include file='filedownloaditem.tpl'}
         {$cat=$item->expCat[0]->id}
     {/foreach}
     {pagelinks paginate=$page bottom=1}

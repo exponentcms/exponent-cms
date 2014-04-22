@@ -41,7 +41,7 @@
     <div id="popup">
         <a href="javascript:void(0);" class="nav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="month-cal-{$name}">
-            {exp_include 'month.tpl'}
+            {exp_include file='month.tpl'}
         </div>
     </div>
 </div>

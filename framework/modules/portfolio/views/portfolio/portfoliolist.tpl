@@ -23,7 +23,7 @@
         {if $cat !== $item->expCat[0]->id && $config.usecategories}
             <h2 class="category">{if $item->expCat[0]->title!= ""}{$item->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</h2>
         {/if}
-        {exp_include 'portfolioitem.tpl'}
+        {exp_include file='portfolioitem.tpl'}
         {$cat=$item->expCat[0]->id}
     {/foreach}
     {clear}

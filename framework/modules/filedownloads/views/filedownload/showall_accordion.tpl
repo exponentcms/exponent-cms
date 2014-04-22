@@ -60,7 +60,7 @@
                     <ul>
                         {foreach from=$cat->records item=file}
                             <li>
-                                {exp_include 'filedownloaditem.tpl'}
+                                {exp_include file='filedownloaditem.tpl'}
                             </li>
                         {/foreach}
                     </ul>

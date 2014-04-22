@@ -54,7 +54,7 @@
    	{/if}
     {subscribe_link}
     <div id="{$name}list">
-        {exp_include 'filelist.tpl'}
+        {exp_include file='filelist.tpl'}
     </div>
 </div>
 

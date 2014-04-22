@@ -59,8 +59,12 @@ function smarty_compiler_exp_include($_params, &$compiler) {
 	$arg_list = array();
 
 	if(!isset($_params['file'])) {
-		trigger_error("missing 'file' attribute in exp_include tag in " . __FILE__ . " on line " . __LINE__, E_COMPILE_WARNING);
-		return;
+        if (count($_params) == 1) {
+            $_params['file'] = $_params[0];  // single parm is filename
+        } else {
+            trigger_error("missing 'file' attribute in exp_include tag in " . __FILE__ . " on line " . __LINE__, E_COMPILE_WARNING);
+            return;
+        }
 	}
 
 	foreach($_params as $arg_name => $arg_value) {

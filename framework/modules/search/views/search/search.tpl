@@ -19,7 +19,7 @@
 	
 	<h1>{'Search Results'|gettext}</h1>
     <div id="{$name}list">
-        {exp_include 'searchlist.tpl'}
+        {exp_include file='searchlist.tpl'}
     </div>
 </div>
 

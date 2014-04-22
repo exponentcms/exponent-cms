@@ -60,7 +60,7 @@
     <div id="popup">
         <a class="calpopup evnav module-actions" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="month-{$name}">
-            {exp_include 'monthlist.tpl'}
+            {exp_include file='monthlist.tpl'}
         </div>
     </div>
 </div>
