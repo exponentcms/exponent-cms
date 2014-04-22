@@ -68,9 +68,9 @@
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}
         {if file_exists($themefileview)}
-            {exp_include file=$themefileview}
+            {include file=$themefileview}
         {elseif file_exists($modulefileview)}
-            {exp_include file=$modulefileview}
+            {include file=$modulefileview}
         {else}
             <p>{'There Are No Display Specific Settings'|gettext}</p>
         {/if}
