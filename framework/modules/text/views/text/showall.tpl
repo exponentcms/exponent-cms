@@ -30,7 +30,7 @@
     {/if}
     {$myloc=serialize($__loc)}
 {exp_include file=show}
-    {foreach from=$items item=text name=items}
+    {foreach from=$items item=item name=items}
         <div class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {if $item->title}<{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>{/if}
             {permissions}
