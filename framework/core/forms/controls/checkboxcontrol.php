@@ -53,45 +53,59 @@ class checkboxcontrol extends formcontrol {
     }
 
     function toHTML($label, $name) {
-        if (!empty($this->id)) {
-            $divID = ' id="' . $this->id . 'Control"';
-            $for   = ' for="' . $this->id . '"';
+        if (!empty($this->_ishidden)) {
+            $this->name = empty($this->name) ? $name : $this->name;
+            $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+    		$html .= ' />';
+    		return $html;
         } else {
+            if (!empty($this->id)) {
+                $divID = ' id="' . $this->id . 'Control"';
+                $for = ' for="' . $this->id . '"';
+            } else {
 //            $divID = '';
-            $divID = ' id="' . $name . 'Control"';
+                $divID = ' id="' . $name . 'Control"';
 //            $for   = '';
-            $for   = ' for="' . $name . '"';
-        }
-        $html = "<div" . $divID . " class=\"control checkbox";
-        $html .= (!empty($this->required)) ? ' required">' : '">';
-        if (!empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
+                $for = ' for="' . $name . '"';
+            }
+            $html = "<div" . $divID . " class=\"control checkbox";
+            $html .= (!empty($this->required)) ? ' required">' : '">';
+            if (!empty($this->flip)) {
+                $html .= "<label" . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                    $name
+                );
 //            $html .= "</td>";
-            $flip = '';
-        } else {
+                $flip = '';
+            } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
+                $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
 //            $html .= "</td><td>";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            if (!empty($label) && $label != ' ') {
+                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                    $name
+                );
+                if (!empty($label) && $label != ' ') {
 //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
 //                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
-                $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
-                if($this->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*</span>';
-                $html .= $label;
+                    $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
+                    if ($this->required) $html .= '<span class="required" title="' . gt(
+                            'This entry is required'
+                        ) . '">*</span>';
+                    $html .= $label;
 //                $html .= "</div>";
-                $html .= "</label>";
-            }
+                    $html .= "</label>";
+                }
 //            $html .= "</td>";
-            $flip = ' style="position:absolute;"';
-        }
+                $flip = ' style="position:absolute;"';
+            }
 //        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"".$flip.">" . $this->description . "</div><br>";
-        $html .= "</div>";
-        return $html;
+            if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"" . $flip . ">" . $this->description . "</div><br>";
+            $html .= "</div>";
+            return $html;
+        }
     }
 
     /*
@@ -204,14 +218,16 @@ class checkboxcontrol extends formcontrol {
             $object->default     = false;
             $object->flip        = false;
             $object->required    = false;
+            $object->is_hidden   = false;
         }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
-        $form->register("default", gt('Default'), new checkboxcontrol($object->default, false));
+        $form->register("default", gt('Default value'), new checkboxcontrol($object->default, false));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
-        $form->register("required", gt('Required'), new checkboxcontrol($object->required, false));
+        $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
+        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
 
         return $form;
@@ -231,6 +247,7 @@ class checkboxcontrol extends formcontrol {
         $object->default     = isset($values['default']);
         $object->flip        = isset($values['flip']);
         $object->required    = isset($values['required']);
+        $object->is_hidden   = isset($values['is_hidden']);
         return $object;
     }
 

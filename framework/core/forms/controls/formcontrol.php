@@ -29,7 +29,8 @@ abstract class formcontrol {
 	var $accesskey = "";
 	var $default = "";
 	var $disabled = false;
-    var $required = false;  
+    var $required = false;
+    var $is_hidden = false;
     var $focus = false;
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
@@ -77,36 +78,46 @@ abstract class formcontrol {
      * @return string
      */
     function toHTML($label,$name) {
-		if (!empty($this->id)) {
-		    $divID  = ' id="'.$this->id.'Control"';
-		    $for = ' for="'.$this->id.'"';
-		} else {
-//		    $divID  = '';
-            $divID  = ' id="'.$name.'Control"';
-		    $for = '';
-		}
-		
-		$disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
-		$class = empty($this->class) ? '' : $this->class;
-		 
-		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
-		$html .= !empty($this->required) ? ' required">' : '">';
-		//$html .= "<label>";
-        if($this->required) {
-            $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
+        if (!empty($this->_ishidden)) {
+            $this->name = empty($this->name) ? $name : $this->name;
+            $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+    		$html .= ' />';
+    		return $html;
         } else {
-            $labeltag = $label;
+            if (!empty($this->id)) {
+                $divID = ' id="' . $this->id . 'Control"';
+                $for = ' for="' . $this->id . '"';
+            } else {
+//		    $divID  = '';
+                $divID = ' id="' . $name . 'Control"';
+                $for = '';
+            }
+
+            $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
+            $class = empty($this->class) ? '' : $this->class;
+
+            $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled;
+            $html .= !empty($this->required) ? ' required">' : '">';
+            //$html .= "<label>";
+            if ($this->required) {
+                $labeltag = '<span class="required" title="' . gt(
+                        'This entry is required'
+                    ) . '">*&#160;</span>' . $label;
+            } else {
+                $labeltag = $label;
+            }
+            if (empty($this->flip)) {
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"label\">" . $labeltag . "</label>" : "";
+                $html .= $this->controlToHTML($name, $label);
+            } else {
+                $html .= $this->controlToHTML($name, $label);
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"label\">" . $labeltag . "</label>" : "";
+            }
+            //$html .= "</label>";
+            $html .= "</div>";
+            return $html;
         }
-		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
-			$html .= $this->controlToHTML($name, $label);
-		} else {
-			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
-		}
-		//$html .= "</label>";
-		$html .= "</div>";			
-		return $html;
 	}
 
     /**

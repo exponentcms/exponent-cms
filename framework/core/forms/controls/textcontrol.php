@@ -96,17 +96,19 @@ class textcontrol extends formcontrol {
             $object->size = 0;
             $object->maxlength = 0;
             $object->required = false;
+            $object->is_hidden = false;
         }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
-        $form->register("default",gt('Default'), new textcontrol($object->default));
+        $form->register("default",gt('Default value'), new textcontrol($object->default));
         $form->register("placeholder",gt('Placeholder'), new textcontrol($object->placeholder));
         $form->register("pattern",gt('Pattern'), new textcontrol($object->pattern));
         $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
-        $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));
+        $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required,false));
+        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
@@ -130,6 +132,7 @@ class textcontrol extends formcontrol {
         if (isset($values['size'])) $object->size = intval($values['size']);
         if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
         $object->required = isset($values['required']);
+        $object->is_hidden = isset($values['is_hidden']);
         return $object;
     }
 
