@@ -298,21 +298,21 @@ class calendarcontrol extends formcontrol {
         }
     }
 
-     static function form($object) {
-      $form = new form();
-      if (!isset($object->identifier)) {
-          $object = new stdClass();
-          $object->identifier = "";
-          $object->caption = "";
-          $object->showtime = true;
-      }
+    static function form($object) {
+        $form = new form();
+        if (empty($object)) $object = new stdClass();
+        if (!isset($object->identifier)) {
+            $object->identifier = "";
+            $object->caption = "";
+            $object->showtime = true;
+        }
 
-      $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
-      $form->register("caption",gt('Caption'), new textcontrol($object->caption));
-      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-      $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
-      return $form;
-     }
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
+        return $form;
+    }
 
     static function update($values, $object) {
         if ($object == null) {

@@ -17,7 +17,7 @@
     {*{css unique="data-view" corecss="button"}*}
 
     {*{/css}*}
-    {css unique="showall-forms" link="`$asset_path`css/datatables-tools.css"}
+    {css unique="showall-forms" corecss="datatables-tools"}
 
     {/css}
 
@@ -98,30 +98,30 @@
 {script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        var responsiveHelper = undefined;
+        var responsiveHelper;
         var breakpointDefinition = {
             tablet: 1024,
             phone : 480
         };
-        var tableElement = $('#forms-showall');
+        var tableContainer = $('#forms-showall');
 
-        var table = tableElement.dataTable({
+        var table = tableContainer.dataTable({
 //            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
             aoColumnDefs: [
                 { bSearchable: false, aTargets: [ -1 ] },
                 { bSortable: false, aTargets: [ -1 ] },
             ],
-            bAutoWidth: false,
-            fnPreDrawCallback: function () {
+            autoWidth: false,
+            preDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
                 }
             },
-            fnRowCallback: function (nRow) {
+            rowCallback: function (nRow) {
                 responsiveHelper.createExpandIcon(nRow);
             },
-            fnDrawCallback: function (oSettings) {
+            drawCallback: function (oSettings) {
                 responsiveHelper.respond();
             }
         });

@@ -177,16 +177,17 @@ class yuicalendarcontrol extends formcontrol
     static function form($object)
     {
         $form = new form();
+        if (empty($object)) $object = new stdClass();
         if (!isset($object->identifier)) {
-            $object = new stdClass();
             $object->identifier = "";
-            $object->caption = "";
-//          $object->showtime = true;
+            $object->caption    = "";
+            $object->showtime   = true;
+//            $object->is_hidden  = false;
         }
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
-//      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-
+        $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+//        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
@@ -204,8 +205,9 @@ class yuicalendarcontrol extends formcontrol
             return null;
         }
         $object->identifier = $values['identifier'];
-        $object->caption = $values['caption'];
-//        $object->showtime   = isset($values['showtime']);
+        $object->caption    = $values['caption'];
+        $object->showtime   = isset($values['showtime']);
+//        $object->is_hidden  = isset($values['is_hidden']);
         return $object;
     }
 
