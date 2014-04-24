@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +33,7 @@ class yuicalendarcontrol extends formcontrol {
     var $showtime = true;
 
     static function name() {
-        return "Date / Time - YUI Calendar";
+        return "Date / Time - Calendar Display";
     }
 
     static function isSimpleControl() {

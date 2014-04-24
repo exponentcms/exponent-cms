@@ -110,12 +110,20 @@ jQuery(document).ready(function($) {
         if (!win) { err(); }
     }
 
+    var workflowtoggle = function (e){
+        if (!confirm('{/literal}{if $smarty.const.ENABLE_WORKFLOW}{'Turn Workflow off (you will lose all revisions)'|gettext}{else}{'Turn Workflow on'|gettext}{/if}{literal}?')) {
+            e.preventDefault();
+            return false;
+        }
+    }
+
     $('#reportabug-toolbar').on('click', reportbugwindow);
     $('#manage-db').on('click', adminerwindow);
     $('#docs-toolbar').on('click',docswindow);
     $('#forums-toolbar').on('click',forumswindow);
     $('#filemanager-toolbar').on('click',filepickerwindow);
     $('#fileuploader-toolbar').on('click',fileuploaderwindow);
+    $('#workflow-toggle').on('click',workflowtoggle);
 });
 {/literal}
 {/script}
