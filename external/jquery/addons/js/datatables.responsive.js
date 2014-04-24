@@ -1,6 +1,6 @@
 /**
  * File:        datatables.responsive.js
- * Version:     0.1.4
+ * Version:     0.2.0
  * Author:      Seen Sai Yang
  * Info:        https://github.com/Comanche/datatables-responsive
  *
@@ -61,6 +61,9 @@ function ResponsiveDatatablesHelper(tableSelector, breakpoints, options) {
         this.tableElement = tableSelector;
     }
 
+    // Get data table API.
+    this.api = this.tableElement.dataTable().api();
+
     // State of column indexes and which are shown or hidden.
     this.columnIndexes = [];
     this.columnsShownIndexes = [];
@@ -71,10 +74,11 @@ function ResponsiveDatatablesHelper(tableSelector, breakpoints, options) {
 
     // Save state
     var fileName = window.location.pathname.split("/").pop();
-    var oSettings = this.tableElement.fnSettings();
-    this.tableId = oSettings.sTableId;
-    this.saveState = oSettings.oInit.bStateSave;
-    this.cookieName = this.tableElement.fnSettings().sCookiePrefix + 'ResponsiveHelper_' + this.tableId + '_' + fileName;
+    var context = this.api.settings().context[0];
+
+    this.tableId = context.sTableId;
+    this.saveState = context.oInit.bStateSave;
+    this.cookieName = 'DataTablesResponsiveHelper_' + this.tableId + (fileName ? '_' + fileName : '');
     this.lastStateExists = false;
 
     // Index of the th in the header tr that stores where the attribute
@@ -150,7 +154,9 @@ ResponsiveDatatablesHelper.prototype.init = function (breakpoints, options) {
 
 ResponsiveDatatablesHelper.prototype.initBreakpoints = function () {
     // Get last state if it exists
-    this.getState();
+    if (this.saveState) {
+        this.getState();
+    }
 
     if (!this.lastStateExists) {
         /** Generate breakpoints in the format we need. ***********************/
@@ -178,9 +184,9 @@ ResponsiveDatatablesHelper.prototype.initBreakpoints = function () {
 
         // Add the default breakpoint which shows all (has no upper limit).
         breakpointsSorted.push({
-            name: 'always',
-            lowerLimit: lowerLimit,
-            upperLimit: Infinity,
+            name         : 'always',
+            lowerLimit   : lowerLimit,
+            upperLimit   : Infinity,
             columnsToHide: []
         });
 
@@ -192,38 +198,27 @@ ResponsiveDatatablesHelper.prototype.initBreakpoints = function () {
             this.breakpoints[breakpointsSorted[i].name] = breakpointsSorted[i];
         }
 
-        /** Create range of possible column indexes ***************************/
-        // Get all current visible column indexes
-        var columns = this.tableElement.fnSettings().aoColumns;
+        /** Create range of visible columns and their indexes *****************/
+        // We need the range of all visible column indexes to calculate the
+        // columns to show:
+        //     Columns to show = all visible columns - columns to hide
+        var columns = this.api.columns().header();
+        var visibleColumnsHeadersTds = [];
         for (i = 0, l = columns.length; i < l; i++) {
-            if (columns[i].bVisible) {
+            if (this.api.columns(i).visible()) {
                 this.columnIndexes.push(i);
+                visibleColumnsHeadersTds.push(columns[i]);
             }
         }
-
-        /** Get visible column headers to work with ***************************/
-        // We need the range of possible column indexes to calculate the columns
-        // to show:
-        //     Columns to show = all columns - columns to hide
-        var headerColumns = this.tableElement.fnSettings().aoColumns;
-
-        // Filter for only visible columns.
-        var visibleColumns = [];
-        for (i = 0; i < headerColumns.length; i++) {
-            if (headerColumns[i].bVisible) {
-                visibleColumns.push(headerColumns[i]);
-            }
-        }
-
-        headerColumns = visibleColumns;
 
         /** Sort columns into breakpoints respectively ************************/
         // Read column headers' attributes and get needed info
-        for (var index = 0; index < headerColumns.length; index++) {
+        for (var index = 0; index < visibleColumnsHeadersTds.length; index++) {
             // Get the column with the attribute data-class="expand" so we know
             // where to display the expand icon.
-            var col = headerColumns[index];
-            if ($(col.nTh).attr('data-class') === 'expand') {
+            var col = $(visibleColumnsHeadersTds[index]);
+
+            if (col.attr('data-class') === 'expand') {
                 this.expandColumn = this.columnIndexes[index];
             }
 
@@ -231,7 +226,7 @@ ResponsiveDatatablesHelper.prototype.initBreakpoints = function () {
             // is associated with.
             // If it's defined, get the data-hide attribute and sort this
             // column into the appropriate breakpoint's columnsToHide array.
-            var dataHide = $(col.nTh).attr('data-hide');
+            var dataHide = col.attr('data-hide');
             if (dataHide !== undefined) {
                 var splitBreakingPoints = dataHide.split(/,\s*/);
                 for (var i = 0; i < splitBreakingPoints.length; i++) {
@@ -260,7 +255,7 @@ ResponsiveDatatablesHelper.prototype.initBreakpoints = function () {
  *
  * @param {Boolean} bindFlag
  */
-ResponsiveDatatablesHelper.prototype.setWindowsResizeHandler = function (bindFlag) {
+ResponsiveDatatablesHelper.prototype.setWindowsResizeHandler = function(bindFlag) {
     if (bindFlag === undefined) {
         bindFlag = true;
     }
@@ -363,12 +358,12 @@ ResponsiveDatatablesHelper.prototype.showHideColumns = function () {
     // Calculate the columns to show
     // Show columns that may have been previously hidden.
     for (var i = 0, l = this.columnsShownIndexes.length; i < l; i++) {
-        this.tableElement.fnSetColumnVis(this.columnsShownIndexes[i], true, false);
+        this.api.column(this.columnsShownIndexes[i]).visible(true);
     }
 
     // Hide columns that may have been previously shown.
     for (var i = 0, l = this.columnsHiddenIndexes.length; i < l; i++) {
-        this.tableElement.fnSetColumnVis(this.columnsHiddenIndexes[i], false, false);
+        this.api.column(this.columnsHiddenIndexes[i]).visible(false);
     }
 
     // Rebuild details to reflect shown/hidden column changes.
@@ -401,7 +396,7 @@ ResponsiveDatatablesHelper.prototype.createExpandIcon = function (tr) {
     // index equal to the expand column given.
     for (var i = 0, l = tds.length; i < l; i++) {
         var td = tds[i];
-        var tdIndex = this.tableElement.fnGetPosition(td)[2];
+        var tdIndex = this.api.cell(td).index().column;
         td = $(td);
         if (tdIndex === this.expandColumn) {
             // Create expand icon if there isn't one already.
@@ -411,13 +406,13 @@ ResponsiveDatatablesHelper.prototype.createExpandIcon = function (tr) {
                 // Respond to click event on expander icon.
                 switch (this.options.clickOn) {
                     case 'cell':
-                        td.on('click', { responsiveDatatablesHelperInstance: this }, this.showRowDetailEventHandler);
+                        td.on('click', {responsiveDatatablesHelperInstance: this}, this.showRowDetailEventHandler);
                         break;
                     case 'row':
-                        $(tr).on('click', { responsiveDatatablesHelperInstance: this }, this.showRowDetailEventHandler);
+                        $(tr).on('click', {responsiveDatatablesHelperInstance: this}, this.showRowDetailEventHandler);
                         break;
                     default:
-                        td.on('click', 'span.responsiveExpander', { responsiveDatatablesHelperInstance: this }, this.showRowDetailEventHandler);
+                        td.on('click', 'span.responsiveExpander', {responsiveDatatablesHelperInstance: this}, this.showRowDetailEventHandler);
                         break;
                 }
             }
@@ -471,8 +466,8 @@ ResponsiveDatatablesHelper.prototype.showRowDetailEventHandler = function (event
  */
 ResponsiveDatatablesHelper.prototype.showRowDetail = function (responsiveDatatablesHelperInstance, tr) {
     // Get column because we need their titles.
-    var tableContainer = responsiveDatatablesHelperInstance.tableElement;
-    var columns = tableContainer.fnSettings().aoColumns;
+    var api = responsiveDatatablesHelperInstance.api;
+    var columns = api.columns().header();
 
     // Create the new tr.
     var newTr = $(responsiveDatatablesHelperInstance.rowTemplate);
@@ -485,15 +480,27 @@ ResponsiveDatatablesHelper.prototype.showRowDetail = function (responsiveDatatab
         var index = responsiveDatatablesHelperInstance.columnsHiddenIndexes[i];
 
         // Get row td
-        var rowIndex = tableContainer.fnGetPosition(tr[0]);
-        var td = tableContainer.fnGetTds(rowIndex)[index];
+        var rowIndex = api.row(tr).index();
+        var td = api.cell(rowIndex, index).node();
 
         // Don't create li if contents are empty (depends on hideEmptyColumnsInRowDetail option).
         if (!responsiveDatatablesHelperInstance.options.hideEmptyColumnsInRowDetail || td.innerHTML.trim().length) {
             var li = $(responsiveDatatablesHelperInstance.rowLiTemplate);
-            $('.columnTitle', li).html(columns[index].sTitle);
-            var rowHtml = $(td).contents().clone();
-            $('.columnValue', li).html(rowHtml);
+            var hiddenColumnName = $(columns[index]).attr('data-name');
+            $('.columnTitle', li).html(hiddenColumnName !== undefined ? hiddenColumnName : columns[index].innerHTML);
+            var contents = $(td).contents();
+            var clonedContents = contents.clone();
+
+            // Select elements' selectedIndex are not cloned.  Do it manually.
+            for (var n = 0, m = contents.length; n < m; n++) {
+                var node = contents[n];
+                if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'SELECT') {
+                    clonedContents[n].selectedIndex = node.selectedIndex
+                }
+            }
+
+            // Set the column contents and save the original td source.
+            $('.columnValue', li).append(clonedContents).data('originalTdSource', td);
 
             // Copy index to data attribute, so we'll know where to put the value when the tr.row-detail is removed.
             li.attr('data-column', index);
@@ -501,7 +508,7 @@ ResponsiveDatatablesHelper.prototype.showRowDetail = function (responsiveDatatab
             // Copy td class to new li.
             var tdClass = $(td).attr('class');
             if (tdClass !== 'undefined' && tdClass !== false && tdClass !== '') {
-                li.addClass(tdClass)
+                      li.addClass(tdClass)
             }
 
             ul.append(li);
@@ -523,16 +530,13 @@ ResponsiveDatatablesHelper.prototype.showRowDetail = function (responsiveDatatab
  * @param {Object}                     tr                                 jQuery wrapped set
  */
 ResponsiveDatatablesHelper.prototype.hideRowDetail = function (responsiveDatatablesHelperInstance, tr) {
-
-    // If the value of an input has changed, we need to copy its state back to the DataTables object
-    // so that value will persist when the tr.row-detail is removed.
+    // If the value of an input has changed while in row detail, we need to copy its state back
+    // to the DataTables object so that value will persist when the tr.row-detail is removed.
     tr.next('.row-detail').find('li').each(function () {
-        var tableContainer = responsiveDatatablesHelperInstance.tableElement;
-        var aoData = tableContainer.fnSettings().aoData;
-        var rowIndex = tableContainer.fnGetPosition(tr[0]);
-        var column = $(this).attr('data-column');
-        var td = $(this).find('span.columnValue').contents();
-        aoData[rowIndex]._anHidden[column] = $(aoData[rowIndex]._anHidden[column]).empty().append(td)[0];
+        var columnValueContainer = $(this).find('span.columnValue');
+        var tdContents = columnValueContainer.contents();
+        var td = columnValueContainer.data('originalTdSource');
+        $(td).empty().append(tdContents);
     });
     tr.next('.row-detail').remove();
 };
@@ -646,48 +650,3 @@ ResponsiveDatatablesHelper.prototype.difference = function (a, b) {
     }
     return arr;
 };
-
-
-(function ($) {
-    /**
-     * Get an array of TD nodes from DataTables for a given row, including any column elements which are hidden.
-     *
-     * Author: Allan Jardine
-     * http://datatables.net/plug-ins/api
-     *
-     * @param {Object} oSettings DataTables settings object
-     * @param {node}   mTr       TR node or aoData index
-     */
-    $.fn.dataTableExt.oApi.fnGetTds = function (oSettings, mTr) {
-        var anTds = [];
-        var anVisibleTds = [];
-        var iCorrector = 0;
-        var nTd, iColumn, iColumns;
-
-        /* Take either a TR node or aoData index as the mTr property */
-        var iRow = (typeof mTr == 'object') ?
-            oSettings.oApi._fnNodeToDataIndex(oSettings, mTr) : mTr;
-        var nTr = oSettings.aoData[iRow].nTr;
-
-        /* Get an array of the visible TD elements */
-        for (iColumn = 0, iColumns = nTr.childNodes.length; iColumn < iColumns ; iColumn++) {
-            nTd = nTr.childNodes[iColumn];
-            if (nTd.nodeName.toUpperCase() == "TD") {
-                anVisibleTds.push(nTd);
-            }
-        }
-
-        /* Construct and array of the combined elements */
-        for (iColumn = 0, iColumns = oSettings.aoColumns.length; iColumn < iColumns ; iColumn++) {
-            if (oSettings.aoColumns[iColumn].bVisible) {
-                anTds.push(anVisibleTds[iColumn - iCorrector]);
-            }
-            else {
-                anTds.push(oSettings.aoData[iRow]._anHidden[iColumn]);
-                iCorrector++;
-            }
-        }
-
-        return anTds;
-    };
-})(jQuery);
