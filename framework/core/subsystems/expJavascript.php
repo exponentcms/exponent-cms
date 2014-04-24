@@ -93,7 +93,7 @@ class expJavascript {
     <!--<![endif]-->';
                 }
                 if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?SWATCH:'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
@@ -228,7 +228,7 @@ class expJavascript {
     <!--<![endif]-->' . "\r\n";
                 }
                 if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?SWATCH:'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
