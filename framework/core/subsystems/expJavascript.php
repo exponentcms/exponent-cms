@@ -103,11 +103,16 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3' || NEWUI) {
+                    } elseif ($head_config['framework'] == 'bootstrap3') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
                         ));
+                        expCSS::pushToHead(array(
+                            "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
+                            "lessvars"=>$lessvars,
+                        ));
+                    } elseif (NEWUI) {
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
@@ -238,7 +243,7 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3' || NEWUI) {
+                    } elseif ($head_config['framework'] == 'bootstrap3') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -247,7 +252,11 @@ class expJavascript {
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
                         ));
-                    }
+                    } elseif (NEWUI) {
+                        expCSS::pushToHead(array(
+                            "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
+                            "lessvars"=>$lessvars,
+                        ));                    }
                 }
 
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {

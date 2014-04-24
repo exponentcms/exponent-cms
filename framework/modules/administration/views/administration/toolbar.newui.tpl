@@ -13,6 +13,23 @@
  *
  *}
 
+{assocarray}
+    lessvars: [
+        swatch: "cerulean"
+        themepath: "cerulean"
+        btn_size: "small"
+    ]
+    lessvars2: [
+        menu_width: "769"
+    ]
+{/assocarray}
+
+{css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}
+
+{/css}
+{css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars2}
+
+{/css}
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
 
 {/css}
@@ -46,8 +63,9 @@
 <nav id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
-    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-      <span class="sr-only">Toggle navigation</span>
+      <button type="button" class="navbar-toggle" data-toggle="collapse"
+          data-target="#admin-navbar-collapse-1">
+      <span class="sr-only">{'Toggle navigation'|gettext}</span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
@@ -58,7 +76,7 @@
   </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="admin-navbar-collapse-1">
         {foreach from=$menu item=topnav name=tbmenu}
         <ul class="nav navbar-nav{if $topnav.alignright} navbar-right{/if}">
             <li class="dropdown">

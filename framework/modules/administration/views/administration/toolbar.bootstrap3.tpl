@@ -24,6 +24,9 @@
 {css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}
 
 {/css}
+{css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less"}
+
+{/css}
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
 {if $top}
     {if (!$smarty.const.MENU_LOCATION || $smarty.const.MENU_LOCATION == 'fixed-top')}
