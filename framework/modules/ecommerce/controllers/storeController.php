@@ -1107,13 +1107,6 @@ class storeController extends expController {
 
 //        $expDefinableField = new expDefinableField();
 //        $definablefields = $expDefinableField->find('all','1','rank');
-        $f = new forms();
-        $forms_list = array();
-        $forms_list[0] = '- '.gt('No User Input Required').' -';
-        $forms = $f->find('all', 'is_saved=1');
-        if (!empty($forms)) foreach ($forms as $frm) {
-            $forms_list[$frm->id] = $frm->title;
-        }
 
         //Make sure that the view is the edit.tpl and not any ajax views
         if (isset($this->params['view']) && $this->params['view'] == 'edit') {
@@ -1220,6 +1213,15 @@ class storeController extends expController {
             $parent = new $product_type($record->parent_id, false, true);
         } else {
             $view = 'edit';
+        }
+
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            if (!$db->countObjects('eventregistration', 'forms_id='.$frm->id) || (!empty($record->forms_id) && $record->forms_id == $frm->id))
+                $forms_list[$frm->id] = $frm->title;
         }
 
         assign_to_template(array(

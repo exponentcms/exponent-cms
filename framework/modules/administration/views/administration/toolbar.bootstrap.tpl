@@ -196,6 +196,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
          if (!win) { err(); }
      }
 
+     var workflowtoggle = function (e){
+         if (!confirm('{/literal}{if $smarty.const.ENABLE_WORKFLOW}{'Turn Workflow off (you will lose all revisions)'|gettext}{else}{'Turn Workflow on'|gettext}{/if}{literal}?')) {
+             e.preventDefault();
+             return false;
+         }
+     }
+
      Y.on('toolbar:loaded',function(){
          if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
          if (document.getElementById("manage-db"))Y.one('#manage-db').on('click', adminerwindow);
@@ -203,6 +210,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
          if (document.getElementById("forums-toolbar")) Y.one('#forums-toolbar').on('click',forumswindow);
          if (document.getElementById("filemanager-toolbar")) Y.one('#filemanager-toolbar').on('click',filepickerwindow);
          if (document.getElementById("fileuploader-toolbar")) Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
+         if (document.getElementById("workflow-toggle")) Y.one('#workflow-toggle').on('click',workflowtoggle);
          // Y.later(900,this,function(){
          //     tb.setStyles({'opacity':'0.3'});
          // });

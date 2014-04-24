@@ -89,7 +89,7 @@ abstract class baseform {
 		return true;
 	}
 	
-	function toHTML($form_id, $module) {
+	function toHTML($form_id) {
 		return "";
 	}
 }

@@ -28,8 +28,14 @@
  */
 class fakeform extends form {
 
-	function toHTML($forms_id=null, $module=null) {
-        if (empty($module)) $module="forms";
+    /**
+     * Display the form in Edit mode as HTML output.
+     *
+     * @param null $form_id
+     *
+     * @return string The HTML code use to display the form to the browser.
+     */
+	function toHTML($forms_id=null) {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -115,7 +121,7 @@ class fakeform extends form {
         }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
-			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; padding: 1em;\" >";
+			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; border-radius: 8px; padding: 1em;" . (!empty($this->controls[$name]->is_hidden)?' background-color: lightgray;':'') . "\" >";
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
@@ -136,11 +142,11 @@ class fakeform extends form {
 
 			$html .= '&#160;';
 			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
-				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				//$html .= '<a href="?module='.'forms'.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
 			}
 			else {
-				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
             if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
                 $html .= $delete_icon_class;
@@ -175,8 +181,8 @@ class fakeform extends form {
             }
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
-//				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>$module, 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank+1))).'">';
+//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
+//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank+1))).'">';
 //				$html .= "<img border='0' src='".ICON_RELATIVE."down.png' />";
 //				$html .= '</a>';
 //			} else {
@@ -184,8 +190,8 @@ class fakeform extends form {
 //			}
 //			$html .= "&#160;";
 //			if ($rank != 0) {
-//				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank-1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>$module, 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank-1))).'">';
+//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank-1).'">';
+//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank-1))).'">';
 //				$html .= "<img border='0' src='".ICON_RELATIVE."up.png' />";
 //				$html .= '</a>';
 //			} else {

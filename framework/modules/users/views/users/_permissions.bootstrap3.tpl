@@ -21,7 +21,7 @@
 {*}*}
 {*{/literal}*}
 {*{/css}*}
-{css unique="manage-perms" link="`$asset_path`css/datatables-tools.css"}
+{css unique="manage-groups" corecss="datatables-tools"}
 
 {/css}
 
@@ -122,14 +122,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
 {script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
 {literal}
     $(document).ready(function() {
-        var responsiveHelper = undefined;
+        var responsiveHelper;
         var breakpointDefinition = {
             tablet: 1024,
             phone : 480
         };
-        var tableElement = $('#permissions');
+        var tableContainer = $('#permissions');
 
-        var table = tableElement.dataTable({
+        var table = tableContainer.dataTable({
 //            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
             aoColumnDefs: [
 //                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
@@ -139,17 +139,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
                 {aTargets: [ "sortme"], bSortable: true },
                 {aTargets: [ 'nosort' ], bSortable: false }
             ],
-            bAutoWidth: false,
-            fnPreDrawCallback: function () {
+            autoWidth: false,
+            preDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {
-                    responsiveHelper = new ResponsiveDatatablesHelper(tableElement, breakpointDefinition);
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
                 }
             },
-            fnRowCallback: function (nRow) {
+            rowCallback: function (nRow) {
                 responsiveHelper.createExpandIcon(nRow);
             },
-            fnDrawCallback: function (oSettings) {
+            drawCallback: function (oSettings) {
                 responsiveHelper.respond();
             }
         });

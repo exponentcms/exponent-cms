@@ -30,7 +30,7 @@ class hiddenfieldcontrol extends formcontrol {
 	var $flip = false;
 	var $jsHooks = array();
 	
-	static function name() { return "generic"; }
+	static function name() { return "Hidden Field"; }
 
 	function __construct($default = "") {
         $this->default = $default;

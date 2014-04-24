@@ -191,8 +191,8 @@ class calendarcontrol extends formcontrol
     static function form($object)
     {
         $form = new form();
+        if (empty($object)) $object = new stdClass();
         if (!isset($object->identifier)) {
-            $object = new stdClass();
             $object->identifier = "";
             $object->caption = "";
             $object->showtime = true;

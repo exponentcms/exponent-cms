@@ -264,7 +264,7 @@ class formsController extends expController {
                 $form->id = $f->sef_url;
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
-                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly = 0 AND is_static = 0','rank');
 //                    $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
                     $data = $f->getRecord($this->params['id']);
                     //            $data = $forms_record->find('first','id='.$this->params['id']);
@@ -316,6 +316,7 @@ class formsController extends expController {
                     $ctl = expUnserialize($c->data);
                     $ctl->_id = $c->id;
                     $ctl->_readonly = $c->is_readonly;
+                    $ctl->_ishidden = !empty($ctl->is_hidden) && empty($this->params['id']);  // hide it if entering new data
                     if (!empty($this->params['id'])) {
                         if ($c->is_readonly == 0) {
                             $name = $c->name;
@@ -390,7 +391,7 @@ class formsController extends expController {
                 if (empty($this->config['description'])) $this->config['description'] = '';
                 assign_to_template(array(
                     "description" => $this->config['description'],
-                    "form_html"   => $form->toHTML($f->id),
+                    "form_html"   => $form->toHTML(),
                     "form"        => $f,
                     "count"       => $count,
 //                    'paged'       => $paged,
@@ -413,35 +414,42 @@ class formsController extends expController {
 //            $coldef = unserialize($col->data);
             $coldef = expUnserialize($col->data);
             $coldata = new ReflectionClass($coldef);
-            $coltype = $coldata->getName();
-            if ($coltype == 'uploadcontrol') {
-                $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);
-            } else {
-                $value = call_user_func(array($coltype, 'parseData'), $col->name, $this->params, true);
-            }
-            $value = call_user_func(array($coltype, 'templateFormat'), $value, $coldef);
-            //eDebug($value);
-            $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;
-            $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
+            if (empty($coldef->is_hidden)) {
+                $coltype = $coldata->getName();
+                if ($coltype == 'uploadcontrol') {
+                    $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);
+                } else {
+                    $value = call_user_func(array($coltype, 'parseData'), $col->name, $this->params, true);
+                }
+                $value = call_user_func(array($coltype, 'templateFormat'), $value, $coldef);
+                //eDebug($value);
+                $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;
+                $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
 
-            if (!empty($this->params[$col->name])) {
+                if (!empty($this->params[$col->name])) {
 //                if ($coltype == 'checkboxcontrol') {
 //                    $responses[$col->caption . $num] = gt('Yes');
 //                } else {
                     $responses[$col->caption . $num] = $value;
 //                }
-            } else {
-                if ($coltype == 'checkboxcontrol') {
-                    $responses[$col->caption . $num] = gt('No');
-                } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
-                    $responses[$col->name] = $value;
-                } elseif ($coltype == 'uploadcontrol') {
-                    $this->params[$col->name] = PATH_RELATIVE . call_user_func(array($coltype, 'moveFile'), $col->name, $_FILES, true);
-        //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
-                    //eDebug($value);
-                    $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
-                } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
-                    $responses[$col->caption . $num] = '';
+                } else {
+                    if ($coltype == 'checkboxcontrol') {
+                        $responses[$col->caption . $num] = gt('No');
+                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
+                        $responses[$col->name] = $value;
+                    } elseif ($coltype == 'uploadcontrol') {
+                        $this->params[$col->name] = PATH_RELATIVE . call_user_func(
+                                array($coltype, 'moveFile'),
+                                $col->name,
+                                $_FILES,
+                                true
+                            );
+                        //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
+                        //eDebug($value);
+                        $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
+                    } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
+                        $responses[$col->caption . $num] = '';
+                    }
                 }
             }
         }
@@ -494,16 +502,18 @@ class formsController extends expController {
                 $varname = $c->name;
                 $db_data->$varname = $value;
         //        $fields[$c->name] = call_user_func(array($control_type,'templateFormat'),$value,$ctl);
-                $emailFields[$c->name] = call_user_func(array($control_type, 'templateFormat'), $value, $ctl);
-                $captions[$c->name] = $c->caption;
-                if ($c->name == "email" && expValidator::isValidEmail($value)) {
-                    $from = $value;
-                }
-                if ($c->name == "name") {
-                    $from_name = $value;
-                }
-                if (get_class($ctl) == 'uploadcontrol') {
-                    $attachments[] = htmlspecialchars_decode($this->params[$c->name]);
+                if (!$ctl->is_hidden) {
+                    $emailFields[$c->name] = call_user_func(array($control_type, 'templateFormat'), $value, $ctl);
+                    $captions[$c->name] = $c->caption;
+                    if ($c->name == "email" && expValidator::isValidEmail($value)) {
+                        $from = $value;
+                    }
+                    if ($c->name == "name") {
+                        $from_name = $value;
+                    }
+                    if (get_class($ctl) == 'uploadcontrol') {
+                        $attachments[] = htmlspecialchars_decode($this->params[$c->name]);
+                    }
                 }
             }
         }
@@ -965,7 +975,7 @@ class formsController extends expController {
                     $form->registerBefore('identifier','control_type',gt('Control Type'),new genericcontrol('hidden',$control_type));
                 }
                 assign_to_template(array(
-                    'form_html' => $form->toHTML($f->id),
+                    'form_html' => $form->toHTML(),
                     'type'      => $types[$control_type],
                     'is_edit'   => ($ctl == null ? 0 : 1),
                 ));
