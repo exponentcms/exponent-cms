@@ -502,6 +502,7 @@ if ($user->isSuperAdmin()) {
                 array(
                     'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
                     'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
+                    'id'        => 'workflow-toggle',
                     'url'       => makeLink(array(
                         'controller' => 'administration',
                         'action'     => 'toggle_workflow'
