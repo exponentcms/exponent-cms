@@ -78,9 +78,9 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 $btn_class .= ' ' . $btn_size;
             } else {
                 expCSS::pushToHead(array(
-                         "corecss"=>"forms"
-                     ));
-                     $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
+                    "corecss"=>"forms"
+                ));
+                $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
 //        }
         expJavascript::pushToFoot(array(

@@ -36,7 +36,7 @@
             </ul>            
             <div class="tab-content">
                 {foreach from=$views item=body name=body}
-                    <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane{if $smarty.foreach.body.first} active{/if}">
+                    <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane fade{if $smarty.foreach.body.first} in active{/if}">
                         {include file=$body.file}
                     </div>
                 {/foreach}
@@ -47,7 +47,7 @@
     {/form}
 </div>
 
-{script unique="conf" jquery=1 bootstrap="tab"}
+{script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
     $('.loadingdiv').remove();
 {/literal}

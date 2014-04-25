@@ -86,7 +86,7 @@ if (!function_exists('smarty_function_icon')) {
                     $params['img'] = $params['action'] . '.png';
                 }
                 if (empty($params['title'])) {
-                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text);
+                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
                 }
             } else $params['text'] = gt($params['text']);
         }
@@ -98,7 +98,7 @@ if (!function_exists('smarty_function_icon')) {
         $alt = (empty($params['alt'])) ? '' : $params['alt'];
         $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : (!empty($params['class']) ? $params['class'] : '');
         $text = (empty($params['text'])) ? '' : $params['text'];
-        $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text) : $params['title'];
+        $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text) : $params['title'];
         if (!empty($params['hash'])) {
 //	    $hash = $params['hash'];
             unset($params['hash']);
@@ -116,16 +116,16 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
         
-        // if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
-        //     $btn_size = '';  // actually default size, NOT true boostrap large
-        //     $icon_size = 'icon-large';
-        // } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
-        //     $btn_size = 'btn-mini';
-        //     $icon_size = '';
-        // } else { // medium
-        //     $btn_size = 'btn-small';
-        //     $icon_size = 'icon-large';
-        // }
+        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
+            $btn_size = '';  // actually default size, NOT true boostrap large
+            $icon_size = 'fa-lg';
+        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
+            $btn_size = 'btn-xs';
+            $icon_size = '';
+        } else { // medium
+            $btn_size = 'btn-sm';
+            $icon_size = 'fa-lg';
+        }
 
         $icon = expTheme::buttonIcon($class);
         if (!empty($params['style']) ) $icon->type = $params['style'];
@@ -173,9 +173,9 @@ if (!function_exists('smarty_function_icon')) {
             }
             echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
             if (($params['action'] == "delete" || $params['action'] == "merge" || $icon->class == "delete" || $icon->class == "merge") && empty($onclick))
-                echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
+                echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
-//                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
+//                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="fa fa-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';

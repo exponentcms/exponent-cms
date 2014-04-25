@@ -40,7 +40,7 @@ if (!function_exists('smarty_block_form')) {
             $name = isset($params['name']) ? $params['name'] : 'form';
             $id = empty($params['id']) ? $name : $params['id'];
             $module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
-            $controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;  //FIXME there is no 'con' property
+            $controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;  //FIXME there is no 'con' property
             $method = isset($params['method']) ? $params['method'] : "POST";
             $enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
