@@ -25,8 +25,7 @@
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
     protected $add_permissions = array(
-//	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
-	    'clear'=>'Clear Caches',
+	    'clear'=>'Clear Caches',  //FIXME this requires a logged in user to perform?
 	    "fix"=>"Fix Database",
 	    "install"=>"Installation",
 	    "theme"=>"Manage Themes",
@@ -474,7 +473,7 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
-	public function clear_all_caches() {
+	public static function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
         expSession::un_set('framework');
