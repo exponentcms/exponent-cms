@@ -16,7 +16,7 @@ Added / Fixed / Changed for 2.3.0
   - adds new optional search/filter to portfolio & faq showall views
   - adds new optional workflow features (revisions and approval) to blog, news, & text modules
   - module and item heading levels are now selectable within module configuration settings
-  - adds optional websnapr link thumbnail support to links module
+  - adds optional 'websnapr' link thumbnail support to links module
   - adds module specific quick upload folder selection
   - updates several 'widgets' from YUI to jQuery variants (tag picker, calendar, list builder color picker, lightbox)
   - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
@@ -28,7 +28,7 @@ Added / Fixed / Changed for 2.3.0
   - enhances the import/export abilities for transferring site content/data from other sites or in other formats
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
   - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
-  - adds new 'reset.php' file to allow easily clearing all caches if the site crashes
+  - adds new 'reset.php' file to allow easily clearing all caches if the site crashes when designing/changing themes
   - includes all fixes from v2.2.3 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
