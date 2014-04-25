@@ -21,6 +21,7 @@
 require_once('exponent.php');
 
 //Fire off the clear all caches via an exponent action.
-redirect_to(array("controller"=>"administration","action"=>"clear_all_caches"));
+//redirect_to(array("controller"=>"administration","action"=>"clear_all_caches"));
+administrationController::clear_all_caches();
 
 ?>
