@@ -88,7 +88,7 @@
                 $('.navbar-static-top').css('margin-top', $adminbar);
             }
         };
-        setTopPadding();
+        setTopPadding(true);
         $(window).resize(function(){
             setTopPadding(true);
         });
