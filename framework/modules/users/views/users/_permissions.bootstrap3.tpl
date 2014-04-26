@@ -129,15 +129,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
         };
         var tableContainer = $('#permissions');
 
-        var table = tableContainer.dataTable({
-//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
+        var table = tableContainer.DataTable({
             aoColumnDefs: [
-//                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-//                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-//                { "bSearchable": false, "aTargets": [ '_all' ] },
-//                { "bSortable": false, "aTargets": [ '_all' ] },
-                {aTargets: [ "sortme"], bSortable: true },
-                {aTargets: [ 'nosort' ], bSortable: false }
+//                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { sortable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { searchable: false, targets: [ '_all' ] },
+//                { sortable: false, targets: [ '_all' ] },
+                {targets: [ "sortme"], sortable: true },
+                {targets: [ 'nosort' ], sortable: false }
             ],
             autoWidth: false,
             preDrawCallback: function () {

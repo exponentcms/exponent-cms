@@ -64,7 +64,10 @@
 				var sheetRules = sheet.cssRules || sheet.rules;
 				for ( var j = 0; j < sheetRules.length; j++ )
 					aRules.push( sheetRules[ j ].selectorText );
-			} catch ( e ) {}
+			} catch ( e ) {
+				if (window.console)
+					console.log(e);
+			}
 		}
 
 		var aClasses = parseClasses( aRules, skipSelectors, validSelectors );
@@ -86,37 +89,45 @@
 	}
 
 	// Register a plugin named "stylesheetparser".
-	CKEDITOR.plugins.add( 'stylesheetparser', {
+	CKEDITOR.plugins.add( 'stylesheetparser-fixed', {
 		init: function( editor ) {
 			// Stylesheet parser is incompatible with filter (#10136).
 			editor.filter.disable();
 
-			var cachedDefinitions;
+			var timer;
 
-			editor.once( 'stylesSet', function( evt ) {
-				// Cancel event and fire it again when styles are ready.
-				evt.cancel();
+			editor.on( 'mode', function( e )
+			{
+				// If there was a timeout pending, cancel it
+				if ( timer )
+					window.clearTimeout( timer );
+				timer = null;
 
-				// Overwrite editor#getStylesSet asap (contentDom is the first moment
-				// when editor.document is ready), but before stylescombo reads styles set (priority 5).
-				editor.once( 'contentDom', function() {
-					editor.getStylesSet( function( definitions ) {
+				if ( editor.mode != 'wysiwyg' )
+					return;
+
+				// Use a delay before parsing the stylesheet to avoid errors with Firefox 4. #7784
+				// Safari requires even greater delay
+				timer = window.setTimeout( function() {
+					editor.getStylesSet( function( definitions )
+					{
 						// Rules that must be skipped
 						var skipSelectors = editor.config.stylesheetParser_skipSelectors || ( /(^body\.|^\.)/i ),
-							// Rules that are valid
-							validSelectors = editor.config.stylesheetParser_validSelectors || ( /\w+\.\w+/ );
+						// Rules that are valid
+						validSelectors = editor.config.stylesheetParser_validSelectors || ( /\w+\.\w+/ );
 
-						cachedDefinitions = definitions.concat( LoadStylesCSS( editor.document.$, skipSelectors, validSelectors ) );
+						// Add the styles found in the document
+						editor._.stylesDefinitions = definitions.concat( LoadStylesCSS( editor.document.$, skipSelectors, validSelectors ) );
 
-						editor.getStylesSet = function( callback ) {
-							if ( cachedDefinitions )
-								return callback( cachedDefinitions );
-						};
+						// Refresh the styles combo
+						var combo = editor.ui.items.Styles;
+						combo && combo.reset();
 
-						editor.fire( 'stylesSet', { styles: cachedDefinitions } );
+						editor.fire( 'stylesSet', { styles: editor._.stylesDefinitions } );
 					} );
-				} );
-			}, null, null, 1 );
+				}, 1000 );
+			});
+
 		}
 	} );
 } )();

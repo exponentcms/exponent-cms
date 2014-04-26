@@ -179,11 +179,10 @@
         };
         var tableContainer = $('#view-registrants');
 
-        var table = tableContainer.dataTable({
-//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
-            aoColumnDefs: [
-                { bSearchable: false, aTargets: [ -2 ] },
-                { bSortable: false, aTargets: [ -2 ] },
+        var table = tableContainer.DataTable({
+            columnDefs: [
+                { searchable: false, targets: [ -2 ] },
+                { sortable: false, targets: [ -2 ] },
             ],
             autoWidth: false,
             preDrawCallback: function () {

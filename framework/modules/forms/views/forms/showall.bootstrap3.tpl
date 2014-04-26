@@ -105,11 +105,10 @@
         };
         var tableContainer = $('#forms-showall');
 
-        var table = tableContainer.dataTable({
-//            sDom: 'T<"row-fluid"<"span6"l><"span6"f>r>t<"row-fluid"<"span6"i><"span6"p>>',
-            aoColumnDefs: [
-                { bSearchable: false, "aTargets": [ -1 ] },
-                { bSortable: false, "aTargets": [ -1 ] },
+        var table = tableContainer.DataTable({
+            columnDefs: [
+                { searchable: false, targets: [ -1 ] },
+                { sortable: false, targets: [ -1 ] },
             ],
             autoWidth: false,
             preDrawCallback: function () {

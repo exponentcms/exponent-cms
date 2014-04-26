@@ -41,8 +41,8 @@
 	    <thead>
 			<tr>
 				{*{$page->header_columns}*}
-                <th data-class="expand">{'Group Name'|gettext}</th>
-                <th data-hide="phone">{'Description'|gettext}</th>
+                <th data-class="expand" data-name="Name">{'Group Name'|gettext}</th>
+                <th data-hide="phone" data-name="Desc">{'Description'|gettext}</th>
                 <th data-hide="phone">{'Type'|gettext}</th>
                 <th data-hide="phone">{'Members'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
@@ -83,14 +83,13 @@
         };
         var tableContainer = $('#groups-manage');
 
-        var table = tableContainer.dataTable({
-//            sDom: "T<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            aoColumns: [
+        var table = tableContainer.DataTable({
+            columns: [
                 null,
                 null,
                 null,
-                { bSearchable: false },
-                { bSearchable: false, bSortable: false },
+                { searchable: false },
+                { searchable: false, sortable: false },
             ],
             autoWidth: false,
             preDrawCallback: function () {

@@ -23,8 +23,8 @@ if (!defined('EXPONENT')) {
 
 //FIXME this is NOT a bootstrap control, but jQuery
 /**
- * Date Picker Control (compat w/ non-jQuery controls}
- * standard calendar control w/o time
+ * Date Picker Control using jQuery datetimepicker
+ * standard calendar control
  * places an update calendar field/button
  *
  * @package    Subsystems-Forms
