@@ -121,20 +121,19 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {literal}
     $(document).ready(function() {
         $('#permissions').dataTable({
-            sPaginationType: "full_numbers",
-//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            sDom: 'T<"clear">lfrtip',
-//            dom: 'T<"clear">lfrtip',
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
-            aoColumnDefs: [
-//                { "bSearchable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-//                { "bSortable": true, "aTargets": [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
-//                { "bSearchable": false, "aTargets": [ '_all' ] },
-//                { "bSortable": false, "aTargets": [ '_all' ] },
-                {aTargets: [ "sortme"], bSortable: true },
-                {aTargets: [ 'nosort' ], bSortable: false }
+            columnDefs: [
+//                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { sortable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { searchable: false, targets: [ '_all' ] },
+//                { sortable: false, targets: [ '_all' ] },
+                {targets: [ "sortme"], sortable: true },
+                {targets: [ 'nosort' ], sortable: false }
             ],
         });
     } );

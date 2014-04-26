@@ -68,20 +68,19 @@
 {script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
-        $('#groups-manage').dataTable({
-            sPaginationType: "full_numbers",
-//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            sDom: 'T<"clear">lfrtip',
-//            dom: 'T<"clear">lfrtip',
+        $('#groups-manage').DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
-            aoColumns: [
+            columns: [
                 null,
                 null,
                 null,
-                { bSearchable: false, bSortable: false },
-                { bSearchable: false, bSortable: false },
+                { searchable: false, sortable: false },
+                { searchable: false, sortable: false },
             ]
         });
     } );
