@@ -23,8 +23,8 @@ if (!defined('EXPONENT')) {
 
 //FIXME this is NOT a bootstrap control, but jQuery
 /**
- * Date/Time Control w/ Popup Date Picker and time w/ am/pm combo
- * text entry date and/or time w/ pop-up date selector
+ * Date/Time Control w/ Popup Date/Time Picker using jQuery datetimepicker
+ * text entry date and/or time w/ pop-up date/time selector
  *
  * @package    Subsystems-Forms
  * @subpackage Control
