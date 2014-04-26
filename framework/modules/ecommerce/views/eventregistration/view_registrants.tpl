@@ -172,17 +172,16 @@
 {script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
-        $('#view-registrants').dataTable({
-            sPaginationType: "full_numbers",
-//            sDom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            sDom: 'T<"clear">lfrtip',
-//            dom: 'T<"clear">lfrtip',
+        $('#view-registrants').DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
-            aoColumnDefs: [
-                { bSearchable: false, aTargets: [ -1 ] },
-                { bSortable: false, aTargets: [ -1 ] },
+            columnDefs: [
+                { searchable: false, targets: [ -1 ] },
+                { sortable: false, targets: [ -1 ] },
             ],
         });
     } );

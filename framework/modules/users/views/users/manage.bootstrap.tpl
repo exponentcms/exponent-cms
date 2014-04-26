@@ -45,9 +45,9 @@
 			<tr>
 				{*{$page->header_columns}*}
                 <th data-class="expand">{'Username'|gettext}</th>
-                <th data-hide="phone">{'First Name'|gettext}</th>
-                <th data-hide="phone">{'Last Name'|gettext}</th>
-                <th data-hide="phone">{'Is Admin'|gettext}</th>
+                <th data-hide="phone" data-name="First">{'First Name'|gettext}</th>
+                <th data-hide="phone" data-name="Last">{'Last Name'|gettext}</th>
+                <th data-hide="phone" data-name="Admin">{'Is Admin'|gettext}</th>
 				<th>&nbsp;</th>
 			</tr>
 		</thead>
@@ -90,14 +90,13 @@
         };
         var tableContainer = $('#users-manage');
 
-        var table = tableContainer.dataTable({
-//            sDom: "T<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-            aoColumns: [
+        var table = tableContainer.DataTable({
+            columns: [
                 null,
                 null,
                 null,
-                { bSearchable: false, bSortable: false },
-                { bSearchable: false, bSortable: false },
+                { searchable: false, sortable: false },
+                { searchable: false, sortable: false },
             ],
             autoWidth: false,
             preDrawCallback: function () {
