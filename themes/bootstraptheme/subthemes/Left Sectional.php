@@ -3,7 +3,7 @@
 	<head>
 	    <?php
             expTheme::head(array(
-                "xhtml"=>false,
+//                "xhtml"=>false,
                 "normalize"=>true,
                 "framework"=>"bootstrap",
                 "css_core"=>array(
@@ -13,8 +13,8 @@
                     'menu_height'=>MENU_HEIGHT,
                     'menu_width'=>MENU_WIDTH,
                 ),
-                "css_links"=>true,
-                "css_theme"=>true
+//                "css_links"=>true,
+//                "css_theme"=>true
             ));
 	    ?>
 	</head>

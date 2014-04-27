@@ -3,11 +3,8 @@
 	<head>
 	    <?php
 	    expTheme::head(array(
-            "xhtml"=>false,
             "normalize"=>true,
-//            "css_primer"=>array(),
             "css_core"=>array("common"),
-            "css_links"=>true,
             "css_theme"=>false  // this is not a true theme and has no stylesheets
         ));
         expCSS::pushToHead(array(
