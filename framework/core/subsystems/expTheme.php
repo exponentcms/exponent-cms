@@ -123,7 +123,7 @@ class expTheme
 
         // set default primer CSS files to false if not set.
         if (empty($config['css_primer']) && empty($config['lessprimer'])) {
-            $config['css_primer'] = false;
+            $head_config['css_primer'] = false;
         }
 
         // parse & load core css files
@@ -137,17 +137,17 @@ class expTheme
                 );
             }
         } else {
-            $config['css_core'] = false;
+            $head_config['css_core'] = false;
         };
 
         // default the running of view based CSS inclusion to true
         if (empty($config['css_links'])) {
-            $config['css_links'] = true;
+            $head_config['css_links'] = true;
         }
 
         // default theme css collecting to true if not set
         if (empty($config['css_theme'])) {
-            $config['css_theme'] = true;
+            $head_config['css_theme'] = true;
         }
 
         if (empty($sectionObj)) {
