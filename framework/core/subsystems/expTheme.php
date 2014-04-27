@@ -121,9 +121,9 @@ class expTheme
             expCSS::pushToHead($config);
         };
 
-        // default loading of primer CSS files to true if not set.
+        // default loading of primer CSS files to true if not set
         if (empty($config['css_primer']) && empty($config['lessprimer'])) {
-            $head_config['css_primer'] = true;
+            array_unshift($head_config, array('css_primer' => true));
         }
 
         // parse & load core css files
