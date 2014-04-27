@@ -3,18 +3,18 @@
     <head>
         <?php
         expTheme::head(array(
-            "xhtml"=>false,
+//            "xhtml"=>false,
             "normalize"=>true,
             "framework"=>"bootstrap",
             // these viewport settings are the defaults so they are not really needed except to customize
-            "viewport"=>array(
-                "width"=>"device-width",
-                "height"=>"device-height",
-                "initial_scale"=>1,
-                "minimum_scale"=>0.25,
-                "maximum_scale"=>5.0,
-                "user_scalable"=>true,
-            ),
+//            "viewport"=>array(
+//                "width"=>"device-width",
+//                "height"=>"device-height",
+//                "initial_scale"=>1,
+//                "minimum_scale"=>0.25,
+//                "maximum_scale"=>5.0,
+//                "user_scalable"=>true,
+//            ),
             "css_core"=>array(
                 "common"
             ),
@@ -23,8 +23,8 @@
                 'menu_height'=>MENU_HEIGHT,
                 'menu_width'=>MENU_WIDTH,
             ),
-            "css_links"=>true,
-            "css_theme"=>true
+//            "css_links"=>true,
+//            "css_theme"=>true
             ));
         ?>
     </head>
