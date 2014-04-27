@@ -121,9 +121,9 @@ class expTheme
             expCSS::pushToHead($config);
         };
 
-        // set default primer CSS files to false if not set.
+        // default loading of primer CSS files to true if not set.
         if (empty($config['css_primer']) && empty($config['lessprimer'])) {
-            $head_config['css_primer'] = false;
+            $head_config['css_primer'] = true;
         }
 
         // parse & load core css files
@@ -140,12 +140,12 @@ class expTheme
             $head_config['css_core'] = false;
         };
 
-        // default the running of view based CSS inclusion to true
+        // default loading of view based CSS inclusion is true if not set
         if (empty($config['css_links'])) {
             $head_config['css_links'] = true;
         }
 
-        // default theme css collecting to true if not set
+        // default theme css collecting is true if not set
         if (empty($config['css_theme'])) {
             $head_config['css_theme'] = true;
         }
