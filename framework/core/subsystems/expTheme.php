@@ -123,7 +123,7 @@ class expTheme
 
         // default loading of primer CSS files to true if not set
         if (empty($config['css_primer']) && empty($config['lessprimer'])) {
-            array_unshift($head_config, array('css_primer' => true));
+            $head_config = array('css_primer' => true) + $head_config;
         }
 
         // parse & load core css files
