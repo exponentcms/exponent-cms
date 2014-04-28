@@ -69,7 +69,7 @@
                     <td>
                         {$order->invoice_id}
                         {permissions}
-                            <div class="item-permissions">
+                            <div class="item-permissions item-actions">
                                 {if $permissions.edit_invoice_id && !$pf}
                                     {br}
                                     <a class="edit" href="{link action=edit_invoice_id id=$order->id}" title="{'Edit Invoice Number'|gettext}">{'Edit'|gettext}</a>
@@ -117,7 +117,7 @@
                     <td style="width:27%;">
                         {$order->billingmethod[0]->addresses_id|address}
                         {permissions}
-                            <div class="item-permissions">
+                            <div class="item-permissions item-actions">
                                 {if $permissions.edit_address && !$pf}
                                 {br}
                                 <a class="edit" href="{link action=edit_address id=$order->id type='b'}" title="{'Edit Billing Address'|gettext}">{'Edit'|gettext}</a>
@@ -128,7 +128,7 @@
                     <td style="width:27%;">
                         {$shipping->shippingmethod->addresses_id|address}
                         {permissions}
-                            <div class="item-permissions">
+                            <div class="item-permissions item-actions">
                                 {if $permissions.edit_address && !$pf}
                                     {br}
                                     <a class="edit" href="{link action=edit_address id=$order->id type='s'}" title="{'Edit Shipping Address'|gettext}">{'Edit'|gettext}</a>
@@ -143,7 +143,7 @@
                                     <strong>{"Shipping Method"|gettext}:</strong>{br}
                                     {$shipping->shippingmethod->option_title}
                                     {permissions}
-                                        <div class="item-permissions">
+                                        <div class="item-permissions item-actions">
                                             {if $permissions.edit_shipping_method && !$pf}
                                                 {br}
                                                 <a class="edit" href="{link action=edit_shipping_method id=$order->id}" title="{'Edit Shipping Method'|gettext}">{'Edit'|gettext}</a>
@@ -205,7 +205,7 @@
                         {"Status"|gettext}
                     </th>
                     {permissions}
-                        <div class="item-permissions">
+                        <div class="item-permissions item-actions">
                             {if $permissions.edit_order_item && !$pf}
                                 <th style="text-align:right;"></th>
                             {/if}
@@ -244,7 +244,7 @@
                         {$oi->products_status}
                     </td>
                     {permissions}
-                        <div class="item-permissions">
+                        <div class="item-permissions item-actions">
                             {if $permissions.edit_order_item && !$pf}
                                 <td style="text-align:right;"><a class="edit" href="{link action=edit_order_item id=$oi->id orderid=$order->id}" title="{'Edit Invoice Item'|gettext}">{'Edit'|gettext}</a>&#160;<a class="delete" href="{link action=delete_order_item id=$oi->id orderid=$order->id}" onclick="return confirm('Are you sure you want to delete this item from this order?')" title="{'Delete Invoice Item'|gettext}">{'Delete'|gettext}</a></td>
                             {/if}
@@ -253,7 +253,7 @@
                 </tr>
             {/foreach}
              {permissions}
-                <div class="item-permissions">
+                <div class="item-permissions item-actions">
                 {if $permissions.add_order_item && !$pf}
                     <tr>
                         {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}

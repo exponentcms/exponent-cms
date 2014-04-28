@@ -25,9 +25,11 @@
         <tbody>
             <tr class="note {cycle values="odd,even"}">
                 <td>
-                {if $permissions.create}
-                    {icon action=edit class="add" content_id=$content_id content_type=$content_type tab=$tab text="Add a Note"|gettext}
-                {/if}
+                    <div class="module-actions">
+                        {if $permissions.create}
+                            {icon action=edit class="add" content_id=$content_id content_type=$content_type tab=$tab text="Add a Note"|gettext}
+                        {/if}
+                    </div>
                 {if $unapproved > 0}
                 <div class="unapproved">
                     || {'There are'|gettext} {$unapproved} {'notes awaiting approval'|gettext}.

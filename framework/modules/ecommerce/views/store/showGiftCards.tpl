@@ -60,9 +60,11 @@
                             {foreachelse}
                                 {'There are no gift cards available!'|gettext}
                                 {permissions}
-                                    {if $permissions.create || $permissions.edit}
-                                        {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
-                                    {/if}
+                                    <div class="module-actions">
+                                        {if $permissions.create || $permissions.edit}
+                                            {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
+                                        {/if}
+                                    </div>
                                 {/permissions}
                             {/foreach}
                         {/group}

@@ -33,18 +33,20 @@
     {$myloc=serialize($__loc)}
     {if $current_category->id}
         {permissions}
-            {if $permissions.edit}
-                {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
-            {/if}
-            {*if $permissions.manage}
-                {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
-            {/if*}
-            {*if $permissions.manage}
-                {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
-            {/if*}
-            {if $permissions.edit && $config.orderby=="rank"}
-                {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
-            {/if}
+            <div class="module-actions">
+                {if $permissions.edit}
+                    {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+                {/if}
+                {*if $permissions.manage}
+                    {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
+                {/if*}
+                {*if $permissions.manage}
+                    {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
+                {/if*}
+                {if $permissions.edit && $config.orderby=="rank"}
+                    {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
+                {/if}
+            </div>
         {/permissions}
     {/if}
 	<div id="catnav">
