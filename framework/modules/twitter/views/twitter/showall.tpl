@@ -64,12 +64,14 @@
                 <dd>
                     {$item.text}
                     {permissions}
-                        {if $permissions.create && !$item.ours && !$item.retweetedbyme}
-                            &#160;{icon img='retweet.png' id=$item.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
-                        {/if}
-                        {if $permissions.delete && $item.ours && !$item.retweeted_status}
-                            &#160;{icon class=delete id=$item.id action=delete_tweet}
-                        {/if}
+                        <div class="item-actions">
+                            {if $permissions.create && !$item.ours && !$item.retweetedbyme}
+                                &#160;{icon img='retweet.png' id=$item.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
+                            {/if}
+                            {if $permissions.delete && $item.ours && !$item.retweeted_status}
+                                &#160;{icon class=delete id=$item.id action=delete_tweet}
+                            {/if}
+                        </div>
                     {/permissions}
                 </dd>
 			</div>

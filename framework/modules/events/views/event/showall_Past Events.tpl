@@ -23,30 +23,34 @@
         &#160;&#160;|&#160;&#160;
         {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
 		{permissions}
-			{if $permissions.manage}
-				&#160;&#160;|&#160;&#160;
-                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
-                {if !$config.disabletags}
+            <div class="module-actions">
+                {if $permissions.manage}
                     &#160;&#160;|&#160;&#160;
-                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                    {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                    {if !$config.disabletags}
+                        &#160;&#160;|&#160;&#160;
+                        {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                    {/if}
+                    {if $config.usecategories}
+                        &#160;&#160;|&#160;&#160;
+                        {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                    {/if}
                 {/if}
-                {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
-                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
-                {/if}
-			{/if}
+            </div>
         {/permissions}
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {permissions}
-            &#160;&#160;|&#160;&#160;
-			{*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
-            {icon class="listviewlink" text='Past Events View'|gettext}
-			{if $permissions.manage}
-				&#160;&#160;|&#160;&#160;
-				{icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
-				{br}
-			{/if}
+            <div class="module-actions">
+                &#160;&#160;|&#160;&#160;
+                {*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
+                {icon class="listviewlink" text='Past Events View'|gettext}
+                {if $permissions.manage}
+                    &#160;&#160;|&#160;&#160;
+                    {icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
+                    {br}
+                {/if}
+            </div>
 		{/permissions}
 	</div>
 	<{$config.heading_level|default:'h1'}>

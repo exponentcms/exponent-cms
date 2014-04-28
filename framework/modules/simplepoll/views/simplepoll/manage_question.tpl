@@ -43,8 +43,10 @@
                     </td>
                     <td>
                         {if $permissions.edit || ($permissions.create && $answer->poster == $user->id)}
-                            {icon class=edit action=edit_answer record=$answer title='Edit this answer'|gettext}
-                            {icon class=delete action=delete_answer record=$answer title='Delete this answer'|gettext}
+                            <div class="item-actions">
+                                {icon class=edit action=edit_answer record=$answer title='Edit this answer'|gettext}
+                                {icon class=delete action=delete_answer record=$answer title='Delete this answer'|gettext}
+                            </div>
                         {/if}
                     </td>
                 </tr>
