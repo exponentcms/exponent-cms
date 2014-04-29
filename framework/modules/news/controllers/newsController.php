@@ -277,7 +277,23 @@ class newsController extends expController {
         }
         return $items;
     }
-    
+
+    /**
+     * additional check for display of search hit, only display published
+     *
+     * @param $record
+     *
+     * @return bool
+     */
+    public static function searchHit($record) {
+        $news = new news($record->original_id);
+        if (expPermissions::check('showUnpublished', expUnserialize($record->location_data)) || ($news->publish == 0 || $news->publish <= time()) && ($news->unpublish == 0 || $news->unpublish > time())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     private function sortDescending($a,$b) {
         return ($a->publish_date > $b->publish_date ? -1 : 1);
     }

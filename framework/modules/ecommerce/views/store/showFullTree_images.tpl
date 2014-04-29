@@ -41,18 +41,20 @@
     {if $current_category->title}<h2>{$current_category->title}</h2>{/if}
     {if $current_category->id}
         {permissions}
-            {if $permissions.edit}
-                {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
-            {/if}
-            {*{if $permissions.manage}*}
-                {*{icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}*}
-            {*{/if}*}
-            {*{if $permissions.manage}*}
-                {*{icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}*}
-            {*{/if}*}
-            {if $permissions.edit && $config.orderby=="rank"}
-                {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
-            {/if}
+            <div class="item-actions">
+                {if $permissions.edit}
+                    {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+                {/if}
+                {*{if $permissions.manage}*}
+                    {*{icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}*}
+                {*{/if}*}
+                {*{if $permissions.manage}*}
+                    {*{icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}*}
+                {*{/if}*}
+                {if $permissions.edit && $config.orderby=="rank"}
+                    {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
+                {/if}
+            </div>
         {/permissions}
     {/if}
     
@@ -143,9 +145,11 @@
     {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}    
     {$page->links}
     {permissions}
-        {if $permissions.create}
-            {icon class="add" action=create title="Add a new product" text="Add a New Product"}
-      {/if}
+        <div class="module-actions">
+            {if $permissions.create}
+                {icon class="add" action=create title="Add a new product" text="Add a New Product"}
+            {/if}
+        </div>
     {/permissions}
     {/if} 
 </div>

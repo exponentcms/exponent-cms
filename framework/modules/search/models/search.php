@@ -99,6 +99,10 @@ class search extends expRecord {
                             unset($recs[$i]); // item is not available for viewing
                             //$records[$i]->canview = false;
                         }
+                        $controller = expModules::getControllerClassName($recs[$i]->ref_module);
+                        if (!$controller::searchHit($recs[$i])) {
+                            unset($recs[$i]); // item is not available for viewing
+                        }
                     } else { // bad record in search index since it's not in sectionref table, don't display
 //                        eDebug($recs[$i]);
                         unset($recs[$i]);

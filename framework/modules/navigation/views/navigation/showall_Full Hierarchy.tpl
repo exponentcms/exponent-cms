@@ -31,7 +31,9 @@
     </ul>
     {permissions}
         {if $canManage == 1}
-            {icon action=manage}
+            <div class="module-actions">
+                {icon action=manage}
+            </div>
         {/if}
     {/permissions}
 </div>

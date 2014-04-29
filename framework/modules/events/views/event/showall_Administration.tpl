@@ -23,17 +23,19 @@
         &#160;&#160;|&#160;&#160;
         {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
         {permissions}
-            &#160;&#160;|&#160;&#160;
-            {*<span class="adminviewlink">{'Administration View'|gettext}</span>*}
-            {icon class="adminviewlink" text='Administration View'|gettext}
-            {if !$config.disabletags}
+            <div class="module-actions">
                 &#160;&#160;|&#160;&#160;
-                {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
-            {/if}
-            {if $config.usecategories}
-                &#160;&#160;|&#160;&#160;
-                {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
-            {/if}
+                {*<span class="adminviewlink">{'Administration View'|gettext}</span>*}
+                {icon class="adminviewlink" text='Administration View'|gettext}
+                {if !$config.disabletags}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    &#160;&#160;|&#160;&#160;
+                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                {/if}
+            </div>
         {/permissions}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}

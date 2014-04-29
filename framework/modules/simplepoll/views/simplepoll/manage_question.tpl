@@ -43,8 +43,10 @@
                     </td>
                     <td>
                         {if $permissions.edit || ($permissions.create && $answer->poster == $user->id)}
-                            {icon class=edit action=edit_answer record=$answer title='Edit this answer'|gettext}
-                            {icon class=delete action=delete_answer record=$answer title='Delete this answer'|gettext}
+                            <div class="item-actions">
+                                {icon class=edit action=edit_answer record=$answer title='Edit this answer'|gettext}
+                                {icon class=delete action=delete_answer record=$answer title='Delete this answer'|gettext}
+                            </div>
                         {/if}
                     </td>
                 </tr>
@@ -54,7 +56,9 @@
         </tbody>
 	</table>
 	{if $permissions.create}
-		{icon class=add action=edit_answer rank=$answer->rank+1 question_id=$question->id text="New Answer"}
+        <div class="item-actions">
+            {icon class=add action=edit_answer rank=$answer->rank+1 question_id=$question->id text="New Answer"}
+        </div>
 	{/if}
 	<br />
 	<a href="{link action=manage_questions}">{'Back to Manager'|gettext}</a>

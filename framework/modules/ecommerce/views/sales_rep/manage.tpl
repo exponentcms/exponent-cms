@@ -35,8 +35,10 @@
                         <td>{$listing->initials}</td>
                         <td>
                             {if $permissions.manage}
-                                {icon controller=sales_rep action=edit img='edit.png' id=$listing->id}
-                                {icon controller=sales_rep action=delete img='delete.png' id=$listing->id}
+                                <div class="item-actions">
+                                    {icon controller=sales_rep action=edit img='edit.png' id=$listing->id}
+                                    {icon controller=sales_rep action=delete img='delete.png' id=$listing->id}
+                                </div>
                             {/if}
                         </td>
                     </tr>

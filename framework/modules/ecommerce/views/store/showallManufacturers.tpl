@@ -38,7 +38,7 @@
 	</ul>	
 	{permissions}
         {if $permissions.create || $permissions.edit}
-            <div id="prod-admin">
+            <div id="prod-admin module-actions">
                 {icon class=add controller=company action=create text="Add a New Company"|gettext}
             </div>
         {/if}
