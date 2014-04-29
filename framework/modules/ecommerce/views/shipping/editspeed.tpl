@@ -19,7 +19,7 @@
     
     {form action=saveEditSpeed}
   		{control type="hidden" name="shippingcalculator_id" value=$calculator->id}
-        {exp_include file=$calculator->editspeed()}
+        {include file=$calculator->editspeed()}
         {control type="buttongroup" submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

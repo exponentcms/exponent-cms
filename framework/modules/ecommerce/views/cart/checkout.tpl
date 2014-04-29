@@ -199,7 +199,7 @@
 
                         <div id="shipping-services">
                             <h3>{"Selected Shipping Method"|gettext}</h3>
-                            {exp_include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
+                            {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
                         </div>
 
                         <h3>{"Shipping Address"|gettext}</h3>
@@ -285,7 +285,7 @@
                     <div class="yui-content">
                         {foreach from=$billing->calculator_views item=cviews name=calcs}
                             <div id="tab{$smarty.foreach.calcs.iteration}">
-                                {exp_include file=$cviews.view calcid=$cviews.id}
+                                {include file=$cviews.view calcid=$cviews.id}
                             </div>
                         {/foreach}
                     </div>

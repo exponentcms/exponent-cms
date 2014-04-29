@@ -691,6 +691,8 @@ class expTemplate {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.bootstrap.tpl');
         } elseif (NEWUI && file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.newui.tpl')) {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.newui.tpl');
+        } elseif (file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . '.tpl')) {
+            return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . '.tpl');
         } else {
             return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
         }

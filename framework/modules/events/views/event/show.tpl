@@ -83,7 +83,7 @@
         </span>
 	</div>
     {if !empty($feedback_form)}
-        {exp_include file="email/$feedback_form.tpl"}
+        {include file="email/$feedback_form.tpl"}
     {/if}
     </div>
 </div>

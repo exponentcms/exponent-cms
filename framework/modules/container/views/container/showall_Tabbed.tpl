@@ -70,7 +70,7 @@
                         {$container=$containers.$index}
                         {$i=$menurank}
                         {$rerank=0}
-                        {exp_include file=$viewfile}
+                        {include file=$viewfile}
                     </div>
                 {else}
                     {permissions}

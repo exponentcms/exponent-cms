@@ -18,7 +18,7 @@
     {pagelinks paginate=$page top=1}
     <div class="products">
         {foreach from=$page->records item=listing name=listings}
-            {exp_include file=$listing->getForm('storeListing')}
+            {include file=$listing->getForm('storeListing')}
         {/foreach}
     </div>
     {pagelinks paginate=$page bottom=1}

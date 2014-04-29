@@ -27,7 +27,7 @@
         </ul>
         {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.  Click on the \'More\' link to enter the option\s weight.'|gettext}{br}
     </blockquote>
-	{exp_include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
+	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
 	<h2>{'Options'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
 {/if}

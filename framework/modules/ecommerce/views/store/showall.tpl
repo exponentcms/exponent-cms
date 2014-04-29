@@ -155,7 +155,7 @@
                     <div class="product-row">
                     {$open_row=0}
                 {/if}
-                {exp_include file=$listing->getForm('storeListing')}
+                {include file=$listing->getForm('storeListing')}
                 {if $smarty.foreach.listings.last || $ipr%$config.images_per_row==0}
                     </div>
                     {$open_row=1}
@@ -169,7 +169,7 @@
                     <div class="product-row">
                     {/if}
 
-                    {exp_include file=$listing->getForm('storeListing')}
+                    {include file=$listing->getForm('storeListing')}
 
                     {if $smarty.foreach.listings.last || $ipr%0}
                         </div>
