@@ -1243,8 +1243,8 @@
 							datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
 						break;
                         case 'update':
-                            this.value = this.defaultValue;
-                            datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+//                            this.value = this.defaultValue;
+//                            datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
                             datetimepicker.trigger('afterOpen.xdsoft');
 						break;
 					}
