@@ -12,7 +12,3 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-
-{if $smarty.const.DEVLEOPMENT}
-    <h4>{'This is the scaffold blank view'|gettext}</h4>
-{/if}
