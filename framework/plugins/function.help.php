@@ -49,9 +49,8 @@ function smarty_function_help($params,&$smarty) {
             $link = help::makeHelpLink($doc);
         }
         echo '<a class="'.$class.'" title="'.$title.'" href="'.$link.'" target="_blank">'.$text.'</a>';
-
         expCSS::pushToHead(array(
-		    "csscore"=>"admin-global",
+		    "corecss"=>"admin-global",
         ));
     }
 }
