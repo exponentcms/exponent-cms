@@ -1200,6 +1200,17 @@ abstract class expController {
     }
 
     /**
+     * additional check for display of search hit
+     *
+     * @param $record
+     *
+     * @return bool
+     */
+    public static function searchHit($record) {
+        return true;  // default is to display search hit
+    }
+
+    /**
      * remove module items from search index
      */
     function delete_search() {
