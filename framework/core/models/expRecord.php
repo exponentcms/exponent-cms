@@ -334,10 +334,12 @@ class expRecord {
         $table = $db->getDataDefinition($this->tablename);
 
         //check for location_data
-        if (is_array($params) && (!empty($params['module']) && !empty($params['src']))) {
-            $params['location_data'] = serialize(expCore::makeLocation($params['module'], $params['src']));
-        } elseif (is_object($params) && (!empty($params->module) && !empty($params->src))) {
-            $params->location_data = serialize(expCore::makeLocation($params->module, $params->src));
+        if (is_array($params) && ((!empty($params['module']) || !empty($params['controller'])) && !empty($params['src']))) {
+            $mod = !empty($params['module']) ? $params['module'] : (!empty($params['controller']) ? $params['controller'] : null);
+            $params['location_data'] = serialize(expCore::makeLocation($mod, $params['src']));
+        } elseif (is_object($params) && ((!empty($params->module) || !empty($params->controller)) && !empty($params->src))) {
+            $mod = !empty($params->module) ? $params->module : (!empty($params->controller) ? $params->controller : null);
+            $params->location_data = serialize(expCore::makeLocation($mod, $params->src));
         }
 
         // Build Class properties based off table fields
