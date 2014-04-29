@@ -228,7 +228,7 @@ class form extends baseform {
                 $btn_size = 'btn-small';
             }
             $btn_class .= ' ' . $btn_size;
-        } elseif (expSession::get('framework') == 'bootstrap3') {
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));

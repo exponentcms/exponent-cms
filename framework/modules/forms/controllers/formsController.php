@@ -909,7 +909,7 @@ class formsController extends expController {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (expSession::get('framework') == 'bootstrap3') {
+            } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));

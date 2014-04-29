@@ -186,7 +186,7 @@ if (!function_exists('smarty_function_icon')) {
         expJavascript::pushToFoot(array(
             "unique"=>"add-theme-class",
             "jquery"=>"1",
-            "content"=>"$('.module-actions, .item-actions').addClass('exp-skin')"
+            "content"=>"$('.module-actions, .item-actions, .admin-view').addClass('exp-skin')"
         ));
     }
 }

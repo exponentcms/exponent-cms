@@ -106,11 +106,13 @@
         &#160;&#160;
     {/if}
     {if !$config.quick_download}
-        {if $item->ext_file}
-            <a class=downloadfile href="{$item->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
-        {else}
-            {icon action=downloadfile fileid=$item->id filenum=0 text='Download'|gettext}
-        {/if}
+        <div class="item-actions">
+            {if $item->ext_file}
+                <a class=downloadfile href="{$item->ext_file}" title="{'Download'|gettext}" target="_blank">{'Download'|gettext}</a>
+            {else}
+                {icon action=downloadfile fileid=$item->id filenum=0 text='Download'|gettext}
+            {/if}
+        </div>
     {/if}
     {clear}
     {*{if $config.show_player && !$item->ext_file && ($filetype == "mp3" || $filetype == "flv" || $filetype == "f4v")}*}

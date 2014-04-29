@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module administration manage-themes">
+<div class="module administration manage-themes admin-view">
 
     <div class="info-header">
         <div class="related-actions">
