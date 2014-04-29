@@ -40,8 +40,7 @@ function smarty_function_help($params,&$smarty) {
         $doc = !empty($params['doc']) ? $params['doc'] : (!empty($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod);
         $text = empty($params['text']) ? '&#160;' : $params['text'];
         $title = empty($params['title']) ? $text : (empty($params['text']) ? gt('Get Help with').' '.ucwords($doc) : $params['title']);
-        $class  = 'helplink';
-        $class .= isset($params['class']) ? $params['class'] : expTheme::buttonStyle('purple');
+        $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle('purple');
 
         if (!empty($params['page'])) {
             $link = HELP_URL.$params['page'];

@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="config" class="module scaffold configure exp-skin bootstrap3">
+<div id="config" class="module scaffold configure">
     <div class="form_header">
         <div class="info-header">
             <div class="related-actions">

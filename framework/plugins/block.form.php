@@ -42,6 +42,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;  //FIXME there is no 'con' property
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
+        $framework = expSession::get('framework');
 
 		echo "<!-- Form Object 'form' -->\r\n";
 		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
@@ -50,7 +51,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
 //        if (!NEWUI) {
-            if (expSession::get('framework') == 'bootstrap') {
+            if ($framework == 'bootstrap') {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
@@ -63,7 +64,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            } elseif (NEWUI || $framework == 'bootstrap3') {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -83,6 +84,11 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
 //        }
+        if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') {
+            $newui_class = ' exp-skin';
+        } else {
+            $newui_class = '';
+        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
@@ -120,7 +126,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             ));
         }
 
-		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'].''. (NEWUI ? ' exp-skin bootstrap3' : '') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {

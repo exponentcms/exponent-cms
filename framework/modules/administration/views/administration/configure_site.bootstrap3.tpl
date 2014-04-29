@@ -15,7 +15,7 @@
 
 {uniqueid assign="config"}
 
-<div id="siteconfig" class="module administration configure-site exp-skin bootstrap3">
+<div id="siteconfig" class="module administration configure-site bootstrap3">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">

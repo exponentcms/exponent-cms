@@ -109,7 +109,7 @@ if (!function_exists('smarty_block_form')) {
             }
 
             echo '<div class="exp-skin">';
-            echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'].''. ($params['horizontal']?' form-horizontal':'') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+            echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . ($params['horizontal']?' form-horizontal':'') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
             if (!empty($controller)) {
                 echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
             } else {
