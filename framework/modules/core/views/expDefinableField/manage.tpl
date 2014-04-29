@@ -58,12 +58,14 @@
                     </td>
                     <td>
                         {permissions}
-                            {if $permissions.edit}
-                                {icon action="edit" record=$listing title="Edit this field"|gettext}
-                            {/if}
-                            {if $permissions.delete}
-                                {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
-                            {/if}
+                            <div class="item-actions">
+                                {if $permissions.edit}
+                                    {icon action="edit" record=$listing title="Edit this field"|gettext}
+                                {/if}
+                                {if $permissions.delete}
+                                    {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
+                                {/if}
+                            </div>
                         {/permissions}
                     </td>
                 </tr>

@@ -21,9 +21,11 @@
         <h2>{"Manage Module Tags"|gettext}</h2>
     </div>
 	{permissions}
-    	{if $permissions.create}
-    		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
-    	{/if}
+        <div class="module-actions">
+            {if $permissions.create}
+                {*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
+            {/if}
+        </div>
     {/permissions}
     {$page->links}
     {form action=change_tags}

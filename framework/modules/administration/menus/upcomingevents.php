@@ -59,6 +59,7 @@ foreach ($allevents as $event) {
         $events[] = $event;
     }
 }
+$events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'order' => 'ASC'));
 foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();

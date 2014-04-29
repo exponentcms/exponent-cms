@@ -36,8 +36,9 @@ function adminer_object() {
         new AdminerTablesFilter,  // adds filter input to tables list
         new AdminerEditTextSerializedarea,  // displays unserialized data as a tooltip
         //new AdminerEmailTable,
-        //new AdminerEditForeign,
-        //new AdminerForeignSystem,
+        new AdminerEditForeign,
+//        new AdminerForeignSystem,
+        new ConventionForeignKeys,
         new AdminerVersionNoverify,  // disable adminer version check/notifiy
     );
     if (SITE_WYSIWYG_EDITOR == 'tinymce') {

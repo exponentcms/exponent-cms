@@ -67,7 +67,9 @@
                                 </td>
                                 <td>
                                     {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-                                        {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+                                        <div class="item-actions">
+                                            {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+                                        </div>
                                     {/if}
                                 </td>
                             {/form}

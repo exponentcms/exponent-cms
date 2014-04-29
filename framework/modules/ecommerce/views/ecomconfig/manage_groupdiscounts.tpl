@@ -74,13 +74,15 @@
                     <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
                     <td>
                         {if $permissions.manage}
-                            {if $smarty.foreach.items.first == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
+                            <div class="item-actions">
+                                {if $smarty.foreach.items.first == 0}
+                                    {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
+                                {/if}
+                                {if $smarty.foreach.items.last == 0}
+                                    {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
+                                {/if}
                             {/if}
-                            {if $smarty.foreach.items.last == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
-                            {/if}
-                        {/if}
+                        </div>
                     </td>
                     <td>{control type=buttongroup submit="Update"|gettext}</td>
 	            {/form}

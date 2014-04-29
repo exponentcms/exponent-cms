@@ -43,8 +43,10 @@
                         <td>{$listing->title}</td>
                         <td>
                             {if $permissions.manage}
-                                {icon controller=order_type action=edit record=$listing}
-                                {icon controller=order_type action=delete record=$listing}
+                                <div class="item-actions">
+                                    {icon controller=order_type action=edit record=$listing}
+                                    {icon controller=order_type action=delete record=$listing}
+                                </div>
                             {/if}
                         </td>
                     </tr>

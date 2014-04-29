@@ -296,6 +296,22 @@ class blogController extends expController {
     }
 
     /**
+     * additional check for display of search hit, only display non=draft
+     *
+     * @param $record
+     *
+     * @return bool
+     */
+    public static function searchHit($record) {
+        $blog = new blog($record->original_id);
+        if (expPermissions::check('edit', expUnserialize($record->location_data)) || $blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
      * @param string $type

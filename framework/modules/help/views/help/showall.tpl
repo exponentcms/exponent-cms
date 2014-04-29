@@ -16,17 +16,19 @@
 <div class="module help showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
-        {if $permissions.create}
-            {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
-        {/if}
-        {if $permissions.manage}
-            {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}{br}
-            {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
-            {*{if $rank == 1}*}
-            {if $rank}
-	            {ddrerank items=$page->records only="help_version_id=`$current_version->id`" model="help" label="Help Docs"|gettext}
-		    {/if}
-        {/if}
+        <div class="module-actions">
+            {if $permissions.create}
+                {icon class=add action=edit text="Add a Help Doc"|gettext}{br}
+            {/if}
+            {if $permissions.manage}
+                {icon action=manage version=$current_version->id text="Manage Help Docs for version"|gettext|cat:" `$current_version->version`"}{br}
+                {icon class=manage action=manage_versions text="Manage Help Versions"|gettext}{br}
+                {*{if $rank == 1}*}
+                {if $rank}
+                    {ddrerank items=$page->records only="help_version_id=`$current_version->id`" model="help" label="Help Docs"|gettext}
+                {/if}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}

@@ -39,7 +39,9 @@
     		{control type="antispam"}
             {permissions}
                 {if $permissions.approve}
-                    {control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
+                    <div class="item-actions">
+                        {control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
+                    </div>
                 {/if}
             {/permissions}
     		{control type=buttongroup submit="Submit Comment"|gettext}

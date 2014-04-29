@@ -37,11 +37,13 @@
     </div>
 	{permissions}
     	{if $permissions.create}
-            {if !empty($page)}
-                {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new"|gettext|cat:" `$catname`"}
-            {else}
-                {icon class="add" controller=$model_name action=edit rank=1 text="Create a new"|gettext|cat:" `$catname`"}
-            {/if}
+            <div class="module-actions">
+                {if !empty($page)}
+                    {icon class="add" controller=$model_name action=edit model=$page->model rank=1 text="Create a new"|gettext|cat:" `$catname`"}
+                {else}
+                    {icon class="add" controller=$model_name action=edit rank=1 text="Create a new"|gettext|cat:" `$catname`"}
+                {/if}
+            </div>
     	{/if}
     {/permissions}
     <div id="{$id}" class="yui-navset exp-skin-tabview hide">
@@ -101,10 +103,12 @@
             {/if}
             {foreach name=items from=$cats->modules key=moduleid item=module}
                 <div id="tab{$smarty.foreach.items.iteration}">
-                    {if $permissions.manage}
-                        {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
-                        {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:$catnames}
-                    {/if}
+                    <div class="module-actions">
+                        {if $permissions.manage}
+                            {*{ddrerank id=$moduleid items=$cats->records model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:"Categories"|gettext}*}
+                            {ddrerank id=$moduleid items=$module model="expCat" module=$moduleid label=$moduleid|cat:' '|cat:$catnames}
+                        {/if}
+                    </div>
                     {*{$cats->links}*}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <thead>
@@ -132,12 +136,14 @@
                                     </td>
                                     <td>
                                         {permissions}
-                                            {if $permissions.edit}
-                                                {icon controller=$controller action=edit record=$listing title="Edit this"|gettext|cat:" `$catname`"}
-                                            {/if}
-                                            {if $permissions.delete}
-                                                {icon controller=$controller action=delete record=$listing title="Delete this"|gettext|cat:" `$catname`" onclick="return confirm('"|cat:("Are you sure you want to delete this?"|gettext)|cat:"');"}
-                                            {/if}
+                                            <div class="item-actions">
+                                                {if $permissions.edit}
+                                                    {icon controller=$controller action=edit record=$listing title="Edit this"|gettext|cat:" `$catname`"}
+                                                {/if}
+                                                {if $permissions.delete}
+                                                    {icon controller=$controller action=delete record=$listing title="Delete this"|gettext|cat:" `$catname`" onclick="return confirm('"|cat:("Are you sure you want to delete this?"|gettext)|cat:"');"}
+                                                {/if}
+                                            </div>
                                         {/permissions}
                                     </td>
                                 </tr>
