@@ -116,13 +116,13 @@ class mysqli_database extends database {
         }
         $sql = substr($sql, 0, -1);
         if (count($primary)) {
-            $sql .= ", PRIMARY KEY ( `" . implode("` , `", $primary) . " `)";
+            $sql .= ", PRIMARY KEY ( `" . implode("` , `", $primary) . "`)";
         }
         if (count($fulltext)) {
-            $sql .= ", FULLTEXT ( `" . implode("` , `", $fulltext) . " `)";
+            $sql .= ", FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
         }
         if (!empty($unique)) foreach ($unique as $key => $value) {
-            $sql .= ", UNIQUE `" . $key . "` ( `" . implode("` , `", $value) . " `)";
+            $sql .= ", UNIQUE `" . $key . "` ( `" . implode("` , `", $value) . "`)";
         }
         foreach ($index as $key => $value) {
             $sql .= ", INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
