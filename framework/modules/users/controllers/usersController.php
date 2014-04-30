@@ -478,7 +478,6 @@ class usersController extends expController {
 
         assign_to_template(array(
             'page' => $page,
-            'groups' => $groups
         ));
     }
 

@@ -120,7 +120,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
-        $('#permissions').dataTable({
+        $('#permissions').DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
             dom: 'T<"clear">lfrtip',

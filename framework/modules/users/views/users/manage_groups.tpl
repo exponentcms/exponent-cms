@@ -37,6 +37,7 @@
 	</div>
     {br}
     {*{pagelinks paginate=$page top=1}*}
+    {$table_filled = true}
 	<table id="groups-manage">
 	    <thead>
 			<tr>
@@ -66,13 +67,15 @@
                     </td>
                 </tr>
 			{foreachelse}
-			    <tr><td colspan="{$page->columns|count}">{'No User Groups Available'|gettext}.</td></tr>
+                {$table_filled = false}
+			    <tr><td colspan="{$page->columns|count}"><h4>{'No User Groups Available'|gettext}</h4></td></tr>
 			{/foreach}
 		</tbody>
 	</table>
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
+{if $table_filled}
 {script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
@@ -93,3 +96,4 @@
     } );
 {/literal}
 {/script}
+{/if}

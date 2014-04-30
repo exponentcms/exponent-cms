@@ -83,6 +83,7 @@
             {/permissions}
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
+            {$table_filled = true}
             <table id="view-registrants">
                 <thead>
                     <tr>
@@ -150,8 +151,9 @@
                             </tr>
                         {/foreach}
                     {else}
+                        {$table_filled = false}
                         <tr class="{cycle values="odd,even"}">
-                            <td colspan="4">{'There is currently no one registered'|gettext}</td>
+                            <td colspan="4"><h4>{'There is currently no one registered'|gettext}</h4></td>
                         </tr>
                     {/if}
                 </tbody>
@@ -169,6 +171,7 @@
     {/form}
 </div>
 
+{if $table_filled}
 {script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
@@ -203,3 +206,4 @@
     } );
 {/literal}
 {/script}
+{/if}

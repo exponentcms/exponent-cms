@@ -66,13 +66,15 @@
                     </td>
                 </tr>
 			{foreachelse}
-			    <tr><td colspan="{$page->columns|count}">{'No User Groups Available'|gettext}.</td></tr>
+                {$table_filled = false}
+			    <tr><td colspan="{$page->columns|count}"><h4>{'No User Groups Available'|gettext}</h4></td></tr>
 			{/foreach}
 		</tbody>
 	</table>
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
+{if $table_filled}
 {script unique="manage-groups" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap,datatables.responsive'}
 {literal}
     $(document).ready(function() {
@@ -110,3 +112,4 @@
     } );
 {/literal}
 {/script}
+{/if}

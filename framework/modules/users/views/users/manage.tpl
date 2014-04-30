@@ -40,6 +40,7 @@
 	</div>
     {br}
     {*{pagelinks paginate=$page top=1}*}
+    {$table_filled = true}
 	<table id="users-manage">
 	    <thead>
 			<tr>
@@ -73,13 +74,15 @@
                     </td>
                 </tr>
 			{foreachelse}
-			    <td colspan="5">{'No Users'|gettext}</td>
+                {$table_filled = false}
+			    <td colspan="5"><h4>{'No Users'|gettext}</h4></td>
 			{/foreach}
 		</tbody>
 	</table>
     {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
+{if $table_filled}
 {script unique="users-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
@@ -101,6 +104,7 @@
     } );
 {/literal}
 {/script}
+{/if}
 
 {*<div class="module users manage yui-skin-sam">*}
     {*<div class="info-header">*}

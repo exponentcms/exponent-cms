@@ -31,6 +31,7 @@
     {form action="update_memberships"}
         <input type="hidden" name="id" value="{$group->id}"/>
         {*{pagelinks paginate=$page top=1}*}
+        {$table_filled = true}
         <table id="groups-manage">
             <thead>
                 <tr>
@@ -56,7 +57,8 @@
                         </td>
                     </tr>
                 {foreachelse}
-                    <td colspan="5">{'No Data'|gettext}.</td>
+                    {$table_filled = false}
+                    <td colspan="5"><h4>{'No Data'|gettext}</h4></td>
                 {/foreach}
             </tbody>
         </table>
@@ -65,6 +67,7 @@
     {/form}
 </div>
 
+{if $table_filled}
 {script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
@@ -86,3 +89,4 @@
     } );
 {/literal}
 {/script}
+{/if}
