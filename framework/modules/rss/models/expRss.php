@@ -36,8 +36,9 @@ class expRss extends expRecord {
         global $db;
         if (is_int($params) || is_string($params)) {
             parent::__construct($params, false, false);
-        } elseif (isset($params['module']) && isset($params['src'])) {
-            $id = $db->selectValue($this->table, 'id', "module='".expModules::getControllerName($params['module'])."' AND src='".$params['src']."'");
+        } elseif ((isset($params['module']) || isset($params['controller'])) && isset($params['src'])) {
+            $mod = !empty($params['module']) ? $params['module'] : (!empty($params['controller']) ? $params['controller'] : null);
+            $id = $db->selectValue($this->table, 'id', "module='".expModules::getControllerName($mod)."' AND src='".$params['src']."'");
             parent::__construct($id, false, false);
         } else {
             parent::__construct($params, false, false);

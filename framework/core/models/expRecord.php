@@ -336,9 +336,11 @@ class expRecord {
         //check for location_data
         if (is_array($params) && ((!empty($params['module']) || !empty($params['controller'])) && !empty($params['src']))) {
             $mod = !empty($params['module']) ? $params['module'] : (!empty($params['controller']) ? $params['controller'] : null);
+            if (empty($params['module'])) $params['module'] = $params['controller'];
             $params['location_data'] = serialize(expCore::makeLocation($mod, $params['src']));
         } elseif (is_object($params) && ((!empty($params->module) || !empty($params->controller)) && !empty($params->src))) {
             $mod = !empty($params->module) ? $params->module : (!empty($params->controller) ? $params->controller : null);
+            if (empty($params->module)) $params->module = $params->controller;
             $params->location_data = serialize(expCore::makeLocation($mod, $params->src));
         }
 

@@ -25,8 +25,9 @@ class expeAlerts extends expRecord {
     
     public function __construct($params=array()) {
         global $db;
-        if (isset($params['module']) && isset($params['src'])) {
-            $id = $db->selectValue($this->table, 'id', "module='".expModules::getModuleBaseName($params['module'])."' AND src='".$params['src']."'");
+        if ((isset($params['module']) || isset($params['controller'])) && isset($params['src'])) {
+            $mod = !empty($params['module']) ? $params['module'] : (!empty($params['controller']) ? $params['controller'] : null);
+            $id = $db->selectValue($this->table, 'id', "module='".expModules::getModuleBaseName($mod)."' AND src='".$params['src']."'");
             parent::__construct($id, false, false);
         } else {
             parent::__construct($params, false, false);
