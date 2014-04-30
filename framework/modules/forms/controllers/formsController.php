@@ -70,20 +70,20 @@ class formsController extends expController {
     }
 
     public function showall() {
-        if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
+//        global $db;
 
-            global $db;
+        expHistory::set('viewable', $this->params);
+        if (!empty($this->config)) {
+            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+        } elseif (!empty($this->params['title'])) {
+            $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+            $this->get_defaults($f);
+        } elseif (!empty($this->params['id'])) {
+            $f = $this->forms->find('first', 'id=' . $this->params['id']);
+            $this->get_defaults($f);
+        }
+        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) && $f != null) {
 
-            expHistory::set('viewable', $this->params);
-            if (!empty($this->config)) {
-                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-            } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
-                $this->get_defaults($f);
-            } elseif (!empty($this->params['id'])) {
-                $f = $this->forms->find('first', 'id=' . $this->params['id']);
-                $this->get_defaults($f);
-            }
 //            $items = $db->selectObjects('forms_' . $f->table_name, 1);
             if (empty($this->config['report_filter'])) {
                 $where = '1';
