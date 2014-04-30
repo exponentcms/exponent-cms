@@ -411,7 +411,7 @@
 
 							select.xdsoftScroller(top/(select.children()[0].offsetHeight-(select[0].clientHeight)));
 							event.stopPropagation();
-							
+
 							return false;
 						});
 
@@ -427,7 +427,9 @@
 								_xdsoft_datetime.currentTime[$(this).parent().parent().hasClass('xdsoft_monthselect')?'setMonth':'setFullYear']($(this).data('value'));
 							
 							$(this).parent().parent().hide();
-							
+
+                            if (options.inline) input.val( _xdsoft_datetime.str() );
+
 							datetimepicker.trigger('xchange.xdsoft');
 							options.onChangeMonth&&options.onChangeMonth.call&&options.onChangeMonth.call(datetimepicker,_xdsoft_datetime.currentTime,datetimepicker.data('input'));
 						});
@@ -758,6 +760,7 @@
 							datetimepicker.data('changed',true);
 							_xdsoft_datetime.setCurrentTime(0);
 							datetimepicker.trigger('afterOpen.xdsoft');
+                            if (options.inline) input.val( _xdsoft_datetime.str() );
 						}).on('dblclick.xdsoft',function(){
 							input.val( _xdsoft_datetime.str() );
 							datetimepicker.trigger('close.xdsoft');
@@ -784,6 +787,7 @@
 								stop = true;
 								$([document.body,window]).off('mouseup.xdsoft',arguments_callee2);
 							});
+                            if (options.inline) input.val( _xdsoft_datetime.str() );
 						});
 
 				timepicker

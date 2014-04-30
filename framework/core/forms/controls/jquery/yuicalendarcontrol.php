@@ -121,7 +121,7 @@ class yuicalendarcontrol extends formcontrol
                     step: 15,
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
                     inline: true,
-                    value: '".$default."'
+//                    value: '".$default."'
                 });
                 $('#" . $idname . "').datetimepicker('update');
             });

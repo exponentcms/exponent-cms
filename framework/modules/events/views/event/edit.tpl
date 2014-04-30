@@ -68,7 +68,7 @@
                         {control type=hidden name=is_recurring value=$record->is_recurring}
                         {'This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.'|gettext}
                         <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-                            {exp_include 'file=_recur_dates.tpl'}
+                            {exp_include file='_recur_dates.tpl'}
                         </table>
                     {/if}
                 </div>
