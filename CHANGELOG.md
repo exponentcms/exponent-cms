@@ -22,6 +22,7 @@ Added / Fixed / Changed for 2.3.0
   - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
   - initial support for alternate/optional file manager - elFinder (uses an OS file manager paradigm)
   - adds optional 'hidden' controls (checkbox, text, textarea) to forms to allow (prefilled) data fields unavailable on initial entry, but can be updated later (e.g. paid, notes)
+  - adds new 'church site' site sample database in addition to 'sample site', 'blog' and 'eCommerce store' during installation
   - vastly improved SEO for events, eventregistrations, & products
     -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
     -- more accurate meta data made available to search engines
