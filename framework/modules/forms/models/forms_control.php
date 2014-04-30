@@ -45,7 +45,9 @@ class forms_control extends expRecord {
      */
     public function __construct($params=array()) {
         parent::__construct($params);
-        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        if (!empty($this->forms_id)) {
+            $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        }
     }
 
     /**
