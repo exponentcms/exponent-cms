@@ -391,6 +391,7 @@ function smarty_function_control($params, &$smarty) {
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
                 $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
+                $control->multiple      = isset($params['multiple']) ? true : false;
                 break;
         }
 

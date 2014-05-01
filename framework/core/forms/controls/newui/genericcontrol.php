@@ -29,7 +29,8 @@ class genericcontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
-    
+    var $multiple = false;
+
     static function name() { return "generic"; }
 
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
@@ -107,6 +108,7 @@ class genericcontrol extends formcontrol {
             $html .= " onfocus=\"".$this->filter."_filter.onfocus(this);\"";
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
+        if ($this->multiple) $html .= ' multiple="multiple"';
         if ($this->disabled) $html .= ' disabled';
         foreach ($this->jsHooks as $type=>$val) {
             $html .= ' '.$type.'="'.$val.'"';

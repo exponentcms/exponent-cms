@@ -61,20 +61,21 @@ class textcontrol extends formcontrol {
             $extra_class = '';
         }
         $html  = '<input' . $inputID . ' class="text' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
-        $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
-        $html .= $this->size ? " size=\"".$this->size."\"" : "";
-        $html .= $this->disabled ? " disabled='disabled' " : "";
+        $html .= " value=\"" . str_replace('"', "&quot;", $this->default) . "\"";
+        $html .= $this->size ? " size=\"" . $this->size . "\"" : "";
+        $html .= $this->multiple ? ' multiple="multiple"' : "";
+        $html .= $this->disabled ? " disabled='disabled'" : "";
         $html .= $this->focus ? " autofocus" : "";
-        $html .= $this->maxlength ? " maxlength=\"".$this->maxlength."\"" : "";
-        $html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\"" : "";
-        $html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\"" : "";
-        $html .= $this->placeholder ? " placeholder=\"".$this->placeholder."\"" : "";
-        if (!empty($this->pattern)) $html .= " pattern=\"".$this->pattern."\"";
+        $html .= $this->maxlength ? " maxlength=\"" . $this->maxlength . "\"" : "";
+        $html .= $this->tabindex >= 0 ? " tabindex=\"" . $this->tabindex . "\"" : "";
+        $html .= ($this->accesskey != "") ? " accesskey=\"" . $this->accesskey . "\"" : "";
+        $html .= $this->placeholder ? " placeholder=\"" . $this->placeholder . "\"" : "";
+        if (!empty($this->pattern)) $html .= " pattern=\"" . $this->pattern . "\"";
         if ($this->filter != "") {
-            $html .= " onkeypress=\"return ".$this->filter."_filter.on_key_press(this, event);\"";
-            $html .= " onblur=\"".$this->filter."_filter.onblur(this);\"";
-            $html .= " onfocus=\"".$this->filter."_filter.onfocus(this);\"";
-            $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
+            $html .= " onkeypress=\"return " . $this->filter . "_filter.on_key_press(this, event);\"";
+            $html .= " onblur=\"" . $this->filter . "_filter.onblur(this);\"";
+            $html .= " onfocus=\"" . $this->filter . "_filter.onfocus(this);\"";
+            $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
