@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,16 +14,16 @@
  *}
 
 <div class="module navigation edit_freeform">
-    <div class="info-header">
-        <div class="related-actions">
-			{help text="Get Help with"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-menu"}
-        </div>
-	    <h1>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Free-form Menu Item'|gettext}</h1>
-	</div>
 	<div class="form_header">
-		<strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong>{br}
-        {'On other views it will appear as an inactive menu item with its children.'|gettext}
-        {'Use it to embed a module/container within a top-level menu item.'|gettext}
+        <div class="info-header">
+            <div class="related-actions">
+   			    {help text="Get Help with"|gettext|cat:" "|cat:("Editing Free-form Menu Item"|gettext) module="edit-freeform-menu"}
+            </div>
+            <h2>{if $section->id}{'Edit Existing'|gettext}{else}{'Create New'|gettext}{/if} {'Free-form Menu Item'|gettext}</h2>
+            <blockquote><strong>{'This page/menu-item type is only functional on some navigation views such as the Mega view where it will appear without its children!'|gettext}</strong>{br}
+             {'On other views it will appear as an inactive menu item with its children.'|gettext}
+             {'Use it to embed a module/container within a top-level menu item.'|gettext}</blockquote>
+        </div>
     </div>
     {form action=update}
         {control type=hidden name=id value=$section->id}

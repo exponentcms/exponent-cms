@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2013 OIC Group, Inc.
+ * Copyright (c) 2007-2014 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -16,9 +16,9 @@
 
 <div class="module help side-column childview">
     <ul>
-        {foreach from=$page->records item=doc name=docs}
-            <li{if $doc->sef_url==$smarty.get.title} class="current"{/if}>
-                <a href={link action=show version=$doc->help_version->version title=$doc->sef_url src=$doc->loc->src}>{$doc->title}</a>
+        {foreach from=$page->records item=item name=docs}
+            <li{if $item->sef_url==$smarty.get.title} class="current"{/if}>
+                <a href={link action=show version=$item->help_version->version title=$item->sef_url src=$item->loc->src}>{$item->title}</a>
             </li>
         {/foreach}
     </ul>

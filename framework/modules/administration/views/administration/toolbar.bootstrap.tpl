@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,32 +16,39 @@
 {css unique="slingbar" link="`$asset_path`css/slingbar.css" corecss="admin-global"}
 {if $top}
     {if (!$smarty.const.MENU_LOCATION || $smarty.const.MENU_LOCATION == 'fixed-top')}
-        .navbar-fixed-top {
-            margin-top: 30px;
-        }
-        .navbar-spacer {
-            height: 74px;
+        {*@media (min-width: {$smarty.const.MENU_WIDTH}px) {*}
+            .navbar-fixed-top {
+                margin-top: 30px;
+            }
+            {*.navbar-spacer {*}
+                {*height: 74px;*}
+            {*}*}
+        {*}*}
+        @media (max-width: {$smarty.const.MENU_WIDTH}px) {
+            .navbar-fixed-top {
+                margin-bottom: 0;
+            }
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
-        .navbar-static-top {
-            margin-top: 30px;
-        }
-        .navbar-spacer {
-            height: 0;
+        {*.navbar-static-top {*}
+            {*margin-top: 30px;*}
+        {*}*}
+        {*.navbar-spacer {*}
+            {*height: 0;*}
         }
     {elseif $smarty.const.MENU_LOCATION == 'fixed-bottom'}
-        .navbar-spacer {
-            height: 30px;
-        }
+        {*.navbar-spacer {*}
+            {*height: 30px;*}
+        {*}*}
     {/if}
 {else}
     {if $smarty.const.MENU_LOCATION == 'fixed-bottom'}
         .navbar-fixed-bottom {
             bottom: 30px;
         }
-        .navbar-spacer {
-            height: 0;
-        }
+        {*.navbar-spacer {*}
+            {*height: 0;*}
+        {*}*}
         .navbar-spacer-bottom {
             height: 30px;
         }
@@ -49,6 +56,9 @@
         	height : 75px;
         }
     {/if}
+    .container.fixedmenu {
+        padding-bottom : 30px;
+    }
 {/if}
 {/css}
 
@@ -157,7 +167,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
      }
 
      var adminerwindow = function (){
-         var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
+         var win = window.open(EXPONENT.PATH_RELATIVE + 'external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
          if (!win) { err(); }
      }
 
@@ -186,6 +196,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
          if (!win) { err(); }
      }
 
+     var workflowtoggle = function (e){
+         if (!confirm('{/literal}{if $smarty.const.ENABLE_WORKFLOW}{'Turn Workflow off (you will lose all revisions)'|gettext}{else}{'Turn Workflow on'|gettext}{/if}{literal}?')) {
+             e.preventDefault();
+             return false;
+         }
+     }
+
      Y.on('toolbar:loaded',function(){
          if (document.getElementById("reportabug-toolbar")) Y.one('#reportabug-toolbar').on('click', reportbugwindow);
          if (document.getElementById("manage-db"))Y.one('#manage-db').on('click', adminerwindow);
@@ -193,6 +210,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
          if (document.getElementById("forums-toolbar")) Y.one('#forums-toolbar').on('click',forumswindow);
          if (document.getElementById("filemanager-toolbar")) Y.one('#filemanager-toolbar').on('click',filepickerwindow);
          if (document.getElementById("fileuploader-toolbar")) Y.one('#fileuploader-toolbar').on('click',fileuploaderwindow);
+         if (document.getElementById("workflow-toggle")) Y.one('#workflow-toggle').on('click',workflowtoggle);
          // Y.later(900,this,function(){
          //     tb.setStyles({'opacity':'0.3'});
          // });
@@ -209,3 +227,26 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-y
  });
 {/literal}
 {/script}
+
+{*{if $smarty.const.LOGGER && $smarty.const.DEVELOPMENT}*}
+{*<div id="yuilogger" class="yui3-skin-sam">*}
+
+{*</div>*}
+{*{script unique="ylogger99" yui3mods="yui"}*}
+{*{literal}*}
+    {*YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {*}
+        {*var yconsole = new Y.Console({*}
+            {*/* any other configuration */*}
+            {*logSource: Y.Global,*}
+            {*newestOnTop : false,*}
+            {*style: 'separate',*}
+            {*plugins: [*}
+                {*Y.Plugin.ConsoleFilters,*}
+                {*Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }*}
+            {*]*}
+        {*}).render("#yuilogger");*}
+        {*yconsole.collapse();*}
+    {*});*}
+{*{/literal}*}
+{*{/script}*}
+{*{/if}*}

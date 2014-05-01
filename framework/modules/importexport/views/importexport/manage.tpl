@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,15 +14,25 @@
  *}
  
 <div class="module importexport manage">
-    <h1>{"Import Data"|gettext}</h1>
-    {form action=import}        
-        {control type="dropdown" name="import_type" label="Select Data to Import"|gettext items=$importDD default="storeController"}
-        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Importing Data"|gettext) module="import-data"}
+        </div>
+        <h2>{"Import Data"|gettext}</h2>
+    </div>
+    {form action=import}
+        {control type="dropdown" name="import_type" label="Select Module Data to Import"|gettext items=$importDD}
+        {control type="buttongroup" submit="Begin Import"|gettext cancel="Cancel"|gettext}
     {/form}
     {br}
-    <h1>{'Export Data'|gettext}</h1>
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Exporting Data"|gettext) module="export-data"}
+        </div>
+        <h2>{"Export Data"|gettext}</h2>
+    </div>
     {form action=export}
-        {control type="dropdown" name="export_type" label="Select Data to Export"|gettext items=$exportDD}
-        {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
+        {control type="dropdown" name="export_type" label="Select Module Data to Export"|gettext items=$exportDD}
+        {control type="buttongroup" submit="Begin Export"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

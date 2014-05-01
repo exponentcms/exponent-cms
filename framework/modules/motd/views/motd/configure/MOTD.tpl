@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,9 +19,9 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("MOTD Settings"|gettext) module="motd"}
 		</div>
         <h2>{"MOTD Settings"|gettext}</h2>
+        <blockquote>
+            {'If no Message of the Day is found for the current day, we can pull up a random Message of the Day.'|gettext}&#160;&#160;
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'If no Message of the Day is found for the current day, we can pull up a random Message of the Day.'|gettext}&#160;&#160;
-</blockquote>
 {control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random messages.'|gettext}

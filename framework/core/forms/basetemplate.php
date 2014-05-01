@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -44,31 +44,39 @@ abstract class basetemplate {
 //	var $langdir = "";
 	//	
 	
-	function __construct($item_type, $item_dir, $view = "Default") {
+	function __construct($item_type, $item_dir, $view = "Default")
+    {
 //        global $head_config;
 
-		include_once(SMARTY_PATH.'Smarty.class.php');
+        include_once(SMARTY_PATH . 'Smarty.class.php');
 
-		// Set up the Smarty template variable we wrap around.
-		$this->tpl = new Smarty();
-		if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
-        $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
-        $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
+        // Set up the Smarty template variable we wrap around.
+        $this->tpl = new Smarty();
 
-		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
+        if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting(
+            ) & ~E_NOTICE & ~E_WARNING; //FIXME this disables bad template code reporting 3.x
+        $this->tpl->debugging = SMARTY_DEVELOPMENT; // Opens up the debug console
+        $this->tpl->error_unassigned = true; // display notice when accessing unassigned variable, if warnings turned on
 
-//		  $this->tpl->caching = false;
+        $this->tpl->php_handling = SMARTY::PHP_REMOVE;
+
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-//		  $this->tpl->cache_dir = BASE.'tmp/cache';
-        $this->tpl->setCacheDir(BASE.'tmp/cache');
+        $this->tpl->setCacheDir(BASE . 'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-//        if (empty($head_config['framework'])) $head_config['framework'] = '';
-//        if ($head_config['framework'] == 'bootstrap') {
-        if ($framework == 'bootstrap') {
+        if ($framework == 'bootstrap3') {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/bootstrap3',
+                BASE.'framework/plugins/bootstrap',
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
+        } elseif ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap',
@@ -76,7 +84,14 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-//        } elseif ($head_config['framework'] == 'jquery') {
+        } elseif (NEWUI) {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/newui',  // we leave out bootstrap3 & bootstrap on purpose
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
         } elseif ($framework == 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -92,11 +107,11 @@ abstract class basetemplate {
             ));
         }
 
-		//autoload filters
-//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-        $this->tpl->loadPlugin('smarty_compiler_switch');
+		//autoload filters & compiler plugins
+        $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
+        $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
-		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);
+		$this->viewfile = expTemplate::getViewFile($item_type, $item_dir, $view);  //FIXME only place we call this method
         if ($this->viewfile == TEMPLATE_FALLBACK_VIEW) {
             $this->tpl->assign("badview", $view);
         }
@@ -104,12 +119,11 @@ abstract class basetemplate {
 
 		$this->module = $item_dir;
 
+        // strip file type
 		$this->view = substr(basename($this->viewfile),0,-4);
 		
-//		$this->tpl->template_dir = $this->viewdir;
         $this->tpl->setTemplateDir($this->viewdir);
 		
-//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
@@ -132,9 +146,13 @@ abstract class basetemplate {
 	 */
 	function output() {
 		// javascript registration
-		
         if (empty($this->file_is_a_config)) {
-            $this->tpl->display($this->view.'.tpl');
+            try {
+                $this->tpl->display($this->view.'.tpl');
+            } catch(SmartyException $e) {
+                echo "Smarty reported: ". $e->getMessage();
+//              exit;
+            }
         }
 	}
 	
@@ -156,10 +174,14 @@ abstract class basetemplate {
 	 * @return bool|mixed|string
 	 */
 	function render() { // Caching support?
-        if (empty($this->file_is_a_config)) {
-            return $this->tpl->fetch($this->view.'.tpl');
-        } else {
-            return $this->tpl->fetch($this->view.'.config');
+        try {
+            if (empty($this->file_is_a_config)) {
+                return $this->tpl->fetch($this->view.'.tpl');
+            } else {
+                return $this->tpl->fetch($this->view.'.config');
+            }
+        } catch(SmartyException $e) {
+            return "Smarty reported: " . $e->getMessage();
         }
 	}
 

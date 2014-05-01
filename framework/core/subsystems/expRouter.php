@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -89,6 +89,7 @@ class expRouter {
             if (isset($params['section']) && !isset($params['action'])) {                
                 if (empty($params['sef_name'])) {
                     global $db;
+
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
                 }                               
                 return self::cleanLink($linkbase.$params['sef_name']);
@@ -219,8 +220,10 @@ class expRouter {
         }
     }
 
+    //FIXME what are we doing with this history?
     public function updateHistory($section=null) {
         global $db,$user;
+
         // if its not already set
         // configurable tracking length
         setcookie('UserUID',expSession::getTicketString(),86400 * TRACKING_COOKIE_EXPIRES);
@@ -516,6 +519,7 @@ class expRouter {
     public function getSefUrlByPageId($id=null) {  //FIXME this method is never called and doesn't do anything as written
         if (!empty($id)) {
             global $db;
+
             $section = $db->selectObject('section', 'id='.intval($id));
             $url = URL_FULL;
             $url .= !empty($section->sef_name) ? $section->sef_name : $section->name;
@@ -617,6 +621,7 @@ class expRouter {
         } elseif ($this->url_type == 'post') {
             if (isset($_REQUEST['PHPSESSID'])) unset($_REQUEST['PHPSESSID']);
             foreach($_REQUEST as $name=>$val) {
+                if (get_magic_quotes_gpc()) $val = stripslashes($val);  // magic quotes fix??
                 $params[$name] = $val;
             }
         }
@@ -652,7 +657,6 @@ class expRouter {
     
     private function buildSEFPath () {
         // Apache
-//        if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') === 0 || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') === 0) {
         if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
             switch(php_sapi_name()) {
                 case "cgi":
@@ -671,14 +675,21 @@ class expRouter {
                     $this->sefPath = !empty($_SERVER['REDIRECT_URL']) ? urldecode($_SERVER['REDIRECT_URL']) : null;
                     break;
             }
-        // Lighty
-//        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') === 0) {
-        } elseif (strpos($_SERVER['SERVER_SOFTWARE'],'lighttpd') !== false) {
+        // Lighty ???
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'lighttpd') !== false) {
+            //FIXME, we still need a good lighttpd.conf rewrite config for sef_urls to work
             if (isset($_SERVER['ORIG_PATH_INFO'])) {
                 $this->sefPath = urldecode($_SERVER['ORIG_PATH_INFO']);
             } elseif (isset($_SERVER['REDIRECT_URI'])){
                 $this->sefPath = urldecode(substr($_SERVER['REDIRECT_URI'],9));
+            } elseif (isset($_SERVER['REQUEST_URI'])){
+                $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
             }
+        // Nginx ???
+        } elseif (strpos(strtolower($_SERVER['SERVER_SOFTWARE']),'nginx') !== false) {
+            $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
+        } else {
+            $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         }
         
         $this->sefPath = substr($this->sefPath,strlen(substr(PATH_RELATIVE,0,-1))); 
@@ -722,6 +733,7 @@ class expRouter {
 
     public function getSectionObj($section) {
         global $db;
+
         if ($section == "*") {
             $controller = expModules::getModuleClassName($this->params['controller']);
             $sectionObj = call_user_func($controller."::getSection",$this->params);

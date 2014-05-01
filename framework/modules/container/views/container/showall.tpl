@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -48,7 +48,7 @@
                     {if ($permissions.configure || $container->permissions.configure)}
                    		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod">{"Configure Settings"|gettext}</a></li>
                    	{/if}
-                    {if $smarty.const.HELP_ACTIVE}<li>{help text="Get Help with"|gettext|cat:" "|cat:("Containers"|gettext)}</li>{/if}
+                    {if $smarty.const.HELP_ACTIVE}<li><a class="helplink" href="{help::makeHelpLink('container')}" target="_blank">{'Get Help'|gettext}</a></li>{/if}
                 </ul>
             </div>
         {/if}

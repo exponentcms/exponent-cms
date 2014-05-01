@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,10 +43,10 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_ID),
     'created_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
+    'editor'=>array(
+        DB_FIELD_TYPE=>DB_DEF_ID),
     'edited_at'=>array(
         DB_FIELD_TYPE=>DB_DEF_TIMESTAMP),
-    'editor'=>array(
-        DB_FIELD_TYPE=>DB_DEF_ID)
 );
 
 ?>

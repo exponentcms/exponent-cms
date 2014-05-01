@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,10 @@
  *
  *}
  
-{css unique="manage_groups" corecss="tables"}
+{*{css unique="manage_groups" corecss="tables"}*}
+
+{*{/css}*}
+{css unique="manage-groups" link="`$asset_path`css/datatables-tools.css"}
 
 {/css}
 
@@ -22,30 +25,37 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Groups"|gettext) module="manage-groups"}
         </div>
-        <h1>{$moduletitle|default:"Manage User Groups"|gettext}</h1>
+        <h2>{$moduletitle|default:"Manage User Groups"|gettext}</h2>
+        <blockquote>
+             {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&#160;&#160;
+             {'This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.'|gettext}{br}
+             {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
+         </blockquote>
     </div>
-	<blockquote>
-        {'Groups are used to treat a set of users as a single entity, mostly for permission management.'|gettext}&#160;&#160;
-        {'This form allows you to determine which users belong to which groups, create new groups, modify existing groups, and remove groups.'|gettext}{br}
-        {'When a new user account is created, it will be automatically added to all groups with a Type of \'Default\''|gettext}
-    </blockquote>
 	<div class="module-actions">
 		{icon class=add controller=users action=edit_group text="Create a New User Group"|gettext alt="Create a New User Group"|gettext}
 	</div>
-    {pagelinks paginate=$page top=1}
-	<table class="exp-skin-table">
+    {br}
+    {*{pagelinks paginate=$page top=1}*}
+    {$table_filled = true}
+	<table id="groups-manage">
 	    <thead>
 			<tr>
-				{$page->header_columns}
+				{*{$page->header_columns}*}
+                <th>{'Group Name'|gettext}</th>
+                <th>{'Description'|gettext}</th>
+                <th>{'Type'|gettext}</th>
+                <th>{'Members'|gettext}</th>
                 <th>{'Actions'|gettext}</th>
 			</tr>
 		</thead>
 		<tbody>
 			{foreach from=$page->records item=group name=listings}
-                <tr class="{cycle values="odd,even"}">
+                <tr>
                     <td>{$group->name}</td>
                     <td>{$group->description}</td>
                     <td>{if $group->inclusive}<strong>{'Default'|gettext}</strong>{else}{'Normal'|gettext}{/if}</td>
+                    <td>{count($group->members)}</td>
                     <td>
                         {permissions}
                             <div class="item-actions">
@@ -57,9 +67,33 @@
                     </td>
                 </tr>
 			{foreachelse}
-			    <tr><td colspan="{$page->columns|count}">{'No User Groups Available'|gettext}.</td></tr>
+                {$table_filled = false}
+			    <tr><td colspan="{$page->columns|count}"><h4>{'No User Groups Available'|gettext}</h4></td></tr>
 			{/foreach}
 		</tbody>
 	</table>
-    {pagelinks paginate=$page bottom=1}
+    {*{pagelinks paginate=$page bottom=1}*}
 </div>
+
+{if $table_filled}
+{script unique="groups-showall" jquery='jquery.dataTables,dataTables.tableTools'}
+{literal}
+    $(document).ready(function() {
+        $('#groups-manage').DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            columns: [
+                null,
+                null,
+                null,
+                { searchable: false, sortable: false },
+            ]
+        });
+    } );
+{/literal}
+{/script}
+{/if}

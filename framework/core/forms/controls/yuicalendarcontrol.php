@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,11 +29,12 @@ if (!defined('EXPONENT')) exit('');
  */
 class yuicalendarcontrol extends formcontrol {
 
-    var $disable_text = "";
-    var $showtime = true;
+//    var $disable_text = "";
+//    var $showdate = true;
+//    var $showtime = false;
 
     static function name() {
-        return "Date / Time - YUI Calendar";
+        return "Date / Time - Calendar Display";
     }
 
     static function isSimpleControl() {
@@ -45,21 +46,25 @@ class yuicalendarcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
-    function __construct($default = null, $disable_text = "", $showtime = true) {
-        $this->disable_text = $disable_text;
+//    function __construct($default = null, $disable_text = "", $showtime = true) {  //FIXME $disable_text & $showtime are NOT used
+    function __construct($default = null, $showdate = true, $showtime = false)
+    {
+//        $this->disable_text = $disable_text;
+        if (empty($default)) $default = time();
         $this->default      = $default;
+//        $this->showdate     = $showdate;
 //        $this->showtime     = $showtime;
 
-        if ($this->default == null) {
-            if ($this->disable_text == "") $this->default = time();
-            else $this->disabled = true;
-        } elseif ($this->default == 0) {
-            $this->default = time();
-        }
+//        if ($this->default == null) {
+//            if ($this->disable_text == "") $this->default = time();
+//            else $this->disabled = true;
+//        } elseif ($this->default == 0) {
+//            $this->default = time();
+//        }
     }
 
-    function onRegister(&$form) {
-    }
+//    function onRegister(&$form) {
+//    }
 
     function controlToHTML($name, $label = null) {
         $idname = str_replace(array('[',']',']['),'_',$name);
@@ -72,7 +77,7 @@ class yuicalendarcontrol extends formcontrol {
         <div class=\"yui3-skin-sam\">
             <div id=\"cal" . $idname . "Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . "\" value=\"" . $default . "\"/>
+                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . ($this->focus?' autofocus':'') . "\" value=\"" . $default . "\"/>
                 <button class=\"button\" type=\"button\" id=\"update-" . $idname . "\">" . gt('Update Calendar') . "</button>
             </div>
         </div>
@@ -80,7 +85,7 @@ class yuicalendarcontrol extends formcontrol {
         ";
 
         $script = "
-            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date',function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','node-event-simulate',function(Y) {
 //            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','gallery-input-calendar-sync','event-valuechange',function(Y) {
                 // Create a new instance of calendar, placing it in
                 // #mycalendar container, setting its width to 340px,
@@ -173,21 +178,22 @@ class yuicalendarcontrol extends formcontrol {
 //        }
     }
 
-     static function form($object) {
-      $form = new form();
-      if (!isset($object->identifier)) {
-          $object = new stdClass();
-          $object->identifier = "";
-          $object->caption = "";
-//          $object->showtime = true;
-      }
-      $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
-      $form->register("caption",gt('Caption'), new textcontrol($object->caption));
-//      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-
-      $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
-      return $form;
-     }
+    static function form($object) {
+        $form = new form();
+        if (empty($object)) $object = new stdClass();
+        if (!isset($object->identifier)) {
+            $object->identifier = "";
+            $object->caption    = "";
+            $object->showtime   = true;
+//            $object->is_hidden  = false;
+        }
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+//        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
+        return $form;
+    }
 
     static function update($values, $object) {
         if ($object == null) {
@@ -202,7 +208,8 @@ class yuicalendarcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
-//        $object->showtime   = isset($values['showtime']);
+        $object->showtime   = isset($values['showtime']);
+//        $object->is_hidden  = isset($values['is_hidden']);
         return $object;
     }
 

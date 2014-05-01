@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,9 +58,7 @@ class storeController extends expController {
     protected $add_permissions = array(
         'copyProduct'                 => "Copy Product",
         'delete_children'             => "Delete Children",
-        'import'                      => 'Import Products',
         'reimport'                    => 'ReImport Products',
-        'export'                      => 'Export Products',
         'findDupes'                   => 'Fix Duplicate SEF Names',
         'manage_sales_reps'           => 'Manage Sales Reps',
         'batch_process'               => 'Batch capture order transactions',
@@ -76,7 +74,9 @@ class storeController extends expController {
         'deleteProcessedModelAliases' => 'Delete processed uploaded model aliases',
         'delete_model_alias'          => 'Process model aliases',
         'update_model_alias'          => 'Save model aliases',
-        'edit_model_alias'            => 'Delete model aliases'
+        'edit_model_alias'            => 'Delete model aliases',
+        'import'                      => 'Import Products',
+        'export'                      => 'Export Products',
     );
 
     static function displayname() {
@@ -586,6 +586,140 @@ class storeController extends expController {
         redirect_to(array('controller' => 'report', 'action' => 'batch_export', 'applytoall' => true));
     }
 
+    function export() {
+        global $db;
+
+        $this->params['applytoall'] = 1;  //FIXME we simply do all now
+
+        //eDebug($this->params);
+        //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
+            $sql = expSession::get('product_export_query');
+            //eDebug($sql);
+            //expSession::set('product_export_query','');
+            $prods = $db->selectArraysBySql($sql);
+            //eDebug($prods);
+        } else {
+            foreach ($this->params['act-upon'] as $prod) {
+                $prods[] = array('id' => $prod);
+            }
+        }
+        set_time_limit(0);
+        $baseProd = new product();
+
+        //$p = new product($pid['id'], false, false);
+        foreach ($prods as $pid) {
+            $except = array('company', 'crosssellItem', 'optiongroup');
+            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, false, $except, true);
+
+            //eDebug($p,true);
+            $out .= expString::outputField($p->id);
+            $out .= expString::outputField($p->parent_id);
+            $out .= expString::outputField($p->child_rank);
+            $out .= expString::outputField($p->title);
+            $out .= expString::outputField(expString::stripLineEndings($p->body), ",", true);
+            $out .= expString::outputField($p->model);
+            $out .= expString::outputField($p->warehouse_location);
+            $out .= expString::outputField($p->sef_url);
+            $out .= expString::outputField($p->canonical);
+            $out .= expString::outputField($p->meta_title);
+            $out .= expString::outputField($p->meta_keywords);
+            $out .= expString::outputField($p->meta_description);
+            $out .= expString::outputField($p->tax_class_id);
+            $out .= expString::outputField($p->quantity);
+            $out .= expString::outputField($p->availability_type);
+            $out .= expString::outputField($p->base_price);
+            $out .= expString::outputField($p->special_price);
+            $out .= expString::outputField($p->use_special_price);
+            $out .= expString::outputField($p->active_type);
+            $out .= expString::outputField($p->product_status_id);
+
+            $rank = 0;
+            //eDebug($p);
+            for ($x = 0; $x < 12; $x++) {
+                $this->catstring = '';
+                if (isset($p->storeCategory[$x])) {
+                    $out .= expString::outputField(reportController::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
+                } else $out .= ',';
+            }
+            $out .= expString::outputField($p->surcharge);
+            $out .= expString::outputField($rank);
+            $out .= expString::outputField($p->feed_title);
+            $out .= substr(expString::outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
+            foreach ($p->childProduct as $cp) {
+                //$p = new product($pid['id'], true, false);
+                //eDebug($p,true);
+                $out .= expString::outputField($cp->id);
+                $out .= expString::outputField($cp->parent_id);
+                $out .= expString::outputField($cp->child_rank);
+                $out .= expString::outputField($cp->title);
+                $out .= expString::outputField(expString::stripLineEndings($cp->body));
+                $out .= expString::outputField($cp->model);
+                $out .= expString::outputField($cp->warehouse_location);
+                $out .= expString::outputField($cp->sef_url);
+                $out .= expString::outputField($cp->canonical);
+                $out .= expString::outputField($cp->meta_title);
+                $out .= expString::outputField($cp->meta_keywords);
+                $out .= expString::outputField($cp->meta_description);
+                $out .= expString::outputField($cp->tax_class_id);
+                $out .= expString::outputField($cp->quantity);
+                $out .= expString::outputField($cp->availability_type);
+                $out .= expString::outputField($cp->base_price);
+                $out .= expString::outputField($cp->special_price);
+                $out .= expString::outputField($cp->use_special_price);
+                $out .= expString::outputField($cp->active_type);
+                $out .= expString::outputField($cp->product_status_id);
+                $out .= ',,,,,,,,,,,,';
+                $out .= expString::outputField($cp->surcharge);
+                $out .= ',,'; //for rank, feed title, feed body
+                $out .= chr(13) . chr(10);
+
+                //echo($out);
+            }
+
+        }
+
+//        $outFile = 'tmp/product_export_' . time() . '.csv';
+//        $outHandle = fopen(BASE . $outFile, 'w');
+//        fwrite($outHandle, $out);
+//        fclose($outHandle);
+//
+//        echo "<br/><br/>Download the file here: <a href='" . PATH_RELATIVE . $outFile . "'>Product Export</a>";
+
+        $filename = 'tmp/product_export_' . time() . '.csv';
+
+        ob_end_clean();
+        ob_start("ob_gzhandler");
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+        echo $out;
+        exit; // Exit, since we are exporting
+
+        /*eDebug(BASE . "tmp/export.csv");
+        $db->sql($sql);
+        eDebug($db->error());*/
+        /*OPTIONALLY ENCLOSED BY '" . '"' .
+        "' ESCAPED BY '\\'
+        LINES TERMINATED BY '" . '\\n' .
+        "' */
+    }
+
     function showallByManufacturer() {  //FIXME Deprecated??, moved to company??
         expHistory::set('viewable', $this->params);
 
@@ -973,13 +1107,6 @@ class storeController extends expController {
 
 //        $expDefinableField = new expDefinableField();
 //        $definablefields = $expDefinableField->find('all','1','rank');
-        $f = new forms();
-        $forms_list = array();
-        $forms_list[0] = '- '.gt('No User Input Required').' -';
-        $forms = $f->find('all', 'is_saved=1');
-        if (!empty($forms)) foreach ($forms as $frm) {
-            $forms_list[$frm->id] = $frm->title;
-        }
 
         //Make sure that the view is the edit.tpl and not any ajax views
         if (isset($this->params['view']) && $this->params['view'] == 'edit') {
@@ -1086,6 +1213,15 @@ class storeController extends expController {
             $parent = new $product_type($record->parent_id, false, true);
         } else {
             $view = 'edit';
+        }
+
+        $f = new forms();
+        $forms_list = array();
+        $forms_list[0] = '- '.gt('No User Input Required').' -';
+        $forms = $f->find('all', 'is_saved=1');
+        if (!empty($forms)) foreach ($forms as $frm) {
+            if (!$db->countObjects('eventregistration', 'forms_id='.$frm->id) || (!empty($record->forms_id) && $record->forms_id == $frm->id))
+                $forms_list[$frm->id] = $frm->title;
         }
 
         assign_to_template(array(
@@ -1319,7 +1455,6 @@ class storeController extends expController {
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall': //category page
-                //$cat = new storeCategory(isset($_REQUEST['title']) ? $_REQUEST['title']: $_REQUEST['id']);
                 $cat = $this->category;
                 if (!empty($cat)) {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
@@ -1340,6 +1475,17 @@ class storeController extends expController {
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? '' : strip_tags($prod->meta_noindex);
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? '' : strip_tags($prod->meta_nofollow);
+                    if (!empty($prod->expFile['mainimage'][0]) && file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
+                        $metainfo['rich'] = '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename.'"/>
+                <Attribute name="width" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
+                <Attribute name="height" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+                    }
                     break;
                 }
             default:
@@ -1576,7 +1722,7 @@ class storeController extends expController {
         ###########
 
         global $db;
-        $template = get_template_for_action(new orderController(), 'setStatus', $this->loc);
+        $template = expTemplate::get_template_for_action(new orderController(), 'setStatus', $this->loc);
 
         //eDebug($_FILES);
         //eDebug($this->params,true); 
@@ -2357,6 +2503,207 @@ class storeController extends expController {
     function setup_wizard() {
 
     }
+
+    function import() {
+        assign_to_template(array(
+            'type' => $this
+        ));
+    }
+
+    function parseCategory($data) {
+        global $db;
+        if (!empty($data)) {
+            $cats1 = explode("::", trim($data));
+            //eDebug($cats1);
+            $cats1count = count($cats1);
+            $counter = 1;
+            $categories1 = array();
+            foreach ($cats1 as $cat) {
+                //eDebug($cat);
+                if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=0');
+                else $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=' . $categories1[$counter - 1]->id);
+                //eDebug($categories1);
+                if (empty($categories1[$counter]->id)) {
+                    return "'" . $cat . "' ".gt('of the set').": '" . $data . "' ".gt("is not a valid category").".";
+                }
+
+                if ($counter == $cats1count) {
+                    return $categories1[$counter]->id;
+                }
+                $counter++;
+            }
+            //eDebug($createCats);
+            //eDebug($categories1,true);
+        } else {
+            return gt("Category was empty.");
+        }
+    }
+
+    function importProduct($file) {
+        $handle = fopen($file->path, "r");
+        $data = fgetcsv($handle, 10000, ",");
+        //eDebug($data);
+        foreach ($data as $value) {
+            $dataset[$value] = '';
+        }
+
+        //eDebug($dataset,true);
+        $count = 1;
+        $errorSet = array();
+        $successSet = array();
+        //$createCats = array();
+        $product = null;
+        /*
+        0= id
+        1=parent_id
+        2=child_rank
+        3=title
+        4=model
+        5=warehouse_location
+        6=sef_url
+        7=meta_title
+        8=meta_keywords
+        9=meta_description
+        10=base_price
+        11=special_price
+        12=use_special_price
+        13=active_type
+        14=product_status_id
+        15=category1
+        16=category2
+        17=category3
+        18=category4
+        19=surcharge
+        20=rank
+        21=feed_title
+        22=feed_body
+        */
+
+        while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            $count++;
+
+            //eDebug($data, true);
+            if (isset($data[0]) && $data[0] != 0) {
+                $product = new product($data[0], false, false);
+                if (empty($product->id)) {
+                    $errorSet[$count] = $product->id . " ".gt("is not a valid product ID.");
+                    continue;
+                }
+            } else {
+                //$errorSet[$count] = "Product ID not supplied.";
+                //continue;
+                $product = new product();
+                //$product->save(false);
+            }
+
+            $checkTitle = trim($data[3]);
+            if (empty($checkTitle)) {
+                $errorSet[$count] = gt("No product name (title) supplied, skipping this record...");
+                continue;
+            }
+            $product->parent_id = $data[1];
+            $product->child_rank = $data[2];
+            $product->title = stripslashes(stripslashes($data[3]));
+            $product->body = utf8_encode(stripslashes(reportController::parseAndTrimImport(($data[4]), true)));
+            //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));
+            $product->model = stripslashes(stripslashes($data[5]));
+            $product->warehouse_location = stripslashes(stripslashes($data[6]));
+            $product->sef_url = stripslashes(stripslashes($data[7]));
+            $product->meta_title = stripslashes(stripslashes($data[8]));
+            $product->meta_keywords = stripslashes(stripslashes($data[9]));
+            $product->meta_description = stripslashes(stripslashes($data[10]));
+
+            $product->tax_class_id = $data[11];
+
+            $product->quantity = $data[12];
+
+            $product->availability_type = $data[13];
+
+            $product->base_price = $data[14];
+            $product->special_price = $data[15];
+            $product->use_special_price = $data[16];
+            $product->active_type = $data[17];
+            $product->product_status_id = $data[18];
+
+            $product->surcharge = $data[31];
+            $product->feed_title = stripslashes(stripslashes($data[33]));
+            $product->feed_body = stripslashes(stripslashes($data[34]));
+
+            if (empty($product->id)) $product->minimum_order_quantity = 1;
+
+            if ($product->parent_id == 0) {
+                $createCats = array();
+                $createCatsRank = array();
+                for ($x = 19; $x <= 30; $x++) {
+                    if (!empty($data[$x])) $result = $this->parseCategory($data[$x]);
+                    else continue;
+
+                    if (is_numeric($result)) {
+                        $createCats[] = $result;
+                        $createCatsRank[$result] = $data[32];
+                    } else {
+                        $errorSet[$count][] = $result;
+                        continue 2;
+                    }
+                }
+            }
+            /*[0] => id
+            [1] => parent_id
+            [2] => child_rank
+            [3] => title
+            [4] => model
+            [5] => warehouse_location
+            [6] => sef_url
+            [7] => meta_title
+            [8] => meta_keywords
+            [9] => meta_description
+            [10] => base_price
+            [11] => special_price
+            [12] => use_special_price
+            [13] => active_type
+            [14] => product_status_id
+            [15] => category1
+            [16] => category2
+            [17] => category3
+            [18] => category4
+            [19] => surcharge*/
+
+            //eDebug($createCats,true);
+            if (!empty($product->user_input_fields) && is_array($product->user_input_fields))
+                $product->user_input_fields = serialize($product->user_input_fields);
+            //eDebug($product->user_input_fields);
+
+            if (!empty($product->user_input_fields) && !is_array($product->user_input_fields))
+                $product->user_input_fields = str_replace("'", "\'", $product->user_input_fields);
+
+            //eDebug($product->user_input_fields,true);
+            $product->save(false);
+            //eDebug($product->body);
+
+            //sort order and categories
+            if ($product->parent_id == 0) {
+                $product->saveCategories($createCats, $createCatsRank);
+                //eDebug($createCatsRank);
+            }
+            echo "Successfully imported row " . $count . ", product: " . $product->title . "<br/>";
+            //eDebug($product);
+
+        }
+
+        if (count($errorSet)) {
+            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
+            foreach ($errorSet as $row => $err) {
+                echo "Row: " . $row . ". Reason:<br/>";
+                if (is_array($err)) {
+                    foreach ($err as $e) {
+                        echo "--" . $e . "<br/>";
+                    }
+                } else echo "--" . $err . "<br/>";
+            }
+            echo "</style>";
+        }
+    }
+
 }
 
 ?>

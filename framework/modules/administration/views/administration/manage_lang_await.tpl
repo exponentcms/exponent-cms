@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
  <div class="form_header">
- 	<h1>{$await|count} {'Phrases Still Awaiting Translation in'|gettext} {$smarty.const.LANG}</h1>
+ 	<h2>{$await|count} {'Phrases Still Awaiting Translation in'|gettext} {$smarty.const.LANG}</h2>
  </div>
  <table cellpadding="2" cellspacing="0" width="100%" border="0" class="exp-skin-table">
 	 <thead>

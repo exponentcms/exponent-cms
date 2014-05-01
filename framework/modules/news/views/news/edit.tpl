@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,13 @@
  *}
 
 <div id="editnews" class="module news edit">
-    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$model_name}</h1>{/if}
     {form action=update}
 	    {control type=hidden name=id value=$record->id}
+        {control type=hidden name=revision_id value=$record->revision_id}
+        {if !empty($record->current_revision_id)}
+            {control type=hidden name=current_revision_id value=$record->current_revision_id}
+        {/if}
         <div id="editnews-tabs" class="yui-navset exp-skin-tabview hide">
             <ul class="yui-nav">
                 <li class="selected"><a href="#tab1"><em>{'Post'|gettext}</em></a></li>
@@ -29,7 +33,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'News Item'|gettext}</h2>
-                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 	{control type="editor" name="body" label="Body"|gettext value=$record->body}
                 	{control type="checkbox" name="is_featured" label="Feature this News Post?"|gettext value=1 checked=$record->is_featured}
                     {if !$config.disabletags}
@@ -51,7 +55,7 @@
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3">
-                        {control type=files name=images label="Attachable Files"|gettext value=$record->expFile}
+                        {control type=files name=images label="Attachable Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
                 <div id="tab4">
@@ -68,7 +72,34 @@
         </div>
 	    <div class="loadingdiv">{"Loading News Item"|gettext}</div>
         {control type=buttongroup submit="Save News Post"|gettext cancel="Cancel"|gettext}
-     {/form}
+    {/form}
+    {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
+    {if count($revisions) > 1}
+        {toggle unique='text-edit' label='Revisons'|gettext collapsed=true}
+            {foreach from=$revisions item=revision name=revision}
+                {$class = ''}
+                {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}
+                {if !empty($revision->editor)}{$editor = $revision->editor}{else}{$editor = $revision->poster}{/if}
+                {$label = 'Revision'|gettext|cat:(' #'|cat:($revision->revision_id|cat:(' '|cat:('from'|gettext|cat:(' '|cat:($revision->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT|cat:(' '|cat:('by'|gettext|cat:(' '|cat:($editor|username))))))))))}
+                {if $revision->revision_id == $record->revision_id}{$label = 'Editing'|gettext|cat:(' '|cat:$label)}{/if}
+                {if !$revision->approved && $smarty.const.ENABLE_WORKFLOW}{$class = 'unapproved '|cat:$class}{/if}
+                {$label = $label|cat:(' - '|cat:$revision->title)}
+                {group label=$label class=$class}
+                    {if $revision->revision_id != $record->revision_id}
+                    <a class="revision" href="{link action=edit id=$revision->id revision_id=$revision->revision_id}" title="{'Click to Restore this revision'|gettext}">
+                    {else}
+                    <span title="{'Editing this revision'|gettext}">
+                    {/if}
+                        {$revision->body|summarize:"html":"parahtml"}
+                    {if $revision->revision_id != $record->revision_id}
+                    </a>
+                    {else}
+                    </span>
+                    {/if}
+                {/group}
+            {/foreach}
+        {/toggle}
+    {/if}
 </div>
 
 {script unique="editform" yui3mods=1}

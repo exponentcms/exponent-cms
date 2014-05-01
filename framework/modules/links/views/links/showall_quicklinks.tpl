@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,12 +13,14 @@
  *
  *}
 
+{uniqueid prepend="links" assign="name"}
+
 {css unique="links" link="`$asset_path`css/links.css"}
 
 {/css}
 
 <div class="module links showall-quicklinks">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {permissions}
         <div class="module-actions">
 			{if $permissions.create}
@@ -48,7 +50,7 @@
             {foreach name=links from=$cat->records item=item}
                 <li class="item{if $smarty.foreach.links.last} last{/if}">
                     <div class="link">
-                        <a class="{$cat->color}" href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                        <a class="{$cat->color}{if !empty($config.websnapr_key)} websnapr{/if}" href="{$item->url}" {if $item->new_window == 1} target="_blank"{/if} title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     </div>
                     {permissions}
                         <div class="item-actions">
@@ -79,7 +81,7 @@
         <ul>
             {foreach name=items from=$items item=item name=links}
                 <li class="item{if $smarty.foreach.links.last} last{/if}">
-                    <a class="link" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
+                    <a class="link{if !empty($config.websnapr_key)} websnapr{/if}" {if $item->new_window}target="_blank"{/if} href="{$item->url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -102,3 +104,9 @@
         </ul>
     {/if}
 </div>
+
+{if !empty($config.websnapr_key)}
+    {script unique=$name src="http://bubble.websnapr.com/`$config.websnapr_key`/swi/"}
+
+    {/script}
+{/if}

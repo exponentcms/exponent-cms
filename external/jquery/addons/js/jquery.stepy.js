@@ -169,9 +169,10 @@
         }, _createBackButton: function (nav, index) {
             var self = this,
                 that = $(this),
-                attributes = { href: 'javascript:void(0);', 'class': 'button-back '+self.opt.btnClass, html: self.opt.backLabel };
+                attributes = { href: '#', 'class': 'button-back '+self.opt.btnClass, html: self.opt.backLabel };
 
-            $('<a />', attributes).on('click.stepy',function () {
+            $('<a />', attributes).on('click.stepy',function (e) {
+                e.preventDefault();
                 if (!self.opt.back || methods._execute.call(self, self.opt.back, index - 1)) {
                     methods.step.call(self, (index - 1) + 1);
                 }
@@ -206,9 +207,10 @@
         }, _createNextButton: function (nav, index) {
             var self = this,
                 that = $(this),
-                attributes = { href: 'javascript:void(0);', 'class': 'button-next '+self.opt.btnClass, html: self.opt.nextLabel };
+                attributes = { href: '#', 'class': 'button-next '+self.opt.btnClass, html: self.opt.nextLabel };
 
-            $('<a/>', attributes).on('click.stepy',function () {
+            $('<a/>', attributes).on('click.stepy',function (e) {
+                e.preventDefault();
                 if (!self.opt.next || methods._execute.call(that, self.opt.next, index + 1)) {
                     methods.step.call(self, (index + 1) + 1);
                 }

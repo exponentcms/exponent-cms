@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,15 +28,16 @@ if (!defined('EXPONENT')) exit('');
  */
 class calendarcontrol extends formcontrol {
 
-    var $disable_text = "";
+//    var $disable_text = "";
     var $showtime = true;
+    var $default = '';
     var $default_date = '';
     var $default_hour = '';
     var $default_min = '';
     var $default_ampm = '';
 
     static function name() {
-        return "Date / Time - YUI Popup w/ Text Time";
+        return "Date / Time - Popup w/ Text Time";
     }
 
     static function isSimpleControl() {
@@ -48,19 +49,11 @@ class calendarcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_TIMESTAMP);
     }
 
-    // function yuicalendarcontrol($default = null, $disable_text = "",$showtime = true) {
-    //     $this->disable_text = $disable_text;
-    //     $this->default = $default;
-    //     $this->showtime = $showtime;
-    // 
-    //     if ($this->default == null) {
-    //         if ($this->disable_text == "") $this->default = time();
-    //         else $this->disabled = true;
-    //     }
-    //     elseif ($this->default == 0) {
-    //         $this->default = time();
-    //     }
-    // }
+    function __construct($default = null,$showtime = true) {
+        if (empty($default)) $default = time();
+        $this->default      = $default;
+        $this->showtime = $showtime;
+    }
 
 //    function toHTML($label, $name) {
 //        if (!empty($this->id)) {
@@ -88,23 +81,29 @@ class calendarcontrol extends formcontrol {
 //    }
 
     function controlToHTML($name, $label = null) {
+        if (empty($this->default_date) && !empty($this->default)) {
+            // parse out date into calendarcontrol fields
+            $this->default_date = date('m/d/Y', $this->default);
+            $this->default_hour = date('h', $this->default);
+            $this->default_min = date('i', $this->default);
+            $this->default_ampm = date('a', $this->default);
+        }
         $idname = str_replace(array('[',']',']['),'_',$name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
             <div id=\"calendar-container-" . $idname . "\" class=\"yui3-skin-sam\"> </div>
             <div id=\"cal-container-" . $idname . "\" class=\"control calendar-control\">";
 //        $html        .= "    <label for=\"" . $name . "\" class=\"label\">" . $label . "</label>";
-        $html        .= "    <input size=10 type=\"text\" id=\"date-" . $idname . "\" name=\"date-" . $name . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
-if ($this->showtime) {
-        $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
-            : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
-            <select id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
-
-        if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
-        else $html .= "<option>am</option><option selected>pm</option>";
-        $html .= "
-            </select>";
-}
+        $html        .= "    <input size=10 type=\"text\" id=\"date-" . $idname . "\" name=\"date-" . $name . ($this->focus?' autofocus=\"autofocus\"':'') . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
+        if ($this->showtime) {
+            $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
+                : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
+                <select id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
+            if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
+            else $html .= "<option>am</option><option selected>pm</option>";
+            $html .= "
+                </select>";
+        }
         $html .= "
         </div>
         <div style=\"clear:both\"></div>
@@ -299,21 +298,21 @@ if ($this->showtime) {
         }
     }
 
-     static function form($object) {
-      $form = new form();
-      if (!isset($object->identifier)) {
-          $object = new stdClass();
-          $object->identifier = "";
-          $object->caption = "";
-          $object->showtime = true;
-      }
+    static function form($object) {
+        $form = new form();
+        if (empty($object)) $object = new stdClass();
+        if (!isset($object->identifier)) {
+            $object->identifier = "";
+            $object->caption = "";
+            $object->showtime = true;
+        }
 
-      $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
-      $form->register("caption",gt('Caption'), new textcontrol($object->caption));
-      $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
-      $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
-      return $form;
-     }
+        $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
+        $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
+        $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
+        return $form;
+    }
 
     static function update($values, $object) {
         if ($object == null) {

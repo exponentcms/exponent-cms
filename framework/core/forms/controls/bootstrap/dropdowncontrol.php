@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -56,7 +56,7 @@ class dropdowncontrol extends formcontrol {
         $html = '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';
         $html .= '" size="' . $this->size . '"';
-        $html .= ' class="'.$this->class.' select control '.$disabled.'"';
+        $html .= ' class="'.$this->class.' select control form-control '.$disabled.'"';
         if ($this->disabled) $html .= ' disabled';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         foreach ($this->jsHooks as $hook=>$action) {

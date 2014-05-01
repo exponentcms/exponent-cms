@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,11 +21,11 @@
 
 <div class="module blog show">
     <div id="{$name}item">
-        {include 'blogitem.tpl'}
+        {exp_include file='blogitem.tpl'}
     </div>
 </div>
 
-{if $config.ajax_paging}
+{if !empty($config.ajax_paging)}
 {script unique="`$name`itemajax" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {

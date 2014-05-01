@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 
 {/css}
 <div class="module store show-top-level">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
@@ -38,22 +38,24 @@
    	{/if}
     {$myloc=serialize($__loc)}
 
-    {if $current_category->title}<h1>{$current_category->title}</h1>{/if}
+    {if $current_category->title}<{$config.heading_level|default:'h1'}>{$current_category->title}</{$config.heading_level|default:'h1'}>{/if}
 
     {if $current_category->id}
         {permissions}
-            {if $permissions.edit}
-                {icon class="edit" action=edit controller=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
-            {/if}
-            {*if $permissions.manage}
-                {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
-            {/if*}
-            {*if $permissions.manage}
-                {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
-            {/if*}
-            {if $permissions.edit && $config.orderby=="rank"}
-                {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
-            {/if}
+            <div class="item-actions">
+                {if $permissions.edit}
+                    {icon class="edit" action=edit controller=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
+                {/if}
+                {*if $permissions.manage}
+                    {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
+                {/if*}
+                {*if $permissions.manage}
+                    {icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
+                {/if*}
+                {if $permissions.edit && $config.orderby=="rank"}
+                    {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
+                {/if}
+            </div>
         {/permissions}
     {/if}
 
@@ -61,7 +63,7 @@
 
     {if $categories|@count > 0}
         <div class="cats">
-        <h2>{'Browse Our Store'|gettext}:</h2>
+        <{$config.item_level|default:'h2'}>{'Browse Our Store'|gettext}:</{$config.item_level|default:'h2'}>
         {counter assign="ipcr" name="ipcr" start=1}
         {foreach name="cats" from=$categories item="cat"}
             {if $cat->is_active==1 || $user->isAdmin()}
@@ -111,7 +113,7 @@
     </div>
     {else}
     <!--hr/-->
-    <h2>{'All Products Under'|gettext} {$current_category->title}</h2>
+    <{$config.item_level|default:'h2'}>{'All Products Under'|gettext} {$current_category->title}</{$config.item_level|default:'h2'}>
 
     {$page->links}
     {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
@@ -144,7 +146,9 @@
     {$page->links}
     {permissions}
         {if $permissions.create}
+        <div class="module-actions">
             {icon class="add" action=create title="Add a new product" text="Add a New Product"}
+        </div>
       {/if}
     {/permissions}
     {/if} 

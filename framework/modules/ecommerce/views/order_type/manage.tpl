@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,8 +43,10 @@
                         <td>{$listing->title}</td>
                         <td>
                             {if $permissions.manage}
-                                {icon controller=order_type action=edit record=$listing}
-                                {icon controller=order_type action=delete record=$listing}
+                                <div class="item-actions">
+                                    {icon controller=order_type action=edit record=$listing}
+                                    {icon controller=order_type action=delete record=$listing}
+                                </div>
                             {/if}
                         </td>
                     </tr>

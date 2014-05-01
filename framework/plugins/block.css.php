@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,9 +40,11 @@ function smarty_block_css($params,$content,&$smarty, &$repeat) {
 
 		expCSS::pushToHead(array(
 		    "unique"=>$params['unique'],
-		    "css"=>$content,
+		    "css"=>trim($content),
 		    "link"=>!empty($params['link']) ? $params['link'] : '',
 		    "corecss"=>!empty($params['corecss']) ? $params['corecss'] : '',
+            "css_primer"=>!empty($params['css_primer']) ? $params['css_primer'] : '',
+            "lessprimer"=>!empty($params['lessprimer']) ? $params['lessprimer'] : '',
             "lesscss"=>!empty($params['lesscss']) ? $params['lesscss'] : '',
             "lessvars"=>!empty($params['lessvars']) ? $params['lessvars'] : '',
 		    )

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -86,8 +86,9 @@ class mysqli_database extends database {
      * @param array $info Information about the table itself.
      * @return array
 	 */
-	function createTable($tablename,$datadef,$info) {
-		if (!is_array($info)) $info = array(); // Initialize for later use.
+	function createTable($tablename, $datadef, $info) {
+		if (!is_array($info))
+            $info = array(); // Initialize for later use.
 
 		$sql = "CREATE TABLE `" . $this->prefix . "$tablename` (";
 		$primary = array();
@@ -115,13 +116,13 @@ class mysqli_database extends database {
         }
         $sql = substr($sql, 0, -1);
         if (count($primary)) {
-            $sql .= ", PRIMARY KEY(`" . implode("`,`", $primary) . "`)";
+            $sql .= ", PRIMARY KEY ( `" . implode("` , `", $primary) . "`)";
         }
         if (count($fulltext)) {
-            $sql .= ", FULLTEXT(`" . implode("`,`", $fulltext) . "`)";
+            $sql .= ", FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
         }
-        foreach ($unique as $key => $value) {
-            $sql .= ", UNIQUE `" . $key . "` ( `" . implode("`,`", $value) . "`)";
+        if (!empty($unique)) foreach ($unique as $key => $value) {
+            $sql .= ", UNIQUE `" . $key . "` ( `" . implode("` , `", $value) . "`)";
         }
         foreach ($index as $key => $value) {
             $sql .= ", INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
@@ -168,8 +169,39 @@ class mysqli_database extends database {
         $dd = $this->getDataDefinition($tablename);
         $modified = false;
 
+        // collect any indexes & keys to the table
+        $primary = array();
+        $fulltext = array();
+        $unique = array();
+        $index = array();
+        foreach ($newdatadef as $name=>$def) {
+            if ($def != null) {
+                if (!empty($def[DB_PRIMARY]))  $primary[] = $name;
+                if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
+                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
+                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
+                        $index[$name] = $def[DB_INDEX];
+                      } else {
+                          $index[$name] = 0;
+                      }
+                  }
+                  if (isset($def[DB_UNIQUE])) {
+                      if (!isset($unique[$def[DB_UNIQUE]]))
+                          $unique[$def[DB_UNIQUE]] = array();
+                      $unique[$def[DB_UNIQUE]][] = $name;
+                }
+            }
+        }
+
         //Drop any old columns from the table if aggressive mode is set.
         if ($aggressive) {
+            //update primary keys to 'release' columns
+            $sql = "ALTER IGNORE TABLE `" . $this->prefix . "$tablename` ";
+            if (count($primary)) {
+                $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+            }
+            @mysqli_query($this->connection, $sql);
+
             if (is_array($newdatadef) && is_array($dd)) {
                 $oldcols = @array_diff_assoc($dd, $newdatadef);
                 if (count($oldcols)) {
@@ -179,7 +211,6 @@ class mysqli_database extends database {
                         $sql .= " DROP COLUMN " . $name . ",";
                     }
                     $sql = substr($sql, 0, -1);
-
                     @mysqli_query($this->connection, $sql);
                 }
             }
@@ -194,48 +225,41 @@ class mysqli_database extends database {
                 foreach ($diff as $name => $def) {
                     $sql .= " ADD COLUMN (" . $this->fieldSQL($name, $def) . "),";
                 }
-
                 $sql = substr($sql, 0, -1);
                 @mysqli_query($this->connection, $sql);
             }
         }
 
-        //Add any new indexes & keys to the table.
-        $index = array();
-        foreach ($newdatadef as $name => $def) {
-            if ($def != null) {
-                if (isset($def[DB_PRIMARY]) && $def[DB_PRIMARY] == true)
-                    $primary[] = $name;
-                if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
-                    if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                        $index[$name] = $def[DB_INDEX];
-                    } else {
-                        $index[$name] = 0;
-                    }
-                }
-                if (isset($def[DB_UNIQUE])) {
-                    if (!isset($unique[$def[DB_UNIQUE]]))
-                        $unique[$def[DB_UNIQUE]] = array();
-                    $unique[$def[DB_UNIQUE]][] = $name;
-                }
-            }
-        }
+        //Add any new indexes & keys to the table
         $sql = "ALTER" . (empty($aggressive) ? "" : " IGNORE") . " TABLE `" . $this->prefix . "$tablename` ";
-        if (!empty($primary) && count($primary)) {
-            $sql .= ", DROP PRIMARY KEY, ADD PRIMARY KEY(`" . implode("`,`",$primary) . "`)";
+
+        $sep = false;
+        if (count($primary)) {
+            $sql .= " DROP PRIMARY KEY, ADD PRIMARY KEY ( `" . implode("` , `",$primary) . "` )";
+            $sep = true;
+        }
+        if (count($fulltext)) {
+            if ($sep) $sql .= ' ,';
+            $sql .= " FULLTEXT ( `" . implode("` , `", $fulltext) . " `)";
+            $sep = true;
         }
         if (!empty($unique)) foreach ($unique as $key=>$value) {
-            $sql .= ", ADD UNIQUE `".$key."` ( `" . implode("`,`",$value) . "`)";
+            if ($sep) $sql .= ' ,';
+            $sql .= ", ADD UNIQUE `".$key."` ( `" . implode("` , `",$value) . " `)";
+            $sep = true;
         }
+
         foreach ($index as $key => $value) {
             // drop the index first so we don't get dupes
             $drop = "DROP INDEX " . $key . " ON " . $this->prefix . $tablename;
             @mysqli_query($this->connection, $drop);
 
             // re-add the index
-            $sql .= "ADD INDEX (" . $key . ")";
-            @mysqli_query($this->connection, $sql);
+            if ($sep) $sql .= ' ,';
+            $sql .= " ADD INDEX (`" . $key . "`)";
+            $sep = true;
         }
+        @mysqli_query($this->connection, $sql);
 
         //Get the return code
         $return = array(
@@ -594,12 +618,23 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table to count objects in.
      * @param string $where Criteria for counting.
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
      * @return int
      */
-    function countObjects($table, $where = null) {
+    function countObjects($table, $where = null, $is_revisioned=false, $needs_approval=false) {
         if ($where == null)
             $where = "1";
-        $res = @mysqli_query($this->connection, "SELECT COUNT(*) as c FROM `" . $this->prefix . "$table` WHERE $where");
+        $as = '';
+        if ($is_revisioned) {
+   //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
+            $as = ' AS rev';
+        }
+        $res = @mysqli_query($this->connection, "SELECT COUNT(*) as c FROM `" . $this->prefix . "$table`" . $as . " WHERE $where");
         if ($res == null)
             return 0;
         $obj = mysqli_fetch_object($res);
@@ -748,6 +783,7 @@ class mysqli_database extends database {
             //if ($table=="text") eDebug($object);
             $res = $this->insertObject($object, $table);
             //if ($table=="text") eDebug($object,true); 
+            $this->trim_revisions($table, $object->$identifier, WORKFLOW_REVISION_LIMIT);
             return $res;
         }
         $sql = "UPDATE " . $this->prefix . "$table SET ";
@@ -921,7 +957,7 @@ class mysqli_database extends database {
      * @return array
      */
     function databaseInfo() {
-        $sql = "SHOW TABLE STATUS";
+//        $sql = "SHOW TABLE STATUS";
         $res = @mysqli_query($this->connection, "SHOW TABLE STATUS LIKE '" . $this->prefix . "%'");
         $info = array();
         for ($i = 0; $res && $i < mysqli_num_rows($res); $i++) {
@@ -1082,7 +1118,6 @@ class mysqli_database extends database {
 
     /**
      * Select a record from the database as an array
-     *
      * Selects a set of arrays from the database.  Because of the way
      * Exponent handles objects and database tables, this is akin to
      * SELECTing a set of records from a database table.  Returns an
@@ -1090,44 +1125,69 @@ class mysqli_database extends database {
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.  If this
-     *   is specified as null, then no criteria is applied, and all objects are
-     *   returned
-     * @param null $orderby
-     * @param bool $is_revisioned
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param null   $orderby
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
      * @return array|void
      */
-    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
+    function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false) {
         if ($where == null)
             $where = "1";
-        if ($is_revisioned)
-            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+        $as = '';
+        if ($is_revisioned) {
+   //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
+            $as = ' AS rev';
+        }
         $orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
-        $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where $orderby LIMIT 0,1";
+        $sql = "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where $orderby LIMIT 0,1";
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
             return array();
         return mysqli_fetch_assoc($res);
     }
 
-	/**
-	 * Select records from the database
-	 * @param string $table The name of the table/object to look at
-	 * @param string $where Criteria used to narrow the result set.  If this
-	 *   is specified as null, then no criteria is applied, and all objects are
-	 *   returned
-	 * @param string $classname
-	 * @param bool $get_assoc
-	 * @param bool $get_attached
-	 * @param array $except
-	 * @param bool $cascade_except
-
-	 * @return array
-	 */
-    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
-        if ($where == null) $where = "1";        
-        $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
+    /**
+     * Select records from the database
+     *
+     * @param string $table The name of the table/object to look at
+     * @param string $where Criteria used to narrow the result set.  If this
+     *                      is specified as null, then no criteria is applied, and all objects are
+     *                      returned
+     * @param string $classname
+     * @param bool   $get_assoc
+     * @param bool   $get_attached
+     * @param array  $except
+     * @param bool   $cascade_except
+     * @param null   $order
+     * @param null   $limitsql
+     * @param bool   $is_revisioned
+     * @param bool   $needs_approval
+     *
+     * @return array
+     */
+    function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false) {
+        if ($where == null)
+            $where = "1";
+        $as = '';
+        if ($is_revisioned) {
+   //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
+            $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
+            if ($needs_approval) $where .= " AND approved=1";
+            $where .= ")";
+            $as = ' AS rev';
+        }
+        $sql = "SELECT * FROM `" . $this->prefix . "$table`" . $as . " WHERE $where";
+        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
+        $sql .= empty($limitsql) ? '' : $limitsql;
         $res = @mysqli_query($this->connection, $sql);
-        if ($res == null) return array();
+        if ($res == null)
+            return array();
         $arrays = array();
         $numrows = mysqli_num_rows($res);
         for ($i = 0; $i < $numrows; $i++) {
@@ -1166,7 +1226,8 @@ class mysqli_database extends database {
 	function getTextColumns($table) {
 		$sql = "SHOW COLUMNS FROM " . $this->prefix.$table . " WHERE type = 'text' OR type like 'varchar%'";
 		$res = @mysqli_query($this->connection, $sql);
-		if ($res == null) return array();
+		if ($res == null)
+            return array();
 		$records = array();
 		while($row = mysqli_fetch_object($res)) {
 			$records[] = $row->Field;

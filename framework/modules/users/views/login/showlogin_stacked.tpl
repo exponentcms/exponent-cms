@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module login stacked">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -28,13 +28,14 @@
                 {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1 prepend="user"}
                 {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
                 {control type="buttongroup" submit="Log In"|gettext|cat:"!"}
+                {br}{icon controller=users action=reset_password text='Forgot Your Password?'|gettext}
             {/form}
         </div>
     {else}
         <h2>{$displayname}</h2>
         <div class="logout">
-            <a class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
-               href="{link action=logout}">{"Log Out"|gettext}</a>
+            {*<a class="{button_style}" href="{link action=logout}">{"Log Out"|gettext}</a>*}
+            {icon button=true action=logout text="Log Out"|gettext}
         </div>
     {/if}
 </div>

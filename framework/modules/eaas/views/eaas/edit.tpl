@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div id="editblog" class="module blog edit">
-    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$model_name}</h1>{/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
         <div id="editblog-tabs" class="yui-navset exp-skin-tabview hide">
@@ -49,7 +49,7 @@
                 </div>
                 {if $config.filedisplay}
                     <div id="tab3">
-                        {control type="files" name="files" label="Files"|gettext value=$record->expFile}
+                        {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
                 <div id="tab4">

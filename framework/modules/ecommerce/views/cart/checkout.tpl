@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,47 +13,48 @@
  *
  *}
 
-{css unique="cart" link="`$asset_path`css/cart.css" corecss="panels,button"}
+{css unique="cart" link="`$asset_path`css/cart.css" corecss="button,panels"}
 
 {/css}
 {uniqueid assign="id"}
 {messagequeue}
 
-<div id="expresscheckout" class="cart checkout exp-skin">
+<div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
 
     {if ecomconfig::getConfig('policy')!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
-        <div id="storepolicies" class="exp-form">
-            <div class="hd">
+        <div id="storepolicies" style="z-index:9999">
+            <div class="yui3-widget-hd">
                 {"Store Policies"|gettext}
             </div>
-            <div class="bd" style="overflow-y:scroll">
+            <div class="yui3-widget-bd" style="overflow-y:scroll">
                 {ecomconfig var='policy' default=""}
             </div>
         </div>
-        {*FIXME convert to yui3*}
         {script unique="policypop" yui3mods=1}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-dragdrop','event', function(Y) {
-                var YAHOO=Y.YUI2;
-
-                var policies = new YAHOO.widget.Panel("storepolicies", {
+            YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
+                var policies = new Y.Panel({
+                    srcNode : '#storepolicies',
+                    headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
                     width:"400px",
                     height:"350px",
+                    centered:true,
                     modal:true,
                     visible:false,
-                    zindex:57,
-                    constraintoviewport:true,
-                    close:true,
-                    draggable:false
+                    zIndex:999,
+                    constrain:true,
+//                    close:true,
+                    render:true,
                 });
-                policies.render();
-
-                YAHOO.util.Event.on('review-policy', 'click', function(e){
-                    YAHOO.util.Event.stopEvent(e);
+                policies.plug(Y.Plugin.Drag, {
+                    handles: ['.yui3-widget-hd']
+                });
+                var showpanel = function(e){
                     policies.show();
-                }, policies, false);
+                };
+                Y.one("#review-policy").on('click',showpanel);
             });
             {/literal}
         {/script}
@@ -214,8 +215,8 @@
                             </div>
 
                             <div class="bracket{if !$shipping->address->id} hide{/if}">
-                                <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-                                   href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
+                                {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
+                                {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
                             </div>
                         </div>
                         {clear}
@@ -228,7 +229,7 @@
                         {foreach from=$shipping->splitmethods item=method}
                             <div class="splitaddress">
                                 <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
-                                <!--a class="ordermessage awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
+                                <!--a class="ordermessage {button_style}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
                                 <address>
                                     {$method->firstname} {$method->middlename} {$method->lastname}{br}
                                     {$method->address1}{br}
@@ -265,8 +266,8 @@
                     {/if}
                 </div>
                 <div class="bracket">
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-                       href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>
+                    {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
+                    {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
                 </div>
             </div>
             <div style="clear: both;"></div>
@@ -295,7 +296,7 @@
                     {form name="free" controller=cart action=preprocess}
                         {control type="hidden" name="billingcalculator_id" value=-1}
                         {control type="hidden" name="cash_amount" value=0}
-                        <button id="continue-checkout" type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Continue Checkout"|gettext}</button>
+                        <button id="continue-checkout" type="submit" class="{button_style}">{"Continue Checkout"|gettext}</button>
                     {/form}
                 </div>
             {/if}

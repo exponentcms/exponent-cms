@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,6 +39,7 @@ abstract class expController {
         'create'    => 'Create',
         'edit'      => 'Edit',
         'delete'    => 'Delete',
+        'approve'  => 'Approval',
     );
     protected $remove_permissions = array();  // $permissions not applicable for this module from above list
     protected $add_permissions = array();  // additional $permissions for this module
@@ -109,6 +110,17 @@ abstract class expController {
 
         // set the location data
         $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
+
+        // flag for needing approval check
+        if ($this->$modelname->supports_revisions && ENABLE_WORKFLOW) {
+            $uilevel = 99;
+            if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
+            if (!expPermissions::check('approve', $this->loc)) {
+                $this->$modelname->needs_approval = true;
+            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+                $this->$modelname->needs_approval = true;
+            }
+        }
 
         // get this controllers config data if there is any
         $config = new expConfig($this->loc);
@@ -227,14 +239,15 @@ abstract class expController {
     }
 
     /**
-     * glue to make module aware of itself
+     * glue to make the view template aware of the module
      */
     function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path' => $this->asset_path,
             'model_name' => $this->basemodel_name,
             'table'      => $this->model_table,
-            'controller' => $this->baseclassname
+            'controller' => $this->baseclassname,
+            'config'     => $this->config
         ));
     }
 
@@ -361,6 +374,7 @@ abstract class expController {
         $used_cats[0] = new stdClass();
         $used_cats[0]->id = 0;
         $used_cats[0]->title = !empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized');
+        $used_cats[0]->count = 0;
         foreach ($items as $item) {
             if (!empty($item->expCat)) {
                 if (isset($used_cats[$item->expCat[0]->id])) {
@@ -523,7 +537,7 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module (deprecated in favor of edit w/o id param
+     * create an item in this module (deprecated in favor of edit w/o id param)
      */
     function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
@@ -539,15 +553,27 @@ abstract class expController {
         expHistory::set('editable', $this->params);
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
-        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+//        $record = isset($this->params['id']) ? $this->$modelname->find($this->params['id']) : new $modelname($this->params);
+        if (isset($this->params['id'])) {
+            if (!isset($this->params['revision_id'])) {
+                $record = $this->$modelname->find($this->params['id']);
+            } else {
+                $currentrecord = $this->$modelname->find($this->params['id']);
+                $records = $this->$modelname->find('revisions', $this->$modelname->identifier . '=' . intval($this->params['id']) . ' AND revision_id=' . intval($this->params['revision_id']));
+                $record = $records[0];
+                $record->current_revision_id = $currentrecord->revision_id;
+            }
+        } else {
+            $record = new $modelname($this->params);
+        }
         if (!empty($this->params['copy'])) {
             $record->id = null;
             if (isset($record->sef_url)) $record->sef_url = null;
         }
         assign_to_template(array(
             'record'     => $record,
-            'table'      => $this->$modelname->tablename,
-            'controller' => $this->params['controller'],
+//            'table'      => $this->$modelname->tablename,
+//            'controller' => $this->params['controller'],
             'taglist'    => $taglist
         ));
     }
@@ -716,7 +742,7 @@ abstract class expController {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
-            $obj->save();
+            $obj->save(false, true);
             $rank += 1;
         }
 
@@ -730,13 +756,14 @@ abstract class expController {
         global $db;
 
         expHistory::set('editable', $this->params);
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
 
         // needed for aggregation list
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
         $page = new expPaginator(array(
             'records' => $pullable_modules,
             'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
             'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
             'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
             'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -795,7 +822,7 @@ abstract class expController {
                 foreach ($actions as $key => $value) {
                     $actions[$key] = gt($value);
                 }
-                $mod_views = get_action_views($this->classname, $container->action, $actions[$container->action]);
+                $mod_views = expTemplate::get_action_views($this->classname, $container->action, $actions[$container->action]);
                 if (count($mod_views) < 1) $mod_views[$container->action] = $actions[$container->action] . ' - Default View';
             }
 
@@ -812,6 +839,14 @@ abstract class expController {
             ));
         }
 
+        $expcat = new expCat();
+        $cats = $expcat->find('all','module="file"');
+        $folders = array();
+        $folders[] = 'Root Folder';
+        foreach ($cats as $cat) {
+            $folders[$cat->id] = $cat->title;
+        }
+
         assign_to_template(array(
             'config'            => $this->config,
             'page'              => $page, // needed for aggregation list
@@ -821,6 +856,7 @@ abstract class expController {
             'classname'         => $this->classname,
             'viewpath'          => $this->viewpath,
             'relative_viewpath' => $this->relative_viewpath,
+            'folders'           => $folders,
         ));
 
     }
@@ -1164,6 +1200,17 @@ abstract class expController {
     }
 
     /**
+     * additional check for display of search hit
+     *
+     * @param $record
+     *
+     * @return bool
+     */
+    public static function searchHit($record) {
+        return true;  // default is to display search hit
+    }
+
+    /**
      * remove module items from search index
      */
     function delete_search() {
@@ -1225,16 +1272,14 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing all") . " - " . $this->displayname();
+                $metainfo['title'] = gt("Showing") . " " . $this->displayname() . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
                 // look up the record.
-//                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
                 if (isset($router->params['id']) || isset($router->params['title'])) {
-//                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : expString::sanitize($_REQUEST['title']);
                     $lookup = isset($router->params['id']) ? $router->params['id'] : $router->params['title'];
                     $object = new $modelname($lookup);
                     // set the meta info
@@ -1259,6 +1304,7 @@ abstract class expController {
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
+                        $metainfo['rich'] = $this->meta_rich($router->params, $object);
                     }
                     break;
                 }
@@ -1294,6 +1340,18 @@ abstract class expController {
     //     }
     // }
 
+    /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    function meta_rich($request, $object) {
+        return null;
+    }
+
     function showall_by_tags_meta($request) {
         global $router;
 
@@ -1322,7 +1380,7 @@ abstract class expController {
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info
-            $metainfo['title'] = gt('Showing all Blog Posts written in') . ' ' . $ts;
+            $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('written in') . ' ' . $ts;
 //            $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object not set
             $metainfo['keywords'] = SITE_KEYWORDS;
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
@@ -1331,6 +1389,18 @@ abstract class expController {
             $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
             return $metainfo;
         }
+    }
+
+    /**
+     * approve module item
+     */
+    function approve() {
+        $modelname = $this->basemodel_name;
+        $lookup = isset($this->params['id']) ? $this->params['id'] : $this->params['title'];
+        $object = new $modelname($lookup);
+        $object->approved = true;
+        $object->save(false, true);  // we don't want to add this approval as a new revision
+        expHistory::back();
     }
 
     /**
@@ -1358,6 +1428,10 @@ abstract class expController {
             }
 
             $sql .= ')';
+        }
+        $model = $this->basemodel_name;
+        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
+            $sql .= ' AND approved=1';
         }
 
         return $sql;

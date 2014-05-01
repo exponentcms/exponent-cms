@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,9 +28,10 @@
 {/if}
 
 <div class="module store show event-registration product">
+<div class="vevent">
     <div class="image" style="padding:0px 10px 10px;float:left;overflow: hidden;">
     {if $product->expFile.mainimage[0]->url != ""}
-        {img file_id=$product->expFile.mainimage[0]->id alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
+        {img file_id=$product->expFile.mainimage[0]->id alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img photo" id="enlarged-image"}
     {else}
         {img src="`$asset_path`images/no-image.jpg" alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`" class="large-img" id="enlarged-image"}
     {/if}
@@ -38,10 +39,10 @@
     </div>
 
     <div class="bd">
-        <h2>{$product->eventdate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}
-            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} {$product->eventenddate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}{/if}</h2>
+        <h2><span class="dtstart">{$product->eventdate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}<span class="value-title" title="{date('c',$product->eventdate)}"></span></span>
+            {if (!empty($product->eventenddate) && $product->eventdate != $product->eventenddate)} {'to'|gettext} <span class="dtend">{$product->eventenddate|format_date:$smarty.const.DISPLAY_DATE_FORMAT}<span class="value-title" title="{date('c',$product->eventenddate)}"></span></span>{/if}</h2>
         <hr>
-        <h3>{$product->title}</h3>
+        <h3><div><span class="summary">{$product->title}</span></div></h3>
         {permissions}
             <div class="item-actions">
                 {if $permissions.edit || ($permissions.create && $product->poster == $user->id)}
@@ -57,16 +58,26 @@
             {if $product->eventdate+$product->event_starttime != $product->eventdate+$product->event_endtime}
                 - {($product->eventdate+$product->event_endtime)|format_date:$smarty.const.DISPLAY_TIME_FORMAT}
                 {time_duration start=$product->eventdate+$product->event_starttime end=$product->eventdate+$product->event_endtime assign=dur}
+                <span class="duration"><span class="value-title" title="{expDateTime::duration($product->eventdate+$product->event_starttime,$product->eventdate+$product->event_endtime,true)}"></span></span>
                 <em class="attribution">({if !empty($dur.h)}{$dur.h} {'hour'|gettext|plural:$dur.h}{/if}{if !empty($dur.h) && !empty($dur.m)} {/if}{if !empty($dur.m)}{$dur.m} {'minute'|gettext|plural:$dur.m}{/if})</em>
             {/if}
             </h4></span>
         {if !empty($product->location)}
-            <h4>{'Location'|gettext}: {$product->location}</h4>
+            <h4>{'Location'|gettext}: <span class="location">{$product->location}</span></h4>
+        {else}
+            <span class="hide">
+               {'Location'|gettext}:
+               <span class="location">
+                   {$smarty.const.ORGANIZATION_NAME}
+               </span>
+           </span>
         {/if}
         <div class="bodycopy">
+            <span class="description">
             {if $product->body}
                 {$product->body}
             {/if}
+            </span>
         </div>
         {clear}
 
@@ -78,14 +89,21 @@
                 {control type="hidden" name="orderitem_id" value="`$orderitem_id`"}
                 {*{control type="hidden" name="quick" value="1"}*}
                 {if $product->spacesLeft() && $product->signup_cutoff >= time()}
+                    <span class="tickets">
+                      <span class="hoffer">
                     <span class="label">{'Registration Closes:'|gettext} </span>
-                    <span class="value">{$product->signup_cutoff|format_date:"%A, %B %e, %Y, %l:%M %P"}</span>{br}
+                    <span class="value pricevaliduntil">{$product->signup_cutoff|format_date}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
-                    <span class="value">{$product->spacesLeft()} {'of'|gettext} {$product->quantity}</span>{br}
+                    <span class="value">{if $product->spacesLeft() == -1}{'Yes'|gettext}{else}<span class="quantity">{$product->spacesLeft()}</span> {'of'|gettext} {$product->quantity}{/if}</span>{br}
                     {if $product->multi_registrant}
                         <div class="seatsContainer">
                             <div class="seatStatus">
-                                {$seats = implode(',',range(1,min($product->spacesLeft(),12)))}
+                                {if $product->spacesLeft() == -1}
+                                    {$remain = 12}
+                                {else}
+                                    {$remain = $product->spacesLeft()}
+                                {/if}
+                                {$seats = implode(',',range(1, min($remain ,12)))}
                                 {control type=dropdown class="2col" name=qtyr label="Select number of seats"|gettext items=$seats value=$count}
                             </div>
                     {else}
@@ -96,11 +114,12 @@
                                 <div class="attribution">{'Starting at'|gettext}:{br}</div>
                             {/if}
                             {if $product->base_price}
+                                <span class="currency hide">{$smarty.const.ECOM_CURRENCY}</span>
                                 {if $product->use_special_price}
                                     <span class="regular-price on-sale">{$product->base_price|currency}</span>
-                                    <span class="sale-price">{$product->special_price|currency}&#160;<sup>{"Early!"|gettext}</sup></span>
+                                    <span class="sale-price price">{$product->special_price|currency}&#160;<sup>{"Early!"|gettext}</sup></span>
                                 {else}
-                                    <span class="regular-price">{$product->base_price|currency}</span>
+                                    <span class="regular-price price">{$product->base_price|currency}</span>
                                 {/if}
                                 {*<span class="seatCost">{$product->base_price|currency}</span>{br}{'per seat'|gettext}*}
                                 {br}{'per seat'|gettext}
@@ -111,6 +130,8 @@
                     {if $product->multi_registrant && $product->forms_id}
                         </div>
                     {/if}
+                      </span>
+                    </span>
                     {if $product->multi_registrant && $product->quantity_discount_num_items}
                         {clear}
                         <div class="label">
@@ -210,7 +231,7 @@
                                         validate: true,
                                         block: true,
                                         errorImage: true,
-                                        btnClass: 'awesome {/literal}$smarty.const.BTN_SIZE $smarty.const.BTN_COLOR{literal}',
+                                        btnClass: '{/literal}{button_style}{literal}',
                                         titleClick: true,
                                         titleTarget: '#form-pages',
                                     });
@@ -235,7 +256,7 @@
                         </div>
                     {/if}
                     {clear}
-                    <button type="submit" class="add-to-cart-btn awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE}"
+                    <button type="submit" class="add-to-cart-btn {button_style}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
                         {"Register for this Event"|gettext}
                     </button>
@@ -250,6 +271,7 @@
         </div>
     </div>
 {clear}
+</div>
 </div>
 
 {script unique="expanding-text" yui3mods="yui"}
@@ -301,9 +323,12 @@
             clone.all('input').each(function(ctrl) {
                 ctrl.set('value','');
             });
-            clone.all('option').each(function(ctrl) {
-                ctrl.removeAttribute('selected');
-            });
+//            clone.all('option').each(function(ctrl) {
+//                ctrl.removeAttribute('selected');
+//            });
+//            clone.all('input[type=file]').each(function(ctrl) {
+//                ctrl.set('value','');
+//            });
 			table.appendChild(clone); // add new row to end of table
         }
 

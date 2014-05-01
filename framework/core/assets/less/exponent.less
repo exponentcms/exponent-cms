@@ -1,42 +1,42 @@
-/* simple mixins for exponent core style sheets */
+// simple mixins for exponent style sheets
 
-/* Mixin */
+// Mixin
 .border-radius (@radius: 5px) {
 	-webkit-border-radius : @radius;
 	-moz-border-radius    : @radius;
 	border-radius         : @radius;
 }
 
-/* Implementation */
+// Implementation 
 //#somediv {
 //    .border-radius(20px);
 //}
 
-/* Mixin */
+// Mixin 
 .border-radius-custom (@topleft: 5px, @topright: 5px, @bottomleft: 5px, @bottomright: 5px) {
 	-webkit-border-radius : @topleft @topright @bottomright @bottomleft;
 	-moz-border-radius    : @topleft @topright @bottomright @bottomleft;
 	border-radius         : @topleft @topright @bottomright @bottomleft;
 }
 
-/* Implementation */
+// Implementation 
 //#somediv {
 //    .border-radius(20px, 20px, 0px, 0px);
 //}
 
-/* Mixin */
+// Mixin
 .box-shadow (@x: 0px, @y: 3px, @blur: 5px, @alpha: 0.5) {
 	-webkit-box-shadow : @x @y @blur rgba(0, 0, 0, @alpha);
 	-moz-box-shadow    : @x @y @blur rgba(0, 0, 0, @alpha);
 	box-shadow         : @x @y @blur rgba(0, 0, 0, @alpha);
 }
 
-/* Implementation */
+// Implementation
 //#somediv {
 //    .box-shadow(5px, 5px, 6px, 0.3);
 //}
 
-/* Mixin */
+// Mixin
 .transition (@prop: all, @time: 1s, @ease: linear) {
 	-webkit-transition : @prop @time @ease;
 	-moz-transition    : @prop @time @ease;
@@ -45,7 +45,7 @@
 	transition         : @prop @time @ease;
 }
 
-/* Implementation */
+// Implementation
 //#somediv {
 //    .transition(all, 0.5s, ease-in);
 //}
@@ -54,7 +54,7 @@
 //    opacity: 0;
 //}
 
-/* Mixin */
+// Mixin
 .transform (@rotate: 90deg, @scale: 1, @skew: 1deg, @translate: 10px) {
 	-webkit-transform : rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
 	-moz-transform    : rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
@@ -63,12 +63,12 @@
 	transform         : rotate(@rotate) scale(@scale) skew(@skew) translate(@translate);
 }
 
-/* Implementation */
+// Implementation
 //#someDiv {
 //    .transform(5deg, 0.5, 1deg, 0px);
 //}
 
-/* Mixin */
+// Mixin
 .gradient (@origin: left, @start: #ffffff, @stop: #000000) {
 	background-color : @start;
 	background-image : -webkit-linear-gradient(@origin, @start, @stop);
@@ -78,12 +78,12 @@
 	background-image : linear-gradient(@origin, @start, @stop);
 }
 
-/* Implementation */
+// Implementation
 //#someDiv {
 //    .gradient(left, #663333, #333333);
 //}
 
-/* Mixin */
+// Mixin
 .quick-gradient (@origin: left, @alpha: 0.2) {
 	background-image : -webkit-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0,@alpha));
 	background-image : -moz-linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0,@alpha));
@@ -92,23 +92,75 @@
 	background-image : linear-gradient(@origin, rgba(0, 0, 0, 0.0), rgba(0, 0, 0,@alpha));
 }
 
-/* Implementation */
+// Implementation
 //#somediv {
 //    background-color: BADA55;
 //    .quick-gradient(top, 0.2);
 //}
 
-/* Mixin */
+// Mixin
+.linear-gradient( @dir: top, @start-color: #eee, @end-color: #aaa ) {
+	background: -webkit-linear-gradient(@dir, @start-color 0%, @end-color 100%);
+	background: -moz-linear-gradient(@dir, @start-color 0%, @end-color 100%);
+	background: -ms-linear-gradient(@dir, @start-color 0%, @end-color 100%);
+	background: -o-linear-gradient(@dir, @start-color 0%, @end-color 100%);
+	background: linear-gradient(@dir, @start-color 0%, @end-color 100%);
+	.linear-gradient-ie( @dir, @start-color, @end-color);
+}
+
+.linear-gradient-multi( ... ) {
+	background-image: -webkit-linear-gradient(@arguments);
+	background-image: -moz-linear-gradient(@arguments);
+	background-image: -ms-linear-gradient(@arguments);
+	background-image: -o-linear-gradient(@arguments);
+	background-image: linear-gradient(@arguments);
+}
+
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = top),
+	not ( isstring(@dir) ) and ( @dir >= 225 ) and ( @dir < 315 ),
+	not ( isstring(@dir) ) and ( @dir >= -135 ) and ( @dir < -45 ) {
+	.linear-gradient-ie-filter(@start-color, @end-color, 0);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = right),
+	not ( isstring(@dir) ) and ( @dir >= 135 ) and ( @dir < 225 ),
+	not ( isstring(@dir) ) and ( @dir >= -225 ) and ( @dir < -135 ) {
+	.linear-gradient-ie-filter(@end-color, @start-color, 1);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = bottom),
+	not ( isstring(@dir) ) and ( @dir >= 45 ) and ( @dir < 135 ),
+	not ( isstring(@dir) ) and ( @dir >= -315 ) and ( @dir < -225 ) {
+	.linear-gradient-ie-filter(@end-color, @start-color, 0);
+}
+.linear-gradient-ie( @dir, @start-color, @end-color) when (@dir = left),
+	not ( isstring(@dir) ) and ( @dir >= 315 ) and ( @dir < 360 ),
+	not ( isstring(@dir) ) and ( @dir >= -45 ) and ( @dir < 45 ),
+	not ( isstring(@dir) ) and ( @dir < -315 ) and ( @dir >= -360 ) {
+	.linear-gradient-ie-filter(@start-color, @end-color, 1);
+}
+
+.linear-gradient-ie-filter(@start: #eee, @end: #aaa, @type: 1) {
+	@c-start: argb(@start);
+	@c-end: argb(@end);
+	filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr='@{c-start}', endColorstr='@{c-end}', GradientType=@{type})";
+	-ms-filter: ~"progid:DXImageTransform.Microsoft.gradient(startColorstr='@{c-start}',endColorstr='@{c-end}',GradientType=@{type})";
+}
+
+// Implementation
+//#somediv {
+//    .linear-gradient(top,  #eee, #aaa);
+//}
+
+// Mixin
 .reflect (@length: 50%, @opacity: 0.2) {
 	-webkit-box-reflect : below 0px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(@length, transparent), to(rgba(255, 255, 255,@opacity)));
 }
 
-/* Implementation */
+// Implementation
 //#somediv {
 //    .reflect(20%, 0.2);
 //}
 
-/* Mixin */
+// Mixin
 .opacity(@opacity: 0.5) {
   -moz-opacity: @opacity;
   -khtml-opacity: @opacity;
@@ -119,7 +171,7 @@
   filter: ~"alpha(opacity=@{opperc})";
 }
 
-/* Mixin */
+// Mixin
 .bordered(@top-color: #EEE, @right-color: #EEE, @bottom-color: #EEE, @left-color: #EEE) {
   border-top: solid 1px @top-color;
   border-left: solid 1px @left-color;
@@ -127,14 +179,14 @@
   border-bottom: solid 1px @bottom-color;
 }
 
-/* Mixin */
+// Mixin
 .drop-shadow(@x-axis: 0, @y-axis: 1px, @blur: 2px, @alpha: 0.1) {
   -webkit-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
   -moz-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
   box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
 }
 
-/* Mixin */
+// Mixin
 .transition-duration(@duration: 0.2s) {
   -moz-transition-duration: @duration;
   -webkit-transition-duration: @duration;
@@ -142,24 +194,34 @@
   transition-duration: @duration;
 }
 
-/* Mixin */
+// Mixin
 .rotation(@deg:5deg){
   .transform(rotate(@deg));
 }
 
-/* Mixin */
+// Mixin
 .scale(@ratio:1.5){
   .transform(scale(@ratio));
 }
 
-/* Mixin */
+// Mixin
+.skew(@angle_x:35, @angle_y:0){
+  .transform(skew(@angle_x, @angle_y));
+}
+
+// Mixin
+.translate(@x:0, @y:0) {
+  .transform(translate(@x, @y));
+}
+
+// Mixin
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @alpha: 0.4) {
   -webkit-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
   -moz-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
   box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
 }
 
-/* Mixin */
+// Mixin
 .box-sizing(@sizing: border-box) {
   -ms-box-sizing: @sizing;
   -moz-box-sizing: @sizing;
@@ -167,7 +229,7 @@
   box-sizing: @sizing;
 }
 
-/* Mixin */
+// Mixin
 .user-select(@argument: none) {
   -webkit-user-select: @argument;
   -moz-user-select: @argument;
@@ -175,7 +237,7 @@
   user-select: @argument;
 }
 
-/* Mixin */
+// Mixin
 .columns(@colwidth: 250px, @colcount: 0, @colgap: 50px, @columnRuleColor: #EEE, @columnRuleStyle: solid, @columnRuleWidth: 1px) {
   -moz-column-width: @colwidth;
   -moz-column-count: @colcount;
@@ -197,12 +259,7 @@
   column-rule-width: @columnRuleWidth;
 }
 
-/* Mixin */
-.translate(@x:0, @y:0) {
-  .transform(translate(@x, @y));
-}
-
-/* Mixin */
+// Mixin
 .background-clip(@argument: padding-box) {
   -moz-background-clip: @argument;
   -webkit-background-clip: @argument;

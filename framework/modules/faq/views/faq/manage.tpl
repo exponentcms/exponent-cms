@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -84,4 +84,5 @@
     </table>    
 </div>
 
-<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="javascript: history.go(-1)">Go Back</a>
+{*<a class="{button_style}" href="javascript: history.go(-1)">{'Go Back'|getttext}</a>*}
+{icon button=true link="javascript: history.go(-1)" text='Go Back'|getttext}

@@ -80,7 +80,10 @@ html/*\*/>/*/*/body a[href$="&create="] {
     padding-left : 22px;
 }
 
-/*html*//*\*//*>*//**//*/body #content p a {padding-left:2px;}*/
+/*html*//*\*//* > *//**//*/ body #content p a {*/
+	/*padding-left : 2px;*/
+/*}*/
+
 html/*\*/>/*/*/body #content p a[href*="&create="] {
     padding-left : 22px;
 }
@@ -522,6 +525,7 @@ h1, h2 {
 
 h1 {
 	font-size : 12px;
+	padding: 0;
 }
 
 h1 .h1 {
@@ -556,11 +560,12 @@ h3 {
 }
 
 .js .hidden {
+	/*display : inline;*/
     display : none;
 }
 
 fieldset div.hidden {
-    display : inline !important;
+    display : inline !important;  // we want these displayed always
 }
 
 .js td.hidden, .js input.hidden {
@@ -611,4 +616,12 @@ fieldset, legend, h2, table, .error, .message {
 
 #loader {
 	margin-left : 35px;
+}
+
+#dbs {
+	display: none;
+}
+
+p.filter:before{
+	content:"Filter:";
 }

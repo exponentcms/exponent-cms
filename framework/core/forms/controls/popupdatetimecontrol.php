@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,7 +30,7 @@ class popupdatetimecontrol extends formcontrol {
 	var $disable_text = "";
 	var $showtime = true;
 
-	static function name() { return "Date / Time - YUI Popup"; }
+	static function name() { return "Date / Time - Popup w/ Static Text"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
 		return array(
@@ -50,12 +50,12 @@ class popupdatetimecontrol extends formcontrol {
 		}
 	}
 
-	function onRegister(&$form) {
+//	function onRegister(&$form) {
 //		$form->addScript("jscal-calendar",      PATH_RELATIVE."external/jscalendar/calendar.js");
 //		$form->addScript("jscal-calendar-lang", PATH_RELATIVE."external/jscalendar/lang/calendar-en.js");
 //		$form->addScript("jscal-calendar-setup",PATH_RELATIVE."external/jscalendar/calendar-setup.js");
 //		$form->addScript("popupdatetimecontrol",PATH_RELATIVE."js/PopupDateTimeControl.js");
-	}
+//	}
 
 	function controlToHTML($name,$label) {
         $idname = str_replace(array('[',']',']['),'_',$name);
@@ -77,7 +77,7 @@ class popupdatetimecontrol extends formcontrol {
         $img .= "\n";
 
         $html = "";
-		$html .= '<input type="hidden" name="'.$name.'" id="'.$idname.'" value="'.($this->default).'" />';
+		$html .= '<input type="hidden" name="' . $name . '" id="' . $idname . ($this->focus?' autofocus':'') . '" value="' . ($this->default) . '" />';
 		$html .= "\n";
 		$html .= '<span class="';
 		if ($this->disabled) $html .= 'datefield_disabled';

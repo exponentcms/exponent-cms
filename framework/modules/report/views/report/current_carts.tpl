@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,7 @@
  *
  *}
 
-{include file='menu.tpl'}
+{exp_include file='menu.tpl'}
 
 {css unique="carts_accordion" link="`$asset_path`css/accordion.css" corecss="tables"}
 

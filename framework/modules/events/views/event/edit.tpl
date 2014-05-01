@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div id="editevent" class="events calendar edit">
-    {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$modelname|capitalize}</h1>{/if}
+    {if $record->id != ""}<h1>{'Editing'|gettext} '{$record->title}'</h1>{else}<h1>{'New'|gettext} {$model_name|capitalize}</h1>{/if}
     <div class="form_header">
         <blockquote>{'Enter the information about the calendar event (the date and times) below.'|gettext}</blockquote>
         <blockquote>{'Note: multiple day events are not supported.'|gettext}</blockquote>
@@ -43,7 +43,7 @@
                         {control type="tags" value=$record}
                     {/if}
                     {if $config.usecategories}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$model_name`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 	{if $config.enable_ealerts}
                 	    {control type="checkbox" name="send_ealerts" label="Send E-Alert?"|gettext value=1}
@@ -56,20 +56,19 @@
                     {/if}
                 </div>
                 <div id="tab2">
-                    {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[$event_key]->date}
-                    {*{control type="calendar" name="eventdate" label="Event Date"|gettext default_date=$record->eventdate[0]->date}*}
+                    {control type="yuicalendarcontrol" name="eventdate" label="Event Date"|gettext value=$record->eventdate[$event_key]->date showtime=false}
                     {$jsHooks = ['onclick'=>'exponent_forms_disable_datetime(\'eventstart\',this.form,this.checked); exponent_forms_disable_datetime(\'eventend\',this.form,this.checked);']}
                   	{control type="checkbox" name="is_allday" label="All Day Event?"|gettext value=1 checked=$record->is_allday hooks=$jsHooks}
                     {control type="datetimecontrol" name="eventstart" label="Start Time"|gettext showdate=false value=$record->eventstart+$record->eventdate[0]->date disabled=$record->is_allday}
                     {control type="datetimecontrol" name="eventend" label="End Time"|gettext showdate=false value=$record->eventend+$record->eventdate[0]->date disabled=$record->is_allday}
                     {if (empty($record->id)) }
-                        {include "_recurring.tpl"}
+                        {exp_include file="_recurring.tpl"}
                     {elseif ($record->is_recurring == 1) }
                         {$dates=$record->eventdate}
                         {control type=hidden name=is_recurring value=$record->is_recurring}
                         {'This event is a recurring event, and occurs on the dates below.  Select which dates you wish to apply these edits to.'|gettext}
                         <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-                            {include '_recur_dates.tpl'}
+                            {exp_include file='_recur_dates.tpl'}
                         </table>
                     {/if}
                 </div>
@@ -77,12 +76,12 @@
                     <div id="tab3">
                         {control type=dropdown name=feedback_form label="Feedback Form"|gettext items=$allforms items=$allforms value=$record->feedback_form}
                         {*{control type=text name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}*}
-                        {control type=email name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
+                        {control type=email multiple="1" name=feedback_email label="Feedback Email"|gettext value=$record->feedback_email}
                     </div>
                 {/if}
                 {if $config.enable_images}
                     <div id="tab4">
-                        {control type=files name=images label="Attached Images"|gettext accept="image/*" value=$record->expFile}
+                        {control type=files name=images label="Attached Images"|gettext accept="image/*" value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
             </div>

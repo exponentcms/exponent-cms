@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -68,8 +68,9 @@ function smarty_function_control($params, &$smarty) {
             case "yuicalendarcontrol":
             case "yuicalendar":
                 if (empty($params['value'])) $params['value'] = time();
-                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
-                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
+//                $disabletext = isset($params['disable_text']) ? $params['disable_text'] : 'Change Date/Time';
+//                $control = new yuicalendarcontrol($params['value'], $disabletext, $showtime);
+                $control = new yuicalendarcontrol($params['value'], $showdate, $showtime);
                 break;
             case "datetimecontrol":
             case "datetime":
@@ -89,6 +90,7 @@ function smarty_function_control($params, &$smarty) {
                 $cancel     = isset($params['cancel']) ? $params['cancel'] : null;
                 $returntype = isset($params['returntype']) ? $params['returntype'] : null;
                 $control    = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
+                if (!empty($params['wide'])) $control->wide = $params['wide'];
                 break;
             case "uploader":
                 $control = new uploadcontrol();
@@ -103,12 +105,13 @@ function smarty_function_control($params, &$smarty) {
                     $control->limit = isset($params['limit']) ? $params['limit'] : 10;
                     if (!empty($params['value'])) $control->value = $params['value'];
                 }
+                if (!empty($params['folder'])) $control->folder = $params['folder'];
                 if (!empty($params['accept'])) $control->accept = $params['accept'];
                 break;
             case "filedisplay-types":
                 $control                = new dropdowncontrol();
                 $control->include_blank = gt('-- This module does not use files --');
-                $control->items         = get_filedisplay_views();
+                $control->items         = expTemplate::get_filedisplay_views();
                 break;
             case "dropdown":
                 $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
@@ -196,16 +199,25 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "editor":
             case "html":
-                $control = new htmleditorcontrol();
-                if (SITE_WYSIWYG_EDITOR == "ckeditor") {
-//                    $control           = new ckeditorcontrol();
-                    $control->toolbar  = empty($params['toolbar']) ? '' : $params['toolbar'];
+                if (empty($params['editor'])) {
+                    $editor = SITE_WYSIWYG_EDITOR;
+                } else {
+                    $editor = $params['editor'];
+                }
+                if ($editor == "ckeditor") {
+                    $control = new ckeditorcontrol();
+                    $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
                     $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
-                } elseif (SITE_WYSIWYG_EDITOR == "tinymce") {
-//                    $control           = new tinymcecontrol();
+                } elseif ($editor == "tinymce") {
+                    $control = new tinymcecontrol();
+                    $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
+                    $control->lazyload = empty($params['lazyload']) ? 0 : 1;
+                    $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
+                    $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } else {
+                    $control = new htmleditorcontrol();
                     if (isset($params['module'])) $control->module = $params['module'];
                     if (isset($params['rows'])) $control->rows = $params['rows'];
                     if (isset($params['cols'])) $control->cols = $params['cols'];
@@ -220,9 +232,9 @@ function smarty_function_control($params, &$smarty) {
                 $control = new listbuildercontrol($default, $source);
 			    $control->process  = isset($params['process']) ? $params['process'] : null;
                 break;
-            case "list":
-                $control = new listcontrol();
-                break;
+//            case "list":
+//                $control = new listcontrol();
+//                break;
             case "user":
                 $control                = new dropdowncontrol();
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
@@ -309,12 +321,6 @@ function smarty_function_control($params, &$smarty) {
                     exit();
                 }
                 break;
-            case "quantity":
-                $value   = isset($params['value']) ? $params['value'] : null;
-                $min     = isset($params['min']) ? $params['min'] : 0;
-                $max     = isset($params['max']) ? $params['max'] : 99999;
-                $control = new quantitycontrol($value, $min, $max);
-                break;
             case "tagtree":
                 $control = new tagtreecontrol($params);
                 break;
@@ -354,16 +360,23 @@ function smarty_function_control($params, &$smarty) {
                 $control->searchoncol = empty($params['searchoncol']) ? "title" : $params['searchoncol'];
                 $control->jsinject    = empty($params['jsinject']) ? "" : $params['jsinject'];
                 break;
-            case "massmail":
-                $control = new massmailcontrol();
-                if (!empty($params['var'])) $control->type = 1;
-                if (!empty($params['default'])) $control->default = $params['default'];
-                break;
-            case "contact":
-                $control = new contactcontrol();
-                if (!empty($params['var'])) $control->type = 1;
-                if (!empty($params['default'])) $control->default = $params['default'];
-                break;
+//            case "massmail":
+//                $control = new massmailcontrol();
+//                if (!empty($params['var'])) $control->type = 1;
+//                if (!empty($params['default'])) $control->default = $params['default'];
+//                break;
+//            case "contact":
+//                $control = new contactcontrol();
+//                if (!empty($params['var'])) $control->type = 1;
+//                if (!empty($params['default'])) $control->default = $params['default'];
+//                break;
+            case "quantity":
+//                $value   = isset($params['value']) ? $params['value'] : null;
+//                $min     = isset($params['min']) ? $params['min'] : 0;
+//                $max     = isset($params['max']) ? $params['max'] : 99999;
+//                $control = new quantitycontrol($value, $min, $max);
+//                break;
+                $params['type'] = 'number';
             case "text":
             case "search":
             case "email":
@@ -448,6 +461,7 @@ function smarty_function_control($params, &$smarty) {
         if (isset($params['nowrap'])) $control->nowrap = "nowrap";
         if (isset($params['flip'])) $control->flip = $params['flip'];
         if (isset($params['disabled']) && $params['disabled'] != false) $control->disabled = true;
+        if (isset($params['focus']) && $params['focus'] != false) $control->focus = true;
         if (isset($params['maxlength'])) $control->maxlength = $params['maxlength'];
         if (isset($params['tabindex'])) $control->tabindex = $params['tabindex'];
         if (isset($params['accesskey'])) $control->accesskey = $params['accesskey'];
@@ -509,7 +523,7 @@ function smarty_function_control($params, &$smarty) {
         if($params['type']!='hidden'){ echo '</label>'; }
         */
     } else {
-        echo gt("Both the 'type' and 'name' parameters are required for the control plugin to function");
+        echo '<h2 style="color:red">' . gt("Both the 'type' and 'name' parameters are required for the control plugin to function") . '</h2>';
     }
 }
 

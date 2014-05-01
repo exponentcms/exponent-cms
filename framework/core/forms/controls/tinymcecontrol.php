@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,7 +37,7 @@ class tinymcecontrol extends formcontrol
 
     static function name()
     {
-        return "CKEditor";
+        return "TinyMCE Editor";
     }
 
     function __construct($default = "", $rows = 5, $cols = 45)
@@ -71,7 +71,7 @@ class tinymcecontrol extends formcontrol
             $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'tinymce');
         }
         $plugins = "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" .
-                ",searchreplace wordcount visualblocks visualchars code fullscreen" .
+                ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                 ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" .
                 ",emoticons,paste,textcolor,visualblocks,importcss";
         if (!empty($settings)) {
@@ -79,9 +79,10 @@ class tinymcecontrol extends formcontrol
             $tb_raw = explode("\n", $settings->data);
             $tb = '';
             foreach ($tb_raw as $key=>$tbr) {
-                if (!empty($tbr)) $tb .= "toolbar" . ($key + 1) . ": \"" . trim($tbr) . "\",\n";
+                if (!empty($tbr)) $tb .= "toolbar" . (count($tb_raw) > 1 ? $key + 1 : '') . ": \"" . trim($tbr) . "\",\n";
             }
             $skin = $settings->skin;
+            $sc_brw_off   = $settings->scayt_on ? 'false' : 'true';
 //            $plugins    = stripSlashes($settings->plugins);
             $stylesset = stripSlashes($settings->stylesset);
             $formattags = stripSlashes($settings->formattags);
@@ -89,10 +90,17 @@ class tinymcecontrol extends formcontrol
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
-//            $plugins .= ',fieldinsert';
         }
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
+        }
+        // clean up (custom) plugins list from missing plugins
+        if (!empty($plugins)) {
+            $plugs = explode(',',trim($plugins));
+            foreach ($plugs as $key=>$plug) {
+                if (empty($plug) || !is_dir(BASE . 'external/editors/tinymce/plugins/' . $plug)) unset($plugs[$key]);
+            }
+            $plugins = implode(',',$plugs);
         }
 
         // set defaults
@@ -102,13 +110,28 @@ class tinymcecontrol extends formcontrol
                 toolbar: 'bold italic underline removeformat | bullist numlist | link unlink',";
             } else {
                 $tb = "
-                    toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                    toolbar2: 'print preview visualblocks media | forecolor backcolor emoticons',";
+                toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+                toolbar2: 'link unlink image | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
+                if (!empty($this->plugin)) {
+                    $plugs = explode(',',trim($this->plugin));
+                    $tb .= ' |';
+                    foreach ($plugs as $key=>$plug) {
+                       $tb .= ' ' . $plug;
+                   }
+                }
+                $tb .= "',";
             }
         }
+        if (MOBILE) {
+            $tb .= "menubar: false,
+                   toolbar_items_size: 'small',
+                   statusbar: false,";
+        }
+
         if (empty($skin) || !is_dir(BASE . 'external/editors/tinymce/skins/' . $skin)) {
             $skin = 'lightgray';
         }
+        if (empty($sc_brw_off)) $sc_brw_off = 'true';
         if (empty($stylesset)) {
             $stylesset = "'default'";
         }
@@ -144,11 +167,14 @@ class tinymcecontrol extends formcontrol
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',
                     plugins : ['" . $plugins . "'],
+                    " . $additionalConfig . "
                     " . $contentCSS . "
                     document_base_url : '" . PATH_RELATIVE . "',
                     " . $tb . "
                     skin: '" . $skin . "',
                     image_advtab: true,
+                    browser_spellcheck : " . $sc_brw_off . " ,
+                    importcss_append: true,
                     style_formats: [
                         {title: 'Image Left', selector: 'img', styles: {
                             'float' : 'left',
@@ -166,10 +192,26 @@ class tinymcecontrol extends formcontrol
                             {title: 'h5', block: 'h5'},
                             {title: 'h6', block: 'h6'}
                         ]},
+                        {title: 'Inline', items: [
+                            {title: 'Bold', inline: 'b', icon: 'bold'},
+                            {title: 'Italic', inline: 'i', icon: 'italic'},
+                            {title: 'Underline', inline: 'span', styles : {textDecoration : 'underline'}, icon: 'underline'},
+                            {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
+                            {title: 'Superscript', inline: 'sup', icon: 'superscript'},
+                            {title: 'Subscript', inline: 'sub', icon: 'subscript'},
+                            {title: 'Code', inline: 'code', icon: 'code'},
+                        ]},
                         {title: 'Blocks', items: [
-                            {title: 'p', block: 'p'},
-                            {title: 'div', block: 'div'},
-                            {title: 'pre', block: 'pre'}
+                            {title: 'Paragraph', block: 'p'},
+                            {title: 'Blockquote', block: 'blockquote'},
+                            {title: 'Div', block: 'div'},
+                            {title: 'Pre', block: 'pre'}
+                        ]},
+                        {title: 'Alignment', items: [
+                            {title: 'Left', block: 'div', styles : {textAlign : 'left'}, icon: 'alignleft'},
+                            {title: 'Center', block: 'div', styles : {textAlign : 'center'}, icon: 'aligncenter'},
+                            {title: 'Right', block: 'div', styles : {textAlign : 'right'}, icon: 'alignright'},
+                            {title: 'Justify', block: 'div', styles : {textAlign : 'justify'}, icon: 'alignjustify'}
                         ]},
                         {title: 'Containers', items: [
                             {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
@@ -188,7 +230,7 @@ class tinymcecontrol extends formcontrol
                             file: '" . makelink(
                                     array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
                                 ) . "?filter='+type,
-                            title: 'File Manager',
+                            title: '".gt('File Manager')."',
                             width: " . FM_WIDTH . ",
                             height: " . FM_HEIGHT . ",
                             resizable: 'yes'
@@ -216,10 +258,17 @@ class tinymcecontrol extends formcontrol
                 //"src"=>PATH_RELATIVE."external/tinymce/tinymce.min.js"
             )
         );
-        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "tinymce",
+                "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
+            )
+        );
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-        $html .= "<!-- cke lazy -->";
+        $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
+        if ($this->focus) $html .= " autofocus";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         if ($this->accesskey != "") {
             $html .= " accesskey=\"" . $this->accesskey . "\"";

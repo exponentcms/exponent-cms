@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,7 +20,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Definable Fields"|gettext) module="manage-definable-fields"}
         </div>
-        <h1>{"Manage Definable Fields"|gettext}</h1>
+        <h2>{"Manage Definable Fields"|gettext}</h2>
     </div>
 	{*{permissions}*}
     	{*{if $permissions.create}*}
@@ -58,12 +58,14 @@
                     </td>
                     <td>
                         {permissions}
-                            {if $permissions.edit}
-                                {icon action="edit" record=$listing title="Edit this field"|gettext}
-                            {/if}
-                            {if $permissions.delete}
-                                {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
-                            {/if}
+                            <div class="item-actions">
+                                {if $permissions.edit}
+                                    {icon action="edit" record=$listing title="Edit this field"|gettext}
+                                {/if}
+                                {if $permissions.delete}
+                                    {icon action="delete" record=$listing title="Delete this field"|gettext onclick="return confirm('Are you sure you want to delete this field?');"}
+                                {/if}
+                            </div>
                         {/permissions}
                     </td>
                 </tr>

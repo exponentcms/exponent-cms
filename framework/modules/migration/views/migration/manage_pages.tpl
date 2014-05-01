@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,19 +18,20 @@
 {/css}
 
 <div class="module migration manage-pages">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_files}"><strong>{'Skip to Next Step -> Migrate Files'|gettext}</strong></a>
+ 	{*<a class="{button_style}" href="{link module=migration action=manage_files}"><strong>{'Skip to Next Step -> Migrate Files'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_files text='Skip to Next Step -> Migrate Files'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Pages"|gettext) module="migrate-pages"}
         </div>
-		<h1>{"Migrate Pages"|gettext}</h1>	    
+		<h2>{"Migrate Pages"|gettext}</h2>
+        <blockquote>
+            {'The following is a list of pages we found in the database'|gettext} {$config.database}.
+            {'Select the pages you would like to pull over from'|gettext} {$config.database}.
+        </blockquote>
     </div>
 
-    <blockquote>
-        {'The following is a list of pages we found in the database'|gettext} {$config.database}.
-        {'Select the pages you would like to pull over from'|gettext} {$config.database}.
-    </blockquote>
     {form action="migrate_pages"}
         <table class="exp-skin-table">
         <thead>

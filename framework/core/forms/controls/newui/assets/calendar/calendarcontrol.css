@@ -1,0 +1,58 @@
+/* Clear calendar's float, using dialog inbuilt form element */
+.calpop {
+    clear:left;
+}
+
+.calpop .bd form {
+    clear:left;
+}
+
+/* Have calendar squeeze upto bd bounding box */
+.calpop .bd {
+    padding:0;
+}
+
+.calpop .hd {
+    text-align:left;
+}
+
+/* Center buttons in the footer */
+.calpop .ft .button-group {
+    text-align:center;
+}
+
+/* Prevent border-collapse:collapse from bleeding through in IE6, IE7 */
+/*#container_c.yui-overlay-hidden table {
+    *display:none;
+}
+*/
+
+.cal.yui-calcontainer {
+    border:0;
+    background:none;
+}
+
+/* Datefield look/feel */
+
+.calendar-control button img {
+    padding:0;
+    margin:0;
+    vertical-align:middle;
+}
+
+.calendar-control table thead tr {
+    background:none;
+}
+
+.calendar-control table {
+    border:0px;
+}
+
+/*.calendar-control input {
+    padding:3px;
+    margin:2px 2px 2px 0;
+    border:1px solid #555555;
+    background:#ffffff;
+}
+
+*/

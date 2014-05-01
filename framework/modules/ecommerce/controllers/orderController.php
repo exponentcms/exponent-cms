@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -290,7 +290,7 @@ class orderController extends expController {
         global $template, $user;
 
         // setup a template suitable for emailing
-        $template = get_template_for_action($this, 'email_invoice', $this->loc);
+        $template = expTemplate::get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
         $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
@@ -847,13 +847,13 @@ exit();
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall':
-                $metainfo['title']       = gt("Managing Invoices");
+                $metainfo['title']       = gt("Managing Invoices") . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
             case 'show':
             case 'showByTitle':
-                $metainfo['title']       = gt('Viewing Invoice');
+                $metainfo['title']       = gt('Viewing Invoice') . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
                 $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
                 $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist

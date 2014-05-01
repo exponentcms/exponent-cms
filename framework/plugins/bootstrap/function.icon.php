@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -86,7 +86,7 @@ if (!function_exists('smarty_function_icon')) {
                     $params['img'] = $params['action'] . '.png';
                 }
                 if (empty($params['title'])) {
-                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text);
+                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
                 }
             } else $params['text'] = gt($params['text']);
         }
@@ -96,9 +96,9 @@ if (!function_exists('smarty_function_icon')) {
 
         // figure out whether to use the edit icon or text, alt tags, etc.
         $alt = (empty($params['alt'])) ? '' : $params['alt'];
-        $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : $params['class'];
+        $class = (empty($params['class']) && empty($params['img'])) ? $params['action'] : (!empty($params['class']) ? $params['class'] : '');
         $text = (empty($params['text'])) ? '' : $params['text'];
-        $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') : $text) : $params['title'];
+        $title = (empty($params['title'])) ? (empty($text) ? gt(ucfirst($class)) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text) : $params['title'];
         if (!empty($params['hash'])) {
 //	    $hash = $params['hash'];
             unset($params['hash']);
@@ -118,82 +118,88 @@ if (!function_exists('smarty_function_icon')) {
 
         $linktext = $img . $text;
         
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
+        if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
+            $btn_size = '';  // actually default size, NOT true boostrap large
             $icon_size = 'icon-large';
-        } else {
+        } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
             $btn_size = 'btn-mini';
             $icon_size = '';
+        } else { // medium
+            $btn_size = 'btn-small';
+            $icon_size = 'icon-large';
         }
-        $btn_type = '';
-        switch ($class) {
-            case 'delete' :
-            case 'deletetitle' :
-                $class = "remove-sign";
-                $btn_type = "btn-danger";  // red
-                break;
-            case 'add' :
-            case 'addtitle' :
-            case 'switchtheme add' :
-                $class = "plus-sign";
-                $btn_type = "btn-success";  // green
-                break;
-            case 'copy' :
-                $class = "copy";
-                break;
-            case 'downloadfile' :
-            case 'export' :
-                $class = "download-alt";
-                break;
-            case 'uploadfile' :
-            case 'import' :
-                $class = "upload-alt";
-                break;
-            case 'manage' :
-                $class = "briefcase";
-                break;
-            case 'merge' :
-            case 'arrow_merge' :
-                $class = "signin";
-                break;
-            case 'reranklink' :
-            case 'alphasort' :
-                $class = "sort";
-                break;
-            case 'configure' :
-                $class = "wrench";
-                break;
-            case 'view' :
-                $class = "search";
-                break;
-            case 'page_next' :
-                $class ='double-angle-right';
-                break;
-            case 'page_prev' :
-                $class = 'double-angle-left';
-                break;
-            case 'change_password' :
-                $class = 'key';
-                break;
-            case 'clean' :
-                $class = 'check';
-                break;
-            case 'groupperms' :
-                $class = 'group';
-                break;
-            case 'monthviewlink' :
-            case 'weekviewlink' :
-                $class = 'calendar';
-                break;
-            case 'listviewlink' :
-                $class = 'list';
-                break;
-            case 'adminviewlink' :
-                $class = 'cogs';
-                break;
-        }
-        if (!empty($params['style']) ) $btn_type = $params['style'];
-        if (!empty($params['icon']) ) $class = $params['icon'];
+
+//        $btn_type = '';
+//        switch ($class) {
+//            case 'delete' :
+//            case 'deletetitle' :
+//                $class = "remove-sign";
+//                $btn_type = "btn-danger";  // red
+//                break;
+//            case 'add' :
+//            case 'addtitle' :
+//            case 'switchtheme add' :
+//                $class = "plus-sign";
+//                $btn_type = "btn-success";  // green
+//                break;
+//            case 'copy' :
+//                $class = "copy";
+//                break;
+//            case 'downloadfile' :
+//            case 'export' :
+//                $class = "download-alt";
+//                break;
+//            case 'uploadfile' :
+//            case 'import' :
+//                $class = "upload-alt";
+//                break;
+//            case 'manage' :
+//                $class = "briefcase";
+//                break;
+//            case 'merge' :
+//            case 'arrow_merge' :
+//                $class = "signin";
+//                break;
+//            case 'reranklink' :
+//            case 'alphasort' :
+//                $class = "sort";
+//                break;
+//            case 'configure' :
+//                $class = "wrench";
+//                break;
+//            case 'view' :
+//                $class = "search";
+//                break;
+//            case 'page_next' :
+//                $class ='double-angle-right';
+//                break;
+//            case 'page_prev' :
+//                $class = 'double-angle-left';
+//                break;
+//            case 'change_password' :
+//                $class = 'key';
+//                break;
+//            case 'clean' :
+//                $class = 'check';
+//                break;
+//            case 'groupperms' :
+//                $class = 'group';
+//                break;
+//            case 'monthviewlink' :
+//            case 'weekviewlink' :
+//                $class = 'calendar';
+//                break;
+//            case 'listviewlink' :
+//                $class = 'list';
+//                break;
+//            case 'adminviewlink' :
+//                $class = 'cogs';
+//                break;
+//        }
+        $icon = expTheme::buttonIcon($class);
+        if (!empty($params['style']) ) $icon->type = $params['style'];
+        if (!empty($params['icon']) ) $icon->class = $params['icon'];
+        if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
 
         // we need to unset these vars before we pass the params array off to makeLink
         unset($params['alt']);
@@ -204,34 +210,45 @@ if (!function_exists('smarty_function_icon')) {
         unset($params['record']);
         unset($params['style']);
         unset($params['icon']);
+        unset($params['size']);
+        unset($params['color']);
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
+        $secure = !empty($params['secure']) ? $params['secure'] : false;
+        unset($params['secure']);
+        $button = !empty($params['button']) ? $params['button'] : false;
+        unset($params['button']);
         //eDebug($params);
         if (!empty($params['name'])) {
             $name = ' id="'.$params['name'].'"';
         } else {
             $name = '';
         }
-        if (!empty($params['action']) && $params['action'] != 'scriptaction') {
+        if(!empty($params['action']) && $params['action'] == 'scriptaction') {
+            echo '<a'.$name.' href="#" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            if (!empty($onclick))
+                echo ' onclick="' . $onclick . '"';
+            echo '><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
+        } elseif ((!empty($params['action']) && $params['action'] != 'scriptaction') || $button) {
             if ($params['action'] == 'copy') {
                 $params['copy'] = true;
                 $params['action'] = 'edit';
             }
-            echo '<a'.$name.' href="' . expCore::makeLink($params) . '" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
-            if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
-                echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
+            if (!empty($params['link'])) {
+                $link = $params['link'];
+            } else {
+                $link = makeLink($params,$secure);
+            }
+            echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            if (($params['action'] == "delete" || $params['action'] == "merge" || $icon->class == "delete" || $icon->class == "merge") && empty($onclick))
+                echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
-//                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('modelname') . ' ' . gt('item') . '?\');"';
+//                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
-            echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
-        } elseif(!empty($params['action']) && $params['action'] == 'scriptaction') {
-           echo '<a'.$name.' href="#" title="' . $title . '" class=" btn '.$btn_type.' '.$btn_size.'"';
-           if (!empty($onclick))
-               echo ' onclick="' . $onclick . '"';
-           echo '><i class="icon-'.$class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
+            echo '><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
         } else {
-            echo '<div class=" btn disabled '.$btn_type.' '.$btn_size.'"><i class="icon-'.$class.' '.$icon_size.'"></i> ' .$linktext.'</div>';
+            echo '<div class=" btn disabled '.$icon->type.' '.$btn_size.'"><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' .$linktext.'</div>';
         }
     }
 }

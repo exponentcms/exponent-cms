@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,11 +19,11 @@
 
 <div class="module ecomconfig promocodes">
 	<div class="form_header">
-        <h1>{'Promotional Codes'|gettext}</h1>
+        <h2>{'Promotional Codes'|gettext}</h2>
         <blockquote>{'Here you can configure promotional codes to give to users.'|gettext}</blockquote>
 	</div>
 	
-	<h2>{'Add a new promo code'|gettext}</h2>
+	<h3>{'Add a new promo code'|gettext}</h3>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>

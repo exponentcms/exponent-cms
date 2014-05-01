@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,16 +48,35 @@ class uploadcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
         $html = '';
         if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
-		$html .= "<input type=\"file\" name=\"$name\" ";
-		if(isset($this->class)) $html .=  'class="' . $this->class . '"';
+		$html .= "<input type=\"file\" name=\"$name\"";
+		if (isset($this->class)) $html .= ' class="' . $this->class . '"';
         if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
-		$html .= ($this->disabled?" disabled ":"");
-		$html .= ($this->tabindex>=0?" tabindex=\"".$this->tabindex."\" ":"");
-		$html .= ($this->accesskey != ""?" accesskey=\"".$this->accesskey."\" ":"");
+		$html .= $this->disabled ? " disabled " : "";
+        $html .= $this->focus ? " autofocus" : "";
+		$html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\" " : "";
+		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
 		$html .= "/>";
         if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
 		return $html;
+	}
+
+    /**
+     * Format the control's data for user display
+     *
+     * @param $db_data
+     * @param $ctl
+     * @return string
+     */
+    static function templateFormat($db_data, $ctl) {
+        $base = str_replace(PATH_RELATIVE, '', BASE);
+        if (file_exists($base . $db_data)) {
+            // if the file exists return a link
+            $baseurl = str_replace(PATH_RELATIVE, '', URL_BASE);
+            return isset($db_data) ? ('<a href="' . $baseurl . $db_data . '">' . basename($db_data) . '</a>') : "";
+        } else
+            // file missing return filename
+            return basename($db_data);
 	}
 
 	static function form($object) {
@@ -96,30 +115,49 @@ class uploadcontrol extends formcontrol {
         return $object;
     }
 
-	static function moveFile($original_name,$formvalues) {
+	static function moveFile($original_name, $formvalues) {
 		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
-		$filename = expFile::fixName(time().'_'.$formvalues[$original_name]['name']);
-		$dest = $dir.'/'.$filename;
+		$filename = expFile::fixName(time() . '_' . $formvalues[$original_name]['name']);
+		$dest = $dir . '/' . $filename;
         //Check to see if the directory exists.  If not, create the directory structure.
         if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
         // Move the temporary uploaded file into the destination directory, and change the name.
-        expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'],BASE.$dest);
-		return $dest;
+        return expFile::moveUploadedFile($formvalues[$original_name]['tmp_name'], BASE . $dest);
 	}
+
+    static function moveRegistrationFile($original_name, $formvalues, $index) {
+   		$dir = UPLOAD_DIRECTORY_RELATIVE . 'uploads';
+   		$filename = expFile::fixName(time() . '_' . $formvalues['name'][$original_name][$index-1]);
+   		$dest = $dir . '/' . $filename;
+        //Check to see if the directory exists.  If not, create the directory structure.
+        if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+        // Move the temporary uploaded file into the destination directory, and change the name.
+        return expFile::moveUploadedFile($formvalues['tmp_name'][$original_name][$index-1], BASE . $dest);
+   	}
 
 //    static function buildDownloadLink($control_name,$file_name,$mode) {
 //   		$file = $formvalues[$original_name];
 //   		return '<a href="'.PATH_RELATIVE.$file.'">'.basename($file).'</a>';
 //   	}
 
-	static function parseData($original_name,$formvalues) {
+    /**
+     * Moves the uploaded file into our file system, NOT the database
+     *
+     * @param $original_name
+     * @param $formvalues
+     *
+     * @return string   The full directory and filename of the uploaded file
+     */
+    static function parseData($original_name,$formvalues) {
         if (is_array($formvalues[$original_name])) {
             $file = $formvalues[$original_name]['name'];
 //            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
         } else {
             if (!empty($formvalues['isedit']) && !empty($_FILES[$original_name]['name'])) {
 //                $file = $_FILES[$original_name]['name'];
-                $file = PATH_RELATIVE . self::moveFile($original_name, $_FILES, true);
+                $file = PATH_RELATIVE . self::moveFile($original_name, $_FILES);
+            } elseif (!empty($formvalues['registration']) && !empty($_FILES['registrant']['name'])) {
+                 $file = PATH_RELATIVE . self::moveRegistrationFile($original_name, $_FILES['registrant'], $formvalues['registration']);
             } else {
                 $file = $formvalues[$original_name];
    //            return '<a href="'.URL_BASE.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link

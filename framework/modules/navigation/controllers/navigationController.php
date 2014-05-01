@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -37,10 +37,10 @@ class navigationController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'view' => "View Page"
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'configure',
         'create',
         'delete',
@@ -493,7 +493,8 @@ class navigationController extends expController {
      *
      * @return array
      */
-    public static function getTemplateHierarchyFlat($parent, $depth = 1) { //FIXME is this only for deprecated templates?
+ 	//FIXME DEPRECATED: this only for deprecated templates
+    public static function getTemplateHierarchyFlat($parent, $depth = 1) {
         global $db;
 
         $arr  = array();
@@ -510,7 +511,8 @@ class navigationController extends expController {
         return $arr;
     }
 
-    public static function process_section($section, $template) { //FIXME is this only for deprecated templates?
+	//FIXME DEPRECATED: this only for deprecated templates
+    public static function process_section($section, $template) {
         global $db;
 
         if (!is_object($template)) {
@@ -734,7 +736,7 @@ class navigationController extends expController {
         }
         $nav= array_values($nav);
 //        $nav[$navcount - 1]->last = true;
-        $nav[count($nav) - 1]->last = true;
+        if (count($nav)) $nav[count($nav) - 1]->last = true;
         echo expJavascript::ajaxReply(201, '', $nav);
         exit;
     }

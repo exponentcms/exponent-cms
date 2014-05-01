@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,7 +32,7 @@
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
         <thead>
             <tr>
-                {if $__loc->src}
+                {if $select}
                     <th>
                         {"Assigned"|gettext}
                     </th>
@@ -51,7 +51,7 @@
         <tbody>
             {foreach from=$forms item=form}
                 <tr class="{cycle values="odd,even"}">
-                    {if $__loc->src}
+                    {if $select}
                        <td>
                            {if $config.forms_id == $form->id}
                                <span class="active">{'Active'|gettext}</span>
@@ -67,10 +67,10 @@
                         {if $form->is_saved}
                             {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
                             {icon class="downloadfile" action=export_csv id=$form->id text="Export Data"|gettext title="Export Form Data as CSV"|gettext}
-                            {icon class="downloadfile" action=export_eql id=$form->id text="Export Form"|gettext title="Export Form Design as EQL"|gettext}
                         {else}
                             {'Data Not Saved'|gettext}
                         {/if}
+                        {icon class="downloadfile" action=export_eql id=$form->id text="Export Form"|gettext title="Export Form Design as EQL"|gettext}
                     </td>
                     <td>
                         <div class="item-actions">

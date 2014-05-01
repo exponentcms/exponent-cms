@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,11 +14,15 @@
  *}
 
 {if !$error}
-    {css unique="data-view" corecss="button, tables"}
+    {*{css unique="data-view" corecss="button"}*}
+
+    {*{/css}*}
+    {css unique="showall-forms" link="`$asset_path`css/datatables-tools.css"}
 
     {/css}
+
     <div class="module forms showall">
-        <h2>{$title}</h2>
+        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
             {$description}
         {/if}
@@ -34,16 +38,23 @@
                     &#160;&#160;|&#160;&#160;
                     {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
                     &#160;&#160;|&#160;&#160;
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
+                    {if !empty($filtered)}
+                        &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
+                    {/if}
                 {/if}
             </div>
+            {br}
         {/permissions}
-        {$page->links}
+        {*{$page->links}*}
         <div style="overflow: auto; overflow-y: hidden;">
-            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+            <table id="forms-showall" border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
-                        {$page->header_columns}
+                        {*{$page->header_columns}*}
+                        {foreach  from=$page->columns item=column key=name name=column}
+                            <th>{$name}</th>
+                        {/foreach}
                         <div class="item-actions">
                             <th>{'Actions'|gettext}</th>
                         </div>
@@ -51,11 +62,13 @@
                 </thead>
                 <tbody>
                     {foreach from=$page->records item=fields key=ukey name=fields}
-                        <tr class="{cycle values="even,odd"}">
-                            {foreach from=$page->columns item=column name=column}
+                        <tr>
+                            {foreach from=$page->columns item=column key=field name=column}
                                 <td>
                                     {if $smarty.foreach.column.iteration == 1}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>{$fields.$column}</a>
+                                    {elseif $column == 'email'}
+                                        <a href="mailto:{$fields.$column}">{$fields.$column}</a>
                                     {else}
                                         {$fields.$column}
                                     {/if}
@@ -77,15 +90,35 @@
                 </tbody>
             </table>
         </div>
-        {$page->links}
-        {*<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{$backlink}">{'Back'|gettext}</a>*}
+        {*{$page->links}*}
+        {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
     </div>
 {/if}
 
-{script unique="form-showall" jquery='jquery.dataTables'}
+{if $config.pagelinks == 'Top Only'}
+    {$pageit = '<"top"lfip>rt<"bottom"<"clear">'}
+{elseif $config.pagelinks == 'Top and Bottom'}
+    {$pageit = '<"top"lfip>rt<"bottom"ip<"clear">'}
+{elseif $config.pagelinks == 'Bottom Only'}
+    {$pageit = '<"top"lf>rt<"bottom"ip<"clear">'}
+{elseif $config.pagelinks == 'Disable page links'}
+    {$pageit = '<"top"lf>rt<"bottom"<"clear">'}
+{/if}
+{script unique="form-showall" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
-        $('#forms-showall').dataTable();
+        $('#forms-showall').DataTable({
+            pagingType: "full_numbers",
+//            dom: '{/literal}{$pageit}{literal}',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            columnDefs: [
+                { searchable: false, targets: [ -1 ] },
+                { sortable: false, targets: [ -1 ] },
+            ],
+        });
     } );
 {/literal}
 {/script}

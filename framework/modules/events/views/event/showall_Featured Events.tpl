@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,10 +19,10 @@
 
 <div class="module events cal-admin">
 	{icon action=showall text='Month View'|gettext}{br}
-	<h1>
+	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
-	</h1>
+	</{$config.heading_level|default:'h1'}>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -42,7 +42,7 @@
 						<table width=100% cellpadding="0" cellspacing="0" border="0">
 							<tr>
 								<td>
-                                    <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+                                    <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
                                         {if substr($item->location_data,1,8) != 'calevent'}
                                             href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                         {/if}

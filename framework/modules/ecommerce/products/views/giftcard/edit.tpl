@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -40,7 +40,7 @@
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
 	            <div id="tab2">
-	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" accept="image/*" value=$record->expFile}
+	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" accept="image/*" value=$record->expFile folder=$config.upload_folder}
 	            </div>
             </div>
         </div>

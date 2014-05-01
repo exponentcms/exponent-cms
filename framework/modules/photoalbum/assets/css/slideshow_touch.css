@@ -1,0 +1,23 @@
+.slideshow-frame li.slide {
+	list-style: none;
+}
+
+.slideshow-container ul {
+	margin : 0;
+}
+
+.slideshow-frame .item-actions {
+    position:absolute;
+    left:5px;
+    bottom:5px;
+    z-index:5;
+	display: none;
+}
+
+.slideshow-frame:hover .item-actions {
+	display: block;
+}
+
+.slideshow-frame .item-actions a {
+    display:block;
+}

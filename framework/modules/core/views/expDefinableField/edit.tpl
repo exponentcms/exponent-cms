@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,8 +18,8 @@
 {/css}
 
 <div class="module expDefinableField edit">
-    <div class="form_header">
-        <h1>{if $is_edit == 1}{'Edit Definable Field'|gettext}{else}{'Create a New Definable Field'|gettext}{/if} - {$types}</h1>
+    2div class="form_header">
+        <h1>{if $is_edit == 1}{'Edit Definable Field'|gettext}{else}{'Create a New Definable Field'|gettext}{/if} - {$types}</h2>
     </div>
     {$form_html}
 </div>

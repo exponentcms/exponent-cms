@@ -22,6 +22,6 @@
         <h2>{"Tag Settings"|gettext}</h2>
 	</div>
 </div>
-<h2>{'Dis-Allow tags'|gettext}</h2>
+<h3>{'Dis-Allow tags'|gettext}</h3>
 {control type=checkbox name=disabletags label="Disable Tags for this module" value=1 checked=$config.disabletags}
 {*{chain module=expTag view=manage}*}

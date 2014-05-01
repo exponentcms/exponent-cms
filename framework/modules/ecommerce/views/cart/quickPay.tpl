@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -82,22 +82,7 @@
     {/form}
 </div>
 {script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
-//
-{/script}
 
-{script unique="`$id`" yui3mods="1"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
-
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-	});
-{/literal}
 {/script}
 
 {script unique="`$id`" yui3mods="1"}

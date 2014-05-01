@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,13 +17,13 @@
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
         <div class="caption">
             &laquo;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$prevmonth3}" rel="{$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$prevmonth2}" rel="{$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$prevmonth}" rel="{$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$prevmonth3}" rel="{$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$prevmonth2}" rel="{$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$prevmonth}" rel="{$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
             <strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$nextmonth}" rel="{$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$nextmonth2}" rel="{$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-            <a class="nav module-actions" href="{link action=eventsCalendar time=$nextmonth3}" rel="{$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$nextmonth}" rel="{$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$nextmonth2}" rel="{$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
+            <a class="evnav module-actions" href="{link action=eventsCalendar time=$nextmonth3}" rel="{$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
         </div>
 		<tr class="daysoftheweek">
             {if $config.show_weeks}<th></th>{/if}
@@ -121,37 +121,15 @@
 	</table>
 
 {if $config.lightbox}
-{*{css unique="cal-lightbox" link="`$smarty.const.PATH_RELATIVE`framework/modules/events/assets/css/lightbox.css"}*}
-
-{*{/css}*}
-
-{*FIXME convert to yui3*}
-{script unique="shadowbox" yui3mods=1}
+{script unique="shadowbox" jquery='jquery.colorbox'}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules = {
-        'yui2-lightbox' : {
-            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/js/lightbox.js',
-            requires : ['yui2-dom','yui2-event','yui2-connectioncore','yui2-json','yui2-selector','yui2-animation','yui2-lightbox-css']
-        },
-        'yui2-lightbox-css' : {
-            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/lightbox.css',
-            type: 'css'
-        }
-    }
-    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-container','yui2-yahoo-dom-event','yui2-lightbox', function(Y) {
-        var YAHOO = Y.YUI2;
-        var lb2 = new this.EXPONENT.Lightbox(
-            {
-                animate: true,
-                maxWidth: 650
-            }
-        );
-        YAHOO.util.Event.addListener(YAHOO.util.Selector.query("a.calpopevent"), "click", function (e) {
-            YAHOO.util.Event.preventDefault(e);
-            target = YAHOO.util.Event.getTarget(e);
-            lb2.cfg.contentURL = EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id;
-            lb2.show(e);
-        }, lb2, true);
+    $('a.calpopevent').click(function(e) {
+        target = e.target;
+        $.colorbox({
+            href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,
+            maxWidth: 650
+        });
+        e.preventDefault();
     });
 {/literal}
 {/script}

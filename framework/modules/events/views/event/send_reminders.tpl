@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 {/css}
  
 <div class="module events cal-default">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -37,7 +37,7 @@
 			{if $counts[$ts] != 0}
 				<dt>
 					<strong>
-						<a class="itemtitle{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
+						<a class="itemtitle{if !empty($item->color)} {$item->color}{/if}" href="{link controller=event action=showall view=showall_Day time=$ts}">{$ts|format_date:"%A, %b %e"}</a>
 					</strong>
 				</dt>
 				{foreach from=$events item=event}

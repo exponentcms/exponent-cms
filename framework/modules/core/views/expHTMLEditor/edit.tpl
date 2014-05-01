@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,29 +16,49 @@
 <div class="module text edit">
     <div class="info-header">
         <div class="related-actions">
-            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="ckeditor-toolbar-configuration"}
+            {help text="Get Help with"|gettext|cat:" "|cat:("Configuring Toolbars"|gettext) module="`$editor`-toolbar-configuration"}
         </div>
-    {if $record->id != ""}
-        <h1>{'Editing CKEditor Toolbar Configuration'|gettext}</h1>
-    {else}
-        <h1>{'New CKEditor Toolbar Configuration'|gettext}</h1>
-    {/if}
+        {if $record->id != ""}
+            <h2>{'Editing'|gettext}
+        {else}
+            <h2>{'New'|gettext}
+        {/if}
+        {if $editor == 'ckeditor'}
+            CKEditor
+        {elseif $editor == 'tinymce'}
+            TinyMCE
+        {/if}
+        {'Toolbar Configuration'|gettext}</h2>
     </div>
 
     {form action=update}
         {control type=hidden name=id value=$record->id}
+        {control type=hidden name=editor value=$editor}
         {control type=text name=name label="Configuration Name"|gettext value=$record->name}
 	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?"|gettext checked=$record->active value=1}
-		{control type=dropdown name=skin label="Toolbar Skin"|gettext items=$skins values=$skins value=$record->skin default='kama'}
-		{control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1 checked=1}
-		{control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
+        {if $editor == 'ckeditor'}
+            {$skin = 'kama'}
+        {elseif $editor == 'tinymce'}
+            {$skin = 'lightgray'}
+        {/if}
+		{control type=dropdown name=skin label="Toolbar Skin"|gettext items=$skins values=$skins value=$record->skin default=$skin}
+        {if $editor == 'ckeditor'}
+            {control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1}
+            {control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
+        {elseif $editor == 'tinymce'}
+            {control type="checkbox" postfalse=1 name=scayt_on label="Disable Browser SpellCheck"|gettext checked=$record->scayt_on value=1}
+        {/if}
         <h4><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h4>
         <blockquote><em>({'Please visit the help page for entry format requirements!'|gettext})</em></blockquote>
-		{control type=textarea cols=80 rows=20 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
+		{control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
         {control type=textarea cols=80 rows=2 name=stylesset label="Styles List (plus style sheet styles)"|gettext value=$record->stylesset}
         {control type=textarea cols=80 rows=2 name=formattags label="Formats List"|gettext value=$record->formattags}
 	    {control type=textarea cols=80 rows=2 name=fontnames label="Fonts List"|gettext value=$record->fontnames}
-        {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins}
+        {if $editor == 'ckeditor'}
+            {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='Adding an uninstalled plugin to this list may crash the site!'|gettext}
+        {elseif $editor == 'tinymce'}
+            {control type=textarea cols=80 rows=2 name=plugins label="Load Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='You must specifically include standard plugins here.'|gettext}
+        {/if}
         {control type=buttongroup submit="Save Toolbar"|gettext cancel="Cancel"|gettext returntype="manageable"}
     {/form}   
 </div>

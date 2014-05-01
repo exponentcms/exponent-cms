@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -53,30 +53,41 @@ class checkboxcontrol extends formcontrol {
     }
 
     function toHTML($label, $name) {
-        if (!empty($this->id)) {
-            $divID = ' id="' . $this->id . 'Control"';
-            $for   = ' for="' . $this->id . '"';
+        if (!empty($this->_ishidden)) {
+            $this->name = empty($this->name) ? $name : $this->name;
+            $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+    		$html .= ' />';
+    		return $html;
         } else {
+            if (!empty($this->id)) {
+                $divID = ' id="' . $this->id . 'Control"';
+                $for = ' for="' . $this->id . '"';
+            } else {
 //            $divID = '';
-            $divID = ' id="' . $name . 'Control"';
+                $divID = ' id="' . $name . 'Control"';
 //            $for   = '';
-            $for   = ' for="' . $name . '"';
-        }
-        $html = "<div" . $divID . " class=\"";
-        $html .= (!empty($this->required)) ? ' required">' : '">';
-        if (!empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"checkbox control\" style=\"display:inline;\">".$label;
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            $html .= "</label>";
+                $for = ' for="' . $name . '"';
+            }
+            $html = "<div" . $divID . " class=\"";
+            $html .= (!empty($this->required)) ? ' required">' : '">';
+            if (!empty($this->flip)) {
+                $html .= "<label" . $for . " class=\"checkbox control\" style=\"display:inline;\">" . $label;
+                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                    $name
+                );
+                $html .= "</label>";
 
-            $flip = '';
-        } else {
+                $flip = '';
+            } else {
 //            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 //            $html .= "<td class=\"input\" nowrap>";
-            $html .= "<label class=\"checkbox control\">";
+                $html .= "<label" . $for . " class=\"checkbox control\">";
 //            $html .= "</td><td>";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
-            $html .= $label."</label>";
+                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                    $name
+                );
+                $html .= $label . "</label>";
 //             if (!empty($label) && $label != ' ') {
 // //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
 // //                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
@@ -87,12 +98,13 @@ class checkboxcontrol extends formcontrol {
 //                 $html .= "</label>";
 //             }
 //            $html .= "</td>";
-            // $flip = ' style="position:absolute;"';
-        }
+                // $flip = ' style="position:absolute;"';
+            }
 //        $html .= "</tr></table>";
-        if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
-        $html .= "</div>";
-        return $html;
+            if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
+            $html .= "</div>";
+            return $html;
+        }
     }
 
     /*
@@ -116,12 +128,14 @@ class checkboxcontrol extends formcontrol {
         $this->value = isset($this->value) ? $this->value : 1;
 //        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
-        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+//        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+        $html        = '<input' . $inputID . ' class="checkbox control form-control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
         if ($this->disabled) $html .= ' disabled';
+        $html .= $this->focus ? " autofocus" : "";
         foreach ($this->jsHooks as $type=> $val) {
             $html .= ' ' . $type . '="' . $val . '"';
         }
@@ -162,6 +176,7 @@ class checkboxcontrol extends formcontrol {
             $html .= " onpaste=\"return " . $this->filter . "_filter.onpaste(this, event);\"";
         }
         if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
+        $html .= $this->focus ? " autofocus" : "";
         foreach ($this->jsHooks as $type=> $val) {
             $html .= ' ' . $type . '="' . $val . '"';
         }
@@ -203,14 +218,16 @@ class checkboxcontrol extends formcontrol {
             $object->default     = false;
             $object->flip        = false;
             $object->required    = false;
+            $object->is_hidden = false;
         }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
-        $form->register("default", gt('Default'), new checkboxcontrol($object->default, false));
+        $form->register("default", gt('Default value'), new checkboxcontrol($object->default, false));
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
-        $form->register("required", gt('Required'), new checkboxcontrol($object->required, false));
+        $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
+        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
 
         return $form;
@@ -230,6 +247,7 @@ class checkboxcontrol extends formcontrol {
         $object->default     = isset($values['default']);
         $object->flip        = isset($values['flip']);
         $object->required    = isset($values['required']);
+        $object->is_hidden = isset($values['is_hidden']);
         return $object;
     }
 

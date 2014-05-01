@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,8 @@ if (!defined('EXPONENT')) exit('');
 <br>
 <p>
 <?php
-    // build core css files from .less
+    // build core css files from .less after clearing the less compiler cache
+    expFile::removeFilesInDirectory(BASE.'tmp/css');
     expCSS::updateCoreCss();
 
     $upgradedb = 'upgrade-2';

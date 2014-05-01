@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 			<div class="related-actions">
 			    {help text="Get Help with"|gettext|cat:" "|cat:("configuring your website"|gettext) page="site-configuration"}
 			</div>
-			<h1>{'Configure Website'|gettext}</h1>
+			<h2>{'Configure Website'|gettext}</h2>
 		</div>
 	</div>
     {form controller="administration" action=update_siteconfig}
@@ -136,7 +136,15 @@
                     </div>
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
-	                <h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>
+	                {*<h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>*}
+                    {*{assocarray}*}
+                        {*manage_themes: [*}
+                            {*controller: "administration"*}
+                            {*action: "manage_themes"*}
+                        {*]*}
+                    {*{/assocarray}*}
+                    {*{$link = makeLink($manage_themes)}*}
+                    {*{icon button=true link=$link text='Display Theme Options'|gettext}*}
 	                {control type="checkbox" postfalse=1 name="sc[INVERT_HIDE_TITLE]" label="Reverse the Logic of Hide Module Title setting?"|gettext checked=$smarty.const.INVERT_HIDE_TITLE value=1 description='Changes default of always show title to always hide title, unless module setting is checked.'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[FORCE_MOBILE]" label="Force Display of the Mobile Theme Variation (if available)?"|gettext checked=$smarty.const.FORCE_MOBILE value=1}
                     {group label="Display Formats"|gettext}
@@ -157,6 +165,7 @@
                         </div>
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
+                    {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder (test)"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
                     {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
@@ -166,7 +175,11 @@
                     {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
                     {group label="Quick Add Settings"|gettext}
                         {control type="text" name="sc[QUICK_UPLOAD_WIDTH]" label="Force Quick Add to Downsize Graphics to Max Width/Height"|gettext value=$smarty.const.QUICK_UPLOAD_WIDTH|default:0 size="4" description='Zero or Empty means do NOT resize on a Quick Add Upload'|gettext}
-                        {control type=dropdown name="sc[QUICK_UPLOAD_FOLDER]" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$smarty.const.QUICK_UPLOAD_FOLDER}
+                        {if $smarty.const.SITE_FILE_MANAGER == 'picker'}
+                            {control type=dropdown name="sc[QUICK_UPLOAD_FOLDER]" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$smarty.const.QUICK_UPLOAD_FOLDER}
+                        {elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+                            {control type="text" name="sc[QUICK_UPLOAD_FOLDER]" label="Quick Add Upload Subfolder"|gettext value=$smarty.const.QUICK_UPLOAD_FOLDER}
+                        {/if}
                     {/group}
                 </div>
                 {if $user->is_admin==1}
@@ -232,12 +245,26 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="sc[SITE_WYSIWYG_EDITOR]" label="HTML Editor"|gettext items="CKEditor" values="ckeditor" default=$smarty.const.SITE_WYSIWYG_EDITOR}
-	                {if $smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}
-                        {group label="Editor Configuration"|gettext}
-                            {chain module=expHTMLEditor view=manage}
-                        {/group}
-	                {/if}
+                    {assocarray}
+                        paramc: [
+                            editor: "ckeditor"
+                        ]
+                        paramt: [
+                            editor: "tinymce"
+                        ]
+                    {/assocarray}
+                    <div id="alt-controlw" class="alt-control">
+                        <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
+                        <div class="alt-body">
+                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE (test)"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            <div id="ckeditor-div" class="alt-item" style="display:none;">
+                                {showmodule module=expHTMLEditor action=manage params=$paramc}
+                            </div>
+                            <div id="tinymce-div" class="alt-item" style="display:none;">
+                                {showmodule module=expHTMLEditor action=manage params=$paramt}
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div id="tab12">
 	                <div class="info-header">
@@ -248,7 +275,7 @@
                     </div>
                     {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
-                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403/401) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab13">
@@ -336,11 +363,11 @@
                     {group label="Minify Debugging Settings"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_ERROR_LOGGER]" label="Enable logging of minify error messages to FirePHP?"|gettext checked=$smarty.const.MINIFY_ERROR_LOGGER value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_CSS]" label="Minify inline css styles?"|gettext checked=$smarty.const.MINIFY_INLINE_CSS value=1}
-                        {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
+                        {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_CSS]" label="Minify and Combine linked css style-sheets?"|gettext checked=$smarty.const.MINIFY_LINKED_CSS value=1}
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_INLINE_JS]" label="Minify inline javascript?"|gettext checked=$smarty.const.MINIFY_INLINE_JS value=1}
-                        {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_JS]" label="Minify linked js scripts?"|gettext checked=$smarty.const.MINIFY_LINKED_JS value=1}
-                        {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI3]" label="Minify YUI3 items?"|gettext checked=$smarty.const.MINIFY_YUI3 value=1}
-                        {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Minify YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
+                        {control type="checkbox" postfalse=1 name="sc[MINIFY_LINKED_JS]" label="Minify and Combine linked js scripts?"|gettext checked=$smarty.const.MINIFY_LINKED_JS value=1}
+                        {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI3]" label="Combine YUI3 items?"|gettext checked=$smarty.const.MINIFY_YUI3 value=1}
+                        {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Combine YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
                     {/group}
                 </div>
 				<div id="tab15">
@@ -432,7 +459,8 @@
                     </div>
                     {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles default=$smarty.const.CURRENTCONFIGNAME onchange="changeProfile(this.value)"}
                     {control type="text" name="profile_name" label="New Profile Name"|gettext value=$smarty.const.CURRENTCONFIGNAME}
-                    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>
+                    {*<a class="{button_style}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>*}
+                    {icon button=true action=scriptaction onclick="saveProfile()" text='Save New Profile'|gettext}
                 </div>
                 {/if}
             </div>
@@ -473,12 +501,31 @@
 {/literal}
 {/script}
 
+{script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    var radioSwitchersw = Y.all('#alt-controlw input[type="radio"]');
+    radioSwitchersw.on('click',function(e){
+        Y.all("#alt-controlw .alt-item").setStyle('display','none');
+        var curdiv = Y.one("#" + e.target.get('value') + "-div");
+        curdiv.setStyle('display','block');
+    });
+
+    radioSwitchersw.each(function(node,k){
+        if(node.get('checked')==true){
+            node.simulate('click');
+        }
+    });
+});
+{/literal}
+{/script}
+
 {script unique="pdf-type" yui3mods="node,node-event-simulate"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
     var radioSwitchers = Y.all('#alt-control input[type="radio"]');
     radioSwitchers.on('click',function(e){
-        Y.all(".alt-item").setStyle('display','none');
+        Y.all("#alt-control .alt-item").setStyle('display','none');
         var curdiv = Y.one("#" + e.target.get('value') + "-div");
         curdiv.setStyle('display','block');
     });

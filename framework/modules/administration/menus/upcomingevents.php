@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -40,11 +40,13 @@ if ($db->countObjects('product', 'product_type="eventregistration"') == 0) retur
 $items = array(
     array(
         'text'      => gt('View All Event Registrations'),
+        'icon' => 'fa-calendar-o',
         'url'       => makeLink(array('controller' => 'eventregistration', 'action' => 'manage')),
         'classname' => 'events',
     ),
     array(
         'text'      => gt('Add an event'),
+        'icon' => 'fa-plus',
         'url'       => makeLink(array('controller' => 'store', 'action' => 'edit', 'product_type' => 'eventregistration')),
         'classname' => 'add',
     )
@@ -57,18 +59,21 @@ foreach ($allevents as $event) {
         $events[] = $event;
     }
 }
+$events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'order' => 'ASC'));
 foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();
-        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . '/' . $event->quantity . ')';
+        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . ($event->quantity ? '/' . $event->quantity : '' . ')');
         $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $event->id));
         $thisitem['classname'] = 'event';
+        $thisitem['icon'] = 'fa-info';
         $items[] = $thisitem;
     }
 }
 
 return array(
     'text'      => gt('Upcoming Events'),
+    'icon' => 'fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'events',

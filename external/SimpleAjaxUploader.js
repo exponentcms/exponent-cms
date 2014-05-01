@@ -1,6 +1,6 @@
 /**
  * Simple Ajax Uploader
- * Version 1.8.1
+ * Version 1.10.1
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2013 LPology, LLC
@@ -11,8 +11,9 @@ YUI.add('SimpleAjaxUploader', function (Y) {
 
   Y.ss = Y.ss || {};
 
-  // Pre-compile and cache our regular expressions
-  // Except for JSON regex. Only IE6 and IE7 use it. Screw them.
+  // Pre-compile and cache regular expressions
+  // (except for JSON regex, which only IE6 and IE7 use)
+
   // Y.ss.trim()
   var rLWhitespace = /^\s+/,
   rTWhitespace = /\s+$/,
@@ -144,28 +145,59 @@ Y.ss.newXHR = function() {
 
 /**
  * Parses a JSON string and returns a Javascript object
- * Parts borrowed from www.jquery.com
+ * Borrowed from www.jquery.com
  */
- Y.ss.parseJSON = function( data ) {
-   "use strict";
+Y.ss.parseJSON = function( data ) {
+  "use strict";
 
   if ( !data ) {
     return false;
   }
-  data = Y.ss.trim( data );
+
+  data = Y.ss.trim( data + '' );
+
   if ( window.JSON && window.JSON.parse ) {
     try {
-      return window.JSON.parse( data );
+      // Support: Android 2.3
+      // Workaround failure to string-cast null input
+      return window.JSON.parse( data + '' );
     } catch ( err ) {
       return false;
     }
   }
-  if ( data ) {
-      if (/^[\],:{}\s]*$/.test( data.replace(/\\(?:["\\\/bfnrt]|u[\da-fA-F]{4})/g, "@" )
-        .replace(/"[^"\\\r\n]*"|true|false|null|-?(?:\d+\.|)\d+(?:[eE][+-]?\d+|)/g, "]" )
-        .replace(/(?:^|:|,)(?:\s*\[)+/g, "")) ) {
-        return ( new Function( "return " + data ) )();
-      }
+
+  var rvalidtokens = /(,)|(\[|{)|(}|])|"(?:[^"\\\r\n]|\\["\\\/bfnrt]|\\u[\da-fA-F]{4})*"\s*:?|true|false|null|-?(?!0\d)\d+(?:\.\d+|)(?:[eE][+-]?\d+|)/g,
+      depth = null,
+      requireNonComma;
+
+	// Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
+	// after removing valid tokens
+	if ( data && !Y.ss.trim  ( data.replace( rvalidtokens, function( token, comma, open, close ) {
+
+		// Force termination if we see a misplaced comma
+		if ( requireNonComma && comma ) {
+			depth = 0;
+		}
+
+		// Perform no more replacements after returning to outermost depth
+		if ( depth === 0 ) {
+			return token;
+		}
+
+		// Commas must not follow "[", "{", or ","
+		requireNonComma = open || comma;
+
+		// Determine new depth
+		// array/object open ("[" or "{"): depth += true - false (increment)
+		// array/object close ("]" or "}"): depth += false - true (decrement)
+		// other cases ("," or primitive): depth += true - true (numeric cast)
+		depth += !close - !open;
+
+		// Remove this token
+		return '';
+	}) ) )
+  {
+    return ( new Function( "return " + data ) )();
   }
   return false;
 };
@@ -229,22 +261,6 @@ Y.ss.copyLayout = function( from, to ) {
     height : from.offsetHeight + 'px'
   });
 };
-
-/**
-* Creates and returns element from html chunk
-*/
-Y.ss.toElement = ( function() {
-  "use strict";
-
-  var div = document.createElement( 'div' );
-
-  return function( html ) {
-    div.innerHTML = html;
-    var element = div.firstChild;
-    div.removeChild( element );
-    return element;
-  };
-})();
 
 /**
 * Generates unique ID
@@ -418,6 +434,7 @@ Y.ss.SimpleUpload = function( options ) {
   this._opts = {
     button: '',
     url: '',
+    cors: false,
     progressUrl: false,
     nginxProgressUrl: false,
     multiple: false,
@@ -426,6 +443,7 @@ Y.ss.SimpleUpload = function( options ) {
     checkProgressInterval: 50,
     keyParamName: 'APC_UPLOAD_PROGRESS',
     nginxProgressHeader: 'X-Progress-ID',
+    corsInputName: 'XHR_CORS_TARGETORIGIN',
     allowedExtensions: [],
     accept: '',
     maxSize: false,
@@ -439,26 +457,27 @@ Y.ss.SimpleUpload = function( options ) {
     hoverClass: '',
     focusClass: '',
     disabledClass: '',
-    onAbort: function( filename ) {},
-    onChange: function( filename, extension ) {},
-    onSubmit: function( filename, extension ) {},
+    customHeaders: {},
+    onAbort: function( filename, uploadBtn ) {},
+    onChange: function( filename, extension, uploadBtn ) {},
+    onSubmit: function( filename, extension, uploadBtn ) {},
     onProgress: function( pct ) {},
     onUpdateFileSize: function( filesize ) {},
-    onComplete: function( filename, response ) {},
+    onComplete: function( filename, response, uploadBtn ) {},
     onExtError: function( filename, extension ) {},
     onSizeError: function( filename, fileSize ) {},
-    onError: function( filename, type, status, statusText ) {},
-    startXHR: function( filename, fileSize ) {},
-    endXHR: function( filename, fileSize ) {},
-    startNonXHR: function( filename ) {},
-    endNonXHR: function( filename ) {}
+    onError: function( filename, type, status, statusText, response, uploadBtn ) {},
+    startXHR: function( filename, fileSize, uploadBtn ) {},
+    endXHR: function( filename, fileSize, uploadBtn ) {},
+    startNonXHR: function( filename, uploadBtn ) {},
+    endNonXHR: function( filename, uploadBtn ) {}
   };
 
   Y.ss.extendObj( this._opts, options );
   options = null; // Null to avoid leaks in IE
   this._btns = [];
 
-  // An array of buttons
+  // An array of buttons were passed
   if ( this._opts.button instanceof Array ) {
     len = this._opts.button.length;
 
@@ -471,7 +490,7 @@ Y.ss.SimpleUpload = function( options ) {
       }
     }
 
-  // A single button
+  // A single button was passed
   } else {
     btn = Y.ss.verifyElem( this._opts.button );
     if ( btn !== false ) {
@@ -490,20 +509,19 @@ Y.ss.SimpleUpload = function( options ) {
     this._opts.maxUploads = 1;
   }
 
+  // An array of objects, each containing two items, a file and a reference
+  // to the button which triggered the upload: { file: uploadFile, btn: button }
   this._queue = [];
+
   this._active = 0;
   this._disabled = false; // if disabled, clicking on button won't do anything
   this._progKeys = []; // contains the currently active upload ID progress keys
   this._maxFails = 10; // max allowed failed progress updates requests in iframe mode
 
   if ( !XhrOk ) {
-    if ( this._opts.progressUrl || this._opts.nginxProgressUrl ) {
-      // Store keys in _sizeFlags after the first time we set sizeBox
-      // and call UpdateFileSize(). No need to do it > 1 time
-      this._sizeFlags = {};
-      // Generate upload ID progress key
-      this._progKey = Y.ss.getUID();
-    }
+    // Store progress keys in _sizeFlags after the first time we set sizeBox
+    // and call UpdateFileSize(). No need to do it > 1 time
+    this._sizeFlags = {};
   }
 
   // Calls below this line must always be last
@@ -567,6 +585,15 @@ Y.ss.SimpleUpload.prototype = {
   setData: function( data ) {
     "use strict";
     this._opts.data = data;
+  },
+
+  /**
+  * Set or change uploader options
+  * @param {Object} options
+  */
+  setOptions: function( options ) {
+    "use strict";
+    Y.ss.extendObj( this._opts, options );
   },
 
   /**
@@ -644,9 +671,16 @@ Y.ss.SimpleUpload.prototype = {
   removeCurrent: function() {
     "use strict";
 
-    Y.ss.removeItem( this._queue, this._file );
+    var i = this._queue.length;
+
+    while ( i-- ) {
+      if ( this._queue[i].file === this._file ) {
+        this._queue.splice( i, 1 );
+        break;
+      }
+    }
+
     delete this._file;
-    this._file = null;
     this._cycleQueue();
   },
 
@@ -691,6 +725,17 @@ Y.ss.SimpleUpload.prototype = {
       Y.ss.removeClass( this._btns[i], this._opts.disabledClass );
       this._btns[i].disabled = false;
     }
+  },
+
+  _getHost: function( uri ) {
+    var a = document.createElement( 'a' );
+
+    a.href = uri;
+
+    if ( a.hostname ) {
+      return a.hostname.toLowerCase();
+    }
+    return uri;
   },
 
   /**
@@ -742,11 +787,12 @@ Y.ss.SimpleUpload.prototype = {
 
     // Make sure that element opacity exists. Otherwise use IE filter
     if ( div.style.opacity !== '0' ) {
-      div.style.filter = 'alpha( opacity=0 )';
+      div.style.filter = 'alpha(opacity=0)';
     }
 
     Y.ss.addEvent( this._input, 'change', function() {
-      var filename,
+      var uploadBtn = self._overBtn,
+          filename,
           ext,
           total,
           i;
@@ -759,16 +805,17 @@ Y.ss.SimpleUpload.prototype = {
         filename = Y.ss.getFilename( self._input.value );
         ext = Y.ss.getExt( filename );
 
-        if ( false === self._opts.onChange.call( self, filename, ext ) ) {
+        if ( false === self._opts.onChange.call( self, filename, ext, uploadBtn ) ) {
           return;
         }
-        self._queue.push( self._input );
+
+        self._queue.push( { file: self._input, btn: uploadBtn } );
 
       } else {
         filename = Y.ss.getFilename( self._input.files[0].name );
         ext = Y.ss.getExt( filename );
 
-        if ( false === self._opts.onChange.call( self, filename, ext ) ) {
+        if ( false === self._opts.onChange.call( self, filename, ext, uploadBtn ) ) {
           return;
         }
 
@@ -780,14 +827,14 @@ Y.ss.SimpleUpload.prototype = {
         }
 
         for ( i = 0; i < total; i++ ) {
-          self._queue.push( self._input.files[i] );
+          self._queue.push( { file: self._input.files[i], btn: uploadBtn } );
         }
       }
 
-      // Now that file is in upload queue, remove the file input
       Y.ss.removeClass( self._overBtn, self._opts.hoverClass );
       Y.ss.removeClass( self._overBtn, self._opts.focusClass );
 
+      // Now that file is in upload queue, remove the file input
       Y.ss.remove( self._input.parentNode );
       delete self._input;
 
@@ -818,8 +865,8 @@ Y.ss.SimpleUpload.prototype = {
       Y.ss.removeClass( self._overBtn, self._opts.focusClass );
     });
 
-    document.body.appendChild( div );
     div.appendChild( this._input );
+    document.body.appendChild( div );
   },
 
   /**
@@ -858,11 +905,20 @@ Y.ss.SimpleUpload.prototype = {
     "use strict";
 
     var id = Y.ss.getUID(),
-        iframe = Y.ss.toElement( '<iframe src="javascript:false;" name="' + id + '" />' );
+        iframe;
 
-    document.body.appendChild( iframe );
+    // IE7 can only create an iframe this way, all others are the other way
+    if ( navigator.userAgent.indexOf('MSIE 7') > -1 ) {
+      iframe = document.createElement('<iframe src="javascript:false;" name="' + id + '">');
+    } else {
+      iframe = document.createElement('iframe');
+      iframe.src = 'javascript:false;';
+      iframe.name = id;
+    }
+
     iframe.style.display = 'none';
     iframe.id = id;
+    document.body.appendChild( iframe );
     return iframe;
   },
 
@@ -871,15 +927,28 @@ Y.ss.SimpleUpload.prototype = {
   * @param {Element} iframe Where to submit
   * @return {Element} form
   */
-  _getForm: function( iframe ) {
+  _getForm: function( iframe, key ) {
     "use strict";
 
-    var form = Y.ss.toElement( '<form method="post" enctype="multipart/form-data"></form>' );
+    var form = document.createElement('form'),
+        url = this._opts.url;
 
-    document.body.appendChild( form );
+    form.method = 'post';
+    form.encoding = 'multipart/form-data'; // IE
+    form.enctype = 'multipart/form-data';
     form.style.display = 'none';
-    form.action = this._opts.url;
+
+    // If we're using Nginx Upload Progress Module, append upload key to the URL
+    if ( this._opts.nginxProgressUrl ) {
+      // Preserve query string if there is one
+      url = url + ( ( url.indexOf( '?' ) > -1 ) ? '&' : '?' ) +
+            encodeURIComponent( this._opts.nginxProgressHeader ) +
+            '=' + encodeURIComponent( key );
+    }
+
+    form.action = url;
     form.target = iframe.name;
+    document.body.appendChild( form );
     return form;
   },
 
@@ -935,21 +1004,22 @@ Y.ss.SimpleUpload.prototype = {
   /**
   * Completes upload request if an error is detected
   */
-  _errorFinish: function( status, statusText, errorType, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort ) {
+  _errorFinish: function( status, statusText, response, errorType, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort, uploadBtn ) {
     "use strict";
 
-    this.log( 'Upload failed: '+status+' '+statusText );
-    this._opts.onError.call( this, filename, errorType, status, statusText );
+    this.log( 'Upload failed: ' + status + ' ' + statusText );
+    response = Y.ss.parseJSON( response );
+    this._opts.onError.call( this, filename, errorType, status, statusText, response, uploadBtn );
     this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
     // Null to avoid leaks in IE
-    status = statusText = errorType = filename = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
+    status = statusText = response = errorType = filename = sizeBox = progBox = pctBox = abortBtn = removeAbort = uploadBtn = null;
   },
 
   /**
   * Completes upload request if the transfer was successful
   */
-  _finish: function( status, statusText, response, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort ) {
+  _finish: function( status, statusText, response, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort, uploadBtn ) {
     "use strict";
 
     this.log( 'Server response: ' + response );
@@ -957,59 +1027,41 @@ Y.ss.SimpleUpload.prototype = {
     if ( this._opts.responseType.toLowerCase() == 'json' ) {
       response = Y.ss.parseJSON( response );
       if ( response === false ) {
-        this._errorFinish( status, statusText, 'parseerror', filename, sizeBox, progBox, abortBtn, removeAbort );
+        this._errorFinish( status, statusText, false, 'parseerror', filename, sizeBox, progBox, abortBtn, removeAbort, uploadBtn );
         return;
       }
     }
 
-    this._opts.onComplete.call( this, filename, response );
+    this._opts.onComplete.call( this, filename, response, uploadBtn );
     this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
     // Null to avoid leaks in IE
-    status = statusText = response = filename = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
+    status = statusText = response = filename = sizeBox = progBox = pctBox = abortBtn = removeAbort = uploadBtn = null;
   },
 
   /**
   * Handles uploading with XHR
   */
-  _uploadXhr: function( filename, size, sizeBox, progBar, progBox, pctBox ) {
+  _uploadXhr: function( filename, size, sizeBox, progBar, progBox, pctBox, abortBtn, removeAbort, uploadBtn ) {
     "use strict";
 
     var self = this,
-        settings = this._opts,
+        opts = this._opts,
         xhr = Y.ss.newXHR(),
         params = {},
         queryURL,
         callback,
-        abortBtn,
-        removeAbort,
         cancel;
 
-    if ( false === settings.startXHR.call( this, filename, size ) ) {
-      if ( this._disabled ) {
-        this.enable();
-      }
-      this._active--;
-      return;
-    }
-
-    // Wait until after startXHR() to get abort
-    // button in case that's where setAbortBtn() is called
-    abortBtn = this._abortBtn;
-    removeAbort = this._removeAbort;
-
-    // Reset to default
-    this._abortBtn = this._removeAbort = null;
-
     // Add name property to query string
-    params[settings.name] = filename;
+    params[opts.name] = filename;
 
     // We get the any additional data here after startXHR()
     // in case the data was changed with setData() prior to submitting
-    Y.ss.extendObj( params, settings.data );
+    Y.ss.extendObj( params, opts.data );
 
-    // Build query string
-    queryURL = settings.url + '?' + Y.ss.obj2string( params );
+    // Build query string while preserving any existing parameters
+    queryURL = opts.url + ( ( opts.url.indexOf( '?' ) > -1 ) ? '&' : '?' ) + Y.ss.obj2string( params );
 
     // Inject file size into size box
     if ( sizeBox ) {
@@ -1025,7 +1077,7 @@ Y.ss.SimpleUpload.prototype = {
       progBar.style.width = '0%';
     }
 
-    settings.onProgress.call( this, 0 );
+    opts.onProgress.call( this, 0 );
 
     // Borrows heavily from jQuery ajax transport
     callback = function( _, isAbort ) {
@@ -1038,8 +1090,8 @@ Y.ss.SimpleUpload.prototype = {
         // Was never called and is aborted or complete
         if ( callback && ( isAbort || xhr.readyState === 4 ) ) {
 
-          xhr.onreadystatechange = function() {};
           callback = undefined;
+          xhr.onreadystatechange = function() {};
 
           // If it's an abort
           if ( isAbort ) {
@@ -1050,7 +1102,7 @@ Y.ss.SimpleUpload.prototype = {
             }
 
             self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
-            settings.onAbort.call( self, filename );
+            opts.onAbort.call( self, filename, uploadBtn );
 
           } else {
             status = xhr.status;
@@ -1059,25 +1111,25 @@ Y.ss.SimpleUpload.prototype = {
             // statusText for faulty cross-domain requests
             try {
               statusText = xhr.statusText;
-            } catch(  e  ) {
+            } catch( e ) {
               // We normalize with Webkit giving an empty statusText
               statusText = '';
             }
 
             if ( status >= 200 && status < 300 ) {
-              settings.endXHR.call( self, filename, size );
-              self._finish( status, statusText, xhr.responseText, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort );
+              opts.endXHR.call( self, filename, size, uploadBtn );
+              self._finish( status, statusText, xhr.responseText, filename, sizeBox, progBox, pctBox, abortBtn, removeAbort, uploadBtn );
 
               // We didn't get a 2xx status so throw an error
             } else {
-              self._errorFinish( status, statusText, 'error', filename, sizeBox, progBox, pctBox, abortBtn, removeAbort );
+              self._errorFinish( status, statusText, xhr.responseText, 'error', filename, sizeBox, progBox, pctBox, abortBtn, removeAbort, uploadBtn );
             }
           }
         }
       }
       catch ( e ) {
         if ( !isAbort ) {
-          self._errorFinish( -1, e.message, 'error', filename, sizeBox, progBox, pctBox, abortBtn, removeAbort );
+          self._errorFinish( -1, e.message, false, 'error', filename, sizeBox, progBox, pctBox, abortBtn, removeAbort, uploadBtn );
         }
       }
     };
@@ -1094,13 +1146,13 @@ Y.ss.SimpleUpload.prototype = {
     }
 
     xhr.onreadystatechange = callback;
-    xhr.open( settings.method.toUpperCase(), queryURL, true );
+    xhr.open( opts.method.toUpperCase(), queryURL, true );
 
     Y.ss.addEvent( xhr.upload, 'progress', function( event ) {
       if ( event.lengthComputable ) {
         var pct = Math.round( ( event.loaded / event.total ) * 100 );
 
-        settings.onProgress.call( self, pct );
+        opts.onProgress.call( self, pct );
 
         if ( pctBox ) {
           pctBox.innerHTML = pct + '%';
@@ -1115,20 +1167,27 @@ Y.ss.SimpleUpload.prototype = {
     xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
     xhr.setRequestHeader( 'X-File-Name', encodeURIComponent( filename ) );
 
-    if ( settings.responseType.toLowerCase() == 'json' ) {
+    if ( opts.responseType.toLowerCase() == 'json' ) {
       xhr.setRequestHeader( 'Accept', 'application/json, text/javascript, */*; q=0.01' );
     }
 
-    if ( settings.multipart === true ) {
+    // Set custom request headers
+    for ( var headerName in opts.customHeaders ) {
+      if ( opts.customHeaders.hasOwnProperty( headerName ) ) {
+        xhr.setRequestHeader( headerName, opts.customHeaders[headerName] );
+      }
+    }
+
+    if ( opts.multipart === true ) {
       var formData = new FormData();
 
-      for ( var prop in settings.data ) {
-        if ( settings.data.hasOwnProperty( prop ) ) {
-          formData.append( prop, settings.data[prop] );
+      for ( var prop in opts.data ) {
+        if ( opts.data.hasOwnProperty( prop ) ) {
+          formData.append( prop, opts.data[prop] );
         }
       }
 
-      formData.append( settings.name, this._file );
+      formData.append( opts.name, this._file );
       this.log( 'Commencing upload using multipart form' );
       xhr.send( formData );
 
@@ -1145,50 +1204,41 @@ Y.ss.SimpleUpload.prototype = {
   /**
   * Handles uploading with iFrame
   */
-  _uploadIframe: function( filename, sizeBox, progBar, progBox, pctBox ) {
+  _uploadIframe: function( filename, sizeBox, progBar, progBox, pctBox, uploadBtn ) {
     "use strict";
 
     var self = this,
-        settings = this._opts,
-        key = this._progKey,
+        opts = this._opts,
+        key = Y.ss.getUID(),
         iframe = this._getFrame(),
-        form = this._getForm( iframe ),
-        callback,
-        input;
-
-    if ( false === settings.startNonXHR.call( this, filename ) ) {
-      if ( this._disabled ) {
-        this.enable();
-      }
-      this._active--;
-      return;
-    }
-
-    // If we're using Nginx Upload Progress Module, append upload key to the URL
-    if ( this._opts.nginxProgressUrl ) {
-      form.action = this._opts.url + '?' + this._opts.nginxProgressHeader + '=' + key;
-    }
+        form = this._getForm( iframe, key ),
+        msgLoaded = false,
+        removeMessageListener,
+        removeLoadListener;
 
     // PHP APC upload progress key field must come before the file field
-    if ( settings.progressUrl !== false ) {
-      var keyField = this._getHidden( settings.keyParamName, key );
-      form.appendChild( keyField );
-      keyField = null;
+    if ( opts.progressUrl ) {
+      form.appendChild( this._getHidden( opts.keyParamName, key ) );
     }
 
     // We get any additional data here after startNonXHR()
     // in case the data was changed with setData() prior to submitting
-    for ( var prop in settings.data ) {
-      if ( settings.data.hasOwnProperty( prop ) ) {
-        input = this._getHidden( prop, settings.data[prop] );
-        form.appendChild( input );
+    for ( var prop in opts.data ) {
+      if ( opts.data.hasOwnProperty( prop ) ) {
+        form.appendChild( this._getHidden( prop, opts.data[prop] ) );
       }
+    }
+
+    // Add a field (default name: "XHR_CORS_TRARGETORIGIN") to tell server this is a CORS request
+    // Value of the field is targetOrigin parameter of postMessage(message, targetOrigin)
+    if ( opts.cors ) {
+      form.appendChild( this._getHidden( opts.corsInputName, window.location.href ) );
     }
 
     form.appendChild( this._file );
 
     // Begin progress bars at 0%
-    settings.onProgress.call( this, 0 );
+    opts.onProgress.call( this, 0 );
 
     if ( pctBox ) {
       pctBox.innerHTML = '0%';
@@ -1198,42 +1248,92 @@ Y.ss.SimpleUpload.prototype = {
       progBar.style.width = '0%';
     }
 
-    callback = Y.ss.addEvent( iframe, 'load', function() {
-      try {
-        var doc = iframe.contentDocument ?
-              iframe.contentDocument :
-              iframe.contentWindow.document,
-            response = doc.body.innerHTML;
+    // For CORS, add a listener for the "message" event, which will be
+    // triggered by the Javascript snippet in the server response
+    if ( opts.cors ) {
+      removeMessageListener = Y.ss.addEvent( window, 'message', function( event ) {
 
-        // Remove key from active progress keys array
-        Y.ss.removeItem( self._progKeys, key );
-        settings.endNonXHR.call( self, filename );
+        // Make sure event.origin matches the upload URL
+        if ( self._getHost( event.origin ) != self._getHost( opts.url ) ) {
+          self.log('Non-matching origin: ' + event.origin);
+          return;
+        }
 
-        // No way to get status and statusText for an iframe so return empty strings
-        self._finish( '', '', response, filename, sizeBox, progBox, pctBox );
-      } catch ( e ) {
-        self._errorFinish( '', e.message, 'error', filename, sizeBox, progBox, pctBox );
+        // Set message event success flag to true
+        msgLoaded = true;
+
+        // Remove listener for message event
+        removeMessageListener();
+
+        opts.endNonXHR.call( self, filename, uploadBtn );
+
+        self._finish( '', '', event.data, filename, sizeBox, progBox, pctBox, undefined, undefined, uploadBtn );
+      });
+    }
+
+    removeLoadListener = Y.ss.addEvent( iframe, 'load', function() {
+      if ( !iframe.parentNode ) {
+        return;
       }
 
+      // Remove listener for iframe load event
+      removeLoadListener();
+
+      // Remove key from active progress keys array
+      Y.ss.removeItem( self._progKeys, key );
+
       // Delete upload key from size update flags
-      if (self._sizeFlags[key]) {
+      if ( self._sizeFlags[key] ) {
         delete self._sizeFlags.key;
       }
 
-      // Removes event listener from iframe
-      callback();
-      Y.ss.remove( iframe );
+      // After a CORS response, we wait briefly for the "message" event to finish,
+      // during which time the msgLoaded var will be set to true, signalling success.
+      // If iframe loads without "message" event, we assume there was an error
+      if ( opts.cors ) {
+        window.setTimeout(function() {
+            Y.ss.remove( iframe );
 
-      // Null to avoid leaks in IE
-      settings = key = iframe = sizeBox = progBox = pctBox = null;
+            // If msgLoaded has not been set to true after "message" event fires, we
+            // infer that an error must have occurred and respond accordingly
+            if ( !msgLoaded ) {
+              self._errorFinish( '', '', false, 'error', filename, sizeBox, progBox, pctBox, undefined, undefined, uploadBtn );
+            }
+
+            // Null to avoid leaks in IE
+            opts = key = iframe = sizeBox = progBox = pctBox = uploadBtn = null;
+        }, 600);
+      }
+
+      // Ordinary, non-CORS upload
+      else {
+        try {
+          var doc = iframe.contentDocument ?
+                iframe.contentDocument :
+                iframe.contentWindow.document,
+              response = doc.body.innerHTML;
+
+          opts.endNonXHR.call( self, filename, uploadBtn );
+
+          // No way to get status and statusText for an iframe so return empty strings
+          self._finish( '', '', response, filename, sizeBox, progBox, pctBox, undefined, undefined, uploadBtn );
+        } catch ( e ) {
+          self._errorFinish( '', e.message, false, 'error', filename, sizeBox, progBox, pctBox, undefined, undefined, uploadBtn );
+        }
+
+        Y.ss.remove( iframe );
+
+        // Null to avoid leaks in IE
+        opts = key = iframe = sizeBox = progBox = pctBox = uploadBtn = null;
+      }
     });
 
     self.log( 'Commencing upload using iframe' );
     form.submit();
     Y.ss.remove( form );
-    form = input = null;
+    form = null;
 
-    if ( this._opts.progressUrl || this._opts.nginxProgressUrl ) {
+    if ( opts.progressUrl || opts.nginxProgressUrl ) {
       // Add progress key to active key array
       this._progKeys.push( key );
 
@@ -1241,10 +1341,7 @@ Y.ss.SimpleUpload.prototype = {
       window.setTimeout( function() {
           self._getProg( key, progBar, sizeBox, pctBox, 1 );
           progBar = sizeBox = pctBox = null;
-      }, self._opts.checkProgressInterval );
-
-      // Get new upload progress key
-      this._progKey = Y.ss.getUID();
+      }, opts.checkProgressInterval );
     }
 
     // Remove this file from the queue and begin next upload
@@ -1259,8 +1356,9 @@ Y.ss.SimpleUpload.prototype = {
     "use strict";
 
     var self = this,
-        xhr = Y.ss.newXHR(),
+        opts = this._opts,
         time = new Date().getTime(),
+        xhr,
         url,
         callback;
 
@@ -1269,12 +1367,16 @@ Y.ss.SimpleUpload.prototype = {
     }
 
     // Nginx Upload Progress Module
-    if ( this._opts.nginxProgressUrl ) {
-      url = self._opts.nginxProgressUrl + '?_=' + time;
+    if ( opts.nginxProgressUrl ) {
+      url = opts.nginxProgressUrl + '?' +
+            encodeURIComponent( opts.nginxProgressHeader ) + '=' + encodeURIComponent( key ) +
+            '&_=' + time;
 
     // PHP APC upload progress
-    } else if ( this._opts.progressUrl ) {
-      url = self._opts.progressUrl + '?progresskey=' + encodeURIComponent( key ) + '&_=' + time;
+    } else if ( opts.progressUrl ) {
+      url = opts.progressUrl +
+            '?progresskey=' + encodeURIComponent( key ) +
+            '&_=' + time;
     }
 
     callback = function() {
@@ -1285,20 +1387,24 @@ Y.ss.SimpleUpload.prototype = {
           statusText;
 
       try {
-        if ( callback && xhr.readyState === 4 ) {
-
-          xhr.onreadystatechange = function() {};
+        // XDomainRequest doesn't have readyState so we
+        // just assume that it finished correctly
+        if ( callback && ( opts.cors || xhr.readyState === 4 ) ) {
           callback = undefined;
-          status = xhr.status;
+          xhr.onreadystatechange = function() {};
 
           try {
             statusText = xhr.statusText;
-          } catch(  e  ) {
+            status = xhr.status;
+          } catch( e ) {
             // We normalize with Webkit giving an empty statusText
             statusText = '';
+            status = '';
           }
 
-          if ( status >= 200 && status < 300 ) {
+          // XDomainRequest also doesn't have status, so we
+          // again just assume that everything is fine
+          if ( opts.cors || ( status >= 200 && status < 300 ) ) {
             response = Y.ss.parseJSON( xhr.responseText );
             counter++;
 
@@ -1308,7 +1414,7 @@ Y.ss.SimpleUpload.prototype = {
             }
 
             // Handle response if using Nginx Upload Progress Module
-            if ( self._opts.nginxProgressUrl ) {
+            if ( opts.nginxProgressUrl ) {
 
               if ( response.state == 'uploading' ) {
                 size = response.size;
@@ -1327,7 +1433,7 @@ Y.ss.SimpleUpload.prototype = {
             }
 
             // Handle response if using PHP APC
-            else if ( self._opts.progressUrl ) {
+            else if ( opts.progressUrl ) {
               if ( response.success === true ) {
                 size = response.size;
                 pct = response.pct;
@@ -1342,7 +1448,7 @@ Y.ss.SimpleUpload.prototype = {
               if ( progBar ) {
                 progBar.style.width = pct + '%';
               }
-              self._opts.onProgress.call( self, pct );
+              opts.onProgress.call( self, pct );
             }
 
             // Update file size box if we haven't yet done so
@@ -1354,7 +1460,8 @@ Y.ss.SimpleUpload.prototype = {
               if ( sizeBox ) {
                 sizeBox.innerHTML = size + 'K';
               }
-              self._opts.onUpdateFileSize.call( self, size );
+
+              opts.onUpdateFileSize.call( self, size );
             }
 
             // Stop attempting progress checks if we keep failing
@@ -1372,7 +1479,7 @@ Y.ss.SimpleUpload.prototype = {
                   self._getProg( key, progBar, sizeBox, pctBox, counter );
                   // Null to avoid leaks in IE
                   key = progBar = sizeBox = pctBox = counter = null;
-              }, self._opts.checkProgressInterval );
+              }, opts.checkProgressInterval );
             }
 
             // We didn't get a 2xx status so don't continue sending requests
@@ -1384,21 +1491,45 @@ Y.ss.SimpleUpload.prototype = {
           // Null to avoid leaks in IE
           xhr = size = pct = status = statusText = response = null;
         }
+
       } catch( e ) {
         self.log( 'Error requesting upload progress: ' + e.message );
       }
     };
 
-    xhr.onreadystatechange = callback;
-    xhr.open( 'GET', url, true );
+    // CORS requests in IE8 and IE9 must use XDomainRequest
+    if ( opts.cors ) {
+      if ( typeof XDomainRequest !== 'undefined' ) {
+        xhr = new window.XDomainRequest();
+        xhr.open( 'GET', url, true );
+        xhr.onprogress = xhr.ontimeout = function() {};
+        xhr.onload = callback;
 
-    // Set the upload progress header for Nginx
-    if ( self._opts.nginxProgressUrl ) {
-      xhr.setRequestHeader( self._opts.nginxProgressHeader, key );
+        xhr.onerror = function() {
+          Y.ss.removeItem( self._progKeys, key );
+          key = null;
+          self.log('Error requesting upload progress');
+        };
+
+        // IE7 or some other dinosaur -- just give up
+      } else {
+        return;
+      }
+
+    } else {
+      xhr = Y.ss.newXHR();
+      xhr.onreadystatechange = callback;
+      xhr.open( 'GET', url, true );
+
+      // Set the upload progress header for Nginx
+      if ( opts.nginxProgressUrl ) {
+        xhr.setRequestHeader( opts.nginxProgressHeader, key );
+      }
+
+      xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
+      xhr.setRequestHeader( 'Accept', 'application/json, text/javascript, */*; q=0.01' );
     }
 
-    xhr.setRequestHeader( 'X-Requested-With', 'XMLHttpRequest' );
-    xhr.setRequestHeader( 'Accept', 'application/json, text/javascript, */*; q=0.01' );
     xhr.send();
   },
 
@@ -1463,7 +1594,7 @@ Y.ss.SimpleUpload.prototype = {
     }
 
     // The next file in the queue will always be in the front of the array
-    this._file = this._queue[0];
+    this._file = this._queue[0].file;
 
     if ( XhrOk ) {
       filename = Y.ss.getFilename( this._file.name );
@@ -1480,7 +1611,7 @@ Y.ss.SimpleUpload.prototype = {
     }
 
     // User returned false to cancel upload
-    if ( false === this._opts.onSubmit.call( this, filename, ext ) ) {
+    if ( false === this._opts.onSubmit.call( this, filename, ext, this._queue[0].btn /* upload button */ ) ) {
       return;
     }
 
@@ -1497,15 +1628,34 @@ Y.ss.SimpleUpload.prototype = {
 
     // Use XHR if supported by browser
     if ( XhrOk ) {
-      this._uploadXhr( filename, size, this._sizeBox, this._progBar, this._progBox, this._pctBox );
+      // Call the startXHR() callback and stop upload if it returns false
+      // We call it before _uploadXhr() in case setProgressBar, setPctBox, etc., is called
+      if ( false === this._opts.startXHR.call( this, filename, size, this._queue[0].btn /* upload button */ ) ) {
+        if ( this._disabled ) {
+          this.enable();
+        }
+        this._active--;
+        return;
+      }
+
+      this._uploadXhr( filename, size, this._sizeBox, this._progBar, this._progBox, this._pctBox, this._abortBtn, this._removeAbort, this._queue[0].btn /* upload button */ );
 
     // Otherwise use iframe method
     } else {
-      this._uploadIframe( filename, this._sizeBox, this._progBar, this._progBox, this._pctBox );
+      // Call the startNonXHR() callback and stop upload if it returns false
+      if ( false === this._opts.startNonXHR.call( this, filename, this._queue[0].btn /* upload button */ ) ) {
+        if ( this._disabled ) {
+          this.enable();
+        }
+        this._active--;
+        return;
+      }
+
+      this._uploadIframe( filename, this._sizeBox, this._progBar, this._progBox, this._pctBox, this._queue[0].btn /* upload button */ );
     }
 
     // Null to avoid leaks in IE
-    this._sizeBox = this._progBar = this._progBox = this._pctBox = null;
+    this._sizeBox = this._progBar = this._progBox = this._pctBox = this._abortBtn = this._removeAbort = null;
   }
 };}, '0.0.1', {
     requires: []

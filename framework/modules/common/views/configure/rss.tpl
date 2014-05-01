@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("RSS Feed Settings"|gettext) module="rss-podcast"}
 		</div>
         <h2>{'RSS Feed Settings'|gettext}</h2>
+        <blockquote>
+            {'These settings allow you make syndicate your content via RSS.'|gettext}&#160;&#160;
+            {'To start syndicating, all you have to do is enable RSS and give this module\'s content a title and description!'|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'These settings allow you make syndicate your content via RSS.'|gettext}&#160;&#160;
-    {'To start syndicating, all you have to do is enable RSS and give this module\'s content a title and description!'|gettext}
-</blockquote>
 {control type="checkbox" name="enable_rss" label="Enable RSS"|gettext value=1 checked=$config.enable_rss}
 {control type="checkbox" name="advertise" label="Advertise RSS"|gettext value=1 checked=$config.advertise}
 {control type="text" name="feed_title" label="Feed Title"|gettext value=$config.feed_title}

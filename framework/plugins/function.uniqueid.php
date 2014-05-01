@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,11 @@ function smarty_function_uniqueid($params,&$smarty) {
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
     $randstr  = 'exp';
     $randstr .= empty($smarty->getTemplateVars('__loc')->src) ? mt_rand(1, 9999) : str_replace($badvals, "",$smarty->getTemplateVars('__loc')->src);
-    $id =  $randstr.$params['id'];
+    if (!empty($params['id'])) {
+        $id = $randstr.$params['id'];
+    } else {
+        $id = $randstr;
+    }
     
     if (!empty($params['prepend'])) $id = $params['prepend'].$id;
     

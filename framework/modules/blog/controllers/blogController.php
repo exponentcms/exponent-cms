@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,8 +33,10 @@ class blogController extends expController {
 //        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
-        'approve'=>"Approve Comments"
+    protected $add_permissions = array(
+        'approve'=>"Approve Comments",
+        'import'=>'Import Blog Items',
+        'export'=>'Export Blog Items'
     );
 
     static function displayname() { return gt("Blog"); }
@@ -42,6 +44,14 @@ class blogController extends expController {
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
     static function isSearchable() { return true; }
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
 
     public function showall() {
 	    expHistory::set('viewable', $this->params);
@@ -286,6 +296,22 @@ class blogController extends expController {
     }
 
     /**
+     * additional check for display of search hit, only display non=draft
+     *
+     * @param $record
+     *
+     * @return bool
+     */
+    public static function searchHit($record) {
+        $blog = new blog($record->original_id);
+        if (expPermissions::check('edit', expUnserialize($record->location_data)) || $blog->private == 0 && ($blog->publish === 0 || $blog->publish <= time())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
      * @param string $type
@@ -300,6 +326,7 @@ class blogController extends expController {
             }
             $sql .= "private = 0 AND (publish = 0 OR publish <= " . time() . ")";
         }
+
         return $sql;
     }
 

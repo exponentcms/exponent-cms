@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -41,7 +41,7 @@ class eaasController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $add_permissions = array(
+    protected $add_permissions = array(
         // 'approve'=>"Approve Comments"
     );
 
@@ -395,7 +395,7 @@ class eaasController extends expController {
         $order = isset($this->params['order']) ? $this->params['order'] : 'section';
         $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
         $pullable = array();
         $page = array();
 
@@ -405,6 +405,7 @@ class eaasController extends expController {
                 $pullable[$tab] = expModules::listInstalledControllers($tab, $this->loc);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',
+                    'action' => $this->params['action'],
                     'records'=>$pullable[$tab],
                     'limit'=>count($pullable[$tab]),
                     'order'=>$order,
@@ -450,7 +451,11 @@ class eaasController extends expController {
             
             $sql .= ')';
         }       
-        
+        $model = $this->basemodel_name;
+        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
+            $sql .= ' AND approved=1';
+        }
+
         return $sql;
     }
 }

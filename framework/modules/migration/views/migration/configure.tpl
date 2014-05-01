@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,18 +14,19 @@
  *}
 
 <div id="migrationconfig" class="module migration configure">
- 	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_users}"><strong>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</strong></a>
+ 	{*<a class="{button_style}" href="{link module=migration action=manage_users}"><strong>{'Skip to Next Step -> Migrate Users & Groups'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_users text='Skip to Next Step -> Migrate Users & Groups'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migration Database Settings"|gettext) module="configure-migration-settings"}
         </div>
-		<h1>{"Database Settings to Migrate Your Old Site"|gettext}</h1>	    
+		<h2>{"Database Settings to Migrate Your Old Site"|gettext}</h2>
+        <blockquote>
+ 		    {'This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from.'|gettext}
+        </blockquote>
     </div>
 
-    <blockquote>
-		{'This is where you enter the database connection information for your old Exponent v1 site you want to migrate data from.'|gettext}
-    </blockquote>
     {form action=saveconfig}
 		{control type=text name=server label="Server Name"|gettext value=$config.server|default:'localhost'}
 		{control type="text" name="database" label="Database Name"|gettext value=$config.database}

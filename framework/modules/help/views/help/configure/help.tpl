@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Help Settings"|gettext) module="help"}
 		</div>
         <h2>{"Help Settings"|gettext}</h2>
+        <blockquote>
+            {"This is where you can configure the settings used by this Help module."|gettext}&#160;&#160;
+            {"These settings only apply to this particular module."|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {"This is where you can configure the settings used by this Help module."|gettext}&#160;&#160;
-    {"These settings only apply to this particular module."|gettext}
-</blockquote>
 {control type=dropdown name=order label="Sort By"|gettext items="Title, Order Manually"|gettxtlist values="title,rank" value=$config.order|default:rank}
 {*control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="No Float,Left,Right"  values="0,1,2"*}
 

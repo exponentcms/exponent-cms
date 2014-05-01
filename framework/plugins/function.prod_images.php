@@ -1,8 +1,8 @@
 <?php
-
+//FIXME Deprecated! Not used
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #

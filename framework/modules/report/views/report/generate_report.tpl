@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,7 +26,8 @@
         <div class="actions-to-apply">
             {control type="dropdown" name="action" label="Select Action"|gettext items="Add Notes,Delete,Apply Discount,Refund"|gettxtlist values="Add Notes,Delete,Apply Discount,Refund"}
             {control type="checkbox" name="applytoall" label="Apply to all pages"|gettext class="applytoall" value=1}
-            <button type="submit" class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}">{"Apply Batch Action"|gettext}</button>
+            {*<button type="submit" class="{button_style}">{"Apply Batch Action"|gettext}</button>*}
+            {control type="buttongroup" submit="Apply Batch Action"|gettext}
         </div>
         <div class="exp-skin-table">
             {$page->table}

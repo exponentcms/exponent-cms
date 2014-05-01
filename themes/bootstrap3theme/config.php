@@ -1,0 +1,11 @@
+<?php
+define("BTN_COLOR",'btn');
+define("SWATCH",'');
+define("BTN_SIZE",'small');
+define("ENHANCED_STYLE",'');
+define("MENU_LOCATION",'fixed-top');
+define("MENU_HEIGHT",'1');
+define("MENU_WIDTH",'769');
+define("MENU_ALIGN",'left');
+define("FLYOUT_SIDEBAR",'1');
+?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,7 +51,7 @@ $auto_dirs = array(
 	BASE.'framework/core/forms/controls',
 	BASE.'framework/modules/ecommerce/billingcalculators',
 	BASE.'framework/modules/ecommerce/shippingcalculators',
-	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
+//	BASE.'framework/modules/ecommerce/products/controllers',  //FIXME does NOT exist
 	BASE.'framework/modules/ecommerce/products/models',  // models
 );
 /**

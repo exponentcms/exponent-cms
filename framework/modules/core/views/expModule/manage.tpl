@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -59,7 +59,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Modules"|gettext) module="manage-modules"}
         </div>
-        <h1>{"Module Manager"|gettext}</h1>
+        <h2>{"Module Manager"|gettext}</h2>
     </div>
     {form action="update"}
     <div id="mod-manager-tabs" class="yui-navset exp-skin-tabview">
@@ -89,6 +89,9 @@
                                 <span class="{$module->codequality}">
                                     {$module->codequality}
                                 </span>
+                                {if !empty($module->workflow)}
+                                    <span class="workflow" title="{'Workflow enabled module'|gettext}"></span>
+                                {/if}
                                 {br}
                                 <em>
                                     {$module->description}

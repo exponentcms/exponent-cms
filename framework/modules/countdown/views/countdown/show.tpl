@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 
 <div class="module countdown show">
 
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if !$config}
         <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'"|gettext|cat:"!"}</strong>
     {else}    
@@ -49,17 +49,8 @@
 {script unique="`$name`" jquery="jquery.countdown"}
 {literal}
     $(function(){
-
     	var note = $('#note'),
     		ts = new Date("{/literal}{$config['date-count']} {$config['time-h-count']}:{$config['time-m-count']} {$config['ampm-count']}{literal}");
-
-//    	if((new Date()) > ts){
-    		// The new year is here! Count towards something else.
-    		// Notice the *1000 at the end - time must be in milliseconds
-    //		ts = (new Date()).getTime() + 10*24*60*60*1000;
-//    		ts = (new Date()).getTime() + 20*1000;
-//    		newYear = false;
-//    	}
 
     	$('#countdown').countdown({
     		timestamp	: ts,

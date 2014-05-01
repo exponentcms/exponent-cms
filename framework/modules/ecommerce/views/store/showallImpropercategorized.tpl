@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -35,12 +35,14 @@
                 <td>{$listing->base_price|currency}</td>
                 <td>
                     {permissions}
-                        {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-                            {icon img='edit.png' action=edit id=$listing->id title="Edit `$listing->title`"}
-                        {/if}
-                        {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
-                            {icon img='delete.png' action=delete id=$listing->id title="Delete `$listing->title`"}
-                        {/if}
+                        <div class="item-actions">
+                            {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
+                                {icon img='edit.png' action=edit id=$listing->id title="Edit `$listing->title`"}
+                            {/if}
+                            {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
+                                {icon img='delete.png' action=delete id=$listing->id title="Delete `$listing->title`"}
+                            {/if}
+                        </div>
                     {/permissions}  
                 </td>                   
             </tr>

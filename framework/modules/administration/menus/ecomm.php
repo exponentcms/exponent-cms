@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,30 +26,39 @@ if (!$user->isAdmin() || empty($active)) return false;
 $new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
 $new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
 if ($new_orders > 0) {
-    $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new') . '</em>';
+    $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new orders') . '</em>';
 } else {
     $newo = '';
 };
 
 $ecom = array(
-    'text'      => gt('e-Commerce') . $newo . '<form id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt("Order Quickfinder") . '"></form>',
+    'text'      => gt('E-commerce'),
+    'icon' => 'fa-dollar',
     'classname' => 'ecom',
     'submenu'   => array(
         'id'       => 'ecomm',
         'itemdata' => array(
             array(
+                'text'      => $newo . '<form id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt("Order Quickfinder") . '"></form>',
+                'info'    => '1',
+                'classname' => 'order-qf',
+                'url'  => makeLink(array('controller' => 'report', 'action' => 'dashboard')),
+            ),
+            array(
                 'text' => gt("Dashboard"),
+                'icon' => 'fa-dashboard',
                 'classname' => 'dashboard',
                 'url'  => makeLink(array('controller' => 'report', 'action' => 'dashboard')),
             ),
             array(
                 'text'    => gt("Orders"),
+                'icon' => 'fa-list-ul',
                 'classname' => 'orders',
                 'submenu' => array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
                         array(
-                            'text' => gt("View Orders") . " <em>(" . $new_orders . "  " . gt("New Orders") . ")",
+                            'text' => gt("View Orders") . " <em>(" . $new_orders . "  " . gt("New Orders") . ")</em>",
                             'classname' => 'search',
                             'url'  => makeLink(array('controller' => 'order', 'action' => 'showall')),
                         ),
@@ -83,6 +92,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Products"),
+                'icon' => 'fa-tag',
                 'classname' => 'products',
                 'submenu' => array(
                     'id'       => 'prodscats',
@@ -131,6 +141,7 @@ $ecom = array(
             ),
             array(
                 'text'    => gt("Reports"),
+                'icon' => 'fa-bar-chart-o',
                 'classname' => 'reports',
                 'submenu' => array(
                     'id'       => 'reports',
@@ -186,6 +197,7 @@ $ecom = array(
 //            ),
             array(
                 'text'    => gt("Store Setup"),
+                'icon' => 'fa-gear',
                 'classname' => 'configure',
                 'submenu' => array(
                     'id'       => 'store',
@@ -238,12 +250,14 @@ $ecom = array(
                         array(
                             'text'      => gt("Import Products"),
                             'classname' => 'import',
-                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+//                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import')),
                         ),
                         array(
                             'text'      => gt("Import External Addresses"),
                             'classname' => 'import',
-                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
+//                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
+                            'url'       => makeLink(array('controller' => 'address', 'action' => 'import')),
                         ),
                     ),
                 ),

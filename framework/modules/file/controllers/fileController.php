@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,17 +23,20 @@
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
-    public $add_permissions = array(
+    protected $add_permissions = array(
 //        'picker'=>'Manage Files',
         'import'=>'Import',
         'export'=>'Export',
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'delete'
     );
     public $requires_login = array(
         'picker'=>'must be logged in',
-        'edit_alt'=>'must be logged in'
+        'editAlt'=>'must be logged in',
+        'editCat'=>'must be logged in',
+        'editShare'=>'must be logged in',
+        'editTitle'=>'must be logged in',
     );
 
     static function displayname() { return gt("File Manager"); }
@@ -81,6 +84,7 @@ class fileController extends expController {
         }
         assign_to_template(array(
             'update'=>$this->params['update'],
+            'filter'=>!empty($this->params['filter'])?$this->params['filter']:null,
             'cats'=>$catarray,
             'jscats'=>json_encode($jscatarray)
         ));
@@ -111,21 +115,34 @@ class fileController extends expController {
     }
     
     /**
-     * Locates appropriate attached file view template
+     * Returns attached file view template configuration settings template
      *
      */
-     public function get_view_config() {
+    public function get_view_config() {
         global $template;
         
+        $framework = expSession::get('framework');
         // set paths we will search in for the view
         $paths = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
             BASE.'framework/modules/common/views/file/configure',
-        );        
-        
+        );
+
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
+                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-3).'bootstrap.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if ($framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-3).'bootstrap3.tpl';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
                 $template = new controllertemplate($this, $view);
                 $ar = new expAjaxReply(200, 'ok');
 		        $ar->send();
@@ -134,7 +151,7 @@ class fileController extends expController {
     }
     
     /**
-     * Locates appropriate attached file view template
+     * Returns view template configuration settings view template
      *
      */
     public function get_module_view_config() {
@@ -154,8 +171,14 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.config';
             if (is_readable($view)) {
-                if ($framework == 'bootstrap') {
+                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
                     $bstrapview = substr($view,0,-6).'bootstrap.config';
+                    if (file_exists($bstrapview)) {
+                        $view = $bstrapview;
+                    }
+                }
+                if ($framework == 'bootstrap3') {
+                    $bstrapview = substr($view,0,-6).'bootstrap3.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -166,20 +189,29 @@ class fileController extends expController {
         }
         if (!$config_found) {
             echo "<p>".gt('There Are No View Specific Settings')."</p>";
-            $template = get_common_template('blank',null);
+            $template = expTemplate::get_common_template('blank', null);
         }
         $ar = new expAjaxReply(200, 'ok');
         $ar->send();
     }
 
+    /**
+     * Get a file record by id or pathname and return it as JSON via Ajax
+     */
     public function getFile() {
-        $file = new expFile($this->params['id']);
+        if (is_numeric($this->params['id'])) {
+            $file = new expFile($this->params['id']);
+        } else {
+            $efile = new expFile();
+            $path = str_replace(BASE, '', $this->params['id']);
+            $path = str_replace('\\', '/', $path);
+            $file = $efile->find('first','directory="'.dirname($path).'/'.'" AND filename="'.basename($path).'"');
+        }
         $ar = new expAjaxReply(200, 'ok', $file);
         $ar->send();
-    } 
+    }
 
     public function getFilesByJSON() {
-//        global $db,$user;
         global $user;
 
         $modelname = $this->basemodel_name;
@@ -220,7 +252,7 @@ class fileController extends expController {
         $totalrecords = 0;
 
         if (isset($this->params['query'])) {
-
+            $filter = '';
             if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
             };
@@ -248,6 +280,7 @@ class fileController extends expController {
                             $groupedfiles[$key]->catid = $file->expCat[0]->id;
                         }
                         $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user = new stdClass();
                         $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
                         $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
                         $groupedfiles[$key]->user->username = $tmpusr->username;
@@ -289,6 +322,7 @@ class fileController extends expController {
     //                    $files[$key]->cat = $file->expCat[0]->title;
     //                    $files[$key]->catid = $file->expCat[0]->id;
                         $tmpusr = new user($file->poster);
+                        $groupedfiles[$key]->user = new stdClass();
                         $groupedfiles[$key]->user->firstname = $tmpusr->firstname;
                         $groupedfiles[$key]->user->lastname = $tmpusr->lastname;
                         $groupedfiles[$key]->user->username = $tmpusr->username;
@@ -388,19 +422,43 @@ class fileController extends expController {
     public function batchDelete() {
         global $user;
 
-        $files = json_decode($this->params['files']);
         $error = false;
-        foreach ($files as $file) {
+        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
+        $files = json_decode($this->params['files']);
+        switch (json_last_error()) {  //FIXME json error checking/reporting, may no longer be needed
+            case JSON_ERROR_NONE:
+            break;
+            case JSON_ERROR_DEPTH:
+                $error = 'JSON - Maximum stack depth exceeded';
+            break;
+            case JSON_ERROR_STATE_MISMATCH:
+                $error = 'JSON - Underflow or the modes mismatch';
+            break;
+            case JSON_ERROR_CTRL_CHAR:
+                $error = 'JSON - Unexpected control character found';
+            break;
+            case JSON_ERROR_SYNTAX:
+                $error = 'JSON - Syntax error, malformed JSON';
+            break;
+            case JSON_ERROR_UTF8:
+                $error = 'JSON - Malformed UTF-8 characters, possibly incorrectly encoded';
+            break;
+            default:
+                $error = 'JSON - Unknown error';
+            break;
+        }
+
+        if (empty($error)) foreach ($files as $file) {
             $delfile = new expFile($file->id);
             if ($user->id==$delfile->poster || $user->isActingAdmin()) {
                 $delfile->delete();
                 unlink($delfile->directory.$delfile->filename);
             } else {
-                $error = true;
+                $error = gt("you didn't have permission");
             }
         }
-        if ($error) {
-            $ar = new expAjaxReply(300, gt("Some files were NOT deleted because you didn't have permission."));
+        if (!empty($error)) {
+            $ar = new expAjaxReply(300, gt("Some files were NOT deleted because") . ' ' . $error);
         } else {
             $ar = new expAjaxReply(200, gt('Your files were deleted successfully'), $file);
         }
@@ -482,17 +540,27 @@ class fileController extends expController {
     public function quickUpload(){
         global $user;
 
+        if (!empty($this->params['folder']) || (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0)) {
+            if (SITE_FILE_MANAGER == 'picker') {
+                $quikFolder = !empty($this->params['folder']) ? $this->params['folder'] :QUICK_UPLOAD_FOLDER;
+                $destDir = null;
+            } elseif (SITE_FILE_MANAGER == 'elfinder') {
+                $quikFolder = null;
+                $destDir = UPLOAD_DIRECTORY_RELATIVE . (!empty($this->params['folder']) ? $this->params['folder'] :QUICK_UPLOAD_FOLDER) . '/';
+                // create folder if non-existant
+                expFile::makeDirectory($destDir);
+            }
+        } else {
+            $quikFolder = null;
+            $destDir = null;
+        }
+
         //extensive suitability check before doing anything with the file...
         if (isset($_SERVER['HTTP_X_FILE_NAME'])) {  //HTML5 XHR upload
-            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+            $file = expFile::fileXHRUpload($_SERVER['HTTP_X_FILE_NAME'],false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
             $file->poster = $user->id;
             $file->posted = $file->last_accessed = time();
             $file->save();
-            if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '') {
-                $quikFolder = QUICK_UPLOAD_FOLDER;
-            } else {
-                $quikFolder = null;
-            }
             if (!empty($quikFolder)) {
                 $expcat = new expCat($quikFolder);
                 $params['expCat'][0] = $expcat->id;
@@ -511,7 +579,7 @@ class fileController extends expController {
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('uploadfile',false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+                $file = expFile::fileUpload('uploadfile',false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
@@ -616,7 +684,7 @@ class fileController extends expController {
             closedir($dir);
         }
 
-        expFile::restoreDatabase($db,$_FILES['file']['tmp_name'],$errors);
+        expFile::restoreDatabase($_FILES['file']['tmp_name'], $errors);
 
         // now remove deprecated definitions files
         $src = BASE."install/old_definitions";
@@ -667,7 +735,7 @@ class fileController extends expController {
     }
 
     public function export_eql_process() {
-        global $db;
+//        global $db;
 
         if (!isset($this->params['tables'])) { // No checkboxes clicked, and got past the JS check
         	echo gt('You must choose at least one table to export.');
@@ -686,7 +754,7 @@ class fileController extends expController {
         		if (!$eql = fopen ($path, "w")) {
         			flash('error',gt("Error opening eql file for writing")." ".$path);
         		} else {
-        			$eqlfile = expFile::dumpDatabase($db,array_keys($this->params['tables']));
+                    $eqlfile = expFile::dumpDatabase(array_keys($this->params['tables']));
         			if (fwrite ($eql, $eqlfile)  === FALSE) {
         				flash('error',gt("Error writing to eql file")." ".$path);
         			}
@@ -712,7 +780,7 @@ class fileController extends expController {
         			header('Content-Disposition: attachment; filename="' . $filename . '"');
         			header('Pragma: no-cache');
         		}
-        		echo expFile::dumpDatabase($db,array_keys($this->params['tables']));
+                echo expFile::dumpDatabase(array_keys($this->params['tables']));
         		exit; // Exit, since we are exporting
         	}
         }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,13 +39,13 @@ class taxController extends expController {
         return gt("Manage tax classes for your e-Commerce store");
     }
 
-    static function canImportData() {
-        return true;
-    }
-
-    static function canExportData() {
-        return true;
-    }
+//    static function canImportData() {
+//        return true;
+//    }
+//
+//    static function canExportData() {
+//        return true;
+//    }
 
     function manage() {
         expHistory::set('manageable', $this->params);

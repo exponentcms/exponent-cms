@@ -1,0 +1,11 @@
+.exp-skin #admin-toolbar {
+  box-shadow: 0 1px 10px #000000;
+}
+.exp-skin #admin-toolbar .navbar-brand {
+  margin: 0;
+  padding: 7px 0 3px;
+}
+.exp-skin #admin-toolbar .dropdown-menu > li > a:hover,
+.exp-skin #admin-toolbar .exp-skin .dropdown-menu > li > a:focus {
+  background-color: #022f5a;
+}

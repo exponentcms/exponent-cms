@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 
 {$rel}
 <div class="module photoalbum galleries showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create}
@@ -50,19 +50,8 @@
         <ul class="image-list">
         {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
-                {if !empty($cat->records[0]->alt)}
-                    {$alt = $cat->records[0]->alt}
-                {elseif !empty($cat->records[0]->expFile[0]->alt)}
-                    {$alt = $cat->records[0]->expFile[0]->alt}
-                {elseif !empty($cat->records[0]->title)}
-                    {$alt = $cat->records[0]->title}
-                {elseif !empty($cat->records[0]->expFile[0]->title)}
-                    {$alt = $cat->records[0]->expFile[0]->title}
-                {else}
-                    {$alt = ''}
-                {/if}
                 <a href="{link action=$config.landing|default:showall src=$page->src gallery=$catid}" title="{'View this gallery'|gettext}">
-                    {img class="img-small" alt=$alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                    {img class="img-small" alt=$cat->records[0]->alt file_id=$cat->records[0]->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
                 </a>
                 {permissions}
                     <div class="item-actions">
@@ -74,10 +63,10 @@
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                 {/if}
                             {/if}
-                            {icon action=edit record=$cat->records[0] title="Edit"|gettext|cat:" `$modelname`"}
+                            {icon action=edit record=$cat->records[0] title="Edit"|gettext|cat:" `$model_name`"}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $records[0]->poster == $user->id)}
-                            {icon action=delete record=$cat->records[0] title="Delete"|gettext|cat:" `$modelname`"}
+                            {icon action=delete record=$cat->records[0] title="Delete"|gettext|cat:" `$model_name`"}
                         {/if}
                         {if $permissions.create}
                             {icon class=add action=edit rank=$cat->records[0]->rank+1 title="Add another here"|gettext  text="Add After"|gettext}

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,12 +25,12 @@ CKEDITOR.plugins.add('fieldinsert' ,
                 {
                     label : 'Fields' ,
                     title : 'Fields' ,
-                    voiceLabel : 'Fields' ,
-                    className : 'cke_format' ,
+//                    voiceLabel : 'Fields' ,
+//                    className : 'cke_format' ,
                     multiSelect : false ,
                     panel : {
                         css : [ editor.config.contentsCss, CKEDITOR.skin.getPath('editor') ] ,
-                        voiceLabel : editor.lang.panelVoiceLabel
+//                        voiceLabel : editor.lang.panelVoiceLabel
                     } ,
 
                     init : function () {

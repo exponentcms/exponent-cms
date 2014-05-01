@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,29 +14,38 @@
  *}
 
 <div class="scaffold show-random">
-	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$modelname`"}</h1>
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
+	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$model_name`"}</h1>
 	{permissions}
+        <div class="module-actions">
         	{if $permissions.create}
-        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$modelname`"}{br}
+        		{icon controller=$model_name action=create text="Create a new"|gettext|cat:" `$model_name`"}{br}
         	{/if}
-        {/permissions}
+        </div>
+    {/permissions}
 	<ul>
         {foreach from=$items item=listing}
 		<li class="listing">
-			<h3>
-				<a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
-				{permissions}
-					<div class="item-actions">
-						{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-							{icon controller=$controller action=edit record=$listing}
-						{/if}
-						{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
-							{icon controller=$controller action=delete record=$listing}
-						{/if}
-					</div>
-				{/permissions}
-			</h3>
-			<p>{$listing->body}</p>
+            <div class="item">
+                <h3>
+                    <a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a>
+                    {permissions}
+                        <div class="item-actions">
+                            {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
+                                {icon controller=$controller action=edit record=$listing}
+                            {/if}
+                            {if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
+                                {icon controller=$controller action=delete record=$listing}
+                            {/if}
+                        </div>
+                    {/permissions}
+                </h3>
+                <div class="bodycopy"
+                    <p>{$listing->body}</p>
+                </div>
+            </div>
 			{clear}
 		</li>
         {/foreach}

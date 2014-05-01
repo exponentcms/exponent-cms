@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -21,15 +21,14 @@
  * @package    Subsystems
  * @subpackage Subsystems
  */
-/** @define "BASE" "../../.." */
 
+/** @define "BASE" "../../.." */
 class expTheme
 {
 
     public static function initialize()
     {
         global $auto_dirs2;
-//        global $user;
         // Initialize the theme subsystem 1.0 compatibility layer
 //		require_once(BASE.'framework/core/compat/theme.php');
 
@@ -117,14 +116,14 @@ class expTheme
             define('XHTML_CLOSING', "");
         }
 
-        // load primer, lesscss, & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lesscss']) || !empty($config['normalize'])) {
+        // load primer, lessprimer, & normalize CSS files
+        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
-        // default primer CSS files to false if not set.
-        if (empty($config['css_primer'])) {
-            $config['css_primer'] = false;
+        // default loading of primer CSS files to true if not set
+        if (empty($config['css_primer']) && empty($config['lessprimer'])) {
+            $head_config = array('css_primer' => true) + $head_config;
         }
 
         // parse & load core css files
@@ -138,17 +137,17 @@ class expTheme
                 );
             }
         } else {
-            $config['css_core'] = false;
+            $head_config['css_core'] = false;
         };
 
-        // default the running of view based CSS inclusion to true
+        // default loading of view based CSS inclusion is true if not set
         if (empty($config['css_links'])) {
-            $config['css_links'] = true;
+            $head_config['css_links'] = true;
         }
 
-        // default theme css collecting to true if not set
+        // default theme css collecting is true if not set
         if (empty($config['css_theme'])) {
-            $config['css_theme'] = true;
+            $head_config['css_theme'] = true;
         }
 
         if (empty($sectionObj)) {
@@ -159,19 +158,41 @@ class expTheme
         if (empty($head_config['framework'])) {
             $head_config['framework'] = '';
         }
-        if ($head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
+        if (NEWUI || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/jquery'
             );
         }
-        if ($head_config['framework'] == 'bootstrap') {
+        if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
             array_unshift(
                 $auto_dirs,
                 BASE . 'framework/core/forms/controls/bootstrap'
             );
         }
+        if ($head_config['framework'] == 'bootstrap3') {
+            array_unshift(
+                $auto_dirs,
+                BASE . 'framework/core/forms/controls/bootstrap3'
+            );
+        }
+        if (NEWUI && $head_config['framework'] != 'bootstrap' && $head_config['framework'] != 'bootstrap3') {
+            expCSS::pushToHead(array(
+                "lessprimer"=>"external/bootstrap3/less/newui.less",
+                "lessvars"=>array(
+                    'swatch'=>'cerulean',  // newui uses this swatch
+                    'themepath'=>'cerulean',  // hack to prevent crash
+                    'btn_size'=>'small',
+                ),
+            ));
+            if (!defined("BTN_SIZE")) define("BTN_SIZE", 'small');
+//            expCSS::pushToHead(array(
+//                "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
+//            ));
+            array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+        }
         array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
+
         if (!expSession::is_set('framework') || expSession::get(
                 'framework'
             ) != $head_config['framework']
@@ -291,7 +312,7 @@ class expTheme
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->' . "\n";
 
             // media css support for IE 6-8
-            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.3.0/respond.min.js"></script><![endif]-->' . "\n";
+            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.4.2/dest/respond.min.js"></script><![endif]-->' . "\n";
         }
 
         // when minification is used, the comment below gets replaced when the buffer is dumped
@@ -308,7 +329,7 @@ class expTheme
     public static function footerInfo($params = array())
     {
         // checks to see if the theme is calling footerInfo.
-        global $validateTheme, $user;
+        global $validateTheme, $user, $jsForHead;
 
         $validateTheme['footerinfo'] = true;
 
@@ -325,20 +346,20 @@ class expTheme
                     array('module' => 'administration', 'action' => 'togglemobile')
                 ) . '">View site in ' . (MOBILE ? "Classic" : "Mobile") . ' mode</a></div>');
         }
-        //echo expJavascript::parseJSFiles();
         self::processCSSandJS();
         echo expJavascript::footJavascriptOutput();
 
         expSession::deleteVar(
             "last_POST"
         ); //ADK - putting this here so one form doesn't unset it before another form needs it.
-        expSession::deleteVar('last_post_errors');
+        expSession::deleteVar(
+            'last_post_errors'
+        );
     }
 
     public static function pageMetaInfo()
     {
         global $sectionObj, $router;
-//        global $db;
 
         $metainfo = array();
         if (self::inAction() && (!empty($router->url_parts[0]) && expModules::controllerExists(
@@ -402,6 +423,7 @@ class expTheme
     public static function processCSSandJS()
     {
         global $jsForHead, $cssForHead;
+
         // returns string, either minified combo url or multiple link and script tags
         $jsForHead = expJavascript::parseJSFiles();
         $cssForHead = expCSS::parseCSSFiles();
@@ -468,6 +490,7 @@ class expTheme
     public static function satisfyThemeRequirements()
     {
         global $validateTheme;
+
         if ($validateTheme['headerinfo'] == false) {
             echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>expTheme::head() is a required function in your theme.  Please refer to the Exponent documentation for details:<br />
 			<a href=\"http://docs.exponentcms.org/docs/current/header-info\" target=\"_blank\">http://docs.exponentcms.org/</a>
@@ -486,6 +509,7 @@ class expTheme
     public static function getTheme()
     {
         global $sectionObj, $router;
+
         // Grabs the action maps files for theme overrides
         $action_maps = self::loadActionMaps();
 
@@ -548,8 +572,8 @@ class expTheme
         }
         if (!is_readable($theme)) {
             if (is_readable(BASE . 'themes/basetheme/index.php')) {
-                $theme = BASE . 'themes/basetheme/index.php';
-            } else {
+//                $theme = BASE . 'themes/basetheme/index.php';
+//            } else {
                 $theme = BASE . 'framework/core/index.php';
             }
         }
@@ -731,7 +755,6 @@ class expTheme
 
     public static function showAction($module, $action, $src = "", $params = array())
     { //FIXME only used by smarty functions, old school?
-//   		global $db, $user;
 
         $loc = expCore::makeLocation($module, (isset($src) ? $src : ""), (isset($int) ? $int : ""));
 
@@ -773,6 +796,7 @@ class expTheme
             exit();
         } else {
             global $db;
+
             $section = $db->selectObject("section", "public = 1 AND active = 1"); // grab first section, go there
             if ($section) {
                 header("Location: " . URL_FULL . "index.php?section=" . $section->id);
@@ -792,7 +816,6 @@ class expTheme
     public static function main()
     {
         global $db;
-//        global $user;
 
         echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
@@ -885,7 +908,6 @@ class expTheme
         $pickable = false,
         $hide_menu = false
     ) {
-//		global $db;
         global $module_scope;
 
         self::deprecated('expTheme::module()', $module, $view);
@@ -903,6 +925,7 @@ class expTheme
 //			$section = null;
 //		} else {
         global $sectionObj;
+
         //$last_section = expSession::get("last_section");
         //$section = $db->selectObject("section","id=".$last_section);
         $src .= $sectionObj->id;
@@ -1180,6 +1203,7 @@ class expTheme
         }
 
         global $db, $sectionObj, $module_scope;
+
         // Ensure that we have a section
         //FJD - changed to $sectionObj
         if ($sectionObj == null) {
@@ -1269,7 +1293,7 @@ class expTheme
 ////							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 ////                            $template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
 //                            $c2 = new containerController();
-//                            $template = get_template_for_action($c2,'_hardcoded_module_menu');
+//                            $template = expTemplate::get_template_for_action($c2,'_hardcoded_module_menu');
 //							$template->assign('container', $container);
 //							$template->output();
 //						}
@@ -1298,7 +1322,7 @@ class expTheme
 //							$template = new template('containermodule','_hardcoded_module_menu',$loc);
 //							$template = new template('containerController','_hardcoded_module_menu',$loc,false,'controllers');
                         $c2 = new containerController();
-                        $template = get_template_for_action($c2, '_hardcoded_module_menu');
+                        $template = expTemplate::get_template_for_action($c2, '_hardcoded_module_menu');
                         $template->assign('container', $hccontainer);
                         $template->output();
                     }
@@ -1320,20 +1344,393 @@ class expTheme
         }
     }
 
+    /**
+     * Return the color style for the current framework
+     *
+     * @param        $color
+     *
+     * @return mixed|string
+     */
+    public static function buttonColor($color = null)
+    {
+        $colors = array(
+            'green'   => 'btn-success',
+            'blue'    => 'btn-primary',
+            'red'     => 'btn-danger',
+            'magenta' => 'btn-danger',
+            'orange'  => 'btn-warning',
+            'yellow'  => 'btn-warning',
+            'grey'    => 'btn-default',
+            'purple'  => 'btn-info',
+            'black'   => 'btn-inverse',
+            'pink'    => 'btn-danger',
+        );
+        if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
+            if (!empty($colors[$color])) { // awesome to bootstrap button conversion
+                $found = $colors[$color];
+            } else {
+                $found = 'btn-default';
+            }
+        } else {
+            $found = array_search($color, $colors); // bootstrap to awesome button conversion?
+            if (empty($found)) {
+                $found = $color;
+            }
+        }
+        return $found;
+    }
+
+    /**
+     * Return the button size for the current framework
+     *
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function buttonSize($size = null)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $btn_size = ''; // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $btn_size = 'btn-mini';
+            } else { // medium
+                $btn_size = 'btn-small';
+            }
+            return $btn_size;
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $btn_size = ''; // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $btn_size = 'btn-xs';
+            } else { // medium
+                $btn_size = 'btn-sm';
+            }
+            return $btn_size;
+        } else {
+            if (empty($size)) {
+                $size = BTN_SIZE;
+            }
+            return $size;
+        }
+    }
+
+    /**
+     * Return the button color and size style for the current framework
+     *
+     * @param null   $color
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function buttonStyle($color = null, $size = null)
+    {
+        if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
+            $btn_class = 'btn ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
+        } else {
+            $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
+            $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+            $btn_class = "awesome " . $btn_size . " " . $btn_color;
+        }
+        return $btn_class;
+    }
+
+    /**
+     * Return the icon associated for the current frameowrk
+     *
+     * @param        $class
+     *
+     * @return stdClass|string
+     */
+    public static function buttonIcon($class)
+    {
+        $btn_type = '';
+//        if (NEWUI) {
+//            switch ($class) {
+//                case 'delete' :
+//                case 'deletetitle' :
+//                    $class = "times";
+//                    $btn_type = "btn-danger btn-sm"; // red
+//                    break;
+//                case 'edit' :
+//                    $class = "edit";
+//                    $btn_type = "btn-warning btn-sm"; // red
+//                    break;
+//                case 'add' :
+//                case 'addtitle' :
+//                case 'switchtheme add' :
+//                    $class = "plus add";
+//                    $btn_type = "btn-success btn-sm"; // green
+//                    break;
+//                case 'copy' :
+//                    $class = "copy";
+//                    break;
+//                case 'downloadfile' :
+//                case 'export' :
+//                    $class = "download-alt";
+//                    break;
+//                case 'uploadfile' :
+//                case 'import' :
+//                    $class = "upload-alt";
+//                    break;
+//                case 'manage' :
+//                    $class = "briefcase";
+//                    break;
+//                case 'merge' :
+//                case 'arrow_merge' :
+//                    $class = "sign-in";
+//                    break;
+//                case 'reranklink' :
+//                case 'alphasort' :
+//                    $class = "sort";
+//                    break;
+//                case 'configure' :
+//                    $class = "wrench";
+//                    break;
+//                case 'view' :
+//                    $class = "search";
+//                    break;
+//                case 'page_next' :
+//                    $class = 'double-angle-right';
+//                    break;
+//                case 'page_prev' :
+//                    $class = 'double-angle-left';
+//                    break;
+//                case 'change_password' :
+//                    $class = 'key';
+//                    break;
+//                case 'clean' :
+//                    $class = 'check';
+//                    break;
+//                case 'groupperms' :
+//                    $class = 'group';
+//                    break;
+//                case 'monthviewlink' :
+//                case 'weekviewlink' :
+//                    $class = 'calendar';
+//                    break;
+//                case 'listviewlink' :
+//                    $class = 'list';
+//                    break;
+//                case 'adminviewlink' :
+//                    $class = 'cogs';
+//                    break;
+//            }
+//            $found = new stdClass();
+//            $found->type = $btn_type;
+//            $found->class = $class;
+//            return $found;
+        if (expSession::get('framework') == 'bootstrap') {
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "remove-sign";
+                    $btn_type = "btn-danger"; // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus-sign add";
+                    $btn_type = "btn-success"; // green
+                    break;
+                case 'copy' :
+                    $class = "copy";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download-alt";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload-alt";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "signin";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class = 'double-angle-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'double-angle-left';
+                    break;
+                case 'password' :
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            switch ($class) {
+                case 'delete' :
+                case 'deletetitle' :
+                    $class = "times-circle";
+                    $btn_type = "btn-danger";  // red
+                    break;
+                case 'add' :
+                case 'addtitle' :
+                case 'switchtheme add' :
+                    $class = "plus-circle";
+                    $btn_type = "btn-success";  // green
+                    break;
+                case 'copy' :
+                    $class = "files-o";
+                    break;
+                case 'downloadfile' :
+                case 'export' :
+                    $class = "download";
+                    break;
+                case 'uploadfile' :
+                case 'import' :
+                    $class = "upload";
+                    break;
+                case 'manage' :
+                    $class = "briefcase";
+                    break;
+                case 'merge' :
+                case 'arrow_merge' :
+                    $class = "sign-in";
+                    break;
+                case 'reranklink' :
+                case 'alphasort' :
+                    $class = "sort";
+                    break;
+                case 'configure' :
+                    $class = "wrench";
+                    break;
+                case 'view' :
+                    $class = "search";
+                    break;
+                case 'page_next' :
+                    $class ='angle-double-right';
+                    break;
+                case 'page_prev' :
+                    $class = 'angle-double-left';
+                    break;
+                case 'password' :
+                case 'change_password' :
+                    $class = 'key';
+                    break;
+                case 'clean' :
+                    $class = 'check-square-o';
+                    break;
+                case 'groupperms' :
+                    $class = 'group';
+                    break;
+                case 'monthviewlink' :
+                case 'weekviewlink' :
+                    $class = 'calendar';
+                    break;
+                case 'listviewlink' :
+                    $class = 'list';
+                    break;
+                case 'adminviewlink' :
+                    $class = 'cogs';
+                    break;
+                case 'approve' :
+                    $class = "check";
+                    $btn_type = "btn-success"; // green
+                    break;
+            }
+            $found = new stdClass();
+            $found->type = $btn_type;
+            $found->class = $class;
+            return $found;
+        } else {
+            return $class;
+        }
+    }
+
+    /**
+     * Return the icon size for the current framework
+     *
+     * @param        $size
+     *
+     * @return mixed|string
+     */
+    public static function iconSize($size = null)
+    {
+        if (expSession::get('framework') == 'bootstrap') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $icon_size = 'icon-large';
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $icon_size = '';
+            } else { // medium
+                $icon_size = 'icon-large';
+            }
+            return $icon_size;
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
+                $icon_size = 'fa-lg';
+            } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
+                $icon_size = '';
+            } else { // medium
+                $icon_size = 'fa-lg';
+            }
+            return $icon_size;
+        } else {
+            return BTN_SIZE;
+        }
+    }
+
     public static function is_mobile()
     {
-        //point the mobile browser to the right page
+        $tablet_browser = 0;
         $mobile_browser = 0;
 
         if (preg_match(
-            '/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|opera m|kindle|webos)/i',
+            '/(tablet|ipad|playbook)|(android(?!.*(mobi|opera mini)))/i',
+            strtolower($_SERVER['HTTP_USER_AGENT'])
+        )
+        ) {
+            $tablet_browser++;
+        }
+
+        if (preg_match(
+            '/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|android|iemobile)/i',
             strtolower($_SERVER['HTTP_USER_AGENT'])
         )
         ) {
             $mobile_browser++;
         }
 
-        if (isset($_SERVER['HTTP_ACCEPT']) && (strpos(
+        if ((!empty($_SERVER['HTTP_ACCEPT']) && strpos(
                     strtolower($_SERVER['HTTP_ACCEPT']),
                     'application/vnd.wap.xhtml+xml'
                 ) > 0) or ((isset($_SERVER['HTTP_X_WAP_PROFILE']) or isset($_SERVER['HTTP_PROFILE'])))
@@ -1363,7 +1760,6 @@ class expTheme
             'eric',
             'hipt',
             'inno',
-            'ipad',
             'ipaq',
             'java',
             'jigs',
@@ -1385,7 +1781,7 @@ class expTheme
             'mwbp',
             'nec-',
             'newt',
-            'noki', /*'oper',*/
+            'noki',
             'palm',
             'pana',
             'pant',
@@ -1435,12 +1831,30 @@ class expTheme
             $mobile_browser++;
         }
 
-        //if (strpos(strtolower($_SERVER['ALL_HTTP']),'operamini') > 0) {
-        //    $mobile_browser++;
-        //}
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'opera mini') > 0) {
+            $mobile_browser++;
+            //Check for tablets on opera mini alternative headers
+            $stock_ua = strtolower(
+                isset($_SERVER['HTTP_X_OPERAMINI_PHONE_UA']) ? $_SERVER['HTTP_X_OPERAMINI_PHONE_UA'] : (isset($_SERVER['HTTP_DEVICE_STOCK_UA']) ? $_SERVER['HTTP_DEVICE_STOCK_UA'] : '')
+            );
+            if (preg_match('/(tablet|ipad|playbook)|(android(?!.*mobile))/i', $stock_ua)) {
+                $tablet_browser++;
+            }
+        }
 
         if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') > 0) {
             $mobile_browser = 0;
+        }
+
+        if ($tablet_browser > 0) {
+            // do something for tablet devices
+//           print 'is tablet';
+        } elseif ($mobile_browser > 0) {
+            // do something for mobile devices
+//            print 'is mobile';
+        } else {
+            // do something for everything else
+//            print 'is desktop';
         }
 
         return $mobile_browser;

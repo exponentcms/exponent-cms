@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,14 +24,14 @@
 {/css}
 
 <div class="store events_calendar events default">
-    <h1>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</h1>
+    <{$config.heading_level|default:'h1'}>{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}</{$config.heading_level|default:'h1'}>
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
                 {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
             {/if}
             {if $permissions.manage}
-                 {icon controller=eventregistration action=manage text="Manage Events"|gettext}
+                 {icon controller=eventregistration action=manage text="Manage Active Events"|gettext}
             {/if}
         </div>
     {/permissions}
@@ -41,7 +41,7 @@
     <div id="popup">
         <a href="javascript:void(0);" class="nav module-actions" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="month-cal-{$name}">
-            {include 'month.tpl'}
+            {exp_include file='month.tpl'}
         </div>
     </div>
 </div>
@@ -130,7 +130,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:

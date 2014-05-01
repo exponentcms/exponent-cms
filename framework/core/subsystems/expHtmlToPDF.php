@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,7 +27,7 @@ class expHtmlToPDF
     /**
      * Private use variables.
      */
-    protected  $pdf = null;  // pdf engine object
+    public  $pdf = null;  // pdf engine object
     protected $size = 'A4';
     protected $orient = 'portrait';
 
@@ -56,6 +56,17 @@ class expHtmlToPDF
      */
     public static $PDF_LANDSCAPE = 'landscape';
 
+    /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        $installed = false;
+        if (class_exists(HTMLTOPDF_ENGINE)) {
+            $engine = HTMLTOPDF_ENGINE;
+            $installed = $engine::installed();
+        }
+        return $installed;
+    }
 
     /**
      * Constructor: initialize a pdf file using selected engine.
@@ -65,7 +76,7 @@ class expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
+    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (HTMLTOPDF_ENGINE != 'none') {
             $engine = HTMLTOPDF_ENGINE;
@@ -265,11 +276,19 @@ class expWKPDF extends expHtmlToPDF
     }
 
     /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        $cmd = HTMLTOPDF_PATH;
+        return file_exists($cmd);
+    }
+
+    /**
      * Constructor: initialize command line and reserve temporary file.
      *
      * @throws Exception
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
+    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         $this->cmd = HTMLTOPDF_PATH; //.self::_getCPU();
         if (!file_exists($this->cmd)) {
@@ -529,6 +548,13 @@ class expDOMPDF extends expHtmlToPDF
 {
 
     /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        return file_exists(BASE . 'external/dompdf/dompdf.php');
+    }
+
+    /**
      * Constructor: initialize a pdf file file.
      *
      * @param string $paper_size  page size
@@ -536,7 +562,7 @@ class expDOMPDF extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
+    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/dompdf/dompdf.php')) {
             require_once(BASE . 'external/dompdf/dompdf_config.inc.php');
@@ -701,6 +727,13 @@ class expMPDF extends expHtmlToPDF
 {
 
     /**
+     * Return status of pdf engine being installed correctly
+     */
+    public static function installed() {
+        return file_exists(BASE . 'external/MPDF57/mpdf.php');
+    }
+
+    /**
      * Constructor: initialize a pdf file file.
      *
      * @param string $paper_size  page size
@@ -708,16 +741,18 @@ class expMPDF extends expHtmlToPDF
      * @param string $html        html code for page
      * @param bool   $use_file    a flag to show $html is an html file location to be loaded
      */
-    public function __construct($paper_size = "A4", $orientation = "portrait", $html, $use_file = false)
+    public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
-            define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
-            define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", PATH_RELATIVE . 'tmp/tmp/');
+            if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", PATH_RELATIVE . 'tmp/ttfontdata/');
+            ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
             $this->orient = strtoupper(substr($orientation, 0, 1));
             $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
             $this->pdf->setBasePath(URL_BASE);
+            $this->pdf->debug = DEVELOPMENT;
             if (!empty($html)) {
                 if ($use_file) {
                     $this->pdf->WriteHTML(file_get_contents($html));
@@ -725,6 +760,7 @@ class expMPDF extends expHtmlToPDF
                     $this->pdf->WriteHTML($html);
                 }
             }
+            if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
         } else {
             return null;
         }
@@ -741,6 +777,7 @@ class expMPDF extends expHtmlToPDF
     public function createpdf($mode, $file)
     {
 //        $this->pdf->render();
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         switch ($mode) {
             case self::$PDF_SAVEFILE:
                 return file_put_contents($file, $this->pdf->Output('S'));
@@ -751,6 +788,7 @@ class expMPDF extends expHtmlToPDF
             default:
                 $this->pdf->Output($file, $mode);
         }
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
         return true;
     }
 
@@ -762,7 +800,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_orientation($orientation)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($this->size,$orientation);
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -773,7 +813,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_page_size($size)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($size,$this->orient);
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -785,7 +827,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_paper($size, $orientation = 'portrait')
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->_setPageSize($size,$orientation);
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -796,7 +840,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_html($html, $encoding = null)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->WriteHTML($html, $encoding);
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -806,7 +852,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function set_html_file($htmlfile)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->WriteHTML(file_get_contents($htmlfile));
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -827,7 +875,9 @@ class expMPDF extends expHtmlToPDF
      */
     public function stream($filename, $options = null)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         $this->pdf->Output($filename, 'D');
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     /**
@@ -839,17 +889,21 @@ class expMPDF extends expHtmlToPDF
      */
     public function output($compress = null)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         return $this->pdf->Output(null, 'S');
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
     public function set_grayscale($mode)
     {
+        ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
         if ($mode) {
             $this->pdf->restrictColorSpace = 1;
         } else {
             $this->pdf->restrictColorSpace = 0;
 
         }
+        if (DEVELOPMENT) ini_set('display_errors', 1);  // warnings must be turned back on
     }
 
 }

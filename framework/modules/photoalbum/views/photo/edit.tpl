@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div id="editgallery" class="module photoalbum edit">
-    {if $record->id}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$modelname}</h1>{/if}
+    {if $record->id}<h1>{'Editing'|gettext} {$record->title}</h1>{else}<h1>{'New'|gettext} {$model_name}</h1>{/if}
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
@@ -28,15 +28,15 @@
                     <h2>{'Photo Item'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title description='Overrides file manager \'title\''|gettext}
                     {control type="text" name="alt" label="'Alt' tag"|gettext value=$record->alt description='Overrides file manager \'alt\''|gettext}
-                    {control type="files" name="files" label="Files"|gettext accept="image/*" value=$record->expFile limit=1}
+                    {control type="files" name="files" label="Files"|gettext accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
                     {control type=html name=body label="Description"|gettext value=$record->body}
-                    {*{control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}*}
-                    {control type=url name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
+                    {control type="text" name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}
+                    {*{control type=url name="link" label="Link this Slideshow Slide to a URL"|gettext value=$record->link}*}
                     {if !$config.disabletags}
                         {control type="tags" value=$record}
                     {/if}
                     {if $config.usecategories}
-                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$modelname`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
+                        {control type="dropdown" name=expCat label="Category"|gettext frommodel="expCat" where="module='`$model_name`'" orderby="rank" display=title key=id includeblank="Not Categorized"|gettext value=$record->expCat[0]->id}
                     {/if}
                 </div>
                 <div id="tab2">

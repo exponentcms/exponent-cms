@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,7 +23,7 @@
 {/css}
 
 <div class="module flowplayer mediaplayer showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 	{permissions}
 		<div class="module-actions">
 			{if $permissions.create}
@@ -38,7 +38,7 @@
    		{$config.moduledescription}
    	{/if}
     <div id="{$name}list">
-        {include 'medialist.tpl'}
+        {exp_include file='medialist.tpl'}
     </div>
 </div>
 
@@ -49,6 +49,7 @@
 {if $config.control_time}{{$control = "`$control`'duration',"}}{/if}
 {if $config.control_volume}{$control = "`$control`'volume',"}{/if}
 {if $config.control_fullscreen}{{$control = "`$control`'fullscreen'"}}{/if}
+{if $control == ''}{$control = "'playpause','progress','current','duration','tracks','volume','fullscreen'"}{/if}
 
 {script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
 {/script}

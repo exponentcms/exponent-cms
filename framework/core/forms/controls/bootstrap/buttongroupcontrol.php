@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -60,9 +60,15 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
 		$html = "";
 		if ($this->submit != "") {
-			$btn_size = 'btn-'.BTN_SIZE;
-			$icon_size = 'icon-'.BTN_SIZE;
-
+//            if (BTN_SIZE == 'large') {
+//                $btn_size = 'btn-small';
+//                $icon_size = 'icon-large';
+//            } else {
+//                $btn_size = 'btn-mini';
+//                $icon_size = '';
+//            }
+            $btn_size = expTheme::buttonSize();
+            $icon_size = expTheme::iconSize();
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'icon-save';
             } elseif (stripos($this->submit, 'log') !== false) {
@@ -99,11 +105,11 @@ class buttongroupcontrol extends formcontrol {
 			$html .= '</button>';
 		}
 		
-		expCSS::pushToHead(array(
-//		    "unique"=>"button",
-		    "corecss"=>"button",
-		    )
-		);
+//		expCSS::pushToHead(array(
+////		    "unique"=>"button",
+//		    "corecss"=>"button",
+//		    )
+//		);
 		
 		return $html;
 	}

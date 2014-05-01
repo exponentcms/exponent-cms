@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,18 +22,6 @@
  */
 
 class importexportController extends expController {
-    public $useractions = array(
-//        'showall'=>'Show all products & categories',
-//        'showall_featured_products'=>'Show all featured products',
-//        'upcoming_events'=>'Show all upcoming events',
-//        'showallSubcategories'=>'Show subcategories to the current category.',
-//        'showallManufacturers'=>'Show products by manufacturer',
-//        'quicklinks'=>'Quick Links for Users',
-//        'showTopLevel'=>'Show Top Level Store Categories',
-//        'search_by_model_form'=>'Product Search - By Model',
-//        'events_calendar'=>'Show events in a calendar'
-    );
-
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -69,12 +57,11 @@ class importexportController extends expController {
         return false;
     }
 
-    function __construct($src = null, $params = array()) {
-//        parent::__construct($src = null, $params);
-        parent::__construct($src, $params);
-    }
+//    function __construct($src = null, $params = array()) {
+//        parent::__construct($src, $params);
+//    }
 
-    function manage() {  // only method currently called
+    function manage() {
         global $available_controllers;
 
         $importDD = array();
@@ -86,7 +73,6 @@ class importexportController extends expController {
                 if ($c->canExportData()) $exportDD[$key] = $c->name();
             }
         }
-
         assign_to_template(array(
             'importDD' => $importDD,
             'exportDD' => $exportDD,
@@ -94,13 +80,249 @@ class importexportController extends expController {
     }
 
     function import() {
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import')) {  // allow for controller specific method
+            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import'));
+        }
+
+        $pullable_modules = expModules::listInstalledControllers($type->baseclassname);
+        $modules = new expPaginator(array(
+            'records' => $pullable_modules,
+            'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
+            'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
+            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
+            'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns' => array(
+                gt('Title') => 'title',
+                gt('Page')  => 'section'
+            ),
+        ));
+
         assign_to_template(array(
-            'type' => $this->params['import_type']
+            'modules' => $modules,
+            'import_type' => $type->baseclassname
         ));
     }
 
+    function import_select() {
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import_select')) {  // allow for controller specific method
+            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_select'));
+        }
+
+        //Get the temp directory to put the uploaded file
+        $directory = "tmp";
+
+        //Get the file save it to the temp directory
+        if ($_FILES["import_file"]["error"] == UPLOAD_ERR_OK) {
+            $file = expFile::fileUpload("import_file", false, false, time() . "_" . $_FILES['import_file']['name'], $directory.'/');
+            if ($file == null) {
+                switch ($_FILES["import_file"]["error"]) {
+                    case UPLOAD_ERR_INI_SIZE:
+                    case UPLOAD_ERR_FORM_SIZE:
+                        $this->params['_formError'] = gt('The file you attempted to upload is too large.  Contact your system administrator if this is a problem.');
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        $this->params['_formError'] = gt('The file was only partially uploaded.');
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        $this->params['_formError'] = gt('No file was uploaded.');
+                        break;
+                    default:
+                        $this->params['_formError'] = gt('A strange internal error has occurred.  Please contact the Exponent Developers.');
+                        break;
+                }
+                expSession::set("last_POST", $this->params);
+                header("Location: " . $_SERVER['HTTP_REFERER']);
+                exit("");
+            } else {
+                $errors = array();
+                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);
+                if (!empty($errors)) {
+                    $message = gt('Importing encountered the following errors') . ':<br>';
+                    foreach ($errors as $error) {
+                        $message .= '* ' . $error . '<br>';
+                    }
+                    flash('error', $message);
+                }
+
+                assign_to_template(array(
+                    'import_type' => $this->params['import_type'],
+                    'items' => $data[$type->model_table]->records,
+                    'filename' => $directory . "/" . $file->filename,
+                    'source' => $this->params['import_aggregate'][0]
+               ));
+            }
+        }
+    }
+
+    function import_process() {
+        $type = expModules::getController($this->params['import_type']);
+        if (method_exists($type, 'import_process')) {  // allow for controller specific method
+            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_process'));
+        }
+
+        $filename = $this->params['filename'];
+        $src = $this->params['source'];
+        $selected = $this->params['items'];
+        $errors = array();
+        $model = new $type->basemodel_name;
+        $tables = array();
+        $attached = $model->getAttachableItemTables();
+        foreach ($attached as $link=>$model) {
+            $tables[] = $link;
+            $attach = new $model;
+            $tables[] = $attach->tablename;
+        }
+        array_unshift($tables, $type->model_table);
+        $data = expFile::parseDatabase(BASE . $filename, $errors, $tables);
+
+        // parse out attachments data using the content_id for easier access
+        $attachments = array();
+        foreach ($attached as $link=>$model) {
+            if (!empty($data[$link]->records)) {
+                $attachments[$link] = array();
+                foreach ($data[$link]->records as $item) {
+                    $attachments[$link][$item['content_id']] = $item;
+                }
+                $attach = new $model;
+                foreach ($data[$attach->tablename]->records as $item) {
+                    $attachments[$link][$item['id']]['content'] = $item;
+                }
+            }
+        }
+
+        foreach ($selected as $select) {
+            $current_id = $data[$type->model_table]->records[$select]['id'];
+            unset($data[$type->model_table]->records[$select]['id']);
+            unset($data[$type->model_table]->records[$select]['sef_url']);
+            unset($data[$type->model_table]->records[$select]['rank']);
+            $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
+            $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
+            $item->update();
+
+            if ($this->params['import_attached']) {
+                $params = null;;
+                foreach ($attached as $link=>$model) {
+                    foreach ($attachments[$link] as $aitem) {
+                        if ($aitem['content_id'] == $current_id) {
+                            //$item is content_ record
+                            //$item['content'] is the attachment
+                            switch ($model) {
+                                case 'expCat':
+                                    $cat = new expCat($aitem['content']['title']);
+                                    if (empty($cat->id)) {
+                                        $cat->title = $aitem['content']['title'];
+                                        $cat->module = $type->baseclassname;
+                                        $cat->save();
+                                    }
+                                    $params['expCat'][] = $cat->id;
+                                    break;
+                                case 'expComment':
+                                    unset($aitem['content']['id']);
+                                    $comment = new expComment($aitem['content']);
+                                    $comment->update();  // create and attach the comment
+                                    $comment->attachComment($type->baseclassname, $item->id, $aitem['subtype']);
+                                    break;
+                                case 'expFile':
+                                    //FIXME we can't handle file attachments since this is only a db import
+                                    break;
+                                case 'expTag':
+                                    $tag = new expTag($aitem['content']['title']);
+                                    if (empty($tag->id))
+                                        $tag->update(array('title'=>$aitem['content']['title']));
+                                    $params['expTag'][] = $tag->id;
+                                    break;
+                            }
+                        }
+                    }
+                }
+                $item->update($params);  // add expCat & expTag attachments to item
+            }
+        }
+        unlink($this->params['filename']);
+        flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
+        expHistory::back();
+    }
+
     function export() {
-        eDebug($this->params);
+        $type = expModules::getController($this->params['export_type']);
+        if (method_exists($type, 'export')) {  // allow for controller specific method
+            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export'));
+        }
+
+        $pullable_modules = expModules::listInstalledControllers($type->baseclassname);
+        $modules = new expPaginator(array(
+            'records' => $pullable_modules,
+            'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
+            'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
+            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
+            'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns' => array(
+                gt('Title') => 'title',
+                gt('Page')  => 'section'
+            ),
+        ));
+        assign_to_template(array(
+            'modules' => $modules,
+            'export_type' => $type->baseclassname
+        ));
+    }
+
+    function export_process() {
+        $type = expModules::getController($this->params['export_type']);
+        if (method_exists($type, 'export_process')) {  // allow for controller specific method
+            redirect_to(array('controller'=>$type->baseclassname, 'action'=>'export_process'));
+        }
+
+        if (!empty($this->params['export_aggregate'])) {
+            $tables = array($type->model_table);
+            $selected = $this->params['export_aggregate'];
+            $where = '(';
+            foreach ($selected as $key=>$src) {
+                if ($key) $where .= ' OR ';
+                $where .= "location_data='" . serialize(expCore::makeLocation($type->baseclassname, $src)) . "'";
+            }
+            $where .= ')';
+            $awhere[] = $where;
+
+            if ($this->params['export_attached']) {
+                $model = new $type->basemodel_name;
+                foreach ($model->getAttachableItemTables() as $link=>$model) {
+                    $tables[] = $link;
+                    $awhere[] = "content_type='" . $type->baseclassname . "'";
+                    $attach = new $model;
+                    $tables[] = $attach->tablename;
+                    $awhere[] = '';
+                }
+            }
+
+            $filename = $type->baseclassname . '.eql';
+
+            ob_end_clean();
+            ob_start("ob_gzhandler");
+
+            // 'application/octet-stream' is the registered IANA type but
+            //        MSIE and Opera seems to prefer 'application/octetstream'
+            $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+            header('Content-Type: ' . $mime_type);
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+            // IE need specific headers
+            if (EXPONENT_USER_BROWSER == 'IE') {
+                header('Content-Disposition: inline; filename="' . $filename . '"');
+                header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+                header('Pragma: public');
+            } else {
+                header('Content-Disposition: attachment; filename="' . $filename . '"');
+                header('Pragma: no-cache');
+            }
+            echo expFile::dumpDatabase($tables, 'export', $awhere);
+            exit; // Exit, since we are exporting
+        }
+        expHistory::back();
     }
 
     function parseCategory($data) {
@@ -163,8 +385,8 @@ class importexportController extends expController {
 
         echo "<br/>" . gt("CSV File passed validation") . "...<br/>";
 
-        if ($this->params['import_type'] == 'storeController') $this->importProduct($file);
-        //else if($this->params['import_type'] == 'addressController') $this->importAddresses($file);
+        if ($this->params['import_type'] == 'store') $this->importProduct($file);
+        //else if($this->params['import_type'] == 'address') $this->importAddresses($file);
     }
 
     /*function importAddresses($file)

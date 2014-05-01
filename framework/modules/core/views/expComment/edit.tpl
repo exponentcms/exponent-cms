@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -39,14 +39,16 @@
     		{control type="antispam"}
             {permissions}
                 {if $permissions.approve}
-                    {control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
+                    <div class="item-actions">
+                        {control type="checkbox" name="approved" label="Approve Comment"|gettext value=1 checked=$comment->approved}
+                    </div>
                 {/if}
             {/permissions}
     		{control type=buttongroup submit="Submit Comment"|gettext}
     	{/form}
 	{else}
 		<p>
-			<a href="{link controller=login action=loginredirect}">{"Log In to leave a comment"|gettext}</a>
-		</p> 
+            {icon class="login" controller=login action=loginredirect text="Log In to leave a comment"|gettext}
+		</p>
 	{/if}
 </div>

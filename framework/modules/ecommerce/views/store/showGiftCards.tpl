@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
 
 {/css}
 <div class="module store show giftcards">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
@@ -60,9 +60,11 @@
                             {foreachelse}
                                 {'There are no gift cards available!'|gettext}
                                 {permissions}
-                                    {if $permissions.create || $permissions.edit}
-                                        {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
-                                    {/if}
+                                    <div class="module-actions">
+                                        {if $permissions.create || $permissions.edit}
+                                            {icon class="add" controller=store action=edit product_type=giftcard text="Add a Gift Card"|gettext}
+                                        {/if}
+                                    </div>
                                 {/permissions}
                             {/foreach}
                         {/group}
@@ -98,7 +100,7 @@
             </tbody>
         </table>
 
-        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="awesome {$smarty.const.BTN_COLOR} {$smarty.const.BTN_SIZE} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
+        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="{button_style} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
 	{/form}
 </div>
 

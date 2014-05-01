@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -62,8 +62,9 @@ class donationController extends expController {
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch($action) {
-            case 'donate':
-                $metainfo['title'] = gt('Make a donation');
+            case 'showall':
+            case 'show':
+                $metainfo['title'] = gt('Online Donations') . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = gt('donate online');
                 $metainfo['description'] = gt("Make a donation");
             break;

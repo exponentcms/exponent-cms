@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,9 +24,9 @@
                 {help text="Get Help with"|gettext|cat:" "|cat:("Editing User Accounts"|gettext) module="edit-user"}
 	        </div>
 			{if $edit_user->id == ""}
-				<h1>{'Create a New User Account'|gettext}</h1>
+				<h2>{'Create a New User Account'|gettext}</h2>
 			{else}
-				<h1>{'Edit User'|gettext} - '{$edit_user->username}'</h1> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
+				<h2>{'Edit User'|gettext} - '{$edit_user->username}'</h2> ( {'Date of last login'|gettext} {$edit_user->last_login|format_date})
 			{/if}
 	    </div>
 	    <div id="edituser-tabs" class="yui-navset exp-skin-tabview hide">
@@ -121,10 +121,10 @@
                 {/if}
 	            {foreach from=$extensions item=extension}
                     <div id="tab{$extension->id+2}" >
-                        {if file_exists("`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl")}
-                            {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
-                        {elseif file_exists("`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl")}
+                        {if file_exists("`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl")}
                             {include file="`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl"}
+                        {elseif file_exists("`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl")}
+                            {include file="`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl"}
                         {/if}
                     </div>
 	            {/foreach}

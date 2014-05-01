@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class eventregistrationController extends expController {
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'view_registrants'=> 'View Registrants',
     );
 
@@ -127,7 +127,6 @@ class eventregistrationController extends expController {
     }
 
     function eventsCalendar() {
-//        global $db, $user;
         global $user;
 
         expHistory::set('viewable', $this->params);
@@ -234,8 +233,6 @@ class eventregistrationController extends expController {
     }
 
     function upcomingEvents() {
-//        global $db;
-
         $sql = 'SELECT DISTINCT p.*, er.eventdate, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE er.signup_cutoff > ' . time() . ' AND er.eventdate > ' . time();
@@ -265,7 +262,7 @@ class eventregistrationController extends expController {
     }
 
     function show() {
-        global $order, $db, $template, $user;
+        global $order, $user;
 
         expHistory::set('viewable', $this->params);
         if (!empty($this->params['token'])) {
@@ -297,7 +294,8 @@ class eventregistrationController extends expController {
             $loc_data->orderitem_id = $this->params['orderitem_id'];
             $loc_data->event_id = $product->id;
             $locdata = serialize($loc_data);
-            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
+//            $order_registrations = $db->selectObjects('forms_' . $f->table_name, "location_data='" . $locdata . "'");
+            $order_registrations = $f->getRecords("location_data='" . $locdata . "'");
 
 //            $registrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND orderitem_id =" . $this->params['orderitem_id'] . " AND event_id =" . $product->id);
 //            if (!empty($registrants)) foreach ($registrants as $registrant) {
@@ -354,7 +352,7 @@ class eventregistrationController extends expController {
     }
 
     function manage() {
-        global $db, $user;
+        global $user;
 
         expHistory::set('viewable', $this->params);
         $limit = (!empty($this->config['limit'])) ? $this->config['limit'] : 10;
@@ -423,15 +421,46 @@ class eventregistrationController extends expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-//        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
-            case 'donate':
-                $metainfo['title']       = gt('Make an event registration');
+            case 'showall':
+            case 'eventsCalendar':
+            case 'upcomingEvents':
+                $metainfo['title']       = gt('Event Registration') . ' - ' . SITE_TITLE;
                 $metainfo['keywords']    = gt('event registration online');
                 $metainfo['description'] = gt("Make an event registration");
                 break;
+            case 'show':
+            case 'showByTitle':
+                if (isset($router->params['id']) || isset($router->params['title'])) {
+                    $lookup = isset($router->params['id']) ? $router->params['id'] : $router->params['title'];
+                    $object = new eventregistration($lookup);
+                    // set the meta info
+                    if (!empty($object)) {
+                        if (!empty($object->body)) {
+                            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
+                        $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
+                        $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
+                        $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
+                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
+                    }
+                    break;
+                }
             default:
                 $metainfo['title']       = $this->displayname() . " - " . SITE_TITLE;
                 $metainfo['keywords']    = SITE_KEYWORDS;
@@ -487,6 +516,7 @@ class eventregistrationController extends expController {
             }
         }
 
+        $event = new eventregistration();
         //Validation for ticker types
         if (isset($this->params['ticket_types']) && empty($this->params['options'])) {
             expValidator::failAndReturnToForm("Invalid ticket types.", $this->params);
@@ -495,13 +525,15 @@ class eventregistrationController extends expController {
 //        if (!empty($this->params['event'])) {
             $sess_id = session_id();
 //            $sess_id = expSession::getTicketString();
-            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+//            $data    = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
+            $data    = $event->getRecords("connector_id ='{$order->id}' AND event_id =" . $this->params['eventregistration']['product_id']);
          //FIXME change this to forms table
             if (!empty($data)) {
                 foreach ($data as $item) {
                     if (!empty($this->params['event'][$item->control_name])) {
                         $item->value = $this->params['event'][$item->control_name];
-                        $db->updateObject($item, "eventregistration_registrants");
+//                        $db->updateObject($item, "eventregistration_registrants");
+                        $event->updateRecord($item);
                     }
                 }
             } else {
@@ -512,13 +544,15 @@ class eventregistrationController extends expController {
                     $obj->value           = $value;
                     $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
-                    $db->insertObject($obj, "eventregistration_registrants");
+//                    $db->insertObject($obj, "eventregistration_registrants");
+                    $event->insertRecord($obj);
                 } else {
                     $obj                  = new stdClass();
                     $obj->event_id        = $this->params['eventregistration']['product_id'];
                     $obj->connector_id    = $order->id;
                     $obj->registered_date = time();
-                    $db->insertObject($obj, "eventregistration_registrants");
+//                    $db->insertObject($obj, "eventregistration_registrants");
+                    $event->insertRecord($obj);
                 }
             }
             expSession::set('session_id', $sess_id);
@@ -684,21 +718,23 @@ class eventregistrationController extends expController {
     }
 
     public function delete_registrant() {
-        global $db;
+//        global $db;
 
         $event = new eventregistration($this->params['event_id']);
         $f = new forms($event->forms_id);
         if (!empty($f->is_saved)) {  // is there user input data
-            $db->delete('forms_' . $f->table_name, "id='{$this->params['id']}'");
+//            $db->delete('forms_' . $f->table_name, "id='{$this->params['id']}'");
+            $f->deleteRecord($this->params['id']);
         } else {
-            $db->delete('eventregistration_registrants', "id ='{$this->params['id']}'");
+//            $db->delete('eventregistration_registrants', "id ='{$this->params['id']}'");
+            $event->deleteRecord($this->params['id']);
         }
         flash('message', gt("Registrant successfully deleted."));
         expHistory::back();
     }
 
     public function edit_registrant() {
-        global $db;
+//        global $db;
 
 //        $event_id     = $this->params['event_id'];
 //        $connector_id = @$this->params['connector_id'];
@@ -718,13 +754,15 @@ class eventregistrationController extends expController {
   //        }
 //            $registrant = expUnserialize($reg_data->value);
             if (!empty($f->is_saved)) {
-                $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+//                $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+                $registrant = $f->getRecord($this->params['id']);
 //            $registrant['id'] = $reg_data->id;
 //            $eventid = $reg_data->event_id;
 //        } else {
 //            $eventid = $this->params['event_id'];
             } else {
-                $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+//                $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+                $registrant = $event->getRecord($this->params['id']);
             }
         }
 
@@ -742,7 +780,8 @@ class eventregistrationController extends expController {
         $event = new eventregistration($this->params['event_id']);
         $f = new forms($event->forms_id);
         $registrant = new stdClass();
-        if (!empty($this->params['id'])) $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+//        if (!empty($this->params['id'])) $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
+        if (!empty($this->params['id'])) $registrant = $f->getRecord($this->params['id']);
         if (!empty($f->is_saved)) {
             $fc = new forms_control();
             $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly=0",'rank');
@@ -758,7 +797,8 @@ class eventregistrationController extends expController {
                 }
             }
             if (!empty($registrant->id)) {
-                $db->updateObject($registrant, 'forms_' . $f->table_name);
+//                $db->updateObject($registrant, 'forms_' . $f->table_name);
+                $f->updateRecord($registrant);
             } else {
                 $loc_data = new stdClass();
                 $loc_data->order_id = 'admin-created';
@@ -774,20 +814,24 @@ class eventregistrationController extends expController {
                     $registrant->user_id = 0;
                 }
                 $registrant->location_data = $locdata;
-                $db->insertObject($registrant, 'forms_' . $f->table_name);
+//                $db->insertObject($registrant, 'forms_' . $f->table_name);
+                $f->insertRecord($registrant);
             }
         } else {
-            $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+//            $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
+            $registrant = $event->getRecord($this->params['id']);
             $registrant->control_name = $this->params['control_name'];
             $registrant->value = $this->params['value'];
             if (!empty($registrant->id)) {
-                $db->updateObject($registrant, "eventregistration_registrants");
+//                $db->updateObject($registrant, "eventregistration_registrants");
+                $event->updateRecord($registrant);
             } else {
                 $registrant->event_id = $this->params['event_id'];
                 $registrant->connector_id = 'admin-created';
                 $registrant->orderitem_id = 'admin-created';
                 $registrant->registered_date = time();
-                $db->insertObject($registrant, "eventregistration_registrants");
+//                $db->insertObject($registrant, "eventregistration_registrants");
+                $event->insertRecord($registrant);
             }
         }
         redirect_to(array('controller'=> 'eventregistration', 'action'=> 'view_registrants', 'id'=> $this->params['event_id']));
@@ -865,7 +909,7 @@ class eventregistrationController extends expController {
 
         // new method to check for guests/registrants
 //        if (!empty($event->num_guest_allowed)) {
-        if (!empty($event->quantity)) {
+//        if (!empty($event->quantity)) {
 //            $registered = array();
 //            if (!empty($order_ids)) foreach ($order_ids as $order_id) {
 //                $newregistrants = $db->selectObjects("eventregistration_registrants", "connector_id ='{$order_id}'");
@@ -958,8 +1002,7 @@ class eventregistrationController extends expController {
 //            foreach ($controls as $control) {
 //                $header[] = $control->caption;
 //            }
-
-        }
+//        }
 
         if (LANG_CHARSET == 'UTF-8') {
             $out = chr(0xEF).chr(0xBB).chr(0xBF);  // add utf-8 signature to file to open appropriately in Excel, etc...
@@ -1087,17 +1130,17 @@ class eventregistrationController extends expController {
 //        }
         if (!empty($_FILES['attach']['size'])) {
             $dir = 'tmp';
-            $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
-            $dest = $dir.'/'.$filename;
+            $filename = expFile::fixName(time() . '_' . $_FILES['attach']['name']);
+            $dest = $dir . '/' . $filename;
             //Check to see if the directory exists.  If not, create the directory structure.
             if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
             // Move the temporary uploaded file into the destination directory, and change the name.
-            expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+            $file = expFile::moveUploadedFile($_FILES['attach']['tmp_name'], BASE . $dest);
 //            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //            $ftype = finfo_file($finfo, BASE.$dest);
 //            finfo_close($finfo);
-            $mail->attach_file_on_disk(BASE.$dest, expFile::getMimeType(BASE.$dest));
+            if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
         }
 
         $mail->quickBatchSend(array(
@@ -1108,7 +1151,7 @@ class eventregistrationController extends expController {
                 'from'        => ecomconfig::getConfig('from_address'),
                 'subject'     => $this->params['email_subject']
         ));
-
+        if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment
         flash('message', gt("You're email to event registrants has been sent."));
         expHistory::back();
     }
@@ -1149,6 +1192,7 @@ class eventregistrationController extends expController {
     */
     function getEventsForDates($edates, $sort_asc = true) {
         global $db;
+
         $events = array();
         foreach ($edates as $edate) {
 //            if (!isset($this->params['cat'])) {
@@ -1194,7 +1238,6 @@ class eventregistrationController extends expController {
 
     // create a pseudo global view_registrants permission
     public static function checkPermissions($permission,$location) {
-//        global $exponent_permissions_r, $user, $db, $router;
         global $exponent_permissions_r, $router;
 
         // only applies to the 'view_registrants' method

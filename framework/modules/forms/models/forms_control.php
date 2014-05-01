@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,7 +45,35 @@ class forms_control extends expRecord {
      */
     public function __construct($params=array()) {
         parent::__construct($params);
-        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        if (!empty($this->forms_id)) {
+            $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        }
+    }
+
+    /**
+     * Gets a form control
+     *
+     * @param string $where
+     *
+     * @return null|object|void
+     */
+    public function getControl($where="1") {
+        global $db;
+
+        return $db->selectObject('forms_control', $where);
+    }
+
+    /**
+     * Counts form controls
+     *
+     * @param string $where
+     *
+     * @return int
+     */
+    public function countControls($where="1") {
+        global $db;
+
+        return $db->countObjects('forms_control', $where);
     }
 
     /**

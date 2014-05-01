@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,10 +34,22 @@ class portfolioController extends expController {
         'rss',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
+    protected $add_permissions = array(
+        'import'=>'Import Portfolio Items',
+        'export'=>'Export Portfolio Items'
+    );
 
     static function displayname() { return gt("Portfolio"); }
     static function description() { return gt("Display a portfolio or listing."); }
     static function isSearchable() { return true; }
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
 
     public function showall() {
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -83,6 +95,27 @@ class portfolioController extends expController {
     }
 
     /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return string
+     */
+    function meta_rich($request, $object) {
+        $rich_meta = '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$object->expFile[0]->directory.$object->expFile[0]->filename.'"/>
+                <Attribute name="width" value="'.$object->expFile[0]->image_width.'"/>
+                <Attribute name="height" value="'.$object->expFile[0]->image_height.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+        return $rich_meta;
+    }
+
+    /**
      * The aggregateWhereClause function creates a sql where clause which also includes aggregated module content
      *
      * @param string $type
@@ -92,6 +125,7 @@ class portfolioController extends expController {
    	function aggregateWhereClause($type='') {
         $sql = parent::aggregateWhereClause();
         $sql .= (!empty($this->config['only_featured']))?"AND featured=1":"";
+
         return $sql;
     }
 

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,9 +18,9 @@
 {/css}
 
 <div class="company showall">
-	<h1>{$moduletitle|default:'Company Listings'|gettext}</h1>
+	<{$config.heading_level|default:'h1'}>{$moduletitle|default:'Company Listings'|gettext}</{$config.heading_level|default:'h1'}>
     {if $permissions.create}
-        {icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$modelname`"}
+        {icon class=add controller=$controller action=edit text="Add a new"|gettext|cat:" `$model_name`"}
     {/if}
     <table class="exp-skin-table">
     <thead>

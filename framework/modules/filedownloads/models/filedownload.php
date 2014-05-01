@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,22 +25,23 @@ class filedownload extends expRecord {
 //	public $table = 'filedownloads';
 
     protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
+        'content_expComments'=>'expComment',
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
-        'content_expComments'=>'expComment',
-        'content_expCats'=>'expCat'
     );
 
 	public $validates = array(
 		'presence_of'=>array(
 			'title'=>array('message'=>'Title is a required field.'),
+            //'body'=>array('message'=>'Body is a required field.'),
 		)
     );
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
 
-        if ($this->id) {
+        if (!empty($this->id)) {
             include_once(BASE.'external/mp3file.php');
             if (!empty($this->expFile['downloadable'][0]) && ($this->expFile['downloadable'][0]->mimetype == "audio/mpeg") && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
                 $mp3 = new mp3file(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename);

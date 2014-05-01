@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,6 +35,22 @@ require_once("../../../../exponent.php");
             $url = '' ;
             // Optional message to show to the user (file renamed, invalid file, not authenticated...)
             $message = '';
+
+            if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0) {
+                if (SITE_FILE_MANAGER == 'picker') {
+                    $quikFolder = QUICK_UPLOAD_FOLDER;
+                    $destDir = null;
+                } elseif (SITE_FILE_MANAGER == 'elfinder') {
+                    $quikFolder = null;
+                    $destDir = UPLOAD_DIRECTORY_RELATIVE . QUICK_UPLOAD_FOLDER . '/';
+                    // create folder if non-existant
+                    expFile::makeDirectory($destDir);
+                }
+            } else {
+                $quikFolder = null;
+                $destDir = null;
+            }
+
             //extensive suitability check before doing anything with the file...
             if (($_FILES['upload'] == "none") OR (empty($_FILES['upload']['name'])) ) {
                 $message = gt("No file uploaded.");
@@ -46,7 +62,7 @@ require_once("../../../../exponent.php");
                 $message = gt("You may be attempting to hack our server.");
             } else {
                 // upload the file, but don't save the record yet...
-                $file = expFile::fileUpload('upload',false,false,null,null,intval(QUICK_UPLOAD_WIDTH));
+                $file = expFile::fileUpload('upload',false,false,null,$destDir,intval(QUICK_UPLOAD_WIDTH));
                 // since most likely this function will only get hit via flash in YUI Uploader
                 // and since Flash can't pass cookies, we lose the knowledge of our $user
                 // so we're passing the user's ID in as $_POST data. We then instantiate a new $user,
@@ -55,8 +71,8 @@ require_once("../../../../exponent.php");
                     $file->poster = $user->id;
                     $file->posted = $file->last_accessed = time();
                     $file->save();
-                    if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER) {
-                       $expcat = new expCat(QUICK_UPLOAD_FOLDER);
+                    if (!empty($quikFolder)) {
+                       $expcat = new expCat($quikFolder);
                        $params['expCat'][0] = $expcat->id;
                        $file->update($params);
                     }

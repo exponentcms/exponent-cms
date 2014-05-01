@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,21 +30,29 @@ if (EXPONENT_VERSION_TYPE != '') {
 }
 $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BUILDDATE);
 
+if (expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) {
+    $admin_text = 'Admin';
+} else {
+    $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">';
+}
 if ($user->isAdmin()) {
     $expAdminMenu = array(
-        'text'      => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
+        'text'      => $admin_text,
+        'icon'      => 'fa-star',
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',
             'itemdata' => array(
                 array(
                     'classname' => 'info',
+                    'icon'      => 'fa-info-circle',
                     'text'      => gt('About ExponentCMS'),
                     "submenu"   => array(
                         'id'       => 'ver',
                         'itemdata' => array(
                             array(
                                 'classname' => 'moreinfo',
+                                'info' => '1',
                                 'text'      => $my_version . $my_type . $my_releasedate . "<br />" . gt("PHP Version") . " : " . phpversion(), "disabled" => true
                             ),
                             array(
@@ -74,6 +82,7 @@ if ($user->isAdmin()) {
 
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text' => gt("Configure Website"),
+        'icon'      => 'fa-gears',
         'classname' => 'configure',
         'url'  => makeLink(array(
             'controller' => 'administration',
@@ -120,6 +129,7 @@ if ($user->isAdmin()) {
 if ($user->isAdmin()) {
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt("Site Management"),
+        'icon'      => 'fa-cog',
         'classname' => 'manage',
         'submenu'   => array(
             'id'       => 'manage',
@@ -148,50 +158,56 @@ if ($user->isAdmin()) {
                         'action'     => 'manage'
                     ))
                 ),
-                array(
-                    'text'      => gt('Manage File Folders'),
-                    'classname' => 'manage',
-                    'url'       => makeLink(array(
-                        'controller' => 'expCat',
-                        'action'     => 'manage',
-                        'model'      => 'file'
-                    ))
-                ),
-                array(
-                    'text'      => gt('Manage Site Forms'),
-                    'classname' => 'manage',
-                    'url'       => makeLink(array(
-                        'controller' => 'forms',
-                        'action'     => 'manage',
-                    ))
-                ),
-                array(
-                    'text'      => gt('View Top Searches'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'topSearchReport'
-                    ))
-                ),
-                array(
-                    'text'      => gt('View Search Queries'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'searchQueryReport'
-                    ))
-                ),
-                array(
-                    'text'      => gt('Regenerate Search Index'),
-                    'classname' => 'search',
-                    'url'       => makeLink(array(
-                        'controller' => 'search',
-                        'action'     => 'spider'
-                    ))
-                ),
             )
         )
     );
+
+    if (SITE_FILE_MANAGER == 'picker') {
+        $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'][] = array(
+            'text'      => gt('Manage File Folders'),
+            'classname' => 'manage',
+            'url'       => makeLink(array(
+                'controller' => 'expCat',
+                'action'     => 'manage',
+                'model'      => 'file'
+            ))
+        );
+    }
+
+    $expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'] = array_merge($expAdminMenu['submenu']['itemdata'][count($expAdminMenu['submenu']['itemdata'])-1]['submenu']['itemdata'],array(
+        array(
+            'text'      => gt('Manage Site Forms'),
+            'classname' => 'manage',
+            'url'       => makeLink(array(
+                'controller' => 'forms',
+                'action'     => 'manage',
+            ))
+        ),
+        array(
+            'text'      => gt('View Top Searches'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'topSearchReport'
+            ))
+        ),
+        array(
+            'text'      => gt('View Search Queries'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'searchQueryReport'
+            ))
+        ),
+        array(
+            'text'      => gt('Regenerate Search Index'),
+            'classname' => 'search',
+            'url'       => makeLink(array(
+                'controller' => 'search',
+                'action'     => 'spider'
+            ))
+        ),
+    ));
 }
 
 $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND is_admin=1');
@@ -199,6 +215,7 @@ $groups = $db->selectObjects('groupmembership', 'member_id=' . $user->id . ' AND
 if ($user->isAdmin() || !empty($groups)) {
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt('User Management'),
+        'icon'      => 'fa-group',
         'classname' => 'users',
         'submenu'   => array(
             'id'       => 'usermanagement',
@@ -267,6 +284,7 @@ if ($user->isSuperAdmin()) {
     );
     $expAdminMenu['submenu']['itemdata'][] = array(
         'text'      => gt('Super-Admin Tools'),
+        'icon'      => 'fa-asterisk',
         'classname' => 'development',
         'submenu'   => array(
             'id'       => 'development',
@@ -280,7 +298,7 @@ if ($user->isSuperAdmin()) {
                     ))
                 ),
                 array(
-                    'text'      => (LOGGER) ? gt('Turn YUI Log Display off') : gt('Turn YUI Log Display on'),
+                    'text'      => (LOGGER) ? gt('Turn Logger off') : gt('Turn Logger on'),
                     'classname' => (LOGGER) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(array(
                         'controller' => 'administration',
@@ -299,15 +317,20 @@ if ($user->isSuperAdmin()) {
                                 'classname' => 'manage',
                             ),
                             array(
-                                'text'      => gt('Import Database'),
+                                'text'      => gt('Restore Database'),
                                 'url'       => makeLink(array('controller' => 'file', 'action' => 'import_eql')),
                                 'classname' => 'import',
                             ),
                             array(
-                                'text'      => gt('Export Database'),
+                                'text'      => gt('Backup Database'),
                                 'url'       => makeLink(array('controller' => 'file', 'action' => 'export_eql')),
                                 'classname' => 'export',
                             ),
+                            array(
+                               'text'      => gt("Import/Export Data"),
+                               'classname' => 'import',
+                               'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+                           ),
                             array(
                                 'text' => gt('Update Tables'),
                                 'url'  => makeLink(array(
@@ -486,6 +509,15 @@ if ($user->isSuperAdmin()) {
                     'url'       => makeLink(array(
                         'controller' => 'recyclebin',
                         'action'     => 'showall'
+                    ))
+                ),
+                array(
+                    'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
+                    'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
+                    'id'        => 'workflow-toggle',
+                    'url'       => makeLink(array(
+                        'controller' => 'administration',
+                        'action'     => 'toggle_workflow'
                     ))
                 ),
                 array(

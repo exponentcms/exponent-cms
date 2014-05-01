@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module snippet showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
@@ -29,33 +29,33 @@
         {$config.moduledescription}
     {/if}
     {$myloc=serialize($__loc)}
-    {foreach from=$items item=text name=items}
-        {if $text->title}<h2>{$text->title}</h2>{/if}
+    {foreach from=$items item=item name=items}
+        {if $item->title}<{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>{/if}
         {permissions}
 			<div class="item-actions">
-				{if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
-                    {if $myloc != $text->location_data}
+				{if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                    {if $myloc != $item->location_data}
                         {if $permissions.manage}
-                            {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                            {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                         {else}
                             {icon img='arrow_merge.png' title="Merged Content"|gettext}
                         {/if}
                     {/if}
-					{icon action=edit record=$text}
+					{icon action=edit record=$item}
 				{/if}
-				{if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
-					{icon action=delete record=$text}
+				{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+					{icon action=delete record=$item}
 				{/if}
 			</div>
         {/permissions}
         <div class="bodycopy">
-            {$text->highlight}
+            {$item->highlight}
             {clear}
         </div>
         {permissions}
 			<div class="module-actions">
 				{if $permissions.create}
-					{icon class=add action=edit rank=$text->rank+1 text="Add a snippet here"|gettext}
+					{icon class=add action=edit rank=$item->rank+1 text="Add a snippet here"|gettext}
 				{/if}
 			</div>
         {/permissions}

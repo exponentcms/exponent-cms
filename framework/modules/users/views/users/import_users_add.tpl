@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,8 +19,10 @@
 
 <div class="importer usercsv-add">
 	<div class="form_header">
-		<h2>{'Import Users - Users Imported'|gettext}</h2>
-		<blockquote>{'The following users were added to the database.  If the user info is highlighted green, then the user was updated in the database.  If the user info is highlighted in red, that user record could not be added to the database due to errors.'|gettext}</blockquote>
+        <div class="info-header">
+            <h2>{'Import Users - Users Imported'|gettext}</h2>
+            <blockquote>{'The following users were added to the database.  If the user info is highlighted green, then the user was updated in the database.  If the user info is highlighted in red, that user record could not be added to the database due to errors.'|gettext}</blockquote>
+        </div>
 	</div>
 	<table cellspacing="0" cellpadding="2" border="0" width="100%" class="exp-skin-table">
         <thead>

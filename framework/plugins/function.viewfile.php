@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -34,6 +34,6 @@
  */
 function smarty_function_viewfile($params,&$smarty) {
     $controller = expModules::getController($params['module']);
-	$view = get_template_for_action($controller,$params['view']);
+	$view = expTemplate::get_template_for_action($controller,$params['view']);
 	$smarty->assign($params['var'],$view->viewfile);
 }

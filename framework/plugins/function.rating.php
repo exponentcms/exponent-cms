@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,7 +36,6 @@ function smarty_function_rating($params,&$smarty) {
     global $user,$db;
     
     expCSS::pushToHead(array(
-//	    "unique"=>'ratings',
         "corecss"=>"ratings",
 	    )
 	);
@@ -107,6 +106,11 @@ function smarty_function_rating($params,&$smarty) {
         </div>
     </div>
     ';
+    if (isset($params['itemprop'])) {
+        $html .= '<span itemprop="review" itemscope itemtype="http://data-vocabulary.org/Review-aggregate" class="hide">
+            <span itemprop="rating">'.$total_average.'</span><span itemprop="count">'.$rating_count.'</span>
+        </span>';
+    }
 
     if (empty($myrate)) $myrate = 0;
     $content = "

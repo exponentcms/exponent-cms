@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -419,11 +419,15 @@ function smarty_function_img($params,&$smarty) {
 	}
 	
 	$source = ' src="'.$src.'"';
-    
+
+    $itemprop = '';
+    if (isset($params['itemprop'])) {
+        $itemprop = ' itemprop="image"';
+    }
     if (empty($params['return'])) {
-    	echo '<img'.$id.$class.$source.$dims.$alt.$style.$title.$closing;
+    	echo '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$closing;
     } else {
-    	return '<img'.$id.$class.$source.$dims.$alt.$style.$title.$rel.$closing;
+    	return '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$rel.$closing;
     }
 }
 

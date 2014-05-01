@@ -2,11 +2,43 @@
 
 ----------
 
-Copyright (c) 2004-2013 OIC Group, Inc.
+Copyright (c) 2004-2014 OIC Group, Inc.
 
 For a more detailed changelog visit https://github.com/exponentcms/exponent-cms/commits/master
 
-Added / Fixed / changed for 2.2.3
+----------
+
+Added / Fixed / Changed for 2.3.0
+-----------------------
+### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
+  - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
+  - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
+  - adds new optional search/filter to portfolio & faq showall views
+  - adds new optional workflow features (revisions and approval) to blog, news, & text modules
+  - module and item heading levels are now selectable within module configuration settings
+  - adds optional 'websnapr' link thumbnail support to links module
+  - adds module specific quick upload folder selection
+  - updates several 'widgets' from YUI to jQuery variants (tag picker, calendar, list builder color picker, lightbox)
+  - initial support for alternate/optional WYSIWYG editor - TinyMCE (works on Android devices)
+  - initial support for alternate/optional file manager - elFinder (uses an OS file manager paradigm)
+  - adds optional 'hidden' controls (checkbox, text, textarea) to forms to allow (prefilled) data fields unavailable on initial entry, but can be updated later (e.g. paid, notes)
+  - adds new 'church site' site sample database in addition to 'sample site', 'blog' and 'eCommerce store' during installation
+  - vastly improved SEO for events, eventregistrations, & products
+    -- event & product data (dates, cost, reviews, etc...) now available to search engine as rich snippets
+    -- more accurate meta data made available to search engines
+  - enhances the import/export abilities for transferring site content/data from other sites or in other formats
+  - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
+  - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
+  - adds new 'reset.php' file to allow easily clearing all caches if the site crashes when designing/changing themes
+  - includes all fixes from v2.2.3 patches
+### Known Issues
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
+----------
+
+Added / Fixed / Changed for 2.2.3
 -----------------------
 ### Address issues in v2.2.2 and finally remove features deprecated in v2.2.0
   * changes use/function of the 'create' permission
@@ -38,7 +70,9 @@ Added / Fixed / changed for 2.2.3
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-Added / Fixed / changed for 2.2.2
+----------
+
+Added / Fixed / Changed for 2.2.2
 -----------------------
 ### Address issues in v2.2.1, enhance SEO and Social Media features
   - greatly enhances default page meta data (SEO out of the box)
@@ -61,7 +95,9 @@ Added / Fixed / changed for 2.2.2
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-Added / Fixed / changed for 2.2.1
+----------
+
+Added / Fixed / Changed for 2.2.1
 -----------------------
 ### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
@@ -86,7 +122,9 @@ Added / Fixed / changed for 2.2.1
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-Added / Fixed / changed for 2.2.0
+----------
+
+Added / Fixed / Changed for 2.2.0
 -----------------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
   - Removes all the 'old school' 1.x files
@@ -128,7 +166,9 @@ Added / Fixed / changed for 2.2.0
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-Added / Fixed / changed for 2.1.4
+----------
+
+Added / Fixed / Changed for 2.1.4
 -----------------------
 ### This release only fixes bugs found in 2.1.3, everything else is destined for the v2.2 major version update
  - updates EQL file export/import to also include table definition for future proofing backups
@@ -136,7 +176,9 @@ Added / Fixed / changed for 2.1.4
  - fixes Online Event Registrations activating many features, adds email registrants
  - fixes over 3 dozen issues found in 2.1.3
 
-Added / Fixed / changed for 2.1.3
+----------
+
+Added / Fixed / Changed for 2.1.3
 -----------------------
 ### This release only fixes bugs found in 2.1.2, everything else is destined for the v2.2 major version update
  - fixes form copy feature
@@ -144,7 +186,9 @@ Added / Fixed / changed for 2.1.3
  - makes blog aggregation configuration tab more intuitive
  - fixes some migration issues with forms, events, & navigation
 
-Added / Fixed / changed for 2.1.2
+----------
+
+Added / Fixed / Changed for 2.1.2
 -----------------------
 ### This release focuses on things not completed in 2.1.1, but not destined for the v2.2 major version update
  - adds category and tag assignment to multi-add photo album feature
@@ -152,7 +196,9 @@ Added / Fixed / changed for 2.1.2
  - cleans up form assignment to a module by using manage forms instead of module configuration settings
  - fixes over a dozen bugs and anomalies from previous versions
 
-Added / Fixed / changed for 2.1.1
+----------
+
+Added / Fixed / Changed for 2.1.1
 -----------------------
 ### This release focuses on the new forms module and user interface improvements
   - adds many new event calendar features
@@ -188,7 +234,9 @@ Added / Fixed / changed for 2.1.1
     - images may be optionally resized to a max width, and files assigned to a virtual folder during upload
   - calendarmodule and simplepollmodule (old school) are now fully deprecated (removed)
 
-Added / Fixed / changed for 2.1.0
+----------
+
+Added / Fixed / Changed for 2.1.0
 -----------------------
 ### This release focuses on new calendar module and a 'mega' menu
   - adds optional nested comments, and optional per-item comment disabling
@@ -207,7 +255,9 @@ Added / Fixed / changed for 2.1.0
   - adds new built-in database manager
   - plus many, many other tweaks, fixes, and features
 
-Added / Fixed / changed for 2.0.9
+----------
+
+Added / Fixed / Changed for 2.0.9
 -----------------------
 ### This release focuses on greater HTML5 & PHP v5.4 compliance, & module upgrades
   - upgrades old school simple poll and navigation modules into 2.0 style controllers
@@ -238,7 +288,9 @@ Added / Fixed / changed for 2.0.9
   - (finally) upgrades the YUI framework to v3.7.2 (after being stuck at v3.4.0 due to issue)
   - plus many, many other tweaks, fixes, and features
 
-Added / Fixed / changed for 2.0.8
+----------
+
+Added / Fixed / Changed for 2.0.8
 -----------------------
 ### This release focuses on fixing bugs and enhancing list management (tags, categories, comments)
   - adds manual sorting to news module
@@ -256,7 +308,9 @@ Added / Fixed / changed for 2.0.8
   - adds alpha-level implementation of less style sheets (both system and theme)
   - plus many other tweaks, fixes, and features
 
-Added / Fixed / changed for 2.0.7
+----------
+
+Added / Fixed / Changed for 2.0.7
 -----------------------
 ### This release focuses on fixing bugs and enhanced speed/size
   - incorporates all fixes from v2.0.6 patches
@@ -288,7 +342,9 @@ Added / Fixed / changed for 2.0.7
   - many 3rd party libraries updated (ckeditor, flowplayer, minify, & swiftmailer)
   - plus many other tweaks, fixes, and features
 
-Added / Fixed / changed for 2.0.6
+----------
+
+Added / Fixed / Changed for 2.0.6
 -----------------------
 ### This release focuses on usability features and security
   - incorporates all fixes from v2.0.5 patches
@@ -306,14 +362,15 @@ Added / Fixed / changed for 2.0.6
   - adds additional url security checking
   - plus other tweaks, fixes, and features
 
-Added / Fixed / changed for 2.0.5
+----------
+
+Added / Fixed / Changed for 2.0.5
 -----------------------
 ### This release focuses on implementing categories
   - categories are (fully) implemented within the faq, filedownloads, links, photoalbum & portfolio modules
     - adds tabbed view either by category or alphabetized like rolodex
     - adds an accordion like view w/ collapse/expand by category/alphabetized
     - categories now migrated; imagegallerymodule galleries converted to categories
-
 ### Many fixes and updates
   - Minification has been fixed for many server scenarios
   - adds optional thumbnail display and list size setting to file manager
@@ -336,7 +393,9 @@ Added / Fixed / changed for 2.0.5
   - coolwater theme enhanced with header configuration, new 'wide' style variation, etc...
   - changes calling parameters for send_reminders.php
 
-Added / Fixed / changed for 2.0.4
+----------
+
+Added / Fixed / Changed for 2.0.4
 -----------------------
 ### This release focuses on revising the install/update/upgrade process
   - installation and upgrade must now be specifically invoked by url
@@ -352,7 +411,9 @@ Added / Fixed / changed for 2.0.4
   - greatly enhanced Coolwater theme that allows easy header customization
   - plus many other bug fixes and updates
 
-Added / Fixed / changed for 2.0.3
+----------
+
+Added / Fixed / Changed for 2.0.3
 -----------------------
 ### This release focuses on refining the language system
   - for general use, installation, and to simplify translation creation
@@ -369,7 +430,9 @@ Added / Fixed / changed for 2.0.3
 ### Adds search result highlighting
 ### Plus many other bug fixes and updates
 
-Added / Fixed / changed for 2.0.2
+----------
+
+Added / Fixed / Changed for 2.0.2
 -----------------------
 ### This release focuses on integrating Smarty v3
   - Custom themes/views must be updated to follow Smarty syntax (v2 allowed sloppy syntax)
@@ -380,7 +443,9 @@ Added / Fixed / changed for 2.0.2
 ### Fixes numerous bugs and other issues; incorporates 3 patches to v2.0.1
 ### All 1.0 subsystems & FCKeditor now fully deprecated
 
-Added / Fixed / changed for 2.0.1
+----------
+
+Added / Fixed / Changed for 2.0.1
 -----------------------
 ### This release focuses on adding new features to and fixing problems with the first stable release
 ### (major change) YUI Loader changed to 'yui2in3', YUI3 updated to v3.4.0
@@ -401,6 +466,8 @@ Added / Fixed / changed for 2.0.1
 ### Deprecates several 1.0 style subsystems & modules including administration & login modules
   - Custom themes/views must be updated to reference login controller instead of loginmodule
 
-Added / Fixed / changed for 2.0.0 (stable)
+----------
+
+Added / Fixed / Changed for 2.0.0 (stable)
 -----------------------
 ### The first stable release

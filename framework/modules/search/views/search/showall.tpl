@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 {/css}
  
 <div class="module search show-form">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -28,7 +28,6 @@
         {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext}*}
         {*{control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}*}
     {*</form>*}
-    <form id="form" name="form" method="POST" action="{$smarty.const.PATH_RELATIVE}index.php">
     {form action=search}
         {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext}
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}

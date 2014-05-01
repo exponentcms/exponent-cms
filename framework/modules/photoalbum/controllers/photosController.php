@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -161,7 +161,29 @@ class photosController extends expController {
             'tags'=>$used_tags
         ));
     }           
-    
+
+    /**
+     * Returns rich snippet PageMap meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return string
+     */
+    function meta_rich($request, $object) {
+        if (file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
+            return '<!--
+        <PageMap>
+            <DataObject type="thumbnail">
+                <Attribute name="src" value="'.URL_FULL.$object->expFile[0]->directory.$object->expFile[0]->filename.'"/>
+                <Attribute name="width" value="'.$object->expFile[0]->image_width.'"/>
+                <Attribute name="height" value="'.$object->expFile[0]->image_width.'"/>
+            </DataObject>
+        </PageMap>
+    -->';
+        } else return null;
+    }
+
     public function update() {
 
         //populate the alt tag field if the user didn't
@@ -179,14 +201,14 @@ class photosController extends expController {
 //        foreach ($tags as $tag) {
 //            $taglist .= "'" . $tag->title . "',";
 //        }
-        $taglist = expTag::getAllTags();
-        $modelname = $this->basemodel_name;
-        assign_to_template(array(
+//        $taglist = expTag::getAllTags();
+//        $modelname = $this->basemodel_name;
+//        assign_to_template(array(
 //            'record'     => $record,
-            'table'      => $this->$modelname->tablename,
+//            'table'      => $this->$modelname->tablename,
 //            'controller' => $this->params['controller'],
-            'taglist'    => $taglist
-        ));
+//            'taglist'    => $taglist
+//        ));
     }
 
     public function multi_update() {

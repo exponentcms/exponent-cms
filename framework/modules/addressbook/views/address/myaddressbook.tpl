@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -82,5 +82,7 @@
 			{/foreach}
 		</tbody>
     </table>
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{backlink}">{"Done"|gettext}</a>
+    {*<a class="{button_style}" href="{backlink}">{"Done"|gettext}</a>*}
+    {$backlink = makeLink(expHistory::getBack(1))}
+    {icon button=true link=$backlink text="Done"|gettext}
 </div>

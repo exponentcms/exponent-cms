@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -105,6 +105,7 @@ class eventController extends expController {
                 $viewtype = "byday";
                 $viewrange = "day";
                 break;
+            case 'showall_announcement':
             case 'showall_Upcoming Events':
             case 'showall_Upcoming Events - Headlines':
                 $viewrange = "upcoming";
@@ -498,7 +499,7 @@ class eventController extends expController {
        	}
 
         assign_to_template(array(
-            'allforms'     => array_merge($allforms, expCore::buildNameList("forms", "event/email", "tpl", "[!_]*")),
+            'allforms'     => array_merge($allforms, expTemplate::buildNameList("forms", "event/email", "tpl", "[!_]*")),
             'checked_date' => !empty($this->params['date_id']) ? $this->params['date_id'] : null,
             'event_key'    => $event_key,
         ));
@@ -563,41 +564,45 @@ class eventController extends expController {
    	function metainfo() {
        global $router;
 
-       $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
-       // look for event date_id which expController::metainfo won't detect
-//       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($_REQUEST['id']) && isset($_REQUEST['date_id'])) {
-       if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
-           // look up the record.
-//           $object = new eventdate(intval($_REQUEST['date_id']));
-           $object = new eventdate(intval($router->params['date_id']));
-           // set the meta info
-           if (!empty($object)) {
-               if (!empty($object->event->body)) {
-                   $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
-               } else {
-                   $desc = SITE_DESCRIPTION;
-               }
-               if (!empty($object->expTag)) {
-                   $keyw = '';
-                   foreach ($object->expTag as $tag) {
-                       if (!empty($keyw)) $keyw .= ', ';
-                       $keyw .= $tag->title;
-                   }
-               } else {
-                   $keyw = SITE_KEYWORDS;
-               }
-               $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
-               $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
-               $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-               $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
-               $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
-               $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
-           }
-           return $metainfo;
-       } else {
-           return parent::metainfo();
-       }
-   }
+        $action = $router->params['action'];
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        // look for event date_id which expController::metainfo won't detect
+//        if (!empty($router->params['action']) && $router->params['action'] == 'show' && !isset($router->params['id']) && isset($router->params['date_id'])) {
+        switch ($action) {
+            case 'show':
+                if (!isset($router->params['id']) && isset($router->params['date_id'])) {
+                    // look up the record.
+                    $object = new eventdate(intval($router->params['date_id']));
+                    // set the meta info
+                    if (!empty($object)) {
+                        if (!empty($object->event->body)) {
+                            $desc = str_replace('"',"'",expString::summarize($object->event->body,'html','para'));
+                        } else {
+                            $desc = SITE_DESCRIPTION;
+                        }
+                        if (!empty($object->expTag)) {
+                            $keyw = '';
+                            foreach ($object->expTag as $tag) {
+                                if (!empty($keyw)) $keyw .= ', ';
+                                $keyw .= $tag->title;
+                            }
+                        } else {
+                            $keyw = SITE_KEYWORDS;
+                        }
+                        $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
+                        $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
+                        $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
+                        $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
+                        $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
+                        $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
+                        return $metainfo;
+                        break;
+                    }
+                }
+            default:
+                return parent::metainfo();
+        }
+    }
 
     function send_feedback() {
         $success = false;
@@ -605,7 +610,7 @@ class eventController extends expController {
             $ed = new eventdate($this->params['id']);
 //            $email_addrs = array();
             if ($ed->event->feedback_email != '') {
-                $msgtemplate = get_template_for_action($this, 'email/_' . $this->params['formname'], $this->loc);
+                $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . $this->params['formname'], $this->loc);
                 $msgtemplate->assign('params', $this->params);
                 $msgtemplate->assign('event', $ed);
                 $email_addrs = explode(',', $ed->event->feedback_email);
@@ -820,7 +825,7 @@ class eventController extends expController {
 
                     $msg .= "BEGIN:VEVENT\n";
                     $msg .= $dtstart . $dtend;
-                    $msg .= "UID:" . $items[$i]->eventdate->id . "\n";
+                    $msg .= "UID:" . $items[$i]->id . "\n";
                     $msg .= "DTSTAMP:" . date("Ymd\THis", time()) . "Z\n";
                     if ($title) {
                         $msg .= "SUMMARY:$title\n";
@@ -911,7 +916,7 @@ class eventController extends expController {
                 $view = "send_reminders"; // default reminder view
             }
 
-            $template = get_template_for_action($this, $view, $this->loc);
+            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
 
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
@@ -1214,7 +1219,7 @@ class eventController extends expController {
                             //FIXME we must have the real timezone offset for the date by this point
 
                             //FIXME this is for the google ical feed which is bad!
-                            if ($dtstart['value']['day'] != intval($thisday2) &&
+                            if ($dtstart['value']['day'] != intval($thisday2) && (isset($dtstart['value']['day']) && isset($dtend['value']['hour']))&&
                                 !(intval($dtstart['value']['hour']) == 0 && intval($dtstart['value']['min']) == 0  && intval($dtstart['value']['sec']) == 0
                                     && intval($dtend['value']['hour']) == 0 && intval($dtend['value']['min']) == 0  && intval($dtend['value']['sec']) == 0
                                     && (((intval($dtstart['value']['day']) - intval($dtend['value']['day'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -11)))) {

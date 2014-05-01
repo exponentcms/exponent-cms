@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,37 +23,41 @@
         &#160;&#160;|&#160;&#160;
         {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
 		{permissions}
-			{if $permissions.manage}
-				&#160;&#160;|&#160;&#160;
-                {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
-                {if !$config.disabletags}
+            <div class="module-actions">
+                {if $permissions.manage}
                     &#160;&#160;|&#160;&#160;
-                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                    {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
+                    {if !$config.disabletags}
+                        &#160;&#160;|&#160;&#160;
+                        {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                    {/if}
+                    {if $config.usecategories}
+                        &#160;&#160;|&#160;&#160;
+                        {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                    {/if}
                 {/if}
-                {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
-                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
-                {/if}
-			{/if}
+            </div>
         {/permissions}
         {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {permissions}
-            &#160;&#160;|&#160;&#160;
-			{*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
-            {icon class="listviewlink" text='Past Events View'|gettext}
-			{if $permissions.manage}
-				&#160;&#160;|&#160;&#160;
-				{icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
-				{br}
-			{/if}
+            <div class="module-actions">
+                &#160;&#160;|&#160;&#160;
+                {*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
+                {icon class="listviewlink" text='Past Events View'|gettext}
+                {if $permissions.manage}
+                    &#160;&#160;|&#160;&#160;
+                    {icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
+                    {br}
+                {/if}
+            </div>
 		{/permissions}
 	</div>
-	<h1>
+	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle} - {'Past Events View'|gettext}{/if}
 
-	</h1>
+	</{$config.heading_level|default:'h1'}>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -76,7 +80,7 @@
 		<tbody>
 		{foreach from=$items item=item}
 			<tr class="{cycle values="odd,even"}">
-				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
+				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}

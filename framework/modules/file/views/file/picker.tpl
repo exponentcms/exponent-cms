@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,11 @@
  *}
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor" || $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}
-    {include file="picker_cke.tpl"}
+    {if $smarty.const.SITE_FILE_MANAGER=="elfinder"}
+        {exp_include file="elfinder.tpl"}
+    {else}
+        {exp_include file="picker_cke.tpl"}
+    {/if}
 {else}
     {"Uh... yeah, we\'re not supporting that editor. Feel free to integrate it yourself though."|gettext}
 {/if}

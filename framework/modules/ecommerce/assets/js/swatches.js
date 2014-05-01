@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,6 +13,7 @@
  *
  */
 
+//FIXME DEPRECATED/UNUSED!
 YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
     // set up the images with correct z-indexes to put the first image on top
     var imgs = Y.all('.ecom-images img.large-img');

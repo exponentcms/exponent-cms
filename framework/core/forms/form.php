@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -177,11 +177,10 @@ class form extends baseform {
      * Convert the form to HTML output.
      *
      * @param null $form_id
-     * @param null $module
      *
      * @return string The HTML code use to display the form to the browser.
      */
-	function toHTML($form_id=null, $module=null) {
+	function toHTML($form_id = null) {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -216,18 +215,37 @@ class form extends baseform {
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
-        if(expSession::get('framework')!='bootstrap'){
+        if (expSession::get('framework') == 'bootstrap') {
             expCSS::pushToHead(array(
-//                "unique"  => 'forms',
-                "corecss"=>"forms"
-            ));
-            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
-        } else {
-            expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
                 "corecss"=>"forms-bootstrap"
             ));
             $btn_class = 'btn btn-default';
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-mini';
+            } else { // medium
+                $btn_size = 'btn-small';
+            }
+            $btn_class .= ' ' . $btn_size;
+        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap3"
+            ));
+            $btn_class = 'btn btn-default';
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-xs';
+            } else { // medium
+                $btn_size = 'btn-sm';
+            }
+            $btn_class .= ' ' . $btn_size;
+        } else {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms"
+            ));
+            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
@@ -243,8 +261,7 @@ class form extends baseform {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
-            "jquery"=> 'jqueryui,jquery.placeholder',
+            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
@@ -284,7 +301,8 @@ class form extends baseform {
                 $html .= '</fieldset>';
             }
 //            if ($this->tabs[$name] != 'base') {
-    			$html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
+            if ($rank == 0) $this->controls[$name]->focus = true;  // first control gets the focus
+            $html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
 //                $oldname = $this->tabs[$name];
 //            } else {
 //                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";

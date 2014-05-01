@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,24 +32,30 @@ class controllertemplate extends basetemplate {
 
 		// Set up the Smarty template variable we wrap around.
 		$this->tpl = new Smarty();
+
         if (!SMARTY_DEVELOPMENT) $this->tpl->error_reporting = error_reporting() & ~E_NOTICE & ~E_WARNING;  //FIXME this disables bad template code reporting 3.x
         $this->tpl->debugging = SMARTY_DEVELOPMENT;  // Opens up the debug console
         $this->tpl->error_unassigned = true;  // display notice when accessing unassigned variable, if warnings turned on
 
 		$this->tpl->php_handling = SMARTY::PHP_REMOVE;
 
-//		  $this->tpl->caching = false;
         $this->tpl->setCaching(Smarty::CACHING_OFF);
 //        $this->tpl->setCaching(Smarty::CACHING_LIFETIME_CURRENT);
-//		  $this->tpl->cache_dir = BASE.'tmp/cache';
         $this->tpl->setCacheDir(BASE.'tmp/cache');
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
         $framework = expSession::get('framework');
-//        if (empty($head_config['framework'])) $head_config['framework'] = '';
-//        if ($head_config['framework'] == 'bootstrap') {
-        if ($framework == 'bootstrap') {
+        if ($framework == 'bootstrap3') {
+            $this->tpl->setPluginsDir(array(
+                BASE . 'themes/' . DISPLAY_THEME . '/plugins',
+                BASE . 'framework/plugins/bootstrap3',
+                BASE . 'framework/plugins/bootstrap',
+                BASE . 'framework/plugins/jquery',
+                BASE . 'framework/plugins',
+                SMARTY_PATH . 'plugins',
+            ));
+        } elseif ($framework == 'bootstrap') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap',
@@ -57,7 +63,14 @@ class controllertemplate extends basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-//        } elseif ($head_config['framework'] == 'jquery') {
+        } elseif (NEWUI) {
+            $this->tpl->setPluginsDir(array(
+                BASE.'themes/'.DISPLAY_THEME.'/plugins',
+                BASE.'framework/plugins/newui',  // we leave out bootstrap3 & bootstrap chain on purpose
+                BASE.'framework/plugins/jquery',
+                BASE.'framework/plugins',
+                SMARTY_PATH.'plugins',
+            ));
         } elseif ($framework == 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
@@ -73,24 +86,23 @@ class controllertemplate extends basetemplate {
             ));
         }
 
-		//autoload filters
-//		$this->tpl->autoload_filters = array('post' => array('includemiscfiles'));
-        $this->tpl->loadPlugin('smarty_compiler_switch');
+		//autoload filters & compiler plugins
+        $this->tpl->loadFilter('output', 'trim');  // trim whitespace from beginning and end of template output
+        $this->tpl->loadPlugin('smarty_compiler_switch');  // adds {switch} function
 
 		$this->viewfile = $viewfile;
 		$this->viewdir = realpath(dirname($this->viewfile));
 
 		$this->module = $controller->baseclassname;
-				
+
+        // strip file type
         if (substr($viewfile, -7) == '.config') {
             $this->file_is_a_config = true;
             $this->view = substr(basename($this->viewfile),0,-7);
         } else $this->view = substr(basename($this->viewfile),0,-4);
 
-//		$this->tpl->template_dir = $this->viewdir;
         $this->tpl->setTemplateDir($this->viewdir);
 
-//		$this->tpl->compile_dir = BASE . 'tmp/views_c';
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
 		$this->tpl->compile_id = md5($this->viewfile);
 		
@@ -98,7 +110,14 @@ class controllertemplate extends basetemplate {
 		$this->tpl->assign("__redirect", expHistory::getLastNotEditable());
 		
 		$this->tpl->assign("__loc",$controller->loc);
-		$this->tpl->assign("__name", $controller->baseclassname);
+		$this->tpl->assign("__name", $controller->baseclassname);  //FIXME probably not used in 2.0?
+        $this->tpl->assign("controller", $controller->baseclassname);
+        if ($controller->baseclassname != 'common') {
+            $this->tpl->assign("asset_path", $controller->asset_path);
+            $this->tpl->assign("model_name", $controller->basemodel_name);
+            $this->tpl->assign("model_table", $controller->model_table);
+            $this->tpl->assign("config", $controller->config);
+        }
 	}
 
 }

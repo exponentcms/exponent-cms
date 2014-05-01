@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -30,7 +30,9 @@
 	</div>
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}
-			{icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
+            <div class="module-actions">
+                {icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
+            </div>
 		{/if}
 	{/permissions}
 	{*<a id="expand" href="#">Expand all</a>*}
@@ -43,7 +45,6 @@
 {*FIXME convert to yui3*}
 {script yui3mods="1" unique="DDTreeNav" }
 {literal} 
-
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-treeview','yui2-menu','yui2-animation','yui2-dragdrop','yui2-json','yui2-container','yui2-connection', function(Y) {
 var YAHOO = Y.YUI2;    
 
@@ -314,20 +315,16 @@ var YAHOO = Y.YUI2;
 
 	function editUserPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-//			window.location=eXp.PATH_RELATIVE+"navigation/userperms/int/"+currentMenuNode.data.id+"/_common/1";
             window.location=eXp.PATH_RELATIVE+"users/userperms/mod/navigation/int/"+currentMenuNode.data.id;
 		{/literal} {else} {literal}
-//			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=userperms&int="+currentMenuNode.data.id+"&_common=1";
             window.location=eXp.PATH_RELATIVE+"index.php?controller=users&action=userperms&mod=navigation&int="+currentMenuNode.data.id;
 		{/literal} {/if} {literal}
 	}
 
 	function editGroupPerms (){
 		{/literal} {if ($smarty.const.SEF_URLS == 1)} {literal}
-//			window.location=eXp.PATH_RELATIVE+"navigation/groupperms/int/"+currentMenuNode.data.id+"/_common/1";
             window.location=eXp.PATH_RELATIVE+"users/groupperms/mod/navigation/int/"+currentMenuNode.data.id;
 		{/literal} {else} {literal}
-//			window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=groupperms&int="+currentMenuNode.data.id+"&_common=1";
             window.location=eXp.PATH_RELATIVE+"index.php?controller=users&action=groupperms&mod=navigation&int="+currentMenuNode.data.id;
 		{/literal} {/if} {literal}
 	}
@@ -530,6 +527,5 @@ var YAHOO = Y.YUI2;
 //once the DOM has loaded, we can go ahead and set up our tree:
 
 });
-
 {/literal}
 {/script}

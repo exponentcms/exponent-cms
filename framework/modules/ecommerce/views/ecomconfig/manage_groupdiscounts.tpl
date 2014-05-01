@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 
 <div class="module storeadmin groupdiscounts">
 	<div class="form_header">
-        <h1>{'Group Discounts'|gettext}</h1>
+        <h2>{'Group Discounts'|gettext}</h2>
         <blockquote>{'You can configure certain user groups to get a discount applied to their carts when they checkout.'|gettext}</blockquote>
 	</div>
     {icon class=add controller=user action=edit_group id=0 text='Add a new group'|gettext}
     {icon class=manage controller=ecomconfig action=manage_discounts text='Manage Discount Rules'|gettext}
-	<h2>{'Add a new group discount'|gettext}</h2>
+	<h3>{'Add a new group discount'|gettext}</h3>
 	<table class="exp-skin-table">
 	<thead>
 	    <tr>
@@ -74,13 +74,15 @@
                     <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
                     <td>
                         {if $permissions.manage}
-                            {if $smarty.foreach.items.first == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
+                            <div class="item-actions">
+                                {if $smarty.foreach.items.first == 0}
+                                    {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
+                                {/if}
+                                {if $smarty.foreach.items.last == 0}
+                                    {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
+                                {/if}
                             {/if}
-                            {if $smarty.foreach.items.last == 0}
-                                {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
-                            {/if}
-                        {/if}
+                        </div>
                     </td>
                     <td>{control type=buttongroup submit="Update"|gettext}</td>
 	            {/form}

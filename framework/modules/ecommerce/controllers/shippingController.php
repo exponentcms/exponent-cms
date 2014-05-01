@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
  */
 
 class shippingController extends expController {
-	public $add_permissions = array(
+    protected $add_permissions = array(
         'toggle'=>'Enable/Disable Options'
     );
 

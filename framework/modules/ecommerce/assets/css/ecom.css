@@ -10,6 +10,11 @@
 /*    border-width:0 1px 1px 1px;*/
 }
 
+.exp-ecom-table .radio table {
+    border:none;
+/*    border-width:0 1px 1px 1px;*/
+}
+
 .exp-ecom-table table.collapse {
     width:10%;
 }

@@ -1,0 +1,53 @@
+.colorContainer {
+	width                 : 290px;
+	background-color      : #ccc;
+	border-radius         : 15px;
+	-webkit-border-radius : 15px;
+	-moz-border-radius    : 15px;
+	margin                : 0 auto;
+	padding               : 10px;
+	display               : block;
+	position              : absolute;
+	z-index               : 1000;
+}
+
+.updateColors, .cancelColors {
+	display               : inline-block;
+	margin                : 10px 0px;
+	background-color      : #666;
+	color                 : #fff;
+	padding               : 5px;
+	padding-left          : 10px;
+	padding-right         : 10px;
+	border-radius         : 5px;
+	-webkit-border-radius : 5px;
+	-moz-border-radius    : 5px;
+	text-decoration       : none;
+	margin-bottom         : 0;
+}
+
+.divpreview {
+	border-radius         : 5px;
+	-webkit-border-radius : 5px;
+	-moz-border-radius    : 5px;
+	display               : inline-block;
+	height                : 20px;
+	width                 : 20px;
+	border                : 1px solid #d4d4d4;
+	margin-bottom         : 5px;
+	vertical-align        : middle;
+}
+
+.updateColors:hover, .cancelColors:hover {
+	background-color : #999;
+	cursor           : pointer;
+}
+
+.yui3-colorpicker input {
+	border-radius      : 0;
+	box-shadow         : none;
+	-moz-box-shadow    : none;
+	-webkit-box-shadow : none;
+	margin-bottom      : 0;
+	padding            : 0;
+}

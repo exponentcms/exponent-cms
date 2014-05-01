@@ -3,7 +3,7 @@
 <head>
 	<?php 
     expTheme::head(array(
-    	"xhtml"=>false,
+//    	"xhtml"=>false,
         "css_primer"=>array(
             YUI3_RELATIVE."cssreset/cssreset-min.css",
             YUI3_RELATIVE."cssfonts/cssfonts-min.css",
@@ -12,8 +12,8 @@
     	"css_core"=>array(
             "common"
         ),
-    	"css_links"=>true,
-    	"css_theme"=>true
+//    	"css_links"=>true,
+//    	"css_theme"=>true
         )
     );
 	?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@ class searchController extends expController {
         'show'=>'Show Search Form',
         'cloud'=>'Show Tag Cloud'
     );
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'spider'=>'Spider Site'
     );
 
@@ -51,7 +51,7 @@ class searchController extends expController {
         // include CSS for results
         // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
-		    "unique"=>"search-results",
+//		    "unique"=>"search-results",
 		    "link"=>$this->asset_path."css/results.css",
 		    )
 		);

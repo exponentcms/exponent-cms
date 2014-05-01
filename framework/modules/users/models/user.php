@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,7 @@ class user extends expRecord {
         parent::update($params);
     }
 
-    public function save($overrideUsername = false) {
+    public function save($overrideUsername = false, $force_no_revisions = false) {
         global $user;
 
         // if someone is trying to make this user an admin, lets make sure they have permission to do so.
@@ -377,7 +377,6 @@ class user extends expRecord {
             $tmpu = $db->selectObject('user', 'id=' . $uid);
             if ($tmpu && $tmpu->is_admin == 1) {
                 // User is an admin.  Update is_acting_admin, just in case.
-                // This can be removed as soon as 0.95 is deprecated.
                 $tmpu->is_acting_admin = 1;
             }
             $SYS_USERS_CACHE[$uid] = $tmpu;

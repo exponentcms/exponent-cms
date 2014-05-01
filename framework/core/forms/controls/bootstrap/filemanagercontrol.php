@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,6 +30,7 @@ class filemanagercontrol extends formcontrol {
     var $html;
     var $span;
     var $description = "";
+    var $folder = "";
     var $accept = "";
 
     static function name() { return "Manage Files"; }
@@ -58,13 +59,15 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
+//        if (BTN_SIZE == 'large') {
+//            $btn_size = 'btn-small';
+//            $icon_size = 'icon-large';
+//        } else {
+//            $btn_size = 'btn-mini';
+//            $icon_size = '';
+//        }
+        $btn_size = expTheme::buttonSize();
+        $icon_size = expTheme::iconSize();
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
         if (!$user->globalPerm('prevent_uploads')) {
         $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
@@ -103,7 +106,7 @@ class filemanagercontrol extends formcontrol {
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
-                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
                         alert('".gt('Please disable your popup blocker')."!!');
@@ -113,8 +116,8 @@ class filemanagercontrol extends formcontrol {
                 if (Y.one('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new Y.ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
-                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
-                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1, "folder"=> $this->folder)) . "',
+                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',
@@ -386,10 +389,16 @@ class filemanagercontrol extends formcontrol {
                     // Y.log(ids);
                 }
 
+                EXPONENT.passBackBatch".$name." = function(ids) {
+                    Y.each(ids, function(id,k){
+                        EXPONENT.passBackFile".$name."(id);
+                    });
+                }
+
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
                     if (Y.Lang.isArray(id)) {
-                        EXPONENT.batchAddFiles.".$name."();
+                        EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
 
@@ -466,7 +475,7 @@ class filemanagercontrol extends formcontrol {
             "; // END PHP STRING LITERAL
 
             expCSS::pushToHead(array(
-        	    "unique"=>"attachable-files",
+//        	    "unique"=>"attachable-files",
         	    "link"=>$assets_path."files/attachable-files.css"
         	    )
         	);

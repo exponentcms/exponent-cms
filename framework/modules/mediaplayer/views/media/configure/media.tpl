@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Media Player Settings"|gettext) module="mediaplayer"}
 		</div>
         <h2>{"Media Player Settings"|gettext}</h2>
+        <blockquote>
+            {"This is where you can configure the settings used by this Media Player module."|gettext}&#160;&#160;
+            {"These settings only apply to this particular module."|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {"This is where you can configure the settings used by this Media Player module."|gettext}&#160;&#160;
-    {"These settings only apply to this particular module."|gettext}
-</blockquote>
 {*{control type="checkbox" name="autoplay" label="Automatically Play Media Files"|gettext value=1 checked=$config.autoplay}*}
 {control type="text" name="video_width" label="Video Width"|gettext value=$config.video_width|default:200 size=4}
 {control type="text" name="video_height" label="Video Height"|gettext value=$config.video_height|default:143 size=4}
@@ -37,3 +37,8 @@
     {control type="checkbox" name="control_volume" label="Volume"|gettext value=1 checked=$config.control_volume}
     {control type="checkbox" name="control_fullscreen" label="Fullscreen"|gettext value=1 checked=$config.control_fullscreen}
 {/group}
+{if $smarty.const.SITE_FILE_MANAGER == 'picker'}
+    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
+{elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+    {control type="text" name="upload_folder" label="Quick Add Upload Subfolder"|gettext value=$config.upload_folder}
+{/if}

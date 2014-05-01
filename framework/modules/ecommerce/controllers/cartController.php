@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -768,7 +768,7 @@ class cartController extends expController {
 
         // reuse the confirm action's template
         $tplvars = $template->tpl->tpl_vars;
-        $template = get_template_for_action($this, 'confirm', $this->loc);
+        $template = expTemplate::get_template_for_action($this, 'confirm', $this->loc);
         $template->tpl->tpl_vars = array_merge($tplvars,$template->tpl->tpl_vars);
 
         if (!empty($this->params['billing'])) {
@@ -880,6 +880,7 @@ class cartController extends expController {
 
         $shipping_items = array();
         foreach ($shippingmethod_id as $id) {
+            $shipping_items[$id] = new stdClass();
             $shipping_items[$id]->method    = new shippingmethod($id);
             $shipping_items[$id]->orderitem = $order->getOrderitemsByShippingmethod($id);
             foreach ($shipping_items[$id]->orderitem as $key=> $item) {

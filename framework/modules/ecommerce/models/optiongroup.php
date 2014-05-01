@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,7 +50,7 @@ class optiongroup extends expRecord {
         }
     }
     
-    public function save($validate=false)
+    public function save($validate=false, $force_no_revisions = false)
     {
         global $db;
         $obj = new stdClass();

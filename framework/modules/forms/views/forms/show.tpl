@@ -40,7 +40,7 @@
                 <thead>
                     <tr>
                         <th colspan="2">
-                            <h2>{$title}</h2>
+                            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
                         </th>
                     </tr>
                 </thead>
@@ -48,13 +48,19 @@
                     {foreach from=$fields key=fieldname item=value}
                         <tr class="{cycle values="even,odd"}">
                             <td>{$captions[$fieldname]}</td>
-                            <td>{$value}</td>
+                            <td>
+                                {if $fieldname == 'email'}
+                                    <a href="mailto:{$value}">{$value}</a>
+                                {else}
+                                    {$value}
+                                {/if}
+                            </td>
                         </tr>
                     {/foreach}
                 </tbody>
             </table>
         {else}
-            <h2>{$title}</h2>
+            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
             {eval var=$config.report_def}
             {clear}{br}
         {/if}
@@ -62,8 +68,8 @@
             <p>{'Referrer'|gettext}: {$referrer}</p>
         {/if}
         {if !$is_email}
-            <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}"
-               href="{$backlink}">{'Back'|gettext}</a>
+            {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
+            {icon button=true link=$backlink text='Back'|gettext}
         {/if}
     </div>
 {/if}

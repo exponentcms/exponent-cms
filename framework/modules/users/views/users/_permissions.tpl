@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,13 +13,16 @@
  *
  *}
  
-{css unique="permissions" corecss="tables"}
-{literal}
-.exp-skin-table thead th {
-    white-space:nowrap;
-    border-right:1px solid #D4CBBA;
-}
-{/literal}
+{*{css unique="permissions" corecss="tables"}*}
+{*{literal}*}
+{*.exp-skin-table thead th {*}
+    {*white-space:nowrap;*}
+    {*border-right:1px solid #D4CBBA;*}
+{*}*}
+{*{/literal}*}
+{*{/css}*}
+{css unique="manage-perms" link="`$asset_path`css/datatables-tools.css"}
+
 {/css}
 
 <form method="post">
@@ -28,18 +31,21 @@
     <input type="hidden" name="mod" value="{$loc->mod}" />
     <input type="hidden" name="src" value="{$loc->src}" />
     <input type="hidden" name="int" value="{$loc->int}" />
-    {$page->links}
+    {*{$page->links}*}
     <div style="overflow : auto; overflow-y : hidden;">
-        <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
+        <table id="permissions" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    {$page->header_columns}
+                    {*{$page->header_columns}*}
+                    {foreach  from=$page->columns item=column key=name name=column}
+                        <th{if ($is_group && $column@first) || (!$is_group && $column@iteration < 4)} class="sortme"{else} class="nosort"{/if}>{$name}</th>
+                    {/foreach}
                 </tr>
             </thead>
             <tbody>
                 {foreach from=$page->records item=user key=ukey name=user}
                     <input type="hidden" name="users[]" value="{$user->id}" />
-                    <tr class="{cycle values="even,odd"}">
+                    <tr>
                         {if !$is_group}
                             <td>
                                 {$user->username}
@@ -65,7 +71,7 @@
             </tbody>
         </table>
     </div>
-    {$page->links}
+    {*{$page->links}*}
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 </form>
 
@@ -73,7 +79,6 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     var manage = Y.all('input.manage');
-//    var create = Y.all('input.create');
 
     var checkSubs = function(row) {
         row.each(function(n,k){
@@ -108,35 +113,29 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         toggleChecks(n,1);
     });
 
-//    create.on('click',function(e){
-//        var row = e.target.ancestor('tr').all('input[type=checkbox]');
-//        if(e.target.get('checked')&&!e.target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        } else {
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.get('previousSibling').remove();
-//                    n.setAttrs({'checked':0,'disabled':0});
-//                };
-//            });
-//        }
-//    });
-//    create.each(function(target){
-//        var row = target.ancestor('tr').all('input[type=checkbox]');
-//        if(target.get('checked')&&!target.get('disabled')){
-//            row.each(function(n,k){
-//                if (n.hasClass('edit')) {
-//                    n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-//                    n.setAttrs({'checked':1,'disabled':1});
-//                };
-//            });
-//        }
-//    });
 });
+{/literal}
+{/script}
+
+{script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools'}
+{literal}
+    $(document).ready(function() {
+        $('#permissions').DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            columnDefs: [
+//                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { sortable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
+//                { searchable: false, targets: [ '_all' ] },
+//                { sortable: false, targets: [ '_all' ] },
+                {targets: [ "sortme"], sortable: true },
+                {targets: [ 'nosort' ], sortable: false }
+            ],
+        });
+    } );
 {/literal}
 {/script}

@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2013 OIC Group, Inc.
+Copyright (c) 2004-2014 OIC Group, Inc.
 
 For installation information, please read the INSTALLATION.md file.
 
@@ -17,13 +17,15 @@ providing site managers the power and flexibility to add new features,
 completely customize the layout, and delegate responsibilities to other
 users.
 
-----------------
+------------
+
 ##Getting Started
 
 First, you'll need to install and configure Exponent. See the INSTALLATION.md
 file for a detailed description of how to do this.
 
 ------------
+
 ##Contributing
 
 Exponent is Open Source, licensed under the GPL.  To read about the
@@ -45,6 +47,7 @@ looking for more testers; people to use and abuse the CMS and expose bugs.
 The more bugs we find and fix, the better off the package is.
 
 -------------------
+
 ##Support / Questions
 For questions, support, or further information, please visit
 

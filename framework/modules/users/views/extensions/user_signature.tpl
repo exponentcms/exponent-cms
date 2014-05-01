@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,6 +15,7 @@
 
 <div class="module users extension signature">
     {control type="editor" name="signature" label="Signature"|gettext rows=7 cols=35 value=$edit_user->signature}
+    {control type="text" name="googleplus" label="Google+ Profile Name"|gettext rows=7 cols=35 value=$edit_user->googleplus description='Requires adding a custom link to this site in the \'Contributor To\' section of your Google+ profile'|gettext}
 </div>
 
 

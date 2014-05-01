@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Installing New Extensions"|gettext) module="install-extension"}
         </div>
-        <h1>{'Install new Extension'|gettext}</h1>
+        <h2>{'Install new Extension'|gettext}</h2>
     </div>
 	<div id="extension-tabs" class="yui-navset exp-skin-tabview hide">
 		<ul class="yui-nav">

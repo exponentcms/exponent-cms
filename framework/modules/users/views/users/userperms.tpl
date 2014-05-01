@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,9 +19,14 @@
 			<div class="related-actions">
 				{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Permissions"|gettext) module="manage-user-permissions"}
 			</div>
-        	<h1>{'Assign User Permissions for this'|gettext} {$title}</h1>
+        	<h2>{'Assign User Permissions for this'|gettext} {$title}</h2>
+            <blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 		</div>
-		<blockquote>{'This form allows you to assign permissions to a specific user.'|gettext}</blockquote>
 	</div>
-	{include file="_permissions.tpl"}
+    {*{if expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'}*}
+        {*{exp_include file="_permissions.bootstrap.tpl"}*}
+    {*{else}*}
+        {*{exp_include file="_permissions.tpl"}*}
+    {*{/if}*}
+    {exp_include file="_permissions.tpl"}
 </div>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,12 +29,12 @@
                     {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
                 {/if}
                 {if $permissions.manage}
-                     {icon action=manage text="Manage Events"|gettext}
+                     {icon action=manage text="Manage Active Events"|gettext}
                 {/if}
             </div>
         {/permissions}
-        <h1>{'Event Information'|gettext}</h1>
-        <h2>{$event->title}</h2>
+        <h2>{'Event Information'|gettext}</h2>
+        <h3>{$event->title}</h3>
         {permissions}
             <div class="item-actions">
                 {if $permissions.edit || ($permissions.create && $event->poster == $user->id)}
@@ -77,12 +77,14 @@
                         {if $permissions.create}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
+                        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
                     </div>
                 {/if}
             {/permissions}
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
-            <table class="exp-skin-table">
+            {$table_filled = true}
+            <table id="view-registrants">
                 <thead>
                     <tr>
                         {*<th>{'Registrant Name'|gettext}</th>*}
@@ -102,16 +104,16 @@
                 </thead>
                 <tbody>
                     {if $registrants|count > 0}
+                        {$is_email = false}
                         {foreach from=$registrants item=registrant key=id}
                             {*{get_user user=$user assign=registrant}*}
-                            <tr class="{cycle values="odd,even"}">
+                            <tr>
                                 {*<td>{$registrant->name}</td>*}
                                 {*<td>*}
                                     {*{if !empty($registrant->email)}{control type="hidden" name="email_addresses[]" value={$registrant->email}}{/if}*}
                                     {*<a href="mailto:{$registrant->email}">{$registrant->email}</a>*}
                                 {*</td>*}
                                 {*<td>{$registrant->phone} </td>*}
-                                {$is_email = false}
                                 {foreach $controls as $control}
                                     {$ctlname = $control->name}
                                     <td>
@@ -149,15 +151,15 @@
                             </tr>
                         {/foreach}
                     {else}
+                        {$table_filled = false}
                         <tr class="{cycle values="odd,even"}">
-                            <td colspan="4">{'There is currently no one registered'|gettext}</td>
+                            <td colspan="4"><h4>{'There is currently no one registered'|gettext}</h4></td>
                         </tr>
                     {/if}
                 </tbody>
             </table>
             </div>
         </div>
-        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
         {if $registrants|count > 0 && $is_email}
             {group label='Send an Email to All Registrants'|gettext}
                 {control type="text" name="email_subject" label="Subject"|gettext}
@@ -168,3 +170,24 @@
         {/if}
     {/form}
 </div>
+
+{if $table_filled}
+{script unique="view-registrants" jquery='jquery.dataTables,dataTables.tableTools'}
+{literal}
+    $(document).ready(function() {
+        $('#view-registrants').DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            columnDefs: [
+                { searchable: false, targets: [ -1 ] },
+                { sortable: false, targets: [ -1 ] },
+            ],
+        });
+    } );
+{/literal}
+{/script}
+{/if}

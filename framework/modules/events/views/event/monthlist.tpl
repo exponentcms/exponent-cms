@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,13 +16,13 @@
     {$myloc=serialize($__loc)}
 	<p class="caption">
 		&laquo;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp3}" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%B %Y"}">{$prev_timestamp3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%B %Y"}">{$prev_timestamp2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%B %Y"}">{$prev_timestamp|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp3}" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%B %Y"}">{$prev_timestamp3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%B %Y"}">{$prev_timestamp2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%B %Y"}">{$prev_timestamp|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
         <strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;{printer_friendly_link view='showall_Monthly+List' text=''|gettext}{export_pdf_link view='showall_Monthly+List' text=''|gettext}&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp}" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%B %Y"}">{$next_timestamp|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp2}" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%B %Y"}">{$next_timestamp2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-		<a class="nav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp3}" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&#160;&#160;&raquo;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp}" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%B %Y"}">{$next_timestamp|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp2}" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%B %Y"}">{$next_timestamp2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp3}" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&#160;&#160;&raquo;
 	</p>
 	<dl class="viewweek">
 		{foreach from=$days item=items key=ts}
@@ -38,7 +38,7 @@
                         {$none=0}
 						<div class="paragraph">
                             {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
-							<a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if $config.usecategories && !empty($item->color)} {$item->color}{/if}"
+							<a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
                                 {if substr($item->location_data,1,8) != 'calevent'}
                                    href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                {/if}

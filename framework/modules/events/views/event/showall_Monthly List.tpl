@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,10 +43,10 @@
         {*{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}*}
         {br}
 	</div>
-	<h1>
+	<{$config.heading_level|default:'h1'}>
         {ical_link}
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{$moduletitle}{/if}
-	</h1>
+	</{$config.heading_level|default:'h1'}>
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
@@ -58,9 +58,9 @@
 		</div>
 	{/permissions}
     <div id="popup">
-        <a class="calpopup nav module-actions" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
+        <a class="calpopup evnav module-actions" href="javascript:void(0);" id="J_popup_closeable{$__loc->src|replace:'@':'_'}">{'Go to Date'|gettext}</a>
         <div id="month-{$name}">
-            {include 'monthlist.tpl'}
+            {exp_include file='monthlist.tpl'}
         </div>
     </div>
 </div>
@@ -119,7 +119,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
     // ajax load new month
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 
         if(o.responseText){
             monthcal.setContent(o.responseText);
@@ -144,7 +144,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -156,7 +156,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-    }, 'a.nav');
+    }, 'a.evnav');
 });
 {/literal}
 {/script}

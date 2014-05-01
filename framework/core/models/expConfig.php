@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,8 +48,12 @@ class expConfig extends expRecord {
 		$this->config = expUnserialize($this->config);
 	}
 
-    // extend the parent update() function to serialize the config
-    // data before we build the object to be saved.
+    /**
+     * extend the parent update() function to serialize the config
+     * data before we build the object to be saved.
+     *
+     * @param array $params
+     */
     public function update($params=array()) {
         foreach($params['config'] as $key => $value) {
             if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
@@ -75,7 +79,6 @@ class expConfig extends expRecord {
             $the_loc = $loc;
         }
         return expUnserialize($db->selectValue('expConfigs','config',"location_data='".$the_loc."'"));
-
     }
 
 }

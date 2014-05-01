@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -46,6 +46,8 @@ class expLang {
 			//DEPRECATED: we no longer use views for i18n
 			define('DEFAULT_VIEW', $info['default_view']);
 	    } else {
+            define('LOCALE', 'en_US');
+			setlocale(LC_ALL, 'en_US');
             // For anything related to character sets:
             define('LANG_CHARSET', 'UTF-8');
 		    //DEPRECATED: we no longer use views for i18n

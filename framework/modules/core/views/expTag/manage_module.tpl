@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,12 +18,14 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Tags"|gettext) module="manage-tags"}
         </div>
-        <h1>{"Manage Module Tags"|gettext}</h1>
+        <h2>{"Manage Module Tags"|gettext}</h2>
     </div>
 	{permissions}
-    	{if $permissions.create}
-    		{*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
-    	{/if}
+        <div class="module-actions">
+            {if $permissions.create}
+                {*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
+            {/if}
+        </div>
     {/permissions}
     {$page->links}
     {form action=change_tags}

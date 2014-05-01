@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,13 +17,13 @@
 
 {/css}
 
-<div class="module administration manage-themes">
+<div class="module administration manage-themes admin-view">
 
     <div class="info-header">
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Themes"|gettext) module="manage-themes"}
         </div>
-		<h1>{"Theme Manager"|gettext}</h1>
+		<h2>{"Theme Manager"|gettext}</h2>
     </div>
 
     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

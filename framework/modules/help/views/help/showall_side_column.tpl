@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2007-2013 OIC Group, Inc.
+ * Copyright (c) 2007-2014 OIC Group, Inc.
  * Written and Designed by Adam Kessler
  *
  * This file is part of Exponent
@@ -15,7 +15,7 @@
  *}
 
 <div class="module help side-column">
-    {if $moduletitle}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
 
     <ul>
     {foreach from=$page->records item=doc name=docs}

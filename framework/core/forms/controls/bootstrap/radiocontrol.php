@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -75,8 +75,10 @@ class radiocontrol extends formcontrol {
     
     function controlToHTML($name,$label=null) {
         //echo "Here";
-        $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
+//        $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
+        $html = '<input class="radiobutton form-control" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
+        $html .= $this->focus ? " autofocus=\"autofocus\"" : "";
         if ($this->onclick != "") {
             $html .= ' onclick="'.$this->onclick.'"';
         }
@@ -92,7 +94,8 @@ class radiocontrol extends formcontrol {
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked)) $html .= ' checked="checked"';
         $this->class = !empty($this->class) ? $this->class : "";
-        $html .= ' class="radio ' . $this->class . '"';
+//        $html .= ' class="radio ' . $this->class . '"';
+        $html .= ' class="radio ' . $this->class . ' form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
         if (!empty($this->filter)) {
@@ -102,7 +105,8 @@ class radiocontrol extends formcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
-        
+        $html .= $this->focus ? " autofocus" : "";
+
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = isset($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));

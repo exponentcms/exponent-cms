@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,7 +22,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Comments"|gettext) module="manage-comments"}
         </div>
-        <h1>{"Manage Comments"|gettext}</h1>
+        <h2>{"Manage Comments"|gettext}</h2>
     </div>
     {form name="bulk_process" action=bulk_process}
         {control type=hidden name=mod value=$page->model}

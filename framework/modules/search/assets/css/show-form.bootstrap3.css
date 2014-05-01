@@ -1,0 +1,35 @@
+.search.show-form {
+    position:relative;
+    text-align:left;
+    margin-bottom: .5em;
+}
+
+.search.show-form .input-group input.form-control {
+    width:74%;
+    margin-top:0;
+	padding: 7px 12px;
+	/*height: 87%;*/
+}
+
+.search.show-form button {
+    /*position:absolute;*/
+    /*top:4px; */
+    /*right:0;*/
+    /*padding:5px;*/
+    /*margin-right:0;*/
+    width: auto;
+    line-height: inherit;
+	font-size: 100%;
+}
+
+.search.show-form .exp-skin button {
+    line-height: 1.5em;
+}
+
+.search.show-form .control {
+    display: inline;
+}
+
+.search.show-form h1 {
+    margin-bottom: .5em;
+}

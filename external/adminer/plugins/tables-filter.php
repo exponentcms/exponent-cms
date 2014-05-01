@@ -17,16 +17,19 @@ function tablesFilter(value) {
 		var a = tables[i].children[1];
 		var text = a.innerText || a.textContent;
 		tables[i].className = (text.indexOf(value) == -1 ? 'hidden' : '');
+//        tables[i].className = (text.toLowerCase().indexOf(value.toLowerCase()) == -1 ? 'hidden' : '');
 		a.innerHTML = text.replace(value, '<b>' + value + '</b>');
 	}
 }
 </script>
-<p class="jsonly"><input onkeyup="tablesFilter(this.value);">
+<p class="jsonly filter"><input onkeyup="tablesFilter(this.value);">
 <?php
 		echo "<p id='tables' onmouseover='menuOver(this, event);' onmouseout='menuOut(this);'>\n";
 		foreach ($tables as $table => $type) {
-			echo '<span><a href="' . h(ME) . 'select=' . urlencode($table) . '"' . bold($_GET["select"] == $table) . ">" . lang('select') . "</a> ";
-			echo '<a href="' . h(ME) . 'table=' . urlencode($table) . '"' . bold($_GET["table"] == $table) . ">" . h($table) . "</a><br></span>\n";
+            $name = str_replace(DB_TABLE_PREFIX . '_', '', h($table));  // remove db prefix
+            $name = str_replace('_', ' ', $name);  // remove underscores
+            echo '<span><a href="' . h(ME) . 'select=' . urlencode($table) . '"' . bold($_GET["select"] == $table) . ' title="' . ucfirst(lang('select data')) . '">"' . lang('select') . "</a> ";
+			echo '<a href="' . h(ME) . 'table=' . urlencode($table) . '"' . bold($_GET["table"] == $table) . ' title="' . ucfirst(lang('show structure')) . '">' . $name . "</a><br></span>\n";
 		}
 		return true;
 	}

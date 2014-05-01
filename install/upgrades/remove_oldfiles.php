@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -80,6 +80,7 @@ class remove_oldfiles extends upgradescript {
             'package.xml',
             'phpdoc.ini',
             'podcast.php',
+            'popup.php',
             'send_reminders.php',
             'site_podcast.php',
             'rss.php',
@@ -98,6 +99,7 @@ class remove_oldfiles extends upgradescript {
             'external/adminer/adminer-3.6.3-mysql-en.php',
             'external/adminer/adminer-3.6.4-mysql-en.php',
             'external/adminer/adminer-3.7.0-mysql-en.php',
+            'external/adminer/adminer-3.7.1-mysql.php',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
             'external/editors/FCKeditor.tpl',
@@ -124,10 +126,14 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-1.10.0.min.js',
             'external/jquery/js/jquery-1.10.1.js',
             'external/jquery/js/jquery-1.10.1.min.js',
+            'external/jquery/js/jquery-1.10.2.js',
+            'external/jquery/js/jquery-1.10.2.min.js',
             'external/jquery/js/jquery-migrate-1.1.0.js',
             'external/jquery/js/jquery-migrate-1.1.0.min.js',
             'external/jquery/js/jquery-migrate-1.1.1.js',
             'external/jquery/js/jquery-migrate-1.1.1.min.js',
+            'external/jquery/js/jquery-migrate-1.2.1.js',
+            'external/jquery/js/jquery-migrate-1.2.1.min.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.js',
             'external/jquery/js/jquery-ui-1.9.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.0.custom.js',
@@ -136,6 +142,9 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-ui-1.10.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.min.js',
+            'external/png-opacity.htc',
+            'framework/conf/extensions/ldap.defaults.php',
+            'framework/conf/extensions/sef.defaults.php',
             'framework/modules/text/views/text/showall_merge.tpl',
             'framework/modules/text/views/text/showall_tabview.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
@@ -293,6 +302,8 @@ class remove_oldfiles extends upgradescript {
             'framework/core/models/taxclass.php',
             'framework/core/models/vendor.php',
             'framework/modules/ecommerce/models/childProduct.php',
+            'framework/modules/ecommerce/definitions/external_addresses.php',
+            'framework/modules/ecommerce/models/external_address.php',
              // ecommerce renamed views
             'framework/modules/ecommerce/views/store/showall_featured_products.tpl',
             'framework/modules/ecommerce/views/store/events_calendar.tpl',
@@ -335,6 +346,17 @@ class remove_oldfiles extends upgradescript {
             'framework/core/assets/js/exp-slideshow.js',
             'framework/core/assets/js/exp-upload.js',
             'framework/modules/photoalbum/assets/js/slideshow.js',
+            // obsolete widgets
+            'framework/core/forms/controls/antispamcontrol.php',
+            'framework/core/forms/controls/configcontrol.php',
+            'framework/core/forms/controls/contactcontrol.php',
+            'framework/core/forms/controls/listcontrol.php',
+            'framework/core/forms/controls/massmailcontrol.php',
+            'framework/core/forms/controls/nextbackcontrol.php',
+            'framework/core/forms/controls/quantitycontrol.php',
+            'framework/core/forms/controls/yuieditorcontrol.php',
+            'framework/plugins/function.configpanel.php',
+            'framework/plugins/function.yuilogger.php',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -384,7 +406,6 @@ class remove_oldfiles extends upgradescript {
             "external/ckeditor/",
             "external/editors/connector/",
             "external/editors/FCKeditor/",
-//            "external/editors/ckeditor/adapters",
             "external/editors/ckeditor/images",
             "external/editors/ckeditor/skins/office2003",
             "external/editors/ckeditor/skins/v2",
@@ -395,6 +416,7 @@ class remove_oldfiles extends upgradescript {
             "external/flowplayer-3.2.12/",
             "external/flowplayer-3.2.15/",
             "external/flowplayer-3.2.16/",
+            "external/iepndfix2/",
             "external/magpierss/",
             "external/yui3/",
             "external/lissa/",
@@ -407,9 +429,12 @@ class remove_oldfiles extends upgradescript {
             "external/yui/3.9.1/",
             "external/yui/3.10.0/",
             "external/yui/3.10.1/",
-            "external/yui/3.10.3/",
+//            "external/yui/3.10.3/",
             "external/yui/3.11.0/",
-            "external/yui/3.12.0/",
+//            "external/yui/3.12.0/",
+            "external/yui/3.13.0/",
+//            "external/yui/3.14.0/",
+//            "external/yui/3.14.1/",
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",
@@ -419,6 +444,8 @@ class remove_oldfiles extends upgradescript {
             "external/Smarty-3.1.12/",
             "external/Smarty-3.1.13/",
             "external/Smarty-3.1.14/",
+            "external/Smarty-3.1.15/",
+//            "external/Smarty-3.1.16/",
             "external/Swift/",
             "external/Swift-4/",
             "external/Swift-4.0.5/",
@@ -434,6 +461,13 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.3.0/",
             "external/Swift-4.3.1/",
             "external/Swift-5.0.0/",
+            "external/Swift-5.0.1/",
+//            "external/Swift-5.0.2/",
+//            "external/Swift-5.0.3/",
+            "external/Respond-1.3.0/",
+//            "external/Respond-1.4.0/",
+//            "external/Respond-1.4.1/",
+            "external/facebook-php-sdk-3.2.2/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {

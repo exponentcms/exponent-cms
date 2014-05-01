@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@ class user_signature extends expRecord {
 #        ));
         
     public function name() { return 'Signature'; }
-	public function description() { return 'The extension allows users to enter a signature placed at the end of blog posts.'; }
+	public function description() { return 'The extension allows users to enter a signature or Google+ link placed at the end of blog posts.'; }
 	
 }
 

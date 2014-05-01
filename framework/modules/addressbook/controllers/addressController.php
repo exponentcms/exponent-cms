@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,10 +25,14 @@ class addressController extends expController {
 	public $useractions = array(
 //        'myaddressbook'=>'Show my addressbook'
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'create',
         'edit',
         'delete'
+    );
+    protected $add_permissions = array(
+        'import' => 'Import External Addresses',
+//        'export' => 'Export External Addresses'
     );
 	public $remove_configs = array(
         'aggregation',
@@ -114,20 +118,21 @@ class addressController extends expController {
 	
 	public function delete() {
 	    global $user;
-        $count = $this->address->find('count', 'user_id='.$user->id);
+
+        $count = $this->address->find('count', 'user_id=' . $user->id);
         if($count > 1)
         {    
-	        if ($user->isAdmin() || ($user->id == $address->user_id)) {  //FIXME $address not set
-                $address = new address($this->params['id']);
-                if ($address->is_billing) 
+            $address = new address($this->params['id']);
+	        if ($user->isAdmin() || ($user->id == $address->user_id)) {
+                if ($address->is_billing)
                 {
-                    $billAddress = $this->address->find('first', 'user_id='.$user->id . " AND id != " .$address->id);
+                    $billAddress = $this->address->find('first', 'user_id=' . $user->id . " AND id != " . $address->id);
                     $billAddress->is_billing = true;
                     $billAddress->save();
                 }
                 if ($address->is_shipping) 
                 {
-                    $shipAddress = $this->address->find('first', 'user_id='.$user->id . " AND id != " .$address->id);
+                    $shipAddress = $this->address->find('first', 'user_id=' . $user->id . " AND id != " . $address->id);
                     $shipAddress->is_shipping = true;
                     $shipAddress->save();
                 }
@@ -136,7 +141,7 @@ class addressController extends expController {
         }
         else
         {
-            flash("error",gt("You must have at least one address."));
+            flash("error", gt("You must have at least one address."));
         }
 	    expHistory::back();
 	}
@@ -144,7 +149,9 @@ class addressController extends expController {
     public function activate_address()
     {
         global $db, $user;
-        $object->id = $this->params['id'];  //FIXME $object not set
+
+        $object = new stdClass();
+        $object->id = $this->params['id'];
         $db->setUniqueFlag($object, 'addresses', $this->params['is_what'], "user_id=" . $user->id);
         flash("message", gt("Successfully updated address."));
         expHistory::back(); 
@@ -167,6 +174,7 @@ class addressController extends expController {
     public function manage_update()
     {
         global $db;
+
         //eDebug($this->params,true);
         //countries
         $db->columnUpdate('geo_country','active',0,'active=1');
@@ -196,6 +204,213 @@ class addressController extends expController {
         flash('message',gt('Address configurations successfully updated.'));
         redirect_to(array('controller'=>'address','action'=>'manage'));
 //        $this->manage();
+    }
+
+    /**
+     * Import external addresses
+     */
+    function import() {
+        $sources = array('mc' => 'MilitaryClothing.com', 'nt' => 'NameTapes.com', 'am' => 'Amazon');
+        assign_to_template(array(
+            'sources' => $sources
+        ));
+    }
+
+    function process_external_addresses() {
+        global $db;
+
+        set_time_limit(0);
+        //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
+        eDebug($this->params);
+//        eDebug($_FILES,true);
+        if (!empty($_FILES['address_csv']['error'])) {
+            flash('error', gt('There was an error uploading your file.  Please try again.'));
+            redirect_to(array('controller' => 'store', 'action' => 'import_external_addresses'));
+//            $this->import_external_addresses();
+        }
+
+        $file = new stdClass();
+        $file->path = $_FILES['address_csv']['tmp_name'];
+        echo "Validating file...<br/>";
+
+        //replace tabs with commas
+        /*if($this->params['type_of_address'][0] == 'am')
+        {
+            $checkhandle = fopen($file->path, "w");
+            $oldFile = file_get_contents($file->path);
+            $newFile = str_ireplace(chr(9),',',$oldFile);
+            fwrite($checkhandle,$newFile);
+            fclose($checkhandle);
+        }*/
+
+        $checkhandle = fopen($file->path, "r");
+        if ($this->params['type_of_address'][0] == 'am') {
+            $checkdata = fgetcsv($checkhandle, 10000, "\t");
+            $fieldCount = count($checkdata);
+        } else {
+            $checkdata = fgetcsv($checkhandle, 10000, ",");
+            $fieldCount = count($checkdata);
+        }
+
+        $count = 1;
+        if ($this->params['type_of_address'][0] == 'am') {
+            while (($checkdata = fgetcsv($checkhandle, 10000, "\t")) !== FALSE) {
+                $count++;
+                //eDebug($checkdata);
+                if (count($checkdata) != $fieldCount) {
+                    echo "Line " . $count . " of your CSV import file does not contain the correct number of columns.<br/>";
+                    echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) . " field in row " . $count . " Please check your file and try again.";
+                    exit();
+                }
+            }
+        } else {
+            while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
+                $count++;
+                if (count($checkdata) != $fieldCount) {
+                    echo "Line " . $count . " of your CSV import file does not contain the correct number of columns.<br/>";
+                    echo "Found " . $fieldCount . " header fields, but only " . count($checkdata) . " field in row " . $count . " Please check your file and try again.";
+                    exit();
+                }
+            }
+        }
+
+        fclose($checkhandle);
+
+        echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
+        //exit();
+        $handle = fopen($file->path, "r");
+        $data = fgetcsv($handle, 10000, ",");
+        //eDebug($data);
+        $dataset = array();
+
+        //mc=1, nt=2, amm=3
+
+        if ($this->params['type_of_address'][0] == 'mc') {
+            //militaryclothing
+            $db->delete('external_addresses', 'source=1');
+
+        } else if ($this->params['type_of_address'][0] == 'nt') {
+            //nametapes
+            $db->delete('external_addresses', 'source=2');
+        } else if ($this->params['type_of_address'][0] == 'am') {
+            //amazon
+            $db->delete('external_addresses', 'source=3');
+        }
+
+        if ($this->params['type_of_address'][0] == 'am') {
+            while (($data = fgetcsv($handle, 10000, "\t")) !== FALSE) {
+                //eDebug($data,true);
+                $extAddy = new external_address();
+
+                //eDebug($data);
+                $extAddy->source = 3;
+                $extAddy->user_id = 0;
+                $name = explode(' ', $data[15]);
+                $extAddy->firstname = $name[0];
+                if (isset($name[3])) {
+                    $extAddy->firstname .= ' ' . $name[1];
+                    $extAddy->middlename = $name[2];
+                    $extAddy->lastname = $name[3];
+                } else if (isset($name[2])) {
+                    $extAddy->middlename = $name[1];
+                    $extAddy->lastname = $name[2];
+                } else {
+                    $extAddy->lastname = $name[1];
+                }
+                $extAddy->organization = $data[15];
+                $extAddy->address1 = $data[16];
+                $extAddy->address2 = $data[17];
+                $extAddy->city = $data[19];
+                $state = new geoRegion();
+                $state = $state->findBy('code', trim($data[20]));
+                if (empty($state->id)) {
+                    $state = new geoRegion();
+                    $state = $state->findBy('name', trim($data[20]));
+                }
+                $extAddy->state = $state->id;
+                $extAddy->zip = str_ireplace("'", '', $data[21]);
+                $extAddy->phone = $data[6];
+                $extAddy->email = $data[4];
+                //eDebug($extAddy);
+                $extAddy->save();
+            }
+        } else {
+            while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+                eDebug($data);
+                $extAddy = new external_address();
+                if ($this->params['type_of_address'][0] == 'mc') {
+                    $extAddy->source = 1;
+                    $extAddy->user_id = 0;
+                    $name = explode(' ', $data[3]);
+                    $extAddy->firstname = $name[0];
+                    if (isset($name[2])) {
+                        $extAddy->middlename = $name[1];
+                        $extAddy->lastname = $name[2];
+                    } else {
+                        $extAddy->lastname = $name[1];
+                    }
+                    $extAddy->organization = $data[4];
+                    $extAddy->address1 = $data[5];
+                    $extAddy->address2 = $data[6];
+                    $extAddy->city = $data[7];
+                    $state = new geoRegion();
+                    $state = $state->findBy('code', $data[8]);
+                    $extAddy->state = $state->id;
+                    $extAddy->zip = str_ireplace("'", '', $data[9]);
+                    $extAddy->phone = $data[20];
+                    $extAddy->email = $data[21];
+                    //eDebug($extAddy);
+                    $extAddy->save();
+
+                    //Check if the shipping add is same as the billing add
+                    if ($data[5] != $data[14]) {
+                        $extAddy = new external_address();
+                        $extAddy->source = 1;
+                        $extAddy->user_id = 0;
+                        $name = explode(' ', $data[12]);
+                        $extAddy->firstname = $name[0];
+                        if (isset($name[2])) {
+                            $extAddy->middlename = $name[1];
+                            $extAddy->lastname = $name[2];
+                        } else {
+                            $extAddy->lastname = $name[1];
+                        }
+                        $extAddy->organization = $data[13];
+                        $extAddy->address1 = $data[14];
+                        $extAddy->address2 = $data[15];
+                        $extAddy->city = $data[16];
+                        $state = new geoRegion();
+                        $state = $state->findBy('code', $data[17]);
+                        $extAddy->state = $state->id;
+                        $extAddy->zip = str_ireplace("'", '', $data[18]);
+                        $extAddy->phone = $data[20];
+                        $extAddy->email = $data[21];
+                        // eDebug($extAddy, true);
+                        $extAddy->save();
+                    }
+                }
+                if ($this->params['type_of_address'][0] == 'nt') {
+                    //eDebug($data,true);
+                    $extAddy->source = 2;
+                    $extAddy->user_id = 0;
+                    $extAddy->firstname = $data[16];
+                    $extAddy->lastname = $data[17];
+                    $extAddy->organization = $data[15];
+                    $extAddy->address1 = $data[18];
+                    $extAddy->address2 = $data[19];
+                    $extAddy->city = $data[20];
+                    $state = new geoRegion();
+                    $state = $state->findBy('code', $data[21]);
+                    $extAddy->state = $state->id;
+                    $extAddy->zip = str_ireplace("'", '', $data[22]);
+                    $extAddy->phone = $data[23];
+                    $extAddy->email = $data[13];
+                    //eDebug($extAddy);
+                    $extAddy->save();
+                }
+            }
+        }
+        echo "Done!";
     }
 
 }

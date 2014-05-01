@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,9 +24,8 @@
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
-    public $add_permissions = array(
-//	    'administrate'=>'Manage Administration', //FIXME is this used? old 1.0 permission
-	    'clear'=>'Clear Caches',
+    protected $add_permissions = array(
+	    'clear'=>'Clear Caches',  //FIXME this requires a logged in user to perform?
 	    "fix"=>"Fix Database",
 	    "install"=>"Installation",
 	    "theme"=>"Manage Themes",
@@ -243,7 +242,7 @@ class administrationController extends expController {
         $eql = BASE . "install/samples/ecommerce.eql";
         if (file_exists($eql)) {
             $errors = array();
-            expFile::restoreDatabase($db,$eql,$errors);
+            expFile::restoreDatabase($eql,$errors);
         }
         if (DEVELOPMENT && count($errors)) {
             $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
@@ -264,6 +263,7 @@ class administrationController extends expController {
 			BASE.'framework/modules/administration/menus',
 			BASE.'themes/'.DISPLAY_THEME.'/modules/administration/menus'
 		);
+
 		foreach ($dirs as $dir) {
 		    if (is_readable($dir)) {
 			    $dh = opendir($dir);
@@ -289,7 +289,7 @@ class administrationController extends expController {
         }
         
 		assign_to_template(array(
-            'menu'=>json_encode($sorted),
+            'menu'=>(expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }
@@ -364,34 +364,67 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-    	$value = (MINIFY == 1) ? 0 : 1;
-    	expSettings::change('MINIFY', $value);
-    	$message = (MINIFY != 1) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
+        $newvalue = (MINIFY == 1) ? 0 : 1;
+    	expSettings::change('MINIFY', $newvalue);
+    	$message = ($newvalue) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
     	flash('message',$message);
     	expHistory::back();
     }
     
 	public function toggle_dev() {
-	    $value = (DEVELOPMENT == 1) ? 0 : 1;
-	    expSettings::change('DEVELOPMENT', $value);
+        $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
+	    expSettings::change('DEVELOPMENT', $newvalue);
 	    expTheme::removeCss();
-		$message = (DEVELOPMENT != 1) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
+		$message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
 		flash('message',$message);
 		expHistory::back();
 	}
 
     public function toggle_log() {
-  	    $value = (LOGGER == 1) ? 0 : 1;
-  	    expSettings::change('LOGGER', $value);
+        $newvalue = (LOGGER == 1) ? 0 : 1;
+  	    expSettings::change('LOGGER', $newvalue);
   		expHistory::back();
   	}
 
 	public function toggle_maintenance() {
-		$value = (MAINTENANCE_MODE == 1) ? 0 : 1;
-		expSettings::change('MAINTENANCE_MODE', $value);
+        $newvalue = (MAINTENANCE_MODE == 1) ? 0 : 1;
+		expSettings::change('MAINTENANCE_MODE', $newvalue);
 		MAINTENANCE_MODE == 1 ? flash('message',gt("Exponent is no longer in 'Maintenance' mode")) : "" ;
 		expHistory::back();
 	}
+
+    public function toggle_workflow() {
+        global $db;
+
+   	    $newvalue = (ENABLE_WORKFLOW == 1) ? 0 : 1;
+   	    expSettings::change('ENABLE_WORKFLOW', $newvalue);
+        $models = expModules::initializeModels();
+        if ($newvalue) {
+            // workflow is now turned on, initialize by approving all items
+            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to add workflow columns
+            foreach ($models as $modelname=>$modelpath) {
+                $model = new $modelname();
+                if ($model->supports_revisions) {
+                    $db->columnUpdate($model->tablename, 'approved', 1, 'approved=0');
+                }
+            }
+        } else {
+            // workflow is now turned off, remove older revisions
+            foreach ($models as $modelname=>$modelpath) {
+                $model = new $modelname();
+                if ($model->supports_revisions) {
+                    $items = $model->find();
+                    foreach ($items as $item) {
+                        $db->trim_revisions($model->tablename, $item->id, 1, $newvalue);
+                    }
+                }
+            }
+            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to remove workflow columns
+        }
+   		$message = ($newvalue) ? gt("Exponent 'Workflow' is now ON") : gt("Exponent 'Workflow' is now OFF") ;
+   		flash('message',$message);
+   		expHistory::back();
+   	}
 
 	public function toggle_preview() {
 		$level = 99;
@@ -440,7 +473,7 @@ class administrationController extends expController {
 		expHistory::back();
 	}
 
-	public function clear_all_caches() {
+	public static function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
         expSession::un_set('framework');
@@ -768,17 +801,17 @@ class administrationController extends expController {
 			$mail = new expMail();
             if (!empty($_FILES['attach']['size'])) {
                 $dir = 'tmp';
-                $filename = expFile::fixName(time().'_'.$_FILES['attach']['name']);
-                $dest = $dir.'/'.$filename;
+                $filename = expFile::fixName(time() . '_' . $_FILES['attach']['name']);
+                $dest = $dir . '/' . $filename;
                 //Check to see if the directory exists.  If not, create the directory structure.
-                if (!file_exists(BASE.$dir)) expFile::makeDirectory($dir);
+                if (!file_exists(BASE . $dir)) expFile::makeDirectory($dir);
                 // Move the temporary uploaded file into the destination directory, and change the name.
-                expFile::moveUploadedFile($_FILES['attach']['tmp_name'],BASE.$dest);
+                $file = expFile::moveUploadedFile($_FILES['attach']['tmp_name'], BASE . $dest);
 //                $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                $ftype = finfo_file($finfo, BASE.$dest);
 //                finfo_close($finfo);
-                $mail->attach_file_on_disk(BASE.$dest, expFile::getMimeType(BASE.$dest));
+                if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
             }
             if ($this->params['batchsend']) {
                 $mail->quickBatchSend(array(
@@ -799,7 +832,7 @@ class administrationController extends expController {
                         'subject'=>$subject,
                 ));
             }
-            if (!empty($dest)) unlink(BASE.$dest);  // delete temp file attachment
+            if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment
             flash('message',gt('Mass Email was sent'));
             expHistory::back();
         }
@@ -980,6 +1013,7 @@ class administrationController extends expController {
 	    }
 	    flash('message',$message);
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
@@ -1000,6 +1034,7 @@ class administrationController extends expController {
 			flash('notice',$message);
 		}
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
 		expHistory::back();
@@ -1020,6 +1055,7 @@ class administrationController extends expController {
             $themeclass = $this->params['theme'];
 			$theme = new $themeclass();
 			$theme->saveThemeConfig($this->params);
+            expSession::set('force_less_compile', 1);
             expTheme::removeSmartyCache();
             expSession::clearAllUsersSessionCache();
 		}
@@ -1069,6 +1105,7 @@ class administrationController extends expController {
 			expSession::set('mobile',MOBILE);
 		}
 		expSession::set('mobile',!expSession::get('mobile'));
+        expSession::set('force_less_compile', 1);
 		expTheme::removeSmartyCache();
 		expHistory::back();
 	}
@@ -1178,10 +1215,10 @@ class administrationController extends expController {
 
         $expcat = new expCat();
         $cats = $expcat->find('all','module="file"');
-        $catarray = array();
-        $catarray[] = 'Root Folder';
+        $folders = array();
+        $folders[] = 'Root Folder';
         foreach ($cats as $cat) {
-            $catarray[$cat->id] = $cat->title;
+            $folders[$cat->id] = $cat->title;
         }
 
         // profiles
@@ -1206,7 +1243,7 @@ class administrationController extends expController {
             'file_permisions'=>$file_permisions,
             'dir_permissions'=>$dir_permissions,
             'section_dropdown'=>$section_dropdown,
-            'folders'=>$catarray,
+            'folders'=>$folders,
             'profiles'=>$profiles
         ));
     }
@@ -1243,6 +1280,7 @@ class administrationController extends expController {
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
         expSession::un_set('framework');
+        expSession::set('force_less_compile', 1);
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();

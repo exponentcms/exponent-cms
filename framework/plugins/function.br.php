@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +33,7 @@
  * @param \Smarty $smarty
  */
 function smarty_function_br($params,&$smarty) {
-	if (XHTML==1){
+	if (defined('XHTML') && XHTML==1){
 		echo "<br />";
 	} else {
 		echo "<br>";

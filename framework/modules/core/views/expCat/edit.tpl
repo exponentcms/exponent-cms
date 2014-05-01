@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,10 +24,10 @@
 <div class="expcat edit">
 	<div class="form_header">
         {if $record->id == ""}
-            <h1>{'Create'|gettext}{if $model == 'expFile'}{else}{if !empty($model)} {$model|capitalize}{/if}{/if} {$catname}</h1>
+            <h2>{'Create'|gettext}{if $model == 'expFile'}{else}{if !empty($model)} {$model|capitalize}{/if}{/if} {$catname}</h2>
             <blockquote>{'Create a new item to add to the list of available'|gettext} {$catnames}</blockquote>
         {else}
-            <h1>{'Edit'|gettext}{if !empty($model)} {$model|capitalize}{/if} {$catname}</h1>
+            <h2>{'Edit'|gettext}{if !empty($model)} {$model|capitalize}{/if} {$catname}</h2>
             <blockquote>{'Edit this item to update all associated items'|gettext}</blockquote>
         {/if}
 	</div>
@@ -35,7 +35,8 @@
 		{control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
 		{control type=text name=title label="Name"|gettext value=$record->title}
-        {control type=color name=color label="Color/Class"|gettext value=$record->color description='Enter a six-digit hex color preceded by #, or an \'a\' tag style name'|gettext}
+        {*{control type=color name=color label="Color/Class"|gettext value=$record->color description='Enter a six-digit hex color preceded by #, or an \'a\' tag style name'|gettext}*}
+        {control type=color name=color label="Color"|gettext value=$record->color}
         {if empty($model)}
             {control type="dropdown" name=module label="Associated Module"|gettext items=$mods value=$record->module}
         {else}

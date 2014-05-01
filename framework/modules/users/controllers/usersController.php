@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@
 
 class usersController extends expController {
     public $basemodel_name = 'user';
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'toggle_extension' => 'Activate Extensions',
         'kill_session'     => 'End Sessions',
         'boot_user'        => 'Boot Users',
@@ -33,7 +33,7 @@ class usersController extends expController {
         'import'           => 'Import Users',
         'export'           => 'Export Users',
     );
-    public $remove_permissions = array(
+    protected $remove_permissions = array(
         'create',
         'edit'
     );
@@ -54,6 +54,10 @@ class usersController extends expController {
         return false;
     }
 
+    static function canImportData() {
+        return true;
+    }
+
     public function manage() {
         global $user;
 
@@ -61,32 +65,35 @@ class usersController extends expController {
 //        $limit = empty($this->config['limit']) ? 10 : $this->config['limit'];
 //        $order = empty($this->config['order']) ? 'username' : $this->config['order'];
         if ($user->is_system_user == 1) {
-            $filter = 1; //'1';
+//            $filter = 1; //'1';
+            $where = '';
         } elseif ($user->isSuperAdmin()) {
-            $filter = 2; //"is_system_user != 1";
+//            $filter = 2; //"is_system_user != 1";
+            $where = "is_system_user != 1";
         } else {
-            $filter = 3; //"is_admin != 1";
+//            $filter = 3; //"is_admin != 1";
+            $where = "is_admin != 1";
         }
-//        $page = new expPaginator(array(
-//                    'model'=>'user',
-//                    'where'=>$where,
+        $page = new expPaginator(array(
+                    'model'=>'user',
+                    'where'=>$where,
 //                    'limit'=>$limit,
 //                    'order'=>$order,
-//                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
-//                    'controller'=>$this->baseclassname,
-//                    'action'=>$this->params['action'],
-//                    'columns'=>array(
-//                        gt('Username')=>'username',
-//                        gt('First Name')=>'firstname',
-//                        gt('Last Name')=>'lastname',
-//                        gt('Is Admin')=>'is_acting_admin',
-//                    )
-//                ));
-//
-//        assign_to_template(array('page'=>$page));
-        assign_to_template(array(
-            'filter' => $filter
-        ));
+                    'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+                    'controller'=>$this->baseclassname,
+                    'action'=>$this->params['action'],
+                    'columns'=>array(
+                        gt('Username')=>'username',
+                        gt('First Name')=>'firstname',
+                        gt('Last Name')=>'lastname',
+                        gt('Is Admin')=>'is_acting_admin',
+                    )
+                ));
+
+        assign_to_template(array('page'=>$page));
+//        assign_to_template(array(
+//            'filter' => $filter
+//        ));
     }
 
     public function create() {
@@ -114,7 +121,6 @@ class usersController extends expController {
         $active_extensions = $db->selectObjects('profileextension', 'active=1', 'rank');
 
         //If there is no image uploaded, use the default avatar
-//        if(empty($u->image)) $u->image = DEFAULT_AVATAR;  //FIXME constant does NOT resolve
         if (empty($u->image)) $u->image = PATH_RELATIVE . "framework/modules/users/assets/images/avatar_not_found.jpg";
 
         assign_to_template(array(
@@ -248,7 +254,7 @@ class usersController extends expController {
 //            expPermissions::load($u);  //FIXME why are we doing this? this loads the edited user perms over the current user???
 
             //signup email stuff
-            if (USER_REGISTRATION_SEND_WELCOME) {
+            if (USER_REGISTRATION_SEND_WELCOME && !empty($u->email)) {
                 $msg = $u->firstname . ", \n\n";
                 $msg .= sprintf(USER_REGISTRATION_WELCOME_MSG, $u->firstname, $u->lastname, $u->username);
 
@@ -454,7 +460,7 @@ class usersController extends expController {
         $page = new expPaginator(array(
             'model'      => 'group',
             'where'      => 1,
-            'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
+//            'limit'      => (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'      => empty($this->config['order']) ? 'name' : $this->config['order'],
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'    => array(
@@ -466,8 +472,12 @@ class usersController extends expController {
             'action'     => $this->params['action'],
         ));
 
+        foreach ($page->records as $key=>$group) {
+            $page->records[$key]->members = group::getUsersInGroup($group->id);
+        }
+
         assign_to_template(array(
-            'page' => $page
+            'page' => $page,
         ));
     }
 
@@ -503,7 +513,7 @@ class usersController extends expController {
         $tok->expires = time() + 2 * 3600;
         $tok->token = md5(time()) . uniqid('');
 
-        $email = $template = get_template_for_action($this, 'email/password_reset_email', $this->loc);
+        $email = $template = expTemplate::get_template_for_action($this, 'email/password_reset_email', $this->loc);
         $email->assign('token', $tok);
         $email->assign('username', $u->username);
         $msg = $email->render();
@@ -545,7 +555,7 @@ class usersController extends expController {
         $u = new user($tok->uid);
 
         // get the email message body and render it
-        $email = $template = get_template_for_action($this, 'email/confirm_password_email', $this->loc);
+        $email = $template = expTemplate::get_template_for_action($this, 'email/confirm_password_email', $this->loc);
         $email->assign('newpass', $newpass);
         $email->assign('username', $u->username);
         $msg = $email->render();
@@ -807,9 +817,8 @@ class usersController extends expController {
     }
 
     public function getUsersByJSON() {
-//        global $db, $user;
         $modelname = $this->basemodel_name;
-        $results = 25; // default get all
+        $results = 25; // default get 25
         $startIndex = 0; // default start at 0
         $sort = null; // default don't sort
         $dir = 'asc'; // default sort dir is asc
@@ -844,18 +853,18 @@ class usersController extends expController {
             }
         }
 
-        if (!empty($_GET['filter'])) {
-            switch ($_GET['filter']) {
-                case '1' :
-                    $filter = '';
-                    break;
-                case '2' :
-                    $filter = "id != 1";
-                    break;
-                case '3' :
-                    $filter = "is_admin != 1";
-            }
-        }
+//        if (!empty($_GET['filter'])) {
+//            switch ($_GET['filter']) {
+//                case '1' :
+//                    $filter = '';
+//                    break;
+//                case '2' :
+//                    $filter = "is_system_user != 1";
+//                    break;
+//                case '3' :
+//                    $filter = "is_admin != 1";
+//            }
+//        }
 
         // Sort dir?
         if ((strlen($this->params['dir']) > 0) && ($this->params['dir'] == 'desc')) {
@@ -1007,10 +1016,10 @@ class usersController extends expController {
                 $p[gt($value)] = 'no-sort';
             }
 
-            if (SEF_URLS == 1) {
+//            if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
@@ -1020,20 +1029,20 @@ class usersController extends expController {
                     'action'     => $this->params['action'],
                     'columns'    => $p,
                 ));
-            } else {
-                $page = new expPaginator(array(
-                    //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
-                    'records'    => $users,
-                    //'sql'=>$sql,
-                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
-                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
-                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-                    'controller' => $this->params['module'],
-                    'action'     => $this->params['action'],
-                    'columns'    => $p,
-                ));
-            }
+//            } else {
+//                $page = new expPaginator(array(
+//                    //'model'=>'user',
+////                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'records'    => $users,
+//                    //'sql'=>$sql,
+//                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'username'),
+//                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+//                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+//                    'controller' => $this->params['module'],
+//                    'action'     => $this->params['action'],
+//                    'columns'    => $p,
+//                ));
+//            }
 
             assign_to_template(array(
                 'user_form'  => 1,
@@ -1104,10 +1113,10 @@ class usersController extends expController {
                 $p[gt($value)] = 'no-sort';
             }
 
-            if (SEF_URLS == 1) {
+//            if (SEF_URLS == 1) {
                 $page = new expPaginator(array(
                     //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
                     'records'    => $users,
                     //'sql'=>$sql,
                     'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
@@ -1117,20 +1126,20 @@ class usersController extends expController {
                     'action'     => $this->params['action'],
                     'columns'    => $p,
                 ));
-            } else {
-                $page = new expPaginator(array(
-                    //'model'=>'user',
-                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
-                    'records'    => $users,
-                    //'sql'=>$sql,
-                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
-                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
-                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
-                    'controller' => $this->params['module'],
-                    'action'     => $this->params['action'],
-                    'columns'    => $p,
-                ));
-            }
+//            } else {
+//                $page = new expPaginator(array(
+//                    //'model'=>'user',
+////                    'limit'      => (isset($this->params['limit']) ? $this->params['limit'] : 20),
+//                    'records'    => $users,
+//                    //'sql'=>$sql,
+//                    'order'      => (isset($this->params['order']) ? $this->params['order'] : 'name'),
+//                    'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
+//                    'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
+//                    'controller' => $this->params['module'],
+//                    'action'     => $this->params['action'],
+//                    'columns'    => $p,
+//                ));
+//            }
 
             assign_to_template(array(
                 'user_form'  => 0,
@@ -1165,7 +1174,7 @@ class usersController extends expController {
         expHistory::back();
     }
 
-    public function import_users() {
+    public function import() {
         if (expFile::canCreate(BASE . "tmp/test") != SYS_FILES_SUCCESS) {
             assign_to_template(array(
                 "error" => "The /tmp directory is not writable.  Please contact your administrator.",
@@ -1214,7 +1223,7 @@ class usersController extends expController {
         //Get the file save it to the temp directory
         if ($_FILES["upload"]["error"] == UPLOAD_ERR_OK) {
             //	$file = file::update("upload",$directory,null,time()."_".$_FILES['upload']['name']);
-            $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/'); //FIXME quick hack to remove file model
+            $file = expFile::fileUpload("upload", false, false, time() . "_" . $_FILES['upload']['name'], $directory.'/');
             if ($file == null) {
                 switch ($_FILES["upload"]["error"]) {
                     case UPLOAD_ERR_INI_SIZE:

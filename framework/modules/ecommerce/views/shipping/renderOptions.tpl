@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -28,7 +28,7 @@
                         {$oc=$option.cost|number_format:2}
                         {control type=radio name="option" value=$option.id label="`$option.title` - `$oc|currency`" checked=$selected}
                     {/foreach}
-                    <button type="submit" class="awesome small blue">{"Update Shipping Option"|gettext}</button>
+                    <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                     {/form}
                 </div>
                 {/group}

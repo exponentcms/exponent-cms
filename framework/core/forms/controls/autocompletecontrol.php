@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -42,9 +42,12 @@ class autocompletecontrol extends formcontrol {
         if ($framework == 'bootstrap') {
             $html .= '<div class="input-prepend">';
             $html .= '<span class="add-on"><i class="icon-search"></i></span>';
+        } elseif ($framework == 'bootstrap3') {
+            $html .= '<div class="input-group">';
+            $html .= '<span class="input-group-addon"><i class="fa fa-search"></i></span>';
         }
-        $html .= '<input type="search" class="text " size="20" value="'.$this->value.'" name="'.$name.'" id="'.$name.'"/>';
-        if ($framework == 'bootstrap') {
+        $html .= '<input type="search" class="text " size="20" value="' . $this->value . '" name="' . $name . '" id="' . $name . ($this->focus?' autofocus':'') . '"/>';
+        if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
             $html .= '</div>';
         }
         $html .= '<div id="results'.$name.'"></div>
@@ -88,7 +91,7 @@ class autocompletecontrol extends formcontrol {
         
         // css
         expCSS::pushToHead(array(
-    	    "unique"=>"autocomplete",
+//    	    "unique"=>"autocomplete",
     	    "link"=>$assets_path."autocomplete/autocomplete.css"
     	    )
     	);

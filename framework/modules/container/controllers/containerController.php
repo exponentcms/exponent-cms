@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,7 +39,7 @@ class containerController extends expController {
 		'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() { return gt("Container"); }
     static function description() { return gt("Encapsulates other modules within a formatted container (e.g. columns, tabs, etc...)"); }
@@ -237,7 +237,7 @@ class containerController extends expController {
         $haveclass = false;
         $mods = array();
 
-        $modules_list = expModules::getActiveModulesAndControllersList();
+        $modules_list = expModules::getActiveControllersList();
 
         if (!count($modules_list)) { // No active modules
 //            $template->assign('nomodules',1);
@@ -278,8 +278,8 @@ class containerController extends expController {
     //        $mod->supportsViews  = ($moduleclass::hasViews()   ? 1 : 0);
 
             // Get a list of views
-            $mod->views = expTemplate::listModuleViews($moduleclass);
-            natsort($mod->views);
+//            $mod->views = expTemplate::listModuleViews($moduleclass);
+//            natsort($mod->views);
 
             // if (!$haveclass) {
             //  $js_init .=  exponent_javascript_class($mod,'Module');
@@ -289,7 +289,7 @@ class containerController extends expController {
             // }
             // $js_init .=  "modules.push(" . exponent_javascript_object($mod,"Module") . ");\r\n";
             // $js_init .=  "modnames.push('" . $moduleclass . "');\r\n";
-            $modules[$moduleclass] = $mod;
+//            $modules[$moduleclass] = $mod;
             $mods[$moduleclass] = $module->name();
     //        $mods[$moduleclass] = $moduleclass::name();
         }
@@ -309,7 +309,7 @@ class containerController extends expController {
 //        $template->assign('back',expHistory::getLastNotEditable());
         assign_to_template(array(
             'user' => $user,
-            'json_obj' => json_encode($modules),
+//            'json_obj' => json_encode($modules),
             'modules' => $mods,
             'loc' => $loc,
             'back' => expHistory::getLastNotEditable(),
@@ -367,7 +367,7 @@ class containerController extends expController {
     }
 
     public function getactionviews() {
-        $views = get_action_views($this->params['mod'], $this->params['act'], $this->params['actname']);
+        $views = expTemplate::get_action_views($this->params['mod'], $this->params['act'], $this->params['actname']);
         if (count($views) < 1) $views[$this->params['act']] = $this->params['actname'].' - Default View';
         echo json_encode($views);
     }
@@ -400,7 +400,7 @@ class containerController extends expController {
 
 //            $template = new template($c_module, $c_view, $loc);
             $cmodule = expModules::getController($c_module);
-            $template = get_template_for_action($cmodule,$c_view);
+            $template = expTemplate::get_template_for_action($cmodule,$c_view);
             if ($dest) $template->assign('dest', $dest);
 
             $container->info = array(

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +33,7 @@ class yuidatetimecontrol extends formcontrol {
     var $showtime = true;
 
     static function name() {
-        return "YAHOO! UI Date / Time";
+        return "Date / Time - Calendar w/ Text Time";
     }
 
     static function getFieldDefinition() {
@@ -76,21 +76,23 @@ class yuidatetimecontrol extends formcontrol {
 
     function controlToHTML($name, $label = null) {
         $idname = str_replace(array('[',']',']['),'_',$name);
-        $datectl  = new yuicalendarcontrol($this->default, '', false);
+//        $datectl  = new yuicalendarcontrol($this->default, '', false);
+        $datectl  = new yuicalendarcontrol($this->default);
         $timectl  = new datetimecontrol($this->default, false);
         $datetime = date('l, F d, o g:i a', $this->default);
 
         $html = '<span id="dtdisplay-' . $idname . '">' . $datetime . '</span>';
         if (!$this->display_only) {
             $html .= ' <input id="pub-' . $idname . '" type="checkbox" name="' . $name . '"';
+            $html .= $this->focus ? " autofocus" : "";
             $html .= $this->checked ? ' checked> ' . $this->edit_text : '> ' . $this->edit_text;
             $html .= "<!-- cke lazy -->";
             $html .= '<div ';
             $html .= $this->checked ? 'style="display:none"' : 'style="display:block"';
             $html .= ' id="datetime-' . $idname . '">';
-            $html .= ($this->showdate) ? $datectl->controlToHTML($name . "date") : "";
+            $html .= $this->showdate ? $datectl->controlToHTML($name . "date") : "";
             $html .= '<div class="yuitime">';
-            $html .= ($this->showtime) ? $timectl->controlToHTML($name . "time") : "";
+            $html .= $this->showtime ? $timectl->controlToHTML($name . "time") : "";
             $html .= '</div>';
             $html .= '</div>';
         }
@@ -122,9 +124,9 @@ class yuidatetimecontrol extends formcontrol {
         return $html;
     }
 
-    function onRegister(&$form) {
+//    function onRegister(&$form) {
         //$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
-    }
+//    }
 
     static function parseData($original_name, $formvalues) {
         if (!isset($formvalues[$original_name])) {

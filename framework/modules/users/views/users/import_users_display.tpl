@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,8 +19,10 @@
 
 <div class="importer usercsv-display">
 	<div class="form_header">
-		<h2>{'Import Users - Available Users to Import'|gettext}</h2>
-		<blockquote>{'The following users can be added to the database.'|gettext}</blockquote>
+        <div class="info-header">
+            <h2>{'Import Users - Available Users to Import'|gettext}</h2>
+            <blockquote>{'The following users can be added to the database.'|gettext}</blockquote>
+        </div>
 	</div>
     {form action="import_users_add"}
         {control type="hidden" name="filename" value=$params.filename}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,8 +28,14 @@
  */
 class fakeform extends form {
 
-	function toHTML($forms_id=null, $module=null) {
-        if (empty($module)) $module="forms";
+    /**
+     * Display the form in Edit mode as HTML output.
+     *
+     * @param null $form_id
+     *
+     * @return string The HTML code use to display the form to the browser.
+     */
+	function toHTML($forms_id=null) {
 		// Form validation script
 		if ($this->validationScript != "") {
 			$this->scripts[] = $this->validationScript;
@@ -69,8 +75,7 @@ class fakeform extends form {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
-            "jquery"=> 'jqueryui,jquery.placeholder',
+            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
@@ -79,45 +84,75 @@ class fakeform extends form {
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
         $edit_class = '';
+        $edit_icon_class = '';
         $delete_class = '';
+        $delete_icon_class = '';
         if ($head_config['framework'] == 'bootstrap') {
-            $edit_class = ' class="btn '.$btn_size.' icon-edit'.$icon_size.'"';
-            $delete_class = ' class="btn btn-danger '.$btn_size.' icon-remove-sign'.$icon_size.'"';
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';  // actually default size, NOT true boostrap large
+                $icon_size = 'icon-large';
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-mini';
+                $icon_size = '';
+            } else { // medium
+                $btn_size = 'btn-small';
+                $icon_size = 'icon-large';
+            }
+            $edit_class = ' class="btn '.$btn_size.'"';
+            $edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
+            $delete_class = ' class="btn btn-danger '.$btn_size.'"';
+            $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
+        } elseif ($head_config['framework'] == 'bootstrap3') {
+            if (BTN_SIZE == 'large') {
+                $btn_size = '';
+                $icon_size = 'fa-lg';
+            } elseif (BTN_SIZE == 'small') {
+                $btn_size = 'btn-xs';
+                $icon_size = '';
+            } else {
+                $btn_size = 'btn-sm';
+                $icon_size = 'fa-lg';
+            }
+            $edit_class = ' class="btn btn-default '.$btn_size.'"';
+            $edit_icon_class = '<i class="fa fa-pencil-square-o '.$icon_size.'"></i>';
+            $delete_class = ' class="btn btn-danger '.$btn_size.'"';
+            $delete_icon_class = '<i class="fa fa-times-circle '.$icon_size.'"></i>';
         }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
-			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; padding: 1em;\" >";
+			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; border-radius: 8px; padding: 1em;" . (!empty($this->controls[$name]->is_hidden)?' background-color: lightgray;':'') . "\" >";
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                    $html .= $edit_icon_class;
+                } else {
+                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
+                }
 				$html .= '</a>';
 			} else {
-                if (!$head_config['framework'] == 'bootstrap') {
-                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
+                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                    $html .= '<div class="btn btn-default disabled ' . $btn_size . '">'.$edit_icon_class.'</div>';
                 } else {
-                    $html .= '<div class="btn disabled '.$btn_size.' icon-edit'.$icon_size.'"> </div>';
+                    $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
                 }
 			}
 
 			$html .= '&#160;';
 			if (!$this->controls[$name]->_readonly && $this->controls[$name]->_controltype != 'htmlcontrol' ) {
-				//$html .= '<a href="?module='.$module.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
-				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				//$html .= '<a href="?module='.'forms'.'&action=delete_control&id='.$this->controls[$name]->_id.'" onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'"  onclick="return confirm(\'Are you sure you want to delete this control? All data associated with it will be removed from the database!\');">';
 			}
 			else {
-				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
+				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-            if (!$head_config['framework'] == 'bootstrap') $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                $html .= $delete_icon_class;
+            } else {
+                $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
+            }
 			$html .= '</a>';
             $html .= "</div>";
             if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
@@ -146,8 +181,8 @@ class fakeform extends form {
             }
 //			$html .= "<div class=\"formmoduleeditactions\">";
 //			if ($rank != count($this->controlIdx)-1) {
-//				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>$module, 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank+1))).'">';
+//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
+//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank+1))).'">';
 //				$html .= "<img border='0' src='".ICON_RELATIVE."down.png' />";
 //				$html .= '</a>';
 //			} else {
@@ -155,8 +190,8 @@ class fakeform extends form {
 //			}
 //			$html .= "&#160;";
 //			if ($rank != 0) {
-//				//$html .= '<a href="?module='.$module.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank-1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>$module, 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank-1))).'">';
+//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank-1).'">';
+//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank-1))).'">';
 //				$html .= "<img border='0' src='".ICON_RELATIVE."up.png' />";
 //				$html .= '</a>';
 //			} else {

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@
  */
 
 class notfoundController extends expController {
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'showall'=>'Showall',
         'show'=>'Show'
     );
@@ -50,7 +50,7 @@ class notfoundController extends expController {
         $terms = empty($params[0]) ? '' : $params[0];
         if (empty($terms) && !empty($params['title'])) $terms = $params['title'];
         expCSS::pushToHead(array(
-	        "unique"=>"search-results",
+//	        "unique"=>"search-results",
 	        "link"=>$this->asset_path."css/results.css",
 	        )
 	    );

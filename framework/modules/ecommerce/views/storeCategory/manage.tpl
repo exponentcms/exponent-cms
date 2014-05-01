@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
 
 <div class="storeCategory manage-categories">
 	<div class="form_header">
-        <h1>{'Manage Store Categories'|gettext}</h1>
+        <h2>{'Manage Store Categories'|gettext}</h2>
         <blockquote>
             {'This is where you can add, edit and rearrange categories.'|gettext}
             {'Right-click on the category to display the command menu.'|gettext}

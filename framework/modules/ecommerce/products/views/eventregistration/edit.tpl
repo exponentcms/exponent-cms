@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,7 +43,7 @@
             <div class="yui-content">
                 <div id="tab1">
                     {control type="text" name="title" label="Event Title"|gettext value=$record->title}
-                    {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity}
+                    {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity description='Zero or empty means unlimited or undefined'|gettext}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
                     {*{control type="editor" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     {*{control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
@@ -51,12 +51,13 @@
                 </div>
                 <div id="tab2">
                     <h2>{'Event Date/Time'|gettext}</h2>
-					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate}
+					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate showtime=false}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
                     {control type="datetimecontrol" name="event_endtime" label="End Time"|gettext value=$record->event_endtime+$record->eventdate showdate=false}
-					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext}
+					{control type="yuicalendarcontrol" name="eventenddate" label="End Date of Event"|gettext value=$record->eventenddate description='Only used for display purposes'|gettext showtime=false}
                     <h2>{'Signup Cutoff'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
+                    {* FIXME yuicalendarcontrol does NOT display time *}
                 </div>
                 <div id="tab3">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
@@ -81,6 +82,7 @@
                             </tr>
                             <tr>
                                 <td>{control type="yuicalendarcontrol" name="earlydiscountdate" label="" value=$record->earlydiscountdate showtime = true}</td>
+                                {* FIXME yuicalendarcontrol does NOT display time *}
                             <tr>
                                 <td>{control type="text" name="special_price" label="then discount the price to"|gettext value=$record->special_price filter=money}</td>
                                 {*<td>{control type="text" name="early_discount_amount" label=" " value=$record->early_discount_amount size=3 filter=decimal}</td>*}
@@ -152,11 +154,11 @@
                       {control type="radiogroup" name="multi_registrant" label="Simultaneous Registration"|gettext items="Single Registration,Multiple Registration"|gettxtlist values="0,1" default=$record->multi_registrant|default:0 description='Should we allow multiple similar (same basic cost) registrations at one time?'|gettext}
                   </div>
                 <div id="tab6">
-                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" accept="image/*" value=$record->expFile description="Images to show for your event"|gettext}
+                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Images to show for your event"|gettext}
                     <div class="additional-images">
-                        {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile description="Additional images to show for your event"|gettext}
+                        {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Additional images to show for your event"|gettext}
                     </div>
-					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
+					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile folder=$config.upload_folder description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                 </div>
                 <div id="tab7">
                     <h2>{'SEO Settings'|gettext}</h2>

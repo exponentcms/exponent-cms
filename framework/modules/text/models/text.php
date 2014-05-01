@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -32,7 +32,9 @@ class text extends expRecord {
 #		'presence_of'=>array(
 #			'body'=>array('message'=>'Body is a required field.'),
 #		));
-		
+
+    public $supports_revisions = true;
+
 }
 
 ?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,7 +23,7 @@
 /** @define "BASE" "../../../.." */
 
 class ecomconfigController extends expController {
-    public $add_permissions = array(
+    protected $add_permissions = array(
         'show'=>'View Admin Options'
     );
 	
@@ -146,6 +146,7 @@ class ecomconfigController extends expController {
 			'order'=>isset($this->params['order']) ? $this->params['order'] : null,
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'  => $this->params['controller'],
+            'action' => $this->params['action'],
 			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
         ));
 
@@ -311,7 +312,7 @@ class ecomconfigController extends expController {
         $config = new expConfig($this->loc);
         $this->config = $config->config;
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
         
         $gc = new geoCountry();             
         $countries = $gc->find('all');

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -40,7 +40,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
     {if $record->id != ""}
         <h1>{'Editing address for'|gettext} {$record->firstname} {$record->lastname}</h1>
     {else}
-        <h1>{'New'|gettext} {$modelname}</h1>
+        <h1>{'New'|gettext} {$model_name}</h1>
     {/if}
     <blockquote>
         <em>{'Fields marked with an * are required'|gettext}.</em>

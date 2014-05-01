@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -258,7 +258,10 @@ class eventregistration extends expRecord {
 //        return $this->quantity - $this->number_of_registrants;
 //        $f = new forms($this->forms_id);
 //        return $this->quantity - $db->countObjects('forms_' . $f->table_name, "referrer='" . $this->id . "'");
-        return $this->quantity - $this->countRegistrants();
+        if ($this->quantity == 0)
+            return -1;
+        else
+            return $this->quantity - $this->countRegistrants();
     }
 
     public function cartSummary($item) {
@@ -364,13 +367,14 @@ class eventregistration extends expRecord {
             if (!empty($params['orderitem_id'])) $db->delete('forms_' . $f->table_name, "location_data ='{$locdata}'");  // remove existing entries for this registration
             $fc = new forms_control();
             $controls = $fc->find('all', "forms_id=" . $f->id . " and is_readonly=0",'rank');
-            foreach ($registrants as $registrant) {
+            foreach ($registrants as $key=>$registrant) {
                 $db_data = new stdClass();
                 foreach ($controls as $c) {
                     $ctl = expUnserialize($c->data);
                     $control_type = get_class($ctl);
                     $def = call_user_func(array($control_type, "getFieldDefinition"));
                     if ($def != null) {
+                        if ($control_type == 'uploadcontrol') $registrant['registration'] = $key + 1;
                         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
                         $value = stripslashes($db->escapeString($emailValue));
                         $varname = $c->name;
@@ -677,9 +681,27 @@ class eventregistration extends expRecord {
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
             BASE . 'framework/modules/ecommerce/products/views/product/',
         );
+        if (expSession::get('framework') == 'bootstrap') {
+            $vars = array(
+                '.bootstrap',
+                '',
+            );
+        } elseif (expSession::get('framework') == 'bootstrap3') {
+            $vars = array(
+                '.bootstrap3',
+                '.bootstrap',
+                '',
+            );
+        } else {
+            $vars = array(
+                '',
+            );
+        }
 
-        foreach ($dirs as $dir) {
-            if (file_exists($dir . $form . '.tpl')) return $dir . $form . '.tpl';
+        foreach ($vars as $var) {
+            foreach ($dirs as $dir) {
+                if (file_exists($dir . $form . $var . '.tpl')) return $dir . $form . $var . '.tpl';
+            }
         }
 
         return false;
@@ -721,10 +743,18 @@ class eventregistration extends expRecord {
         // build list of registrants with completed orders
         if (!empty($order_ids)) {
             if (!empty($f->is_saved)) {  // is there user input data
+                $fc = new forms_control();
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
                 $registrants = $db->selectObjects('forms_' . $f->table_name, "referrer = {$this->id}", "timestamp");
                 foreach ($registrants as $key=>$registrant) {
                     $order_data = expUnserialize($registrant->location_data);
                     if (in_array($order_data->order_id, $order_ids)) {
+                        foreach ($controls as $c) {
+                            $ctl = expUnserialize($c->data);
+                            $control_type = get_class($ctl);
+                            $name = $c->name;
+                            $registrant->$name = call_user_func(array($control_type, 'templateFormat'), $registrant->$name, $ctl);
+                        }
                         $registered[$key] = $registrant;
                         if (is_numeric($order_data->order_id)) {
                             $registered[$key]->order_id = $order_data->order_id;
@@ -788,6 +818,73 @@ class eventregistration extends expRecord {
 
     public function isChild() {
         return false;
+    }
+
+    /**
+     * Returns registrant records as objects
+     *
+     * @param string $where
+     *
+     * @return array
+     */
+    public function getRecords($where="1") {
+        global $db;
+
+        return $db->selectObjects('eventregistration_registrants', $where);
+    }
+
+    /**
+     * Returns single registrant record
+     *
+     * @param null $id
+     *
+     * @return null|object|void
+     */
+    public function getRecord($id=null) {
+        global $db;
+
+        if ($id == null) return null;
+        return $db->selectObject('eventregistration_registrants', "id ='{$id}'");
+    }
+
+    /**
+     * Inserts a registrant record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function insertRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->insertObject($record, 'eventregistration_registrants');
+    }
+
+    /**
+     * Updates a registrant record
+     *
+     * @param null $record
+     *
+     * @return null
+     */
+    public function updateRecord($record=null) {
+        global $db;
+
+        if ($record == null) return null;
+        $db->updateObject($record, 'eventregistration_registrants');
+    }
+
+    /**
+     * Deletes a registrant record
+     *
+     * @param null $id
+     */
+    public function deleteRecord($id=null) {
+        global $db;
+
+        if ($id == null) return;
+        $db->delete('eventregistration_registrants', "id='{$id}'");
     }
 
 }

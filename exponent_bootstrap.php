@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,7 +45,7 @@ if (!function_exists('__realpath')) {
 	 */
 	function __realpath($path) {
 		$path = str_replace('\\','/',realpath($path));
-		if ($path{1} == ':') {
+		if (!empty($path{1}) && $path{1} == ':') {
 			// We can't just check for C:/, because windows users may have the IIS webroot on X: or F:, etc.
 			$path = substr($path,2);
 		}

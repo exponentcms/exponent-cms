@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
         <h2>{"Categories Settings"|gettext}</h2>
 	</div>
 </div>
-<h2>{"Allow item grouping by category"|gettext}</h2>
+<h3>{"Allow item grouping by category"|gettext}</h3>
 {control type="checkbox" name="usecategories" label="Use Categories for this module?"|gettext value=1 checked=$config.usecategories}
 {control type="checkbox" name="dontsort" label='Don\'t Sort List by Categories for this module?'|gettext value=1 checked=$config.dontsort}
 {control type=text name=uncat label="Label for Un-Categorized items"|gettext value=$config.uncat|default:"Uncategorized"|gettext}

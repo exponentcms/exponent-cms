@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -310,7 +310,7 @@ class expCommentController extends expController {
     }
 
     function update() {
-        global $db, $user;
+        global $user;
         
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
@@ -340,13 +340,14 @@ class expCommentController extends expController {
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
-        $obj = new stdClass();
-		$obj->content_type = $this->params['content_type'];
-		$obj->content_id = $this->params['content_id'];
-		$obj->expcomments_id = $this->expComment->id;
-		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
-		$db->insertObject($obj, $this->expComment->attachable_table);
-		
+//        $obj = new stdClass();
+//		$obj->content_type = $this->params['content_type'];
+//		$obj->content_id = $this->params['content_id'];
+//		$obj->expcomments_id = $this->expComment->id;
+//		if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+//		$db->insertObject($obj, $this->expComment->attachable_table);
+        $this->expComment->attachComment($this->params['content_type'], $this->params['content_id'], $this->params['subtype']);
+
 		$msg = 'Thank you for posting a comment.';
 		if ($require_approval == 1 && !$user->isAdmin()) {
 		    $msg .= ' '.gt('Your comment is now pending approval. You will receive an email to').' ';
@@ -356,7 +357,7 @@ class expCommentController extends expController {
 		if ($require_notification && !$user->isAdmin()) {
 		    $this->sendNotification($this->expComment,$this->params);
 		}
-        if ($require_approval==1 && $this->params['approved']==1) {
+        if ($require_approval==1 && $this->params['approved']==1 && $this->expComment->poster != $user->id) {
 		    $this->sendApprovalNotification($this->expComment,$this->params);
         }
 

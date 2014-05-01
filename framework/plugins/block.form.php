@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -39,9 +39,10 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
 		$module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
-		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->con;  //FIXME there is no 'con' property
+		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;  //FIXME there is no 'con' property
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
+        $framework = expSession::get('framework');
 
 		echo "<!-- Form Object 'form' -->\r\n";
 		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
@@ -49,18 +50,44 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
-		if(expSession::get('framework')!='bootstrap'){
-			expCSS::pushToHead(array(
-//                "unique"  => 'forms',
-                "corecss"=>"forms"
-            ));
-            $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
-		} else {
-            expCSS::pushToHead(array(
-//                "unique"  => 'z-forms-bootstrap',
-                "corecss"=>"forms-bootstrap"
-            ));
-            $btn_class = 'btn btn-default';
+//        if (!NEWUI) {
+            if ($framework == 'bootstrap') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap"
+                ));
+                $btn_class = 'btn btn-default';
+                if (BTN_SIZE == 'large') {
+                    $btn_size = '';  // actually default size, NOT true boostrap large
+                } elseif (BTN_SIZE == 'small') {
+                    $btn_size = 'btn-mini';
+                } else { // medium
+                    $btn_size = 'btn-small';
+                }
+                $btn_class .= ' ' . $btn_size;
+            } elseif (NEWUI || $framework == 'bootstrap3') {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms-bootstrap3"
+                ));
+                $btn_class = 'btn btn-default';
+                if (BTN_SIZE == 'large') {
+                    $btn_size = '';  // actually default size, NOT true boostrap large
+                } elseif (BTN_SIZE == 'small') {
+                    $btn_size = 'btn-xs';
+                } else { // medium
+                    $btn_size = 'btn-sm';
+                }
+                $btn_class .= ' ' . $btn_size;
+            } else {
+                expCSS::pushToHead(array(
+                    "corecss"=>"forms"
+                ));
+                $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
+            }
+//        }
+        if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') {
+            $newui_class = ' exp-skin';
+        } else {
+            $newui_class = '';
         }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms1',
@@ -76,8 +103,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms4',
-//            "jquery"=> 'jqueryui,jquery.placeholder,colorpicker',
-            "jquery"=> 'jqueryui,jquery.placeholder',
+            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
         if (!empty($params['paged'])) {
@@ -100,7 +126,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             ));
         }
 
-		echo '<form id="'.$id.'" name="'.$name.'" class="'.$params['class'].'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {

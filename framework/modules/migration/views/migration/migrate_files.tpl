@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,18 +18,19 @@
 {/css}
 
 <div class="module migration migrate-files">
-    <a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>
+    {*<a class="{button_style}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_content text='Skip to Next Step -> Migrate Content'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Tips to Follow after Migrating Files"|gettext module="post-file-migration"}
         </div>
-		<h1>{"File Migration Report"|gettext}</h1>	    
+		<h2>{"File Migration Report"|gettext}</h2>
+        <blockquote>
+            {'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
+            {'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
+        </blockquote>
     </div>
-    <blockquote>
-		{'Note: this only properly copied over the records from the old database into the Exponent v2 database.'|gettext}&#160;&#160;
-		{'Make sure you manually copy the \'files\' directory over to this installation.'|gettext}
-    </blockquote>
         <ul>
 			<li class=\"mig-msg\">
 				{'Emptied the expFiles table before the file import'|gettext}

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -27,9 +27,27 @@ class expCSS {
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
         
+        // if within an ajax call, immediately output the css
+        //FIXME we ONLY output links, NO inline styles in $params['css'], nor any less, etc... processing
+        if (expJavascript::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+            if (isset($params['corecss'])&&!empty($css_core)){
+                foreach ($css_core as $path) {
+                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
+                }
+            }
+            if (!empty($params['link'])){
+                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            }
+		    echo "</div>";
+            return true;
+        }
+
         // normalize.css is always at the top
         if (!empty($params['normalize'])){
-            $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+            if (!(!empty($params['framework']) && $params['framework'] == 'bootstrap3')) {
+                $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
+            }
         }
 
          // set up less variables
@@ -44,13 +62,15 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
-                $css_path = str_replace("/less/","/css/",$less_path);
-                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                $less_path = ltrim($less_path, '/');
+                $css_path = str_replace("/less/", "/css/", $less_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
                 //indexing the array by the filename
-                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
-                    $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
+                if (!isset($css_primer[$path_rel.$css_path]))
+                    if (self::auto_compile_less($less_path, $css_path, $lless_vars))
+                        $css_primer[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
 
@@ -73,55 +93,45 @@ class expCSS {
                     $less_path = str_replace(PATH_RELATIVE, '', $less_path);  // strip relative path for links coming from templates
                     $path_rel = PATH_RELATIVE;
                 } else {
-                    $path_rel = '';
+                    $path_rel = '/';
                 }
-                $css_path = str_replace("/less/","/css/",$less_path);
-                $css_path = substr($css_path,0,strlen($css_path)-4)."css";
+                $less_path = ltrim($less_path, '/');
+                $css_path = str_replace("/less/", "/css/", $less_path);
+                $css_path = substr($css_path, 0, strlen($css_path)-4)."css";
                 //indexing the array by the filename
-                if (self::auto_compile_less($less_path,$css_path,$lless_vars))
-                    $css_links[$path_rel.$css_path] = $path_rel.$css_path;
+                if (!isset($css_links[$path_rel.$css_path]))
+                    if (self::auto_compile_less($less_path, $css_path, $lless_vars))
+                        $css_links[$path_rel.$css_path] = $path_rel.$css_path;
             }
         }
 
         // files in framework/core/assets/less that are general to many views and the system overall
-        // add .less support to corecss
         if (!empty($params['corecss'])){
             $core_array = explode(",",$params['corecss']);
             foreach ($core_array as $filename) {
                 $filename = trim($filename);
                 $css_path = "framework/core/assets/css/".$filename.".css";
                 $less_path = "framework/core/assets/less/".$filename.".less";
-                if (file_exists(BASE.$less_path))
-                    self::auto_compile_less($less_path,$css_path,$lless_vars);
-                if (is_file(BASE.$css_path))
-                    $css_core[PATH_RELATIVE.$css_path] = PATH_RELATIVE.$css_path;
+                if (!isset($css_core[PATH_RELATIVE . $css_path])) {
+                    if (file_exists(BASE . $less_path))
+                        self::auto_compile_less($less_path, $css_path, $lless_vars);
+                    if (is_file(BASE . $css_path))
+                        $css_core[PATH_RELATIVE . $css_path] = PATH_RELATIVE . $css_path;
+                }
             }
         }
         
-        // css linked in through the css plugin
+        // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
             $css_links[$params['link']] = $params['link'];
         };
         
-        // CSS hard coded in a view
+        // css hard coded in a view
         if (!empty($params['css'])){
             $tcss = trim($params['css']);
             if (!empty($tcss)) $css_inline[$params['unique']] = $params['css'];
         }
-
-        if (expJavascript::inAjaxAction()) {
-		    echo "<div class=\"io-execute-response\">";
-            if (isset($params['corecss'])&&!empty($css_core)){
-                foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
-                }
-            }
-            if (!empty($params['link'])){
-                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
-            }
-		    echo "</div>";
-        }
-    }    
+    }
 
     public static function parseCSSFiles() {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;  // these are all used via $$key below
@@ -166,7 +176,7 @@ class expCSS {
             $srt = array();
             $srt[$i] = "";
             foreach ($css_files as $file) {
-                if (!empty($file)) {
+                if (!empty($file) && file_exists($_SERVER['DOCUMENT_ROOT'].$file)) {
                     if (strlen($srt[$i])+strlen($file) <= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file.",";
                     } else {
@@ -236,7 +246,7 @@ class expCSS {
                     $dh = opendir($lessdir);
                     while (($lessfile = readdir($dh)) !== false) {
                         $filename = $lessdir.$lessfile;
-                        if (is_file($filename) && substr($filename,-5,5) == ".less") {
+                        if (is_file($filename) && substr($filename,-5,5) == ".less" && basename($filename) != 'variables.less') {
                             $css_dir = str_replace("/less/","/css/",$lessdir);
                             $css_file = substr($lessfile,0,strlen($lessfile)-4)."css";
                             self::auto_compile_less($lessdir.$lessfile,$css_dir.$css_file,$less_vars);
@@ -289,37 +299,124 @@ class expCSS {
      * @param string $css_fname  filename of the output css file
      * @param array  $vars       array of variables to pass to parse()
      *
+     * @throws Exception
      * @return bool
      */
     public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
-        if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
-            include_once(BASE.'external/lessphp/lessc.inc.php');
-            // load the cache
-            $less_cname = str_replace("/","_",$less_pname);
-            $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
-            $cache = BASE.$less_pname;
-            if (file_exists($cache_fname)) {
-                $cache = unserialize(file_get_contents($cache_fname));
-                if (!empty($cache['vars']) && $vars != $cache['vars']) {
-                    $cache = BASE.$less_pname;
-                }
-            }
-            $less = new lessc;
-            $less->setVariables($vars);
-            $new_cache = $less->cachedCompile($cache, false);
-            if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-                if (!empty($new_cache['compiled'])) {
-                    $new_cache['vars'] = !empty($vars)?$vars:null;
-                    $css_loc = pathinfo(BASE.$css_fname);
-                    if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
-                    file_put_contents(BASE.$css_fname, $new_cache['compiled']);
-                    file_put_contents($cache_fname, serialize($new_cache));
-                }
-            }
-            return true;
+        if (defined('LESS_COMPILER')) {
+            $less_compiler = strtolower(LESS_COMPILER);
         } else {
-            flash('notice',$less_pname. ' ' . gt('does not exist!'));
-            return false;
+            $less_compiler = 'lessphp';
+        }
+        switch ($less_compiler) {
+            case 'iless':
+//                if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+////                    include_once(BASE.'external/lessphp/lessc.inc.php');
+//                    include_once(BASE.'external/phpless/Less.php');
+//                    // load the cache
+//                    $less_cname = str_replace("/","_",$less_pname);
+//                    $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
+//                    $cache = BASE.$less_pname;
+//                    if (file_exists($cache_fname)) {
+//                        $cache = unserialize(file_get_contents($cache_fname));
+//                        if (!empty($cache['vars']) && $vars != $cache['vars']) {
+//                            $cache = BASE.$less_pname;
+//                        }
+//                    }
+////                    $less = new lessc;
+//                    $less = new Less_Parser();
+//                    $less->SetCacheDir(BASE.'tmp/css/');
+//                    $less->setVariables($vars);
+//                    // we need to convert $vars array to a less string
+//                    $lvars = '';
+//                    foreach ($vars as $key=>$param) {
+//                        $lvars .= '@' . $key . ":" . $param . ";";
+//                    }
+//                    $less->parse($lvars);
+//
+//                    $new_cache = $less->cachedCompile($cache, false);
+//                    if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
+//                        if (!empty($new_cache['compiled'])) {
+//                            $new_cache['vars'] = !empty($vars)?$vars:null;
+//                            $css_loc = pathinfo(BASE.$css_fname);
+//                            if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
+//                            file_put_contents(BASE.$css_fname, $new_cache['compiled']);
+//                            file_put_contents($cache_fname, serialize($new_cache));
+//                        }
+//                    }
+//
+//                    $less->parseFile($cache);
+//                    $new_cache = $less->getCss();
+//                    $css_loc = pathinfo(BASE.$css_fname);
+//                    if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
+//                    file_put_contents(BASE.$css_fname, $new_cache);
+//                    return true;
+//                } else {
+//                    flash('notice',$less_pname. ' ' . gt('does not exist!'));
+//                    return false;
+//                }
+//                break;
+            case 'less.php':
+            case 'lessphp':
+            default :
+                if(DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
+                    if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
+                        if (!is_file(
+                            BASE . 'external/' . $less_compiler . '/lessc.inc.php'
+                        )
+                        ) $less_compiler = 'lessphp';
+                        include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
+                        // load the cache
+                        $less_cname = str_replace("/", "_", $less_pname);
+                        $cache_fname = BASE . 'tmp/css/' . $less_cname . ".cache";
+                        $cache = BASE . $less_pname;
+                        if (file_exists($cache_fname)) {
+                            $cache = unserialize(file_get_contents($cache_fname));
+                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                                $cache = BASE . $less_pname;
+                            }
+                        }
+                        $less = new lessc;
+                        if (DEVELOPMENT && $less_compiler == 'less.php') {
+                            $less->setOptions(array(
+//                                'outputSourceFiles' => true,
+//                                'sourceMap'         => true,  // include css source in .map file
+//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
+//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
+                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
+                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations
+//                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
+//                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,
+                                )
+                            );
+                        }
+                        $less->setVariables($vars);
+
+                        $new_cache = $less->cachedCompile($cache, false);
+                        if (!file_exists(BASE . $css_fname) || !is_array(
+                                $cache
+                            ) || $new_cache['updated'] > $cache['updated']
+                        ) {
+                            if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                $new_cache['vars'] = !empty($vars) ? $vars : null;
+                                $css_loc = pathinfo(BASE . $css_fname);
+                                if (!is_dir($css_loc['dirname'])) mkdir(
+                                    $css_loc['dirname']
+                                ); // create /css output folder if it doesn't exist
+                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
+                                file_put_contents($cache_fname, serialize($new_cache));
+                            }
+                        }
+                        return true;
+                    } else {
+                        flash('notice', $less_pname . ' ' . gt('does not exist!'));
+                        return false;
+                    }
+                } else {
+                    return true;  // the .css file already exists and we're not in develeopment
+                }
         }
     }
 

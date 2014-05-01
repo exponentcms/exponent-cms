@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,10 +13,19 @@
  *
  *}
 
-<h1>{'Showing'|gettext} {$model_name}, id: {$object->id}</h1>
+<div class="scaffold show">
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
+    <h1>{'Showing'|gettext} {$model_name}, id: {$object->id}</h1>
 
-<div id="scaffold-object">
-	{list_object object=$record}
-    <a href="{link controller=$model_name action=showall}">{'Go back to Show All'|gettext} {$model_name}</a> or
-    <a href="{link controller=$model_name action=edit id=$record->id}"> {'Edit this'|gettext} {$model_name}</a>
+    <div class="item" id="scaffold-object">
+        {list_object object=$record}
+        <a href="{link controller=$model_name action=showall}">{'Go back to Show All'|gettext} {$model_name}</a> or
+        {permissions}
+            <div class="item-actions">
+                <a href="{link controller=$model_name action=edit id=$record->id}"> {'Edit this'|gettext} {$model_name}</a>
+            </div>
+        {/permissions}
+    </div>
 </div>

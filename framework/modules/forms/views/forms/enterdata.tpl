@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -37,15 +37,15 @@
                         {icon class=configure action=design_form id=$form->id text="Design Form"|gettext}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
             </div>
         {/permissions}
         {if $edit_mode}
-            <h1>{'Edit Form Record'|gettext}</h1>
+            <{$config.heading_level|default:'h1'}>{'Edit Form Record'|gettext}</{$config.heading_level|default:'h1'}>
         {else}
             {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-                <h1>{$moduletitle}</h1>{/if}
+                <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
             {if $config.moduledescription != ""}
                 {$config.moduledescription}
             {/if}
@@ -55,7 +55,7 @@
                 {permissions}
                     <div class="module-actions">
                         <div class="msg-queue notice" style="text-align:center">
-                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage"}</p></div>
+                            <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage" select=true}</p></div>
                     </div>
                 {/permissions}
             {else}
@@ -67,30 +67,3 @@
         </div>
     </div>
 {/if}
-
-{*{script unique=jWizard jquery='jqueryui,jquery.jWizard'}*}
-    {*$("#test").jWizard();*}
-{*{/script}*}
-
-{*{script unique=quickWizard jquery='jqueryui,jquery.validate,jquery.quickWizard'}*}
-    {*$(document).ready(function() {*}
-        {*$('#test').quickWizard();*}
-    {*});*}
-{*{/script}*}
-
-{*{if $paged}*}
-{*{script unique=$name jquery='jquery.validate,jquery.stepy'}*}
-{*{literal}*}
-    {*$("#{/literal}{$form->sef_url}{literal}").stepy({*}
-        {*validate: true,*}
-        {*block: true,*}
-        {*errorImage: true,*}
-{*//        finishButton: false,  // otherwise crashes because we can't find submit button*}
-        {*btnClass: 'awesome {/literal}{$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}{literal}',*}
-{*//        description: false,*}
-{*//        legend: false,*}
-        {*titleClick: true,*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
-{*{/if}*}

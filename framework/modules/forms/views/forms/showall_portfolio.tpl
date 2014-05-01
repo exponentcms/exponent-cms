@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,7 +18,7 @@
 
     {/css}
     <div class="module forms showall">
-        <h2>{$title}</h2>
+        <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
         {if $description != ""}
             {$description}
         {/if}
@@ -34,7 +34,7 @@
                     &#160;&#160;|&#160;&#160;
                     {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
                     &#160;&#160;|&#160;&#160;
-                    {icon action=manage text="Manage Forms"|gettext}
+                    {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
             </div>
         {/permissions}
@@ -42,14 +42,12 @@
         <div style="overflow: auto; overflow-y: hidden;">
             {foreach from=$page->records item=fields key=key name=fields}
                 <div class="item-actions">
-                    <td>
-                        {if $permissions.edit}
-                            {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
-                        {/if}
-                        {if $permissions.delete}
-                            {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
-                        {/if}
-                    </td>
+                    {if $permissions.edit}
+                        {icon class=edit action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
+                    {/if}
+                    {if $permissions.delete}
+                        {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
+                    {/if}
                 </div>
                 {if empty($config.report_def)}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">

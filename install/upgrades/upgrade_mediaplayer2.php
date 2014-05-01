@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -26,7 +26,7 @@
  */
 class upgrade_mediaplayer2 extends upgradescript {
 	protected $from_version = '0.0.0';
-	protected $to_version = '2.2.4';  // mediaplayer module was added in v2.2.0
+	protected $to_version = '2.3.0';  // mediaplayer module was added in v2.2.0
 //    public $optional = true;
 
 	/**

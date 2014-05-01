@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,6 +36,8 @@ class blog extends expRecord {
             'body'=>array('message'=>'Post Content is a required field.'),
         )
     );
+
+    public $supports_revisions = true;
 
 //    public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 //        parent::__construct($params, $get_assoc, $get_attached);

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -20,7 +20,7 @@
 {/css}
 
 <div class="module photoalbum slideshow">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
@@ -70,15 +70,8 @@
                         </div>
                     {/permissions}
                     {if !$config.hidetext}
-                        {if !empty($slide->title)}
-                            {$title = $slide->title}
-                        {elseif !empty($slide->expFile[0]->title)}
-                            {$title = $slide->expFile[0]->title}
-                        {else}
-                            {$title = ''}
-                        {/if}
                         <div class="bodycopy">
-                            <h2>{$title}</h2>
+                            <{$config.item_level|default:'h2'}>{$slide->title}</{$config.item_level|default:'h2'}>
                             {$slide->body}
                         </div>
                     {/if}

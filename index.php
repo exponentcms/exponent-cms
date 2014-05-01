@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -110,12 +110,14 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 		if (!expJavascript::inAjaxAction()) {
 			include_once($page);
 			expTheme::satisfyThemeRequirements();
-		} else {
+		} else {  // ajax request
             // set up controls search order based on framework
             $framework = expSession::get('framework');
-            if ($framework == 'jquery' || $framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/jquery');
-            if ($framework == 'bootstrap') array_unshift($auto_dirs,BASE.'framework/core/forms/controls/bootstrap');
-            array_unshift($auto_dirs,BASE.'themes/'.DISPLAY_THEME.'/controls');
+            if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
+            if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
+            if ($framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
+            if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+            array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
 			expTheme::runAction();
 		}
@@ -146,5 +148,6 @@ if (EXPORT_AS_PDF == 1) {
 } else {
     ob_end_flush();
 }
+expSession::un_set('force_less_compile');  // remove flag at when page finishes
 
 ?>

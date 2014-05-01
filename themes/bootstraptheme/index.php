@@ -3,18 +3,18 @@
     <head>
         <?php
         expTheme::head(array(
-            "xhtml"=>false,
+//            "xhtml"=>false,
             "normalize"=>true,
             "framework"=>"bootstrap",
             // these viewport settings are the defaults so they are not really needed except to customize
-            "viewport"=>array(
-                "width"=>"device-width",
-                "height"=>"device-height",
-                "initial_scale"=>1,
-                "minimum_scale"=>0.25,
-                "maximum_scale"=>5.0,
-                "user_scalable"=>true,
-            ),
+//            "viewport"=>array(
+//                "width"=>"device-width",
+//                "height"=>"device-height",
+//                "initial_scale"=>1,
+//                "minimum_scale"=>0.25,
+//                "maximum_scale"=>5.0,
+//                "user_scalable"=>true,
+//            ),
             "css_core"=>array(
                 "common"
             ),
@@ -23,44 +23,27 @@
                 'menu_height'=>MENU_HEIGHT,
                 'menu_width'=>MENU_WIDTH,
             ),
-            "css_links"=>true,
-            "css_theme"=>true
+//            "css_links"=>true,
+//            "css_theme"=>true
             ));
         ?>
     </head>
     <body>
         <!-- navigation bar/menu -->
-        <div class="navigation navbar <?php echo (MENU_LOCATION) ? 'navbar-'.MENU_LOCATION : '' ?>">
-            <div class="navbar-inner">
-                <div class="container">
-                    <!-- toggle for collapsed/mobile navbar content -->
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <!-- menu header -->
-                    <a class="brand" href="<?php echo URL_FULL ?>"><?php echo ORGANIZATION_NAME ?></a>
-                    <!-- menu -->
-                    <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-                </div>
-            </div>
-        </div>
-        <div class="navbar-spacer"></div>
-        <div class="navbar-spacer-bottom"></div>
+        <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
         <!-- main page body -->
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
-            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
+            <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
-                <!-- left column -->
-                <aside id="sidebar" class="span3 well">
-                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
-                </aside>
-                <!-- main column -->
-                <section id="content" class="span8">
+                <!-- main column wanted on top if collapsed -->
+                <section id="content" class="span8 pull-right">
                     <?php expTheme::main(); ?>
                 </section>
+                <!-- left column -->
+                <aside id="sidebar" class="span3 well pull-left">
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
+                </aside>
             </section>
             <!-- footer -->
             <footer class="row">

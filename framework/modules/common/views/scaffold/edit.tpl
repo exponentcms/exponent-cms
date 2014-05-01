@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,13 +13,18 @@
  *
  *}
 
-{if $record->id != ""}
-	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
-{else}
-	<h1>{'New'|gettext} {$modelname}</h1>
-{/if}
+<div class="scaffold edit">
+    {if $smarty.const.DEVLEOPMENT}
+        <h4>{'This is the scaffold view'|gettext}</h4>
+    {/if}
+    {if $record->id != ""}
+        <h1>{'Edit Information for'|gettext} {$model_name}</h1>
+    {else}
+        <h1>{'New'|gettext} {$model_name}</h1>
+    {/if}
 
-{form action=update}
-	{control name=controller type=hidden value=$controller}
-	{scaffold model=$table item=$record}
-{/form}
+    {form action=update}
+        {control name=controller type=hidden value=$controller}
+        {scaffold model=$model_table item=$record}
+    {/form}
+</div>

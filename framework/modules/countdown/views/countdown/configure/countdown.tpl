@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,12 +19,12 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("Countdown Settings"|gettext) module="countdown"}
 		</div>
         <h2>{'Countdown Settings'|gettext}</h2>
+        <blockquote>
+            {"This is where you configure the settings used by this Countdown module."|gettext}&#160;&#160;
+            {"These settings only apply to this particular module."|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {"This is where you configure the settings used by this Countdown module."|gettext}&#160;&#160;
-    {"These settings only apply to this particular module."|gettext}
-</blockquote>
 {control type="text" name="title" label="Title"|gettext value=$config.title}
 {control type="calendar" name="count" label="Countdown to Date"|gettext value=$config.count default_date=$config['date-count'] default_hour=$config['time-h-count'] default_min=$config['time-m-count'] default_ampm=$config['ampm-count']}
 {control type="editor" name="message" label="Countdown Completed Message"|gettext value=$config.message}

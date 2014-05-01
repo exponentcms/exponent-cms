@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -97,6 +97,11 @@ class genericcontrol extends formcontrol {
                 $html .= '<div class="input-prepend">';
                 $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
             }
+        } elseif ($framework == 'bootstrap3') {
+            if (!empty($this->prepend)) {
+                $html .= '<div class="input-group">';
+                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
+            }
         }
         $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
@@ -117,6 +122,7 @@ class genericcontrol extends formcontrol {
             $html .= " onpaste=\"return ".$this->filter."_filter.onpaste(this, event);\"";
         }
         if ($this->disabled) $html .= ' disabled';
+        if ($this->focus) $html .= " autofocus";
         foreach ($this->jsHooks as $type=>$val) {
             $html .= ' '.$type.'="'.$val.'"';
         }
@@ -129,7 +135,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
-        if ($framework == 'bootstrap' && !empty($this->prepend)) {
+        if (($framework == 'bootstrap' || $framework == 'bootstrap3') && !empty($this->prepend)) {
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";

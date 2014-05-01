@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,15 +22,15 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Managing User Sessions"|gettext) module="manage-sessions"}
         </div>
-        <h1>{"Manage User Sessions"|gettext}</h1>
+        <h2>{"Manage User Sessions"|gettext}</h2>
+        <blockquote>
+            {'This page shows all of the active sessions, along with session information like login time, browser signature, etc.'|gettext}&#160;&#160;
+            {'You can forcibly end either a specific session or all sessions for a user account.'|gettext}&#160;&#160;
+            {'Ending a session will cause that user to be logged out of the site, and any content they were editing will be lost.'|gettext}
+            {br}{br}
+            <em>{'Administrator sessions cannot be forcibly ended'|gettext}.</em>
+        </blockquote>
     </div>
-    <blockquote>
-        {'This page shows all of the active sessions, along with session information like login time, browser signature, etc.'|gettext}&#160;&#160;
-        {'You can forcibly end either a specific session or all sessions for a user account.'|gettext}&#160;&#160;
-        {'Ending a session will cause that user to be logged out of the site, and any content they were editing will be lost.'|gettext}
-        {br}{br}
-        <em>{'Administrator sessions cannot be forcibly ended'|gettext}.</em>
-    </blockquote>
     <p>
         <strong>{'Total active sessions'|gettext}: {$sessions|count}</strong>
     </p>

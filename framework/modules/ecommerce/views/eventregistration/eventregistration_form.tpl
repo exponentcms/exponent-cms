@@ -16,7 +16,7 @@
 {css unique="donation" link="`$asset_path`css/eventregistration.css"}
 {/css}
 <div class="module eventregistration showall">
-    {if $moduletitle != ''}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle != ''}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 	{form name="eventregistration`$key`" action="eventregistration_process"}
 	{control type="hidden" name="eventregistration[product_id]" value="{$product_id}"}
 	{control type="hidden" name="eventregistration[base_price]" value="{$base_price}"}
@@ -147,7 +147,7 @@
 		<tr>
 			<td style="width: 143px;"></td>
 			<td>
-				<input type="submit" class="awesome medium yellow" value="Next Page"/>
+				<input type="submit" class="{button_style color=yellow size=medium}" value="Next Page"/>
 			</td>
 		</tr>
 			

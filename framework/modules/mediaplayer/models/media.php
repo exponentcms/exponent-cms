@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,7 +33,7 @@ class media extends expRecord {
     //     'presence_of'=>array(
     //         'title'=>array('message'=>'Title is a required field.')
     //     ));
-        
+
 }
 
 ?>

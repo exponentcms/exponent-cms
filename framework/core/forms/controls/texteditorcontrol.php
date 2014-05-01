@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,6 +49,7 @@ class texteditorcontrol extends formcontrol {
 
 	function controlToHTML($name,$label) {
 		$html = "<textarea class=\"textarea\" id=\"$name\" name=\"$name\"";
+        if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
@@ -81,15 +82,17 @@ class texteditorcontrol extends formcontrol {
 			$object->cols = 38;
 			$object->maxchars = 0;
             $object->maxlength = 0;
+            $object->is_hidden = false;
 		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
-		$form->register("default",gt('Default'),  new texteditorcontrol($object->default));
+		$form->register("default",gt('Default value'),  new texteditorcontrol($object->default));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
+        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
@@ -111,9 +114,8 @@ class texteditorcontrol extends formcontrol {
         if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
         if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
 		$object->required = isset($values['required']);
-		
+        $object->is_hidden = isset($values['is_hidden']);
 		return $object;
-	
 	}
 	
 	static function parseData($original_name,$formvalues,$for_db = false) {

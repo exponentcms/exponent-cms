@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,9 +49,8 @@ function smarty_function_help($params,&$smarty) {
             $link = help::makeHelpLink($doc);
         }
         echo '<a class="'.$class.'" title="'.$title.'" href="'.$link.'" target="_blank">'.$text.'</a>';
-
         expCSS::pushToHead(array(
-		    "csscore"=>"admin-global",
+		    "corecss"=>"admin-global",
         ));
     }
 }

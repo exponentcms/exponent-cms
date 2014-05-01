@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,7 +15,7 @@
 
 <div id="editcategory" class="storecategory edit">
 	<div class="form_header">
-        <h1>{'Edit Store Category'|gettext}</h1>
+        <h2>{'Edit Store Category'|gettext}</h2>
         <blockquote>{'Complete and save the form below to configure this store category'|gettext}</blockquote>
 	</div>
 	{if $node->id == ""}
@@ -44,7 +44,7 @@
                     <div id="general">
                         {control type=text name=title label="Category Name"|gettext value=$node->title}
                         {control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
-                        {control type="files" name="image" label="Category Image"|gettext accept="image/*" value=$node->expFile}
+                        {control type="files" name="image" label="Category Image"|gettext accept="image/*" value=$node->expFile folder=$config.upload_folder}
                         {control type=editor name=body label="Category Description"|gettext value=$node->body}
                     </div>
                     <div id="seo">

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -138,7 +138,7 @@ class expPaginator {
 	
 	    // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
-		    "unique"=>"pagination",
+//		    "unique"=>"pagination",
 		    "link"=>PATH_RELATIVE."framework/core/assets/css/pagination.css",
 		    )
 		);
@@ -405,7 +405,7 @@ class expPaginator {
 			$this->pages[$i] = $router->makeLink($page_params, false, false, true);
 		} 	
 
-		$links_template = get_common_template('pagination_links', null, 'common');
+		$links_template = expTemplate::get_common_template('pagination_links', null, 'common');
 		$links_template->assign('page', $this);
 		$this->links = $links_template->render();
 		
@@ -420,7 +420,7 @@ class expPaginator {
 
 		$this->makeSortDropdown($sortparams);  // used on non-table views
        
-        $table_template = get_common_template('pagination_table', null, 'common');
+        $table_template = expTemplate::get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
         $this->table = $table_template->render();  // table view
         

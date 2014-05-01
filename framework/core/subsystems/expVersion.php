@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -146,6 +146,37 @@ class expVersion {
                     $update = true;
                 }
             }
+
+            // check if online version is newer than installed software version, but only once per session
+            if ((!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) || $force) && $user->isSuperAdmin()) {
+                if (!expSession::is_set('update-check')) {
+                    //FIXME we need a good installation/server to place this on
+                    $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
+                    expSession::set('update-check', '1');
+                    if (!empty($jsondata->data)) {
+                        $onlineVer = $jsondata->data;
+                        if (!empty($onlineVer)) {
+                            if (self::compareVersion($swversion, $onlineVer)) {
+                                if (self::compareVersion($swversion, $onlineVer, true)) {
+                                    // is NOT a patch to the current version, so need a whole package
+                                    $note = gt('A newer') . ' ' . gt('version of Exponent is available') . ':';
+                                    $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . (!empty($onlineVer->type) && $onlineVer->type != 'patch' ? $onlineVer->type : '') . (!empty($onlineVer->iteration) && !empty($onlineVer->type) && $onlineVer->type != 'patch' ? $onlineVer->iteration : '');
+                                } else {
+                                    // only difference is a patch, so only the patch file is needed
+                                    $note = gt('A patch for this') . ' ' . gt('version of Exponent is available') . ':';
+                                    $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . ($onlineVer->type ? $onlineVer->type : '') . ($onlineVer->iteration ? $onlineVer->iteration : '');
+                                }
+                                flash('message', $note . ' v' . $newvers . ' ' . gt('was released') . ' ' . expDateTime::format_date($onlineVer->builddate) .
+                                    '<br><a href="https://sourceforge.net/projects/exponentcms/files/" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
+                                $update = true;
+                            }
+                        }
+                    } else {
+                        flash('error', gt('Unable to contact update server. Automatic Version Check is only performed once per Super-admin login.'));
+                    }
+                }
+            }
+            return $update;
         } else {
             // database is unavailable, so show us as being offline
             $template = new standalonetemplate('_maintenance');
@@ -153,30 +184,6 @@ class expVersion {
             $template->output();
             exit();
         }
-
-        // check if online version is newer than installed software version, but only once per session
-        if ((!(defined('SKIP_VERSION_CHECK') ? SKIP_VERSION_CHECK : 0) || $force) && $user->isSuperAdmin()) {
-            if (!expSession::is_set('update-check')) {
-                //FIXME we need a good installation/server to place this on
-                $jsondata = json_decode(expCore::loadData('http://www.exponentcms.org/' . 'getswversion.php'));
-                expSession::set('update-check', '1');
-                if (!empty($jsondata->data)) {
-                    $onlineVer = $jsondata->data;
-                    if (!empty($onlineVer)) {
-                        if (self::compareVersion($swversion, $onlineVer)) {
-                            $note = ($onlineVer->type == 'patch' ? gt('A patch for the latest') : gt('A newer')) . ' ' . gt('version of Exponent is available') . ':';
-                            $newvers = $onlineVer->major . '.' . $onlineVer->minor . '.' . $onlineVer->revision . ($onlineVer->type ? $onlineVer->type : '') . ($onlineVer->iteration ? $onlineVer->iteration : '');
-                            flash('message', $note . ' v' . $newvers . ' ' . gt('was released') . ' ' . expDateTime::format_date($onlineVer->builddate) .
-                                '<br><a href="https://sourceforge.net/projects/exponentcms/files/" target="_blank">' . gt('Click here to see available Downloads') . '</a>');
-                            $update = true;
-                        }
-                    }
-                } else {
-                    flash('error', gt('Unable to contact update server. Automatic Version Check is only performed once per Super-admin login.'));
-                }
-            }
-        }
-        return $update;
     }
 
     /**
@@ -184,10 +191,11 @@ class expVersion {
      *
      * @param object $version1
      * @param object $version2
+     * @param bool   $onlypatchchk  returns false if major.minor.revision are equal and type is 'patch'
      *
      * @return bool set to true if $version1 is less than $version2
      */
-    public static function compareVersion($version1, $version2) {
+    public static function compareVersion($version1, $version2, $onlypatchchk = false) {
         if (!is_object($version1) || !is_object($version2)) return false;
         if ($version1->major < $version2->major) {
             return true;
@@ -196,6 +204,9 @@ class expVersion {
         } elseif ($version1->major == $version2->major && $version1->minor == $version2->minor && $version1->revision < $version2->revision) {
             return true;
         } elseif ($version1->major == $version2->major && $version1->minor == $version2->minor && $version1->revision == $version2->revision) {
+            if ($onlypatchchk && $version2->type == 'patch') {
+                return false;
+            }
             $ver1type = self::iterateType($version1->type);
             $ver2type = self::iterateType($version2->type);
             if ($ver1type < $ver2type) {

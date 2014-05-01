@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,9 +14,9 @@
  *}
 
 {if $record->id != ""}
-	<h1>{'Edit Information for'|gettext} {$modelname}</h1>
+	<h1>{'Edit Information for'|gettext} {$model_name}</h1>
 {else}
-	<h1>{'New'|gettext} {$modelname}</h1>
+	<h1>{'New'|gettext} {$model_name}</h1>
 {/if}
 
 {form action=update}

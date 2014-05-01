@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,12 +58,12 @@ class ckeditorcontrol extends formcontrol {
         if (is_file($cssabs)) {
             $contentCSS = "contentsCss : '" . $css . "',";
         }
-        if (empty($this->toolbar)) {
+        if ($this->toolbar === '') {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
-            $settings = expHTMLEditorController::getActiveEditorSettings();
+            $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
         } elseif (intval($this->toolbar) != 0) {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'id=' . $this->toolbar);
-            $settings = expHTMLEditorController::getEditorSettings($this->toolbar);
+            $settings = expHTMLEditorController::getEditorSettings($this->toolbar, 'ckeditor');
         }
         $plugins = '';
         if (!empty($settings)) {
@@ -78,18 +78,25 @@ class ckeditorcontrol extends formcontrol {
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
-//            $plugins .= ',fieldinsert';
         } else {
             $additionalConfig = '';
         }
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
         }
-
+        // clean up (custom) plugins list from missing plugins
+        if (!empty($plugins)) {
+            $plugs = explode(',',trim($plugins));
+            foreach ($plugs as $key=>$plug) {
+                if (empty($plug) || !is_dir(BASE . 'external/editors/ckeditor/plugins/' . $plug)) unset($plugs[$key]);
+            }
+            $plugins = implode(',',$plugs);
+        }
         // set defaults
+        // make sure the (custom) skin exists
         if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
-              if ($this->toolbar == 'basic') {
+              if ($this->toolbar === 'basic') {
                 $tb = "
                 toolbar : [
                     ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']
@@ -116,6 +123,12 @@ class ckeditorcontrol extends formcontrol {
             }
         } else {
             $tb = "toolbar : [".$tb."],";
+        }
+        if (MOBILE) {
+            $tb .= "
+            toolbarStartupExpanded : false,
+            removePlugins : 'elementspath',
+            resize_enabled : false,";
         }
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
@@ -152,11 +165,11 @@ class ckeditorcontrol extends formcontrol {
                     " . $upload . "
                     filebrowserWindowWidth : " . FM_WIDTH . ",
                     filebrowserWindowHeight : " . FM_HEIGHT . ",
-                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
-                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php',
+                    filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
+                    filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'stylesheetparser,tableresize," . $plugins . "',
+                    extraPlugins : 'stylesheetparser,tableresize,widget,image2," . $plugins . "',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,
@@ -174,6 +187,7 @@ class ckeditorcontrol extends formcontrol {
                     baseHref : '" . PATH_RELATIVE . "',
                 });
 
+                // set formatting rules - CKEditor rules defaults are all true for these block tags
                 CKEDITOR.on( 'instanceReady', function( ev ) {
                     var blockTags = ['div','h1','h2','h3','h4','h5','h6','p','pre','ol','ul','li'];
                     var rules =  {
@@ -201,10 +215,15 @@ class ckeditorcontrol extends formcontrol {
             "content" => $content,
             //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"
         ));
-        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/ckeditor/ckeditor.js\"></script>";
+//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/ckeditor/ckeditor.js\"></script>";
+        expJavascript::pushToFoot(array(
+            "unique"  => "ckeditor",
+            "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
+        ));
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-        $html .= "<!-- cke lazy -->";
+        $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
+        if ($this->focus) $html .= " autofocus";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
         if (!empty($this->class)) $html .= " class=\"" . $this->class . "\"";

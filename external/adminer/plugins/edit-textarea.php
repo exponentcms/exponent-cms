@@ -1,4 +1,19 @@
 <?php
+##################################################
+#
+# Copyright (c) 2004-2014 OIC Group, Inc.
+#
+# This file is part of Exponent
+#
+# Exponent is free software; you can redistribute
+# it and/or modify it under the terms of the GNU
+# General Public License as published by the Free
+# Software Foundation; either version 2 of the
+# License, or (at your option) any later version.
+#
+# GPL: http://www.gnu.org/licenses/gpl.txt
+#
+##################################################
 
 /** Use <textarea> for char and varchar
 * @link http://www.adminer.org/plugins/#use
@@ -9,8 +24,8 @@
 class AdminerEditTextarea {
 	
 	function editInput($table, $field, $attrs, $value) {
-		if (ereg('char', $field["type"])) {
-			return "<textarea cols='30' rows='1' style='height: 1.2em;'$attrs>" . h($value) . '</textarea>';
+		if (preg_match('~char|text~', $field["type"])) {
+			return "<textarea cols='30' rows='2' style='height: 1.2em;'$attrs>" . h($value) . '</textarea>';
 		}
 	}
 	

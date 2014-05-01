@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -43,12 +43,12 @@
                     <!--td>
                     {permissions}
                         <div class="item-actions">
-                        {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
-                            {icon controller=$page->controller action=edit record=$item}
-                        {/if}
-                        {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            {icon controller=$page->controller action=delete record=$item}
-                        {/if}
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {icon controller=$page->controller action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                                {icon controller=$page->controller action=delete record=$item}
+                            {/if}
                         </div>
                     {/permissions}
                     </td-->

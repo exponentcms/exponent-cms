@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,13 +41,15 @@
 	        <td>{$sections[$doc->loc->src]}</td>
             <td>
                 {permissions}
-                    {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
-                        {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"|gettext}
-                        {icon img='copy.png' action=copy record=$doc title="Copy Help Doc"|gettext}
-                    {/if}
-                    {if $permissions.delete || ($permissions.create && $doc->poster == $user->id)}
-                        {icon action=delete img='delete.png' record=$doc title="Delete this help doc"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this help document?"|gettext)|cat:"');"}
-                    {/if}
+                    <div class="item-actions">
+                        {if $permissions.edit || ($permissions.create && $doc->poster == $user->id)}
+                            {icon img='edit.png' action=edit record=$doc title="Edit Help Doc"|gettext}
+                            {icon img='copy.png' action=copy record=$doc title="Copy Help Doc"|gettext}
+                        {/if}
+                        {if $permissions.delete || ($permissions.create && $doc->poster == $user->id)}
+                            {icon action=delete img='delete.png' record=$doc title="Delete this help doc"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this help document?"|gettext)|cat:"');"}
+                        {/if}
+                    </div>
                 {/permissions}
             </td>
         </tr>

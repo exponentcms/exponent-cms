@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,7 +29,7 @@
 class clear_cache extends upgradescript {
 	protected $from_version = '0.0.0';
 //	protected $to_version = '1.99.2';
-    public $priority = 95; // set this to a very low priority
+    public $priority = 94; // set this to a very low priority
 
 	/**
 	 * name/title of upgrade script

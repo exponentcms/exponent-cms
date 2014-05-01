@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,10 +22,10 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Notes"|gettext) module="manage-simple-notes"}
         </div>
-        <h1>{'Manage Notes'|gettext}</h1>
+        <h2>{'Manage Notes'|gettext}</h2>
+        <blockquote>{'The table below shows notes have not yet been approved'|gettext}.</blockquote>
     </div>
-    <blockquote>{'The table below shows notes have not yet been approved'|gettext}.</blockquote>
-    
+
     {$page->links}
     <table class="exp-skin-table">
     <thead>

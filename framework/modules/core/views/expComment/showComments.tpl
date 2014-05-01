@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,12 +12,12 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
+{uniqueid prepend="comments" assign="name"}
+
 {css unique="blog-comments" corecss="comments"}
 
 {/css}
-
-{uniqueid assign="id"}
 
 <div class="exp-comments">
 	{if !$hidecomments && ($comments->records|@count > 0 || $config.usescomments!=1)}
@@ -100,16 +100,16 @@
                 {"No comments yet"|gettext}
             </div>
         {/if}
-    	{*$comments->links* <-- We'll need to fix pagination*}
+    	{*$comments->links <-- We need to fix pagination*}
 	{/if}
 	{if !$hideform && !$smarty.const.PRINTER_FRIENDLY && !$smarty.const.EXPORT_AS_PDF}
-	    {include file="edit.tpl"}
+	    {exp_include file="edit.tpl"}
     {else}
     <p></p>
 	{/if}
 </div>
 
-{script unique="`$id`" yui3mods="1"}
+{script unique=$name yui3mods="1" jquery=1}
 {literal}
 	YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         EXPONENT.changeParent = function(e,n) {

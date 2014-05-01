@@ -1,4 +1,6 @@
-# `<video>` and `<audio>` made easy. One file. Any browser. Same UI.
+# `<video>` and `<audio>` made easy. 
+
+One file. Any browser. Same UI.
 
 * Author: John Dyer [http://j.hn/](http://j.hn/)
 * Website: [http://mediaelementjs.com/](http://mediaelementjs.com/)
@@ -15,75 +17,131 @@ _MediaElementPlayer: HTML5 `<video>` and `<audio>` player_
 A complete HTML/CSS audio/video player built on top `MediaElement.js` and `jQuery`. Many great HTML5 players have a completely separate Flash UI in fallback mode, but MediaElementPlayer.js uses the same HTML/CSS for all players.
 
 ### 1. Add Script and Stylesheet
+```html
+<script src="jquery.js"></script>
+<script src="mediaelement-and-player.min.js"></script>
+<link rel="stylesheet" href="mediaelementplayer.css" />
+```
+### 2. Add `<video>` or `<audio>` tags
+If your users have JavaScript and/or Flash, the easist route for all browsers and mobile devices is to use a single MP4 or MP3 file.
 
-	<script src="jquery.js"></script>
-	<script src="mediaelement-and-player.min.js"></script>
-	<link rel="stylesheet" href="mediaelementplayer.css" />
+```html	
+<video src="myvideo.mp4" width="320" height="240"></video>
+```
+```html	
+<video src="myaudio.mp3"></video>
+```
 
-### 2. Option A: Single H.264 file
+#### Optional: multiple codecs
+This includes multiple codecs for various browsers (H.264 for IE9+, Safari, and Chrome, WebM for Firefox 4 and Opera, Ogg for Firefox 3).
 
-If your users have JavaScript and Flash, this is the easist route for all browsers and mobile devices.
-	
-	<video src="myvideo.mp4" width="320" height="240"></video>
+```html
+<video width="320" height="240" poster="poster.jpg" controls="controls" preload="none">
+	<source type="video/mp4" src="myvideo.mp4" />
+	<source type="video/webm" src="myvideo.webm" />
+	<source type="video/ogg" src="myvideo.ogv" />
+</video>
+```
 
-### 2. Option B: Multiple codecs with Flash fall-through when JavaScript is disabled
+#### Optional: Browsers with JavaScript disabled
+In very rare cases, you might have an non-HTML5 browser with Flash turned on and JavaScript turned off. In that specific case, you can also include the Flash `<object>` code.
+```html
+<video width="320" height="240" poster="poster.jpg" controls="controls" preload="none">
+	<source type="video/mp4" src="myvideo.mp4" />
+	<source type="video/webm" src="myvideo.webm" />
+	<source type="video/ogg" src="myvideo.ogv" />
+	<object width="320" height="240" type="application/x-shockwave-flash" data="flashmediaelement.swf">
+		<param name="movie" value="flashmediaelement.swf" /> 
+		<param name="flashvars" value="controls=true&amp;poster=myvideo.jpg&amp;file=myvideo.mp4" /> 		
+		<img src="myvideo.jpg" width="320" height="240" title="No video playback capabilities" />
+	</object>
+</video>
+```
 
-This includes multiple codecs for various browsers (H.264 for IE and Safari, WebM for Chrome, Firefox 4, and Opera, Ogg for Firefox 3) as well as a Flash fallback for non HTML5 browsers with JavaScript disabled.
+### 3. Startup
 
-	<video width="320" height="240" poster="poster.jpg" controls="controls" preload="none">
-		<source type="video/mp4" src="myvideo.mp4" />
-		<source type="video/webm" src="myvideo.webm" />
-		<source type="video/ogg" src="myvideo.ogv" />
-		<object width="320" height="240" type="application/x-shockwave-flash" data="flashmediaelement.swf">
-			<param name="movie" value="flashmediaelement.swf" /> 
-			<param name="flashvars" value="controls=true&amp;poster=myvideo.jpg&amp;file=myvideo.mp4" /> 		
-			<img src="myvideo.jpg" width="320" height="240" title="No video playback capabilities" />
-		</object>
-	</video>
+#### Automatic start
+You can avoid running any startup scripts by added `class="mejs-player"` to the `<video>` or `<audio>` tag. Options can be added using the `data-mejsoptions` attribute
+```html	
+<video src="myvideo.mp4" width="320" height="240" 
+		class="mejs-player" 
+		data-mejsoptions='{"alwaysShowControls": true}'></video>
+```
 
-### 3. Run startup script
+#### Normal JavaScirpt
+```html
+<script>
+var player = new MediaElementPlayer('#player', {success: function(mediaElement, originalNode) {
+	// do things
+}});
+</script>	
+```
 
-Make sure this is not in the `<head>` tag or iOS 3 will fail.
-
-	<script>
-	// jQuery method
-	$('video').mediaelementplayer();
-	</script>
-	
-	<script>
-	// normal JavaScript 
-	var player = new MediaElementPlayer('#player');
-	</script>	
+#### jQuery plugin
+```html
+<script>
+$('video').mediaelementplayer({success: function(mediaElement, originalNode) {
+	// do things
+}});
+</script>
+```
 
 ## How it Works: 
 _MediaElement.js: HTML5 `<video>` and `<audio>` shim_
 
 `MediaElement.js` is a set of custom Flash and Silverlight plugins that mimic the HTML5 MediaElement API for browsers that don't support HTML5 or don't support the media codecs you're using. 
 Instead of using Flash as a _fallback_, Flash is used to make the browser seem HTML5 compliant and enable codecs like H.264 (via Flash) and even WMV (via Silverlight) on all browsers.
+```html
+<script src="mediaelement.js"></script>
+<video src="myvideo.mp4" width="320" height="240"></video>
 
-	<script src="mediaelement.js"></script>
-	<video src="myvideo.mp4" width="320" height="240"></video>
-	
-	<script>
-	var v = document.getElementsByTagName("video")[0];
-	new MediaElement(v, {success: function(media) {
-		media.play();
-	}});
-	</script>
-
+<script>
+var v = document.getElementsByTagName("video")[0];
+new MediaElement(v, {success: function(media) {
+	media.play();
+}});
+</script>
+```
 You can use this as a standalone library if you wish, or just stick with the full MediaElementPlayer.
 
 ### Version History
 
-*Proposed features*
+*2.14.2 (2014/04/04)*
 
-* deeper WebVTT support (alignment, color, etc.) - include captionator
-* Full support for Ender.js, including mediaelement-and-player-standalone which includes ender.
-* thin line when controls are off
-* system-wide events
-* Ogg/Theora playback
-* Better alignment with native MediaElement (using shimichanga.com techniques)
+* Additional progress bar checks for hidden/missing bars
+* Add Gruntfile.js build support (https://github.com/johndyer/mediaelement/pull/1147) [jeremyfelt]
+* Add #! line to Builder.py for legacy builds (https://github.com/johndyer/mediaelement/pull/1036) [amenonsen]
 
+*2.14.1 (2014/03/31)*
+
+* Fix infinite loop on progress bar 
+
+*2.14.0 (2014/03/29)*
+
+* Vimeo support (https://github.com/johndyer/mediaelement/pull/1079) [clkao]
+* fix for aac-audio (itunes-samples etc.) (https://github.com/johndyer/mediaelement/pull/1133) [faebser]
+* added 'm4a' file type, to be detected as 'audio/mp4' (https://github.com/johndyer/mediaelement/pull/988) [heshiming]
+* Function remove() should remove mejs container only if it exists (https://github.com/johndyer/mediaelement/pull/1144) [lucash]
+* Handle the case when parentNode is null (https://github.com/johndyer/mediaelement/pull/1136) [lbeder, also hypomodern]
+* fix leaky variables (https://github.com/johndyer/mediaelement/pull/1123) [kernel]
+* Fixed display of volume control on non-mobile touch devices (https://github.com/johndyer/mediaelement/pull/1093) [OwenEdwards]
+* Calculate correctly the video player height for 100% (https://github.com/johndyer/mediaelement/pull/1083) [LeResKP]
+* restore focus after click on the controls (https://github.com/johndyer/mediaelement/pull/1094) [rounce]
+* Support youtu.be URL for youtube source (https://github.com/johndyer/mediaelement/pull/1135) [clkao]
+* Make slider work on touch devices (https://github.com/johndyer/mediaelement/pull/1033) [Singularetantum]
+* add Simplified Chinese translation (https://github.com/johndyer/mediaelement/pull/1065) [michaeljayt]
+* Fixed the reference to `media` in the bigPlay control creation. (https://github.com/johndyer/mediaelement/pull/1111) [nuzzio]
+* Fix layout bug when zooming page (https://github.com/johndyer/mediaelement/pull/1097) [ChiChou]
+* Fix fullscreen iframe zoom bug. (https://github.com/johndyer/mediaelement/pull/1070) [lisbakke]
+
+*2.13.2 (2014/01/24)*
+
+* Removed breaking `hasTouch` detection
+* Fixed IE detection https://github.com/johndyer/mediaelement/pull/1018
+* fix play() on ipad does not start playing and double click issue (https://github.com/johndyer/mediaelement/pull/918) [fbuecklers]
+* added scale=default to Flash for better 100% https://github.com/johndyer/mediaelement/pull/963
+* Add code fences for GHFM https://github.com/johndyer/mediaelement/pull/975
+* i18n improvements https://github.com/johndyer/mediaelement/pull/1025
 
 *2.13.1 (2013/09/?06)*
 
@@ -698,3 +756,15 @@ Fixes and updates
 * Flash/SL error codes
 * Postroll
 * Flash StageVideo?
+
+
+
+*Someday/Maybe features*
+
+* deeper WebVTT support (alignment, color, etc.) - include captionator
+* Full support for Ender.js, including mediaelement-and-player-standalone which includes ender.
+* thin line when controls are off
+* system-wide events
+* Ogg/Theora playback
+* Better alignment with native MediaElement (using shimichanga.com techniques)
+

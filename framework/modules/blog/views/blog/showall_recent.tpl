@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,9 +23,9 @@
 {/if}
 
 <div class="module blog showall">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
     {rss_link}
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent Posts from'|gettext} '{$moduletitle}'</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
 		<div class="module-actions">
 			{if $permissions.create}
@@ -48,7 +48,7 @@
     {$myloc=serialize($__loc)}
     {foreach name=items from=$page->records item=item}
         {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
-        <div class="item">
+        <div class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
             {if $config.datetag}
                 <p class="post-date">
                     <span class="month">{$item->publish_date|format_date:"%b"}</span>
@@ -56,11 +56,11 @@
                     <span class="year">{$item->publish_date|format_date:"%Y"}</span>
                 </p>
             {/if}
-            <h2>
-            <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
-            {$item->title}
+            <{$config.item_level|default:'h2'}>
+                <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">
+                {$item->title}
             </a>
-            </h2>
+            </{$config.item_level|default:'h2'}>
             <div class="post-info">
                 <span class="attribution">
                     {if $item->private}<strong>({'Draft'|gettext})</strong>{/if}
@@ -86,6 +86,7 @@
             {permissions}
                 <div class="item-actions">
                     {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                        {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
                         {if $myloc != $item->location_data}
                             {if $permissions.manage}
                                 {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
@@ -97,6 +98,9 @@
                     {/if}
                     {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
                         {icon action=delete record=$item}
+                    {/if}
+                    {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $item->poster == $user->id))}
+                        {icon action=approve record=$item}
                     {/if}
                 </div>
             {/permissions}

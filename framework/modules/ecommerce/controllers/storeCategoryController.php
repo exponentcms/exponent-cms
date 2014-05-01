@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -125,7 +125,7 @@ class storeCategoryController extends expNestedNodeController {
         $config = new expConfig($this->loc);
         $this->config = $config->config;
         $pullable_modules = expModules::listInstalledControllers($this->baseclassname, $this->loc);
-        $views = get_config_templates($this, $this->loc);
+        $views = expTemplate::get_config_templates($this, $this->loc);
         assign_to_template(array(
             'config'           => $this->config,
             'pullable_modules' => $pullable_modules,

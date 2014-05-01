@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -203,6 +203,7 @@ class expSimpleNoteController extends expController {
         $this->expSimpleNote->update($this->params);
         
         // attach the note to the datatype it belongs to (blog, news, etc..);
+        $obj = new stdClass();
         $obj->content_type = $this->params['content_type'];
         $obj->content_id = $this->params['content_id'];
         $obj->expsimplenote_id = $this->expSimpleNote->id;

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,7 +16,7 @@
 {uniqueid assign="id"}
 
 <div class="module text showall-tabbed">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
         <div class="module-actions">
             {*{if $permissions.create}*}
@@ -54,32 +54,36 @@
             {/permissions}
         </ul>
         <div class="yui-content">
-            {foreach from=$items item=text name=items}
-                <div id="tab{$smarty.foreach.items.iteration}" class="item">
+            {foreach from=$items item=item name=items}
+                <div id="tab{$smarty.foreach.items.iteration}" class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                     {permissions}
 						<div class="item-actions">
-						   {if $permissions.edit || ($permissions.create && $text->poster == $user->id)}
-                                {if $myloc != $text->location_data}
+						    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
+                                {if $myloc != $item->location_data}
                                     {if $permissions.manage}
-                                        {icon action=merge id=$text->id title="Merge Aggregated Content"|gettext}
+                                        {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
                                     {else}
                                         {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                     {/if}
                                 {/if}
-								{icon action=edit record=$text}
+								{icon action=edit record=$item}
 							{/if}
-							{if $permissions.delete || ($permissions.create && $text->poster == $user->id)}
-								{icon action=delete record=$text}
+							{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+								{icon action=delete record=$item}
 							{/if}
+                            {if !$item->approved && $smarty.const.ENABLE_WORKFLOW && $permissions.approve && ($permissions.edit || ($permissions.create && $item->poster == $user->id))}
+                                {icon action=approve record=$item}
+                            {/if}
 						</div>
                     {/permissions}
                     <div class="bodycopy">
                         {if $config.ffloat != "Below"}
-                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                            {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item}
                         {/if}
-                        {$text->body}
+                        {$item->body}
                         {if $config.ffloat == "Below"}
-                            {filedisplayer view="`$config.filedisplay`" files=$text->expFile record=$text}
+                            {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item}
                         {/if}
                     </div>
                     {clear}
@@ -88,7 +92,7 @@
             {permissions}
                 {if $permissions.create}
                     <div id="tab{$smarty.foreach.tabs.iteration+1}">
-                        {icon class=add action=edit rank=$text->rank+1 text="Add more text here"|gettext}
+                        {icon class=add action=edit rank=$item->rank+1 text="Add more text here"|gettext}
                     </div>
                 {/if}
             {/permissions}

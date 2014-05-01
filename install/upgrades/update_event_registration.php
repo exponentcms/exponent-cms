@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -88,7 +88,7 @@ class update_event_registration extends upgradescript {
 
         // create/update the forms data table
         $tablename = $newform->updateTable();
-        $db->delete('forms_' . $tablename,1); // empty the table
+        $db->delete('forms_' . $tablename, 1); // empty the table
 
         $registrants = $db->selectObjects('eventregistration_registrants','value LIKE \'%a:3:{s:4:"name";%\'');
         $newreg = new stdClass();

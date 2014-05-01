@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,9 +25,12 @@
         {control type=hidden name=id value=$event->id}
         {$dates = $event->eventdate}
         <table cellspacing="0" cellpadding="2" width="100%" class="exp-skin-table">
-            {include file="_recur_dates.tpl"}
+            {exp_include file="_recur_dates.tpl"}
             <tr>
-                <td colspan="2"><input class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" type="submit" value="{'Delete Selected'|gettext}" /></td>
+                <td colspan="2">
+                    {*<input class="{button_style}" type="submit" value="{'Delete Selected'|gettext}" />*}
+                    {control type=buttongroup submit='Delete Selected'|gettext}
+                </td>
             </tr>
         </table>
     {/form}

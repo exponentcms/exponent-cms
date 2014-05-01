@@ -1,0 +1,85 @@
+/* slider
+----------------------------------------------------------*/
+.slider {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.slide > * {
+    max-width: 100%;
+}
+.slider .slide-prev {
+    cursor: pointer;
+    height: 48px;
+    width: 48px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -24px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 0px;
+}
+.slider .slide-next {
+    cursor: pointer;
+    height: 48px;
+    width: 48px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -24px;
+    background-color: rgba(255,255,255,0.8);
+    padding: 0px;
+}
+.slider .slide-next:hover, .slider .slide-prev:hover {
+    background-color: rgba(255,255,255,0.9);
+}
+.slider .slide-next img, .slider .slide-prev img {
+    position: relative;
+    top: 0;
+    left: 0;
+    max-height: 100%;
+    max-width: 100%;
+}
+.es-caption {
+    position: absolute;
+    bottom: 0;
+    text-align: center;
+    background-color: rgba(0,0,0,0.8);
+    color: #fff;
+    font-size: 14px;
+    padding: 16px;
+    margin: 10px;
+    width: auto;
+    left: 0;
+    right: 0;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -khtml-border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+ul.es-pager {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin: 5px 0 0 0;
+    padding: 0;
+    line-height: 0px;
+}
+ul.es-pager li {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    height: 16px;
+    width: 16px;
+    /*background-image: url("../Images/pagericon.png");*/
+    background-repeat: no-repeat;
+    background-position: 0 -16px;
+    cursor: pointer;
+}
+ul.es-pager li:hover, ul.es-pager li.act {
+    background-position: 0 0;
+}
+ul.es-pager li.act {
+    cursor: default;
+}

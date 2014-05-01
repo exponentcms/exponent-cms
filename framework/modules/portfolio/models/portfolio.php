@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,10 +24,10 @@
 class portfolio extends expRecord {
 
     protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
+//        'content_expComments'=>'expComment',
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag',
-        'content_expComments'=>'expComment',
-        'content_expCats'=>'expCat'
     );
 
     public $validates = array(

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -26,10 +26,8 @@
     {/css}
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <script src="{$smarty.const.JQUERY_SCRIPT}">
-    </script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js">
-    </script>
+    <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js"></script>
 </head>
 <body class=" exp-skin">
 <div id="filemanager">
@@ -95,9 +93,19 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yu
         var batchIDs = {};
 
         function getUrlParam(paramName) {
+            if (paramName == 'update' || paramName == 'filter') {
+               // need to parse sef url also
+                var pathArray = window.location.pathname.split( '/' );
+                if (paramName == 'update') {
+                    var parmu = pathArray.indexOf('update');
+                    if (parmu > 0) return pathArray[parmu+1];
+                } else if (paramName == 'filter') {
+                    var parmf = pathArray.indexOf('filter');
+                    if (parmf > 0) return pathArray[parmf+1];
+                }
+            }
             var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
             var match = window.location.search.match(reParam) ;
-
             return (match && match.length > 1) ? match[1] : '' ;
         }
 

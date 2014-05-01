@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -18,19 +18,20 @@
 {/css}
 
 <div class="module migration manage-users">
-	<a class="awesome {$smarty.const.BTN_SIZE} {$smarty.const.BTN_COLOR}" href="{link module=migration action=manage_pages}"><strong>{'Skip to Next Step -> Migrate Pages'|gettext}</strong></a>
+	{*<a class="{button_style}" href="{link module=migration action=manage_pages}"><strong>{'Skip to Next Step -> Migrate Pages'|gettext}</strong></a>*}
+    {icon button=true module=migration action=manage_pages text='Skip to Next Step -> Migrate Pages'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Users and Groups"|gettext) module="migrate-users"}
         </div>
-		<h1>{"Migrate Users and Groups"|gettext}</h1>	    
+		<h2>{"Migrate Users and Groups"|gettext}</h2>
+        <blockquote>
+            {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
+            {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
+ 	 	    {'User and group permissions will NOT be migrated.'|gettext}
+        </blockquote>
     </div>
-    <blockquote>
-        {'The following is a list of users and groups we found in the database'|gettext} {$config.database}.
-        {'Select the users and groups you would like to pull over from'|gettext} {$config.database}.
-		{'User and group permissions will NOT be migrated.'|gettext}
-    </blockquote>
     {form action="migrate_users"}
         <table class="exp-skin-table">
 			<thead>

@@ -3,7 +3,7 @@
 	<head>
 	    <?php
             expTheme::head(array(
-                "xhtml"=>false,
+//                "xhtml"=>false,
                 "normalize"=>true,
                 "framework"=>"bootstrap",
                 "css_core"=>array(
@@ -13,39 +13,23 @@
                     'menu_height'=>MENU_HEIGHT,
                     'menu_width'=>MENU_WIDTH,
                 ),
-                "css_links"=>true,
-                "css_theme"=>true
+//                "css_links"=>true,
+//                "css_theme"=>true
             ));
 	    ?>
 	</head>
 	<body>
-        <div class="navigation navbar <?php echo (MENU_LOCATION) ? 'navbar-'.MENU_LOCATION : '' ?>">
-            <div class="navbar-inner">
-                <div class="container">
-                    <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="<?php echo URL_FULL ?>"><?php echo ORGANIZATION_NAME ?></a>
-                    <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-                    <?php //expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Responsive Nav")); ?>
-                </div>
-            </div>
-        </div>
-        <div class="navbar-spacer"></div>
-        <div class="navbar-spacer-bottom"></div>
+        <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
         <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
-            <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
+            <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
-                <aside id="sidebar" class="span3">
-                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
-                </aside>
-                <section id="content" class="span8">
+                <section id="content" class="span8 pull-right">
                     <?php expTheme::main(); ?>
                 </section>
+                <aside id="sidebar" class="span3 well pull-left">
+                    <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left","scope"=>"sectional")); ?>
+                </aside>
             </section>
             <footer class="row">
                 <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>

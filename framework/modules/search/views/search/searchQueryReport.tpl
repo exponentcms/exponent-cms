@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
 
 <div class="module searchquery report">
     <div class="info-header">
-        <h1>{$moduletitle|default:"Search Queries Report"|gettext}</h1>
+        <h2>{$moduletitle|default:"Search Queries Report"|gettext}</h2>
     </div>
     {permissions}
     <div class="module-actions">

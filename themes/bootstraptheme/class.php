@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,7 +22,7 @@ class bootstraptheme extends theme {
     public $user_configured = true;
     public $stock_theme = true;
 
-	function name() { return "Twitter Bootstrap Theme"; }
+	function name() { return "Twitter Bootstrap 2 Theme"; }
 	function author() { return "David Leffler"; }
 	function description() { return "An HTML5 responsive grids theme based on <a href=\"http://http://twitter.github.com/bootstrap/\" target=\"_blank\">Twitter Bootstrap v 2</a>"; }
 
@@ -40,6 +40,7 @@ class bootstraptheme extends theme {
        	}
 		// Button Sizes
         $icon_sizes = array(
+            "small"=>'Small',
             "medium"=>'Medium',
 			"large"=>'Large',
 		);
@@ -69,9 +70,10 @@ class bootstraptheme extends theme {
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));
         if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 1;
         $form->register('menu_height',gt('Fixed Menu Height Adjustment').': ',new textcontrol($settings['MENU_HEIGHT'],3,false,'integer'));
-        if (empty($settings['MENU_HEIGHT'])) $settings['MENU_HEIGHT'] = 979;
+        if (empty($settings['MENU_WIDTH'])) $settings['MENU_WIDTH'] = 769;
         $form->register('menu_width',gt('Mobile Menu Collapse Width').': ',new textcontrol($settings['MENU_WIDTH'],4,false,'integer'));
         $form->register('menu_align',gt('Menu Alignment').': ',new dropdowncontrol($settings['MENU_ALIGN'],$menu_alignments));
+        $form->register('flyout_sidebar',gt('Enable Sidebar Flyout Container'),new checkboxcontrol((!empty($settings['FLYOUT_SIDEBAR'])?$settings['FLYOUT_SIDEBAR']:0)));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
             'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),

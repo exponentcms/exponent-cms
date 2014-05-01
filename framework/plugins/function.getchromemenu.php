@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -123,7 +123,7 @@ function smarty_function_getchromemenu($params,&$smarty) {
 	$list .= '</ul>';
 
     expCSS::pushToHead(array(
-	    "unique"=>"admin-container",
+//	    "unique"=>"admin-container",
 	    "link"=>PATH_RELATIVE."framework/modules/container/assets/css/admin-container.css",
 	    )
 	);

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,14 +21,14 @@
 {/css}
 
 <div class="module events showall headlines">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
                 {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
             {/if}
             {if $permissions.manage}
-                 {icon action=manage text="Manage Events"|gettext}
+                 {icon action=manage text="Manage Active Events"|gettext}
             {/if}
         </div>
     {/permissions}
@@ -38,12 +38,28 @@
     <ul>
         {foreach name=items from=$page->records item=item}
             {if $smarty.foreach.items.iteration<=$config.headcount || !$config.headcount}
+                <div class="vevent">
                 <li>
                     <div class="events">
-                        <a class="link" href="{link action=show title=$item->sef_url}">{$item->title}</a>
-                        {br}<em class="date">{$item->eventdate|format_date}</em>{br}
-                        {$item->body|summarize:"text":"paralinks"}<span>
-                        {if $item->getBasePrice()}{br}{'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
+                        <a class="url link" href="{link action=show title=$item->sef_url}"><span class="summary">{$item->title}</span></a>
+                        {br}<em class="date"><span class="dtstart">{$item->eventdate|format_date}<span class="value-title" title="{date('c',$item->eventdate)}"></span></span></em>{br}
+                        <span class="description">{$item->body|summarize:"text":"paralinks"}</span>
+                        <span class="tickets">
+                          <span class="hoffer">
+                          <span class="currency hide">{$smarty.const.ECOM_CURRENCY}</span>
+                            {if $item->getBasePrice()}{br}{'Cost'|gettext}: <span class="price">{$item->getBasePrice()|currency}</span>{/if}
+                            <span class="quantity hide">{$item->spacesLeft()}</span>
+                            </span>
+                          </span>
+                        <span class="hide">
+                            <span class="location">
+                            {if !empty($item->location)}
+                                {$item->location}
+                            {else}
+                                {$smarty.const.ORGANIZATION_NAME}
+                            {/if}
+                            </span>
+                        </span>
                         {if $item->isRss != true}
                             {permissions}
                                 <div class="item-actions">
@@ -59,6 +75,7 @@
                         {/if}
                     </div>
                 </li>
+                </div>
             {/if}
         {/foreach}
     </ul>

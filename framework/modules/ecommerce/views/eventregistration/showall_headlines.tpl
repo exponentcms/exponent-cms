@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -22,14 +22,14 @@
 {/css}
 
 <div class="module store upcoming-events">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h2>{$moduletitle}</h2>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
             {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
         {/if}
         {if $permissions.manage}
-             {icon controller=eventregistration action=manage text="Manage Events"|gettext}
+             {icon controller=eventregistration action=manage text="Manage Active Events"|gettext}
         {/if}
     </div>
     {/permissions}
@@ -39,9 +39,19 @@
     <ul>
         {foreach name=uce from=$page->records item=item}
             {if $smarty.foreach.uce.iteration<=$config.headcount || !$config.headcount}
+                <div class="vevent">
                 <li>
-                    <a {if $item->eventdate < time()}class="date past" {/if}href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->eventdate|format_date:"%A, %B %e, %Y"}</a>
+                    <a class="url{if $item->eventdate < time()} date past{/if}" href="{link controller=eventregistration action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}"><span class="dtstart">{$item->eventdate|format_date:"%A, %B %e, %Y"}<span class="value-title" title="{date('c',$item->eventdate)}"></span></span></a>
                     {*<p>{$item->summary|truncate:75:"..."}</p>*}
+                    <span class="hide">
+                        <span class="location">
+                        {if !empty($item->location)}
+                            {$item->location}
+                        {else}
+                            {$smarty.const.ORGANIZATION_NAME}
+                        {/if}
+                        </span>
+                    </span>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -54,10 +64,17 @@
                         </div>
                     {/permissions}
                     <p>
-                        {$item->title}
-                        {if $item->getBasePrice()}- {'Cost'|gettext}: {$item->getBasePrice()|currency}{/if}
+                        <span class="summary">{$item->title}</span>
+                        <span class="tickets">
+                          <span class="hoffer">
+                          <span class="currency hide">{$smarty.const.ECOM_CURRENCY}</span>
+                          {if $item->getBasePrice()}- {'Cost'|gettext}: <span class="price">{$item->getBasePrice()|currency}</span>{/if}
+                          <span class="quantity hide">{$item->spacesLeft()}</span>
+                          </span>
+                        </span>
                     </p>
                 </li>
+                </div>
             {/if}
         {/foreach}
     </ul>

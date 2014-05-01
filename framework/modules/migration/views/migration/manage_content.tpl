@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,11 +24,11 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Migrating Content"|gettext) module="migrate-content"}
         </div>
-		<h1>{"Migrate Content"|gettext}</h1>	    
+		<h2>{"Migrate Content"|gettext}</h2>
+        <blockquote>
+            {'The following is a list of modules we found in the database'|gettext} {$config.database}.
+        </blockquote>
     </div>
-    <blockquote>
-        {'The following is a list of modules we found in the database'|gettext} {$config.database}.
-    </blockquote>
     {form action="migrate_content"}
         <table class="exp-skin-table">
 			<thead>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -36,8 +36,6 @@
  */
 function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
-//		global $userjsfiles;
-		
 		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {script} plugin.")."</strong>");
 
         if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {
@@ -66,9 +64,10 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
         expJavascript::pushToFoot(array(
             "unique"=>$params['unique'],
             //"yui2mods"=>$params['yui2mods']?$params['yui2mods']:$params['yuimodules'],
-            "yui3mods"=>$params['yui3mods'],
-            "jquery"=>$params['jquery'],
-            "content"=>$content,
+            "yui3mods"=>!empty($params['yui3mods']) ? $params['yui3mods'] : null,
+            "jquery"=>!empty($params['jquery']) ? $params['jquery'] : null,
+            "bootstrap"=>!empty($params['bootstrap']) ? $params['bootstrap'] : null,
+            "content"=>trim($content),
             "src"=>!empty($params['src']) ? $params['src'] : ''
          ));
 	}

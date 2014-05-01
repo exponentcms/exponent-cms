@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,7 +13,14 @@
  *
  *}
 
-<h1>{$demo->name} {'Toolbar Configuration Preview'|gettext}</h1>
-<blockquote>Using the '{$demo->skin}' skin.<blockquote>
-{control type="editor" name="xxx" label="" value="This is an example of what this editor toolbar configuration looks and works like"|gettext toolbar=$demo->id}
+<h1>
+    {if $editor == 'ckeditor'}
+        CKEditor
+    {elseif $editor == 'tinymce'}
+        TinyMCE
+    {/if}
+    '{$demo->name}' {'Toolbar Configuration Preview'|gettext}
+</h1>
+<blockquote>{'Using the'|gettext} '{$demo->skin}' {'skin'|gettext}.<blockquote>
+{control type="editor" name="xxx" label="" value="This is an example of what this editor toolbar configuration looks and works like"|gettext editor=$editor toolbar=$demo->id}
 {control type="buttongroup" name="done" cancel="Done"|gettext returntype="manageable"}

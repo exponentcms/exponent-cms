@@ -87,22 +87,25 @@ if(!Modernizr.inputtypes.date){
  *
  * using jQuery ColorPicker plugin by Stefan Petre (http://www.eyecon.ro/)
  * http://www.eyecon.ro/colorpicker/
+ *
+ * now using jQuery Spectrum which auto-initiates
+ * http://bgrins.github.io/spectrum
  */
-var initColorpicker = function() {
-	$('input[type=color]').each(function() {
-		var $input = $(this);
-		$input.ColorPicker({
-			onSubmit: function(hsb, hex, rgb, el) {
-				$(el).val(hex);
-				$(el).ColorPickerHide();
-			}
-		});
-	});			
-};
+//var initColorpicker = function() {
+//	$('input[type=color]').each(function() {
+//		var $input = $(this);
+//		$input.ColorPicker({
+//			onSubmit: function(hsb, hex, rgb, el) {
+//				$(el).val(hex);
+//				$(el).ColorPickerHide();
+//			}
+//		});
+//	});
+//};
 
-if(!Modernizr.inputtypes.color){
+//if(!Modernizr.inputtypes.color){
 //	$(document).ready(initColorpicker);
-};
+//};
 
 /* Placeholder
  * placeholder attribute fallback

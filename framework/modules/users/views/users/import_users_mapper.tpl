@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -15,8 +15,10 @@
 
 <div class="importer usercsv-mapper">
 	<div class="form_header">
-		<h2>{'Import Users - Mapping CSV Columns'|gettext}</h2>
-		<blockquote>{'Below is some sample data from your csv file using the start row broken out by fields. Map the columns from the csv file to the corresponding user property in the database.'|gettext}</blockquote>
+        <div class="info-header">
+            <h2>{'Import Users - Mapping CSV Columns'|gettext}</h2>
+            <blockquote>{'Below is some sample data from your csv file using the start row broken out by fields. Map the columns from the csv file to the corresponding user property in the database.'|gettext}</blockquote>
+        </div>
 	</div>
 	{$form_html}
 </div>

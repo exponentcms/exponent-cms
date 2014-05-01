@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,11 +19,11 @@
 		    {help text="Get Help with"|gettext|cat:" "|cat:("E-alerts Settings"|gettext) module="ealerts"}
 		</div>
         <h2>{'Email-Alerts Subscription Settings'|gettext}</h2>
+        <blockquote>
+            {'E-Alerts allow users to sign up to receive email notification of new or updated content.'|gettext}
+        </blockquote>
 	</div>
 </div>
-<blockquote>
-    {'E-Alerts allow users to sign up to receive email notification of new or updated content.'|gettext}
-</blockquote>
 {control type="checkbox" name="enable_ealerts" label="Enable E-Alerts"|gettext value=1 checked=$config.enable_ealerts}
 {control type="checkbox" name="autosend_ealerts" label="Automatically Send E-Alerts"|gettext value=1 checked=$config.autosend_ealerts}
 {control type="radiogroup" name="ealert_usebody" label="E-Alert Auto-Send Body Text"|gettext value=$config.ealert_usebody|default:0 items="Full,Summary,None"|gettxtlist values="0,1,2"}

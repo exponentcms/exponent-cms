@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,6 +25,23 @@
 class expComment extends expRecord {
 	public $table = 'expComments';
     public $attachable_table = 'content_expComments';
+
+    /**
+     * attach the comment to the item it belongs to (blog, news, etc..);
+     */
+    public function attachComment($content_type, $content_id, $subtype = null) {
+        global $db;
+
+        if ($this->id) {
+            // attach the comment to the datatype it belongs to (blog, news, etc..);
+            $obj = new stdClass();
+            $obj->content_type = $content_type;
+            $obj->content_id = $content_id;
+            $obj->expcomments_id = $this->id;
+            if(isset($subtype)) $obj->subtype = $subtype;
+            $db->insertObject($obj, $this->attachable_table);
+        }
+    }
 
     public function afterDelete() {
         global $db;

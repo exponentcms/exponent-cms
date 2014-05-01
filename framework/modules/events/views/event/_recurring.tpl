@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -79,6 +79,7 @@
         {$until = $record->eventdate->date}
     {/if}
     {control type=yuicalendarcontrol name=untildate label='Until'|gettext value=$until+365*86400 showtime=false}
+    {* FIXME yuicalendarcontrol does NOT display time *}
 </div>
 
 {script unique="recurring"}

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -38,7 +38,11 @@ function smarty_function_getnav($params,&$smarty) {
     foreach ($sections as $value) {
         $rekeyed[$value->id] = $value;
     }
-    $linkInQuestion = $rekeyed[$params['of']];
+    if (!empty($params['of']) && !empty($rekeyed[$params['of']])) {
+        $linkInQuestion = $rekeyed[$params['of']];
+    } else {
+        $linkInQuestion = null;
+    }
     switch ($params['type']) {
         case "parent" :
             $nav = $rekeyed[$linkInQuestion->parent];

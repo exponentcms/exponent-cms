@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,7 +14,7 @@
  *}
 
 <div class="module motd edit">
-    <h1>{if $record->id == ''}{'New Message of the Day'|gettext}{else}{'Edit Message of the Day'|gettext}{/if}</h1>
+    <{$config.heading_level|default:'h1'}>{if $record->id == ''}{'New Message of the Day'|gettext}{else}{'Edit Message of the Day'|gettext}{/if}</{$config.heading_level|default:'h1'}>
     <p>{$record->body}</p>
     
     {form action='update'}

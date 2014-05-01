@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -14,14 +14,14 @@
  *}
 
 <div class="module store upcoming-events">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<h1>{$moduletitle}</h1>{/if}
+    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
     <div class="module-actions">
         {if $permissions.create}
             {icon class="add" controller=store action=edit product_type=eventregistration text="Add an event"|gettext}
         {/if}
         {if $permissions.manage}
-             {icon controller=eventregistration action=manage text="Manage Events"|gettext}
+             {icon controller=eventregistration action=manage text="Manage Active Events"|gettext}
         {/if}
     </div>
     {/permissions}

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1192,7 +1192,8 @@ class migrationController extends expController {
                                     $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
                                     $tag = new expTag($tagtitle);
     //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-                                    if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                    if (empty($tag->id))
+                                        $tag->update(array('title'=>$tagtitle));
                                     $params['expTag'][] = $tag->id;
                                 }
                             }
@@ -1572,7 +1573,8 @@ class migrationController extends expController {
 								$tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
 								$tag = new expTag($tagtitle);
 //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-								if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+								if (empty($tag->id))
+                                    $tag->update(array('title'=>$tagtitle));
 								$params['expTag'][] = $tag->id;
 							}
 							$post->update($params);
@@ -1587,12 +1589,13 @@ class migrationController extends expController {
                             $newcomment->publish = $comment['posted'];
 							$newcomment->update();
 							// attach the comment to the blog post it belongs to
-                            $obj = new stdClass();
-							$obj->content_type = 'blog';
-							$obj->content_id = $post->id;
-							$obj->expcomments_id = $newcomment->id;
-							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
-							$db->insertObject($obj, $newcomment->attachable_table);
+//                            $obj = new stdClass();
+//							$obj->content_type = 'blog';
+//							$obj->content_id = $post->id;
+//							$obj->expcomments_id = $newcomment->id;
+//							if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+//							$db->insertObject($obj, $newcomment->attachable_table);
+                            $newcomment->attachComment('blog', $post->id);
 						}
                     }
                 }
@@ -2131,7 +2134,8 @@ class migrationController extends expController {
                                 $tagtitle = strtolower(trim($old_db->selectValue('tags','name','id = '.$oldtag)));
                                 $tag = new expTag($tagtitle);
 //								$tag->title = $old_db->selectValue('tags','name','id = '.$oldtag);
-                                if (empty($tag->id)) $tag->update(array('title'=>$tagtitle));
+                                if (empty($tag->id))
+                                    $tag->update(array('title'=>$tagtitle));
                                 $params['expTag'][] = $tag->id;
                             }
                         }
@@ -2266,7 +2270,8 @@ class migrationController extends expController {
                         $records = $old_db->selectObjects('formbuilder_'.$oldform->table_name, 1);
                         foreach($records as $record) {
                             //FIXME do we want to add a forms_id field?
-                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+//                            $db->insertObject($record, 'forms_'.$oldform->table_name);
+                            $oldform->insertRecord($record);
                         }
                     }
 
@@ -2586,7 +2591,12 @@ class migrationController extends expController {
       		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-		echo "<a class=\"awesome ".BTN_SIZE." ".BTN_COLOR."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
+        if(expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'){
+            $btn_class = 'btn btn-default';
+        } else {
+            $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;
+        };
+		echo "<a class=\"".$btn_class."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
     }
 	
 	/**

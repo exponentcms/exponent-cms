@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -16,8 +16,8 @@
 <div class="module navigation site-map">
     {$titlepresent=0}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
-        <h1>{$moduletitle}</h1>
-        {$titlepresente=1}
+        <{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>
+        {$titlepresent=1}
     {/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
@@ -80,7 +80,9 @@
     {/foreach}
     {permissions}
         {if $canManage == 1}
-            {icon action=manage}
+            <div class="module-actions">
+                {icon action=manage}
+            </div>
         {/if}
     {/permissions}
 </div>

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,7 @@
 {if $permissions.manage}
     <div class="module ecomconfig manage-discounts">
         <div class="form_header">
-            <h1>{"Manage Discounts"|gettext}</h1>
+            <h2>{"Manage Discounts"|gettext}</h2>
             <blockquote>{"Here you can configure discounts to be used in your store."|gettext}</blockquote>
         </div>
         
@@ -31,7 +31,7 @@
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
             
         {if $page|@count > 0}
-            <h2>{"Modify existing discount"|gettext}</h2>
+            <h3>{"Modify existing discount"|gettext}</h3>
            {pagelinks paginate=$page top=1}
 			<table id="discounts" class="exp-skin-table">
 				<thead>
@@ -67,7 +67,9 @@
                                 </td>
                                 <td>
                                     {if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-                                        {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+                                        <div class="item-actions">
+                                            {icon class=edit action=edit_discount record=$listing title="Edit Discount"}
+                                        </div>
                                     {/if}
                                 </td>
                             {/form}

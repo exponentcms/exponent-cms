@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,16 +23,36 @@
 
 class photo extends expRecord {
     //public $table = 'photo';
+    protected $attachable_item_types = array(
+        'content_expCats'=>'expCat',
+        'content_expFiles'=>'expFile',
+    	'content_expTags'=>'expTag'
+    );
+
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'Title is a required field.'),
             //'body'=>array('message'=>'Body is a required field.'),
         ));
-    protected $attachable_item_types = array(
-        'content_expFiles'=>'expFile',
-	    'content_expCats'=>'expCat',
-    	'content_expTags'=>'expTag'
-    );
+
+    function __construct($params = null, $get_assoc = true, $get_attached = true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+        // do our best to give this photo a title and an alt
+        if (empty($this->title)) {
+            if (!empty($this->expFile[0]->title)) {
+                $this->title = $this->expFile[0]->title;
+            } elseif (!empty($this->meta_title)) {
+                $this->title = $this->meta_title;
+            }
+        }
+        if (empty($this->alt)) {
+            if (!empty($this->expFile[0]->alt)) {
+                $this->alt = $this->expFile[0]->alt;
+            } elseif (!empty($this->title)) {
+                $this->alt = $this->title;
+            }
+        }
+    }
 
     public function addNextPrev($where=1) {
         global $db;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -98,6 +98,11 @@ class search extends expRecord {
                         if (empty($section) || !(navigationController::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
                             //$records[$i]->canview = false;
+                        }
+                        $controller = expModules::getControllerClassName($recs[$i]->ref_module);
+//                        if (!$controller::searchHit($recs[$i])) {
+                        if (!call_user_func(array($controller, 'searchHit'), $recs[$i])) {
+                            unset($recs[$i]); // item is not available for viewing
                         }
                     } else { // bad record in search index since it's not in sectionref table, don't display
 //                        eDebug($recs[$i]);

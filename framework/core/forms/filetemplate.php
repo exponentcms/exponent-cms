@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2013 OIC Group, Inc.
+# Copyright (c) 2004-2014 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -23,7 +23,7 @@
  * @package Subsystems-Forms
  * @subpackage Template
  */
-class filetemplate extends basetemplate {  //FIXME Not used???
+class filetemplate extends basetemplate {  //FIXME Never used???
 
 	function __construct($file) {
 		parent::__construct("", "", $file);

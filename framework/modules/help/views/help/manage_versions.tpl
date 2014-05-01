@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2013 OIC Group, Inc.
+ * Copyright (c) 2004-2014 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -46,12 +46,14 @@
             <td>{$version->num_docs}</td>
             <td>
                 {permissions}
-                    {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
-                        {icon img='edit.png' action=edit_version record=$version title="Edit Help Version"|gettext}
-                    {/if}
-                    {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
-                        {icon action=delete_version img='delete.png' record=$version title="Delete this version"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this help version and all the documentation that goes along with it?"|gettext)|cat:"');"}
-                    {/if}
+                    <div class="item-actions">
+                        {if $permissions.edit || ($permissions.create && $record->poster == $user->id)}
+                            {icon img='edit.png' action=edit_version record=$version title="Edit Help Version"|gettext}
+                        {/if}
+                        {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
+                            {icon action=delete_version img='delete.png' record=$version title="Delete this version"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this help version and all the documentation that goes along with it?"|gettext)|cat:"');"}
+                        {/if}
+                    </div>
                 {/permissions}
             </td>
         </tr>
