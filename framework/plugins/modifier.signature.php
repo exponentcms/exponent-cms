@@ -44,7 +44,7 @@ function smarty_modifier_signature($userid) {
         if (empty($sig)) {
             $sig = user::getUserAttribution($userid) . ' ' . gt('is on');
         }
-        $sig .= ' <a href="'.$googleplus.'?rel=author" title="'.user::getUserAttribution($userid).' '.gt('on Google+').'"><img src="'.PATH_RELATIVE.'framework/core/assets/images/gplus-16.png"></a>';
+        $sig .= ' <a href="https://plus.google.com/'.$googleplus.'?rel=author" title="'.user::getUserAttribution($userid).' '.gt('on Google+').'"><img src="'.PATH_RELATIVE.'framework/core/assets/images/gplus-16.png"></a>';
     }
     return $sig;
 }

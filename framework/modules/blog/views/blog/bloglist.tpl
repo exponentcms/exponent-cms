@@ -88,6 +88,9 @@
     			{else}
     				{$item->body}
     			{/if}			
+                {if !$config.displayauthor}
+                    {$record->poster|signature}
+                {/if}
                 {if $config.ffloat == "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
