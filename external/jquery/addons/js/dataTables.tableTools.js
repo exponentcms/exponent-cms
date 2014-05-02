@@ -1,4 +1,4 @@
-/*! TableTools 2.2.0
+/*! TableTools 2.2.1
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  *
  * ZeroClipboard 1.0.4
@@ -8,7 +8,7 @@
 /**
  * @summary     TableTools
  * @description Tools and buttons for DataTables
- * @version     2.2.0
+ * @version     2.2.1
  * @file        dataTables.tableTools.js
  * @author      SpryMedia Ltd (www.sprymedia.co.uk)
  * @contact     www.sprymedia.co.uk/contact
@@ -437,10 +437,8 @@ window.ZeroClipboard_TableTools = ZeroClipboard_TableTools;
  * 2009-2014 SpryMedia Ltd - datatables.net/license
  */
 
-/*globals ZeroClipboard_TableTools*/
+/*globals TableTools,ZeroClipboard_TableTools*/
 
-/* Global scope for TableTools */
-var TableTools;
 
 (function($, window, document) {
 
@@ -873,7 +871,7 @@ TableTools.prototype = {
 			this.fnSelectNone();
 			this._fnRowSelect( n );
 		}
-		else if ( this.s.select.type == "multi" )
+		else
 		{
 			this._fnRowSelect( n );
 		}
@@ -1120,6 +1118,12 @@ TableTools.prototype = {
 			"fn": function () {
 				$(that.s.dt.nTBody).off( 'click.DTTT_Select', 'tr' );
 				$(that.dom.container).empty();
+
+				// Remove the instance
+				var idx = $.inArray( that, TableTools._aInstances );
+				if ( idx !== -1 ) {
+					TableTools._aInstances.splice( idx, 1 );
+				}
 			}
 		} );
 	},
@@ -1487,17 +1491,21 @@ TableTools.prototype = {
 			}
 
 			// Row selection
-			$(dt.nTBody).on( 'click.DTTT_Select', 'tr', function(e) {
+			$(dt.nTBody).on( 'click.DTTT_Select', this.s.custom.sRowSelector, function(e) {
+				var row = this.nodeName.toLowerCase() === 'tr' ?
+					this :
+					$(this).parents('tr')[0];
+
 				var select = that.s.select;
-				var pos = that.s.dt.oInstance.fnGetPosition( this );
+				var pos = that.s.dt.oInstance.fnGetPosition( row );
 
 				/* Sub-table must be ignored (odd that the selector won't do this with >) */
-				if ( this.parentNode != dt.nTBody ) {
+				if ( row.parentNode != dt.nTBody ) {
 					return;
 				}
 
 				/* Check that we are actually working with a DataTables controlled row */
-				if ( dt.oInstance.fnGetData(this) === null ) {
+				if ( dt.oInstance.fnGetData(row) === null ) {
 				    return;
 				}
 
@@ -1506,11 +1514,11 @@ TableTools.prototype = {
 				if ( select.type == 'os' ) {
 					if ( e.ctrlKey || e.metaKey ) {
 						// Add or remove from the selection
-						if ( that.fnIsSelected( this ) ) {
-							that._fnRowDeselect( this, e );
+						if ( that.fnIsSelected( row ) ) {
+							that._fnRowDeselect( row, e );
 						}
 						else {
-							that._fnRowSelect( this, e );
+							that._fnRowSelect( row, e );
 						}
 					}
 					else if ( e.shiftKey ) {
@@ -1537,7 +1545,7 @@ TableTools.prototype = {
 							rowIdxs.splice( 0, idx1 );
 						}
 
-						if ( ! that.fnIsSelected( this ) ) {
+						if ( ! that.fnIsSelected( row ) ) {
 							// Select range
 							that._fnRowSelect( rowIdxs, e );
 						}
@@ -1550,24 +1558,24 @@ TableTools.prototype = {
 					else {
 						// No cmd or shift click. Deselect current if selected,
 						// or select this row only
-						if ( that.fnIsSelected( this ) && that.fnGetSelected().length === 1 ) {
-							that._fnRowDeselect( this, e );
+						if ( that.fnIsSelected( row ) && that.fnGetSelected().length === 1 ) {
+							that._fnRowDeselect( row, e );
 						}
 						else {
 							that.fnSelectNone();
-							that._fnRowSelect( this, e );
+							that._fnRowSelect( row, e );
 						}
 					}
 				}
-				else if ( that.fnIsSelected( this ) ) {
-					that._fnRowDeselect( this, e );
+				else if ( that.fnIsSelected( row ) ) {
+					that._fnRowDeselect( row, e );
 				}
 				else if ( select.type == "single" ) {
 					that.fnSelectNone();
-					that._fnRowSelect( this, e );
+					that._fnRowSelect( row, e );
 				}
 				else if ( select.type == "multi" ) {
-					that._fnRowSelect( this, e );
+					that._fnRowSelect( row, e );
 				}
 
 				select.lastRow = pos;
@@ -2311,7 +2319,7 @@ TableTools.prototype = {
 			$('<div/>')
 				.addClass( this.classes.print.message )
 				.html( oConfig.sMessage )
-				.prepend( 'body' );
+				.prependTo( 'body' );
 		}
 
 		/* Cache the scrolling and the jump to the top of the page */
@@ -2361,11 +2369,7 @@ TableTools.prototype = {
 		window.scrollTo( 0, oSetPrint.saveScroll );
 
 		/* Drop the print message */
-		if ( oDomPrint.message !== null )
-		{
-			document.body.removeChild( oDomPrint.message );
-			oDomPrint.message = null;
-		}
+		$('div.'+this.classes.print.message).remove();
 
 		/* Styling class */
 		$(document.body).removeClass( 'DTTT_Print' );
@@ -2932,6 +2936,7 @@ TableTools.classes_themeroller = {
 TableTools.DEFAULTS = {
 	"sSwfPath":        "../swf/copy_csv_xls_pdf.swf",
 	"sRowSelect":      "none",
+	"sRowSelector":    "tr",
 	"sSelectedClass":  null,
 	"fnPreRowSelect":  null,
 	"fnRowSelected":   null,
@@ -2969,7 +2974,7 @@ TableTools.prototype.CLASS = "TableTools";
  *  @type	  String
  *  @default   See code
  */
-TableTools.version = "2.2.0-dev";
+TableTools.version = "2.2.1";
 
 
 
@@ -3008,7 +3013,9 @@ if ( typeof $.fn.dataTable == "function" &&
 	$.fn.dataTableExt.aoFeatures.push( {
 		"fnInit": function( oDTSettings ) {
 			var init = oDTSettings.oInit;
-			var opts = init.tableTools || init.oTableTools || {};
+			var opts = init ?
+				init.tableTools || init.oTableTools || {} :
+				{};
 
 			var oTT = new TableTools( oDTSettings.oInstance, opts );
 			TableTools._aInstances.push( oTT );
