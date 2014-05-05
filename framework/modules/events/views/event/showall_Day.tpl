@@ -164,6 +164,10 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegat
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
     }, 'a.nav');
+    {/literal}
+{/if}
+{literal}
+
 });
 {/literal}
 {/script}
