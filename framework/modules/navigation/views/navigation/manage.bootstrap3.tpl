@@ -28,8 +28,8 @@
 	        {if $canManageStandalones}<li><a href="#tab2" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="tab-content">
-        	<div id="tab1" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.bootstrap3.tpl"}</div>
-	        {if $canManageStandalones}<div id="tab2" class="tab-pane fade">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.bootstrap3.tpl"}</div>{/if}
+        	<div id="tab1" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.tpl"}</div>
+	        {if $canManageStandalones}<div id="tab2" class="tab-pane fade">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.tpl"}</div>{/if}
 	    </div>
 	</div>
 	<div class="loadingdiv">{'Loading Pages'|gettext}</div>
