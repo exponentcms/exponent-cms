@@ -793,7 +793,7 @@ class vcalendar {
         if( '.ics' != strtolower( substr( $value, -4 )))
           unset( $this->filename );
         else
-          $this->filename = $basename( $value );
+          $this->filename = basename( $value );
         return TRUE;
         break;
       default:  // any unvalid config key.. .
