@@ -817,7 +817,8 @@ class expTheme
     {
         global $db;
 
-        echo show_msg_queue();
+        if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
+            echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
