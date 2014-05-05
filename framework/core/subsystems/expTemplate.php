@@ -478,6 +478,8 @@ class expTemplate {
         $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
         $controller->loc = $loc;
 
+        $view = urldecode($view);  // parse a non-SEFURL name
+
         $themenewuipath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.newui.tpl';
         $themepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/common/views/' . $controllername . '/' . $view . '.tpl';
         $basenewuipath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.newui.tpl';
@@ -621,6 +623,8 @@ class expTemplate {
 
     public static function get_template_for_action($controller, $action, $loc=null) {
         $framework = expSession::get('framework');
+
+        $action = urldecode($action);  // parse a non-SEFURL name
 
         // set paths we will search in for the view
         $newuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.newui.tpl'; //FIXME shoudl there be a theme newui variation?

@@ -252,7 +252,8 @@ function renderAction(array $parms=array()) {
 //    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);
     $controllerClass = new ReflectionClass($fullControllerName);
-    
+
+    if (isset($parms['view'])) $parms['view'] = urldecode($parms['view']);
     // Figure out the action to use...if the specified action doesn't exist then
     // we look for the index action.
     if ($controllerClass->hasMethod($parms['action'])) {
