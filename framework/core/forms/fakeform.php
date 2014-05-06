@@ -125,7 +125,7 @@ class fakeform extends form {
             $html .= "<div class=\"item-actions\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
-				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>$module,'action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
+				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
                 if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
                     $html .= $edit_icon_class;
                 } else {
