@@ -65,23 +65,23 @@ if ($user->isAdmin()) {
                             array(
                                 'text'      => gt("Exponent Documentation"),
                                 'icon'      => 'fa-book',
+                                'classname' => 'docs',
                                 'url'       => '#',
                                 'id'        => 'docs-toolbar',
-                                'classname' => 'docs',
                             ),
                             array(
                                 'text'      => gt("Discuss Exponent"),
                                 'icon'      => 'fa-comments',
+                                'classname' => 'forums',
                                 'url'       => '#',
                                 'id'        => 'forums-toolbar',
-                                'classname' => 'forums',
                             ),
                             array(
                                 'text'      => gt("Report a bug"),
                                 'icon'      => 'fa-bug',
+                                'classname' => 'reportbug',
                                 'url'       => '#',
                                 'id'        => 'reportabug-toolbar',
-                                'classname' => 'reportbug',
                             )
                         )
                     )
@@ -122,16 +122,16 @@ if ($user->isAdmin()) {
                             array(
                                 'text'      => gt("Exponent Documentation"),
                                 'icon'      => 'fa-book',
+                                'classname' => 'docs',
                                 'url'       => '#',
                                 'id'        => 'docs-toolbar',
-                                'classname' => 'docs',
                             ),
                             array(
                                 'text'      => gt("Discuss Exponent"),
                                 'icon'      => 'fa-comments',
+                                'classname' => 'forums',
                                 'url'       => '#',
                                 'id'        => 'forums-toolbar',
-                                'classname' => 'forums',
                             )
                         )
                     )
@@ -269,24 +269,24 @@ if ($user->isAdmin() || !empty($groups)) {
                 array(
                     'text'      => gt('User Accounts'),
                     'icon'      => 'fa-user',
+                    'classname' => 'euser',
                     'url'       => makeLink(
                         array(
                             'controller' => 'users',
                             'action'     => 'manage'
                         )
                     ),
-                    'classname' => 'euser',
                 ),
                 array(
                     'text'      => gt('Group Accounts'),
                     'icon'      => 'fa-group',
+                    'classname' => 'egroup',
                     'url'       => makeLink(
                         array(
                             'controller' => 'users',
                             'action'     => 'manage_groups'
                         )
                     ),
-                    'classname' => 'egroup',
                 ),
                 array(
                     'text' => gt('User Profile Extensions'),
@@ -311,13 +311,13 @@ if ($user->isAdmin() || !empty($groups)) {
                 array(
                     'text'      => gt('Import Users'),
                     'icon'      => 'fa-upload',
+                    'classname' => 'import',
                     'url'       => makeLink(
                         array(
                             'controller' => 'users',
                             'action'     => 'import_users'
                         )
                     ),
-                    'classname' => 'import',
                 )
             )
         )
@@ -674,13 +674,13 @@ if ($user->isSuperAdmin()) {
                     'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
                     'icon'      => 'fa-shield',
                     'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
-                    'id'        => 'workflow-toggle',
                     'url'       => makeLink(
                         array(
                             'controller' => 'administration',
                             'action'     => 'toggle_workflow'
                         )
-                    )
+                    ),
+                    'id'        => 'workflow-toggle',
                 ),
                 array(
                     'text'      => (MAINTENANCE_MODE) ? gt('Turn Maintenance Mode off') : gt(

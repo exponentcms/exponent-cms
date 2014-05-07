@@ -16,39 +16,64 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT')) {
+    exit('');
+}
 
 global $db, $user, $router;
 
 if (!$user->isAdmin()) {
-    $viewregperms = $db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND module=='eventregistration' AND permission!='view_registrants'");
+    $viewregperms = $db->selectValue(
+        'userpermission',
+        'uid',
+        "uid='" . $user->id . "' AND module=='eventregistration' AND permission!='view_registrants'"
+    );
     if (!$viewregperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$viewregperms) {
-                $viewregperms = $db->selectValue('grouppermission', 'gid', "gid='" . $group->id . "' AND module=='eventregistration' AND permission!='view_registrants'");
+                $viewregperms = $db->selectValue(
+                    'grouppermission',
+                    'gid',
+                    "gid='" . $group->id . "' AND module=='eventregistration' AND permission!='view_registrants'"
+                );
             } else {
                 break;
             }
         }
     }
-    if (!$viewregperms) return false;
+    if (!$viewregperms) {
+        return false;
+    }
 }
 
-if ($db->countObjects('product', 'product_type="eventregistration"') == 0) return false;
+if ($db->countObjects('product', 'product_type="eventregistration"') == 0) {
+    return false;
+}
 
 $items = array(
     array(
         'text'      => gt('View All Event Registrations'),
-        'icon' => 'fa-calendar-o',
-        'url'       => makeLink(array('controller' => 'eventregistration', 'action' => 'manage')),
+        'icon'      => 'fa-calendar-o',
         'classname' => 'events',
+        'url'       => makeLink(
+            array(
+                'controller' => 'eventregistration',
+                'action' => 'manage'
+            )
+        ),
     ),
     array(
         'text'      => gt('Add an event'),
-        'icon' => 'fa-plus',
-        'url'       => makeLink(array('controller' => 'store', 'action' => 'edit', 'product_type' => 'eventregistration')),
+        'icon'      => 'fa-plus',
         'classname' => 'add',
+        'url'       => makeLink(
+            array(
+                'controller' => 'store',
+                'action' => 'edit',
+                'product_type' => 'eventregistration'
+            )
+        ),
     )
 );
 $ev = new eventregistration();
@@ -63,8 +88,14 @@ $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'or
 foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();
-        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants() . ($event->quantity ? '/' . $event->quantity : '' . ')');
-        $thisitem['url'] = $router->makeLink(array('controller' => 'eventregistration', 'action' => 'view_registrants', 'id' => $event->id));
+        $thisitem['text'] = $event->title . ' (' . $event->countRegistrants(
+            ) . ($event->quantity ? '/' . $event->quantity : '' . ')');
+        $thisitem['url'] = $router->makeLink(
+            array(
+                'controller' => 'eventregistration',
+                'action' => 'view_registrants', 'id' => $event->id
+            )
+        );
         $thisitem['classname'] = 'event';
         $thisitem['icon'] = 'fa-info';
         $items[] = $thisitem;
@@ -73,7 +104,7 @@ foreach ($events as $event) {
 
 return array(
     'text'      => gt('Upcoming Events'),
-    'icon' => 'fa-calendar',
+    'icon'      => 'fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
         'id'       => 'events',

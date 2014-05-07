@@ -16,7 +16,9 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT')) {
+    exit('');
+}
 
 global $user, $db;
 
@@ -36,56 +38,86 @@ $items = array();
 if (!$user->globalPerm('prevent_profile_change')) {
     $items[] = array(
         'text'      => gt("Edit My Profile"),
-        'url'       => makeLink(array('controller' => 'users', 'action' => 'edituser', 'id' => $user->id)),
+        'icon'      => 'fa-edit',
         'classname' => 'edit',
-        'icon'   => 'fa-edit'
+        'url'       => makeLink(
+            array(
+                'controller' => 'users',
+                'action' => 'edituser', 'id' => $user->id
+            )
+        ),
     );
 }
 
 if ((!USER_NO_PASSWORD_CHANGE || $user->isAdmin()) && !$user->is_ldap) {
     $items[] = array(
         'text'      => gt("Change My Password"),
-        'url'       => makeLink(array('controller' => 'users', 'action' => 'change_password')),
+        'icon'      => 'fa-lock',
         'classname' => 'password',
-        'icon'   => 'fa-lock'
+        'url'       => makeLink(
+            array(
+                'controller' => 'users',
+                'action' => 'change_password'
+            )
+        ),
     );
 }
 
 $items[] = array(
     'text'      => gt("Log Out"),
-    'url'       => makeLink(array('controller' => 'login', 'action' => 'logout')),
+    'icon'      => 'fa-sign-out',
     'classname' => 'logout',
-    'icon'   => 'fa-sign-out'
+    'url'       => makeLink(
+        array(
+            'controller' => 'login',
+            'action' => 'logout'
+        )
+    ),
 );
 
 if (!$user->isAdmin()) {
-    $previewperms = !$db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND (permission='manage' OR permission='edit')");
+    $previewperms = !$db->selectValue(
+        'userpermission',
+        'uid',
+        "uid='" . $user->id . "' AND (permission='manage' OR permission='edit')"
+    );
     if (!$previewperms) {
         $groups = $user->getGroupMemberships();
         foreach ($groups as $group) {
             if (!$previewperms) {
-                $previewperms = !$db->selectValue('grouppermission', 'gid', "gid='" . $group->id . "' AND (permission='manage' OR permission='edit')");
+                $previewperms = !$db->selectValue(
+                    'grouppermission',
+                    'gid',
+                    "gid='" . $group->id . "' AND (permission='manage' OR permission='edit')"
+                );
             } else {
                 break;
             }
         }
     }
-} else $previewperms = true;
+} else {
+    $previewperms = true;
+}
 
 if ($previewperms) { // must be an admin user to use toggle_preview method
     $items[] = array(
         'text'      => ($level == UILEVEL_PREVIEW) ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'),
+        'icon'      => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash' : 'fa-eye',
         'classname' => ($level == UILEVEL_PREVIEW) ? 'preview_on' : 'preview_off',
-        'url'       => makeLink(array('controller' => 'administration', 'action' => 'toggle_preview')),
-        'icon'   => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash' : 'fa-eye'
+        'url'       => makeLink(
+            array(
+                'controller' => 'administration',
+                'action' => 'toggle_preview'
+            )
+        ),
     );
 }
 
 return array(
     'text'       => $user->firstname . ' ' . $user->lastname,
+    'icon'       => 'fa-user',
     'classname'  => 'quicklink user',
     'alignright' => 1,
-    'icon'   => 'fa-user',
     'submenu'    => array(
         'id'       => 'events',
         'itemdata' => $items,
