@@ -16,12 +16,16 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT')) {
+    exit('');
+}
 
 global $user, $db;
 
 $active = ECOM;
-if (!$user->isAdmin() || empty($active)) return false;
+if (!$user->isAdmin() || empty($active)) {
+    return false;
+}
 
 $new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
 $new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
@@ -33,140 +37,260 @@ if ($new_orders > 0) {
 
 $ecom = array(
     'text'      => gt('E-commerce'),
-    'icon' => 'fa-dollar',
+    'icon'      => 'fa-dollar',
     'classname' => 'ecom',
     'submenu'   => array(
         'id'       => 'ecomm',
         'itemdata' => array(
             array(
-                'text'      => $newo . '<form id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt("Order Quickfinder") . '"></form>',
-                'info'    => '1',
+                'text'      => $newo . '<form id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt(
+                        "Order Quickfinder"
+                    ) . '"></form>',
+                'info'      => '1',
                 'classname' => 'order-qf',
-                'url'  => makeLink(array('controller' => 'report', 'action' => 'dashboard')),
+                'url'       => makeLink(
+                    array(
+                        'controller' => 'report',
+                        'action'     => 'dashboard'
+                    )
+                ),
             ),
             array(
-                'text' => gt("Dashboard"),
-                'icon' => 'fa-dashboard',
+                'text'      => gt("Dashboard"),
+                'icon'      => 'fa-dashboard',
                 'classname' => 'dashboard',
-                'url'  => makeLink(array('controller' => 'report', 'action' => 'dashboard')),
+                'url'       => makeLink(
+                    array(
+                        'controller' => 'report',
+                        'action'     => 'dashboard'
+                    )
+                ),
             ),
             array(
-                'text'    => gt("Orders"),
-                'icon' => 'fa-list-ul',
+                'text'      => gt("Orders"),
+                'icon'      => 'fa-list-ul',
                 'classname' => 'orders',
-                'submenu' => array(
+                'submenu'   => array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
                         array(
-                            'text' => gt("View Orders") . " <em>(" . $new_orders . "  " . gt("New Orders") . ")</em>",
+                            'text'      => gt("View Orders") . " <em>(" . $new_orders . "  " . gt(
+                                    "New Orders"
+                                ) . ")</em>",
+                            'icon'      => 'fa-search',
                             'classname' => 'search',
-                            'url'  => makeLink(array('controller' => 'order', 'action' => 'showall')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order',
+                                    'action'     => 'showall'
+                                )
+                            ),
                         ),
                         array(
-                            'text' => gt("Create Order"),
+                            'text'      => gt("Create Order"),
+                            'icon'      => 'fa-plus-circle',
                             'classname' => 'add',
-                            'url'  => makeLink(array('controller' => 'order', 'action' => 'create_new_order')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order',
+                                    'action'     => 'create_new_order'
+                                )
+                            ),
                         ),
                         array(
-                            'text' => gt("Batch Process Orders"),
+                            'text'      => gt("Batch Process Orders"),
+                            'icon'      => 'fa-cogs',
                             'classname' => 'config',
-                            'url'  => makeLink(array('controller' => 'store', 'action' => 'batch_process')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'batch_process'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Order Status Codes"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'order_status', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order_status',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Order Status Email Messages"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'order_status', 'action' => 'manage_messages')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order_status',
+                                    'action'     => 'manage_messages'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Order Types"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'order_type', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order_type',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                     ),
                 ),
             ),
             array(
-                'text'    => gt("Products"),
-                'icon' => 'fa-tag',
+                'text'      => gt("Products"),
+                'icon'      => 'fa-tag',
                 'classname' => 'products',
-                'submenu' => array(
+                'submenu'   => array(
                     'id'       => 'prodscats',
                     'itemdata' => array(
                         array(
                             'text'      => gt("Add a Product"),
+                            'icon'      => 'fa-plus-circle',
                             'classname' => 'add',
-                            'url'       => makeLink(array('controller' => 'store', 'action' => 'create')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'create'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Products"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'store', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Product Statuses"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'product_status', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'product_status',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Product Options"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'ecomconfig', 'action' => 'options')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'ecomconfig',
+                                    'action'     => 'options'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Store Categories"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'storeCategory', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'storeCategory',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Manufacturers"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
 //                            'url'=>makeLink(array('controller'=>'company','action'=>'manage')),
-                            'url'       => makeLink(array('controller' => 'company', 'action' => 'showall')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'company',
+                                    'action'     => 'showall'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt('Manage Definable Fields'),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array(
-                                'controller' => 'expDefinableField',
-                                'action'     => 'manage'
-                            ))
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'expDefinableField',
+                                    'action'     => 'manage'
+                                )
+                            )
                         ),
                     ),
                 ),
             ),
             array(
-                'text'    => gt("Reports"),
-                'icon' => 'fa-bar-chart-o',
+                'text'      => gt("Reports"),
+                'icon'      => 'fa-bar-chart-o',
                 'classname' => 'reports',
-                'submenu' => array(
+                'submenu'   => array(
                     'id'       => 'reports',
                     'itemdata' => array(
                         array(
                             'text' => gt("View Uncategorized Products"),
-                            'url'  => makeLink(array('controller' => 'store', 'action' => 'showallUncategorized')),
+                            'icon' => 'fa-search',
+                            'url'  => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'showallUncategorized'
+                                )
+                            ),
                         ),
                         array(
                             'text' => gt("View Improperly Categorized Products"),
-                            'url'  => makeLink(array('controller' => 'store', 'action' => 'showallImpropercategorized')),
+                            'icon' => 'fa-search',
+                            'url'  => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'showallImpropercategorized'
+                                )
+                            ),
                         ),
                         array(
                             'text' => gt("View Products with Data Issues"),
-                            'url'  => makeLink(array('controller' => 'store', 'action' => 'nonUnicodeProducts')),
+                            'icon' => 'fa-search',
+                            'url'  => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'nonUnicodeProducts'
+                                )
+                            ),
                         ),
                         array(
-                            'text' => gt("Build an Order Report"),
+                            'text'      => gt("Build an Order Report"),
+                            'icon'      => 'fa-cogs',
                             'classname' => 'development',
-                            'url'  => makeLink(array('controller' => 'report', 'action' => 'order_report')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'report',
+                                    'action'     => 'order_report'
+                                )
+                            ),
                         ),
                         array(
-                            'text' => gt("Build a Product Report"),
+                            'text'      => gt("Build a Product Report"),
+                            'icon'      => 'fa-cogs',
                             'classname' => 'development',
-                            'url'  => makeLink(array('controller' => 'report', 'action' => 'product_report')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'report',
+                                    'action'     => 'product_report'
+
+                                )
+                            ),
                         ),
                     ),
                 ),
@@ -196,16 +320,22 @@ $ecom = array(
 //                ),
 //            ),
             array(
-                'text'    => gt("Store Setup"),
-                'icon' => 'fa-gear',
+                'text'      => gt("Store Setup"),
+                'icon'      => 'fa-gear',
                 'classname' => 'configure',
-                'submenu' => array(
+                'submenu'   => array(
                     'id'       => 'store',
                     'itemdata' => array(
                         array(
-                            'text' => gt("General Store Settings"),
+                            'text'      => gt("General Store Settings"),
+                            'icon'      => 'fa-cogs',
                             'classname' => 'configure',
-                            'url'  => makeLink(array('controller' => 'ecomconfig', 'action' => 'configure')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'ecomconfig',
+                                    'action'     => 'configure'
+                                )
+                            ),
                         ),
 //                        array(
 //                            'text' => gt("General Cart Settings"),
@@ -213,51 +343,105 @@ $ecom = array(
 //                            'url'  => makeLink(array('controller' => 'cart', 'action' => 'configure')),
 //                        ),
                         array(
-                            'text' => gt("Address/Geo Settings"),
+                            'text'      => gt("Address/Geo Settings"),
+                            'icon'      => 'fa-cogs',
                             'classname' => 'configure',
-                            'url'  => makeLink(array('controller' => 'address', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'address',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Geo Up Charge Rate"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'ecomconfig', 'action' => 'manage_upcharge')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'ecomconfig',
+                                    'action'     => 'manage_upcharge'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Tax Classes"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'tax', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'tax',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Sales Reps"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'sales_rep', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'sales_rep',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Payment Options"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'billing', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'billing',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Shipping Options"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'shipping', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'shipping',
+                                    'action'     => 'manage'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Manage Discounts"),
+                            'icon'      => 'fa-cog',
                             'classname' => 'manage',
-                            'url'       => makeLink(array('controller' => 'ecomconfig', 'action' => 'manage_discounts')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'ecomconfig',
+                                    'action'     => 'manage_discounts'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Import Products"),
+                            'icon'      => 'fa-upload',
                             'classname' => 'import',
 //                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
-                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'import'
+                                )
+                            ),
                         ),
                         array(
                             'text'      => gt("Import External Addresses"),
+                            'icon'      => 'fa-upload',
                             'classname' => 'import',
 //                            'url'       => makeLink(array('controller' => 'store', 'action' => 'import_external_addresses')),
-                            'url'       => makeLink(array('controller' => 'address', 'action' => 'import')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'address',
+                                    'action'     => 'import'
+                                )
+                            ),
                         ),
                     ),
                 ),
