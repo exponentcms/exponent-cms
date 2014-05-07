@@ -22,6 +22,7 @@ if (!defined('EXPONENT')) exit('');
 expTheme::removeSmartyCache();
 expSession::clearAllSessionData();
 expTheme::removeCss();
+expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 
 global $user;
 
