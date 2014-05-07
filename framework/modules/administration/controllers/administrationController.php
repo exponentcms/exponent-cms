@@ -375,6 +375,7 @@ class administrationController extends expController {
         $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
 	    expSettings::change('DEVELOPMENT', $newvalue);
 	    expTheme::removeCss();
+        expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		$message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
 		flash('message',$message);
 		expHistory::back();
@@ -456,6 +457,7 @@ class administrationController extends expController {
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
+        expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		flash('message',gt("CSS/Minify Cache has been cleared"));
 		expHistory::back();
 	}
@@ -480,6 +482,7 @@ class administrationController extends expController {
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
 		expTheme::removeCss();
+        expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		if (file_exists(BASE.'tmp/extensionuploads')) expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
