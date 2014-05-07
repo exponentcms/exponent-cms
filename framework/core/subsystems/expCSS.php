@@ -359,7 +359,7 @@ class expCSS {
             case 'less.php':
             case 'lessphp':
             default :
-                if(DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
+                if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
                     if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
                         if (!is_file(
                             BASE . 'external/' . $less_compiler . '/lessc.inc.php'
@@ -379,18 +379,17 @@ class expCSS {
                         $less = new lessc;
                         if (DEVELOPMENT && $less_compiler == 'less.php') {
                             $less->setOptions(array(
-//                                'outputSourceFiles' => true,
-//                                'sourceMap'         => true,  // include css source in .map file
+//                                'outputSourceFiles' => true,  // include css source in .map file?
+                                'sourceMap'         => true,  // output .map file?
 //                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
 //                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
                                 'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
                                 'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
                                 'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
-                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations
+                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
 //                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
-//                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,
-                                )
-                            );
+//                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
+                            ));
                         }
                         $less->setVariables($vars);
 
@@ -420,6 +419,9 @@ class expCSS {
         }
     }
 
+    /**
+     * Rebuild the entire set of 'core' .css files by pushign them all to the head (this one time)
+     */
     public static function updateCoreCss(){
         $dir = BASE . 'framework/core/assets/less';
         $files = '';
