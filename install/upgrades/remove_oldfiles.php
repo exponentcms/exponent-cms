@@ -436,6 +436,7 @@ class remove_oldfiles extends upgradescript {
             "external/Smarty-3.1.13/",
             "external/Smarty-3.1.14/",
             "external/Smarty-3.1.15/",
+            "external/swfobject/",
             "external/Swift/",
             "external/Swift-4/",
             "external/Swift-4.0.5/",
