@@ -128,6 +128,8 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-1.10.1.min.js',
             'external/jquery/js/jquery-1.10.2.js',
             'external/jquery/js/jquery-1.10.2.min.js',
+            'external/jquery/js/jquery-1.11.0.min.js',
+            'external/jquery/js/jquery-2.1.1.min.js',
             'external/jquery/js/jquery-migrate-1.1.0.js',
             'external/jquery/js/jquery-migrate-1.1.0.min.js',
             'external/jquery/js/jquery-migrate-1.1.1.js',
