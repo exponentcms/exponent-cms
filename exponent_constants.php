@@ -550,7 +550,7 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.1.0');
+    define('SWIFT_VERSION', '5.2.0');
     define('SWIFT_PATH', BASE . 'external/Swift-' . SWIFT_VERSION . '/lib/');
 }
 
