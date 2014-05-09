@@ -36,14 +36,17 @@
 	<body>
         <!-- navigation bar/menu -->
         <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
+        <!-- main page body -->
         <div class="container<?php echo (STYLE_WIDTH) ?> <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
             <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">
+                <!-- main column -->
                 <section id="content" class="col-sm-12">
                     <?php expTheme::main(); ?>
                 </section>
             </section>
+            <!-- footer -->
             <footer class="row">
                 <?php expTheme::module(array("controller"=>"text","action"=>"showall","view"=>"showall_single","source"=>"@footer","chrome"=>1)) ?>
                 <?php if (MENU_LOCATION == 'fixed-bottom') echo '<div class="menu-spacer-bottom"></div>'; ?>
