@@ -1,22 +1,22 @@
 .login .box {
-    display        : inline-block;
-    *display       : inline;
+    /*display        : inline-block;*/
     zoom           : 1;
     vertical-align : top;
     width          : 45%;
-    padding        : 5px;
-    margin         : 5px;
+	padding        : 5px 25px 5px 5px;
+	margin         : 5px;
     border-right   : 1px dotted #aaa;
+	max-width: 330px;
 }
 
 .login .box.two {
     border : 0;
 }
 
-.login .box input.text,
-.login .box input.password {
-    max-width : 90%;
-}
+/*.login .box input.text,*/
+/*.login .box input.password {*/
+    /*max-width : 90%;*/
+/*}*/
 
 .login a.profile, .login a.profile:visited, .login a.profile:hover {
     padding-left : 25px;
