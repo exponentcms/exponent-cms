@@ -465,7 +465,7 @@ class formsController extends expController {
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
         assign_to_template(array(
-            'recaptcha_theme' => RECAPTCHA_THEME,
+//            'recaptcha_theme' => RECAPTCHA_THEME,
             'responses'       => $responses,
             'postdata'        => $this->params,
         ));
@@ -545,7 +545,8 @@ class formsController extends expController {
                     $db_data->referrer = $referrer;
                     $location_data = null;
                     if (!empty($this->params['src'])) {
-                        expCore::makeLocation($this->params['module'],$this->params['src'],$this->params['int']);
+                        $mod = !empty($this->params['module']) ? $this->params['module'] : $this->params['controller'];
+                        expCore::makeLocation($mod,$this->params['src'],$this->params['int']);
                     }
                     $db_data->location_data = $location_data;
                 }
