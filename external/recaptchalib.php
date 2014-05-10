@@ -35,7 +35,7 @@
 /**
  * The reCAPTCHA server URL's
  */
-define("RECAPTCHA_API_SERVER", "http://api.recaptcha.net");
+define("RECAPTCHA_API_SERVER", "http://www.google.com/recaptcha/api");
 define("RECAPTCHA_API_SECURE_SERVER", "https://api-secure.recaptcha.net");
 define("RECAPTCHA_VERIFY_SERVER", "api-verify.recaptcha.net");
 
@@ -106,7 +106,7 @@ function _recaptcha_http_post($host, $path, $data, $port = 80) {
 function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
 {
 	if ($pubkey == null || $pubkey == '') {
-		die ("To use reCAPTCHA you must get an API key from <a href='http://recaptcha.net/api/getkey'>http://recaptcha.net/api/getkey</a>");
+		die ("To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>");
 	}
 	
 	if ($use_ssl) {
@@ -129,6 +129,81 @@ function recaptcha_get_html ($pubkey, $error = null, $use_ssl = false)
 }
 
 
+function generateRecaptcha($pubkey)
+{
+    return '
+        <script type="text/javascript" src="' . RECAPTCHA_API_SERVER . '/challenge?k=' . $pubkey . '"></script>
+        <noscript>
+            <iframe src="' . RECAPTCHA_API_SERVER . '/noscript?k=' . $pubkey . '" height="300" width="500" frameborder="0"></iframe><br/>
+            <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+            <input type="hidden" name="recaptcha_response_field" value="manual_challenge"/>
+        </noscript>';
+}
+
+
+/**
+ * Gets the challenge HTML (javascript and non-javascript version) for Twitter Bootstrap v3.
+ * This is called from the browser, and the resulting reCAPTCHA HTML widget
+ * is embedded within the HTML form it was called from.
+ * @param string $pubkey A public key for reCAPTCHA
+
+ * @return string - The HTML to be embedded in the user's form.
+ */
+function recaptcha_get_html_bs3 ($pubkey)
+{
+    $script = "<script>var RecaptchaOptions = {theme: 'custom', custom_theme_widget: 'recaptcha_widget'};</script>\n";
+    $html = '
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="captcha col-sm-4">
+                                <div id="recaptcha_image"></div>
+                            </div>
+                            <div class="col-sm-2" style="float:right;">
+                                <img id="recaptcha_logo" width="71" height="36" alt="" src="http://www.google.com/recaptcha/api/img/clean/logo.png"></img>
+                            </div>
+                        </div>
+                        <div class="form-group" style="clear:both;">
+                            <div class="recaptcha_only_if_image">' . gt('Enter the words above') . '</div>
+                            <div class="recaptcha_only_if_audio">' . gt('Enter the numbers you hear') . '</div>
+                            <div class="input-group">
+                                <input type="text" id="recaptcha_response_field" name="recaptcha_response_field"
+                                    placeholder="' . gt('Type the text') . '"
+                                    class="form-control input-lg"/>
+                                <a class="btn btn-default input-group-addon"
+                                    title="' . gt('Get a new challenge') . '"
+                                    href="javascript:Recaptcha.reload()">
+                                    <span class="glyphicon glyphicon-refresh"></span>
+                                </a>
+                                <a class="btn btn-default input-group-addon recaptcha_only_if_image"
+                                    title="' . gt('Get an audio challenge') . '"
+                                    href="javascript:Recaptcha.switch_type(\'audio\')">
+                                    <span class="glyphicon glyphicon-volume-up"></span>
+                                </a>
+                                <a class="btn btn-default input-group-addon recaptcha_only_if_audio"
+                                    title="' . gt('Get an image challenge') . '"
+                                    href="javascript:Recaptcha.switch_type(\'image\')">
+                                    <span class="glyphicon glyphicon-picture"></span>
+                                </a>
+                                <a class="btn btn-default input-group-addon"
+                                    title="' . gt('Help') . '"
+                                    href="javascript:Recaptcha.showhelp()">
+                                    <span class="glyphicon glyphicon-info-sign"></span>
+                                </a>
+                            </div>';
+                        $html .= $script . generateRecaptcha($pubkey);
+                        $html .= '
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>';
+    return $html;
+}
 
 
 /**
@@ -152,7 +227,7 @@ class ReCaptchaResponse {
 function recaptcha_check_answer ($privkey, $remoteip, $challenge, $response, $extra_params = array())
 {
 	if ($privkey == null || $privkey == '') {
-		die ("To use reCAPTCHA you must get an API key from <a href='http://recaptcha.net/api/getkey'>http://recaptcha.net/api/getkey</a>");
+		die ("To use reCAPTCHA you must get an API key from <a href='https://www.google.com/recaptcha/admin/create'>https://www.google.com/recaptcha/admin/create</a>");
 	}
 
 	if ($remoteip == null || $remoteip == '') {
@@ -230,14 +305,14 @@ function _recaptcha_mailhide_urlbase64 ($x) {
 function recaptcha_mailhide_url($pubkey, $privkey, $email) {
 	if ($pubkey == '' || $pubkey == null || $privkey == "" || $privkey == null) {
 		die ("To use reCAPTCHA Mailhide, you have to sign up for a public and private key, " .
-		     "you can do so at <a href='http://mailhide.recaptcha.net/apikey'>http://mailhide.recaptcha.net/apikey</a>");
+		     "you can do so at <a href='http://www.google.com/recaptcha/mailhide/apikey'>http://www.google.com/recaptcha/mailhide/apikey</a>");
 	}
 	
 
 	$ky = pack('H*', $privkey);
 	$cryptmail = _recaptcha_aes_encrypt ($email, $ky);
 	
-	return "http://mailhide.recaptcha.net/d?k=" . $pubkey . "&c=" . _recaptcha_mailhide_urlbase64 ($cryptmail);
+	return "http://www.google.com/recaptcha/mailhide/d?k=" . $pubkey . "&c=" . _recaptcha_mailhide_urlbase64 ($cryptmail);
 }
 
 /**
