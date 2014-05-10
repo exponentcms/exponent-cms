@@ -67,7 +67,7 @@ function validateForm(f){
                 <?php echo gt('The password of your administrator account.'); ?>
             </div>
         </div>
-            <div class="control">
+        <div class="control">
             <span class="label"><?php echo gt('Password Again'); ?>: </span>
             <input class="text" type="password" name="password2" value="" required=1 />
             <div class="control_help">

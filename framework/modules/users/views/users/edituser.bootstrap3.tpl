@@ -50,6 +50,11 @@
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1}
                         {/if}
                         {control type=password name=pass1 label="Password"|gettext required=1}
+                        <div class="row">
+                            <div class="col-sm-4" style="padding-top: 8px;">
+                                <div class="pwstrength_viewport_progress"></div>
+                            </div>
+                        </div>
                         {control type=password name=pass2 label="Confirm Password"|gettext required=1}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}
@@ -156,5 +161,24 @@
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
     $('.loadingdiv').remove();
+{/literal}
+{/script}
+
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.1.2'}
+{literal}
+    $(document).ready(function () {
+        "use strict";
+        var options = {};
+        options.ui = {
+            container: ".users.edit",
+            showVerdictsInsideProgressBar: true,
+            showErrors: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress",
+                errors: ".pwstrength_viewport_progress",
+            }
+        };
+        $('#pass1').pwstrength(options);
+    });
 {/literal}
 {/script}

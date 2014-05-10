@@ -25,11 +25,37 @@
     </div>
     {form action=save_change_password}
         {control type="hidden" name="uid" value=$u->id}
+        {control type="hidden" name="username" value=$u->username}
         {if $isuser}
             {control type="password" name="password" label="Current Password"|gettext}
         {/if}
         {control type="password" name="new_password1" label="Enter your new password"|gettext}
+        <div class="row">
+            <div class="col-sm-4" style="padding-top: 8px;">
+                <div class="pwstrength_viewport_progress"></div>
+            </div>
+        </div>
         {control type="password" name="new_password2" label="Confirm your new password"|gettext}
+        {br}
         {control type="buttongroup" submit="Change My Password"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
+
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.1.2'}
+{literal}
+    $(document).ready(function () {
+        "use strict";
+        var options = {};
+        options.ui = {
+            container: ".change-password",
+            showVerdictsInsideProgressBar: true,
+            showErrors: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress",
+                errors: ".pwstrength_viewport_progress",
+            }
+        };
+        $('#new_password1').pwstrength(options);
+    });
+{/literal}
+{/script}
