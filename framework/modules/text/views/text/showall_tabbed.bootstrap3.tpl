@@ -38,13 +38,13 @@
     {*{/if}*}
     {*{else}*}
     <div id="text-{$id}" class="">
-        <ul class="yui-nav">
+        <ul class="nav nav-tabs">
             {foreach from=$items item=tab name=tabs}
-                <li{if $smarty.foreach.tabs.iteration == 0} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
+                <li{if $smarty.foreach.tabs.iteration == 0} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
             {/foreach}
             {permissions}
                 {if ($permissions.create)}
-                    <li{if $smarty.foreach.tabs.iteration != 0} class="active">{/if}<a href="#tab{$smarty.foreach.tabs.iteration+1}"><em>({'Add New'|gettext})</em></a></li>
+                    <li{if $smarty.foreach.tabs.iteration != 0} class="active">{/if}<a href="#tab{$smarty.foreach.tabs.iteration+1}" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
