@@ -90,6 +90,7 @@ function smarty_function_control($params, &$smarty) {
                 $cancel     = isset($params['cancel']) ? $params['cancel'] : null;
                 $returntype = isset($params['returntype']) ? $params['returntype'] : null;
                 $control    = new buttongroupcontrol($submit, $reset, $cancel, null, $returntype);
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 if (!empty($params['wide'])) $control->wide = $params['wide'];
                 break;
             case "uploader":
@@ -115,6 +116,7 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "dropdown":
                 $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
+                    $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 if (!empty($params['default'])) $control->default = $params['default'];
                 $control->type          = "select";
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
@@ -162,6 +164,7 @@ function smarty_function_control($params, &$smarty) {
                 $value              = isset($params['value']) ? $params['value'] : null;
                 $control            = new checkboxcontrol($value);
                 $control->postfalse = isset($params['postfalse']) ? 1 : 0;
+                    $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 $control->newschool = true;
                 $control->value     = isset($params['value']) ? $params['value'] : 1;
                 $control->jsHooks   = isset($params['hooks']) ? $params['hooks'] : null;
@@ -395,6 +398,7 @@ function smarty_function_control($params, &$smarty) {
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
                 $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
                 $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                    $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
                 $control->multiple      = isset($params['multiple']) ? true : false;
                 break;
