@@ -45,7 +45,7 @@
    	{/if}
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container">
-        <ul style="width:{$config.width|default:350}px;">
+        <ul>
             <div class="slideshow-frame">
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
@@ -73,11 +73,11 @@
                     {if $slide->link}
                         <a href="{$slide->link}">
                     {/if}
-                    {if $config.quality==100}
-                        <img src="{$slide->expFile[0]->url}" class="slide-image" />
-                    {else}
-                        {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" far=TL f=jpeg q=$quality|default:75}
-                    {/if}
+                    {*{if $config.quality==100}*}
+                        {*<img src="{$slide->expFile[0]->url}" class="slide-image" />*}
+                    {*{else}*}
+                        {img file_id=$slide->expFile[0]->id w=1000 aoe=1 class="slide-image" far=TL f=jpeg q=$quality|default:75}
+                    {*{/if}*}
                     {if $slide->link}
                         </a>
                     {/if}
