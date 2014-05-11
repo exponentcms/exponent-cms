@@ -882,6 +882,34 @@ function curPageURL() {
     return $pageURL;
 }
 
+/**
+ * Is the current framework Bootstrap v3 based?
+ *
+ * @return bool
+ */
+function bs3() {
+    $framework = expSession::get('framework');
+    if ($framework == 'bootstrap3' || (NEWUI && $framework != 'bootstrap')) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Is the current framework NEWUI (NOT Bootstrap)
+ *
+ * @return bool
+ */
+function newui() {
+    $framework = expSession::get('framework');
+    if (NEWUI && $framework != 'bootstrap3' && $framework != 'bootstrap') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 function gt($s){
     return expLang::gettext($s);
 }
