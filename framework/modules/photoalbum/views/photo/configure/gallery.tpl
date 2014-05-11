@@ -40,6 +40,7 @@
         <div class="alt-body">
             {control type=radiogroup columns=2 name="landing" items="Gallery,Slideshow"|gettxtlist values="showall,slideshow" default=$config.landing|default:"showall"}
             <div id="showall-div" class="alt-item" style="display:none;">
+                <quote>{'There are no gallery settings'|gettext}</quote>
             </div>
             <div id="slideshow-div" class="alt-item" style="display:none;">
                 {group label='Slideshow View Settings'|gettext}
@@ -62,6 +63,7 @@
                            values="none,fadeIn,fadeOut,swipeInLTR,swipeOutLTR,swipeInRTL,swipeOutRTL,swipeInTTB,swipeOutTTB,swipeInBTT,swipeOutBTT"
                            label="Transition Out" value=$config.anim_out|default:'fadeOut'
                         }
+                        <quote class="error">{'Settings other than Fade In/Fade Out may not work correctly!'|gettext}</quote>
                         {control type=text name="duration" label="Animation Duration"|gettext value=$config.duration|default:0.5 size="5"}
                     {/group}
                 {/group}
