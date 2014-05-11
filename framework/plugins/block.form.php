@@ -35,6 +35,7 @@
  * @param $repeat
  */
 function smarty_block_form($params,$content,&$smarty, &$repeat) {
+    $framework = expSession::get('framework');
 	if(empty($content)){
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
@@ -42,7 +43,6 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;  //FIXME there is no 'con' property
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
-        $framework = expSession::get('framework');
 
 		echo "<!-- Form Object 'form' -->\r\n";
 		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
@@ -126,7 +126,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             ));
         }
 
-		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class . ($params['horizontal']?' form-horizontal':'') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
 		if (!empty($controller)) {
 			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
 		} else {
@@ -141,7 +141,6 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		echo $content;	
 		echo '</form>';
 	}
-	
 }
 
 ?>

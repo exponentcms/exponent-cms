@@ -44,7 +44,7 @@ class filemanagercontrol extends formcontrol {
     function toHTML($label,$name) {
         global $user;
 
-    	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/newui/assets/';
+    	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
         $html = '<div id="filemanager'.$name.'" class="filemanager control'.(empty($this->class)?"":" ".$this->class).'">';

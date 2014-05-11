@@ -36,6 +36,7 @@
  */
 if (!function_exists('smarty_block_form')) {
     function smarty_block_form($params,$content,&$smarty, &$repeat) {
+        $framework = expSession::get('framework');
         if(empty($content)){
             $name = isset($params['name']) ? $params['name'] : 'form';
             $id = empty($params['id']) ? $name : $params['id'];
@@ -103,6 +104,7 @@ if (!function_exists('smarty_block_form')) {
                 ));
                 $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
+//        }
              expJavascript::pushToFoot(array(
                  "unique"  => 'html5forms1',
                  "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
