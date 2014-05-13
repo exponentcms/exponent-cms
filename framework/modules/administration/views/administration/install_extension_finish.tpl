@@ -83,6 +83,6 @@
           </tbody>
         </table>
 		{*<a class="{button_style}" href="{$redirect}">{'Back'|gettext}</a>*}
-        {icon button=true link$redirect text='Back'|gettext}
+        {icon button=true link=$redirect text='Back'|gettext}
 	{/if}
 </div>
