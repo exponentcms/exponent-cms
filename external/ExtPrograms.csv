@@ -23,7 +23,7 @@ Twitter-Bootstrap,3.1.1,twitter.github.com/bootstrap,3.1.1,patched bootstrap.les
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.1.1+1,bootswatch.com/,3.1.1+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
-Font-Awesome,4.0.3,fortawesome.github.com/Font-Awesome,4.0.3,updated FontAwesomePath in variables.less
+Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
