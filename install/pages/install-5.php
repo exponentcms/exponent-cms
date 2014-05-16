@@ -28,11 +28,11 @@ echo gt('Pick Your Theme');
 
 $themes = array();
 if (is_readable(BASE . 'themes')) {
-    echo '<form method="post" action="index.php">';
+    echo '<form role="form" method="post" action="index.php">';
     echo '<div class="theme">';
     if (file_exists(BASE . "install/samples/sample.eql")) {
         echo '<b font-size:120%><label class="label">'.gt('Install Sample Content?').' </label></b>';
-        echo '<select name="install_sample">';
+        echo '<select class="form-control" name="install_sample">';
         echo '    <option value="">'.gt('No Sample Data').'</option>';
         echo '    <option value="sample">'.gt('Sample Site').'</option>';
         $dh = opendir(BASE . 'install/samples');

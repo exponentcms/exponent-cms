@@ -36,7 +36,7 @@ if (isset($_REQUEST['run'])) {
 if (is_readable('upgrades')) {
     $i = 0;
     if (is_readable('include/upgradescript.php')) include_once('include/upgradescript.php');
-    echo '<form method="post" action="index.php">';
+    echo '<form role="form" method="post" action="index.php">';
     if (isset($_REQUEST['run'])) {
         echo '<input type="hidden" name="page" value="final" />';
         echo '<input type="hidden" name="upgrade" value="1" />';
