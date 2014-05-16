@@ -37,12 +37,12 @@ if (!defined('LANGUAGE')) {
 }
 ?>
 
-<form method="post" action="index.php">
+<form role="form" method="post" action="index.php">
     <!--	 send us to the next page -->
     <input type="hidden" name="page" value="install-1"/>
 
     <div class="control">
-        <select name="lang" onchange="Refresh(this.value)">
+        <select class="form-control" name="lang" onchange="Refresh(this.value)">
             <?PHP foreach (expLang::langList() as $currid => $currlang) { ?>
                 <option
                     value="<?PHP echo $currid ?>"<?php if ($currid == LANGUAGE) echo " selected"; ?>><?PHP echo $currlang ?></option>
@@ -72,7 +72,7 @@ if (!empty($profiles)) {
         <label class="label">
             <?php echo gt('Select a configuration profile to restore'); ?>
         </label>
-        <select id="profiles" onchange="changeProfile(this.value)">
+        <select class="form-control" id="profiles" onchange="changeProfile(this.value)">
             <?PHP foreach ($profiles as $currid => $currprof) { ?>
                 <option
                     value="<?PHP echo $currid ?>"<?php if ($currid == '') echo " selected"; ?>><?PHP echo $currprof ?></option>

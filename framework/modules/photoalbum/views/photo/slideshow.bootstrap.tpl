@@ -101,9 +101,9 @@
             captionAutoHide : true,
             autoPlay : {/literal}{$config.autoplay|default:true}{literal},
             animationDuration : {/literal}{$config.duration|default:5}00{literal},
-            prevButtonImage : EXPONENT.JQUERY_RELATIVE +"addons/images/prev.png",
-            nextButtonImage : EXPONENT.JQUERY_RELATIVE +"addons/images/next.png",
-            pagerImage : EXPONENT.JQUERY_RELATIVE +"addons/images/pagericon.png",
+//            prevButtonImage : EXPONENT.JQUERY_RELATIVE +"addons/images/prev.png",
+//            nextButtonImage : EXPONENT.JQUERY_RELATIVE +"addons/images/next.png",
+//            pagerImage : EXPONENT.JQUERY_RELATIVE +"addons/images/pagericon.png",
         });
     });
 {/literal}

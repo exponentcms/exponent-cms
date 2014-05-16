@@ -20,32 +20,32 @@ if (!defined('EXPONENT')) exit('');
 
 ?>
 
-<form method="post" action="index.php">
+<form role="form" method="post" action="index.php">
 <input type="hidden" name="page" value="install-5" />
 
 <div id="tab1">
   <h2><?php echo gt('Site Configuration'); ?></h2>
   <div class="text-control control  ">
     <label class="label"><?php echo gt('Site/Organization Name'); ?></label>
-    <input type="text" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text ">
+    <input type="text form-control" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text ">
   </div>
   <div class="text-control control  ">
     <label class="label"><?php echo gt('Site Title'); ?></label>
-    <input type="text" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text ">
+    <input type="text form-control" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text ">
   </div>
   
   <div class="text-control control ">
     <label class="label"><?php echo gt('Site Header'); ?></label>
-    <input type="text" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text ">
+    <input type="text form-control" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text ">
   </div>
   
   <div class="text-control control ">
     <label class="label"><?php echo '('.gt('Meta').') '.gt('Keywords'); ?></label>
-    <textarea class="textarea" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
+    <textarea class="textarea form-control" id="sc[SITE_KEYWORDS]" name="sc[SITE_KEYWORDS]" rows="5" cols="38">exponent cms</textarea>
   </div>
   <div class="text-control control ">
     <label class="label"><?php echo '('.gt('Meta').') '.gt('Description'); ?></label>
-    <textarea class="textarea" id="sc[SITE_DESCRIPTION]" name="sc[SITE_DESCRIPTION]" rows="5" cols="38">exponent</textarea>
+    <textarea class="textarea form-control" id="sc[SITE_DESCRIPTION]" name="sc[SITE_DESCRIPTION]" rows="5" cols="38">exponent</textarea>
   </div>
   <div class="control checkbox">
     <table border="0" cellpadding="0" cellspacing="0">
