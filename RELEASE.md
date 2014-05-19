@@ -12,4 +12,4 @@ For a complete list of the changes made from release to release, see the CHANGEL
 
 ----------
 
-### Implement revisions/workflow/approval, multi-day events and event caching, integrate Twitter-Bootstrap v3 & Font-Awesome 4,implement form data filtering both actively in the view, plus address any issues in v2.2.3
+### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
