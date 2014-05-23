@@ -71,7 +71,7 @@ show view
     border-bottom: 1px solid #CEBB6C;
     border-top: 1px solid #CEBB6C;
 	padding-right: 5px;
-    height: 90px;
+    /*height: 90px;*/
     /*margin-bottom: 20px;*/
     width: 100%;
 }
