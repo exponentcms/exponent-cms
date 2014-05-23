@@ -325,7 +325,7 @@
 				// is destroyed and re-inited.
 				if ( !this.data.link ) {
 					if ( this.parts.link )
-						this.parts.link = null;
+						delete this.parts.link;
 				} else {
 					if ( !this.parts.link )
 						this.parts.link = this.parts.image.getParent();
@@ -373,10 +373,10 @@
 				// If we used 'a' in widget#parts definition, it could happen that
 				// selected element is a child of widget.parts#caption. Since there's no clever
 				// way to solve it with CSS selectors, it's done like that. (#11783).
-				this.parts.link = this.element.is( 'a' ) ?
-					this.element : this.element.getFirst( function( el ) {
-						return el.is( 'a' );
-					} );
+				var link = image.getAscendant( 'a' );
+
+				if ( link && this.wrapper.contains( link ) )
+					this.parts.link = link;
 
 				// Depending on configuration, read style/class from element and
 				// then remove it. Removed style/class will be set on wrapper in #data listener.
@@ -432,9 +432,10 @@
 					evt.data.image = CKEDITOR.TRISTATE_OFF;
 
 					// Integrate context menu items for link.
-					evt.data.link = CKEDITOR.TRISTATE_OFF;
-					evt.data.unlink = this.parts.link ?
-						CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+					// Note that widget may be wrapped in a link, which
+					// does not belong to that widget (#11814).
+					if ( this.parts.link || this.wrapper.getAscendant( 'a' ) )
+						evt.data.link = evt.data.unlink = CKEDITOR.TRISTATE_OFF;
 				} );
 
 				// Pass the reference to this widget to the dialog.
@@ -891,8 +892,7 @@
 		var alignClasses = editor.config.image2_alignClasses;
 
 		// @param {CKEDITOR.htmlParser.element} el
-		// @param {Object} data
-		return function( el, data ) {
+		return function( el ) {
 			// In case of <a><img/></a>, <img/> is the element to hold
 			// inline styles or classes (image2_alignClasses).
 			var attrsHolder = el.name == 'a' ? el.getFirst() : el,
@@ -1403,7 +1403,9 @@
 		editor.getCommand( 'unlink' ).on( 'exec', function( evt ) {
 			var widget = getFocusedWidget( editor );
 
-			if ( !widget )
+			// Override unlink only when link truly belongs to the widget.
+			// If wrapped inline widget in a link, let default unlink work (#11814).
+			if ( !widget || !widget.parts.link )
 				return;
 
 			widget.setData( 'link', null );
@@ -1422,7 +1424,10 @@
 			if ( !widget )
 				return;
 
-			this.setState( widget.data.link ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
+			// Note that widget may be wrapped in a link, which
+			// does not belong to that widget (#11814).
+			this.setState( widget.data.link || widget.wrapper.getAscendant( 'a' ) ?
+				CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
 
 			evt.cancel();
 		} );
