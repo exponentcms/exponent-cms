@@ -127,20 +127,20 @@
                                 <span class="seatCost">{'No Cost'|gettext}</span>
                             {/if}
                         </div>
-                    {if $product->multi_registrant && $product->forms_id}
+                        {clear}
+                            {if $product->multi_registrant}
                         </div>
-                    {/if}
+                          {/if}
                       </span>
                     </span>
                     {if $product->multi_registrant && $product->quantity_discount_num_items}
-                        {clear}
                         <div class="label">
                             {'There is a discount of'|gettext} {if ($product->quantity_discount_amount_mod == '%')}%{$product->quantity_discount_amount}{else}{$product->quantity_discount_amount|currency}{/if}
                             {if ($product->quantity_discount_apply)}
                                 {'for additional registrations'|gettext}
                             {/if}
                             {'if more than'|gettext} {$product->quantity_discount_num_items} {'people are registered'|gettext}.
-                        </div>{br}{br}
+                        </div>
                     {/if}
 
                     {if $product->hasOptions()}
