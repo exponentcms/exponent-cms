@@ -49,7 +49,11 @@ class uploadcontrol extends formcontrol {
         $html = '';
         if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
 		$html .= "<input type=\"file\" name=\"$name\"";
-		if (isset($this->class)) $html .= ' class="' . $this->class . '"';
+		if (isset($this->class)) {
+            $html .= ' class="form-control ' . $this->class . '"';
+        } else {
+            $html .= ' class="form-control"';
+        }
         if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
 		$html .= $this->disabled ? " disabled " : "";
         $html .= $this->focus ? " autofocus" : "";

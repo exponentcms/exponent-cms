@@ -77,7 +77,7 @@ class yuicalendarcontrol extends formcontrol {
         <div class=\"yui3-skin-sam\">
             <div id=\"cal" . $idname . "Container\"></div>
             <div id=\"calinput\">
-                <input class=\"text\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . ($this->focus?' autofocus':'') . "\" value=\"" . $default . "\"/>
+                <input class=\"text form-control\" type=\"text\" name=\"" . $name . "\" id=\"" . $idname . ($this->focus?' autofocus':'') . "\" value=\"" . $default . "\"/>
                 <button class=\"button\" type=\"button\" id=\"update-" . $idname . "\">" . gt('Update Calendar') . "</button>
             </div>
         </div>

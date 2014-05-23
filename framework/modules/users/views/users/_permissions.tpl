@@ -25,13 +25,18 @@
 
 {/css}
 
-<form method="post">
-    <input type="hidden" name="module" value="{$page->controller}" />
-    <input type="hidden" name="action" value="{if $user_form == 1}userperms_save{else}groupperms_save{/if}" />
-    <input type="hidden" name="mod" value="{$loc->mod}" />
-    <input type="hidden" name="src" value="{$loc->src}" />
-    <input type="hidden" name="int" value="{$loc->int}" />
+//<form method="post">
+    {*<input type="hidden" name="module" value="{$page->controller}" />*}
+    {*<input type="hidden" name="action" value="{if $user_form == 1}userperms_save{else}groupperms_save{/if}" />*}
+    {*<input type="hidden" name="mod" value="{$loc->mod}" />*}
+    {*<input type="hidden" name="src" value="{$loc->src}" />*}
+    {*<input type="hidden" name="int" value="{$loc->int}" />*}
     {*{$page->links}*}
+{if $user_form == 1}{$action = 'userperms_save'}{else}{$action = 'groupperms_save'}{/if}
+{form action=$action module=$page->controller}
+    {control type="hidden" name="mod" value=$loc->mod}
+    {control type="hidden" name="src" value=$loc->src}
+    {control type="hidden" name="int" value=$loc->int}
     <div style="overflow : auto; overflow-y : hidden;">
         <table id="permissions" border="0" cellspacing="0" cellpadding="0">
             <thead>
@@ -44,7 +49,8 @@
             </thead>
             <tbody>
                 {foreach from=$page->records item=user key=ukey name=user}
-                    <input type="hidden" name="users[]" value="{$user->id}" />
+                    {*<input type="hidden" name="users[]" value="{$user->id}" />*}
+                    {control type="hidden" name="users[]" value=$user->id}
                     <tr>
                         {if !$is_group}
                             <td>
@@ -73,7 +79,8 @@
     </div>
     {*{$page->links}*}
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
-</form>
+//</form>
+{/form}
 
 {script unique="permission-checking" yui3mods=1}
 {literal}

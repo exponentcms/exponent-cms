@@ -399,19 +399,19 @@
 
                 <div class="add-to-cart-btn input">
                     {if $product->availability_type == 0 && $product->active_type == 0}
-                        <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                        <input type="text" class="text form-control" size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                         <button type="submit" class="add-to-cart-btn {button_style}" rel="nofollow">
                             {"Add to Cart"|gettext}
                         </button>
                     {elseif $product->availability_type == 1 && $product->active_type == 0}
-                        <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                        <input type="text" class="text form-control" size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                         <button type="submit" class="add-to-cart-btn {button_style}" rel="nofollow">
                             {"Add to Cart"|gettext}
                         </button>
                         {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}
                     {elseif $product->availability_type == 2}
                         {if $user->isAdmin()}
-                            <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                            <input type="text form-control" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                             <button type="submit" class="add-to-cart-btn {button_style color=red}" rel="nofollow">
                                 {"Add to Cart"|gettext}
                             </button>
@@ -419,7 +419,7 @@
                         {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}
                     {elseif $product->active_type == 1}
                         {if $user->isAdmin()}
-                            <input type="text" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                            <input type="text" class="text form-control" size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                             <button type="submit" class="add-to-cart-btn {button_style color=red}" rel="nofollow">
                                 {"Add to Cart"|gettext}
                             </button>
@@ -496,7 +496,7 @@
                                         <input name="prod-check[]" type="checkbox" value="{$chiprod->id}">
                                     </td>
                                     <td>
-                                        <input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5>
+                                        <input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5>
                                     </td>
                                 {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
                                     <td>

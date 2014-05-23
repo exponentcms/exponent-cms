@@ -29,7 +29,8 @@
     </div>
 
     {form action="update_memberships"}
-        <input type="hidden" name="id" value="{$group->id}"/>
+        {*<input type="hidden" name="id" value="{$group->id}"/>*}
+        {control type="hidden" name="id" value=$group->id}
         {*{pagelinks paginate=$page top=1}*}
         {$table_filled = true}
         <table id="groups-manage">

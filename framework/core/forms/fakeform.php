@@ -80,7 +80,7 @@ class fakeform extends form {
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
-		$html .= "<form id='abc123' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";

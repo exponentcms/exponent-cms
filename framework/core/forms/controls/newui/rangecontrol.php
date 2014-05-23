@@ -42,7 +42,7 @@ class rangecontrol extends textcontrol {
         } else {
             $extra_class = '';
         }
-        $html  = '<input' . $inputID . ' class="text' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
+        $html  = '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"',"&quot;",$this->default) . "\"";
         $html .= ($this->size?" size=\"".$this->size."\"":"");
         $html .= ($this->disabled?" disabled ":"");
@@ -64,7 +64,7 @@ class rangecontrol extends textcontrol {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="'.rawurlencode($this->default).'" caption="'.$caption.'"';
         $html .= "/>";
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         return $html;
     }
 

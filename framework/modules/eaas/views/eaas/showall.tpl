@@ -29,7 +29,7 @@
 		</div>
     {/permissions}
     <{$config.item_level|default:'h2'}>{'API Key'|gettext}</{$config.item_level|default:'h2'}>
-    <textarea style="width:100%; height:200px;">{$info.apikey}</textarea>
+    <textarea class="form-control" style="width:100%; height:200px;">{$info.apikey}</textarea>
     {*edebug var=$info*}
 
 </div>

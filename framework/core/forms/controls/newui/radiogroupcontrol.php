@@ -96,7 +96,7 @@ class radiogroupcontrol extends formcontrol {
 			$i++; 
 		}	
 		$html .= '</tr></table>';
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
 		return $html;
 	}
 	

@@ -48,7 +48,7 @@ class texteditorcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-		$html = "<textarea class=\"textarea\" id=\"$name\" name=\"$name\"";
+		$html = "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$name\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");

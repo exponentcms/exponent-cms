@@ -123,7 +123,7 @@
 			<td style="width: 143px;">*&#160;Card&#160;Number</td>
 			<td class="creditcard-form">
 				<div class="text-control control " id="cc_numberControl">
-					<input required="1" type="text" class="text" name="billing[cc_number]" id="cc_number" size="20" maxlength="20" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" caption="Credit Card Number"/>
+					<input required="1" type="text" class="text form-control" name="billing[cc_number]" id="cc_number" size="20" maxlength="20" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" caption="Credit Card Number"/>
 				</div>
 			</td>
 		</tr>
@@ -140,7 +140,7 @@
 			<td style="width: 143px;">*&#160;CVV&#160;Number <br />(<a style="font-size:10px;" href="http://en.wikipedia.org/wiki/Card_Verification_Value" target="_blank" class="cvv_ver">What is a CVV Number?</a>)</td>
 			<td class="creditcard-form">
 				<div class="text-control control " id="cvvControl">
-					<input required="1" type="text" class="text" id="cvv" name="billing[cvv]" size="4" maxlength="4" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" caption="CVV Number"/>
+					<input required="1" type="text" class="text form-control" id="cvv" name="billing[cvv]" size="4" maxlength="4" onkeypress="return integer_filter.on_key_press(this, event);" onblur="integer_filter.onblur(this);" onfocus="integer_filter.onfocus(this);" onpaste="return integer_filter.onpaste(this, event);" caption="CVV Number"/>
 				</div>
 			</td>
 		</tr>

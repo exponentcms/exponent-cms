@@ -107,7 +107,7 @@ class genericcontrol extends formcontrol {
         $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
-        $html .= ' class="'.$this->type. " " . $this->class . '"';
+        $html .= ' class="'.$this->type. " form-control " . $this->class . '"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';

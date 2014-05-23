@@ -83,14 +83,14 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 			}
 			$html .= "</td>";
-			$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected')."</div><select id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected')."</div><select " . (bs3() ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
 			}
 			$html .= "</select>";
 			$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
-			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
+//			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
         $html .= "<div style=\"clear:both\"></div>";
         if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
