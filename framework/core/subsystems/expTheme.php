@@ -261,7 +261,7 @@ class expTheme
         }
 
         if (empty($config['viewport'])) {
-            $viewport = 'width=device-width, initial-scale=1.0, user-scalable=yes';
+            $viewport = 'width=device-width, user-scalable=yes';
         } else {
             if (!empty($config['viewport']['width'])) {
                 $viewport = 'width=' . $config['viewport']['width'];
@@ -273,8 +273,8 @@ class expTheme
             }
             if (!empty($config['viewport']['initial_scale'])) {
                 $viewport .= ' initial-scale=' . $config['viewport']['initial_scale'];
-            } else {
-                $viewport .= ', initial-scale=1.0';
+//            } else {
+//                $viewport .= ', initial-scale=1.0';
             }
             if (!empty($config['viewport']['minimum_scale'])) {
                 $viewport .= ', minimum-scale=' . $config['viewport']['minimum_scale'];
