@@ -43,7 +43,7 @@ class monthyearcontrol extends formcontrol {
     }
 	
 	function controlToHTML($name,$label=null) {
-		$html = '<select id="' . $name . '_month" name="' . $name . '_month">';
+		$html = '<select ' . (bs3() ? 'class="form-control" ' : '') . 'id="' . $name . '_month" name="' . $name . '_month">';
 		for ($i = 1; $i <= 12; $i++) {
 			$s = ((strlen($i) == 1)?"0".$i:$i);
 			$html .= '<option value="' . $s . '"';
@@ -52,7 +52,7 @@ class monthyearcontrol extends formcontrol {
 		}
 		$html .= '</select>';
 		$html .= "/";
-		$html .= '<select id="' . $name . '_year" name="' . $name . '_year">';
+		$html .= '<select ' . (bs3() ? 'class="form-control" ' : '') . 'id="' . $name . '_year" name="' . $name . '_year">';
 		for ($i = date("Y"); $i <= (date("Y") + 15); $i++) {
 			$html .= '<option value="' . $i . '"';
 			if ($i == $this->default_year) $html .= " selected";

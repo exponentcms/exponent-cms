@@ -96,9 +96,9 @@ class calendarcontrol extends formcontrol {
 //        $html        .= "    <label for=\"" . $name . "\" class=\"label\">" . $label . "</label>";
         $html        .= "    <input size=10 type=\"text\" id=\"date-" . $idname . "\" name=\"date-" . $name . ($this->focus?' autofocus=\"autofocus\"':'') . "\" value=\"" . $this->default_date . "\" class=\"text datebox\" />";
         if ($this->showtime) {
-            $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox\" maxlength=2/>
-                : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox\" maxlength=2/>
-                <select id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
+            $html .=   " @ <input size=2 type=\"text\" id=\"time-h-" . $idname . "\" name=\"time-h-" . $name . "\" value=\"" . $this->default_hour . "\" class=\"timebox form-control\" maxlength=2/>
+                : <input size=2 type=\"text\" id=\"time-m-" . $idname . "\" name=\"time-m-" . $name . "\" value=\"" . $this->default_min . "\" class=\"timebox form-control\" maxlength=2/>
+                <select " . (bs3() ? "class=\"form-control\" " : "") . "id=\"ampm-" . $idname . "\" name=\"ampm-" . $name . "\">";
             if ($this->default_ampm == "AM") $html .= "<option selected>am</option><option>pm</option>";
             else $html .= "<option>am</option><option selected>pm</option>";
             $html .= "

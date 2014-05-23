@@ -102,7 +102,7 @@
                                 <td>{control type="text" name="quantity_discount_num_items" value=$record->quantity_discount_num_items size=3 filter=integer}</td>
                                 <td>{'people, then discount the price by'|gettext}</td>
                                 <td>{control type="text" name="quantity_discount_amount" value=$record->quantity_discount_amount size=3 filter=decimal}
-                                <td>{control type="dropdown" name="quantity_discount_amount_mod" label=" " items=$record->early_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
+                                <td>{control type="dropdown" name="quantity_discount_amount_mod" items=$record->early_discount_amount_modifiers value=$record->quantity_discount_amount_mod}</td>
                             </tr>
                             <tr>
                                 <td colspan="6">{control type="checkbox" name="quantity_discount_apply" label="Only apply a discount to registrations over the discount threshold"|gettext value=1 checked=$record->quantity_discount_apply postfalse=1}</td>

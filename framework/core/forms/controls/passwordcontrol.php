@@ -41,7 +41,7 @@ class passwordcontrol extends formcontrol {
 	}
 	
 	function controlToHTML($name,$label) {
-		$html = "<input type=\"password\" name=\"$name\" value=\"" . $this->default . "\"";
+		$html = "<input class=\"form-control\" type=\"password\" name=\"$name\" value=\"" . $this->default . "\"";
 		$html .= $this->size ? " size=\"".$this->size."\"" : "";
 		$html .= $this->disabled ? " disabled " : "" ;
         $html .= $this->focus ? " autofocus" : "";

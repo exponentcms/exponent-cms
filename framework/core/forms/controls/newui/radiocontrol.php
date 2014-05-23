@@ -67,7 +67,7 @@ class radiocontrol extends formcontrol {
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
         }
-        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"control-desc\">".$this->description."</div></td>";
+        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"help-block\">".$this->description."</div></td>";
         $html .= "</tr></table></div>";
 
         return $html;

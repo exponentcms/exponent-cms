@@ -97,7 +97,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         <div id="panel' . $uniqueid . '" class="exp-skin-panel exp-skin-rerank hide">
             <div class="yui3-widget-hd">Order ' . $params['label'] . '</div>
             <div class="yui3-widget-bd">
-            <form method="post" action="' . PATH_RELATIVE . '">
+            <form role="form" method="post" action="' . PATH_RELATIVE . '">
             <input type="hidden" name="model" value="' . $model . '" />
             <input type="hidden" name="controller" value="' . $controller . '" />
             <input type="hidden" name="lastpage" value="' . curPageURL() . '" />

@@ -303,7 +303,7 @@
                 $('#textcontent-{/literal}{$name}{literal}').append(newItem);
                 startEditor($('#title-' + msg.data)[0]);
                 startEditor($('#body-' + msg.data)[0]);
-                newDDItem = '<li><input type="hidden" value="' + msg.data + '" name="rerank[]"><div class="fpdrag"></div><span class="label">title placeholder</span></li>';
+                newDDItem = '<li><input type="hidden" class="form-control" value="' + msg.data + '" name="rerank[]"><div class="fpdrag"></div><span class="label">title placeholder</span></li>';
                 $('#listToOrder' + src.slice(1)).append(newDDItem);
             }
         });

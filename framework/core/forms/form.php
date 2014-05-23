@@ -267,12 +267,12 @@ class form extends baseform {
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
 		if (isset($this->ajax_updater)) {
-			$html .= "<form name=\"" . $this->name . "\" method=\"" ;
+			$html .= "<form role=\"form\" name=\"" . $this->name . "\" method=\"" ;
 			$html .= $this->method . "\" action=\"" . $this->action ."\" ";
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
 		} else {
-			$html .= "<form id='".$this->id."' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		}
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";

@@ -96,8 +96,8 @@
                                 {** }*}
 
                                 {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                    <td><input name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
-                                    <td><input name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
+                                    <td><input class="form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
+                                    <td><input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
                                 {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
                                     <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
                                 {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
@@ -113,9 +113,9 @@
                                 <td style="text-align: right;">
                                     {if $chiprod->use_special_price}
                                         <span style="color:red; font-size: 8px; font-weight: bold;">{'SALE'|gettext}</span>{br}
-                                        <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
+                                        <span>{currency_symbol}<input class="form-control" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->special_price|number_format:2}" size=7 maxlength=9></span>
                                     {else}
-                                        <span>{currency_symbol}<input name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
+                                        <span>{currency_symbol}<input class="form-cotnrol" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
                                     {/if}
                                 </td>
                                 <td>

@@ -85,7 +85,7 @@ function smarty_function_rating($params,&$smarty) {
     $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
     $html .= '
         <div class="rating-form">
-            <form id="ratingform-'.$params['subtype'].'" action="index.php" method="post">
+            <form role="form" id="ratingform-'.$params['subtype'].'" action="index.php" method="post">
                 <input type="hidden" name="action" value="update" />
                 <input type="hidden" name="controller" value="expRating" />
                 <input type="hidden" name="content_type" value="'.$params['content_type'].'" />

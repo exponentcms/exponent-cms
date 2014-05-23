@@ -60,31 +60,32 @@
         </thead>
         <tbody>
             <tr class="controlrow">
-                <form id="controlRowValues">
+                <form role="form" id="controlRowValues">
                     <td>
-                        <input type="text" name="vid" value="">
+                        <input class="form-control" type="text" name="vid" value="">
                     </td>
                     <td>
-                        <input type="text" name="product" value="">
+                        <input class="form-control" type="text" name="product" value="">
                     </td>
                     <td>
-                        <textarea name="productdescription">
-                        </textarea>
+                        {*<textarea name="productdescription">*}
+                        {*</textarea>*}
+                        {control type="textarea" name="productdescription"}
                     </td>
                     <td>
-                        <input type="text" name="qty" value="" size="5">
+                        <input class="form-control" class="form-control" type="text" name="qty" value="" size="5">
                     </td>
                     <td>
-                        <input type="text" name="rate" value="" size="5">
+                        <input class="form-control" type="text" name="rate" value="" size="5">
                     </td>
                     <td>
-                        <input type="text" name="custorder" value="" size="5">
+                        <input class="form-control" type="text" name="custorder" value="" size="5">
                     </td>
                     <td>
-                        <input type="text" name="origpo" value="" size="5">
+                        <input class="form-control" type="text" name="origpo" value="" size="5">
                     </td>
                     <td>
-                        <input type="text" name="eta" value="" size="5">
+                        <input class="form-control" type="text" name="eta" value="" size="5">
                     </td>
                     <td>
                         <a class="add" href="#" id="addPOItem">{"Add"|gettext}</a>

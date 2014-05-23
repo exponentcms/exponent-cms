@@ -48,15 +48,20 @@
         <table cellpadding="5" cellspacing="0" border="0">
             <tr>
                 <td style="border:none;">
-                    <form method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
+                    <form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
                         <input type="hidden" name="controller" value="forms"/>
                         <input type="hidden" name="action" value="edit_control"/>
                         <input type="hidden" name="forms_id" value="{$form->id}"/>
-                        {'Add a'|gettext} <select name="control_type" onchange="this.form.submit()">
-                            {foreach from=$types key=value item=caption}
-                                <option value="{$value}">{$caption}</option>
-                            {/foreach}
-                        </select>
+                        <div class="row">
+                            <div class="col-md-3">{'Add a'|gettext} </div>
+                            <div class="col-md-8">
+                                <select class="form-control" name="control_type" onchange="this.form.submit()">
+                                    {foreach from=$types key=value item=caption}
+                                        <option value="{$value}">{$caption}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
                     </form>
                 </td>
             </tr>

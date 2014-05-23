@@ -42,7 +42,7 @@
                                 {control type="hidden" name="id" value=$item->id}
                                 <table class="quantity-controller" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
-                                        <td><input type="text" size="2" name="quantity" value="{$item->quantity}"></td>
+                                        <td><input class="form-control" type="text" size="2" name="quantity" value="{$item->quantity}"></td>
                                         <td><input class="refresh-quantity" type="image" name="id" value="{$item->id}" src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/ecommerce/assets/images/update.png'}" title="{'Update quantities'|gettext}" alt="{'Update quantities'|gettext}"></td>
                                     </tr>
                                 </table>

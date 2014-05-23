@@ -389,7 +389,7 @@
                         }
 
                         var createHTML = function(val) {                        
-                            var f = '<form id=addItem method=post>';
+                            var f = '<form role="form" id=addItem method=post>';
                                 f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
                                 f += '<input type=hidden name=module id=module value=order>';
                                 f += '<input type=hidden name=action id=action value=add_order_item>';

@@ -83,10 +83,10 @@ class datetimecontrol extends formcontrol {
         if ($this->showdate) {
             $html .= '<div class="datetime date"><label style="display:inline;float:none;">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
-            $html .= '<input class="text" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
+            $html .= '<input class="text form-control" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text" type="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '"';
+            $html .= '<input class="text form-control" type="text" id="' . $name . '_year" name="' . $name . '_year" size="5" maxlength="4" value="' . $default_date['year'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
             $html .= '</div>';
@@ -97,13 +97,13 @@ class datetimecontrol extends formcontrol {
                 $html .= '<br /><label class="label spacer"> </label>';
             }
             $html .= '<div class="datetime date time"><label style="display:inline;float:none;">' . gt('Time') . ': </label>';
-            $html .= '<input class="text timebox" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
+            $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<input class="text timebox" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" maxlength="2" value="' . $minute . '"';
+            $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_minute" name="' . $name . '_minute" size="3" maxlength="2" value="' . $minute . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
-            $html .= '<select class="select" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
+            $html .= '<select class="select form-control" id="' . $name . '_ampm" name="' . $name . '_ampm" size="1"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= '>';
             $html .= '<option value="am"' . ($default_date['hours'] < 12 ? " selected" : "") . '>am</option>';
