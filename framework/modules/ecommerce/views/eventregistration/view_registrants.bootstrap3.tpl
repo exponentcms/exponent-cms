@@ -63,7 +63,7 @@
             <span class="label">{'Price per person:'|gettext} </span>
             <span class="value">{if $event->base_price}{$event->base_price|currency}{else}{'No Cost'|gettext}{/if}</span>{br}
             <span class="label">{'Seats Registered:'|gettext} </span>
-            <span class="value">{$count} {'of'|gettext} {$event->quantity}</span>{br}
+            <span class="value">{$count}{if $event->quantity} {'of'|gettext} {$event->quantity}{/if}</span>{br}
             <span class="label">{'Registration Closes:'|gettext} </span>
             <span class="value">{$event->signup_cutoff|format_date:"%A, %B %e, %Y"}</span>
         </div>
@@ -73,7 +73,7 @@
         <div class="events">
             {permissions}
                 <div class="module-actions">
-                    {if $registrants|count < $event->quantity}
+                    {if $registrants|count < $event->quantity || $event->quantity == 0}
                         {if $permissions.create}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
