@@ -411,7 +411,7 @@
                         {if $product->quantity <= 0}<span class="error">{$product->availability_note}</span>{/if}
                     {elseif $product->availability_type == 2}
                         {if $user->isAdmin()}
-                            <input type="text form-control" class="text " size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
+                            <input type="text" class="text form-control" size="5" value="{$product->minimum_order_quantity|default:1}" name="quantity">
                             <button type="submit" class="add-to-cart-btn {button_style color=red}" rel="nofollow">
                                 {"Add to Cart"|gettext}
                             </button>
