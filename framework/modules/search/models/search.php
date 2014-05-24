@@ -97,6 +97,7 @@ class search extends expRecord {
                         $section = $db->selectObject("section", "id=" . $sectionref->section);
                         if (empty($section) || !(navigationController::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
+                            continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;
                         }
                         $controller = expModules::getControllerClassName($recs[$i]->ref_module);
