@@ -72,14 +72,14 @@
     {form action="emailRegistrants"}
         <div class="events">
             {permissions}
-                {if $registrants|count < $event->quantity}
-                    <div class="module-actions">
+                <div class="module-actions">
+                    {if $registrants|count < $event->quantity}
                         {if $permissions.create}
                             {icon class="add" action=edit_registrant event_id=$event->id text="Manually Add a Registrant"|gettext}
                         {/if}
-                        {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
-                    </div>
-                {/if}
+                    {/if}
+                    {icon class=downloadfile controller=eventregistration action=export id=$event->id text='Export this Event Roster'|gettext}
+                </div>
             {/permissions}
             {$controls = $event->getAllControls()}
             <div style="overflow: auto; overflow-y: hidden;">
