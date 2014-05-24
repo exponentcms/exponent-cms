@@ -27,16 +27,16 @@ if (!defined('EXPONENT')) exit('');
   <h2><?php echo gt('Site Configuration'); ?></h2>
   <div class="text-control control  ">
     <label class="label"><?php echo gt('Site/Organization Name'); ?></label>
-    <input type="text form-control" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text ">
+    <input type="text" name="sc[ORGANIZATION_NAME]" value="Exponent CMS" size="40" class="text form-control">
   </div>
   <div class="text-control control  ">
     <label class="label"><?php echo gt('Site Title'); ?></label>
-    <input type="text form-control" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text ">
+    <input type="text" name="sc[SITE_TITLE]" value="Exponent CMS - A Powerful, Flexible, and Intuitive Web Solution." size="40" class="text form-control">
   </div>
   
   <div class="text-control control ">
     <label class="label"><?php echo gt('Site Header'); ?></label>
-    <input type="text form-control" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text ">
+    <input type="text" name="sc[SITE_HEADER]" value="Exponent CMS" size="40" class="text form-control">
   </div>
   
   <div class="text-control control ">

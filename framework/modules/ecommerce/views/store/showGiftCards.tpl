@@ -89,7 +89,7 @@
                     <td>
                         {group label='Personalize your gift card'|gettext}
                             <h3>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</h3>
-                            <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text form-control" class="text " size="20" name="toname" value="{$records.toname}"></div>
+                            <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text" class="text form-control" size="20" name="toname" value="{$records.toname}"></div>
                             <div class="text-control control  "><label class="label">{"From"|gettext}:</label><input type="text" class="text form-control" size="20" value="{$records.fromname}" name="fromname"></div>
                             {*<br><em>{'Adding a custom message will add'|gettext} {currency_symbol}{$config.custom_message_product|number_format:2} {'to the price of your gift card.'|gettext}</em><br><br>*}
                             <br><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em>
