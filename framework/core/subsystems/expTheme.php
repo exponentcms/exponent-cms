@@ -313,6 +313,9 @@ class expTheme
 
             // media css support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.4.2/dest/respond.min.js"></script><![endif]-->' . "\n";
+
+            // canvas support for IE 6-8
+            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
         }
 
         // when minification is used, the comment below gets replaced when the buffer is dumped
