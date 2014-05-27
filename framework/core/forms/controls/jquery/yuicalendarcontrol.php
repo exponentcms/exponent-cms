@@ -125,10 +125,13 @@ class yuicalendarcontrol extends formcontrol
                 });
                 $('#" . $idname . "').datetimepicker('update');
             });
-            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
                 Y.Global.on('lazyload:cke', function() {
                     $('#" . $idname . "').datetimepicker('update');
                 });
+                if (!Y.one('#" . $idname . "').ancestor('.exp-skin-tabview')) {
+                    Y.Global.fire('lazyload:cke');
+                }
             });
         ";
 
