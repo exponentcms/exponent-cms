@@ -117,7 +117,7 @@ class yuidatetimecontrol extends formcontrol
         }
 
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
             var handleCheck" . $idname . " = function(e) {
                 var cal = Y.one('#datetime-" . $idname . "');
                 if (cal.getStyle('display')=='none') {
@@ -130,9 +130,12 @@ class yuidatetimecontrol extends formcontrol
             Y.Global.on('lazyload:cke', function() {
                 Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
                 Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
-                $('#" . $idname . "date').datetimepicker('update');
+//                $('#" . $idname . "date').datetimepicker('update');
             });
-            $('#" . $idname . "date').datetimepicker('update');
+            if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
+                Y.Global.fire('lazyload:cke');
+            }
+//            $('#" . $idname . "date').datetimepicker('update');
         });
         ";
 
