@@ -290,11 +290,12 @@ class expString {
                 return expString::convertSmartQuotes(strip_tags($string, '<a>'));
                 break;
             case "parapaged":
-               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
-               $para = explode($s, $string);
-               $string = $para[0];
-               return expString::convertSmartQuotes($string);
-               break;
+//               $s = '<div style="page-break-after: always;"><span style="display: none;">&nbsp;</span></div>';
+                $s = '<div style="page-break-after: always';
+                $para = explode($s, $string);
+                $string = $para[0];
+                return expString::convertSmartQuotes($string);
+                break;
             case "parahtml":
                 foreach ($sep as $s) {
                     $para = explode($s, $string);
