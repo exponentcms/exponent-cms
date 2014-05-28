@@ -34,7 +34,7 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.1,optional
 CKEditor,4.4.1,ckeditor.com,4.4.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.0.26,tinymce.com,4.0.26,add xenmce skin
+TinyMCE,4.0.28,tinymce.com,4.0.28,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
