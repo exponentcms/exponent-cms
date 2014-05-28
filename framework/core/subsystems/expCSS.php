@@ -26,22 +26,6 @@ class expCSS {
 
     public static function pushToHead($params) {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
-        
-        // if within an ajax call, immediately output the css
-        //FIXME we ONLY output links, NO inline styles in $params['css'], nor any less, etc... processing
-        if (expJavascript::inAjaxAction()) {
-		    echo "<div class=\"io-execute-response\">";
-            if (isset($params['corecss'])&&!empty($css_core)){
-                foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
-                }
-            }
-            if (!empty($params['link'])){
-                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
-            }
-		    echo "</div>";
-            return true;
-        }
 
         // normalize.css is always at the top
         if (!empty($params['normalize'])){
@@ -130,6 +114,22 @@ class expCSS {
         if (!empty($params['css'])){
             $tcss = trim($params['css']);
             if (!empty($tcss)) $css_inline[$params['unique']] = $params['css'];
+        }
+
+        // if within an ajax call, immediately output the css
+        //FIXME we ONLY output links, NO inline styles in $params['css'], nor any less, etc... processing
+        if (expJavascript::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+            if (isset($params['corecss'])&&!empty($css_core)){
+                foreach ($css_core as $path) {
+                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
+                }
+            }
+            if (!empty($params['link'])){
+                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+            }
+		    echo "</div>";
+            return true;
         }
     }
 
