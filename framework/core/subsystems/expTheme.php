@@ -141,12 +141,12 @@ class expTheme
         };
 
         // default loading of view based CSS inclusion is true if not set
-        if (empty($config['css_links'])) {
+        if (!empty($config['css_links']) || !isset($config['css_links'])) {
             $head_config['css_links'] = true;
         }
 
         // default theme css collecting is true if not set
-        if (empty($config['css_theme'])) {
+        if (!empty($config['css_theme']) || !isset($config['css_theme'])) {
             $head_config['css_theme'] = true;
         }
 
