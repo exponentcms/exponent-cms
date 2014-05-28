@@ -2,15 +2,23 @@
     margin-top:10px;
 }
 
-#product-range-opControl.select-control.control,
-#product-price-opControl.select-control.control,
-#order-range-opControl.select-control.control,
-#order-price-opControl.select-control.control,
-#bl-sp-zipControl.radiogroup.control,
-#bl-sp-stateControl.radiogroup.control {
+.build-report .control {
     /*padding:0;*/
     /*margin:0;*/
     float:left;
+}
+
+.build-report .control .text.align {
+    margin-left: 8px;
+    margin-top: 29px;
+}
+
+#pstartdateControl label,
+#penddateControl label,
+#sstartdateControl label,
+#senddateControl label {
+	float : left;
+	margin-right: 8px;
 }
 
 .build-report .control .label {
@@ -36,9 +44,7 @@
 }
 
 .build-report .control .select {
-    /*margin:4px 10px 0 0;*/
-	/*margin-left: 4px;*/
-	margin-right : 6px;
+    margin:4px 10px 0 0;
 }
 
 .build-report .control.collapse .label {
