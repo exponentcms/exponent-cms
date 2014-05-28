@@ -16,7 +16,7 @@
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css" corecss="tree,button,panel"}
 
 {/css}
-{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder.css"}
+{css unique="report-builder" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/report-builder-bs3.css"}
 
 {/css}
 
@@ -47,7 +47,7 @@
                         <div>{control type="checkbox" name="uncategorized" flip=true label="Uncategorized Products Only"|gettext value=1}  </div>
                             <div class="control">
                                 {*<a href="#showcats" id="showcats" class="{button_style color=black size=small}">{'Select Categories'|gettext}</a>*}
-                                {icon name="showcats" action='scriptaction' button=true color=black text='Select Categories'|gettext}
+                                {icon name="showcats" action='scriptaction' class="listviewlink" text='Select Categories'|gettext}
                             </div>
                             <div>
                                 <div id="catpicker" class="exp-skin-panel hide">
@@ -108,14 +108,14 @@
                         <td>
                             {control type="dropdown" name="product-range-op" label="A Product ID..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
                             {*{control type="text" name="product-range-num" label=" " value=$record->prn class="collapse prn"}*}
-                            {control type="text" name="product-range-num" size=8 value=$record->prn class=" prn"}
+                            {control type="text" name="product-range-num" size=8 value=$record->prn class="prn align"}
                         </td>
                     </tr>
                     <tr class="even">
                          <td>
                             {control type="dropdown" name="product-price-op" label="Product Price..."|gettext items="Equal to,Less than,Greater than"|gettxtlist values="e,l,g"}
                             {*{control type="text" name="product-price-num" label=" " value=$record->ppn class="collapse ppn"}*}
-                             {control type="text" name="product-price-num" size=8 value=$record->ppn class=" ppn" filter=money}
+                             {control type="text" name="product-price-num" size=8 value=$record->ppn class="ppn align" filter=money}
                         </td>
                     </tr>
                     <tr class="odd">

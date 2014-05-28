@@ -134,6 +134,13 @@ function smarty_function_icon($params, &$smarty) {
     } else {
         $name = '';
     }
+    if ($button) {
+        $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
+        $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+        $class = "awesome " . $btn_size . " " . $btn_color;
+        unset($params['size']);
+        unset($params['color']);
+    }
     if(!empty($params['action']) && $params['action'] == 'scriptaction') {
         echo '<a'.$name.' href="#" title="' . $title . '" class="' . $class . '"';
         if (!empty($onclick))
@@ -143,13 +150,6 @@ function smarty_function_icon($params, &$smarty) {
         if ($params['action'] == 'copy') {
             $params['copy'] = true;
             $params['action'] = 'edit';
-        }
-        if ($button) {
-            $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
-            $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
-            $class = "awesome " . $btn_size . " " . $btn_color;
-            unset($params['size']);
-            unset($params['color']);
         }
         if (!empty($params['link'])) {
             $link = $params['link'];
