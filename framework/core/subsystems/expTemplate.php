@@ -472,7 +472,7 @@ class expTemplate {
     }
 
     public static function get_common_template($view, $loc, $controllername='') {
-        $framework = expSession::get('framework');
+        $framework = framework();
 
         $controller = new stdClass();
         $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
@@ -591,7 +591,7 @@ class expTemplate {
      * @return array
      */
     public static function find_config_views($paths=array(), $excludes=array()) {
-        $framework = expSession::get('framework');
+        $framework = framework();
         $views = array();
         foreach ($paths as $path) {
             if (is_readable($path)) {
@@ -622,12 +622,12 @@ class expTemplate {
     }
 
     public static function get_template_for_action($controller, $action, $loc=null) {
-        $framework = expSession::get('framework');
+        $framework = framework();
 
         $action = urldecode($action);  // parse a non-SEFURL name
 
         // set paths we will search in for the view
-        $newuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.newui.tpl'; //FIXME shoudl there be a theme newui variation?
+        $newuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.newui.tpl'; //FIXME should there be a theme newui variation?
         $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
         $basenewuipath = $controller->viewpath.'/'.$action.'.newui.tpl';
         $basepath = $controller->viewpath.'/'.$action.'.tpl';
@@ -636,7 +636,7 @@ class expTemplate {
         // action.  i.e. showall_by_tags would use the showall.tpl view if we do not have a view named
         // showall_by_tags.tpl
         $root_action = explode('_', $action);
-        $rootnewuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.newui.tpl'; //FIXME shoudl there be a theme newui variation?
+        $rootnewuithemepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$root_action[0].'.newui.tpl'; //FIXME should there be a theme newui variation?
         $rootthemepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/' . $controller->relative_viewpath . '/' . $root_action[0] . '.tpl';
         $rootnewuipath = $controller->viewpath.'/'.$root_action[0].'.newui.tpl';
         $rootbasepath = $controller->viewpath . '/' . $root_action[0] . '.tpl';
