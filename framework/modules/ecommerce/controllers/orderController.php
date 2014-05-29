@@ -664,10 +664,15 @@ exit();
 
         //only save the status change if it actually changed to something different
         if ($order->order_status_id != $this->params['order_status_id']) {
+            if (empty($this->params['order_status_messages'])) {
+                $comment = $this->params['comment'];
+            } else {
+                $comment = $this->params['order_status_messages'];
+            }
             $change = new order_status_changes();
             // save the changes
             $change->from_status_id = $order->order_status_id;
-            $change->comment        = $this->params['comment'];
+            $change->comment        = $comment;
             $change->to_status_id   = $this->params['order_status_id'];
             $change->orders_id      = $order->id;
             $change->save();
@@ -676,7 +681,7 @@ exit();
             $order->order_status_id = $this->params['order_status_id'];
 
             // Save the message for future use if that is what the user wanted.
-            if (!empty($this->params['save_message'])) {
+            if (!empty($this->params['save_message']) && !empty($this->params['comment'])) {
                 $message       = new stdClass();
                 $message->body = $this->params['comment'];
                 $db->insertObject($message, 'order_status_messages');
@@ -715,11 +720,12 @@ exit();
                     flash('error', gt('The email address was NOT send. An email address count not be found for this customer'));
                 }
             }
+            flash('message', gt('Order Type and/or Status Updated.'));
+        } else {
+            flash('message', gt('Order Type and/or Status was not changed.'));
         }
 
         $order->save();
-
-        flash('message', gt('Order Type and/or Status Updated.'));
         expHistory::back();
     }
 
@@ -732,8 +738,14 @@ exit();
         // get the order
         $order = new order($this->params['id']);
 
+        if (empty($this->params['order_status_messages'])) {
+            $email_message = $this->params['email_message'];
+        } else {
+            $email_message = $this->params['order_status_messages'];
+        }
+
         // Save the message for future use if that is what the user wanted.
-        if (!empty($this->params['save_message'])) {
+        if (!empty($this->params['save_message']) && !empty($this->params['email_message'])) {
             $message       = new stdClass();
             $message->body = $this->params['email_message'];
             $db->insertObject($message, 'order_status_messages');
@@ -743,7 +755,7 @@ exit();
         //eDebug($email_addy,true);
         if (!empty($email_addys)) {
             assign_to_template(array(
-                'message'=> $this->params['email_message']
+                'message'=> $email_message
             ));
             $html = $template->render();
             if (!empty($this->params['include_invoice'])) {
@@ -784,7 +796,7 @@ exit();
             }
             $emailed_to     = implode(',', $email_addys);
             $note           = new expSimpleNote();
-            $note->body     = "<strong>[action]: Emailed message to " . $emailed_to . ":</strong><br><br>" . $this->params['email_message'];
+            $note->body     = "<strong>[action]: Emailed message to " . $emailed_to . ":</strong><br><br>" . $email_message;
             $note->approved = 1;
             $note->name     = $user->firstname . " " . $user->lastname;
             $note->email    = $user->email;
