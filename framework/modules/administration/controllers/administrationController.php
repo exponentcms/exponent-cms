@@ -1017,7 +1017,7 @@ class administrationController extends expController {
 	    flash('message',$message);
         expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
-        expTheme::removeSmartyCache();
+//        expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
     }	
@@ -1038,7 +1038,7 @@ class administrationController extends expController {
 		}
         expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
-		expTheme::removeSmartyCache();
+//		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
 		expHistory::back();
 	}

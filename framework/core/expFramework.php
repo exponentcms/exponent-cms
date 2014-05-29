@@ -883,13 +883,31 @@ function curPageURL() {
 }
 
 /**
+ * Return the current framework
+ *
+ * @return bool
+ */
+function framework() {
+    $framework = expSession::get('framework');
+    if (empty($framework)) {
+        if (NEWUI) {
+            $framework = 'newui';
+        } else {
+            $framework = 'yui';  // yui is the 2.x default framework
+        }
+    }
+    return $framework;
+}
+
+/**
  * Is the current framework Bootstrap v3 based?
  *
  * @return bool
  */
 function bs3() {
-    $framework = expSession::get('framework');
-    if ($framework == 'bootstrap3' || (NEWUI && $framework != 'bootstrap')) {
+    $framework = framework();
+//    if ($framework == 'bootstrap3' || (NEWUI && $framework != 'bootstrap')) {
+    if ($framework == 'bootstrap3' || $framework == 'newui') {
         return true;
     } else {
         return false;
@@ -897,13 +915,14 @@ function bs3() {
 }
 
 /**
- * Is the current framework NEWUI (NOT Bootstrap)
+ * Is the current framework NEWUI and NOT a Bootstrap framework
  *
  * @return bool
  */
 function newui() {
-    $framework = expSession::get('framework');
-    if (NEWUI && $framework != 'bootstrap3' && $framework != 'bootstrap') {
+//    $framework = framework();
+//    if (NEWUI && $framework != 'bootstrap3' && $framework != 'bootstrap') {
+    if (framework() == 'newui') {
         return true;
     } else {
         return false;
