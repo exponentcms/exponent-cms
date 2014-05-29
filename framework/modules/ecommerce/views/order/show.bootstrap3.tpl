@@ -68,12 +68,12 @@
                                     {control type="checkbox" name="email_user" label="Send email to user to notify them of status change?"|gettext value=1}
                                     {control type="checkbox" name="include_shipping_info" label="Include Shipping Information in email?"|gettext value=1}
                                     <select class="form-control" id="order_status_messages" name="order_status_messages" size="1">
-                                        <option value="0" selected>{'-- Select a predefined message --'|gettext}</option>
+                                        <option value="0" selected>{'-- Select a predefined comment --'|gettext}</option>
                                         {foreach from=$messages item=msg}
                                             <option value="{$msg->body}">{$msg->body|truncate:80}</option>
                                         {/foreach}
                                     </select>
-                                    {control id=msgbox type="textarea" name="comment" label="Comment"|gettext rows=6 cols=45}
+                                    {control id=msgbox type="textarea" name="comment" label="or enter a Comment"|gettext rows=6 cols=45}
                                     {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
                                     {control type=buttongroup submit="Save change"|gettext}
                                 {/form}                 
@@ -280,15 +280,16 @@
                             {if $permissions.manage}
                                 {form action=emailCustomer}
                                     {control type="hidden" name="id" value=$order->id}
+                                    {control type=text name="to_addresses" size="100" label="To (comma separate multiple):"|gettext value="`$to_addresses`"}
+                                    {control type=text name="email_subject" size="100" label="Email Subject:"|gettext value="`$email_subject`"}
+                                    {br}
                                     <select class="form-control" id="order_status_messages" name="order_status_messages" size="1">
                                         <option value="0" selected>{'-- Select a predefined message --'|gettext}</option>
                                         {foreach from=$messages item=msg}
                                             <option value="{$msg->body|escape:"all"}">{$msg->body|truncate:80}</option>
                                         {/foreach}
                                     </select>
-                                    {control type=text name="to_addresses" size="100" label="To (comma separate multiple):"|gettext value="`$to_addresses`"}
-                                    {control type=text name="email_subject" size="100" label="Email Subject:"|gettext value="`$email_subject`"}
-                                    {control id=email_message type="editor" name="email_message" height=250}
+                                    {control id=email_message type="editor" name="email_message" label="or enter a Message"|gettext height=250}
                                     {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
                                     {control type="checkbox" name="include_invoice" label="Attach invoice to this email?"|gettext value=1}
                                     {control type=radiogroup columns=1 name="from_address" label="Select From Address"|gettext items=$from_addresses default=$from_default flip=false}
