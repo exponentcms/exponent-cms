@@ -228,6 +228,7 @@ class expModules {
 
 	public static function listControllers() {
 	    global $available_controllers;
+
 	    return $available_controllers;
 	}
 
@@ -239,11 +240,12 @@ class expModules {
      *
      * @return null
      */
-    public static function getController($controllername='',$param=null) {
+    public static function getController($controllername='', $param=null) {
+        if (is_object($controllername)) return $controllername;  // just in case we were passed an object already
+
 	    $fullname = self::getControllerClassName($controllername);
 	    if (self::controllerExists($controllername))  {
-	        $controller = new $fullname($param);
-	        return $controller;
+            return new $fullname($param);
 	    } else {
 	        return null;
 	    }
