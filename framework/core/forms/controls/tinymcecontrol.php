@@ -83,7 +83,7 @@ class tinymcecontrol extends formcontrol
             }
             $skin = $settings->skin;
             $sc_brw_off   = $settings->scayt_on ? 'false' : 'true';
-//            $plugins    = stripSlashes($settings->plugins);
+            $plugins    = stripSlashes($settings->plugins);
             $stylesset = stripSlashes($settings->stylesset);
             $formattags = stripSlashes($settings->formattags);
             $fontnames = stripSlashes($settings->fontnames);
