@@ -207,14 +207,17 @@ class expCommentController extends expController {
 
         /* This is the recursive function that does the magic */
         /* $k is the position in the array */
-        function findchildren(&$parent, &$comments, $k=0){
-            if (isset($comments[$k])){
-                if($comments[$k]->parent_id==$parent->id){
-                    $com = $comments[$k];
-                    findchildren($com, $comments); // We try to find children's children
-                    $parent->children[] = $com;
+        if (!function_exists('findchildren')) {
+            function findchildren(&$parent, &$comments, $k = 0)
+            {
+                if (isset($comments[$k])) {
+                    if ($comments[$k]->parent_id == $parent->id) {
+                        $com = $comments[$k];
+                        findchildren($com, $comments); // We try to find children's children
+                        $parent->children[] = $com;
+                    }
+                    findchildren($parent, $comments, $k + 1); // And move to the next sibling
                 }
-                findchildren($parent, $comments, $k+1); // And move to the next sibling
             }
         }
 
