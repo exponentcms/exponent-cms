@@ -35,6 +35,10 @@
  *	template file when it exists. Otherwise, a default file passed
  *	by parameter "else" will be included.
  *
+ * NOTE! debugging only works if template is NOT already compiled
+ *  templates are only re-compiled when the template is updated
+ *  or the compiled file does not exist
+ *
  * Updates
  *    Version 2.0:
  *       Updated to work with Smarty v3 and added Exponent framework template detection/selection
@@ -80,29 +84,35 @@ function smarty_compiler_exp_include($_params, &$compiler) {
             //FIXME we assume the file is only a filename and NOT a path?
             $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['model_name']->value . '/';  // strip relative path for links coming from templates
 
+            $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
+            $themepath = str_replace(PATH_RELATIVE, '', $themepath);
+
             // see if there's an framework appropriate template variation
-            $framework =  expSession::get('framework');
-            if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+            //FIXME we need to check for custom views and add full path for system views if coming from custom view
+            $framework =  framework();
+            if (file_exists(BASE . $themepath . $include_file . '.' . $type)) {
+                $include_file = BASE . $themepath . $include_file . '.' . $type;
+            } elseif ($framework == 'bootstrap' || $framework == 'bootstrap3') {
                 if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
-                    $include_file = $include_file . '.bootstrap.' . $type;
+                    $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;
                 } elseif ($framework == 'bootstrap3' && file_exists(BASE . $path . $include_file . '.bootstrap3.' . $type)) {
-                    $include_file = $include_file . '.bootstrap3.' . $type;
+                    $include_file = BASE . $path . $include_file . '.bootstrap3.' . $type;
                 } else {
-                    $include_file = $include_file . '.' . $type;
+                    $include_file = BASE . $path . $include_file . '.' . $type;
                 }
             } else {
                 if (NEWUI) {
                     if (file_exists(BASE . $path . $include_file . '.newui.' . $type)) {
-                        $include_file = $include_file . '.newui.' . $type;
+                        $include_file = BASE . $path . $include_file . '.newui.' . $type;
                     } else {
-                        $include_file = $include_file . '.' . $type;
+                        $include_file = BASE . $path . $include_file . '.' . $type;
                     }
                 } else {
-                    $include_file = $include_file . '.' . $type;
+                    $include_file = BASE . $path . $include_file . '.' . $type;
                 }
             }
 
-            $include_file = '"' . $include_file . '"';
+            $include_file = '"' . $include_file . '"';  // add quotes for string
 			continue;
 		} else if($arg_name == 'else') {
             // the fallback view
