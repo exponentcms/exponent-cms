@@ -44,7 +44,7 @@
     {$myloc=serialize($__loc)}
     <ul>
         {foreach from=$page->records item=item name="blogs"}
-            {if $smarty.foreach.blogs.iteration <= $config.headcount}
+            {if $smarty.foreach.blogs.iteration <= $config.headcount || !$config.headcount}
                 <li class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                     <a href="{link action=show title=$item->sef_url}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a>
                     {if !$config.displayauthor}
