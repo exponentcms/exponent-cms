@@ -82,7 +82,7 @@ function smarty_compiler_exp_include($_params, &$compiler) {
             } else $type = '.tpl';
             $include_file = implode($fileparts);
             //FIXME we assume the file is only a filename and NOT a path?
-            $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['model_name']->value . '/';  // strip relative path for links coming from templates
+            $path = substr(str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value), 0, -7) . 'views/' . $compiler->tpl_vars['controller']->value . '/';  // strip relative path for links coming from templates
 
             $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
             $themepath = str_replace(PATH_RELATIVE, '', $themepath);
