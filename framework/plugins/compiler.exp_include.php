@@ -100,14 +100,19 @@ function smarty_compiler_exp_include($_params, &$compiler)
                     //                }
 
                     //FIXME we assume the file is only a filename and NOT a path?
+                    if (PATH_RELATIVE != '/') {
+                        $path = str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value);
+                    } else {
+                        $path = $compiler->tpl_vars['asset_path']->value;
+                    }
                     $path = substr(
-                            str_replace(PATH_RELATIVE, '', $compiler->tpl_vars['asset_path']->value),
+                            $path,
                             0,
                             -7
                         ) . 'views/' . $compiler->tpl_vars['controller']->value . '/'; // strip relative path for links coming from templates
 
                     $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
-                    $themepath = str_replace(PATH_RELATIVE, '', $themepath);
+                    if (PATH_RELATIVE != '/') $themepath = str_replace(PATH_RELATIVE, '', $themepath);
 
                     // see if there's an framework appropriate template variation
                     //FIXME we need to check for custom views and add full path for system views if coming from custom view
