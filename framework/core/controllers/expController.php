@@ -848,12 +848,12 @@ abstract class expController {
         }
 
         assign_to_template(array(
-            'config'            => $this->config,
+//            'config'            => $this->config,  //FIXME already assigned in controllertemplate?
             'page'              => $page, // needed for aggregation list
             'views'             => $views,
             'title'             => $this->displayname(),
             'current_section'   => expSession::get('last_section'),
-            'classname'         => $this->classname,
+//            'classname'         => $this->classname,  //FIXME $controller already assigned baseclassname (short vs long) in controllertemplate?
             'viewpath'          => $this->viewpath,
             'relative_viewpath' => $this->relative_viewpath,
             'folders'           => $folders,

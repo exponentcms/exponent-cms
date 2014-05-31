@@ -195,7 +195,7 @@
             arguments: { 'X-Transaction': 'Load File Config'}
         };
 
-        var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$classname}{literal}";
+        var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
 
         var handleSuccess = function (ioId, o) {
             Y.log(o.responseText);

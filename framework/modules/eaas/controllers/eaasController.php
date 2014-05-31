@@ -418,7 +418,12 @@ class eaasController extends expController {
         }
         // edebug($this->config['expFile']);
 
-        assign_to_template(array('config'=>$this->config, 'pullable'=>$pullable, 'page'=>$page, 'views'=>$views));
+        assign_to_template(array(
+//                'config'=>$this->config, //FIXME already assigned in controllertemplate?
+                'pullable'=>$pullable,
+                'page'=>$page,
+                'views'=>$views
+            ));
     }
 
     private function configImage($tab) {

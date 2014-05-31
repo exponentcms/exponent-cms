@@ -56,8 +56,9 @@ class expCatController extends expController {
 
         expHistory::set('manageable', $this->params);
         if (!empty($this->params['model'])) {
-            $modulename = expModules::getControllerClassName($this->params['model']);
-            $module = new $modulename(empty($this->params['src'])?null:$this->params['src']);
+//            $modulename = expModules::getControllerClassName($this->params['model']);
+//            $module = new $modulename(empty($this->params['src'])?null:$this->params['src']);
+            $module = expModules::getController($this->params['model'], empty($this->params['src']) ? null : $this->params['src']);
             $where = $module->aggregateWhereClause();
             if ($this->params['model'] == 'file') $where = 1;
             $page = new expPaginator(array(
