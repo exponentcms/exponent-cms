@@ -8,19 +8,24 @@
     clear:both;
 }
 
+.blog ul {
+	padding-left: 20px;
+	margin-left: 0;
+}
+
 /* blog tag cloud */
 
-.blog.tags_cloud ul,
-.blog.tags_cloud ul li {
+.blog.cloud ul,
+.blog.cloud ul li {
     display:inline-block;
     *display:inline;
     zoom:1;
     vertical-align:middle;
     list-style:none;
     margin:0;
-    margin:0;
+	padding-left: 0;
 }
 
-.blog.tags_cloud ul li {
+.blog.cloud ul li {
     margin:0 3px;
 }

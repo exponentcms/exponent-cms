@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="module blog tags_cloud">
+<div class="module blog cloud">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {permissions}
         {if $permissions.manage}
@@ -30,7 +30,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <ul>
+    <ul class="item">
         {foreach from=$tags item=tag}
             <li>
                 <a href="{link action=showall_by_tags tag=$tag->sef_url}" style="font-size:1.{if $tag->count<10}0{$tag->count}{else}{$tag->count}{/if}em;" title="{'View all posts tagged with'|gettext} '{$tag->title}'">{$tag->title}</a>
