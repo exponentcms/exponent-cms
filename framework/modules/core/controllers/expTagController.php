@@ -128,8 +128,9 @@ class expTagController extends expController {
    	 */
    	function manage_module() {
         expHistory::set('manageable', $this->params);
-        $modulename = expModules::getControllerClassName($this->params['model']);
-        $module = new $modulename($this->params['src']);
+//        $modulename = expModules::getControllerClassName($this->params['model']);
+//        $module = new $modulename($this->params['src']);
+        $module = expModules::getController($this->params['model'], $this->params['src']);
         $where = $module->aggregateWhereClause();
         if ($this->params['model'] == 'sermonseries') {
             $model = 'sermons';

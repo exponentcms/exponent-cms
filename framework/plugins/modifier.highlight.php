@@ -39,6 +39,7 @@ function smarty_modifier_highlight($text='', $word='', $highlight='') {
    if(strlen($text) > 0 && strlen($word) > 0) {
        $highlight = empty($highlight) ? 'style="background-color:#ffff55;"' : $highlight;
        $words = explode(' ',$word);
+       $words = array_unique($words);  // no need to highlight duplicated words more than once
        foreach ($words as $phrase) {
            $phrase = str_replace(array('+','-','*'), '', $phrase);
     //      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);

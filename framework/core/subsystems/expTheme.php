@@ -369,8 +369,9 @@ class expTheme
                     $router->url_parts[0]
                 ))
         ) {
-            $classname = expModules::getControllerClassName($router->url_parts[0]);
-            $controller = new $classname();
+//            $classname = expModules::getControllerClassName($router->url_parts[0]);
+//            $controller = new $classname();
+            $controller = expModules::getController($router->url_parts[0]);
             $metainfo = $controller->metainfo();
         } else {
             $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;

@@ -73,8 +73,9 @@ class expRss extends expRecord {
         $items = array();
         // loop over and build out a master list of rss items
         foreach ($feeds as $feed) {
-            $controllername = expModules::getControllerClassname($feed->module);
-            $controller = new $controllername($feed->src);
+//            $controllername = expModules::getControllerClassname($feed->module);
+//            $controller = new $controllername($feed->src);
+            $controller = expModules::getController($feed->module, $feed->src);
             $controller->loc = expCore::makeLocation($feed->module, $feed->src);
             $controller->params = $this->params;
             $items = array_merge($items, $controller->getRSSContent());

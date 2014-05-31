@@ -158,7 +158,8 @@ class fileController extends expController {
         global $template;
 
         $framework = expSession::get('framework');
-        $controller = new $this->params['mod'];
+//        $controller = new $this->params['mod'];
+        $controller = expModules::getController($this->params['mod']);
         // set paths we will search in for the view
         $paths = array(
 //            BASE.'themes/'.DISPLAY_THEME.'/modules/'.$this->params['mod'].'/views/'.$this->params['mod'].'/configure',
