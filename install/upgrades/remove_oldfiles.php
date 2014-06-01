@@ -56,6 +56,9 @@ class remove_oldfiles extends upgradescript {
 	function upgrade() {
 
         $oldfiles = array (
+            // trigger to allow installation, security risk if remains in system
+            'install/not_configured',
+
             // misc old files
             'captcha.php',
             'captcha_why.php',
