@@ -171,7 +171,7 @@ class photosController extends expController {
      * @return string
      */
     function meta_rich($request, $object) {
-        if (file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
+        if (!empty($object->expFile[0]) && file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
             return '<!--
         <PageMap>
             <DataObject type="thumbnail">
