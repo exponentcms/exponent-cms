@@ -112,16 +112,18 @@ class filedownloadController extends expController {
      * @return string
      */
     function meta_rich($request, $object) {
-        $rich_meta = '<!--
+        if (!empty($object->expFile[0]) && file_exists(BASE.$object->expFile[0]->directory.$object->expFile[0]->filename)) {
+            $rich_meta = '<!--
         <PageMap>
             <DataObject type="action">
-                <Attribute name="label" value="'.gt('Download').'"/>
-                <Attribute name="url" value="'.$object->download_link().'"/>
+                <Attribute name="label" value="' . gt('Download') . '"/>
+                <Attribute name="url" value="' . $object->download_link() . '"/>
                 <Attribute name="class" value="download"/>
             </DataObject>
         </PageMap>
     -->';
-        return $rich_meta;
+            return $rich_meta;
+        }
     }
 
     function getRSSContent() {
