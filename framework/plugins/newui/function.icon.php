@@ -172,7 +172,7 @@ if (!function_exists('smarty_function_icon')) {
                 $link = makeLink($params,$secure);
             }
             echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
-            if (($params['action'] == "delete" || $params['action'] == "merge" || $icon->class == "delete" || $icon->class == "merge") && empty($onclick))
+            if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
                 echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
 //                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';

@@ -6,7 +6,7 @@ Smarty,3.1.18,smarty.net,3.1.18,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.11,"phpThumb.config.php - we set the cache folder, also several local bug fixes"
 minify,2.2.0,github.com/mrclay/minify,2.2.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.17.1,developer.yahoo.com/yui/3,3.17.1,
+YUI3,3.17.2,developer.yahoo.com/yui/3,3.17.2,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11exp,code.google.com/p/recaptcha,1.11,updated google.com urls & added bootstrap3 widget
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,

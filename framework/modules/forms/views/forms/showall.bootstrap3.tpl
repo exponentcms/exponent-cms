@@ -43,6 +43,10 @@
                         &#160;&#160;|&#160;&#160;<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
                     {/if}
                 {/if}
+                {if $permissions.delete}
+                    &#160;&#160;|&#160;&#160;
+                    {icon class=delete action=delete_records forms_id=$f->id text='Purge records'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete all form records?"|gettext)|cat:"');"}
+                {/if}
             </div>
             {br}
             {/permissions}

@@ -135,7 +135,6 @@ class formsController extends expController {
                 } else {
                     $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id,'rank');
                     if ($control) {
-//                        $ctl = unserialize($control->data);
                         $ctl = expUnserialize($control->data);
                         $control_type = get_class($ctl);
                         foreach ($items as $key => $item) {
@@ -265,9 +264,7 @@ class formsController extends expController {
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly = 0 AND is_static = 0','rank');
-//                    $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
                     $data = $f->getRecord($this->params['id']);
-                    //            $data = $forms_record->find('first','id='.$this->params['id']);
                 } else {
                     if (!empty($f->forms_control)) {
                         $controls = $f->forms_control;
@@ -695,9 +692,30 @@ class formsController extends expController {
         }
 
         $f = new forms($this->params['forms_id']);
-//        $db->delete('forms_' . $f->table_name, 'id=' . $this->params['id']);
         $f->deleteRecord($this->params['id']);
 
+        expHistory::back();
+    }
+
+    /**
+     * delete all items in saved data
+     *
+     */
+    function delete_records() {
+        global $db;
+
+        if (empty($this->params['forms_id'])) {
+            flash('error', gt('Missing id for the') . ' ' . gt('form records') . ' ' . gt('you would like to delete'));
+            expHistory::back();
+        }
+
+        $f = new forms($this->params['forms_id']);
+        $recs = $f->getRecords();
+        foreach ($recs as $rec) {
+            $f->deleteRecord($rec->id);
+        }
+
+        flash('message', gt('All form records were deleted!'));
         expHistory::back();
     }
 
@@ -1243,7 +1261,7 @@ class formsController extends expController {
 //                    $srt = $column_name . "_srt";
                     foreach ($items as $key => $item) {
 //                        $item->$srt = $item->$column_name;
-                        $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
+                        $item->$column_name = strftime("%m/%d/%y %T", $item->$column_name);  // needs to be in a machine readable format
                         $items[$key] = $item;
                     }
                 } else {
