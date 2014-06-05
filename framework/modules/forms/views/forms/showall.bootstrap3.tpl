@@ -96,6 +96,14 @@
         </div>
         {*{$page->links}*}
         {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}
+        {if empty($f) && $permissions.configure}
+            {permissions}
+                <div class="module-actions">
+                    <div class="msg-queue notice" style="text-align:center">
+                        <p>{'You MUST assign a form to use this module!'|gettext} {icon action="manage" select=true}</p></div>
+                </div>
+            {/permissions}
+        {/if}
     </div>
 {/if}
 
