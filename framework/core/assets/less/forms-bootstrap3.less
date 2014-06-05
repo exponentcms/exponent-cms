@@ -8,9 +8,9 @@ input[type="color"] {
 //	padding : 0;
 }
 
-/*input[type="image"] {*/
-/*width : 16px;*/
-/*}*/
+//input[type="image"] {
+//    width : 16px;
+//}
 
 //select, textarea {
 	//	width: auto !important;
@@ -97,6 +97,20 @@ input.radio, input.checkbox {
 
 li [class^="fa-"], li [class*=" fa-"], li .fa-lg[class^="fa-"], li .fa-lg[class*=" fa-"] {
 	width : auto;
+}
+
+input:focus:invalid, textarea:focus:invalid,
+select:focus:invalid, {
+	color  : #b94a48;
+	border : 1px solid #ee5f5b;
+}
+
+input:focus:invalid:focus, textarea:focus:invalid:focus,
+select:focus:invalid:focus, {
+	border-color       : #e9322d;
+	box-shadow         : 0 0 2px #ce1a15;
+	-moz-box-shadow    : 0 0 2px #ce1a15;
+	-webkit-box-shadow : 0 0 2px #ce1a15;
 }
 
 /* buttons */
