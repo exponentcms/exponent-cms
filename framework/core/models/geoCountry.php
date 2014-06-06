@@ -33,6 +33,15 @@ class geoCountry extends expRecord {
 	        parent::__construct($id, $get_assoc, $get_attached);
 	    }
 	}
+
+    public function afterDelete() {
+	    // get and delete the regions for this country
+	    $rgn = new geoRegion();
+	    $regions = $rgn->find('all', 'country_id='.$this->id);
+	    foreach ($regions as $region) {
+            $region->delete();
+	    }
+    }
 }
 
 ?>
