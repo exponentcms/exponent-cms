@@ -206,6 +206,56 @@ class addressController extends expController {
 //        $this->manage();
     }
 
+    function edit_country() {
+        $country_id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $country = new geoCountry($country_id);
+        assign_to_template(array(
+            'record'=>$country,
+        ));
+    }
+
+    function update_country() {
+        $country_id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $country = new geoCountry($country_id);
+        $country->update($this->params);
+        expHistory::back();
+    }
+
+    function delete_country() {
+        if (empty($this->params['id'])) {
+            flash('error', gt('Missing id for the country you would like to delete'));
+            expHistory::back();
+        }
+        $country = new geoCountry($this->params['id']);
+        $country->delete();
+        expHistory::back();
+    }
+
+    function edit_region() {
+        $region_id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $region = new geoRegion($region_id);
+        assign_to_template(array(
+            'record'=>$region,
+        ));
+    }
+
+    function update_region() {
+        $region_id = !empty($this->params['id']) ? $this->params['id'] : null;
+        $region = new geoRegion($region_id);
+        $region->update($this->params);
+        expHistory::back();
+    }
+
+    function delete_region() {
+        if (empty($this->params['id'])) {
+            flash('error', gt('Missing id for the region you would like to delete'));
+            expHistory::back();
+        }
+        $region = new geoRegion($this->params['id']);
+        $region->delete();
+        expHistory::back();
+    }
+
     /**
      * Import external addresses
      */
