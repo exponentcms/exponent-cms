@@ -120,10 +120,11 @@ class paypalExpressCheckout extends billingcalculator {
             // get a shipping address to display in the invoice email.
             $shippingaddress = $order->getCurrentShippingMethod();
             $shipping_state = new geoRegion($shippingaddress->state);
-            $shipping_country = new geoCountry($shipping_state->country_id);
+//            $shipping_country = new geoCountry($shipping_state->country_id);
+            $shipping_country = new geoCountry($shippingaddress->country);
 
-            $state = new geoRegion($method->state);
-            $country = new geoCountry($state->country_id);
+//            $state = new geoRegion($method->state);
+//            $country = new geoCountry($state->country_id);
 
             $config = unserialize($this->config);
             //eDebug($config, true);  
