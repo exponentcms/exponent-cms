@@ -214,8 +214,7 @@ class expValidator {
      * @return bool|string
      */
     public static function is_valid_state($field, $object, $opts) {        
-        if(($object->state == -2 && !empty($object->non_us_state)) || $object->state > 0)
-        {
+        if(($object->state == -2 && !empty($object->non_us_state)) || $object->country != 223 || $object->state > 0) {
             return true; //supplied a non-us state/province, so we're OK
         } else {
             return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid US state abbreviation.";
