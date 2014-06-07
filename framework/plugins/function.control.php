@@ -261,7 +261,7 @@ function smarty_function_control($params, &$smarty) {
 
                 if ($db->tableExists('geo_region')) {
                     $c = $db->selectObject('geo_country', 'is_default=1');
-                    if (empty($c->id)) $country = 223;
+                    if (empty($c->id)) $country = 223;  //FIXME this is the US in sample db
                     else $country = $c->id;
 
                     $control = new dropdowncontrol();
@@ -273,6 +273,13 @@ function smarty_function_control($params, &$smarty) {
                     /*if (isset($params['add_other'])) {
                         $control->items[-2] = '-- Specify State Below --';
                     }*/
+                    //if(!count($states)) $control->items[-2] = '-- Specify State Below --';
+                    if (isset($params['add_other'])) {
+                        $control->items[-2] = '-- Specify State Below --';
+                        $control->include_blank = false;
+                    }
+                    else $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
+
                     $states = $db->selectObjects('geo_region', 'country_id=' . $country . ' AND active=1 ORDER BY rank, name ASC');
                     foreach ($states as $state) {
                         // only show the US states unless the theme says to show all us territories
@@ -280,9 +287,6 @@ function smarty_function_control($params, &$smarty) {
                         $control->items[$state->id] = isset($params['abbv']) ? $state->code : $state->name;
                         //}
                     }
-                    //if(!count($states)) $control->items[-2] = '-- Specify State Below --';
-                    if (isset($params['add_other'])) $control->items[-2] = '-- Specify State Below --';
-                    else $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
                     if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
@@ -323,6 +327,13 @@ function smarty_function_control($params, &$smarty) {
                     echo "NO TABLE";
                     exit();
                 }
+                break;
+            case "countryregion":
+                $country_default = isset($params['country_default']) ? $params['country_default'] : null;
+                $region_default = isset($params['region_default']) ? $params['region_default'] : null;
+                $entire_country = isset($params['entire_country']) ? $params['entire_country'] : null;
+                $control = new countryregioncontrol($country_default, $region_default, $entire_country);
+                $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 break;
             case "tagtree":
                 $control = new tagtreecontrol($params);
