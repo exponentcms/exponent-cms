@@ -29,6 +29,13 @@ $config = array(
 	'DB_ENCODING'=>'utf8'
 );
 
+global $db;
+if ($db->havedb) {
+    // if we already have a good database don't allow changes to db settings
+    header("Location: " . "index.php?page=upgrade-1");
+    exit();
+}
+
 ?>
 <script type="text/javascript">
 	function hideAllOptions() {
