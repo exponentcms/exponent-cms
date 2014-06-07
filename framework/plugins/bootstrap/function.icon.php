@@ -129,77 +129,13 @@ if (!function_exists('smarty_function_icon')) {
             $icon_size = 'icon-large';
         }
 
-//        $btn_type = '';
-//        switch ($class) {
-//            case 'delete' :
-//            case 'deletetitle' :
-//                $class = "remove-sign";
-//                $btn_type = "btn-danger";  // red
-//                break;
-//            case 'add' :
-//            case 'addtitle' :
-//            case 'switchtheme add' :
-//                $class = "plus-sign";
-//                $btn_type = "btn-success";  // green
-//                break;
-//            case 'copy' :
-//                $class = "copy";
-//                break;
-//            case 'downloadfile' :
-//            case 'export' :
-//                $class = "download-alt";
-//                break;
-//            case 'uploadfile' :
-//            case 'import' :
-//                $class = "upload-alt";
-//                break;
-//            case 'manage' :
-//                $class = "briefcase";
-//                break;
-//            case 'merge' :
-//            case 'arrow_merge' :
-//                $class = "signin";
-//                break;
-//            case 'reranklink' :
-//            case 'alphasort' :
-//                $class = "sort";
-//                break;
-//            case 'configure' :
-//                $class = "wrench";
-//                break;
-//            case 'view' :
-//                $class = "search";
-//                break;
-//            case 'page_next' :
-//                $class ='double-angle-right';
-//                break;
-//            case 'page_prev' :
-//                $class = 'double-angle-left';
-//                break;
-//            case 'change_password' :
-//                $class = 'key';
-//                break;
-//            case 'clean' :
-//                $class = 'check';
-//                break;
-//            case 'groupperms' :
-//                $class = 'group';
-//                break;
-//            case 'monthviewlink' :
-//            case 'weekviewlink' :
-//                $class = 'calendar';
-//                break;
-//            case 'listviewlink' :
-//                $class = 'list';
-//                break;
-//            case 'adminviewlink' :
-//                $class = 'cogs';
-//                break;
-//        }
         $icon = expTheme::buttonIcon($class);
         if (!empty($params['style']) ) $icon->type = $params['style'];
         if (!empty($params['icon']) ) $icon->class = $params['icon'];
         if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
+        if (strpos($icon->class, ' ') !== false) {
+            $icon->type .= ' ' . $icon->class;
+        }
 
         // we need to unset these vars before we pass the params array off to makeLink
         unset($params['alt']);
