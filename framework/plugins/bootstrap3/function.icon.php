@@ -107,6 +107,7 @@ if (!function_exists('smarty_function_icon')) {
         if  (empty($params['img']) && empty($params['text'])) {
             $img = gt(ucfirst($class));
         } else if (!empty($params['img'])) {
+            // we don't use an image for bootstrap, so convert image name to a class name
             $imgtmp = explode('.',$params['img']);
             $class = $imgtmp[0];
             $img = '';
@@ -129,78 +130,14 @@ if (!function_exists('smarty_function_icon')) {
             $icon_size = 'fa-lg';
         }
 
-//        $btn_type = 'btn-default';
-//        switch ($class) {
-//            case 'delete' :
-//            case 'deletetitle' :
-//                $class = "times-circle";
-//                $btn_type = "btn-danger";  // red
-//                break;
-//            case 'add' :
-//            case 'addtitle' :
-//            case 'switchtheme add' :
-//                $class = "plus-circle";
-//                $btn_type = "btn-success";  // green
-//                break;
-//            case 'copy' :
-//                $class = "files-o";
-//                break;
-//            case 'downloadfile' :
-//            case 'export' :
-//                $class = "download";
-//                break;
-//            case 'uploadfile' :
-//            case 'import' :
-//                $class = "upload";
-//                break;
-//            case 'manage' :
-//                $class = "briefcase";
-//                break;
-//            case 'merge' :
-//            case 'arrow_merge' :
-//                $class = "sign-in";
-//                break;
-//            case 'reranklink' :
-//            case 'alphasort' :
-//                $class = "sort";
-//                break;
-//            case 'configure' :
-//                $class = "wrench";
-//                break;
-//            case 'view' :
-//                $class = "search";
-//                break;
-//            case 'page_next' :
-//                $class ='angle-double-right';
-//                break;
-//            case 'page_prev' :
-//                $class = 'angle-double-left';
-//                break;
-//            case 'change_password' :
-//                $class = 'key';
-//                break;
-//            case 'clean' :
-//                $class = 'check-square-o';
-//                break;
-//            case 'groupperms' :
-//                $class = 'group';
-//                break;
-//            case 'monthviewlink' :
-//            case 'weekviewlink' :
-//                $class = 'calendar';
-//                break;
-//            case 'listviewlink' :
-//                $class = 'list';
-//                break;
-//            case 'adminviewlink' :
-//                $class = 'cogs';
-//                break;
-//        }
         $icon = expTheme::buttonIcon($class);
         if (!empty($params['style']) ) $icon->type = $params['style'];
         if (!empty($params['icon']) ) $icon->class = $params['icon'];
         if (!empty($params['color']) ) $icon->type = expTheme::buttonColor($params['color']);  // color was specifically set
         if (empty($icon->type)) $icon->type = 'btn-default';
+        if (strpos($icon->class, ' ') !== false) {
+            $icon->type .= ' ' . $icon->class;
+        }
         if (!empty($params['wide']) ) $icon->type .= ' btn-block';
 
         // we need to unset these vars before we pass the params array off to makeLink
