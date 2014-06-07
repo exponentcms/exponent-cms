@@ -43,7 +43,7 @@ class countryregioncontrol extends formcontrol {
 		$html = "";
 
 		$countries = expGeo::listCountriesOnly();
-		$c_dd = new dropdowncontrol($this->country_default,$countries);
+		$c_dd = new dropdowncontrol($this->country_default, $countries);
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
 
 		if (!defined('GEO_JS_INCLUDED')) {
@@ -88,7 +88,7 @@ class countryregioncontrol extends formcontrol {
 			foreach ($countries as $cid=>$cname) {
 				$region = new stdClass();
 				$region->parent_id = $cid;
-				foreach (expGeo::listRegions($cid) as $rid=>$rname) {
+				foreach (expGeo::listRegions($cid, $this->include_blank) as $rid=>$rname) {
 					$region->id = $rid;
 					$region->name = $rname;
 					$html .= "geo_regions.push(";
@@ -97,17 +97,16 @@ class countryregioncontrol extends formcontrol {
 				}
 			}
 			$html .= "</script>\n";
-
 		}
 
-		$regions = expGeo::listRegions($this->country_default);
+		$regions = expGeo::listRegions($this->country_default, $this->include_blank);
 		if ($this->allow_entire_country) {
 			array_unshift($regions,"[ Entire Country ]");
 		}
 		elseif ($regions == null) {
 			array_unshift($regions,"[ None Specified ]");
 		}
-		$r_dd = new dropdowncontrol($this->region_default,$regions);
+		$r_dd = new dropdowncontrol($this->region_default, $regions);
 
 		$html .= $c_dd->controlToHTML($name."_country_id");
 		$html .="<br>";

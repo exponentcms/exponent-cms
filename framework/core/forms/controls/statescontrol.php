@@ -53,11 +53,11 @@ class statescontrol extends dropdowncontrol {
 
         if ($db->tableExists('geo_region')) {
             $c = $db->selectObject('geo_country', 'is_default=1');
-            if (empty($c->id)) $country = 223;
+            if (empty($c->id)) $country = 223;  //FIXME this is the US in sample db
             else $country = $c->id;
 
             if ($this->multiple) {
-//                $this->multiple  = true;
+                $this->multiple  = true;
                 $this->items[-1] = 'ALL United States';
             }
             /*if (isset($this->add_other)) {

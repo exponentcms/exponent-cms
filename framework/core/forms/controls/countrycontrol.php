@@ -52,11 +52,11 @@ class countrycontrol extends dropdowncontrol {
         global $db;
 
         if ($db->tableExists('geo_country')) {
-//            $this->include_blank = isset($this->include_blank) ? $this->include_blank : false;
-//            if (isset($params['multiple'])) {
-//                $this->multiple = true;
-//                //$this->items[-1] = 'ALL United States';
-//            }
+            $this->include_blank = isset($this->include_blank) ? $this->include_blank : false;
+            if (isset($params['multiple'])) {
+                $this->multiple = true;
+//                $this->items[-1] = 'ALL United States';
+            }
 
             if ($this->show_all) $countries = $db->selectObjects('geo_country', null, 'name ASC');
             else $countries = $db->selectObjects('geo_country', 'active=1', 'name ASC');
