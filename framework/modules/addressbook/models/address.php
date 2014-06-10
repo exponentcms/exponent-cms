@@ -29,7 +29,8 @@ class address extends expRecord {
 			    'lastname'=>array('message'=>'Last name is a required field.'),
 			    'address1'=>array('message'=>'Street Address is a required field.'),
 			    'city'=>array('message'=>'City name is a required field.'),
-			    'state'=>array('message'=>'You must choose a state.'),			
+//			    'state'=>array('message'=>'You must choose a state.'),
+			    'country'=>array('message'=>'You must choose a country.'),
 		    ),
 		    'is_valid_zipcode'=>array(
 			    'zip'=>array('message'=>'The zip code you entered does not appear to be a valid US zip code.')

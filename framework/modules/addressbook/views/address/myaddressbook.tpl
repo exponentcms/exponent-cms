@@ -60,7 +60,7 @@
                             {$address->address1}{br}
                             {if $address->address2 != ""}{$address->address2}{br}{/if}
                             {$address->city}, {if $address->state == -2}{$address->non_us_state}{else}{$address->state|statename}{/if} {$address->zip}{br}
-                            {if $address->state == -2}{$address->country|countryname}{br}{/if}
+                            {if $address->state == -2 || empty($address->state)}{$address->country|countryname}{br}{/if}
                             {$address->address_type}{br}
                             {$address->phone}{br}
                             {$address->email}{br}

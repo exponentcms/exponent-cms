@@ -28,7 +28,7 @@
             {$address->state|statename}
         {/if}
         {$address->zip}{br}
-        {if $address->state == -2}
+        {if $address->state == -2 || empty($address->state)}
             {$address->country|countryname}
         {/if}
     </span>
