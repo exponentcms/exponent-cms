@@ -56,7 +56,7 @@
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
 	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
 	            {control type="text" name="shipfrom[city]" label="City"|gettext value=$calculator->configdata.shipfrom.city required=1}
-	            {control type="state" name="shipfrom[region]" label="State"|gettext value=$calculator->configdata.shipfrom.region required=1}
+	            {control type=state name="shipfrom[region]" label="State"|gettext value=$calculator->configdata.shipfrom.region required=1}
 	            {control type="text" name="shipfrom[postalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.postalCode required=1}
 	        </div>
 	        <div id="tab4" class="tab-pane fade">

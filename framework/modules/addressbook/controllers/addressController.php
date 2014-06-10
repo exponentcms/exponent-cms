@@ -87,9 +87,16 @@ class addressController extends expController {
 	}
 
 	public function update() {
-//		global $db, $user;
         global $user;
 
+        if (isset($this->params['address_country_id'])) {
+            $this->params['country'] = $this->params['address_country_id'];
+            unset($this->params['address_country_id']);
+        }
+        if (isset($this->params['address_region_id'])) {
+            $this->params['state'] = $this->params['address_region_id'];
+            unset($this->params['address_region_id']);
+        }
 		if ($user->isLoggedIn()) {
 			// check to see how many other addresses this user has already.
 			$count = $this->address->find('count', 'user_id='.$user->id);

@@ -73,13 +73,13 @@
 		<tr>
 			<td>* {'State'|gettext}</td>
 			<td class="state_field"> 
-				{control type="state" name="address[state]" includeblank="-- Choose a State -- " value="`$record.address.state`" label="" required=1}            
+				{control type=state name="address[state]" includeblank="-- Choose a State -- " value="`$record.address.state`" label="" required=1}
 			</td>
 		</tr>
 		<tr>
 			<td>* {'Country/State'|gettext}:</td>
 			<td class="state_field">       
-				{control type="country" name="address[country]" value="`$record.address.country`" value="`$record->country`"}
+				{control type=country name="address[country]" value="`$record.address.country`"}
 			</td>
 		</tr>
 		

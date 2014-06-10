@@ -106,7 +106,7 @@
 		<tr>
 			<td>* Country/State:</td>
 			<td>       
-				{control type=country name=address[country] value=`$record.address.country` value=$record->country}
+				{control type=country name=address[country] value=`$record.address.country`}
 			</td>
 		</tr>
 		
