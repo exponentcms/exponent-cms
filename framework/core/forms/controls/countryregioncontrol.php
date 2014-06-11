@@ -29,6 +29,9 @@ class countryregioncontrol extends formcontrol {
 
 	var $size = 0;
 	var $maxlength = "";
+    var $include_blank = false;
+    var $type = 'select';
+    var $multiple = false;
 
 	static function name() { return "Country / Region Selector"; }
 
@@ -44,6 +47,8 @@ class countryregioncontrol extends formcontrol {
 
 		$countries = expGeo::listCountriesOnly();
 		$c_dd = new dropdowncontrol($this->country_default, $countries);
+        $c_dd->required = $this->required;
+        $c_dd->disabled = $this->disabled;
 		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
 
 		if (!defined('GEO_JS_INCLUDED')) {
@@ -54,14 +59,13 @@ class countryregioncontrol extends formcontrol {
 			$html .= "	if (r_select.childNodes != null) while (r_select.childNodes.length) r_select.removeChild(r_select.firstChild);\n";
 
 			$html .= "	var country = c_select.options[c_select.selectedIndex].value;\n";
-			//alert(country);
-			$html .= "   if (allow_all) {\n";
+			$html .= "  if (allow_all) {\n";
 			$html .= "		var o = document.createElement('option');\n";
 			$html .= "		o.setAttribute('value',0);\n";
-			$html .= "		o.appendChild(document.createTextNode('[ Entire Country ]'));\n";
+			$html .= "		o.appendChild(document.createTextNode('[ ".gt('Entire Country')." ]'));\n";
 			$html .= "		r_select.appendChild(o);";
 			$html .= "	}\n";
-			$html .= "   var count = 0;\n";
+			$html .= "  var count = 0;\n";
 			$html .= "	for (i = 0; i < geo_regions.length; i++) {\n";
 			$html .= "		if (geo_regions[i].var_parent_id == country) {\n";
 			$html .= "			count++;\n";
@@ -74,7 +78,7 @@ class countryregioncontrol extends formcontrol {
 			$html .= "	if (!allow_all && count == 0) {\n";
 			$html .= " 		var o = document.createElement('option');\n";
 			$html .= "		o.setAttribute('value',0);\n";
-			$html .= "		o.appendChild(document.createTextNode('[ None Specified ]'));\n";
+			$html .= "		o.appendChild(document.createTextNode('[ ".gt('None Specified')." ]'));\n";
 			$html .= "		r_select.appendChild(o);\n";
 			$html .= "	}\n";
 			$html .= "}\n";
@@ -101,12 +105,16 @@ class countryregioncontrol extends formcontrol {
 
 		$regions = expGeo::listRegions($this->country_default, $this->include_blank);
 		if ($this->allow_entire_country) {
-			array_unshift($regions,"[ Entire Country ]");
+            $entire_str = gt('Entire Country');
+            $regions = array(0 => "[ ".$entire_str." ]") + $regions;
 		}
 		elseif ($regions == null) {
-			array_unshift($regions,"[ None Specified ]");
+            $none_str = gt('None Specified');
+            $regions = array(0 => "[ ".$none_str." ]") + $regions;
 		}
 		$r_dd = new dropdowncontrol($this->region_default, $regions);
+        $r_dd->required = $this->required;
+        $r_dd->disabled = $this->disabled;
 
 		$html .= $c_dd->controlToHTML($name."_country_id");
 		$html .="<br>";
