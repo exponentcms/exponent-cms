@@ -65,7 +65,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             {*{control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state}*}
             {*{control type=country name=country label="Country"|gettext value=$record->country}*}
         {*{/if}*}
-        {control type=countryregion name=address label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext}
+        {control type=countryregion name=address label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext required=true}
         {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
         {*{control type="text" name="phone" label="Phone Number"|gettext|cat:" <span class=\"example\">ex: 480-555-4200</span>" required=true value=$record->phone}*}
         {control type=tel name="phone" label="Phone Number"|gettext required=true value=$record->phone placeholder="ex: 480-555-4200"}

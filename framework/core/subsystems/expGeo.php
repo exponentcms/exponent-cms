@@ -80,7 +80,7 @@ class expGeo
         }
         uasort($regions, "strnatcasecmp");
         if (!empty($regions) && !empty($include_blank)) {
-            array_unshift($regions, $include_blank);
+            $regions = array(""=>$include_blank) + $regions;
         }
         return $regions;
     }

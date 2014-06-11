@@ -38,9 +38,8 @@ class countrycontrol extends dropdowncontrol {
         }
     }
 
-    function __construct($default = "",$items = array(), $include_blank = false, $multiple=false, $abbv=false, $show_all=false) {
+    function __construct($default = "", $include_blank = false, $multiple=false, $abbv=false, $show_all=false) {
         $this->default = $default;
-        $this->items = $items;
         $this->include_blank = $include_blank;
         $this->required = false;
         $this->multiple = $multiple;
@@ -88,7 +87,6 @@ class countrycontrol extends dropdowncontrol {
             $object->description = "";
             $object->default = "";
             $object->size = 1;
-            $object->items = array();
             $object->abbv = false;
             $object->show_all = false;
             $object->required = false;

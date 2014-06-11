@@ -38,9 +38,8 @@ class statescontrol extends dropdowncontrol {
         }
     }
 
-    function __construct($default = "",$items = array(), $include_blank = false, $multiple=false, $abbv=false, $add_other=false) {
+    function __construct($default = "", $include_blank = false, $multiple=false, $abbv=false, $add_other=false) {
         $this->default = $default;
-        $this->items = $items;
         $this->include_blank = $include_blank;
         $this->required = false;
         $this->multiple = $multiple;
@@ -58,7 +57,7 @@ class statescontrol extends dropdowncontrol {
 
             if ($this->multiple) {
                 $this->multiple  = true;
-                $this->items[-1] = 'ALL United States';
+                $this->items[-1] = gt('Entire Country');
             }
             /*if (isset($this->add_other)) {
                 $this->items[-2] = '-- Specify State Below --';
@@ -98,7 +97,6 @@ class statescontrol extends dropdowncontrol {
             $object->description = "";
             $object->default = "";
             $object->size = 1;
-            $object->items = array();
             $object->abbv = false;
             $object->add_other = false;
             $object->include_blank = false;

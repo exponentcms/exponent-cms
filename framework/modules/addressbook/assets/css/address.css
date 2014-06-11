@@ -9,7 +9,7 @@
 }
 
 .address.edit .control .text {
-    width:250px;
+    /*width:250px;*/
 }
 
 #passwordDiv p {
@@ -24,6 +24,7 @@
 
 .address.edit .buttongroup {
     padding-left:190px;
+	margin-top: 12px;
 }
 
 .address .address_type {
