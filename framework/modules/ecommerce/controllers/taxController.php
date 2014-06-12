@@ -109,6 +109,14 @@ class taxController extends expController {
     function update() {
         global $db;
 
+        if (isset($this->params['address_country_id'])) {
+            $this->params['country'] = $this->params['address_country_id'];
+            unset($this->params['address_country_id']);
+        }
+        if (isset($this->params['address_region_id'])) {
+            $this->params['state'] = $this->params['address_region_id'];
+            unset($this->params['address_region_id']);
+        }
         if (empty($this->params['id'])) {
             //Add data in tax class
             $tax_class = new stdClass();

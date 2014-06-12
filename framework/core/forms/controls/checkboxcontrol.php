@@ -93,7 +93,7 @@ class checkboxcontrol extends formcontrol {
                     $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
                     if ($this->required) $html .= '<span class="required" title="' . gt(
                             'This entry is required'
-                        ) . '">*</span>';
+                        ) . '">*&#160;</span>';
                     $html .= $label;
 //                $html .= "</div>";
                     $html .= "</label>";

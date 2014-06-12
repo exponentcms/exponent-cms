@@ -116,9 +116,19 @@ class countryregioncontrol extends formcontrol {
         $r_dd->required = $this->required;
         $r_dd->disabled = $this->disabled;
 
-		$html .= $c_dd->controlToHTML($name."_country_id");
+        if (substr($name, -1) == ']') {
+            $c_name = substr($name, 0, -1) . "_country_id]";
+        } else {
+            $c_name = $name . "_country_id";
+        }
+		$html .= $c_dd->controlToHTML($c_name);
 		$html .="<br>";
-		$html .= $r_dd->controlToHTML($name."_region_id");
+        if (substr($name, -1) == ']') {
+            $r_name = substr($name, 0, -1) . "_region_id]";
+        } else {
+            $r_name = $name . "_region_id";
+        }
+		$html .= $r_dd->controlToHTML($r_name);
 
 		return $html;
 	}
