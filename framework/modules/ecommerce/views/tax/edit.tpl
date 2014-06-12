@@ -18,7 +18,8 @@
     {control type="text" name="name" label="Class Name"|gettext value=$record->classname}
     {control type="text" name="rate" label="Percentage Rate"|gettext value=$record->rate}
     {control type="dropdown" name="zone" label="Zone"|gettext items=$zones value=$record->zone}
-    {control type=state name=state label="State/Province"|gettext value=$record->state}
-    {control type=country name=country label="Country"|gettext value=$record->country}
+    {*{control type=state name=state label="State/Province"|gettext value=$record->state}*}
+    {*{control type=country name=country label="Country"|gettext value=$record->country}*}
+    {control type=regioncountry name=address label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext}
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

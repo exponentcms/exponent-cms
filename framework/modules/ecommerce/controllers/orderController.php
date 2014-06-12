@@ -1341,6 +1341,12 @@ exit();
         //eDebug($addy,true);
 
         foreach ($this->params['address'] as $key=> $val) {
+            if ($key == 'address_country_id') {
+                $key = 'country';
+            }
+            if ($key == 'address_region_id') {
+                $key = 'state';
+            }
             $addy->$key = $val;
             if (isset($billingmethod->$key)) $billingmethod->$key = $val;
             if (isset($shippingmethod->$key)) $shippingmethod->$key = $val;
