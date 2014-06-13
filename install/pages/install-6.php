@@ -27,24 +27,47 @@ if (!defined('EXPONENT')) {
 
 <span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
 <?php echo isset($_GET['errusername']) == 'true' ? gt('You must supply a username.') : ''; ?>
-<?php echo isset($_GET['errpassword']) == 'true' ? gt(
-    'Your passwords do not match. Please check your entries.'
-) : ''; ?>
+<?php echo isset($_GET['errpwusername']) == 'true' ? gt('Your password must be at least 8 letters long and cannot be equal to the username.') : ''; ?>
+<?php echo isset($_GET['errpassword']) == 'true' ? gt('Your passwords do not match. Please check your entries.') : ''; ?>
 <?php echo isset($_GET['erremail']) == 'true' ? gt('Your email address is invalid. Please check your entry.') : ''; ?>
 </span>
 <script>
+    function strcasecmp(f_string1, f_string2) {
+        //  discuss at: http://phpjs.org/functions/strcasecmp/
+        // original by: Martijn Wieringa
+        // bugfixed by: Onno Marsman
+        //   example 1: strcasecmp('Hello', 'hello');
+        //   returns 1: 0
+
+        var string1 = (f_string1 + '')
+            .toLowerCase();
+        var string2 = (f_string2 + '')
+            .toLowerCase();
+
+        if (string1 > string2) {
+            return 1;
+        } else if (string1 == string2) {
+            return 0;
+        }
+
+        return -1;
+    }
+
     function validateForm(f) {
         emailfilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if (f.username.value == "") {
-            //alert('<?php echo gt('You must specify a username.'); ?>');
             document.getElementById("errorMessage").innerHTML = "<?php echo gt('You must specify a username.'); ?>";
             return false;
         } else if (f.password.value != f.password2.value) {
-            //alert('<?php echo gt('Your passwords do not match. Please check your entries.'); ?>');
             document.getElementById("errorMessage").innerHTML = "<?php echo gt('Your passwords do not match. Please check your entries.'); ?>";
             return false;
+        } else if (strcasecmp(f.username.value, f.password.value) == 0) {
+            document.getElementById("errorMessage").innerHTML = "<?php echo gt('Your password cannot be equal to the username.'); ?>";
+            return false;
+        } else if (f.password.textLength < 8) {
+            document.getElementById("errorMessage").innerHTML = "<?php echo gt('Your password must be at least 8 characters long.'); ?>";
+            return false;
         } else if (!emailfilter.test(f.email.value)) {
-            //alert('<?php echo gt('Your email address is invalid. Please check your entry.'); ?>');
             document.getElementById("errorMessage").innerHTML = "<?php echo gt('Your email address is invalid. Please check your entry.'); ?>";
             return false;
         } else {
@@ -55,6 +78,7 @@ if (!defined('EXPONENT')) {
 </script>
 <form role="form" method="post" onsubmit="return validateForm(this);">
     <input type="hidden" name="page" value="install-7"/>
+
     <div class="form_section">
         <div class="control">
             <span class="label"><?php echo gt('Username'); ?>: </span>

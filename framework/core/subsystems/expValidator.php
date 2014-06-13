@@ -560,7 +560,7 @@ class expValidator {
 		}
 		# For example purposes, the next line forces passwords to be over 8 characters long.
 		if (strlen($password) < 8) {
-			return gt('Passwords must be at least 8 letters long.');
+			return gt('Passwords must be at least 8 characters long.');
 		}
 
 		return ""; // by default, accept any passwords

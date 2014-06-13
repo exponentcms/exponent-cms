@@ -29,6 +29,7 @@ expSettings::change('LANGUAGE', LANGUAGE);
 $user = $db->selectObject('user', 'is_system_user=1');
 
 $user->username = $_POST['username'];
+$pwstrength = expValidator::checkPasswordStrength($_POST['username'], $_POST['password']);
 if ($user->username == '') {
     $error = true;
     $errorstr = gt('You must specify a valid username.');
@@ -38,6 +39,11 @@ if ($user->username == '') {
     $error = true;
     $errorstr = gt('Your passwords do not match. Please check your entries.');
     $errorflag = '&errpassword=true';
+    echo $errorstr;
+} elseif ($pwstrength != '') {
+    $error = true;
+    $errorstr = $pwstrength;
+    $errorflag = '&errpwusername=true';
     echo $errorstr;
 } elseif (!expValidator::validate_email_address($_POST['email'])) {
     $error = true;
