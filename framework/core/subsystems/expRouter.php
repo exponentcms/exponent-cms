@@ -604,7 +604,7 @@ class expRouter {
     }
 
     public function convertPartsToParams() {
-                 
+        $params = array();
         if ($this->url_type == 'base') {
             $params['section'] = SITE_DEFAULT_SECTION;
         } elseif ($this->url_type == 'page') {
