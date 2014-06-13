@@ -202,6 +202,7 @@ class remove_oldfiles extends upgradescript {
             'themes/retrotheme/sample.tar.gz',
             'themes/simpletheme/sample.eql',
             'themes/simpletheme/sample.tar.gz',
+            'install/pop.css',
             'install/pages/admin_user.php',
             'install/pages/dbcheck.php',
             'install/pages/dbconfig.php',

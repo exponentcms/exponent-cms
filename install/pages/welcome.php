@@ -16,23 +16,33 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT')) {
+    exit('');
+}
 
 ?>
 <h1><?php echo gt('Welcome to Exponent CMS'); ?></h1>
 <p>
-    <?php echo gt('The Exponent Development Team would like to thank you for downloading and installing the Exponent Content Management System.') .
-        gt('We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.') ?>
+    <?php echo gt(
+            'The Exponent Development Team would like to thank you for downloading and installing the Exponent Content Management System.'
+        ) .
+        gt(
+            'We fervently hope that you will enjoy the power, flexibility, and ease-of-use that Exponent has to offer.'
+        ) ?>
 </p>
 
 <h1 id="subtitle"><?php echo gt('Please select a language'); ?></h1>
 <p>
-    <?php echo gt('This will set the default Language for the installation process as well as your new Exponent website.'); ?>
+    <?php echo gt(
+        'This will set the default Language for the installation process as well as your new Exponent website.'
+    ); ?>
 </p>
 
 <?php
 if (!defined('LANGUAGE')) {
-    if (empty($_POST['sc']['LANGUAGE'])) $_POST['sc']['LANGUAGE'] = 'English - US';
+    if (empty($_POST['sc']['LANGUAGE'])) {
+        $_POST['sc']['LANGUAGE'] = 'English - US';
+    }
     define('LANGUAGE', $_POST['sc']['LANGUAGE']);
 }
 ?>
@@ -45,7 +55,9 @@ if (!defined('LANGUAGE')) {
         <select class="form-control" name="lang" onchange="Refresh(this.value)">
             <?PHP foreach (expLang::langList() as $currid => $currlang) { ?>
                 <option
-                    value="<?PHP echo $currid ?>"<?php if ($currid == LANGUAGE) echo " selected"; ?>><?PHP echo $currlang ?></option>
+                    value="<?PHP echo $currid ?>"<?php if ($currid == LANGUAGE) {
+                    echo " selected";
+                } ?>><?PHP echo $currlang ?></option>
             <?PHP } ?>
         </select>
     </div>
@@ -55,10 +67,10 @@ if (!defined('LANGUAGE')) {
 
 <?php
 // build core css files from .less after clearing the less compiler cache
-expFile::removeFilesInDirectory(BASE.'tmp/css');
+expFile::removeFilesInDirectory(BASE . 'tmp/css');
 expCSS::updateCoreCss();
 
-// profiles
+// Are profiles available to load?
 $profiles = expSettings::profiles();
 if (!empty($profiles)) {
     $profile = array('' => '(select a profile to abort install)');
@@ -75,7 +87,9 @@ if (!empty($profiles)) {
         <select class="form-control" id="profiles" onchange="changeProfile(this.value)">
             <?PHP foreach ($profiles as $currid => $currprof) { ?>
                 <option
-                    value="<?PHP echo $currid ?>"<?php if ($currid == '') echo " selected"; ?>><?PHP echo $currprof ?></option>
+                    value="<?PHP echo $currid ?>"<?php if ($currid == '') {
+                    echo " selected";
+                } ?>><?PHP echo $currprof ?></option>
             <?PHP } ?>
         </select>
     </div>

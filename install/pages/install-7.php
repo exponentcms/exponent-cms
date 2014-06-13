@@ -16,19 +16,22 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT')) {
+    exit('');
+}
+
 global $db;
 
 $error = false;
 // We have to force the language name into the config.php file
-expSettings::change('LANGUAGE',LANGUAGE);
+expSettings::change('LANGUAGE', LANGUAGE);
 
-$user = $db->selectObject('user','is_system_user=1');
+$user = $db->selectObject('user', 'is_system_user=1');
 
 $user->username = $_POST['username'];
 if ($user->username == '') {
     $error = true;
-	$errorstr = gt('You must specify a valid username.');
+    $errorstr = gt('You must specify a valid username.');
     $errorflag = '&errusername=true';
     echo $errorstr;
 } elseif ($_POST['password'] != $_POST['password2']) {
@@ -43,25 +46,24 @@ if ($user->username == '') {
     echo $errorstr;
 }
 
-if ($error) {  //FIXME Shouldn't get this because of check in install-6.php unless browser jscript disabled
-    flash('error',$errorstr);
-    header('Location: index.php?page=install-6'.$errorflag);
+if ($error) { //FIXME Shouldn't get this because of check in install-6.php unless browser jscript disabled
+    flash('error', $errorstr);
+    header('Location: index.php?page=install-6' . $errorflag);
     exit();
 } else {
-	$user->password = md5($_POST['password']);
-	$user->firstname = $_POST['firstname'];
-	$user->lastname = $_POST['lastname'];
-	$user->is_admin = 1;
-	$user->is_acting_admin = 1;
+    $user->password = md5($_POST['password']);
+    $user->firstname = $_POST['firstname'];
+    $user->lastname = $_POST['lastname'];
+    $user->is_admin = 1;
+    $user->is_acting_admin = 1;
     $user->is_system_user = 1;
-	$user->email = $_POST['email'];
-	$user->created_on = time();
-	if (isset($user->id)){
-		$db->updateObject($user,'user');
-	}else{
-		$db->insertObject($user,'user');
-	}
-	header('Location: '.'index.php?page=final');
+    $user->email = $_POST['email'];
+    $user->created_on = time();
+    if (isset($user->id)) {
+        $db->updateObject($user, 'user');
+    } else {
+        $db->insertObject($user, 'user');
+    }
+    header('Location: ' . 'index.php?page=final');
 }
-
 ?>
