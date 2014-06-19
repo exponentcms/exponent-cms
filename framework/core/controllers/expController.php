@@ -1048,13 +1048,13 @@ abstract class expController {
             $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
             if ($site_rss->module == "filedownload") {
                 $rss->itunes = new iTunes();
-                //		$rss->itunes->summary = $site_rss->feed_desc;
                 $rss->itunes->author = ORGANIZATION_NAME;
+                $rss->itunes->image = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
+                $rss->itunes->summary = $site_rss->feed_desc;
                 if (!empty($itunes_cats)) {
                     $rss->itunes->category = $itunes_cats[0]->category;
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
-                $rss->itunes->image = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
                 //		$rss->itunes->explicit = 0;
                 $rss->itunes->subtitle = $site_rss->title;
                 //		$rss->itunes->keywords = 0;
