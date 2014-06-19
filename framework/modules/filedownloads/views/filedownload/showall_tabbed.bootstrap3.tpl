@@ -61,7 +61,7 @@
         <div class="tab-content">
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
-                    {foreach from=$cat->records item=file}
+                    {foreach from=$cat->records item=item}
                         {exp_include file='filedownloaditem.tpl'}
                     {/foreach}
                 </div>
