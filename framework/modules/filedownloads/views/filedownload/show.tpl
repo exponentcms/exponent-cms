@@ -21,7 +21,7 @@
 
 {$orderarray = explode(' ',$config.order)}
 {$order = $orderarray[0]}
-{if $order == 'created_at' }
+{if $order == 'created_at'}
     {$date = 'created_at'}
 {elseif $order == 'edited_at'}
     {$date = 'edited_at'}

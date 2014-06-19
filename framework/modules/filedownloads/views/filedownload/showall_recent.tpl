@@ -47,7 +47,7 @@
     {subscribe_link}
     {$myloc=serialize($__loc)}
     {$cat="bad"}
-    {foreach from=$page->records item=file name=files}
+    {foreach from=$page->records item=item name=files}
         {if $smarty.foreach.files.iteration<=$config.headcount || !$config.headcount}
             {exp_include file='filedownloaditem.tpl'}
             {$cat=$file->expCat[0]->id}
