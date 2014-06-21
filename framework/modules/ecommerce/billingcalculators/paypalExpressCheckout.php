@@ -181,7 +181,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'PWD'                                => $pwd,
                 'SIGNATURE'                          => $sig,
 //                'VERSION'           => '59.0',
-                'VERSION'                            => '95.0',
+                'VERSION'                            => '114.0',
 //                'ReturnUrl' => $returnURL,
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
@@ -321,7 +321,7 @@ class paypalExpressCheckout extends billingcalculator {
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
 //            'VERSION'       => '59.0',
-            'VERSION'                        => '95.0',
+            'VERSION'                        => '114.0',
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
             'TOKEN'                          => $billing_options->result->token,
@@ -741,7 +741,8 @@ class paypalExpressCheckout extends billingcalculator {
         if ("sandbox" === $environment || "beta-sandbox" === $environment) {
             $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
         }
-        $version = urlencode('51.0');
+//        $version = urlencode('51.0');
+        $version = urlencode('114.0');
 
         // Set the curl parameters.
         $ch = curl_init();
