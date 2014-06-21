@@ -20,7 +20,7 @@
     {if $order->total}
         {form controller=cart action=preprocess}
             {control type="hidden" name="billingcalculator_id" value=$calcid}
-            <input id="continue-checkout" type="image" name="submit" value="1" src="https://cms.paypal.com/cms_content/US/en_US/images/developer/US_AU_btn.gif">
+            <input id="continue-checkout" type="image" name="submit" value="1" src="https://fpdbs.paypal.com/dynamicimageweb?cmd=_dynamic-image&locale={$smarty.const.LOCALE}">
         {/form}
     {else}
         <h4>{'PayPal Express Checkout is unavailable for this transaction'|gettext}</h4>
