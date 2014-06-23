@@ -31,7 +31,7 @@
         </blockquote>
         {control type="text" name="app_id" label="App ID"|gettext value=$config.app_id class=title}
         {control type="text" name="app_secret" label="App secret"|gettext value=$config.app_secret class=title}
-        {'Save these settings, then'|gettext} <a href="http://www.facebook.com/dialog/oauth?client_id={$config.app_id}&redirect_uri={urlencode($smarty.const.URL_FULL)}&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event" target=_blank">{'Establish Facebook Permissions'|gettext}</a>
+        {'Save these settings, then'|gettext} <a href="http://www.facebook.com/dialog/oauth?client_id={$config.app_id}&redirect_uri={urlencode($smarty.const.URL_FULL)}&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event" target="_blank">{'Establish Facebook Permissions'|gettext}</a>
     {/group}
 {/group}
 {group label='Facebook Like Button'|gettext}

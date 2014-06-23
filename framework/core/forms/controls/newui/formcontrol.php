@@ -72,7 +72,7 @@ abstract class formcontrol {
     static function getFieldDefinition() { return array(); }
 
     /**
-     * Place the control in the form
+     * Place the control in the form with label and description
      *
      * @param $label
      * @param $name
@@ -95,10 +95,10 @@ abstract class formcontrol {
                 $for = '';
             }
 
-            $disabled = $this->disabled != 0 ? "disabled" : "";
+            $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
             $class = empty($this->class) ? '' : $this->class;
 
-            $html = "<div" . $divID . " class=\"" . $this->type . "-control form-group " . $class . $disabled;
+            $html = "<div" . $divID . " class=\"" . $this->type . "-control control form-group " . $class . $disabled;
             $html .= !empty($this->required) ? ' required">' : '">';
             //$html .= "<label>";
             if ($this->required) {

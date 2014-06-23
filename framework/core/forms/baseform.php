@@ -34,13 +34,22 @@ abstract class baseform {
 	var $method  = "post";
 	var $action  = "";
 	var $enctype = "";
+    var $style   = false;  // stacked/default or horizontal control labels
 
 	function __construct() {
 		//$this->action = SCRIPT_RELATIVE.SCRIPT_FILENAME;
 		$this->action = PATH_RELATIVE.SCRIPT_FILENAME;
 	}
 
-	function meta($name,$value) {
+    /**
+     * Adds form meta data (hidden inputs)
+     *
+     * @param $name
+     * @param $value
+     *
+     * @return bool
+     */
+    function meta($name,$value) {
 		if (!is_array($value)) {
 			$this->meta[$name] = $value;
 		} else {
@@ -50,8 +59,15 @@ abstract class baseform {
 		}
 		return true;
 	}
-	
-	function location($loc) {
+
+    /**
+     * Sets form location data
+     *
+     * @param $loc
+     *
+     * @return bool
+     */
+    function location($loc) {
 		$this->meta["controller"] = $loc->mod;
 		$this->meta["src"] = $loc->src;
 		$this->meta["int"] = $loc->int;
@@ -89,9 +105,8 @@ abstract class baseform {
 		return true;
 	}
 	
-	function toHTML($form_id) {
-		return "";
-	}
+	abstract function toHTML($form_id);
+
 }
 
 ?>

@@ -103,8 +103,7 @@ class checkboxcontrol extends formcontrol {
 
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size) && $this->size) $html .= ' size="' . $this->size . '"';
-//        if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
-        if ($this->default) $html .= ' checked="checked"';
+        if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox form-control"' : ' class="checkbox form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';

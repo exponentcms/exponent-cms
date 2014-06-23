@@ -110,7 +110,7 @@ class datetimecontrol extends formcontrol {
             $html .= '<option value="pm"' . ($default_date['hours'] < 12 ? "" : " selected") . '>pm</option>';
             $html .= '</select></div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->description . "</div>";
         return $html;
     }
 

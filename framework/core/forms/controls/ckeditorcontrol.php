@@ -232,7 +232,7 @@ class ckeditorcontrol extends formcontrol {
         $html .= ">";
         $html .= htmlentities($this->default, ENT_COMPAT, LANG_CHARSET);
         $html .= "</textarea>";
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         return $html;
     }
 

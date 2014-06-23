@@ -52,6 +52,14 @@ class checkboxcontrol extends formcontrol {
         $this->required = $required;
     }
 
+    /**
+     * Fully formated control including label and description
+     *
+     * @param $label
+     * @param $name
+     *
+     * @return string
+     */
     function toHTML($label, $name) {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
@@ -69,67 +77,27 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
                 $for = ' for="' . $name . '"';
             }
-            $html = "<div" . $divID . " class=\"";
+            $html = "<div" . $divID . " class=\"checkbox control form-group";
             $html .= (!empty($this->required)) ? ' required">' : '">';
-            if (!empty($this->flip)) {
-                $html .= "<label" . $for . " class=\"checkbox control\" style=\"display:inline;\">" . $label;
-                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
-                    $name
-                );
-                $html .= "</label>";
-
-                $flip = '';
-            } else {
-//            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-//            $html .= "<td class=\"input\" nowrap>";
-                $html .= "<label" . $for . " class=\"checkbox control\">";
-//            $html .= "</td><td>";
-                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
-                    $name
-                );
-                $html .= $label . "</label>";
-//             if (!empty($label) && $label != ' ') {
-// //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
-// //                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
-//                 $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";
-//                 if($this->required) $html .= '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>';
-//                 $html .= $label;
-// //                $html .= "</div>";
-//                 $html .= "</label>";
-//             }
-//            $html .= "</td>";
-                // $flip = ' style="position:absolute;"';
-            }
-//        $html .= "</tr></table>";
+            $html .= "<label" . $for . " class=\" ".(bs3()?"control-label ":"")."checkbox control\" style=\"display:inline;\">";
+            if (!empty($this->flip)) $html .= $label;
+            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                $name
+            );
+            if (empty($this->flip)) $html .= $label;
+            $html .= "</label>";
             if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
             $html .= "</div>";
             return $html;
         }
     }
 
-    /*
-        function toHTML($label,$name) {
-            if(empty($this->flipped)){
-                $html = '<label>';
-                $html .= $this->controlToHTML($name);
-                $html .= "<span class=\"checkboxlabel\">".$label."</span>";
-                $html .= "</label>";
-            }else{
-                $html = '<label>';
-                $html .= "<span class=\"checkboxlabel\">".$label."</span>";
-                $html .= $this->controlToHTML($name);
-                $html .= "</label>";
-            }
-            return $html;
-        }
-    */
-
     function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;
 //        $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
 //        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
-        $html        = '<input' . $inputID . ' class="checkbox control form-control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+        $html        = '<input' . $inputID . ' class="checkbox form-control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
@@ -149,6 +117,14 @@ class checkboxcontrol extends formcontrol {
 
     //FIXME:  this is just here until we completely deprecate the old school checkbox
     //control calls in the old school forms
+    /**
+     * Input control only, label and description left to calling function
+     *
+     * @param $name
+     * @param $label
+     *
+     * @return string
+     */
     function controlToHTML_newschool($name, $label) {
         $this->value = isset($this->value) ? $this->value : 1;
 
@@ -157,7 +133,7 @@ class checkboxcontrol extends formcontrol {
 
         $html = "";
         // hidden value to force a false value in to the post array
-        // if unchecked, the index won't even get in to the post array
+        // if unchecked, the param won't even get in to the post array
         if (!empty($this->postfalse) && $this->postfalse) {
             $html .= '<input type="hidden" name="' . $name . '" value="0" />';
         }
@@ -188,7 +164,6 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 
         $html .= ' />';
-//        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">".$this->description."</div>";
         return $html;
     }
 

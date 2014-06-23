@@ -35,6 +35,7 @@ class buttongroupcontrol extends formcontrol {
 	var $returntype = "";
 	var $class = "";
 	var $validateJS = "";
+    var $wide = false;
 
 	static function name() { return "Button Group"; }
 
@@ -49,7 +50,7 @@ class buttongroupcontrol extends formcontrol {
 	function toHTML($label,$name) {
 	    $disabled = $this->disabled != false ? " disabled" : "";
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
-		$html = "<div id=\"".$name."Control\" class=\"form-group".$disabled."\">";
+		$html = "<div id=\"".$name."Control\" class=\"buttongroup control form-group".$disabled."\">";
 		$html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 		$html .= $this->controlToHTML($name);
 		$html .= ($this->horizontal == 1 ) ? '</div>' : '';
@@ -60,23 +61,32 @@ class buttongroupcontrol extends formcontrol {
 	function controlToHTML($name,$label=null) {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
-		$html = "";
+        $html = '';
 		if ($this->submit != "") {
-			$btn_size = 'btn-'.BTN_SIZE;
-			$icon_size = 'icon-'.BTN_SIZE;
-
+//            if (BTN_SIZE == 'large') {
+//                $btn_size = 'btn-sm';
+//                $icon_size = 'fa-large';
+//            } else {
+//                $btn_size = 'btn-xs';
+//                $icon_size = '';
+//            }
+            $btn_size = expTheme::buttonSize();
+            if ($this->wide) {
+                $btn_size .= ' btn-block';
+            }
+            $icon_size = expTheme::iconSize();
             if (stripos($this->submit, 'save') !== false) {
-                $icon = 'icon-save';
+                $icon = 'fa fa-floppy-o';
             } elseif (stripos($this->submit, 'log') !== false) {
-                $icon = 'icon-signin';
+                $icon = 'fa fa-sign-in';
             } else {
-                $icon = 'icon-ok-circle';
+                $icon = 'fa fa-check-circle-o';
             }
 			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn btn-primary '.$btn_size.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
-			$html .= ' onclick="if (checkRequired(this.form)';
+//			$html .= ' onclick="if (checkRequired(this.form)';
 			if (isset($this->onclick)) $html .= ' '.$this->onclick;
 			$html .= ') ';
 			if ($this->validateJS != "") {
@@ -96,11 +106,17 @@ class buttongroupcontrol extends formcontrol {
 			} else {
 			    $html .= '<button type="cancel" class="cancel btn btn-default '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
-            $html .= ' ><i class="icon-ban-circle '.$icon_size.'"></i> ';
+            $html .= ' ><i class="fa fa-ban '.$icon_size.'"></i> ';
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
-				
+
+//		expCSS::pushToHead(array(
+////		    "unique"=>"button",
+//		    "corecss"=>"button",
+//		    )
+//		);
+
 		return $html;
 	}
 

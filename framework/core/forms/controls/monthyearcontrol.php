@@ -34,9 +34,9 @@ class monthyearcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
         $this->id = (empty($this->id)) ? $name : $this->id;
-        $html     = "<div id=\"" . $this->id . "Control\" class=\"control";
+        $html     = "<div id=\"" . $this->id . "Control\" class=\"monthyear control form-group";
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<label><span class=\"label\">" . $label . "</span></label>";
+        $html .= "<label><span class=\"".(bs3()?"control-label":"label")."\">" . $label . "</span></label>";
         $html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
         return $html;

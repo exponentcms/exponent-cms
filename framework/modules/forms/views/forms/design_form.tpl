@@ -48,7 +48,7 @@
         <table cellpadding="5" cellspacing="0" border="0">
             <tr>
                 <td style="border:none;">
-                    <form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php">
+                    <form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php" class="exp-skin">
                         <input type="hidden" name="controller" value="forms"/>
                         <input type="hidden" name="action" value="edit_control"/>
                         <input type="hidden" name="forms_id" value="{$form->id}"/>
@@ -79,7 +79,7 @@
             {'Use the drop down to add fields to this form.'|gettext}
             <em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>
         </blockquote>
-        <p>
+        <p class="exp-skin">
             {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
             {icon button=true link=$backlink text='Done'|gettext}
         </p>

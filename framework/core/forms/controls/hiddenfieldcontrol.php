@@ -72,8 +72,8 @@ class hiddenfieldcontrol extends formcontrol {
 		$form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
 		$form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
 		$form->register(null, null, new htmlcontrol('<br />'));
-				$form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
-				$form->register(null, null, new htmlcontrol('<br />')); 
+        $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
+        $form->register(null, null, new htmlcontrol('<br />'));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		
 		return $form;

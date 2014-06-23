@@ -62,11 +62,11 @@ class colorcontrol extends textcontrol {
             $labeltag = $label;
         }
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "&#160;<label style=\"display:inline-block\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "&#160;<label".(bs3()?" class=\"control-label\"":"")." style=\"display:inline-block\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label);
 		} else {
 			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "&#160;<label style=\"display:inline-block\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "&#160;<label".(bs3()?" class=\"control-label\"":"")." style=\"display:inline-block\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 //		$html .= "</div>";

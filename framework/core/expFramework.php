@@ -906,7 +906,6 @@ function framework() {
  */
 function bs3() {
     $framework = framework();
-//    if ($framework == 'bootstrap3' || (NEWUI && $framework != 'bootstrap')) {
     if ($framework == 'bootstrap3' || $framework == 'newui') {
         return true;
     } else {
@@ -920,8 +919,6 @@ function bs3() {
  * @return bool
  */
 function newui() {
-//    $framework = framework();
-//    if (NEWUI && $framework != 'bootstrap3' && $framework != 'bootstrap') {
     if (framework() == 'newui') {
         return true;
     } else {

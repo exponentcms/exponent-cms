@@ -57,11 +57,11 @@ class datetimecontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         //$html .= "<label>";
         if (empty($this->flip)) {
-            $html .= "<span class=\"label\">" . $label . "</span>";
+            $html .= "<span class=\"".(bs3()?"control-label":"label")."\">" . $label . "</span>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);
-            $html .= "<span class=\"label\">" . $label . "</span>";
+            $html .= "<span class=\"".(bs3()?"control-label":"label")."\">" . $label . "</span>";
         }
         //$html .= "</label>";
         $html .= "</div>";
@@ -81,7 +81,7 @@ class datetimecontrol extends formcontrol {
         if ($minute < 10) $minute = "0" . $minute;
         $html = "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         if ($this->showdate) {
-            $html .= '<div class="datetime date"><label style="display:inline;float:none;">' . gt('Date') . ': </label>';
+            $html .= '<div class="datetime date"><label".(bs3()?"class=\"control-label\"":"")." style="display:inline;float:none;">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
             $html .= '<input class="text form-control" type="text" id="' . $name . '_day" name="' . $name . '_day" size="3" maxlength="2" value="' . $default_date['mday'] . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
@@ -94,9 +94,9 @@ class datetimecontrol extends formcontrol {
         if ($this->showtime) {
             $framework = expSession::get('framework');
             if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
-                $html .= '<br /><label class="label spacer"> </label>';
+                $html .= '<br /><label class="'.(bs3()?"control-label":"label").' spacer"> </label>';
             }
-            $html .= '<div class="datetime date time"><label style="display:inline;float:none;">' . gt('Time') . ': </label>';
+            $html .= '<div class="datetime date time"><label".(bs3()?" class=\"control-label\"":"")." style="display:inline;float:none;">' . gt('Time') . ': </label>';
             $html .= '<input class="text timebox form-control" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
             if (!empty($this->readonly) || !empty($this->disabled)) $html .= ' disabled="disabled"';
             $html .= ' />';
@@ -110,7 +110,7 @@ class datetimecontrol extends formcontrol {
             $html .= '<option value="pm"' . ($default_date['hours'] < 12 ? "" : " selected") . '>pm</option>';
             $html .= '</select></div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">" . $this->description . "</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->description . "</div>";
         return $html;
     }
 

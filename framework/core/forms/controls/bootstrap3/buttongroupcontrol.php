@@ -50,16 +50,18 @@ class buttongroupcontrol extends formcontrol {
 	function toHTML($label,$name) {
 	    $disabled = $this->disabled != false ? " disabled" : "";
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
-		$html = "<div id=\"".$name."Control\" class=\"control buttongroup".$disabled."\">";
+		$html = "<div id=\"".$name."Control\" class=\"buttongroup control form-group".$disabled."\">";
+		$html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 		$html .= $this->controlToHTML($name);
-		$html .= "</div>";			
+		$html .= ($this->horizontal == 1 ) ? '</div>' : '';
+		$html .= "</div>";
 		return $html;
 	}
 
 	function controlToHTML($name,$label=null) {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
-		$html = "";
+        $html = '';
 		if ($this->submit != "") {
 //            if (BTN_SIZE == 'large') {
 //                $btn_size = 'btn-sm';
@@ -84,7 +86,7 @@ class buttongroupcontrol extends formcontrol {
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
-			$html .= ' onclick="if (checkRequired(this.form)';
+//			$html .= ' onclick="if (checkRequired(this.form)';
 			if (isset($this->onclick)) $html .= ' '.$this->onclick;
 			$html .= ') ';
 			if ($this->validateJS != "") {
@@ -108,7 +110,7 @@ class buttongroupcontrol extends formcontrol {
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
-		
+
 //		expCSS::pushToHead(array(
 ////		    "unique"=>"button",
 //		    "corecss"=>"button",

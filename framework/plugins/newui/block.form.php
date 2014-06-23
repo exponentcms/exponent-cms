@@ -125,7 +125,7 @@ if (!function_exists('smarty_block_form')) {
             if (!empty($params['paged'])) {
                 if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>".gt("The 'name' or 'id parameter is required for the paged {form} plugin.")."</strong>");
                 $content = "
-                    $('#".$id."').stepy({
+                    $('#" . $id . "').stepy({
                         validate: true,
                         block: true,
                         errorImage: true,
@@ -133,6 +133,29 @@ if (!function_exists('smarty_block_form')) {
                     //    legend: false,
                         btnClass: '" . $btn_class . "',
                         titleClick: true,
+                        validateOptions: {
+                            highlight: function(element) {
+                                $(element).closest('.control').removeClass('has-success').addClass('has-error');
+        //                        var id_attr = '#' + $( element ).attr('id') + '1';
+        //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                            },
+                            unhighlight: function(element) {
+                                $(element).closest('.control').removeClass('has-error').addClass('has-success');
+        //                        var id_attr = '#' + $( element ).attr('id') + '1';
+        //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                            },
+                            errorElement: 'span',
+                            errorClass: '".(bs3()?"help-block":"control-desc")."',
+                            errorPlacement: function(error, element) {
+                                if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                    error.appendTo(element.parent().parent());
+                                } else if(element.parent('.input-group').length) {
+                                    error.insertAfter(element.parent());
+                                } else {
+                                    error.insertAfter(element);
+                                }
+                            }
+                        }
                     });
                 ";
                 expJavascript::pushToFoot(array(
@@ -140,6 +163,39 @@ if (!function_exists('smarty_block_form')) {
                     "jquery"  => 'jquery.validate,jquery.stepy',
                     "content" => $content,
                 ));
+            } else {
+                $content = "
+                    $('#" . $id . "').validate({
+                        highlight: function(element) {
+                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        },
+                        unhighlight: function(element) {
+                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                        },
+                        errorElement: 'span',
+                        errorClass: 'help-block',
+                        errorPlacement: function(error, element) {
+                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else if(element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+                expJavascript::pushToFoot(
+                    array(
+                        "unique" => 'formvalidate-' . $id,
+                        "jquery" => 'jquery.validate',
+                        "content" => $content,
+                    )
+                );
             }
 
             echo '<div class="exp-skin">';

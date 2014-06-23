@@ -65,8 +65,8 @@ class genericcontrol extends formcontrol {
         $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div'.$divID.' class="form-group"'.$disabled;
-            $html .= (!empty($this->required)) ? ' required="1">' : '>';
+            $html = '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
                 $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
@@ -93,7 +93,7 @@ class genericcontrol extends formcontrol {
         $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
-        $html .= ' class="'.$this->type. " form-control" . $this->class . '"';
+        $html .= ' class="'.$this->type. " " . $this->class . ' form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -110,6 +110,7 @@ class genericcontrol extends formcontrol {
         }
         if ($this->multiple) $html .= ' multiple="multiple"';
         if ($this->disabled) $html .= ' disabled';
+        $html .= $this->focus ? " autofocus" : "";
         foreach ($this->jsHooks as $type=>$val) {
             $html .= ' '.$type.'="'.$val.'"';
         }
@@ -117,7 +118,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->readonly)) $html .= ' readonly="readonly"';
 
         $caption = !empty($this->caption) ? $this->caption : '';
-        if (!empty($this->required)) $html .= ' required="required"';
+        if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         if (!empty($this->onclick)) $html .= ' onclick="'.$this->onclick.'"';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 

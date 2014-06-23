@@ -31,7 +31,7 @@ class radiogroupcontrol extends formcontrol {
 
 	var $flip = false;
 	var $items = array();
-	var $spacing = 100;
+//	var $spacing = 100;
 	var $cols = 1;
 	var $onclick = null;
 	
@@ -47,21 +47,16 @@ class radiogroupcontrol extends formcontrol {
 		$this->default = $default;
 		$this->items = $items;
 		$this->flip = $flip;
-		$this->spacing = $spacing;
+//		$this->spacing = $spacing;
 		$this->cols = $cols;
 		$this->required = false;
 	}
 
 	function toHTML($label,$name) {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
-		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control";
+		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-//		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-//		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
-        $html .= (!empty($label))?"<span class=\"label\">".$label."</span>":"";
-//        $html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-//		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
-//		$html .= "</tr></table>";
+        $html .= (!empty($label))?"<label class=\"control-label".($this->cols!=1?" show":"")."\">".$label."</label>":"";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
@@ -69,8 +64,7 @@ class radiogroupcontrol extends formcontrol {
 	
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
-		$html = '<table cellspacing="0" cellpadding="0" border="0"><tr>';
-		$i = 0;
+        $html = '';
 		foreach ($this->items as $value=>$rname) {  //FJD
 			$radio = null;
 			
@@ -86,16 +80,12 @@ class radiogroupcontrol extends formcontrol {
 			
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
+            $radio->cols = $this->cols;
+
             if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
 			
-            if ($this->cols!=0 && $i==$this->cols) {
-    			$html .= '</tr><tr>';
-    			$i = 0;
-            }
-			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rname, $name).'</td>';
-			$i++; 
-		}	
-		$html .= '</tr></table>';
+            $html .= $radio->toHTML($rname, $name);
+		}
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
 		return $html;
 	}
@@ -109,7 +99,7 @@ class radiogroupcontrol extends formcontrol {
             $object->description = "";
 			$object->default = "";
 			$object->flip = false;
-			$object->spacing = 100;
+//			$object->spacing = 100;
 			$object->cols = 1;
 			$object->items = array();
 		} 
@@ -120,9 +110,10 @@ class radiogroupcontrol extends formcontrol {
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
-		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
-		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
-		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
+//		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
+        $form->register("cols","Stacked Controls", new checkboxcontrol($object->cols,false));
+//		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
+//		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		
 		return $form;
@@ -142,8 +133,9 @@ class radiogroupcontrol extends formcontrol {
 		$object->default = $values['default'];
 		$object->items = listbuildercontrol::parseData($values,'items',true);
 		$object->flip = isset($values['flip']);
-        if (isset($values['cols'])) $object->cols = intval($values['cols']);
-        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
+//        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+        $object->cols = !empty($values['cols']) ? 1 : 0;
+//        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
 		$object->required = isset($values['required']);
 		
 		return $object;
