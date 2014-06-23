@@ -140,7 +140,7 @@ class genericcontrol extends formcontrol {
         if (($framework == 'bootstrap' || $framework == 'bootstrap3') && !empty($this->prepend)) {
             $html .= '</div>';
         }
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         return $html;
     }
     

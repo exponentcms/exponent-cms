@@ -63,11 +63,7 @@
     padding:0 15px;
 }
 
-.exp-container.edit .control .control-desc {
-    margin-left: 170px;
-}
-
-.containermodule.edit .control .control-desc {
+.exp-container.edit .control .control-desc,.containermodule.edit .control .control-desc  {
     margin-left: 170px;
 }
 

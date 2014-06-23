@@ -81,7 +81,7 @@ class textcontrol extends formcontrol {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         $html .= "/>";
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         return $html;
     }
 

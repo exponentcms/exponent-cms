@@ -73,17 +73,12 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if (!empty($this->flip)) {
                 $html .= "<label" . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
-//            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr><td>";
                 $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
                     $name
                 );
-//            $html .= "</td>";
                 $flip = '';
             } else {
-//            $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
-//            $html .= "<td class=\"input\" nowrap>";
                 $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
-//            $html .= "</td><td>";
                 $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
                     $name
                 );
@@ -98,32 +93,13 @@ class checkboxcontrol extends formcontrol {
 //                $html .= "</div>";
                     $html .= "</label>";
                 }
-//            $html .= "</td>";
                 $flip = ' style="position:absolute;"';
             }
-//        $html .= "</tr></table>";
             if (!empty($this->description)) $html .= "<br><div class=\"control-desc\"" . $flip . ">" . $this->description . "</div><br>";
             $html .= "</div>";
             return $html;
         }
     }
-
-    /*
-        function toHTML($label,$name) {
-            if(empty($this->flipped)){
-                $html = '<label>';
-                $html .= $this->controlToHTML($name);
-                $html .= "<span class=\"checkboxlabel\">".$label."</span>";
-                $html .= "</label>";
-            }else{
-                $html = '<label>';
-                $html .= "<span class=\"checkboxlabel\">".$label."</span>";
-                $html .= $this->controlToHTML($name);
-                $html .= "</label>";
-            }
-            return $html;
-        }
-    */
 
     function controlToHTML($name, $label = null) {
         $this->value = isset($this->value) ? $this->value : 1;

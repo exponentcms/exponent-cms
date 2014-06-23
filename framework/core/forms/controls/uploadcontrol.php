@@ -61,7 +61,7 @@ class uploadcontrol extends formcontrol {
 		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
 		$html .= "/>";
         if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
 		return $html;
 	}
 

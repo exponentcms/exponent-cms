@@ -71,7 +71,7 @@ abstract class formcontrol {
     static function getFieldDefinition() { return array(); }
 
     /**
-     * Place the control in the form
+     * Place the control in the form with label and description
      *
      * @param $label
      * @param $name

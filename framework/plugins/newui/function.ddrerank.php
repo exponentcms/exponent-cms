@@ -109,7 +109,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             $icon_size = expTheme::iconSize();
 //            if (empty($params['uniqueid'])) {  // make a button
             if ($model != 'container') {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="icon-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             }
@@ -160,7 +160,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                     <div class="yui3-widget-ft">';
 //                    <a href="#" class="btn '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="icon-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
                 $html .= '
-                    <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="icon-save '.$icon_size.'"></i> ' . gt('Save') . '</button>
+                    <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="fa fa-floppy-o '.$icon_size.'"></i> ' . gt('Save') . '</button>
                     </div>
                     </form>
                     </div>

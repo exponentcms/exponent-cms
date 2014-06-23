@@ -67,7 +67,7 @@ class pagecontrol extends formcontrol {
 	}
 
     function controlToHTML($name, $label) {
-        $html = "<label class=\"label\">".gt('Page Break').' - '.$label."</label>";
+        $html = "<label class=\"".(bs3()?"control-label":"label")."\">".gt('Page Break').' - '.$label."</label>";
         $html .= $this->toHTML($name, $label);
         return $html . '</fieldset>';
     }

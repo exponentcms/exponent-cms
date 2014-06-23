@@ -107,23 +107,93 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
         if (!empty($params['paged'])) {
-            if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>".gt("The 'name' or 'id parameter is required for the paged {form} plugin.")."</strong>");
+            if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>" . gt(
+                    "The 'name' or 'id parameter is required for the paged {form} plugin."
+                ) . "</strong>");
             $content = "
-                $('#".$id."').stepy({
+                $('#" . $id . "').stepy({
                     validate: true,
                     block: true,
                     errorImage: true,
                 //    description: false,
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
-                    titleClick: true,
+                    titleClick: true,";
+            if (bs3()) {
+                $content .= "
+                    validateOptions: {
+                       highlight: function(element) {
+                           $(element).closest('.control').removeClass('has-success').addClass('has-error');
+   //                        var id_attr = '#' + $( element ).attr('id') + '1';
+   //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                       },
+                       unhighlight: function(element) {
+                           $(element).closest('.control').removeClass('has-error').addClass('has-success');
+   //                        var id_attr = '#' + $( element ).attr('id') + '1';
+   //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                       },
+                       errorElement: 'span',
+                       errorClass: 'help-block',
+                       errorPlacement: function(error, element) {
+                           if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                               error.appendTo(element.parent().parent());
+                           } else if(element.parent('.input-group').length) {
+                               error.insertAfter(element.parent());
+                           } else {
+                               error.insertAfter(element);
+                           }
+                       }
+                    }";
+            }
+            $content .= "
                 });
             ";
-            expJavascript::pushToFoot(array(
-                "unique"  => 'stepy-'.$id,
-                "jquery"  => 'jquery.validate,jquery.stepy',
-                "content" => $content,
-            ));
+            expJavascript::pushToFoot(
+                array(
+                    "unique" => 'stepy-' . $id,
+                    "jquery" => 'jquery.validate,jquery.stepy',
+                    "content" => $content,
+                )
+            );
+        } else {
+            if (bs3()) {
+                $content = "
+                    $('#" . $id . "').validate({
+                        highlight: function(element) {
+                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        },
+                        unhighlight: function(element) {
+                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                        },
+                        errorElement: 'span',
+                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorPlacement: function(error, element) {
+                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else if(element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+            } else {
+                $content = "
+                    $('#" . $id . "').validate();
+                ";
+            }
+            expJavascript::pushToFoot(
+                array(
+                    "unique" => 'formvalidate-' . $id,
+                    "jquery" => 'jquery.validate',
+                    "content" => $content,
+                )
+            );
         }
 
 		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class . ($params['horizontal']?' form-horizontal':'') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";

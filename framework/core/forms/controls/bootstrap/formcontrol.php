@@ -35,6 +35,7 @@ abstract class formcontrol {
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
+    var $horizontal = 0;
 
 	static function name() { return "formcontrol"; }
 
@@ -71,7 +72,7 @@ abstract class formcontrol {
     static function getFieldDefinition() { return array(); }
 
     /**
-     * Place the control in the form
+     * Place the control in the form with label and description
      *
      * @param $label
      * @param $name
@@ -97,7 +98,7 @@ abstract class formcontrol {
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
             $class = empty($this->class) ? '' : $this->class;
 
-            $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . $class . $disabled;
+            $html = "<div" . $divID . " class=\"" . $this->type . "-control control form-group " . $class . $disabled;
             $html .= !empty($this->required) ? ' required">' : '">';
             //$html .= "<label>";
             if ($this->required) {
@@ -108,11 +109,11 @@ abstract class formcontrol {
                 $labeltag = $label;
             }
             if (empty($this->flip)) {
-                $html .= (!empty($label)) ? "<label" . $for . " class=\"\">" . $labeltag . "</label>" : "";
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"".(bs3()?"control-label":"") . (($this->horizontal == 1)?' col-sm-2':'') ."\">" . $labeltag . "</label>" : "";
                 $html .= $this->controlToHTML($name, $label);
             } else {
                 $html .= $this->controlToHTML($name, $label);
-                $html .= (!empty($label)) ? "<label" . $for . " class=\"\">" . $labeltag . "</label>" : "";
+                $html .= (!empty($label)) ? "<label" . $for . " class=\"".(bs3()?"control-label":"")."\">" . $labeltag . "</label>" : "";
             }
             //$html .= "</label>";
             $html .= "</div>";

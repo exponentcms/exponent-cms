@@ -54,6 +54,8 @@
                 if (self.opt.validate) {
                     jQuery.validator.setDefaults({ ignore: self.opt.ignore });
 
+                    jQuery.validator.setDefaults( self.opt.validateOptions );
+
                     that.append('<div class="stepy-error" />');
                 }
 
@@ -379,7 +381,12 @@
 
     $.fn.stepy = function (method) {
         if (methods[method]) {
-            return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
+            var args = Array.prototype.slice.call(arguments, 1);
+            var ret = [];
+            this.each(function() {
+                return methods[method].apply(this, args);
+            });
+            return ret;
         } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
         } else {
@@ -406,7 +413,8 @@
         titleClick: false,
         titleTarget: undefined,
         transition: 'hide',
-        validate: false
+        validate: false,
+        validateOptions: ''
     };
 
 })(jQuery);

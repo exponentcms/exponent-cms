@@ -54,7 +54,7 @@ class listbuildercontrol extends formcontrol {
 		$this->process = $process;
 
 		if (!$this->newList) {
-			$html = "<div class=\"control-desc\"></div><select name='".$name."[]' id='$name' multiple='multiple'>";
+			$html = "<div class=\"".(bs3()?"help-block":"control-desc")."\"></div><select name='".$name."[]' id='$name' class=\"form-control\" multiple='multiple'>";
             $list = $this->default + $this->source;
 			foreach ($list as $key=>$value) {
 				$html .= "<option value='$key'";
@@ -67,8 +67,8 @@ class listbuildercontrol extends formcontrol {
 		} else {
             $this->_normalize();
 			$html = '<input type="hidden" name="'.$name.'" id="'.$name.'" value="'.implode("|!|",array_keys($this->default)).'" />';
-		    $html .= '<table cellpadding="9" border="0" width="30" style="margin-bottom:0;"><tr><td width="10" style="border:none;">';
-			$html .= "<input id='source_$name' type='text' />";
+		    $html .= '<table cellpadding="9" border="0" width="70%" style="margin-bottom:0;"><tr><td width="40%" style="border:none;">';
+			$html .= "<input id='source_$name' type='text' class=\"text form-control\"/>";
 			$html .= "</td>";
 			$html .= '<td valign="middle" width="10" style="border:none;">';
 			if($process == "copy") {
@@ -83,17 +83,17 @@ class listbuildercontrol extends formcontrol {
 				$html .= "<input type='image' title='".gt('Remove from list')."' onclick='removeSelectedItem(&quot;$name&quot;); return false;' src='".ICON_RELATIVE."navigate-left-icon.png' />";
 			}
 			$html .= "</td>";
-			$html .= "<td width='10' valign='top' style='border:none;'><div class=\"control-desc\">".gt('Selected')."</div><select " . (bs3() ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
+			$html .= "<td width='40%' valign='top' style='border:none;'><div class=\"".(bs3()?"help-block":"control-desc")."\">".gt('Selected')."</div><select " . (bs3() ? "class=\"form-control\" " : "") . "id='dest_$name' size='".$this->size."'>";
 			foreach ($this->default as $key=>$value) {
 				if (isset($this->source[$key])) $value = $this->source[$key];
 				$html .= "<option value='$key'>$value</option>";
 			}
 			$html .= "</select>";
-			$html .= "</td><td width='100%' style='border:none;'></td></tr></table>";
+			$html .= "</td><td width='20%' style='border:none;'></td></tr></table>";
 //			$html .= "<script>newList.$name = ".($this->newList?"true":"false").";</script>";
 		}
         $html .= "<div style=\"clear:both\"></div>";
-        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
 		return $html;
 	}
 
@@ -109,7 +109,7 @@ class listbuildercontrol extends formcontrol {
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
 		 
-		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
+		$html = "<div".$divID." class=\"".$this->type."-control control form-group ".$class.$disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
@@ -119,11 +119,11 @@ class listbuildercontrol extends formcontrol {
         }
 		$process = empty($this->process) ? null : $this->process;
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"".(bs3()?"control-label":"label")."\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label, $process);
 		} else {
 			$html .= $this->controlToHTML($name, $label, $process);
-			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "<label".$for." class=\"".(bs3()?"control-label":"label")."\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
 		$html .= "</div>";

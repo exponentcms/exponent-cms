@@ -47,9 +47,9 @@ class filemanagercontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
-        $html = '<div id="filemanager'.$name.'" class="filemanager control'.(empty($this->class)?"":" ".$this->class).'">';
+        $html = '<div id="filemanager'.$name.'" class="filemanager control form-group'.(empty($this->class)?"":" ".$this->class).'">';
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
-        $html .= '<div class="hd"><label class="">'.$label.'';
+        $html .= '<div class="hd"><label class="control-label">'.$label.'';
         if ($this->limit!=null){
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
@@ -58,13 +58,6 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-//        if (BTN_SIZE == 'large') {
-//            $btn_size = 'btn-sm';
-//            $icon_size = 'fa-lg';
-//        } else {
-//            $btn_size = 'btn-xs';
-//            $icon_size = '';
-//        }
         $btn_size = expTheme::buttonSize();
         $icon_size = expTheme::iconSize();
         $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="fa fa-plus-circle '.$icon_size.'"></i> '.gt('Add Files').'</a>';

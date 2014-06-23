@@ -56,13 +56,7 @@ class radiogroupcontrol extends formcontrol {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
 		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-//		$html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-//		$html .= (!empty($label))?"<td><span class=\"label\">".$label."</span></td></tr><tr>":"";
-//        $html .= (!empty($label))?"<span class=\"label\">".$label."</span>":"";
-        $html .= (!empty($label))?"<label class=\"".(bs3()?"control-label":"label")."\">".$label."</label>":"";
-//        $html .= "<table border=0 cellspacing=0 cellpadding=0><tr>";
-//		$html .= "<td>".$this->controlToHTML($name, $label)."</td>";
-//		$html .= "</tr></table>";
+        $html .= (!empty($label))?"<label class=\"control-label".($this->cols!=1?" show":"")."\">".$label."</label>":"";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
@@ -70,8 +64,7 @@ class radiogroupcontrol extends formcontrol {
 	
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
-		$html = '<table cellspacing="0" cellpadding="0" border="0"><tr>';
-		$i = 0;
+        $html = '';
 		foreach ($this->items as $value=>$rname) {  //FJD
 			$radio = null;
 			
@@ -87,17 +80,13 @@ class radiogroupcontrol extends formcontrol {
 			
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
+            $radio->cols = $this->cols;
+
             if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
 			
-            if ($this->cols!=0 && $i==$this->cols) {
-    			$html .= '</tr><tr>';
-    			$i = 0;
-            }
-			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rname, $name).'</td>';
-			$i++; 
-		}	
-		$html .= '</tr></table>';
-        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+            $html .= $radio->toHTML($rname, $name);
+		}
+        if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
 		return $html;
 	}
 	

@@ -65,8 +65,8 @@ class genericcontrol extends formcontrol {
         $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$disabled;
-            $html .= (!empty($this->required)) ? ' required">' : '">';
+            $html = '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
                 $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
@@ -74,11 +74,11 @@ class genericcontrol extends formcontrol {
                 $labeltag = $label;
             }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for.">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 control-label":"" ).">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for.">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").">". $labeltag."</label>";
             }
             $html .= "</div>";
         } else {
@@ -92,6 +92,7 @@ class genericcontrol extends formcontrol {
         $this->name = empty($this->name) ? $name : $this->name;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
+        $html .= ($this->type != 'hidden' && $this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div>';
         $framework = expSession::get('framework');
         if ($framework == 'bootstrap') {
             if (!empty($this->prepend)) {
@@ -107,7 +108,6 @@ class genericcontrol extends formcontrol {
         $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
-//        $html .= ' class="'.$this->type. " " . $this->class . '"';
         $html .= ' class="'.$this->type. " " . $this->class . ' form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
@@ -142,6 +142,7 @@ class genericcontrol extends formcontrol {
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
+        $html .= '</div>';
         return $html;
     }
     

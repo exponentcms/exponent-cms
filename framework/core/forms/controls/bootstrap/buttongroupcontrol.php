@@ -58,7 +58,7 @@ class buttongroupcontrol extends formcontrol {
 	function controlToHTML($name,$label=null) {
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		if (empty($this->id)) $this->id = $name;
-		$html = "";
+        $html = "<div class='form-actions'>";
 		if ($this->submit != "") {
 //            if (BTN_SIZE == 'large') {
 //                $btn_size = 'btn-small';
@@ -80,7 +80,7 @@ class buttongroupcontrol extends formcontrol {
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
-			$html .= ' onclick="if (checkRequired(this.form)';
+//			$html .= ' onclick="if (checkRequired(this.form)';
 			if (isset($this->onclick)) $html .= ' '.$this->onclick;
 			$html .= ') ';
 			if ($this->validateJS != "") {
@@ -104,7 +104,8 @@ class buttongroupcontrol extends formcontrol {
 			$html .= $this->cancel;
 			$html .= '</button>';
 		}
-		
+        $html .= "</div>";
+
 //		expCSS::pushToHead(array(
 ////		    "unique"=>"button",
 //		    "corecss"=>"button",

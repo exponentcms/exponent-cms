@@ -237,6 +237,12 @@
                                     });
                                 {/literal}
                                 {/script}
+                            {else}
+                                {script unique="unpaged_event" jquery='jquery.validate'}
+                                {literal}
+                                    $('#addtocart{/literal}{$product->id}{literal}').validate();
+                                {/literal}
+                                {/script}
                             {/if}
                         {/if}
                     {/if}

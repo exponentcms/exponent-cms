@@ -31,7 +31,7 @@ class fakeform extends form {
     /**
      * Display the form in Edit mode as HTML output.
      *
-     * @param null $form_id
+     * @param null/integer $form_id
      *
      * @return string The HTML code use to display the form to the browser.
      */
@@ -80,7 +80,7 @@ class fakeform extends form {
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
-		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\"" . (newui()?" class=\"exp-skin\"":"") . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";
@@ -155,63 +155,50 @@ class fakeform extends form {
             }
 			$html .= '</a>';
             $html .= "</div>";
-            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol') || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<label class=\"label\" style=\"background: transparent;\"></label>";
-                $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'radiogroupcontrol' && $this->controls[$name]->_controltype != 'checkboxcontrol')  // flipped non-checkbox non-radio group
+                  || (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
+                if (bs3() && $this->controls[$name]->_controltype == 'checkboxcontrol') {
+                    $html .= $this->controls[$name]->toHTML($this->controlLbl[$name], $name) . "\r\n";
+                } else {
+                    $html .= "<label class=\"".(bs3()?"control-label":"label")."\" style=\"background: transparent;\"></label>";
+                    $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
+                }
             }
             $for   = ' for="' . $name . '"';
-            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
-                $html .= "<label ".$for." class=\"label\" style=\"width:auto; display:inline;\">";
+            if (!bs3() && (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
+                $html .= "<label ".$for." class=\"".(bs3()?"control-label":"label")."\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</label>";
-                if (!empty($this->controls[$name]->description)) $html .= "<br><div class=\"control-desc\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
+                if (!empty($this->controls[$name]->description))
+                    $html .= "<br><div class=\"".(bs3()?"help-block":"control-desc")."\" style=\"position:absolute;\">" . $this->controls[$name]->description . "</div>";
             }
 
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
-            } elseif (!empty($this->controlLbl[$name])) {
+            } elseif (!empty($this->controlLbl[$name])) {  // flipped non-checkbox or page control
                 if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
-                    $html .= "<label ".$for." class=\"label\" style=\"display:inline;\">";
+                    $html .= "<label ".$for." class=\"".(bs3()?"control-label":"label")."\" style=\"display:inline;\">";
                 } else {
-                    $html .= "<label class=\"label\">";
+                    $break = $this->controls[$name]->_controltype == 'radiogroupcontrol' && $this->controls[$name]->cols != 1 ? true : false;
+                    $html .= "<label class=\"".(bs3()?"control-label":"label").($break?" show":"")."\">";
                 }
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</label>";
             }
-//			$html .= "<div class=\"formmoduleeditactions\">";
-//			if ($rank != count($this->controlIdx)-1) {
-//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank+1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank+1))).'">';
-//				$html .= "<img border='0' src='".ICON_RELATIVE."down.png' />";
-//				$html .= '</a>';
-//			} else {
-//				$html .= "<img src='".ICON_RELATIVE."down.disabled.png' />";
-//			}
-//			$html .= "&#160;";
-//			if ($rank != 0) {
-//				//$html .= '<a href="?module='.'forms'.'&action=order_controls&p='.$form_id.'&a='.$rank.'&b='.($rank-1).'">';
-//				$html .= '<a href="'.$router->makeLink(array('module'=>'forms', 'action'=>'order_controls', 'p'=>$form_id, 'a'=>$rank, 'b'=>($rank-1))).'">';
-//				$html .= "<img border='0' src='".ICON_RELATIVE."up.png' />";
-//				$html .= '</a>';
-//			} else {
-//				$html .= "<img src='".ICON_RELATIVE."up.disabled.png' />";
-//			}
-//
             $html .= "&#160;&#160;";
-            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {
+            if ((!empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // flipped checkbox
                 $html .= "<span style=\"display:inline-block\">".$this->controls[$name]->controlToHTML_newschool($name, $this->controlLbl[$name]) . "</span>\r\n";
-                if (!empty($this->controls[$name]->description)) $html .= "<div class=\"control-desc\">" . $this->controls[$name]->description . "</div>";
+                if (!empty($this->controls[$name]->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">" . $this->controls[$name]->description . "</div>";
             }
-            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol') || $this->controls[$name]->_controltype == 'radiogroupcontrol') {
+            if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol')  // not fipped non-checkbox control
+                  || $this->controls[$name]->_controltype == 'radiogroupcontrol') {  // flipped/not flipped radio group
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
 			$html .= "</div>";
 			
 			$rank++;
 		}
-	//	$html .= "<tr><td width='5%'></td><td wdith='90%'><td></td width='5%'></tr>\r\n";
-	//	$html .= "</table>\r\n";
 		$html .= "</form>\r\n";
 		return $html;
 	}

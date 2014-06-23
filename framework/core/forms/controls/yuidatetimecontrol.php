@@ -64,11 +64,11 @@ class yuidatetimecontrol extends formcontrol {
         $html = "<div" . $divID . " class=\"control datetime-control";
         $html .= (!empty($this->required)) ? ' required">' : '">';
         if (empty($this->flip)) {
-            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+            $html .= "<label" . $for . " class=\"".(bs3()?"control-label":"label")."\">" . $label . "</label>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);
-            $html .= "<label" . $for . " class=\"label\">" . $label . "</label>";
+            $html .= "<label" . $for . " class=\"".(bs3()?"control-label":"label")."\">" . $label . "</label>";
         }
         $html .= "</div>";
         return $html;

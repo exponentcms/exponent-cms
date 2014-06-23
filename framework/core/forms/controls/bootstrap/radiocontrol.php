@@ -52,7 +52,7 @@ class radiocontrol extends formcontrol {
 //		    $for = ' for="'.$name.'"';
             $for = ' for="'.$name.$this->value.'"';
 		}
-        $html = '<div'.$divID.' class="radio control';
+        $html = '<div'.$divID.' class="radio control';  //FIXME does this mess up validation styling?
         $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= "<table border=0 cellpadding=0 cellspacing=0><tr>";
 
@@ -60,14 +60,14 @@ class radiocontrol extends formcontrol {
             $html .= "<td class=\"input\">";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
-            $html .= "<td nowrap><label".$for.">".$label."</label></td>";
+            $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
         } else {
-            $html .= "<td nowrap><label".$for.">".$label."</label></td>";
+            $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
             $html .= "<td class=\"input\">";
             $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
         }
-        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"control-desc\">".$this->description."</div></td>";
+        if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div></td>";
         $html .= "</tr></table></div>";
 
         return $html;

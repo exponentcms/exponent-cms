@@ -272,7 +272,7 @@ class form extends baseform {
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
 		} else {
-			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\"" . (newui()?" class=\"exp-skin\"":"") . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		}
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
@@ -319,19 +319,85 @@ class form extends baseform {
 		$html .= "</form>\r\n";
         if ($this->is_paged) {
             $content = "
-                $('#".$this->id."').stepy({
+                $('#" . $this->id . "').stepy({
                     validate: true,
                     block: true,
                     errorImage: true,
                 //    description: false,
                 //    legend: false,
                     btnClass: '" . $btn_class . "',
-                    titleClick: true,
+                    titleClick: true,";
+            if (bs3()) {
+                $content .= "
+                    validateOptions: {
+                       highlight: function(element) {
+                           $(element).closest('.control').removeClass('has-success').addClass('has-error');
+   //                        var id_attr = '#' + $( element ).attr('id') + '1';
+   //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                       },
+                       unhighlight: function(element) {
+                           $(element).closest('.control').removeClass('has-error').addClass('has-success');
+   //                        var id_attr = '#' + $( element ).attr('id') + '1';
+   //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                       },
+                       errorElement: 'span',
+                       errorClass: 'help-block',
+                       errorPlacement: function(error, element) {
+                           if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                               error.appendTo(element.parent().parent());
+                           } else if(element.parent('.input-group').length) {
+                               error.insertAfter(element.parent());
+                           } else {
+                               error.insertAfter(element);
+                           }
+                       }
+                    }";
+            }
+            $content .= "
                 });
             ";
+            expJavascript::pushToFoot(
+                array(
+                    "unique"  => 'stepy-' . $this->id,
+                    "jquery"  => 'jquery.validate,jquery.stepy',
+                    "content" => $content,
+                )
+            );
+        } else {
+            if (bs3()) {
+                $content = "
+                    $('#" . $this->id . "').validate({
+                        highlight: function(element) {
+                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        },
+                        unhighlight: function(element) {
+                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
+    //                        var id_attr = '#' + $( element ).attr('id') + '1';
+    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+                        },
+                        errorElement: 'span',
+                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorPlacement: function(error, element) {
+                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else if(element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
+                     });
+                ";
+            } else {
+                $content = "
+                    $('#" . $this->id . "').validate();
+                ";
+            }
             expJavascript::pushToFoot(array(
-                "unique"  => 'stepy-'.$this->id,
-                "jquery"  => 'jquery.validate,jquery.stepy',
+                "unique"  => 'formvalidate-' . $this->id,
+                "jquery"  => 'jquery.validate',
                 "content" => $content,
             ));
         }

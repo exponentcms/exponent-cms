@@ -3,8 +3,8 @@
 /* override standard bootstrap styling for use in Exponent */
 
 input[type="color"] {
-	height  : 34px;
-	width   : 50px;
+	height  : 34px!important;
+	width   : 50px!important;
 //	padding : 0;
 }
 
@@ -35,7 +35,7 @@ input.password {
 }
 
 input[type="file"] {
-    height: 150%;
+    height: 150%!important;
 }
 
 .datetime.date input[type="text"] {
@@ -45,6 +45,10 @@ input[type="file"] {
 .datetime.date select {
 	width : 120px;
 }
+
+//.datetime-control .form-group {
+//	display: inline-block;
+//}
 
 .datetime.date.time select {
 	width : 80px;
@@ -70,6 +74,11 @@ input[type="file"] {
 	margin-right : 5px;
 	height  : inherit;
 	width : inherit;
+	margin-top: 0;
+}
+
+.exp-skin .radio input[type="radio"], .exp-skin .checkbox input[type="checkbox"] {
+	margin-top: -2px;
 }
 
 .radio, .checkbox {
@@ -126,6 +135,13 @@ a.fa-sort, .container-chrome ul li a.fa-sort {
 
 .control .radio label, .control .checkbox label {
 	margin-bottom : 0px !important;
+	margin-right: 5px;
+	padding-top: 10px;
+	padding-left: 0;
+}
+
+.radio.radio-inline {
+	margin-top: 0;
 }
 
 .add-to-cart-btn,

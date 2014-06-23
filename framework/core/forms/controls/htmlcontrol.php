@@ -40,7 +40,7 @@ if (!defined('EXPONENT')) exit('');
 
 	function toHTML($label,$name) {
 		if ($this->span) {
-			return '<div class="control htmlcontrol">' . $this->html . '</div>';
+			return '<div class="htmlcontrol control form-group">' . $this->html . '</div>';
 		} else {
 			return parent::toHTML($label,$name);
 		}

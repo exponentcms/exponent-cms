@@ -37,7 +37,7 @@ class autocompletecontrol extends formcontrol {
     function controlToHTML($name,$label) {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $html = '<div class="text-control control exp-skin" id="search_stringControl">';
-        $html .= empty($this->label) ? '' : '<label for="'.$name.'">'.$label.'</label>';
+        $html .= empty($this->label) ? '' : '<label for="'.$name.'"'.(bs3()?"class=\"control-label\"":"").'>'.$label.'</label>';
         $framework = expSession::get('framework');
         if ($framework == 'bootstrap') {
             $html .= '<div class="input-prepend">';

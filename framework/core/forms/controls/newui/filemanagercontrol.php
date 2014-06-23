@@ -47,9 +47,9 @@ class filemanagercontrol extends formcontrol {
     	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         $subTypeName = empty($this->subtype) ? "expFile[]" : "expFile[".$this->subtype."][]";
         $files = $this->buildImages();
-        $html = '<div id="filemanager'.$name.'" class="filemanager control'.(empty($this->class)?"":" ".$this->class).'">';
+        $html = '<div id="filemanager'.$name.'" class="filemanager control form-group'.(empty($this->class)?"":" ".$this->class).'">';
         //$html .= '<div id="displayfiles" class="displayfiles" style="padding:5px; border:1px solid #444"> </div>';
-        $html .= '<div class="hd"><label class="">'.$label.'';
+        $html .= '<div class="hd"><label class="control-label">'.$label.'';
         if ($this->limit!=null){
             $html .= ' | <small>'.gt('Limit').': <em class="limit">'.$this->limit.'</em></small>';
         }
@@ -58,16 +58,11 @@ class filemanagercontrol extends formcontrol {
         } else {
             $hide = ' class="hide"';
         }
-        if (BTN_SIZE == 'large') {
-            $btn_size = 'btn-small';
-            $icon_size = 'icon-large';
-        } else {
-            $btn_size = 'btn-mini';
-            $icon_size = '';
-        }
-        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Add Files').'</a>';
+        $btn_size = expTheme::buttonSize();
+        $icon_size = expTheme::iconSize();
+        $html .= ' <span id="adders-'.$name.'"'.$hide.'>| <a class="btn btn-success '. $btn_size.'" href="#" id="addfiles-'.$name.'" title="'.gt('Add Files using the File Manager').'"><i class="fa fa-plus-circle '.$icon_size.'"></i> '.gt('Add Files').'</a>';
         if (!$user->globalPerm('prevent_uploads')) {
-        $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="icon-plus-sign '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
+        $html .= ' | <a class="btn btn-success '. $btn_size.'" href="#" id="quickaddfiles-'.$name.'" title="'.gt('One-step Upload and Add Files').'"><i class="fa fa-plus-circle '.$icon_size.'"></i> '.gt('Quick Add').'</a></span>';
         } else {
         $html .= '</span>';
         }
@@ -103,7 +98,7 @@ class filemanagercontrol extends formcontrol {
                 // file picker window opener
                 function openFilePickerWindow(e){
                     e.halt();
-                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=800,height=600,toolbar=no,resizable=yes,status=0');
+                    win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
                         alert('".gt('Please disable your popup blocker')."!!');
@@ -386,10 +381,16 @@ class filemanagercontrol extends formcontrol {
                     // Y.log(ids);
                 }
 
+                EXPONENT.passBackBatch".$name." = function(ids) {
+                    Y.each(ids, function(id,k){
+                        EXPONENT.passBackFile".$name."(id);
+                    });
+                }
+
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
                     if (Y.Lang.isArray(id)) {
-                        EXPONENT.batchAddFiles.".$name."();
+                        EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
 
@@ -471,22 +472,16 @@ class filemanagercontrol extends formcontrol {
         	    )
         	);
 
-//        exponent_javascript_toFoot("filepicker".$name,"json,connection","dd-constrain,dd-proxy,dd-drop",$js,"");
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
                 "yui3mods"=>"1",
                 "content"=>$js,
              ));
-    //         expJavascript::pushToFoot(array(
-    //             "unique"=>"quickupload",
-    //             "jquery"=>"1",
-    //             "src"=>PATH_RELATIVE."external/SimpleAjaxUploader.js"
-    //          ));
         return $html;
     }
     
     function buildImages() {
-    	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/newui/assets/';
+    	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
         if (empty($this->value)) return null;
 
         //get the array of files
