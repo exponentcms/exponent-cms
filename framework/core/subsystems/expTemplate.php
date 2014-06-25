@@ -703,6 +703,75 @@ class expTemplate {
     }
 
     /**
+     * Return the best match template file for the framework, including custom views
+     *  If we receive a pathname, we'll only look there, otherwise we'll run the 'framework' flow
+     *  allowing for custom/theme views
+     *
+     * @param $ctl
+     * @param $view
+     * @return mixed|string
+     */
+    public static function find_template($ctl, $view) {
+        if (strpos($view, '$') !== false) return $view;  // we don't mess with variables
+
+        $framework = framework();
+        $controller = expModules::getController($ctl);
+
+        $include_file = str_replace(array('\'', '"'), '', $view);  // remove quotes
+
+        // store/strip template file type
+        $fileparts = explode('.', $include_file);
+        if (count($fileparts) > 1) {
+            $type = array_pop($fileparts);
+        } else $type = '.tpl';
+        $include_file = implode($fileparts);
+
+        // store/strip path and file type
+        $fileparts = explode('/', $include_file);
+        if (count($fileparts) > 1) {
+            $is_path = true;
+            $fname = array_pop($fileparts);
+            $fpath = implode($fileparts);
+        } else {
+            $is_path = false;
+            $fname = $include_file;
+            $fpath = '';
+        }
+
+        //FIXME we assume the file is only a filename and NOT a path?
+        $path = substr(str_replace(PATH_RELATIVE, '', $controller->asset_path), 0, -7) . 'views/' . $controller . '/';  // strip relative path for links coming from templates
+
+        $themepath = THEME_RELATIVE . str_replace('framework/', '', $path);
+        $themepath = str_replace(PATH_RELATIVE, '', $themepath);
+
+        // see if there's an framework appropriate template variation
+        //FIXME we need to check for custom views and add full path for system views if coming from custom view
+        if (file_exists(BASE . $themepath . $include_file . '.' . $type)) {
+            $include_file = BASE . $themepath . $include_file . '.' . $type;
+        } elseif ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+            if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
+                $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;
+            } elseif ($framework == 'bootstrap3' && file_exists(BASE . $path . $include_file . '.bootstrap3.' . $type)) {
+                $include_file = BASE . $path . $include_file . '.bootstrap3.' . $type;
+            } else {
+                $include_file = BASE . $path . $include_file . '.' . $type;
+            }
+        } else {
+            if (NEWUI) {
+                if (file_exists(BASE . $path . $include_file . '.newui.' . $type)) {
+                    $include_file = BASE . $path . $include_file . '.newui.' . $type;
+                } else {
+                    $include_file = BASE . $path . $include_file . '.' . $type;
+                }
+            } else {
+                $include_file = BASE . $path . $include_file . '.' . $type;
+            }
+        }
+
+        return $include_file;
+    }
+
+    /**
      * Return list of controller display views available
      * @param $ctl
      * @param $action
