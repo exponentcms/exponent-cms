@@ -33,13 +33,13 @@ Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.1,optional
-CKEditor,4.4.1,ckeditor.com,4.4.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.0.28,tinymce.com,4.1.0,add xenmce skin
+CKEditor,4.4.2,ckeditor.com,4.4.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
+TinyMCE,4.1.0,tinymce.com,4.1.0,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
 jQueryUI,1.10.4,jqueryui.com,1.10.4,
-stepy,1.1.0,wbotelhos.com/stepy,1.1.0,added button class
+stepy,1.1.0,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.12.0,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.12.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
