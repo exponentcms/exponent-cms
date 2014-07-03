@@ -185,6 +185,7 @@ class ckeditorcontrol extends formcontrol {
                         " . $fontnames . ",
                     uiColor : '#aaaaaa',
                     baseHref : '" . PATH_RELATIVE . "',
+                    disallowedContent : 'table[cellspacing,cellpadding,border,align,summary,bgcolor,frame,rules,width]; td[axis,abbr,scope,align,bgcolor,char,charoff,height,nowrap,valign,width]; th[axis,abbr,align,bgcolor,char,charoff,height,nowrap,valign,width]; tbody[align,char,charoff,valign]; tfoot[align,char,charoff,valign]; thead[align,char,charoff,valign]; tr[align,bgcolor,char,charoff,valign]; col[align,char,charoff,valign,width]; colgroup[align,char,charoff,valign,width];',
                 });
 
                 // set formatting rules - CKEditor rules defaults are all true for these block tags
