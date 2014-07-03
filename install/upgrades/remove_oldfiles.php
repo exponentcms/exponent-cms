@@ -147,6 +147,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/js/jquery-ui-1.10.1.custom.min.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.js',
             'external/jquery/js/jquery-ui-1.10.2.custom.min.js',
+            'external/jquery/addons/js/pwstrength-bootstrap-1.1.2.js',
             'external/php.less/Cache.php',
             'external/php.less/Less.php',
             'external/php.less/Version.php',

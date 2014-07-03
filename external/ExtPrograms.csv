@@ -32,15 +32,15 @@ MediaElement.js,2.14.2,mediaelementjs.com/,2.14.2,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
-mPDF,5.7.1,mpdf1.com,5.7.1,optional
+mPDF,5.7.1,mpdf1.com,5.7.2,optional
 CKEditor,4.4.2,ckeditor.com,4.4.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.0,tinymce.com,4.1.0,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
-jQueryUI,1.10.4,jqueryui.com,1.11.0,
+jQueryUI,1.11.0,jqueryui.com,1.11.0,
 stepy,1.1.0,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.12.0,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.12.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
+validate,1.13.0,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.5,http://trentrichardson.com/examples/timepicker/,1.4.5,used by adminer
@@ -53,7 +53,7 @@ multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.5.10,http://www.jacklmoore.com/colorbox,1.5.10,using style #5 renamed to jquery.colorbox.css
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
-DateTimePicker,2.2.8exp,http://xdsoft.net/jqplugins/datetimepicker/,2.2.9,added additional 'update' method and click update if inline
+DateTimePicker,2.2.8exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.0,added additional 'update' method and click update if inline
 TimeCircles,1.4.0,https://github.com/wimbarelds/TimeCircles,1.4.0,
 pwstrength-bootstrap,1.1.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.1.5,
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,needed by TimesCircle for IE8
