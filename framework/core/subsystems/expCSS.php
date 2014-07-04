@@ -381,13 +381,14 @@ class expCSS {
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
                                 'sourceMap'         => true,  // output .map file?
-//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
-//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
-                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
-                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
+                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $less_cname . ".map",
+                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+//                                'sourceMapWriteTo'  => dirname(BASE . $less_pname) . '/' . $less_cname . ".map",  // file location of .map file
+//                                'sourceMapURL'      => dirname(PATH_RELATIVE . $less_pname) . '/' . $less_cname . ".map",  // url location of .map file
                                 'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
                                 'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
 //                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
+                                'sourceRoot'        => '/',
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
                             ));
                         }

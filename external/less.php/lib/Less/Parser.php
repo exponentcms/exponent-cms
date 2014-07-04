@@ -347,7 +347,7 @@ class Less_Parser{
 	 */
 	public function ModifyVars( $vars ){
 
-		$this->input = $this->serializeVars( $vars );
+		$this->input = Less_Parser::serializeVars( $vars );
 		$this->_parse();
 
 		return $this;
@@ -518,7 +518,7 @@ class Less_Parser{
 			if( Less_Parser::$options['cache_method'] == 'callback' ){
 				if( is_callable(Less_Parser::$options['cache_callback_set']) ){
 					call_user_func_array(
-						Less_Parser::$options['cache_callback_set'], 
+						Less_Parser::$options['cache_callback_set'],
 						array($this, $file_path, $cache_file, $rules)
 					);
 				}
@@ -680,10 +680,12 @@ class Less_Parser{
 	 */
 	private function MatchFuncs($toks){
 
-		foreach($toks as $tok){
-			$match = $this->$tok();
-			if( $match ){
-				return $match;
+		if( $this->pos < $this->input_len ){
+			foreach($toks as $tok){
+				$match = $this->$tok();
+				if( $match ){
+					return $match;
+				}
 			}
 		}
 
@@ -908,11 +910,11 @@ class Less_Parser{
 		if ($e) {
 			$this->MatchChar('~');
 		}
-                
+
                 // Fix for #124: match escaped newlines
                 //$str = $this->MatchReg('/\\G"((?:[^"\\\\\r\n]|\\\\.)*)"|\'((?:[^\'\\\\\r\n]|\\\\.)*)\'/');
 		$str = $this->MatchReg('/\\G"((?:[^"\\\\\r\n]|\\\\.|\\\\\r\n|\\\\[\n\r\f])*)"|\'((?:[^\'\\\\\r\n]|\\\\.|\\\\\r\n|\\\\[\n\r\f])*)\'/');
-                
+
 		if( $str ){
 			$result = $str[0][0] == '"' ? $str[1] : $str[2];
 			return $this->NewObj5('Less_Tree_Quoted',array($str[0], $result, $e, $index, $this->env->currentFileInfo) );
@@ -1610,22 +1612,24 @@ class Less_Parser{
 	// in the input, to see if it's a ` ` character.
 	//
 	private function parseCombinator(){
-		$c = $this->input[$this->pos];
-		if ($c === '>' || $c === '+' || $c === '~' || $c === '|' || $c === '^' ){
+		if( $this->pos < $this->input_len ){
+			$c = $this->input[$this->pos];
+			if ($c === '>' || $c === '+' || $c === '~' || $c === '|' || $c === '^' ){
 
-			$this->pos++;
-			if( $this->input[$this->pos] === '^' ){
-				$c = '^^';
 				$this->pos++;
+				if( $this->input[$this->pos] === '^' ){
+					$c = '^^';
+					$this->pos++;
+				}
+
+				$this->skipWhitespace(0);
+
+				return $c;
 			}
 
-			$this->skipWhitespace(0);
-
-			return $c;
-		}
-
-		if( $this->pos > 0 && $this->isWhitespace(-1) ){
-			return ' ';
+			if( $this->pos > 0 && $this->isWhitespace(-1) ){
+				return ' ';
+			}
 		}
 	}
 
@@ -1666,7 +1670,9 @@ class Less_Parser{
 				//if( count($extendList) ){
 					//error("Extend can only be used at the end of selector");
 				//}
-				$c = $this->input[ $this->pos ];
+				if( $this->pos < $this->input_len ){
+					$c = $this->input[ $this->pos ];
+				}
 				$elements[] = $e;
 				$e = null;
 			}
@@ -2426,7 +2432,7 @@ class Less_Parser{
 		}
 	}
 
-	public function serializeVars( $vars ){
+	public static function serializeVars( $vars ){
 		$s = '';
 
 		foreach($vars as $name => $value){
