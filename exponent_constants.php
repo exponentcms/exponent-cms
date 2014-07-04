@@ -501,7 +501,7 @@ if (!defined('JS_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('YUI3_RELATIVE')) {
-    define('YUI3_VERSION', '3.16.0');
+    define('YUI3_VERSION', '3.17.2');
     define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
 //	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
     define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');
@@ -525,7 +525,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.11.1');
     define('JQUERY2_VERSION', '2.1.1');
-    define('JQUERYUI_VERSION', '1.10.4');
+    define('JQUERYUI_VERSION', '1.11.0');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -540,7 +540,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.18');
+    define('SMARTY_VERSION', '3.1.19');
     define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -550,8 +550,8 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.2.0');
-    define('SWIFT_PATH', BASE . 'external/Swift-' . SWIFT_VERSION . '/lib/');
+    define('SWIFT_VERSION', '5.2.1');
+    define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
 }
 
 ?>
