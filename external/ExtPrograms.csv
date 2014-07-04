@@ -1,12 +1,12 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swift,5.2.0,swiftmailer.org,5.2.1,we add  eDebugLogger plugin
+Swift,5.2.1,swiftmailer.org,5.2.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,13.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,13.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.18,smarty.net,3.1.18,
+Smarty,3.1.19,smarty.net,3.1.19,
 phpthumb,1.7.11,phpthumb.sourceforge.net,1.7.13,"phpThumb.config.php - we set the cache folder, also several local bug fixes, reinstitued 'err' param & allow &amp in parsing"
 minify,2.2.0,github.com/mrclay/minify,2.2.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
-YUI3,3.16.0,developer.yahoo.com/yui/3,3.17.2,
+YUI3,3.17.2,developer.yahoo.com/yui/3,3.17.2,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.11exp,code.google.com/p/recaptcha,1.11,updated google.com urls & added bootstrap3 widget
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,

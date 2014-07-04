@@ -6,7 +6,6 @@ Less_Autoloader::register();
 
 // Create our environment
 $env		= array('compress' => false);
-
 $silent		= false;
 $watch		= false;
 $rootpath	= '';
@@ -44,7 +43,6 @@ Usage: lessc [options] sources [destination]
  -ru, --relative-urls  re-write relative urls to the base less file.
  -rp, --rootpath=URL   Set rootpath for url rewriting in relative imports and urls.
                        Works with or without the relative-urls option.
- --insecure            Allow imports from insecure https hosts.
  -w, --watch           Watch input files for changes.
 
 
