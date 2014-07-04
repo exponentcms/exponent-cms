@@ -463,6 +463,10 @@ class remove_oldfiles extends upgradescript {
             "external/iepndfix2/",
             "external/magpierss/",
             "external/lesshat/",
+            "external/phpThumb/demo/",
+            "external/phpThumb/docs/",
+            "external/phpThumb/fonts/",
+            "external/phpThumb/images/",
             "external/Respond-1.3.0/",
             "external/Smarty/",
             "external/Smarty-2/",
@@ -474,6 +478,7 @@ class remove_oldfiles extends upgradescript {
             "external/Smarty-3.1.13/",
             "external/Smarty-3.1.14/",
             "external/Smarty-3.1.15/",
+            "external/Smarty-3.1.18/",
             "external/swfobject/",
             "external/Swift/",
             "external/Swift-4/",
@@ -491,6 +496,7 @@ class remove_oldfiles extends upgradescript {
             "external/Swift-4.3.1/",
             "external/Swift-5.0.0/",
             "external/Swift-5.0.1/",
+            "external/Swift-5.2.0/",
             "external/yui3/",
             "external/lissa/",
             "external/yui/build/",
@@ -504,6 +510,7 @@ class remove_oldfiles extends upgradescript {
             "external/yui/3.10.1/",
             "external/yui/3.11.0/",
             "external/yui/3.13.0/",
+            "external/yui/3.16.0/",
         );
         foreach ($olddirs as $dir) {
             if (expUtil::isReallyWritable(BASE.$dir)) {
