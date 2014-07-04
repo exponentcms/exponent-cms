@@ -17,11 +17,11 @@ pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily 
 class.upload,0.32,www.verot.net/php_class_upload.htm,0.32,placed in Pixidou module folder
 iCalCreator,2.2,kigkonsult.se/iCalcreator,2.2,Fixed $baseline to baseline bug
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,will not compile bootstrap v3+
-less.php,1.7.0.1,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
+less.php,1.7.0.2exp,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.1.1,twitter.github.com/bootstrap,3.2.0,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.1.1+1,bootswatch.com/,3.2.0,
+Bootswatch,3.1.1+1,bootswatch.com/,3.2.0+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
@@ -39,8 +39,8 @@ elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and a
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
 jQueryUI,1.11.0,jqueryui.com,1.11.0,
-stepy,1.1.0,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.13.0,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
+stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
+validate,1.13.0exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.4.5,http://trentrichardson.com/examples/timepicker/,1.4.5,used by adminer
@@ -53,7 +53,7 @@ multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.5.10,http://www.jacklmoore.com/colorbox,1.5.10,using style #5 renamed to jquery.colorbox.css
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
-DateTimePicker,2.2.8exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.0,added additional 'update' method and click update if inline
+DateTimePicker,2.3.0exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.0,added additional 'update' method and click update if inline
 TimeCircles,1.4.0,https://github.com/wimbarelds/TimeCircles,1.4.0,
 pwstrength-bootstrap,1.1.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.1.5,
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,needed by TimesCircle for IE8
