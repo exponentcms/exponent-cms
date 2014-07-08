@@ -576,8 +576,6 @@ class expTheme
         }
         if (!is_readable($theme)) {
             if (is_readable(BASE . 'themes/basetheme/index.php')) {
-//                $theme = BASE . 'themes/basetheme/index.php';
-//            } else {
                 $theme = BASE . 'framework/core/index.php';
             }
         }
@@ -656,7 +654,7 @@ class expTheme
         return ($level == UILEVEL_PREVIEW);
     }
 
-    public static function inAction()
+    public static function inAction($action=null)
     {
         return (isset($_REQUEST['action']) && (isset($_REQUEST['module']) || isset($_REQUEST['controller'])) && (!isset($action) || ($action == $_REQUEST['action'])));
     }
@@ -1460,7 +1458,7 @@ class expTheme
                 case 'add' :
                 case 'addtitle' :
                 case 'switchtheme add' :
-                    $class = "plus-sign add";
+                    $class = "plus-sign";
                     $btn_type = "btn-success"; // green
                     break;
                 case 'copy' :
