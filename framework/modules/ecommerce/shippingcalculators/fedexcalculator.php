@@ -240,7 +240,7 @@ class fedexcalculator extends shippingcalculator {
                 //);
 //             eDebug($this->configdata['shipping_methods']);
 //             eDebug($response->RateReplyDetails);
-                foreach ($response->RateReplyDetails as $rateReply) {
+                if (!empty($response->RateReplyDetails)) foreach ($response->RateReplyDetails as $rateReply) {
                     if (in_array($rateReply->ServiceType, $this->configdata['shipping_methods'])) {
                         $rates[$rateReply->ServiceType] = array(
                             "id"   => $rateReply->ServiceType,
