@@ -164,7 +164,7 @@
                                        class="servopt">
                                         {$calc}
                                     </a>
-                                    {else}
+                                {else}
                                     <span class="servopt">{$calc}</span>
                                 {/if}
                             {/foreach}

@@ -178,7 +178,8 @@ class upscalculator extends shippingcalculator {
 	    
 	    $handling = empty($has_giftcard) ? 0 : 5;
         if (empty($rateFromUPS)) {
-            return 0;
+//            return 0;
+            return array();
         } elseif ($rateFromUPS['RatingServiceSelectionResponse']['Response']['ResponseStatusCode']['VALUE'] == 1) {
 	        $rates = array();
 	        $available_methods = $this->availableMethods();

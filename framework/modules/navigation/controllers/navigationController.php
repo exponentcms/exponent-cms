@@ -878,7 +878,8 @@ class navigationController extends expController {
         //FIXME we come here for new/edit content/standalone pages
         // FIXME: Allow non-administrative users to manage certain parts of the section hierarchy.
         //if ($user->is_acting_admin == 1 /*TODO: section admin*/) {
-        $section = null;
+//        $section = null;
+        $section = new stdClass();
         if (isset($this->params['id'])) {
             // Check to see if an id was passed in get.  If so, retrieve that section from
             // the database, and perform an edit on it.
