@@ -34,7 +34,7 @@
         {/if}
     </div>
     {/permissions}
-	<div id="showhelp-tabs-{$id}" class="yui-navset exp-skin-tabview">
+	<div id="showhelp-tabs-{$id}" class="yui-navset">
 		<ul class="yui-nav">
 			<li class="selected"><a href="#tab1"><em>{'General Overview'|gettext}</em></a></li>
 			{if $doc->actions_views}

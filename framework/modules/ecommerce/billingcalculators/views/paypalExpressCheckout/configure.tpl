@@ -17,7 +17,7 @@
 {'To setup a PayPal Express Checkout account, visit'|gettext} <a href="https://www.paypal.com/webapps/mpp/merchant" target="_blank">https://www.paypal.com/webapps/mpp/merchant</a>
 </blockquote>
 <div id="paypal">
-    <div id="paypal-tabs" class="yui-navset exp-skin-tabview">
+    <div id="paypal-tabs" class="yui-navset">
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>

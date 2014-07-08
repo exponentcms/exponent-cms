@@ -276,7 +276,7 @@
             {if $order->total}
                 <h2>{"Payment Information"|gettext}</h2>
                 <h3>{"Available Payment Methods"|gettext}</h3>
-                <div id="cart-{$id}" class="yui-navset exp-skin-tabview">
+                <div id="cart-{$id}" class="yui-navset">
                     <ul class="yui-nav">
                         {foreach from=$billing->calculator_views item=cviews name=calcs}
                             <li><a href="#tab{$smarty.foreach.calcs.iteration}">{$billing->selectable_calculators[$cviews.id]}</a></li>

@@ -37,7 +37,7 @@
         {*{/permissions}*}
     {*{/if}*}
     {*{else}*}
-    <div id="text-{$id}" class="yui-navset exp-skin-tabview">
+    <div id="text-{$id}" class="yui-navset">
         <ul class="yui-nav">
             {foreach from=$items item=tab name=tabs}
                 <li><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>

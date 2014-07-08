@@ -21,7 +21,7 @@
 
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
-    <div id="{$tabs}" class="yui-navset exp-skin-tabview">
+    <div id="{$tabs}" class="yui-navset">
         <ul class="yui-nav">
             {foreach from=$containers item=container key=tabnum name=contain}
                 {$numcontainers=$tabnum+1}
