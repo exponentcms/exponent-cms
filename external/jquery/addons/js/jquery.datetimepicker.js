@@ -1,5 +1,5 @@
 /**
- * @preserve jQuery DateTimePicker plugin v2.3.0
+ * @preserve jQuery DateTimePicker plugin v2.3.2
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
@@ -217,7 +217,10 @@
 		
 		timepicker:true,
 		datepicker:true,
-	
+		
+		defaultTime:false,		// use formatTime format (ex. '10:00' for formatTime:	'H:i')
+		defaultDate:false, 		// use formatDate format (ex new Date() or '1986/12/08' or '-1970/01/05' or '-1970/01/05')
+		
 		minDate:false,
 		maxDate:false,
 		minTime:false,
@@ -526,7 +529,7 @@
 						triggerAfterOpen = true;
 						datetimepicker.addClass('xdsoft_inline');
 						input.after(datetimepicker).hide();
-						datetimepicker.trigger('afterOpen.xdsoft');
+						datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 					}
 
 					if( options.inverseButton ) {
@@ -733,21 +736,37 @@
 
 				var _xdsoft_datetime = new function() {
 					var _this = this;
-					_this.now = function() {
+					_this.now = function( norecursion ) {
 						var d = new Date();
-						if( options.yearOffset )
+						
+						if( !norecursion && options.defaultDate  ){
+							var date = _this.strtodate(options.defaultDate);
+							d.setFullYear( date.getFullYear() );
+							d.setMonth( date.getMonth() );
+							d.setDate( date.getDate() );
+						}
+						
+						if( options.yearOffset  ){
 							d.setFullYear(d.getFullYear()+options.yearOffset);
+						}
+						
+						if( !norecursion && options.defaultTime ){
+							var time = _this.strtotime(options.defaultTime);
+							d.setHours( time.getHours() );
+							d.setMinutes( time.getMinutes() );
+						}
+							
 						return d;
 					};
 
-					_this.currentTime = this.now();
+					
 					_this.isValidDate = function (d) {
 						if ( Object.prototype.toString.call(d) !== "[object Date]" )
 							return false;
 						return !isNaN(d.getTime());
 					};
 
-					_this.setCurrentTime = function( dTime) {
+					_this.setCurrentTime = function( dTime ) {
 						_this.currentTime = (typeof dTime == 'string')? _this.strToDateTime(dTime) : _this.isValidDate(dTime) ? dTime: _this.now();
 						datetimepicker.trigger('xchange.xdsoft');
 					};
@@ -818,9 +837,9 @@
 						if( sDate && sDate instanceof Date && _this.isValidDate(sDate) )
 							return sDate;
 						
-						var currentTime = sDate?Date.parseDate(sDate, options.formatDate):_this.now();
+						var currentTime = sDate?Date.parseDate(sDate, options.formatDate):_this.now(true);
 						if( !_this.isValidDate(currentTime) )
-							currentTime = _this.now();
+							currentTime = _this.now(true);
 							
 						return currentTime;
 					};
@@ -831,7 +850,7 @@
 							
 						var currentTime = sTime?Date.parseDate(sTime, options.formatTime):_this.now();
 						if( !_this.isValidDate(currentTime) )
-							currentTime = _this.now();
+							currentTime = _this.now(true);
 							
 						return currentTime;
 					};
@@ -839,6 +858,8 @@
 					_this.str = function() {
 						return _this.currentTime.dateFormat(options.format);
 					};
+					
+					_this.currentTime = this.now();
 				};
 				mounth_picker
 					.find('.xdsoft_today_button')
@@ -1093,6 +1114,12 @@
 						timerclick++;
 						var $this = $(this),
 							currentTime = _xdsoft_datetime.currentTime;
+						
+						if( currentTime===undefined||currentTime===null ){
+                            _xdsoft_datetime.currentTime = _xdsoft_datetime.now();
+                            currentTime = _xdsoft_datetime.currentTime;
+                        }
+						
 						if( $this.hasClass('xdsoft_disabled') )
 							return false;
 
@@ -1125,6 +1152,12 @@
 					    xdevent.stopPropagation(); // NAJ: Prevents closing of Pop-ups, Modals and Flyouts
 						var $this = $(this),
 							currentTime = _xdsoft_datetime.currentTime;
+						
+						if( currentTime===undefined||currentTime===null ){
+                            _xdsoft_datetime.currentTime = _xdsoft_datetime.now();
+                            currentTime = _xdsoft_datetime.currentTime;
+                        }
+						
 						if( $this.hasClass('xdsoft_disabled') )
 							return false;
 						currentTime.setHours($this.data('hour'));
@@ -1239,7 +1272,7 @@
 						}
 						if( onShow!==false ) {
 							datetimepicker.show();
-							datetimepicker.trigger('afterOpen.xdsoft');
+							datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 							setPos();
 							$(window)
 								.off('resize.xdsoft',setPos)
@@ -1275,11 +1308,9 @@
 
 					var ct = false;
 
-                    if (options.startDate instanceof Date && !isNaN(options.startDate.valueOf())) {
-                        ct = options.startDate;
-                    } else if (!ct && options.startDate!==false) {
+                    if ( options.startDate ) {
                         ct = _xdsoft_datetime.strToDateTime(options.startDate);
-                    } else if (!ct) {
+                    } else {
                         ct = options.value?options.value:(input&&input.val&&input.val())?input.val():'';
 				        ct = Date.parseDate(ct, options.format);
                     }
@@ -1292,10 +1323,10 @@
 					
 					return ct?ct:0;
 				}
-				
+				//debugger
 				_xdsoft_datetime.setCurrentTime( getCurrentValue() );
 
-				datetimepicker.trigger('afterOpen.xdsoft');
+				datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 
 				input
 					.data( 'xdsoft_datetimepicker',datetimepicker )
