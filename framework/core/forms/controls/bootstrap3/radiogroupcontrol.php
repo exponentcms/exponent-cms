@@ -110,8 +110,9 @@ class radiogroupcontrol extends formcontrol {
 		$form->register("items",gt('Items'), new listbuildercontrol($object->items,null));
 		$form->register("default",gt('Default'), new textcontrol($object->default));
 		$form->register("flip","Caption on Left", new checkboxcontrol($object->flip,false));
-		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
-		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
+//		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4,false,2,"integer"));
+        $form->register("cols","Stacked Controls", new checkboxcontrol($object->cols,false));
+//		$form->register(null,"", new htmlcontrol(gt('Setting Number of Columns to zero will put all items on one row.')));
 //		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
 		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		
@@ -132,7 +133,8 @@ class radiogroupcontrol extends formcontrol {
 		$object->default = $values['default'];
 		$object->items = listbuildercontrol::parseData($values,'items',true);
 		$object->flip = isset($values['flip']);
-        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+//        if (isset($values['cols'])) $object->cols = intval($values['cols']);
+        $object->cols = !empty($values['cols']) ? 1 : 0;
 //        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
 		$object->required = isset($values['required']);
 		
