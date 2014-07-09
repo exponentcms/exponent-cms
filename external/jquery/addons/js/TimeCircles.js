@@ -15,6 +15,50 @@
  **/
 (function($) {
 
+    var useWindow = window;
+    
+    // From https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
+    if (!Object.keys) {
+        Object.keys = (function() {
+            'use strict';
+            var hasOwnProperty = Object.prototype.hasOwnProperty,
+                    hasDontEnumBug = !({toString: null}).propertyIsEnumerable('toString'),
+                    dontEnums = [
+                        'toString',
+                        'toLocaleString',
+                        'valueOf',
+                        'hasOwnProperty',
+                        'isPrototypeOf',
+                        'propertyIsEnumerable',
+                        'constructor'
+                    ],
+                    dontEnumsLength = dontEnums.length;
+
+            return function(obj) {
+                if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+                    throw new TypeError('Object.keys called on non-object');
+                }
+
+                var result = [], prop, i;
+
+                for (prop in obj) {
+                    if (hasOwnProperty.call(obj, prop)) {
+                        result.push(prop);
+                    }
+                }
+
+                if (hasDontEnumBug) {
+                    for (i = 0; i < dontEnumsLength; i++) {
+                        if (hasOwnProperty.call(obj, dontEnums[i])) {
+                            result.push(dontEnums[i]);
+                        }
+                    }
+                }
+                return result;
+            };
+        }());
+    }
+    
     // Used to disable some features on IE8
     var limited_mode = false;
     var tick_duration = 200; // in ms
@@ -143,7 +187,7 @@
         var old_time = {};
 
         var greater_unit = null;
-        for (var i in units) {
+        for(var i = 0; i < units.length; i++) {
             var unit = units[i];
             var maxUnits;
 
@@ -156,11 +200,14 @@
 
             var curUnits = (diff / secondsIn[unit]);
             var oldUnits = (old_diff / secondsIn[unit]);
-            if (floor)
-                curUnits = Math.floor(curUnits);
-            if (floor)
-                oldUnits = Math.floor(oldUnits);
-
+            
+            if(floor) {
+                if(curUnits > 0) curUnits = Math.floor(curUnits);
+                else curUnits = Math.ceil(curUnits);
+                if(oldUnits > 0) oldUnits = Math.floor(oldUnits);
+                else oldUnits = Math.ceil(oldUnits);
+            }
+            
             if (unit !== "Days") {
                 curUnits = curUnits % maxUnits;
                 oldUnits = oldUnits % maxUnits;
@@ -187,13 +234,14 @@
     }
 
     var TC_Instance_List = {};
-    // Try fetch/share instance
-    if (window !== window.top && typeof window.top.TC_Instance_List !== "undefined") {
-        TC_Instance_List = window.top.TC_Instance_List;
-    }
-    else {
-        window.top.TC_Instance_List = TC_Instance_List;
-    }
+    function updateInstanceList() {
+        if(typeof useWindow.TC_Instance_List !== "undefined") {
+            TC_Instance_List = useWindow.TC_Instance_List;
+        }
+        else {
+            useWindow.TC_Instance_List = TC_Instance_List;
+        }
+    };
 
     (function() {
         var vendors = ['webkit', 'moz'];
@@ -229,6 +277,7 @@
             paused: false,
             last_frame: 0,
             animation_frame: null,
+            interval_fallback: null,
             timer: false,
             total_duration: null,
             prev_time: null,
@@ -262,10 +311,25 @@
         this.initialize();
     };
 
+    TC_Instance.prototype.clearListeners = function() {
+        this.listeners = { all: [], visible: [] };
+    };
+    
+    TC_Instance.prototype.addTime = function(seconds_to_add) {
+        if(this.data.attributes.ref_date instanceof Date) {
+            var d = this.data.attributes.ref_date;
+            d.setSeconds(d.getSeconds() + seconds_to_add);
+        }
+        else if(!isNaN(this.data.attributes.ref_date)) {
+            this.data.attributes.ref_date += (seconds_to_add * 1000);
+        }
+    };
+    
     TC_Instance.prototype.initialize = function(clear_listeners) {
         // Initialize drawn units
         this.data.drawn_units = [];
-        for (var unit in this.config.time) {
+        for(var i = 0; i < Object.keys(this.config.time).length; i++) {
+            var unit = Object.keys(this.config.time)[i];
             if (this.config.time[unit].show) {
                 this.data.drawn_units.push(unit);
             }
@@ -277,7 +341,7 @@
         if (typeof clear_listeners === "undefined")
             clear_listeners = true;
         if (clear_listeners || this.listeners === null) {
-            this.listeners = {all: [], visible: []};
+            this.clearListeners();
         }
         this.container = $("<div>");
         this.container.addClass('time_circles');
@@ -338,23 +402,38 @@
 
             var headerElement = $("<h4>");
             headerElement.text(this.config.time[key].text); // Options
-            headerElement.css("font-size", Math.round(0.07 * this.data.attributes.item_size));
-            headerElement.css("line-height", Math.round(0.07 * this.data.attributes.item_size) + "px");
+            headerElement.css("font-size", Math.round(this.config.text_size * this.data.attributes.item_size));
+            headerElement.css("line-height", Math.round(this.config.text_size * this.data.attributes.item_size) + "px");
             headerElement.appendTo(textElement);
 
             var numberElement = $("<span>");
-            numberElement.css("font-size", Math.round(0.21 * this.data.attributes.item_size));
-            numberElement.css("line-height", Math.round(0.07 * this.data.attributes.item_size) + "px");
+            numberElement.css("font-size", Math.round(3 * this.config.text_size * this.data.attributes.item_size));
+            numberElement.css("line-height", Math.round(this.config.text_size * this.data.attributes.item_size) + "px");
             numberElement.appendTo(textElement);
 
             this.data.text_elements[key] = numberElement;
         }
 
-        if (this.config.start && this.data.paused === false)
-            this.start();
+        this.start();
+        if (!this.config.start) {
+            this.data.paused = true;
+        }
+        
+        // Set up interval fallback
+        var _this = this
+        this.data.interval_fallback = useWindow.setInterval(function(){
+            _this.update.call(_this, true);
+        }, 1000);
     };
 
-    TC_Instance.prototype.update = function() {
+    TC_Instance.prototype.update = function(nodraw) {
+        if(typeof nodraw === "undefined") {
+            nodraw = false;
+        }
+        else if(nodraw && this.data.paused) {
+            return;
+        }
+        
         if(limited_mode) {
             //Per unit clearing doesn't work in IE8 using explorer canvas, so do it in one time. The downside is that radial fade cant be used
             this.data.attributes.context.clearRect(0, 0, this.data.attributes.canvas[0].width, this.data.attributes.canvas[0].hright);
@@ -371,8 +450,7 @@
         // If not counting past zero, and time < 0, then simply draw the zero point once, and call stop
         if (!this.config.count_past_zero) {
             if (curDate > this.data.attributes.ref_date) {
-                for (var i in this.data.drawn_units) {
-                    // TODO: listeners!
+                for(var i = 0; i < this.data.drawn_units.length; i++) {
                     var key = this.data.drawn_units[i];
 
                     // Set the text value
@@ -416,36 +494,43 @@
             if (Math.floor(visible_times.raw_time[key]) !== Math.floor(visible_times.raw_old_time[key])) {
                 this.notifyListeners(key, Math.floor(visible_times.time[key]), Math.floor(diff), "visible");
             }
+            
+            if(!nodraw) {
+                // Set the text value
+                this.data.text_elements[key].text(Math.floor(Math.abs(visible_times.time[key])));
 
-            // Set the text value
-            this.data.text_elements[key].text(Math.floor(Math.abs(visible_times.time[key])));
+                var x = (j * this.data.attributes.item_size) + (this.data.attributes.item_size / 2);
+                var y = this.data.attributes.item_size / 2;
+                var color = this.config.time[key].color;
 
-            var x = (j * this.data.attributes.item_size) + (this.data.attributes.item_size / 2);
-            var y = this.data.attributes.item_size / 2;
-            var color = this.config.time[key].color;
-
-            if (this.config.animation === "smooth") {
-                if (lastKey !== null && !limited_mode) {
-                    if (Math.floor(visible_times.time[lastKey]) > Math.floor(visible_times.old_time[lastKey])) {
-                        this.radialFade(x, y, color, 1, key);
-                        this.data.state.fading[key] = true;
+                if (this.config.animation === "smooth") {
+                    if (lastKey !== null && !limited_mode) {
+                        if (Math.floor(visible_times.time[lastKey]) > Math.floor(visible_times.old_time[lastKey])) {
+                            this.radialFade(x, y, color, 1, key);
+                            this.data.state.fading[key] = true;
+                        }
+                        else if (Math.floor(visible_times.time[lastKey]) < Math.floor(visible_times.old_time[lastKey])) {
+                            this.radialFade(x, y, color, 0, key);
+                            this.data.state.fading[key] = true;
+                        }
                     }
-                    else if (Math.floor(visible_times.time[lastKey]) < Math.floor(visible_times.old_time[lastKey])) {
-                        this.radialFade(x, y, color, 0, key);
-                        this.data.state.fading[key] = true;
+                    if (!this.data.state.fading[key]) {
+                        this.drawArc(x, y, color, visible_times.pct[key]);
                     }
                 }
-                if (!this.data.state.fading[key]) {
-                    this.drawArc(x, y, color, visible_times.pct[key]);
+                else {
+                    this.animateArc(x, y, color, visible_times.pct[key], visible_times.old_pct[key], (new Date()).getTime() + tick_duration);
                 }
-            }
-            else {
-                this.animateArc(x, y, color, visible_times.pct[key], visible_times.old_pct[key], (new Date()).getTime() + tick_duration);
             }
             lastKey = key;
             j++;
         }
 
+        // Dont request another update if we should be paused
+        if(this.data.paused || nodraw) {
+            return;
+        }
+        
         // We need this for our next frame either way
         var _this = this;
         var update = function() {
@@ -455,7 +540,7 @@
         // Either call next update immediately, or in a second
         if (this.config.animation === "smooth") {
             // Smooth animation, Queue up the next frame
-            this.data.animation_frame = window.top.requestAnimationFrame(update, _this.element, _this);
+            this.data.animation_frame = useWindow.requestAnimationFrame(update, _this.element, _this);
         }
         else {
             // Tick animation, Don't queue until very slightly after the next second happens
@@ -464,8 +549,8 @@
                 delay = 1000 + delay;
             delay += 50;
 
-            _this.data.animation_frame = window.top.setTimeout(function() {
-                _this.data.animation_frame = window.top.requestAnimationFrame(update, _this.element, _this);
+            _this.data.animation_frame = useWindow.setTimeout(function() {
+                _this.data.animation_frame = useWindow.requestAnimationFrame(update, _this.element, _this);
             }, delay);
         }
     };
@@ -495,7 +580,7 @@
             if (progress >= 1)
                 return;
             var _this = this;
-            window.top.requestAnimationFrame(function() {
+            useWindow.requestAnimationFrame(function() {
                 _this.animateArc(x, y, color, target_pct, cur_pct, animation_end);
             }, this.element);
         }
@@ -569,14 +654,14 @@
             (function() {
                 var delay = 50 * i;
                 var rgba = "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + (Math.round(from * 10) / 10) + ")";
-                window.top.setTimeout(function() {
+                useWindow.setTimeout(function() {
                     _this.drawArc(x, y, rgba, 1);
                 }, delay);
             }());
             from += step;
         }
         if (typeof key !== undefined) {
-            window.top.setTimeout(function() {
+            useWindow.setTimeout(function() {
                 _this.data.state.fading[key] = false;
             }, 50 * i);
         }
@@ -588,8 +673,8 @@
     };
 
     TC_Instance.prototype.start = function() {
-        window.top.cancelAnimationFrame(this.data.animation_frame);
-        window.top.clearTimeout(this.data.animation_frame)
+        useWindow.cancelAnimationFrame(this.data.animation_frame);
+        useWindow.clearTimeout(this.data.animation_frame)
 
         // Check if a date was passed in html attribute or jquery data
         var attr_data_date = $(this.element).data('date');
@@ -641,11 +726,15 @@
         }
         // Stop running
         this.data.paused = true;
-        window.top.cancelAnimationFrame(this.data.animation_frame);
+        useWindow.cancelAnimationFrame(this.data.animation_frame);
     };
 
     TC_Instance.prototype.destroy = function() {
+        this.clearListeners();
         this.stop();
+        useWindow.clearInterval(this.data.interval_fallback);
+        this.data.interval_fallback = null;
+        
         this.container.remove();
         $(this.element).removeAttr('data-tc-id');
         $(this.element).removeData('tc-id');
@@ -658,6 +747,12 @@
         }
         $.extend(true, this.config, options);
 
+        // Use window.top if use_top_frame is true
+        if(this.config.use_top_frame) {
+            useWindow = window.top;
+            updateInstanceList();
+        }
+        
         this.data.total_duration = this.config.total_duration;
         if (typeof this.data.total_duration === "string") {
             if (typeof secondsIn[this.data.total_duration] !== "undefined") {
@@ -666,7 +761,8 @@
             }
             else if (this.data.total_duration === "Auto") {
                 // If set to auto, total_duration is the size of 1 unit, of the unit type bigger than the largest shown
-                for (var unit in this.config.time) {
+                for(var i = 0; i < Object.keys(this.config.time).length; i++) {
+                    var unit = Object.keys(this.config.time)[i];
                     if (this.config.time[unit].show) {
                         this.data.total_duration = secondsIn[nextUnits[unit]];
                         break;
@@ -705,8 +801,10 @@
         use_background: true,
         fg_width: 0.1,
         bg_width: 1.2,
+        text_size: 0.07,
         total_duration: "Auto",
         direction: "Clockwise",
+        use_top_frame: false,
         start_angle: 0,
         time: {
             Days: {
@@ -768,6 +866,12 @@
         return instance;
     };
 
+    TC_Class.prototype.addTime = function(seconds_to_add) {
+        this.foreach(function(instance) {
+            instance.addTime(seconds_to_add);
+        });
+    };
+    
     TC_Class.prototype.foreach = function(callback) {
         var _this = this;
         this.elements.each(function() {
