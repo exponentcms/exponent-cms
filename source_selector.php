@@ -27,10 +27,24 @@ define('SOURCE_SELECTOR',1);
 
 // Initialize the Exponent Framework
 include_once('exponent.php');
+
+$level = 99;
+if (expSession::is_set('uilevel')) {
+    $level = expSession::get('uilevel');
+}
+expSession::set("uilevel", UILEVEL_PREVIEW);
+
 $section = $router->getSection();
 $sectionObj = $router->getSectionObj($section);
-
+if (bs3()) {
+    expCSS::pushToHead(array(
+        'unique'=>"container-newui",
+        'lesscss'=>PATH_RELATIVE."framework/modules/container/assets/less/container-newui.less"
+    ));
+}
 // Call the real selector script.  It will use the value of SOURCE_SELECTOR to determine what it needs to do.
 include_once('selector.php');
+
+expSession::set("uilevel", $level);
 
 ?>

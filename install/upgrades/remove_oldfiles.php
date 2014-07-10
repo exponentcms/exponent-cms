@@ -249,6 +249,8 @@ class remove_oldfiles extends upgradescript {
             'framework/core/definitions/modstate.php',
             'framework/modules/container/controllers/container2Controller.php',
             'framework/modules/container/models/container2.php',
+            'framework/modules/container/views/container/_nocontent.tpl',
+            'framework/modules/container/views/container/_popup_info.tpl',
             // ecommerce definitions
             'framework/core/definitions/billingcalculator.php',
             'framework/core/definitions/billingmethods.php',

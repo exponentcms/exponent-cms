@@ -101,7 +101,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 
 	// If we are in a printer friendly request then we need to change to our printer friendly subtheme
 	if (PRINTER_FRIENDLY == 1 || EXPORT_AS_PDF == 1) {
-		expSession::set("uilevel",0);
+		expSession::set("uilevel", UILEVEL_PREVIEW);
 		$pftheme = expTheme::getPrinterFriendlyTheme();  	// get the printer friendly theme
 		$page = $pftheme == null ? $page : $pftheme;		// if there was no theme found then just use the current subtheme
 	}
