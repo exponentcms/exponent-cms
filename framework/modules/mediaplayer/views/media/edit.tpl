@@ -31,7 +31,7 @@
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name=rank value=$record->rank}
-        {control type="text" name="title" label="Title"|gettext value=$record->title}
+        {control type="text" name="title" label="Title"|gettext value=$record->title focus=1}
         {control type="html" name="body" label="Description"|gettext value=$record->body}
         {control type="text" name="width" label="Width"|gettext filter=integer value=$record->width|default:$width}
         {control type="text" name="height" label="Height"|gettext filter=integer value=$record->height|default:$height}

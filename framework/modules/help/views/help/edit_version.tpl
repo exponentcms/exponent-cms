@@ -25,7 +25,7 @@
 
     {form action=update_version}
         {control type=hidden name=id value=$record->id}
-        {control type="text" name="version" label="Version"|gettext|cat:" #" value=$record->version}
+        {control type="text" name="version" label="Version"|gettext|cat:" #" value=$record->version focus=1}
         {control type=text name=title label="Version Name"|gettext value=$record->title}
         {control type="checkbox" name="is_current" label="Make this the current version"|gettext value=1 checked=$record->is_current}
         {control type=buttongroup submit="Save Version"|gettext cancel="Cancel"|gettext}

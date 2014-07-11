@@ -44,10 +44,10 @@
 	                {*{if $edit_user->id == "" || $edit_user->id == 0}*}
                     {if empty($edit_user->id)}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
-                            {control type=text name=username label="Username"|gettext value=$edit_user->username required=1}
+                            {control type=text name=username label="Username"|gettext value=$edit_user->username required=1 focus=1}
                         {else}
                             {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}*}
-                            {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1}
+                            {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1 focus=1}
                         {/if}
                         {control type=password name=pass1 label="Password"|gettext required=1}
                         <div class="row">

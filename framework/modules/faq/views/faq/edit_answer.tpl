@@ -26,7 +26,7 @@
         </tr>
         </table>
         {control type="hidden" name="id" value=$faq->id}
-        {control type="text" name="subject" label="Subject"|gettext size="50" value=$config.answer_subject}
+        {control type="text" name="subject" label="Subject"|gettext size="50" value=$config.answer_subject focus=1}
         {control type="html" name="body" label="Message"|gettext value=$reply}
         {control type="buttongroup" submit="Send Email"|gettext cancel="Cancel"|gettext}
     {/form}

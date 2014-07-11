@@ -23,7 +23,7 @@
 	{control name=id type=hidden value=$record->id}
 	{control name=impressions type=hidden value=$record->impressions}
 	{control name=clicks type=hidden value=$record->clicks}
-    {control type="text" name="title" label="Banner Name"|gettext value=$record->title}
+    {control type="text" name="title" label="Banner Name"|gettext value=$record->title focus=1}
     {control type="text" name="url" label="URL"|gettext value=$record->url}
     {control type="text" name="impression_limit" label="Impression Limit"|gettext size=5 filter=integer value=$record->impression_limit}
     {control type="text" name="click_limit" label="Click Limit"|gettext size=5 filter=integer value=$record->click_limit}
