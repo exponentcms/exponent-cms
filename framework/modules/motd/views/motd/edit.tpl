@@ -20,7 +20,7 @@
     {form action='update'}
         {control type="hidden" name="id" value=$record->id}
         {*{control type="text" name="body" label="Message"|gettext size=35 value=$record->body}*}
-        {control type="html" name="body" label="Message"|gettext value=$record->body}
+        {control type="html" name="body" label="Message"|gettext value=$record->body focus=1}
         {control type="dropdown" name="month" label="Month"|gettext items=$record->months value=$record->month}
         {control type="dropdown" name="day" label="Day"|gettext from=1 to=31 value=$record->day}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}

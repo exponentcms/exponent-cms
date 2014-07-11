@@ -30,7 +30,7 @@
         {*{control type="text" name="submitter_name" label="Your Name"|gettext value=$record->submitter_name}*}
         {*{control type="text" name="submitter_email" label="Your Email Address"|gettext value=$record->submitter_email}*}
         {if $user->id == 0 || $comment->id }
-  	        {control type=text name="submitter_name" label="Your Name"|gettext required=true value=$record->submitter_name}
+  	        {control type=text name="submitter_name" label="Your Name"|gettext required=true value=$record->submitter_name focus=1}
   		    {*{control type=text name="submitter_email" label="Your Email Address"|gettext required=true value=$record->submitter_email}*}
             {control type=email name="submitter_email" label="Your Email Address"|gettext required=true value=$record->submitter_email}
   		{else}

@@ -21,7 +21,7 @@
 
 {form action=update}
 	{control name=id type=hidden value=$record->id}
-    {control type="text" name="title" label="Title"|gettext value=$record->title}
+    {control type="text" name="title" label="Title"|gettext value=$record->title focus=1}
     {*{control type="text" name="url" label="URL"|gettext value=$record->url}*}
     {control type=url name="url" label="URL"|gettext value=$record->url}
     {control type="files" name="image" label="Image"|gettext accept="image/*" value=$record->expFile}

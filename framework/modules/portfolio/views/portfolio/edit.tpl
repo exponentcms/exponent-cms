@@ -29,7 +29,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Portfolio Piece'|gettext}</h2>
-                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
                     {control type="checkbox" name="featured" label="Feature this Portfolio Piece"|gettext|cat:"?" checked=$record->featured value=1}
                     {if !$config.disabletags}

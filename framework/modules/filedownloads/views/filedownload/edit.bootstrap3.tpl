@@ -27,7 +27,7 @@
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" class="tab-pane fade in active">
                     <h2>{'File Download'|gettext}</h2>
-                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title focus=1}
 
                     <div id="alt-control" class="alt-control">
                         <div class="control"><label class="label">{'Type of Media'|gettext}</label></div>

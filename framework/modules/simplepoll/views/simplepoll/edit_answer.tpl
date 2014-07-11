@@ -25,7 +25,7 @@
         {control type=hidden name=simplepoll_question_id value=$answer->simplepoll_question->id}
         {control type=hidden name=rank value=$answer->rank}
         {control type=hidden name=vote_count value=$answer->vote_count}
-        {control type=html name=answer label="Answer"|gettext value=$answer->answer}
+        {control type=html name=answer label="Answer"|gettext value=$answer->answer focus=1}
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

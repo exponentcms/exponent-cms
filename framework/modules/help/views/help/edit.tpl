@@ -29,7 +29,7 @@
             <div class="yui-content">
             <div id="tab1">
                 <h2>{'Help Document'|gettext}</h2>
-                {control type=text name=title label="Title"|gettext value=$record->title}
+                {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
                 {*{control type=textarea name=summary label="Summary"|gettext value=$record->summary}*}
                 {control type=html name=body label="General Information"|gettext value=$record->body}

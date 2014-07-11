@@ -23,7 +23,7 @@
     {/if}
     {form action=update}
     	{control name=id type=hidden value=$record->id}
-        {control type="text" name="title" label="Title"|gettext value=$record->title}
+        {control type="text" name="title" label="Title"|gettext value=$record->title focus=1}
         {*{control type="text" name="url" label="URL"|gettext value=$record->url}*}
         {control type="text" name="url" label="URL"|gettext value=$record->url}
         {control type="checkbox" name="new_window" label="Open in New Window"|gettext checked=$newwin value="1"}

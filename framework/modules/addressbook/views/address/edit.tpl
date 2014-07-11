@@ -50,7 +50,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         {control type=hidden name=is_default value=$record->is_default}
         {control type=hidden name=is_shipping value=$record->is_shipping}
         {control type=hidden name=is_billing value=$record->is_billing}
-        {control type=text name=firstname label="First Name"|gettext required=true value=$record->firstname}
+        {control type=text name=firstname label="First Name"|gettext required=true value=$record->firstname focus=1}
         {control type=text name=middlename label="Middle Name"|gettext value=$record->middlename}
         {control type=text name=lastname label="Last Name"|gettext required=true value=$record->lastname}
         {control type=text name=organization label="Company/Organization"|gettext value=$record->organization}

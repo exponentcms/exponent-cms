@@ -43,7 +43,7 @@
                 {control type=hidden name=rerank value=$rerank}
                 {control type=hidden name=current_section value=$current_section}
                 
-                {control type=text size=31 horizontal="1" label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
+                {control type=text size=31 horizontal="1" label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext focus=1}
 
                 {if $smarty.const.INVERT_HIDE_TITLE}
                     {$title_str = 'Show Module Title?'|gettext}

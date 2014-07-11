@@ -17,7 +17,7 @@
     <h1>{'Create a Tweet'|gettext}</h1>
     {form action=update}
         {control type=hidden name=id value=$record->id}
-	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)"|gettext value=''}
+	    {control type=textarea cols="60" rows=5 name=body label="Tweet (trimmed to 140 characters)"|gettext value='' focus=1}
         {control type=buttongroup submit="Send Tweet"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>
