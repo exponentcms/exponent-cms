@@ -27,7 +27,7 @@
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" class="tab-pane fade in active">
                     <h2>{'Photo Items'|gettext}</h2>
-                    {control type=text name=title label="Base Title"|gettext value=$record->title description="(Optional) This will become the root title used for these photo album items."|gettext}
+                    {control type=text name=title label="Base Title"|gettext value=$record->title description="(Optional) This will become the root title used for these photo album items."|gettext focus=1}
                     {control type="files" name="files" label="Files"|gettext accept="image/*" value=$record->expFile limit=64 folder=$config.upload_folder}
                     {if !$config.disabletags}
                         {control type="tags"}

@@ -19,7 +19,7 @@
             <div class="address">
 {*FIXME convert to yui3; url doesn't exist either*}
                 <a href="javascript:void(0)" onclick="YAHOO.util.Connect.asyncRequest('GET', 'http://adam/core/cart/setAddress/1');">{'Make this my shipping address'|gettext}</a>
-                {control type=radio flip=true name=shipping label="Ship to this address"|gettext value=$address->id}
+                {control type=radio flip=true name=shipping label="Ship to this address"|gettext value=$address->id focus=1}
                 <strong>{$addy->firstname} {$addy->middlename} {$addy->lastname}</strong>{br}
                 {$addy->address1}{br}
                 {if $addy->address2 != ""}{$addy->address2}{br}{/if}

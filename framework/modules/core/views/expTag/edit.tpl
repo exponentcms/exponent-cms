@@ -29,7 +29,7 @@
 		{*{control type=hidden name=parent_id value=$record->parent_id}*}
 		{*{control type=hidden name=rgt value=$record->rgt}*}
 		{*{control type=hidden name=lft value=$record->lft}*}
-		{control type=text name=title label="Tag Name"|gettext value=$record->title}
+		{control type=text name=title label="Tag Name"|gettext value=$record->title focus=1}
 		{control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
 	{/form}
 </div>

@@ -37,7 +37,7 @@
             </ul>
             <div class="yui-content">
                 <div id="tab1">
-                    {control type=text name=name label="Name"|gettext value=$section->name}
+                    {control type=text name=name label="Name"|gettext value=$section->name focus=1}
                     {if $section->id == 0 || $section->parent == -1}
                         {control type=hidden name=parent value=$section->parent}
                     {else}

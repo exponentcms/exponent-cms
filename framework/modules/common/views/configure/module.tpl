@@ -39,7 +39,7 @@
         {*{control type=hidden name=hcview value=1}*}
         {*{control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$moduletitle caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}*}
     {*{else}*}
-    {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext}
+    {control type=text size=31 label="Module Title"|gettext name="moduletitle" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext focus=1}
     {*{/if}*}
     {control type=radiogroup columns=6 name="heading_level" label='Module Title Heading Level'|gettext items="1,2,3,4,5,6"|gettxtlist values="h1,h2,h3,h4,h5,h6" default=$config.heading_level|default:'h1'}
     {control type=radiogroup columns=6 name="item_level" label='Item Title Heading Level'|gettext items="1,2,3,4,5,6"|gettxtlist values="h1,h2,h3,h4,h5,h6" default=$config.item_level|default:'h2'}

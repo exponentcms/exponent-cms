@@ -37,7 +37,7 @@
             </ul>
             <div class="tab-content">
                 <div id="tab1" class="tab-pane fade in active">
-                    {control type=text name=name label="Name"|gettext value=$section->name}
+                    {control type=text name=name label="Name"|gettext value=$section->name focus=1}
                     {if $section->id == 0 || $section->parent == -1}
                         {control type=hidden name=parent value=$section->parent}
                     {else}

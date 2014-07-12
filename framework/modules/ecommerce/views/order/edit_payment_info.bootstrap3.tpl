@@ -23,7 +23,7 @@
                 </ul>
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">
-                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->transId}
+                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->transId focus=1}
                         {group label="Payment Statuses"|gettext}
                         {foreach from=$opts item=field key=key}
                             {if $key != 'transId'}

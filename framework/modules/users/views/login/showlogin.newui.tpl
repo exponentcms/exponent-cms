@@ -33,7 +33,7 @@
                         <h2>{"Existing"|gettext} {$usertype}</h2>
                         <!--p>If you are an existing customer please log-in below to continue in the checkout process.</p-->
                         {form action=login}
-                            {control type="text" name="username" label=$label size=25 required=1 prepend="user"}
+                            {control type="text" name="username" label=$label size=25 required=1 prepend="user" focus=1}
                             {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
 
                             {control type="buttongroup" submit="Log In"|gettext}

@@ -25,7 +25,7 @@
     		{control type=hidden name=content_type value=$content_type}
             <div id="commentinput"></div>
     		{if $user->id == 0 || $comment->id }
-    	        {control type=text name=name label="Name"|gettext required=true value=$comment->name required=1}
+    	        {control type=text name=name label="Name"|gettext required=true value=$comment->name required=1 focus=1}
     		    {*{control type=text name=email label="Email"|gettext required=true value=$comment->email required=1}*}
                 {control type=email name=email label="Email"|gettext required=true value=$comment->email required=1}
     		{else}

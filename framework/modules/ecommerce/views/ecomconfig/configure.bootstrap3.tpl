@@ -33,7 +33,7 @@
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">
                         <h2>{'General Configuration'|gettext}</h2>
-                        {control type="text" name="storename" label="Store Name"|gettext value=$config.storename|default:'My Store'|gettext}
+                        {control type="text" name="storename" label="Store Name"|gettext value=$config.storename|default:'My Store'|gettext focus=1}
                         {* control type="checkbox" name="allow_anonymous_checkout" label="Allow Anonymous Checkout" value=1 checked=$config.allow_anonymous_checkout *}
                         {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
                         {control type="html" name="ecomheader" label='Header'|gettext rows=6 cols=60 value=$config.ecomheader description='This will be displayed on the top of your emails and invoices.'|gettext}

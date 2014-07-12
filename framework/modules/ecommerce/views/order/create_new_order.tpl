@@ -22,7 +22,7 @@
     <div id="create_new_order">
         {form id=order_item_form name=order_item_form action=save_new_order}
             {'Select the order type, order status, and customer.'|gettext}{br}{br}
-            {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type'}
+            {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type' focus=1}
             {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
             {control type="hidden" id="addresses_id" name="addresses_id"}
             {br}

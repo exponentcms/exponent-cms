@@ -24,7 +24,7 @@
                 <div class="pwstrength_viewport_progress"></div>
             </div>
         </div>
-        {control type="password" name="new_password2" label="Retype Password"|gettext}
+        {control type="password" name="new_password2" label="Retype Password"|gettext focus=1}
         {br}
         {control type="buttongroup" submit="Change Password"|gettext cancel="Cancel"|gettext}
     {/form}

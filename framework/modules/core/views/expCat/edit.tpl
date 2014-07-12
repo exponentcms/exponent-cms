@@ -34,7 +34,7 @@
 	{form controller=expCat action=update}
 		{control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
-		{control type=text name=title label="Name"|gettext value=$record->title}
+		{control type=text name=title label="Name"|gettext value=$record->title focus=1}
         {*{control type=color name=color label="Color/Class"|gettext value=$record->color description='Enter a six-digit hex color preceded by #, or an \'a\' tag style name'|gettext}*}
         {control type=color name=color label="Color"|gettext value=$record->color}
         {if empty($model)}

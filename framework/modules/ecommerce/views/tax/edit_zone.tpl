@@ -15,6 +15,6 @@
 
 {form action=update_zone}
     {control type="hidden" name="id" value=$zone->id}
-    {control type="text" name="name" label="Zone Name"|gettext value=$zone->name}
+    {control type="text" name="name" label="Zone Name"|gettext value=$zone->name focus=1}
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}

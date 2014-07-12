@@ -34,7 +34,7 @@
     {form action=update}
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=editor value=$editor}
-        {control type=text name=name label="Configuration Name"|gettext value=$record->name}
+        {control type=text name=name label="Configuration Name"|gettext value=$record->name focus=1}
 	    {control type="checkbox" postfalse=1 name=active label="Make this Configuration Active?"|gettext checked=$record->active value=1}
         {if $editor == 'ckeditor'}
             {$skin = 'kama'}

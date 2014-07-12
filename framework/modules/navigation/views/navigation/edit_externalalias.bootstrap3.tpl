@@ -35,7 +35,7 @@
             </ul>
             <div class="tab-content">
                 <div id="tab1" class="tab-pane fade in active">
-                    {control type=text name=name label="Name"|gettext value=$section->name}
+                    {control type=text name=name label="Name"|gettext value=$section->name focus=1}
                     {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name description='If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}
                     {if $section->id == 0}
                         {control type=hidden name=parent value=$section->parent}

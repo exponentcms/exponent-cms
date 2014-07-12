@@ -14,4 +14,4 @@
  *}
 
 <h2>{'Online Donations'|gettext}</h2>
-{control type="checkbox" name="quickadd" label="Quickly donate set amount to cart?"|gettext checked=$config.quickadd value=1 description='Bypasses option for user to enter donation amount'|gettext}
+{control type="checkbox" name="quickadd" label="Quickly donate set amount to cart?"|gettext checked=$config.quickadd value=1 description='Bypasses option for user to enter donation amount'|gettext focus=1}
