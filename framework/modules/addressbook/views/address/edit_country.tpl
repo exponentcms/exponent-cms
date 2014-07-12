@@ -22,7 +22,7 @@
     {form action=update_country}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="is_default" value=$record->is_default}
-        {control type="text" name="name" label="Country Name"|gettext value=$record->name}
+        {control type="text" name="name" label="Country Name"|gettext value=$record->name focus=1}
         {control type="text" name="iso_code_2letter" label="ISO Code - 2 Letter"|gettext value=$record->iso_code_2letter size=2}
         {control type="text" name="iso_code_3letter" label="ISO Code - 3 Letter"|gettext value=$record->iso_code_3letter size=3}
         {control type="text" name="iso_code_number" label="ISO Code - Number"|gettext value=$record->iso_code_number size=8 filter=integer}

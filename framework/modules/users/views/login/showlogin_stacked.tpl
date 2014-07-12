@@ -25,7 +25,7 @@
     {if $loggedin == false}
         <div>
             {form action=login}
-                {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1 prepend="user"}
+                {control type="text" name="username" label="Username"|gettext|cat:":" size=25 required=1 prepend="user" focus=1}
                 {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
                 {control type="buttongroup" submit="Log In"|gettext|cat:"!"}
                 {br}{icon controller=users action=reset_password text='Forgot Your Password?'|gettext}

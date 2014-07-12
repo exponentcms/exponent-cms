@@ -25,7 +25,7 @@
         </blockquote>
 	</div>
 </div>
-{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Number Downloads, Number Downloads Descending, Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,downloads,downloads DESC,title,title DESC,rank" value=$config.order|default:'created_at DESC'}
+{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Number Downloads, Number Downloads Descending, Alphabetical, Reverse Alphabetical, Order Manually"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,downloads,downloads DESC,title,title DESC,rank" value=$config.order|default:'created_at DESC' focus=1}
 {control type="radiogroup" name="usebody" label="Display File Description in List"|gettext value=$config.usebody|default:0 items="Full,Summary,Page,None"|gettxtlist values="0,1,3,2"}
 {control type="checkbox" name="datetag" label="Display Item Date as Badge"|gettext value=1 checked=$config.datetag}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional pdf engine add-on"|gettext value=1 checked=$config.printlink}

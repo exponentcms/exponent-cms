@@ -25,7 +25,7 @@
         </blockquote>
 	</div>
 </div>
-{control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually, Random"|gettxtlist values="title,title DESC,rank,RAND()" value=$config.order|default:rank}
+{control type=dropdown name=order label="Sort By"|gettext items="Alphabetical, Reverse Alphabetical, Order Manually, Random"|gettxtlist values="title,title DESC,rank,RAND()" value=$config.order|default:rank focus=1}
 {control type="checkbox" name="opennewwindow" label="Default to Open Link in New Window?"|gettext value=1 checked=$config.opennewwindow}
 {control type="text" name="websnapr_key" label="Show link snapshots using websnapr"|gettext value=$config.websnapr_key description='Enter the key received from'|gettext|cat:' <a href="http://www.websnapr.com" target="_blank">websnapr</a>'}
 {if $smarty.const.SITE_FILE_MANAGER == 'picker'}

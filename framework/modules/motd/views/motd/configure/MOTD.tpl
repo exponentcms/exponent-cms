@@ -24,4 +24,4 @@
         </blockquote>
 	</div>
 </div>
-{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random messages.'|gettext}
+{control type="checkbox" name="userand" label="Use Random MOTD"|gettext value=1 checked=$config.userand description='Check this box to select random messages.'|gettext focus=1}

@@ -15,7 +15,7 @@
 
 {form action=update}
     {control type="hidden" name="id" value=$record->id}
-    {control type="text" name="name" label="Class Name"|gettext value=$record->classname}
+    {control type="text" name="name" label="Class Name"|gettext value=$record->classname focus=1}
     {control type="text" name="rate" label="Percentage Rate"|gettext value=$record->rate}
     {control type="dropdown" name="zone" label="Zone"|gettext items=$zones value=$record->zone}
     {*{control type=state name=state label="State/Province"|gettext value=$record->state}*}

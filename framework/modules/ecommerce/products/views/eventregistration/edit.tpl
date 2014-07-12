@@ -42,7 +42,7 @@
             </ul>
             <div class="yui-content">
                 <div id="tab1">
-                    {control type="text" name="title" label="Event Title"|gettext value=$record->title}
+                    {control type="text" name="title" label="Event Title"|gettext value=$record->title focus=1}
                     {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity description='Zero or empty means unlimited or undefined'|gettext}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
                     {*{control type="editor" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}

@@ -28,7 +28,7 @@
                 <div class="yui-content">
                     <div id="tab1">
                         <h2>{"General Configuration"|gettext}</h2>
-                        {control type="text" name="title" label="Name"|gettext value=$discount->title}
+                        {control type="text" name="title" label="Name"|gettext value=$discount->title focus=1}
                         {control type="text" name="coupon_code" label="Coupon Code"|gettext value=$discount->coupon_code}
                         {control type="editor" name="body" label="Description"|gettext height=250 value=$discount->body}
                         {*control type="text" name="priority" label="Priority"|gettext value=$discount->priority*}

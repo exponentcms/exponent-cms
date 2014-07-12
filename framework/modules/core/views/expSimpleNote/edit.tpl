@@ -24,7 +24,7 @@
 		{control type=hidden name=content_type value=$content_type}
         {control type=hidden name=tab value=$tab}
 		{if $user->id == 0}
-		    {control type=text name=name label="Name (required)"|gettext value=$simplenote->id}
+		    {control type=text name=name label="Name (required)"|gettext value=$simplenote->id focus=1}
 		{else}
 		    <strong>{'Name'|gettext}: {$user->firstname} {$user->lastname}</strong>{br}
 		{/if}

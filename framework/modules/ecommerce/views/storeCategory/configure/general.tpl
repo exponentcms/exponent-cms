@@ -16,7 +16,7 @@
 {control type=hidden name=category name="cat-id" value=$smarty.get.id}
 <h3>{$title}</h3>
 {group label="Global Override"|gettext}
-    {control type="checkbox" name="use_global" label="Use the Global Store Settings instead?"|gettext value=1 checked=$config.use_global}
+    {control type="checkbox" name="use_global" label="Use the Global Store Settings instead?"|gettext value=1 checked=$config.use_global focus=1}
 {/group}
 {group label='Product Display'|gettext}
     {control type="text" name="images_per_row" label="Products per Row (also determines product width if not set below)"|gettext value=$config.imagesperrow|default:1}

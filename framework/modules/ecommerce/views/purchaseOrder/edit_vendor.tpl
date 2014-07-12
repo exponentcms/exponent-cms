@@ -16,7 +16,7 @@
 <h1>{'Vendor Information'|gettext}</h1>
 {form action=update_vendor}
     {control type="hidden" name="vendor[id]" value=$vendor->id}
-    {control type="text" name="vendor[title]" label="Vendor Name"|gettext value=$vendor->title}
+    {control type="text" name="vendor[title]" label="Vendor Name"|gettext value=$vendor->title focus=1}
 	{control type="textarea" name="vendor[body]" label="Vendor Notes"|gettext rows=5 cols=85 value=$vendor->body}
 	{control type="text" name="vendor[address1]" label="Address 1"|gettext value=$vendor->address1}
 	{control type="text" name="vendor[address2]" label="Address 2"|gettext value=$vendor->address2}

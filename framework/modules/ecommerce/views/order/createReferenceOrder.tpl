@@ -24,7 +24,7 @@
             {control type=hidden name=original_orderid value=$order->id}
             {"Select the order type, order status, item message, which items to roll to a backorder, and order totals from below."|gettext}{br}  {br}
 
-            {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type'}
+            {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type' focus=1}
             {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
             {br}
             <table class="order-items" border="0" cellspacing="0" cellpadding="0">

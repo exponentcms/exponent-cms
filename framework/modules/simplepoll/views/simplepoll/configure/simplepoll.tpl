@@ -25,7 +25,7 @@
         </blockquote>
 	</div>
 </div>
-{control type="html" name="thank_you_message" label='\'Thank You\' Message'|gettext value=$config.thank_you_message|default:'Thank you for voting.'|gettext}
+{control type="html" name="thank_you_message" label='\'Thank You\' Message'|gettext value=$config.thank_you_message|default:'Thank you for voting.'|gettext focus=1}
 {control type="html" name="already_voted_message" label='\'Already Voted\' Message'|gettext value=$config.already_voted_message|default:'You have already voted in this poll.'|gettext}
 {control type="html" name="voting_closed_message" label='\'Voting Closed\' Message'|gettext value=$config.voting_closed_message|default:'Voting has been closed for this poll.'|gettext}
 {control type="text" name="anonymous_timeout" label='Anonymous Block Timeout (hours)'|gettext size=4 filter=integer value=$config.anonymous_timeout|default:'5'}

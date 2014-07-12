@@ -25,7 +25,7 @@
         </blockquote>
 	</div>
 </div>
-{control type="text" name="feed_title" label="Calendar Title"|gettext description="Used for iCal publishing and email reminders"|gettext value=$config.feed_title}
+{control type="text" name="feed_title" label="Calendar Title"|gettext description="Used for iCal publishing and email reminders"|gettext value=$config.feed_title focus=1}
 {control type="text" name="feed_sef_url" label="Calendar SEF URL"|gettext description="Auto-generated from title if left blank"|gettext value=$config.feed_sef_url}
 {*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}
 {*{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Rank"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}*}

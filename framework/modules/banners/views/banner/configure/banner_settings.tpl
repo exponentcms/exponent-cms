@@ -26,7 +26,7 @@
 	</div>
 </div>
 <h2>{'Number of Banners to Display'|gettext}</h2>
-{control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit}
+{control type="text" name="limit" label="Number of banners"|gettext size=3 filter=integer value=$config.limit focus=1}
 <h2>{'Banner Size'|gettext}</h2>
 {control type="text" name="width" label="Width"|gettext size=4 filter=integer value=$config.width}
 {control type="text" name="height" label="Height"|gettext size=4 filter=integer value=$config.height}

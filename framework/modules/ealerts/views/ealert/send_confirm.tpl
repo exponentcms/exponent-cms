@@ -27,7 +27,7 @@
         {control type="hidden" name="id" value=$ealert->id}
         {control type="hidden" name="model" value=$ealert->module}
         {control type="hidden" name="sef_url" value=$record->sef_url}
-        {control type="text" name="subject" label="Subject"|gettext size="50" value='Notification of New Content Posted to'|gettext|cat:' '|cat:$ealert->ealert_title}
+        {control type="text" name="subject" label="Subject"|gettext size="50" value='Notification of New Content Posted to'|gettext|cat:' '|cat:$ealert->ealert_title focus=1}
         {control type="html" name="body" label="Message"|gettext value="<h3>"|cat:"New content was added titled"|gettext|cat:" '"|cat:$record->title|cat:"'"|gettext|cat:".</h3><hr>"|cat:$record->body}
         {control type="buttongroup" submit="Send E-Alert"|gettext cancel="Cancel"|gettext}
     {/form}

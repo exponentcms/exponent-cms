@@ -22,7 +22,7 @@
     {form action=update_country}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="rank" value=$record->rank}
-        {control type="text" name="name" label="Region Name"|gettext value=$record->name}
+        {control type="text" name="name" label="Region Name"|gettext value=$record->name focus=1}
         {control type="text" name="code" label="Code"|gettext value=$record->code}
         {control type=country name=country label="Country"|gettext value=$record->country_id show_all=1}
         {control type="checkbox" name="active" label="Active"|gettext value=1 checked=$record->active}

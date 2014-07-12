@@ -29,7 +29,7 @@
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
                     <h2>{'Blog Entry'|gettext}</h2>
-                    {control type=text name=title label="Title"|gettext value=$record->title}
+                    {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                     {control type=html name=body label="Body Content"|gettext value=$record->body}
                     {control type="checkbox" name="private" label="Save as draft/private"|gettext value=1 checked=$record->private}
                     {if !$config.disabletags}

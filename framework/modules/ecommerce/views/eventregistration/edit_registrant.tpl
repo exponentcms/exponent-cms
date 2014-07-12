@@ -30,7 +30,7 @@
                 {$event->showControl($control,"registrant[`$ctlname`]",null,$registrant->$ctlname)}
             {/foreach}
         {else}
-            {control type="text" name="control_name" label='Name'|gettext value="`$registrant->control_name`" required=1}
+            {control type="text" name="control_name" label='Name'|gettext value="`$registrant->control_name`" required=1 focus=1}
             {control type="text" name="value" label='Quantity'|gettext value="`$registrant->value`" required=1}
         {/if}
 

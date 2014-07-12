@@ -25,6 +25,6 @@
         </blockquote>
 	</div>
 </div>
-{control type=dropdown name=order label="Sort By"|gettext items="Title, Order Manually"|gettxtlist values="title,rank" value=$config.order|default:rank}
+{control type=dropdown name=order label="Sort By"|gettext items="Title, Order Manually"|gettxtlist values="title,rank" value=$config.order|default:rank focus=1}
 {*control type="radiogroup" name="usebody" label="Body Text"|gettext value=$config.usebody|default:0 items="Full,Summary,None"|gettxtlist values="No Float,Left,Right"  values="0,1,2"*}
 

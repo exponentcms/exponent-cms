@@ -46,7 +46,7 @@
                         {control type="hidden" name="general[parent_id]" value=$record->parent_id}
                         {control type="hidden" name="general[product_type]" value='childProduct'}
                         {"Parent Product:"|gettext} <a href="{link controller='store' action='edit' id=$record->parent_id}">{$parent->title}</a>
-                        {control type="text" name="general[child_rank]" label="Rank"|gettext value=$record->child_rank}
+                        {control type="text" name="general[child_rank]" label="Rank"|gettext value=$record->child_rank focus=1}
                         {control type="text" name="general[model]" label="Model # / SKU"|gettext value=$record->model}
                         {control type="text" class="title" name="general[title]" label="Product Name"|gettext value=$record->title}
                         {control type="dropdown" name="general[companies_id]" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}

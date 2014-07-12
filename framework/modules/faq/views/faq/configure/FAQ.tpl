@@ -25,6 +25,6 @@
         </blockquote>
 	</div>
 </div>
-{control type="checkbox" name="allow_user_questions" label="Allow users to ask questions"|gettext value=1 checked=$config.allow_user_questions}
+{control type="checkbox" name="allow_user_questions" label="Allow users to ask questions"|gettext value=1 checked=$config.allow_user_questions focus=1}
 {control type="checkbox" name="use_toc" label="Show Table of Contents when displaying FAQs"|gettext value=1 checked=$config.use_toc}
 

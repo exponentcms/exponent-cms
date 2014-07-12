@@ -28,7 +28,7 @@
         <table width='60%'>
             <tr>
                 <td>{'Item name:'|gettext}</td>
-                <td>{control type=textarea name=products_name cols=40 rows=2 label="" value=$oi->products_name}</td>
+                <td>{control type=textarea name=products_name cols=40 rows=2 label="" value=$oi->products_name focus=1}</td>
             </tr>
             <tr>
                 <td>{'Item model:'|gettext}</td>

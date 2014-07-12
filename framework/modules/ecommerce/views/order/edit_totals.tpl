@@ -24,7 +24,7 @@
         
         <table width='60%'>
             <tr><td>
-                {control type=text name=subtotal label="Subtotal"|gettext value=$order->subtotal filter=money} </td><td>* {'This is the total of all order items.'|gettext}
+                {control type=text name=subtotal label="Subtotal"|gettext value=$order->subtotal filter=money focus=1} </td><td>* {'This is the total of all order items.'|gettext}
             </td></tr>
             <tr><td>
                 {control type=text name=total_discounts label="Total Discounts"|gettext value=$order->total_discounts filter=money}</td><td> * {'Total discounts you want reflected on this order.'|gettext}

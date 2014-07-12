@@ -37,7 +37,7 @@
                 {'If you save this as a new address, it will leave the existing address as-is to be used later by the customer and create a new'|gettext} {$type} {'address for this order.'|gettext}{br}
             {/if}
         </blockquote>
-        {control type=radiogroup label='' items='Update existing address, Save as new address'|gettxtlist values='0,1' name=save_option default='0'}
+        {control type=radiogroup label='' items='Update existing address, Save as new address'|gettxtlist values='0,1' name=save_option default='0' focus=1}
         {control type=checkbox label='Default address for this customer?'|gettext flip=true name='address[is_default]' value=1 checked=$record->is_default}
         {br}
         {control type=hidden name='address[is_shipping]' value=$record->is_shipping}

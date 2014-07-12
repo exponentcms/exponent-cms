@@ -35,7 +35,7 @@
             </ul>            
             <div class="tab-content">
 	            <div id="tab1" class="tab-pane fade in active">
-	                {control type="text" name="title" label="Title"|gettext value=$record->title}
+	                {control type="text" name="title" label="Title"|gettext value=$record->title focus=1}
 	                {*{control type="textarea" name="summary" label="Gift Card Summary"|gettext rows=3 cols=45 value=$record->summary}*}
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>

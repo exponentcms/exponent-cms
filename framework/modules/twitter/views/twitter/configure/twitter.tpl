@@ -35,7 +35,7 @@
         </blockquote>
 	</div>
 </div>
-{control type="text" name="consumer_key" label="Consumer key"|gettext value=$config.consumer_key class=title}
+{control type="text" name="consumer_key" label="Consumer key"|gettext value=$config.consumer_key class=title focus=1}
 {control type="text" name="consumer_secret" label="Consumer secret"|gettext value=$config.consumer_secret class=title}
 {control type="text" name="oauth_token" label="Access token"|gettext value=$config.oauth_token class=title}
 {control type="text" name="oauth_token_secret" label="Access token secret"|gettext value=$config.oauth_token_secret class=title}

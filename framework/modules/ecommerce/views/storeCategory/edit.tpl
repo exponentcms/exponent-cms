@@ -42,7 +42,7 @@
                 </ul>
                 <div class="yui-content">
                     <div id="general">
-                        {control type=text name=title label="Category Name"|gettext value=$node->title}
+                        {control type=text name=title label="Category Name"|gettext value=$node->title focus=1}
                         {control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
                         {control type="files" name="image" label="Category Image"|gettext accept="image/*" value=$node->expFile folder=$config.upload_folder}
                         {control type=editor name=body label="Category Description"|gettext value=$node->body}
