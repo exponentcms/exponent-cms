@@ -139,16 +139,16 @@ class expJavascript {
                                 $i++;
                                 $srt[$i] = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
                             }
-                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less')) {
+                            if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.less')) {
                                 expCSS::pushToHead(array(
 //                           		    "unique"=>$mod,
-                           		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/less/'.$mod.'.less',
+                           		    "lesscss"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.less',
                            		    )
                            		);
-                            } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css')) {
+                            } elseif (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.css')) {
                                 expCSS::pushToHead(array(
 //                           		    "unique"=>$mod,
-                           		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/css/'.$mod.'.css',
+                           		    "link"=>PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.css',
                            		    )
                            		);
                             }
