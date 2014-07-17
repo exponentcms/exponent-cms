@@ -25,16 +25,19 @@ Bootswatch,3.1.1+1,bootswatch.com/,3.2.0+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
-html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
 normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
 MediaElement.js,2.14.2,mediaelementjs.com/,2.14.2,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
-Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,
+Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
+html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
+CSS3 PIE,1,http://css3pie.com,1,IE6-8 shim
+csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
+excanvas,r3,https://code.google.com/p/explorercanvas/,r3,needed by TimesCircle for IE8
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.2,optional
-CKEditor,4.4.2,ckeditor.com,4.4.2,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.1.0,tinymce.com,4.1.1,add xenmce skin
+CKEditor,4.4.3,ckeditor.com,4.4.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
+TinyMCE,4.1.2,tinymce.com,4.1.2,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
@@ -56,4 +59,3 @@ Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
 DateTimePicker,2.3.2exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.2,added additional 'update' method and click update if inline
 TimeCircles,1.5.2,https://github.com/wimbarelds/TimeCircles,1.5.2,
 pwstrength-bootstrap,1.2.0,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.0,
-excanvas,r3,https://code.google.com/p/explorercanvas/,r3,needed by TimesCircle for IE8
