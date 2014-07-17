@@ -1,89 +1,12 @@
-<attach event="ondocumentready" handler="parseStylesheets" />
-<script language="JScript">
+<public:attach event="ondocumentready" onevent="CSSHover()" />
+<script>
 /**
- *	Pseudos - V1.30.050121 - hover & active
- *	---------------------------------------------
- *	Peterned - http://www.xs4all.nl/~peterned/
- *	(c) 2005 - Peter Nederlof
- *
- *	Credits  - Arnoud Berendsen 
- *	         - Martin Reurings
- *           - Robert Hanson
- *
- *	howto: body { behavior:url("csshover.htc"); }
- *	---------------------------------------------
+ * Whatever:hover - V3.11
+ * http://www.xs4all.nl/~peterned/
+ *	
+ * Copyright (c) 2009 Peter Nederlof
+ * Licensed under the LGPL license
+ * http://creativecommons.org/licenses/LGPL/2.1
  */
-
-var currentSheet, doc = window.document, activators = {
-	onhover:{on:'onmouseover', off:'onmouseout'},
-	onactive:{on:'onmousedown', off:'onmouseup'}
-}
-
-function parseStylesheets() {
-	var sheets = doc.styleSheets, l = sheets.length;
-	for(var i=0; i<l; i++) 
-		parseStylesheet(sheets[i]);
-}
-	function parseStylesheet(sheet) {
-		if(sheet.imports) {
-			try {
-				var imports = sheet.imports, l = imports.length;
-				for(var i=0; i<l; i++) parseStylesheet(sheet.imports[i]);
-			} catch(securityException){}
-		}
-
-		try {
-			var rules = (currentSheet = sheet).rules, l = rules.length;
-			for(var j=0; j<l; j++) parseCSSRule(rules[j]);
-		} catch(securityException){}
-	}
-
-	function parseCSSRule(rule) {
-		var select = rule.selectorText, style = rule.style.cssText;
-		if(!(/(^|\s)(([^a]([^ ]+)?)|(a([^#.][^ ]+)+)):(hover|active)/i).test(select) || !style) return;
-		
-		var pseudo = select.replace(/[^:]+:([a-z-]+).*/i, 'on$1');
-		var newSelect = select.replace(/(\.([a-z0-9_-]+):[a-z]+)|(:[a-z]+)/gi, '.$2' + pseudo);
-		var className = (/\.([a-z0-9_-]*on(hover|active))/i).exec(newSelect)[1];
-		var affected = select.replace(/:hover.*$/, '');
-		var elements = getElementsBySelect(affected);
-
-		currentSheet.addRule(newSelect, style);
-		for(var i=0; i<elements.length; i++)
-			new HoverElement(elements[i], className, activators[pseudo]);
-	}
-
-function HoverElement(node, className, events) {
-	if(!node.hovers) node.hovers = {};
-	if(node.hovers[className]) return;
-	node.hovers[className] = true;
-	node.attachEvent(events.on,
-		function() { node.className += ' ' + className; });
-	node.attachEvent(events.off,
-		function() { node.className = 
-			node.className.replace(new RegExp('\\s+'+className, 'g'),''); });
-}
-
-function getElementsBySelect(rule) {
-	var parts, nodes = [doc];
-	parts = rule.split(' ');
-	for(var i=0; i<parts.length; i++) {
-		nodes = getSelectedNodes(parts[i], nodes);
-	}	return nodes;
-}
-	function getSelectedNodes(select, elements) {
-		var result, node, nodes = [];
-		var classname = (/\.([a-z0-9_-]+)/i).exec(select);
-		var identify = (/\#([a-z0-9_-]+)/i).exec(select);
-		var tagName = select.replace(/(\.|\#|\:)[a-z0-9_-]+/i, '');
-		for(var i=0; i<elements.length; i++) {
-			result = tagName? elements[i].all.tags(tagName):elements[i].all; 
-			for(var j=0; j<result.length; j++) {
-				node = result[j];
-				if((identify && node.id != identify[1]) || (classname && !(new RegExp('\\b' +
-					classname[1] + '\\b').exec(node.className)))) continue;
-				nodes[nodes.length] = node;
-			}
-		}	return nodes;
-	}
+window.CSSHover=(function(){var m=/(^|\s)((([^a]([^ ]+)?)|(a([^#.][^ ]+)+)):(hover|active|focus))/i;var n=/(.*?)\:(hover|active|focus)/i;var o=/[^:]+:([a-z\-]+).*/i;var p=/(\.([a-z0-9_\-]+):[a-z]+)|(:[a-z]+)/gi;var q=/\.([a-z0-9_\-]*on(hover|active|focus))/i;var s=/msie (5|6|7)/i;var t=/backcompat/i;var u={index:0,list:['text-kashida','text-kashida-space','text-justify'],get:function(){return this.list[(this.index++)%this.list.length]}};var v=function(c){return c.replace(/-(.)/mg,function(a,b){return b.toUpperCase()})};var w={elements:[],callbacks:{},init:function(){if(!s.test(navigator.userAgent)&&!t.test(window.document.compatMode)){return}var a=window.document.styleSheets,l=a.length;for(var i=0;i<l;i++){this.parseStylesheet(a[i])}},parseStylesheet:function(a){if(a.imports){try{var b=a.imports;var l=b.length;for(var i=0;i<l;i++){this.parseStylesheet(a.imports[i])}}catch(securityException){}}try{var c=a.rules;var r=c.length;for(var j=0;j<r;j++){this.parseCSSRule(c[j],a)}}catch(someException){}},parseCSSRule:function(a,b){var c=a.selectorText;if(m.test(c)){var d=a.style.cssText;var e=n.exec(c)[1];var f=c.replace(o,'on$1');var g=c.replace(p,'.$2'+f);var h=q.exec(g)[1];var i=e+h;if(!this.callbacks[i]){var j=u.get();var k=v(j);b.addRule(e,j+':expression(CSSHover(this, "'+f+'", "'+h+'", "'+k+'"))');this.callbacks[i]=true}b.addRule(g,d)}},patch:function(a,b,c,d){try{var f=a.parentNode.currentStyle[d];a.style[d]=f}catch(e){a.runtimeStyle[d]=''}if(!a.csshover){a.csshover=[]}if(!a.csshover[c]){a.csshover[c]=true;var g=new CSSHoverElement(a,b,c);this.elements.push(g)}return b},unload:function(){try{var l=this.elements.length;for(var i=0;i<l;i++){this.elements[i].unload()}this.elements=[];this.callbacks={}}catch(e){}}};var x={onhover:{activator:'onmouseenter',deactivator:'onmouseleave'},onactive:{activator:'onmousedown',deactivator:'onmouseup'},onfocus:{activator:'onfocus',deactivator:'onblur'}};function CSSHoverElement(a,b,c){this.node=a;this.type=b;var d=new RegExp('(^|\\s)'+c+'(\\s|$)','g');this.activator=function(){a.className+=' '+c};this.deactivator=function(){a.className=a.className.replace(d,' ')};a.attachEvent(x[b].activator,this.activator);a.attachEvent(x[b].deactivator,this.deactivator)}CSSHoverElement.prototype={unload:function(){this.node.detachEvent(x[this.type].activator,this.activator);this.node.detachEvent(x[this.type].deactivator,this.deactivator);this.activator=null;this.deactivator=null;this.node=null;this.type=null}};window.attachEvent('onbeforeunload',function(){w.unload()});return function(a,b,c,d){if(a){return w.patch(a,b,c,d)}else{w.init()}}})();
 </script>
