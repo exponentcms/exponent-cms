@@ -305,8 +305,11 @@ class expTheme
         }
 
         if ($config['meta']['ie_compat']) {
-            // the last little bit of IE 6 support
+            // some IE 6 support
             $str .= "\t" . '<!--[if IE 6]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/csshover.htc); }</style><![endif]-->' . "\n";
+
+            // some css3 support for IE 6-8
+            $str .= "\t" . '<!--[if lt IE 9]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/PIE-1.0.0/PIE.htc); }</style><![endif]-->' . "\n";
 
             // html5 support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->' . "\n";
