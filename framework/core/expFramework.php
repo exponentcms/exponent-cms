@@ -264,6 +264,7 @@ function renderAction(array $parms=array()) {
 //    } elseif ($controllerClass->hasMethod('index')) {
 //        $action = 'index';
     } elseif ($controllerClass->hasMethod('showall')) {
+        $parms['action'] = 'showall';
         $action = 'showall';
     } else {
         expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));

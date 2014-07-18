@@ -57,10 +57,7 @@ class orderController extends expController {
     }
 
     function showall() {
-        global $user, $db;
-
-        // if the user isn't admin in flash an error msg since this is THE common action
-        if (!$user->isAdmin()) expQueue::flashAndFlow('error', gt('You do not have permission for this action'));
+        global $db;
 
         expHistory::set('viewable', $this->params);
 
@@ -151,9 +148,6 @@ class orderController extends expController {
 //eDebug($_REQUEST);
 //eDebug($this->params,true);
 //if (!empty($this->params['printerfriendly'])) $_REQUEST['printerfriendly'] = 1;
-
-        // if the user isn't admin in flash an error msg since this is THE common action
-        if (!$user->isAdmin()) expQueue::flashAndFlow('error', gt('You do not have permission for this action'));
 
         expHistory::set('viewable', $this->params);
 
