@@ -136,7 +136,7 @@ a.DTTT_disabled {
  * BUTTON_STYLES
  * Action specific button styles
  * If you want images - comment this back in
-*/
+
 a.DTTT_button_csv,
 a.DTTT_button_xls,
 a.DTTT_button_copy,
@@ -171,6 +171,8 @@ a.DTTT_button_pdf:hover span { background: #f0f0f0 url(../images/pdf_hover.png) 
 
 a.DTTT_button_print span { background: url(../images/print.png) no-repeat center right; }
 a.DTTT_button_print:hover span { background: #f0f0f0 url(../images/print_hover.png) no-repeat center right; }
+
+ */
 
 button.DTTT_button_collection span {
 	padding-right: 17px;
