@@ -1063,7 +1063,7 @@ class navigationController extends expController {
         global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
-        if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
+        if (empty($location->src) && empty($location->int) && (!empty($router->params['action']) && $router->params['action'] == 'manage') || strpos($router->current_url, 'action=manage') !== false) {
             if (!empty($exponent_permissions_r['navigation'])) foreach ($exponent_permissions_r['navigation'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['manage'])) return true;
