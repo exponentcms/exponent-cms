@@ -36,7 +36,7 @@
     {control type="hidden" name="mod" value=$loc->mod}
     {control type="hidden" name="src" value=$loc->src}
     {control type="hidden" name="int" value=$loc->int}
-    {$page->links}
+    {*{$page->links}*}
     <div style="overflow : auto; overflow-y : hidden;">
         <table id="permissions" border="0" cellspacing="0" cellpadding="0">
             <thead>
@@ -77,7 +77,7 @@
             </tbody>
         </table>
     </div>
-    {$page->links}
+    {*{$page->links}*}
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 {*</form>*}
 {/form}
