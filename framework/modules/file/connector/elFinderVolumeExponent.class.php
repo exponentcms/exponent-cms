@@ -298,9 +298,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                 ) != '.'
             ) {
                 $file = self::_get_expFile($path);
-                if (!$user->isAdmin() && !$file->shared && $file->poster != $user->id) {
+                if (!$user->isAdmin() && $file->poster != $user->id) {
                     $result['locked'] = true;
-                    $result['hidden'] = true;
+                    if (!$file->shared) {
+                        $result['hidden'] = true;
+                    }
                 }
                 $fileuser = user::getUserById($file->poster);
                 if (!empty($fileuser->id)) {
@@ -331,7 +333,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                     }
                 } else {
                     if (!$user->isAdmin()) {
-                        $result['write'] = false;
+//                        $result['write'] = false;
                         $result['locked'] = true;
                     }
                 }
