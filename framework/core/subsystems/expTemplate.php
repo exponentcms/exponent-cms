@@ -657,7 +657,7 @@ class expTemplate {
             } elseif ($root_action[0] != $action) {
                 if (file_exists($rootthemepath)) {
                     return new controllertemplate($controller, $rootthemepath);
-                } elseif (file_exists($framework == "bootstrap3" && file_exists($rootbstrap3path))) {
+                } elseif ($framework == "bootstrap3" && file_exists($rootbstrap3path)) {
                     return new controllertemplate($controller, $rootbstrap3path);
                 } elseif (file_exists($rootbstrappath)) {
                     return new controllertemplate($controller, $rootbstrappath);
