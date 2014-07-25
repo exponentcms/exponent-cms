@@ -276,7 +276,7 @@ class fileController extends expController {
         }
         $totalrecords = 0;
 
-        if (isset($this->params['query'])) {
+        if (!empty($this->params['query'])) {
             $filter = '';
             if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";
@@ -325,7 +325,7 @@ class fileController extends expController {
                 'records'=>$files
             );
         } else {
-            if (!$user->isActingAdmin()) {
+            if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1)";
             };
 //            if ($this->params['update']=='ck' || $this->params['update']=='tiny') {
@@ -475,7 +475,7 @@ class fileController extends expController {
 
         if (empty($error)) foreach ($files as $file) {
             $delfile = new expFile($file->id);
-            if ($user->id==$delfile->poster || $user->isActingAdmin()) {
+            if ($user->id==$delfile->poster || $user->isAdmin()) {
                 $delfile->delete();
                 unlink($delfile->directory.$delfile->filename);
             } else {
@@ -630,7 +630,7 @@ class fileController extends expController {
     public function editCat() {
         global $user;
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->isActingAdmin()) {
+        if ($user->id==$file->poster || $user->isAdmin()) {
             $expcat = new expCat($this->params['newValue']);
             $params['expCat'][0] = $expcat->id;
             $file->update($params);
@@ -646,7 +646,7 @@ class fileController extends expController {
     public function editTitle() {
         global $user;
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->isActingAdmin()) {
+        if ($user->id==$file->poster || $user->isAdmin()) {
             $file->title = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('Your title was updated successfully'), $file);
@@ -659,7 +659,7 @@ class fileController extends expController {
     public function editAlt() {
         global $user;        
         $file = new expFile($this->params['id']);
-        if ($user->id==$file->poster || $user->isActingAdmin()) {
+        if ($user->id==$file->poster || $user->isAdmin()) {
             $file->alt = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('Your alt was updated successfully'), $file);
@@ -676,7 +676,7 @@ class fileController extends expController {
 		if(!isset($this->params['newValue'])) {
 			$this->params['newValue'] = 0;
 		}
-        if ($user->id==$file->poster || $user->isActingAdmin()) {
+        if ($user->id==$file->poster || $user->isAdmin()) {
             $file->shared = $this->params['newValue'];
             $file->save();
             $ar = new expAjaxReply(200, gt('This file is now shared.'), $file);
