@@ -65,13 +65,10 @@
 {/if}
 {group label='Display Specific Configuration Settings'|gettext}
     <div id="moduleViewConfig">
-        {$bstrapthemefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.bootstrap.config"}
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.config"}
         {$bstrapmodulefileview="`$viewpath`/configure/`$containerview`.bootstrap.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}
-        {if file_exists($bstrapthemefileview)}
-            {include file=$bstrapthemefileview}
-        {elseif file_exists($themefileview)}
+        {if file_exists($themefileview)}
             {include file=$themefileview}
         {elseif file_exists($bstrapmodulefileview)}
             {include file=$bstrapmodulefileview}

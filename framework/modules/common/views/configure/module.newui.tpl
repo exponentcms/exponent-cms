@@ -66,9 +66,12 @@
 {group label='Display Specific Configuration Settings'|gettext}
     <div id="moduleViewConfig">
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.config"}
+        {$newuimodulefileview="`$viewpath`/configure/`$containerview`.newui.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
+        {elseif file_exists($newuimodulefileview)}
+            {include file=$newuimodulefileview}
         {elseif file_exists($modulefileview)}
             {include file=$modulefileview}
         {else}
