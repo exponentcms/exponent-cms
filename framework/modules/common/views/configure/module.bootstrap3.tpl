@@ -66,9 +66,15 @@
 {group label='Display Specific Configuration Settings'|gettext}
     <div id="moduleViewConfig">
         {$themefileview="`$smarty.const.THEME_ABSOLUTE`modules/`$relative_viewpath`/configure/`$containerview`.config"}
+        {$bstrap3modulefileview="`$viewpath`/configure/`$containerview`.bootstrap3.config"}
+        {$bstrapmodulefileview="`$viewpath`/configure/`$containerview`.bootstrap.config"}
         {$modulefileview="`$viewpath`/configure/`$containerview`.config"}
         {if file_exists($themefileview)}
             {include file=$themefileview}
+        {elseif file_exists($bstrap3modulefileview)}
+            {include file=$bstrap3modulefileview}
+        {elseif file_exists($bstrapmodulefileview)}
+            {include file=$bstrapmodulefileview}
         {elseif file_exists($modulefileview)}
             {include file=$modulefileview}
         {else}

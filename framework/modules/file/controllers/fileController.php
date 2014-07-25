@@ -132,13 +132,13 @@ class fileController extends expController {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
                 if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
-                    $bstrapview = substr($view,0,-3).'bootstrap.tpl';
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
                 if ($framework == 'bootstrap3') {
-                    $bstrapview = substr($view,0,-3).'bootstrap3.tpl';
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -173,13 +173,13 @@ class fileController extends expController {
             $view = $path.'/'.$this->params['view'].'.config';
             if (is_readable($view)) {
                 if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
-                    $bstrapview = substr($view,0,-6).'bootstrap.config';
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
                 if ($framework == 'bootstrap3') {
-                    $bstrapview = substr($view,0,-6).'bootstrap3.config';
+                    $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
@@ -188,10 +188,34 @@ class fileController extends expController {
                 $config_found = true;
             }
         }
+        $parts = explode('_', $this->params['view']);
+        if (!$config_found && ($this->params['view'] != $parts[0])) {
+            foreach ($paths as $path) {
+                $actview = $path.'/'.$parts[0].'.config';
+                if (is_readable($actview)) {
+                    if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                        $bstrapview = $path . '/' . $actview . '.bootstrap.config';
+                        if (file_exists($bstrapview)) {
+                            $view = $bstrapview;
+                        }
+                    }
+                    if ($framework == 'bootstrap3') {
+                        $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
+                        if (file_exists($bstrapview)) {
+                            $view = $bstrapview;
+                        }
+                    }
+                    $template = new controllertemplate($this, $view);
+                    $config_found = true;
+                }
+            }
+        }
         if (!$config_found) {
             echo "<p>".gt('There Are No View Specific Settings')."</p>";
             $template = expTemplate::get_common_template('blank', null);
         }
+
+//        expTemplate::get_config_template($this);
         $ar = new expAjaxReply(200, 'ok');
         $ar->send();
     }
