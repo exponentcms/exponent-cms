@@ -27,7 +27,7 @@ Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
 normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
-MediaElement.js,2.14.2,mediaelementjs.com/,2.14.2,
+MediaElement.js,2.14.2,mediaelementjs.com/,2.15.0,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
@@ -53,7 +53,7 @@ spectrum,1.4.1,http://bgrins.github.io/spectrum/,1.4.1,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
-colorbox,1.5.12,http://www.jacklmoore.com/colorbox,1.5.12,using style #5 renamed to jquery.colorbox.css
+colorbox,1.5.13,http://www.jacklmoore.com/colorbox,1.5.13,using style #5 renamed to jquery.colorbox.css
 Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
 DateTimePicker,2.3.3exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.3,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
