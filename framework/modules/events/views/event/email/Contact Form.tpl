@@ -21,6 +21,7 @@
             {control type=email name=email label="Your Email Address"|gettext}
             {control type=text name=subject label="Subject"|gettext}
             {control type="textarea" name="message" label='Message'|gettext}
+            {control type=antispam}
             {control type=buttongroup submit="Send"|gettext}
         {/form}
     {/group}
