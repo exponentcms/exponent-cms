@@ -24,6 +24,7 @@
             {control type=tel name=phone label="Your Phone"|gettext}
             {control type=text name=attendees label="Number of Attendees"|gettext}
             {control type="textarea" name="comments" label='Comments'|gettext}
+            {control type=antispam}
             {control type=buttongroup submit="Send"|gettext}
         {/form}
     {/group}
