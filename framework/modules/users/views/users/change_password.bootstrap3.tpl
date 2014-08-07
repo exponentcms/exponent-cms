@@ -29,8 +29,8 @@
         {if $isuser}
             {control type="password" name="password" label="Current Password"|gettext}
         {/if}
-        {control type="password" name="new_password1" label="Enter your new password"|gettext}
         <div class="row">
+            {control class="col-sm-4" type="password" name="new_password1" label="Enter your new password"|gettext}
             <div class="col-sm-4" style="padding-top: 8px;">
                 <div class="pwstrength_viewport_progress"></div>
             </div>
