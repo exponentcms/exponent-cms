@@ -80,8 +80,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                         {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
                         {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                     </blockquote>
-                    {control type="password" name="password" label="Password"|gettext required=true}
                     <div class="row">
+                        {control type="password" name="password" label="Password"|gettext required=true}
                         <div class="col-sm-4" style="padding-top: 8px;">
                             <div class="pwstrength_viewport_progress"></div>
                         </div>

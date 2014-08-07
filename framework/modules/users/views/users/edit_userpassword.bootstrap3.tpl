@@ -18,8 +18,8 @@
     {form action=update_userpassword}
         {control type="hidden" name="id" value=$u->id}
         {control type="hidden" name="username" value=$u->username}
-        {control type="password" name="new_password1" label="Type New Password"|gettext}
         <div class="row">
+            {control type="password" name="new_password1" label="Type New Password"|gettext}
             <div class="col-sm-4" style="padding-top: 8px;">
                 <div class="pwstrength_viewport_progress"></div>
             </div>
