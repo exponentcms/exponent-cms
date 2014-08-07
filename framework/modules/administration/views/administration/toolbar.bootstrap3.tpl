@@ -105,7 +105,7 @@
 {/function}
 
 <div class="exp-skin">
-    <nav id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <header id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -137,7 +137,7 @@
             {/foreach}
         </div>
         <!-- /.navbar-collapse -->
-    </nav>
+    </header>
 </div>
 
 {script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
