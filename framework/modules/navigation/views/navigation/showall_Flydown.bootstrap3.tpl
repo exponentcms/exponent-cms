@@ -19,23 +19,25 @@
 
 <!-- navigation bar/menu -->
 <nav id="topnavbar" class="navigation navbar navbar-default {if $smarty.const.MENU_LOCATION}navbar-{$smarty.const.MENU_LOCATION}{/if}" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            <span class="sr-only">{'Toggle navigation'|gettext}</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <!-- menu header -->
-        <a class="navbar-brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>
-    </div>
-    <!-- menu -->
-    <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
-        <ul class="nav navbar-nav{if $smarty.const.MENU_ALIGN == 'right'} navbar-right pull-right{/if}">
-            {getnav type='hierarchy' assign=hierarchy}
-            {bootstrap_navbar menu=$hierarchy}
-        </ul>
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+                <span class="sr-only">{'Toggle navigation'|gettext}</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- menu header -->
+            <a class="navbar-brand" href="{$smarty.const.URL_FULL}">{$smarty.const.ORGANIZATION_NAME}</a>
+        </div>
+        <!-- menu -->
+        <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+            <ul class="nav navbar-nav{if $smarty.const.MENU_ALIGN == 'right'} navbar-right pull-right{/if}">
+                {getnav type='hierarchy' assign=hierarchy}
+                {bootstrap_navbar menu=$hierarchy}
+            </ul>
+        </div>
     </div>
 </nav>
 <div class="navbar-spacer"></div>
