@@ -59,7 +59,7 @@
                 {/foreach}
             </tbody>
         </table>
-        {control class=delete type=buttongroup submit="Delete Selected Pages"|gettext onclick="&& confirm('"|cat:("Are you sure you want to delete these pages?"|gettext)|cat:"')"}
+        {control class=delete type=buttongroup submit="Delete Selected Pages"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete these pages?"|gettext)|cat:"');"}
     {/form}
 </div>
 
