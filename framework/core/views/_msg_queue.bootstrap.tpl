@@ -34,7 +34,7 @@
 
 {script unique="alert" jquery=1 bootstrap="alert"}
 {literal}
-    $(".alert").alert()
+    $(".alert").alert();
 {/literal}
 {/script}
 {/if}
