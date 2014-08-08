@@ -13,13 +13,15 @@
  *
  *}
 
-{uniqueid prepend="fblike" assign="name"}
+{uniqueid prepend="fb" assign="name"}
 
+{if $config.resp_width}
 {css unique=fblike}
     .fb-like, .fb-like span, .fb-like span iframe[style] {
         width: 100% !important;
     }
 {/css}
+{/if}
 
 <div class="module facebook show">
     <div id="fb-root"></div>
@@ -27,8 +29,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    {*<div class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>*}
-    <div id="fb-container-{$name}"></div>
+    <div id="fb-container-{$name}" class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
 </div>
 
 {script unique='facebook_src'}
@@ -37,18 +38,26 @@
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
         js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";  //FIXME add &appId=ADD YOUR APP ID HERE ???
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+//    $(window).bind("load resize", function(){
+//        var container_width = $('#fb-container-{/literal}{$name}{literal}').width();
+//        $('#fb-container-{/literal}{$name}{literal}').html('<div class="fb-like" ' +
+//            'data-href="{/literal}{$facebook_url}{literal}" ' +
+//            'data-send="false" data-width="' + container_width + '" data-show-faces="{/literal}{if $config.show_faces}true{else}false{/if}{literal}" ' +
+//            'data-colorscheme="{/literal}{$config.color_scheme|default:''}{literal}" data-font="{/literal}{$config.font|default:''}{literal}" ' +
+//            'data-action="{/literal}{$config.verb|default:''}{literal}"></div>');
+//        FB.XFBML.parse( );
+//    });
+{/literal}
+{if $config.resp_width}
+{literal}
     $(window).bind("load resize", function(){
-        var container_width = $('#fb-container-{/literal}{$name}{literal}').width();
-        $('#fb-container-{/literal}{$name}{literal}').html('<div class="fb-like" ' +
-            'data-href="{/literal}{$facebook_url}{literal}" ' +
-            'data-send="false" data-width="' + container_width + '" data-show-faces="{/literal}{if $config.show_faces}true{else}false{/if}{literal}" ' +
-            'data-colorscheme="{/literal}{$config.color_scheme|default:''}{literal}" data-font="{/literal}{$config.font|default:''}{literal}" ' +
-            'data-action="{/literal}{$config.verb|default:''}{literal}"></div>');
-        FB.XFBML.parse( );
+        $('#fb-container-{/literal}{$name}{literal}').attr('data-width', $('#fb-container-{/literal}{$name}{literal}').parent().width());
+        FB.XFBML.parse();
     });
 {/literal}
+{/if}
 {/script}
