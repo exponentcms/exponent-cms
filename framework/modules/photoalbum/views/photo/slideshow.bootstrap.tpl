@@ -46,10 +46,10 @@
     {$myloc=serialize($__loc)}
     <div id="ss-{$name}" class="slideshow-container">
         <ul>
-            <div class="slideshow-frame">
+            <div class="slideshow-frame-ex">
             {$quality=$config.quality|default:$smarty.const.THUMB_QUALITY}
             {foreach key=key from=$slides item=slide name=slides}
-                <li class="slide" style="position:absolute;{if $smarty.foreach.slides.first}z-index:4;{else}z-index:1;{/if}"{if !$config.hidetext} data-plugin-slide-caption='{$slide->title} {$slide->body}'{/if}>
+                <li class="slide"{if !$config.hidetext} data-plugin-slide-caption='<{$config.item_level|default:'h2'}>{$slide->title|escape}</{$config.item_level|default:'h2'}> {$slide->body|escape}'{/if}>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $slide->poster == $user->id)}
@@ -94,7 +94,7 @@
 {script unique="ssj-`$name`" jquery="jquery.excoloSlider"}
 {literal}
     $(function () {
-        $("#ss-{/literal}{$name}{literal} .slideshow-frame").excoloSlider({
+        $("#ss-{/literal}{$name}{literal} .slideshow-frame-ex").excoloSlider({
             width : {/literal}{$config.width|default:350}{literal},
             height : {/literal}{$config.height|default:300}{literal},
             interval : {/literal}{$config.speed|default:5}000{literal},
