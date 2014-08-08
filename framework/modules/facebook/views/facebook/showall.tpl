@@ -13,23 +13,42 @@
  *
  *}
 
+{uniqueid prepend="fblike" assign="name"}
+
+{css unique=fblike}
+    .fb-like, .fb-like span, .fb-like span iframe[style] {
+        width: 100% !important;
+    }
+{/css}
+
 <div class="module facebook show">
     <div id="fb-root"></div>
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<div class=fb-title'><strong>{$moduletitle}</strong></div>{br}{/if}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>
+    {*<div class="fb-like" data-href="{$facebook_url}" data-send="false" data-width="{$config.width|default:'450'}" data-show-faces="{if $config.showfaces}true{else}false{/if}" data-font="{$config.font|default:''}" data-colorscheme="{$config.color_scheme|default:''}" data-action="{$config.verb|default:''}"></div>*}
+    <div id="fb-container-{$name}"></div>
 </div>
 
 {script unique='facebook_src'}
 {literal}
     (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-      fjs.parentNode.insertBefore(js, fjs);
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+        fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
+    $(window).bind("load resize", function(){
+        var container_width = $('#fb-container-{/literal}{$name}{literal}').width();
+        $('#fb-container-{/literal}{$name}{literal}').html('<div class="fb-like" ' +
+            'data-href="{/literal}{$facebook_url}{literal}" ' +
+            'data-send="false" data-width="' + container_width + '" data-show-faces="{/literal}{if $config.show_faces}true{else}false{/if}{literal}" ' +
+            'data-colorscheme="{/literal}{$config.color_scheme|default:''}{literal}" data-font="{/literal}{$config.font|default:''}{literal}" ' +
+            'data-action="{/literal}{$config.verb|default:''}{literal}"></div>');
+        FB.XFBML.parse( );
+    });
 {/literal}
 {/script}
