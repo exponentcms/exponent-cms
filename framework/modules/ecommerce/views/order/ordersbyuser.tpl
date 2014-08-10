@@ -37,7 +37,7 @@
                     </tr>
                 {foreachelse}
                     <tr>
-                        <td colspan=3>{'No Orders Found'|gettext}</td>
+                        <td colspan=3>{message text='No Orders Found'|gettext}</td>
                     </tr>
                 {/foreach}
             </tbody>

@@ -113,7 +113,7 @@
             {counter name="ipr"}
         {/if}
     {foreachelse}
-       {'No Products were found!'|gettext}
+       {message text='No Products were found!'|gettext}
     {/foreach}
     </div>
 </div>

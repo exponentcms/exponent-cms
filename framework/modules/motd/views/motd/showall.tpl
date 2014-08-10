@@ -69,7 +69,11 @@
 			{foreachelse}
 				<tr class="{cycle values="odd,even"}">
                     <td colspan="6">
-                        {'There are no messages yet.'|gettext}
+                        {permissions}
+                           {if $permissions.create}
+                               {message class=notice text="There are no messages yet."|gettext}
+                           {/if}
+                       {/permissions}
                     </td>
                 </tr>
 			{/foreach}

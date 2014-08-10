@@ -70,7 +70,7 @@
                             </tr>
                         {foreachelse}
                             <p>
-                                 {'This option group does not have any options yet.'|gettext}
+                                {message class=notice text="This option group does not have any options yet."|gettext}
                             </p>
                         {/foreach}
                     </tbody>
@@ -78,7 +78,7 @@
             </div>
         </div>
     {foreachelse}
-        {'There are no product options setup yet.'|gettext}
+        {message class=notice text="There are no product options setup yet."|gettext}
     {/foreach}
 </div>
 

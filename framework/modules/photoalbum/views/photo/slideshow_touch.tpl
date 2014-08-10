@@ -83,7 +83,13 @@
                     {/if}
                 </li>
             {foreachelse}
-                <li>{"No slides yet"|gettext}</li>
+                <li>
+                    {permissions}
+                        {if $permissions.create}
+                            {message class=notice text="No slides created yet"|gettext}
+                        {/if}
+                    {/permissions}
+                </li>
             {/foreach}
             </div>
         </ul>

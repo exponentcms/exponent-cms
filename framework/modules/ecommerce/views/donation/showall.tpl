@@ -51,9 +51,11 @@
                 </td>
              </tr>
         {foreachelse}
-            {if $permissions.create}
-                <h2>{"No causes have been setup for donations."|gettext}</h2>
-            {/if}
+            {permissions}
+                {if $permissions.create}
+                    {message class=notice text="No causes have been setup for donations."|gettext}
+                {/if}
+            {/permissions}
         {/foreach}
     </table>
 </div>
