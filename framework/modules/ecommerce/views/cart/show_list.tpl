@@ -24,7 +24,7 @@
 				{clear}
 			</li>
 		{foreachelse}
-            <li>{'You currently have no items in your cart'|gettext}</li>
+            <li>{message class=notice text='You currently have no items in your cart'|gettext}</li>
         {/foreach}
 	</ul>
     {br}<em>{"Cart Total"|gettext}: {$total|currency}</em>

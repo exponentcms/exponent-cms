@@ -18,7 +18,7 @@
     {foreach from=$edit_user->expeAlerts item=ealert}
         {control type=checkbox name="expeAlert[]" value=$ealert->id label=$ealert->module|getcontrollerdisplayname|cat:' - '|cat:$ealert->ealert_title checked=true}
     {foreachelse}
-        <p><em>{'No email alert subscriptions were found'|gettext}</em></p>
+        <p><em>{message text='No email alert subscriptions were found'|gettext}</em></p>
     {/foreach}
 </div>
 

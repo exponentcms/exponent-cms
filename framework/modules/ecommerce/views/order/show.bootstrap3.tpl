@@ -103,7 +103,7 @@
                         </td></tr>
                     {foreachelse}
                         <tr>
-                            <td>{'There is no change history for this order yet.'|gettext}
+                            <td>{message text='There is no change history for this order yet.'|gettext}
                             </td>
                         </tr>
                     {/foreach}

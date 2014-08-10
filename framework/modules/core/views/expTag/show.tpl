@@ -52,7 +52,7 @@
                 {/foreach}
             </ul>
         {foreachelse}
-            {'No items tagged with'|gettext} '{$tag}'.
+            {message text='No items tagged with'|gettext} '{$tag}'.
         {/foreach}
     </div>
 </div>

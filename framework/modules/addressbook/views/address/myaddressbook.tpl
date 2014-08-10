@@ -78,7 +78,7 @@
                     </td>
 				</tr>    
 			{foreachelse}
-				<tr><td colspan="4"><p>{'You don\'t have any addresses in your address book yet'|gettext}</p></td></tr>
+				<tr><td colspan="4"><p>{message text='You don\'t have any addresses in your address book yet'|gettext}</p></td></tr>
 			{/foreach}
 		</tbody>
     </table>

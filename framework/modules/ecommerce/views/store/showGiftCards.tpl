@@ -58,7 +58,7 @@
                                     {/if}
                                 </div>
                             {foreachelse}
-                                {'There are no gift cards available!'|gettext}
+                                {message text='There are no gift cards available!'|gettext}
                                 {permissions}
                                     <div class="module-actions">
                                         {if $permissions.create || $permissions.edit}

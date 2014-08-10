@@ -51,7 +51,7 @@
                     </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
-				        <td colspan="4">{'No orders have been placed yet'|gettext}</td>
+				        <td colspan="4">{message text='No orders have been placed yet'|gettext}</td>
 				    </tr>
 				{/foreach}
 		    </tbody>
