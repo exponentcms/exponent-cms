@@ -22,9 +22,7 @@
 {/css}
 
 {if $product->user_message != ''}
-    <div id="msg-queue" class="msg-queue notice" xmlns="http://www.w3.org/1999/html">
-        <div class="msg">{$product->user_message}</div>
-    </div>
+    {message class=notice text=$product->user_message}
 {/if}
 
 <div class="module store show event-registration product">

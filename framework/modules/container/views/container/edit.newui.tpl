@@ -29,9 +29,7 @@
         </div>
         
         {if $error}
-        <div class="msg-queue error">
-            <div class="msg">{$error}</div>
-        </div>
+        {message class=error text=$error}
     </div>
         {else}
             {form action=update horizontal="1"}

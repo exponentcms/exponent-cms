@@ -41,7 +41,8 @@
 function smarty_function_message($params,&$smarty) {
     $text = empty($params['text']) ? '&#160;' : $params['text'];
     $class = empty($params['class']) ? '' : $params['class'];
-    echo '<div class="msg-queue ' . $class . '"><div class="msg">' . $text . '</div></div';
+    $centered = empty($params['center']) ? '' : ' style="text-align:center"';
+    echo '<div class="msg-queue ' . $class . $centered . '"><div class="msg">' . $text . '</div></div';
     expCSS::pushToHead(array(
         "corecss"=>"msgq",
     ));
