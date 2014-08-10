@@ -25,7 +25,7 @@
     {else}
         {$qtype = 'success'}
     {/if}
-    <div class="alert msg-queue alert-{$qtype}">
+    <div class="alert msg-queue alert-{$qtype} alert-dismissible" role="alert" fade in">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         {foreach from=$queue item=msg}
             <div class="msg">{$msg}</div>
@@ -33,7 +33,7 @@
     </div>
 {/foreach}
 
-{script unique="alert" jquery=1 bootstrap="alert"}
+{script unique="alert" jquery=1 bootstrap="alert,transition"}
 {literal}
     $(".alert").alert();
 {/literal}
