@@ -19,6 +19,12 @@
 
 {if $queues|@count!=0} 
 {foreach from=$queues item=queue key=qname}
+    {if $qname == 'danger'}  {* allow for twitter bootstrap names *}
+        {$qname = 'error'}
+    {elseif $qname == 'warning'}
+        {$qname = 'warning'}
+    {/if}
+
     <div class="msg-queue {$qname}">
         <a class="close" href="#">{'Close'|gettext}</a>
         {foreach from=$queue item=msg}

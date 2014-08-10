@@ -15,11 +15,12 @@
 
 {if $queues|@count!=0}
 {foreach from=$queues item=queue key=qname}
-    {if $qname == 'error'}
+    {* test for and convert non-twitter bootstrap names *}
+    {if $qname == 'error' || $qname == 'danger'}
         {$qtype = 'danger'}
     {elseif $qname == 'info'}
         {$qtype = 'info'}
-    {elseif $qname == 'notice'}
+    {elseif $qname == 'notice' || $qname == 'warning'}
         {$qtype = 'warning'}
     {else}
         {$qtype = 'success'}
