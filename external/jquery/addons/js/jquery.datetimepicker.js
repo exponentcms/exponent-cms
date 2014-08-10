@@ -1,5 +1,5 @@
 /**
- * @preserve jQuery DateTimePicker plugin v2.3.3
+ * @preserve jQuery DateTimePicker plugin v2.3.4
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
  * (c) 2014, Chupurnov Valeriy.
  */
@@ -156,7 +156,7 @@
 					"January", "Februar", "Marts", "April", "Maj", "Juni", "July", "August", "September", "Oktober", "November", "December"
 				],
 				dayOfWeek: [
-					"Søn", "Man", "Tir", "ons", "Tor", "Fre", "lør"
+					"Søn", "Man", "Tir", "Ons", "Tor", "Fre", "Lør"
 				]
 			},
 			no:{ // Norwegian
@@ -561,10 +561,10 @@
 						_xdsoft_datetime.setCurrentTime(options.value);
 					}
 
-					if( isNaN(options.dayOfWeekStart)||parseInt(options.dayOfWeekStart)<0||parseInt(options.dayOfWeekStart)>6 )
+					if( isNaN(options.dayOfWeekStart) )
 						options.dayOfWeekStart = 0;
 					else
-						options.dayOfWeekStart = parseInt(options.dayOfWeekStart);
+						options.dayOfWeekStart = parseInt(options.dayOfWeekStart)%7;
 
 					if( !options.timepickerScrollbar )
 						scrollbar.hide();
@@ -959,7 +959,7 @@
 
 								// days
 								for(var j = 0; j<7; j++) {
-									table+='<th>'+options.i18n[options.lang].dayOfWeek[(j+options.dayOfWeekStart)>6?0:j+options.dayOfWeekStart]+'</th>';
+									table+='<th>'+options.i18n[options.lang].dayOfWeek[(j+options.dayOfWeekStart)%7]+'</th>';
 								}
 
 								table+='</tr></thead>';
@@ -1234,6 +1234,7 @@
 						if( options.onChangeDateTime&&options.onChangeDateTime.call ) {
 							var $input = datetimepicker.data('input');
 							options.onChangeDateTime.call(datetimepicker, _xdsoft_datetime.currentTime, $input);
+							delete options.value;
 							$input.trigger('change');
 						}
 					})
