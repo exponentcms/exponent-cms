@@ -33,10 +33,10 @@
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional pdf engine add-on"|gettext value=1 checked=$config.printlink}
 {control type="checkbox" name="enable_feedback" label="Enable Event Feedback Option"|gettext value=1 checked=$config.enable_feedback}
 {control type="checkbox" name="enable_images" label="Enable Attached Images"|gettext value=1 checked=$config.enable_images}
-{if $smarty.const.SITE_FILE_MANAGER == 'picker'}
-    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
-{elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+{if $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
     {control type="text" name="upload_folder" label="Quick Add Upload Subfolder"|gettext value=$config.upload_folder}
+{else}
+    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}
 {control type="checkbox" name="ajax_paging" label="Use ajax paging if available"|gettext value=1 checked=$config.ajax_paging description='Can decrease paging loading time, but may cause SEO issues'|gettext}
 {if $smarty.const.ECOM}
