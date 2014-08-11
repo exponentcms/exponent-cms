@@ -29,8 +29,8 @@
 {group label="Pagination"|gettext}
     {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
 {/group}
-{if $smarty.const.SITE_FILE_MANAGER == 'picker'}
-    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
-{elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+{if $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
     {control type="text" name="upload_folder" label="Quick Add Upload Subfolder"|gettext value=$config.upload_folder}
+{else}
+    {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}

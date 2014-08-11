@@ -175,10 +175,10 @@
                     {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
                     {group label="Quick Add Settings"|gettext}
                         {control type="text" name="sc[QUICK_UPLOAD_WIDTH]" label="Force Quick Add to Downsize Graphics to Max Width/Height"|gettext value=$smarty.const.QUICK_UPLOAD_WIDTH|default:0 size="4" description='Zero or Empty means do NOT resize on a Quick Add Upload'|gettext}
-                        {if $smarty.const.SITE_FILE_MANAGER == 'picker'}
-                            {control type=dropdown name="sc[QUICK_UPLOAD_FOLDER]" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$smarty.const.QUICK_UPLOAD_FOLDER}
-                        {elseif $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
+                        {if $smarty.const.SITE_FILE_MANAGER == 'elfinder'}
                             {control type="text" name="sc[QUICK_UPLOAD_FOLDER]" label="Quick Add Upload Subfolder"|gettext value=$smarty.const.QUICK_UPLOAD_FOLDER}
+                        {else}
+                            {control type=dropdown name="sc[QUICK_UPLOAD_FOLDER]" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$smarty.const.QUICK_UPLOAD_FOLDER}
                         {/if}
                     {/group}
                 </div>
