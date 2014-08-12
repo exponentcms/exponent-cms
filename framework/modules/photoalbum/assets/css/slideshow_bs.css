@@ -1,8 +1,8 @@
-.slideshow-frame-ex li.slide {
+ul.slideshow-frame-ex li.slide {
 	list-style: none;
 }
 
-.slideshow-container ul {
+ul.slideshow-container {
 	margin : 0;
 	padding : 0;
 }
