@@ -21,7 +21,6 @@
 {*{/if}*}
 {/css}
 
-<!-- navigation bar/menu -->
 <nav id="topnavbar" class="navigation navbar navbar-default {if $smarty.const.MENU_LOCATION}navbar-{$smarty.const.MENU_LOCATION}{/if}" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
