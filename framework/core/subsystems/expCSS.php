@@ -377,7 +377,7 @@ class expCSS {
                             }
                         }
                         $less = new lessc;
-                        if (DEVELOPMENT && $less_compiler == 'less.php') {
+                        if (DEVELOPMENT && $less_compiler == 'less.php' && LESS_COMPILER_MAP) {
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
                                 'sourceMap'         => true,  // output .map file?
