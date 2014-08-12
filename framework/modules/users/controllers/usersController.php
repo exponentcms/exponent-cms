@@ -585,7 +585,7 @@ class usersController extends expController {
         global $user;
 
         expHistory::set('editable', $this->params);
-        $id = isset($this->params['ud']) ? $this->params['ud'] : $user->id;
+        $id = isset($this->params['id']) ? $this->params['id'] : $user->id;
 
         if ($user->isAdmin() || ($user->id == $id)) {
             $isuser = ($user->id == $id) ? 1 : 0;
