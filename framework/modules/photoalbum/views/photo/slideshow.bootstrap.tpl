@@ -15,7 +15,7 @@
 
 {uniqueid prepend="slideshow" assign="name"}
 
-{css unique="slideshow-touch" link="`$asset_path`css/slideshow_touch.css"}
+{css unique="slideshow-bs" link="`$asset_path`css/slideshow_bs.css"}
 
 {/css}
 
