@@ -21,7 +21,7 @@
         <div class="info-header">
             <div class="related-actions">
                 {if $user->isSuperAdmin()}
-                    <a class="managemodules" href="{link module=expModule action=manage}">{"Manage Active Modules"|gettext}</a>
+                    {icon module=expModule action=manage text="Manage Active Modules"|gettext}
                 {/if}
                 {help text="Get Help with"|gettext|cat:" "|cat:("Adding Page Content"|gettext) module="adding-modules-to-a-page"}
             </div>
