@@ -140,10 +140,11 @@ if (!function_exists('smarty_function_ddrerank')) {
                     }
                     $html .= '
                     <li class="">
-                    <input type="hidden" name="rerank[]" value="' . $item->id . '" />';
+                    <input type="hidden" name="rerank[]" value="' . $item->id . '" />
+                    <div class="fpdrag"></div>';
                     //Do we include the picture? It depends on if there is one set.
                     $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1">' : '';
-                    $html .= '<span class="">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
+                    $html .= '<span class="title">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
                     </li>';
                 }
                 $html .= '</ul></div>
