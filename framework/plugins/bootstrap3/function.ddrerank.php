@@ -98,7 +98,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             $btn_size = expTheme::buttonStyle();
             $icon_size = expTheme::iconSize();
             if ($model != 'container') {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="'.$btn_size.'" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="'.$btn_size.'" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-exchange fa-rotate-90 '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             }
@@ -121,7 +121,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                 // we may need to pass through an ID for some reason, like a category ID for products
                 $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="' . $params['id'] . '" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
-                <ul id="listToOrder' . $uniqueid . '" class="default vertical" style="' . ((count($params['items']) < 12) ? "" : "height:350px") . ';overflow-y:auto;">
+                <ul id="listToOrder' . $uniqueid . '" class="scrollable" style="' . ((count($params['items']) < 12) ? "" : "height:350px") . ';overflow-y:auto;">
                 ';
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
