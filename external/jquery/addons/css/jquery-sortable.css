@@ -5,7 +5,7 @@ body.dragging, body.dragging * {
 .dragged {
 	position: absolute;
 	top: 0;
-	opacity: 0.5;
+	opacity: 0.5 !important;
 	z-index: 2000;
 }
 
@@ -19,9 +19,16 @@ ul.scrollable li {
 	margin: 5px;
 	padding: 5px;
 	border: 1px solid #cccccc;
-	color: #0088cc;
+	/*color: #0088cc;*/
 	background: #eeeeee;
-	cursor: pointer;
+	cursor: move;
+	text-align: left;
+	background: #efecce url(../images/gradient.png) repeat-x;
+}
+
+ul.scrollable li span.title {
+	padding-left: 5px;
+	font-weight: bold;
 }
 
 ul.scrollable li.placeholder {
@@ -45,4 +52,14 @@ ul.scrollable li.placeholder:before {
 	color: red;
 	font-weight: bold;
 	font-size: 16px;
+}
+
+ul.scrollable li .fpdrag {
+	width: 10px;
+	height: 11px;
+	margin: 2px 5px 0 5px;
+	background:url(../images/dragger.png);
+	display: inline-block;
+	zoom: 1;
+	vertical-align: top;
 }
