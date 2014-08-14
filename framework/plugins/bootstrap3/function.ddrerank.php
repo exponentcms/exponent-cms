@@ -83,11 +83,11 @@ if (!function_exists('smarty_function_ddrerank')) {
         }
 
         if (count($params['items']) >= 2) {
-            expCSS::pushToHead(array(
-                    //"corecss"=>"rerankpanel,panels",
-                    "corecss" => "rerank,panel",
-                )
-            );
+//            expCSS::pushToHead(array(
+//                    //"corecss"=>"rerankpanel,panels",
+//                    "corecss" => "rerank,panel",
+//                )
+//            );
 
             $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; // this is the field to display in list
 
@@ -95,27 +95,24 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!empty($params['label'])) {
                 $params['label'] = gt($params['label']);
             }
-//            if (BTN_SIZE == 'large') {
-//                $btn_size = 'btn-sm';
-//                $icon_size = 'fa-lg';
-//            } else {
-//                $btn_size = 'btn-xs';
-//                $icon_size = '';
-//            }
             $btn_size = expTheme::buttonStyle();
             $icon_size = expTheme::iconSize();
-//            if (empty($params['uniqueid'])) {  // make a button
             if ($model != 'container') {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="btn btn-default '.$btn_size.'" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="'.$btn_size.'" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
-                echo '<a id="rerank' . $uniqueid . '" class="" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             }
 
             $html = '
-        <div id="panel' . $uniqueid . '" class="exp-skin-panel exp-skin-rerank hide">
-            <div class="yui3-widget-hd">Order ' . $params['label'] . '</div>
-            <div class="yui3-widget-bd">
+        <div id="panel' . $uniqueid . '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel' . $uniqueid . '" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
             <form role="form" method="post" action="' . PATH_RELATIVE . '">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">' . gt('Close') . '</span></button>
+                <h4 class="modal-title" id="myModalLabel' . $uniqueid . '">' . gt('Set Order of') . ' ' . $params['label'] . '</h4>
+              </div>
+              <div class="modal-body">
             <input type="hidden" name="model" value="' . $model . '" />
             <input type="hidden" name="controller" value="' . $controller . '" />
             <input type="hidden" name="lastpage" value="' . curPageURL() . '" />
@@ -124,9 +121,8 @@ if (!function_exists('smarty_function_ddrerank')) {
                 // we may need to pass through an ID for some reason, like a category ID for products
                 $html .= !empty($params['id']) ? '<input type="hidden" name="id" value="' . $params['id'] . '" />' : '';
                 $html .= '<input type="hidden" name="action" value="manage_ranks" />
-                <ul id="listToOrder' . $uniqueid . '" style="' . ((count($params['items']) < 12) ? "" : "height:350px") . ';overflow-y:auto;">
+                <ul id="listToOrder' . $uniqueid . '" class="default vertical" style="' . ((count($params['items']) < 12) ? "" : "height:350px") . ';overflow-y:auto;">
                 ';
-                $odd = "even";
                 $stringlen = 40;
                 foreach ($params['items'] as $item) {
                 if (!empty($params['module']) || $params['model'] == 'expDefinableField') {  // we want to embellish the title used
@@ -134,7 +130,6 @@ if (!function_exists('smarty_function_ddrerank')) {
                             $control = expUnserialize($item->data);
                             $ctrl = new $control();
                             $name = $ctrl->name();
-//                            $name = $control::name();
                             $item->$sortfield = (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . ' (' . $name . ')';
                             $stringlen = 65;
                         } elseif ($params['module'] == 'container') {
@@ -144,233 +139,50 @@ if (!function_exists('smarty_function_ddrerank')) {
                         }
                     }
                     $html .= '
-                    <li class="' . $odd . '">
-                    <input type="hidden" name="rerank[]" value="' . $item->id . '" />
-                    <div class="fpdrag"></div>';
+                    <li class="">
+                    <input type="hidden" name="rerank[]" value="' . $item->id . '" />';
                     //Do we include the picture? It depends on if there is one set.
                     $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1">' : '';
-                    $html .= '<span class="label">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
+                    $html .= '<span class="">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
                     </li>';
-                    $odd = $odd == "even" ? "odd" : "even";
                 }
-                $html .= '</ul>
-                    <div class="yui3-widget-ft">';
+                $html .= '</ul></div>
+                    <div class="modal-footer">';
 //                    <a href="#" class="btn btn-default '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
                 $html .= '
                     <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="fa fa-floppy-o '.$icon_size.'"></i> ' . gt('Save') . '</button>
                     </div>
-                    </form>
-                    </div>
+                  </form>
+                </div>
+                </div>
                 </div>
                 ';
             } else {
                 $html .= '<strong>' . gt('Nothing to re-rank') . '</strong>
-            
                     </div>
                 </div>
                 ';
             }
-
             echo $html;
 
             $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
-            var panel = new Y.Panel({
-                srcNode      : '#panel" . $uniqueid . "',
-                width        : 500,
-                visible      : false,
-                zIndex       : 50,
-                centered     : false,
-                render       : 'body'
-//                 plugins      : [Y.Plugin.Drag]
-            }).plug(Y.Plugin.Drag);
-            
-            panel.dd.addHandle('.yui3-widget-hd');
-            Y.namespace('MyApp');
-            var ul = document.getElementById('listToOrder" . $uniqueid . "');
-            Y.MyApp.old_ul = ul.cloneNode(true);
-            panel.on('visibleChange',function(e) {
-                if (!e.newVal) {
-                    //alert('close');
-                    var ul = document.getElementById('listToOrder" . $uniqueid . "');
-                    ul.parentNode.replaceChild(Y.MyApp.old_ul,ul);
-                    ddinit();
-                } else {
-                    //alert('open');
-                }
-            });
-
-            var panelContainer = Y.one('#panel" . $uniqueid . "').get('parentNode');
-            panelContainer.addClass('exp-panel-container');
-            Y.one('#panel" . $uniqueid . "').removeClass('hide');
-                        
-            if (Y.one('#alpha" . $uniqueid . "') != null) Y.one('#alpha" . $uniqueid . "').on('click',function(e){
-                // Get the list items and setup an array for sorting
-                var ul = document.getElementById('listToOrder" . $uniqueid . "');
-                var new_ul = ul.cloneNode(false);
-                var lis = ul.getElementsByTagName('LI');
-                var vals = [];
-
-                // Populate the array
-                for(var i = 0, l = lis.length; i < l; i++)
-                    vals.push(lis[i]);
-
-                // Sort it
-                vals.sort(function(a, b){
-                    if (a.textContent.toLowerCase() == b.textContent.toLowerCase()) return 0;
-                    return a.textContent.toLowerCase()  > b.textContent.toLowerCase()  ? 1 : -1;
+                $(document).ready(function(){
+                  $('#listToOrder" . $uniqueid . "').sortable();
+            ";
+            if ($model == 'container') {  // must move modal off of menu to display
+                $script .= "$('#panel" . $uniqueid . "').appendTo('body');";
+            }
+            $script .="
                 });
-
-                // Change the list on the page
-                for(var i = 0, l = vals.length; i < l; i++) {
-                    new_ul.appendChild(vals[i]);
-                }
-                Y.MyApp.old_ul;
-                ul.parentNode.replaceChild(new_ul, ul);
-                ddinit();
-            });
-
-            Y.one('#rerank" . $uniqueid . "').on('click',function(e){
-                e.halt();
-                panel.show();
-                panel.set('centered',true);
-                panel.align('#rerank" . $uniqueid . "',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);
-            });
-
-            //Static Vars
-            var goingUp = false, lastY = 0;
-
-            // the list
-            var ul = '#listToOrder" . $uniqueid . "';
-            ddinit();
-
-            // turn this into a function so we can initialize anytime needed
-            function ddinit() {
-            //Get the list of li's in the lists and make them draggable
-            var lis = Y.Node.all('#listToOrder" . $uniqueid . " li');
-//            lis.each(function(v, k) {
-                // var dragItem = new Y.DD.Drag({
-                //     node: v,
-                //     target: {
-                //         padding: '0 0 0 0'
-                //     }
-                // }).plug(Y.Plugin.DDProxy, {
-                //     moveOnEnd: false
-                // }).plug(Y.Plugin.DDConstrained, {
-                //     constrain2node: ul,
-                //     stickY:true
-                // }).plug(Y.Plugin.DDNodeScroll, {
-                //     node: ul
-                // }).addHandle('.fpdrag');
-
-                var dragItems = new Y.DD.Delegate({
-                    container: ul,
-                    nodes: 'li',
-                    target: {
-                        padding: '0 0 0 0'
-                    }
-                })
-                
-                dragItems.dd.plug(Y.Plugin.DDConstrained, {
-//                    constrain2node: ul,
-//                    constrain: ul,
-                    constrain: panelContainer,
-//                    stickY:true
-                }).plug(Y.Plugin.DDProxy, {
-                    moveOnEnd: false
-                }).plug(Y.Plugin.DDNodeScroll, {
-                    node: ul
-                }).plug(Y.Plugin.DDWinScroll, {
-                }).plug(Y.Plugin.DDWindowScroll, {
-                }).addHandle('.fpdrag');
-
-                dragItems.on('drop:over', function(e) {
-                    //Get a reference to out drag and drop nodes
-                    var drag = e.drag.get('node'),
-                        drop = e.drop.get('node');
-
-                    //Are we dropping on a li node?
-                    if (drop.get('tagName').toLowerCase() === 'li') {
-                        //Are we not going up?
-                        if (!goingUp) {
-                            drop = drop.get('nextSibling');
-                        }
-                        //Add the node to this list
-                        e.drop.get('node').get('parentNode').insertBefore(drag, drop);
-                        //Set the new parentScroll on the nodescroll plugin
-                        e.drag.nodescroll.set('parentScroll', e.drop.get('node').get('parentNode'));
-                        //Resize this nodes shim, so we can drop on it later.
-                        e.drop.sizeShim();
-                    }
-                });
-                //Listen for all drag:drag events
-                dragItems.on('drag:drag', function(e) {
-                    //Get the last y point
-                    var y = e.target.lastXY[1];
-                    //is it greater than the lastY var?
-                    if (y < lastY) {
-                        //We are going up
-                        goingUp = true;
-                    } else {
-                        //We are going down..
-                        goingUp = false;
-                    }
-                    //Cache for next check
-                    lastY = y;
-                    Y.DD.DDM.syncActiveShims(true);
-                });
-                //Listen for all drag:start events
-                dragItems.on('drag:start', function(e) {
-                    //Get our drag object
-                    var drag = e.target;
-                    //Set some styles here
-                    drag.get('node').setStyle('opacity', '.25');
-                    drag.get('dragNode').addClass('rerank-proxy').set('innerHTML', drag.get('node').get('innerHTML'));
-                    drag.get('dragNode').setStyles({
-                        opacity: '.5'
-                        // borderColor: drag.get('node').getStyle('borderColor'),
-                        // backgroundColor: drag.get('node').getStyle('backgroundColor')
-                    });
-                });
-                //Listen for a drag:end events
-                dragItems.on('drag:end', function(e) {
-                    var drag = e.target;
-                    //Put out styles back
-                    drag.get('node').setStyles({
-                        visibility: '',
-                        opacity: '1'
-                    });
-                });
-                //Listen for all drag:drophit events
-                dragItems.on('drag:drophit', function(e) {
-                    var drop = e.drop.get('node'),
-                        drag = e.drag.get('node');
-
-                    //if we are not on an li, we must have been dropped on a ul
-                    if (drop.get('tagName').toLowerCase() !== 'li') {
-                        if (!drop.contains(drag)) {
-                            drop.appendChild(drag);
-                            //Set the new parentScroll on the nodescroll plugin
-                            e.drag.nodescroll.set('parentScroll', e.drop.get('node'));
-                        }
-                    }
-                });
-//            });
-
-            //Create simple targets for the 2 lists..
-            var tar = new Y.DD.Drop({
-                node: ul
-            });
-                 };
-        });
-        
-        ";
+            ";
 
             if (!expTheme::inPreview()) {
                 expJavascript::pushToFoot(array(
-                    "unique"   => $uniqueid,
-                    "yui3mods" => 1,
-                    "content"  => $script,
+                    "unique"    => $uniqueid,
+//                    "yui3mods"  => 1,
+                    "jquery"    => 'jquery-sortable',
+                    "bootstrap" => 'modal,transition',
+                    "content"   => $script,
                 ));
             }
         }

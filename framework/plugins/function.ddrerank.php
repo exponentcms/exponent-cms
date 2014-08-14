@@ -209,7 +209,7 @@ function smarty_function_ddrerank($params, &$smarty) {
                     target: {
                         padding: '0 0 0 0'
                     }
-                })
+                });
 
                 dragItems.dd.plug(Y.Plugin.DDConstrained, {
 //                    constrain2node: ul,
@@ -301,7 +301,7 @@ function smarty_function_ddrerank($params, &$smarty) {
                 var tar = new Y.DD.Drop({
                     node: ul
                 });
-            };
+            }
         });
         
         ";

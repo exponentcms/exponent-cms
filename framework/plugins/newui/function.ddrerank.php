@@ -272,7 +272,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                     target: {
                         padding: '0 0 0 0'
                     }
-                })
+                });
                 
                 dragItems.dd.plug(Y.Plugin.DDConstrained, {
 //                    constrain2node: ul,
@@ -364,7 +364,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             var tar = new Y.DD.Drop({
                 node: ul
             });
-                 };
+            }
         });
         
         ";
