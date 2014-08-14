@@ -109,7 +109,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             $icon_size = expTheme::iconSize();
 //            if (empty($params['uniqueid'])) {  // make a button
             if ($model != 'container') {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank' . $uniqueid . '" class="btn '.$btn_size.'" href="#"><i class="fa fa-exchange fa-rotate-90 '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             } else {  // make a menu item
                 echo '<a id="rerank' . $uniqueid . '" class="" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
             }

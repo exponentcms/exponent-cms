@@ -27,12 +27,12 @@ Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
 normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
-MediaElement.js,2.14.2,mediaelementjs.com/,2.15.0,
+MediaElement.js,2.15.0,mediaelementjs.com/,2.15.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,3.2.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
-excanvas,r3,https://code.google.com/p/explorercanvas/,r3,needed by TimesCircle for IE8
+excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.2,optional
 CKEditor,4.4.3,ckeditor.com,4.4.3,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
