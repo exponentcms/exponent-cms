@@ -31,7 +31,7 @@
         {*if $hasParent == 0 && ($permissions.edit || $permissions.create || $permissions.delete || $permissions.order_module || $permissions.manage)*}
         {if empty($container->hasParent) && ($permissions.configure || $container->permissions.configure)}
         {** top level container module **}
-            <div class="exp-skin">
+            <div class="">
             <div class="dropdown exp-container-chrome exp-container-chrome-container">
                 <a class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
                 <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
@@ -86,7 +86,7 @@
                     {else}
                         {$last=false}
                     {/if}
-                    <div class="exp-skin">
+                    <div class="">
                         <div class="dropdown exp-container-chrome exp-container-chrome-module">
                             <a class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
                             {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
