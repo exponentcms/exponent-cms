@@ -49,7 +49,7 @@ timepicker,1.4.6,http://trentrichardson.com/examples/timepicker/,1.4.6,used by a
 DataTables,1.10.2,http://www.datatables.net,1.10.2,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.2,http://www.datatables.net,2.2.2,
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
-spectrum,1.4.1,http://bgrins.github.io/spectrum/,1.5.0,
+spectrum,1.5.0,http://bgrins.github.io/spectrum/,1.5.0,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,

@@ -1,4 +1,4 @@
-// Spectrum Colorpicker v1.4.1
+// Spectrum Colorpicker v1.5.0
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
@@ -25,6 +25,7 @@
         showInitial: false,
         showPalette: false,
         showPaletteOnly: false,
+        hideAfterPaletteSelect: false,
         togglePaletteOnly: false,
         showSelectionPalette: true,
         localStorageKey: false,
@@ -448,7 +449,9 @@
                     set($(e.target).closest(".sp-thumb-el").data("color"));
                     move();
                     updateOriginalInput(true);
-                    hide();
+                    if (opts.hideAfterPaletteSelect) {
+                      hide();
+                    }
                 }
 
                 return false;
@@ -990,7 +993,7 @@
         onmove = onmove || function () { };
         onstart = onstart || function () { };
         onstop = onstop || function () { };
-        var doc = element.ownerDocument || document;
+        var doc = document;
         var dragging = false;
         var offset = {};
         var maxHeight = 0;
@@ -1016,7 +1019,7 @@
         function move(e) {
             if (dragging) {
                 // Mouseup happened outside of window
-                if (IE && document.documentMode < 9 && !e.button) {
+                if (IE && doc.documentMode < 9 && !e.button) {
                     return stop();
                 }
 
@@ -1038,7 +1041,6 @@
 
         function start(e) {
             var rightclick = (e.which) ? (e.which == 3) : (e.button == 2);
-            var touches = e.originalEvent.touches;
 
             if (!rightclick && !dragging) {
                 if (onstart.apply(element, arguments) !== false) {
