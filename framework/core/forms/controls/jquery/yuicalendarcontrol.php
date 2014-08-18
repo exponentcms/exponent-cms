@@ -137,9 +137,10 @@ class yuicalendarcontrol extends formcontrol
 
         expJavascript::pushToFoot(
             array(
-                "unique"  => '00yuical-' . $idname,
-                "jquery"  => "jquery.datetimepicker",
-                "content" => $script,
+                "unique"   => '00yuical-' . $idname,
+                "yui3mods" => "1",
+                "jquery"   => "jquery.datetimepicker",
+                "content"  => $script,
             )
         );
         return $html;
