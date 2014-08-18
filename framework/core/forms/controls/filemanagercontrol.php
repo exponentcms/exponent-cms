@@ -86,7 +86,7 @@ class filemanagercontrol extends formcontrol {
         }
         $js = "
             EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
-                fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader.js'
+                fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader/SimpleAjaxUploader-yui.js'
             };
 
             YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
@@ -107,7 +107,7 @@ class filemanagercontrol extends formcontrol {
                 if (Y.one('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new Y.ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
-                    action: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1, "folder"=> $this->folder)) . "',
+                    url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1, "folder"=> $this->folder)) . "',
                     data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
                     responseType: 'json',
                     name: 'uploadfile',
@@ -206,7 +206,7 @@ class filemanagercontrol extends formcontrol {
                     filesAdded--;
                     if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
                     if (filesAdded == 0) showEmptyLI();
-                }
+                };
 
                 //Drag Drop stuff
                 
@@ -333,7 +333,7 @@ class filemanagercontrol extends formcontrol {
                             
                             var html = '<li>';
                             html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                            html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
+                            html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
                             html += filepic;
                             if (obj.title) {
                                 filetitle = obj.title;
@@ -367,7 +367,7 @@ class filemanagercontrol extends formcontrol {
                                 fl.one('.blank').remove();
                             }
 
-                            filesAdded++
+                            filesAdded++;
 
 //                            if (limit>=filesAdded) {
                             if (filesAdded>=limit) {
@@ -378,13 +378,13 @@ class filemanagercontrol extends formcontrol {
                         }
                     })
                     // Y.log(ids);
-                }
+                };
 
                  EXPONENT.passBackBatch".$name." = function(ids) {
                     Y.each(ids, function(id,k){
                         EXPONENT.passBackFile".$name."(id);
                     });
-                 }
+                 };
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
@@ -410,7 +410,7 @@ class filemanagercontrol extends formcontrol {
                     
                         var html = '<li>';
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\">".gt('delete')."<\/a>';
+                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
                         html += filepic;
                         if (obj.title) {
                             filetitle = obj.title;
@@ -442,7 +442,7 @@ class filemanagercontrol extends formcontrol {
                             fl.one('.blank').remove();
                         }
 
-                        filesAdded++
+                        filesAdded++;
 
 //                        if (limit>=filesAdded) {
                         if (filesAdded>=limit) {
@@ -515,7 +515,7 @@ class filemanagercontrol extends formcontrol {
             $html .= "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
-            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}'>".gt('Delete')."</a>";
+            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\">".gt('Delete')."</a>";
             $html .= $filepic;
             $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
