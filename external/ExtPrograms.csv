@@ -27,7 +27,7 @@ Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.1.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
 normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
-MediaElement.js,2.15.0,mediaelementjs.com/,2.15.1,
+MediaElement.js,2.15.1,mediaelementjs.com/,2.15.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.10,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
@@ -58,3 +58,4 @@ Searcher,0.1.0,https://github.com/lloiser/jquery-searcher/,0.1.0,
 DateTimePicker,2.3.4exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.4,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.0,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.0,
+jquery-sortable,0.9.12,http://johnny.github.com/jquery-sortable/,0.9.12,
