@@ -36,6 +36,9 @@ ul.scrollable li.placeholder {
 	margin: 0;
 	padding: 0;
 	border: none;
+	width: 80%;
+	min-height: 28px;
+	opacity: 0.8;
 }
 
 ul.scrollable li.placeholder:before {
