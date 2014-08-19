@@ -84,12 +84,9 @@
 {/if}
 
 {if !$hcview}
-{*FIXME convert to yui3*}
 {script unique="edit-module" yui3mods=1}
 {literal}
-    YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "yui2-yahoo-dom-event", "yui2-connection", "yui2-json", function (Y) {
-        var YAHOO = Y.YUI2;
-//        var osmv = {/literal}{$json_obj};{literal} //oldschool module views (in a JSON object)
+    YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "json-parse", function (Y) {
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
         var current_view = {/literal}{if $container->view}"{$container->view}"{else}false{/if}{literal}; //Do we have an existing view
@@ -98,105 +95,123 @@
 
         // handles the action picker change
         EXPONENT.handleActionChange = function () {
-            EXPONENT.setCurAction();
+//            EXPONENT.setCurAction();
             if (actionpicker.get("value") != -1) {
                 EXPONENT.writeViews();
-//            } else {
-//                EXPONENT.resetViews();
             }
         }
 
         //listens for a change in the action dropdown
         Y.one('#config').delegate('change', EXPONENT.handleActionChange, "#actions");
 
-        // handles view picker changes
-//        EXPONENT.handleViewChange = function (e) {
-//            if (viewpicker.get("value") != -1) {
-    //                EXPONENT.enableSave();
-//            } else {
-    //                EXPONENT.disableSave();
-//            }
-//        }
-
-        //listens for a change in the view dropdown
-//        Y.one('#config').delegate('change', EXPONENT.handleViewChange, "#views");
-
-        //resets both the viewpicker and actionpicker
-//        EXPONENT.resetActionsViews = function () {
-//            EXPONENT.resetViews();
-//            EXPONENT.resetActions();
-//        }
-
-        //resets the actionpicker to the default when entering this page
-//        EXPONENT.resetActions = function () {
-//            var actionDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Module Selected"|gettext}{literal}</option>');
-//            actionpicker.appendChild(actionDefaultOption);
-    //            actionpicker.set('disabled',1);
-    //            actionpicker.ancestor('div.control').addClass('disabled');
-//        }
-
         //resets the viewpicker to the default when entering this page
         EXPONENT.resetViews = function () {
             var viewDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Action Selected"|gettext}{literal}</option>');
             viewpicker.appendChild(viewDefaultOption);
-    //            viewpicker.set('disabled',1);
-    //            viewpicker.ancestor('div.control').addClass('disabled');
         }
 
         //finds the currently selected action for the given module
-        EXPONENT.setCurAction = function () {
-            var selectmenu = YAHOO.util.Dom.get('actions');
-            EXPONENT.curAction = selectmenu.options[selectmenu.selectedIndex].value;
-        };
+//        EXPONENT.setCurAction = function () {
+//            var selectmenu = YAHOO.util.Dom.get('actions');
+//            EXPONENT.curAction = selectmenu.options[selectmenu.selectedIndex].value;
+//        };
+
+        var handleSuccessAction = function (ioId, o) {
+            var viewpicker = Y.one('#views'); // the views dropdown
+            //var opts = YAHOO.lang.JSON.parse(o.responseText);
+            var opts = Y.JSON.parse(o.responseText);
+            viewpicker.set('innerHTML', '');
+            el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
+            for (var view in opts) {
+                el = document.createElement('option');
+                el.appendChild(document.createTextNode(opts[view]));
+                el.setAttribute('value', view);
+                viewpicker.appendChild(el);
+            }
+            for (var view in opts) {
+                if (view == current_view) {
+                    viewpicker.set('value',current_view);
+                }
+            }
+            var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
+            var cfg = {
+                data : "view=" + viewpicker.get('value'),
+                on: {
+                    success: handleSuccessView,
+                    failure: handleFailure
+                }
+            };
+            var request = Y.io(sUrl, cfg);
+            Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+        }
 
         EXPONENT.writeViews = function () {
             var actionpicker = Y.one('#actions'); // the actions dropdown
 //            Y.one('#moduleViewConfig').setContent(Y.Node.create('<div class="msg-queue error" style="text-align:center"><p>{/literal}{"You Must Select a View!"|gettext}{literal}</p></div>'));
     //            viewpicker.removeAttribute('disabled');
-            var uri = EXPONENT.PATH_RELATIVE + 'index.php'
-            YAHOO.util.Connect.asyncRequest('POST', uri,
-                {success: function (o) {
-                    var viewpicker = Y.one('#views'); // the views dropdown
-                    var opts = YAHOO.lang.JSON.parse(o.responseText);
-                    viewpicker.set('innerHTML', '');
-                    el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
+            var uri = EXPONENT.PATH_RELATIVE + 'index.php?controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}'
+            var cfg = {
+                data : 'act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value'),
+                on: {
+                    success: handleSuccessAction,
+                    failure: handleFailure
+                }
+            };
+            var request = Y.io(uri, cfg);
+
+            //var uri = EXPONENT.PATH_RELATIVE + 'index.php'
+            //YAHOO.util.Connect.asyncRequest('POST', uri,
+            //    { success : handleSuccessAction },
+                    //success: function (o) {
+                    //var viewpicker = Y.one('#views'); // the views dropdown
+                    //var opts = YAHOO.lang.JSON.parse(o.responseText);
+                    //viewpicker.set('innerHTML', '');
+                    //el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
 //                    viewpicker.appendChild(el);
-                    for (var view in opts) {
-                        el = document.createElement('option');
-                        el.appendChild(document.createTextNode(opts[view]));
-                        el.setAttribute('value', view);
-                        viewpicker.appendChild(el);
-                    }
-                    for (var view in opts) {
-                        if (view == current_view) {
-                            viewpicker.set('value',current_view);
-                        }
-                    }
-    var tmp = viewpicker.get('value');
-    cfg.data = "view=" + viewpicker.get('value');
-    var request = Y.io(sUrl, cfg);
-    Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+//                    for (var view in opts) {
+//                        el = document.createElement('option');
+//                        el.appendChild(document.createTextNode(opts[view]));
+//                        el.setAttribute('value', view);
+//                        viewpicker.appendChild(el);
+//                    }
+//                    for (var view in opts) {
+//                        if (view == current_view) {
+//                            viewpicker.set('value',current_view);
+//                        }
+//                    }
+//                    var tmp = viewpicker.get('value');
+//                    cfg.data = "view=" + viewpicker.get('value'),
+//                    var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
+                    //var cfg = {
+                    //    data : "view=" + viewpicker.get('value'),
+                        //method: "POST",
+                        //headers: { 'X-Transaction': 'Load File Config'},
+                        //arguments: { 'X-Transaction': 'Load File Config'},
+                        //on: {
+                        //    success: handleSuccessView,
+                        //    failure: handleFailure
+                        //}
+                    //};
+                    //var request = Y.io(sUrl, cfg);
+                    //Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
 //                    EXPONENT.handleViewChange();
 
-//                }}, 'module=containermodule&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-                }}, 'controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-            );
+                //}},
+                //'controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
+            //);
         }
 
-        //set the current module
-//        EXPONENT.curMod = '{/literal}{$container->internal->mod}{literal}';
+//        var cfg = {
+//            method: "POST",
+//            headers: { 'X-Transaction': 'Load File Config'},
+//            arguments: { 'X-Transaction': 'Load File Config'}
+//        };
 
-        var cfg = {
-            method: "POST",
-            headers: { 'X-Transaction': 'Load File Config'},
-            arguments: { 'X-Transaction': 'Load File Config'}
-        };
+//        var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
 
-        var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
-
-        var handleSuccess = function (ioId, o) {
-            Y.log(o.responseText);
-            Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
+        var handleSuccessView = function (ioId, o) {
+            //Y.log(o.responseText);
+            //Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
 
             if (o.responseText) {
                 Y.one('#moduleViewConfig').setContent(o.responseText);
@@ -225,21 +240,28 @@
         };
 
         //Subscribe our handlers to IO's global custom events:
-        Y.on('io:success', handleSuccess);
-        Y.on('io:failure', handleFailure);
+//        Y.on('io:success', handleSuccess);
+//        Y.on('io:failure', handleFailure);
 
         Y.one('#views').on('change', function (e) {
             e.halt();
             if (e.target.get('value') != 0) {
-                cfg.data = "view=" + e.target.get('value');
+//                cfg.data = "view=" + e.target.get('value');
+                var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}";
+                var cfg = {
+                    data: "view=" + e.target.get('value'),
+                    on: {
+                        success: handleSuccessView,
+                        failure: handleFailure
+                    }
+                };
                 var request = Y.io(sUrl, cfg);
                 Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
-            } else {
+//            } else {
 //                Y.one('#moduleViewConfig').setContent(Y.Node.create('<div class="msg-queue error" style="text-align:center"><p>{/literal}{"You Must Select a View!"|gettext}{literal}</p></div>'));
             }
         });
     });
-
 {/literal}
 {/script}
 {/if}

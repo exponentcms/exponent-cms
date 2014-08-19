@@ -54,20 +54,16 @@
 
                 {control type="checkbox" horizontal="1" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 
-                {control type="dropdown" horizontal="1" id="modcntrol" name=modcntrol items=$modules size=count($modules) label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
+                {control type="dropdown" horizontal="1" id="modcntrol" name=modcntrol items=$modules size=count($modules) includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
                 
                 {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
                 {if $is_edit == 0}
-                    <div class="form-group">
-                        <label for="title" class="col-sm-2 control-label">
-                            {'Recycle Bin'|gettext}
-                        </label>
-                        <div class="col-sm-10">
-                            <a id="browse-bin" href="#" class="btn disabled"><i class="fa fa-trash-o"></i> {'Browse Recycled Content'|gettext}</a>
-                            <input type="hidden" id="existing_source" name="existing_source" value="" />
-                        </div>
-                    
+                    <div id="recyclebin" class="control">
+                        <label>{'Recycle Bin'|gettext}</label>
+                        {*<a id="browse-bin" class="btn" href="#" >{'Browse Recycled Content'|gettext}</a>*}
+                        {icon name="browse-bin" class=trash action=scriptaction text='Browse Recycled Content'|gettext}
+                        <input type="hidden" id="existing_source" name="existing_source" value="" />
                     </div>
                 {/if}
 
@@ -81,8 +77,6 @@
             {/form}
         </div>
 
-        {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
-
         {script unique="addmodule" jquery=1}
         {literal}
         $(document).ready(function() {
@@ -93,8 +87,7 @@
             var actionpicker = $('#actions'); // the actions dropdown
             var viewpicker = $('#views'); // the views dropdown
             var recyclebin = $('#browse-bin'); // the recyclebin link
-            var recyclebinwrap = $('#recyclebin'); // the recyclebin div
-            // console.log(!is_edit);
+            //var recyclebinwrap = $('#recyclebin'); // the recyclebin div
 
             modpicker.on('change',function(e){
                 EXPONENT.disableSave();
@@ -109,12 +102,7 @@
                         EXPONENT.disableRecycleBin();
                     }
 
-                    //decide what to do weather it's a controller or module
-                    if (EXPONENT.isController()) {
-                        EXPONENT.writeActions();
-                    } else {
-                        EXPONENT.writeViews();
-                    }
+                    EXPONENT.writeActions();
                 }else{
                     //else, they clicked back on "select a module", so we reset everything
                     EXPONENT.disableRecycleBin();
@@ -179,15 +167,6 @@
                 EXPONENT.curAction = $('#actions').val();
             };
 
-            //decides if its a controller or old school module
-            EXPONENT.isController = function(){
-                // console.log(EXPONENT.curMod);
-                if (EXPONENT.curMod.indexOf('module')!=-1) {
-                    return false;
-                } else {
-                    return true;
-                };
-            }
             //enables the save button once the view is selected
             EXPONENT.enableSave = function() {
                 var svbtn = $('#buttonsSubmit')
@@ -213,98 +192,86 @@
             //makes the recycle bin link clickable
             EXPONENT.disableRecycleBin = function() {
                 recyclebin.detach('click');
-                recyclebinwrap.addClass('disabled');
+                recyclebin.addClass('disabled');
             }
 
             //launches the recycle bin
             EXPONENT.recyclebin = function() {
                 var mod = EXPONENT.curMod;
-                //Y.log(mod);
                 var url = EXPONENT.PATH_RELATIVE+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
-                //Y.log(url);
                 window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
             }
 
             //called from the recyclebin when a trashed item is selected for use
             EXPONENT.useRecycled = function(src) {
-               var recycledSource = $('#existing_source');
-               recycledSource.set('value',src)
-               recyclebinwrap.addClass('using-rb');
+                var recycledSource = $('#existing_source');
+                recycledSource.val(src)
+                recyclebin.addClass('btn-success');
+                $('#browse-bin > i').removeClass('fa-trash-o');
+                $('#browse-bin > i').addClass('fa-check-square-o');
             }
 
             //removes the source from the value of the hidden variable if the switch modules
             EXPONENT.clearRecycledSource = function() {
                 var recycledSource = $('#existing_source');
                 recycledSource.val("")
-                recyclebinwrap.removeClass('using-rb');
+                recyclebin.removeClass('btn-success');
+                $('#browse-bin > i').addClass('fa-trash-o');
+                $('#browse-bin > i').removeClass('fa-check-square-o');
             }
 
             EXPONENT.writeActions = function() {
-                if (EXPONENT.isController()) {
-                    actionpicker.attr('disabled',1);
-                    EXPONENT.resetViews();
-                    // var uri = EXPONENT.PATH_RELATIVE+'index.php';
-                    $.ajax({
-                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod,
-                        success: function(o){
-                            var opts = $.parseJSON(o);
-                            actionpicker.empty();
-                            el = $('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
-                            actionpicker.append(el);
+                actionpicker.attr('disabled',1);
+                EXPONENT.resetViews();
+                // var uri = EXPONENT.PATH_RELATIVE+'index.php';
+                $.ajax({
+                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod,
+                    success: function(o){
+                        var opts = $.parseJSON(o);
+                        actionpicker.empty();
+                        el = $('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
+                        actionpicker.append(el);
 
-                            $.each(opts, function( index, module ) {
-                                actionpicker.append($('<option></option>').attr('value',index).text(module));
-                            });
+                        $.each(opts, function( index, module ) {
+                            actionpicker.append($('<option></option>').attr('value',index).text(module));
+                        });
 
-                            actionpicker.removeAttr('disabled').attr('size',actionpicker.find('option').length);
-                        }
-                    });
-                } else {
-                    actionpicker.attr('disabled',1).html('<option value="0">{/literal}{"No actions for this module..."|gettext}{literal}</option>');
-                };
+                        actionpicker.removeAttr('disabled').attr('size',actionpicker.find('option').length);
+                    }
+                });
             }
 
             EXPONENT.writeViews = function() {
                 viewpicker.removeAttr('disabled');
-                if (EXPONENT.isController()) {
+                $.ajax({
+                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.val() + '&actname=' + actionpicker.val(),
+                    success: function(o){
+                        var opts = $.parseJSON(o);
+                        //console.log(opts)
+                        viewpicker.empty();
+                        el = $('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
+                        viewpicker.append(el);
 
-                    $.ajax({
-                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.val() + '&actname=' + actionpicker.val(),
-                        success: function(o){
-                            var opts = $.parseJSON(o);
-                            console.log(opts)
-                            viewpicker.empty();
-                            el = $('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
-                            viewpicker.append(el);
+                        $.each(opts, function( index, view ) {
+                            viewpicker.append($('<option></option>').attr('value',index).text(view));
+                        });
 
-                            $.each(opts, function( index, view ) {
-                                viewpicker.append($('<option></option>').attr('value',index).text(view));
-                            });
+                        viewpicker.removeAttr('disabled').attr('size',viewpicker.find('option').length);
 
-                            viewpicker.removeAttr('disabled').attr('size',viewpicker.find('option').length);
-
-                            if (is_edit) {
-                                viewpicker.val(current_view);
-                                EXPONENT.handleViewChange();
-                            }
+                        if (is_edit) {
+                            viewpicker.val(current_view);
+                            EXPONENT.handleViewChange();
                         }
-                    });
-                };
+                    }
+                });
             }
 
             if (!is_edit) {
-                // console.log("this");
                 modpicker.removeAttr('disabled');
             } else {
                 //set the current module
                 EXPONENT.setCurMod();
-                if (EXPONENT.isController()) {
-                    EXPONENT.writeActions();
-                } else {
-                    EXPONENT.writeViews();
-                }
             };
-
         });
         {/literal}
         {/script}
