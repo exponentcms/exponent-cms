@@ -347,7 +347,12 @@ class expTheme
         if (MOBILE && is_readable(BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php')) {
             echo('<div style="text-align:center"><a href="' . makeLink(
                     array('module' => 'administration', 'action' => 'togglemobile')
-                ) . '">View site in ' . (MOBILE ? "Classic" : "Mobile") . ' mode</a></div>');
+                ) . '">' . gt('View site in') . ' ' . (MOBILE ? "Classic" : "Mobile") . ' ' . gt('mode') . '</a></div>');
+        }
+                // load primer, lessprimer, & normalize CSS files
+
+        if (!empty($params['src']) || !empty($params['content']) || !empty($params['yui3mods']) || !empty($params['jquery']) || !empty($params['bootstrap'])) {
+            expJavascript::pushToFoot($params);
         }
         self::processCSSandJS();
         echo expJavascript::footJavascriptOutput();
@@ -1431,8 +1436,8 @@ class expTheme
         if (NEWUI || expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
             $btn_class = 'btn ' . self::buttonColor($color) . ' ' . self::buttonSize($size);
         } else {
-            $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
-            $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
+            $btn_size = !empty($size) ? $size : BTN_SIZE;
+            $btn_color = !empty($color) ? $color : BTN_COLOR;
             $btn_class = "awesome " . $btn_size . " " . $btn_color;
         }
         return $btn_class;
@@ -1445,7 +1450,7 @@ class expTheme
      *
      * @return stdClass|string
      */
-    public static function buttonIcon($class)
+    public static function buttonIcon($class, $size=null)
     {
         $btn_type = '';
         if (expSession::get('framework') == 'bootstrap') {
@@ -1523,6 +1528,7 @@ class expTheme
             $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
+            $found->size = self::iconSize($size);
             return $found;
         } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             switch ($class) {
@@ -1578,6 +1584,9 @@ class expTheme
                 case 'clean' :
                     $class = 'check-square-o';
                     break;
+                case 'trash' :
+                    $class = "trash-o";
+                    break;
                 case 'groupperms' :
                     $class = 'group';
                     break;
@@ -1599,6 +1608,7 @@ class expTheme
             $found = new stdClass();
             $found->type = $btn_type;
             $found->class = $class;
+            $found->size = self::iconSize($size);
             return $found;
         } else {
             return $class;
