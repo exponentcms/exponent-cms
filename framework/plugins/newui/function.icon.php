@@ -54,13 +54,17 @@ if (!function_exists('smarty_function_icon')) {
             }
         }
         // guess the src if it is not set
-        if (!isset($params['src'])) {
+        if (empty($params['src'])) {
             if (!empty($record)) {
                 $modloc = expUnserialize($record->location_data);
-                $params['src'] = $modloc->src;
-            } else if (!empty($params['controller']) || @call_user_func(array(expModules::getModuleClassName($loc->mod), 'hasSources'))) {
-                $params['src'] = $loc->src;
-            } elseif (!empty($params['module']) || @call_user_func(array(expModules::getModuleClassName($loc->mod), 'hasSources'))) {
+                if (!empty($modloc->src)) {
+                    $params['src'] = $modloc->src;
+                } elseif (!empty($loc->src)) {  // if src wasn't passed, try the template variables
+                    $params['src'] = $loc->src;
+                }
+//            } else if (!empty($params['controller']) || @call_user_func(array(expModules::getModuleClassName($loc->mod), 'hasSources'))) {
+//                $params['src'] = $loc->src;
+            } elseif (!empty($params['controller']) || !empty($params['module']) || @call_user_func(array(expModules::getModuleClassName($loc->mod), 'hasSources'))) {
                 $params['src'] = $loc->src;
             }
         }
@@ -187,9 +191,9 @@ if (!function_exists('smarty_function_icon')) {
         }
 
         expJavascript::pushToFoot(array(
-            "unique"=>"add-theme-class",
-            "jquery"=>"1",
-            "content"=>"$('.module-actions, .item-actions, .admin-view').addClass('exp-skin')"
+            "unique"  => "add-theme-class",
+            "jquery"  => "1",
+            "content" => "$('.module-actions, .item-actions, .admin-view').addClass('exp-skin');"
         ));
     }
 }
