@@ -54,24 +54,21 @@
 
                 {control type="checkbox" horizontal="1" name="is_private" label='Hide Module?'|gettext value=1 checked=$container->is_private description='Should this module be hidden from users without a view permission?'|gettext}
 
-                {control type="dropdown" horizontal="1" id="modcntrol" name=modcntrol items=$modules size=count($modules) includeblank="Select a Module"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
+                {control type="dropdown" horizontal="1" id="modcntrol" name=modcntrol items=$modules size=count($modules) includeblank="-- Select a Module --"|gettext label="Type of Content"|gettext disabled=1 value=$container->internal->mod}
                 
                 {if $is_edit}{control type=hidden id="modcntrol" name=modcntrol value=$container->internal->mod}{/if}
 
                 {if $is_edit == 0}
                     <div id="recyclebin" class="control">
                         <label>{'Recycle Bin'|gettext}</label>
-                        {*<a id="browse-bin" class="btn" href="#" >{'Browse Recycled Content'|gettext}</a>*}
-                        {icon name="browse-bin" class=trash action=scriptaction text='Browse Recycled Content'|gettext}
+                        {icon name="browse-bin" class=trash disabled=1 text='Browse Recycled Content'|gettext}
                         <input type="hidden" id="existing_source" name="existing_source" value="" />
                     </div>
                 {/if}
 
-                {control type="dropdown" horizontal="1" id="actions" name=actions includeblank="No Module Selected"|gettext disabled=1 label="Content Action"|gettext}
+                {control type="dropdown" horizontal="1" id="actions" name=actions includeblank="-- No Module Selected --"|gettext disabled=1 label="Content Action"|gettext}
 
-                {control type="dropdown" horizontal="1" id="views" name=views includeblank="No Action Selected"|gettext disabled=1 label="Content Display"|gettext}
-
-                {*control type=dropdown id=ctlview name=ctlview label=" "*}
+                {control type="dropdown" horizontal="1" id="views" name=views includeblank="-- No Action Selected --"|gettext disabled=1 label="Content Display"|gettext}
 
                 {control type="buttongroup" horizontal="1" submit="Save"|gettext disabled=1 cancel="Cancel"|gettext name="buttons"}
             {/form}
@@ -87,8 +84,9 @@
             var actionpicker = $('#actions'); // the actions dropdown
             var viewpicker = $('#views'); // the views dropdown
             var recyclebin = $('#browse-bin'); // the recyclebin link
-            //var recyclebinwrap = $('#recyclebin'); // the recyclebin div
+            var recycledSource = $('#existing_source');
 
+            //listens for a change in the module dropdown
             modpicker.on('change',function(e){
                 EXPONENT.disableSave();
                 EXPONENT.clearRecycledSource();
@@ -96,12 +94,13 @@
                     //set the current module
                     EXPONENT.setCurMod();
                     //enable recycle bin
-                    if (modpicker.val()!='' && modpicker.val()!='container') {
+                    if (modpicker.val()!='container') {
                         EXPONENT.enableRecycleBin();
                     } else {
                         EXPONENT.disableRecycleBin();
                     }
 
+                    EXPONENT.resetViews
                     EXPONENT.writeActions();
                 }else{
                     //else, they clicked back on "select a module", so we reset everything
@@ -110,8 +109,8 @@
                 };
             });
 
-            // handles the action picker change
-            EXPONENT.handleActionChange = function(){
+            //listens for a change in the action dropdown
+            actionpicker.on('change', function(){
                 EXPONENT.disableSave();
                 EXPONENT.setCurAction();
                 if (actionpicker.val()!='0') {
@@ -119,43 +118,45 @@
                 }else{
                     EXPONENT.resetViews();
                 };
-            }
+            });
 
-            //listens for a change in the action dropdown
-            actionpicker.on('change', EXPONENT.handleActionChange);
+            //listens for a change in the view dropdown
+            viewpicker.on('change', EXPONENT.handleViewChange);
 
             // handles view picker changes
             EXPONENT.handleViewChange = function(e){
-                if (viewpicker.val()!=-1) {
+                if (viewpicker.val()!='0') {
                     EXPONENT.enableSave();
                 }else{
                     EXPONENT.disableSave();
                 };
             }
 
-            //listens for a change in the view dropdown
-            viewpicker.on('change', EXPONENT.handleViewChange);
-
             //resets both the viewpicker and actionpicker
             EXPONENT.resetActionsViews = function() {
-                EXPONENT.resetViews();
                 EXPONENT.resetActions();
+                EXPONENT.resetViews();
             }
 
-            //resets the actionpicker to the default when entering this page
+            //resets the actionpicker to the default
             EXPONENT.resetActions = function() {
-                var actionDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Module Selected"|gettext}{literal}</option>');
-                actionpicker.appendChild(actionDefaultOption);
-                actionpicker.set('disabled',1);
-                actionpicker.ancestor('div.control').addClass('disabled');
+                actionpicker.empty();
+                //var actionDefaultOption = $('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>');
+                actionpicker.append($('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>'));
+                actionpicker.val(0);
+                actionpicker.attr('disabled',1).attr('size',1);
+                actionpicker.closest('div.control').addClass('disabled');
             }
 
-            //resets the viewpicker to the default when entering this page
+            //resets the viewpicker to the default
             EXPONENT.resetViews = function() {
-                // var viewDefaultOption = $('<option value="0">{/literal}{"No Action Selected"|gettext}{literal}</option>');
-                // viewpicker.append(viewDefaultOption);
-                // viewpicker.attr('disabled',1);
-                // EXPONENT.disableSave();
+                viewpicker.empty();
+                //var viewDefaultOption = $('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>');
+                viewpicker.append($('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>'));
+                viewpicker.val(0);
+                viewpicker.attr('disabled',1).attr('size',1);
+                viewpicker.closest('div.control').addClass('disabled');
+                EXPONENT.disableSave();
             }
 
             //finds the currently selected module
@@ -167,10 +168,10 @@
                 EXPONENT.curAction = $('#actions').val();
             };
 
-            //enables the save button once the view is selected
+            //enables the save button once the module/action/view is selected
             EXPONENT.enableSave = function() {
-                var svbtn = $('#buttonsSubmit')
-                svbtn.removeAttr('disabled').removeClass('disabled');
+                //var svbtn = $('#buttonsSubmit')
+                $('#buttonsSubmit').removeAttr('disabled').removeClass('disabled');
                 // svbtn.ancestor('.buttongroup').removeClass('disabled');
             }
 
@@ -189,14 +190,15 @@
                 }
             }
 
-            //makes the recycle bin link clickable
+            //disables the recycle bin link being clickable
             EXPONENT.disableRecycleBin = function() {
                 recyclebin.detach('click');
                 recyclebin.addClass('disabled');
             }
 
-            //launches the recycle bin
+            //launches the recycle bin window
             EXPONENT.recyclebin = function() {
+                EXPONENT.clearRecycledSource();  //reset recycle bin status to empty
                 var mod = EXPONENT.curMod;
                 var url = EXPONENT.PATH_RELATIVE+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
                 window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
@@ -204,22 +206,21 @@
 
             //called from the recyclebin when a trashed item is selected for use
             EXPONENT.useRecycled = function(src) {
-                var recycledSource = $('#existing_source');
                 recycledSource.val(src)
                 recyclebin.addClass('btn-success');
                 $('#browse-bin > i').removeClass('fa-trash-o');
                 $('#browse-bin > i').addClass('fa-check-square-o');
             }
 
-            //removes the source from the value of the hidden variable if the switch modules
+            //removes the source from the value of the hidden variable if switching modules
             EXPONENT.clearRecycledSource = function() {
-                var recycledSource = $('#existing_source');
                 recycledSource.val("")
                 recyclebin.removeClass('btn-success');
-                $('#browse-bin > i').addClass('fa-trash-o');
                 $('#browse-bin > i').removeClass('fa-check-square-o');
+                $('#browse-bin > i').addClass('fa-trash-o');
             }
 
+            //create the list of actions for selected module
             EXPONENT.writeActions = function() {
                 actionpicker.attr('disabled',1);
                 EXPONENT.resetViews();
@@ -229,7 +230,7 @@
                     success: function(o){
                         var opts = $.parseJSON(o);
                         actionpicker.empty();
-                        el = $('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
+                        el = $('<option value="0">{/literal}{"-- Select an Action --"|gettext}{literal}</option>');
                         actionpicker.append(el);
 
                         $.each(opts, function( index, module ) {
@@ -237,10 +238,12 @@
                         });
 
                         actionpicker.removeAttr('disabled').attr('size',actionpicker.find('option').length);
+                        actionpicker.val(0);
                     }
                 });
             }
 
+            //create the list of views for the selected action
             EXPONENT.writeViews = function() {
                 viewpicker.removeAttr('disabled');
                 $.ajax({
@@ -249,7 +252,7 @@
                         var opts = $.parseJSON(o);
                         //console.log(opts)
                         viewpicker.empty();
-                        el = $('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
+                        el = $('<option value="0">{/literal}{"-- Select a View --"|gettext}{literal}</option>');
                         viewpicker.append(el);
 
                         $.each(opts, function( index, view ) {
@@ -261,6 +264,8 @@
                         if (is_edit) {
                             viewpicker.val(current_view);
                             EXPONENT.handleViewChange();
+                        }else{
+                            viewpicker.val(0);
                         }
                     }
                 });
