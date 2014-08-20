@@ -19,8 +19,7 @@
           || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
             {$mainNeedsClosing=1}
 
-            {css unique="container-newui" link="`$asset_path`css/container-newui.css"}
-            {*{css unique="container-newui" lesscss="`$asset_path`css/container-newui.less"}*}
+            {css unique="container-newui" lesscss="`$asset_path`less/container-newui.less"}
 
             {/css}
             {script unique="container-chrome" jquery=1 }

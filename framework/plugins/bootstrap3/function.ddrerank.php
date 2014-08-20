@@ -83,12 +83,6 @@ if (!function_exists('smarty_function_ddrerank')) {
         }
 
         if (count($params['items']) >= 2) {
-//            expCSS::pushToHead(array(
-//                    //"corecss"=>"rerankpanel,panels",
-//                    "corecss" => "rerank,panel",
-//                )
-//            );
-
             $sortfield = empty($params['sortfield']) ? 'title' : $params['sortfield']; // this is the field to display in list
 
             // attempt to translate the label
@@ -180,7 +174,6 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!expTheme::inPreview()) {
                 expJavascript::pushToFoot(array(
                     "unique"    => $uniqueid,
-//                    "yui3mods"  => 1,
                     "jquery"    => 'jquery-sortable',
                     "bootstrap" => 'modal,transition',
                     "content"   => $script,
