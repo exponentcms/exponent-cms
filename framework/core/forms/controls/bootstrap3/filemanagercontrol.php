@@ -267,8 +267,9 @@ class filemanagercontrol extends formcontrol {
                             df.append(htmln);
 
                             if (filesAdded==0) {
-                                var fla = Y.one('#filelist".$name."');
-                                fla.one('.blank').remove();
+//                                Y.one('#filelist".$name."').one('.blank').remove();
+                                $('#filelist".$name." .blank').remove();
+
                             }
 
                             filesAdded++;
@@ -340,7 +341,6 @@ class filemanagercontrol extends formcontrol {
 //                            Y.one('#filelist".$name."').one('.blank').remove();
                             $('#filelist".$name." .blank').remove();
                         }
-
                         filesAdded++;
 
 //                        if (limit>=filesAdded) {
