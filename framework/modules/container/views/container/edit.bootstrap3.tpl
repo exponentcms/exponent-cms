@@ -38,13 +38,9 @@
                 {control type=hidden name=existing_source value=$container->internal->src}
             {/if}
             {control type=hidden name=rank value=$container->rank}
-            {*{control type=hidden name=module value=containermodule}*}
-            {*{control type=hidden name=src value=$loc->src}*}
-            {*{control type=hidden name=int value=$loc->int}*}
             {control type=hidden name=rerank value=$rerank}
             {control type=hidden name=current_section value=$current_section}
 
-            {*{control type=text size=31 label="Module Title"|gettext name="title" value=$container->title}*}
             {control type=text size=31 label="Module Title"|gettext name="title" value=$container->title caption="Module Title"|gettext required=true description='The module title is used to help the user identify this module.'|gettext focus=1}
 
             {if $smarty.const.INVERT_HIDE_TITLE}
@@ -64,131 +60,51 @@
             {if $is_edit == 0}
                 <div id="recyclebin" class="control">
                     <label>{'Recycle Bin'|gettext}</label>
-                    {*<a id="browse-bin" class="btn" href="#" >{'Browse Recycled Content'|gettext}</a>*}
-                    {icon name="browse-bin" class=trash action=scriptaction text='Browse Recycled Content'|gettext}
+                    {icon name="browse-bin" class=trash disabled=1 text='Browse Recycled Content'|gettext}
                     <input type="hidden" id="existing_source" name="existing_source" value="" />
                 </div>
             {/if}
 
-            {control type=dropdown id="actions" name=actions includeblank="No Module Selected"|gettext disabled=1 label="Content Action"|gettext}
+            {control type=dropdown id="actions" name=actions includeblank="-- No Module Selected --"|gettext disabled=1 label="Content Action"|gettext}
 
-            {control type=dropdown id="views" name=views includeblank="No Action Selected"|gettext disabled=1 label="Content Display"|gettext}
-
-            {*control type=dropdown id=ctlview name=ctlview label=" "*}
+            {control type=dropdown id="views" name=views includeblank="-- No Action Selected --"|gettext disabled=1 label="Content Display"|gettext}
 
             {control type=buttongroup submit="Save"|gettext disabled=1 cancel="Cancel"|gettext name="buttons"}
         {/form}
     </div>
-    {if $is_edit}
-        <div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>
-    {else}
-        <div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>
-    {/if}
-    {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
+    {*{if $is_edit}*}
+        {*<div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>*}
+    {*{else}*}
+        {*<div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>*}
+    {*{/if}*}
 
-    {script unique="addmodule" yui3mods=1}
+    {script unique="addmodule" jquery=1}
     {literal}
-    YUI(EXPONENT.YUI_CONFIG).use("node","event","io","json-parse",function(Y){
-        //var YAHOO=Y.YUI2;
-        var modpicker = Y.one('#modcntrol'); // the module selection dropdown
+    $(document).ready(function() {
+        var modpicker = $('#modcntrol'); // the module selection dropdown
         var is_edit = {/literal}{$is_edit}{literal} //are we editing?
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
         var current_view = {/literal}{if $container->view}"{$container->view}"{else}false{/if}{literal}; //Do we have an existing view
-        var actionpicker = Y.one('#actions'); // the actions dropdown
-        var viewpicker = Y.one('#views'); // the views dropdown
-        var recyclebin = Y.one('#browse-bin'); // the recyclebin link
-        //var recyclebinwrap = Y.one('#recyclebin'); // the recyclebin div
-
-        recyclebin.addClass('disabled');
-        // moving this func to here for now. Was in exponent.js.php, but this is the only place using it.
-        EXPONENT.forms = {
-
-            getSelectedRadio: function (formId, inputId){
-                var oForm = this.grabForm(formId);
-                for (var i=0; i<oForm.elements.length; i++){
-                    oElement = oForm.elements[i];
-                    oValue = oElement.value;
-
-                    switch(oElement.type)
-                    {
-                        case 'radio':
-                            if(oElement.checked && oElement.name==inputId){
-                                return oValue;
-                            }
-                            break;
-                    }
-                }
-                return "{/literal}{"no selected radios found"|gettext}{literal}";
-            },
-            setSelectedRadio: function (formId, inputId, rValue){
-                var oForm = this.grabForm(formId);
-                for (var i=0; i<oForm.elements.length; i++){
-                    oElement = oForm.elements[i];
-                    oValue = oElement.value;
-
-                    switch(oElement.type)
-                    {
-                        case 'radio':
-                            if(oElement.name==inputId && oElement.value==rValue){
-                                oElement.checked = true;
-                                return "{/literal}{"Radio"|gettext}{literal}"+" "+oElement.name+" "+"{/literal}{"set to value"|gettext}{literal}"+" "+oElement.value;
-                            }
-                            break;
-                    }
-                }
-                return "{/literal}{"No value matching the one provided was found in this radio group"|gettext}{literal}";
-            },
-            getSelectValue: function (selectid) {
-//                var selectmenu = YAHOO.util.Dom.get(selectid);
-                var selectmenu = Y.one('#'+selectid);
-                //return selectmenu.options[selectmenu.selectedIndex].value;
-                return selectmenu.get('value');
-            },
-            setSelectValue: function (selectid,setVal) {
-//                var selectmenu = YAHOO.util.Dom.get(selectid);
-                var selectmenu = Y.one('#'+selectid);
-                //return selectmenu.value = setVal;
-                return selectmenu.set('value',setVal);
-            },
-            //addSelectOption: function (selectid,oVal,text) {
-//                var selectmenu = YAHOO.util.Dom.get(selectid);
-//                var selectmenu = Y.one('#'+selectid);
-//                selectmenu.options[selectmenu.length] = new Option(text, oVal);
-//                return oVal;
-//            },
-            grabForm: function (formId){
-                var oForm;
-                if(typeof formId == 'string'){
-                    // Determine if the argument is a form id or a form name.
-                    // Note form name usage is deprecated, but supported
-                    // here for backward compatibility.
-                    oForm = (document.getElementById(formId) || document.forms[formId]);
-                }
-                else if(typeof formId == 'object'){
-                    // Treat argument as an HTML form object.
-                    oForm = formId;
-                }
-                else{
-                    return;
-                }
-                return oForm;
-            }
-        };
+        var actionpicker = $('#actions'); // the actions dropdown
+        var viewpicker = $('#views'); // the views dropdown
+        var recyclebin = $('#browse-bin'); // the recyclebin link
+        var recycledSource = $('#existing_source');
 
         //listens for a change in the module dropdown
         modpicker.on('change',function(e){
             EXPONENT.disableSave();
             EXPONENT.clearRecycledSource();
-            if (modpicker.get("value")!='') {
+            if (modpicker.val()!='') {
                 //set the current module
                 EXPONENT.setCurMod();
                 //enable recycle bin
-                if (modpicker.get("value")!='' && modpicker.get("value")!='container') {
-                EXPONENT.enableRecycleBin();
+                if (modpicker.val()!='container') {
+                    EXPONENT.enableRecycleBin();
                 } else {
                     EXPONENT.disableRecycleBin();
                 }
 
+                EXPONENT.resetViews
                 EXPONENT.writeActions();
             }else{
                 //else, they clicked back on "select a module", so we reset everything
@@ -197,23 +113,20 @@
             };
         });
 
-        // handles the action picker change
-        EXPONENT.handleActionChange = function(){
+        //listens for a change in the action dropdown
+        actionpicker.on('change', function(){
             EXPONENT.disableSave();
             EXPONENT.setCurAction();
-            if (actionpicker.get("value")!='0') {
+            if (actionpicker.val()!='0') {
                 EXPONENT.writeViews();
             }else{
                 EXPONENT.resetViews();
             };
-        }
-
-        //listens for a change in the action dropdown
-        actionpicker.on('change', EXPONENT.handleActionChange);
+        });
 
         // handles view picker changes
         EXPONENT.handleViewChange = function(e){
-            if (viewpicker.get("value")!=-1) {
+            if (viewpicker.val()!='0') {
                 EXPONENT.enableSave();
             }else{
                 EXPONENT.disableSave();
@@ -225,66 +138,71 @@
 
         //resets both the viewpicker and actionpicker
         EXPONENT.resetActionsViews = function() {
-            EXPONENT.resetViews();
             EXPONENT.resetActions();
+            EXPONENT.resetViews();
         }
 
-        //resets the actionpicker to the default when entering this page
+        //resets the actionpicker to the default
         EXPONENT.resetActions = function() {
-            var actionDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Module Selected"|gettext}{literal}</option>');
-            actionpicker.appendChild(actionDefaultOption);
-            actionpicker.set('disabled',1);
-            actionpicker.ancestor('div.control').addClass('disabled');
+            actionpicker.empty();
+            //var actionDefaultOption = $('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>');
+            actionpicker.append($('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>'));
+            actionpicker.val(0);
+            actionpicker.attr('disabled',1).attr('size',1);
+            actionpicker.closest('div.control').addClass('disabled');
         }
 
-        //resets the viewpicker to the default when entering this page
+        //resets the viewpicker to the default
         EXPONENT.resetViews = function() {
-            var viewDefaultOption = Y.Node.create('<option value="0">{/literal}{"No Action Selected"|gettext}{literal}</option>');
-            viewpicker.appendChild(viewDefaultOption);
-            viewpicker.set('disabled',1);
-            viewpicker.ancestor('div.control').addClass('disabled');
+            viewpicker.empty();
+            //var viewDefaultOption = $('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>');
+            viewpicker.append($('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>'));
+            viewpicker.val(0);
+            viewpicker.attr('disabled',1).attr('size',1);
+            viewpicker.closest('div.control').addClass('disabled');
             EXPONENT.disableSave();
         }
 
         //finds the currently selected module
         EXPONENT.setCurMod = function() {
-            EXPONENT.curMod = EXPONENT.forms.getSelectValue('modcntrol');
+            EXPONENT.curMod = $('#modcntrol').val();
         };
         //finds the currently selected action for the given module
         EXPONENT.setCurAction = function() {
-            EXPONENT.curAction = EXPONENT.forms.getSelectValue('actions');
+            EXPONENT.curAction = $('#actions').val();
         };
 
-        //enables the save button once the view is selected
+        //enables the save button once the module/action/view is selected
         EXPONENT.enableSave = function() {
-            var svbtn = Y.one('#buttonsSubmit')
-            svbtn.removeAttribute('disabled').removeClass('disabled');
-            svbtn.ancestor('.buttongroup').removeClass('disabled');
+            //var svbtn = $('#buttonsSubmit')
+            $('#buttonsSubmit').removeAttr('disabled').removeClass('disabled');
+            // svbtn.ancestor('.buttongroup').removeClass('disabled');
         }
 
         //disables save button
         EXPONENT.disableSave = function() {
-            Y.one('#buttonsSubmit').set('disabled',1).addClass('disabled').ancestor('.buttongroup').addClass('disabled');
+            $('#buttonsSubmit').attr('disabled',1).addClass('disabled');
         }
 
         //makes the recycle bin link clickable
         EXPONENT.enableRecycleBin = function() {
             recyclebin.on('click',EXPONENT.recyclebin);
-            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.get("value")!='container') {
+            if ({/literal}{$user->is_acting_admin}{literal} && modpicker.val()!='container') {
                 recyclebin.removeClass('disabled');
             } else {
                 recyclebin.detach('click');
             }
         }
 
-        //makes the recycle bin link clickable
+        //disables the recycle bin link being clickable
         EXPONENT.disableRecycleBin = function() {
             recyclebin.detach('click');
             recyclebin.addClass('disabled');
         }
 
-        //launches the recycle bin
+        //launches the recycle bin window
         EXPONENT.recyclebin = function() {
+            EXPONENT.clearRecycledSource();  //reset recycle bin status to empty
             var mod = EXPONENT.curMod;
             var url = EXPONENT.PATH_RELATIVE+"index.php?controller=recyclebin&action=show&ajax_action=1&recymod="+mod;//+"&dest="+escape(dest)+"&vmod="+vmod+"&vview="+vview;
             window.open(url,'sourcePicker','title=no,resizable=yes,toolbar=no,width=900,height=750,scrollbars=yes');
@@ -292,148 +210,77 @@
 
         //called from the recyclebin when a trashed item is selected for use
         EXPONENT.useRecycled = function(src) {
-            var recycledSource = Y.one('#existing_source');
-            recycledSource.set('value',src)
+            recycledSource.val(src)
             recyclebin.addClass('btn-success');
-            Y.all('#browse-bin > i').removeClass('fa-trash-o');
-            Y.all('#browse-bin > i').addClass('fa-check-square-o');
+            $('#browse-bin > i').removeClass('fa-trash-o');
+            $('#browse-bin > i').addClass('fa-check-square-o');
         }
 
-        //removes the source from the value of the hidden variable if the switch modules
+        //removes the source from the value of the hidden variable if switching modules
         EXPONENT.clearRecycledSource = function() {
-            var recycledSource = Y.one('#existing_source');
-            recycledSource.set('value',"")
+            recycledSource.val("")
             recyclebin.removeClass('btn-success');
-            Y.all('#browse-bin > i').addClass('fa-trash-o');
-            Y.all('#browse-bin > i').removeClass('fa-check-square-o');
+            $('#browse-bin > i').removeClass('fa-check-square-o');
+            $('#browse-bin > i').addClass('fa-trash-o');
         }
 
-        var handleSuccessAction = function(ioId, o) {
-            //var opts = YAHOO.lang.JSON.parse(o.responseText);
-            var opts = Y.JSON.parse(o.responseText);
-            actionpicker.set('innerHTML','');
-            el = Y.Node.create('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
-            actionpicker.appendChild(el);
-
-            for(var action in opts) {
-                el = document.createElement('option');
-                el.appendChild(document.createTextNode(opts[action]));
-                el.setAttribute('value', action);
-                actionpicker.appendChild(el);
-            }
-            actionpicker.removeAttribute('disabled');
-            actionpicker.ancestor('div.control').removeClass('disabled');
-            if (is_edit) {
-                EXPONENT.forms.setSelectValue(actionpicker.get("id"),current_action);
-                EXPONENT.handleActionChange();
-            }
-        }
-
-        //A function handler to use for failed requests:
-        var handleFailure = function (ioId, o) {
-            Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
-        };
-
+        //create the list of actions for selected module
         EXPONENT.writeActions = function() {
-            actionpicker.set('disabled',1);
+            actionpicker.attr('disabled',1);
             EXPONENT.resetViews();
-            var uri = EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getaction&ajax_action=1';
-            //YAHOO.util.Connect.asyncRequest('POST', uri, { success: handleSuccessAction }, 'mod=' + EXPONENT.curMod);
-            var cfg = {
-                data : 'mod=' + EXPONENT.curMod,
-                on: {
-                    success: handleSuccessAction,
-                    failure: handleFailure
+            // var uri = EXPONENT.PATH_RELATIVE+'index.php';
+            $.ajax({
+                url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod,
+                success: function(o){
+                    var opts = $.parseJSON(o);
+                    actionpicker.empty();
+                    el = $('<option value="0">{/literal}{"-- Select an Action --"|gettext}{literal}</option>');
+                    actionpicker.append(el);
+
+                    $.each(opts, function( index, module ) {
+                        actionpicker.append($('<option></option>').attr('value',index).text(module));
+                    });
+
+                    actionpicker.removeAttr('disabled').attr('size',actionpicker.find('option').length);
+                    actionpicker.val(0);
                 }
-            };
-            var request = Y.io(uri, cfg);
-                //{success: function(o) {
-                //    var opts = YAHOO.lang.JSON.parse(o.responseText);
-                //    actionpicker.set('innerHTML','');
-                //    el = Y.Node.create('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
-                    //actionpicker.appendChild(el);
-                    //for(var action in opts) {
-                    //    el = document.createElement('option');
-                    //    el.appendChild(document.createTextNode(opts[action]));
-                    //    el.setAttribute('value', action);
-                    //    actionpicker.appendChild(el);
-                    //}
-                    //actionpicker.removeAttribute('disabled');
-                    //actionpicker.ancestor('div.control').removeClass('disabled');
-                    //if (is_edit) {
-                    //    EXPONENT.forms.setSelectValue(actionpicker.get("id"),current_action);
-                    //    EXPONENT.handleActionChange();
-                    //}
-                //}}, 'controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
-            //);
+            });
         }
 
-        var handleSuccessView = function(ioId, o) {
-            //var opts = YAHOO.lang.JSON.parse(o.responseText);
-            var opts = Y.JSON.parse(o.responseText);
-            viewpicker.set('innerHTML','');
-            el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
-            viewpicker.appendChild(el);
-            for(var view in opts) {
-                    el = document.createElement('option');
-                    el.appendChild(document.createTextNode(opts[view]));
-                    el.setAttribute('value', view);
-                    viewpicker.appendChild(el);
-            }
-            viewpicker.removeAttribute('disabled');
-            viewpicker.ancestor('div.control').removeClass('disabled');
-            if (is_edit) {
-                EXPONENT.forms.setSelectValue(viewpicker.get("id"),current_view);
-                EXPONENT.handleViewChange();
-            }
-        }
-
+        //create the list of views for the selected action
         EXPONENT.writeViews = function() {
-            viewpicker.removeAttribute('disabled');
-//                var uri = EXPONENT.PATH_RELATIVE+'index.php'
-            var uri = EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1'
-            //YAHOO.util.Connect.asyncRequest('POST', uri, { success: handleSuccessView }, 'mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value'));
-            var cfg = {
-                data : 'mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value'),
-                on: {
-                    success: handleSuccessView,
-                    failure: handleFailure
+            viewpicker.removeAttr('disabled');
+            $.ajax({
+                url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.val() + '&actname=' + actionpicker.val(),
+                success: function(o){
+                    var opts = $.parseJSON(o);
+                    //console.log(opts)
+                    viewpicker.empty();
+                    el = $('<option value="0">{/literal}{"-- Select a View --"|gettext}{literal}</option>');
+                    viewpicker.append(el);
+
+                    $.each(opts, function( index, view ) {
+                        viewpicker.append($('<option></option>').attr('value',index).text(view));
+                    });
+
+                    viewpicker.removeAttr('disabled').attr('size',viewpicker.find('option').length);
+
+                    if (is_edit) {
+                        viewpicker.val(current_view);
+                        EXPONENT.handleViewChange();
+                    }else{
+                        viewpicker.val(0);
+                    }
                 }
-            };
-            var request = Y.io(uri, cfg);
-                //{success: function(o) {
-                //    var opts = YAHOO.lang.JSON.parse(o.responseText);
-                //    viewpicker.set('innerHTML','');
-                //    el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
-                    //viewpicker.appendChild(el);
-                    //for(var view in opts) {
-                    //        el = document.createElement('option');
-                    //        el.appendChild(document.createTextNode(opts[view]));
-                    //        el.setAttribute('value', view);
-                    //        viewpicker.appendChild(el);
-                    //}
-                    //viewpicker.removeAttribute('disabled');
-                    //viewpicker.ancestor('div.control').removeClass('disabled');
-                    //if (is_edit) {
-                    //    EXPONENT.forms.setSelectValue(viewpicker.get("id"),current_view);
-                    //    EXPONENT.handleViewChange();
-                    //}
-//                    }}, 'controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-//                );
+            });
         }
 
         if (!is_edit) {
-            modpicker.removeAttribute('disabled');
-            modpicker.ancestor('div.control').removeClass('disabled');
-        }else{
+            modpicker.removeAttr('disabled');
+        } else {
             //set the current module
             EXPONENT.setCurMod();
-            EXPONENT.writeActions();
         };
-
-        Y.one('.loadingdiv').setStyle('display','none');
-        Y.one('.exp-container.hide').removeClass('hide');
-
     });
     {/literal}
     {/script}
