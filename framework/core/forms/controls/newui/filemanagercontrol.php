@@ -72,7 +72,7 @@ class filemanagercontrol extends formcontrol {
             $this->count = 0;
             $files = '<li class="blank">'.gt('You need to add some files').'</li>';
         }
-        $html .= '<div class="filembox"><div class="filebox"><ul id="filelist'.$name.'" class="filelist">';
+        $html .= '<div class="filembox"><div class="filebox"><ul id="filelist'.$name.'" class="scrollable filelist">';
         $html .= $files;
         $html .= '</ul></div>';
         $html .= '<div id="progressBox-'.$name.'" class="progressbox"></div><div style="clear:both"></div></div>';
@@ -86,18 +86,16 @@ class filemanagercontrol extends formcontrol {
             $filter = 0;
         }
         $js = "
-            EXPONENT.YUI3_CONFIG.modules.SimpleAjaxUploader = {
-                fullpath: EXPONENT.URL_FULL+'external/SimpleAjaxUploader/SimpleAjaxUploader-yui.js'
-            };
-
-            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
+            $(document).ready(function(){
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
-                var fl = Y.one('#filelist".$name."');
-                
+//                var fl = Y.one('#filelist".$name."');
+                var fl = $('#filelist".$name."');
+
                 // file picker window opener
                 function openFilePickerWindow(e){
-                    e.halt();
+//                    e.halt();
+                    e.preventDefault();
                     win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
                         //Catch the popup blocker
@@ -105,8 +103,10 @@ class filemanagercontrol extends formcontrol {
                     }
                 };
 
-                if (Y.one('#quickaddfiles-".$name."') != null) {
-                var quickUpload = new Y.ss.SimpleUpload({
+                // quick file upload
+//                if (Y.one('#quickaddfiles-".$name."') != null) {
+                if ($('#quickaddfiles-".$name."') != null) {
+                var quickUpload = new ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
                     url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
                     data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
@@ -116,8 +116,7 @@ class filemanagercontrol extends formcontrol {
                     hoverClass: 'active',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
-                    maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",
-//                    debug: true,";
+                    maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",";
         if (!empty($this->accept)) {
             $js .= '
                     accept: "'.$this->accept.'",';
@@ -130,8 +129,10 @@ class filemanagercontrol extends formcontrol {
 //                            }
 //                            quickUpload.disable();
 //                        if (quickUpload._activeUploads) {
-                           Y.one('#quickaddfiles-".$name."').addClass('ajax');
-                           Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
+//                           Y.one('#quickaddfiles-".$name."').addClass('ajax');
+//                           Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
+                           $('#quickaddfiles-".$name."').addClass('ajax');
+                           $('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
 //                        }
                         // Create the elements of our progress bar
                         var progress = document.createElement('div'), // container for progress bar
@@ -165,8 +166,10 @@ class filemanagercontrol extends formcontrol {
                         }
 //                            quickUpload.enable();
                         if (!quickUpload._activeUploads) {
-                            Y.one('#quickaddfiles-".$name."').removeClass('ajax');
-                            Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
+//                            Y.one('#quickaddfiles-".$name."').removeClass('ajax');
+//                            Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
+                            $('#quickaddfiles-".$name."').removeClass('ajax');
+                            $('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
                         }
                     },
                     onSizeError: function(filename, fileSize){
@@ -179,17 +182,23 @@ class filemanagercontrol extends formcontrol {
                 }
 
                 var listenForAdder = function(){
-                    var af = Y.one('#addfiles-".$name."');
-                    af.on('click',openFilePickerWindow);
-                    var afq = Y.one('#quickaddfiles-".$name."');
+//                    var af = Y.one('#addfiles-".$name."');
+                    var af = $('#addfiles-".$name."');
+//                    af.on('click',openFilePickerWindow);
+                    af.click(openFilePickerWindow);
+
+//                    var afq = Y.one('#quickaddfiles-".$name."');
+                    var afq = $('#quickaddfiles-".$name."');
                     if (afq != null) {
-                        afq.on('click',quickUpload);
+//                        afq.on('click',quickUpload);
+                        afq.click(quickUpload);
                     }
                 };
                 
                 var showEmptyLI = function(){
-                    var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
-                    fl.appendChild(blank);
+//                    var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
+                    var blank = $('<li class=\"blank\">".gt('You need to add some files')."</li>');
+                    $('#filelist".$name."').append(blank);
                 };
                 
                 if (limit > filesAdded) {
@@ -197,119 +206,21 @@ class filemanagercontrol extends formcontrol {
                 }
                                 
                 // remove the file from the list
-                fl.delegate('click',function(e){
-                    e.target.ancestor('li').remove();
+//                fl.delegate('click',function(e){
+                $('#filelist".$name."').delegate('.btn-danger', 'click', function(e){
+//                    e.target.ancestor('li').remove();
+                    $(e.target).closest('li').remove();
                     showFileAdder();
-                },'.delete');
-                
-                var showFileAdder = function() {
+//                },'.btn-danger');
+                });
+
+                var showFileAdder = function(){
                     listenForAdder();
                     filesAdded--;
-                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
+//                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
+                    if (filesAdded < limit) $('#adders-".$name."').removeClass('hide');
                     if (filesAdded == 0) showEmptyLI();
                 };
-
-                //Drag Drop stuff
-                
-                //Listen for all drop:over events
-                Y.DD.DDM.on('drop:over', function(e) {
-                    //Get a reference to out drag and drop nodes
-                    var drag = e.drag.get('node'),
-                        drop = e.drop.get('node');
-
-                    //Are we dropping on a li node?
-                    if (drop.get('tagName').toLowerCase() === 'li') {
-                        //Are we not going up?
-                        if (!goingUp) {
-                            drop = drop.get('nextSibling');
-                        }
-                        //Add the node to this list
-                        e.drop.get('node').get('parentNode').insertBefore(drag, drop);
-                        //Resize this nodes shim, so we can drop on it later.
-                        e.drop.sizeShim();
-                    }
-                });
-                //Listen for all drag:drag events
-                Y.DD.DDM.on('drag:drag', function(e) {
-                    //Get the last y point
-                    var y = e.target.lastXY[1];
-                    //is it greater than the lastY var?
-                    if (y < lastY) {
-                        //We are going up
-                        goingUp = true;
-                    } else {
-                        //We are going down..
-                        goingUp = false;
-                    }
-                    //Cache for next check
-                    lastY = y;
-                });
-                //Listen for all drag:start events
-                Y.DD.DDM.on('drag:start', function(e) {
-                    //Get our drag object
-                    var drag = e.target;
-                    //Set some styles here
-                    drag.get('node').setStyle('opacity', '.25');
-                    drag.get('dragNode').set('innerHTML', drag.get('node').get('innerHTML'));
-                    drag.get('dragNode').setStyles({
-                        opacity: '.85',
-                        borderColor: drag.get('node').getStyle('borderColor'),
-                        backgroundImage: drag.get('node').getStyle('backgroundImage')
-                    });
-                });
-                //Listen for a drag:end events
-                Y.DD.DDM.on('drag:end', function(e) {
-                    var drag = e.target;
-                    //Put out styles back
-                    drag.get('node').setStyles({
-                        visibility: '',
-                        opacity: '1'
-                    });
-                });
-                //Listen for all drag:drophit events
-                Y.DD.DDM.on('drag:drophit', function(e) {
-                    var drop = e.drop.get('node'),
-                        drag = e.drag.get('node');
-
-                    //if we are not on an li, we must have been dropped on a ul
-                    if (drop.get('tagName').toLowerCase() !== 'li') {
-                        if (!drop.contains(drag)) {
-                            drop.appendChild(drag);
-                        }
-                    }
-                });
-
-                //Static Vars
-                var goingUp = false, lastY = 0;
-
-                var initDragables =  function(){
-                    //Get the list of li's in the lists and make them draggable
-                    var lis = Y.Node.all('#filelist".$name." li');
-                    if (lis){
-                        lis.each(function(v, k) {
-                            var dd = new Y.DD.Drag({
-                                node: v,
-                                proxy: true,
-                                moveOnEnd: false,
-                                target: {
-                                    padding: '0 0 0 20'
-                                }
-                            }).plug(Y.Plugin.DDConstrained, {
-                                //Keep it inside the #list1 node
-                                constrain2node: '#filelist".$name."',
-                                stickY:true
-                            }).plug(Y.Plugin.DDProxy, {
-                                //Don't move the node at the end of the drag
-                                moveOnEnd: false,
-                                borderStyle:'0'
-                            });//.addHandle('.fpdrag');
-                        });
-                    }
-
-                    //var tar = new Y.DD.Drop({ node:Y.one('#filelist".$name."')});
-                }
-                
-                initDragables();
 
                 if (EXPONENT.batchAddFiles==undefined) {
                     EXPONENT.batchAddFiles = {};
@@ -317,10 +228,12 @@ class filemanagercontrol extends formcontrol {
 
                 EXPONENT.batchAddFiles.".$name." = function(ids) {
                     var j=0;
-                    Y.each(ids, function(obj,k){
+//                    Y.each(ids, function(obj,k){
+                    $.each(ids, function(k,obj){
                         if (j<limit) {
 
-                            var df = Y.one('#filelist".$name."');
+//                            var df = Y.one('#filelist".$name."');
+                            var df = $('#filelist".$name."');
 
                             if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                                 var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
@@ -333,8 +246,11 @@ class filemanagercontrol extends formcontrol {
                             }
                             
                             var html = '<li>';
-                            html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                            html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
+                            html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';";
+                            $icon = expTheme::buttonIcon('delete');
+                            $js .= "
+                            html += '<a class=\" btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
+                            $js .= "
                             html += filepic;
                             if (obj.title) {
                                 filetitle = obj.title;
@@ -345,60 +261,51 @@ class filemanagercontrol extends formcontrol {
 //                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                             html += '<\/li>';
                             
-                            htmln = Y.Node.create(html);                        
-                            
+//                            htmln = Y.Node.create(html);
+                            htmln = $(html);
+
                             df.append(htmln);
 
-                            var dd = new Y.DD.Drag({
-                                node: htmln,
-                                proxy: true,
-                                moveOnEnd: false,
-                                target: {
-                                    padding: '0 0 0 20'
-                                }
-                            }).plug(Y.Plugin.DDConstrained, {
-                                constrain2node: '#filelist".$name."',
-                                stickY:true
-                            }).plug(Y.Plugin.DDProxy, {
-                                moveOnEnd: false,
-                                borderStyle:'0'
-                            });
-
                             if (filesAdded==0) {
-                                fl.one('.blank').remove();
+//                                Y.one('#filelist".$name."').one('.blank').remove();
+                                $('#filelist".$name." .blank').remove();
                             }
-
                             filesAdded++;
 
 //                            if (limit>=filesAdded) {
                             if (filesAdded>=limit) {
-                                Y.one('#adders-".$name."').addClass('hide');
+//                                Y.one('#adders-".$name."').addClass('hide');
+                                $('#adders-".$name."').addClass('hide');
                             }
 
                             j++;
                         }
                     })
-                    // Y.log(ids);
                 };
 
                 EXPONENT.passBackBatch".$name." = function(ids) {
-                    Y.each(ids, function(id,k){
+//                    Y.each(ids, function(id,k){
+                    $.each(ids, function(k,id){
                         EXPONENT.passBackFile".$name."(id);
                     });
                 };
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-                    if (Y.Lang.isArray(id)) {
+//                    if (Y.Lang.isArray(id)) {
+                    if ($.isArray(id)) {
                         EXPONENT.batchAddFiles.".$name."(id);
                         return;
                     }
 
-                    var complete = function (ioId, o) {
+                    var complete = function (o, ioId) {
                       if (filesAdded < limit) {
-                        var df = Y.one('#filelist".$name."');
-                        var objson = Y.JSON.parse(o.responseText);
-                        var obj = objson.data;
+//                        var df = Y.one('#filelist".$name."');
+                        var df = $('#filelist".$name."');
+//                        var objson = Y.JSON.parse(o.responseText);
+//                        var objson = $.parseJSON(o.data);
+//                        var obj = objson.data;
+                        var obj = o.data;
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
                         } else if (obj.mimetype=='audio/mpeg') {
@@ -410,8 +317,11 @@ class filemanagercontrol extends formcontrol {
                         }
                     
                         var html = '<li>';
-                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';
-                        html += '<a class=\"delete\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\">".gt('delete')."<\/a>';
+                        html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';";
+                        $icon = expTheme::buttonIcon('delete');
+                        $js .= "
+                        html += '<a class=\" btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
+                        $js .= "
                         html += filepic;
                         if (obj.title) {
                             filetitle = obj.title;
@@ -420,62 +330,46 @@ class filemanagercontrol extends formcontrol {
                         }
                         html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                         html += '<\/li>';
-                        htmln = Y.Node.create(html);
+//                        htmln = Y.Node.create(html);
+                        htmln = $(html);
 
                         df.append(htmln);
 
-                        var dd = new Y.DD.Drag({
-                            node: htmln,
-                            proxy: true,
-                            moveOnEnd: false,
-                            target: {
-                                padding: '0 0 0 20'
-                            }
-                        }).plug(Y.Plugin.DDConstrained, {
-                            constrain2node: '#filelist".$name."',
-                            stickY:true
-                        }).plug(Y.Plugin.DDProxy, {
-                            moveOnEnd: false,
-                            borderStyle:'0'
-                        });
-
                         if (filesAdded==0) {
-                            fl.one('.blank').remove();
+//                            Y.one('#filelist".$name."').one('.blank').remove();
+                            $('#filelist".$name." .blank').remove();
                         }
-
                         filesAdded++;
 
 //                        if (limit>=filesAdded) {
                         if (filesAdded>=limit) {
-                            Y.one('#adders-".$name."').addClass('hide');
+//                            Y.one('#adders-".$name."').addClass('hide');
+                            $('#adders-".$name."').addClass('hide');
                         }
-
-                        //initDragables();
                       }
                     };
                     
-                    var cfg = {
-                        on:{
-                            success:complete
-                        }
-                    };
-                    Y.io(EXPONENT.PATH_RELATIVE+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id, cfg);
-                    //ej.fetch({action:'getFile',controller:'fileController',json:1,params:'&id='+id});
+                    $.ajax({
+                        url: EXPONENT.PATH_RELATIVE+'index.php.php?controller=file&action=getFile&ajax_action=1&json=1&id='+id,
+                        success: complete
+                    });
                 }
 
+                $('#filelist" . $name . "').sortable();
             });
             "; // END PHP STRING LITERAL
 
             expCSS::pushToHead(array(
-        	    "unique"=>"attachable-files",
-        	    "link"=>$assets_path."files/attachable-files.css"
-        	    )
-        	);
+        	    "unique"    => "attachable-files",
+        	    "link"      => $assets_path."files/attachable-files.css"
+            ));
 
             expJavascript::pushToFoot(array(
-                "unique"=>"filepicker".$name,
-                "yui3mods"=>"1",
-                "content"=>$js,
+                "unique"    => "filepicker".$name,
+                "src"       => PATH_RELATIVE . 'external/SimpleAjaxUploader/SimpleAjaxUploader.js',
+//                "yui3mods"  => "1",
+                "jquery"    => 'jquery-sortable',
+                "content"   => $js,
              ));
         return $html;
     }
@@ -516,7 +410,8 @@ class filemanagercontrol extends formcontrol {
             $html .= "<li>";
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
-            $html .= "<a class=\"delete\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\">".gt('Delete')."</a>";
+            $icon = expTheme::buttonIcon('delete');
+            $html .= "<a class=\"btn btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>";
             $html .= $filepic;
             $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";
