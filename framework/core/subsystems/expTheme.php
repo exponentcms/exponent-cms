@@ -179,16 +179,12 @@ class expTheme
         if (NEWUI && $head_config['framework'] != 'bootstrap' && $head_config['framework'] != 'bootstrap3') {
             expCSS::pushToHead(array(
                 "lessprimer"=>"external/bootstrap3/less/newui.less",
-                "lessvars"=>array(
-                    'swatch'=>'cerulean',  // newui uses this swatch
-                    'themepath'=>'cerulean',  // hack to prevent crash
-                    'btn_size'=>'small',
-                ),
+//                "lessvars"=>array(
+//                    'swatch'=>'cerulean',  // newui uses this swatch
+//                    'themepath'=>'cerulean',  // hack to prevent crash
+//                ),
             ));
             if (!defined("BTN_SIZE")) define("BTN_SIZE", 'small');
-//            expCSS::pushToHead(array(
-//                "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
-//            ));
             array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
         }
         array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');

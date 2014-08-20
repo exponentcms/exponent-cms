@@ -24,9 +24,9 @@
     ]
 {/assocarray}
 
-{css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}
+{*{css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}*}
 
-{/css}
+{*{/css}*}
 {css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars2}
 
 {/css}
