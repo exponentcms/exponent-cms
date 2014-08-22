@@ -20,7 +20,7 @@
  * elFinder volume driver for the Exponent CMS expFile filesystem.
  *
  * @author     Dave Leffler
- * @package    Connectors
+ * @package    elFinder
  * @subpackage Connectors
  */
 class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem

@@ -20,7 +20,7 @@
  * elFinder object subclass for Exponent CMS expFile filesystem.
  *
  * @author     Dave Leffler
- * @package    Connectors
+ * @package    elFinder
  * @subpackage Connectors
  */
 class elFinderExponent extends elFinder
