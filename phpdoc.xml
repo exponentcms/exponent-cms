@@ -2,7 +2,6 @@
 <phpdoc>
     <title>Exponent v2.3.0</title>
     <parser>
-        <default-category-name>API Documentation</default-category-name>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api/phpdoc</target>
         <markers>
@@ -30,6 +29,7 @@
     <files>
         <directory>.</directory>
         <ignore>external/*</ignore>
+        <ignore>files/*</ignore>
         <ignore>tmp/*</ignore>
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
