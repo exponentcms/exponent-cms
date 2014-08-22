@@ -53,7 +53,7 @@
         <div class="yui-content">
             {foreach name=items from=$page->cats key=catid item=cat}
                 <div id="tab{$smarty.foreach.items.iteration}">
-                     {foreach from=$cat->records item=record}
+                     {foreach from=$cat->records item=item}
                         {exp_include file='portfolioitem.tpl'}
                     {/foreach}
                 </div>
