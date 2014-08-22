@@ -114,7 +114,7 @@
         {/script}
     {/if}
 
-{script unique=$name jquery="jqueryui"}
+{script unique=$name jquery="bootstrap-dialog" bootstrap="modal,transition"}
 {literal}
     src = '{/literal}{$__loc->src}{literal}';
 
@@ -137,40 +137,41 @@
 
     var saveEditor = function(item, data) {
         if(parseInt({/literal}{!$config.fast_save}{literal}) && parseInt({/literal}{$smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}{literal})) {
-            var dialog = $('<p>{/literal}{'Save these changes?'|gettext}{literal}</p>').dialog({
-                width: 375,
+            BootstrapDialog.show({
                 title: '{/literal}{'Text Item Updated'|gettext}{literal}',
-                buttons: {
-                    "Yes": function() {
+                message: '{/literal}{'Save these changes?'|gettext}{literal}',
+                buttons: [{
+                    label: "{/literal}{'Yes'|gettext}{literal}",
+                    action: function(dialog) {
                         $.ajax({
                             type: "POST",
                             url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                             data: "id="+item[1] + "&type="+item[0] + "&value="+data,
                         });
                         $('input:hidden[name=\'rerank[]\'][value=\'' + item[1] + '\']').siblings('span').html(data);
-                        dialog.dialog('close');
-                    },
-                    "No, Undo All Changes":  function() {
+                        dialog.close();
+                    }
+                }, {
+                    label: "{/literal}{'No, Undo All Changes'|gettext}{literal}",
+                    action: function(dialog) {
                         $.ajax({
                             type: "POST",
                             url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                             data: "id="+item[1] + "&type=revert",
-                //            success:function(data) {
                             success:function(msg) {
-                //                var msg = $.parseJSON(data);
                                 data = $.parseJSON(msg.data);
-//                                CKEDITOR.instances['body-' + data.id].setData(data.body);
                                 setContent('body-' + data.id, data.body);
-//                                CKEDITOR.instances['title-' + data.id].setData(data.title);
                                 setContent('title-' + data.id, data.title);
                             }
                         });
-                        dialog.dialog('close');
-                    },
-                    "Cancel":  function() {
-                        dialog.dialog('close');
+                        dialog.close();
                     }
-                }
+                }, {
+                    label: "{/literal}{'Cancel'|gettext}{literal}",
+                    action: function(dialog) {
+                        dialog.close();
+                    }
+                }]
             });
         } else {
             $.ajax({
@@ -233,7 +234,7 @@
             baseHref : EXPONENT.PATH_RELATIVE,
 
         });
-        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+    {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         tinymce.init({
             selector : '#'+node.id,
             plugins : ['image,searchreplace,contextmenu,paste,link'],

@@ -148,9 +148,7 @@
                                 success:function(msg) {
                     //                var msg = $.parseJSON(data);
                                     data = $.parseJSON(msg.data);
-    //                                    CKEDITOR.instances['body-' + data.id].setData(data.body);
                                     setContent('body-' + data.id, data.body);
-    //                                    CKEDITOR.instances['title-' + data.id].setData(data.title);
                                     setContent('title-' + data.id, data.title);
                                 }
                             });
@@ -222,7 +220,7 @@
                 baseHref : EXPONENT.PATH_RELATIVE,
 
             });
-            {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
+        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : ['image,searchreplace,contextmenu,paste,link'],
