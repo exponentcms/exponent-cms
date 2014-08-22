@@ -35,10 +35,10 @@
             </div>
 		{/if}
 	{/permissions}
-	{*<a id="expand" href="#">Expand all</a>*}
-	<div><a id="collapse" href="#">Collapse all</a></div>
+	{*<a id="expand" href="#">{'Expand all'|gettext}</a>*}
+	<div><a id="collapse" href="#">{'Collapse all'|gettext}</a></div>
 	<div id="navtree">
-		<img src="{$smarty.const.ICON_RELATIVE|cat:'ajax-loader.gif'}">	<strong>Loading Navigation</strong>
+		<img src="{$smarty.const.ICON_RELATIVE|cat:'ajax-loader.gif'}">	<strong>{'Loading Pages'|gettext}</strong>
 	</div>
 </div>
 

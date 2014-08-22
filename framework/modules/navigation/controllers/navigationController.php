@@ -702,7 +702,7 @@ class navigationController extends expController {
 
         expHistory::set('manageable', $router->params);
         assign_to_template(array(
-            'canManageStandalones' => navigationController::canManageStandalones(),
+            'canManageStandalones' => self::canManageStandalones(),
             'sasections'           => $db->selectObjects('section', 'parent=-1'),
             'user'                 => $user,
             'canManagePagesets'    => $user->isAdmin(),
@@ -710,10 +710,13 @@ class navigationController extends expController {
         ));
     }
 
+    /**
+     * Ajax request for specific pages as json date to yui tree
+     */
     public static function returnChildrenAsJSON() {
         global $db;
 
-        //$nav = navigationController::levelTemplate(intval($_REQUEST['id'], 0));
+        //$nav = self::levelTemplate(intval($_REQUEST['id'], 0));
         $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
         //FIXME $manage_all is moot w/ cascading perms now?
@@ -741,12 +744,52 @@ class navigationController extends expController {
         exit;
     }
 
+    /**
+     * Ajax request for all pages as json date to jstree
+     */
+    public static function returnChildrenAsJSON2() {
+        global $db;
+
+        $icons = array(
+            0 => 'addpage',
+            1 => 'addextpage',
+            2 => 'addintpage',
+            3 => 'addfreeform',
+        );
+
+//        $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+        $navs        = $db->selectObjects('section', 'parent!=-1', 'rank');
+        //FIXME recode to use foreach $key=>$value
+//        $navcount = count($jnav);
+//        for ($i = 0; $i < $navcount; $i++) {
+        foreach ($navs as $i=>$nav) {
+            $navs[$i]->parent = $nav->parent?$nav->parent:'#';
+            $navs[$i]->text = $nav->name;
+            $navs[$i]->icon = $icons[$nav->alias_type];
+            if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $navs[$i]->id))) {
+                $navs[$i]->manage = 1;
+                $view = true;
+            } else {
+                $navs[$i]->manage = 0;
+                $navs[$i]->state->disabled = true;
+                $view = $navs[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigation', '', $navs[$i]->id));
+            }
+            $navs[$i]->link = expCore::makeLink(array('section' => $navs[$i]->id), '', $navs[$i]->sef_name);
+            if (!$view) unset($navs[$i]);
+        }
+        $navs= array_values($navs);
+        header('Content-Type: application/json; charset=utf8');
+		echo json_encode($navs);
+//        echo expJavascript::ajaxReply(201, '', $navs);
+        exit;
+    }
+
+    /**
+     * Ajax function to reorder page hierarchy from yui tree control
+     */
     public static function DragnDropReRank() {
         global $db, $router;
 
-//        $move   = intval($_REQUEST['move']);
-//        $target = intval($_REQUEST['target']);
-//        $type   = $_REQUEST['type'];
         $move   = $router->params['move'];
         $target = $router->params['target'];
         $type   = $router->params['type'];
@@ -858,7 +901,32 @@ class navigationController extends expController {
                 }
             }
         }
-        navigationController::checkForSectionalAdmins($move);
+        self::checkForSectionalAdmins($move);
+        expSession::clearAllUsersSessionCache('navigation');
+    }
+
+    /**
+     * Ajax function to reorder page hierarchy from jstree control
+     */
+    public static function DragnDropReRank2() {
+        global $router, $db;
+
+        $id = $router->params['id'];
+        $page = new section($id);
+        $old_rank = $page->rank;
+        $old_parent = $page->parent;
+        $new_rank = $router->params['position'] + 1;  // rank
+        $new_parent = intval($router->params['parent']);
+
+        $db->decrement($page->tablename, 'rank', 1, 'rank>' . $old_rank . ' AND parent=' . $old_parent);  // close in hole
+        $db->increment($page->tablename, 'rank', 1, 'rank>=' . $new_rank . ' AND parent=' . $new_parent);  // make room
+
+        $params = array();
+        $params['parent'] = $new_parent;
+        $params['rank'] = $new_rank;
+        $page->update($params);
+
+        self::checkForSectionalAdmins($id);
         expSession::clearAllUsersSessionCache('navigation');
     }
 
@@ -1031,7 +1099,7 @@ class navigationController extends expController {
 
         $section = $db->selectObject('section', 'id=' . $this->params['id']);
         if ($section) {
-            navigationController::removeLevel($section->id);
+            self::removeLevel($section->id);
             $db->decrement('section', 'rank', 1, 'rank > ' . $section->rank . ' AND parent=' . $section->parent);
             $section->parent = -1;
             $db->updateObject($section, 'section');
@@ -1048,7 +1116,7 @@ class navigationController extends expController {
             foreach ($this->params['deleteit'] as $page) {
                 $section = new section(intval($page));
                 if ($section) {
-//                    navigationController::deleteLevel($section->id);
+//                    self::deleteLevel($section->id);
                     $section->delete();
                 }
             }
