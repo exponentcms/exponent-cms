@@ -28,7 +28,6 @@
         </ul>
         <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
     </blockquote>
-    {br}
     {permissions}
         {if $user->is_admin || $user->is_acting_admin}
                <div class="module-actions">
@@ -39,7 +38,7 @@
     {icon class=refresh action=scriptaction name='refresh-tree' text='Refresh'|gettext}
     {icon class=expand action=scriptaction name='expand-tree' text='Expand all'|gettext}
     {icon class=compress action=scriptaction name='collapse-tree' text='Collapse all'|gettext}
-    {br}{br}
+    {br}
     <div id="nav_jstree"></div>
 </div>
 
@@ -64,7 +63,7 @@
                     'variant' : 'small',
                 },
                 'strings' : {
-                    'Loading ...' : 'Loading Pages ...'
+                    'Loading ...' : '{/literal}{'Loading Pages'|gettext}{literal} ...'
                 }
             },
             'contextmenu' : {
@@ -78,7 +77,7 @@
                                 return true;
                             }
                         },
-                        "label"				: "Add a Sub-page",
+                        "label"				: "{/literal}{'Add a Sub-page here'|gettext}{literal}",
                         "action"			: false,
                         "submenu" : {
                             "add-content" : {
@@ -92,7 +91,7 @@
                             },
                             "add-external" : {
                                 "icon"				: 'addextpage',
-                                "label"				: "Add External Web-site Link (Page)",
+                                "label"				: "{/literal}{'Add External Web-site Link (Page) here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -101,7 +100,7 @@
                             },
                             "add-alias" : {
                                 "icon"				: 'addintpage',
-                                "label"				: "Add Page Alias (Page)",
+                                "label"				: "{/literal}{'Add Page Alias (Page) here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -110,7 +109,7 @@
                             },
                             "move-standalone" : {
                                 "icon"				: 'addsapage',
-                                "label"				: "Move Stand-alone Page",
+                                "label"				: "{/literal}{'Move Stand-alone Page to here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -121,7 +120,7 @@
                     },
     				"view" : {
                         "icon"				: 'fa fa-lg fa-fw fa-search',
-    					"label"				: "View this Page",
+    					"label"				: "{/literal}{'View this Page'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -137,7 +136,7 @@
                                 return true;
                             }
                         },
-    					"label"				: "Edit this Page",
+    					"label"				: "{/literal}{'Edit this Page'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -162,7 +161,7 @@
                                 return true;
                             }
                         },
-    					"label"				: "Delete this Page",
+    					"label"				: "{/literal}{'Delete this Page'|gettext}{literal}",
     					"action"			: function (data) {
     						var inst = $.jstree.reference(data.reference),
     							obj = inst.get_node(data.reference);
@@ -174,7 +173,7 @@
                                 var btn = {"{/literal}{'Delete Page'|gettext}{literal}": true, "No": false};
                             }
                             $.prompt(message, {
-                                title: "Remove \""+obj.text+"\" from hierarchy",
+                                title: "{/literal}{'Remove'|gettext}{literal} \""+obj.text+"\" {/literal}{'from hierarchy'|gettext}{literal}",
                                 buttons: btn,
                                 submit: function(e,v,m,f){
                                     // use e.preventDefault() to prevent closing when needed or return false.
@@ -201,7 +200,7 @@
                                 return true;
                             }
                         },
-                        "label"				: "Manage User Permissions",
+                        "label"				: "{/literal}{'Manage User Permissions'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -219,7 +218,7 @@
                                 return true;
                             }
                         },
-                        "label"				: "Manage Group Permissions",
+                        "label"				: "{/literal}{'Manage Group Permissions'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
