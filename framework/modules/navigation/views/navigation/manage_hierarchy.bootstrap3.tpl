@@ -22,7 +22,6 @@
         </ul>
         <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
     </blockquote>
-    {br}
     {permissions}
         {if $user->is_admin || $user->is_acting_admin}
                <div class="module-actions">
@@ -58,7 +57,7 @@
                     'variant' : 'small',
                 },
                 'strings' : {
-                    'Loading ...' : 'Loading Pages ...'
+                    'Loading ...' : '{/literal}{'Loading Pages'|gettext}{literal} ...'
                 }
             },
             'contextmenu' : {
@@ -72,12 +71,12 @@
                                 return true;
                             }
                         },
-                        "label"				: "Add a Sub-page",
+                        "label"				: "{/literal}{'Add a Sub-page here'|gettext}{literal}",
                         "action"			: false,
                         "submenu" : {
                             "add-content" : {
                                 "icon"				: 'addpage',
-                                "label"				: "Add Content Page",
+                                "label"				: "{/literal}{'Add Content Page here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -86,7 +85,7 @@
                             },
                             "add-external" : {
                                 "icon"				: 'addextpage',
-                                "label"				: "Add External Web-site Link (Page)",
+                                "label"				: "{/literal}{'Add External Web-site Link (Page) here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -95,7 +94,7 @@
                             },
                             "add-alias" : {
                                 "icon"				: 'addintpage',
-                                "label"				: "Add Page Alias (Page)",
+                                "label"				: "{/literal}{'Add Page Alias (Page) here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -104,7 +103,7 @@
                             },
                             "move-standalone" : {
                                 "icon"				: 'addsapage',
-                                "label"				: "Move Stand-alone Page",
+                                "label"				: "{/literal}{'Move Stand-alone Page to here'|gettext}{literal}",
                                 "action"			: function (data) {
                                     var inst = $.jstree.reference(data.reference),
                                         obj = inst.get_node(data.reference);
@@ -115,7 +114,7 @@
                     },
     				"view" : {
                         "icon"				: 'fa fa-lg fa-fw fa-search',
-    					"label"				: "View this Page",
+    					"label"				: "{/literal}{'View this Page'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -131,7 +130,7 @@
                                 return true;
                             }
                         },
-    					"label"				: "Edit this Page",
+    					"label"				: "{/literal}{'Edit this Page'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -156,7 +155,7 @@
                                 return true;
                             }
                         },
-    					"label"				: "Delete this Page",
+    					"label"				: "{/literal}{'Delete this Page'|gettext}{literal}",
     					"action"			: function (data) {
     						var inst = $.jstree.reference(data.reference),
     							obj = inst.get_node(data.reference);
@@ -168,7 +167,7 @@
                                 var yesbtn = "{/literal}{"Delete Page"|gettext}{literal}";
                             }
                             BootstrapDialog.show({
-                                title: "Remove \""+obj.text+"\" from hierarchy",
+                                title: "{/literal}{'Remove'|gettext}{literal} \""+obj.text+"\" {/literal}{'from hierarchy'|gettext}{literal}",
                                 message: message,
                                 buttons: [{
                                     label: yesbtn,
@@ -199,7 +198,7 @@
                                 return true;
                             }
                         },
-                        "label"				: "Manage User Permissions",
+                        "label"				: "{/literal}{'Manage User Permissions'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
@@ -217,7 +216,7 @@
                                 return true;
                             }
                         },
-                        "label"				: "Manage Group Permissions",
+                        "label"				: "{/literal}{'Manage Group Permissions'|gettext}{literal}",
                         "action"			: function (data) {
                             var inst = $.jstree.reference(data.reference),
                                 obj = inst.get_node(data.reference);
