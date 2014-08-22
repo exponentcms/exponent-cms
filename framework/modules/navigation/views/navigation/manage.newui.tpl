@@ -13,7 +13,7 @@
  *
  *}
 
-<div id="navmanager" class="module navigation manager">
+<div id="navmanager" class="module navigation manager exp-skin">
 	<div class="form_header">
 		<div class="info-header">
 			<div class="related-actions">
@@ -28,7 +28,7 @@
 	        {if $canManageStandalones}<li><a href="#tab2" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="tab-content">
-        	<div id="tab1" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.bootstrap3.tpl"}</div>
+        	<div id="tab1" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.newui.tpl"}</div>
 	        {if $canManageStandalones}<div id="tab2" class="tab-pane fade">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.tpl"}</div>{/if}
 	    </div>
 	</div>
