@@ -13,13 +13,13 @@
  *
  *}
 
-{css unique="install-upgrades"}
-{literal}
-    .install-upgrades h3 {
-        display       : inline;
-    }
-{/literal}
-{/css}
+{*{css unique="install-upgrades"}*}
+{*{literal}*}
+    {*.install-upgrades h3 {*}
+        {*display       : inline;*}
+    {*}*}
+{*{/literal}*}
+{*{/css}*}
 
 <div class="module administration install-upgrades">
     <h1>{'Run Upgrade Scripts'|gettext}</h1>
@@ -31,8 +31,8 @@
         <ol>
             {foreach from=$scripts item=upgradescript key=name}
                 <li>
-                    <input type="checkbox" name="{$upgradescript->classname}" value="1" class="checkbox" style="margin-top: 7px;">
-                    <label class="label "><h3>{$upgradescript->name()}</h3></label>
+                    {$title = $upgradescript->name()}
+                    <h3>{control type="checkbox" name=$upgradescript->classname label=$title value=1}</h3>
                     <p>{$upgradescript->description()}</p>
                 </li>
             {/foreach}
