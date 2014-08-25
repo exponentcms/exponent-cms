@@ -16,10 +16,10 @@
 #
 ##################################################
 
-define('SANITY_FINE',				0);
-define('SANITY_NOT_R',				2);
-define('SANITY_NOT_RW',				4);
-define('SANITY_NOT_E',				8);
+define('SANITY_FINE',				0);  // no SANITY_WARNING/SANITY_ERROR
+define('SANITY_NOT_R',				2);  // SANITY_ERROR
+define('SANITY_NOT_RW',				4);  // SANITY_ERROR
+define('SANITY_NOT_E',				8);  // SANITY_ERROR
 
 define('SANITY_READONLY',			1);
 define('SANITY_READWRITE',			2);
@@ -28,6 +28,13 @@ define('SANITY_CREATEFILE',			4); // Read write, without the need for the file t
 define('SANITY_WARNING',			1);
 define('SANITY_ERROR',				2);
 
+/**
+ * Check file/folder for requested permissions
+ * @param $file     file/folder name
+ * @param $as_file  is this a file or a folder
+ * @param $flags    type of check to perform
+ * @return int      error
+ */
 function sanity_checkFile($file,$as_file,$flags) {
 	$__oldumask = umask(0);
 	if (!file_exists($file)) {
@@ -77,6 +84,12 @@ function sanity_checkFile($file,$as_file,$flags) {
 	return SANITY_FINE;
 }
 
+/**
+ * Recursively check folder and all files/folders within for requested permissions
+ * @param $dir  folder name
+ * @param $flag type of check
+ * @return int  error
+ */
 function sanity_checkDirectory($dir,$flag) {
 	$status = sanity_checkFile(BASE.$dir,false,$flag);
 	if ($status != SANITY_FINE) {
@@ -106,15 +119,13 @@ function sanity_checkDirectory($dir,$flag) {
 
 function sanity_checkFiles() {
 	$status = array(
-//        'framework/modules/'=>sanity_checkDirectory('framework/modules',SANITY_READWRITE),
 		'framework/conf/config.php'=>sanity_checkFile(BASE.'framework/conf/config.php',true,SANITY_CREATEFILE),
 		'framework/conf/profiles/'=>sanity_checkFile(BASE.'framework/conf/profiles',false,SANITY_READWRITE),
-//		'files/'=>sanity_checkDirectory('files',SANITY_READWRITE),
         'files/'=>sanity_checkFile('files',false,SANITY_READWRITE),  // we're only concerned about the folder itself and NOT the contents
         'files/uploads/'=>sanity_checkDirectory('files/uploads',SANITY_READWRITE),
         'files/avatars/'=>sanity_checkDirectory('files/avatars',SANITY_READWRITE),
 		'install/'=>sanity_checkFile(BASE.'install',false,SANITY_READWRITE),
-		//'overrides.php'=>sanity_checkFile(BASE.'overrides.php',1,SANITY_READWRITE),
+		'overrides.php'=>sanity_checkFile(BASE.'overrides.php',true,SANITY_CREATEFILE),
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
         'tmp/css'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
@@ -126,7 +137,7 @@ function sanity_checkFiles() {
         'tmp/views_c'=>sanity_checkDirectory('tmp/views_c',SANITY_READWRITE),
 	);
 	
-	return $status;
+	return $status;  // any error or warning is fatal
 }
 
 function sanity_checkServer() {
@@ -145,6 +156,14 @@ function sanity_checkServer() {
 		gt('Temporary File Creation')=>_sanity_checkTemp(BASE.'tmp'),
 	);
 	return $status;
+}
+
+function _sanity_checkDB() {
+	if (count(expDatabase::backends(1)) > 0) {
+		return array(SANITY_FINE,gt('Supported'));
+	} else {
+		return array(SANITY_ERROR,gt('No Databases Supported'));
+	}
 }
 
 function _sanity_checkGD() {
@@ -185,7 +204,6 @@ function _sanity_checkFileinfo() {
 	if (function_exists('finfo_open')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
-//		return array(SANITY_ERROR,gt('Failed'));
         return array(SANITY_WARNING,gt('No FileInfo Support'));
 	}
 }
@@ -198,19 +216,19 @@ function _sanity_checkUploadSize() {
 	}
 }
 
-function _sanity_checkSafeMode() {
-	if (ini_get('safe_mode') == 1) {
-		return array(SANITY_WARNING,gt('Failed'));
-	} else {
-		return array(SANITY_FINE,gt('Passed'));
-	}
-}
-
 function _sanity_checkXML() {
 	if (function_exists('xml_parser_create')) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
 		return array(SANITY_WARNING,gt('Failed'));
+	}
+}
+
+function _sanity_checkSafeMode() {
+	if (ini_get('safe_mode') == 1) {
+		return array(SANITY_WARNING,gt('Failed'));
+	} else {
+		return array(SANITY_FINE,gt('Passed'));
 	}
 }
 
@@ -230,16 +248,6 @@ function _sanity_checkTemp($dir) {
 		return array(SANITY_FINE,gt('Passed'));
 	} else {
 		return array(SANITY_ERROR,gt('Failed'));
-	}
-}
-
-function _sanity_checkDB() {
-//	$have_good = false;
-	
-	if (count(expDatabase::backends(1)) > 0) {
-		return array(SANITY_FINE,gt('Supported'));
-	} else {
-		return array(SANITY_ERROR,gt('No Databases Supported'));
 	}
 }
 

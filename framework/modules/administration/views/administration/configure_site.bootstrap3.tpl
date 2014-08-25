@@ -15,6 +15,8 @@
 
 {uniqueid assign="config"}
 
+{messagequeue}
+
 <div id="siteconfig" class="module administration configure-site bootstrap3">
 	<div class="form_header">
 		<div class="info-header">

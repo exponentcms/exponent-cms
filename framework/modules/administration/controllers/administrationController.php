@@ -1116,6 +1116,10 @@ class administrationController extends expController {
     public function configure_site () {
 	    expHistory::set('manageable',$this->params);
 
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'));
+        }
+
         // TYPES OF ANTISPAM CONTROLS... CURRENTLY ONLY ReCAPTCHA
         $as_types = array(
             '0'=>'-- '.gt('Please Select an Anti-Spam Control').' --',
@@ -1268,12 +1272,16 @@ class administrationController extends expController {
 	}
 
     public function update_siteconfig () {
-        foreach ($this->params['sc'] as $key => $value) {
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'));
+        } else {
+            foreach ($this->params['sc'] as $key => $value) {
 //            expSettings::change($key, addslashes($value));
-            expSettings::change($key, $value);
+                expSettings::change($key, $value);
+            }
+
+            flash('message', gt("Your Website Configuration has been updated"));
         }
-        
-        flash('message', gt("Your Website Configuration has been updated"));
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
     }
