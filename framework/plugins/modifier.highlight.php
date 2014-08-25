@@ -35,15 +35,18 @@
  *
  * @return array
  */
-function smarty_modifier_highlight($text='', $word='', $highlight='') {
+function smarty_modifier_highlight($text='', $word='', $highlight='html5') {
    if(strlen($text) > 0 && strlen($word) > 0) {
        $highlight = empty($highlight) ? 'style="background-color:#ffff55;"' : $highlight;
        $words = explode(' ',$word);
        $words = array_unique($words);  // no need to highlight duplicated words more than once
-       foreach ($words as $phrase) {
+       foreach ($words as $phrase) {   // highlight each word
            $phrase = str_replace(array('+','-','*'), '', $phrase);
-    //      return preg_replace('/\b('.preg_quote($word).')\b/', '<span class="highlight">${1}</span>', $text);
-           $text = preg_replace('/('.preg_quote($phrase).')/i', '<span '.$highlight.'>${1}</span>', $text);
+           if ($highlight == 'html5' && $phrase != 'mark') {
+               $text = preg_replace('/('.preg_quote($phrase).')/i', '<mark>${1}</mark>', $text);
+           } else {
+               $text = preg_replace('/('.preg_quote($phrase).')/i', '<span '.$highlight.'>${1}</span>', $text);
+           }
        }
    }
    return($text);
