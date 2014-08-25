@@ -61,7 +61,7 @@ if (!defined('EXPONENT')) {
         echo ' <a href="' . expCore::makeLink(array('controller' => 'file', 'action' => 'export_eql')) . '">' . gt(
                 'Export Database'
             ) . '</a> ';
-        echo gt("and then run the install/upgrade process again.");
+        echo gt("and then run the upgrade process again.");
         ?>
     </p>
 <?php } ?>

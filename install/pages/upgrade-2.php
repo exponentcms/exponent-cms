@@ -27,6 +27,14 @@ $status = sanity_checkFiles();
 $errcount = count($status);
 $warncount = 0; // No warnings with permissions
 
+if ($status['framework/conf/config.php'] == SANITY_NOT_RW) {
+    $config_not_w = true;
+    $errcount--;
+    $warncount++;
+} else {
+    $config_not_w = false;
+}
+
 // create the not_configured file since we're in the installer
 //if (!@file_exists(BASE . 'install/not_configured')) {
 //    $nc_file = fopen(BASE . 'install/not_configured', "w");
@@ -48,7 +56,9 @@ $warncount = 0; // No warnings with permissions
     $row = "even";
     foreach ($status as $file => $stat) {
         echo '<tr class="' . $row . '"><td>' . $file . '</td><td';
-        if ($stat != SANITY_FINE) {
+        if ($file == 'framework/conf/config.php' && $stat == SANITY_NOT_RW) {
+            echo ' class="bodytext warning">';
+        } elseif ($stat != SANITY_FINE) {
             echo ' class="bodytext failed">';
         } else {
             echo ' class="bodytext success">';
@@ -117,12 +127,10 @@ $warncount = 0; // No warnings with permissions
 
 <?php
 
-$write_file = 0;
-
 if ($errcount > 0) {
     // Had errors.  Force halt and fix.
     echo gt(
-        'The Exponent Install Wizard found some major problems with the server environment, which you must fix before you can continue.'
+        'The Exponent Upgrade Wizard found some major problems with the server environment, which you must fix before you can continue.'
     );
 
     if (ini_get('safe_mode') == true) {
@@ -136,6 +144,7 @@ if ($errcount > 0) {
 <?php
 } else {
     if ($warncount > 0) {
+        $errcount = 0;  // cancel out config.php write error
         ?><p><?php
         echo gt(
             'The Exponent Install Wizard found some minor problems with the server environment, but you should be able to continue.'
@@ -149,8 +158,13 @@ if ($errcount > 0) {
             );
             ?></p><?php
         }
-
-        $write_file = 1;
+        if ($config_not_w) {
+            ?><p class="important_message"><?php
+            echo gt(
+                'The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'
+            );
+            ?></p><?php
+        }
     } else {
         // No errors, and no warnings.  Let them through.
         ?><p><?php
@@ -168,8 +182,6 @@ if ($errcount > 0) {
             ?>
         </p>
         <?php
-
-        $write_file = 1;
     }
 }
 
@@ -181,37 +193,4 @@ if ($errcount == 0) {
 <?php
 }
 
-// create the overrides.php file if needed for installations in subfolders
-if ($write_file) {
-#	// The following checks work on Apache and IIS.  Any other success / failure stories are welcome.
-#	if (strtolower(substr(php_sapi_name(),0,3)) == 'cgi') {
-#		//In CGI mode SCRIPT_NAME is not correct, so we will try PATH_INFO first...
-#		// We need to strip off the last two things, filename and the install dirname.
-#		$components = implode('/',array_splice(split('/',$_SERVER['PATH_INFO']),0,-2)).'/';
-#	} else {
-#		// If we aren't in either cgi or cgi-fast, then we are compiled in and should use SCRIPT_NAME
-#		// We need to strip off the last two things, filename and the install dirname.
-#		$components = implode('/',array_splice(split('/',$_SERVER['SCRIPT_NAME']),0,-2)).'/';
-#	}
-
-    if (isset($_SERVER['SCRIPT_NAME'])) {
-        $scriptname = explode('/', $_SERVER['SCRIPT_NAME']);
-        $components = implode('/', array_splice($scriptname, 0, -2)) . '/';
-    } elseif (isset($_SERVER['PATH_INFO'])) {
-        $pathinfo = explode('/', $_SERVER['PATH_INFO']);
-        $components = implode('/', array_splice($pathinfo, 0, -2)) . '/';
-    } else {
-        $components = '/';
-    }
-
-    $path_relative = PATH_RELATIVE;
-
-    if ($components != $path_relative) {
-        $path_relative = $components;
-        $fh = fopen(BASE . 'overrides.php', 'w');
-        fwrite($fh, "<?php\r\n\r\ndefine('PATH_RELATIVE','$path_relative');\r\n\r\n?>\r\n");
-        fclose($fh);
-    }
-
-}
 ?>
