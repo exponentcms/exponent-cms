@@ -64,7 +64,7 @@ class search extends expRecord {
         $records = $db->selectObjectsBySql($sql);
         //eDebug($records);
 
-        // search results due to permissions...not sure what to do about that.
+        // modify search results based on permissions
         $recs = $records;
         for ($i = 0; $i < count($records); $i++) {
             if ($only_best && $records[$i]->score == 0) {
@@ -100,10 +100,12 @@ class search extends expRecord {
                             continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;
                         }
-                        $controller = expModules::getControllerClassName($recs[$i]->ref_module);
-//                        if (!$controller::searchHit($recs[$i])) {
-                        if (!call_user_func(array($controller, 'searchHit'), $recs[$i])) {
-                            unset($recs[$i]); // item is not available for viewing
+                        $controller = expModules::getController($recs[$i]->ref_module);
+                        if (method_exists($controller, 'searchHit')) {
+    //                        if (!$controller::searchHit($recs[$i])) {
+                            if (!call_user_func(array($controller, 'searchHit'), $recs[$i])) {
+                                unset($recs[$i]); // item is not available for viewing
+                            }
                         }
                     } else { // bad record in search index since it's not in sectionref table, don't display
 //                        eDebug($recs[$i]);
