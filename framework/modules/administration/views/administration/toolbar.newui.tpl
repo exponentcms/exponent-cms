@@ -24,9 +24,6 @@
     ]
 {/assocarray}
 
-{*{css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}*}
-
-{*{/css}*}
 {css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars2}
 
 {/css}
@@ -60,7 +57,7 @@
 
 <div class="exp-skin">  
 
-<header id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+<header id="admin-toolbar" class="navbar navbar-default navbar-fixed-{if $top}top{else}bottom{/if} navbar-inverse" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -96,7 +93,7 @@
 {script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
 {literal}
 jQuery(document).ready(function($) {
-    $('body').css('margin-top', $('#admin-toolbar').height()+10);
+    //$('body').css('margin-top', $('#admin-toolbar').height()+10);
 
     var adminerwindow = function (){
         var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
@@ -143,5 +140,24 @@ jQuery(document).ready(function($) {
     $('#fileuploader-toolbar').on('click',fileuploaderwindow);
     $('#workflow-toggle').on('click',workflowtoggle);
 });
+
+    $('.dropdown-toggle').click(function(e) {
+        e.preventDefault();
+        setTimeout($.proxy(function() {
+            if ('ontouchstart' in document.documentElement) {
+                $(this).siblings('.dropdown-backdrop').off().remove();
+            }
+        }, this), 0);
+    });
+
+    $(document).ready(function(){
+        if ({/literal}{$top}{literal}) {  // fixed top menu
+            $(document.body).css('margin-top', $('#admin-toolbar').height()+10);
+            $(document.body).css('margin-bottom', 0);
+        } else {  // fixed bottom menu
+            $(document.body).css('margin-top', 0);
+            $(document.body).css('margin-bottom', $('#admin-toolbar').height()+10);
+        }
+    });
 {/literal}
 {/script}
