@@ -364,66 +364,93 @@ class administrationController extends expController {
 	}
 
     public function toggle_minify() {
-        $newvalue = (MINIFY == 1) ? 0 : 1;
-    	expSettings::change('MINIFY', $newvalue);
-    	$message = ($newvalue) ? gt("Exponent is now minifying Javascript and CSS") : gt("Exponent is no longer minifying Javascript and CSS") ;
-    	flash('message',$message);
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Minification settings.'));
+        } else {
+            $newvalue = (MINIFY == 1) ? 0 : 1;
+            expSettings::change('MINIFY', $newvalue);
+            $message = ($newvalue) ? gt("Exponent is now minifying Javascript and CSS") : gt(
+                "Exponent is no longer minifying Javascript and CSS"
+            );
+            flash('message', $message);
+        }
     	expHistory::back();
     }
     
 	public function toggle_dev() {
-        $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
-	    expSettings::change('DEVELOPMENT', $newvalue);
-	    expTheme::removeCss();
-        expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
-		$message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt("Exponent is no longer in 'Development' mode") ;
-		flash('message',$message);
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Error Reporting settings.'));
+        } else {
+            $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
+            expSettings::change('DEVELOPMENT', $newvalue);
+            expTheme::removeCss();
+            expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
+            $message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt(
+                "Exponent is no longer in 'Development' mode"
+            );
+            flash('message', $message);
+        }
 		expHistory::back();
 	}
 
     public function toggle_log() {
-        $newvalue = (LOGGER == 1) ? 0 : 1;
-  	    expSettings::change('LOGGER', $newvalue);
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Logging settings.'));
+        } else {
+            $newvalue = (LOGGER == 1) ? 0 : 1;
+            expSettings::change('LOGGER', $newvalue);
+        }
   		expHistory::back();
   	}
 
 	public function toggle_maintenance() {
-        $newvalue = (MAINTENANCE_MODE == 1) ? 0 : 1;
-		expSettings::change('MAINTENANCE_MODE', $newvalue);
-		MAINTENANCE_MODE == 1 ? flash('message',gt("Exponent is no longer in 'Maintenance' mode")) : "" ;
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Maintenance settings.'));
+        } else {
+            $newvalue = (MAINTENANCE_MODE == 1) ? 0 : 1;
+            expSettings::change('MAINTENANCE_MODE', $newvalue);
+            MAINTENANCE_MODE == 1 ? flash('message', gt("Exponent is no longer in 'Maintenance' mode")) : "";
+        }
 		expHistory::back();
 	}
 
     public function toggle_workflow() {
         global $db;
 
-   	    $newvalue = (ENABLE_WORKFLOW == 1) ? 0 : 1;
-   	    expSettings::change('ENABLE_WORKFLOW', $newvalue);
-        $models = expModules::initializeModels();
-        if ($newvalue) {
-            // workflow is now turned on, initialize by approving all items
-            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to add workflow columns
-            foreach ($models as $modelname=>$modelpath) {
-                $model = new $modelname();
-                if ($model->supports_revisions) {
-                    $db->columnUpdate($model->tablename, 'approved', 1, 'approved=0');
-                }
-            }
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'));
         } else {
-            // workflow is now turned off, remove older revisions
-            foreach ($models as $modelname=>$modelpath) {
-                $model = new $modelname();
-                if ($model->supports_revisions) {
-                    $items = $model->find();
-                    foreach ($items as $item) {
-                        $db->trim_revisions($model->tablename, $item->id, 1, $newvalue);
+            $newvalue = (ENABLE_WORKFLOW == 1) ? 0 : 1;
+            expSettings::change('ENABLE_WORKFLOW', $newvalue);
+            $models = expModules::initializeModels();
+            if ($newvalue) {
+                // workflow is now turned on, initialize by approving all items
+                expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to add workflow columns
+                foreach ($models as $modelname => $modelpath) {
+                    $model = new $modelname();
+                    if ($model->supports_revisions) {
+                        $db->columnUpdate($model->tablename, 'approved', 1, 'approved=0');
                     }
                 }
+            } else {
+                // workflow is now turned off, remove older revisions
+                foreach ($models as $modelname => $modelpath) {
+                    $model = new $modelname();
+                    if ($model->supports_revisions) {
+                        $items = $model->find();
+                        foreach ($items as $item) {
+                            $db->trim_revisions($model->tablename, $item->id, 1, $newvalue);
+                        }
+                    }
+                }
+                expDatabase::install_dbtables(
+                    true,
+                    $newvalue
+                );  // force a strict table update to remove workflow columns
             }
-            expDatabase::install_dbtables(true, $newvalue);  // force a strict table update to remove workflow columns
+            $message = ($newvalue) ? gt("Exponent 'Workflow' is now ON") : gt("Exponent 'Workflow' is now OFF");
+            flash('message', $message);
         }
-   		$message = ($newvalue) ? gt("Exponent 'Workflow' is now ON") : gt("Exponent 'Workflow' is now OFF") ;
-   		flash('message',$message);
    		expHistory::back();
    	}
 
@@ -960,6 +987,11 @@ class administrationController extends expController {
 
     public function manage_themes() {
         expHistory::set('manageable', $this->params);
+
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change the theme.'));
+        }
+
     	$themes = array();
     	if (is_readable(BASE.'themes')) {
     		$dh = opendir(BASE.'themes');
@@ -998,6 +1030,9 @@ class administrationController extends expController {
     }
     
     public function theme_switch() {
+        if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
+            flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change the theme.'));
+        }
     	expSettings::change('DISPLAY_THEME_REAL', $this->params['theme']);
 	    expSession::set('display_theme',$this->params['theme']);
 	    $sv = isset($this->params['sv'])?$this->params['sv']:'';
