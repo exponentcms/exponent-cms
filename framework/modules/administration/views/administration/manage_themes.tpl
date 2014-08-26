@@ -17,6 +17,8 @@
 
 {/css}
 
+{messagequeue}
+
 <div class="module administration manage-themes admin-view">
 
     <div class="info-header">
