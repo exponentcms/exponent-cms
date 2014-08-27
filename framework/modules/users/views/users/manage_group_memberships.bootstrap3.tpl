@@ -45,16 +45,16 @@
                 </tr>
             </thead>
             <tbody>
-                {foreach from=$page->records item=user name=listings}
+                {foreach from=$page->records item=grp_user name=listings}
                     <tr>
-                        <td>{$user->username}</td>
-                        <td>{$user->firstname}</td>
-                        <td>{$user->lastname}</td>
+                        <td>{$grp_user->username}</td>
+                        <td>{$grp_user->firstname}</td>
+                        <td>{$grp_user->lastname}</td>
                         <td>
-                            {control type=checkbox name="memdata[`$user->id`][is_member]" value=1 checked=$user->is_member}
+                            {control type=checkbox name="memdata[`$grp_user->id`][is_member]" value=1 checked=$grp_user->is_member}
                         </td>
                         <td>
-                            {control type=checkbox name="memdata[`$user->id`][is_admin]" value=1 checked=$user->is_admin}
+                            {control type=checkbox name="memdata[`$grp_user->id`][is_admin]" value=1 checked=$grp_user->is_admin}
                         </td>
                     </tr>
                 {foreachelse}
