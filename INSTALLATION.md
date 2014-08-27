@@ -23,7 +23,8 @@ content from 1.0 to 2.0.
 ---------------------
 
 1. Download the latest package
-    - Check [http://www.exponentcms.org](http://www.exponentcms.org) for the latest available releases. 
+    - Check [http://www.exponentcms.org](http://www.exponentcms.org) or
+    [https://sourceforge.net/projects/exponentcms/files](https://sourceforge.net/projects/exponentcms/files) for the latest available releases.
 
 2. Unpack the archive in place on your web server
     - This can be locally if you have a web server installed on your computer, or on any number of linux-based hosts.

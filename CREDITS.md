@@ -52,7 +52,6 @@ Daniele Mezzetti - Various code contributions.
 Imran Somji - Pagination bug fix
 Dave Leffler - Many code contributions
 
-
 ----------
 
 Testing / Bug Hunting
