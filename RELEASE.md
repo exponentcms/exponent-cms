@@ -6,7 +6,7 @@ Copyright (c) 2004-2014 OIC Group, Inc.
 
 Release Notes for Exponent Content Management System
 
-For a complete list of the changes made from release to release, see the CHANGELOG.md
+For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
 ##2.3.0 - April 2014
 

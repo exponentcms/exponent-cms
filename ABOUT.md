@@ -59,7 +59,7 @@ its underlying simplicity and common sense.
 
 ###Exponent is the next generation CMS for everyone
 
-Please refer to the CHANGELOG for a full list of new Exponent features, and
+Please refer to [CHANGELOG.md](CHANGELOG.md) for a full list of new Exponent features, and
 a list of features coming up in future releases.
 
 Thank you for using Exponent!
