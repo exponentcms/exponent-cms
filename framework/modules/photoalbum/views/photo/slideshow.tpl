@@ -107,13 +107,13 @@
                         <a class="slide-page-link" href="#" rel="{$key}">{$smarty.foreach.slides.iteration}</a>
                     {/foreach}
                 </span>
-                <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title="Pause Slideshow"|gettext>
+                <a id="plps{$name}" href="javascript:void(0);" class="pause_slide" title={"Pause Slideshow"|gettext}>
                     {'Pause'|gettext}
                 </a>
-                <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title="Play Slideshow"|gettext>
+                <a id="plps{$name}" href="javascript:void(0);" class="play_slide hide" title={"Play Slideshow"|gettext}>
                     {'Play'|gettext}
                 </a>
-                <a id="next{$name}" href="javascript:void(0);" class="next_slide" title="Next Slide"|gettext>
+                <a id="next{$name}" href="javascript:void(0);" class="next_slide" title={"Next Slide"|gettext}>
                     {'Next'|gettext} &gt;&gt;
                 </a>
             </div>
