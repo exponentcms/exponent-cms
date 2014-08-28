@@ -348,7 +348,7 @@ class expJavascript {
         return "\r\n" . $jsForHead . "\r\n" . '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>' . "\r\n";
 	}
 	
-    public static function pushToFoot($params=null) {
+    public static function pushToFoot($params) {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
         // if within an ajax call, immediately output the javascript
