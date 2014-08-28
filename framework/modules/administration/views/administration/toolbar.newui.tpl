@@ -28,7 +28,20 @@
 
 {/css}
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
-
+    .exp-skin .navbar.navbar-fixed-bottom li.dropdown-submenu ul.dropdown-menu {
+        top: auto!important;
+        bottom: -6px;
+    }
+    .exp-skin .navbar.navbar-fixed-bottom .dropdown-menu:before {
+        border-bottom: 0px solid transparent !important;
+        border-top: 7px solid rgba(0, 0, 0, 0.2);
+        top: auto !important; bottom: -7px;
+    }
+    .exp-skin .navbar.navbar-fixed-bottom .dropdown-menu:after  {
+        border-bottom: 0px solid transparent !important;
+        border-top: 6px solid white;
+        top: auto !important; bottom: -6px;
+    }
 {/css}
 
 {* define the function to draw out the menus *}
