@@ -41,16 +41,6 @@
         js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";  //FIXME add &appId=ADD YOUR APP ID HERE ???
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
-
-//    $(window).bind("load resize", function(){
-//        var container_width = $('#fb-container-{/literal}{$name}{literal}').width();
-//        $('#fb-container-{/literal}{$name}{literal}').html('<div class="fb-like-box" ' +
-//            'data-href="{/literal}{$facebook_url}{literal}" ' +
-//            'data-width="' + container_width + '" data-height="{/literal}{$config.height}{literal}" data-show-faces="{/literal}{if $config.show_faces}true{else}false{/if}{literal}" ' +
-//            'data-colorscheme="{/literal}{$config.color_scheme}{literal}"{/if} data-show-border="{/literal}{if $config.show_border}true{else}false{/if}{literal}" ' +
-//            'data-stream="{/literal}{if $config.stream}true{else}false{/if}{literal}" data-header="{/literal}{if $config.show_header}true{else}false{/if}{literal}"></div>');
-//        FB.XFBML.parse( );
-//    });
 {/literal}
 {if $config.resp_width}
 {literal}
