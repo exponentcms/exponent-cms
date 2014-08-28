@@ -34,7 +34,7 @@
         {/permissions}
     {/if}
     {if $config.enable_follow && $config.twitter_user}
-        <a href="https://twitter.com/{$config.twitter_user}" class="twitter-follow-button" data-show-count="false" data-show-screen-name="{if $config.hideuser}false{else}true{/if} data-lang="en"">{'Follow'|gettext} @{$config.twitter_user}</a>
+        <a href="https://twitter.com/{$config.twitter_user}" class="twitter-follow-button" data-show-count="false" data-show-screen-name="{if $config.hideuser}false{else}true{/if} data-lang="en">{'Follow'|gettext} @{$config.twitter_user}</a>
         {script unique='tweet_src'}
         {literal}
             !function(d,s,id){
