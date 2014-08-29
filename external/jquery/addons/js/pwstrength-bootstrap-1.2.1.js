@@ -27,7 +27,7 @@ try {
     var validation = {};
 
     rulesEngine.forbiddenSequences = [
-        "0123456789", "abcdefghijklmnopqrstuvxywz", "qwertyuiop", "asdfghjkl",
+        "0123456789", "abcdefghijklmnopqrstuvwxyz", "qwertyuiop", "asdfghjkl",
         "zxcvbnm", "!@#$%^&*()_+"
     ];
 
@@ -546,6 +546,8 @@ var methods = {};
             verdictText,
             verdictLevel,
             score;
+
+        if (options === undefined) { return; }
 
         options.instances.errors = [];
         if (options.common.zxcvbn) {

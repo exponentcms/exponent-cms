@@ -57,9 +57,9 @@ if ($user->isAdmin()) {
                             array(
                                 'classname' => 'moreinfo',
                                 'info'      => '1',
-                                'text'      => $my_version . $my_type . $my_releasedate . "<br />" . gt(
-                                        "PHP Version"
-                                    ) . " : " . phpversion(),
+                                'text'      => $my_version . $my_type . $my_releasedate . "<br />" .
+                                    gt("PHP Version") . " : " . phpversion() . "<br />" .
+                                    gt("Max Upload") . " : " . expCore::maxUploadSize(),
                                 "disabled"  => true
                             ),
                             array(
