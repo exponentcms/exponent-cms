@@ -120,9 +120,6 @@
                 };
             });
 
-            //listens for a change in the view dropdown
-            viewpicker.on('change', EXPONENT.handleViewChange);
-
             // handles view picker changes
             EXPONENT.handleViewChange = function(e){
                 if (viewpicker.val()!='0') {
@@ -131,6 +128,9 @@
                     EXPONENT.disableSave();
                 };
             }
+
+            //listens for a change in the view dropdown
+            viewpicker.on('change', EXPONENT.handleViewChange);
 
             //resets both the viewpicker and actionpicker
             EXPONENT.resetActionsViews = function() {
