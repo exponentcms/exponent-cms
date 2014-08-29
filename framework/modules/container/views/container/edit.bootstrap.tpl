@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="exp-container edit">
+<div class="exp-container edit{if !$error} hide{/if}">
     <div class="info-header">
         <div class="related-actions">
             {if $user->isSuperAdmin()}
@@ -208,7 +208,7 @@
 
         // handles view picker changes
         EXPONENT.handleViewChange = function(e){
-            if (viewpicker.get("value")!=-1) {
+            if (viewpicker.get("value")!='0') {
                 EXPONENT.enableSave();
             }else{
                 EXPONENT.disableSave();
@@ -428,9 +428,7 @@
 
         Y.one('.loadingdiv').setStyle('display','none');
         Y.one('.exp-container.hide').removeClass('hide');
-
     });
-
     {/literal}
     {/script}
 {/if}
