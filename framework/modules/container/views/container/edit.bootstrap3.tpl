@@ -148,7 +148,7 @@
             //var actionDefaultOption = $('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>');
             actionpicker.append($('<option value="0">{/literal}{"-- No Module Selected --"|gettext}{literal}</option>'));
             actionpicker.val(0);
-            actionpicker.attr('disabled',1).attr('size',1);
+            actionpicker.attr('disabled',1);
             actionpicker.closest('div.control').addClass('disabled');
         }
 
@@ -158,7 +158,7 @@
             //var viewDefaultOption = $('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>');
             viewpicker.append($('<option value="0">{/literal}{"-- No Action Selected --"|gettext}{literal}</option>'));
             viewpicker.val(0);
-            viewpicker.attr('disabled',1).attr('size',1);
+            viewpicker.attr('disabled',1);
             viewpicker.closest('div.control').addClass('disabled');
             EXPONENT.disableSave();
         }
@@ -241,7 +241,7 @@
                         actionpicker.append($('<option></option>').attr('value',index).text(module));
                     });
 
-                    actionpicker.removeAttr('disabled').attr('size',actionpicker.find('option').length);
+                    actionpicker.removeAttr('disabled');
                     actionpicker.val(0);
                 }
             });
@@ -263,7 +263,7 @@
                         viewpicker.append($('<option></option>').attr('value',index).text(view));
                     });
 
-                    viewpicker.removeAttr('disabled').attr('size',viewpicker.find('option').length);
+                    viewpicker.removeAttr('disabled');
 
                     if (is_edit) {
                         viewpicker.val(current_view);
