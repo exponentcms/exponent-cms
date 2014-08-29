@@ -31,7 +31,7 @@
 {/literal}
 {/css}
 
-<div class="module {* container *} flyout{$side} thetop" style="display: none;">
+<div class="module flyout{$side} thetop" style="display: none;">
     {if !empty($moduletitle) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}
         {$tag = $moduletitle}
         <{$config.heading_level|default:'h4'}>{$moduletitle}</{$config.heading_level|default:'h4'}>
