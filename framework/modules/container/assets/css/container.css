@@ -25,8 +25,7 @@ div.containermodule.main-wrapper {
 * Three Column View
 */
 .containermodule.three-column .col1,
-.containermodule.three-column .col2,
-.containermodule.three-column .col3 {
+.containermodule.three-column .col2 {
     width:31%;
     float:left;
 }
@@ -35,5 +34,23 @@ div.containermodule.main-wrapper {
 }
 .containermodule.three-column .col3 {
     width:32%;
+    float:right;
+}
+
+/**
+* Four Column View
+*/
+.containermodule.four-column .col1,
+.containermodule.four-column .col2,
+.containermodule.four-column .col3 {
+    width:23%;
+    float:left;
+}
+.containermodule.four-column .col2,
+.containermodule.four-column .col3 {
+    margin-left:1.0em;
+}
+.containermodule.four-column .col4 {
+    width:24%;
     float:right;
 }
