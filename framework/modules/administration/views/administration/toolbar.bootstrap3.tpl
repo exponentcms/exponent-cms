@@ -15,8 +15,6 @@
 
 {assocarray}
     lessvars: [
-        swatch: "cerulean"
-        themepath: "cerulean"
         btn_size: "small"
     ]
 {/assocarray}
@@ -77,6 +75,20 @@
         }
     {/if}
 {/if}
+    .exp-skin .navbar.navbar-fixed-bottom li.dropdown-submenu ul.dropdown-menu {
+        top: auto!important;
+        bottom: -6px;
+    }
+    .exp-skin .navbar.navbar-fixed-bottom .dropdown-menu:before {
+        border-bottom: 0px solid transparent !important;
+        border-top: 7px solid rgba(0, 0, 0, 0.2);
+        top: auto !important; bottom: -7px;
+    }
+    .exp-skin .navbar.navbar-fixed-bottom .dropdown-menu:after  {
+        border-bottom: 0px solid transparent !important;
+        border-top: 6px solid white;
+        top: auto !important; bottom: -6px;
+    }
 {/css}
 
 {* define the function to draw out the menus *}
@@ -105,7 +117,7 @@
 {/function}
 
 <div class="exp-skin">
-    <header id="admin-toolbar" class="navbar navbar-default navbar-fixed-top navbar-inverse" role="navigation">
+    <header id="admin-toolbar" class="navbar navbar-default navbar-fixed-{if $top}top{else}bottom{/if} navbar-inverse" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -189,6 +201,25 @@
         $('#filemanager-toolbar').on('click',filepickerwindow);
         $('#fileuploader-toolbar').on('click',fileuploaderwindow);
         $('#workflow-toggle').on('click',workflowtoggle);
+    });
+
+    $('.dropdown-toggle').click(function(e) {
+        e.preventDefault();
+        setTimeout($.proxy(function() {
+            if ('ontouchstart' in document.documentElement) {
+                $(this).siblings('.dropdown-backdrop').off().remove();
+            }
+        }, this), 0);
+    });
+
+    $(document).ready(function(){
+        if ({/literal}{$top}{literal}) {  // fixed top menu
+            $(document.body).css('margin-top', $('#admin-toolbar').height()+10);
+            $(document.body).css('margin-bottom', 0);
+        } else {  // fixed bottom menu
+            $(document.body).css('margin-top', $('#topnavbar').height());
+            $(document.body).css('margin-bottom', $('#admin-toolbar').height()+10);
+        }
     });
 {/literal}
 {/script}

@@ -15,16 +15,11 @@
 
 {assocarray}
     lessvars: [
-        swatch: "cerulean"
-        themepath: "cerulean"
-        btn_size: "small"
-    ]
-    lessvars2: [
         menu_width: "769"
     ]
 {/assocarray}
 
-{css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars2}
+{css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars}
 
 {/css}
 {css unique="exp-toolbar" lesscss="`$asset_path`less/exp-toolbar.less"}
@@ -68,8 +63,7 @@
 {/if}
 {/function}
 
-<div class="exp-skin">  
-
+<div class="exp-skin">
 <header id="admin-toolbar" class="navbar navbar-default navbar-fixed-{if $top}top{else}bottom{/if} navbar-inverse" role="navigation">
   <!-- Brand and toggle get grouped for better mobile display -->
   <div class="navbar-header">
