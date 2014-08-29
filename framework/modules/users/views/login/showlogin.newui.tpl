@@ -19,7 +19,7 @@
 
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 
-        <div class="container">
+        <div class="">
             <div class="row">
                 <div class="col-xs-6">
                     <div>
