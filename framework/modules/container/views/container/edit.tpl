@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="exp-container edit {if !$error}hide{/if}">
+<div class="exp-container edit">
     <div class="info-header">
         <div class="related-actions">
             {if $user->isSuperAdmin()}
