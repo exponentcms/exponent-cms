@@ -1121,6 +1121,11 @@ abstract class expController {
         return $perms;
     }
 
+    // create a psuedo global manage pages permission
+    public static function checkPermissions($permission,$location) {
+        return false;
+    }
+
     /**
      * get the models associated with this module
      *
