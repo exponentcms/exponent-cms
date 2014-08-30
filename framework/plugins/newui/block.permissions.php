@@ -45,7 +45,7 @@ if (!function_exists('smarty_block_permissions')) {
                 if ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) {
                     $cntnt = "";
                 } else {
-                    // if (empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
+                     if (empty($css_core['admin-global'])) expCSS::pushToHead(array("corecss"=>"admin-global"));
                     $cntnt = ((isset($uilevel) && $uilevel == UILEVEL_PREVIEW) || !$user->isLoggedIn()) ? "" : $content;
                 }
                 return $cntnt;
