@@ -91,10 +91,8 @@ class expPermissions {
         }
 
         if (expModules::controllerExists($location->mod)) {
-            $mod = expModules::getController($location->mod);
-            if (method_exists($mod, 'checkPermissions')){
-                if ($mod->checkPermissions($permission,$location)) return true;
-            }
+            $mod = expModules::getControllerClassName($location->mod);
+            if ($mod::checkPermissions($permission,$location)) return true;
         }
 
         $ploc = clone $location;
