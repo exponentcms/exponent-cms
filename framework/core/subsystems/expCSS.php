@@ -392,24 +392,33 @@ class expCSS {
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
                             ));
                         }
+                        if (MINIFY==1&&MINIFY_LESS==1) {
+                            $less->setOptions(array(
+                                'compress'         => true,  // compress output file?
+                            ));
+                        }
                         $less->setVariables($vars);
 
-                        $new_cache = $less->cachedCompile($cache, false);
-                        if (!file_exists(BASE . $css_fname) || !is_array(
-                                $cache
-                            ) || $new_cache['updated'] > $cache['updated']
-                        ) {
-                            if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
-                                $new_cache['vars'] = !empty($vars) ? $vars : null;
-                                $css_loc = pathinfo(BASE . $css_fname);
-                                if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname']
-                                ); // create /css output folder if it doesn't exist
-                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
-                                file_put_contents($cache_fname, serialize($new_cache));
+                        try {
+                            $new_cache = $less->cachedCompile($cache, false);
+                            if (!file_exists(BASE . $css_fname) || !is_array(
+                                    $cache
+                                ) || $new_cache['updated'] > $cache['updated']
+                            ) {
+                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                    $new_cache['vars'] = !empty($vars) ? $vars : null;
+                                    $css_loc = pathinfo(BASE . $css_fname);
+                                    if (!is_dir($css_loc['dirname'])) mkdir(
+                                        $css_loc['dirname']
+                                    ); // create /css output folder if it doesn't exist
+                                    file_put_contents(BASE . $css_fname, $new_cache['compiled']);
+                                    file_put_contents($cache_fname, serialize($new_cache));
+                                }
                             }
+                            return true;
+                        } catch(Exception $e) {
+                            flash('error', gt('Less compiler') . ': ' .$e->getMessage());
                         }
-                        return true;
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
                         return false;
