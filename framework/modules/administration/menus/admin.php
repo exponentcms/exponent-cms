@@ -36,13 +36,15 @@ $my_releasedate = gt("Release date") . " : " . date("F-d-Y", EXPONENT_VERSION_BU
 
 if (expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) {
     $admin_text = 'Admin';
+    $admin_icon = 'fa-star';
 } else {
     $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">';
+    $admin_icon = '';
 }
 if ($user->isAdmin()) {
     $expAdminMenu = array(
         'text'      => $admin_text,
-        'icon'      => 'fa-star',
+        'icon'      => $admin_icon,
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',
@@ -103,7 +105,8 @@ if ($user->isAdmin()) {
     );
 } else {
     $expAdminMenu = array(
-        'text'      => '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">',
+        'text'      => $admin_text,
+        'icon'      => $admin_icon,
         'classname' => 'site',
         'submenu'   => array(
             'id'       => 'admin',
