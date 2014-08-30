@@ -202,6 +202,10 @@ class expJavascript {
 
             foreach ($expJS as $file) {
                 if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
+                    if ($file['name'] == 'ckeditor') {
+                        $scripts .= "\t".'<script type="text/javascript" src="'.$file['fullpath'].'"></script>'."\r\n";
+                        continue;
+                    }
                     if (strlen($srt[$i])+strlen($file['fullpath'])<= $strlen && $i <= MINIFY_MAX_FILES) {
                         $srt[$i] .= $file['fullpath'].",";
                     } else {
