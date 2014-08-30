@@ -21,3 +21,14 @@
         </div>
     </div>
 {/permissions}
+
+{script unique="hard-coded-module" jquery=1}
+{literal}
+    $(document).ready(function(){
+        // move hard coded mod menus inside the mod wrapper they pertain to
+        $('.hardcoded-chrome').each(function(k,node){
+            $(node.parentNode).next().prepend($(node.parentNode));
+        });
+    });
+{/literal}
+{/script}
