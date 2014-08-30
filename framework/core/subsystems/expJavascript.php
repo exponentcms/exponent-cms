@@ -202,7 +202,7 @@ class expJavascript {
 
             foreach ($expJS as $file) {
                 if (!empty($file['fullpath']) && file_exists($_SERVER['DOCUMENT_ROOT'].$file['fullpath'])) {
-                    if ($file['name'] == 'ckeditor') {
+                    if ($file['name'] == 'ckeditor' || $file['name'] == 'tinymce') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.$file['fullpath'].'"></script>'."\r\n";
                         continue;
                     }
