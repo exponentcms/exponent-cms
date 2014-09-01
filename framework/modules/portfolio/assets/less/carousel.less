@@ -1,0 +1,103 @@
+/********************************* Carousel *******************************/
+
+.cu-controls {
+	position: relative;
+	padding: 0 15px 12px;
+}
+
+/*.cu-controls > div {*/
+	/*padding-right: 0;*/
+	/*padding-left: 0;*/
+/*}*/
+
+.cu-controls a.sercacontrol {
+	border-radius: 50%;
+	border: 1px solid #dddddd;
+	color: #aaaaaa;
+	display: block;
+	padding: 10px;
+	position: absolute;
+	background: #fff;
+	line-height: 1.0;
+}
+
+/*.cu-controls a.sercacontrol:hover {*/
+/*color: #00885e;*/
+/*border: 1px solid #00c88a;*/
+/*}*/
+
+.cu-controls a.sercacontrol.next {
+	left: 100%;
+	margin-left: -36px;
+}
+
+.cu-controls .carousel-indicators {
+	width: 95%;
+	position: static;
+	margin: 0 auto;
+}
+
+.cu-controls .carousel-indicators li {
+	background: none;
+	border-radius: 0;
+	border: none;
+	height: auto;
+	margin: 0;
+	text-indent: 0;
+}
+
+.cu-controls .carousel-indicators li.middle {
+	border-top: 1px solid #dddddd;
+//	width: 25%;
+	display: block;
+	float: left;
+	font-size: 1.3em;
+	margin-top: 15px;
+	padding-top: 7px;
+	text-align: center;
+}
+
+.cu-controls .carousel-indicators li.middle:hover,
+.cu-controls .carousel-indicators li.middle.active {
+	padding-top: 5px;
+}
+
+.cu-controls a.sercacontrol:hover {
+	color: #525252;
+	border: 1px solid #525252;
+}
+
+.cu-controls .carousel-indicators li.middle:hover,
+.cu-controls .carousel-indicators li.middle.active {
+	border-top: 3px solid #1a1530;
+	color: #1a1530;
+}
+
+.carousel-fade {
+  .carousel-inner {
+    .item {
+      opacity: 0;
+      transition-property: opacity;
+    }
+
+    .active {
+      opacity: 1;
+    }
+
+    .active.left,
+    .active.right {
+      left: 0;
+      opacity: 0;
+      z-index: 1;
+    }
+
+    .next.left,
+    .prev.right {
+      opacity: 1;
+    }
+  }
+
+  .carousel-control {
+    z-index: 2;
+  }
+}
