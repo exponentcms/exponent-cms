@@ -51,18 +51,18 @@
         {foreach name=items from=$page->cats key=catid item=cat}
             <div id="item{$catid}" class="panel panel-default">
                 <div class="panel-heading">
-                <div class="panel-title"><a data-toggle="collapse" data-parent="#portfolio-{$id}" href="#collapse-{$catid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</{$config.item_level|default:'h2'}></a></div>
+                    <div class="panel-title"><a data-toggle="collapse" data-parent="#portfolio-{$id}" href="#collapse-{$catid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $cat->name ==""}{if $config.uncat == ""}{'The List'|gettext}{else}{$config.uncat}{/if}{else}{$cat->name}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
                 <div id="collapse-{$catid}" class="panel-collapse collapse{if $smarty.foreach.items.iteration==1 && $config.initial_view == '3'} in{/if}">
-                <div class="piece panel-body">
-                    <ul>
-                        {foreach from=$cat->records item=item}
-                            <li>
-                                {exp_include file='portfolioitem.tpl'}
-                            </li>
-                        {/foreach}
-                    </ul>
-                </div>
+                    <div class="piece panel-body">
+                        <ul>
+                            {foreach from=$cat->records item=item}
+                                <li>
+                                    {exp_include file='portfolioitem.tpl'}
+                                </li>
+                            {/foreach}
+                        </ul>
+                    </div>
                 </div>
             </div>
         {/foreach}
@@ -71,8 +71,7 @@
 
 {script unique="accordion" bootstrap="collapse,transition"}
 {literal}
-    $(document).ready(function(){
-    });
+
 {/literal}
 {/script}
 
