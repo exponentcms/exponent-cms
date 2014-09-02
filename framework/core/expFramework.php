@@ -994,12 +994,12 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
 function eDebug($var, $halt=false){
 	if (DEVELOPMENT) {
         if (LOGGER) {
-            if(is_array($var) || is_object($var)) {
-                $pvar = print_r($var, true);
-            } else {
-                $pvar = $var;
-            }
-            echo("<script>YUI().use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
+//            if(is_array($var) || is_object($var)) {
+//                $pvar = print_r($var, true);
+//            } else {
+//                $pvar = $var;
+//            }
+//            echo("<script>YUI().use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
             echo "<pre>";
