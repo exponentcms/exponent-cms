@@ -77,6 +77,9 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
                 $for = ' for="' . $name . '"';
             }
+            if (empty($label)) {
+                $for = '';
+            }
             $html = "<div" . $divID . " class=\"checkbox control form-group";
             $html .= (!empty($this->required)) ? ' required">' : '">';
             $html .= "<label" . $for . " class=\" ".(bs3()?"control-label ":"")."checkbox control\" style=\"display:inline;\">";
