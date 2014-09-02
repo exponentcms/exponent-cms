@@ -73,7 +73,7 @@
                     <thead>
                         <tr>
                             <th>
-                                <a class="selectall" href="#" id="sa_conts" onclick="EXPONENT.selectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts" onclick="EXPONENT.unSelectAllCheckboxes('#tab1 input[type=checkbox]'); return false;">{"Select None"|gettext}</a>
+                                <a class="selectall" href="#" id="sa_conts" onclick="selectAll(1); return false;">{"Select All"|gettext}</a> / <a class="selectnone" href="#" id="sn_conts" onclick="selectAll(0); return false;">{"Select None"|gettext}</a>
                             </th>
                         </tr>
                     </thead>
@@ -82,7 +82,7 @@
                         <tr class="{cycle values="odd,even"}{if $module->active == 1} active{/if}">
                             <td class="activate">
                             <label>
-                                <input type="checkbox" name="mods[{$module->class}]"{if $module->active == 1} checked {/if}value=1>
+                                <input type="checkbox" class="selectbox" name="mods[{$module->class}]"{if $module->active == 1} checked{/if} value=1>
                                 <strong>
                                     {$module->name}
                                 </strong>
@@ -136,29 +136,36 @@
     {/form}
 </div>
 
-{script unique="filetabs" yui3mods=1}
+{script unique="selectall"}
 {literal}
 //    EXPONENT.YUI3_CONFIG.modules.exptabs = {
 //        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
 //        requires: ['history','tabview','event-custom']
 //    };
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+//	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
 //        Y.expTabs({srcNode: '#mod-manager-tabs'});
 //		Y.one('#mod-manager-tabs').removeClass('hide');
 //		Y.one('.loadingdiv').remove();
 
-		EXPONENT.selectAllCheckboxes = function (selector) {
-			Y.all(selector).each(function(n){
-				n.set('checked',1);
-			});
-		};
+//		EXPONENT.selectAllCheckboxes = function (selector) {
+//			Y.all(selector).each(function(n){
+//				n.set('checked',1);
+//			});
+//		};
 
-		EXPONENT.unSelectAllCheckboxes = function (selector) {
-			Y.all(selector).each(function(n){
-				n.set('checked',0);
-			});
-		};
-	});
+//		EXPONENT.unSelectAllCheckboxes = function (selector) {
+//			Y.all(selector).each(function(n){
+//				n.set('checked',0);
+//			});
+//		};
+//	});
+
+    function selectAll(val) {
+        var checks = document.getElementsByClassName('selectbox');
+        for (var i = 0; i < checks.length; i++) {
+          checks[i].checked = val;
+        }
+    }
 {/literal}
 {/script}
