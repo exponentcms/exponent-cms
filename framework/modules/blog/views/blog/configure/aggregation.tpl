@@ -66,6 +66,7 @@
           checks[i].checked = val;
         }
     }
+
     YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         var aggnodes = Y.one('#aggregation-list');
         EXPONENT.handleClick = function(e) {

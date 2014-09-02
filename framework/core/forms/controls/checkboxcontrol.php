@@ -69,6 +69,9 @@ class checkboxcontrol extends formcontrol {
 //            $for   = '';
                 $for = ' for="' . $name . '"';
             }
+            if (empty($label)) {
+                $for = '';
+            }
             $html = "<div" . $divID . " class=\"control checkbox";
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if (!empty($this->flip)) {
