@@ -118,26 +118,29 @@ function smarty_compiler_exp_include($_params, &$compiler)
                     //FIXME we need to check for custom views and add full path for system views if coming from custom view
                     $framework = framework();
                     if (file_exists(BASE . $themepath . $include_file . '.' . $type)) {
-                        $include_file = BASE . $themepath . $include_file . '.' . $type;
+                        $include_file = BASE . $themepath . $include_file . '.' . $type;  // theme custom view gets priority
                     } elseif ($framework == 'bootstrap' || $framework == 'bootstrap3') {
                         $tmp_include = $include_file;
+                        $bs_file_found = false;
                         if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
-                            $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;
+                            $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;  // bootstrap3 falls back to bootstrap
+                            $bs_file_found = true;
                         }
                         if ($framework == 'bootstrap3' && file_exists(
                                 BASE . $path . $tmp_include . '.bootstrap3.' . $type
                             )
                         ) {
                             $include_file = BASE . $path . $tmp_include . '.bootstrap3.' . $type;
-                        } else {
-                            $include_file = BASE . $path . $include_file . '.' . $type;
+                            $bs_file_found = true;
+                        } elseif (!$bs_file_found) {
+                            $include_file = BASE . $path . $include_file . '.' . $type;  // fall back to plain
                         }
                     } else {
                         if (NEWUI) {
                             if (file_exists(BASE . $path . $include_file . '.newui.' . $type)) {
                                 $include_file = BASE . $path . $include_file . '.newui.' . $type;
                             } else {
-                                $include_file = BASE . $path . $include_file . '.' . $type;
+                                $include_file = BASE . $path . $include_file . '.' . $type;  // newui falls back to plain
                             }
                         } else {
                             $include_file = BASE . $path . $include_file . '.' . $type;
