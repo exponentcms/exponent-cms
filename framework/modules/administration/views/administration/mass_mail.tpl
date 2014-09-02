@@ -42,17 +42,23 @@
     {/form}
 </div>
 
-{script unique="mass-mailer" yui3mods=1}
+{script unique="mass-mailer" jquery=1}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-        var mailall = Y.all('input.emailall');
-        var emailnodes = Y.all('div.email');
-        mailall.on('click',function(e){
-            if (e.currentTarget.get('checked')) {
-                emailnodes.setStyle('display','none');
-            } else {
-                emailnodes.setStyle('display','block');
-            }
+//    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+//        var mailall = Y.all('input.emailall');
+//        var emailnodes = Y.all('div.email');
+//        mailall.on('click',function(e){
+//            if (e.currentTarget.get('checked')) {
+//                emailnodes.setStyle('display','none');
+//            } else {
+//                emailnodes.setStyle('display','block');
+//            }
+//        });
+//    });
+
+    $(document).ready(function(){
+        $("input.emailall").click(function(){
+            $("div.email").toggle(!this.checked);
         });
     });
 {/literal}

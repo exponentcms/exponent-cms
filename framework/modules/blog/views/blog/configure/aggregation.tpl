@@ -59,7 +59,8 @@
 </table>
 </div>
 
-{script unique="aggregation"}
+{script unique="aggregation" jquery=1}
+{literal}
     function selectAll(val) {
         var checks = document.getElementsByName("aggregate[]");
         for (var i = 0; i < checks.length; i++) {
@@ -67,18 +68,26 @@
         }
     }
 
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-        var aggnodes = Y.one('#aggregation-list');
-        EXPONENT.handleClick = function(e) {
-            if (e.currentTarget.get('checked')) {
-                aggnodes.setStyle('display','block');
-            } else {
-                aggnodes.setStyle('display','none');
-            }
-        };
-        Y.one('#add_sourceControl').delegate('click', EXPONENT.handleClick, "#add_source");
-        if (!Y.one('#add_source').get('checked')) {
-            aggnodes.setStyle('display','none');
-        }
+    $(document).ready(function(){
+        $("#add_source").click(function(){
+            $("#aggregation-list").toggle(this.checked);
+        });
+        if ($("#add_source").checked) $("#aggregation-list").toggle();
     });
+
+//    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+//        var aggnodes = Y.one('#aggregation-list');
+//        EXPONENT.handleClick = function(e) {
+//            if (e.currentTarget.get('checked')) {
+//                aggnodes.setStyle('display','block');
+//            } else {
+//                aggnodes.setStyle('display','none');
+//            }
+//        };
+//        Y.one('#add_sourceControl').delegate('click', EXPONENT.handleClick, "#add_source");
+//        if (!Y.one('#add_source').get('checked')) {
+//            aggnodes.setStyle('display','none');
+//        }
+//    });
+{/literal}
 {/script}
