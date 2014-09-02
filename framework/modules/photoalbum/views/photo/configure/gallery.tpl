@@ -70,7 +70,6 @@
             </div>
         </div>
     </div>
-
 {/group}
 {group label="Detail Page or Lightbox"|gettext}
     {control type=text name="pa_showall_enlarged" label="Box size for enlarged images"|gettext value=$config.pa_showall_enlarged|default:300 size="5"}
