@@ -104,7 +104,7 @@ class yuidatetimecontrol extends formcontrol
             $html .= '<div class="checkbox control form-group"';
             $html .= '<label for="pub-' . $idname . '" class="control-label"><input id="pub-' . $idname . '" type="checkbox" class="checkbox form-control" name="' . $name . '"';
             $html .= ($this->checked ? ' checked> ' . $this->edit_text : '> ') . $this->edit_text . '</label></div>';
-            $html .= "<!-- cke lazy -->";
+//            $html .= "<!-- cke lazy -->";
             $html .= '<div ';
             $html .= $this->checked ? 'style="display:none"' : 'style="display:block"';
             $html .= ' id="datetime-' . $idname . '">';
@@ -117,27 +117,39 @@ class yuidatetimecontrol extends formcontrol
             $html .= '</div>';
         }
 
-        $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
-            var handleCheck" . $idname . " = function(e) {
-                var cal = Y.one('#datetime-" . $idname . "');
-                if (cal.getStyle('display')=='none') {
-                    cal.setStyle('display','block');
-                } else {
-                    cal.setStyle('display','none');
-                }
-                $('#" . $idname . "date').datetimepicker('update');
-            };
-            Y.Global.on('lazyload:cke', function() {
-                Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
-                Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
+//        $script = "
+//        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
+//            var handleCheck" . $idname . " = function(e) {
+//                var cal = Y.one('#datetime-" . $idname . "');
+//                if (cal.getStyle('display')=='none') {
+//                    cal.setStyle('display','block');
+//                } else {
+//                    cal.setStyle('display','none');
+//                }
 //                $('#" . $idname . "date').datetimepicker('update');
+//            };
+//            Y.Global.on('lazyload:cke', function() {
+//                Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
+//                Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
+////                $('#" . $idname . "date').datetimepicker('update');
+//            });
+//            if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
+//                Y.Global.fire('lazyload:cke');
+//            }
+////            $('#" . $idname . "date').datetimepicker('update');
+//        });
+//        ";
+        $script = "
+            $(document).ready(function(){
+                $('#pub-" . $idname . "').click(function(){
+                    if (this.checked) {
+                        $('#datetime-" . $idname . "').hide('slow');
+                    } else {
+                        $('#datetime-" . $idname . "').show('slow');
+                    }
+                    $('#" . $idname . "date').datetimepicker('update');
+                });
             });
-            if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
-                Y.Global.fire('lazyload:cke');
-            }
-//            $('#" . $idname . "date').datetimepicker('update');
-        });
         ";
 
         expJavascript::pushToFoot(
