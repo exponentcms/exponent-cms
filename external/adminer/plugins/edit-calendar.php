@@ -82,7 +82,7 @@ class AdminerEditCalendar {
                     jQuery('#fields-" . js_escape($field['field']) . "').val(dt);
                 }";
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
-                "<input id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
+                "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
                     . ((preg_match("~eventstart~", $field["field"]) || preg_match("~eventend~", $field["field"])) ? "timepicker({ $timeFormat })"
                     : (preg_match("~_at|publish|_accessed|posted|timestamp~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
