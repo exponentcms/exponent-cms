@@ -70,9 +70,13 @@
 
     $(document).ready(function(){
         $("#add_source").click(function(){
-            $("#aggregation-list").toggle(this.checked);
+            if (this.checked) {
+                $("#aggregation-list").show("slow");
+            } else {
+                $("#aggregation-list").hide("slow");
+            }
         });
-        if ($("#add_source").checked) $("#aggregation-list").toggle();
+        if ($("#add_source").checked) $("#aggregation-list").show();
     });
 
 //    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
