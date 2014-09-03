@@ -45,7 +45,7 @@ stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate op
 validate,1.13.0exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
-timepicker,1.4.6,http://trentrichardson.com/examples/timepicker/,1.4.6,used by adminer
+timepicker,1.5.0,http://trentrichardson.com/examples/timepicker/,1.5.0,used by adminer
 DataTables,1.10.2,http://www.datatables.net,1.10.2,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.2,http://www.datatables.net,2.2.2,
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
@@ -61,5 +61,5 @@ pwstrength-bootstrap,1.2.1,https://github.com/ablanco/jquery.pwstrength.bootstra
 jquery-sortable,0.9.12,http://johnny.github.com/jquery-sortable/,0.9.12,
 jstree,3.0.3,https://github.com/vakata/jstree,3.0.3,added nav menu icons to stylesheet
 bootstrap3-dialog,1.33.4,https://github.com/nakupanda/bootstrap3-dialog,1.33.4,
-impromptu,5.2.4,http://trentrichardson.com/Impromptu,5.2.4,
+impromptu,5.2.5,http://trentrichardson.com/Impromptu,5.2.5,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
