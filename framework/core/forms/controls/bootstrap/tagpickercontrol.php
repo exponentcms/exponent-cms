@@ -95,13 +95,24 @@ class tagpickercontrol extends formcontrol {
         $textbox->class    = $this->class;
 
         expJavascript::pushToFoot(array(
-            "unique"  => 'tag-it',
-            "jquery"=> 'jqueryui,tag-it',
+            "unique"  => 'tagsinput',
+            "jquery"=> 'bootstrap-tagsinput,typeahead.bundle',
         ));
         $script = "
-            $('#expTag').tagit({
-                availableTags: [".$this->taglist."],
-                allowSpaces: true
+            var tags = [".$this->taglist."];
+            var exptags = new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                local: $.map(tags, function(tag) { return { value: tag }; })
+            });
+            exptags.initialize();
+
+            $('#expTag').tagsinput({
+                typeaheadjs: {
+                    name: 'exptags',
+                    displayKey: 'value',
+                    source: exptags.ttAdapter()
+                }
             });
         ";
         expJavascript::pushToFoot(array(

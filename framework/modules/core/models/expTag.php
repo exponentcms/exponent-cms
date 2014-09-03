@@ -48,7 +48,7 @@ class expTag extends expRecord {
         $tags = $db->selectObjects('expTags', '1', 'title ASC');
         $taglist = '';
         foreach ($tags as $tag) {
-            $taglist .= "'" . $tag->title . "',";
+            if (!empty($tag->title)) $taglist .= "'" . $tag->title . "',";
         }
         return $taglist;
     }
