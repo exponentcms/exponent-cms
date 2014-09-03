@@ -90,19 +90,19 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             $newui_class = '';
         }
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms1',
+            "unique"  => 'html5forms-1mod',
             "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
         ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms2',
+            "unique"  => 'html5forms-2eh',
             "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
         ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms3',
+            "unique"  => 'html5forms-3wf',
             "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
         ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms4',
+            "unique"  => 'html5forms-4fb',
             "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
             "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
         ));
