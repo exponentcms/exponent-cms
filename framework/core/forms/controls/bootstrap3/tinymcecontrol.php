@@ -159,10 +159,7 @@ class tinymcecontrol extends formcontrol
             ";
         }
         $content = "
-//        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
-        $(document).ready(function(){
-//            Y.Global.on(\"lazyload:cke\", function () {
-//                if(!Y.Lang.isUndefined(EXPONENT.editor" . createValidId($name) . ")){
+            $(document).ready(function(){
                 if(typeof(EXPONENT.editor" . createValidId($name) . ") !== 'undefined'){
                     return true;
                 };
@@ -244,31 +241,24 @@ class tinymcecontrol extends formcontrol
                         return false;
                     },
                 });
-
-//            });
-//            if (!Y.one('#" . createValidId($name) . "').ancestor('.exp-skin-tabview')) {
-//                Y.Global.fire('lazyload:cke');
-//            }
-        });
+            });
         ";
 
         expJavascript::pushToFoot(
             array(
                 "unique" => "000-tinymce" . $name,
 //                "yui3mods" => "1",
+                "jquery" => "1",
                 "content" => $content,
-                //"src"=>PATH_RELATIVE."external/tinymce/tinymce.min.js"
             )
         );
-//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/tinymce/tinymce.min.js\"></script>";
         expJavascript::pushToFoot(
             array(
                 "unique" => "tinymce",
                 "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
             )
         );
-        // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-//        $html = "<!-- cke lazy -->";
+
         $html = "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";

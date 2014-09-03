@@ -21,7 +21,6 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
-//FIXME this is NOT a bootstrap control, but jQuery
 /**
  * Date Picker Control using jQuery datetimepicker
  * standard calendar control
@@ -125,20 +124,10 @@ class yuicalendarcontrol extends formcontrol
                 });
                 $('#" . $idname . "').datetimepicker('update');
             });
-//            YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
-//                Y.Global.on('lazyload:cke', function() {
-//                    $('#" . $idname . "').datetimepicker('update');
-//                });
-//                if (!Y.one('#" . $idname . "').ancestor('.exp-skin-tabview')) {
-//                    Y.Global.fire('lazyload:cke');
-//                }
-//            });
         ";
-
         expJavascript::pushToFoot(
             array(
                 "unique"   => '00yuical-' . $idname,
-//                "yui3mods" => "1",
                 "jquery"   => "jquery.datetimepicker",
                 "content"  => $script,
             )

@@ -149,10 +149,7 @@ class ckeditorcontrol extends formcontrol {
                                     'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
                                     'Verdana/Verdana, Geneva, sans-serif'";
         $content = "
-//        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
-        $(document).ready(function(){
-//            Y.Global.on(\"lazyload:cke\", function () {
-//                if(!Y.Lang.isUndefined(EXPONENT.editor" . createValidId($name) . ")){
+            $(document).ready(function(){
                 if(typeof(EXPONENT.editor" . createValidId($name) . ") !== 'undefined'){
                     return true;
                 };
@@ -204,28 +201,19 @@ class ckeditorcontrol extends formcontrol {
                         ev.editor.dataProcessor.writer.setRules( blockTags[i], rules );
                     }
                 });
-
-//            });
-//            if (!Y.one('#" . createValidId($name) . "').ancestor('.exp-skin-tabview')) {
-//                Y.Global.fire('lazyload:cke');
-//            }
         });
         ";
 
         expJavascript::pushToFoot(array(
             "unique"  => "000-cke" . $name,
-//            "yui3mods"=> "1",
             "jquery"=> "1",
             "content" => $content,
-            //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"
         ));
-//        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/ckeditor/ckeditor.js\"></script>";
         expJavascript::pushToFoot(array(
             "unique"  => "ckeditor",
             "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
         ));
-        // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
-//        $html = "<!-- cke lazy -->";
+
         $html = "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
         $html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";

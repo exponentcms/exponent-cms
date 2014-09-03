@@ -117,28 +117,6 @@ class yuidatetimecontrol extends formcontrol
             $html .= '</div>';
         }
 
-//        $script = "
-//        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
-//            var handleCheck" . $idname . " = function(e) {
-//                var cal = Y.one('#datetime-" . $idname . "');
-//                if (cal.getStyle('display')=='none') {
-//                    cal.setStyle('display','block');
-//                } else {
-//                    cal.setStyle('display','none');
-//                }
-//                $('#" . $idname . "date').datetimepicker('update');
-//            };
-//            Y.Global.on('lazyload:cke', function() {
-//                Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
-//                Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
-////                $('#" . $idname . "date').datetimepicker('update');
-//            });
-//            if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
-//                Y.Global.fire('lazyload:cke');
-//            }
-////            $('#" . $idname . "date').datetimepicker('update');
-//        });
-//        ";
         $script = "
             $(document).ready(function(){
                 $('#pub-" . $idname . "').click(function(){
@@ -151,11 +129,9 @@ class yuidatetimecontrol extends formcontrol
                 });
             });
         ";
-
         expJavascript::pushToFoot(
             array(
                 "unique"   => "000-datetime-" . $idname,
-                "yui3mods" => "1",
                 "jquery"   => "jquery.datetimepicker",
                 "content"  => $script,
             )
