@@ -67,7 +67,7 @@
             </table>
 
             {*FIXME convert to yui3*}
-            {script unique="shippingopts`$shippingitem->method->id`"}
+            {script unique="shippingopts`$shippingitem->method->id`" yui3mods="1"}
             {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
                 var YAHOO=Y.YUI2;
@@ -95,7 +95,7 @@
     {/form}
 </div>
 
-{script unique="shippingopts"}
+{script unique="shippingopts" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
     var YAHOO=Y.YUI2;

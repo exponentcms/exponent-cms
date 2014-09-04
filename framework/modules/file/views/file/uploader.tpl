@@ -72,7 +72,7 @@
         <span id="overallProgress"></span>
     </div>
 
-{script unique="uploader2" yui3="1"}
+{script unique="uploader2" yui3mods="1"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
     Y.one("#overallProgress").set("text", "Uploader type: " + Y.Uploader.TYPE);

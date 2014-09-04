@@ -42,7 +42,7 @@
     <div style="clear:both;"></div>
 </div>
 
-{script unique="continue-passthru-checkout"}
+{script unique="continue-passthru-checkout" yui3mods="1"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         //Y.one('#cont-checkout').setStyle('display','none');

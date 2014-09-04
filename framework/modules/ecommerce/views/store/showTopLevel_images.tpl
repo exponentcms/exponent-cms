@@ -118,7 +118,7 @@
     {$page->links}
     {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
     
-    {script unique="sort-submit"}
+    {script unique="sort-submit" yui3mods="1"}
     {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
         Y.all('select[name="sortme"]').on('change',function(e){

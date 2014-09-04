@@ -104,7 +104,7 @@
 	{/form}
 </div>
 
-{script unique="giftcard-submit"}
+{script unique="giftcard-submit" yui3mods="1"}
 	{literal}
 		YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 			Y.one('#submit-giftcard').on('click',function(e){
