@@ -557,7 +557,7 @@
                 {/if}
             {/form}
 
-            {script unique="children-submit"}
+            {script unique="children-submit" yui3mods="1"}
             {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 Y.one('#submit-chiprods').on('click',function(e){

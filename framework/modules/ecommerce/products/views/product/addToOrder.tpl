@@ -34,7 +34,7 @@
         {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
     </blockquote>
     {clear}
-    {script unique="children-submit"}
+    {script unique="children-submit" yui3mods="1"}
         {literal}
         YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             Y.one('#submit-chiprods').on('click',function(e){

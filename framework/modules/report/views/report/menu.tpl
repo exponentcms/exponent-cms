@@ -141,7 +141,7 @@
 
     </div>
 
-    {script unique="expand-panels"}
+    {script unique="expand-panels" yui3mods=1}
     {literal}
         YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
         var panels = Y.all(".dashboard .panel");

@@ -75,7 +75,7 @@
 </div>
 
 {*FIXME convert to yui3*}
-{script unique="picker"}
+{script unique="picker" yui3mods="1"}
 {literal}
 // this.moveTo(1,1);
 // this.resizeTo(screen.width,screen.height);

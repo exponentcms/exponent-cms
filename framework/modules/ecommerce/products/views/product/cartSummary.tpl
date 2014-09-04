@@ -55,7 +55,7 @@
                         {/if}
                     </div>
                 </div>        
-                {script unique="z-index" }
+                {script unique="z-index" yui3mods="1"}
                 {literal}
                     YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                         var opts = Y.all(".options");
