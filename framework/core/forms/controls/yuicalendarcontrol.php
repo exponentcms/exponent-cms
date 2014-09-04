@@ -208,7 +208,7 @@ class yuicalendarcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
-        $object->showtime   = isset($values['showtime']);
+        $object->showtime   = !empty($values['showtime']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;
     }

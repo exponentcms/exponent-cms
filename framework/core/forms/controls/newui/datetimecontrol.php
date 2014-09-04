@@ -206,8 +206,8 @@ class datetimecontrol extends formcontrol {
         $object->identifier  = $values['identifier'];
         $object->caption     = $values['caption'];
         $object->description = $values['description'];
-        $object->showdate    = isset($values['showdate']);
-        $object->showtime    = isset($values['showtime']);
+        $object->showdate    = !empty($values['showdate']);
+        $object->showtime    = !empty($values['showtime']);
         return $object;
     }
 }

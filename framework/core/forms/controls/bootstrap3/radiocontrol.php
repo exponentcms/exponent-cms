@@ -56,7 +56,7 @@ class radiocontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= "<label".$for." class=\"control-label\">";
         if ($this->flip) $html .= $label;
-        $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+        $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
         if (!$this->flip) $html .= $label;
         $html .= "</label>";
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
@@ -136,8 +136,8 @@ class radiocontrol extends formcontrol {
         $object->identifier = uniqid("");
         $object->groupname = $values['groupname'];
         $object->caption = $values['caption'];
-        $object->default = isset($values['default']);
-        $object->flip = isset($values['flip']);
+        $object->default = !empty($values['default']);
+        $object->flip = !empty($values['flip']);
         return $object;
     }
 }

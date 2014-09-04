@@ -90,8 +90,8 @@ class hiddenfieldcontrol extends formcontrol {
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
 		$object->default = isset($values['default']);
-		$object->flip = isset($values['flip']);
-		$object->required = isset($values['required']);
+		$object->flip = !empty($values['flip']);
+		$object->required = !empty($values['required']);
 		return $object;
 	}
 	

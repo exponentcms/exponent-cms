@@ -46,7 +46,7 @@ class checkboxcontrol extends formcontrol {
     }
 
     function __construct($default = 1, $flip = false, $required = false) {
-        $this->default  = $default;
+        $this->default  =  $this->checked = $default;
         $this->flip     = $flip;
         $this->jsHooks  = array();
         $this->required = $required;
@@ -76,13 +76,13 @@ class checkboxcontrol extends formcontrol {
             $html .= (!empty($this->required)) ? ' required">' : '">';
             if (!empty($this->flip)) {
                 $html .= "<label" . $for . " class=\"label\" style=\"display:inline;\">" . $label . "</label>";
-                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
                     $name
                 );
                 $flip = '';
             } else {
                 $html .= "<label class=\"label spacer\" style=\"background: transparent;\"></label>";
-                $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
+                $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
                     $name
                 );
                 if (!empty($label) && $label != ' ') {
@@ -110,7 +110,7 @@ class checkboxcontrol extends formcontrol {
         $inputID     = (!empty($this->id)) ? ' id="' . $this->id . '"' : ' id="' . $name . '"';
         $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
-        if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
+        if (!empty($this->checked)) $html .= ' checked="checked"';
 //        if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -138,13 +138,13 @@ class checkboxcontrol extends formcontrol {
         $html = "";
         // hidden value to force a false value in to the post array
         // if unchecked, the index won't even get in to the post array
-        if (!empty($this->postfalse) && $this->postfalse) {
+        if (!empty($this->postfalse)) {
             $html .= '<input type="hidden" name="' . $name . '" value="0" />';
         }
 
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
-        if (!empty($this->size) && $this->size) $html .= ' size="' . $this->size . '"';
-        if (!empty($this->checked) && $this->checked) $html .= ' checked="checked"';
+        if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
+        if (!empty($this->checked)) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox control"' : ' class="checkbox control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -225,9 +225,9 @@ class checkboxcontrol extends formcontrol {
         $object->caption     = $values['caption'];
         $object->description = $values['description'];
         $object->default     = isset($values['default']);
-        $object->flip        = isset($values['flip']);
-        $object->required    = isset($values['required']);
-        $object->is_hidden   = isset($values['is_hidden']);
+        $object->flip        = !empty($values['flip']);
+        $object->required    = !empty($values['required']);
+        $object->is_hidden   = !empty($values['is_hidden']);
         return $object;
     }
 

@@ -73,7 +73,7 @@ class popupdatetimecontrol extends formcontrol {
         } else {
             $img .= 'style="cursor: pointer;" ';
         }
-        $img .= 'title="'.gt('Select Date').'" onclick="return true;" onmouseover="this.style.background=\'red\';" onmouseout="this.style.background=\'\'" />';
+        $img .= 'title="'.gt('Select Date').'" onclick="return true;" onmouseover="this.parentNode.style.background=\'red\';" onmouseout="this.parentNode.style.background=\'\'" />';
         $img .= "\n";
 
         $html = "";
@@ -148,20 +148,9 @@ class popupdatetimecontrol extends formcontrol {
                         cal.setStyle('display','none');
                     }
                 };
-
-//                Y.Global.on('lazyload:cke', function() {
-//                    Y.one('#".$idname."_disabled').detach('click',handleCheck".$idname.");
-//                    Y.one('#".$idname."_disabled').on('click',handleCheck".$idname.");
-//                });
-
             });
         ";
 
-//        expCSS::pushToHead(array(
-//    	    "unique"=>"popcalcss" . $idname,
-//    	    "link"=>PATH_RELATIVE.'framework/modules/events/assets/css/default.css',
-////            "css"=>$css
-//        ));
         expJavascript::pushToFoot(array(
             "unique"  => 'popcal' . $idname,
             "yui3mods"=> 1,
@@ -228,7 +217,7 @@ class popupdatetimecontrol extends formcontrol {
 		}
 		$object->identifier = $values['identifier'];
 		$object->caption = $values['caption'];
-		$object->showtime = isset($values['showtime']);
+		$object->showtime = !empty($values['showtime']);
 		return $object;
 	}
 

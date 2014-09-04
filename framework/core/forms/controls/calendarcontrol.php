@@ -327,7 +327,7 @@ class calendarcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
-        $object->showtime   = isset($values['showtime']);
+        $object->showtime   = !empty($values['showtime']);
         return $object;
     }
 
