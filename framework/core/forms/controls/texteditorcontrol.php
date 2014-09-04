@@ -113,8 +113,8 @@ class texteditorcontrol extends formcontrol {
         if (isset($values['cols'])) $object->cols = intval($values['cols']);
         if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
         if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
-		$object->required = isset($values['required']);
-        $object->is_hidden = isset($values['is_hidden']);
+		$object->required = !empty($values['required']);
+        $object->is_hidden = !empty($values['is_hidden']);
 		return $object;
 	}
 	

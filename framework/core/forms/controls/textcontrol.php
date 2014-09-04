@@ -133,8 +133,8 @@ class textcontrol extends formcontrol {
         if (isset($values['pattern'])) $object->pattern = $values['pattern'];
         if (isset($values['size'])) $object->size = intval($values['size']);
         if (isset($values['maxlength'])) $object->maxlength = intval($values['maxlength']);
-        $object->required = isset($values['required']);
-        $object->is_hidden = isset($values['is_hidden']);
+        $object->required = !empty($values['required']);
+        $object->is_hidden = !empty($values['is_hidden']);
         return $object;
     }
 

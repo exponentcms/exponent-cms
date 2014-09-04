@@ -58,13 +58,13 @@ class radiocontrol extends formcontrol {
 
         if(empty($this->flip)){
             $html .= "<td class=\"input\">";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+            $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
             $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
         } else {
             $html .= "<td nowrap><label".$for." ".(bs3()?"class=\"control-label\"":"").">".$label."</label></td>";
             $html .= "<td class=\"input\">";
-            $html .= isset($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
+            $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
             $html .="</td>";
         }
         if (!empty($this->description)) $html .= "</tr><tr><td></td><td><div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div></td>";
@@ -148,8 +148,8 @@ class radiocontrol extends formcontrol {
         $object->identifier = uniqid("");
         $object->groupname = $values['groupname'];
         $object->caption = $values['caption'];
-        $object->default = isset($values['default']);
-        $object->flip = isset($values['flip']);
+        $object->default = !empty($values['default']);
+        $object->flip = !empty($values['flip']);
         return $object;
     }
 }

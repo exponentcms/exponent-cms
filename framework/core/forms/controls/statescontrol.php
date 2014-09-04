@@ -133,7 +133,7 @@ class statescontrol extends dropdowncontrol {
         $object->abbv = isset($values['abbv']);
         $object->add_other = isset($values['add_other']);
         $object->include_blank = isset($values['include_blank']);
-        $object->required = isset($values['required']);
+        $object->required = !empty($values['required']);
         return $object;
     }
 

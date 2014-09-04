@@ -52,7 +52,7 @@ class countrycontrol extends dropdowncontrol {
 
         if ($db->tableExists('geo_country')) {
             $this->include_blank = isset($this->include_blank) ? $this->include_blank : false;
-            if (isset($params['multiple'])) {
+            if (!empty($params['multiple'])) {
                 $this->multiple = true;
 //                $this->items[-1] = 'ALL United States';
             }
@@ -118,8 +118,8 @@ class countrycontrol extends dropdowncontrol {
         $object->default = $values['default'];
         if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
         $object->abbv = isset($values['abbv']);
-        $object->show_all = isset($values['show_all']);
-        $object->required = isset($values['required']);
+        $object->show_all = !empty($values['show_all']);
+        $object->required = !empty($values['required']);
         return $object;
     }
 
