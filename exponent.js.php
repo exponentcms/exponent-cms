@@ -31,10 +31,10 @@ EXPONENT.JS_URL = "<?php echo JS_URL; ?>";
 EXPONENT.JQUERY_RELATIVE = "<?php echo JQUERY_RELATIVE; ?>";
 EXPONENT.JQUERY_PATH = "<?php echo JQUERY_PATH; ?>";
 EXPONENT.JQUERY_URL = "<?php echo JQUERY_URL; ?>";
-EXPONENT.YUI3_VERSION = "<?php echo YUI3_VERSION; ?>";
+EXPONENT.YUI3_VERSION = "<?php echo YUI3_VERSION; ?>";  //FIXME deprecated
 EXPONENT.YUI3_RELATIVE = "<?php echo YUI3_RELATIVE; ?>";
 EXPONENT.YUI3_URL = "<?php echo YUI3_URL; ?>";
-EXPONENT.YUI2_VERSION = "<?php echo YUI2_VERSION; ?>";
+EXPONENT.YUI2_VERSION = "<?php echo YUI2_VERSION; ?>";  //FIXME deprecated
 EXPONENT.YUI2_RELATIVE = "<?php echo YUI2_RELATIVE; ?>";
 EXPONENT.YUI2_URL = "<?php echo YUI2_URL; ?>";
 

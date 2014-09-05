@@ -80,7 +80,9 @@ class expTheme
         if (!defined('JQUERYUI_THEME')) {
             define('JQUERYUI_THEME', 'exponent');
         } // jQueryUI theme
-        define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
+        if (!defined('JQUERYUI_CSS')) {
+            define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
+        } // local jQueryUI stylesheet
 
         // add our theme folder into autoload to prioritize custom (theme) modules
         array_unshift($auto_dirs2, BASE . 'themes/' . DISPLAY_THEME . '/modules');
