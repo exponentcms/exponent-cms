@@ -529,10 +529,16 @@ if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
-    define('JQUERY_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY_VERSION . '.min.js');
-    define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
+    if (!defined('JQUERY_SCRIPT')) {
+        define('JQUERY_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY_VERSION . '.min.js');
+    } // local jQuery v1.x script
+    if (!defined('JQUERY2_SCRIPT')) {
+        define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
+    } // local jQuery v2.x script
 //    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
-    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
+    if (!defined('JQUERYUI_SCRIPT')) {
+        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
+    } // local jQueryUI script
 }
 
 /**
