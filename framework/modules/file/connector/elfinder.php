@@ -29,8 +29,8 @@ if (DEVELOPMENT) {
 ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT files at once
 
 // needed for case insensitive search to work, due to broken UTF-8 support in PHP
-ini_set('mbstring.internal_encoding', 'UTF-8');
-ini_set('mbstring.func_overload', 2);
+//ini_set('mbstring.internal_encoding', 'UTF-8');
+//ini_set('mbstring.func_overload', 2);
 
 include_once BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include_once BASE . 'external/elFinder/php/elFinder.class.php';
