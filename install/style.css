@@ -203,6 +203,7 @@ p, fieldset, table, pre {
 
 p {
     font-size : 120%;
+    margin-top: 0;
 }
 
 .success {
