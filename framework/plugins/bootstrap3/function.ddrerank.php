@@ -170,11 +170,21 @@ if (!function_exists('smarty_function_ddrerank')) {
             $script .="
                 });
             ";
+            $script = "
+                $(document).ready(function(){
+                  new Sortable(document.getElementById('listToOrder" . $uniqueid . "'));
+            ";
+            if ($model == 'container') {  // must move modal off of menu to display
+                $script .= "$('#panel" . $uniqueid . "').appendTo('body');";
+            }
+            $script .="
+                });
+            ";
 
             if (!expTheme::inPreview()) {
                 expJavascript::pushToFoot(array(
                     "unique"    => $uniqueid,
-                    "jquery"    => 'jquery-sortable',
+                    "jquery"    => 'Sortable',
                     "bootstrap" => 'modal,transition',
                     "content"   => $script,
                 ));

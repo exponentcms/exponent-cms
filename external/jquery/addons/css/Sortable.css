@@ -1,17 +1,11 @@
-body.dragging, body.dragging * {
-	cursor: move !important;
-}
-
-.dragged {
-	position: absolute;
-	top: 0;
-	opacity: 0.5 !important;
-	z-index: 2000;
+.sortable-ghost {
+	opacity: .4;
 }
 
 ul.scrollable {
 	margin: 0 0 9px 0;
 	min-height: 10px;
+	padding-left: 0;
 }
 
 ul.scrollable li {
@@ -29,6 +23,7 @@ ul.scrollable li {
 ul.scrollable li span.title {
 	padding-left: 5px;
 	font-weight: bold;
+	overflow: hidden;
 }
 
 ul.scrollable li.placeholder {
