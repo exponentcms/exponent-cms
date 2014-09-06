@@ -357,9 +357,9 @@ class filemanagercontrol extends formcontrol {
                     });
                 }
 
-                $('#filelist" . $name . "').sortable();
+                new Sortable(document.getElementById('filelist" . $name . "'));
             });
-            "; // END PHP STRING LITERAL
+            ";
 
             expCSS::pushToHead(array(
         	    "unique"    => "attachable-files",
@@ -370,7 +370,7 @@ class filemanagercontrol extends formcontrol {
                 "unique"    => "filepicker".$name,
                 "src"       => PATH_RELATIVE . 'external/SimpleAjaxUploader/SimpleAjaxUploader.js',
 //                "yui3mods"  => "1",
-                "jquery"    => 'jquery-sortable',
+                "jquery"    => 'Sortable',
                 "content"   => $js,
              ));
         return $html;
