@@ -459,7 +459,7 @@ class expRecord {
             $saveObj->$col = empty($this->$col) ? null : $this->$col;
         }
 
-        if ($this->supports_revisions && ENABLE_WORKFLOW && !$this->approved && expPermissions::check('approve', serialize($this->location_data))) {
+        if ($this->supports_revisions && ENABLE_WORKFLOW && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
             $saveObj->approved = true;  // auto-approve item if use has approve perm
         }
         $identifier = $this->identifier;
