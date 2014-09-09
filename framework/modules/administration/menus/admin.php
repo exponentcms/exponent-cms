@@ -365,7 +365,7 @@ if ($user->isSuperAdmin()) {
             'itemdata' => array(
                 array(
                     'text'      => (DEVELOPMENT) ? gt('Turn Error Reporting off') : gt('Turn Error Reporting on'),
-                    'icon'      => 'fa-list',
+                    'icon'      => (DEVELOPMENT) ? 'fa-list text-danger' : 'fa-list',
                     'classname' => (DEVELOPMENT) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -376,7 +376,7 @@ if ($user->isSuperAdmin()) {
                 ),
                 array(
                     'text'      => (LOGGER) ? gt('Turn Logger off') : gt('Turn Logger on'),
-                    'icon'      => 'fa-indent',
+                    'icon'      => (LOGGER) ? 'fa-indent text-danger' : 'fa-indent',
                     'classname' => (LOGGER) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -565,7 +565,7 @@ if ($user->isSuperAdmin()) {
                             ),
                             array(
                                 'text'      => (MOBILE) ? gt('Turn Mobile View off') : gt('Turn Mobile View on'),
-                                'icon'      => 'fa-tablet',
+                                'icon'      => (MOBILE) ? 'fa-tablet text-success' : 'fa-tablet',
                                 'classname' => (MOBILE) ? 'develop_on_green' : 'develop_off',
                                 'url'       => makeLink(
                                     array(
@@ -595,7 +595,7 @@ if ($user->isSuperAdmin()) {
                         'itemdata' => array(
                             array(
                                 'text'      => (MINIFY) ? gt('Turn Minification off') : gt('Turn Minification on'),
-                                'icon'      => 'fa-paperclip',
+                                'icon'      => (MINIFY) ? 'fa-paperclip text-success' : 'fa-paperclip',
                                 'classname' => (MINIFY) ? 'develop_on_green' : 'develop_off',
                                 'url'       => makeLink(
                                     array(
@@ -675,7 +675,7 @@ if ($user->isSuperAdmin()) {
                 ),
                 array(
                     'text'      => (ENABLE_WORKFLOW) ? gt('Turn Workflow off') : gt('Turn Workflow on'),
-                    'icon'      => 'fa-shield',
+                    'icon'      => (ENABLE_WORKFLOW) ? 'fa-shield text-success' : 'fa-shield',
                     'classname' => (ENABLE_WORKFLOW) ? 'develop_on_green' : 'develop_off',
                     'url'       => makeLink(
                         array(
@@ -689,7 +689,7 @@ if ($user->isSuperAdmin()) {
                     'text'      => (MAINTENANCE_MODE) ? gt('Turn Maintenance Mode off') : gt(
                         'Turn Maintenance Mode on'
                     ),
-                    'icon'      => 'fa-warning',
+                    'icon'      => (MAINTENANCE_MODE) ? 'fa-warning text-danger' : 'fa-warning',
                     'classname' => (MAINTENANCE_MODE) ? 'develop_on_red' : 'develop_off',
                     'url'       => makeLink(
                         array(

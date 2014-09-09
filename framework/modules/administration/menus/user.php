@@ -102,7 +102,7 @@ if (!$user->isAdmin()) {
 if ($previewperms) { // must be an admin user to use toggle_preview method
     $items[] = array(
         'text'      => ($level == UILEVEL_PREVIEW) ? gt('Turn Preview Mode off') : gt('Turn Preview Mode on'),
-        'icon'      => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash' : 'fa-eye',
+        'icon'      => ($level == UILEVEL_PREVIEW) ? 'fa-eye-slash text-success' : 'fa-eye',
         'classname' => ($level == UILEVEL_PREVIEW) ? 'preview_on' : 'preview_off',
         'url'       => makeLink(
             array(
