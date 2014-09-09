@@ -161,7 +161,7 @@ class expRecord {
      * @return array
      */
     public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false) {
-        global $db;
+        global $db, $user;
 
         if (is_numeric($range)) {
             $where = $this->identifier . '=' . intval($range); // If we hit this then we are expecting just a simple id
@@ -173,7 +173,11 @@ class expRecord {
 //        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
-        $needs_approval = $this->needs_approval && ENABLE_WORKFLOW;
+        if ($this->needs_approval && ENABLE_WORKFLOW) {
+            $needs_approval = $user->id;
+        } else {
+            $needs_approval = false;
+        }
 
         if (strcasecmp($range, 'all') == 0) {  // return all items matching request, most current revision
 //            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;

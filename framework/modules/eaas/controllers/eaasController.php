@@ -444,6 +444,8 @@ class eaasController extends expController {
     }
 
     function aggregateWhereClause($type='') {
+        global $user;
+
         $sql = '';
         $sql .= '(';
         $sql .= "location_data ='".serialize($this->loc)."'";
@@ -458,7 +460,11 @@ class eaasController extends expController {
         }       
         $model = $this->basemodel_name;
         if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
-            $sql .= ' AND approved=1';
+            if ($user->id) {
+                $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
+            } else {
+                $sql .= ' AND approved=1';
+            }
         }
 
         return $sql;
