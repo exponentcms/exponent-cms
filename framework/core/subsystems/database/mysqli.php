@@ -630,7 +630,7 @@ class mysqli_database extends database {
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= " AND approved=1";
+            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
             $where .= ")";
             $as = ' AS rev';
         }
@@ -1140,7 +1140,7 @@ class mysqli_database extends database {
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= " AND approved=1";
+            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
             $where .= ")";
             $as = ' AS rev';
         }
@@ -1178,7 +1178,7 @@ class mysqli_database extends database {
         if ($is_revisioned) {
    //            $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
             $where .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE id = rev.id ";
-            if ($needs_approval) $where .= " AND approved=1";
+            if ($needs_approval) $where .= ' AND (approved=1 OR poster=' . $needs_approval . ' OR editor=' . $needs_approval . ')';
             $where .= ")";
             $as = ' AS rev';
         }

@@ -118,7 +118,7 @@ abstract class expController {
             if (!expPermissions::check('approve', $this->loc)) {
                 $this->$modelname->needs_approval = true;
             } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
-                $this->$modelname->needs_approval = true;
+                $this->$modelname->needs_approval = true;  // 'preview' should provide a true preview
             }
         }
 
@@ -1416,6 +1416,8 @@ abstract class expController {
      * @return string
      */
     function aggregateWhereClause($type='') {
+        global $user;
+
         $sql = '';
 
         if (!$this->hasSources() && empty($this->config['add_source'])) {
@@ -1436,7 +1438,11 @@ abstract class expController {
         }
         $model = $this->basemodel_name;
         if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
-            $sql .= ' AND approved=1';
+            if ($user->id) {
+                $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
+            } else {
+                $sql .= ' AND approved=1';
+            }
         }
 
         return $sql;
