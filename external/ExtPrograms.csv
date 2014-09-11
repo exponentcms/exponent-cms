@@ -36,7 +36,7 @@ excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by Ti
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.2,optional
 CKEditor,4.4.4,ckeditor.com,4.4.4,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.1.4,tinymce.com,4.1.4,add xenmce skin
+TinyMCE,4.1.5,tinymce.com,4.1.5,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 Webshim,1.15.3,http://afarkas.github.io/webshim,1.15.3,
 jQuery1,1.11.1,jquery.com,1.11.1,
