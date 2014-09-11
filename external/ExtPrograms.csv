@@ -19,16 +19,16 @@ iCalCreator,2.2,kigkonsult.se/iCalcreator,2.2,Fixed $baseline to baseline bug
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,will not compile bootstrap v3+
 less.php,1.7.0.2exp,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.1.1,twitter.github.com/bootstrap,3.2.0,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.2.0,twitter.github.com/bootstrap,3.2.0,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.1.1+1,bootswatch.com/,3.2.0+4,
+Bootswatch,3.2.0+4,bootswatch.com/,3.2.0+4,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
-Font-Awesome,4.1.0,fortawesome.github.com/Font-Awesome,4.2.0,
+Font-Awesome,4.2.0,fortawesome.github.com/Font-Awesome,4.2.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,converted to yui module
 normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
 MediaElement.js,2.15.1,mediaelementjs.com/,2.15.1,
-Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.10,
+Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.11,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
@@ -36,8 +36,9 @@ excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by Ti
 dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.2,optional
 CKEditor,4.4.4,ckeditor.com,4.4.4,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.1.,tinymce.com,4.1.4,add xenmce skin
+TinyMCE,4.1.4,tinymce.com,4.1.4,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
+Webshim,1.15.3,http://afarkas.github.io/webshim,1.15.3,
 jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
 jQueryUI,1.11.0,jqueryui.com,1.11.0,
@@ -63,3 +64,5 @@ jstree,3.0.3,https://github.com/vakata/jstree,3.0.3,added nav menu icons to styl
 bootstrap3-dialog,1.33.4,https://github.com/nakupanda/bootstrap3-dialog,1.33.4,
 impromptu,5.2.5,http://trentrichardson.com/Impromptu,5.2.5,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
+fd-slider,,https://github.com/freqdec/fd-slider,,
+number-polyfill,,https://github.com/jonstipe/number-polyfill,,

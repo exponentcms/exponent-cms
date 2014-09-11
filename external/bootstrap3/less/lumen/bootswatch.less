@@ -1,4 +1,4 @@
-// Lumen 3.1.1
+// Lumen 3.2.0
 // Bootswatch
 // -----------------------------------------------------
 
@@ -17,7 +17,7 @@
 // Buttons ====================================================================
 
 .btn {
-  padding: 8px @padding-base-horizontal 7px;
+  padding: @padding-base-vertical+2 @padding-base-horizontal @padding-base-vertical;
   .shadow();
   font-size: 12px;
   font-weight: bold;
@@ -36,18 +36,18 @@
 
   &-lg,
   &-group-lg > .btn {
-    padding: 14px @padding-large-horizontal 13px;
+    padding: @padding-large-vertical+2 @padding-large-horizontal @padding-large-vertical;
     line-height: 15px;
   }
 
   &-sm,
   &-group-sm > .btn {
-    padding: 4px @padding-small-horizontal;
+    padding: @padding-small-vertical+2 @padding-small-horizontal @padding-small-vertical;
   }
 
   &-xs,
   &-group-xs > .btn {
-    padding: @padding-xs-vertical @padding-xs-horizontal;
+    padding: @padding-xs-vertical+2 @padding-xs-horizontal @padding-xs-vertical;
   }
 
   &-default:hover,
@@ -97,6 +97,36 @@
   }
 }
 
+.navbar-btn {
+  &:hover {
+    margin-top: 8px
+  }
+
+  &:active {
+    margin-top: 9px
+  }
+
+  &.btn-sm {
+    &:hover {
+      margin-top: 11px
+    }
+
+    &:active {
+      margin-top: 12px
+    }
+  }
+
+  &.btn-xs {
+    &:hover {
+      margin-top: 15px
+    }
+
+    &:active {
+      margin-top: 16px
+    }
+  }
+}
+
 // Typography =================================================================
 
 .text-primary,
@@ -129,7 +159,7 @@
 table,
 .table {
 
-  a {
+  a:not(.btn) {
     text-decoration: underline;
   }
 
@@ -139,7 +169,7 @@ table,
   .info {
     color: #fff;
 
-    a {
+    a:not(.btn) {
       color: #fff;
     }
   }
@@ -166,7 +196,8 @@ label {
 
 .has-warning {
   .help-block,
-  .control-label {
+  .control-label,
+  .form-control-feedback {
     color: @brand-warning;
   }
 
@@ -175,11 +206,16 @@ label {
     border: 1px solid @brand-warning;
     .box-shadow(inset 0 2px 0 rgba(0, 0, 0, 0.075));
   }
+
+  .input-group-addon {
+    border: 1px solid @brand-warning;
+  }
 }
 
 .has-error {
   .help-block,
-  .control-label {
+  .control-label,
+  .form-control-feedback {
     color: @brand-danger;
   }
 
@@ -188,11 +224,16 @@ label {
     border: 1px solid @brand-danger;
     .box-shadow(inset 0 2px 0 rgba(0, 0, 0, 0.075));
   }
+
+  .input-group-addon {
+    border: 1px solid @brand-danger;
+  }
 }
 
 .has-success {
   .help-block,
-  .control-label {
+  .control-label,
+  .form-control-feedback {
     color: @brand-success;
   }
 
@@ -200,6 +241,10 @@ label {
   .form-control:focus {
     border: 1px solid @brand-success;
     .box-shadow(inset 0 2px 0 rgba(0, 0, 0, 0.075));
+  }
+
+  .input-group-addon {
+    border: 1px solid @brand-success;
   }
 }
 
@@ -319,26 +364,25 @@ label {
 
 // Indicators =================================================================
 
+.close {
+  color: #fff;
+  text-decoration: none;
+  opacity: 0.4;
+
+  &:hover,
+  &:focus {
+    color: #fff;
+    opacity: 1;
+  }
+}
+
 .alert {
   .shadow();
 
-  a,
   .alert-link {
     font-weight: normal;
     color: #fff;
     text-decoration: underline;
-  }
-
-  .close {
-    color: #fff;
-    text-decoration: none;
-    opacity: 0.4;
-
-    &:hover,
-    &:focus {
-      color: #fff;
-      opacity: 1;
-    }
   }
 }
 
@@ -372,4 +416,20 @@ label {
 .panel {
   border: 1px solid @navbar-default-border;
   .shadow();
+
+  &-default {
+    .close {
+      color: @text-color;
+    }
+  }
+}
+
+.modal {
+  .close {
+    color: @text-color;
+  }
+}
+
+.popover {
+  color: @text-color;
 }

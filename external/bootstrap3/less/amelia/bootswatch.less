@@ -1,4 +1,4 @@
-// Amelia 3.1.1
+// Amelia 3.2.0
 // Bootswatch
 // -----------------------------------------------------
 
@@ -76,48 +76,21 @@
 table,
 .table {
 
-  a {
+  a:not(.btn) {
     color: #fff;
     text-decoration: underline;
+  }
+
+  .text-muted {
+    color: @text-muted;
   }
 }
 
 // Forms ======================================================================
 
-.has-warning {
-  .help-block,
-  .control-label {
-    color: lighten(@brand-warning, 20%);
-  }
-
-  .form-control,
-  .form-control:focus {
-    border-color: lighten(@brand-warning, 20%);
-  }
-}
-
-.has-error {
-  .help-block,
-  .control-label {
-    color: lighten(@brand-primary, 40%);
-  }
-
-  .form-control,
-  .form-control:focus {
-    border-color: lighten(@brand-primary, 40%);
-  }
-}
-
-.has-success {
-  .help-block,
-  .control-label {
-    color: lighten(@brand-success, 20%);
-  }
-
-  .form-control,
-  .form-control:focus {
-    border-color: lighten(@brand-success, 20%);
-  }
+input,
+textarea {
+  color: @input-color;
 }
 
 legend {
@@ -127,6 +100,57 @@ legend {
 
 .input-group-addon {
   color: @btn-default-color;
+}
+
+.has-warning {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: lighten(@brand-warning, 20%);
+  }
+
+  .form-control,
+  .form-control:focus {
+    border-color: lighten(@brand-warning, 20%);
+  }
+
+  .input-group-addon {
+    border: none;
+  }
+}
+
+.has-error {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: lighten(@brand-primary, 40%);
+  }
+
+  .form-control,
+  .form-control:focus {
+    border-color: lighten(@brand-primary, 40%);
+  }
+
+  .input-group-addon {
+    border: none;
+  }
+}
+
+.has-success {
+  .help-block,
+  .control-label,
+  .form-control-feedback {
+    color: lighten(@brand-success, 20%);
+  }
+
+  .form-control,
+  .form-control:focus {
+    border-color: lighten(@brand-success, 20%);
+  }
+
+  .input-group-addon {
+    border: none;
+  }
 }
 
 // Navs =======================================================================
@@ -160,6 +184,8 @@ legend {
 
 // Containers =================================================================
 
-.popover {
-  color: @gray-dark;
+a.thumbnail:hover,
+a.thumbnail:focus,
+a.thumbnail.active {
+  border-color: @thumbnail-border;
 }
