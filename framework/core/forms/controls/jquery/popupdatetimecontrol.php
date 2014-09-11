@@ -188,6 +188,7 @@ class popupdatetimecontrol extends formcontrol
                 $('#" . $idname . "_span').datetimepicker({
                     datepicker: " . ($this->showdate ? 'true' : 'false') .",
                     timepicker: " . ($this->showtime ? 'true' : 'false') .",
+                    closeOnDateSelect: " . ($this->showtime ? 'false' : 'true') .",
                     format: '" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."',
                     formatTime:'g:i a',
                     step: 15,
