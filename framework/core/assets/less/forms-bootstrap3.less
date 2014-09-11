@@ -3,9 +3,9 @@
 /* override standard bootstrap styling for use in Exponent */
 
 input[type="color"] {
-	height  : 34px!important;
-	width   : 50px!important;
-//	padding : 0;
+	height: 34px !important;
+	width: 50px !important;
+	//	padding : 0;
 }
 
 //input[type="image"] {
@@ -13,11 +13,11 @@ input[type="color"] {
 //}
 
 //select, textarea {
-	//	width: auto !important;
+//	width: auto !important;
 //}
 
 textarea {
-	width : auto;
+	width: auto;
 }
 
 //input[type="text"], input[type="password"] {
@@ -30,20 +30,20 @@ textarea {
 
 //input.text, input.password {
 input.password {
-	width          : 200px;
-	vertical-align : top;
+	width: 200px;
+	vertical-align: top;
 }
 
 input[type="file"] {
-    height: 150%!important;
+	height: 150% !important;
 }
 
 .datetime.date input[type="text"] {
-	width : 60px;
+	width: 60px;
 }
 
 .datetime.date select {
-	width : 120px;
+	width: 120px;
 }
 
 //.datetime-control .form-group {
@@ -51,11 +51,11 @@ input[type="file"] {
 //}
 
 .datetime.date.time select {
-	width : 80px;
+	width: 80px;
 }
 
 .control.calendar-control input.text {
-	width : 120px;
+	width: 120px;
 }
 
 //.control.calendar-control input.timebox,
@@ -66,28 +66,35 @@ input[type="file"] {
 //.control.calendar-control select,
 //.control .datetime select {
 .control.calendar-control select {
-	width : 60px;
+	width: 60px;
 }
 
-.radio input[type="radio"], .checkbox input[type="checkbox"] {
-	margin-left  : 0;
-	margin-right : 5px;
-	height  : inherit;
-	width : inherit;
-	margin-top: 0;
+.radio input[type="radio"],
+.checkbox input[type="checkbox"] {
+	margin-left: 0;
+	margin-right: 5px;
+	height: inherit;
+	width: inherit;
+//	margin-top: 0;
+/*  bootstrap 3.2.0 fix */
+	float: left;
+	display: inline-block;
+	position: relative;
+	margin-top: 3px;
 }
 
-.exp-skin .radio input[type="radio"], .exp-skin .checkbox input[type="checkbox"] {
+.exp-skin .radio input[type="radio"],
+.exp-skin .checkbox input[type="checkbox"] {
 	margin-top: -2px;
 }
 
 .radio, .checkbox {
-	padding-left : 0px;
+	padding-left: 0px;
 }
 
 input.radio, input.checkbox {
-	float        : none;
-	margin-right : 2px;
+	float: none;
+	margin-right: 2px;
 }
 
 .radiogroup.control .radio.control {
@@ -104,37 +111,44 @@ input.radio, input.checkbox {
 //	width : 214px;
 //}
 
-li [class^="fa-"], li [class*=" fa-"], li .fa-lg[class^="fa-"], li .fa-lg[class*=" fa-"] {
-	width : auto;
+li [class^="fa-"],
+li [class*=" fa-"],
+li .fa-lg[class^="fa-"],
+li .fa-lg[class*=" fa-"] {
+	width: auto;
 }
 
-input:focus:invalid, textarea:focus:invalid,
+input:focus:invalid,
+textarea:focus:invalid,
 select:focus:invalid, {
-	color  : #b94a48;
-	border : 1px solid #ee5f5b;
+	color: #b94a48;
+	border: 1px solid #ee5f5b;
 }
 
-input:focus:invalid:focus, textarea:focus:invalid:focus,
+input:focus:invalid:focus,
+textarea:focus:invalid:focus,
 select:focus:invalid:focus, {
-	border-color       : #e9322d;
-	box-shadow         : 0 0 2px #ce1a15;
-	-moz-box-shadow    : 0 0 2px #ce1a15;
-	-webkit-box-shadow : 0 0 2px #ce1a15;
+	border-color: #e9322d;
+	box-shadow: 0 0 2px #ce1a15;
+	-moz-box-shadow: 0 0 2px #ce1a15;
+	-webkit-box-shadow: 0 0 2px #ce1a15;
 }
 
 /* buttons */
-a.fa-sort, .container-chrome ul li a.fa-sort {
-	background : url("../images/rerank.png") no-repeat scroll 0 50% transparent;
-	background : none;
+a.fa-sort,
+.container-chrome ul li a.fa-sort {
+	background: url("../images/rerank.png") no-repeat scroll 0 50% transparent;
+	background: none;
 }
 
 //.awesome, .awesome:visited {
-	/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
+/*background : linear-gradient(to bottom, #FFFFFF, #E6E6E6) repeat-x;*/
 //	color : inherit;
 //}
 
-.control .radio label, .control .checkbox label {
-	margin-bottom : 0px !important;
+.control .radio label,
+.control.checkbox label {
+	margin-bottom: 0px !important;
 	margin-right: 5px;
 	padding-top: 10px;
 	padding-left: 0;
@@ -147,60 +161,61 @@ a.fa-sort, .container-chrome ul li a.fa-sort {
 .add-to-cart-btn,
 .add-to-cart-btn a,
 .add-to-cart-btn button {
-	line-height : 2.4;
+	line-height: 2.4;
 }
 
 .add-to-cart-btn.input button {
-	padding-left : 60px;
+	padding-left: 60px;
 }
 
 .add-to-cart-btn input[type="text"] {
-	width   : 24px;
-	z-index : 999;
-	color   : #000000;
+	width: 24px;
+	z-index: 999;
+	color: #000000;
 }
 
 .alt-body {
-	padding               : 4px;
-	border                : 1px solid #999;
-	-moz-border-radius    : 4px;
-	-webkit-border-radius : 4px;
-	border-radius         : 4px;
+	padding: 4px;
+	border: 1px solid #999;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 
 .alt-item {
-	padding               : 8px;
-	border                : 1px solid #999;
-	background            : #dedede;
-	-moz-border-radius    : 4px;
-	-webkit-border-radius : 4px;
-	border-radius         : 4px;
+	padding: 8px;
+	border: 1px solid #999;
+	background: #dedede;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
 }
 
 .alt-control .control {
-	margin-bottom  : 0;
-	padding-bottom : 0;
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 .text-control select[multiple] {
-	height : 200px;
-//	width  : 500px;
+	height: 200px;
+	//	width  : 500px;
 }
 
 .text-control {
-	margin-bottom : 5px
+	margin-bottom: 5px
 }
 
 .label {
-  color: #000000;
+	color: #000000;
 }
 
 input.tagit-hidden-field {
-	display: none!important;
+	display: none !important;
 }
 
-.seatsContainer .form-control, .product-options .form-control {
-	width : inherit;
+.seatsContainer .form-control,
+.product-options .form-control {
+	width: inherit;
 	display: inline;
 	margin-left: 5px;
 }
