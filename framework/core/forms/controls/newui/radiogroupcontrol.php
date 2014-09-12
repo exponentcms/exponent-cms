@@ -65,26 +65,26 @@ class radiogroupcontrol extends formcontrol {
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
-		foreach ($this->items as $value=>$rname) {  //FJD
+		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
 			
 			$checked = false;
 			if (!empty($this->checked)) {
-			    $checked = $value == $this->checked ? true : false;
+			    $checked = $rvalue == $this->checked ? true : false;
 			}	
 
-			$radio = new radiocontrol($checked, $value, $rname, $this->flip, $this->onclick);
+			$radio = new radiocontrol($checked, $rvalue, $name, $this->flip, $this->onclick);
 
 			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
-			$radio->value = $value;
+			$radio->value = $rvalue;
 			
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
             $radio->cols = $this->cols;
 
-            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
+            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$rvalue];
 			
-            $html .= $radio->toHTML($rname, $name);
+            $html .= $radio->toHTML($rlabel, $name);
 		}
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
 		return $html;

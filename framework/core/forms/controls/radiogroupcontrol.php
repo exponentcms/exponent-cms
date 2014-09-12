@@ -72,28 +72,28 @@ class radiogroupcontrol extends formcontrol {
         //eDebug($this->items);
 		$html = '<table cellspacing="0" cellpadding="0" border="0"><tr>';
 		$i = 0;
-		foreach ($this->items as $value=>$rname) {  //FJD
+		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
-			
+
 			$checked = false;
 			if (!empty($this->checked)) {
-			    $checked = $value == $this->checked ? true : false;
-			}	
+			    $checked = $rvalue == $this->checked ? true : false;
+			}
 
-			$radio = new radiocontrol($checked, $value, $rname, $this->flip, $this->onclick);
+			$radio = new radiocontrol($checked, $rvalue, $name, $this->flip, $this->onclick);
 
 			$radio->newschool = !empty($this->newschool) ? $this->newschool : false;
-			$radio->value = $value;
-			
+			$radio->value = $rvalue;
+
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
-            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$value];
-			
+            if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$rvalue];
+
             if ($this->cols!=0 && $i==$this->cols) {
     			$html .= '</tr><tr>';
     			$i = 0;
             }
-			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rname, $name).'</td>';
+			$html .= '<td style="border:none; padding-left:5px">'.$radio->toHTML($rlabel, $name).'</td>';
 			$i++; 
 		}	
 		$html .= '</tr></table>';
