@@ -96,6 +96,7 @@ class checkboxcontrol extends formcontrol {
 
         $inputID    = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
+        if (empty($inputID)) $inputID = ' id="' . $this->name . '"';
 
         $html = "";
         // hidden value to force a false value in to the post array
