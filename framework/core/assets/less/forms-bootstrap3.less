@@ -85,7 +85,22 @@ input[type="file"] {
 
 .exp-skin .radio input[type="radio"],
 .exp-skin .checkbox input[type="checkbox"] {
-	margin-top: -2px;
+/*  bootstrap 3.2.0 fix */
+	float: left;
+	display: inline-block;
+	position: relative;
+	margin-top: 3px;
+}
+
+.exp-skin .radiogroup.control .radio,
+.exp-skin .checkbox.control {
+/*  bootstrap 3.2.0 fix */
+	margin-left: 20px;
+}
+
+.exp-skin .checkbox input[type="checkbox"] {
+/*  bootstrap 3.2.0 fix */
+	margin-top: -3px;
 }
 
 .radio, .checkbox {

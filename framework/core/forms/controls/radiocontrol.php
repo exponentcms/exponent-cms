@@ -74,8 +74,7 @@ class radiocontrol extends formcontrol {
     }
     
     function controlToHTML($name,$label=null) {
-        //echo "Here";
-        $html = '<input class="radiobutton" type="radio" value="'.$this->value .'" name="' . $this->groupname . '"';
+        $html = '<input class="radiobutton" type="radio" value="' . $this->value .'" id="' . $this->groupname . $this->value . '"' .'" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->focus) $html .= " autofocus";
         if ($this->onclick != "") {
