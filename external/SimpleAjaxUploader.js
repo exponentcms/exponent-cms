@@ -7,27 +7,27 @@
  * Released under the MIT license
  */
 
-YUI.add('SimpleAjaxUploader', function (Y) {
+;(function( window, document, undefined ) {
 
-  Y.ss = Y.ss || {};
+  var ss = window.ss || {},
 
   // Pre-compile and cache regular expressions
   // (except for JSON regex, which only IE6 and IE7 use)
 
-  // Y.ss.trim()
-  var rLWhitespace = /^\s+/,
+  // ss.trim()
+  rLWhitespace = /^\s+/,
   rTWhitespace = /\s+$/,
 
-  // Y.ss.getUID
+  // ss.getUID
   uidReplace = /[xy]/g,
 
-  // Y.ss.getFilename()
+  // ss.getFilename()
   rPath = /.*(\/|\\)/,
 
-  // Y.ss.getExt()
+  // ss.getExt()
   rExt = /.*[.]/,
 
-  // Y.ss.hasClass()
+  // ss.hasClass()
   rHasClass = /[\t\r\n]/g,
 
   // Check for Safari -- it doesn't like multi file uploading. At all.
@@ -48,7 +48,7 @@ YUI.add('SimpleAjaxUploader', function (Y) {
 /**
  * Converts object to query string
  */
-Y.ss.obj2string = function( obj, prefix ) {
+ss.obj2string = function( obj, prefix ) {
   "use strict";
 
   var str = [];
@@ -56,7 +56,7 @@ Y.ss.obj2string = function( obj, prefix ) {
     if ( obj.hasOwnProperty( prop ) ) {
       var k = prefix ? prefix + '[' + prop + ']' : prop, v = obj[prop];
       str.push( typeof v === 'object' ?
-        Y.ss.obj2string( v, k ) :
+        ss.obj2string( v, k ) :
         encodeURIComponent( k ) + '=' + encodeURIComponent( v ) );
     }
   }
@@ -66,7 +66,7 @@ Y.ss.obj2string = function( obj, prefix ) {
 /**
  * Copies all missing properties from second object to first object
  */
-Y.ss.extendObj = function( first, second ) {
+ss.extendObj = function( first, second ) {
   "use strict";
 
   for ( var prop in second ) {
@@ -79,7 +79,7 @@ Y.ss.extendObj = function( first, second ) {
 /**
  * Returns true if item is found in array
  */
-Y.ss.contains = function( array, item ) {
+ss.contains = function( array, item ) {
   "use strict";
 
   var i = array.length;
@@ -94,7 +94,7 @@ Y.ss.contains = function( array, item ) {
 /**
  * Remove an item from an array
  */
-Y.ss.removeItem = function( array, item ) {
+ss.removeItem = function( array, item ) {
   "use strict";
 
   var i = array.length;
@@ -106,7 +106,7 @@ Y.ss.removeItem = function( array, item ) {
   }
 };
 
-Y.ss.addEvent = function( elem, type, fn ) {
+ss.addEvent = function( elem, type, fn ) {
   "use strict";
 
   if ( elem.addEventListener ) {
@@ -115,11 +115,11 @@ Y.ss.addEvent = function( elem, type, fn ) {
     elem.attachEvent( 'on' + type, fn );
   }
   return function() {
-    Y.ss.removeEvent( elem, type, fn );
+    ss.removeEvent( elem, type, fn );
   };
 };
 
-Y.ss.removeEvent = function( elem, type, fn ) {
+ss.removeEvent = function( elem, type, fn ) {
   "use strict";
 
  if ( elem.removeEventListener ) {
@@ -129,7 +129,7 @@ Y.ss.removeEvent = function( elem, type, fn ) {
   }
 };
 
-Y.ss.newXHR = function() {
+ss.newXHR = function() {
   "use strict";
 
   if ( typeof XMLHttpRequest !== 'undefined' ) {
@@ -147,14 +147,14 @@ Y.ss.newXHR = function() {
  * Parses a JSON string and returns a Javascript object
  * Borrowed from www.jquery.com
  */
-Y.ss.parseJSON = function( data ) {
+ss.parseJSON = function( data ) {
   "use strict";
 
   if ( !data ) {
     return false;
   }
 
-  data = Y.ss.trim( data + '' );
+  data = ss.trim( data + '' );
 
   if ( window.JSON && window.JSON.parse ) {
     try {
@@ -170,39 +170,39 @@ Y.ss.parseJSON = function( data ) {
       depth = null,
       requireNonComma;
 
-	// Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
-	// after removing valid tokens
-	if ( data && !Y.ss.trim  ( data.replace( rvalidtokens, function( token, comma, open, close ) {
+  // Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
+  // after removing valid tokens
+  if ( data && !ss.trim  ( data.replace( rvalidtokens, function( token, comma, open, close ) {
 
-		// Force termination if we see a misplaced comma
-		if ( requireNonComma && comma ) {
-			depth = 0;
-		}
+    // Force termination if we see a misplaced comma
+    if ( requireNonComma && comma ) {
+      depth = 0;
+    }
 
-		// Perform no more replacements after returning to outermost depth
-		if ( depth === 0 ) {
-			return token;
-		}
+    // Perform no more replacements after returning to outermost depth
+    if ( depth === 0 ) {
+      return token;
+    }
 
-		// Commas must not follow "[", "{", or ","
-		requireNonComma = open || comma;
+    // Commas must not follow "[", "{", or ","
+    requireNonComma = open || comma;
 
-		// Determine new depth
-		// array/object open ("[" or "{"): depth += true - false (increment)
-		// array/object close ("]" or "}"): depth += false - true (decrement)
-		// other cases ("," or primitive): depth += true - true (numeric cast)
-		depth += !close - !open;
+    // Determine new depth
+    // array/object open ("[" or "{"): depth += true - false (increment)
+    // array/object close ("]" or "}"): depth += false - true (decrement)
+    // other cases ("," or primitive): depth += true - true (numeric cast)
+    depth += !close - !open;
 
-		// Remove this token
-		return '';
-	}) ) )
+    // Remove this token
+    return '';
+  }) ) )
   {
     return ( new Function( "return " + data ) )();
   }
   return false;
 };
 
-Y.ss.getBox = function( elem ) {
+ss.getBox = function( elem ) {
   "use strict";
 
   var box,
@@ -233,7 +233,7 @@ Y.ss.getBox = function( elem ) {
 * @param {Element} el
 * @param {Object} styles
 */
-Y.ss.addStyles = function( elem, styles ) {
+ss.addStyles = function( elem, styles ) {
   "use strict";
 
   for ( var name in styles ) {
@@ -248,12 +248,12 @@ Y.ss.addStyles = function( elem, styles ) {
 * element on top of the specified element
 * copying position and dimensions.
 */
-Y.ss.copyLayout = function( from, to ) {
+ss.copyLayout = function( from, to ) {
   "use strict";
 
-  var box = Y.ss.getBox( from );
+  var box = ss.getBox( from );
 
-  Y.ss.addStyles( to, {
+  ss.addStyles( to, {
     position: 'absolute',
     left : box.left + 'px',
     top : box.top + 'px',
@@ -267,7 +267,7 @@ Y.ss.copyLayout = function( from, to ) {
 * Complies with RFC 4122 version 4
 * http://stackoverflow.com/a/2117523/1091949
 */
-Y.ss.getUID = function() {
+ss.getUID = function() {
   "use strict";
 
   /*jslint bitwise: true*/
@@ -280,7 +280,7 @@ Y.ss.getUID = function() {
 /**
 * Removes white space from left and right of string
 */
-Y.ss.trim = function( text ) {
+ss.trim = function( text ) {
   "use strict";
   return text.toString().replace(rLWhitespace, '').replace(rTWhitespace, '');
 };
@@ -288,7 +288,7 @@ Y.ss.trim = function( text ) {
 /**
 * Extract file name from path
 */
-Y.ss.getFilename = function( path ) {
+ss.getFilename = function( path ) {
   "use strict";
   return path.replace(rPath, '');
 };
@@ -296,7 +296,7 @@ Y.ss.getFilename = function( path ) {
 /**
 * Get file extension
 */
-Y.ss.getExt = function( file ) {
+ss.getExt = function( file ) {
   "use strict";
   return (-1 !== file.indexOf('.')) ? file.replace(rExt, '') : '';
 };
@@ -305,7 +305,7 @@ Y.ss.getExt = function( file ) {
 * Check whether element has a particular CSS class
 * Parts borrowed from www.jquery.com
 */
-Y.ss.hasClass = function( elem, name ) {
+ss.hasClass = function( elem, name ) {
   "use strict";
   return (' ' + elem.className + ' ').replace(rHasClass, ' ').indexOf(' ' + name + ' ') >= 0;
 };
@@ -313,13 +313,13 @@ Y.ss.hasClass = function( elem, name ) {
 /**
 * Adds CSS class to an element
 */
-Y.ss.addClass = function( elem, name ) {
+ss.addClass = function( elem, name ) {
   "use strict";
 
   if ( !name || name === '' ) {
     return false;
   }
-  if ( !Y.ss.hasClass( elem, name ) ) {
+  if ( !ss.hasClass( elem, name ) ) {
     elem.className += ' ' + name;
   }
 };
@@ -327,7 +327,7 @@ Y.ss.addClass = function( elem, name ) {
 /**
 * Removes CSS class from an element
 */
-Y.ss.removeClass = (function() {
+ss.removeClass = (function() {
   "use strict";
 
   var c = {}; //cache regexps for performance
@@ -346,7 +346,7 @@ Y.ss.removeClass = (function() {
 * @param {Element} d
 * @return void
 */
-Y.ss.purge = function( d ) {
+ss.purge = function( d ) {
   "use strict";
 
   var a = d.attributes, i, l, n;
@@ -362,7 +362,7 @@ Y.ss.purge = function( d ) {
   if ( a ) {
     l = a.length;
     for ( i = 0; i < l; i += 1 ) {
-      Y.ss.purge( d.childNodes[i] );
+      ss.purge( d.childNodes[i] );
     }
   }
 };
@@ -370,12 +370,12 @@ Y.ss.purge = function( d ) {
 /**
 * Removes element from the DOM
 */
-Y.ss.remove = function( elem ) {
+ss.remove = function( elem ) {
   "use strict";
 
   if ( elem.parentNode ) {
     // null out event handlers for IE
-    Y.ss.purge( elem );
+    ss.purge( elem );
     elem.parentNode.removeChild( elem );
   }
   elem = null;
@@ -387,7 +387,7 @@ Y.ss.remove = function( elem ) {
  * @param {Mixed} elem
  * @return {Element}
  */
-Y.ss.verifyElem = function( elem ) {
+ss.verifyElem = function( elem ) {
   "use strict";
 
   if ( typeof jQuery !== 'undefined' && elem instanceof jQuery ) {
@@ -406,7 +406,7 @@ Y.ss.verifyElem = function( elem ) {
 
   if ( elem.nodeName.toUpperCase() == 'A' ) {
     elem.style.cursor = 'pointer';
-    Y.ss.addEvent( elem, 'click', function( e ) {
+    ss.addEvent( elem, 'click', function( e ) {
         if ( e && e.preventDefault ) {
           e.preventDefault();
         } else if ( window.event ) {
@@ -424,7 +424,7 @@ Y.ss.verifyElem = function( elem ) {
 
   View README.md for documentation
 */
-Y.ss.SimpleUpload = function( options ) {
+ss.SimpleUpload = function( options ) {
   "use strict";
 
   var i,
@@ -473,7 +473,7 @@ Y.ss.SimpleUpload = function( options ) {
     endNonXHR: function( filename, uploadBtn ) {}
   };
 
-  Y.ss.extendObj( this._opts, options );
+  ss.extendObj( this._opts, options );
   options = null; // Null to avoid leaks in IE
   this._btns = [];
 
@@ -482,7 +482,7 @@ Y.ss.SimpleUpload = function( options ) {
     len = this._opts.button.length;
 
     for ( i = 0; i < len; i++ ) {
-      btn = Y.ss.verifyElem( this._opts.button[i] );
+      btn = ss.verifyElem( this._opts.button[i] );
       if ( btn !== false ) {
         this._btns.push( this.rerouteClicks( btn ) );
       } else {
@@ -492,7 +492,7 @@ Y.ss.SimpleUpload = function( options ) {
 
   // A single button was passed
   } else {
-    btn = Y.ss.verifyElem( this._opts.button );
+    btn = ss.verifyElem( this._opts.button );
     if ( btn !== false ) {
       this._btns.push( this.rerouteClicks( btn ) );
     }
@@ -529,7 +529,7 @@ Y.ss.SimpleUpload = function( options ) {
   this.enable();
 };
 
-Y.ss.SimpleUpload.prototype = {
+ss.SimpleUpload.prototype = {
 
   /**
   * Completely removes uploader functionality
@@ -548,16 +548,16 @@ Y.ss.SimpleUpload.prototype = {
       }
 
       // Remove any lingering classes
-      Y.ss.removeClass( this._btns[i], this._opts.hoverClass );
-      Y.ss.removeClass( this._btns[i], this._opts.focusClass );
-      Y.ss.removeClass( this._btns[i], this._opts.disabledClass );
+      ss.removeClass( this._btns[i], this._opts.hoverClass );
+      ss.removeClass( this._btns[i], this._opts.focusClass );
+      ss.removeClass( this._btns[i], this._opts.disabledClass );
 
       // In case we disabled it
       this._btns[i].disabled = false;
     }
 
     // Remove div/file input combos from the DOM
-    Y.ss.remove( this._input.parentNode );
+    ss.remove( this._input.parentNode );
 
     // Now burn it all down
     for ( var prop in this ) {
@@ -593,7 +593,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   setOptions: function( options ) {
     "use strict";
-    Y.ss.extendObj( this._opts, options );
+    ss.extendObj( this._opts, options );
   },
 
   /**
@@ -602,7 +602,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   setProgressBar: function( elem ) {
     "use strict";
-    this._progBar = Y.ss.verifyElem( elem );
+    this._progBar = ss.verifyElem( elem );
   },
 
   /**
@@ -611,7 +611,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   setPctBox: function( elem ) {
     "use strict";
-    this._pctBox = Y.ss.verifyElem( elem );
+    this._pctBox = ss.verifyElem( elem );
   },
 
   /**
@@ -620,7 +620,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   setFileSizeBox: function( elem ) {
     "use strict";
-    this._sizeBox = Y.ss.verifyElem( elem );
+    this._sizeBox = ss.verifyElem( elem );
   },
 
   /**
@@ -629,7 +629,7 @@ Y.ss.SimpleUpload.prototype = {
   */
   setProgressContainer: function( elem ) {
     "use strict";
-    this._progBox = Y.ss.verifyElem( elem );
+    this._progBox = ss.verifyElem( elem );
   },
 
   /**
@@ -638,7 +638,7 @@ Y.ss.SimpleUpload.prototype = {
   setAbortBtn: function( elem, remove ) {
     "use strict";
 
-    this._abortBtn = Y.ss.verifyElem( elem );
+    this._abortBtn = ss.verifyElem( elem );
     this._removeAbort = false;
 
     if ( remove ) {
@@ -697,7 +697,7 @@ Y.ss.SimpleUpload.prototype = {
 
     while ( i-- ) {
       nodeName = this._btns[i].nodeName.toUpperCase();
-      Y.ss.addClass( this._btns[i], this._opts.disabledClass );
+      ss.addClass( this._btns[i], this._opts.disabledClass );
 
       if ( nodeName == 'INPUT' || nodeName == 'BUTTON' ) {
         this._btns[i].disabled = true;
@@ -722,7 +722,7 @@ Y.ss.SimpleUpload.prototype = {
     this._disabled = false;
 
     while ( i-- ) {
-      Y.ss.removeClass( this._btns[i], this._opts.disabledClass );
+      ss.removeClass( this._btns[i], this._opts.disabledClass );
       this._btns[i].disabled = false;
     }
   },
@@ -764,7 +764,7 @@ Y.ss.SimpleUpload.prototype = {
       this._input.accept = this._opts.accept;
     }
 
-    Y.ss.addStyles( div, {
+    ss.addStyles( div, {
       'display' : 'block',
       'position' : 'absolute',
       'overflow' : 'hidden',
@@ -775,7 +775,7 @@ Y.ss.SimpleUpload.prototype = {
       'zIndex': 2147483583
     });
 
-    Y.ss.addStyles( this._input, {
+    ss.addStyles( this._input, {
       'position' : 'absolute',
       'right' : 0,
       'margin' : 0,
@@ -790,7 +790,7 @@ Y.ss.SimpleUpload.prototype = {
       div.style.filter = 'alpha(opacity=0)';
     }
 
-    Y.ss.addEvent( this._input, 'change', function() {
+    ss.addEvent( this._input, 'change', function() {
       var uploadBtn = self._overBtn,
           filename,
           ext,
@@ -802,8 +802,8 @@ Y.ss.SimpleUpload.prototype = {
       }
 
       if ( !XhrOk ) {
-        filename = Y.ss.getFilename( self._input.value );
-        ext = Y.ss.getExt( filename );
+        filename = ss.getFilename( self._input.value );
+        ext = ss.getExt( filename );
 
         if ( false === self._opts.onChange.call( self, filename, ext, uploadBtn ) ) {
           return;
@@ -812,8 +812,8 @@ Y.ss.SimpleUpload.prototype = {
         self._queue.push( { file: self._input, btn: uploadBtn } );
 
       } else {
-        filename = Y.ss.getFilename( self._input.files[0].name );
-        ext = Y.ss.getExt( filename );
+        filename = ss.getFilename( self._input.files[0].name );
+        ext = ss.getExt( filename );
 
         if ( false === self._opts.onChange.call( self, filename, ext, uploadBtn ) ) {
           return;
@@ -831,11 +831,11 @@ Y.ss.SimpleUpload.prototype = {
         }
       }
 
-      Y.ss.removeClass( self._overBtn, self._opts.hoverClass );
-      Y.ss.removeClass( self._overBtn, self._opts.focusClass );
+      ss.removeClass( self._overBtn, self._opts.hoverClass );
+      ss.removeClass( self._overBtn, self._opts.focusClass );
 
       // Now that file is in upload queue, remove the file input
-      Y.ss.remove( self._input.parentNode );
+      ss.remove( self._input.parentNode );
       delete self._input;
 
       // Then create a new file input
@@ -847,22 +847,22 @@ Y.ss.SimpleUpload.prototype = {
       }
     });
 
-    Y.ss.addEvent( this._input, 'mouseover', function() {
-      Y.ss.addClass( self._overBtn, self._opts.hoverClass );
+    ss.addEvent( this._input, 'mouseover', function() {
+      ss.addClass( self._overBtn, self._opts.hoverClass );
     });
 
-    Y.ss.addEvent( this._input, 'mouseout', function() {
-      Y.ss.removeClass( self._overBtn, self._opts.hoverClass );
-      Y.ss.removeClass( self._overBtn, self._opts.focusClass );
+    ss.addEvent( this._input, 'mouseout', function() {
+      ss.removeClass( self._overBtn, self._opts.hoverClass );
+      ss.removeClass( self._overBtn, self._opts.focusClass );
       self._input.parentNode.style.visibility = 'hidden';
     });
 
-    Y.ss.addEvent( this._input, 'focus', function() {
-      Y.ss.addClass( self._overBtn, self._opts.focusClass );
+    ss.addEvent( this._input, 'focus', function() {
+      ss.addClass( self._overBtn, self._opts.focusClass );
     });
 
-    Y.ss.addEvent( this._input, 'blur', function() {
-      Y.ss.removeClass( self._overBtn, self._opts.focusClass );
+    ss.addEvent( this._input, 'blur', function() {
+      ss.removeClass( self._overBtn, self._opts.focusClass );
     });
 
     div.appendChild( this._input );
@@ -878,9 +878,9 @@ Y.ss.SimpleUpload.prototype = {
 
     var self = this;
 
-    // Y.ss.addEvent() returns a function to detach, which
+    // ss.addEvent() returns a function to detach, which
     // allows us to call elem.off() to remove mouseover listener
-    elem.off = Y.ss.addEvent( elem, 'mouseover', function() {
+    elem.off = ss.addEvent( elem, 'mouseover', function() {
       if ( self._disabled ) {
         return;
       }
@@ -890,7 +890,7 @@ Y.ss.SimpleUpload.prototype = {
       }
 
       self._overBtn = elem;
-      Y.ss.copyLayout( elem, self._input.parentNode );
+      ss.copyLayout( elem, self._input.parentNode );
       self._input.parentNode.style.visibility = 'visible';
     });
 
@@ -904,7 +904,7 @@ Y.ss.SimpleUpload.prototype = {
   _getFrame: function() {
     "use strict";
 
-    var id = Y.ss.getUID(),
+    var id = ss.getUID(),
         iframe;
 
     // IE7 can only create an iframe this way, all others are the other way
@@ -979,13 +979,13 @@ Y.ss.SimpleUpload.prototype = {
       sizeBox.innerHTML = '';
     }
     if ( progBox ) {
-      Y.ss.remove( progBox );
+      ss.remove( progBox );
     }
     if ( pctBox ) {
       pctBox.innerHTML = '';
     }
     if ( abortBtn && removeAbort ) {
-      Y.ss.remove( abortBtn );
+      ss.remove( abortBtn );
     }
 
     // Decrement the active upload counter
@@ -1008,7 +1008,7 @@ Y.ss.SimpleUpload.prototype = {
     "use strict";
 
     this.log( 'Upload failed: ' + status + ' ' + statusText );
-    response = Y.ss.parseJSON( response );
+    response = ss.parseJSON( response );
     this._opts.onError.call( this, filename, errorType, status, statusText, response, uploadBtn );
     this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
@@ -1025,7 +1025,7 @@ Y.ss.SimpleUpload.prototype = {
     this.log( 'Server response: ' + response );
 
     if ( this._opts.responseType.toLowerCase() == 'json' ) {
-      response = Y.ss.parseJSON( response );
+      response = ss.parseJSON( response );
       if ( response === false ) {
         this._errorFinish( status, statusText, false, 'parseerror', filename, sizeBox, progBox, abortBtn, removeAbort, uploadBtn );
         return;
@@ -1047,7 +1047,7 @@ Y.ss.SimpleUpload.prototype = {
 
     var self = this,
         opts = this._opts,
-        xhr = Y.ss.newXHR(),
+        xhr = ss.newXHR(),
         params = {},
         queryURL,
         callback,
@@ -1058,10 +1058,10 @@ Y.ss.SimpleUpload.prototype = {
 
     // We get the any additional data here after startXHR()
     // in case the data was changed with setData() prior to submitting
-    Y.ss.extendObj( params, opts.data );
+    ss.extendObj( params, opts.data );
 
     // Build query string while preserving any existing parameters
-    queryURL = opts.url + ( ( opts.url.indexOf( '?' ) > -1 ) ? '&' : '?' ) + Y.ss.obj2string( params );
+    queryURL = opts.url + ( ( opts.url.indexOf( '?' ) > -1 ) ? '&' : '?' ) + ss.obj2string( params );
 
     // Inject file size into size box
     if ( sizeBox ) {
@@ -1135,20 +1135,20 @@ Y.ss.SimpleUpload.prototype = {
     };
 
     cancel = function() {
-      Y.ss.removeEvent( abortBtn, 'click', cancel );
+      ss.removeEvent( abortBtn, 'click', cancel );
       if ( callback ) {
         callback( undefined, true );
       }
     };
 
     if ( abortBtn ) {
-      Y.ss.addEvent( abortBtn, 'click', cancel );
+      ss.addEvent( abortBtn, 'click', cancel );
     }
 
     xhr.onreadystatechange = callback;
     xhr.open( opts.method.toUpperCase(), queryURL, true );
 
-    Y.ss.addEvent( xhr.upload, 'progress', function( event ) {
+    ss.addEvent( xhr.upload, 'progress', function( event ) {
       if ( event.lengthComputable ) {
         var pct = Math.round( ( event.loaded / event.total ) * 100 );
 
@@ -1209,7 +1209,7 @@ Y.ss.SimpleUpload.prototype = {
 
     var self = this,
         opts = this._opts,
-        key = Y.ss.getUID(),
+        key = ss.getUID(),
         iframe = this._getFrame(),
         form = this._getForm( iframe, key ),
         msgLoaded = false,
@@ -1251,7 +1251,7 @@ Y.ss.SimpleUpload.prototype = {
     // For CORS, add a listener for the "message" event, which will be
     // triggered by the Javascript snippet in the server response
     if ( opts.cors ) {
-      removeMessageListener = Y.ss.addEvent( window, 'message', function( event ) {
+      removeMessageListener = ss.addEvent( window, 'message', function( event ) {
 
         // Make sure event.origin matches the upload URL
         if ( self._getHost( event.origin ) != self._getHost( opts.url ) ) {
@@ -1271,7 +1271,7 @@ Y.ss.SimpleUpload.prototype = {
       });
     }
 
-    removeLoadListener = Y.ss.addEvent( iframe, 'load', function() {
+    removeLoadListener = ss.addEvent( iframe, 'load', function() {
       if ( !iframe.parentNode ) {
         return;
       }
@@ -1280,7 +1280,7 @@ Y.ss.SimpleUpload.prototype = {
       removeLoadListener();
 
       // Remove key from active progress keys array
-      Y.ss.removeItem( self._progKeys, key );
+      ss.removeItem( self._progKeys, key );
 
       // Delete upload key from size update flags
       if ( self._sizeFlags[key] ) {
@@ -1292,7 +1292,7 @@ Y.ss.SimpleUpload.prototype = {
       // If iframe loads without "message" event, we assume there was an error
       if ( opts.cors ) {
         window.setTimeout(function() {
-            Y.ss.remove( iframe );
+            ss.remove( iframe );
 
             // If msgLoaded has not been set to true after "message" event fires, we
             // infer that an error must have occurred and respond accordingly
@@ -1321,7 +1321,7 @@ Y.ss.SimpleUpload.prototype = {
           self._errorFinish( '', e.message, false, 'error', filename, sizeBox, progBox, pctBox, undefined, undefined, uploadBtn );
         }
 
-        Y.ss.remove( iframe );
+        ss.remove( iframe );
 
         // Null to avoid leaks in IE
         opts = key = iframe = sizeBox = progBox = pctBox = uploadBtn = null;
@@ -1330,7 +1330,7 @@ Y.ss.SimpleUpload.prototype = {
 
     self.log( 'Commencing upload using iframe' );
     form.submit();
-    Y.ss.remove( form );
+    ss.remove( form );
     form = null;
 
     if ( opts.progressUrl || opts.nginxProgressUrl ) {
@@ -1405,7 +1405,7 @@ Y.ss.SimpleUpload.prototype = {
           // XDomainRequest also doesn't have status, so we
           // again just assume that everything is fine
           if ( opts.cors || ( status >= 200 && status < 300 ) ) {
-            response = Y.ss.parseJSON( xhr.responseText );
+            response = ss.parseJSON( xhr.responseText );
             counter++;
 
             if ( response === false ) {
@@ -1474,7 +1474,7 @@ Y.ss.SimpleUpload.prototype = {
             }
 
             // Begin countdown until next progress update check
-            if ( pct < 100 && Y.ss.contains( self._progKeys, key ) ) {
+            if ( pct < 100 && ss.contains( self._progKeys, key ) ) {
               window.setTimeout( function() {
                   self._getProg( key, progBar, sizeBox, pctBox, counter );
                   // Null to avoid leaks in IE
@@ -1484,7 +1484,7 @@ Y.ss.SimpleUpload.prototype = {
 
             // We didn't get a 2xx status so don't continue sending requests
           } else {
-            Y.ss.removeItem( self._progKeys, key );
+            ss.removeItem( self._progKeys, key );
             self.log( 'Error requesting upload progress: ' + status + ' ' + statusText );
           }
 
@@ -1506,7 +1506,7 @@ Y.ss.SimpleUpload.prototype = {
         xhr.onload = callback;
 
         xhr.onerror = function() {
-          Y.ss.removeItem( self._progKeys, key );
+          ss.removeItem( self._progKeys, key );
           key = null;
           self.log('Error requesting upload progress');
         };
@@ -1517,7 +1517,7 @@ Y.ss.SimpleUpload.prototype = {
       }
 
     } else {
-      xhr = Y.ss.newXHR();
+      xhr = ss.newXHR();
       xhr.onreadystatechange = callback;
       xhr.open( 'GET', url, true );
 
@@ -1597,14 +1597,14 @@ Y.ss.SimpleUpload.prototype = {
     this._file = this._queue[0].file;
 
     if ( XhrOk ) {
-      filename = Y.ss.getFilename( this._file.name );
+      filename = ss.getFilename( this._file.name );
       // Convert from bytes to kilobytes
       size = Math.round( this._file.size / 1024 );
     } else {
-      filename = Y.ss.getFilename( this._file.value );
+      filename = ss.getFilename( this._file.value );
     }
 
-    ext = Y.ss.getExt( filename );
+    ext = ss.getExt( filename );
 
     if ( !this._checkFile( filename, ext, size ) ) {
       return;
@@ -1657,6 +1657,9 @@ Y.ss.SimpleUpload.prototype = {
     // Null to avoid leaks in IE
     this._sizeBox = this._progBar = this._progBox = this._pctBox = this._abortBtn = this._removeAbort = null;
   }
-};}, '0.0.1', {
-    requires: []
-});
+};
+
+// Expose to the global window object
+window.ss = ss;
+
+})( window, document );
