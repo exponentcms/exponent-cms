@@ -272,7 +272,7 @@ class storeController extends expController {
         // of the page is router mapped. We'll ensure we do here:
         $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
-        $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config, $this->config);
+        $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $this->config, $catConfig->config);
 
         //This is needed since in the first installation of ecom the value for this will be empty and we are doing % operation for this value
         //So we need to ensure if the value is = 0, then we can as well make it to 1

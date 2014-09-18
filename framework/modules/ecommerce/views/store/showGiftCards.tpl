@@ -74,6 +74,7 @@
                     <td>
                         {group label="Select the amount of the gift card"|gettext}
                             <h3>{'Card Amount'|gettext}</h3>
+                            {* FIXME Need to convert to smarty controls *}
                             <div class="radio control" id="25dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="25" name="card_amount" id="25d" {if $records.card_amount == "25"}checked="checked"{/if}></td><td><label class="label " for="25d">$25</label></td></tr></tbody></table></div>
                             <div class="radio control" id="50dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="50" name="card_amount" id="50d" {if $records.card_amount == "50"}checked="checked"{/if}></td><td><label class="label " for="50d">$50</label></td></tr></tbody></table></div>
                             <div class="radio control" id="75dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="75" name="card_amount" id="75d" {if $records.card_amount == "75"}checked="checked"{/if}></td><td><label class="label " for="75d">$75</label></td></tr></tbody></table></div>

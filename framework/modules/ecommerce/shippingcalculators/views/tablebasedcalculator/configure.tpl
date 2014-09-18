@@ -126,18 +126,18 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 '<a class="delete" href="#">remove</a>'+
             '</td>'+
             '<td class="from">'+
-                '<label for="from-'+i+'">{currency_symbol}</label>'+
+                '<label for="from-'+i+'">{/literal}{currency_symbol}{literal}</label>'+
                 '<input class="form-control" type="text" name="from[]" value="" id="from-'+i+'" size="10">'+
             '</td>'+
             '<td>to</td>'+
             '<td class="to">'+
-                '<label for="to-'+i+'">{currency_symbol}</label>'+
+                '<label for="to-'+i+'">{/literal}{currency_symbol}{literal}</label>'+
                 '<input class="form-control" type="text" name="to[]" value="" id="to-'+i+'" size="10">'+
             '</td>'+
 			{/literal}
 			{foreach from=$calculator->shippingspeeds item=calc}
 				{literal}
-					'<td><label for="{/literal}{$calc->speed}{literal}-1">{currency_symbol}</label>'+
+					'<td><label for="{/literal}{$calc->speed}{literal}-1">{/literal}{currency_symbol}{literal}</label>'+
 					'<input class="form-control" type="text" name="{/literal}{$calc->speed|remove_space}[]{literal}" value="" id="{$calc->speed}-' + i + '" size="10">' +
 					'</td>'+
 				{/literal}
