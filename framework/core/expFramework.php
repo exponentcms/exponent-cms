@@ -251,7 +251,11 @@ function renderAction(array $parms=array()) {
     //Get some info about the controller
 //    $baseControllerName = expModules::getControllerName($parms['controller']);
     $fullControllerName = expModules::getControllerClassName($parms['controller']);
-    $controllerClass = new ReflectionClass($fullControllerName);
+    if (expModules::controllerExists($fullControllerName)) {
+        $controllerClass = new ReflectionClass($fullControllerName);
+    } else {
+        return sprintf(gt('The module "%s" was not found in the system'), $parms['controller']);
+    }
 
     if (isset($parms['view'])) $parms['view'] = urldecode($parms['view']);
     // Figure out the action to use...if the specified action doesn't exist then
