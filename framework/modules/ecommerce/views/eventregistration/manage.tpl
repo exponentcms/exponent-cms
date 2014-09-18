@@ -52,11 +52,12 @@
                             <td><a href="{link controller=eventregistration action=show id=$listing->id}" title="View this event"|gettext>{$listing->title}</a></td>
                             <td>{$listing->eventdate|format_date:"%b %d,'%y"} {($listing->eventdate+$listing->event_starttime)|format_date:"%l:%M %p"}</td>
                             <td>{$listing->number_of_registrants}{if $listing->quantity != 0} {'of'|gettext} {$listing->quantity}{/if}</td>
-                            <td>
+                            <td class="item-actions">
                             {icon img='groupperms.png' action=view_registrants record=$listing title="View Registrants"|gettext}
                             {icon img='edit.png' controller=store action=edit record=$listing title="Edit this event"|gettext}
                             {icon img="copy.png" controller=store action=copyProduct record=$listing title="Copy this Event"|gettext}
                             {icon img='delete.png' controller=store action=delete record=$listing title="Delete this event"|gettext}
+                            </td>
                         </tr>
                     {/foreach}
                 </tbody>
