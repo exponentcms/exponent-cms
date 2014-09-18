@@ -507,8 +507,10 @@ function smarty_function_control($params, &$smarty) {
         $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '');
         $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
         //echo $control->id;
-        if (empty($control->id)) $control->id = $params['name'];
-        if (empty($control->name)) $control->name = $params['id'];
+        if ($params['type'] != 'radio') {
+            if (empty($control->id)) $control->id = $params['name'];
+            if (empty($control->name)) $control->name = $params['id'];
+        }
 
         /*$labelclass = isset($params['labelclass']) ? ' '.$params['labelclass'] : '';
         
