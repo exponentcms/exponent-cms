@@ -99,7 +99,7 @@
                                     <td><input class="form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
                                     <td><input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
                                 {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
-                                    <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">Out Of Stock</a></span></td>
+                                    <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Out Of Stock'|gettext}</a></span></td>
                                 {elseif $product->active_type != 0 || $chiprod->availability_type == 3 || $chiprod->active_type == 1 || $chiprod->active_type == 2}
                                      <td colspan="2" style="text-align:center; font-weight: bold;">N/A</td>
                                 {/if}
