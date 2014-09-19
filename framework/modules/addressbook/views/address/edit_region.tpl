@@ -19,12 +19,12 @@
     {else}
         <h1>{'New region'|gettext}</h1>
     {/if}
-    {form action=update_country}
+    {form action=update_region}
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="rank" value=$record->rank}
         {control type="text" name="name" label="Region Name"|gettext value=$record->name focus=1}
         {control type="text" name="code" label="Code"|gettext value=$record->code}
-        {control type=country name=country label="Country"|gettext value=$record->country_id show_all=1}
+        {control type=country name="country_id" label="Country"|gettext value=$record->country_id show_all=1}
         {control type="checkbox" name="active" label="Active"|gettext value=1 checked=$record->active}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}

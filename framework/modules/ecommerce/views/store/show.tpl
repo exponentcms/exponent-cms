@@ -592,7 +592,7 @@
     {/if}
 
     {if $product->crosssellItem|@count >= 1}
-         <div class="products ipr{$config.images_per_row} related-products">
+         <div class="products ipr{$config.images_per_row|default:3} related-products">
              <{$config.item_level|default:'h2'}>{"Related Items"|gettext}</{$config.item_level|default:'h2'}>
 
              {counter assign="ipr" name="ipr" start=1}

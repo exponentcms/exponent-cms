@@ -23,12 +23,13 @@
 class taxclass extends expRecord {
     public $table = 'tax_class';
         
-    public function __construct($params=null, $get_assoc=false, $get_attached=false) {
+    public function __construct($params=null, $get_assoc=false, $get_attached=false) {  // change param default values
         parent::__construct($params, $get_assoc, $get_attached);
     }
     
     public function getProductTax($item) {
         global $db;
+
         if (empty($item->shippingmethod->state)) return false;
         
         // find any zones that match the state we are shipping this item to.

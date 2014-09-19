@@ -19,17 +19,24 @@
 
 <h1>{"Tax Zone Manager"|gettext}</h1>
 
-{icon action=edit_zone class="add" text="Add a Tax Zone"|gettext}
-{br}
+<div class="module-actions">
+    {icon action=edit_zone class="add" text="Add a Tax Zone"|gettext}
+</div>
 {br}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
-            <th style="width:50px">
-                &#160;
-            </th>
             <th>
                 {'Name'|gettext}
+            </th>
+            <th>
+                {'State'|gettext}
+            </th>
+            <th>
+                {'Country'|gettext}
+            </th>
+            <th>
+                {'Action'|gettext}
             </th>
         </tr>
     </thead>
@@ -37,13 +44,23 @@
         {foreach from=$zones item=zone key=key name=zones}
             <tr class="{cycle values="odd,even"}">
                 <td>
-                    {icon action=edit_zone record=$zone img="edit.png"}
-                    {icon action=delete_zone record=$zone img="delete.png"}
+                    {$zone->name}
                 </td>
                 <td>
-                    {$zone->name}
+                    {$zone->state}
+                </td>
+                <td>
+                    {$zone->country}
+                </td>
+                <td class="module-actions">
+                    {icon action=edit_zone record=$zone img="edit.png"}
+                    {icon action=delete_zone record=$zone img="delete.png" title='Delete tax zone along with classes and rates'|gettext}
                 </td>
             </tr>
         {/foreach}
     </tbody>
 </table>
+{br}
+<div class="module-actions">
+    {icon action=manage class="reply" text="Return to Tax Class Manager"|gettext}
+</div>

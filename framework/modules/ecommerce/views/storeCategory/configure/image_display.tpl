@@ -18,8 +18,8 @@
     {control type="text" name="listingheight" label="Maximum image height"|gettext value=$config.listingheight|default:0}
 {/group}
 {group label="Product Detail Pages"|gettext}
-    {control type="text" name="displaywidth" label="Image Viewer Width"|gettext value=$config.displaywidth|default:250}
-    {control type="text" name="displayheight" label="Image Viewer Height (0 for auto height)"|gettext value=$config.displayheight|default:0}
+    {control type="text" name="displaywidth" label="Image Viewer width"|gettext value=$config.displaywidth|default:250}
+    {control type="text" name="displayheight" label="Image Viewer height (0 for auto height)"|gettext value=$config.displayheight|default:0}
 {/group}
 {group label="Thumbnails"|gettext}
     {control type="checkbox" name="thumbsattop" label="Display thumbnails above main image?"|gettext checked=$config.thumbsattop|default:1 value=1}
@@ -28,7 +28,7 @@
 {/group}
 {group label="Swatches"|gettext}
     {control type="text" name="swatchsmw" label="Swatch Thumbnail width"|gettext value=$config.swatchsmw|default:50}
-    {control type="text" name="swatchsmh" label="Swatch Thumbnail Height"|gettext value=$config.swatchsmh|default:50}
+    {control type="text" name="swatchsmh" label="Swatch Thumbnail height"|gettext value=$config.swatchsmh|default:50}
     {control type="text" name="swatchpopw" label="Swatch Thumbnail popup width"|gettext value=$config.swatchpopw|default:75}
     {control type="text" name="swatchpoph" label="Swatch Thumbnail popup width"|gettext value=$config.swatchpoph|default:75}
 {/group}

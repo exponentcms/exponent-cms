@@ -98,7 +98,7 @@
                     </div>
                     <div id="tab8" class="tab-pane fade">
                         {group label="Product Listing Pages"|gettext}
-                        {control type="text" name="images_per_row" label="Products per row"|gettext size="3" value=$config.images_per_row}
+                        {control type="number" name="images_per_row" label="Products per Row"|gettext size="3" value=$config.images_per_row|default:3 min=1 max=6}
                         {/group}
                         {group label="Product Detail Pages"|gettext}
                         {control type="checkbox" name="enable_ratings_and_reviews" label="Enable Ratings & Reviews?"|gettext value=1 checked=$config.enable_ratings_and_reviews}
