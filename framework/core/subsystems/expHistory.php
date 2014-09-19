@@ -278,7 +278,12 @@ class expHistory {
         }
         return $link;
     }
-    
+
+    /**
+     * Redirects to the login page if necessary
+     *
+     * @param null $redirecturl
+     */
 	public static function redirecto_login($redirecturl = null) {
     	$redirecturl = empty($redirecturl) ? self::getLastNotEditable() : $redirecturl;
         expSession::set('redirecturl',$redirecturl);

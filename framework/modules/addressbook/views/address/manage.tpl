@@ -27,8 +27,10 @@
 
 <div id="storeconfig" class="module address manage">
     <h1>{"Geography Settings"|gettext}</h1>
-    {icon action=edit_country class="add" text="Add a Country"|gettext}
-    {icon action=edit_region class="add" text="Add a Region"|gettext}
+    <div class="module-actions">
+        {icon action=edit_country class="add" text="Add a Country"|gettext}
+        {icon action=edit_region class="add" text="Add a Region"|gettext}
+    </div>
     <blockquote>
         {'Select the Countries and States/Provinces below that you would like to show for users creating billing and shipping addresses'|gettext}{br}
         {'These are also the list displayed for tax class management, geo upcharges, etc...'|gettext}:

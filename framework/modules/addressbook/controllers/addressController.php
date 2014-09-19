@@ -166,7 +166,8 @@ class addressController extends expController {
     
     public function manage()
     {
-        $gc = new geoCountry();             
+        expHistory::set('manageable',$this->params);
+        $gc = new geoCountry();
         $countries = $gc->find('all');
         
         $gr = new geoRegion();             
@@ -225,7 +226,7 @@ class addressController extends expController {
         $country_id = !empty($this->params['id']) ? $this->params['id'] : null;
         $country = new geoCountry($country_id);
         $country->update($this->params);
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     function delete_country() {
@@ -235,7 +236,7 @@ class addressController extends expController {
         }
         $country = new geoCountry($this->params['id']);
         $country->delete();
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     function edit_region() {
@@ -250,7 +251,7 @@ class addressController extends expController {
         $region_id = !empty($this->params['id']) ? $this->params['id'] : null;
         $region = new geoRegion($region_id);
         $region->update($this->params);
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     function delete_region() {
@@ -260,7 +261,7 @@ class addressController extends expController {
         }
         $region = new geoRegion($this->params['id']);
         $region->delete();
-        expHistory::back();
+        expHistory::returnTo('manageable');
     }
 
     /**

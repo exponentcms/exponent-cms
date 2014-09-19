@@ -16,6 +16,6 @@
 <h2>{'Category Display'|gettext}</h2>
 {control type=dropdown name=category label="Category to Display"|gettext frommodel=storeCategory display=title key=id includeblank="Display all categories"|gettext value=$config.category}
 {group label='Product Display'|gettext}
-    {control type="text" name="images_per_row" label="Products per Row (also determines product width if not set below)"|gettext value=$config.imagesperrow|default:1 focus=1}
+    {control type="number" name="images_per_row" label="Products per Row"|gettext value=$config.images_per_row|default:3 min=1 max=6 focus=1}
     {control type="text" name="productheight" label="Product Height (0 will not set a height)"|gettext value=$config.productheight|default:200}
 {/group}
