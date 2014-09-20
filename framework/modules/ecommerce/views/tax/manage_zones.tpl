@@ -62,5 +62,5 @@
 </table>
 {br}
 <div class="module-actions">
-    {icon action=manage class="reply" text="Return to Tax Class Manager"|gettext}
+    {icon action=manage class="reply" text="Return to Tax Rate Manager"|gettext}
 </div>

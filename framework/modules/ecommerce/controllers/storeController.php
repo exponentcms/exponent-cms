@@ -797,6 +797,7 @@ class storeController extends expController {
         if (empty($product->id)) {
             redirect_to(array('controller' => 'notfound', 'action' => 'page_not_found', 'title' => $this->params['title']));
         }
+        // we do not display child products by themselves
         if (!empty($product->parent_id)) {
             $product = new product($product->parent_id);
             redirect_to(array('controller' => 'store', 'action' => 'show', 'title' => $product->sef_url));

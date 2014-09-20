@@ -17,48 +17,38 @@
 
 {/css}
 
-<h1>{"Tax Rate Manager"|gettext}</h1>
+<h1>{"Tax Class Manager"|gettext}</h1>
 
 <div class="module-actions">
-    {icon action=edit class="add" text="Add a Tax Class"|gettext}
-    {icon action=manage_classes class="manage" text="Manage Classes"|gettext}
-    {icon action=manage_zones class="manage" text="Manage Zones"|gettext}
+    {icon action=edit_class class="add" text="Add a Tax Class"|gettext}
 </div>
 {br}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
     <thead>
         <tr>
             <th>
-                {'Class'|gettext}
+                {'Name'|gettext}
             </th>
             <th>
-                {'Rate'|gettext}
-            </th>
-            <th>
-                {'Zone'|gettext}
-            </th>
-			 <th>
                 {'Action'|gettext}
             </th>
         </tr>
     </thead>
     <tbody>
-        {foreach from=$taxes item=tax key=key name=taxes}
+        {foreach from=$classes item=class key=key name=classes}
             <tr class="{cycle values="odd,even"}">
                 <td>
-                    {$tax->classname}
-                </td>
-                <td>
-                    {$tax->rate|number_format:2}%
-                </td>
-                <td>
-                    {$tax->zonename} <em>({if !empty($tax->state)}{$tax->state}, {/if}{$tax->country})</em>
+                    {$class->name}
                 </td>
                 <td class="module-actions">
-                    {icon action=edit record=$tax img="edit.png"}
-                    {icon action=delete record=$tax img="delete.png"}
+                    {icon action=edit_class record=$class img="edit.png"}
+                    {icon action=delete_class record=$class img="delete.png" title='Delete tax class along with rates'|gettext}
                 </td>
             </tr>
         {/foreach}
     </tbody>
 </table>
+{br}
+<div class="module-actions">
+    {icon action=manage class="reply" text="Return to Tax Rate Manager"|gettext}
+</div>
