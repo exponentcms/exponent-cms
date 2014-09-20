@@ -25,6 +25,7 @@ class geoRegion extends expRecord {
 	
 	public function __construct($params=null, $get_assoc=false, $get_attached=false) {
 	    global $db;
+
 	    if (is_array($params) || is_numeric($params)) {
 	        parent::__construct($params, $get_assoc, $get_attached);
 	    } else {
@@ -33,33 +34,82 @@ class geoRegion extends expRecord {
 	    }
 	}
 
-    public static function getId($state) {
+    /**
+     * Get state id from state name or state code
+     *
+     * @param $state
+     * @return null
+     */
+    public static function getRegionId($state) {
         global $db;
+
         return $db->selectValue('geo_region', 'id', "name='".$state."' OR code='".$state."'" );
     }
-    
+
+    /**
+     * Get state abbreviation from state id
+     *
+     * @param $id
+     * @return null
+     */
     public static function getAbbrev($id) {
         global $db;
+
         return $db->selectValue('geo_region', 'code', 'id='.$id);
     }
-       
+
+    /**
+     * Get state name from state id
+     *
+     * @param $id
+     * @return null
+     */
     public static function getName($id) {
         global $db;
-        return $db->selectValue('geo_region', 'code', 'id='.$id);
+
+        return $db->selectValue('geo_region', 'name', 'id='.$id);
     }
-    
+
+    /**
+     * Get country 2 letter iso code from country id
+     *
+     * @param $id
+     * @return null
+     */
     public static function getCountryCode($id) {
         global $db;
-        $countryid = $db->selectValue('geo_region', 'country_id', 'id='.$id);
-        return $db->selectValue('geo_country', 'iso_code_2letter', 'id='.$countryid);
+
+//        $countryid = $db->selectValue('geo_region', 'country_id', 'id='.$id);
+//        return $db->selectValue('geo_country', 'iso_code_2letter', 'id='.$countryid);
+        return $db->selectValue('geo_country', 'iso_code_2letter', 'id='.$id);
     }
-    
+
+    /**
+     * Get country name from country id
+     *
+     * @param $id
+     * @return null
+     */
     public static function getCountryName($id) {
         global $db;
-        $countryid = $db->selectValue('geo_region', 'country_id', 'id='.$id);
-        return $db->selectValue('geo_country', 'name', 'id='.$countryid);
+
+//        $countryid = $db->selectValue('geo_region', 'country_id', 'id='.$id);
+//        return $db->selectValue('geo_country', 'name', 'id='.$countryid);
+        return $db->selectValue('geo_country', 'name', 'id='.$id);
     }
- 
+
+    /**
+     * Get country id from country name or iso code
+     *
+     * @param $country
+     * @return null
+     */
+    public static function getCountryId($country) {
+        global $db;
+
+        return $db->selectValue('geo_country', 'id', "name='".$country."' OR iso_code_2letter='".$country."'" );
+    }
+
 }
 
 ?>

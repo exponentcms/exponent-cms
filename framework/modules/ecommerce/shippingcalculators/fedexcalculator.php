@@ -51,7 +51,7 @@ class fedexcalculator extends shippingcalculator {
 
         //The WSDL is not included with the sample code.
         //Please include and reference in $path_to_wsdl variable.
-        $path_to_wsdl = BASE . 'external/fedex-phpv13/wsdl/RateService_v13.wsdl';
+        $path_to_wsdl = BASE . 'external/fedex-phpv16/wsdl/RateService_v16.wsdl';
 
         ini_set("soap.wsdl_cache_enabled", "0");
 
@@ -65,10 +65,11 @@ class fedexcalculator extends shippingcalculator {
         $request['ClientDetail']            = array('AccountNumber' => $this->configdata['fedex_account_number'], 'MeterNumber' => $this->configdata['fedex_meter_number']);
         //$request['TransactionDetail'] = array('CustomerTransactionId' => ' *** Rate Available Services Request v9 using PHP ***');
         $request['TransactionDetail']                  = array('CustomerTransactionId' => md5("Probody " . date('c')));
-        $request['Version']                            = array('ServiceId' => 'crs', 'Major' => '13', 'Intermediate' => '0', 'Minor' => '0');
+        $request['Version']                            = array('ServiceId' => 'crs', 'Major' => '16', 'Intermediate' => '0', 'Minor' => '0');
         $request['ReturnTransitAndCommit']             = true;
         $request['RequestedShipment']['DropoffType']   = 'REGULAR_PICKUP'; // valid values REGULAR_PICKUP, REQUEST_COURIER, ...
         $request['RequestedShipment']['ShipTimestamp'] = date('c');
+
         // Service Type and Packaging Type are not passed in the request
         $this->configdata['shipfrom']['StreetLines'][] = $this->configdata['shipfrom']['address1'];
         if (!empty($this->configdata['shipfrom']['address2'])) $this->configdata['shipfrom']['StreetLines'][] = $this->configdata['shipfrom']['address2'];
@@ -80,6 +81,13 @@ class fedexcalculator extends shippingcalculator {
         unset($this->configdata['shipfrom']['state']);
         unset($this->configdata['shipfrom']['country']);
 
+        if (is_numeric($this->configdata['shipfrom']['StateOrProvinceCode'])) {
+            $this->configdata['shipfrom']['StateOrProvinceCode'] = geoRegion::getAbbrev($this->configdata['shipfrom']['StateOrProvinceCode']);
+        }
+        if (is_numeric($this->configdata['shipfrom']['CountryCode'])) {
+            $this->configdata['shipfrom']['CountryCode'] = geoRegion::getCountryCode($this->configdata['shipfrom']['CountryCode']);
+        }
+
         //eDebug($this->configdata['shipfrom'],true);
 
         $request['RequestedShipment']['Shipper'] = array('Address'=> $this->configdata['shipfrom']);
@@ -87,11 +95,14 @@ class fedexcalculator extends shippingcalculator {
         $currentmethod                                          = $order->getCurrentShippingMethod();
         $request['RequestedShipment']['Recipient']              = array('Address'=> $this->formatAddress($currentmethod));
         $request['RequestedShipment']['ShippingChargesPayment'] = array('PaymentType' => 'SENDER',
-                                                                        'Payor'       => array('AccountNumber' => $this->configdata['fedex_account_number'], // Replace 'XXX' with payor's account number
-                                                                                               'CountryCode'   => $this->configdata['shipfrom']['CountryCode']));
-        $request['RequestedShipment']['RateRequestTypes']       = 'ACCOUNT';
-        $request['RequestedShipment']['RateRequestTypes']       = 'LIST';
-        $request['RequestedShipment']['PackageDetail']          = 'INDIVIDUAL_PACKAGES';
+                                                                        'Payor'       => array( 'AccountNumber' => $this->configdata['fedex_account_number'], // Replace 'XXX' with payor's account number
+                                                                                                'Contact' => null,
+                                                                                                'Address' => array(
+                                                                         				            'CountryCode' => $this->configdata['shipfrom']['CountryCode']
+                                                                                                )));
+//        $request['RequestedShipment']['RateRequestTypes']       = 'ACCOUNT';
+//        $request['RequestedShipment']['RateRequestTypes']       = 'LIST';
+//        $request['RequestedShipment']['PackageDetail']          = 'INDIVIDUAL_PACKAGES';
 
         // set the standard box sizes.
         $box_width  = empty($this->configdata['default_width']) ? 0 : $this->configdata['default_width'];
@@ -159,13 +170,13 @@ class fedexcalculator extends shippingcalculator {
                        'GroupPackageCount' => 1,
                        'Weight'            => array(
                            'Value' => $weight,
-                           'Units' => 'LB'
+                           'Units' => 'LB'  //FIXME we need to be able to set this
                        ),
                        'Dimensions'        => array(
                            'Length' => $pi->l,
                            'Width'  => $pi->w,
                            'Height' => $pi->h,
-                           'Units'  => 'IN'
+                           'Units'  => 'IN'  //FIXME we need to be able to set this
                        )
                     );
                     $used[] = $idx;
@@ -197,13 +208,13 @@ class fedexcalculator extends shippingcalculator {
                     'GroupPackageCount' => 1,
                     'Weight'            => array(
                         'Value' => $total_weight,
-                        'Units' => 'LB'
+                        'Units' => 'LB'  //FIXME we need to be able to set this
                     ),
                     'Dimensions'        => array(
                         'Length' => $box_length,
                         'Width'  => $box_width,
                         'Height' => $box_height,
-                        'Units'  => 'IN'
+                        'Units'  => 'IN'  //FIXME we need to be able to set this
                     )
                 );
                 $space_left       = $box_volume;
@@ -222,7 +233,7 @@ class fedexcalculator extends shippingcalculator {
 
         try {
 //            if (setEndpoint('changeEndpoint')) {
-//                $newLocation = $client->__setLocation(setEndpoint('endpoint'));
+//                $newLocation = $client->__setLocation('');
 //            }
 
             $response = $client->getRates($request);
@@ -245,7 +256,7 @@ class fedexcalculator extends shippingcalculator {
                         $rates[$rateReply->ServiceType] = array(
                             "id"   => $rateReply->ServiceType,
                             "title"=> $this->shippingmethods[$rateReply->ServiceType],
-                            "cost" => number_format($rateReply->RatedShipmentDetails[0]->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
+                            "cost" => number_format($rateReply->RatedShipmentDetails->ShipmentRateDetail->TotalNetCharge->Amount, 2, ".", ",")
                         );
                     }
 
@@ -431,8 +442,10 @@ class fedexcalculator extends shippingcalculator {
         foreach ($config_vars as $varname) {
             $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
             if ($varname == 'shipfrom') {
-                $config[$varname]['state']   = geoRegion::getAbbrev($values[$varname]['region']);
-                $config[$varname]['country'] = geoRegion::getCountryCode($values[$varname]['region']);
+                $config[$varname]['StateOrProvinceCode'] = geoRegion::getAbbrev($values[$varname]['address_region_id']);
+   	            $config[$varname]['CountryCode'] = geoRegion::getCountryCode($values[$varname]['address_country_id']);
+                unset($config[$varname]['address_region_id']);
+                unset($config[$varname]['address_country_id']);
             }
         }
 
@@ -454,7 +467,7 @@ class fedexcalculator extends shippingcalculator {
         if (isset($params->address2)) $addy['Streetlines'][] = $params->address2;
         $addy['City']                = isset($params->city) ? $params->city : '';
         $addy['StateOrProvinceCode'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-        $addy['CountryCode']         = isset($params->state) ? geoRegion::getCountryCode($params->state) : '';
+        $addy['CountryCode']         = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
         $addy['PostalCode']          = isset($params->zip) ? $params->zip : '';
         return $addy;
     }

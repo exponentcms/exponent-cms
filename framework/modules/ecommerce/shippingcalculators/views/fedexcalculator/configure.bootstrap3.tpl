@@ -17,7 +17,7 @@
     <blockquote>
         {'To setup a FEDEX account, visit this page'|gettext} <a href="https://www.fedex.com/login/web/jsp/logon.jsp" target="_blank">https://www.fedex.com/login/web/jsp/logon.jsp</a>
         <ul>
-            <li>{'You will also need to obtain a Developer Test Key'|gettext} <a href="https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html" target="_blank">https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html</a></li>
+            <li>{'You will also need to obtain a Developer Test Key'|gettext} <a href="https://www.fedex.com/us/developer/web-services/process.html?tab=tab2" target="_blank">https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html</a></li>
         </ul>
     </blockquote>
     <div id="fedex-tabs" class="">

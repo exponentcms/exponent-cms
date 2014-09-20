@@ -26,7 +26,7 @@
                     {foreach from=$shipping->pricelist item=option}
                         {if $option.id == $shipping->shippingmethod->option}{$selected=true}{else}{$selected=false}{/if}
                         {$oc=$option.cost|number_format:2}
-                        {control type=radio name="option" value=$option.id label="`$option.title` - `$oc|currency`" checked=$selected}
+                        {control type=radio name="option" columns=1 value=$option.id label="`$option.title` - `$oc|currency`" checked=$selected}
                     {/foreach}
                     <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                     {/form}

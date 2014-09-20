@@ -192,6 +192,7 @@ function smarty_function_control($params, &$smarty) {
                 $control            = new radiocontrol();
                 if (!empty($params['value'])) $control->value = $params['value'];
                 $control->newschool = true;
+                $control->cols      = $params['columns'];
                 break;
             case "textarea":
                 $control = new texteditorcontrol();

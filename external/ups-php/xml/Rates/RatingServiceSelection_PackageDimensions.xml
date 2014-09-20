@@ -1,6 +1,6 @@
 			<Dimensions>
 				<UnitOfMeasurement>
-					<Code>IN</Code>
+					<Code>{PACKAGE_DIM_MEASURE}</Code>
 				</UnitOfMeasurement>
 				<Length>{PACKAGE_LENGTH}</Length>
 				<Width>{PACKAGE_WIDTH}</Width>

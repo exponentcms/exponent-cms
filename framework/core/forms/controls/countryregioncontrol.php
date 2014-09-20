@@ -36,7 +36,13 @@ class countryregioncontrol extends formcontrol {
 	static function name() { return "Country / Region Selector"; }
 
 	function __construct($country_default = "", $region_default = "", $allow_entire_country = false, $disabled = false) {
+        if (!is_numeric($country_default)) {
+            $country_default = geoRegion::getCountryId($country_default);
+        }
 		$this->country_default = $country_default;
+        if (!is_numeric($region_default)) {
+            $region_default = geoRegion::getRegionId($region_default);
+        }
 		$this->region_default = $region_default;
 		$this->allow_entire_country = $allow_entire_country;
 		$this->disabled = $disabled;
@@ -49,7 +55,12 @@ class countryregioncontrol extends formcontrol {
 		$c_dd = new dropdowncontrol($this->country_default, $countries);
         $c_dd->required = $this->required;
         $c_dd->disabled = $this->disabled;
-		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$name."_region_id'," . (($this->allow_entire_country)?'true':'false') . ");";
+        if (substr($name, -1) == ']') {
+            $r_name = substr($name, 0, -1) . "_region_id]";
+        } else {
+            $r_name = $name . "_region_id";
+        }
+		$c_dd->jsHooks["onchange"] = "geo_rebuildRegions(this,'".$r_name."'," . (($this->allow_entire_country)?'true':'false') . ");";
 
 		if (!defined('GEO_JS_INCLUDED')) {
 			define('GEO_JS_INCLUDED',1);
@@ -123,11 +134,6 @@ class countryregioncontrol extends formcontrol {
         }
 		$html .= $c_dd->controlToHTML($c_name);
 		$html .="<br>";
-        if (substr($name, -1) == ']') {
-            $r_name = substr($name, 0, -1) . "_region_id]";
-        } else {
-            $r_name = $name . "_region_id";
-        }
 		$html .= $r_dd->controlToHTML($r_name);
 
 		return $html;

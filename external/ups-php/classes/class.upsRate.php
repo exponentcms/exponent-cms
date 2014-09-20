@@ -113,8 +113,30 @@ class upsRate {
 
 	// Build the package XML
 	function package($params) {
-		$package = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Package.xml', array('{PACKAGE_DESCRIPTION}',
-			'{PACKAGING_CODE}','{PACKAGE_SIZE}','{PACKAGE_EXTRAS}'), array($params['description'],$params['code'],$this->packageDimensions(array('length' => $params['length'], 'width' => $params['width'], 'height' => $params['height'])). $this->packageWeight(array('weight' => $params['weight'])),''));
+		$package = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_Package.xml',
+            array(
+                '{PACKAGING_DESCRIPTION}',
+			    '{PACKAGING_CODE}',
+                '{PACKAGE_SIZE}',
+                '{PACKAGE_EXTRAS}'),
+            array(
+                $params['description'],
+                $params['code'],
+                $this->packageDimensions(array(
+                        'length' => $params['length'],
+                        'width' => $params['width'],
+                        'height' => $params['height'],
+                        !empty($params['measure_type'])?$params['measure_type']:'IN',
+                    )
+                ).
+                $this->packageWeight(array(
+                        'weight' => $params['weight'],
+                        !empty($params['weight_type'])?$params['weight_type']:'LBS',
+                    )
+                ),
+                ''
+            )
+        );
 
 		$this->packageXML .= $package;
 		return $package;
@@ -122,9 +144,20 @@ class upsRate {
 
 	// Build the packageDimensions XML
 	function packageDimensions($params) {
-		$packageDimensions = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_PackageDimensions.xml', array('{PACKAGE_LENGTH}',
-			'{PACKAGE_WIDTH}',
-			'{PACKAGE_HEIGHT}'), array($params['length'],$params['width'],$params['height']));
+		$packageDimensions = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_PackageDimensions.xml',
+            array(
+                '{PACKAGE_LENGTH}',
+			    '{PACKAGE_WIDTH}',
+			    '{PACKAGE_HEIGHT}',
+                '{PACKAGE_DIM_MEASURE}',
+            ),
+            array(
+                $params['length'],
+                $params['width'],
+                $params['height'],
+                !empty($params['measure_type'])?$params['measure_type']:'IN',
+            )
+        );
 
 		$this->packageDimensionsXML = $packageDimensions;
 		return $packageDimensions;
@@ -132,7 +165,16 @@ class upsRate {
 
 	// Build packageWeight XML
 	function packageWeight($params) {
-		$packageWeight = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_PackageWeight.xml', array('{PACKAGE_WEIGHT}'), array($params['weight'])); 
+		$packageWeight = $this->ups->sandwich($this->ups->templatePath.'Rates/RatingServiceSelection_PackageWeight.xml',
+            array(
+                '{PACKAGE_WEIGHT}',
+                '{PACKAGE_WEIGHT_MEASURE}',
+            ),
+            array(
+                $params['weight'],
+                !empty($params['weight_type'])?$params['weight_type']:'LBS',
+            )
+        );
 
 		$this->packageWeightXML = $packageWeight;
 		return $packageWeight;

@@ -77,7 +77,7 @@
                 {/if}
                 <tr>
                     <td colspan="4" class="totals">
-                        Tax:
+                        {'Tax'|gettext}:
                         {foreach from=$order->taxzones item=zone}
                             {br}{$zone->name} ({$zone->rate}%)
                         {foreachelse}

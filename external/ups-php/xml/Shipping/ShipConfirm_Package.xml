@@ -1,5 +1,5 @@
 		<Package>
-			<Description><![CDATA[{PACKAGE_DESCRIPTION}]]></Description>
+			<Description><![CDATA[{PACKAGING_DESCRIPTION}]]></Description>
 			<PackagingType>
 				<Code>{PACKAGING_CODE}</Code>
 				<Description><![CDATA[{PACKAGING_DESCRIPTION}]]></Description>

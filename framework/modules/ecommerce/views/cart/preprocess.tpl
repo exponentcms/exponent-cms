@@ -184,7 +184,14 @@
                         </tr>
                         {/if}
                     <tr class="odd">
-                        <td class="right">{'Tax'|gettext}:</td>
+                        <td class="right">
+                            {"Tax"|gettext} -
+                            {foreach from=$order->taxzones item=zone}
+                                {$zone->name} ({$zone->rate}%):
+                            {foreachelse}
+                                ({'N/A'|gettext}):
+                            {/foreach}
+                        </td>
                         <td class="totals tax">{$order->tax|currency}</td>
                     </tr>
                         {if $order->shipping_required == true}
