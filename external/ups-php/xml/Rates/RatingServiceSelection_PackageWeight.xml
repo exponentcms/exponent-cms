@@ -1,6 +1,6 @@
 			<PackageWeight>
 				<UnitOfMeasurement>
-					<Code>LBS</Code>
+					<Code>{PACKAGE_WEIGHT_MEASURE}</Code>
 				</UnitOfMeasurement>
 				<Weight>{PACKAGE_WEIGHT}</Weight>
 			</PackageWeight>

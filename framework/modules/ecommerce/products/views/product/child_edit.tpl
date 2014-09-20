@@ -86,9 +86,9 @@
                                 </tr>
                             </table>
                         {/group}
-                        {group label="Tax Class"|gettext}
+                        {group label="Tax Rate"|gettext}
                             {control type="dropdown" name="pricing[tax_class_id]" label="" frommodel=taxclass key=id display=name includeblank="-- No Tax Required --"|gettext value=$record->tax_class_id}
-                            {icon controller="tax" action="manage" text="Manage Tax Classes"|gettext}
+                            {icon controller="tax" action="manage" text="Manage Tax Rates"|gettext}
                         {/group}
                     </div>
                     <div id="images">

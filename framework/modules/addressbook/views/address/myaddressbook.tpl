@@ -25,9 +25,9 @@
         {'A green button indicates your selection'|gettext}.{br}{br}
         {'When you are done, simply click the \'Done\' button below to go back to the checkout process'|gettext}.
     </blockquote>
-    <p>
+    <div class="module-actions">
         {icon class=add action=edit text="Add New Address"|gettext}
-    </p>
+    </div>
     <table class="exp-skin-table">
         <thead>
             <tr>
@@ -82,7 +82,9 @@
 			{/foreach}
 		</tbody>
     </table>
-    {*<a class="{button_style}" href="{backlink}">{"Done"|gettext}</a>*}
-    {$backlink = makeLink(expHistory::getBack(1))}
-    {icon button=true link=$backlink text="Done"|gettext}
+    <div class="module-actions">
+        {*<a class="{button_style}" href="{backlink}">{"Done"|gettext}</a>*}
+        {$backlink = makeLink(expHistory::getBack(1))}
+        {icon button=true class="reply" link=$backlink text="Done"|gettext}
+    </div>
 </div>

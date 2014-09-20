@@ -104,7 +104,7 @@ class ups {
 		$prefix = str_replace(array('<','>',"\n","\r"),'',$items[0]);
 		$x=0;
 		$finalArr = array();
-		$textArrayLayout .= "$".$prefix." = array();<br>";
+		$textArrayLayout = "$".$prefix." = array();<br>";
 		while($x<count($availArr[0])){
 			if(!in_array($availArr[0][$x], $finalArr)){
 				$finalArr[] = $availArr[0][$x];

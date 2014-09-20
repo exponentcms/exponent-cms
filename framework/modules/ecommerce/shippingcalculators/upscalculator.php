@@ -65,6 +65,12 @@ class upscalculator extends shippingcalculator {
 	    $upsRate->request(array('Shop' => true));
 
         // set the address we will be shipping from.  this should be in the config data
+        if (is_numeric($this->configdata['shipfrom']['state'])) {
+            $this->configdata['shipfrom']['state'] = geoRegion::getAbbrev($this->configdata['shipfrom']['state']);
+        }
+        if (is_numeric($this->configdata['shipfrom']['country'])) {
+            $this->configdata['shipfrom']['country'] = geoRegion::getCountryCode($this->configdata['shipfrom']['country']);
+        }
 	    $upsRate->shipper($this->configdata['shipfrom']);
 
         // get the current shippingmethod and format the address for ups
@@ -78,8 +84,8 @@ class upscalculator extends shippingcalculator {
         $box_volume = $box_height * $box_width * $box_length;
         
         // set some starting/default values
-        $weight = 0;
-        $volume = 0;  
+//        $weight = 0;
+//        $volume = 0;
         $count = 0;
         $package_items = array();
         
@@ -142,7 +148,16 @@ class upscalculator extends shippingcalculator {
 #                    eDebug('dimensions: height: '.$pi->h." width: ".$pi->w." length: ".$pi->l);
 #                    echo "<hr>";
                     $weight = $pi->weight > 1 ? $pi->weight : 1;
-                    $upsRate->package(array('description'=>'shipment','weight'=>$weight,'code'=>'02','length'=>$pi->l,'width'=>$pi->w,'height'=>$pi->h));
+                    $upsRate->package(array(
+                        'description'=>'shipment',
+                        'weight'=>$weight,
+                        'weight_type'=>'LBS',  //FIXME we need to be able to set this
+                        'code'=>'02',
+                        'length'=>$pi->l,
+                        'width'=>$pi->w,
+                        'height'=>$pi->h,
+                        'measure_type'=>'IN',  //FIXME we need to be able to set this
+                    ));
                     $used[] = $idx;
                     $no_more_room = false;
                 } elseif($pi->volume <= $space_left) {
@@ -166,7 +181,16 @@ class upscalculator extends shippingcalculator {
                 $total_weight = $total_weight > 1 ? $total_weight : 1;
 #                eDebug('created standard sized package with weight of '.$total_weight);
 #                echo "<hr>";
-                $upsRate->package(array('description'=>'shipment','weight'=>$total_weight,'code'=>'02','length'=>$box_length,'width'=>$box_width,'height'=>$box_height));
+                $upsRate->package(array(
+                    'description'=>'shipment',
+                    'weight'=>$total_weight,
+                    'weight_type'=>'LBS',  //FIXME we need to be able to set this
+                    'code'=>'02',
+                    'length'=>$box_length,
+                    'width'=>$box_width,
+                    'height'=>$box_height,
+                    'measure_type'=>'IN',  //FIXME we need to be able to set this
+                ));
                 $space_left = $box_volume;
                 $total_weight = 0;
             }
@@ -210,8 +234,10 @@ class upscalculator extends shippingcalculator {
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	        if ($varname == 'shipfrom') {
-	            $config[$varname]['state'] = geoRegion::getAbbrev($values[$varname]['region']);
-	            $config[$varname]['country'] = geoRegion::getCountryCode($values[$varname]['region']);
+	            $config[$varname]['state'] = geoRegion::getAbbrev($values[$varname]['address_region_id']);
+	            $config[$varname]['country'] = geoRegion::getCountryCode($values[$varname]['address_country_id']);
+                unset($config[$varname]['address_region_id']);
+                unset($config[$varname]['address_country_id']);
 	        }
 	    }
 	    
@@ -237,7 +263,7 @@ class upscalculator extends shippingcalculator {
 	    $addy['address3'] = isset($params->address3) ? $params->address3 : '';
 	    $addy['city'] = isset($params->city) ? $params->city : '';
 	    $addy['state'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-	    $addy['countryCode'] = isset($params->state) ? geoRegion::getCountryCode($params->state) : '';
+	    $addy['countryCode'] = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
 	    $addy['postalCode'] = isset($params->zip) ? $params->zip : '';
 	    $addy['phone'] = isset($params->phone) ? $params->phone : '';
 	    return $addy;

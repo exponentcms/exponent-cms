@@ -17,7 +17,7 @@
     <blockquote>
         {'To setup a FEDEX account, visit this page'|gettext} <a href="https://www.fedex.com/login/web/jsp/logon.jsp" target="_blank">https://www.fedex.com/login/web/jsp/logon.jsp</a>
         <ul>
-            <li>{'You will also need to obtain a Developer Test Key'|gettext} <a href="https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html" target="_blank">https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html</a></li>
+            <li>{'You will also need to obtain a Developer Test Key'|gettext} <a href="https://www.fedex.com/us/developer/web-services/process.html?tab=tab2" target="_blank">https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/develop.html</a></li>
         </ul>
     </blockquote>
     <div id="fedex-tabs" class="yui-navset exp-skin-tabview hide">
@@ -52,8 +52,9 @@
 	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
 	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
 	            {control type="text" name="shipfrom[City]" label="City"|gettext value=$calculator->configdata.shipfrom.City required=1}
-                {control type=state name="shipfrom[StateOrProvinceCode]" label="State"|gettext value=$calculator->configdata.shipfrom.StateOrProvinceCode required=1}
-                {control type=country name="shipfrom[CountryCode]" label="Country"|gettext value=$calculator->configdata.shipfrom.CountryCode required=1}
+                {*{control type="state" name="shipfrom[StateOrProvinceCode]" label="State"|gettext value=$calculator->configdata.shipfrom.StateOrProvinceCode required=1}*}
+                {*{control type="country" name="shipfrom[CountryCode]" label="Country"|gettext value=$calculator->configdata.shipfrom.CountryCode required=1}*}
+                {control type="countryregion" name="shipfrom[address]" label="Country/State"|gettext country_default=$calculator->configdata.shipfrom.CountryCode|default:223 region_default=$calculator->configdata.shipfrom.StateOrProvinceCode includeblank="-- Choose a State --"|gettext required=1}
                 {control type="text" name="shipfrom[PostalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.PostalCode required=1}
 	        </div>
 	        <div id="tab4">
