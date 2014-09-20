@@ -47,20 +47,22 @@ class taxController extends expController {
 //        return true;
 //    }
 
+    // tax rates
+
     function manage() {
         expHistory::set('manageable', $this->params);
-        $taxes = taxController::getTaxClasses();
+        $taxes = taxController::getTaxRates();
         assign_to_template(array(
             'taxes' => $taxes
         ));
     }
 
-    static function getTaxClasses() {
+    static function getTaxRates() {
         global $db;
 
         $sql = "
             SELECT
-                " . DB_TABLE_PREFIX . "_tax_class.id,
+                " . DB_TABLE_PREFIX . "_tax_rate.id,
                 " . DB_TABLE_PREFIX . "_tax_zone.`name` AS zonename,
                 " . DB_TABLE_PREFIX . "_tax_rate.rate as rate,
                 " . DB_TABLE_PREFIX . "_tax_class.`name` AS classname,
@@ -77,20 +79,19 @@ class taxController extends expController {
         return $db->selectObjectsBySql($sql);
     }
 
-    // tax classes
-
     function edit() {
         global $db;
 
         $record = '';
         if (!empty($this->params['id'])) {
             //Get the data from the 3 tables
-            $tax_class = $db->selectObject('tax_class', 'id =' . $this->params['id']);
-            $tax_rate = $db->selectObject('tax_rate', 'class_id =' . $this->params['id']);
+            $tax_rate = $db->selectObject('tax_rate', 'id =' . $this->params['id']);
+            $tax_class = $db->selectObject('tax_class', 'id =' . $tax_rate->class_id);
 //            $tax_geo = $db->selectObject('tax_geo', 'zone_id =' . $tax_rate->zone_id);
             //Store it in a single object all the data needed
             $record = new stdClass();
-            $record->id = $tax_class->id;
+            $record->id = $tax_rate->id;
+            $record->class_id = $tax_rate->class_id;
             $record->classname = $tax_class->name;
             $record->rate = $tax_rate->rate;
             $record->zone = $tax_rate->zone_id;
@@ -105,7 +106,14 @@ class taxController extends expController {
             $zones[$item->id] = $item->name;
         }
 
+        $records = $db->selectObjects('tax_class');
+        $classes = array();
+        foreach ($records as $item) {
+            $classes[$item->id] = $item->name;
+        }
+
         assign_to_template(array(
+            'classes' => $classes,
             'zones'  => $zones,
             'record' => $record
         ));
@@ -125,14 +133,14 @@ class taxController extends expController {
 
         if (empty($this->params['id'])) {
             // Add data in tax class
-            $tax_class = new stdClass();
-            $tax_class->name = $this->params['name'];
-            $class_id = $db->insertObject($tax_class, 'tax_class');
+//            $tax_class = new stdClass();
+//            $tax_class->name = $this->params['name'];
+//            $class_id = $db->insertObject($tax_class, 'tax_class');
 
             // Add data in the tax rate
             $tax_rate = new stdClass();
             $tax_rate->zone_id = $this->params['zone'];
-            $tax_rate->class_id = $class_id;
+            $tax_rate->class_id = $this->params['class'];
             $tax_rate->rate = $this->params['rate'];
             $db->insertObject($tax_rate, 'tax_rate');
 
@@ -144,14 +152,15 @@ class taxController extends expController {
 //            $db->insertObject($tax_geo, 'tax_geo');
         } else {
             // Update the Tax class table
-            $tax_class = $db->selectObject('tax_class', 'id =' . $this->params['id']);
-            $tax_class->name = $this->params['name'];
-            $db->updateObject($tax_class, 'tax_class');
+//            $tax_class = $db->selectObject('tax_class', 'id =' . $this->params['id']);
+//            $tax_class->name = $this->params['name'];
+//            $db->updateObject($tax_class, 'tax_class');
 
             // Update the Tax rate table
-            $tax_rate = $db->selectObject('tax_rate', 'class_id =' . $this->params['id']);
-            $zone_id = $tax_rate->zone_id;
+            $tax_rate = $db->selectObject('tax_rate', 'id =' . $this->params['id']);
+//            $zone_id = $tax_rate->zone_id;
             $tax_rate->zone_id = $this->params['zone'];
+            $tax_rate->class_id = $this->params['class'];
             $tax_rate->rate = $this->params['rate'];
             $db->updateObject($tax_rate, 'tax_rate');
 
@@ -166,6 +175,9 @@ class taxController extends expController {
         expHistory::returnTo('manageable');
     }
 
+    /**
+     * Delete tax rate
+     */
     function delete() {
         global $db;
 
@@ -182,6 +194,70 @@ class taxController extends expController {
 //        $db->delete('tax_geo', 'zone_id =' . $rate->zone_id);
 
         //Finally delete the record in tax class
+//        $db->delete('tax_class', 'id =' . $this->params['id']);
+
+        expHistory::returnTo('manageable');
+    }
+
+    // tax classes
+
+    function manage_classes() {
+        global $db;
+
+        $back = expHistory::getLast('manageable');
+        expHistory::set('manageable', $this->params);
+        $classes = $db->selectObjects('tax_class');
+
+        assign_to_template(array(
+            'classes' => $classes,
+            'back' => $back
+        ));
+    }
+
+    /**
+     * Edit tax class
+     */
+    function edit_class() {
+        global $db;
+
+        if (isset($this->params['id'])) {
+            $class = $db->selectObject('tax_class', 'id =' . $this->params['id']);
+
+            assign_to_template(array(
+                'class' => $class
+            ));
+        }
+    }
+
+    /**
+     * Update tax class
+     */
+    function update_class() {
+        global $db;
+
+        if (empty($this->params['id'])) {
+             // Add data in tax class
+            $obj = new stdClass();
+            $obj->name = $this->params['name'];
+            $db->insertObject($obj, 'tax_class');
+        } else {
+            // Update the Tax class table
+            $class = $db->selectObject('tax_class', 'id =' . $this->params['id']);
+            $class->name = $this->params['name'];
+            $db->updateObject($class, 'tax_class');
+        }
+
+        expHistory::returnTo('manageable');
+    }
+
+    /**
+     * Delete tax class along with assoc. tax rates
+     */
+    function delete_class() {
+        global $db;
+
+        if (empty($this->params['id'])) return false;
+        $db->delete('tax_rate', 'class_id =' . $this->params['id']);
         $db->delete('tax_class', 'id =' . $this->params['id']);
 
         expHistory::returnTo('manageable');
@@ -302,6 +378,7 @@ class taxController extends expController {
 
         expHistory::returnTo('manageable');
     }
+
 }
 
 ?>

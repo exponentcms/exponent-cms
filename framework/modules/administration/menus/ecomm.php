@@ -365,7 +365,7 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Manage Tax Classes"),
+                            'text'      => gt("Manage Tax Rates"),
                             'icon'      => 'fa-cog',
                             'classname' => 'manage',
                             'url'       => makeLink(

@@ -20,7 +20,7 @@
 <div id="myCart" class="module cart show hide">
 	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
-    <div style="padding:8px; 0">
+    <div class="module-actions" style="padding:8px; 0">
         {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
         {$backlink = makeLink(expHistory::getBack(1))}
         {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
@@ -166,7 +166,7 @@
             </table>       
         {/if}
 	</div>
-    <div style="padding:8px; 0">
+    <div class="module-actions" style="padding:8px; 0">
         {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
         {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
         {if $items|@count gt 0}

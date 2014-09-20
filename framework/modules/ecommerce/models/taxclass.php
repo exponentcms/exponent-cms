@@ -30,10 +30,10 @@ class taxclass extends expRecord {
     public function getProductTax($item) {
         global $db;
 
-        if (empty($item->shippingmethod->state)) return false;
+        if (empty($item->shippingmethod->country) && empty($item->shippingmethod->state)) return false;
         
         // find any zones that match the state we are shipping this item to.
-        $zones = $db->selectColumn('tax_geo', 'zone_id', 'region_id='.$item->shippingmethod->state);
+        $zones = $db->selectColumn('tax_geo', 'zone_id', 'country_id='.$item->shippingmethod->country . ' AND region_id=' . intval($item->shippingmethod->state));
         if (empty($zones)) return false;
         
         $rate = $db->selectValue('tax_rate', 'rate', 'zone_id IN ('.implode(',', $zones).') AND class_id='.$item->product->tax_class_id);
@@ -50,8 +50,7 @@ class taxclass extends expRecord {
         $zones = array();
         foreach ($order->orderitem as $item) {
             $sql  = "SELECT tz.name, tr.rate FROM ".DB_TABLE_PREFIX."_tax_geo as tg JOIN ".DB_TABLE_PREFIX."_tax_zone as tz ON tg.zone_id=tz.id ";
-            $sql .= "JOIN ".DB_TABLE_PREFIX."_tax_rate as tr ON tr.zone_id=tg.zone_id  where tg.region_id=".$item->shippingmethod->state;
-            
+            $sql .= "JOIN ".DB_TABLE_PREFIX."_tax_rate as tr ON tr.zone_id=tg.zone_id where tr.class_id=".$item->product->tax_class_id." AND (tg.country_id=".$item->shippingmethod->country." AND tg.region_id=".intval($item->shippingmethod->state).")";
             $zone = $db->selectObjectBySql($sql);
             if (!empty($zone)) $zones[$zone->name] = $zone;            
         }
