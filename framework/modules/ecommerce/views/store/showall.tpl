@@ -60,9 +60,9 @@
                 {if $permissions.manage && $config.orderby=="rank"}
                     {ddrerank label="Products"|gettext sql=$rerankSQL model="product" controller="storeCategory" id=$current_category->id}
                 {/if}
-                {if $permissions.create}
-                     {icon class=add action=create text="Add a New Product"|gettext}
-                {/if}
+                {*{if $permissions.create}*}
+                     {*{icon class=add action=create text="Add a New Product"|gettext}*}
+                {*{/if}*}
             </div>
         {/permissions}
     {/if}

@@ -29,7 +29,7 @@ class sales_repController extends expController {
     static function hasContent() { return false; }
     
     public function manage() {
-        expHistory::set('viewable', $this->params);
+        expHistory::set('manageable', $this->params);
         
         $page = new expPaginator(array(
 			'model'=>'sales_rep',

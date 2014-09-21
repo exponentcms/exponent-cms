@@ -70,7 +70,7 @@ class billing extends expRecord {
 
         $this->address = new address($order->billingmethod[0]->addresses_id);
         //$this->address = new address($order->billingmethod[0]->id);
-        $this->available_calculators = billing::listAvailableCalculators();
+        $this->available_calculators = self::listAvailableCalculators();
         $this->selectable_calculators = $this->selectableCalculators();
         $this->calculator_views = $this->getCalcViews();
         

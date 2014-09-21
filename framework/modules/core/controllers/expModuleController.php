@@ -30,6 +30,7 @@ class expModuleController extends expController {
     static function hasContent() { return false; }
     
     function manage () {
+        expHistory::set('manageable', $this->params);
         $controllers = expModules::listActiveControllers();
 //        $old_school_mods = expModules::listActiveOSMods();
         assign_to_template(array(

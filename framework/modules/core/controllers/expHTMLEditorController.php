@@ -66,6 +66,7 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
+        expHistory::set('manageable', $this->params);
         if (SITE_WYSIWYG_EDITOR == "FCKeditor") {
             flash('error', gt('FCKeditor is deprecated!'));
             redirect_to(array("module" => "administration", "action" => "configure_site"));

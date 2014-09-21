@@ -64,6 +64,7 @@ class importexportController extends expController {
     function manage() {
         global $available_controllers;
 
+        expHistory::set('manageable', $this->params);
         $importDD = array();
         $exportDD = array();
         foreach ($available_controllers as $key => $path) {
