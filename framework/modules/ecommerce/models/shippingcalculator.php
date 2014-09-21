@@ -64,6 +64,26 @@ class shippingcalculator extends expRecord {
         else return false;
     }
 
+    /**
+     * Return shipping calculator name
+     *
+     */
+    public static function getCalcName($calc_id) {
+        global $db;
+
+        return $db->selectValue('shippingcalculator','name','id='.$calc_id);
+    }
+
+    /**
+     * Return shipping calculator title
+     *
+     */
+    public static function getCalcTitle($calc_id) {
+        global $db;
+
+        return $db->selectValue('shippingcalculator','title','id='.$calc_id);
+    }
+
 }
 
 ?>

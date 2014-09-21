@@ -111,7 +111,7 @@ class storeController extends expController {
         }
         parent::__construct($src, $params);
 
-        // we're setting the config here globally
+        // we're setting the config here from the module and globally
         $this->grabConfig();
 
 //        if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && $router->url_parts[1] == "showall")) {
@@ -165,7 +165,7 @@ class storeController extends expController {
         $this->parent = expSession::get('catid');
         $this->category = new storeCategory($this->parent);
         if ($this->parent) { // we're setting the config here for the category
-            $this->grabConfig($this->category); //FIXME we don't currently create category configuration since we can display them as modules?
+            $this->grabConfig($this->category);
         }
     }
 
@@ -263,19 +263,23 @@ class storeController extends expController {
 
     function grabConfig($category = null) {
 
-        // grab the configs for the category
+        // grab the configs for the passed category
         if (is_object($category)) {
             $catConfig = new expConfig(expCore::makeLocation("storeCategory","@store-" . $category->id,""));
+        } elseif (empty($this->config)) {  // config not set yet
+            $global_config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
+            $this->config = $global_config->config;
+            return;
         }
 
-        // since router maps strip off src and we need that to pull configs, we won't get the configs
-        // of the page is router mapped. We'll ensure we do here:
+        // grab the store general settings
         $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 
-        $this->config = @array_merge((empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $this->config, $catConfig->config);
+        // $this->config currently holds the module settings - merge together with any cat config settings having priority
+        $this->config = empty($catConfig->config) || @$catConfig->config['use_global'] == 1 ?  @array_merge($config->config, $this->config) :  @array_merge($config->config, $this->config, $catConfig->config);
 
         //This is needed since in the first installation of ecom the value for this will be empty and we are doing % operation for this value
-        //So we need to ensure if the value is = 0, then we can as well make it to 1
+        //So we need to ensure if the value is = 0, we make it the default
         if (empty($this->config['images_per_row'])) {
             $this->config['images_per_row'] = 3;
         }

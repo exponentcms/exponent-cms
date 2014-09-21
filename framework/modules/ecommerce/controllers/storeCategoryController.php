@@ -171,6 +171,7 @@ class storeCategoryController extends expNestedNodeController {
     }
 
     function manage() {
+        expHistory::set('viewable', $this->params);
         //         $category = new storeCategory();
         //         $categories = $category->getFullTree();
         //         

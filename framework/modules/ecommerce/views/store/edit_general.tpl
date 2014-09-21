@@ -15,7 +15,7 @@
 
 {control type="hidden" name="tab_loaded[general]" value=1}
 {if $record->parent_id == 0}
-	{control type="hidden" name="general[parent_id]" value=$record->parent_id}   
+	{control type="hidden" name="general[parent_id]" value=$record->parent_id}
 	{control type="text" name="general[model]" label="Model # / SKU"|gettext value=$record->model focus=1}
 	{control type="text" class="title" name="general[title]" label="Product Name"|gettext value=$record->title}
 	{control type="dropdown" name="general[companies_id]" label="Manufacturer"|gettext includeblank=true frommodel=company value=$record->companies_id}
@@ -30,7 +30,6 @@
 	{/foreach}
 	{/if}
 {else}
-	{'Parent Product:'|gettext} <a href="{link controller='store' action='edit' id=$record->parent_id}">{$parent->title}</a>
 	{control type="text" name="general[child_rank]" label="Rank"|gettext value=$record->child_rank}
 	{control type="hidden" name="general[parent_id]" value=$record->parent_id}  
 	{control type="hidden" name="general[product_type]" value='childProduct'}  

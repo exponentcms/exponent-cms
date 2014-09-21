@@ -64,7 +64,7 @@
 	                }
 	            </div-->
 	            <!--div id="tab5" class="tab-pane fade">
-	                {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=$record->no_shipping}
+	                {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
 	                {control type="text" name="weight" label="Item Weight"|gettext value=$record->weight}
 	            </div-->
 	            <div id="tab6" class="tab-pane fade">
