@@ -46,7 +46,7 @@ class checkboxcontrol extends formcontrol {
     }
 
     function __construct($default = 1, $flip = false, $required = false) {
-        $this->default  =  $this->checked = $default;
+        $this->default  = $default;
         $this->flip     = $flip;
         $this->jsHooks  = array();
         $this->required = $required;
