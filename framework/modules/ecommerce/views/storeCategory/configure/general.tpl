@@ -19,8 +19,8 @@
     {control type="checkbox" name="use_global" label="Use the Global Store Settings instead?"|gettext value=1 checked=$config.use_global focus=1}
 {/group}
 {group label='Product Display'|gettext}
-    {control type="number" name="images_per_row" label="Products per Row"|gettext value=$config.images_per_row|default:3 min=1 max=6}
-    {control type="text" name="productheight" label="Product Height (0 will not set a height)"|gettext value=$config.productheight|default:200}
+    {control type="number" name="images_per_row" label="Products per Row"|gettext value=$config.images_per_row|default:3 min=0 max=6 description='0 will use default'|gettext}
+    {control type="text" name="productheight" label="Product Height"|gettext value=$config.productheight|default:200 description='0 will not set a height'|gettext}
 {/group}
 {group label="Product Sorting"|gettext}
     {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
