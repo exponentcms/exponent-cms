@@ -5,7 +5,7 @@ define("ENHANCED_STYLE",'');
 define("STYLE_WIDTH",'');
 define("BTN_SIZE",'small');
 define("MENU_LOCATION",'fixed-top');
-define("MENU_HEIGHT",'1');
+define("MENU_HEIGHT",'65');
 define("MENU_WIDTH",'769');
 define("MENU_ALIGN",'left');
 define("FLYOUT_SIDEBAR",'1');
