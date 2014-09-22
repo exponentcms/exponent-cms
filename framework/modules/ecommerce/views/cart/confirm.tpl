@@ -154,9 +154,9 @@
                 {/if}
                 &#160;-&#160;{$method->option_title} - {$method->shipping_cost|currency}
             </h4>
-        {include file="../order/partial_summary.tpl" items=$method->orderitem}
+            {include file="../order/partial_summary.tpl" items=$method->orderitem}
         {/foreach}
-        {else}
+    {else}
         <h2>{'You\'re purchasing'|gettext}</h2>
         {include file="../order/partial_summary.tpl" items=$order->orderitem}
         <div class=" order-total">

@@ -55,7 +55,7 @@ class dropdowncontrol extends formcontrol {
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
 
-        $html = ($this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div>';
+        $html = ($this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div style="display:inline">';
 
         $html .= '<select'.$inputID.' name="' . $name;
         if ($this->multiple) $html.= '[]';

@@ -45,7 +45,7 @@
             {/if}
             <div class="product">
                 {if $listing->availability_type != 3 && $listing->active_type == 0}
-                  <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style}">{"View Item"|gettext}</a>
+                  <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=blue}">{"View Item"|gettext}</a>
                   {*if $listing->hasChildren()}
                       <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style}">{"View Item"|gettext}</a>
                   {else}

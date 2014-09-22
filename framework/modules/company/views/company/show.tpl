@@ -53,7 +53,7 @@
                 {/if}
                 </div>
                 <div style="text-align: right;">
-                    <a href="{link controller=store action=show title=$result->sef_url}" class="exp-ecom-link view-item" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
+                    <a href="{link controller=store action=show title=$result->sef_url}" class="exp-ecom-link {button_style color=blue}" rel="nofollow"><strong><em>{'View Item'|gettext}</em></strong></a>
                 </div> 
             </div>
             {clear}
