@@ -35,7 +35,7 @@
     </head>
     <body>
         <!-- navigation bar/menu -->
-        <div class="container<?php echo (STYLE_WIDTH) ?>">
+        <div class="container<?php echo (STYLE_WIDTH) ?> main-menu">
             <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
         </div>
         <!-- main page body -->
