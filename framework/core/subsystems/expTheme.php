@@ -59,14 +59,10 @@ class expTheme
              */
             define('THEME_STYLE', THEME_STYLE_REAL);
         }
-        if (THEME_STYLE != '') {
-            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/config_' . THEME_STYLE . '.php')) {
-                @include_once(BASE . 'themes/' . DISPLAY_THEME . '/config_' . THEME_STYLE . '.php');
-            }
-        } else {
-            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/config.php')) {
-                @include_once(BASE . 'themes/' . DISPLAY_THEME . '/config.php');
-            }
+        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/config_' . THEME_STYLE . '.php')) {
+            @include_once(BASE . 'themes/' . DISPLAY_THEME . '/config_' . THEME_STYLE . '.php');
+        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/config.php')) {
+            @include_once(BASE . 'themes/' . DISPLAY_THEME . '/config.php');
         }
         if (!defined('BTN_SIZE')) {
             define('BTN_SIZE', 'medium');
