@@ -260,7 +260,7 @@
                         </div>
                     {/if}
                     {clear}
-                    <button type="submit" class="add-to-cart-btn {button_style}"
+                    <button type="submit" class="add-to-cart-btn {button_style color=blue size=large}"
                             style="margin: 20px auto; display: block;" rel="nofollow">
                         {"Register for this Event"|gettext}
                     </button>
