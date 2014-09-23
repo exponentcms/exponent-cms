@@ -507,7 +507,7 @@ class storeController extends expController {
 //        $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
 //        $sql .= 'sc ON p.id = sc.product_id WHERE sc.storecategories_id = 0 AND parent_id=0';
         $sql = 'SELECT p.* FROM ' . DB_TABLE_PREFIX . '_product p LEFT OUTER JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories ';
-        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null';
+        $sql .= 'sc ON p.id = sc.product_id WHERE sc.product_id is null AND p.parent_id=0';
 
         expSession::set('product_export_query', $sql);
 
