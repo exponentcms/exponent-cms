@@ -111,7 +111,7 @@ class genericcontrol extends formcontrol {
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->maxlength != "") $html .= ' maxlength="' . $this->maxlength . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
-        if ($this->min != "") $html .= ' min="' . $this->min . '"';
+        if ($this->min !== "") $html .= ' min="' . $this->min . '"';
         if ($this->max != "") $html .= ' max="' . $this->max . '"';
         if ($this->step != "") $html .= ' step="' . $this->step . '"';
         if ($this->placeholder != "") $html .= " placeholder=\"".$this->placeholder."\"";
