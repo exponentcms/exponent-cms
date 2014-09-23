@@ -214,7 +214,7 @@
 
     $(document).ready(function(){
         if ({/literal}{$top}{literal}) {  // fixed top menu
-            $(document.body).css('margin-top', $('#admin-toolbar').height()+10);
+            $(document.body).css('margin-top', $('#admin-toolbar').height() + $('#topnavbar').height());
             $(document.body).css('margin-bottom', 0);
         } else {  // fixed bottom menu
             $(document.body).css('margin-top', $('#topnavbar').height());
