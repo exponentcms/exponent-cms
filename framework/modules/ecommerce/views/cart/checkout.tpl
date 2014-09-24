@@ -138,7 +138,7 @@
                     {if $order->forced_shipping == true || $is_shipping_discount == true}
                         <ul id="forcedshipping" class="queue message">
                             {if $order->forced_shipping == true}
-                                <li>{$order->forcing_shipping_reason} {"requires you to ship this order via"|gettext} {$shipping->shippingmethod->option_title}</li>
+                                <li>{$order->forcing_shipping_reason} {"requires you to ship this order via"|gettext} {shippingcalculator::getCalcTitle($shipping->shippingmethod->shippingcalculator_id)} {'shipping'|gettext}{if !empty($shipping->shippingmethod->option)} {'using'|gettext} {$shipping->shippingmethod->option_title}{/if}</li>
                             {/if}
                             {if $is_shipping_discount}
                                 <li>{"Your full shipping discount will be reflected on the following order confirmation page, prior to submitting your order."|gettext}</li>
@@ -157,21 +157,25 @@
                         <h3>{"Available Shipping Methods"|gettext}</h3>
 
                         <div class="separate">
-                            {foreach key=key from=$shipping->selectable_calculators item=calc}
-                                {if $shipping->calculator->id!=$key}
-                                    <a rel="{$key}"
-                                       href="{link shippingcalculator_id=$key controller=shipping action=selectShippingCalculator}"
-                                       class="servopt">
-                                        {$calc}
-                                    </a>
-                                {else}
-                                    <span class="servopt">{$calc}</span>
-                                {/if}
-                            {/foreach}
+                            {if $order->forced_shipping == true}
+                                <span class="servopt">{$shipping->calculator->title}</span>
+                            {else}
+                                {foreach key=key from=$shipping->selectable_calculators item=calc}
+                                    {if $shipping->calculator->id!=$key}
+                                        <a rel="{$key}"
+                                           href="{link shippingcalculator_id=$key controller=shipping action=selectShippingCalculator}"
+                                           class="servopt">
+                                            {$calc}
+                                        </a>
+                                    {else}
+                                        <span class="servopt">{$calc}</span>
+                                    {/if}
+                                {/foreach}
+                            {/if}
                         </div>
 
-                        {if $order->forced_shipping == true}
-                            <p>{"Your order requires"|gettext} <strong>{$shipping->shippingmethod->option_title}</strong></p>
+                        {if $order->forced_shipping == true && !empty($shipping->shippingmethod->option)}
+                            <p>{"Your order requires"|gettext} <strong>{$shipping->shippingmethod->option_title} {'shipping'|gettext}</strong></p>
                         {else}
                         {*
                         <p{if $noShippingPrices} class="hide"{/if}><strong id="cur-calc">{if $shipping->calculator->id}{$shipping->calculator->title}{else}{'No service selected'|gettext}{/if}</strong>  -  <a href="#" id="servicepicker">{'Select a Service'|gettext}</a></p>
@@ -198,7 +202,7 @@
                         {clear}
 
                         <div id="shipping-services">
-                            <h3>{"Selected Shipping Method"|gettext}</h3>
+                            <h3>{"Selected Shipping Option"|gettext}</h3>
                             {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
                         </div>
 

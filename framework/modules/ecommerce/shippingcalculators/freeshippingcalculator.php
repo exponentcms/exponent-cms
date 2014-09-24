@@ -26,8 +26,8 @@ class freeshippingcalculator extends shippingcalculator {
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
 	 */
 	//overridden methods:
-	public function name() { return gt('Free Shipping'); }
-	public function description() { return gt('Use this to offer customers free shipping.'); }
+	public function name() { return gt('Free'); }
+	public function description() { return gt('Offers free shipping on all orders'); }
 	public function hasUserForm() { return true; }
 	public function hasConfig() { return true; }
 	public function addressRequired() { return true; }

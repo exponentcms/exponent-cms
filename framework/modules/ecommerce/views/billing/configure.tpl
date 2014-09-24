@@ -15,7 +15,7 @@
 
 <div class="module billing configure">
     <h1>{'Configure'|gettext} {$calculator->title}</h1>
-    <blockquote>{'Use this form to configure the'|gettext} {$calculator->title}</blockquote>
+    <blockquote>{'Use this form to configure'|gettext} {$calculator->title} {'billing'|gettext}</blockquote>
     
     {form action=saveconfig}
         {control type="hidden" name="id" value=$calculator->id}

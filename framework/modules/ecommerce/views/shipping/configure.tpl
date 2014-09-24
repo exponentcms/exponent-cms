@@ -15,7 +15,7 @@
 
 <div class="module shipping configure">
     <h1>{'Configure'|gettext} {$calculator->title}</h1>
-    <blockquote>{'Use this form to configure'|gettext} {$calculator->title}</blockquote>
+    <blockquote>{'Use this form to configure'|gettext} {$calculator->title} {'shipping'|gettext}</blockquote>
     
     {form action=saveconfig}
         {control type="hidden" name="id" value=$calculator->id}

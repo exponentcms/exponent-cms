@@ -26,8 +26,8 @@ class flatratecalculator extends shippingcalculator {
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
 	 */
 	//overridden methods:
-	public function name() { return gt('Flat Rate Shipping'); }
-	public function description() { return gt('Flat Rate Shipping calculator'); }
+	public function name() { return gt('Flat Rate'); }
+	public function description() { return gt('Flat Rate shipping calculator - one rate for all orders'); }
 	public function hasUserForm() { return true; }
 	public function hasConfig() { return true; }
 	public function addressRequired() { return true; }
