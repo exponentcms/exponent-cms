@@ -856,7 +856,7 @@ class reportController extends expController {
         $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
         $tax_res = $db->selectObjectBySql($tax_sql);
 
-        $tax_types = taxController::getTaxClasses();
+        $tax_types = taxController::getTaxRates();
         $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
 
         assign_to_template(array(
