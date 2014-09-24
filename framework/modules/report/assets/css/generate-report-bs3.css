@@ -101,10 +101,10 @@
 }
 
 .report.generate-report .actions-to-apply {
-    position:relative;
-    height:50px;
-    border:1px dotted #777;
-    border-width:1px 0 0 1px;
+    /*position:relative;*/
+    /*height:50px;*/
+    /*border:1px dotted #777;*/
+    /*border-width:1px 0 0 1px;*/
     margin:30px 0 5px 12px;
 }
 .report.generate-report .actions-to-apply .awesome {
@@ -113,29 +113,28 @@
     right:-10px;
 }
 
+.report.generate-report .actions-to-apply .btn {
+    margin-top:18px;
+}
+
 .report.generate-report .actions-to-apply .select-control .label {
-    float:left;
-    padding-right:10px;
-    text-align:right;
+    /*float:left;*/
+    /*padding-right:10px;*/
+    /*text-align:right;*/
 }
 
 .report.generate-report .actions-to-apply .select-control {
-    position:absolute;
-    right:150px;
+    /*position:absolute;*/
+    /*right:150px;*/
     top:-14px;
-    background:#fff;
+    /*background:#fff;*/
 }
 
 .report.generate-report .actions-to-apply .control.checkbox {
-    position:absolute;
+    /*position:absolute;*/
     bottom:5px;
-    left:-4px;
-    /*padding:0;*/
-    margin:6px 0;
-    background:#fff;
-}
-
-.report.generate-report .actions-to-apply .control.checkbox .label {
-	display: block;
-	margin-left: 14px;
+    /*left:-8px;*/
+    padding:0;
+	margin: 12px 0 0 0;
+	/*background:#fff;*/
 }

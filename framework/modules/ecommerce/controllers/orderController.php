@@ -101,6 +101,7 @@ class orderController extends expController {
 //            }
             $closed_count = $db->countObjects('orders', 'order_status_id IN (' . $closed_status . ')');
         } else {
+            $status_where = '';
             $closed_count = -1;
         }
 
