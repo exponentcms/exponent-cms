@@ -19,10 +19,18 @@
     white-space:nowrap;
     text-align:left;
 }
+.exp-skin-table th {
+    padding-left: 30px;
+}
+.amount .form-control{
+    display: inherit;
+}
+
 {/literal}
 {/css}
-<div id="tablebasedcalculator" class="module shipping  configure hide">
-    {"Shipping Speeds"|gettext}
+<div id="tablebasedcalculator" class="module shipping configure hide">
+    <blockquote>{'Shipping cost is based on order total and shipping speed'|gettext}</blockquote>
+    <h4>{"Shipping Speeds"|gettext}</h4>
     <ul id="shippingspeeds">
 		{foreach from=$calculator->shippingspeeds item=calc}
 			<li>
@@ -39,7 +47,8 @@
         {br}
 
         <div>
-            <a href="#" id="newrange">{"Add Range Set"|gettext}</a>
+            {* <a href="#" id="newrange">{"Add Range Set"|gettext}</a> *}
+            {icon class="add" action=scriptaction name="newrange" text="Add Range Set"|gettext}
         </div>
         {br}
         <table id="shippingtable" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
@@ -59,21 +68,21 @@
                 <!-- loop me -->
                 {section name=i loop=$calculator->configdata.from}
                     {if !($smarty.section.i.last)}
-                    <tr class="row row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
-                        <td class="from">
+                    <tr class="row-{$smarty.section.i.index+1} {cycle values='odd,even'}">
+                        <td>
                             <a href="#" class="delete">{'Remove'|gettext}</a>
                         </td>
-                        <td class="from">
+                        <td class="from amount">
                             <label for="from-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" size="10" id="from-{$smarty.section.i.index}" value="{$calculator->configdata.from[i]}" name="from[]}">
                         </td>
                         <td>
                             {'to'|gettext}
                         </td>
-                        <td class="to">
+                        <td class="to amount">
                             <label for="to-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" size="10" id="to-{$smarty.section.i.index}" value="{$calculator->configdata.to[i]}" name="to[]">
                         </td>
                         {foreach from=$calculator->shippingspeeds item=calc}
-                        <td>
+                        <td class="amount">
                             <label for="rate[{$shippingspeed}][]">{currency_symbol}</label><input class="form-control" type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
                         </td>
                         {/foreach}
@@ -85,21 +94,20 @@
                 <!-- stop looping me loop me -->
 
                 <tr class="even last">
-                    <td class="from">
-
+                    <td>
+                        &#160;
                     </td>
-                    <td class="from">
+                    <td class="from amount">
                         <label for="from-1">{currency_symbol}</label><input class="form-control" type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
                     </td>
                     <td>
                         {'and up'|gettext}
                     </td>
                     <td class="to">
-
+                        &#160;
                     </td>
                     {foreach from=$calculator->shippingspeeds item=calc}
-
-                    <td>
+                    <td class="amount">
                         <label for="standard-1">{currency_symbol}</label><input class="form-control" type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
                     </td>
                     {/foreach}

@@ -29,7 +29,7 @@ class shipping extends expRecord {
 	public $available_options = null;
 	public $address = null;
 	public $splitshipping = false;
-	public $forced_shipping = false;
+	public $forced_shipping = false;  //FIXME we don't use this in shipping, only order?
 	
 	public function __construct() {
         global $order, $user;
@@ -112,14 +112,24 @@ class shipping extends expRecord {
 		}
 
 		// if the user hasn't selected a shipping option yet we will default one for him now.
-		if ((!empty($this->shippingmethod->id) && (is_array($this->pricelist) && (count($this->pricelist) > 0)))) { 
+		if ((!empty($this->shippingmethod->id) && (is_array($this->pricelist) && (count($this->pricelist) > 0)))) {
 		    if(empty($this->shippingmethod->option)) {
 		        $opt = current($this->pricelist);
-		        $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
+                if ($this->forced_shipping) {
+                    $option = $this->shippingmethod->option;
+                } else {
+                    $option = $opt['id'];
+                }
+		        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
 		    } else {                       
 		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {                    
 		            $opt = !empty($this->pricelist[$this->shippingmethod->option]) ? $this->pricelist[$this->shippingmethod->option] : '';
-		            $this->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
+                    if ($this->forced_shipping) {
+                        $option = $this->shippingmethod->option;
+                    } else {
+                        $option = $opt['id'];
+                    }
+		            $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
 		        }
 		    }
 		}		

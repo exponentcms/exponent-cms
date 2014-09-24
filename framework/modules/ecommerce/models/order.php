@@ -38,7 +38,7 @@ class order extends expRecord {
     public $promos = array();
     public $taxzones = array();
     public $forced_shipping = false;
-    public $product_forcing_shipping = '';
+    public $product_forcing_shipping = '';  //FIXME we don't seem to use this
 
 //    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
 //        //'content_expTags'=>'expTag',
@@ -397,10 +397,15 @@ class order extends expRecord {
         return;
     }
 
+    /**
+     * Determine if the order has any item with forced shipping
+     *
+     * @return bool
+     */
     public function forcedShipping() {
         $this->forced_shipping = false;
         foreach ($this->orderitem as $item) {
-            if (!empty($item->product->required_shipping_method)) {
+            if (!empty($item->product->required_shipping_calculator_id)) {
                 $this->forced_shipping = true;
                 $this->product_forcing_shipping = $item->product;
                 return true;
@@ -419,13 +424,18 @@ class order extends expRecord {
         return false;
     }
 
+    /**
+     * Update order object with forced shipping details
+     *
+     * @return shippingmethod
+     */
     public function getForcedShippingMethod() {
         global $db, $user;
 
         $forced_calc = '';
         $forced_method = '';
         foreach ($this->orderitem as $item) {
-            if (!empty($item->product->required_shipping_method)) {
+            if (!empty($item->product->required_shipping_calculator_id)) {
                 $method = new shippingmethod($item->shippingmethods_id);
                 $forced_calc = $item->product->required_shipping_calculator_id;
                 $forced_method = $item->product->required_shipping_method;
@@ -467,7 +477,11 @@ class order extends expRecord {
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id=' . $forced_calc);
         $calculator = new $calcname($forced_calc);
         $rates = $calculator->getRates($this);
-        $rate = $rates[$forced_method];
+        if (!empty($forced_method)) {
+            $rate = $rates[$forced_method];
+        } else {
+            $rate = array_shift($rates);  // select first rate type as default
+        }
         $method->update(array('option' => $forced_method, 'option_title' => $rate['title'], 'shipping_cost' => $rate['cost'], 'shippingcalculator_id' => $forced_calc));
         return $method;
     }

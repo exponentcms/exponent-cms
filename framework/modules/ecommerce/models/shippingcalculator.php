@@ -47,6 +47,11 @@ class shippingcalculator extends expRecord {
         return true;
     }
 
+    /**
+     * Unused at this time
+     *
+     * @return int
+     */
     public function getHandling() {
         return 0;
     }

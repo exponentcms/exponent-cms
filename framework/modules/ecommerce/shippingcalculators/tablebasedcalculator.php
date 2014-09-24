@@ -29,8 +29,8 @@ class tablebasedcalculator extends shippingcalculator {
 	// public $table = 'table_based_shipping_charges';
 	public $has_many = array('shippingspeeds');
 	
-    public function name() { return gt('Table Based Shipping'); }
-    public function description() { return gt('Table Based Shipping calculator'); }
+    public function name() { return gt('Simple'); }
+    public function description() { return gt('Order Total Cost based shipping calculator'); }
     public function hasUserForm() { return true; }
     public function hasConfig() { return true; }
     public function addressRequired() { return false; }
@@ -93,6 +93,7 @@ class tablebasedcalculator extends shippingcalculator {
     //process config form
     function parseConfig($values) {
 		global $db;
+
 		$where = " shippingcalculator_id = {$values['id']}";
 		$speeds = $db->selectObjects("shippingspeeds", $where);
         $config_vars = array('to', 'from');
@@ -108,7 +109,8 @@ class tablebasedcalculator extends shippingcalculator {
             }
             
         }
-        
+        //FIXME we need to sort by lower end of range values
+
         return $config;
     }
     
@@ -121,11 +123,21 @@ class tablebasedcalculator extends shippingcalculator {
 		
         return $shippingmethods;
     }
-    
+
+    /**
+     * Unused at this time
+     *
+     * @return int
+     */
     public function getHandling() {
         return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;
     }
-    
+
+    /**
+     * Unused at this file
+     *
+     * @return mixed
+     */
     public function getMessage() {
         return $this->configdata['message'];
     }
