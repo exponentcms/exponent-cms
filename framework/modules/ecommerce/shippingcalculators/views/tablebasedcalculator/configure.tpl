@@ -83,7 +83,7 @@
                         </td>
                         {foreach from=$calculator->shippingspeeds item=calc}
                         <td class="amount">
-                            <label for="rate[{$shippingspeed}][]">{currency_symbol}</label><input class="form-control" type="text" size="10" id="rate[{$shippingspeed}][]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
+                            <label for="rate-{$calc->speed|remove_space}-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" size="10" id="rate-{$calc->speed|remove_space}-{$smarty.section.i.index}" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$smarty.section.i.index}" name="{$calc->speed|remove_space}[]">
                         </td>
                         {/foreach}
                     </tr>
@@ -93,12 +93,12 @@
                 {/section}
                 <!-- stop looping me loop me -->
 
-                <tr class="even last">
+                <tr class="row-{$smarty.section.i.index+1} even last">
                     <td>
                         &#160;
                     </td>
                     <td class="from amount">
-                        <label for="from-1">{currency_symbol}</label><input class="form-control" type="text" name="from[]" value="{$calculator->configdata.from[$lastcharge]}" id="from-1" size="10">
+                        <label for="from-{$smarty.section.i.index+1}">{currency_symbol}</label><input class="form-control" type="text" id="from-{$smarty.section.i.index+1}" value="{$calculator->configdata.from[$lastcharge]}" name="from[]" size="10">
                     </td>
                     <td>
                         {'and up'|gettext}
@@ -108,7 +108,7 @@
                     </td>
                     {foreach from=$calculator->shippingspeeds item=calc}
                     <td class="amount">
-                        <label for="standard-1">{currency_symbol}</label><input class="form-control" type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="shipping_rate[1][]" size="10">
+                        <label for="rate-{$calc->speed|remove_space}-{$smarty.section.i.index}">{currency_symbol}</label><input class="form-control" type="text" name="{$calc->speed|remove_space}[]" value="{$calc->speed|remove_space|array_lookup:$calculator->configdata:$lastcharge}" id="rate-{$calc->speed|remove_space}-{$smarty.section.i.index}" size="10">
                     </td>
                     {/foreach}
                 </tr>

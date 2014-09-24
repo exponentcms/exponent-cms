@@ -101,17 +101,27 @@ class tablebasedcalculator extends shippingcalculator {
 			$config_vars[] = str_replace(' ', '_', $item->speed);
 		}
 		// eDebug($config_vars, true);
+        $sorted_config = array();
         foreach ($config_vars as $varname) {
             if ($varname == 'rate') {
                 $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
             } else {
                 $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
             }
-            
+            $sorted_config[$varname] = array();
         }
-        //FIXME we need to sort by lower end of range values
+        // sort by lower end of range values
+        $from = $config['from'];
+        asort($from);
+        $i = 0;
+        foreach ($from as $key=>$val) {
+            foreach ($config_vars as $varname) {
+                $sorted_config[$varname][$i] = $config[$varname][$key];
+            }
+            $i++;
+        }
 
-        return $config;
+        return $sorted_config;
     }
     
     function availableMethods() {
