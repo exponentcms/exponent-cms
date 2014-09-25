@@ -695,6 +695,13 @@ exit();
                 if (!empty($email_addy)) {
                     $from_status = $db->selectValue('order_status', 'title', 'id=' . $change->from_status_id);
                     $to_status   = $db->selectValue('order_status', 'title', 'id=' . $change->to_status_id);
+
+                    if ($order->shippingmethod->carrier == 'UPS') {
+                        $carrierTrackingLink = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=";
+                    } elseif ($order->shippingmethod->carrier == 'FedEx') {
+                        $carrierTrackingLink = "http://www.fedex.com/Tracking?action=track&tracknumbers=";
+                    }
+
                     assign_to_template(array(
                         'comment'         => $change->comment,
                         'to_status'       => $to_status,
@@ -702,7 +709,9 @@ exit();
                         'order'           => $order,
                         'date'            => date("F j, Y, g:i a"),
                         'storename'       => ecomconfig::getConfig('storename'),
-                        'include_shipping'=> isset($this->params['include_shipping_info']) ? true : false
+                        'include_shipping'=> isset($this->params['include_shipping_info']) ? true : false,
+                        'tracking_link'    => $carrierTrackingLink . $order->shipping_tracking_number,
+                        'carrier'          => $order->shippingmethod->carrier
                     ));
 
                     $html = $template->render();
