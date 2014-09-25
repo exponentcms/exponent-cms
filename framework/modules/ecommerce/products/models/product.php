@@ -394,10 +394,12 @@ class product extends expRecord {
      * Process submitted order and update product inventory/quantity
      *
      * @param $item
+     * @param bool $affects_inventory
      */
-    public function process($item) {
+    public function process($item, $affects_inventory=false) {
         global $db;
-        $this->quantity = $this->quantity - $item->quantity;
+
+        if ($affects_inventory) $this->quantity = $this->quantity - $item->quantity;
         if ($this->quantity < 0) $this->quantity = 0;
         //$this->save();
         $pobj = new stdClass();

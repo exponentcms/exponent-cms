@@ -225,7 +225,7 @@ class giftcard extends expRecord {
         // nothing to do for this callback.
     }
 
-    public function process($item) {
+    public function process($item, $affects_inventory=false) {
 
     }
 
