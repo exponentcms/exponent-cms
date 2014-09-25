@@ -1679,7 +1679,7 @@ class storeController extends expController {
 
     function batch_process() {
         $os = new order_status();
-        $oss = $os->find('all');
+        $oss = $os->find('all',1,'rank');
         $order_status = array();
         $order_status[-1] = '';
         foreach ($oss as $status) {
@@ -1767,11 +1767,11 @@ class storeController extends expController {
         if (trim($data[0]) == 'ShipmentInformationShipmentID') {
             echo "Detected UPS file...<br/>";
             $carrier = "UPS";
-            $carrierTrackingLink = "http://wwwapps.ups.com/etracking/tracking.cgi?TypeOfInquiryNumber=T&InquiryNumber1=";
+            $carrierTrackingLink = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=";
         } elseif (trim($data[0]) == 'PIC') {
             echo "Detected United States Post Service file...<br/>";
             $carrier = "USPS";
-            $carrierTrackingLink = "http://trkcnfrm1.smi.usps.com/PTSInternetWeb/InterLabelInquiry.do?origTrackNum=";
+            $carrierTrackingLink = "https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=";
         }
 
         //eDebug($carrier);
