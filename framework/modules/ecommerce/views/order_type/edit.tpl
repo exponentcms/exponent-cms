@@ -22,7 +22,7 @@
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="title" label="Order Type"|gettext value=$record->title focus=1}
         {control type="checkbox" name="is_default" label="Default?"|gettext value=1 checked=$record->is_default}
-        {control type="checkbox" name="creates_new_user" label="Creates New User?"|gettext value=1 checked=$record->creates_new_user}
+        {control type="checkbox" name="creates_new_user" label="Creates New User?"|gettext value=1 checked=$record->creates_new_user description='Only applies to Passthru payment option'|gettext}
         {control type="checkbox" name="emails_customer" label="Emails Customer?"|gettext value=1 checked=$record->emails_customer}
         {control type="checkbox" name="affects_inventory" label="Affects Inventory?"|gettext value=1 checked=$record->affects_inventory}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}

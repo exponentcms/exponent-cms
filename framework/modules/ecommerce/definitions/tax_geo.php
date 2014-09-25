@@ -20,16 +20,20 @@
  * @package Core
  */
 return array(
-	"id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	"zone_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	"country_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	"region_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID)
+    "id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY => true,
+        DB_INCREMENT => true
+    ),
+    "zone_id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID
+    ),
+    "country_id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+    ),
+    "region_id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+    ),
 );
 
 ?>

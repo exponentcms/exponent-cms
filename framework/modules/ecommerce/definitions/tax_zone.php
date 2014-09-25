@@ -20,14 +20,16 @@
  * @package Core
  */
 return array(
-	"id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	"name"=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100,
-		DB_INDEX=>10)
-	);
+    "id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY => true,
+        DB_INCREMENT => true
+    ),
+    "name" => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100,
+        DB_INDEX => 10
+    )
+);
 
 ?>
