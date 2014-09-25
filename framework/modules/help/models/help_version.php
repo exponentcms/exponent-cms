@@ -64,7 +64,7 @@ class help_version extends expRecord {
     public static function getHelpVersionsDropdown() {
         global $db;
 
-        return $db->selectDropdown('help_version','version',1,'version');
+        return $db->selectDropdown('help_version','version',1,'version DESC');
     }
 
     public static function clearHelpVersion() {
