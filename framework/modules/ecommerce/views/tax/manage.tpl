@@ -17,12 +17,12 @@
 
 {/css}
 
-<h1>{"Tax Rate Manager"|gettext}</h1>
+<h1>{"Tax Manager"|gettext}</h1>
 
 <div class="module-actions">
-    {icon action=edit class="add" text="Add a Tax Class"|gettext}
-    {icon action=manage_classes class="manage" text="Manage Classes"|gettext}
-    {icon action=manage_zones class="manage" text="Manage Zones"|gettext}
+    {icon action=edit class="add" text="Add a Tax Rate"|gettext}
+    {icon action=manage_classes class="manage" text="Manage Tax Classes"|gettext}
+    {icon action=manage_zones class="manage" text="Manage Tax Zones"|gettext}
 </div>
 {br}
 <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
