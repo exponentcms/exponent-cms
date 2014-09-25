@@ -525,10 +525,10 @@ class eventregistration extends expRecord {
      * process - here we are actually making a 'reservation' by submitting the purchase
      *
      * @param product $item the event registration product
-     *
+     * @param bool $affects_inventory
      * @return bool
      */
-    public function process($item) {
+    public function process($item, $affects_inventory=false) {
         global $user, $db, $order;
 
         // save the names of the registrants to the eventregistration table too
