@@ -20,16 +20,20 @@
  * @package Core
  */
 return array(
-	"id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID,
-		DB_PRIMARY=>true,
-		DB_INCREMENT=>true),
-	"zone_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	"class_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
-	"rate"=>array(
-		DB_FIELD_TYPE=>DB_DEF_DECIMAL)
-	
+    "id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID,
+        DB_PRIMARY => true,
+        DB_INCREMENT => true
+    ),
+    "zone_id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID
+    ),
+    "class_id" => array(
+        DB_FIELD_TYPE => DB_DEF_ID
+    ),
+    "rate" => array(
+        DB_FIELD_TYPE => DB_DEF_DECIMAL
+    )
 );
+
 ?>
