@@ -25,7 +25,7 @@
 {/literal}
 {/css}
 <div id="storeconfig" class="module upcharge manage">
-    <h1>{"Up Charge Rate Settings"|gettext}</h1>
+    <h1>{"Location Up-Charge Rate Settings"|gettext}</h1>
 	
 	{form action=update_upcharge}
 		{'Select the configuration of the Up charge Rate for the Countries and States/Provinces:'|gettext}

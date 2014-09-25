@@ -13,6 +13,7 @@
  *
  *}
 
+<h1>{"Edit Tax Class"|gettext}</h1>
 {form action=update_class}
     {control type="hidden" name="id" value=$class->id}
     {control type="text" name="name" label="Class Name"|gettext value=$class->name focus=1}

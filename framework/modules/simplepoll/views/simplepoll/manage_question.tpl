@@ -61,5 +61,5 @@
         </div>
 	{/if}
 	<br />
-	<a href="{link action=manage_questions}">{'Back to Manager'|gettext}</a>
+	<a href="{link class="reply" action=manage_questions}">{'Return to Question Manager'|gettext}</a>
 </div>

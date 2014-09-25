@@ -53,7 +53,7 @@
                     {$zone->country}
                 </td>
                 <td class="module-actions">
-                    {icon action=edit_zone record=$zone img="edit.png"}
+                    {icon action=edit_zone record=$zone img="edit.png" title='Edit tax class|gettext'|gettext}
                     {icon action=delete_zone record=$zone img="delete.png" title='Delete tax zone along with classes and rates'|gettext}
                 </td>
             </tr>
@@ -62,5 +62,5 @@
 </table>
 {br}
 <div class="module-actions">
-    {icon action=manage class="reply" text="Return to Tax Rate Manager"|gettext}
+    {icon action=manage class="reply" text="Return to Tax Manager"|gettext}
 </div>

@@ -26,7 +26,7 @@
 {/css}
 
 <div id="storeconfig" class="module address manage">
-    <h1>{"Geography Settings"|gettext}</h1>
+    <h1>{"Manage Locations"|gettext}</h1>
     <div class="module-actions">
         {icon action=edit_country class="add" text="Add a Country"|gettext}
         {icon action=edit_region class="add" text="Add a Region"|gettext}

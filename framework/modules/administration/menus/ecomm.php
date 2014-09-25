@@ -120,17 +120,6 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Manage Order Status Email Messages"),
-                            'icon'      => 'fa-cog',
-                            'classname' => 'manage',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'order_status',
-                                    'action'     => 'manage_messages'
-                                )
-                            ),
-                        ),
-                        array(
                             'text'      => gt("Manage Order Types"),
                             'icon'      => 'fa-cog',
                             'classname' => 'manage',
@@ -138,6 +127,17 @@ $ecom = array(
                                 array(
                                     'controller' => 'order_type',
                                     'action'     => 'manage'
+                                )
+                            ),
+                        ),
+                        array(
+                            'text'      => gt("Manage Order Status Email Messages"),
+                            'icon'      => 'fa-cog',
+                            'classname' => 'manage',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'order_status',
+                                    'action'     => 'manage_messages'
                                 )
                             ),
                         ),
@@ -343,9 +343,9 @@ $ecom = array(
 //                            'url'  => makeLink(array('controller' => 'cart', 'action' => 'configure')),
 //                        ),
                         array(
-                            'text'      => gt("Address/Geo Settings"),
+                            'text'      => gt("Manage Locations"),
                             'icon'      => 'fa-cogs',
-                            'classname' => 'configure',
+                            'classname' => 'manage',
                             'url'       => makeLink(
                                 array(
                                     'controller' => 'address',
@@ -354,7 +354,7 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Manage Geo Up Charge Rate"),
+                            'text'      => gt("Manage Location Up-Charge Rates"),
                             'icon'      => 'fa-cog',
                             'classname' => 'manage',
                             'url'       => makeLink(
@@ -365,7 +365,7 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Manage Tax Rates"),
+                            'text'      => gt("Manage Taxes"),
                             'icon'      => 'fa-cog',
                             'classname' => 'manage',
                             'url'       => makeLink(
