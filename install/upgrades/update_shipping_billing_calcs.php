@@ -45,8 +45,16 @@ class update_shipping_billing_calcs extends upgradescript {
 	 * @return bool
 	 */
 	function needed() {
-        if (defined('ECOM')) return true;
-        else return false;
+        global $db;
+
+        if ($db->selectValue('modstate', 'active', 'module="store"') ||
+          $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
+          $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM) {
+            return true;
+        } else {
+            return false;
+        }
+
 	}
 
 	/**

@@ -11,7 +11,22 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Added / Fixed / Changed for 2.3.1
 -----------------------
 ### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address any issues in v2.3.0
-  - includes all fixes from v2.3.0 patches
+  * !!!Fixes regression bug where non-admin user login with workflow turned on always broke page
+  * !!!Fixes regression bug where all checkboxes were either checked or unchecked
+  * !!!Fixes regression bug where adding/editing a module would display a blank page or disable the save button
+  * !!!Fixes loss of admin/super-admin status when password is changed
+  * !!!Updates install/upgrade logic for greater security
+  * !!!Fixes bug which could allow display of orders to non-admin users
+  - updates ecommerce to be more robust with non-US areas (countries w/o regions/states)
+    -- Much improved interface for managing sales tax and also countries/regions
+  - adds many Twitter Bootstrap v3 widgets/components to that theme framework, moving away from YUI2/YUI3/jQueryUI
+    -- many tweaks and fixes applied to the Twitter Bootstrap v3 theme framework
+  - adds NEWUI & BS3 Slingbar 'bottom' location (can't be dragged/dropped, but only changed in site configuration)
+  - allows upgrading a site where the config.php file is read-only to prevent hacking (w/ assoc. warnings)
+  - adds 4-column container view
+  - adds .less file compilation minification setting, and better error trapping on compilation error
+  - fixes loading of ckeditor & tinymce if linked js is minified
+  - includes all fixes from v2.3.0 patches 1 - 4 plus the following bug fixes
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
