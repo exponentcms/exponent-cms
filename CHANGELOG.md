@@ -8,7 +8,16 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
-Added / Fixed / Changed for 2.3.0
+Added / Fixed / Changed for 2.3.1
+-----------------------
+### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address any issues in v2.3.0
+  - includes all fixes from v2.3.0 patches
+### Known Issues
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
+  Added / Fixed / Changed for 2.3.0
 -----------------------
 ### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
