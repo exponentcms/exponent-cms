@@ -170,32 +170,32 @@ ss.parseJSON = function( data ) {
       depth = null,
       requireNonComma;
 
-  // Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
-  // after removing valid tokens
-  if ( data && !ss.trim  ( data.replace( rvalidtokens, function( token, comma, open, close ) {
+	// Guard against invalid (and possibly dangerous) input by ensuring that nothing remains
+	// after removing valid tokens
+	if ( data && !ss.trim  ( data.replace( rvalidtokens, function( token, comma, open, close ) {
 
-    // Force termination if we see a misplaced comma
-    if ( requireNonComma && comma ) {
-      depth = 0;
-    }
+		// Force termination if we see a misplaced comma
+		if ( requireNonComma && comma ) {
+			depth = 0;
+		}
 
-    // Perform no more replacements after returning to outermost depth
-    if ( depth === 0 ) {
-      return token;
-    }
+		// Perform no more replacements after returning to outermost depth
+		if ( depth === 0 ) {
+			return token;
+		}
 
-    // Commas must not follow "[", "{", or ","
-    requireNonComma = open || comma;
+		// Commas must not follow "[", "{", or ","
+		requireNonComma = open || comma;
 
-    // Determine new depth
-    // array/object open ("[" or "{"): depth += true - false (increment)
-    // array/object close ("]" or "}"): depth += false - true (decrement)
-    // other cases ("," or primitive): depth += true - true (numeric cast)
-    depth += !close - !open;
+		// Determine new depth
+		// array/object open ("[" or "{"): depth += true - false (increment)
+		// array/object close ("]" or "}"): depth += false - true (decrement)
+		// other cases ("," or primitive): depth += true - true (numeric cast)
+		depth += !close - !open;
 
-    // Remove this token
-    return '';
-  }) ) )
+		// Remove this token
+		return '';
+	}) ) )
   {
     return ( new Function( "return " + data ) )();
   }
