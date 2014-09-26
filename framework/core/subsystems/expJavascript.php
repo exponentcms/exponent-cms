@@ -64,6 +64,12 @@ class expJavascript {
         }
         $scripts .= '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$exponent_js."\r\n".'//]]></script>' . "\r\n";
 
+        if (THEME_STYLE != '' && file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less_' . THEME_STYLE)) {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less_' . THEME_STYLE;
+        } else {
+            $theme_variables = '../../../themes/'.DISPLAY_THEME.'/less';
+        }
+
         if (MINIFY==1&&MINIFY_LINKED_JS==1) {
             // if we're minifying, we'll break our URLs apart at MINIFY_URL_LENGTH characters to allow it through
             // browser string limits
@@ -93,7 +99,7 @@ class expJavascript {
     <!--<![endif]-->';
                 }
                 if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
@@ -237,7 +243,7 @@ class expJavascript {
     <!--<![endif]-->' . "\r\n";
                 }
                 if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':'../../../themes/'.DISPLAY_THEME.'/less') . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
                     if ($head_config['framework'] == 'bootstrap') {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",

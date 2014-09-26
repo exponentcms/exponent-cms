@@ -89,10 +89,10 @@ if (!function_exists('smarty_function_icon')) {
                 if (empty($params['img']) && !empty($params['action'])) {
                     $params['img'] = $params['action'] . '.png';
                 }
-                if (empty($params['title'])) {
-                    $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
-                }
             } else $params['text'] = gt($params['text']);
+        }
+        if (empty($params['title'])) {
+            $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
         }
         if (!empty($params['title'])) {
             $params['title'] = gt($params['title']);
@@ -193,7 +193,7 @@ if (!function_exists('smarty_function_icon')) {
         expJavascript::pushToFoot(array(
             "unique"  => "add-theme-class",
             "jquery"  => "1",
-            "content" => "$('.module-actions, .item-actions, .admin-view').addClass('exp-skin');"
+            "content" => "$('.module-actions, .item-actions').addClass('exp-skin');"
         ));
     }
 }

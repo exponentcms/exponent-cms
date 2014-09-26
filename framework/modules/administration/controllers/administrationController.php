@@ -1011,6 +1011,8 @@ class administrationController extends expController {
             		while (($s = readdir($sv)) !== false) {
                         if (substr($s,0,4) == "css_") {
                             $t->style_variations[str_replace("css_","",$s)] = str_replace("css_","",$s);
+                        } elseif (substr($s,0,5) == "less_") {
+                            $t->style_variations[str_replace("less_","",$s)] = str_replace("less_","",$s);
                         }
                     }
                     if(count($t->style_variations)>0){
