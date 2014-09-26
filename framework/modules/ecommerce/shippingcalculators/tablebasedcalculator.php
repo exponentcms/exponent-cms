@@ -59,7 +59,7 @@ class tablebasedcalculator extends shippingcalculator {
 			}            
 		}
 		 //if certain states, add $$ from config
-        $currentMethod = $order->getCurrentShippingMethod(); //third created shipping method
+        $currentMethod = $order->getCurrentShippingMethod();
 		
 		//Get the config and parse to get the states/regions only
 		$upcharge = ecomconfig::getConfig('upcharge');

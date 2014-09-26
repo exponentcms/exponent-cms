@@ -76,7 +76,7 @@ class shippingcalculator extends expRecord {
     public static function getCalcName($calc_id) {
         global $db;
 
-        return $db->selectValue('shippingcalculator','name','id='.$calc_id);
+        return $db->selectValue('shippingcalculator','calculator_name','id='.$calc_id);
     }
 
     /**

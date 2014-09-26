@@ -35,7 +35,7 @@ class freeshippingcalculator extends shippingcalculator {
 
     public $shippingmethods = array("01"=>"Free Shipping");
 
-    public function __construct($params)
+    public function __construct($params = null)
     {
         parent::__construct($params);
         if(isset($this->configdata['free_shipping_method_default_name']))

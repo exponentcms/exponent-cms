@@ -25,6 +25,7 @@ class shippingmethod extends expRecord {
 
 	public static function getCurrentShippingMethod() {
         global $order;
+
         $smid = empty($order->orderitem[0]->shippingmethods_id) ? null : $order->orderitem[0]->shippingmethods_id;
         return new shippingmethod($smid);
     }
@@ -42,7 +43,8 @@ class shippingmethod extends expRecord {
 	
 	function updateOrderitems() {
 		global $order;
-		// update the shippingmethod id for each orderitem..again, this is only here until we implement split shipping.
+
+		//FIXME update the shippingmethod id for each orderitem..again, this is only here until we implement split shipping.
         // once we have that we'll need to figure out which orderitems get which shippingmethod id.     
         foreach($order->orderitem as $item) {
             if (empty($item->shippingmethods_id)) {
