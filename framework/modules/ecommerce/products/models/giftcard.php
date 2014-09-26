@@ -69,6 +69,7 @@ class giftcard extends expRecord {
         expSession::set('params', $params);
         //get the configuration
         $config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
+        //FIXME we're missing the category, but we don't give gifts categories?
         $this->config = (empty($catConfig->config) || @$catConfig->config['use_global'] == 1) ? $config->config : $catConfig->config; //FIXME $catConfig doesn't exist
         $min_amount = $this->config['minimum_gift_card_purchase'];
         $custom_message_product = $this->config['custom_message_product'];

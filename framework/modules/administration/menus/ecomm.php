@@ -48,12 +48,6 @@ $ecom = array(
                     ) . '"></form>',
                 'info'      => '1',
                 'classname' => 'order-qf',
-                'url'       => makeLink(
-                    array(
-                        'controller' => 'report',
-                        'action'     => 'dashboard'
-                    )
-                ),
             ),
             array(
                 'text'      => gt("Dashboard"),

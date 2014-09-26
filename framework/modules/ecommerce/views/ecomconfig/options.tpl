@@ -53,7 +53,7 @@
                 <tbody>
                     <tr>
                         <td colspan=3>
-                            <strong><a href="{link action=edit_option_master optiongroup_master_id=$group->id}">{'Add an option to'|gettext} {$group->title}</a></strong>
+                            {icon class=add action=edit_option_master optiongroup_master_id=$group->id text='Add an option to'|gettext|cat:' '|cat:$group->title}
                             {foreach name=options from=$group->option_master item=optname}
                                 <tr>
                                     <td>
