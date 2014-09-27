@@ -167,7 +167,7 @@
                         </div>
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder (test)"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
+                    {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
                     {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
@@ -258,7 +258,7 @@
                     <div id="alt-controlw" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE (test)"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
                                 {showmodule module=expHTMLEditor action=manage params=$paramc}
                             </div>
