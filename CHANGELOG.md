@@ -26,6 +26,7 @@ Added / Fixed / Changed for 2.3.1
   - adds 4-column container view
   - adds .less file compilation minification setting, and better error trapping on compilation error
   - fixes loading of ckeditor & tinymce if linked js is minified
+  - adds new Portuguese translation
   - includes all fixes from v2.3.0 patches 1 - 4 plus the following bug fixes
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
