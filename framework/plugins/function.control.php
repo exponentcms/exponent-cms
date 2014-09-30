@@ -139,7 +139,7 @@ function smarty_function_control($params, &$smarty) {
                         $control->items[$item->$key] = $item->$display;
                     }
                     $noitems = gt("-- No items found --");
-                    if (count($control->items) < 1) $control->items = array(0=> $noitems);
+                    if (count($control->items) < 1 && empty($control->include_blank)) $control->items = array(0=> $noitems);
                 } else {
                     if (is_array($params['items'])) {
                         $control->items = $params['items'];
