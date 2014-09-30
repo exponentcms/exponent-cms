@@ -145,8 +145,9 @@ class worldpayCheckout extends billingcalculator {
                 $object->result->message = "User has approved the payment at Worldpay";
                 $object->result->transId = $params['transId'];
                 $object->result->payment_status = "Pending";
-                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "Pending"));
-                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, 'success');
+//                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "Pending"));
+                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "complete"));
+                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, 'complete');  //FIXME 'complete' is proper?
                 redirect_to(array('controller' => 'cart', 'action' => 'process'));
             } else {
                 redirect_to(array('controller' => 'cart', 'action' => 'checkout'), true);

@@ -76,18 +76,20 @@ class splitcreditcard extends creditcard {
         if (empty($opts)) return false;
 
         $this->opts->cc_number = 'XXXX-XXXX-XXXX-' . substr($this->opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
 
         $object = new stdClass();
         $object->errorCode = 0;
+        $object->payment_status = 'complete';
         $this->opts->result = $object;
+//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
+        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
         return true;
     }
 
-    function postProcess($order, $params) {
-        return true;
-    }
+//    function postProcess($order, $params) {
+//        return true;
+//    }
 
     //Form for user input
     function userForm() {

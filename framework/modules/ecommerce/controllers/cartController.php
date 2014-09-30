@@ -623,6 +623,7 @@ class cartController extends expController {
 //            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
             $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $order);
         } else {
+            // manually perform createBillingTransaction() normally done within billing calculator process()
             $opts = expSession::get('billing_options');
             $object = new stdClass();
             $object->errorCode = $opts->result->errorCode = 0;
@@ -894,7 +895,7 @@ class cartController extends expController {
             } else {
                 foreach ($shipping->available_calculators as $calcid=> $name) {
                     $calc                                 = new $name($calcid);
-                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
+                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);  //FIXME shouldn't this be the order object?
                     //eDebug($shipping_items[$id]->prices[$id]);
                 }
             }

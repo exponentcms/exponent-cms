@@ -425,13 +425,15 @@ class paypalExpressCheckout extends billingcalculator {
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
             if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
             $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
+            $billing_options->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
             $trax_state = "error";
         }
         //eDebug($billing_options,true);                                                               
-        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
+//        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
+        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $billing_options->result, $trax_state);
         return $billing_options->result;
 

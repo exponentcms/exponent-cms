@@ -968,6 +968,7 @@ exit();
         //$order = new order($this->params['id']);
         $billing = new billing($this->params['id']);
         $opts    = expUnserialize($billing->billingmethod->billing_options);
+        //FIXME what about the most recent transaction?
         //eDebug($billing);
 //        eDebug($opts);
         assign_to_template(array(
@@ -987,6 +988,7 @@ exit();
 //        $res     = serialize($obj);
         $billing = new billing($this->params['id']);
         // eDebug($billing);
+        //FIXME shouldn't we be ADDING a new billing transaction?
         $billingmethod      = $billing->billingmethod;
         $billingtransaction = $billingmethod->billingtransaction[0];
 

@@ -45,12 +45,17 @@ class creditcard extends billingcalculator {
     public $title = 'Credit Card';
     public $payment_type = 'Credit Card';
 
-    public $cards = array("AmExCard" => "American Express", "DiscoverCard" => "Discover", "MasterCard" => "MasterCard", "VisaCard" => "Visa");
+    public $cards = array(
+        "AmExCard" => "American Express",
+        "DiscoverCard" => "Discover",
+        "MasterCard" => "MasterCard",
+        "VisaCard" => "Visa"
+    );
     public $card_images = array(
-        "AmExCard"     => "path/to/image.png",
-        "DiscoverCard" => "path/to/image.png",
-        "MasterCard"   => "path/to/image.png",
-        "VisaCard"     => "path/to/image.png"
+        "AmExCard"     => 'Amex.png',
+        "DiscoverCard" => 'Discover.png',
+        "MasterCard"   => 'Mastercard.png',
+        "VisaCard"     => 'Visa.png'
     );
 
     function userForm() {
@@ -86,30 +91,40 @@ class creditcard extends billingcalculator {
         $cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
         */
 
-        $cardtypes = new dropdowncontrol("", $this->getAvailableCards());
-        $cardnumber = new textcontrol("", 20, false, 20, "integer", true);
-        $expiration = new monthyearcontrol("", "");
-        $cvv = new textcontrol("", 4, false, 4, "integer", true);
         //$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
-        $cardtypes->id = "cc_type";
-        $cardnumber->id = "cc_number";
-        $expiration->id = "expiration";
-        $cvv->id = "cvv";
-        $cvv->size = 5;
-        //$cvvhelp->id = "cvvhelp";
+        $form .= '<span class="credit-cards control"><label class="label"></label>';
+        foreach ($this->getAvailableCards() as $key=>$card) {
+            $form .= '<img src="'.PATH_RELATIVE . 'framework/modules/ecommerce/billingcalculators/icons/' . $this->card_images[$key] . '" />';
+        }
+        $form .= '</span>';
 
+        $cardtypes = new dropdowncontrol("", $this->getAvailableCards());
+        $cardtypes->id = "cc_type";
+        //$cvvhelp->id = "cvvhelp";
         //FIXME we need to display/obtain user information if we are doing a quickPay checkout???
         //$form .= $fname->toHTML("First Name", "first_name");
         //$form .= $lname->toHTML("Last Name", "last_name");
         $form .= $cardtypes->toHTML(gt("Card Type"), "cc_type");
+
+        $cardnumber = new textcontrol("", 20, false, 20, "integer", true);
+        $cardnumber->id = "cc_number";
         $form .= $cardnumber->toHTML(gt("Card #"), "cc_number");
+
         //$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
+
+        $expiration = new monthyearcontrol("", "");
+        $expiration->id = "expiration";
         $form .= $expiration->toHTML(gt("Expiration"), "expiration");
+
+        $cvv = new textcontrol("", 4, false, 4, "integer", true);
+        $cvv->id = "cvv";
+        $cvv->size = 5;
         $form .= $cvv->toHTML("CVV # <br /><a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>" . gt('What\'s this?') . "</a>", 'cvv');
         //$form .= $cvvhelp->toHTML('', 'cvvhelp');
         //$form .= "<a class=\"exp-ecom-link-dis continue\" href=\"#\" id=\"checkoutnow\"><strong><em>Continue Checkout</em></strong></a>";
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
+
         return $form;
     }
 

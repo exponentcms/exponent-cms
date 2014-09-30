@@ -1,33 +1,41 @@
 .creditcard-form {
-    position:relative;
+	position: relative;
 }
+
 .creditcard-form .control .label {
-    display:inline-block;
-    *display:inline;
-    zoom:1;
-    vertical-align:top;
-    width:130px;
-    text-align:right;
-    padding-right:10px;
+	display: inline-block;
+	*display: inline;
+	zoom: 1;
+	vertical-align: top;
+	width: 130px;
+	text-align: right;
+	padding-right: 10px;
 }
+
 .creditcard-form .control input,
 .creditcard-form .control select {
 
 }
+
 .creditcard-form .control select {
-    padding:3px;
+	padding: 3px;
 }
+
+.creditcard-form .credit-cards img {
+	margin-right: 4px;
+}
+
 #cc_numberControl input,
 #cc_typeControl select {
-    width:150px;
-}
-#cc_typeControl select {
-    width:160px;
+	width: 150px;
 }
 
+#cc_typeControl select {
+	width: 160px;
+}
 
 #continue-checkout {
-    margin:10px 0 10px 140px;
+	margin: 10px 0 10px 140px;
 }
 
 

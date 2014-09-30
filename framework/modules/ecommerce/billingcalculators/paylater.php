@@ -77,7 +77,6 @@ class paylater extends billingcalculator {
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
         $cash_amount->id = "cash_amount";
-
         $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
 
         return $form;

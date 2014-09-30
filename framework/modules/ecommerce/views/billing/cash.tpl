@@ -19,6 +19,10 @@
 
 <div class="billing-method payflowpro creditcard-form">
     {form name="ccinfoform`$key`" controller=cart action=preprocess}
+        <span class="credit-cards control">
+            <label class="label"></label>
+            <img src="{$smarty.const.PATH_RELATIVE}framework/modules/ecommerce/billingcalculators/icons/Cash.png" />
+        </span>
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}
         {*<button id="continue-checkout" type="submit" class="add-to-cart-btn {button_style}">{"Continue Checkout"|gettext}</button>*}

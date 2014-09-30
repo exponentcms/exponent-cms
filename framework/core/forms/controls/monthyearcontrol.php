@@ -26,8 +26,8 @@
 class monthyearcontrol extends formcontrol {
 	
 	function __construct($default_month = null,$default_year = null) {
-		if ($default_month == null) date("m");
-		if ($default_year == null) date("Y");
+		if (empty($default_month)) $default_month = date("m");
+		if (empty($default_year)) $default_year = date("Y");
 		$this->default_month = $default_month;
 		$this->default_year = $default_year;
 	}

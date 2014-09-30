@@ -179,7 +179,7 @@ class authorizedotnet extends creditcard {
 
         $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($opts)));
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
         return $object;
     }
