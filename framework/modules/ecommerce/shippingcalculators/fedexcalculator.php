@@ -44,8 +44,8 @@ class fedexcalculator extends shippingcalculator {
         "FEDEX_GROUND"       => "FedEx Ground - 1-5 Business Days"
     );
 
-    public function getRates($items) {
-        global $order;
+    public function getRates($order) {  //FIXME isn't this an order object?
+//        global $order;  //FIXME this is the current user order object, NOT the edited order object
 //        require_once(BASE . 'external/fedex-php/fedex-common.php');
         //require_once('fedex-common.php');
 
@@ -117,7 +117,7 @@ class fedexcalculator extends shippingcalculator {
         $package_items = array();
 
         // loop each product in this shipment and create the packages        
-        foreach ($items->orderitem as $item) {
+        foreach ($order->orderitem as $item) {
             for ($i = 0; $i < $item->quantity; $i++) {
                 if (empty($item->product->no_shipping) && $item->product->requiresShipping == true) {
                     $lbs    = empty($item->product->weight) ? $this->configdata['default_max_weight'] : $item->product->weight;
@@ -290,8 +290,8 @@ class fedexcalculator extends shippingcalculator {
         }
     }
 
-    public function oldgetRates($items) {
-        global $order;
+    public function oldgetRates($order) {
+//        global $order;
 
         // Require the main ups class and upsRate
         include_once(BASE . 'external/ups-php/classes/class.ups.php');
@@ -326,7 +326,7 @@ class fedexcalculator extends shippingcalculator {
 
         // loop each product in this shipment and create the packages
         $has_giftcard = false;
-        foreach ($items->orderitem as $item) {
+        foreach ($order->orderitem as $item) {
             for ($i = 0; $i < $item->quantity; $i++) {
                 if (empty($item->product->no_shipping) && $item->product->requiresShipping == true) {
                     if ($item->product_type != 'giftcard') {
@@ -438,7 +438,20 @@ class fedexcalculator extends shippingcalculator {
 
     //process config form
     function parseConfig($values) {
-        $config_vars = array('fedex_account_number', 'fedex_meter_number', 'fedex_key', 'fedex_password', 'shipping_methods', 'shipfrom', 'default_width', 'default_length', 'default_height', 'default_max_weight', 'testmode');
+        $config_vars = array(
+            'fedex_account_number',
+            'fedex_meter_number',
+            'fedex_key',
+            'fedex_password',
+            'shipping_methods',
+            'shipfrom',
+            'default_width',
+            'default_length',
+            'default_height',
+            'default_max_weight',
+            'testmode'
+        );
+        $config = array();
         foreach ($config_vars as $varname) {
             $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
             if ($varname == 'shipfrom') {
@@ -476,6 +489,7 @@ class fedexcalculator extends shippingcalculator {
         eDebug($a);
         return ($a->volume > $b->volume ? -1 : 1);
     }
+
 }
 
 ?>

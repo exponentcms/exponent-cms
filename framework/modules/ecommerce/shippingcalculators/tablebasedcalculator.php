@@ -72,17 +72,27 @@ class tablebasedcalculator extends shippingcalculator {
         $rates = array();
 	    if(!empty($c)) {
 			for($i = 0; $i < count($c); $i++) {
-			
-				if (array_key_exists($currentMethod->state, $stateUpcharge)) { 
+				if (array_key_exists($currentMethod->state, $stateUpcharge)) {
 					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
 				}
-                if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
-                else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
-				
-			}            
+                if($i > 9) $rates[($i+1)] = array(
+                    'id' => 0 . ($i+1),
+                    'title' => @$this->shippingspeeds[$i]->speed,
+                    'cost' => $c[$i]
+                );
+                else $rates[0 . ($i+1)] = array(
+                    'id' => 0 . ($i+1),
+                    'title' => @$this->shippingspeeds[$i]->speed,
+                    'cost' => $c[$i]
+                );
+			}
 		}
 	     
-        if(!count($rates)) $rates['01'] = array('id' => '01', 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
+        if(!count($rates)) $rates['01'] = array(
+            'id' => '01',
+            'title' => gt("Table Based Shipping is Currently NOT Configured"),
+            'cost' => 0
+        );
 		return $rates;
     }    
     
@@ -96,7 +106,11 @@ class tablebasedcalculator extends shippingcalculator {
 
 		$where = " shippingcalculator_id = {$values['id']}";
 		$speeds = $db->selectObjects("shippingspeeds", $where);
-        $config_vars = array('to', 'from');
+        $config_vars = array(
+            'to',
+            'from'
+        );
+        $config = array();
 		foreach($speeds as $item) {
 			$config_vars[] = str_replace(' ', '_', $item->speed);
 		}
@@ -125,7 +139,7 @@ class tablebasedcalculator extends shippingcalculator {
     }
     
     function availableMethods() {
-
+        $shippingmethods = array();
 		for($i = 0; $i < count($this->shippingspeeds); $i++) {
             if($i > 9 ) $shippingmethods[($i+1)] = $this->shippingspeeds[$i]->speed;
 			else $shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;

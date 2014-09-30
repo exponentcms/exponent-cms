@@ -20,7 +20,8 @@
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">
-	            {control type="text" name="rate" label="In Store Pickup Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.rate}
+	            {control type="text" name="rate" label="Per Item Shipping Rate"|gettext size=5 filter=money value=$calculator->configdata.rate description='The shipping cost will be multiplied by the number of items in an order that uses this shipping method'|gettext}
+                {control type="text" name="handling" label="Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling description='Charge added to each shipment regardless of number of items'|gettext}
 	        </div>
         </div>
     </div>

@@ -21,44 +21,51 @@
  * @package Modules
  */
 
-class instorepickupcalculator extends shippingcalculator {
+class perweightcalculator extends shippingcalculator {
 	/*
 	 * Returns the name of the shipping calculator, for use in the Shipping Administration Module
 	 */
 	//overridden methods:
-	public function name() { return gt('In Store Pickup'); }
-	public function description() { return gt('In store pickup calculator'); }
+	public function name() { return gt('Per Weight'); }
+	public function description() { return gt('Per weight based shipping calculator'); }
 	public function hasUserForm() { return false; }
 	public function hasConfig() { return true; }
 	public function addressRequired() { return false; }
 	public function isSelectable() { return true; }
 
-    public $shippingmethods = array("01"=>"In Store Pickup");
+    public $shippingmethods = array("01"=>"Per Weight");
 
     public function getRates($order) {
         $rate = !empty($this->configdata['rate']) ? $this->configdata['rate'] : '';
+        $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : '';
+        $weight = 0;
+        foreach ($order->orderitem as $item) {
+            if (!$item->product->no_shipping) $weight += $item->product->weight * $item->quantity;
+        }
+        $total = $weight * $rate + $handling;
 	    $rates = array(
             '01'=>array(
                 'id'=>'01',
                 'title'=>$this->shippingmethods['01'],
-                'cost'=>$rate
+                'cost'=>$total
             )
         );
 	    return $rates;
     }	
     
    	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/instorepickupcalculator/configure.tpl';
+   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/perweightcalculator/configure.tpl';
    	}
 	
 	//process config form
 	function parseConfig($values) {
 	    $config_vars = array(
-            'rate'
+            'rate',
+            'handling'
         );
         $config = array();
 	    foreach ($config_vars as $varname) {
-	        if ($varname == 'rate') {
+	        if ($varname == 'rate' || $varname == 'handling') {
 	            $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
 	        } else {
 	            $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;

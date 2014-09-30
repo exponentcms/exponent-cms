@@ -49,8 +49,8 @@ class upscalculator extends shippingcalculator {
         "65"=>"UPS Saver",
     );
 
-    public function getRates($items) {
-        global $order;
+    public function getRates($order) {  //FIXME isn't this an order object?
+//        global $order;  //FIXME this is the current user order object, NOT the edited order object
         
         // Require the main ups class and upsRate
         include_once(BASE.'external/ups-php/classes/class.ups.php');
@@ -91,7 +91,7 @@ class upscalculator extends shippingcalculator {
         
         // loop each product in this shipment and create the packages
         $has_giftcard = false;
-        foreach ($items->orderitem as $item) {
+        foreach ($order->orderitem as $item) {
             for($i=0; $i<$item->quantity; $i++) {
                 if (empty($item->product->no_shipping) && $item->product->requiresShipping == true) {
                     if ($item->product_type != 'giftcard') {
@@ -230,7 +230,19 @@ class upscalculator extends shippingcalculator {
 	
 	//process config form
 	function parseConfig($values) {
-	    $config_vars = array('username', 'accessnumber', 'password', 'shipping_methods', 'shipfrom', 'default_width', 'default_length', 'default_height', 'default_max_weight', 'testmode');
+	    $config_vars = array(
+            'username',
+            'accessnumber',
+            'password',
+            'shipping_methods',
+            'shipfrom',
+            'default_width',
+            'default_length',
+            'default_height',
+            'default_max_weight',
+            'testmode'
+        );
+        $config = array();
 	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	        if ($varname == 'shipfrom') {
@@ -273,6 +285,7 @@ class upscalculator extends shippingcalculator {
 	    eDebug($a);
 	    return ($a->volume > $b->volume ? -1 : 1);
 	}
+
 }
 
 ?>
