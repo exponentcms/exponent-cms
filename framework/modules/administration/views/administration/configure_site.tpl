@@ -74,7 +74,8 @@
                         </div>
 		                <h2>{"Anti-Spam Measures"|gettext}</h2>
                     </div>
-                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" id=use_antispam label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    <span id="antispam">
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     <blockquote>
@@ -83,6 +84,7 @@
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    </span>
                 </div>
                 <div id="tab3">
 	                <div class="info-header">
@@ -106,12 +108,14 @@
                     {/group}
                     {if function_exists('ldap_connect')}
                     {group label="LDAP Authentication"|gettext}
-                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" id=use_ldap label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                        <span id="ldap">
                         {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description=gt('Enter the hostname or IP of the LDAP server.')}
                         {control type="text" name="sc[LDAP_BASE_CONTEXT]" label="Base Context"|gettext value=$smarty.const.LDAP_BASE_CONTEXT description=gt('Enter the Base Context for this LDAP connection. (e.g., ou=users, dc=mycompanysite, dc=local)')}
                         {control type="text" name="sc[LDAP_BASE_DN]" label="Base Domain"|gettext value=$smarty.const.LDAP_BASE_DN description=gt('Enter the Base Domain for this LDAP connection. (e.g., mycompanysite.local)')}
                         {control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description=gt('The username or context for the binding to the LDAP Server to perform administration tasks.')}
                         {control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description=gt('Enter the password for the username/context listed above.')}
+                        </span>
                     {/group}
                     {/if}
                 </div>
@@ -193,8 +197,9 @@
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
                     {control type=email name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}
-                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
-	                ({"or"|gettext})
+                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" id=no_smtp label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+	                <span id="smtp">
+                   ({"or"|gettext})
                     {group label="SMTP Server Settings"|gettext}
                         {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                         {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
@@ -203,6 +208,7 @@
                         {control type="password" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
                         {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                     {/group}
+                    </span>
                 </div>
                 <div id="tab8">
 	                <div class="info-header">
@@ -501,6 +507,40 @@
             }
         }
     }
+{/literal}
+{/script}
+
+{script unique="editchecks" jquery=1}
+{literal}
+$('#use_antispam').change(function() {
+    if ($('#use_antispam').is(':checked') == false)
+        $("#antispam").hide("slow");
+    else {
+        $("#antispam").show("slow");
+    }
+});
+if ($('#use_antispam').is(':checked') == false)
+    $("#antispam").hide("slow");
+
+$('#use_ldap').change(function() {
+    if ($('#use_ldap').is(':checked') == false)
+        $("#ldap").hide("slow");
+    else {
+        $("#ldap").show("slow");
+    }
+});
+if ($('#use_ldap').is(':checked') == true)
+    $("#ldap").hide("slow");
+
+$('#no_smtp').change(function() {
+    if ($('#no_smtp').is(':checked') == true)
+        $("#smtp").hide("slow");
+    else {
+        $("#smtp").show("slow");
+    }
+});
+if ($('#no_smtp').is(':checked') == true)
+    $("#smtp").hide("slow");
 {/literal}
 {/script}
 
