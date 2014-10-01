@@ -1198,14 +1198,24 @@ class administrationController extends expController {
 //        ksort($langs);
 
         // smtp protocol
-        $protocol = array('ssl'=>'SSL','tls'=>'TLS');
+        $protocol = array(
+            'ssl'=>'SSL',
+            'tls'=>'TLS'
+        );
 
         // Currency Format
         $currency = expSettings::dropdownData('currency');
 
         // attribution
-        $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
-        
+//        $attribution = array(
+//            'firstlast'=>'John Doe',
+//            'lastfirst'=>'Doe, John',
+//            'first'=>'John',
+//            'last'=>'Doe',
+//            'username'=>'jdoe'
+//        );
+        $attribution = expSettings::dropdownData('attribution');
+
         // These funcs need to be moved up in to new subsystems
         
         // Date/Time Format

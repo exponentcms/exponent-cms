@@ -409,6 +409,9 @@ class user extends expRecord {
              case "first":
                  $str = $u->firstname;
                  break;
+             case "last":
+                 $str = $u->lastname;
+                 break;
              case "username":
              default:
                  $str = $u->username;
