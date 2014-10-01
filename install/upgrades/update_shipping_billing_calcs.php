@@ -26,7 +26,7 @@
  */
 class update_shipping_billing_calcs extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
-	protected $to_version = '2.3.1';  // shipping/billing caclculator text was changed in 2.3.1
+//	protected $to_version = '2.3.1';  // shipping/billing caclculator text was changed in 2.3.1
 
 	/**
 	 * name/title of upgrade script
