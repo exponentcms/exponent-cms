@@ -127,13 +127,14 @@ class billing extends expRecord {
 
     public function selectableCalculators() {
         global $db,$user;
+
         $calcs = array();
         foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calcObj) {
             $calcNameReal = $calcObj->calculator_name;
             $calc = new $calcNameReal($calcObj->id);
             if($user->isAdmin() || $calc->isRestricted() == false)
             {
-                $calcs[$calc->id] = $calc->user_title;
+                $calcs[$calc->id] = $calc->title;
             }
         }
         

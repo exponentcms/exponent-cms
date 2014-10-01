@@ -31,12 +31,17 @@ class tablebasedcalculator extends shippingcalculator {
 	
     public function name() { return gt('Simple'); }
     public function description() { return gt('Order Total Cost based shipping calculator'); }
-    public function hasUserForm() { return true; }
-    public function hasConfig() { return true; }
     public function addressRequired() { return false; }
-    public function isSelectable() { return true; }    
 
-    public function getRates($order) {   
+    public function __construct($params = null) {
+        parent::__construct($params);
+        if(isset($this->configdata['shipping_service_name']))
+        {
+            $this->title = $this->configdata['shipping_service_name'];
+        }
+    }
+
+    public function getRates($order) {
         $a = $order->total;        
 		
 		//get the rates
@@ -148,13 +153,17 @@ class tablebasedcalculator extends shippingcalculator {
         return $shippingmethods;
     }
 
+    public function editspeed() {
+        return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/editspeed.tpl';
+    }
+
     /**
      * Unused at this time
      *
      * @return int
      */
     public function getHandling() {
-        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;
+        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;  //FIXME handling is not set in config
     }
 
     /**
@@ -164,10 +173,6 @@ class tablebasedcalculator extends shippingcalculator {
      */
     public function getMessage() {
         return $this->configdata['message'];
-    }
-	
-	public function editspeed() {
-        return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/editspeed.tpl';
     }
 	
 }

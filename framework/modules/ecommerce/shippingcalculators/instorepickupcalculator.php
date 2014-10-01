@@ -28,10 +28,7 @@ class instorepickupcalculator extends shippingcalculator {
 	//overridden methods:
 	public function name() { return gt('In Store Pickup'); }
 	public function description() { return gt('In store pickup calculator'); }
-	public function hasUserForm() { return false; }
-	public function hasConfig() { return true; }
 	public function addressRequired() { return false; }
-	public function isSelectable() { return true; }
 
     public $shippingmethods = array("01"=>"In Store Pickup");
 

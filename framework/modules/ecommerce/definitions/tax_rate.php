@@ -33,7 +33,10 @@ return array(
     ),
     "rate" => array(
         DB_FIELD_TYPE => DB_DEF_DECIMAL
-    )
+    ),
+    'shipping_taxed'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN
+    ),
 );
 
 ?>

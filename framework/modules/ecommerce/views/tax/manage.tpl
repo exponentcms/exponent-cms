@@ -35,6 +35,9 @@
                 {'Rate'|gettext}
             </th>
             <th>
+                {'Shipping'|gettext}
+            </th>
+            <th>
                 {'Zone'|gettext}
             </th>
 			 <th>
@@ -50,6 +53,9 @@
                 </td>
                 <td>
                     {$tax->rate|number_format:2}%
+                </td>
+                <td>
+                    {if $tax->shipping_taxed == 1}{icon img="clean.png"}{/if}
                 </td>
                 <td>
                     {$tax->zonename} <em>({if !empty($tax->state)}{$tax->state}, {/if}{$tax->country})</em>

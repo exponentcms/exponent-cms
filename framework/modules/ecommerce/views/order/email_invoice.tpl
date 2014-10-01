@@ -241,7 +241,7 @@
                </tr>
             </thead>
             <tbody>
-                <tr class="even">
+                <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {"Subtotal"|gettext}
                     </td>
@@ -252,7 +252,7 @@
                     </td>
                 </tr>
                  {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()} 
-                 <tr class="odd">
+                 <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {"Total Discounts (Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     </td>
@@ -262,7 +262,7 @@
                     <td style="text-align:right; border:1px solid #DEDEDE;  border-left:0px;">-{$order->total_discounts|number_format:2}
                     </td>
                 </tr>
-                <tr class="even">
+                <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {"Total"|gettext}
                     </td>
@@ -272,8 +272,9 @@
                     <td style="text-align:right; border:1px solid #DEDEDE;  border-left:0px;">{$order->total|number_format:2}
                     </td>
                 </tr>   
-                 {/if}
-                  <tr class="odd">
+                {/if}
+                {if !$order->shipping_taxed}
+                  <tr class="{cycle values="odd, even"}">
                     <td width="90%" style="border:1px solid #DEDEDE;">
                         {"Tax"|gettext|cat:" - "}
                         {foreach from=$order->taxzones item=zone}
@@ -287,8 +288,9 @@
                     </td>
                     <td style="text-align:right; border:1px solid #DEDEDE; border-left:0px;">{$order->tax|number_format:2}
                     </td>
-                </tr>   
-                <tr class="even">
+                </tr>
+                {/if}
+                <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
                             {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
@@ -303,7 +305,7 @@
                     </td>
                 </tr>
                 {if $order->surcharge_total != 0}
-                    <tr class="even">
+                    <tr class="{cycle values="odd, even"}">
                         <td style="border:1px solid #DEDEDE;">
                             {"Freight Surcharge"|gettext}
                         </td>
@@ -314,7 +316,24 @@
                         </td>
                     </tr>
                 {/if}
-                <tr class="odd">
+                {if $order->shipping_taxed}
+                  <tr class="{cycle values="odd, even"}">
+                    <td width="90%" style="border:1px solid #DEDEDE;">
+                        {"Tax"|gettext|cat:" - "}
+                        {foreach from=$order->taxzones item=zone}
+                            {$zone->name} ({$zone->rate}%)
+                        {foreachelse}
+                            ({"Not Required"|gettext})
+                        {/foreach}
+                    </td>
+                    <td style="border:1px solid #DEDEDE; border-right:0px;">
+                        {currency_symbol}
+                    </td>
+                    <td style="text-align:right; border:1px solid #DEDEDE; border-left:0px;">{$order->tax|number_format:2}
+                    </td>
+                </tr>
+                {/if}
+                <tr class="{cycle values="odd, even"}">
                     <td style="border:1px solid #DEDEDE;">
                         {"Order Total"|gettext}
                     </td>

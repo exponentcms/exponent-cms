@@ -165,7 +165,7 @@
                         {control type="text" name="shipping[width]" label="Width (in inches)"|gettext size=4 filter=decimal value=$record->width}
                         {control type="text" name="shipping[height]" label="Height (in inches)"|gettext size=4 filter=decimal value=$record->height}
                         {control type="text" name="shipping[length]" label="Length (in inches)"|gettext size=4 filter=decimal value=$record->length}
-                        {control type="text" name="shipping[surcharge]" label="Surcharge"|gettext size=4 filter=money value=$record->surcharge}
+                        {control type="text" name="shipping[surcharge]" label="Freight Surcharge"|gettext size=4 filter=decimal value=$record->surcharge description='per item'|gettext}
                     </div>
                     <div id="categories">
                         <h2>{'Categories'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>

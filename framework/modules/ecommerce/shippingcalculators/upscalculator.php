@@ -29,10 +29,6 @@ class upscalculator extends shippingcalculator {
 	//overridden methods:
 	public function name() { return gt('UPS'); }
 	public function description() { return gt('Shipping calculator for dynamically calculating shipping rates using the UPS XML Rate API'); }
-	public function hasUserForm() { return true; }
-	public function hasConfig() { return true; }
-	public function addressRequired() { return true; }
-	public function isSelectable() { return true; }
 
     public $shippingmethods = array(
         "01"=>"UPS Next Day Air",
@@ -282,7 +278,7 @@ class upscalculator extends shippingcalculator {
 	}
 	
 	public static function sortByVolume($a, $b) {
-	    eDebug($a);
+//	    eDebug($a);
 	    return ($a->volume > $b->volume ? -1 : 1);
 	}
 

@@ -39,6 +39,7 @@ class order extends expRecord {
     public $taxzones = array();
     public $forced_shipping = false;
     public $product_forcing_shipping = '';  //FIXME we don't seem to use this
+    public $shipping_taxed = false;
 
 //    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
 //        //'content_expTags'=>'expTag',
@@ -64,17 +65,17 @@ class order extends expRecord {
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
                 $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
-                $requiresShipping = false;
-                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
-                    if ($oi->product->requiresShipping) $requiresShipping = true;
-                }
+//                $requiresShipping = false;
+//                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
+//                    if ($oi->product->requiresShipping) $requiresShipping = true;
+//                }
                 /*if ($requiresShipping == true) {
     	            $this->shipping_total += $this->shippingmethods[$smid]->shipping_cost;
 	            }  */
             }
 
             // grab our tax zones
-            $this->taxzones = taxclass::getCartTaxZones($this);
+//            $this->taxzones = taxclass::getCartTaxZones($this);
 
             /*$this->total = $this->getCartTotal();
       $this->calculateTax();
@@ -86,6 +87,7 @@ class order extends expRecord {
 
     private function setReturnCount($orig_referrer, $merge_array = array()) {
         global $router;
+
         if ($this->return_count != "") {
             $retArray = expUnserialize($this->return_count);
         } else {
@@ -494,6 +496,7 @@ class order extends expRecord {
 
     public function getBillingMethods() {
         global $db;
+
         return $db->selectColumn('billingmethods', 'id', 'orders_id=' . $this->id, null, true);
     }
 
@@ -578,7 +581,7 @@ class order extends expRecord {
     }
 
     public function calculateGrandTotal() {
-        // calulate promo codes and group discounts
+        // calculate promo codes and group discounts
         //we need to tally up the cart, apply discounts, TAX that TOTAL somehow (different tax clases come into play), then add shipping
 
         //grab our discounts
@@ -663,6 +666,9 @@ class order extends expRecord {
             $this->orderitem[$i]->save();
         }
 
+        // figure out which tax zones apply to this order.
+        $this->taxzones = taxclass::getCartTaxZones($this);
+
         // add the "cart discounts" - percentage for sure, but straight can work also should be added after the final total is calculated,
         //including tax but not shipping                                                     
         // $this->updateOrderDiscounts();  
@@ -700,6 +706,15 @@ class order extends expRecord {
 
         $this->shipping_total_before_discounts = $this->shipping_total;
 
+        $this->shipping_taxed = false;
+        foreach ($this->taxzones as $tz) {  //FIXME not written for multiple shipments/destinations
+            if (!empty($tz->shipping_taxed)) {
+                $this->tax += round(($tz->rate * .01) * $this->shipping_total,2);
+                $this->shipping_taxed = true;
+                break;
+            }
+        }
+
         if (isset($cartDiscounts)) {
             foreach ($cartDiscounts as $od) {
                 $discount = new discounts($od->discounts_id);
@@ -715,8 +730,6 @@ class order extends expRecord {
 
         $estimate_shipping = true;
         if ($estimate_shipping && !$this->shipping_total) $this->shipping_total = shipping::estimateShipping($this);
-        // figure out which tax zones apply to this order.
-        $this->taxzones = taxclass::getCartTaxZones($this);
 
         $this->grand_total = ($this->subtotal - $this->total_discounts) + $this->tax + $this->shipping_total + $this->surcharge_total;
 

@@ -22,6 +22,8 @@
 	        <div id="tab1">
 	            {control type="text" name="rate" label="Per Item Shipping Rate"|gettext size=5 filter=money value=$calculator->configdata.rate description='The shipping cost will be multiplied by the number of items in an order that uses this shipping method'|gettext}
                 {control type="text" name="handling" label="Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling description='Charge added to each shipment regardless of number of items'|gettext}
+                {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Per Weight'|gettext}
+                {control type="text" name="shipping_method_name" label="Default Name for Shipping Method"|gettext value=$calculator->configdata.shipping_method_name|default:'Per Weight'|gettext}
 	        </div>
         </div>
     </div>

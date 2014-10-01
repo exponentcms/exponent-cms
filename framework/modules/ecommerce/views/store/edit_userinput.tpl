@@ -20,8 +20,8 @@
         {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}
     </blockquote>
     {group label="User Field 1"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[0]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.0.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[0]" id=userinput1 label="Show Field"|gettext value=1 checked=$record->user_input_fields.0.use}
+	<div id="input1">
 		<table>
 			<tr>
 				<td>
@@ -48,8 +48,8 @@
 	</div>
     {/group}
     {group label="User Field 2"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[1]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.1.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[1]" id=userinput2 label="Show Field"|gettext value=1 checked=$record->user_input_fields.1.use}
+	<div id="input2">
 		<table>
 			<tr>
 				<td>
@@ -76,8 +76,8 @@
 	</div>
     {/group}
     {group label="User Field 3"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[2]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.2.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[2]" id=userinput3 label="Show Field"|gettext value=1 checked=$record->user_input_fields.2.use}
+	<div id="input3">
 		<table>
 			<tr>
 				<td>
@@ -104,8 +104,8 @@
 	</div>
     {/group}
     {group label="User Field 4"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[3]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.3.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[3]" id=userinput4 label="Show Field"|gettext value=1 checked=$record->user_input_fields.3.use}
+	<div id="input4">
 		<table>
 			<tr>
 				<td>
@@ -132,8 +132,8 @@
 	</div>
     {/group}
     {group label="User Field 5"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[4]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.4.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[4]" id=userinput5 label="Show Field"|gettext value=1 checked=$record->user_input_fields.4.use}
+	<div id="input5">
 		<table>
 			<tr>
 				<td>
@@ -160,8 +160,8 @@
 	</div>
     {/group}
     {group label="User Field 6"|gettext}
-	{control class="userInputToggle" type="checkbox" name="user_input_use[5]"  label="Show Field"|gettext value=1 checked=$record->user_input_fields.5.use}
-	<div>
+	{control class="userInputToggle" type="checkbox" name="user_input_use[5]" id=userinput6 label="Show Field"|gettext value=1 checked=$record->user_input_fields.5.use}
+	<div id="input6">
 		<table>
 			<tr>
 				<td>
@@ -190,3 +190,67 @@
 {else}
 	<h2>{'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
 {/if}
+
+{script unique="edituserinput" jquery=1}
+{literal}
+$('#userinput1').change(function() {
+    if ($('#userinput1').is(':checked') == false)
+        $("#input1").hide("slow");
+    else {
+        $("#input1").show("slow");
+    }
+});
+if ($('#userinput1').is(':checked') == false)
+    $("#input1").hide("slow");
+
+$('#userinput2').change(function() {
+    if ($('#userinput2').is(':checked') == false)
+        $("#input2").hide("slow");
+    else {
+        $("#input2").show("slow");
+    }
+});
+if ($('#userinput2').is(':checked') == false)
+    $("#input2").hide("slow");
+
+$('#userinput3').change(function() {
+    if ($('#userinput3').is(':checked') == false)
+        $("#input3").hide("slow");
+    else {
+        $("#input3").show("slow");
+    }
+});
+if ($('#userinput3').is(':checked') == false)
+    $("#input3").hide("slow");
+
+$('#userinput4').change(function() {
+    if ($('#userinput4').is(':checked') == false)
+        $("#input4").hide("slow");
+    else {
+        $("#input4").show("slow");
+    }
+});
+if ($('#userinput4').is(':checked') == false)
+    $("#input4").hide("slow");
+
+$('#userinput5').change(function() {
+    if ($('#userinput5').is(':checked') == false)
+        $("#input5").hide("slow");
+    else {
+        $("#input5").show("slow");
+    }
+});
+if ($('#userinput5').is(':checked') == false)
+    $("#input5").hide("slow");
+
+$('#userinput6').change(function() {
+    if ($('#userinput6').is(':checked') == false)
+        $("#input6").hide("slow");
+    else {
+        $("#input6").show("slow");
+    }
+});
+if ($('#userinput6').is(':checked') == false)
+    $("#input6").hide("slow");
+{/literal}
+{/script}

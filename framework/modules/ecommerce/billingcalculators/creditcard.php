@@ -34,10 +34,6 @@ class creditcard extends billingcalculator {
         return false;
     }
 
-    function isOffsite() {
-        return false;
-    }
-
     function isSelectable() {
         return false;
     }
@@ -58,7 +54,7 @@ class creditcard extends billingcalculator {
         "VisaCard"     => 'Visa.png'
     );
 
-    function userForm() {
+    function userForm($config_object = null, $user_data = null) {
         // make sure we have some billing options saved.
         //if (empty($this->opts)) return false;
 
@@ -288,6 +284,7 @@ class creditcard extends billingcalculator {
         }
         return ($total % 10 == 0);
     }
+
 }
 
 ?>

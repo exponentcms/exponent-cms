@@ -88,7 +88,8 @@
                                 </td>
                             </tr>   
                         {/if}
-                      {/if}     
+                      {/if}
+                      {if !$order->shipping_taxed}
                       <tr class="{cycle values="odd, even"}">
                         <td width="90%" class="cart-totals-title">
                             {"Tax"|gettext} -
@@ -103,7 +104,8 @@
                         </td>
                         <td style="text-align:right;">{$order->tax|number_format:2}
                         </td>
-                    </tr>   
+                    </tr>
+                    {/if}
                     <tr class="{cycle values="odd, even"}">
                         <td class="cart-totals-title">
                             {if isset($discounts[0])}
@@ -127,6 +129,23 @@
                         {/if}
                         </td>
                     </tr>
+                    {if $order->shipping_taxed}
+                    <tr class="{cycle values="odd, even"}">
+                      <td width="90%" class="cart-totals-title">
+                          {"Tax"|gettext} -
+                          {foreach from=$order->taxzones item=zone}
+                              {$zone->name} ({$zone->rate}%):
+                          {foreachelse}
+                              ({'N/A'|gettext}):
+                          {/foreach}
+                      </td>
+                      <td>
+                          {currency_symbol}
+                      </td>
+                      <td style="text-align:right;">{$order->tax|number_format:2}
+                      </td>
+                    </tr>
+                    {/if}
                     {if $order->surcharge_total != 0}
                         <tr class="{cycle values="odd, even"}">
                             <td class="cart-totals-title">

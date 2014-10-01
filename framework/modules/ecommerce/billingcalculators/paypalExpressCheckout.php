@@ -31,18 +31,6 @@ class paypalExpressCheckout extends billingcalculator {
         return gt("PayPal Express Checkout");
     }
 
-    public function captureEnabled() {
-        return true;
-    }
-
-    public function voidEnabled() {
-        return true;
-    }
-
-    public function creditEnabled() {
-        return true;
-    }
-
     /**
      * The description that will be displayed in the payment methods selector admin screen
      *
@@ -52,12 +40,15 @@ class paypalExpressCheckout extends billingcalculator {
         return gt("Enabling this payment option will allow your customers to use a PayPal account to make purchases. It requires a Merchant Account with PayPal in order to obtain an API signature.");
     }
 
-    /**
-     * Does this billing calculator need some configuration to work?
-     *
-     * @return boolean
-     */
-    function hasConfig() {
+    public function captureEnabled() {
+        return true;
+    }
+
+    public function voidEnabled() {
+        return true;
+    }
+
+    public function creditEnabled() {
         return true;
     }
 
@@ -76,15 +67,6 @@ class paypalExpressCheckout extends billingcalculator {
      * @return boolean
      */
     function isOffsite() {
-        return true;
-    }
-
-    /**
-     * Is this billing calculator selectable in the payment methods. It may not be if it is meant more as base class for other calculators to extend from
-     *
-     * @return boolean
-     */
-    function isSelectable() {
         return true;
     }
 
@@ -483,21 +465,6 @@ class paypalExpressCheckout extends billingcalculator {
         return;
     }
 
-    function userForm() {
-        return '';
-    }
-
-    //process user input. This function should return an object of the user input.
-    //the returned object will be saved in the session and passed to post_process.
-    //If need be this could use another method of data storage, as long post_process can get the data.
-    function userFormUpdate($params) {
-
-    }
-
-    function userView($opts) {
-        return '';
-    }
-
     /**
      * A utility a call to Paypal's api CURL
      *
@@ -654,14 +621,6 @@ class paypalExpressCheckout extends billingcalculator {
 
     function getCVVMatched($billingmethod) {
         return 'X';
-    }
-
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
     }
 
     // credit transaction

@@ -257,6 +257,8 @@ class orderController extends expController {
         else $pf = 0;
         $css = file_get_contents(BASE . 'framework/modules/ecommerce/assets/css/print-invoice.css');
 
+        $order->calculateGrandTotal();
+
         $trackMe = false;
         if (isset($this->params['tc']) && $this->params['tc'] == 1) {
             if (expSession::is_set('orders_tracked')) {

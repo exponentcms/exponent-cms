@@ -27,11 +27,8 @@ class flatratecalculator extends shippingcalculator {
 	 */
 	//overridden methods:
 	public function name() { return gt('Flat Rate'); }
-	public function description() { return gt('Flat Rate shipping calculator - one rate for all orders'); }
-	public function hasUserForm() { return true; }
-	public function hasConfig() { return true; }
-	public function addressRequired() { return true; }
-	public function isSelectable() { return true; }
+	public function description() { return gt('Flat Rate shipping calculator - single rate for entire order'); }
+    public function addressRequired() { return false; }
 
     public $shippingmethods = array("01"=>"Flat Rate");
 

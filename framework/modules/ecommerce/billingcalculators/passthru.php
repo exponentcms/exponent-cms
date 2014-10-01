@@ -38,14 +38,6 @@ class passthru extends billingcalculator {
         return false;
     }
 
-    function isOffsite() {
-        return false;
-    }
-
-    function isSelectable() {
-        return true;
-    }
-
     function isRestricted() {
         return true;
     }
@@ -54,24 +46,24 @@ class passthru extends billingcalculator {
     public $payment_type = 'Passthru';
 
     //Called for billing medthod seletion screen, return true if it's a valid billing method.
-    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
-        return true;
-    }
+//    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
+//        return true;
+//    }
 
-    function post_process() {
-        return true;
-    }
+//    function post_process() {
+//        return true;
+//    }
 
     //Config Form
-    function form($config_object) {
-        $form = new form();
-        if (!$config_object) {
-            $config_object->give_change = true;
-        }
-        $form->register("give_change", gt("Give Change?"), new checkboxcontrol($config_object->give_change));
-        $form->register("submit", "", new buttongroupcontrol("Save", "", "Cancel"));
-        return $form->toHTML();
-    }
+//    function form($config_object) {
+//        $form = new form();
+//        if (!$config_object) {
+//            $config_object->give_change = true;
+//        }
+//        $form->register("give_change", gt("Give Change?"), new checkboxcontrol($config_object->give_change));
+//        $form->register("submit", "", new buttongroupcontrol("Save", "", "Cancel"));
+//        return $form->toHTML();
+//    }
 
     //process config form
 //	function update($values, $config_object) {  //FIXME doesn't match parent declaration update($params = array())
@@ -257,6 +249,7 @@ class passthru extends billingcalculator {
         //$ret = expUnserialize($billingmethod->billing_options);
         return 'Manual';
     }
+
 }
 
 ?>

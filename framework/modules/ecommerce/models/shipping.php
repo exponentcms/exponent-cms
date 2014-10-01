@@ -136,20 +136,21 @@ class shipping extends expRecord {
 		//return $pricelist;
 	}
 	
+//    public static function listAllCalculators() {
+//	    global $db;
+//	    $calcs = array();
+//	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
+//	        $calcs[$calc->id] = $calc->calculator_name;
+//	    }
+//
+//		return $calcs;
+//    }
+
 	public function listAvailableCalculators() {
 	    global $db;
+
 	    $calcs = array();
 	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calc) {
-	        $calcs[$calc->id] = $calc->calculator_name;
-	    }
-	    
-		return $calcs;
-    }
-    
-    public static function listAllCalculators() {
-	    global $db;
-	    $calcs = array();
-	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
 	        $calcs[$calc->id] = $calc->calculator_name;
 	    }
 	    
@@ -158,8 +159,11 @@ class shipping extends expRecord {
     
     public function selectableCalculators() {
 	    global $db;
+
 	    $calcs = array();
-	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calc) {
+	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calcObj) {
+            $calcNameReal = $calcObj->calculator_name;
+            $calc = new $calcNameReal($calcObj->id);
 	        $calcs[$calc->id] = $calc->title;
 	    }
 	    

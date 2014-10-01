@@ -873,9 +873,10 @@ class payflowpro extends creditcard {
         return $ret->cc_type;
     }
 
-    function showOptions($bm) {
-        return expUnserialize($bm);
-    }
+    /** Unused */
+//    function showOptions($bm) {
+//        return expUnserialize($bm);
+//    }
 }
 
 ?>

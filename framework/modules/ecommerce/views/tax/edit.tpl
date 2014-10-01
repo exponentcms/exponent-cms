@@ -29,5 +29,6 @@
     {*{control type=country name=country label="Country"|gettext value=$record->country}*}
     {*{control type="countryregion" name=address label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext}*}
     {control type="text" name="rate" label="Percentage Rate"|gettext value=$record->rate}
+    {control type="checkbox" name="shipping_taxed" label="Shipping cost is taxable"|gettext value=1 checked=$record->shipping_taxed}
     {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
 {/form}
