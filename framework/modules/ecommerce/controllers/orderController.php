@@ -106,7 +106,7 @@ class orderController extends expController {
         }
 
         // build out a SQL query that gets all the data we need and is sortable.
-        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.transaction_state as paid, b.billingcalculator_id as method, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
         $sql .= 'FROM ' . DB_TABLE_PREFIX . '_orders o, ' . DB_TABLE_PREFIX . '_billingmethods b, ';
         $sql .= DB_TABLE_PREFIX . '_order_status os, ';
         $sql .= DB_TABLE_PREFIX . '_order_type ot ';
@@ -131,6 +131,7 @@ class orderController extends expController {
                 gt('Customer')      => 'lastname',
                 gt('Order #')       => 'invoice_id',
                 gt('Total')         => 'total',
+                gt('Payment')       => 'method',
                 gt('Date Purchased')=> 'purchased',
                 gt('Type')          => 'order_type_id',
                 gt('Status')        => 'order_status_id',
@@ -140,7 +141,8 @@ class orderController extends expController {
         //eDebug($page,true);
         assign_to_template(array(
             'page'        => $page,
-            'closed_count'=> $closed_count
+            'closed_count'=> $closed_count,
+            'new_order'   => order::getDefaultOrderStatus()
         ));
     }
 
@@ -198,7 +200,7 @@ class orderController extends expController {
             'messages'       => $status_messages,
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
-            'sales_reps'     => $order->getSalesReps(),
+            'sales_reps'     => order::getSalesReps(),
             'from_addresses' => $from_addresses,
             'from_default'   => $from_default,
             'email_subject'  => $email_subject,

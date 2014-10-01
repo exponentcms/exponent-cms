@@ -50,6 +50,7 @@ class ecomconfigController extends expController {
     
     function update_optiongroup_master() {
         global $db;
+
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $og = new optiongroup_master($id);
         $oldtitle = $og->title;
@@ -83,6 +84,7 @@ class ecomconfigController extends expController {
     
     function delete_option_master() {
         global $db;
+
         $masteroption = new option_master($this->params['id']);
         
         // delete any implementations of this option master
@@ -104,6 +106,7 @@ class ecomconfigController extends expController {
     
     function update_option_master() {        
         global $db;
+
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $opt = new option_master($id);
         $oldtitle = $opt->title;
@@ -265,6 +268,7 @@ class ecomconfigController extends expController {
     /*****************************************************************/
 	public function manage_groupdiscounts() {
 		global $db;
+
 		expHistory::set('manageable', $this->params);
 		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
@@ -352,7 +356,6 @@ class ecomconfigController extends expController {
 	 }
 	 
 	 function update_upcharge() {
-       
         $this->loc->src = "@globalstoresettings";
         $config = new expConfig($this->loc);
 		$this->config = $config->config;
@@ -376,6 +379,7 @@ class ecomconfigController extends expController {
 		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
 		parent::saveconfig();
 	}
+
 }
 
 ?>

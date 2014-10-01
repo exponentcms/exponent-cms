@@ -91,12 +91,14 @@ class order_statusController extends expController {
     
     public function toggle_closed() {
         global $db;
+
         $db->toggle('order_status', 'treat_as_closed', 'id='.$this->params['id']);
         expHistory::back();
     }
     
     public function toggle_default() {
         global $db;
+
         $order_status = new order_status($this->params['id']);
         $db->setUniqueFlag($order_status, 'order_status', 'is_default');
         expHistory::back();

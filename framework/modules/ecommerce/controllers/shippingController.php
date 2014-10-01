@@ -33,6 +33,7 @@ class shippingController extends expController {
 	
 	function selectShippingCalculator() {
 	    global $db;
+
 		$shipping = new shipping();
 		
 		// update the shippingmethod
@@ -50,6 +51,7 @@ class shippingController extends expController {
 
 	function selectShippingOption() {
 	    global $order;
+
 		$shipping = new shipping();
 		$id = $this->params['option'];
 		$rates = $shipping->calculator->getRates($order);
@@ -153,6 +155,7 @@ class shippingController extends expController {
 		
 	public function toggle() {
 	    global $db;
+
 	    if (isset($this->params['id'])) $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
         if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
             $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
@@ -169,6 +172,7 @@ class shippingController extends expController {
 
     public function toggle_default() {
   	    global $db;
+
         $db->toggle('shippingcalculator',"is_default",'is_default=1');
   	    if (isset($this->params['id'])) {
             $active = $db->selectObject('shippingcalculator',"id=".$this->params['id']);
@@ -183,6 +187,7 @@ class shippingController extends expController {
 
     public function configure() {
         global $db;
+
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
@@ -193,7 +198,8 @@ class shippingController extends expController {
     }
     
     public function saveconfig() {
-        global $db;                
+        global $db;
+
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
@@ -203,8 +209,8 @@ class shippingController extends expController {
     }
 	
 	public function editspeed() {
-	
         global $db;
+
         if (empty($this->params['id'])) return false;
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->params['id']);
         $calc = new $calcname($this->params['id']);
@@ -216,6 +222,7 @@ class shippingController extends expController {
 	
 	public function saveEditSpeed() {
 		global $db;
+
         $obj = new stdClass();
 		$obj->speed = $this->params['speed'];
 		$obj->shippingcalculator_id = $this->params['shippingcalculator_id'];
@@ -225,10 +232,12 @@ class shippingController extends expController {
 	
 	public function deleteSpeed() {
 		global $db;
+
         if (empty($this->params['id'])) return false;
 		$db->delete('shippingspeeds',' id =' . $this->params['id']);
 		expHistory::back();
 	}
+
 }
 
 ?>

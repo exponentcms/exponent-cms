@@ -71,7 +71,7 @@ class billing extends expRecord {
         $this->address = new address($order->billingmethod[0]->addresses_id);
         //$this->address = new address($order->billingmethod[0]->id);
         $this->available_calculators = self::listAvailableCalculators();
-        $this->selectable_calculators = $this->selectableCalculators();
+        $this->selectable_calculators = self::selectableCalculators();
         $this->calculator_views = $this->getCalcViews();
         
         // if there is only one available calculator we'll force it on the user
@@ -125,7 +125,7 @@ class billing extends expRecord {
         return $calcs;
     }
 
-    public function selectableCalculators() {
+    public static function selectableCalculators() {
         global $db,$user;
 
         $calcs = array();

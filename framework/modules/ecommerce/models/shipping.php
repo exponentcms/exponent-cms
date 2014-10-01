@@ -37,8 +37,8 @@ class shipping extends expRecord {
         if (empty($order->id)) return false;
         
         $existing_shippingmethods = $order->getShippingMethods();        
-        $this->available_calculators = $this->listAvailableCalculators();
-        $this->selectable_calculators = $this->selectableCalculators();
+        $this->available_calculators = self::listAvailableCalculators();
+        $this->selectable_calculators = self::selectableCalculators();
         
         if (count($existing_shippingmethods) == 1) {
             if ($order->forcedShipping()) {
@@ -146,7 +146,7 @@ class shipping extends expRecord {
 //		return $calcs;
 //    }
 
-	public function listAvailableCalculators() {
+	public static function listAvailableCalculators() {
 	    global $db;
 
 	    $calcs = array();
@@ -157,7 +157,7 @@ class shipping extends expRecord {
 		return $calcs;
     }
     
-    public function selectableCalculators() {
+    public static function selectableCalculators() {
 	    global $db;
 
 	    $calcs = array();
@@ -170,7 +170,7 @@ class shipping extends expRecord {
 		return $calcs;
     }
     
-    static function estimateShipping($order)
+    public static function estimateShipping($order)
     {
         $c = new shippingcalculator();
         $calc = $c->find('first',"enabled=1 AND is_default=1");

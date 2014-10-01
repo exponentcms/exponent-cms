@@ -38,15 +38,17 @@
 				{foreach from=$page->records item=listing name=listings}
                     <tr class="{cycle values="odd,even"}">
                         <td>
-                            <a href="{link action=show id=$listing->id}">
-                                {$listing->lastname}, {$listing->firstname}
-                            </a>
+                            <a href="{link action=show id=$listing->id}">{$listing->lastname}, {$listing->firstname}</a>
+                            {*{$listing->user_id|username:'system'}*}
                         </td>
-                        <td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
-                        <td style="text-align:right;">{$listing->grand_total|currency}</td>
+                        <td>
+                            <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
+                        </td>
+                        <td style="text-align:right;"><span style="padding:3px;border-radius:5px;background-color:{if $listing->paid|lower == 'complete'}darkseagreen{else}lightgray{/if};" title="{if $listing->paid|lower == 'complete'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
+                        <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td>{$listing->order_type}</td>
-                        <td>{$listing->status}</td>
+                        <td>{if $listing->order_status_id == $new_order}<span style="font-weight:bold;color:#008000">* </span>{/if}{$listing->status}</td>
                         <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png"}</a>{/if}</td>
                     </tr>
 				{foreachelse}

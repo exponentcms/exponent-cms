@@ -136,7 +136,6 @@ class storeCategoryController extends expNestedNodeController {
     }
 
     function saveconfig() {
-
         // unset some unneeded params
         unset($this->params['module']);
         unset($this->params['controller']);
@@ -426,6 +425,7 @@ class storeCategoryController extends expNestedNodeController {
         //     }
         // }
     }
+
 }
 
 ?>

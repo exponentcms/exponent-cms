@@ -27,7 +27,7 @@ class taxclass extends expRecord {
         parent::__construct($params, $get_assoc, $get_attached);
     }
     
-    public function getProductTax($item) {
+    public static function getProductTax($item) {
         global $db;
 
         if (empty($item->shippingmethod->country) && empty($item->shippingmethod->state)) return false;
@@ -57,6 +57,7 @@ class taxclass extends expRecord {
         
         return $zones;
     }
+    
 }
 
 ?>

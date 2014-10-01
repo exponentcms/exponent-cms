@@ -344,10 +344,10 @@ class cartController extends expController {
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
-        if (!$order->getDefaultOrderType()) {
+        if (!order::getDefaultOrderType()) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Type').' <a href="'.expCore::makeLink(array('controller'=>'order_type','action'=>'manage')).'">'.gt('Here').'</a>');
         }
-        if (!$order->getDefaultOrderStatus()) {
+        if (!order::getDefaultOrderStatus()) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Status').' <a href="'.expCore::makeLink(array('controller'=>'order_status','action'=>'manage')).'">'.gt('Here').'</a>');
         }
 
@@ -428,11 +428,11 @@ class cartController extends expController {
             'billing'             => $billing,
             'discounts'           => $discounts,
             'order'               => $order,
-            'order_types'         => $order->getOrderTypes(),
-            'default_order_type'  => $order->getDefaultOrderType(),
-            'order_statuses'      => $order->getOrderStatuses(),
-            'default_order_status'=> $order->getDefaultOrderStatus(),
-            'sales_reps'          => $order->getSalesReps()
+            'order_types'         => order::getOrderTypes(),
+            'default_order_type'  => order::getDefaultOrderType(),
+            'order_statuses'      => order::getOrderStatuses(),
+            'default_order_status'=> order::getDefaultOrderStatus(),
+            'sales_reps'          => order::getSalesReps()
             //'needs_address'=>$needs_address,
         ));
     }
@@ -513,7 +513,7 @@ class cartController extends expController {
             $opts = $billing->calculator->userFormUpdate($this->params);
             //$billing->calculator->preprocess($this->params);
             //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
-            //eDebug($order->getDefaultOrderType(),true);
+            //eDebug(order::getDefaultOrderType(),true);
 
             // call the billing method's preprocess in case it needs to prepare things.
             // eDebug($billing);
@@ -1183,6 +1183,7 @@ class cartController extends expController {
         $this->loc->int = "";
         parent::saveconfig();
     }
+
 }
 
 ?>

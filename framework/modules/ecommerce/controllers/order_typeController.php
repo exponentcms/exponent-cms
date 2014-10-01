@@ -56,6 +56,7 @@ class order_typeController extends expController {
     
     public function update() {
         global $db;
+
         //reset others
         if ($this->params['is_default']){
             $o = new stdClass();
@@ -64,6 +65,7 @@ class order_typeController extends expController {
         }
         parent::update();
     }
+
 }
 
 ?>

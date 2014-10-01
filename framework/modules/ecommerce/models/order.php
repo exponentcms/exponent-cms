@@ -525,7 +525,7 @@ class order extends expRecord {
          $this->tax = 0;
          foreach($this->orderitem as $item) {
              $taxclass = new taxclass($item->product->tax_class_id);
-             $item->products_tax = $taxclass->getProductTax($item);
+             $item->products_tax = taxclass::getProductTax($item);
              $this->tax += $item->products_tax;
          }
 
@@ -658,8 +658,8 @@ class order extends expRecord {
             }
 
             // calculate the tax for this product
-            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
-            $this->orderitem[$i]->products_tax = $taxclass->getProductTax($this->orderitem[$i]);
+//            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
+            $this->orderitem[$i]->products_tax = taxclass::getProductTax($this->orderitem[$i]);
             $this->tax += $this->orderitem[$i]->products_tax * $this->orderitem[$i]->quantity;
 
             //save out the order item
@@ -794,7 +794,7 @@ class order extends expRecord {
         if (isset($params['order_type'])) {
             $this->order_type_id = $params['order_type'];
         } else {
-            $this->order_type_id = $this->getDefaultOrderType();
+            $this->order_type_id = self::getDefaultOrderType();
         }
         $this->save();
     }
@@ -805,7 +805,7 @@ class order extends expRecord {
         return $db->selectValue('order_type', 'title', 'id=' . $this->order_type_id);
     }
 
-    public function getOrderTypes() {
+    public static function getOrderTypes() {
         $ot = new order_type();
         $ots = $ot->find('all');
         $order_types = array();
@@ -815,7 +815,7 @@ class order extends expRecord {
         return $order_types;
     }
 
-    public function getDefaultOrderType() {
+    public static function getDefaultOrderType() {
         $ot = new order_type();
         $ots = $ot->find('first', 'is_default=1');
         //eDebug($ots,true);
@@ -834,7 +834,7 @@ class order extends expRecord {
         if (isset($params['order_status'])) {
             $this->order_status_id = $params['order_status'];
         } else {
-            $this->order_status_id = $this->getDefaultOrderStatus();
+            $this->order_status_id = self::getDefaultOrderStatus();
         }
         $this->save();
     }
@@ -845,7 +845,7 @@ class order extends expRecord {
         return $db->selectValue('order_status', 'title', 'id=' . $this->order_status_id);
     }
 
-    public function getOrderStatuses() {
+    public static function getOrderStatuses() {
         $os = new order_status();
         $oss = $os->find('all');
         $order_statuses = array();
@@ -855,7 +855,7 @@ class order extends expRecord {
         return $order_statuses;
     }
 
-    public function getDefaultOrderStatus() {
+    public static function getDefaultOrderStatus() {
         $os = new order_status();
         $oss = $os->find('first', 'is_default=1');
         //eDebug($ots,true);
@@ -870,7 +870,7 @@ class order extends expRecord {
        return;
     } */
 
-    public function getSalesReps() {
+    public static function getSalesReps() {
         $sr = new sales_rep();
         $srs = $sr->find('all');
         $sales_reps = array();

@@ -150,6 +150,26 @@ class billingcalculator extends expRecord {
         else return false;
     }
 
+    /**
+     * Return billing calculator name
+     *
+     */
+    public static function getCalcName($calc_id) {
+        global $db;
+
+        return $db->selectValue('billingcalculator','calculator_name','id='.$calc_id);
+    }
+
+    /**
+     * Return billing calculator title
+     *
+     */
+    public static function getCalcTitle($calc_id) {
+        global $db;
+
+        return $db->selectValue('billingcalculator','title','id='.$calc_id);
+    }
+
 }
 
 ?>

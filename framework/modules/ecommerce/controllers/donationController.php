@@ -55,6 +55,7 @@ class donationController extends expController {
     
     function metainfo() {
         global $router;
+
         if (empty($router->params['action'])) return false;
         
         // figure out what metadata to pass back based on the action we are in.
@@ -90,7 +91,8 @@ class donationController extends expController {
     function delete() {
         redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();
-    } 
+    }
+
 }
 
 ?>
