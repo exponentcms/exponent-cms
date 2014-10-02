@@ -75,7 +75,7 @@ class order extends expRecord {
             }
 
             // grab our tax zones
-//            $this->taxzones = taxclass::getCartTaxZones($this);
+            $this->taxzones = taxclass::getCartTaxZones($this);
 
             /*$this->total = $this->getCartTotal();
       $this->calculateTax();

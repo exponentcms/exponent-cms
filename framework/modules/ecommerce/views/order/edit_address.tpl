@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module order address edit address-form">
-    <h1>{'Editing address'|gettext}</h1>
+    <h1>{'Editing'|gettext} {if $type == 'b'}{'Billing'|gettext}{else}{'Shipping'|gettext}{/if} {'address'|gettext}</h1>
     <blockquote>
         <em>{'Fields marked with an * are required.'|gettext}</em>
     </blockquote>
