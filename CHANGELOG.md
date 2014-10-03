@@ -17,6 +17,7 @@ Added / Fixed / Changed for 2.3.1
   * !!!Fixes loss of admin/super-admin status when password is changed
   * !!!Updates install/upgrade logic for greater security
   * !!!Fixes bug which could allow display of orders to non-admin users
+  - php v5.6 compatible
   - updates ecommerce to be more robust with non-US areas (countries w/o regions/states)
     -- Much improved interface for managing sales tax and also countries/regions
   - adds many Twitter Bootstrap v3 widgets/components to that theme framework, moving away from YUI2/YUI3/jQueryUI
@@ -125,6 +126,7 @@ Added / Fixed / Changed for 2.2.2
 Added / Fixed / Changed for 2.2.1
 -----------------------
 ### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+  - php v5.5 compatible
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
   - adds optional tweet button to blog articles & file downloads, and optional twitter follow button to twitter view
   - adds paged form (wizard) feature

@@ -29,8 +29,9 @@ class expTheme
     public static function initialize()
     {
         global $auto_dirs2;
-        // Initialize the theme subsystem 1.0 compatibility layer
-//		require_once(BASE.'framework/core/compat/theme.php');
+
+        // Initialize the theme subsystem 1.0 compatibility layer if requested
+		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE) require_once(BASE.'framework/core/compat/theme.php');
 
         if (!defined('DISPLAY_THEME')) {
             /* exdoc
@@ -1792,6 +1793,13 @@ class expTheme
         return $mobile_browser;
     }
 
+    /**
+     * Warn admin of obsolete theme methods
+     *
+     * @param string $newcall
+     * @param null $controller
+     * @param null $actionview
+     */
     public static function deprecated($newcall = "expTheme::module()", $controller = null, $actionview = null)
     {
         global $user;
