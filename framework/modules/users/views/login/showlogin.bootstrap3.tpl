@@ -20,7 +20,7 @@
 {messagequeue}
 <div class="login default row">
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-        <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one col-sm-9"{/if}>
+        <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one col-sm-6"{/if}>
             {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
                 {$usertype="Customers"|gettext}
                 {$label="Email Address"|gettext|cat:":"}
@@ -41,7 +41,7 @@
             {/form}
         </div>
         {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
-            <div class="box new-user two col-sm-9">
+            <div class="box new-user two col-sm-6">
                 <h2>{"New"|gettext} {$usertype}</h2>
                 <p>
                     {if $smarty.const.ECOM}
@@ -66,7 +66,7 @@
         {/if}
     {else}
         {if !$smarty.const.ECOM}
-            <div class=" logout">
+            <div class="col-sm-6 logout">
                 {*<a class="btn btn-default {$btn_size}" href="{link action=logout}">{'Logout'|gettext}</a>*}
                 {icon button=true wide=true action=logout text='Logout'|gettext}
             </div>
