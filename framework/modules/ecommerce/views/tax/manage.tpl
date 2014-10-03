@@ -55,7 +55,7 @@
                     {$tax->rate|number_format:2}%
                 </td>
                 <td>
-                    {if $tax->shipping_taxed == 1}{icon img="clean.png"}{/if}
+                    {if $tax->shipping_taxed == 1}{icon img="clean.png" color=green}{/if}
                 </td>
                 <td>
                     {$tax->zonename} <em>({if !empty($tax->state)}{$tax->state}, {/if}{$tax->country})</em>

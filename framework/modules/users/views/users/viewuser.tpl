@@ -111,7 +111,7 @@
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td>{$listing->order_type}</td>
                         <td>{$listing->status}</td>
-                        <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png"}</a>{/if}</td>
+                        <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                     </tr>
 				{foreachelse}
 				    <tr class="{cycle values="odd,even"}">
