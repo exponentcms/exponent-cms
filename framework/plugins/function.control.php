@@ -405,6 +405,7 @@ function smarty_function_control($params, &$smarty) {
             case "telephone":
             case "number":
             case "range":
+            case "hidden":
             default:
                 $control       = new genericcontrol($params['type']);
                 $control->size = !empty($params['size']) ? $params['size'] : "40";
