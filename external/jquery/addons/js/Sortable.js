@@ -96,7 +96,7 @@
 		_customEvents.forEach(function (name) {
 			options[name] = _bind(this, options[name] || noop);
 			_on(el, name.substr(2).toLowerCase(), options[name]);
-		});
+		}, this);
 
 
 		// Export group name
@@ -143,6 +143,10 @@
 				, el = this.el
 				, filter = options.filter
 			;
+
+			if( evt.type === 'mousedown' && evt.button !== 0 ) {
+				return; // only left button
+			}
 
 			// Check filter
 			if( typeof filter === 'function' && filter.call(this, target, this) ){
@@ -454,7 +458,9 @@
 
 			for (; i < n; i++) {
 				el = children[i];
-				order.push(el.getAttribute('data-id') || _generateId(el));
+				if (_closest(el, this.options.draggable, this.el)) {
+					order.push(el.getAttribute('data-id') || _generateId(el));
+				}
 			}
 
 			return order;
@@ -466,16 +472,21 @@
 		 * @param  {String[]}  order  order of the items
 		 */
 		sort: function (order) {
-			var items = {}, el = this.el;
+			var items = {}, rootEl = this.el;
 
 			this.toArray().forEach(function (id, i) {
-				items[id] = el.children[i];
-			});
+				var el = rootEl.children[i];
+
+				if (_closest(el, this.options.draggable, rootEl)) {
+					items[id] = el;
+				}
+			}, this);
+
 
 			order.forEach(function (id) {
 				if (items[id]) {
-					el.removeChild(items[id]);
-					el.appendChild(items[id]);
+					rootEl.removeChild(items[id]);
+					rootEl.appendChild(items[id]);
 				}
 			});
 		},
@@ -669,7 +680,7 @@
 	};
 
 
-	Sortable.version = '0.5.0';
+	Sortable.version = '0.5.1';
 
 
 	// Export
