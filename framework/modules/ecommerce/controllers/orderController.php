@@ -675,8 +675,8 @@ exit();
             } else {
                 $comment = $this->params['order_status_messages'];
             }
+            // save the order status change
             $change = new order_status_changes();
-            // save the changes
             $change->from_status_id = $order->order_status_id;
             $change->comment        = $comment;
             $change->to_status_id   = $this->params['order_status_id'];

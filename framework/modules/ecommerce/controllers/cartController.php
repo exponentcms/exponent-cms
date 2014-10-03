@@ -609,6 +609,13 @@ class cartController extends expController {
         // set the gift comments
         $order->update($this->params);
 
+        // save initial order status
+        $change = new order_status_changes();
+//        $change->from_status_id = null;
+        $change->to_status_id   = $order->order_status_id;
+        $change->orders_id      = $order->id;
+        $change->save();
+
         // get the biling & shipping info
         $shipping = new shipping();
         $billing  = new billing();

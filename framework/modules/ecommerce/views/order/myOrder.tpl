@@ -13,4 +13,4 @@
  *
  *}
 
-{exp_include file="show.tpl"}
+{exp_include file="invoice.tpl"}

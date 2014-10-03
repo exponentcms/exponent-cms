@@ -92,7 +92,7 @@
                     {foreach from=$order->order_status_changes item=change}
                         <tr style="border-bottom: 1px solid gray;"><td>
                         <strong>
-                        {'Status was changed from'|gettext} {selectvalue table='order_status' field="title" where="id=`$change->from_status_id`"}
+                        {'Status was changed'|gettext} {if $change->from_status_id}{'from'|gettext} {selectvalue table='order_status' field="title" where="id=`$change->from_status_id`"}{/if}
                         {'to'|gettext} {selectvalue table='order_status' field="title" where="id=`$change->to_status_id`"} {'on'|gettext} {$change->getTimestamp()} {'by'|gettext} {$change->getPoster()}
                         </strong>
                         {if $change->comment != ''}
