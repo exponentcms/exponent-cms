@@ -905,6 +905,20 @@ function framework() {
 }
 
 /**
+ * Is the current framework Bootstrap v2 based?
+ *
+ * @return bool
+ */
+function bs2() {
+    $framework = framework();
+    if ($framework == 'bootstrap') {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
  * Is the current framework Bootstrap v3 based?
  *
  * @return bool
