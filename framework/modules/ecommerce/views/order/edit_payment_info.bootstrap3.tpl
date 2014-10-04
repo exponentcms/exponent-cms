@@ -27,7 +27,7 @@
                         {group label="Payment Statuses"|gettext}
                         {foreach from=$opts item=field key=key}
                             {if $key != 'transId'}
-                                {control type="text" name="result[`$key`]" label=$key value=$field}
+                                {control type="text" name="result[`$key`]" label=$key|replace:"_":" "|ucwords value=$field}
                             {/if}
                         {/foreach}
                         {/group}

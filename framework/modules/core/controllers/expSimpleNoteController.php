@@ -90,12 +90,12 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         $sql  = 'SELECT n.* FROM '.DB_TABLE_PREFIX.'_expSimpleNote n ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
         $sql .= 'AND n.approved=0';
         
         $page = new expPaginator(array(
-            'model'=>'expSimpleNote',
+//            'model'=>'expSimpleNote',  // brings in all of model
             'sql'=>$sql, 
             'limit'=>10,
             'order'=>'created_at',

@@ -154,7 +154,13 @@ class orderController extends expController {
 
         expHistory::set('viewable', $this->params);
 
-        $order = new order($this->params['id']);
+        if (!empty($this->params['invoice']) && empty($this->params['id'])) {
+            $ord = new order();
+            $order = $ord->find('first', 'invoice_id=' . $this->params['invoice']);
+            $this->params['id'] = $order->id;
+        } else {
+            $order = new order($this->params['id']);
+        }
 
         // We're forcing the location. Global store setting will always have this loc
 //        $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
