@@ -39,6 +39,7 @@ function smarty_function_scaffold($params,&$smarty) {
             $filepath = $value ."/function.control.php";
             if (file_exists($filepath)) {
                 require_once $filepath;
+                break;
             }
         }
 
