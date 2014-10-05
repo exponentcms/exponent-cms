@@ -44,7 +44,7 @@
                         <td>
                             <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
                         </td>
-                        <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete'}alert-success{/if}" title="{if $listing->paid|lower == 'complete'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
+                        <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}alert-success{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                         <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td>{$listing->order_type}</td>

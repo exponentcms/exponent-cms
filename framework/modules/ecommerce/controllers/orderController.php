@@ -111,7 +111,7 @@ class orderController extends expController {
         $sql .= DB_TABLE_PREFIX . '_order_status os, ';
         $sql .= DB_TABLE_PREFIX . '_order_type ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0';
-
+  //FIXME this sql isn't correct???
 //        if (!empty($status_where)) {
 //            $status_where .= ')';
             $sql .= $status_where;

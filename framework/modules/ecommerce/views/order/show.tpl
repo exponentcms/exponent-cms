@@ -190,7 +190,7 @@
                                     {/form}
                                 {/if}
                             {/if}                            
-                            {if $bt->transaction_state == "complete"}
+                            {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
                                 {if $billing->calculator != null && $bt->creditEnabled() == true}
                                     {form action=creditTransaction}
                                         {control type="hidden" name="id" value=$order->id}

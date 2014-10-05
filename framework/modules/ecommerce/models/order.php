@@ -132,20 +132,21 @@ class order extends expRecord {
 
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
-        $active = $db->selectValue('modstate', 'active', 'module="store"' || ECOM);
+        $active = ECOM;
         if (!expModules::controllerExists('cart') || empty($active)) {
             // if ecomm is turned off, no cart.
             return null;
         } else if (isset($router->params['controller']) && $router->params['controller'] == 'order' &&
-            ($router->params['action'] == 'verifyReturnShopper' || $router->params['action'] == 'verifyAndRestoreCart' ||
-                $router->params['action'] == 'clearCart') &&
+            ($router->params['action'] == 'verifyReturnShopper' ||
+             $router->params['action'] == 'verifyAndRestoreCart' ||
+             $router->params['action'] == 'clearCart') &&
             (!isset($sessAr['validated']) || $sessAr['validated'] != true)
         ) {
             return new order();
         } else {
             // if ecomm is turned off, no cart.		    
             //$active = ;
-            if (empty($active)) return null;
+//            if (empty($active)) return null;
             $order = new order(); //initialize a new order object to use the find function from.
             $ticket = expSession::getTicketString(); //get this users session ticket. this is how we track anonymous users.
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
@@ -157,6 +158,7 @@ class order extends expRecord {
             $sessioncart = $order->find('first', "invoice_id='' AND sessionticket_ticket='" . $ticket . "'");
 
             //check to see if the user is logged in, and if so grab their existing cart
+            $usercart = null;
             if (!empty($user) && $user->isLoggedIn()) {
                 $usercart = $order->find('first', "invoice_id='' AND user_id=" . $user->id);
             }
@@ -322,8 +324,10 @@ class order extends expRecord {
 
             $cart->item_count = 0;
             foreach ($cart->orderitem as $items) {
-                if ($items->product->requiresShipping && !$items->product->no_shipping) $cart->shipping_required = true;
-                if ($items->product->requiresBilling) $cart->billing_required = true;
+                if ($items->product->requiresShipping && !$items->product->no_shipping)
+                    $cart->shipping_required = true;
+                if ($items->product->requiresBilling)
+                    $cart->billing_required = true;
                 $cart->item_count += $items->quantity;
             }
 
@@ -737,6 +741,11 @@ class order extends expRecord {
         //eDebug($this, true); 
     }
 
+    /**
+     * Return next invoice number and advance counter
+     *
+     * @return mixed|null
+     */
     public function getInvoiceNumber() {
         global $db;
 
@@ -869,6 +878,37 @@ class order extends expRecord {
        $this->save();
        return;
     } */
+
+    /**
+     * Return number of orders in requested state
+     *
+     * @param string $state
+     * @return int
+     */
+    public static function getOrdersCount($state='new') {
+        global $db;
+
+        if ($state == 'new') {
+            $new_status = order::getDefaultOrderStatus();
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);  // complete orders w/ default status
+        } elseif ($state == 'placed' || $state == 'submitted' || $state == 'confirmed' || $state == 'purchased') {
+            return $db->countObjects('orders', 'purchased !=0');  // complete orders w/ any status
+        } elseif ($state == 'open') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status);
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id NOT IN (' . $closed_status . ')');
+        } elseif ($state == 'processing') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status) . ',' . order::getDefaultOrderStatus();
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id NOT IN (' . $closed_status . ')');  // complete orders w/ closed status
+        } elseif ($state == 'closed') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status);
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id IN (' . $closed_status . ')');  // complete orders w/ closed status
+        } else {
+            return $db->countObjects('orders', 'purchased=0');  // incomplete orders w/ any status
+        }
+    }
 
     public static function getSalesReps() {
         $sr = new sales_rep();
