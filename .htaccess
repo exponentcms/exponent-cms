@@ -8,6 +8,9 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # you may have to edit/uncomment the next line if working from a subfolder
+#    RewriteBase /subfolder-name
+
     # To redirect all users to access the site WITH the 'www.' prefix,
     # (http://example.com/... will be redirected to http://www.example.com/...)
     # adapt and uncomment the following:
