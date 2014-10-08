@@ -96,6 +96,6 @@
                 {/foreach}
             </tbody>
         </table>
-        {control type=buttongroup submit="Save Geography Configuration"|gettext cancel="Cancel"|gettext}
+        {control type=buttongroup submit="Save Location Configuration"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

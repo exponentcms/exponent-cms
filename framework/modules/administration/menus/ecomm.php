@@ -28,11 +28,6 @@ if (!$user->isAdmin() || empty($active)) {
 }
 
 $new_orders = order::getOrdersCount('new');
-$placed_orders = order::getOrdersCount('placed');
-$open_orders = order::getOrdersCount('open');
-$processing_orders = order::getOrdersCount('processing');
-$closed_orders = order::getOrdersCount('closed');
-$other_orders = order::getOrdersCount('other');
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new orders') . '</em>';
 } else {

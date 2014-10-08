@@ -969,7 +969,7 @@ class usersController extends expController {
                 gt('Order #')        => 'invoice_id',
                 gt('Total')          => 'total',
                 gt('Date Purchased') => 'purchased',
-                gt('Type')           => 'order_type_id',
+//                gt('Type')           => 'order_type_id',
                 gt('Status')         => 'order_status_id',
                 gt('Ref')            => 'orig_referrer',
             ),

@@ -201,6 +201,7 @@ class orderController extends expController {
             'css'            => $css,
             'printerfriendly'=> $pf,
             'order'          => $order,
+            'order_user'     => new user($order->user_id),
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
             'billing'        => $billing,
             'messages'       => $status_messages,
@@ -293,7 +294,8 @@ class orderController extends expController {
             'billing'        => $billing,
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
-            'tc'             => $trackMe
+            'tc'             => $trackMe,
+            'checkout'       => !empty($this->params['tc'])  //FIXME we'll use the tc param for now
         ));
 
     }
@@ -849,7 +851,7 @@ exit();
 
         expHistory::set('viewable', $this->params);
         $page = new expPaginator(array(
-            'model'     => 'order',
+            'model'     => 'order',  //FIXME we should also be getting the order status name
             'where'     => 'purchased > 0 AND user_id=' . $user->id,
             'limit'     => 10,
             'order'     => 'purchased',

@@ -47,7 +47,7 @@
         {*<a class="{button_style}" href="#" id="continue-passthru-checkout" class="exp-ecom-link"><strong><em>{'Continue To Last Step'|gettext}</em></strong></a>*}
         {*<button id="continue-passthru-checkout" type="submit" class="add-to-cart-btn {button_style}">{"Continue Checkout"|gettext}</button>*}
         {*{icon button=true action=scriptaction id="continue-passthru-checkout" class="exp-ecom-link" text='Continue To Last Step'|gettext}*}
-        {control type="buttongroup" id="continue-checkout" class="add-to-cart-btn" submit="Continue Checkout"|gettext}
+        {control type="buttongroup" id="continue-checkout" class="shopping-cart" color=green size=large submit="Continue Checkout"|gettext}
     {/form}
     {*<div style="clear:both;"></div>*}
 </div>

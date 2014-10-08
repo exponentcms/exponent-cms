@@ -16,30 +16,52 @@
 {css unique="confirmation1" link="`$asset_path`css/ecom.css"}
 
 {/css}
-
 {css unique="confirmation2" link="`$asset_path`css/confirmation.css" corecss="button"}
 
 {/css}
-
 {css unique="cart" link="`$asset_path`css/cart.css" corecss="panels"}
 
 {/css}
 
 <div class="module cart confirm exp-ecom-table">
+    {assocarray}
+        breadcrumb: [
+            0: [
+                title: "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'show'))
+            ]
+            1: [
+                title:  "{'Sign In'|gettext}"
+                link: ""
+            ]
+            2: [
+                title:  "{'Shipping/Billing'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'checkout'))
+            ]
+            3: [
+                title:  "{'Order Confirmation'|gettext}"
+                link: ""
+            ]
+            4: [
+                title:  "{'Order Complete'|gettext}"
+                link: ""
+            ]
+        ]
+    {/assocarray}
+    {breadcrumb items=$breadcrumb active=3 style=flat}
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
-
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
-{br}
+    {br}
     <div class="confirmationlinks">
-        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="{button_style color=green} next">
-        {"Looks good, submit my order!"|gettext} &raquo;
-        </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
+        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
+           class="{button_style color=green size=large} next">
+        {"Looks good, submit my order!"|gettext} &raquo;
+        </a>
     </div>
-{br}
+    {br}
     <div class="billinginfo">
         <h2>{'Billing Information'|gettext}</h2>
 
@@ -241,14 +263,14 @@
         </div>
     {/if}
     </div>
-{clear}{br}
+    {clear}{br}
     <div class="confirmationlinks">
-        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="{button_style color=green} next">
-        {"Looks good, submit my order!"|gettext} &raquo;
-        </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
+        </a>
+        <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
+           class="{button_style color=green size=large} next">
+        {"Looks good, submit my order!"|gettext} &raquo;
         </a>
     </div>
     <p align="center">
@@ -257,5 +279,5 @@
         </div>
     </p>
 
-{ecomconfig var='checkout_message_bottom' default=""}
+    {ecomconfig var='checkout_message_bottom' default=""}
 </div>

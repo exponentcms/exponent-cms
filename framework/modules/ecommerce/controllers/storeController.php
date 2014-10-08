@@ -538,7 +538,7 @@ class storeController extends expController {
         $page = new expPaginator(array(
             'model'      => 'product',
             'where'      => 'parent_id=0',
-            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : !empty($this->config['limit']) ? $this->config['limit'] : 10,
+            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10,
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'title'),
             'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),

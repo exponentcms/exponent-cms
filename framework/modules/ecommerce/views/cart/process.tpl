@@ -14,6 +14,36 @@
  *}
 
 <div class="module order show">
+    {assocarray}
+        {*breadcrumb: [{"Summary"|gettext}, {"Sign In"|gettext}, {"Order Confirmation"|gettext}, {"Order Complete"|gettext}, ]*}
+        {*test5: [*}
+            {*key1: "value1"*}
+            {*key2: "value2"*}
+        {*]*}
+        breadcrumb: [
+            0: [
+                title: "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'cart'))
+            ]
+            1: [
+                title:  "{'Sign In'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'cart'))
+            ]
+            2: [
+                title:  "{'Order Confirmation'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'cart'))
+            ]
+            3: [
+                title:  "{'Order Complete'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'cart'))
+            ]
+            4: [
+                title:  "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'cart'))
+            ]
+        ]
+    {/assocarray}
+    {breadcrumb items=$breadcrumb active=4}
     <h2 class="message">{'Your order was was successful. Thank you for your business.'|gettext}</h2>
 	<table width=100% border="0" cellspacing="5" cellpadding="5">
 		<thead>

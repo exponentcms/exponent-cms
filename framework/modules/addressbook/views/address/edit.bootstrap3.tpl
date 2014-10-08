@@ -37,6 +37,33 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {/literal}
 {/script}
 <div class="module address edit address-form">
+    {if $checkout}
+        {assocarray}
+            breadcrumb: [
+                0: [
+                    title: "{'Summary'|gettext}"
+                    link: makeLink(array('controller'=>'cart','action'=>'show'))
+                ]
+                1: [
+                    title:  "{'Sign In'|gettext}"
+                    link: ""
+                ]
+                2: [
+                    title:  "{'Shipping/Billing'|gettext}"
+                    link: ""
+                ]
+                3: [
+                    title:  "{'Order Confirmation'|gettext}"
+                    link: ""
+                ]
+                4: [
+                    title:  "{'Order Complete'|gettext}"
+                    link: ""
+                ]
+            ]
+        {/assocarray}
+        {breadcrumb items=$breadcrumb active=1 style=flat}
+    {/if}
     {if $record->id != ""}
         <h1>{'Editing address for'|gettext} {$record->firstname} {$record->lastname}</h1>
     {else}
@@ -93,7 +120,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             <!--The following field is an anti-spam measure to prevent fraudulent account creation. -->
             {* control type="antispam" *}
         {/if}
-        {control type=buttongroup submit="Save Address and Continue"|gettext cancel="Cancel"|gettext}
+        {control type=buttongroup size=large submit="Save Address and Continue"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
 

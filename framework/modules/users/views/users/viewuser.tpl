@@ -86,7 +86,7 @@
 				</tr>
                 {*{if $billings[0]->id == '' || $shippings[0]->id == ''}*}
                     <tr><td colspan=2>
-                        <a class="manage" href="{link module=address action=myaddressbook user_id=$u->id}">{'Manage My Addresses'|gettext}</a>
+                        <a class="manage" href="{link module=address action=myaddressbook user_id=$u->id}">{'Manage Addresses'|gettext}</a>
                     </td></tr>
                 {*{/if}*}
 			</tbody>
@@ -106,10 +106,10 @@
 			<tbody>
 				{foreach from=$orders->records item=listing name=listings}
                     <tr class="{cycle values='odd,even'}">
-                        <td><a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a></td>
+                        <td><a href="{link controller=order action=myOrder id=$listing->id}">{$listing->invoice_id}</a></td>
                         <td style="text-align:right;">{$listing->grand_total|currency}</td>
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
-                        <td>{$listing->order_type}</td>
+                        {*<td>{$listing->order_type}</td>*}
                         <td>{$listing->status}</td>
                         <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                     </tr>

@@ -19,7 +19,7 @@
             {control type="hidden" name="id" value=$orderid}
             <div id="editpayment-tabs" class="">
                 <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Edit Payment Info'|gettext}</em></a></li>
+                    <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Edit Payment Info'|gettext}</em></a></li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab1" class="tab-pane fade in active">

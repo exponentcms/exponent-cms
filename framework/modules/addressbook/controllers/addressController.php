@@ -65,6 +65,11 @@ class addressController extends expController {
             'record'=>$record,
             'admin_config'=>$config
         ));
+        if (expSession::get('customer-signup')) {
+            assign_to_template(array(
+                'checkout'=>true
+            ));
+        }
     }
     
 	public function myaddressbook() {
@@ -89,6 +94,7 @@ class addressController extends expController {
 	public function update() {
         global $user;
 
+        if (expSession::get('customer-signup')) expSession::set('customer-signup', false);
         if (isset($this->params['address_country_id'])) {
             $this->params['country'] = $this->params['address_country_id'];
             unset($this->params['address_country_id']);

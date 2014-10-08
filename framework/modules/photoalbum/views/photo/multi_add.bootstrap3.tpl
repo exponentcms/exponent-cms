@@ -22,7 +22,7 @@
     {form action=multi_update}
         <div id="editgallery-tabs" class="">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
+                <li class="active"><a href="#tab1" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
             </ul>
             <div class="tab-content yui3-skin-sam">
                 <div id="tab1" class="tab-pane fade in active">

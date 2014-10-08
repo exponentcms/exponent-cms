@@ -334,6 +334,20 @@ class ecomconfigController extends expController {
         ));
     }   
 
+    function saveconfig() {
+   		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
+   		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
+        if (isset($this->params['store']['address_country_id'])) {
+            $this->params['store']['country'] = $this->params['store']['address_country_id'];
+            unset($this->params['store']['address_country_id']);
+        }
+        if (isset($this->params['store']['address_region_id'])) {
+            $this->params['store']['state'] = $this->params['store']['address_region_id'];
+            unset($this->params['store']['address_region_id']);
+        }
+   		parent::saveconfig();
+   	}
+
 	/*****************************************************************/
     /***************  Upcharge Rate   *******************************/
     /*****************************************************************/
@@ -374,12 +388,6 @@ class ecomconfigController extends expController {
         expHistory::back();
     }
 	
-	function saveconfig() {
-		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
-		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
-		parent::saveconfig();
-	}
-
 }
 
 ?>

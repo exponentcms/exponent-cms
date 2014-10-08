@@ -20,8 +20,32 @@
 {messagequeue}
 
 <div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
+    {assocarray}
+        breadcrumb: [
+            0: [
+                title: "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'show'))
+            ]
+            1: [
+                title:  "{'Sign In'|gettext}"
+                link: ""
+            ]
+            2: [
+                title:  "{'Shipping/Billing'|gettext}"
+                link: ""
+            ]
+            3: [
+                title:  "{'Order Confirmation'|gettext}"
+                link: ""
+            ]
+            4: [
+                title:  "{'Order Complete'|gettext}"
+                link: ""
+            ]
+        ]
+    {/assocarray}
+    {breadcrumb items=$breadcrumb active=2 style=flat}
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
-
     {if ecomconfig::getConfig('policy')!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
         <div id="storepolicies" style="z-index:9999">
@@ -300,7 +324,7 @@
                     {form name="free" controller=cart action=preprocess}
                         {control type="hidden" name="billingcalculator_id" value=-1}
                         {control type="hidden" name="cash_amount" value=0}
-                        <button id="continue-checkout" type="submit" class="{button_style}">{"Continue Checkout"|gettext}</button>
+                        <button id="continue-checkout" type="submit" class="shopping-cart {button_style size=large}">{"Continue Checkout"|gettext}</button>
                     {/form}
                 </div>
             {/if}

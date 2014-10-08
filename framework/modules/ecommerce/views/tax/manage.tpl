@@ -29,10 +29,16 @@
     <thead>
         <tr>
             <th>
+                {'Enabled'|gettext}
+            </th>
+            <th>
                 {'Class'|gettext}
             </th>
             <th>
                 {'Rate'|gettext}
+            </th>
+            <th>
+                {'Origin'|gettext}
             </th>
             <th>
                 {'Shipping'|gettext}
@@ -49,10 +55,18 @@
         {foreach from=$taxes item=tax key=key name=taxes}
             <tr class="{cycle values="odd,even"}">
                 <td>
+                    {if $tax->inactive != 1}
+                        {icon img="clean.png" color=green title='Enabled'|gettext}
+                    {/if}
+                </td>
+                <td>
                     {$tax->classname}
                 </td>
                 <td>
                     {$tax->rate|number_format:2}%
+                </td>
+                <td>
+                    {if $tax->origin_tax == 1}{icon img="clean.png" color=green}{/if}
                 </td>
                 <td>
                     {if $tax->shipping_taxed == 1}{icon img="clean.png" color=green}{/if}

@@ -41,7 +41,7 @@
  *           assignments as well as arrays and keyed arrays.
  *           See:      http://www.phpinsider.com/smarty-forum/viewtopic.php?t=64
  *           Example:
- *           {dsrlz}
+ *           {assocarray}
  *              test: "test"
  *              test2: 10
  *              test3: "this is a test"
@@ -57,7 +57,7 @@
  *                      subkey2: "subvalue2"
  *                  ]
  *              ]
- *           {/dsrlz}
+ *           {/assocarray}
  *
  *           creates the following smarty assignments:
  *           $test  [= "test"]
@@ -135,7 +135,7 @@ function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
             }
         }
         $msg .= ';';
-        $cnt = preg_match_all('/(\$(\w+)\s*=\s*(.*?;))/', $msg, $list);
+        $cnt = preg_match_all('/(\$(\w+)\s*=\s*(.*?;))/', $msg, $list);  //FIXME we discard this result?
         $cnt = count($list[1]);
         if ($cnt > 0) {
             for ($i = 0; $i < $cnt; $i++) {

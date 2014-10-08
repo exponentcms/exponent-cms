@@ -31,7 +31,7 @@
             {control type=hidden name=lft value=$node->lft}
             <div id="cattabs" class="">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="#general"><em>{'General'|gettext}</em></a></li>
+                    <li class="active"><a href="#general" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
                     <li><a href="#seo" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
                     {*<li><a href="#events1"><em>{'Events'|gettext}</em></a></li>*}
                     {if $product_types}

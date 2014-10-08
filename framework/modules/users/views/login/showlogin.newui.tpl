@@ -16,6 +16,33 @@
 {messagequeue}
 
 <div class="exp-skin module login show-login">
+    {if $checkout}
+        {assocarray}
+            breadcrumb: [
+                0: [
+                    title: "{'Summary'|gettext}"
+                    link: makeLink(array('controller'=>'cart','action'=>'show'))
+                ]
+                1: [
+                    title:  "{'Sign In'|gettext}"
+                    link: ""
+                ]
+                2: [
+                    title:  "{'Shipping/Billing'|gettext}"
+                    link: ""
+                ]
+                3: [
+                    title:  "{'Order Confirmation'|gettext}"
+                    link: ""
+                ]
+                4: [
+                    title:  "{'Order Complete'|gettext}"
+                    link: ""
+                ]
+            ]
+        {/assocarray}
+        {breadcrumb items=$breadcrumb active=1 style=flat}
+    {/if}
 
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
 

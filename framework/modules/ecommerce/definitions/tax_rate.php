@@ -37,6 +37,12 @@ return array(
     'shipping_taxed'=>array(
    		DB_FIELD_TYPE=>DB_DEF_BOOLEAN
     ),
+    'origin_tax'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN
+    ),
+    'inactive'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN
+    ),
 );
 
 ?>

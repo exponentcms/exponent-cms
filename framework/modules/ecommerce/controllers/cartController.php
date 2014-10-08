@@ -329,8 +329,9 @@ class cartController extends expController {
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));
 
-        if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
+        if (!expSession::get('customer-signup') && !$user->isLoggedin()) {  // give opportunity to login or sign up
             expHistory::set('viewable', $this->params);
+            expSession::set('customer-login', true);
             flash('message', gt("Please select how you would like to continue with the checkout process."));
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
         }
@@ -397,9 +398,8 @@ class cartController extends expController {
         $address = new address();
         //$addresses_dd = $address->dropdownByUser($user->id);
         $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
-        if (empty($shipAddress) || !$user->isLoggedin()) {
-            expSession::set('customer-signup', false);
-            flash('message', gt('Step One: enter your primary address info now.') .
+        if (empty($shipAddress) || !$user->isLoggedin()) {  // we're not logged in and don't have an address yet
+            flash('message', gt('Enter your primary address info now.') .
                 '<br><br>' .
                 gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.') .
                 '<br><br>' .
@@ -915,6 +915,7 @@ class cartController extends expController {
     }
 
     public function customerSignup() {
+        if (expSession::get('customer-login')) expSession::un_set('customer-login');
         expSession::set('customer-signup', true);
         redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
 //        $this->checkout();
