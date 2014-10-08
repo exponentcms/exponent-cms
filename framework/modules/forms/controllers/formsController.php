@@ -261,6 +261,7 @@ class formsController extends expController {
             if (!empty($f)) {
                 $form = new form();
                 $form->id = $f->sef_url;
+                $form->horizontal = $this->config['style'];
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly = 0 AND is_static = 0','rank');
@@ -890,6 +891,7 @@ class formsController extends expController {
             $controls = $f->forms_control;
 
             $form = new fakeform();
+            $form->horizontal = $this->config['style'];
             foreach ($controls as $c) {
 //                $ctl = unserialize($c->data);
                 $ctl = expUnserialize($c->data);

@@ -70,11 +70,13 @@ class form extends baseform {
      *
      * @return boolean Returns true if the new Control was registered.
      */
-	function register($name,$label, $control,$replace=true,$tab=null,$desc=null) {
+	function register($name, $label, $control, $replace=true, $tab=null, $desc=null) {
 		if ($name == null || $name == "") $name = uniqid("");
 		if (isset($this->controls[$name])) {
 			if (!$replace) return false;
 		} else $this->controlIdx[] = $name;
+
+        if ($this->horizontal) $control->horizontal = true;
 		$this->controls[$name] = $control;
         if (!empty($desc)) $this->controls[$name]->description = $desc;
 		$this->controlLbl[$name] = $label;
@@ -121,10 +123,11 @@ class form extends baseform {
      * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
-	function registerAfter($afterName,$name,$label, $control,$tab=null) {
+	function registerAfter($afterName, $name, $label, $control, $tab=null) {
 		if ($name == null || $name == "") $name = uniqid("");
 		if (in_array($name,$this->controlIdx)) return false;
 		
+        if ($this->horizontal) $control->horizontal = true;
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
 //        $this->tabs[$name] = $tab;
@@ -152,10 +155,11 @@ class form extends baseform {
      * @param string $tab
      * @return boolean Returns true if the new Control was registered.
      */
-	function registerBefore($beforeName,$name,$label, $control,$tab=null) {
+	function registerBefore($beforeName, $name, $label, $control, $tab=null) {
 		if ($name == null || $name == "") $name = uniqid("");
 		if (in_array($name,$this->controlIdx)) return false;
 		
+        if ($this->horizontal) $control->horizontal = true;
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
 //        $this->tabs[$name] = $tab;
@@ -266,13 +270,23 @@ class form extends baseform {
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
 		$html .= '<div class="error">'.$formError.'</div>';
+        $class = '';
+        if ($this->horizontal) {
+            if (newui()) {
+                $class = " class=\"exp-skin form-horizontal\"";
+            } else {
+                $class = " class=\"form-horizontal\"";
+            }
+        } elseif (newui()) {
+            $class = " class=\"exp-skin\"";
+        }
 		if (isset($this->ajax_updater)) {
 			$html .= "<form role=\"form\" name=\"" . $this->name . "\" method=\"" ;
 			$html .= $this->method . "\" action=\"" . $this->action ."\" ";
 			$html .= " onsubmit=\"new Ajax.Updater('".$this->div_to_update."', '".$this->action."', ";
 			$html .= "{asynchronous:true, parameters:Form.serialize(this)}); return false;\">\r\n";
 		} else {
-			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\"" . (newui()?" class=\"exp-skin\"":"") . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+			$html .= "<form role=\"form\" id='".$this->id."' name=\"" . $this->name . "\"" . $class . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		}
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";

@@ -101,6 +101,7 @@ class yuicalendarcontrol extends formcontrol
         }
 
         $date_input = new textcontrol($default);
+        if ($this->horizontal) $date_input->horizontal_top = true;
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';

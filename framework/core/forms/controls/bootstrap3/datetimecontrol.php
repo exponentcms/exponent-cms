@@ -57,7 +57,7 @@ class datetimecontrol extends formcontrol {
         $html .= (!empty($this->required)) ? ' required">' : '">';
         //$html .= "<label>";
         if (empty($this->flip)) {
-            $html .= "<label class=\"control-label\">" . $label . "</label>";
+            $html .= "<label class=\"control-label".($this->horizontal?' col-sm-2':'')."\">" . $label . "</label>";
             $html .= $this->controlToHTML($name);
         } else {
             $html .= $this->controlToHTML($name);
@@ -79,7 +79,8 @@ class datetimecontrol extends formcontrol {
 
         $minute = $default_date['minutes'] . "";
         if ($minute < 10) $minute = "0" . $minute;
-        $html = "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
+        $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
+        $html .= "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         $html .= "<div class=\"row\">";
         if ($this->showdate) {
             $html .= '<div class="datetime date" style="display:inline-block;"><label class="col-md-2 control-label">' . gt('Date') . ': </label>';
@@ -113,6 +114,7 @@ class datetimecontrol extends formcontrol {
         }
         $html .= "</div>";
         if (!empty($this->description)) $html .= "<div class=\"help-block\">" . $this->description . "</div>";
+        $html .= ($this->horizontal && bs3()) ? '</div>' : '';
         return $html;
     }
 

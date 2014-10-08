@@ -15,11 +15,19 @@
 
 {uniqueid prepend=$form->sef_url assign="name"}
 {if !$error}
-    {if $config.style}
+    {if $config.style && !bs3()}
         {css unique="formmod2" corecss="forms2col"}
 
         {/css}
+    {else}
+        {css unique="formmod2"}
+            .stepy-step label {
+            	margin   : 0;
+                display  : inline;
+            }
+        {/css}
     {/if}
+
     <div class="module forms edit enter-data">
         {messagequeue name='notice'}
         {permissions}

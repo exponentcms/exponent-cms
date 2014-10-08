@@ -31,6 +31,7 @@ class checkboxcontrol extends formcontrol {
 
     var $flip = false;
     var $jsHooks = array();
+    var $class = "";
 
     static function name() {
         return "Options - Checkbox";
@@ -74,16 +75,18 @@ class checkboxcontrol extends formcontrol {
             }
             $html = "<div" . $divID . " class=\"checkbox control form-group";
             $html .= (!empty($this->required)) ? ' required">' : '">';
-            $html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
+            $html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 
 //            $html .= "<div class=\"checkbox\"><label class=\"control-label\">".$label;
-            $html .= "<label" . $for . " class=\"control-label\">".$label;
+            $html .= "<label" . $for . " class=\"control-label\">";
+            if (!$this->horizontal) $html .= $label;
             $html .= $this->controlToHTML($name, $label);
+            if ($this->horizontal) $html .= $label;
 //            $html .= "</label></div>";
             $html .= "</label>";
 
             if (!empty($this->description)) $html .= "<span class=\"help-block\">" . $this->description . "</span>";
-            $html .= ($this->horizontal == 1 ) ? '</div>' : '';
+            $html .= ($this->horizontal) ? '</div>' : '';
             $html .= "</div>";
             return $html;
         }

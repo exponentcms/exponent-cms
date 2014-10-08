@@ -80,7 +80,17 @@ class fakeform extends form {
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
-		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\"" . (newui()?" class=\"exp-skin\"":"") . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
+        $class = '';
+        if ($this->horizontal) {
+            if (newui()) {
+                $class = " class=\"exp-skin form-horizontal\"";
+            } else {
+                $class = " class=\"form-horizontal\"";
+            }
+        } elseif (newui()) {
+            $class = " class=\"exp-skin\"";
+        }
+		$html .= "<form role=\"form\" id='abc123' name=\"" . $this->name . "\"" . $class . " method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 		$rank = 0;
 		$even = "odd";
@@ -103,7 +113,7 @@ class fakeform extends form {
             $edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
             $delete_class = ' class="btn btn-danger '.$btn_size.'"';
             $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
-        } elseif ($head_config['framework'] == 'bootstrap3') {
+        } elseif (NEWUI || $head_config['framework'] == 'bootstrap3') {
             if (BTN_SIZE == 'large') {
                 $btn_size = '';
                 $icon_size = 'fa-lg';
@@ -122,18 +132,19 @@ class fakeform extends form {
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
 			$html .= "<div class=\"formmoduleedit ".$even." control\" style=\"border: 1px dashed lightgrey; border-radius: 8px; padding: 1em;" . (!empty($this->controls[$name]->is_hidden)?' background-color: lightgray;':'') . "\" >";
-            $html .= "<div class=\"item-actions\">";
+            if ($this->controls[$name]->horizontal&&bs3()) $html .= '<div class="row">';
+            $html .= "<div class=\"item-actions".($this->controls[$name]->horizontal&&bs3()?' col-sm-12':'')."\">";
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
                     $html .= $edit_icon_class;
                 } else {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
                 }
 				$html .= '</a>';
 			} else {
-                if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+                if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
                     $html .= '<div class="btn btn-default disabled ' . $btn_size . '">'.$edit_icon_class.'</div>';
                 } else {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
@@ -148,7 +159,7 @@ class fakeform extends form {
 			else {
 				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-            if ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+            if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
                 $html .= $delete_icon_class;
             } else {
                 $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';
@@ -160,13 +171,13 @@ class fakeform extends form {
                 if (bs3() && $this->controls[$name]->_controltype == 'checkboxcontrol') {
                     $html .= $this->controls[$name]->toHTML($this->controlLbl[$name], $name) . "\r\n";
                 } else {
-                    $html .= "<label class=\"".(bs3()?"control-label":"label")."\" style=\"background: transparent;\"></label>";
+                    $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"background: transparent;\"></label>";
                     $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
                 }
             }
             $for   = ' for="' . $name . '"';
             if (!bs3() && (empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol')) {  // not flipped checkbox
-                $html .= "<label ".$for." class=\"".(bs3()?"control-label":"label")."\" style=\"width:auto; display:inline;\">";
+                $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"width:auto; display:inline;\">";
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
                 $html .= "</label>";
@@ -177,10 +188,10 @@ class fakeform extends form {
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype == 'checkboxcontrol') || $this->controls[$name]->_controltype == 'pagecontrol') {
             } elseif (!empty($this->controlLbl[$name])) {  // flipped non-checkbox or page control
                 if ($this->controls[$name]->_controltype == 'checkboxcontrol') {
-                    $html .= "<label ".$for." class=\"".(bs3()?"control-label":"label")."\" style=\"display:inline;\">";
+                    $html .= "<label ".$for." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\" style=\"display:inline;\">";
                 } else {
                     $break = $this->controls[$name]->_controltype == 'radiogroupcontrol' && $this->controls[$name]->cols != 1 ? true : false;
-                    $html .= "<label class=\"".(bs3()?"control-label":"label").($break?" show":"")."\">";
+                    $html .= "<label class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'').($break?" show":"")."\">";
                 }
                 if($this->controls[$name]->required) $html .= '<span class="required" title="'.gt('This entry is required').'">* </span>';
                 $html .= $this->controlLbl[$name];
@@ -193,8 +204,10 @@ class fakeform extends form {
             }
             if ((empty($this->controls[$name]->flip) && $this->controls[$name]->_controltype != 'checkboxcontrol')  // not fipped non-checkbox control
                   || $this->controls[$name]->_controltype == 'radiogroupcontrol') {  // flipped/not flipped radio group
+                $this->controls[$name]->design_time = true;
                 $html .= $this->controls[$name]->controlToHTML($name, $this->controlLbl[$name]) . "\r\n";
             }
+            if ($this->controls[$name]->horizontal&&bs3()) $html .= '</div>';
 			$html .= "</div>";
 			
 			$rank++;

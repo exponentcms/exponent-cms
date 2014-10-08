@@ -48,6 +48,7 @@ class uploadcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
         $html = '';
         if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
+        $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 		$html .= "<input type=\"file\" name=\"$name\"";
 		if (isset($this->class)) {
             $html .= ' class="form-control ' . $this->class . '"';
@@ -62,6 +63,7 @@ class uploadcontrol extends formcontrol {
 		$html .= "/>";
         if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        $html .= ($this->horizontal && bs3()) ? '</div>' : '';
 		return $html;
 	}
 
