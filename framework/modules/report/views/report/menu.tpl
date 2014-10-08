@@ -53,12 +53,12 @@
                         {*{'Quick statistics on carts vs. orders.'|gettext}*}
                     {*</li>*}
                     <li>
-                        <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
-                        {'View and manage abandoned carts.'|gettext}
-                    </li>
-                    <li>
                         <strong><a href="{link action=current_carts}">{'Current Carts'|gettext}</a></strong>
                         {'View and manage current carts.'|gettext}
+                    </li>
+                    <li>
+                        <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
+                        {'View and manage abandoned carts.'|gettext}
                     </li>
                 </ul>
             </div>

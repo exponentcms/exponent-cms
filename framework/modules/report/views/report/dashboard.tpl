@@ -44,18 +44,24 @@
                     <th>
                         {"Orders being Processed"|gettext}
                     </th>
+                    <th>
+                        {"Active Carts"|gettext}
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%">
-                    <td>
-                        {order::getOrdersCount('open')}
+                <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%;">
+                    <td style="text-align:center;">
+                        <a href="{link controller=order action=showall}">{order::getOrdersCount('open')}</a>
                     </td>
-                    <td>
-                        {order::getOrdersCount('new')}
+                    <td style="text-align:center;">
+                        <a href="{link controller=order action=showall}">{order::getOrdersCount('new')}</a>
                     </td>
-                    <td>
-                        {order::getOrdersCount('processing')}
+                    <td style="text-align:center;">
+                        <a href="{link controller=order action=showall}">{order::getOrdersCount('processing')}</a>
+                    </td>
+                    <td style="text-align:center;">
+                        <a href="{link action=current_carts}">{$active_carts}</a>
                     </td>
                 </tr>
             <tbody>
