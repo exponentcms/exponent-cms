@@ -48,7 +48,7 @@
                         <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                         <td>{$listing->purchased|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</td>
                         <td>{$listing->order_type}</td>
-                        <td>{if $listing->order_status_id == $new_order}<span style="font-weight:bold;color:#008000">* </span>{/if}{$listing->status}</td>
+                        <td>{if $listing->order_status_id == $new_order}<span class="badge alert-success">{/if}{$listing->status}{if $listing->order_status_id == $new_order}</span>{/if}</td>
                         <td>{if $listing->orig_referrer !=''}<a href="{$listing->orig_referrer}" target="_blank" title="{$listing->orig_referrer}">{icon img="clean.png" color=green}</a>{/if}</td>
                     </tr>
 				{foreachelse}
