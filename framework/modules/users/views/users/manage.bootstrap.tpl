@@ -98,7 +98,7 @@
                 null,
                 null,
                 null,
-                { searchable: false, sortable: false },
+                { searchable: false, sortable: true },
                 { searchable: false, sortable: false },
             ],
             autoWidth: false,
