@@ -279,7 +279,17 @@
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
                     {/literal}{if $update=='ck'}{literal}
-                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+//                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
+                    window.opener.CKEDITOR.tools.callFunction( funcNum, file.url, function() {
+                        var dialog = this.getDialog();
+                        if ( dialog.getName() == 'image2' ) {
+                            dialog.getContentElement( 'info', 'alt' ).setValue( file.alt );
+                            dialog.getContentElement( 'info', 'height' ).setValue( file.height );  //work-around
+                            dialog.getContentElement( 'info', 'width' ).setValue( file.width );  //work-around
+                        } else if (dialog.getName() == 'image') {
+                            dialog.getContentElement( 'info', 'txtAlt' ).setValue( file.alt );
+                        }
+                    });
                     window.close();
                     {/literal}{elseif $update=='tiny'}{literal}
                     FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE

@@ -214,7 +214,8 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                removePlugins: 'image',
                 {/literal}{$editor->additionalConfig}{literal}
                 height : 200,
                 autoGrow_minHeight : 200,
