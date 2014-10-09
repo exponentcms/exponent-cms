@@ -19,8 +19,8 @@ var factory = function( $, DataTable ) {
 /* Set the defaults for DataTables initialisation */
 $.extend( true, DataTable.defaults, {
 	dom:
-		"<'row'<'col-xs-6'l><'col-xs-6'f>r>"+
-		"t"+
+		"<'row'<'col-xs-6'l><'col-xs-6'f>r>" +
+		"<'row'<'col-xs-12't>>" +
 		"<'row'<'col-xs-6'i><'col-xs-6'p>>",
 	renderer: 'bootstrap'
 } );
@@ -45,7 +45,7 @@ DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, bu
 		var i, ien, node, button;
 		var clickHandler = function ( e ) {
 			e.preventDefault();
-			if ( e.data.action !== 'ellipsis' ) {
+			if ( !$(e.currentTarget).hasClass('disabled') ) {
 				api.page( e.data.action ).draw( false );
 			}
 		};
