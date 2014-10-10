@@ -21,7 +21,7 @@
 {*}*}
 {*{/literal}*}
 {*{/css}*}
-{css unique="manage-perms" link="`$asset_path`css/datatables-tools.css"}
+{css unique="manage-perms" corecss="datatables-tools"}
 
 {/css}
 

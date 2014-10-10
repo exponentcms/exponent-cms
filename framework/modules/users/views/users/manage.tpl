@@ -20,7 +20,7 @@
     {*height:20px;*}
 {*}*}
 {*{/css}*}
-{css unique="manage-users" link="`$asset_path`css/datatables-tools.css"}
+{css unique="manage-users" corecss="datatables-tools"}
 
 {/css}
 
