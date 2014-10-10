@@ -16,7 +16,7 @@
 {*{css unique="group" corecss="tables"}*}
 
 {*{/css}*}
-{css unique="manage-groups" link="`$asset_path`css/datatables-tools.css"}
+{css unique="manage-groups" corecss="datatables-tools"}
 
 {/css}
 

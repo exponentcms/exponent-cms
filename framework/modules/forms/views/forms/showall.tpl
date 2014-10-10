@@ -17,7 +17,7 @@
     {*{css unique="data-view" corecss="button"}*}
 
     {*{/css}*}
-    {css unique="showall-forms" link="`$asset_path`css/datatables-tools.css"}
+    {css unique="showall-forms" corecss="datatables-tools"}
 
     {/css}
 
