@@ -38,7 +38,7 @@ $db_version = expVersion::dbVersion();
     if (is_readable('upgrades')) {
         $i = 0;
         if (is_readable('include/upgradescript.php')) {
-            include_once('include/upgradescript.php');
+            include('include/upgradescript.php');
         }
         echo '<form role="form" method="post" action="' . (isset($_REQUEST['run']) ? '../' : '') . 'index.php">';
         if (isset($_REQUEST['run'])) {

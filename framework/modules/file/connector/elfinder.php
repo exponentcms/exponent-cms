@@ -32,16 +32,16 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 //ini_set('mbstring.internal_encoding', 'UTF-8');
 //ini_set('mbstring.func_overload', 2);
 
-include_once BASE . 'external/elFinder/php/elFinderConnector.class.php';
-include_once BASE . 'external/elFinder/php/elFinder.class.php';
-include_once BASE . 'framework/modules/file/connector/elFinderExponent.class.php'; // our custom elFinder object
-include_once BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
-include_once BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
-//include_once BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
-//include_once BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
-//include_once BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
-//include_once BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
-include_once BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
+include BASE . 'external/elFinder/php/elFinderConnector.class.php';
+include BASE . 'external/elFinder/php/elFinder.class.php';
+include BASE . 'framework/modules/file/connector/elFinderExponent.class.php'; // our custom elFinder object
+include BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
+include BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
+//include BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
+//include BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
+//include BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
+//include BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
+include BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
 

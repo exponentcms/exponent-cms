@@ -876,7 +876,7 @@ class administrationController extends expController {
         //display the upgrade scripts
         if (is_readable(BASE.'install/upgrades')) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
 
             // first build a list of valid upgrade scripts
             $oldscripts = array(
@@ -939,7 +939,7 @@ class administrationController extends expController {
         $upgrade_dir = BASE.'install/upgrades';
         if (is_readable($upgrade_dir)) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
             $dh = opendir($upgrade_dir);
 
             // first build a list of valid upgrade scripts

@@ -108,7 +108,7 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
  
 	if (is_readable($page)) {
 		if (!expJavascript::inAjaxAction()) {
-			include_once($page);
+			include($page);
 			expTheme::satisfyThemeRequirements();
 		} else {  // ajax request
             // set up controls search order based on framework
