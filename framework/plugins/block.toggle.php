@@ -47,7 +47,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 	if(empty($content)) {
         if (!empty($params['link'])) $params['title'] = $params['link'];
 
-        echo '<div id="'.$params['unique'].'" class="yui3-module">
+        echo '<div id="',$params['unique'],'" class="yui3-module">
             <div id="head" class="yui3-hd">
                 <h4 id="h4-'.$params['unique'].'" title="'.gt('Click to Expand').'">'.$params['title'].'</h4>
                 <a id="a-'.$params['unique'].'" title="'.gt('Click to Expand').'" class="yui3-toggle"></a>
@@ -55,9 +55,9 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
         ';
         echo '  <div class="yui3-bd">';
         if (!empty($summary)) {
-            echo  '<div id="'.$params['unique'].'-summary" class="hide">' . $params['summary'] . '  </div>';
+            echo  '<div id="',$params['unique'],'-summary" class="hide">', $params['summary'], '  </div>';
         }
-        echo '  <div id="'.$params['unique'].'-body">
+        echo '  <div id="',$params['unique'],'-body">
 
         ';
 	} else {

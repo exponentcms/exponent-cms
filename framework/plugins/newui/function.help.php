@@ -52,7 +52,7 @@ if (!function_exists('smarty_function_help')) {
             } else {
                 $link = help::makeHelpLink($doc);
             }
-            echo '<a class="' . $class. '" title="' . $title . '" href="' . $link . '" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ' . $text . '</a>';
+            echo '<a class="', $class, '" title="', $title, '" href="', $link, '" target="_blank"><i class="fa fa-question-circle fa-fw"></i> ', $text, '</a>';
             expCSS::pushToHead(array(
                 "corecss"=>"admin-global",
             ));

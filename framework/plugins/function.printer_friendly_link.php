@@ -51,7 +51,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
         $class = isset($params['class']) ? $params['class'] : 'printer-friendly-link';
 
         // spit out the link
-        echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);
+        echo $prepend,$router->printerFriendlyLink($text, $class, 800, 600, $view);
     }
 }
 

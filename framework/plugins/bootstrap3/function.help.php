@@ -48,7 +48,7 @@ function smarty_function_help($params,&$smarty) {
             $link = help::makeHelpLink($doc);
         }
 
-        echo '<a class="' . $class. '" title="'.$title.'" href="'.$link.'" target="_blank"><i class="fa fa-question-circle '.expTheme::iconSize().'"></i> '.$text.'</a>';
+        echo '<a class="', $class, '" title="',$title,'" href="',$link,'" target="_blank"><i class="fa fa-question-circle ',expTheme::iconSize(),'"></i> ',$text,'</a>';
         expCSS::pushToHead(array(
 		    "corecss"=>"admin-global",
         ));

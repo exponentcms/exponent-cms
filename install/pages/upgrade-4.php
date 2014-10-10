@@ -92,21 +92,21 @@ $db_version = expVersion::dbVersion();
             if ($upgradescript->checkVersion($db_version) && $upgradescript->needed()) {
                 echo '<li>';
                 if (isset($_REQUEST['run'])) {
-                    echo '<h3>' . $upgradescript->name() . '</h3>';
+                    echo '<h3>', $upgradescript->name(), '</h3>';
                     if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[$classname]))) {
-                        echo '<p class="success">' . $upgradescript->upgrade();
+                        echo '<p class="success">', $upgradescript->upgrade();
                     } else {
-                        echo '<p class="failed"> ' . gt('Not Selected to Run');
+                        echo '<p class="failed"> ', gt('Not Selected to Run');
                     }
                 } else {
                     if ($upgradescript->optional) {
-                        echo '<input type="checkbox" name="' . $classname . '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>' . $upgradescript->name(
-                            ) . '</h3></label>';
+                        echo '<input type="checkbox" name="', $classname, '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                            ), '</h3></label>';
                     } else {
-                        echo '<input type="checkbox" name="' . $classname . '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>' . $upgradescript->name(
-                            ) . '</h3></label>';
+                        echo '<input type="checkbox" name="', $classname, '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                            ), '</h3></label>';
                     }
-                    echo '<p>' . $upgradescript->description();
+                    echo '<p>', $upgradescript->description();
                 }
                 echo "</p></li>\n";
                 $i++;

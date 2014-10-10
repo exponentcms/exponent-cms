@@ -62,7 +62,7 @@ function smarty_function_subscribe_link($params,&$smarty) {
             }
             // spit out the link
             $link = '<a class="'.$class.'" href="'.$router->makelink(array('controller'=>'ealert', 'action'=>$action, 'id'=>$ealert->id)).'"><i class="icon-'.$iclass.' '.expTheme::iconSize().'"></i> '.$text.'</a>';
-            echo $prepend.$link;
+            echo $prepend,$link;
         }
     }
 }

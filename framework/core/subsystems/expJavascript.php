@@ -366,11 +366,11 @@ class expJavascript {
     	if (self::inAjaxAction()) {
 		    echo "<div class=\"io-execute-response\">";
     	    if ($params['src']) {
-                echo '<script type="text/javascript" src="'.$params['src'].'"></script>';
+                echo '<script type="text/javascript" src="',$params['src'],'"></script>';
     	    }
 		    echo "
-		    <script id=\"".$params['unique']."\" type=\"text/javascript\" charset=\"utf-8\">
-		      ".$params['content']."
+		    <script id=\"",$params['unique'],"\" type=\"text/javascript\" charset=\"utf-8\">
+		      ",$params['content'],"
 		    </script>
 		    </div>
 		    ";
@@ -469,7 +469,7 @@ class expJavascript {
 		}
 		$js = substr($js, 0, -2) . ") {\n" . $js1 . "}\n";
 		foreach ($otherclasses as $other) {
-			echo "/// Other Object : ".$other[1] . ", " . $other[0] ."\n";
+			echo "/// Other Object : ",$other[1], ", ", $other[0],"\n";
 			$js .= "\n" . self::jClass($other[1], $other[0]);
 		}
 		return $js;

@@ -77,7 +77,7 @@ function smarty_function_rss_link($params,&$smarty) {
             $link = expCore::makeLink($link_params);
         }
         // spit out the link
-        echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.$title.'"><i class="fa fa-rss '.expTheme::iconSize().'"></i> '.$text.'</a>';
+        echo $prepend,'<a class="',$class,'" href="',$link,'" title="',$title,'"><i class="fa fa-rss ',xpTheme::iconSize(),'"></i> ',$text,'</a>';
     }
 }
 

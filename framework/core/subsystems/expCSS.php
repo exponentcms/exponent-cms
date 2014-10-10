@@ -122,11 +122,11 @@ class expCSS {
 		    echo "<div class=\"io-execute-response\">";
             if (isset($params['corecss'])&&!empty($css_core)){
                 foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="'.$path.'">';
+                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">';
                 }
             }
             if (!empty($params['link'])){
-                echo '<link rel="stylesheet" type="text/css" href="'.$params['link'].'">';
+                echo '<link rel="stylesheet" type="text/css" href="',$params['link'],'">';
             }
 		    echo "</div>";
             return true;

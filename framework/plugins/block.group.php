@@ -38,15 +38,15 @@ function smarty_block_group($params,$content,&$smarty, &$repeat) {
 	if(empty($content)) {
 		if (!empty($params['label'])) echo '<div class="control" style="margin-bottom: 0;padding-bottom: 0;"><label class="'.(bs3()?'control-label':'label').'" style="margin-bottom: 0;padding-bottom: 0;">'.$params['label'].'</label></div>';
         $class = !empty($params['class']) ? ' ' . $params['class'] : '';
-		echo '<div class="group-controls' . $class . '">';
+		echo '<div class="group-controls', $class, '">';
 	} else {
 		echo $content;	
 		echo '</div>';
         if (!empty($params['description'])) {
             if (bs3()) {
-                echo "<div class=\"control\"><p class=\"help-block\">".$params['description']."</p></div>";
+                echo "<div class=\"control\"><p class=\"help-block\">",$params['description'],"</p></div>";
             } else {
-                echo "<div class=\"control\"><div class=\"control-desc\">".$params['description']."</div></div>";
+                echo "<div class=\"control\"><div class=\"control-desc\">",$params['description'],"</div></div>";
             }
         }
 	}

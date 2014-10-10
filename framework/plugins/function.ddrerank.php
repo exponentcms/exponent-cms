@@ -91,7 +91,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         if (!empty($params['label'])) {
             $params['label'] = gt($params['label']);
         }
-        echo '<a id="rerank' . $uniqueid . '" class="reranklink" href="#">' . gt("Order") . ' ' . $params['label'] . '</a>';
+        echo '<a id="rerank', $uniqueid, '" class="reranklink" href="#">', gt("Order"), ' ', $params['label'], '</a>';
 
         $html = '
         <div id="panel' . $uniqueid . '" class="exp-skin-panel exp-skin-rerank hide">

@@ -340,9 +340,9 @@ class expTheme
 
 //   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
         if (MOBILE && is_readable(BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php')) {
-            echo('<div style="text-align:center"><a href="' . makeLink(
+            echo '<div style="text-align:center"><a href="', makeLink(
                     array('module' => 'administration', 'action' => 'togglemobile')
-                ) . '">' . gt('View site in') . ' ' . (MOBILE ? "Classic" : "Mobile") . ' ' . gt('mode') . '</a></div>');
+                ), '">', gt('View site in'), ' ', (MOBILE ? "Classic" : "Mobile"), ' ', gt('mode'), '</a></div>';
         }
                 // load primer, lessprimer, & normalize CSS files
 
@@ -474,9 +474,9 @@ class expTheme
                     $params['src'] = $feed->src;
 //					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
                     //FIXME need to use $feed instead of $params
-                    echo "\t" . '<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(
+                    echo "\t" . '<link rel="alternate" type="application/rss+xml" title="', $title, '" href="', expCore::makeLink(
                             array('controller' => 'rss', 'action' => 'feed', 'title' => $feed->sef_url)
-                        ) . "\" />\r\n";
+                        ), "\" />\r\n";
                 }
             }
         }
