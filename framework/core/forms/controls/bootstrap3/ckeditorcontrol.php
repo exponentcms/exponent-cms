@@ -31,6 +31,7 @@ class ckeditorcontrol extends formcontrol {
     var $cols;
     var $maxchars;
     var $toolbar;
+    var $tb_collapsed = false;
 
     static function name() {
         return "CKEditor";
@@ -130,6 +131,7 @@ class ckeditorcontrol extends formcontrol {
             removePlugins : 'elementspath',
             resize_enabled : false,";
         }
+        if (!MOBILE && $this->tb_collapsed) $tb .= 'toolbarStartupExpanded : false,';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";

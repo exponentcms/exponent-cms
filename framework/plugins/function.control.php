@@ -211,12 +211,14 @@ function smarty_function_control($params, &$smarty) {
                 if ($editor == "ckeditor") {
                     $control = new ckeditorcontrol();
                     $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
+                    $control->tb_collapsed  = !isset($params['tb_collapsed']) ? 0 : 1;
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
                     $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
                 } elseif ($editor == "tinymce") {
                     $control = new tinymcecontrol();
                     $control->toolbar  = !isset($params['toolbar']) ? '' : $params['toolbar'];
+                    $control->tb_collapsed  = !isset($params['tb_collapsed']) ? 0 : 1;
                     $control->lazyload = empty($params['lazyload']) ? 0 : 1;
                     $control->plugin = empty($params['plugin']) ? '' : $params['plugin'];
                     $control->additionalConfig = empty($params['additionalConfig']) ? '' : $params['additionalConfig'];
