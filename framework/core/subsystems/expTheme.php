@@ -819,18 +819,20 @@ class expTheme
     {
         global $db;
 
-        if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
-            echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
             // View authorization will be taken care of by the runAction and mainContainer functions
             if (self::inAction()) {
+                if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
+                    echo show_msg_queue();
                 self::runAction();
             } else {
                 if ($section == null) {
                     self::goDefaultSection();
                 } else {
+                    if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
+                        echo show_msg_queue();
                     self::mainContainer();
                 }
             }
