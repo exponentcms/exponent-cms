@@ -13,7 +13,8 @@
  *
  *}
 
-{exp_include file='menu.tpl'}
+<div class="module report dashboard">
+    {exp_include file='menu.tpl'}
 
 	<div class="rightcol">
 	    <div id="dashboard-tabs" class="yui-navset exp-skin-tabview hide">

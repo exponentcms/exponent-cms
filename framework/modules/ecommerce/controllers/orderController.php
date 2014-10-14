@@ -123,16 +123,16 @@ class orderController extends expController {
             'sql'       => $sql,
             'order'     => 'purchased',
             'dir'       => 'DESC',
-            'limit'     => $limit,
+//            'limit'     => $limit,
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
             'action'    => $this->params['action'],
             'columns'   => array(
                 gt('Customer')      => 'lastname',
-                gt('Order #')       => 'invoice_id',
+                gt('Inv #')         => 'invoice_id',
                 gt('Total')         => 'total',
                 gt('Payment')       => 'method',
-                gt('Date Purchased')=> 'purchased',
+                gt('Purchased')     => 'purchased',
                 gt('Type')          => 'order_type_id',
                 gt('Status')        => 'order_status_id',
                 gt('Ref')           => 'orig_referrer',
@@ -1055,7 +1055,6 @@ exit();
         assign_to_template(array(
             'order'=> $order
         ));
-
     }
 
     function save_reference_order() {
@@ -1088,6 +1087,13 @@ exit();
         }
         $newOrder->save();
         $newOrder->refresh();
+
+        // save initial order status
+        $change = new order_status_changes();
+//        $change->from_status_id = null;
+        $change->to_status_id   = $newOrder->order_status_id;
+        $change->orders_id      = $newOrder->id;
+        $change->save();
 
         $tObj                             = new stdClass();
         $tObj->result->errorCode          = 0;
@@ -1153,13 +1159,13 @@ exit();
     }
 
     function create_new_order() {
-        $order = new order();
-        assign_to_template(array(
-            'order'=> $order
-        ));
+//        $order = new order();
+//        assign_to_template(array(
+//            'order'=> $order
+//        ));
     }
 
-    function save_new_order() {  //FIXME we need to be able to call this from program with $params also
+    function save_new_order() {
         //eDebug($this->params);
         /*addresses_id
         customer_type = 1 //new
@@ -1199,7 +1205,7 @@ exit();
         $newOrder->order_type_id   = $this->params['order_type_id'];
         //$newOrder->order_references = $order->id;
         $newOrder->reference_id    = 0;
-        $newOrder->user_id         = 0;
+        $newOrder->user_id         = $newAddy->user_id;
         $newOrder->purchased       = time();
         $newOrder->updated         = time();
         $newOrder->invoice_id      = $newOrder->getInvoiceNumber();
@@ -1212,6 +1218,13 @@ exit();
         $newOrder->grand_total     = 0;
         $newOrder->save();
         $newOrder->refresh();
+
+        // save initial order status
+        $change = new order_status_changes();
+//        $change->from_status_id = null;
+        $change->to_status_id   = $newOrder->order_status_id;
+        $change->orders_id      = $newOrder->id;
+        $change->save();
 
         $tObj                             = new stdClass();
         $tObj->result->errorCode          = 0;
@@ -1253,7 +1266,7 @@ exit();
         $newBillingTransaction->billing_cost         = 0;
         $newBillingTransaction->billingmethods_id    = $newBillingMethod->id;
         $newBillingTransaction->transaction_state    = 'authorization pending';
-        $newBillingTransaction->billing_options = serialize($tObj);
+        $newBillingTransaction->billing_options      = serialize($tObj);
         $newBillingTransaction->save();
 
         $newShippingMethod                        = new shippingmethod();

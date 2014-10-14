@@ -113,7 +113,7 @@
                     </td></tr>
                 </tbody>
             </table>
-            <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
+            <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Create Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
         {/form}
     </div>
 </div>

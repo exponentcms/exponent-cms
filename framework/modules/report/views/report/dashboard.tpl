@@ -13,8 +13,6 @@
  *
  *}
 
-{exp_include file='menu.tpl'}
-
 {css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
@@ -30,9 +28,12 @@
 {css unique="calendar-edit1" link="`$smarty.const.YUI2_RELATIVE`assets/skins/sam/button.css"}
 
 {/css}
-<div class="rightcol exp-ecom-table">
-    <h3>{'Current Order Stats'|gettext}</h3>
-    <table border="0" cellspacing="0" cellpadding="0">
+<div class="module report dashboard">
+    {exp_include file='menu.tpl'}
+
+    <div class="rightcol exp-ecom-table">
+        <h3>{'Current Order Stats'|gettext}</h3>
+        <table border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
                     <th>
@@ -42,7 +43,7 @@
                         {"New Orders"|gettext}
                     </th>
                     <th>
-                        {"Orders being Processed"|gettext}
+                        {"Orders Processing"|gettext}
                     </th>
                     <th>
                         {"Active Carts"|gettext}
@@ -52,21 +53,22 @@
             <tbody>
                 <tr class="{cycle values="even,odd"}" style="font-weight:bold; font-size:120%;">
                     <td style="text-align:center;">
-                        <a href="{link controller=order action=showall}">{order::getOrdersCount('open')}</a>
+                        <a href="{link controller=order action=showall}" title="{'View Orders'|gettext}">{order::getOrdersCount('open')}</a>
                     </td>
                     <td style="text-align:center;">
-                        <a href="{link controller=order action=showall}">{order::getOrdersCount('new')}</a>
+                        <a href="{link controller=order action=showall}" title="{'View Orders'|gettext}">{order::getOrdersCount('new')}</a>
                     </td>
                     <td style="text-align:center;">
-                        <a href="{link controller=order action=showall}">{order::getOrdersCount('processing')}</a>
+                        <a href="{link controller=order action=showall}" title="{'View Orders'|gettext}">{order::getOrdersCount('processing')}</a>
                     </td>
                     <td style="text-align:center;">
-                        <a href="{link action=current_carts}">{$active_carts}</a>
+                        <a href="{link action=current_carts}" title="{'View Carts'|gettext}">{$active_carts}</a>
                     </td>
                 </tr>
             <tbody>
         </table>
     </div>
+
     <div class="rightcol exp-ecom-table">
         <h3>{'Order Stats for Requested Period'|gettext}</h3>
         <table border="0" cellspacing="0" cellpadding="0">
@@ -114,6 +116,7 @@
                 {/foreach}
             <tbody>
         </table>
+
         <table>
             <tr>
                 <td>

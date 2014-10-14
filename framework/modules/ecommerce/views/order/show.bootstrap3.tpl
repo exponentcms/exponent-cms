@@ -37,11 +37,13 @@
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3 box-stats color2">
-                    <div class="kpi-content">
-                        <i class="fa fa-comments"></i>
-                        <span class="title">{'Messages'|gettext}</span>
-                        <span class="value">{expSimpleNote::noteCount($order->id, "order")}</span>
-                    </div>
+                    <a href="#start_messages">
+                        <div class="kpi-content">
+                            <i class="fa fa-comments"></i>
+                            <span class="title">{'Messages'|gettext}</span>
+                            <span class="value">{expSimpleNote::noteCount($order->id, "order")}</span>
+                        </div>
+                    </a>
                 </div>
                 <div class="col-xs-6 col-sm-3 box-stats color1">
                     <a href="#start_products">
@@ -73,6 +75,9 @@
                             <div class="btn-group">
                                 <a class="btn btn-default" href="{link action=show invoice=$order->invoice_id -1}" title="{'Previous Invoice'|gettext}">
                                     <i class="fa fa-backward"></i>
+                                </a>
+                                <a class="btn btn-default" href="{link action=showall}" title="{'All Invoices'|gettext}">
+                                    <i class="fa fa-eject"></i>
                                 </a>
                                 <a class="btn btn-default" href="{link action=show invoice=$order->invoice_id +1}" title="{'Next Invoice'|gettext}">
                                     <i class="fa fa-forward"></i>
@@ -590,7 +595,7 @@
 
                 <div class="panel">
                 <!-- messages/notes -->
-                    <div class="panel-heading">
+                    <div id="start_messages" class="panel-heading">
                         <i class="fa fa-envelope"></i> {'Messages'|gettext}
                         <span class="badge">
                             {expSimpleNote::noteCount($order->id, "order")}
@@ -627,7 +632,7 @@
                                                         <option value="{$msg->body|escape:"all"}">{$msg->body|truncate:80}</option>
                                                     {/foreach}
                                                 </select>
-                                                {control id=email_message type="editor" name="email_message" label="or enter a Message"|gettext height=250}
+                                                {control id=email_message type="editor" name="email_message" label="or enter a Message"|gettext height=250 toolbar=basic tb_collapsed=1}
                                                 {control type="checkbox" name="save_message" label="Save this message to use in the future?"|gettext value=1}
                                                 {control type="checkbox" name="include_invoice" label="Attach invoice to this email?"|gettext value=1}
                                                 {control type=radiogroup columns=1 name="from_address" label="Select From Address"|gettext items=$from_addresses default=$from_default flip=false}
@@ -785,7 +790,7 @@
                                                 f += '<input type=hidden name=module id=module value=order>';
                                                 f += '<input type=hidden name=action id=action value=add_order_item>';
                                                 f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                                f += '<input type=submit class="add" name=submit value="Add This Item">';
+                                                f += '<input type=submit class="add {/literal}{expTheme::buttonStyle()}{literal}" name=submit value="Add This Item">';
                                                 f += '</form>';
                                             var newLI = Y.Node.create(f);
                                             return newLI;

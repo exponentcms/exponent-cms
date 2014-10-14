@@ -394,7 +394,7 @@
                                 f += '<input type=hidden name=module id=module value=order>';
                                 f += '<input type=hidden name=action id=action value=add_order_item>';
                                 f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                f += '<input type=submit class="add" name=submit value="Add This Item">';
+                                f += '<input type=submit class="add {/literal}{expTheme::buttonStyle()}{literal}" name=submit value="Add This Item">';
                                 f += '</form>';
                             var newLI = Y.Node.create(f);
                             return newLI;   
