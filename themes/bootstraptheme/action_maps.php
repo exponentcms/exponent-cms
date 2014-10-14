@@ -24,10 +24,10 @@ if (!defined('EXPONENT')) {
 // the action may be a wildcard (meaning all methods) by using an asterisk '*'
 return array(
 //    'cart'=>array(                      // the 'cartController' module
-//        'checkout'=>'Full Body'         // the 'checkout' method will use the 'Full Body' subtheme
+//        'checkout'=>'Full Size'         // the 'checkout' method will use the 'Full Size' subtheme
 //    ),
 //    'order'=>array(                     // the 'orderController' module
-//        '*'=>'Full Body'                // ANY order method will use the 'Full Body' subtheme
+//        '*'=>'Full Size'                // ANY order method will use the 'Full Size' subtheme
 //    ),
 //    '*'=>array(                         // ANY module
 //        'showall_by_tags'=>'Tags View'  // ANY order method will use the 'Tags View' subtheme
