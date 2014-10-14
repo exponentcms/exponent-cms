@@ -65,7 +65,7 @@ $items = array(
     ),
     array(
         'text'      => gt('Add an event'),
-        'icon'      => 'fa-plus',
+        'icon'      => 'fa-plus-circle',
         'classname' => 'add',
         'url'       => makeLink(
             array(
