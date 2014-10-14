@@ -122,7 +122,7 @@
         var table = tableContainer.DataTable({
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },
-                { sortable: false, targets: [ -1 ] },
+                { orderable: false, targets: [ -1 ] },
             ],
             autoWidth: false,
             preDrawCallback: function () {

@@ -98,8 +98,8 @@
                 null,
                 null,
                 null,
-                { searchable: false, sortable: true },
-                { searchable: false, sortable: false },
+                { searchable: false, orderable: true },
+                { searchable: false, orderable: false },
             ],
             autoWidth: false,
             preDrawCallback: function () {

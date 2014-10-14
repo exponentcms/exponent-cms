@@ -90,7 +90,8 @@
                 null,
                 null,
                 null,
-                { searchable: false, sortable: false },
+                { searchable: false },
+                { searchable: false, orderable: false },
             ]
         });
     } );
