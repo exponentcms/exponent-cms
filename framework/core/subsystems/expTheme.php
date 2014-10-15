@@ -1119,7 +1119,7 @@ class expTheme
         $module_scope[$params['source']][$controller] = new stdClass();
         $module_scope[$params['source']][$controller]->scope = $params['scope'];
 //            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        self::showModule(
+        return self::showModule(
             $controller,
             $params['view'],
             $params['title'],
@@ -1174,7 +1174,7 @@ class expTheme
 //                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
 //            }
 //        }
-        return false;
+//        return false;
     }
 
     /** exdoc
@@ -1339,12 +1339,13 @@ class expTheme
                 $params['controller'] = $module;
                 $params['view'] = $view;
                 $params['moduletitle'] = $title;
-                renderAction($params);
+                return renderAction($params);
 //				} else {
 //					call_user_func(array($module,"show"),$view,$loc,$title);
 //				}
             } else {
                 echo sprintf(gt('The module "%s" was not found in the system.'), $module);
+                return false;
             }
         }
     }
