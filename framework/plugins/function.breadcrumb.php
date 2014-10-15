@@ -51,11 +51,12 @@ function smarty_function_breadcrumb($params,&$smarty) {
         if ($i == $active) $html .= ' class="active"';
         $html .= '>';
         if (is_array($item)) {
-            $html .= $item['title'];
+            $title = $item['title'];
         } else {
-            $html .= $item;
+            $title = $item;
         }
-        $html .= '</a>';
+        if ($i != $active) $title = '&#160;<span class="breadcrumb-title">' .$title . '</span>';
+        $html .= $title . '</a>';
         $i++;
     }
     $html .= '</div>';

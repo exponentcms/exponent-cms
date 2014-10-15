@@ -99,6 +99,12 @@
 	font-weight: bold;
 }
 
+@media (max-width: 768px) {
+	.cart-breadcrumb span.breadcrumb-title {
+		display: none;
+	}
+}
+
 .flat a, .flat a:after {
 	background: white;
 	color: black;
