@@ -158,6 +158,7 @@ class remove_oldfiles extends upgradescript {
             'external/lessphp/plessc',
             'external/png-opacity.htc',
             'external/SimpleAjaxUploader.js',
+            // obsolete misc files
             'framework/conf/extensions/ldap.defaults.php',
             'framework/conf/extensions/sef.defaults.php',
             'framework/core/assets/less/rerankpanel.less',
@@ -174,6 +175,7 @@ class remove_oldfiles extends upgradescript {
             'framework/plugins/postfilter.includemiscfiles.php',
             'themes/basetheme/sample.eql',
             'themes/basetheme/sample.tar.gz',
+            "themes/bootstrap3theme/modules/navigation/views/navigation/showall_Bootstrap Top Nav.tpl",
             'themes/coolwatertheme/sample.eql',
             'themes/coolwatertheme/sample.tar.gz',
             'themes/multioptiontheme/sample.eql',
