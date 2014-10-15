@@ -16,8 +16,11 @@
 {css unique="z-dropdown-bootstrap" lesscss="`$asset_path`less/dropdown-bootstrap.less"}
 
 {/css}
+{css unique="mega" lesscss="`$asset_path`less/yamm.less"}
 
-<nav id="topnavbar" class="navigation navbar navbar-default {if $smarty.const.MENU_LOCATION}navbar-{$smarty.const.MENU_LOCATION}{/if}" role="navigation">
+{/css}
+
+<nav id="topnavbar" class="navigation navbar yamm navbar-default {if $smarty.const.MENU_LOCATION}navbar-{$smarty.const.MENU_LOCATION}{/if}" role="navigation">
     <div class="">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -52,6 +55,10 @@
             }
         }, this), 0);
     });
+
+    $(document).on('click', '.yamm .dropdown-menu', function(e) {
+        e.stopPropagation()
+    })
 
     $(document).ready(function(){
         function setTopPadding(admin) {

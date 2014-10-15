@@ -381,6 +381,10 @@ class remove_oldfiles extends upgradescript {
             'framework/core/forms/controls/yuieditorcontrol.php',
             'framework/plugins/function.configpanel.php',
             'framework/plugins/function.yuilogger.php',
+            'framework/plugins/bootstrap/function.bootstrap_navbar.php',
+            'framework/plugins/bootstrap3/function.bootstrap_navbar.php',
+            'framework/plugins/newui/function.bootstrap_navbar.php',
+            'framework/plugins/newui/function.control.php',
             'framework/core/forms/controls/bootstrap3/texteditorcontrol.php',
             'framework/core/forms/controls/newui/autocompletecontrol.php',
             'framework/core/forms/controls/newui/calendarcontrol.php',
@@ -412,7 +416,6 @@ class remove_oldfiles extends upgradescript {
             'framework/core/forms/controls/newui/yuicalendarcontrol.php',
             'framework/core/forms/controls/newui/yuidatetimecontrol.php',
             'framework/core/forms/controls/newui/yuieditorcontrol.php',
-            'framework/plugins/newui/function.control.php',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
