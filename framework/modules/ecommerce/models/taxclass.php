@@ -33,7 +33,7 @@ class taxclass extends expRecord {
         if (empty($item->shippingmethod->country) && empty($item->shippingmethod->state)) return false;
 
         $global_config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        if (empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
+        if ($db->countObjects('taxrate') && empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
 
         // find any zones that match the state we are shipping this item to.
         $my_zone = $db->selectValue('tax_geo', 'zone_id', 'country_id='.intval($global_config->config['store']['country']).' AND region_id='.intval($global_config->config['store']['state']));
@@ -54,7 +54,7 @@ class taxclass extends expRecord {
         global $db;
 
         $global_config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        if (empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
+        if ($db->countObjects('taxrate') && empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
 
         $zones = array();
         foreach ($order->orderitem as $item) {
