@@ -91,11 +91,12 @@ class bootstrap3theme extends theme {
    	}
 
     function saveThemeConfig ($params) {
-        if (empty($params['swatch'])) $params['swatch'] = "''";
-        if (empty($params['enhanced_style'])) $params['enhanced_style'] = false;
-        if (empty($params['style_width'])) $params['style_width'] = "''";
-        if (empty($params['btn_size'])) $params['btn_size'] = "''";
+        if (empty($params['swatch'])) $params['swatch'] = "";
+        if (empty($params['enhanced_style'])) $params['enhanced_style'] = '0';
+        if (empty($params['style_width'])) $params['style_width'] = "";
+        if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
+        if (empty($params['flyout_sidebar'])) $params['flyout_sidebar'] = '0';
         parent::saveThemeConfig($params);
    	}
 
