@@ -107,7 +107,13 @@ class expCSS {
         
         // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
-            $css_links[$params['link']] = $params['link'];
+            if (is_array($params['link'])) {
+                foreach ($params['link'] as $link) {
+                    $css_links[$link] = $link;
+                }
+            } elseif (is_string($params['link'])) {
+                $css_links[$params['link']] = $params['link'];
+            }
         };
         
         // css hard coded in a view
@@ -126,7 +132,13 @@ class expCSS {
                 }
             }
             if (!empty($params['link'])){
-                echo '<link rel="stylesheet" type="text/css" href="',$params['link'],'">';
+                if (is_array($params['link'])) {
+                    foreach ($params['link'] as $link) {
+                        echo '<link rel="stylesheet" type="text/css" href="',$link,'">';
+                    }
+                } elseif (is_string($params['link'])) {
+                    echo '<link rel="stylesheet" type="text/css" href="',$params['link'],'">';
+                }
             }
 		    echo "</div>";
             return true;
@@ -145,6 +157,7 @@ class expCSS {
         unset($head_config['xhtml']);
         unset($head_config['lessprimer']);
         unset($head_config['lesscss']);
+        unset($head_config['link']);
         unset($head_config['lessvars']);
         unset($head_config['normalize']);
         unset($head_config['framework']);

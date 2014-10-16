@@ -116,7 +116,7 @@ class expTheme
         }
 
         // load primer, lessprimer, & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
+        if (!empty($config['css_primer']) || !empty($config['link']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
@@ -290,6 +290,8 @@ class expTheme
         // favicon
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.ico')) {
             $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.ico" type="image/x-icon" ' . XHTML_CLOSING . '>' . "\n";
+        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.png')) {
+            $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.png" ' . XHTML_CLOSING . '>' . "\n";
         }
         // touch icons
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon.png')) {

@@ -1443,7 +1443,7 @@ class theme {
 				unset ($params[$key]);
 			}
 		}
-		if ($sv != '') {
+		if (!empty($sv)) {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
 		} else {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");
