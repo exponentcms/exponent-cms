@@ -35,9 +35,13 @@ class optiongroup extends expRecord {
         
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
-        parent::__construct($params, $get_assoc, $get_attached);        
-        $this->timesImplemented = $db->countObjects('optiongroup', 'optiongroup_master_id='.$this->id);
-        
+        parent::__construct($params, $get_assoc, $get_attached);
+        if (!empty($this->id)) {
+            $this->timesImplemented = $db->countObjects('optiongroup', 'optiongroup_master_id='.$this->id);
+        } else {
+            $this->timesImplemented = 0;
+        }
+
         //sort the options based on the master sort order 
         if(!empty($this->id))
         {               
