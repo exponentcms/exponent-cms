@@ -98,7 +98,7 @@ if (!file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
 $page = $_REQUEST['page'];
 
 // Superadmin must be logged in to do an upgrade
-if (strpos($page, 'upgrade-') !== false && !$user->isSuperAdmin()) {
+if (strpos($page, 'upgrade-') !== false && empty($user->is_admin)) {
     header('Location: ../index.php');
     exit();
 }
