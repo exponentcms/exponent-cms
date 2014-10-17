@@ -535,8 +535,8 @@ if (!defined('JQUERY_RELATIVE')) {
     if (!defined('JQUERY2_SCRIPT')) {
         define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
     } // local jQuery v2.x script
-//    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
     if (!defined('JQUERYUI_SCRIPT')) {
+//        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
     } // local jQueryUI script
 }
@@ -546,7 +546,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.19');
+    define('SMARTY_VERSION', '3.1.20');
     define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
