@@ -301,6 +301,9 @@ class expTheme
             $str .= "\t" . '<link rel="apple-touch-icon-precomposed" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png" ' . XHTML_CLOSING . '>' . "\n";
         }
 
+        // when minification is used, the comment below gets replaced when the buffer is dumped
+        $str .= '<!-- MINIFY REPLACE -->';
+
         if ($config['meta']['ie_compat']) {
             // some IE 6 support
             $str .= "\t" . '<!--[if IE 6]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/csshover.htc); }</style><![endif]-->' . "\n";
@@ -314,9 +317,6 @@ class expTheme
             // canvas support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
         }
-
-        // when minification is used, the comment below gets replaced when the buffer is dumped
-        $str .= '<!-- MINIFY REPLACE -->';
 
         return $str;
     }
