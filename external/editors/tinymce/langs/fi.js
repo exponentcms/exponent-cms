@@ -2,7 +2,7 @@ tinymce.addI18n('fi',{
 "Cut": "Leikkaa",
 "Heading 5": "Otsikko 5",
 "Header 2": "Otsikko 2",
-"Your browser doesn't support direct access to the clipboard. Please use the Ctrl+X\/C\/V keyboard shortcuts instead.": "Selaimesi ei tue leikekirjan suoraa k\u00e4ytt\u00e4mist\u00e4. Ole hyv\u00e4 ja k\u00e4yt\u00e4 n\u00e4pp\u00e4imist\u00f6n Ctrl+X ja Ctrl+V n\u00e4pp\u00e4inyhdistelmi\u00e4.",
+"Your browser doesn't support direct access to the clipboard. Please use the Ctrl+X\/C\/V keyboard shortcuts instead.": "Selaimesi ei tue leikep\u00f6yd\u00e4n suoraa k\u00e4ytt\u00e4mist\u00e4. Ole hyv\u00e4 ja k\u00e4yt\u00e4 n\u00e4pp\u00e4imist\u00f6n Ctrl+X\/C\/V n\u00e4pp\u00e4inyhdistelmi\u00e4.",
 "Heading 4": "Otsikko 4",
 "Div": "Div",
 "Heading 2": "Otsikko 2",
