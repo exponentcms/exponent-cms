@@ -31,7 +31,10 @@ function adminer_object() {
         new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
         new AdminerDumpZip,  // adds zip option to export
-        new AdminerEditCalendar,  // add calendar popup for date/time fileds
+        new AdminerEditCalendar(
+            "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n",
+            JQUERY_RELATIVE."js/ui/i18n/datepicker-%s.js"
+        ),  // add calendar popup for date/time fileds
         new AdminerEnumOption,  // turns enum fields into select input
         new AdminerTablesFilter,  // adds filter input to tables list
         new AdminerEditTextSerializedarea,  // displays unserialized data as a tooltip
@@ -40,11 +43,22 @@ function adminer_object() {
 //        new AdminerForeignSystem,
         new ConventionForeignKeys,
         new AdminerVersionNoverify,  // disable adminer version check/notifiy
+
+//        new AdminerTheme(),
+//        new AdminerSimpleMenu(),
+//        new AdminerJsonPreview(),
     );
     if (SITE_WYSIWYG_EDITOR == 'tinymce') {
-        $plugins[] = new AdminerTinymce;  // inserts wysiwyg editor for 'body' fields
+        $plugins[] = new AdminerTinymce(
+            PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
+        );  // inserts wysiwyg editor for 'body' fields
     } else {
-        $plugins[] = new AdminerCKeditor;  // inserts wysiwyg editor for 'body' fields
+        $plugins[] = new AdminerCKeditor(
+            array(
+                PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
+            ),
+            "options"
+        );  // inserts wysiwyg editor for 'body' fields
     }
     $plugins[] = new AdminerEditTextarea;  // adjusts box size smaller, MUST be last in chain for textarea widgets
 

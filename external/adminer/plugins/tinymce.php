@@ -29,8 +29,7 @@ class AdminerTinymce {
 	/**
 	* @param string
 	*/
-	function AdminerTinymce($path = null) {
-        $path = PATH_RELATIVE."external/editors/tinymce/tinymce.min.js";
+	function AdminerTinymce($path = "tiny_mce/tiny_mce.js") {
 		$this->path = $path;
 	}
 	
@@ -80,7 +79,6 @@ tinyMCE.init({
 	}
 	
 	function editInput($table, $field, $attrs, $value) {
-//		if (ereg("text", $field["type"]) && ereg("_html", $field["field"])) {
         if (preg_match("~text~", $field["type"]) && preg_match("~body~", $field["field"])) {
 			return "<textarea$attrs id='fields-" . h($field["field"]) . "' rows='6' cols='50'>" . h($value) . "</textarea><script type='text/javascript'>
 tinyMCE.remove(tinyMCE.get('fields-" . js_escape($field["field"]) . "') || { });

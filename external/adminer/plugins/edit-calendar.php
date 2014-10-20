@@ -31,9 +31,7 @@ class AdminerEditCalendar {
 	* @param string text to append before first calendar usage
 	* @param string path to language file, %s stands for language code
 	*/
-	function AdminerEditCalendar($prepend = null, $langPath = null) {
-        $prepend = "<script type='text/javascript' src='".JQUERY_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERYUI_SCRIPT."'></script>\n<script type='text/javascript' src='".JQUERY_RELATIVE."addons/js/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='".JQUERYUI_CSS."'>\n<link rel='stylesheet' type='text/css' href='".JQUERY_RELATIVE."addons/css/jquery-ui-timepicker-addon.css'>\n";
-        $langPath = JQUERY_RELATIVE."js/ui/i18n/jquery.ui.datepicker-%s.js";
+    function AdminerEditCalendar($prepend = "<script type='text/javascript' src='jquery-ui/jquery.js'></script>\n<script type='text/javascript' src='jquery-ui/jquery-ui.js'></script>\n<script type='text/javascript' src='jquery-ui/jquery-ui-timepicker-addon.js'></script>\n<link rel='stylesheet' type='text/css' href='jquery-ui/jquery-ui.css'>\n", $langPath = "jquery-ui/i18n/jquery.ui.datepicker-%s.js") {
         $this->prepend = $prepend;
 		$this->langPath = $langPath;
 	}
@@ -51,7 +49,6 @@ class AdminerEditCalendar {
 	}
 
 	function editInput($table, $field, $attrs, $value) {
-//		if (ereg("date|time", $field["type"])) {
 		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
 			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
 			    beforeShow: function(input,inst){

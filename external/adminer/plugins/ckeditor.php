@@ -31,7 +31,7 @@ class AdminerCKeditor {
 	* @param string in format "skin: 'custom', preInit: function () { }"
 	*/
 	function AdminerCKeditor($scripts = array(null), $options = "") {
-		$this->scripts = array(PATH_RELATIVE."external/editors/ckeditor/ckeditor.js");
+		$this->scripts = $scripts;
 		$this->options = $options;
 	}
 	
