@@ -22,7 +22,7 @@
 
 {/css}
 
-<div class="module flowplayer mediaplayer showall">
+<div class="module flowplayer mediaplayer showall row">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 	{permissions}
 		<div class="module-actions">
