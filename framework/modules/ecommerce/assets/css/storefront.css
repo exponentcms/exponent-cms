@@ -205,6 +205,7 @@ em.unavailable {
 	-webkit-box-shadow    : 0 0 2px rgba(0, 0, 0, .5) inset;
 	text-shadow           : 1px 1px 1px #565;
 	width                 : 20px;
+	height                : 22px;
 	margin-right          : 4px;
 }
 
