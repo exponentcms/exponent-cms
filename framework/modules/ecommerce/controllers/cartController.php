@@ -415,7 +415,7 @@ class cartController extends expController {
         }
 
         // we need to get the current shipping method rates
-        $shipping->getRates();
+        $shipping->getRates();  //FIXME this has a global $order
 
         if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
@@ -1040,7 +1040,7 @@ class cartController extends expController {
         }
 
         //this should really be reworked, as it shoudn't redirect directly and not return
-        $validateDiscountMessage = $discount->validateDiscount();
+        $validateDiscountMessage = $discount->validateDiscount();  //FIXME this has a global $order
         if ($validateDiscountMessage == "") {
             //if all good, add to cart, otherwise it will have redirected
             $od               = new order_discounts();

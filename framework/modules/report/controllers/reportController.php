@@ -811,7 +811,7 @@ class reportController extends expController {
     }
 
     function show_payment_summary() {
-        global $order, $db;
+        global $db;
 
         $payments = billingmethod::$payment_types;
 

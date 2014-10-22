@@ -55,7 +55,7 @@ if ($db->selectValue('modstate', 'active', 'module="store"') ||
   $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
   $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM) {
     define('ECOM',1);
-    $order = order::getUserCart();
+    $order = order::getUserCart();  // set global store $order
     // global store config
     // We're forcing the location. Global store setting will always have this loc
 //    $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));

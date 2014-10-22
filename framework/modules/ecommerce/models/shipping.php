@@ -32,7 +32,7 @@ class shipping extends expRecord {
 	public $forced_shipping = false;  //FIXME we don't use this in shipping, only order?
 	
 	public function __construct() {
-        global $order, $user;
+        global $order, $user; //FIXME we do NOT want the global $order
 
         if (empty($order->id)) return false;
         
@@ -103,7 +103,7 @@ class shipping extends expRecord {
     }
 	
 	public function getRates() {
-	    global $order;
+	    global $order; //FIXME we do NOT want the global order
         
 	    if (!empty($this->calculator->id) && (!empty($this->shippingmethod->addresses_id) || !$this->calculator->addressRequired())) {	
 		    $this->pricelist = $this->calculator->getRates($order);

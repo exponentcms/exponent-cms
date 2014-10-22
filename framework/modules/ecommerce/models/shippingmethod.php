@@ -23,12 +23,12 @@
 class shippingmethod extends expRecord {
 	public $table = 'shippingmethods';
 
-	public static function getCurrentShippingMethod() {
-        global $order;
-
-        $smid = empty($order->orderitem[0]->shippingmethods_id) ? null : $order->orderitem[0]->shippingmethods_id;
-        return new shippingmethod($smid);
-    }
+//	public static function getCurrentShippingMethod() {
+//        global $order;
+//
+//        $smid = empty($order->orderitem[0]->shippingmethods_id) ? null : $order->orderitem[0]->shippingmethods_id;
+//        return new shippingmethod($smid);
+//    }
 
 	public function setAddress($address) {
 		$address = is_object($address) ? $address : new address($address);
@@ -38,11 +38,11 @@ class shippingmethod extends expRecord {
 	}	
 	
 	function afterSave() {
-		$this->updateOrderitems($this->id);
+		$this->updateOrderitems($this->id);  //FIXME this has a global $order
 	}
 	
 	function updateOrderitems() {
-		global $order;
+		global $order; //FIXME we do NOT want the global $order
 
 		//FIXME update the shippingmethod id for each orderitem..again, this is only here until we implement split shipping.
         // once we have that we'll need to figure out which orderitems get which shippingmethod id.     

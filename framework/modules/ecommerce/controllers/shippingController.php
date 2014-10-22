@@ -50,7 +50,7 @@ class shippingController extends expController {
 	}
 
 	function selectShippingOption() {
-	    global $order;
+	    global $order; //FIXME we do NOT want the global $order
 
 		$shipping = new shipping();
 		$id = $this->params['option'];
@@ -87,7 +87,7 @@ class shippingController extends expController {
 	
 	function renderOptions() {
 //	    global $db, $order;
-        global $order;
+        global $order; //FIXME we do NOT want the global $order
 
 	    $shipping = new shipping();
         $shipping->pricelist = $shipping->calculator->getRates($order);
