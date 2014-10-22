@@ -15,6 +15,9 @@
 
 {uniqueid prepend="mediaplayer" assign="name"}
 
+{css unique="player" link="`$asset_path`css/player.css"}
+
+{/css}
 {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
 
 {/css}

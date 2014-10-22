@@ -16,7 +16,7 @@
     {pagelinks paginate=$page top=1}
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item key=key}
-        <div class="grid-unit">
+        <div class="yui3-u-1-3">
             {$filetype=$item->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
             <div class="item">
                 <{$config.item_level|default:'h2'} class="media-title">{$item->title}</{$config.item_level|default:'h2'}>
@@ -39,7 +39,7 @@
                     </div>
                 {/permissions}
                 {if $config.use_lightbox}
-                    {img file_id=$item->expFile.splash[0]->id class="openColorbox" h=$config.thumb_width|default:"64" w=$config.thumb_height|default:"64" title='Click to view'|gettext}
+                    {img file_id=$item->expFile.splash[0]->id class="openColorbox" h=$config.thumb_width|default:"64" w=$config.thumb_height|default:"64" title='Click to view video'|gettext}
                 {/if}
                 <div class="video media"{if $config.use_lightbox} style='display:none'{/if}>
                     {if $filetype == "mp3"}

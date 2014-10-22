@@ -15,6 +15,9 @@
 
 {uniqueid prepend="mediaplayer" assign="name"}
 
+{css unique="player" link="`$asset_path`css/player.css"}
+
+{/css}
 {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
 
 {/css}
@@ -37,7 +40,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div id="{$name}list">
+    <div id="{$name}list" class="yui3-g">
         {exp_include file='medialist.tpl'}
     </div>
 </div>

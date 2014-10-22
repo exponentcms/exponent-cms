@@ -39,7 +39,7 @@
                     </div>
                 {/permissions}
                 {if $config.use_lightbox}
-                    {img file_id=$item->expFile.splash[0]->id class="openColorbox" h=$config.thumb_width|default:"64" w=$config.thumb_height|default:"64" title='Click to view'|gettext}
+                    {img file_id=$item->expFile.splash[0]->id class="openColorbox" h=$config.thumb_width|default:"64" w=$config.thumb_height|default:"64" title='Click to view video'|gettext}
                 {/if}
                 <div class="video media"{if $config.use_lightbox} style='display:none'{/if}>
                     {if $filetype == "mp3"}
