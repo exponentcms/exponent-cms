@@ -62,7 +62,10 @@ class taxclass extends expRecord {
             $sql  = "SELECT tz.name, tr.rate, tr.shipping_taxed, tr.origin_tax FROM ".DB_TABLE_PREFIX."_tax_geo as tg ";
             $sql .= "JOIN ".DB_TABLE_PREFIX."_tax_zone as tz ON tg.zone_id=tz.id ";
             $sql .= "JOIN ".DB_TABLE_PREFIX."_tax_rate as tr ON tr.zone_id=tg.zone_id ";
-            $sql .= "WHERE tr.class_id=".$item->product->tax_class_id." AND (tg.country_id=".intval($global_config->config['store']['country'])." AND tg.region_id=".intval($global_config->config['store']['state'])." AND tr.origin_tax=1 AND inactive!=1) OR (tg.country_id=".intval($item->shippingmethod->country)." AND tg.region_id=".intval($item->shippingmethod->state)." AND inactive!=1) ";
+            $sql .= "WHERE tr.class_id=".$item->product->tax_class_id;
+            if (!empty($global_config->config['store']))
+                $sql .= " AND (tg.country_id=".intval($global_config->config['store']['country']) . " AND tg.region_id=".intval($global_config->config['store']['state']);
+            $sql .= " AND tr.origin_tax=1 AND inactive!=1) OR (tg.country_id=".intval($item->shippingmethod->country)." AND tg.region_id=".intval($item->shippingmethod->state)." AND inactive!=1) ";
             $sql .= "ORDER BY origin_tax DESC";
             $zone = $db->selectObjectBySql($sql);
             if (!empty($zone)) $zones[$zone->name] = $zone;            
