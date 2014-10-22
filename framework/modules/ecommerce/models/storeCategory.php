@@ -51,13 +51,12 @@ class storeCategory extends expNestedNode {
 		}
 		
 		for($i=0; $i<count($children); $i++) {
-			$sql  = 'SELECT count(DISTINCT p.id) as count FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ';
+			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ';
           	$sql .= 'ON p.id = sc.product_id WHERE sc.storecategories_id IN (';
           	$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
 
-            //TODO: Category count update
-          	//$count = $db->selectObjectBySql($sql);  //FIXME we need a count
-          	$children[$i]->product_count = 0;//$count->count;
+          	$count = $db->selectObjectBySql($sql);
+          	$children[$i]->product_count = $count->c;
 		}
 
 		return $children;

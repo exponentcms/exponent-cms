@@ -362,7 +362,7 @@ class blogController extends expController {
 //            }
 
             if (!empty($str)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;
@@ -382,7 +382,7 @@ class blogController extends expController {
 //
 //        // figure out what metadata to pass back based on the action
 //        // we are in.
-//        $action = $_REQUEST['action'];
+//        $action = $router->params['action'];
 //        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'');
 //        $modelname = $this->basemodel_name;
 //        switch($action) {

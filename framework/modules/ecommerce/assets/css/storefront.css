@@ -27,6 +27,7 @@
 .related-products .product {
 	margin-right : 4%;
 	text-align   : center;
+	position: relative;
 }
 
 .store.showall .ipr1 .product,
@@ -141,6 +142,23 @@ em.unavailable {
 
 .store.showall .category-row .cat-img-link {
 	margin-right : 10px;
+}
+
+.store.showall .category-row a.cat-img-link h3 {
+	display: inline;
+}
+
+.store.showall .product .ecom-hover {
+    position:absolute;
+	width: 100%;
+    left:auto;
+    top:50%;
+    z-index:5;
+	display: none;
+}
+
+.store.showall .product:hover .ecom-hover {
+	display: block;
 }
 
 /****************  show view  ***********************/

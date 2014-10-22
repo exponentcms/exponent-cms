@@ -187,8 +187,10 @@ class storeController extends expController {
             $count_sql = $count_sql_start . $sql;
             $sql = $sql_start . $sql;
 
-            $order = 'title'; // $order = 'sc.rank'; //$this->config['orderby'];
-            $dir = 'ASC'; //$this->config['orderby_dir'];
+//            $order = 'title'; // $order = 'sc.rank'; //$this->config['orderby'];
+//            $dir = 'ASC'; //$this->config['orderby_dir'];
+            $order = !empty($this->params['order']) ? $this->params['order'] : 'title';
+            $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
             //eDebug($this->config);
         } else { // this is an event category
             $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
@@ -204,8 +206,8 @@ class storeController extends expController {
             $count_sql = $count_sql_start . $sql;
             $sql = $sql_start . $sql;
 
-            $order = 'event_starttime';
-            $dir = 'ASC';
+            $order = !empty($this->params['order']) ? $this->params['order'] : 'event_starttime';
+            $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
         }
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
@@ -908,9 +910,9 @@ class storeController extends expController {
 //        global $db;
 
         expHistory::set('viewable', $this->params);
-        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
+        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
-        $categories = $category->getEcomSubcategories();  //FIXME returns a product count of 0
+        $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();
         assign_to_template(array(
             'categories' => $categories,
@@ -1457,30 +1459,32 @@ class storeController extends expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-        $action = $_REQUEST['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $action = $router->params['action'];
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
         switch ($action) {
             case 'showall': //category page
                 $cat = $this->category;
                 if (!empty($cat)) {
-                    $metainfo['title'] = empty($cat->meta_title) ? $cat->title : $cat->meta_title;
+                    $metainfo['title'] = empty($cat->meta_title) ? $cat->title . ' ' . gt('Products') . ' - ' . $storename : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
                     $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
-                    $metainfo['noindex'] = empty($cat->meta_noindex) ? '' : strip_tags($cat->meta_noindex);
-                    $metainfo['nofollow'] = empty($cat->meta_nofollow) ? '' : strip_tags($cat->meta_nofollow);
+                    $metainfo['noindex'] = empty($cat->meta_noindex) ? false : $cat->meta_noindex;
+                    $metainfo['nofollow'] = empty($cat->meta_nofollow) ? false : $cat->meta_nofollow;
                 }
                 break;
             case 'show':
             case 'showByTitle':
-                $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']) : intval($_REQUEST['id']));
+                $prod = new product(isset($router->params['title']) ? expString::sanitize($router->params['title']) : intval($router->params['id']));
                 if (!empty($prod)) {
-                    $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
+                    $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
                     $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
-                    $metainfo['noindex'] = empty($prod->meta_noindex) ? '' : strip_tags($prod->meta_noindex);
-                    $metainfo['nofollow'] = empty($prod->meta_nofollow) ? '' : strip_tags($prod->meta_nofollow);
+                    $metainfo['noindex'] = empty($prod->meta_noindex) ? false : $prod->meta_noindex;
+                    $metainfo['nofollow'] = empty($prod->meta_nofollow) ? false : $prod->meta_nofollow;
                     if (!empty($prod->expFile['mainimage'][0]) && file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
                         $metainfo['rich'] = '<!--
         <PageMap>
@@ -1495,18 +1499,18 @@ class storeController extends expController {
                     break;
                 }
             default:
-                $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                $metainfo['title'] = gt("Shopping") . " - " . $storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }
 
         // Remove any quotes if there are any.
-        $metainfo['title'] = expString::parseAndTrim($metainfo['title'], true);
-        $metainfo['description'] = expString::parseAndTrim($metainfo['description'], true);
-        $metainfo['keywords'] = expString::parseAndTrim($metainfo['keywords'], true);
-        $metainfo['canonical'] = expString::parseAndTrim($metainfo['canonical'], true);
-        $metainfo['noindex'] = expString::parseAndTrim($metainfo['noindex'], true);
-        $metainfo['nofollow'] = expString::parseAndTrim($metainfo['nofollow'], true);
+//        $metainfo['title'] = expString::parseAndTrim($metainfo['title'], true);
+//        $metainfo['description'] = expString::parseAndTrim($metainfo['description'], true);
+//        $metainfo['keywords'] = expString::parseAndTrim($metainfo['keywords'], true);
+//        $metainfo['canonical'] = expString::parseAndTrim($metainfo['canonical'], true);
+//        $metainfo['noindex'] = expString::parseAndTrim($metainfo['noindex'], true);
+//        $metainfo['nofollow'] = expString::parseAndTrim($metainfo['nofollow'], true);
 
         return $metainfo;
     }

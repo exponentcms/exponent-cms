@@ -1192,6 +1192,32 @@ class cartController extends expController {
         parent::saveconfig();
     }
 
+    /**
+     * get the metainfo for this module
+     *
+     * @return array
+     */
+    function metainfo() {
+        global $router;
+
+        if (empty($router->params['action'])) return false;
+
+        // figure out what metadata to pass back based on the action we are in.
+        $action = $router->params['action'];
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
+        switch ($action) {
+            default:
+                $metainfo['title'] = gt("Shopping Cart") . " - " . $storename;
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
+                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+        }
+
+        return $metainfo;
+    }
+
 }
 
 ?>

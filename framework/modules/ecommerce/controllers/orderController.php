@@ -877,26 +877,34 @@ exit();
 
         // figure out what metadata to pass back based on the action 
         // we are in.
-//        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        if (!empty($router->params['id'])) {
+            $order    = new order($router->params['id']);
+        } else {
+            $order    = '';
+        }
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
         switch ($action) {
             case 'showall':
-                $metainfo['title']       = gt("Managing Invoices") . ' - ' . SITE_TITLE;
+                $metainfo['title']       = gt("Managing Orders") . ' - ' . $storename;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
+            case 'myOrder':
             case 'show':
             case 'showByTitle':
-                $metainfo['title']       = gt('Viewing Invoice') . ' - ' . SITE_TITLE;
-                $metainfo['keywords']    = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords; //FIXME $object doesn't exist
-                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object doesn't exist
-                $metainfo['canonical'] = empty($object->canonical) ? '' : $object->canonical; //FIXME $object doesn't exist
-                $metainfo['noindex'] = empty($object->meta_noindex) ? '' : $object->meta_noindex; //FIXME $object doesn't exist
-                $metainfo['nofollow'] = empty($object->meta_nofollow) ? '' : $object->meta_nofollow; //FIXME $object doesn't exist
+                $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
+                $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
+                $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
+                $metainfo['canonical'] = empty($order->canonical) ? '' : $order->canonical;
+                $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
+                $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;
+            case 'ordersbyuser':
             default:
-                $metainfo['title']       = gt("Order Management") . " - " . SITE_TITLE;
+                $metainfo['title']       = gt("Order Management") . " - " . $storename;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }

@@ -1185,7 +1185,7 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {

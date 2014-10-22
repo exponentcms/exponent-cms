@@ -384,6 +384,10 @@ class expTheme
             $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
+        // clean up meta tag output
+        foreach ($metainfo as $key=>$value) {
+            $metainfo[$key] = expString::parseAndTrim($value, true);
+        }
         return $metainfo;
     }
 

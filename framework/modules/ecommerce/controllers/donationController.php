@@ -59,18 +59,19 @@ class donationController extends expController {
         if (empty($router->params['action'])) return false;
         
         // figure out what metadata to pass back based on the action we are in.
-//        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
         switch($action) {
             case 'showall':
             case 'show':
-                $metainfo['title'] = gt('Online Donations') . ' - ' . SITE_TITLE;
+                $metainfo['title'] = gt('Online Donations') . ' - ' . $storename;
                 $metainfo['keywords'] = gt('donate online');
                 $metainfo['description'] = gt("Make a donation");
             break;
             default:
-                $metainfo['title'] = $this->displayname()." - ".SITE_TITLE;
+                $metainfo['title'] = $this->displayname()." - ".$storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }

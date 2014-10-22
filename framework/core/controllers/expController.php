@@ -1270,9 +1270,8 @@ abstract class expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-//        $action = $_REQUEST['action'];
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
         $modelname = $this->basemodel_name;
 
         switch ($action) {
@@ -1330,21 +1329,6 @@ abstract class expController {
         return $metainfo;
     }
 
-    // function showall_by_tags_meta($request) {
-    //     // look up the record.
-    //     if (isset($request['tag'])) {
-    //         $object = new expTag(expString::sanitize($request['tag']));
-    //         // set the meta info
-    //         if (!empty($object)) {
-    //             $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
-    //             $metainfo['title'] = gt('Showing all Items tagged with') . " \"" . $object->title . "\"";
-    //             $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-    //             $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-    //             return $metainfo;
-    //         }
-    //     }
-    // }
-
     /**
      * Returns rich snippet PageMap meta data
      *
@@ -1362,7 +1346,7 @@ abstract class expController {
 
         // look up the record.
         if (isset($request['tag'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $tag = $request['tag'];
             // set the meta info
             $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('tagged as') . ' ' . $tag;
@@ -1381,7 +1365,7 @@ abstract class expController {
 
         // look up the record.
         if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info

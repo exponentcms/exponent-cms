@@ -39,7 +39,7 @@
     {$myloc=serialize($__loc)}
 
     {* current category image *}
-    {if $current_category->expFile[0]->id && $config.banner_width}
+    {if $current_category->expFile[0]->id}
         <div class="category-banner">
             {img file_id=$current_category->expFile[0]->id w=522 h=100}
         </div>
@@ -100,7 +100,7 @@
                         </div>
                         {/permissions}
 
-                        <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
+                        <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link" title="{$cat->body|summarize:"html":"para"}">
                             {if $cat->expFile[0]->id}
                                 {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
                             {elseif $page->records[0]->expFile.mainimage[0]->id}
@@ -108,14 +108,17 @@
                             {else}
                                 {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image" alt="'No Image Available'|gettext"}
                             {/if}
-                        </a>
+                        {*</a>*}
 
                         <h3>
-                            <a href="{link controller=store action=showall title=$cat->sef_url}">
+                            {*<a href="{link controller=store action=showall title=$cat->sef_url}">*}
                                 {$cat->title}
-                            </a>
+                            {*</a>*}
                         </h3>
-
+                        {*<div class="body-copy">*}
+                            {*{$cat->body}*}
+                        {*</div>*}
+                        </a>
                     </div>
 
                     {if $smarty.foreach.cats.last || $ipcr%2==0}
@@ -135,19 +138,17 @@
         </div>
     {else}
         <{$config.item_level|default:'h2'}>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</{$config.item_level|default:'h2'}>
-        {pagelinks paginate=$page top=1}
-        {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
-
-        {*script unique="sort-submit"}
+        <div class="row"><div class="col-sm-7 col-sm-push-5"><div class="row">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div></div>
+        {script unique="sort-submit"}
         {literal}
-        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            Y.all('select[name="sortme"]').on('change',function(e){
-                window.location = e.target.get('value');
+            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                Y.all('select[name="sortme"]').on('change',function(e){
+                    window.location = e.target.get('value');
+                });
             });
-
-        });
         {/literal}
-        {/script*}
+        {/script}
+        {pagelinks paginate=$page top=1}
         <div class="products ipr{$config.images_per_row|default:3} listing-row">
             {counter assign="ipr" name="ipr" start=1}
             {foreach from=$page->records item=listing name=listings}
