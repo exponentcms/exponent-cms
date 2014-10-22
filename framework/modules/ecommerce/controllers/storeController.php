@@ -115,7 +115,7 @@ class storeController extends expController {
         $this->grabConfig();
 
 //        if (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && $router->url_parts[1] == "showall")) {
-        if (!empty($params['action']) && ($params['controller'] == "store" && $params['action'] == "showall")) {
+        if (!empty($params['action']) && ($params['controller'] == "store" && $params['action'] == "showall") ) {
 //            if (isset($router->url_parts[array_search('title', $router->url_parts) + 1]) && is_string($router->url_parts[array_search('title', $router->url_parts) + 1])) {
             if (isset($params['title']) && is_string($params['title'])) {
 //                $default_id = $db->selectValue('storeCategories', 'id', "sef_url='" . $router->url_parts[array_search('title', $router->url_parts) + 1] . "'");
@@ -129,7 +129,7 @@ class storeController extends expController {
                 $default_id = $this->config['category'];
             }
 //        } elseif (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && ($router->url_parts[1] == "show" || $router->url_parts[1] == "showByTitle"))) {
-        } elseif (!empty($params['action']) && ($params['controller'] == "store" && ($params['action'] == "show" || $params['action'] == "showByTitle"))) {
+        } elseif (!empty($params['action']) && ($params['controller'] == "store" && ($params['action'] == "show" || $params['action'] == "showByTitle" || $params['action'] == "categoryBreadcrumb"))) {
 //            if (isset($router->url_parts[array_search('id', $router->url_parts) + 1]) && ($router->url_parts[array_search('id', $router->url_parts) + 1] != 0)) {
             if (!empty($params['id'])) {
 //                $default_id = $db->selectValue('product_storeCategories', 'storecategories_id', "product_id='" . $router->url_parts[array_search('id', $router->url_parts) + 1] . "'");
@@ -261,6 +261,7 @@ class storeController extends expController {
             'current_category' => $this->category,
             'rerankSQL'        => $rerankSQL
         ));
+        $this->categoryBreadcrumb();
     }
 
     function grabConfig($category = null) {
@@ -839,6 +840,7 @@ class storeController extends expController {
             'product'       => $product_type,
             'last_category' => !empty($order->lastcat) ? $order->lastcat : null,
         ));
+        $this->categoryBreadcrumb();
     }
 
     function showByTitle() {
