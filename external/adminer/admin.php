@@ -27,6 +27,9 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
+        new AdminerTheme(),
+//        new AdminerSimpleMenu(),
+        new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
         new AdminerDumpBz2,  // adds bz2 option to export
 //        new AdminerDumpDate,
@@ -44,9 +47,6 @@ function adminer_object() {
         new ConventionForeignKeys,
         new AdminerVersionNoverify,  // disable adminer version check/notifiy
 
-//        new AdminerTheme(),
-//        new AdminerSimpleMenu(),
-//        new AdminerJsonPreview(),
     );
     if (SITE_WYSIWYG_EDITOR == 'tinymce') {
         $plugins[] = new AdminerTinymce(
