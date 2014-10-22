@@ -144,7 +144,7 @@ class user extends expRecord {
      * @return bool
      */
     public function isSystemAdmin() {
-        return $this->is_system_admin;
+        return $this->is_system_user;
     }
 
     /**
