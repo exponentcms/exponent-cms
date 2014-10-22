@@ -24,9 +24,9 @@ Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.2.0+4,bootswatch.com/,3.2.0+4,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.2.0,fortawesome.github.com/Font-Awesome,4.2.0,
-Adminer,4.1.0,www.adminer.org,4.1.0,
+Adminer,4.1.0,www.adminer.org,4.1.0,we add some system user checks in design.inc
 SimpleAjaxUploader,1.10.1-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.10.1,also converted to yui module
-normalize.css,3.0.1,necolas.github.com/normalize.css/,3.0.1,auto included w/ bootstrap 3
+normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
 MediaElement.js,2.15.1,mediaelementjs.com/,2.15.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.11,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
@@ -42,7 +42,7 @@ jQuery1,1.11.1,jquery.com,1.11.1,
 jQuery,2.1.1,jquery.com,2.1.1,
 jQueryUI,1.11.2,jqueryui.com,1.11.2,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.13.0exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
+validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.5.0,http://trentrichardson.com/examples/timepicker/,1.5.0,used by adminer
@@ -60,8 +60,8 @@ DateTimePicker,2.3.7exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.7,added 
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.2,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.2,
 Sortable,0.5.2,https://github.com/RubaXa/Sortable,0.5.2,
-jstree,3.0.4,https://github.com/vakata/jstree,3.0.4,added nav menu icons to stylesheet
-bootstrap3-dialog,1.33.4,https://github.com/nakupanda/bootstrap3-dialog,1.33.4,
+jstree,3.0.6,https://github.com/vakata/jstree,3.0.6,added nav menu icons to stylesheet
+bootstrap3-dialog,1.33.5,https://github.com/nakupanda/bootstrap3-dialog,1.33.5,
 impromptu,5.2.5,http://trentrichardson.com/Impromptu,5.2.5,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.4.2,https://github.com/timschlechter/bootstrap-tagsinput,0.4.2,

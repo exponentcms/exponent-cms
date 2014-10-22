@@ -2,13 +2,13 @@
 
 /* ================================================
  * Make use of Bootstrap's modal more monkey-friendly.
- * 
+ *
  * For Bootstrap 3.
- * 
+ *
  * javanoob@hotmail.com
- * 
+ *
  * https://github.com/nakupanda/bootstrap3-dialog
- * 
+ *
  * Licensed under The MIT License.
  * ================================================ */
 (function(root, factory) {
@@ -74,6 +74,8 @@
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_SUCCESS] = 'Success';
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING] = 'Warning';
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_DANGER] = 'Danger';
+    BootstrapDialog.DEFAULT_TEXTS['OK'] = 'OK';
+    BootstrapDialog.DEFAULT_TEXTS['CANCEL'] = 'Cancel';
 
     BootstrapDialog.SIZE_NORMAL = 'size-normal';
     BootstrapDialog.SIZE_LARGE = 'size-large';
@@ -103,7 +105,8 @@
         spinicon: BootstrapDialog.ICON_SPINNER,
         autodestroy: true,
         draggable: false,
-        animate: true
+        animate: true,
+        description: ''
     };
 
     /**
@@ -187,8 +190,8 @@
             return this;
         },
         createModal: function() {
-            var $modal = $('<div class="modal" tabindex="-1"></div>');
-            $modal.prop('id', this.getId());
+            var $modal = $('<div class="modal" tabindex="-1" role="dialog" aria-hidden="true"></div>');
+            $modal.prop('id', this.getId()).attr('aria-labelledby', this.getId() + '_title');
 
             return $modal;
         },
@@ -342,7 +345,7 @@
         updateTitle: function() {
             if (this.isRealized()) {
                 var title = this.getTitle() !== null ? this.createDynamicContent(this.getTitle()) : this.getDefaultText();
-                this.getModalHeader().find('.' + this.getNamespace('title')).html('').append(title);
+                this.getModalHeader().find('.' + this.getNamespace('title')).html('').append(title).prop('id', this.getId() + '_title');
             }
 
             return this;
@@ -436,9 +439,9 @@
         },
         /**
          * If there is id provided for a button option, it will be in dialog.indexedButtons list.
-         * 
+         *
          * In that case you can use dialog.getButton(id) to find the button.
-         * 
+         *
          * @param {type} id
          * @returns {undefined}
          */
@@ -472,6 +475,14 @@
         },
         setAutodestroy: function(autodestroy) {
             this.options.autodestroy = autodestroy;
+        },
+        getDescription: function() {
+            return this.options.description;
+        },
+        setDescription: function(description) {
+            this.options.description = description;
+
+            return this;
         },
         getDefaultText: function() {
             return BootstrapDialog.DEFAULT_TEXTS[this.getType()];
@@ -593,9 +604,9 @@
         },
         /**
          * Dynamically add extra functions to $button
-         * 
+         *
          * Using '$this' to reference 'this' is just for better readability.
-         * 
+         *
          * @param {type} $button
          * @returns {_L13.BootstrapDialog.prototype}
          */
@@ -667,7 +678,7 @@
         },
         /**
          * Invoke this only after the dialog is realized.
-         * 
+         *
          * @param {type} enable
          * @returns {undefined}
          */
@@ -680,7 +691,7 @@
         },
         /**
          * Invoke this only after the dialog is realized.
-         * 
+         *
          * @returns {undefined}
          */
         updateClosable: function() {
@@ -793,7 +804,7 @@
                 this.getModalHeader().addClass(this.getNamespace('draggable')).on('mousedown', {dialog: this}, function(event) {
                     var dialog = event.data.dialog;
                     dialog.draggableData.isMouseDown = true;
-                    var dialogOffset = dialog.getModalContent().offset();
+                    var dialogOffset = dialog.getModalDialog().offset();
                     dialog.draggableData.mouseOffset = {
                         top: event.clientY - dialogOffset.top,
                         left: event.clientX - dialogOffset.left
@@ -807,7 +818,7 @@
                     if (!dialog.draggableData.isMouseDown) {
                         return;
                     }
-                    dialog.getModalContent().offset({
+                    dialog.getModalDialog().offset({
                         top: event.clientY - dialog.draggableData.mouseOffset.top,
                         left: event.clientX - dialog.draggableData.mouseOffset.left
                     });
@@ -824,12 +835,10 @@
             $.each(BootstrapDialog.dialogs, function(dialogId, dialogInstance) {
                 dialogCount++;
             });
-            if (dialogCount > 1) {
-                var $modal = this.getModal();
-                var $backdrop = $modal.data('bs.modal').$backdrop;
-                $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
-                $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
-            }
+            var $modal = this.getModal();
+            var $backdrop = $modal.data('bs.modal').$backdrop;
+            $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
+            $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
 
             return this;
         },
@@ -838,6 +847,9 @@
             this.getModal().addClass(BootstrapDialog.NAMESPACE)
             .addClass(this.getSize())
             .addClass(this.getCssClass());
+            if(this.getDescription()){
+                this.getModal().attr('aria-describedby', this.getDescription());
+            }
             this.getModalFooter().append(this.createFooterContent());
             this.getModalHeader().append(this.createHeaderContent());
             this.getModalBody().append(this.createBodyContent());
@@ -900,7 +912,7 @@
 
     /**
      * Shortcut function: show
-     * 
+     *
      * @param {type} options
      * @returns the created dialog instance
      */
@@ -910,7 +922,7 @@
 
     /**
      * Alert window
-     * 
+     *
      * @returns the created dialog instance
      */
     BootstrapDialog.alert = function() {
@@ -920,7 +932,7 @@
             title: null,
             message: null,
             closable: true,
-            buttonLabel: 'OK',
+            buttonLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
             callback: null
         };
 
@@ -930,7 +942,7 @@
             options = $.extend(true, defaultOptions, {
                 message: arguments[0],
                 closable: false,
-                buttonLabel: 'OK',
+                buttonLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
                 callback: typeof arguments[1] !== 'undefined' ? arguments[1] : null
             });
         }
@@ -959,7 +971,7 @@
 
     /**
      * Confirm window
-     * 
+     *
      * @param {type} message
      * @param {type} callback
      * @returns the created dialog instance
@@ -973,13 +985,13 @@
                 'callback': callback
             },
             buttons: [{
-                    label: 'Cancel',
+                    label: BootstrapDialog.DEFAULT_TEXTS.CANCEL,
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(false);
                         dialog.close();
                     }
                 }, {
-                    label: 'OK',
+                    label: BootstrapDialog.DEFAULT_TEXTS.OK,
                     cssClass: 'btn-primary',
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(true);
@@ -991,7 +1003,7 @@
 
     /**
      * Warning window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */
@@ -1004,7 +1016,7 @@
 
     /**
      * Danger window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */
@@ -1017,7 +1029,7 @@
 
     /**
      * Success window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */
