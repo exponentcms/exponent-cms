@@ -26,7 +26,7 @@ class motd extends expRecord {
     public $validates = array(
         'presence_of'=>array(
             'body'=>array('message'=>'Message is a required field.'),
-            'month'=>array('message'=>'Month is a required field.'),
+//            'month'=>array('message'=>'Month is a required field.'),
             'day'=>array('message'=>'Day is a required field.'),
         ));
         
