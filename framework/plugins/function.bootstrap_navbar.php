@@ -34,7 +34,7 @@
  * @return string
  */
 function smarty_function_bootstrap_navbar($params,&$smarty) {
-    //load up the img plugin
+    //load the {img} plugin
     foreach ($smarty->smarty->plugins_dir as $value) {
         $filepath = $value ."/function.img.php";
         if (file_exists($filepath)) {

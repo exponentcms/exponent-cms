@@ -141,7 +141,7 @@ function smarty_function_icon($params, &$smarty) {
     if ($button) {
         $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
         $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
-        $class = "awesome " . $btn_size . " " . $btn_color;
+        $class = "awesome " . $btn_size . " " . $btn_color . ' ' . $class;
         unset($params['size']);
         unset($params['color']);
     }

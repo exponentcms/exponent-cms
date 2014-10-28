@@ -65,6 +65,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
         $list = '';
         // does it need a reorder modules menu item?
         if (!empty($params['rank']) && ($module->info['class'] == 'containerController') && expPermissions::check('configure', $cloc)) {
+             //load the {ddrerank} plugin
             foreach ($smarty->smarty->plugins_dir as $value) {
                 $filepath = $value ."/function.ddrerank.php";
                 if (file_exists($filepath)) {
