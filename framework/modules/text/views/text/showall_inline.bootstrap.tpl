@@ -116,6 +116,7 @@
 
     {script unique=$name jquery="jqueryui"}
     {literal}
+    $(document).ready(function(){
         src = '{/literal}{$__loc->src}{literal}';
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -377,6 +378,7 @@
                 });
             }
         });
+    });
     {/literal}
     {/script}
 {/if}
