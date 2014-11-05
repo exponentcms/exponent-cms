@@ -61,8 +61,8 @@ function adminer_object() {
          * @param bool
          * @return string cryptic string which gets combined with password or false in case of an error
          */
-//		function permanentLogin() { // key used for permanent login
-//			return "";
+//		function permanentLogin() { // key used for permanent login 
+//			return ""; 
 //		}
 
         /** Connection parameters

@@ -263,7 +263,7 @@ class expRouter {
         if (!empty($this->sefPath)) {
             $this->url_style = 'sef';
             $this->url_parts = explode('/', $this->sefPath);     
-
+            
             //if (empty($this->url_parts[count($this->url_parts)-1])) array_pop($this->url_parts);
             if ($this->url_parts[count($this->url_parts)-1] == '') array_pop($this->url_parts);
             if (empty($this->url_parts[0])) array_shift($this->url_parts);

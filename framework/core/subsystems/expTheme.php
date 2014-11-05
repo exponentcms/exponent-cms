@@ -29,6 +29,8 @@ class expTheme
     public static function initialize()
     {
         global $auto_dirs2;
+        // Initialize the theme subsystem 1.0 compatibility layer
+//		require_once(BASE.'framework/core/compat/theme.php');
 
         // Initialize the theme subsystem 1.0 compatibility layer if requested
 		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE) require_once(BASE.'framework/core/compat/theme.php');
@@ -290,6 +292,8 @@ class expTheme
         // favicon
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.ico')) {
             $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.ico" type="image/x-icon" ' . XHTML_CLOSING . '>' . "\n";
+        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.png')) {
+            $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.png" ' . XHTML_CLOSING . '>' . "\n";
         }
         // touch icons
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon.png')) {
@@ -382,6 +386,10 @@ class expTheme
             $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
+        // clean up meta tag output
+        foreach ($metainfo as $key=>$value) {
+            $metainfo[$key] = expString::parseAndTrim($value, true);
+        }
         return $metainfo;
     }
 
@@ -1804,13 +1812,6 @@ class expTheme
         return $mobile_browser;
     }
 
-    /**
-     * Warn admin of obsolete theme methods
-     *
-     * @param string $newcall
-     * @param null $controller
-     * @param null $actionview
-     */
     public static function deprecated($newcall = "expTheme::module()", $controller = null, $actionview = null)
     {
         global $user;
