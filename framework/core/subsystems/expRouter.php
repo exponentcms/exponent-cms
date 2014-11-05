@@ -263,7 +263,7 @@ class expRouter {
         if (!empty($this->sefPath)) {
             $this->url_style = 'sef';
             $this->url_parts = explode('/', $this->sefPath);     
-            
+
             //if (empty($this->url_parts[count($this->url_parts)-1])) array_pop($this->url_parts);
             if ($this->url_parts[count($this->url_parts)-1] == '') array_pop($this->url_parts);
             if (empty($this->url_parts[0])) array_shift($this->url_parts);
@@ -501,7 +501,7 @@ class expRouter {
         if ($this->url_style == 'sef') {
             $url .= substr(PATH_RELATIVE,0,-1).$this->sefPath;
         } else {
-            $url .= (empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI'];
+            $url .= expString::sanitize(urldecode((empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI']));
         }
         return $url;
     }
@@ -625,8 +625,8 @@ class expRouter {
                 $params[$name] = $val;
             }
         }
-        //TODO: fully sanitize all params values here for 
-        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
+        //TODO: fully sanitize all params values here for ---We already do this!
+//        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
         return $params;
     }
 
@@ -710,6 +710,8 @@ class expRouter {
             }            
         }
         if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
+        // santize it
+        $this->sefPath = expString::sanitize($this->sefPath);
     }
 
     public function getSection() {

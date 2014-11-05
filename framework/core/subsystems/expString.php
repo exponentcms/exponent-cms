@@ -234,7 +234,7 @@ class expString {
             $data = self::escape($data);
         }
 
-        return $data;
+        return str_replace('\"/>', '', $data);
     }
 
     /**\
