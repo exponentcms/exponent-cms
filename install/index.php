@@ -24,7 +24,7 @@ if (isset($_REQUEST['lang'])) {
 }
 if (isset($_POST['sc']['LANGUAGE'])) {
     if (!defined('LANGUAGE')) {
-        define('LANGUAGE', $_POST['sc']['LANGUAGE']);
+        define('LANGUAGE', expString::sanitize($_POST['sc']['LANGUAGE']));
     }
 }
 
@@ -32,7 +32,7 @@ include_once('../exponent.php');
 
 // Switch to a saved profile as requested
 if (isset($_GET['profile'])) {
-    expSettings::activateProfile($_GET['profile']);
+    expSettings::activateProfile(expString::sanitize($_GET['profile']));
     expTheme::removeSmartyCache(); //FIXME is this still necessary?
     expSession::clearAllUsersSessionCache();
     flash('message', gt("New Configuration Profile Loaded"));
@@ -44,12 +44,13 @@ if (isset($_POST['sc'])) {
     if (file_exists("../framework/conf/config.php")) {
         // Update the config
         foreach ($_POST['sc'] as $key => $value) {
+            $value = expString::sanitize($value);
             expSettings::change($key, $value);
         }
     } else {
         // Initialize /framework/conf/config
         $values = array(
-            'c'          => $_POST['sc'],
+            'c'          => expString::sanitize_array($_POST['sc']),
             'opts'       => array(),
             'configname' => 'Default',
             'activate'   => 1

@@ -112,7 +112,7 @@ class expRecord {
             if (is_numeric($params)) {
                 $this->build($db->selectArray($this->tablename, $this->identifier . '=' . $params, null, $supports_revisions));
                 $identifier = $this->identifier;
-                $params     = array($identifier=> $params); // Convert $params (given number value) into an key/value pair
+                $params     = array($identifier => $params); // Convert $params (given number value) into an key/value pair
             } else {
                 // try to look up by sef_url
                 $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", null, $supports_revisions, $needs_approval);
@@ -532,7 +532,7 @@ class expRecord {
         // run the validation as defined in the models
         if (!isset($this->validates)) return true;
         $messages = array();
-        $post     = empty($_POST) ? array() : $_POST;
+        $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
         foreach ($this->validates as $validation=> $field) {
             foreach ($field as $key=> $value) {
                 $fieldname = is_numeric($key) ? $value : $key;

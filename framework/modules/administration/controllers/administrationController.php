@@ -798,11 +798,11 @@ class administrationController extends expController {
         $emaillist = array_map('trim', $emaillist);
 
         if (empty($emaillist)) {
-            $post     = empty($_POST) ? array() : $_POST;
+            $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
             expValidator::failAndReturnToForm(gt('No Mailing Recipients Selected!'), $post);
         }
         if (empty($this->params['subject']) && empty($this->params['body']) && empty($_FILES['attach']['size'])) {
-            $post     = empty($_POST) ? array() : $_POST;
+            $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
             expValidator::failAndReturnToForm(gt('Nothing to Send!'), $post);
         }
 
@@ -1392,26 +1392,26 @@ class theme {
 	 * and presents the values as text boxes.
 	 */
 	function configureTheme () {
-		if (isset($this->params['sv']) && $_GET['sv'] != '') {
-			if (strtolower($_GET['sv'])=='default') {
-                $_GET['sv']='';
+		if (isset($this->params['sv']) && $this->params['sv'] != '') {
+			if (strtolower($this->params['sv'])=='default') {
+                $this->params['sv']='';
 			}
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config_".$_GET['sv'].".php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config_".$this->params['sv'].".php");
 		} else {
-			$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+			$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
 		}
 		$form = new form();
 		$form->meta('controller','administration');
 		$form->meta('action','update_theme');
-		$form->meta('theme',$_GET['theme']);
-		$form->meta('sv',isset($_GET['sv'])?$_GET['sv']:'');
+		$form->meta('theme',$this->params['theme']);
+		$form->meta('sv',isset($this->params['sv'])?$this->params['sv']:'');
 		foreach ($settings as $setting=>$key) {
 			$form->register($setting,$setting.': ',new textcontrol($key,20));
 		}
 		$form->register(null,'',new htmlcontrol('<br>'));
 		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
 		assign_to_template(array(
-            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
+            'name'=>$this->name().(!empty($this->params['sv'])?' '.$this->params['sv']:''),
             'form_html'=>$form->toHTML()
         ));
 	}

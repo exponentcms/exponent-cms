@@ -49,20 +49,20 @@ if (is_readable(BASE.$page)) {
 	$count_orig = count($source_select);
 	
 	if (isset($_REQUEST['vview'])) {
-		$source_select['view'] = $_REQUEST['vview'];
+		$source_select['view'] = expString::sanitize($_REQUEST['vview']);
 	} else if (!isset($source_select['view'])) {
 		$source_select['view'] = '_sourcePicker';
 	}
 	
 	if (isset($_REQUEST['vmod'])) {
-		$source_select['module'] = $_REQUEST['vmod'];
+		$source_select['module'] = expString::sanitize($_REQUEST['vmod']);
 	} else if (!isset($source_select['module'])) {
 //		$source_select['module'] = 'containermodule';
         $source_select['module'] = 'container';
 	}
 	
 	if (isset($_REQUEST['showmodules'])) {
-		if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = $_REQUEST['showmodules'];
+		if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = expString::sanitize_array($_REQUEST['showmodules']);
 		else if ($_REQUEST['showmodules'] == 'all') $source_select['showmodules'] = null;
 		else $source_select['showmodules'] = explode(',',$_REQUEST['showmodules']);
 	} else if (!isset($source_select['showmodules'])) {
@@ -70,17 +70,18 @@ if (is_readable(BASE.$page)) {
 	}
 	
 	if (isset($_REQUEST['dest'])) {
-		$source_select['dest'] = $_REQUEST['dest'];
+		$source_select['dest'] = expString::sanitize($_REQUEST['dest']);
 	} else if (!isset($source_select['dest'])) {
 		$source_select['dest'] = null;
 	}
 	
-	if (isset($_REQUEST['hideOthers'])) {
-		$source_select['hideOthers'] = $_REQUEST['hideOthers'];
-	} else if (!isset($source_select['hideOthers'])) {
-		$source_select['hideOthers'] = 0;
-	}
-	
+//	if (isset($_REQUEST['hideOthers'])) {
+//		$source_select['hideOthers'] = $_REQUEST['hideOthers'];
+//	} else if (!isset($source_select['hideOthers'])) {
+//		$source_select['hideOthers'] = 0;
+//	}
+    $source_select['hideOthers'] = !empty($_REQUEST['hideOthers']);
+
 	expSession::set('source_select',$source_select);
     if (!defined('PRINTER_FRIENDLY')) define('PRINTER_FRIENDLY','0');
     if (!defined('EXPORT_AS_PDF')) define('EXPORT_AS_PDF','0');

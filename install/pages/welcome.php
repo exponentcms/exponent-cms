@@ -43,7 +43,7 @@ if (!defined('LANGUAGE')) {
     if (empty($_POST['sc']['LANGUAGE'])) {
         $_POST['sc']['LANGUAGE'] = 'English - US';
     }
-    define('LANGUAGE', $_POST['sc']['LANGUAGE']);
+    define('LANGUAGE', expString::sanitize($_POST['sc']['LANGUAGE']));
 }
 ?>
 

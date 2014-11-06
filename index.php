@@ -63,7 +63,7 @@ if ($db->selectValue('modstate', 'active', 'module="store"') ||
     define('ECOM',0);
 }
 
-if (isset($_GET['id']) && !is_numeric($_GET['id'])) $_GET['id'] = intval($_GET['id']);
+if (isset($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 if ($db->havedb) {
     $section = $router->getSection();
     $sectionObj = $router->getSectionObj($section);

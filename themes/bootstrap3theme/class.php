@@ -65,12 +65,12 @@ class bootstrap3theme extends theme {
 			"right"=>'Right',
 		);
 
-   		$settings = expSettings::parseFile(BASE."themes/".$_GET['theme']."/config.php");
+   		$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
         if (empty($settings['SWATCH'])) $settings['SWATCH'] = '';
    		$form = new form();
    		$form->meta('controller','administration');
    		$form->meta('action','update_theme');
-   		$form->meta('theme',$_GET['theme']);
+   		$form->meta('theme',$this->params['theme']);
         $form->meta('BTN_COLOR','btn');
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
         $form->register('enhanced_style',gt('Bootstrap v2 Styles'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE'])?$settings['ENHANCED_STYLE']:0)));
@@ -85,7 +85,7 @@ class bootstrap3theme extends theme {
         $form->register('flyout_sidebar',gt('Enable Sidebar Flyout Container'),new checkboxcontrol((!empty($settings['FLYOUT_SIDEBAR'])?$settings['FLYOUT_SIDEBAR']:0)));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
-            'name'=>$this->name().(!empty($_GET['sv'])?' '.$_GET['sv']:''),
+            'name'=>$this->name().(!empty($this->params['sv'])?' '.$this->params['sv']:''),
             'form_html'=>$form->tohtml()
         ));
    	}

@@ -216,11 +216,15 @@ class expString {
      * @param $data string
      * @return string
      */
-    public static function sanitize($data) {
+    public static function sanitize(&$data) {
         global $db;
 
+        if (empty($data)) return $data;
+
         // remove whitespaces and tags
-        $data = strip_tags(trim($data));
+//        $data = strip_tags(trim($data));
+        // remove whitespaces and script tags
+        $data = self::strip_tags_content(trim($data), '<script>', true);
 
         // apply stripslashes if magic_quotes_gpc is enabled
         if(get_magic_quotes_gpc()) {
@@ -234,8 +238,52 @@ class expString {
             $data = self::escape($data);
         }
 
+        // re-escape newlines
+        $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
+
+        // remove old tag fragments
         $data = str_replace(array('\">','\"/>'), '', $data);
         return $data;
+    }
+
+    /**
+     * Scrub an input array for possible security issues.
+     *
+     * @static
+     * @param $data array
+     * @return string/array
+     */
+    public static function sanitize_array(array &$data)
+    {
+        if (is_string($data)) return self::sanitize($data);
+
+        array_walk_recursive($data, array('self','sanitize'));
+        return $data;
+    }
+
+    /**
+     * Enhanced variation of strip_tags with 'invert' option to remove specific tags
+     *
+     * @param $text
+     * @param string $tags
+     * @param bool $invert
+     * @return mixed
+     */
+    public static function strip_tags_content($text, $tags = '', $invert = false)
+    {
+        preg_match_all('/<(.+?)[\s]*\/?[\s]*>/si', trim($tags), $tags);
+        $tags = array_unique($tags[1]);
+
+        if (is_array($tags) AND count($tags) > 0) {
+            if ($invert == false) {
+                return preg_replace('@<(?!(?:' . implode('|', $tags) . ')\b)(\w+)\b.*?>.*?</\1>@si', '', $text);
+            } else {
+                return preg_replace('@<(' . implode('|', $tags) . ')\b.*?>.*?</\1>@si', '', $text);
+            }
+        } elseif ($invert == false) {
+            return preg_replace('@<(\w+)\b.*?>.*?</\1>@si', '', $text);
+        }
+        return $text;
     }
 
     /**\
