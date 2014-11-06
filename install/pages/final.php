@@ -56,7 +56,7 @@ if (!isset($_POST['username'])) {
 //
 //} else {
     if (isset($_POST['username'])) {
-        user::login($_POST['username'], $_POST['password']);
+        user::login(expString::sanitize($_POST['username']),expString::sanitize($_POST['password']));
         $leaveinstaller = (unlink(BASE . 'install/not_configured') || !file_exists(BASE . 'install/not_configured'));
         if ($leaveinstaller) {
             if ($user->is_system_user) {

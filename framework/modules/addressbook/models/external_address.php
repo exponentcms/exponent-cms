@@ -87,17 +87,17 @@ class external_address extends expRecord {
             //if not, then we just check the captha and create an account manually
 
             
-            $password = $_POST['password'];
-            if (isset($_POST['remember_me']) && $_POST['remember_me'] == true)  
+            $password = expString::sanitize($_POST['password']);
+            if (isset($_POST['remember_me']) && $_POST['remember_me'] == true)
             {
-                $user->username = $_POST['email'];     
-                $validateUser = $user->setPassword($password,$_POST['password2']);
+                $user->username = expString::sanitize($_POST['email']);
+                $validateUser = $user->setPassword($password,expString::sanitize($_POST['password2']));
                 if (!is_bool($validateUser))                
                  {                    
-                    expValidator::failAndReturnToForm($validateUser, $_POST);    
+                    expValidator::failAndReturnToForm($validateUser, expString::sanitize_array($_POST));
                  }   
             } else {
-                $user->username = $_POST['email'] . time();  //make a unique username
+                $user->username = expString::sanitize($_POST['email']) . time();  //make a unique username
                 $password = md5(time().rand(50,000));  //generate random password
                 $user->setPassword($password, $password);
             }
@@ -105,15 +105,15 @@ class external_address extends expRecord {
             //expValidator::check_antispam($_POST, "Your anti-spam verification failed.  Please try again.");
             
             //if we've come this far, we're good to create the new user account
-            $user->email = $_POST['email'];
-            $user->firstname = $_POST['firstname'];
-            $user->lastname = $_POST['lastname'];
+            $user->email = expString::sanitize($_POST['email']);
+            $user->firstname = expString::sanitize($_POST['firstname']);
+            $user->lastname = expString::sanitize($_POST['lastname']);
             //eDebug($_POST);
             //eDebug($user);
             $checkUser = $db->selectObject('user','username="' . $user->username . '"');
             if (isset($checkUser->id))
             {
-                expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>".gt("Reset Password")."</a>.", $_POST);
+                expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>".gt("Reset Password")."</a>.", expString::sanitize_array($_POST));
             }
             $user->is_system_user = false;
             $user->save(true);

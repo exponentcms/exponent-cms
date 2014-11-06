@@ -28,7 +28,7 @@ expSettings::change('LANGUAGE', LANGUAGE);
 
 $user = $db->selectObject('user', 'is_system_user=1');
 
-$user->username = $_POST['username'];
+$user->username = expString::sanitize($_POST['username']);
 $pwstrength = expValidator::checkPasswordStrength($_POST['username'], $_POST['password']);
 if ($user->username == '') {
     $error = true;
@@ -58,12 +58,12 @@ if ($error) { //FIXME Shouldn't get this because of check in install-6.php unles
     exit();
 } else {
     $user->password = md5($_POST['password']);
-    $user->firstname = $_POST['firstname'];
-    $user->lastname = $_POST['lastname'];
+    $user->firstname = expString::sanitize($_POST['firstname']);
+    $user->lastname = expString::sanitize($_POST['lastname']);
     $user->is_admin = 1;
     $user->is_acting_admin = 1;
     $user->is_system_user = 1;
-    $user->email = $_POST['email'];
+    $user->email = expString::sanitize($_POST['email']);
     $user->created_on = time();
     if (isset($user->id)) {
         $db->updateObject($user, 'user');

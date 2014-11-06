@@ -188,6 +188,7 @@ class expSettings
                 $value = htmlentities(stripslashes($value), ENT_QUOTES, LANG_CHARSET); // slashes added by POST
 //              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
                 $value = str_replace(array("\r\n", "\r", "\n"), "", $value);
+//                $value = str_replace(array('\r\n', '\r', '\n'), "", $value);
                 $str .= "exponent_unhtmlentities('$value')";
             } elseif (is_int($value)) {
                 $str .= "'" . $value . "'";

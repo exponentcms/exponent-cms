@@ -907,7 +907,8 @@ class storeController extends expController {
 //        global $db;
 
         expHistory::set('viewable', $this->params);
-        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
+//        $parent = isset($_REQUEST['cat']) ? $_REQUEST['cat'] : expSession::get('last_ecomm_category');
+        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('last_ecomm_category');
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();  //FIXME returns a product count of 0
         $ancestors = $category->pathToNode();
@@ -1456,7 +1457,8 @@ class storeController extends expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-        $action = $_REQUEST['action'];
+//        $action = $_REQUEST['action'];
+        $action = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
         switch ($action) {
             case 'showall': //category page
@@ -1472,7 +1474,8 @@ class storeController extends expController {
                 break;
             case 'show':
             case 'showByTitle':
-                $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']) : intval($_REQUEST['id']));
+//                $prod = new product(isset($_REQUEST['title']) ? expString::sanitize($_REQUEST['title']) : intval($_REQUEST['id']));
+                $prod = new product(isset($router->params['title']) ? $router->params['title'] : intval($router->params['id']));
                 if (!empty($prod)) {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);

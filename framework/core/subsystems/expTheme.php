@@ -698,10 +698,11 @@ class expTheme
 //				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 //			}
 
-            // clean our passed parameters
-            foreach ($_REQUEST as $key=>$param) {
-                $_REQUEST[$key] = expString::sanitize($param);
-            }
+            //FIXME clean our passed parameters
+//            foreach ($_REQUEST as $key=>$param) {  //FIXME need array sanitizer
+//                $_REQUEST[$key] = expString::sanitize($param);
+//            }
+            expString::sanitize_array($_REQUEST);
 
             //FIXME: module/controller glue code..remove ASAP
             $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
@@ -774,10 +775,11 @@ class expTheme
 
         $actfile = "/" . $module . "/actions/" . $action . ".php";
         if (isset($params)) {
-            foreach ($params as $key => $value) {
-//                $_GET[$key] = $value;
-                $_GET[$key] = expString::sanitize($value);
-            }
+//            foreach ($params as $key => $value) {  //FIXME need array sanitizer
+////                $_GET[$key] = $value;
+//                $_GET[$key] = expString::sanitize($value);
+//            }
+            expString::sanitize_array($_GET);
         }
         //if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
@@ -786,10 +788,6 @@ class expTheme
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
         } else {
-            // clean our passed parameters
-            foreach ($_REQUEST as $key=>$param) {
-                $_REQUEST[$key] = expString::sanitize($param);
-            }
 //   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
             notfoundController::handle_not_found();
             echo '<br /><hr size="1" />';
