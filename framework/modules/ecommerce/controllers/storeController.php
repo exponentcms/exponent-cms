@@ -290,7 +290,7 @@ class storeController extends expController {
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
 
         $limit = empty($this->config['event_limit']) ? 10 : $this->config['event_limit'];
-        $order = 'eventdate';
+        $order = 'event_starttime';
         $dir = 'ASC';
 
         $page = new expPaginator(array(

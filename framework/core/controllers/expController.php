@@ -504,8 +504,7 @@ abstract class expController {
         $loc = expUnserialize($record->location_data);
         $loc->src = $this->loc->src;
         $record->location_data = serialize($loc);
-//        $this->$modelname->update($record);
-        $record->update();
+        $this->$modelname->update($record);
 
         expHistory::back();
     }

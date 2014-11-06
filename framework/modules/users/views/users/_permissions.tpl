@@ -38,7 +38,6 @@
             </thead>
             <tbody>
                 {foreach from=$page->records item=user key=ukey name=user}
-                    <input type="hidden" name="users[]" value="{$user->id}" />
                     <tr class="{cycle values="even,odd"}">
                         {if !$is_group}
                             <td>
