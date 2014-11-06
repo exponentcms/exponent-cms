@@ -611,7 +611,10 @@ class usersController extends expController {
             flash('error', $ret);
             expHistory::returnTo('editable');
         } else {
-            $u->update();
+            $params = array();
+            $params['is_admin'] = !empty($u->is_admin);
+            $params['is_acting_admin'] = !empty($u->is_acting_admin);
+            $u->update($params);
         }
 
         if ($this->params['uid'] != $user->id) {
