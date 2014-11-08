@@ -25,7 +25,7 @@
 
 {/css}
 
-<div class="module flowplayer mediaplayer showall row">
+<div class="module flowplayer mediaplayer showall">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 	{permissions}
 		<div class="module-actions">
@@ -40,7 +40,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div id="{$name}list">
+    <div id="{$name}list" class="row">
         {exp_include file='medialist.tpl'}
     </div>
 </div>

@@ -16,7 +16,7 @@
     {pagelinks paginate=$page top=1}
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item key=key}
-        <div{if $config.use_lightbox} class="col-sm-4"{/if}>
+        <div class="col-sm-{if $config.use_lightbox}4{else}12{/if}">
             {$filetype=$item->expFile.media[0]->filename|regex_replace:"/^.*\.([^.]+)$/D":"$1"}
             <div class="item">
                 <{$config.item_level|default:'h2'} class="media-title">{$item->title}</{$config.item_level|default:'h2'}>
