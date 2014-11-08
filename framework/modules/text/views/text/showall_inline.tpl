@@ -56,7 +56,7 @@
                             {icon action=edit record=$item}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            {icon class=delete action=deleter text='Delete'|gettext}
+                            {icon class=delete action=delete text='Delete'|gettext}
                         {/if}
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                             {if $item->title}
@@ -106,7 +106,7 @@
     {script unique=$name jquery="jqueryui"}
     {literal}
     $(document).ready(function(){
-        src = '{/literal}{$__loc->src}{literal}';
+        var src = '{/literal}{$__loc->src}{literal}';
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
         CKEDITOR.disableAutoInline = true;
@@ -285,8 +285,8 @@
                 success: function(msg) {
     //                msg = $.parseJSON(data);
                     newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
-                    newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#">{/literal}{'Delete'|gettext}{literal}</a>';
+                    newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + msg.data + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
+                    newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + msg.data + '/src/' + src + '">{/literal}{'Delete'|gettext}{literal}</a>';
                     newItem +='<a class="deletetitle" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a></div>';
                     newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                     $('#textcontent-{/literal}{$name}{literal}').append(newItem);

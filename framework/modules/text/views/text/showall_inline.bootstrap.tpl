@@ -15,6 +15,16 @@
 
 {uniqueid prepend="text" assign="name"}
 {$inline = false}
+{if $smarty.const.BTN_SIZE == 'large'}
+    {$btn_size = ''}
+    {$icon_size = 'icon-large'}
+{elseif $smarty.const.BTN_SIZE == 'small'}
+    {$btn_size = 'btn-mini'}
+    {$icon_size = ''}
+{else}
+    {$btn_size = 'btn-small'}
+    {$icon_size = 'icon-large'}
+{/if}
 
 <div id="textmodule-{$name}" class="module text showall showall-inline">
     <div id="textcontent-{$name}">
@@ -22,7 +32,8 @@
         {permissions}
             <div class="module-actions">
                 {if $permissions.create}
-                    {icon class=add action=add text="Add more text at bottom"|gettext}
+                    {icon class="add-body" action=add text="Add more text at bottom"|gettext}
+                    <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text at bottom'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text at bottom'|gettext}</a>
                 {/if}
                 {if $permissions.manage}
                     {ddrerank items=$items model="text" label="Text Items"|gettext}
@@ -33,16 +44,6 @@
             {$config.moduledescription}
         {/if}
         {$myloc=serialize($__loc)}
-        {if $smarty.const.BTN_SIZE == 'large'}
-            {$btn_size = ''}
-            {$icon_size = 'icon-large'}
-        {elseif $smarty.const.BTN_SIZE == 'small'}
-            {$btn_size = 'btn-mini'}
-            {$icon_size = ''}
-        {else}
-            {$btn_size = 'btn-small'}
-            {$icon_size = 'icon-large'}
-        {/if}
 
         {foreach from=$items item=item name=items}
             {if ($permissions.edit || ($permissions.create && $item->poster == $user->id)) && !$preview}
@@ -67,7 +68,7 @@
                             {icon action=edit record=$item}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            {icon class=delete action=deleter text='Delete'|gettext}
+                            <a class="delete btn btn-danger {$btn_size}"" href="{link action=delete}" title="{'Delete this text item'|gettext}"><i class="icon-remove-sign {$icon_size}"></i> {'Delete'|gettext}</a>
                         {/if}
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                             {if $item->title}
@@ -99,7 +100,8 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class=add action=add text="Add more text here"|gettext}
+                {icon class="add-body" action=add text="Add more text here"|gettext}
+                <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text here'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text here'|gettext}</a>
             {/if}
         </div>
     {/permissions}
@@ -117,7 +119,7 @@
     {script unique=$name jquery="jqueryui"}
     {literal}
     $(document).ready(function(){
-        src = '{/literal}{$__loc->src}{literal}';
+        var src = '{/literal}{$__loc->src}{literal}';
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
         CKEDITOR.disableAutoInline = true;
@@ -286,7 +288,7 @@
             startEditor(editableBlocks[i]);
         }
 
-        $('#textmodule-{/literal}{$name}{literal}').on('click', '.add', function(event) {
+        $('#textmodule-{/literal}{$name}{literal}').on('click', '.add-body', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
@@ -296,8 +298,8 @@
                 success:function(msg) {
     //                var msg = $.parseJSON(data);
                     newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    newItem += '<div class="item-actions"><a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="http://localhost/exp2/text/edit/id/' + msg.data + '/src/' + src + '"> {/literal}{'Edit'|gettext}{literal}</a>';
-                    newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="#"> {/literal}{'Delete'|gettext}{literal}</a>';
+                    newItem += '<div class="item-actions"><a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + msg.data + '/src/' + src + '"><i class="icon-edit {/literal}{$icon_size}{literal}"></i>  {/literal}{'Edit'|gettext}{literal}</a>';
+                    newItem += '<a class="btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + msg.data + '/src/' + src + '"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
                     newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
                     newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                     $('#textcontent-{/literal}{$name}{literal}').append(newItem);

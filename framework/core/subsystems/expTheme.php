@@ -1467,12 +1467,13 @@ class expTheme
         if (expSession::get('framework') == 'bootstrap') {
             switch ($class) {
                 case 'delete' :
-                case 'deletetitle' :
+                case 'delete-title' :
                     $class = "remove-sign";
                     $btn_type = "btn-danger"; // red
                     break;
                 case 'add' :
-                case 'addtitle' :
+                case 'add-title' :
+                case 'add-body' :
                 case 'switchtheme add' :
                     $class = "plus-sign";
                     $btn_type = "btn-success"; // green
@@ -1544,12 +1545,13 @@ class expTheme
         } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             switch ($class) {
                 case 'delete' :
-                case 'deletetitle' :
+                case 'delete-title' :
                     $class = "times-circle";
                     $btn_type = "btn-danger";  // red
                     break;
                 case 'add' :
-                case 'addtitle' :
+                case 'add-title' :
+                case 'add-body' :
                 case 'switchtheme add' :
                     $class = "plus-circle";
                     $btn_type = "btn-success";  // green
