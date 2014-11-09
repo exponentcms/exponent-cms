@@ -33,7 +33,7 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-dompdf,6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
+dompdf,0.6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
 mPDF,5.7.1,mpdf1.com,5.7.2,optional
 CKEditor,4.4.5,ckeditor.com,4.4.5,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.6,tinymce.com,4.1.6,add xenmce skin
@@ -56,7 +56,7 @@ multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.5.14,http://www.jacklmoore.com/colorbox,1.5.14,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
-DateTimePicker,2.3.7exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.9,added additional 'update' method and click update if inline
+DateTimePicker,2.3.9exp,http://xdsoft.net/jqplugins/datetimepicker/,2.3.9,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.2,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.2,
 Sortable,0.5.2,https://github.com/RubaXa/Sortable,0.5.2,
