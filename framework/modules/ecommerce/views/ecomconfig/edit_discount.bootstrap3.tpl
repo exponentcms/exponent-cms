@@ -19,21 +19,21 @@
         {form action=update_discount}
             {control type="hidden" name="id" value=$discount->id}
             <div id="discounttabs" class="">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
-                    <li><a href="#tab2" data-toggle="tab"><em>{"Usage"|gettext}</em></a></li>
-                    <li><a href="#tab3" data-toggle="tab"><em>{"Conditions"|gettext}</em></a></li>
-                    <li><a href="#tab4" data-toggle="tab"><em>{"Actions"|gettext}</em></a></li>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{"Usage"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{"Conditions"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{"Actions"|gettext}</em></a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1" class="tab-pane fade in active">
+                    <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                         <h2>{"General Configuration"|gettext}</h2>
                         {control type="text" name="title" label="Name"|gettext value=$discount->title focus=1}
                         {control type="text" name="coupon_code" label="Coupon Code"|gettext value=$discount->coupon_code}
                         {control type="editor" name="body" label="Description"|gettext height=250 value=$discount->body}
                         {*control type="text" name="priority" label="Priority"|gettext value=$discount->priority*}
                     </div>
-                     <div id="tab2" class="tab-pane fade">
+                     <div id="tab2" role="tabpanel" class="tab-pane fade">
                         <h2>{"Usage Rules"|gettext}</h2>
                         {* control type="text" name="uses_per_coupon" label="Uses Per Coupon"|gettext value=$discount->uses_per_coupon}
                         {control type="text" name="uses_per_user" label="Uses Per Customer"|gettext value=$discount->uses_per_user *}
@@ -52,12 +52,12 @@
                             </div>
                         {/foreach}
                     </div>
-                    <div id="tab3" class="tab-pane fade">
+                    <div id="tab3" role="tabpanel" class="tab-pane fade">
                         <h2>{"Conditions"|gettext}</h2>
                         {* control type="dropdown" name="group_ids[]" label="Groups"|gettext items=$groups default=$selected_groups multiple=true size=10 *}
                         {control type="text" name="minimum_order_amount" label="Minimum Order Amount"|gettext filter=money value=$discount->minimum_order_amount}
                     </div>
-                    <div id="tab4" class="tab-pane fade">
+                    <div id="tab4" role="tabpanel" class="tab-pane fade">
                         <h2>{"Actions and Amounts"|gettext}</h2>
                         {control type="dropdown" name="action_type" label="Discount Action"|gettext items=$discount->actions default=$discount->action_type}
                         {'If you selected \'Percentage off entire cart\', enter the percentage discount you would like applied with this coupon code here.'|gettext}

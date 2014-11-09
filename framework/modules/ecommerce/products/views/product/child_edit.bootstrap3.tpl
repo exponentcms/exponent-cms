@@ -26,22 +26,22 @@
       		{control type="hidden" name="original_id" value=$record->original_id}
       		{/if}
             <div id="childtabs" class="">
-                <ul class="nav nav-tabs">
-                    <li class="selected"><a href="#general" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
-                    <li><a href="#pricing" data-toggle="tab"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
-                    <li><a href="#images" data-toggle="tab"><em>{"Images & Files"|gettext}</em></a></li>
-                    <li><a href="#quantity" data-toggle="tab"><em>{"Quantity"|gettext}</em></a></li>
-                    <li><a href="#shipping" data-toggle="tab"><em>{"Shipping"|gettext}</em></a></li>
-                    <li><a href="#categories" data-toggle="tab"><em>{"Categories"|gettext}</em></a></li>
-                    <li><a href="#options" data-toggle="tab"><em>{"Options"|gettext}</em></a></li>
-                    <li><a href="#uifld" data-toggle="tab"><em>{"User Input Fields"|gettext}</em></a></li>
-                    <li><a href="#active" data-toggle="tab"><em>{"Active & Status Settings"|gettext}</em></a></li>
-                    <li><a href="#notes" data-toggle="tab"><em>{"Notes"|gettext}</em></a></li>
-                    <li><a href="#xtrafields" data-toggle="tab"><em>{"Extra Fields"|gettext}</em></a></li>
-                    <li><a href="#misc" data-toggle="tab"><em>{"Misc"|gettext}</em></a></li>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="selected"><a href="#general" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#pricing" role="tab" data-toggle="tab"><em>{"Pricing, Tax & Discounts"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#images" role="tab" data-toggle="tab"><em>{"Images & Files"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#quantity" role="tab" data-toggle="tab"><em>{"Quantity"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#shipping" role="tab" data-toggle="tab"><em>{"Shipping"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#categories" role="tab" data-toggle="tab"><em>{"Categories"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#options" role="tab" data-toggle="tab"><em>{"Options"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#uifld" role="tab" data-toggle="tab"><em>{"User Input Fields"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#active" role="tab" data-toggle="tab"><em>{"Active & Status Settings"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#notes" role="tab" data-toggle="tab"><em>{"Notes"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#xtrafields" role="tab" data-toggle="tab"><em>{"Extra Fields"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#misc" role="tab" data-toggle="tab"><em>{"Misc"|gettext}</em></a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="general" class="tab-pane fade in active">
+                    <div id="general" role="tabpanel" class="tab-pane fade in active">
                         {control type="hidden" name="tab_loaded[general]" value=1}
                         {control type="hidden" name="general[parent_id]" value=$record->parent_id}
                         {control type="hidden" name="general[product_type]" value='childProduct'}
@@ -54,7 +54,7 @@
                         {control type="editor" name="general[body]" label="Product Description"|gettext height=250 value=$record->body}
                         {*{control type="textarea" name="summary" label="Product Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     </div>
-                    <div id="pricing" class="tab-pane fade">
+                    <div id="pricing" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[pricing]" value=1}
                         {group label="General Pricing"|gettext}
                             <table>
@@ -91,7 +91,7 @@
                             {icon controller="tax" action="manage" text="Manage Taxes"|gettext}
                         {/group}
                     </div>
-                    <div id="images" class="tab-pane fade">
+                    <div id="images" role="tabpanel" class="tab-pane fade">
                         <h2>{'Images'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                         {*<div id="imagefunctionality">*}
                             {*{control type="text" name="image_alt_tag" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}*}
@@ -142,7 +142,7 @@
                         {*{/literal}*}
                         {*{/script}*}
                     </div>
-                    <div id="quantity" class="tab-pane fade">
+                    <div id="quantity" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[quantity]" value=1}
                         {control type="text" name="quantity[quantity]" label="Quantity in stock"|gettext value=$record->quantity}
                         {control type="text" name="quantity[minimum_order_quantity]" label="Minimum order quantity"|gettext value=$record->minimum_order_quantity|default:1}
@@ -151,7 +151,7 @@
                         {control type="radiogroup" name="quantity[availability_type]" label="Quantity Display"|gettext items=$record->quantity_display default=$record->availability_type|default:0}
                         {control type="textarea" name="quantity[availability_note]" label="* "|cat:("Note to display per above selection"|gettext) rows=5 cols=45 value=$record->availability_note}
                     </div>
-                    <div id="shipping" class="tab-pane fade">
+                    <div id="shipping" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[shipping]" value=1}
                         {control type="checkbox" name="shipping[no_shipping]" label='This item doesn\'t require shipping'|gettext value=1 checked=$record->no_shipping}
                         {control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --" items=$shipping_services value=$record->required_shipping_calculator_id}
@@ -167,16 +167,16 @@
                         {control type="text" name="shipping[length]" label="Length (in inches)"|gettext size=4 filter=decimal value=$record->length}
                         {control type="text" name="shipping[surcharge]" label="Freight Surcharge"|gettext size=4 filter=decimal value=$record->surcharge description='per item'|gettext}
                     </div>
-                    <div id="categories" class="tab-pane fade">
+                    <div id="categories" role="tabpanel" class="tab-pane fade">
                         <h2>{'Categories'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                     </div>
-                    <div id="options" class="tab-pane fade">
+                    <div id="options" role="tabpanel" class="tab-pane fade">
                         <h2>{'Options'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                     </div>
-                    <div id="uifld" class="tab-pane fade">
+                    <div id="uifld" role="tabpanel" class="tab-pane fade">
                         <h2>{'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
                     </div>
-                    <div id="active" class="tab-pane fade">
+                    <div id="active" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[status]" value=1}
                         <h2>{"Active/Inactive"|gettext}</h2>
                         {control type="radiogroup" name="status[active_type]" label=" " items=$record->active_display default=$record->active_type|default:0}
@@ -184,11 +184,11 @@
                         {control type="dropdown" name="status[product_status_id]" label=" " frommodel=product_status items=$status_display value=$record->product_status_id}
                         {icon controller="product_status" action="manage" text="Manage Product Statuses"|gettext}
                     </div>
-                    <div id="notes" class="tab-pane fade">
+                    <div id="notes" role="tabpanel" class="tab-pane fade">
                         <h2>{"Notes"|gettext}</h2>
                         {simplenote content_type="product" content_id=$record->id require_login="1" require_approval="0" require_notification="0" tab="notes"}
                     </div>
-                     <div id="xtrafields" class="tab-pane fade">
+                     <div id="xtrafields" role="tabpanel" class="tab-pane fade">
                          {control type="hidden" name="tab_loaded[extrafields]" value=1}
                          <h2>{"Extra Fields"|gettext}</h2>
                          {'Extra field names are defined in this product\'s parent.  You may enter the field values for this product here.'|gettext}
@@ -225,7 +225,7 @@
                             {/if}
                         </table>
                     </div>
-                    <div id="misc" class="tab-pane fade">
+                    <div id="misc" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[misc]" value=1}
                         <h2>{'Miscellaneous Information'|gettext}</h2>
                         {control type="text" name="misc[warehouse_location]" label="Warehouse Location"|gettext value=$record->warehouse_location}

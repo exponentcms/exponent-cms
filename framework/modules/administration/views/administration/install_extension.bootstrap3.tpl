@@ -21,14 +21,14 @@
         <h2>{'Install new Extension'|gettext}</h2>
     </div>
 	<div id="extension-tabs" class="">
-		<ul class="nav nav-tabs">
-            <li class="active"><a href="#tab1" data-toggle="tab"><em>{"Themes"|gettext}</em></a></li>
-            <li><a href="#tab2" data-toggle="tab"><em>{"Fixes"|gettext}</em></a></li>
-            <li><a href="#tab3" data-toggle="tab"><em>{"Mods"|gettext}</em></a></li>
-            <li><a href="#tab4" data-toggle="tab"><em>{"Upload Extension"|gettext}</em></a></li>
+		<ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{"Themes"|gettext}</em></a></li>
+            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{"Fixes"|gettext}</em></a></li>
+            <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{"Mods"|gettext}</em></a></li>
+            <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{"Upload Extension"|gettext}</em></a></li>
 		</ul>
 		<div class="tab-content">
-			<div id="tab1" class="tab-pane fade in active">
+			<div id="tab1" role="tabpanel" class="tab-pane fade in active">
 				<h2>{"Themes"|gettext}</h2>
                 {form action=install_extension_confirm}
                     {foreach from=$themes item=theme name=themes}
@@ -54,7 +54,7 @@
                     {if_elements array=$themes}{control type="buttongroup" submit="Install Selected Themes"|gettext}{/if_elements}
                 {/form}
 			</div>
-			<div id="tab2" class="tab-pane fade">
+			<div id="tab2" role="tabpanel" class="tab-pane fade">
 				<h2>{"Patches and Fixes"|gettext}</h2>
                 {form action=install_extension_confirm}
                     {control type=hidden name=patch value=1}
@@ -81,7 +81,7 @@
                     {if_elements array=$fixes}{control type="buttongroup" submit="Install Selected Patches"|gettext}{/if_elements}
                 {/form}
 			</div>
-			<div id="tab3" class="tab-pane fade">
+			<div id="tab3" role="tabpanel" class="tab-pane fade">
 				<h2>{"Modifications"|gettext}</h2>
                 {form action=install_extension_confirm}
                     {foreach from=$mods item=mod name=mods}
@@ -107,7 +107,7 @@
                     {if_elements array=$mods}{control type="buttongroup" submit="Install Selected Modifications"|gettext}{/if_elements}
                 {/form}
 			</div>
-			<div id="tab4" class="tab-pane fade">
+			<div id="tab4" role="tabpanel" class="tab-pane fade">
                 <h2>{"Extension File Upload"|gettext}</h2>
                 <div class="form_header">{'This form allows you to upload custom modules, themes, and views to the website, or patch the installation.  After you upload an archive containing an extension you will be shown a pre-installation summary page outlining exactly what files will be installed where, and what each file contains (for security reasons)'|gettext}</div>
                 <p><h4>{'It is NOT intended to be used to perform a full version upgrade!'|gettext}</h4></p>

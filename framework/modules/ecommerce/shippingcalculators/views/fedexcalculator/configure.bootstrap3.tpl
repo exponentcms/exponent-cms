@@ -21,14 +21,14 @@
         </ul>
     </blockquote>
     <div id="fedex-tabs" class="">
-        <ul class="nav nav-tabs">
-	        <li class="active"><a href="#tab1" data-toggle="tab"><em>{'FedEx Settings'|gettext}</em></a></li>
-	        <li><a href="#tab2" data-toggle="tab"><em>{'Shipping Methods'|gettext}</em></a></li>
-	        <li><a href="#tab3" data-toggle="tab"><em>{'My Info'|gettext}</em></a></li>
-	        <li><a href="#tab4" data-toggle="tab"><em>{'Shipping Defaults'|gettext}</em></a></li>
+        <ul class="nav nav-tabs" role="tablist">
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'FedEx Settings'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Shipping Methods'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'My Info'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Shipping Defaults'|gettext}</em></a></li>
         </ul>
         <div class="tab-content">
-	        <div id="tab1" class="tab-pane fade in active">
+	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {control type="text" name="fedex_account_number" label="FedEx Account Number"|gettext value=$calculator->configdata.fedex_account_number required=1}
 	            {control type="text" name="fedex_meter_number" label="Meter Number"|gettext value=$calculator->configdata.fedex_meter_number required=1}
 	            {control type="text" name="fedex_key" label="Key"|gettext value=$calculator->configdata.fedex_key required=1}
@@ -36,7 +36,7 @@
 	            {*control type="text" name="shipfrom[shipperNumber]" label="Account #" value=$calculator->configdata.shipfrom.shipperNumber*}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
-	        <div id="tab2" class="tab-pane fade">
+	        <div id="tab2" role="tabpanel" class="tab-pane fade">
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Next Day Air - Delivery by 8:30AM"|gettext value="FIRST_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Next Day Air - Delivery by 10:30AM"|gettext value="PRIORITY_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Standard Overnight - Delivery by 3PM"|gettext value="STANDARD_OVERNIGHT" checked=$calculator->configdata.shipping_methods}
@@ -45,7 +45,7 @@
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx 3Day Express Saver - Delivery by 4:30PM"|gettext value="FEDEX_EXPRESS_SAVER" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="FedEx Ground - 1-5 Business Days"|gettext value="FEDEX_GROUND" checked=$calculator->configdata.shipping_methods}
 	        </div>
-	        <div id="tab3" class="tab-pane fade">
+	        <div id="tab3" role="tabpanel" class="tab-pane fade">
 	            {*control type="text" name="shipfrom[name]" label="Company Name" value=$calculator->configdata.shipfrom.name}
 	            {control type="text" name="shipfrom[phone]" label="Phone Number" value=$calculator->configdata.shipfrom.phone*}
 	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1 required=1}
@@ -56,7 +56,7 @@
                 {control type=country name="shipfrom[CountryCode]" label="Country"|gettext value=$calculator->configdata.shipfrom.CountryCode required=1}
                 {control type="text" name="shipfrom[PostalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.PostalCode required=1}
 	        </div>
-	        <div id="tab4" class="tab-pane fade">
+	        <div id="tab4" role="tabpanel" class="tab-pane fade">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}
 	            {control type="text" name="default_length" label="Standard Box Length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
 	            {control type="text" name="default_height" label="Standard Box Height (inches)"|gettext size=5 value=$calculator->configdata.default_height}

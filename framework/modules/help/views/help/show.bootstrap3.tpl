@@ -35,42 +35,42 @@
     </div>
     {/permissions}
 	<div id="showhelp-tabs-{$id}" class="">
-		<ul class="nav nav-tabs">
-			<li class="active"><a href="#tab1" data-toggle="tab"><em>{'General Overview'|gettext}</em></a></li>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Overview'|gettext}</em></a></li>
 			{if $doc->actions_views}
-				<li><a href="#tab2" data-toggle="tab"><em>{'Actions and Views'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Actions and Views'|gettext}</em></a></li>
 			{/if}
 			{if $doc->configuration}
-				<li><a href="#tab3" data-toggle="tab"><em>{'Configuration'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Configuration'|gettext}</em></a></li>
 			{/if}
 			{if $doc->youtube_vid_code}
-				<li><a href="#tab4" data-toggle="tab"><em>{'Videos'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Videos'|gettext}</em></a></li>
 			{/if}
 			{if $doc->additional}
-				<li><a href="#tab5" data-toggle="tab"><em>{'Additional Information'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Additional Information'|gettext}</em></a></li>
 			{/if}
 		</ul>
 		<div class="tab-content bodycopy">
-			<div id="tab1" class="tab-pane fade in active">
+			<div id="tab1" role="tabpanel" class="tab-pane fade in active">
 				{$doc->body|replace:"!!!version!!!":$hv}
 			</div>
 			{if $doc->actions_views}
-				<div id="tab2" class="tab-pane fade">
+				<div id="tab2" role="tabpanel" class="tab-pane fade">
 					{$doc->actions_views|replace:"!!!version!!!":$hv}
 				</div>
 			{/if}
 			{if $doc->configuration}
-				<div id="tab3" class="tab-pane fade">
+				<div id="tab3" role="tabpanel" class="tab-pane fade">
 					{$doc->configuration|replace:"!!!version!!!":$hv}
 				</div>
 			{/if}
 			{if $doc->youtube_vid_code}
-				<div id="tab4" class="tab-pane fade">
+				<div id="tab4" role="tabpanel" class="tab-pane fade">
 					{$doc->youtube_vid_code}
 				</div>
 			{/if}
 			{if $doc->additional}
-				<div id="tab5" class="tab-pane fade">
+				<div id="tab5" role="tabpanel" class="tab-pane fade">
 					{$doc->additional|replace:"!!!version!!!":$hv}
 				</div>
 			{/if}

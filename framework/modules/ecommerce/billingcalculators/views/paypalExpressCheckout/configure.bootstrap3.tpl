@@ -18,13 +18,13 @@
 </blockquote>
 <div id="paypal">
     <div id="paypal-tabs" class="">
-        <ul class="nav nav-tabs">
-	        <li class="active"><a href="#tab1" data-toggle="tab"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
-	        <li><a href="#tab2" data-toggle="tab"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
-	        <li><a href="#tab3" data-toggle="tab"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
+        <ul class="nav nav-tabs" role="tablist">
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'PayPal Express Checkout'|gettext}<br>{'Settings'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Customer'|gettext}<br>{'Confirmations'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Administrator'|gettext}<br>{'Notifications'|gettext}</em></a></li>
         </ul>            
         <div class="tab-content">
-	        <div id="tab1" class="tab-pane fade in active">
+	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {control type="text" name="username" label="API Username"|gettext value=$calculator->configdata.username}
 	            {control type="password" name="password" label="API Password"|gettext value=$calculator->configdata.password}
 	            {control type="text" name="signature" label="Signature"|gettext value=$calculator->configdata.signature}
@@ -44,10 +44,10 @@
  	            {control type="text" name="testsignature" label="Sandbox Signature"|gettext value=$calculator->configdata.testsignature}
                 </p>
 	        </div>
-	        <div id="tab2" class="tab-pane fade">
+	        <div id="tab2" role="tabpanel" class="tab-pane fade">
 	            {control type="checkbox" name="email_customer" label="Send customer an email confirmation?"|gettext value=1 checked=$calculator->configdata.email_customer}
 	        </div>
-	        <div id="tab3" class="tab-pane fade">
+	        <div id="tab3" role="tabpanel" class="tab-pane fade">
 	            {control type="checkbox" name="email_admin" label="Send a notification that a new order was received?"|gettext value=1 checked=$calculator->configdata.email_admin}
                 {control type=email name="notification_addy" label="Email addresses to send notifications to (comma separated list of email addresses)"|gettext value=$calculator->configdata.notification_addy}
 	        </div>

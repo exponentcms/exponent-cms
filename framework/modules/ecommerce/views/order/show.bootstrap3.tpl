@@ -100,9 +100,9 @@
                     </div>
 
                     <!-- order status tabs -->
-                    <ul id="tabOrder" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#status" data-toggle="tab">
+                    <ul id="tabOrder" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#status" role="tab" data-toggle="tab">
                                 <i class="fa fa-clock-o"></i>
                                 {'Status'|gettext}
                                 <span class="badge">
@@ -110,15 +110,15 @@
                                 </span>
                             </a>
                         </li>
-                        <li>
-                            <a href="#other" data-toggle="tab">
+                        <li role="presentation">
+                            <a href="#other" role="tab" data-toggle="tab">
                                 <i class="fa fa-users"></i>
                                 {'Sales Reps and Referrers'|gettext}
                             </a>
                         </li>
                     </ul>
                     <div class="tab-content panel">
-                        <div id="status" class="tab-pane fade in active">
+                        <div id="status" role="tabpanel" class="tab-pane fade in active">
                             <div class="table-responsive">
                                 <table class="table order-info">
                                     <tbody>
@@ -175,7 +175,7 @@
                             {/if}
                             {/permissions}
                         </div>
-                        <div id="other" class="tab-pane fade">
+                        <div id="other" role="tabpanel" class="tab-pane fade">
                             <div class="table-reponsive">
                                 <table class="table" border="0" cellspacing="0" cellpadding="0">
                                     <thead>
@@ -236,22 +236,22 @@
                         </div>
                     </div>
                     <!-- shipping status tabs -->
-                    <ul id="myTab" class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#shipping" data-toggle="tab">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#shipping" role="tab" data-toggle="tab">
                                 <i class="fa fa-truck"></i>
                                 {'Shipping'|gettext}
                             </a>
                         </li>
-                        <li>
-                            <a href="#tracking" data-toggle="tab">
+                        <li role="presentation">
+                            <a href="#tracking" role="tab" data-toggle="tab">
                                 <i class="fa fa-ticket"></i>
                                 {'Tracking'|gettext}
                             </a>
                         </li>
                     </ul>
                     <div class="tab-content panel">
-                        <div id="shipping" class="tab-pane fade in active">
+                        <div id="shipping" role="tabpanel" class="tab-pane fade in active">
                             <div class="table-responsive">
                                 <table class="table" style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                                     <tr style="border: 0px; padding: 0px; margin:0px;">
@@ -285,7 +285,7 @@
                                 {/if}
                             </div>
                         </div>
-                        <div id="tracking" class="tab-pane fade">
+                        <div id="tracking" role="tabpanel" class="tab-pane fade">
                             <div class="table-responsive">
                                  <table class="table order-info">
                                     <thead>
@@ -534,22 +534,22 @@
                     </div>
 
                     <div class="row">
-                        <ul id="tabAddresses" class="nav nav-tabs">
-                            <li class="active">
-                                <a href="#addressShipping" data-toggle="tab">
+                        <ul id="tabAddresses" class="nav nav-tabs" role="tablist">
+                            <li role="presentation" class="active">
+                                <a href="#addressShipping" role="tab" data-toggle="tab">
                                     <i class="fa fa-truck"></i>
                                     {'Shipping Address'|gettext}
                                 </a>
                             </li>
-                            <li>
-                                <a href="#addressInvoice" data-toggle="tab">
+                            <li role="presentation">
+                                <a href="#addressInvoice" role="tab" data-toggle="tab">
                                     <i class="fa fa-file-text"></i>
                                     {'Invoice Address'|gettext}
                                 </a>
                             </li>
                         </ul>
                         <div class="tab-content panel">
-                            <div id="addressShipping" class="tab-pane fade in active">
+                            <div id="addressShipping" role="tabpanel" class="tab-pane fade in active">
                                 <div class="well well-sm">
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -569,7 +569,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="addressInvoice" class="tab-pane fade">
+                            <div id="addressInvoice" role="tabpanel" class="tab-pane fade">
                                 <div class="well well-sm">
                                     <div class="row">
                                         <div class="col-sm-6">

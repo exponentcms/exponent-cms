@@ -16,7 +16,7 @@
 <html>
 <head>
     <title>{'Restore from Recycle Bin'|gettext}</title>
-    {css unique="show" corecss="admin-global" link="`$asset_path`css/recyclebin.css"}
+    {css unique="show" link="`$asset_path`css/recyclebin.css"}
 
     {/css}
     {css unique="newui" link="`$smarty.const.PATH_RELATIVE`external/bootstrap3/css/bootstrap.css"}

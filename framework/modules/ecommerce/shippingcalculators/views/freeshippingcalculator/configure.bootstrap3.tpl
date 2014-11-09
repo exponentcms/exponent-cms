@@ -15,11 +15,11 @@
 
 <div id="freeshippingcfg">
     <div id="freeship-tabs" class="">
-        <ul class="nav nav-tabs">
-	        <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Free Shipping Settings'|gettext}</em></a></li>
+        <ul class="nav nav-tabs" role="tablist">
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Free Shipping Settings'|gettext}</em></a></li>
         </ul>            
         <div class="tab-content">
-            <div id="tab1" class="tab-pane fade in active">
+            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 <blockquote>{'Offering Free Shipping means every order ships for Free'|gettext}</blockquote>
                 {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Free'|gettext}
                 {control type="text" name="free_shipping_method_default_name" label="Default Name for Shipping Method"|gettext value=$calculator->configdata.free_shipping_method_default_name}

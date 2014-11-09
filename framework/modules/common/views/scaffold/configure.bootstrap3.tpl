@@ -25,10 +25,10 @@
     </div>
     {form action=saveconfig}
         <div id="config-tabs" class="">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" role="tablist">
                 {foreach from=$views item=tab name=tabs}
-                    <li{if $smarty.foreach.tabs.first} class="active"{/if}>
-                        <a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">
+                    <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}>
+                        <a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">
                             {$tab.name}
                         </a>
                     </li>
@@ -36,7 +36,7 @@
             </ul>            
             <div class="tab-content">
                 {foreach from=$views item=body name=body}
-                    <div id="tab{$smarty.foreach.body.iteration}" class="tab-pane fade{if $smarty.foreach.body.first} in active{/if}">
+                    <div id="tab{$smarty.foreach.body.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.body.first} in active{/if}">
                         {include file=$body.file}
                     </div>
                 {/foreach}

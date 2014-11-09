@@ -18,16 +18,16 @@
     {form action=update record=$record}
         {control type=hidden name=id value=$record->id}
         <div id="edithelp-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
-                <li><a href="#tab2" data-toggle="tab"><em>{'Actions and Views'|gettext}</em></a></li>
-                <li><a href="#tab3" data-toggle="tab"><em>{'Configuration'|gettext}</em></a></li>
-                <li><a href="#tab4" data-toggle="tab"><em>{'Videos'|gettext}</em></a></li>
-                <li><a href="#tab5" data-toggle="tab"><em>{'Additional Information'|gettext}</em></a></li>
-                <li><a href="#tab6" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Actions and Views'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Configuration'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Videos'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Additional Information'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="tab-content">
-            <div id="tab1" class="tab-pane fade in active">
+            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 <h2>{'Help Document'|gettext}</h2>
                 {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                 {control type="dropdown" name="help_version_id" label="Version"|gettext frommodel="help_version" key=id display=version order=version dir=DESC value=$record->help_version_id}
@@ -36,23 +36,23 @@
                 {control type="dropdown" name="parent" label="Parent Help Doc"|gettext items=$parents value=$record->parent}
 				{control type="dropdown" name="help_section" label="Help Section"|gettext items=$sections value=$record->loc->src default=$current_section}
             </div>
-            <div id="tab2" class="tab-pane fade">
+            <div id="tab2" role="tabpanel" class="tab-pane fade">
                  <h2>{'Actions and Views'|gettext}</h2>
                  {control type=html name=actions_views label="Actions and Views"|gettext value=$record->actions_views}
             </div>
-            <div id="tab3" class="tab-pane fade">
+            <div id="tab3" role="tabpanel" class="tab-pane fade">
                  <h2>{'Configuration'|gettext}</h2>
                  {control type=html name=configuration label="Configurations"|gettext value=$record->configuration}
             </div>
-            <div id="tab4" class="tab-pane fade">
+            <div id="tab4" role="tabpanel" class="tab-pane fade">
                 <h2>{'YouTube Video Code'|gettext}</h2>
                 {control type=textarea cols=80 rows=20 name=youtube_vid_code label="YouTube Video (Embed) Code"|gettext value=$record->youtube_vid_code}
             </div>
-            <div id="tab5" class="tab-pane fade">
+            <div id="tab5" role="tabpanel" class="tab-pane fade">
                  <h2>{'Additional Information'|gettext}</h2>
                  {control type=html name=additional label="Additional Info"|gettext|cat:" ("|cat:("displays in side column"|gettext)|cat:")"|gettext value=$record->additional}
             </div>
-            <div id="tab6" class="tab-pane fade">
+            <div id="tab6" role="tabpanel" class="tab-pane fade">
                  <h2>{'SEO Settings'|gettext}</h2>
                 {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                 {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical description='Helps get rid of duplicate search engine entries'|gettext}

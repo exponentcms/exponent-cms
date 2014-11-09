@@ -31,12 +31,12 @@
         {control type=hidden name=alias_type value=0}
         {control type=hidden name=_validate value=1}
         <div id="configure-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
-                <li><a href="#tab2" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
             </ul>
             <div class="tab-content">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     {control type=text name=name label="Name"|gettext value=$section->name focus=1}
                     {if $section->id == 0 || $section->parent == -1}
                         {control type=hidden name=parent value=$section->parent}
@@ -53,7 +53,7 @@
                     {/if}
                     {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
                 </div>
-                <div id="tab2" class="tab-pane fade">
+                <div id="tab2" role="tabpanel" class="tab-pane fade">
                     <h2>{'SEO Information'|gettext}</h2>
                     {control type=text name=sef_name label="SEF URL"|gettext value=$section->sef_name description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                     {control type=text name=canonical label="Canonical URL"|gettext value=$section->canonical|default description='Helps get rid of duplicate search engine entries'|gettext}

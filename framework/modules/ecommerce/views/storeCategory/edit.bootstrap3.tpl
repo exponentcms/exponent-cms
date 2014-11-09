@@ -30,24 +30,24 @@
             {control type=hidden name=rgt value=$node->rgt}
             {control type=hidden name=lft value=$node->lft}
             <div id="cattabs" class="">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#general" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
-                    <li><a href="#seo" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#general" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#seo" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
                     {*<li><a href="#events1"><em>{'Events'|gettext}</em></a></li>*}
                     {if $product_types}
                         {foreach from=$product_types key=key item=item}
-                            <li><a href="#{$item}" data-toggle="tab"><em>{$key} {'Product Types'|gettext}</em></a></li>
+                            <li role="presentation"><a href="#{$item}" role="tab" data-toggle="tab"><em>{$key} {'Product Types'|gettext}</em></a></li>
                         {/foreach}
                     {/if}
                 </ul>
                 <div class="tab-content">
-                    <div id="general" class="tab-pane fade in active">
+                    <div id="general" role="tabpanel" class="tab-pane fade in active">
                         {control type=text name=title label="Category Name"|gettext value=$node->title focus=1}
                         {control type="checkbox" name="is_active" label="This category is active"|gettext value=1 checked=$node->is_active|default:1}
                         {control type="files" name="image" label="Category Image"|gettext accept="image/*" value=$node->expFile folder=$config.upload_folder}
                         {control type=editor name=body label="Category Description"|gettext value=$node->body}
                     </div>
-                    <div id="seo" class="tab-pane fade">
+                    <div id="seo" role="tabpanel" class="tab-pane fade">
                         {control type=text name=sef_url label="SEF URL"|gettext value=$node->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                         {control type=text name=canonical label="Canonical URL"|gettext value=$node->canonical description='Helps get rid of duplicate search engine entries'|gettext}
                         {control type=text name=meta_title label="Meta Title"|gettext value=$node->meta_title description='Override the item title for search engine entries'|gettext}
@@ -62,7 +62,7 @@
                     {*</div>*}
                     {if $product_types}
                         {foreach from=$product_types key=key item=item}
-                            <div id="{$item}" class="tab-pane fade">
+                            <div id="{$item}" role="tabpanel" class="tab-pane fade">
                                 <h2>{$key} {'Product Types'|gettext}</h2>
                                 {$product_type.$item}
                             </div>

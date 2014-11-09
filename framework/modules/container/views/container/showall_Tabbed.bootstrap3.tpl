@@ -22,7 +22,7 @@
 <div class="containermodule tabbed"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     <div id="{$tabs}" class="">
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" role="tablist">
             {foreach from=$containers item=container key=tabnum name=contain}
                 {$numcontainers=$tabnum+1}
             {/foreach}
@@ -37,13 +37,13 @@
                     {$tabtitle=$container->title}
                 {/if}
                 {if $smarty.section.contain.first}
-                    <li class="active"><a href="#tab{$smarty.section.contain.index}" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                    <li role="presentation" class="active"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                 {elseif $container != null}
-                    <li><a href="#tab{$smarty.section.contain.index}" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                    <li role="presentation"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                 {else}
                     {permissions}
                         {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure)}
-                            <li><a href="#tab{$smarty.section.contain.index}" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                            <li role="presentation"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                         {/if}
                     {/permissions}
                 {/if}
@@ -51,11 +51,11 @@
             {permissions}
                 {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure)}
                     {if $smarty.section.contain.total != 0}
-                        <li>
+                        <li role="presentation">
                     {else}
-                        <li class="active">
+                        <li role="presentation" class="active">
                     {/if}
-                    <a href="#tab{$smarty.section.contain.index}" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
+                    <a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
@@ -66,7 +66,7 @@
                 {$menurank=$rank+1}
                 {$index=$smarty.section.contain.index}
                 {if $container != null}
-                    <div id="tab{$smarty.section.contain.index}"{if !$smarty.section.contain.first}{/if} class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
+                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
                         {$container=$containers.$index}
                         {$i=$menurank}
                         {$rerank=0}
@@ -75,7 +75,7 @@
                 {else}
                     {permissions}
                         {if $permissions.create && $hidebox == 0}
-                            <div id="tab{$smarty.section.contain.index}" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
+                            <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
                                 {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
                                 <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                             </div>
@@ -85,7 +85,7 @@
             {/section}
             {permissions}
                 {if $permissions.create && $hidebox == 0}
-                    <div id="tab{$smarty.section.contain.index}" class="tab-pane fade">
+                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade">
                         {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
                         <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                     </div>

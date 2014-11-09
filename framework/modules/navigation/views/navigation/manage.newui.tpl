@@ -23,13 +23,13 @@
 		</div>
 	</div>
 	<div id="navmanager-tabs" class="">
-	    <ul class="nav nav-tabs">
-        	<li class="active"><a href="#tab1" data-toggle="tab"><em>{'Menu Hierarchy'|gettext}</em></a></li>
-	        {if $canManageStandalones}<li><a href="#tab2" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
+	    <ul class="nav nav-tabs" role="tablist">
+        	<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Menu Hierarchy'|gettext}</em></a></li>
+	        {if $canManageStandalones}<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="tab-content">
-        	<div id="tab1" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.newui.tpl"}</div>
-	        {if $canManageStandalones}<div id="tab2" class="tab-pane fade">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.tpl"}</div>{/if}
+        	<div id="tab1" role="tabpanel" class="tab-pane fade in active">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.newui.tpl"}</div>
+	        {if $canManageStandalones}<div id="tab2" role="tabpanel" class="tab-pane fade">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.tpl"}</div>{/if}
 	    </div>
 	</div>
 	<div class="loadingdiv">{'Loading Pages'|gettext}</div>
