@@ -200,6 +200,7 @@ class expTemplate {
 
     //FIXME we need to also look for custom & jquery & bootstrap controls and NOT assume we only subclass basic controls?
 	public static function listSimilarControlTypes($type) {
+        if (empty($type)) return array();
         $oldctl = new $type();
 		$cdh = opendir(BASE."framework/core/forms/controls");
 		$list = array();
