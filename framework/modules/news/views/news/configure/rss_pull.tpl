@@ -45,7 +45,7 @@
             Y.one('#norssfeeds').setStyle('display', 'none');
             var newli = document.createElement('li');
             var newLabel = document.createElement('span');
-            newLabel.innerHTML = feedtoadd.value + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd+'" />';
+            newLabel.innerHTML = feedtoadd + '    <input type="hidden" name="pull_rss[]" value="'+feedtoadd+'" />';
             var newRemove = document.createElement('a');
             newRemove.setAttribute('href','#');
             newRemove.className = "delete removerss";
