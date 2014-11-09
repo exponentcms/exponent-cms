@@ -14,7 +14,7 @@
  *}
 
 <div class="scaffold showall">
-    {if $smarty.const.DEVLEOPMENT}
+    {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
 	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$model_name`"}</h1>
