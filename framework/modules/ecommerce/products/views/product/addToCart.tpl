@@ -25,8 +25,8 @@
 {/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
-    {if $product->expFile.mainimage.0->id}
-        {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
+    {if $product->expFile.mainimage[0]->id}
+        {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}
     {/if}
     <blockquote>
         <strong>{'Additional information is required before we can add to your cart'|gettext}</strong>
@@ -56,12 +56,7 @@
                             {if $og->allow_multiple}
                                 {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
                             {else}
-                                {if $og->required}
-                                    {*{$og->title}*}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
-                                {else}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
-                                {/if}                                           
+                                {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}
                             {/if}
                         </div> 
                     {/if}

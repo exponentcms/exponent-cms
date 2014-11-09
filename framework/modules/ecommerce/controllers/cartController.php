@@ -25,12 +25,30 @@ class cartController extends expController {
     public $basemodel_name = 'order';
     private $checkout_steps = array('productinfo', 'specials', 'form', 'wizards', 'newsletter', 'confirmation', 'postprocess');
 
+    public $useractions = array(
+        'show'                         => 'Show Shopping Cart',
+    );
+
+        // hide the configs we don't need
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'facebook',
+        'files',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
+
     static function displayname() {
         return gt("e-Commerce Shopping Cart");
     }
 
     static function description() {
-        return gt("This is the cart users will add products from your store to.");
+        return gt("Displays the shopping cart contents from your store.");
     }
 
     function addItem() {
@@ -316,6 +334,14 @@ class cartController extends expController {
 
     }
 
+    function cart_only() {
+        $this->show();
+    }
+
+    function quickpay_donation_cart() {
+        $this->show();
+    }
+
     function checkout() {
         global $user, $order;
 
@@ -550,7 +576,6 @@ class cartController extends expController {
     }
 
     public function confirm() {
-//        global $order, $user, $db;
         global $order;
 
         //eDebug($this->params);
@@ -617,7 +642,7 @@ class cartController extends expController {
         $change->save();
 
         // get the biling & shipping info
-        $shipping = new shipping();
+//        $shipping = new shipping();
         $billing  = new billing();
 
         // finalize the total to bill
@@ -1040,7 +1065,7 @@ class cartController extends expController {
         }
 
         //this should really be reworked, as it shoudn't redirect directly and not return
-        $validateDiscountMessage = $discount->validateDiscount();  //FIXME this has a global $order
+        $validateDiscountMessage = $discount->validateDiscount();
         if ($validateDiscountMessage == "") {
             //if all good, add to cart, otherwise it will have redirected
             $od               = new order_discounts();
@@ -1082,16 +1107,16 @@ class cartController extends expController {
         return false;
     }
 
-    function configure() {
-        expHistory::set('editable', $this->params);
-        $this->loc->src = "@globalcartsettings";
-        $config         = new expConfig($this->loc);
-        $this->config   = $config->config;
-        assign_to_template(array(
-            'config'=> $this->config,
-            'title' => $this->displayname()
-        ));
-    }
+//    function configure() {
+//        expHistory::set('editable', $this->params);
+//        $this->loc->src = "@globalcartsettings";
+//        $config         = new expConfig($this->loc);
+//        $this->config   = $config->config;
+//        assign_to_template(array(
+//            'config'=> $this->config,
+//            'title' => $this->displayname()
+//        ));
+//    }
 
     //this is ran after we alter the quantity of the cart, including
     //delete items or runing the updatequantity action
@@ -1184,13 +1209,13 @@ class cartController extends expController {
         expHistory::back();
     }
 
-    function saveconfig() {
-        // setup and save the config
-        $this->loc->mod = "cart";
-        $this->loc->src = "@globalcartsettings";
-        $this->loc->int = "";
-        parent::saveconfig();
-    }
+//    function saveconfig() {
+//        // setup and save the config
+//        $this->loc->mod = "cart";
+//        $this->loc->src = "@globalcartsettings";
+//        $this->loc->int = "";
+//        parent::saveconfig();
+//    }
 
     /**
      * get the metainfo for this module

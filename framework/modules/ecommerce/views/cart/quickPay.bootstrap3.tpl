@@ -48,14 +48,14 @@
                    <h2>{"Payment Information"|gettext}</h2>
                    <h3>{"Available Payment Methods"|gettext}</h3>
                    <div id="{$id}" class="">
-                       <ul class="nav nav-tabs">
+                       <ul class="nav nav-tabs" role="tablist">
                            {foreach from=$billing->calculator_views item=cviews name=tabs}
-                               <li{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                               <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
                            {/foreach}
                        </ul>
                        <div class="tab-content">
                            {foreach from=$billing->calculator_views item=cviews name=items}
-                               <div id="tab{$smarty.foreach.items.iteration}" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
+                               <div id="tab{$smarty.foreach.items.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                                    {include file=$cviews.view calcid=$cviews.id}
                                </div>
                            {/foreach}
@@ -75,7 +75,7 @@
             <p>{'You\'ve got'|gettext} <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} {'in your cart.'|gettext} {br}
             <a id="expandcart" href="#" class="fox-link">{'Show them?'|gettext}<span></span></a></p>
             <div id="shoppingcartwrapper">
-                {chain controller=cart action=show view=show_quickpay_donation_cart}
+                {chain controller=cart action=quickpay_donation_cart}
             </div>
         </div>
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}

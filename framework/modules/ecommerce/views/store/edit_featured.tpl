@@ -13,11 +13,19 @@
  *
  *}
 
-{control type="hidden" name="tab_loaded[featured]" value=1}
-{control type="checkbox" name="featured[is_featured]" id=is_featured label="Feature this product?"|gettext value=1 checked=$record->is_featured postfalse=1}
-<span id=featured_body>
-{control type="editor" name="featured[featured_body]" label="Featured Product Description"|gettext height=450 value=$record->featured_body}
-</span>
+{if $record->parent_id == 0}
+    {control type="hidden" name="tab_loaded[featured]" value=1}
+    {if count($record->childProduct)}
+        <h2>{'Child products inherit these settings.'|gettext}</h2>
+    {/if}
+    {control type="checkbox" name="featured[is_featured]" id=is_featured label="Feature this product?"|gettext value=1 checked=$record->is_featured postfalse=1}
+    <span id=featured_body>
+        {control type=files name="featured_image" label="Featured Product Image"|gettext subtype="featured_image" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder description="Image to use if this item is a featured product"|gettext}
+        {control type="editor" name="featured[featured_body]" label="Featured Product Description"|gettext height=450 value=$record->featured_body}
+    </span>
+{else}
+	<h2>{'Featured Details'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+{/if}
 
 {script unique="general" yui3mods=1}
 {literal}

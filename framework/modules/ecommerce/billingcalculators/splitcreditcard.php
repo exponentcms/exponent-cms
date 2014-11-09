@@ -151,7 +151,7 @@ class splitcreditcard extends creditcard {
      * @return string
      */
     function textmessage($opts) {
-        global $order;
+        global $order;   //FIXME we do NOT want the global $order
         //FIXME: hard coded text!!
         $message = "Order Number: $order->invoice_id\r\n";
         $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "\r\n";
@@ -167,7 +167,7 @@ class splitcreditcard extends creditcard {
      * @return string
      */
     function htmlmessage($opts) {
-        global $order;
+        global $order;   //FIXME we do NOT want the global $order
         //FIXME: hard coded text!!
         $message = "Order Number: $order->invoice_id<br>";
         $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "<br>";

@@ -41,7 +41,7 @@ class donationController extends expController {
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
-    static function displayname() { return gt("Online Donations"); }
+    static function displayname() { return gt("e-Commerce Online Donations"); }
     static function description() { return gt("Allows you to accept donations on your website"); }
 
     function showall() {

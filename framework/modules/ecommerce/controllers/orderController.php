@@ -1027,7 +1027,8 @@ exit();
         $billingtransaction->billing_cost = $order->grand_total;
         $billingtransaction->save();
 
-        flashAndFlow('message', gt('Payment info updated.'));
+//        flashAndFlow('message', gt('Payment info updated.'));
+        flash('message', gt('Payment info updated.'));
         redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['id']));
     }
 
@@ -1057,7 +1058,7 @@ exit();
     function createReferenceOrder() {
         if (!isset($this->params['id'])) {
             flashAndFlow('error', gt('Unable to process request. Invalid order number.'));
-            expHistory::back();
+//            expHistory::back();
         }
         $order = new order($this->params['id']);
         assign_to_template(array(
@@ -1235,6 +1236,7 @@ exit();
         $change->save();
 
         $tObj                             = new stdClass();
+        $tObj->result                     = new stdClass();
         $tObj->result->errorCode          = 0;
         $tObj->result->message            = "Reference Order Pending";
         $tObj->result->PNREF              = "Pending";
@@ -1311,7 +1313,11 @@ exit();
         $newOrder->update();
 
         flash('message', gt('New Order #') . $newOrder->invoice_id . " " . gt("created successfully."));
-        redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $newOrder->id));
+        if (empty($this->params['no_redirect'])) {
+            redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $newOrder->id));
+        } else {
+            return $newOrder->id;
+        }
     }
 
     function edit_address() {
@@ -1420,7 +1426,8 @@ exit();
         if ($addy->is_default) $db->setUniqueFlag($addy, 'addresses', 'is_default', 'user_id=' . $addy->user_id);
 
         //eDebug($shippingmethod,true);
-        flashAndFlow('message', gt('Address updated.'));
+//        flashAndFlow('message', gt('Address updated.'));
+        flash('message', gt('Address updated.'));
         redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['id']));
     }
 
@@ -1479,20 +1486,25 @@ exit();
         $order->calculateGrandTotal();
         $order->save();
 
-        flashAndFlow('message', gt('Order item removed and order totals updated.'));
-        redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
+//        flashAndFlow('message', gt('Order item removed and order totals updated.'));
+        flash('message', gt('Order item removed and order totals updated.'));
+        if (empty($this->params['no_redirect'])) redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
     }
 
-    function save_order_item() {  //FIXME we need to be able to call this from program with $params also, edit_order_item
-        $oi = new orderitem($this->params['id']);
+    function save_order_item() {
+        if (!empty($this->params['id'])) {
+            $oi = new orderitem($this->params['id']);
+        } else {
+            $oi = new orderitem($this->params);
+        }
         //eDebug($this->params);
 
         /*eDebug($oi);
         eDebug(expUnserialize($oi->options));
         eDebug(expUnserialize($oi->user_input_fields),true);*/
-        $oi->products_price = expUtil::currency_to_float($this->params['products_price']);
+        if (!empty($this->params['products_price'])) $oi->products_price = expUtil::currency_to_float($this->params['products_price']);
         $oi->quantity       = $this->params['quantity'];
-        $oi->products_name  = $this->params['products_name'];
+        if (!empty($this->params['products_name'])) $oi->products_name  = $this->params['products_name'];
 
         if ($oi->product->parent_id != 0) {
             $oi->product = new product($oi->product->parent_id, true, false);
@@ -1503,6 +1515,7 @@ exit();
 
         //eDebug($oi->product,true);
 
+        $options = array();
         foreach ($oi->product->optiongroup as $og) {
             $isOptionEmpty = true;
             if (!empty($this->params['options'][$og->id])) {
@@ -1527,7 +1540,7 @@ exit();
         //check user input fields
         //$this->user_input_fields = expUnserialize($this->user_input_fields);
         //eDebug($this,true);
-        foreach ($oi->product->user_input_fields as $uifkey=> $uif) {
+        if (!empty($oi->product->user_input_fields)) foreach ($oi->product->user_input_fields as $uifkey=> $uif) {
             /*if ($uif['is_required'] || (!$uif['is_required'] && strlen($params['user_input_fields'][$uifkey]) > 0)) 
             {
                 if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length'])
@@ -1584,8 +1597,13 @@ exit();
 //        $order->billingmethod[0]->billingcalculator->calculator->createBillingTransaction($order->billingmethod[0], number_format($order->grand_total, 2, '.', ''), $bmopts->result, $bmopts->result->payment_status);
         $order->save();
 
-        flashAndFlow('message', gt('Order item updated and order totals recalculated.'));
-        redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
+//        flashAndFlow('message', gt('Order item updated and order totals recalculated.'));
+        flash('message', gt('Order item updated and order totals recalculated.'));
+        if (empty($this->params['no_redirect'])) {
+            redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
+        } else {
+            return $oi->id;
+        }
     }
 
     function add_order_item() {
@@ -1624,7 +1642,8 @@ exit();
 //            $bmopts->result->transId = gt('Item added to order');
 //            $order->billingmethod[0]->billingcalculator->calculator->createBillingTransaction($order->billingmethod[0], number_format($order->grand_total, 2, '.', ''), $bmopts->result, $bmopts->result->payment_status);
             $order->save();
-            flashAndFlow('message', gt('Product added to order and order totals recalculated.'));
+//            flashAndFlow('message', gt('Product added to order and order totals recalculated.'));
+            flash('message', gt('Product added to order and order totals recalculated.'));
             redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
         }
         /*else
@@ -1683,7 +1702,8 @@ exit();
 //        $order->billingmethod[0]->billingcalculator->calculator->createBillingTransaction($order->billingmethod[0], number_format($order->grand_total, 2, '.', ''), $bmopts->result, $bmopts->result->payment_status);
         $order->save();
 
-        flashAndFlow('message', gt('Order totals updated.'));
+//        flashAndFlow('message', gt('Order totals updated.'));
+        flash('message', gt('Order totals updated.'));
         redirect_to(array('controller'=> 'order', 'action'=> 'show', 'id'=> $this->params['orderid']));
     }
 

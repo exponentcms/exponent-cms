@@ -31,7 +31,7 @@
     {/if}
     {$myloc=serialize($__loc)}
 
-    {form action=search_by_model_old}
+    {form action=searchByModelForm}
         {control type="text" name="search_string" label=" "}
         {control type="buttongroup" submit="Search"|gettext}
     {/form}

@@ -24,11 +24,11 @@
 <script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
 <script type="text/javascript" src="{$asset_path}js/bubbling.js"></script>
 <script type="text/javascript" src="{$asset_path}js/accordion.js"></script>
+
 <div class="module report dashboard">
     {exp_include file='menu.tpl'}
 
 	<div class="rightcol">
-	
 		<div class="module report abandoned_carts myAccordion">
 			{form action="abandoned_carts"}
                 {"Abandoned Carts From:"|gettext}{br}

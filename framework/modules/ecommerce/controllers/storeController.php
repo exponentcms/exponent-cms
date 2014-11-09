@@ -26,18 +26,18 @@ class storeController extends expController {
     public $basemodel_name = 'product';
 
     public $useractions = array(
-        'showall'                         => 'All Products and Categories',
-        'showallFeaturedProducts'         => 'Products - Only show Featured',
+        'showall'                         => 'Products - All Products and Categories',
+        'showallFeaturedProducts'         => 'Products - Only Featured',
+        'showallCategoryFeaturedProducts' => 'Products - Featured Products under current category',
         'showallManufacturers'            => 'Products - By Manufacturer',
-        'showTopLevel'                    => 'Categories - Show Top Level',
-        'showFullTree'                    => 'Categories - Show Full Tree',  //FIXME image variant needs separate method
-        'showallSubcategories'            => 'Categories - Subcategories of current category',
+        'showTopLevel'                    => 'Product Categories Menu - Show Top Level',
+        'showFullTree'                    => 'Product Categories Menu - Show Full Tree',  //FIXME image variant needs a separate method
+        'showallSubcategories'            => 'Product Categories Menu - Subcategories of current category',
 //        'upcomingEvents'                  => 'Event Registration - Upcoming Events',
 //        'eventsCalendar'                  => 'Event Registration - Calendar View',
-        'ecomSearch'                      => 'Search - Autocomplete',
-        'searchByModelForm'               => 'Search - By Model',  //FIXME broken? doesn't work as initial view
-        'quicklinks'                      => 'Links - Users Links',
-        'showallCategoryFeaturedProducts' => 'Show Featured Products under the current category',  //FIXME broken? doesn't work as initial view
+        'ecomSearch'                      => 'Product Search - Autocomplete',
+        'searchByModel'                   => 'Product Search - By Model',
+        'quicklinks'                      => 'Links - User Links',
         'showGiftCards'                   => 'Gift Cards UI',
     );
 
@@ -84,7 +84,7 @@ class storeController extends expController {
     }
 
     static function description() {
-        return gt("Displays products and categories from your e-Commerce store");
+        return gt("Displays the products and categories in your store");
     }
 
     static function author() {
@@ -127,6 +127,8 @@ class storeController extends expController {
                 }
             } elseif (isset($this->config['category'])) { // the module category to display
                 $default_id = $this->config['category'];
+            } else {
+                $default_id = 0;
             }
 //        } elseif (expTheme::inAction() && !empty($router->url_parts[1]) && ($router->url_parts[0] == "store" && ($router->url_parts[1] == "show" || $router->url_parts[1] == "showByTitle"))) {
         } elseif (!empty($params['action']) && ($params['controller'] == "store" && ($params['action'] == "show" || $params['action'] == "showByTitle" || $params['action'] == "categoryBreadcrumb"))) {
@@ -143,15 +145,17 @@ class storeController extends expController {
             if (!empty($this->config['show_first_category'])) {
                 $default_id = $db->selectValue('storeCategories', 'id', 'lft=1');
             } else {
-                $default_id = 0;
+                $default_id = null;
+                flash('error','store-show first category empty, but default seciton');
             }
         } elseif (!isset($this->config['show_first_category']) && !expTheme::inAction()) {
-            $default_id = 0;
+            $default_id = null;
+            flash('error','store-don\'t show first category empty');
         } else {
-            $default_id = 0;
+            $default_id = null;
         }
-        if (empty($default_id)) $default_id = 0;
-        expSession::set('catid', $default_id);
+//        if (empty($default_id)) $default_id = 0;
+        if (!is_null($default_id)) expSession::set('catid', $default_id);
 
         // figure out if we need to show all categories and products or default to showing the first category.
         // elseif (!empty($this->config['category'])) {
@@ -189,9 +193,10 @@ class storeController extends expController {
 
 //            $order = 'title'; // $order = 'sc.rank'; //$this->config['orderby'];
 //            $dir = 'ASC'; //$this->config['orderby_dir'];
-            $order = !empty($this->params['order']) ? $this->params['order'] : 'title';
-            $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
-            //eDebug($this->config);
+            $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
+            $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
+            if (empty($order)) $order = 'title';
+            if (empty($dir)) $dir = 'ASC';
         } else { // this is an event category
             $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
             $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
@@ -912,7 +917,9 @@ class storeController extends expController {
 //        global $db;
 
         expHistory::set('viewable', $this->params);
-        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('last_ecomm_category');
+//        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('catid');
+        $catid = expSession::get('catid');
+        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? $this->params['cat'] : 0);
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();
@@ -924,8 +931,10 @@ class storeController extends expController {
     }
 
     function showallFeaturedProducts() {
-        $order = 'title';
-        $dir = 'ASC';
+        $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
+        if (empty($order)) $order = 'title';
+        if (empty($dir)) $dir = 'ASC';
 
         $page = new expPaginator(array(
             'model_field' => 'product_type',
@@ -952,10 +961,12 @@ class storeController extends expController {
 
         $curcat = $this->category;
 
-        $order = 'title';
-        $dir = 'ASC';
+        $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
+        $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
+        if (empty($order)) $order = 'title';
+        if (empty($dir)) $dir = 'ASC';
         //FIXME bad sql statement needs to be a JOIN
-        $sql = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product,' . DB_TABLE_PREFIX . '_product_storeCategories WHERE product_id = id and is_featured=1 and storecategories_id =' . $curcat->id;
+        $sql = 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product as p,' . DB_TABLE_PREFIX . '_product_storeCategories as sc WHERE sc.product_id = p.id and p.is_featured=1 and sc.storecategories_id =' . $curcat->id;
         $page = new expPaginator(array(
             'model_field' => 'product_type',
             'sql'         => $sql,
@@ -993,6 +1004,7 @@ class storeController extends expController {
 
     function showTopLevel_images() {
         global $user;
+
         $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
@@ -1193,8 +1205,8 @@ class storeController extends expController {
         uasort($editable_options, array("optiongroup", "sortOptiongroups"));
 
         // get the shipping options and their methods
-        $shipping = new shipping();
-        foreach ($shipping->available_calculators as $calcid => $name) {
+//        $shipping = new shipping();
+        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -1314,8 +1326,8 @@ class storeController extends expController {
         }
 
         // get the shipping options and their methods
-        $shipping = new shipping();
-        foreach ($shipping->available_calculators as $calcid => $name) {
+//        $shipping = new shipping();
+        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -1569,7 +1581,7 @@ class storeController extends expController {
         global $db, $user;
 
         $sql = "select DISTINCT(p.id) as id, p.title, model from " . $db->prefix . "product as p WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
 
         //if first character of search is a -, then we do a wild card, else from beginning
         if ($this->params['query'][0] == '-') {
@@ -1599,10 +1611,10 @@ class storeController extends expController {
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
         $terms = explode(" ", $this->params['query']);
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
-        $sql .= "  from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix .
+        $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
         $sql .= "order by score desc LIMIT 10";
 
@@ -1614,10 +1626,10 @@ class storeController extends expController {
             $res[$set->model] = $set;
         }
 
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix .
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
         $sql .= " OR p.title like '%" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";
@@ -1628,10 +1640,10 @@ class storeController extends expController {
             $res[$set->model] = $set;
         }
 
-        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix .
+        $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '" . $this->params['query'] . "%' ";
         $sql .= " OR p.title like '" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";

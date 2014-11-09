@@ -195,10 +195,10 @@ class ecomconfigController extends expController {
        if ($discount->discount_percent == "") $discount->discount_percent = 0;
        
         // get the shipping options and their methods
-        $shipping = new shipping();
         $shipping_services = array();
         $shipping_methods = array();
-        foreach ($shipping->available_calculators as $calcid=>$name) {
+//        $shipping = new shipping();
+        foreach (shipping::listAvailableCalculators() as $calcid=>$name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();

@@ -184,7 +184,7 @@
             },
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },
-                { sortable: false, targets: [ -1 ] },
+                { orderable: false, targets: [ -1 ] },
             ],
         });
     } );

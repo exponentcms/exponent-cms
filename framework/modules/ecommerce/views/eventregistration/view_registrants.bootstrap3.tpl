@@ -185,7 +185,7 @@
         var table = tableContainer.DataTable({
             columnDefs: [
                 { searchable: false, targets: [ -2 ] },
-                { sortable: false, targets: [ -2 ] },
+                { orderable: false, targets: [ -2 ] },
             ],
             autoWidth: false,
             preDrawCallback: function () {

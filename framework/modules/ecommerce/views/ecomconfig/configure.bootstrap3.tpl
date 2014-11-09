@@ -18,19 +18,19 @@
     <div id="mainform">
         {form action=saveconfig}
             <div id="storetabs" class="">
-                <ul class="nav nav-tabs">
-                    <li class="active"><a href="#tab1" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
-                    <li><a href="#tab2" data-toggle="tab"><em>{'Site'|gettext}</em></a></li>
-                    <li><a href="#tab3" data-toggle="tab"><em>{'Cart'|gettext}</em></a></li>
-                    <li><a href="#tab4" data-toggle="tab"><em>{'Display'|gettext}</em></a></li>
-                    <li><a href="#tab5" data-toggle="tab"><em>{'Invoices'|gettext}</em></a></li>
-                    <li><a href="#tab6" data-toggle="tab"><em>{'Notifications'|gettext}</em></a></li>
-                    <li><a href="#tab7" data-toggle="tab"><em>{'Location'|gettext}</em></a></li>
-                    <li><a href="#tab8" data-toggle="tab"><em>{'Product Feeds'|gettext}</em></a></li>
-                    <li><a href="#tab9" data-toggle="tab"><em>{'Gift Cards'|gettext}</em></a></li>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Site'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Cart'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Display'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Invoices'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Notifications'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab7" role="tab" data-toggle="tab"><em>{'Location'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{'Product Feeds'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{'Gift Cards'|gettext}</em></a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1" class="tab-pane fade in active">
+                    <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                         <h2>{'Store Information'|gettext}</h2>
                         {control type="text" name="storename" label="Store Name"|gettext value=$config.storename|default:'My Store'|gettext focus=1}
            	            {control type="text" name="store[address1]" label="Address"|gettext value=$config.store.address1 required=1}
@@ -40,12 +40,12 @@
            	            {control type="text" name="store[postalCode]" label="Zip Code"|gettext size=10 value=$config.store.postalCode required=1}
                         {*{control type=tel name="store[phone]" label="Phone Number"|gettext value=$calculator->configdata.store.phone}*}
                     </div>
-                    <div id="tab2" class="tab-pane fade">
+                    <div id="tab2" role="tabpanel" class="tab-pane fade">
                         <h2>{"Site Settings"|gettext}</h2>
                         {control type="html" name="ecomheader" label='Header'|gettext rows=6 cols=60 value=$config.ecomheader description='This will be displayed on the top of your emails and invoices.'|gettext}
                         {control type="html" name="ecomfooter" label='Footer'|gettext rows=6 cols=60 value=$config.ecomfooter description='This will be displayed on the bottom of your emails and invoices.'|gettext}
                     </div>
-                    <div id="tab3" class="tab-pane fade">
+                    <div id="tab3" role="tabpanel" class="tab-pane fade">
                         <h2>{"Cart Settings"|gettext}</h2>
                         {control type="checkbox" name="show_cart" label="Adding an Item Displays Shopping Cart?"|gettext value=1 checked=$config.show_cart description='Move directly to the shopping cart after adding a new item?'|gettext}
                         {control type="text" name="min_order" label="Minimum order amount to require"|gettext value=$config.min_order filter=money description='Orders less than this amount will not be allowed to complete a checkout'|gettext}
@@ -62,7 +62,7 @@
                             {control type="textarea" name="ssl_seal" label='SSL Display Seal Code'|gettext rows=6 cols=60 value=$config.ssl_seal description='This will be displayed in various places on your site.'|gettext}
                         {/group}
                     </div>
-                    <div id="tab4" class="tab-pane fade">
+                    <div id="tab4" role="tabpanel" class="tab-pane fade">
                         <h2>{"Display Settings"|gettext}</h2>
                         {group label="Product Listing Pages"|gettext}
                             {control type="number" name="images_per_row" label="Products per Row"|gettext size="3" value=$config.images_per_row|default:3 min=0 max=6 description='0 will use default'|gettext}
@@ -77,7 +77,7 @@
                         {/group}
                         {group label="Pagination and Display"|gettext}
                             {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
-                            {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category}
+                            {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category description='Show first top-level category instead of all top level categories'|gettext}
                         {/group}
                         {*
                         <h2>Sub Category Display</h2>
@@ -90,7 +90,7 @@
                         drop down coming soon...
                         *}
                     </div>
-                    <div id="tab5" class="tab-pane fade">
+                    <div id="tab5" role="tabpanel" class="tab-pane fade">
                         <h2>{'Invoice Settings'|gettext}</h2>
                         {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
                         {control type="checkbox" name="enable_barcode" label="Enable Barcode?"|gettext value=1 checked=$config.enable_barcode}
@@ -104,17 +104,17 @@
                         {/group}
                         </span>
                     </div>
-                    <div id="tab6" class="tab-pane fade">
+                    <div id="tab6" role="tabpanel" class="tab-pane fade">
                         <h2>{'New Order Notifications'|gettext}</h2>
                         {control type="checkbox" name="email_invoice" label="Send email notification of new orders?"|gettext value=1 checked=$config.email_invoice}
                         {*{control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}*}
                         {control type=email name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
                     </div>
-                    <div id="tab7" class="tab-pane fade">
+                    <div id="tab7" role="tabpanel" class="tab-pane fade">
                         <h2>{'General Location Settings'|gettext}</h2>
                         {control type="checkbox" name="address_allow_admins_all" label="Allow admins access to the full geographical data regardless of other settings?"|gettext value=1 checked=$config.address_allow_admins_all}
                     </div>
-                    <div id="tab8" class="tab-pane fade">
+                    <div id="tab8" role="tabpanel" class="tab-pane fade">
                         <h2>{"Product Feeds Settings"|gettext}</h2>
                         <blockquote>
                             {'Allows you to activate online shopping service category selection/matching for your store categories.'|gettext}
@@ -127,7 +127,7 @@
                         {control type="checkbox" name="product_types[Shopping]" label="Shopping Feed"|gettext value="shopping_product_type" checked=$config.product_types.Shopping}
                         {control type="checkbox" name="product_types[PriceGrabber]" label="Price Grabber Feed"|gettext value="pricegrabber_product_type" checked=$config.product_types.PriceGrabber}
                     </div>
-                    <div id="tab9" class="tab-pane fade">
+                    <div id="tab9" role="tabpanel" class="tab-pane fade">
                         <h2>{"Gift Card Settings"|gettext}</h2>
                         {control type="text" name="minimum_gift_card_purchase" label="Minimum Gift Card Purchase"|gettext value=$config.minimum_gift_card_purchase filter=money}
                         {control type="text" name="custom_message_product" label="Custom Message Price"|gettext value=$config.custom_message_product filter=money}

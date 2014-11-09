@@ -16,10 +16,10 @@
 {control type="hidden" name="tab_loaded[shipping]" value=1}
 {control type="checkbox" id="no_shipping" name="shipping[no_shipping]" label='This item doesn\'t require shipping'|gettext value=1 checked=$record->no_shipping postfalse=1}
 <span id="shipping_needed">
-{control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- Select a shipping service --"|gettext items=$shipping_services value=$record->required_shipping_calculator_id}
+{control type="dropdown" name="shipping[required_shipping_calculator_id]" id="required_shipping_calculator_id" label="Required Shipping Service"|gettext includeblank="-- No specific service --"|gettext items=$shipping_services value=$record->required_shipping_calculator_id}
 {foreach from=$shipping_methods key=calcid item=methods name=sm}
     <div id="dd-{$calcid}" class="methods" style="display:none;">
-        {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shipping_method includeblank='No specific method'|gettext}
+        {control type="dropdown" name="required_shipping_methods[`$calcid`]" label="Shipping Methods"|gettext items=$methods value=$record->required_shipping_method includeblank='-- No specific method --'|gettext}
     </div>
 {/foreach}
 {icon controller="shipping" action="manage" text="Manage Shipping Options"|gettext}

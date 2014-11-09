@@ -30,11 +30,11 @@
                 link: makeLink(array('controller'=>'cart','action'=>'cart'))
             ]
             2: [
-                title:  "{'Order Confirmation'|gettext}"
+                title:  "{'Confirmation'|gettext}"
                 link: makeLink(array('controller'=>'cart','action'=>'cart'))
             ]
             3: [
-                title:  "{'Order Complete'|gettext}"
+                title:  "{'Complete'|gettext}"
                 link: makeLink(array('controller'=>'cart','action'=>'cart'))
             ]
             4: [

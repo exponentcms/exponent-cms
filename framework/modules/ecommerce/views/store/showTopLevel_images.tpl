@@ -63,93 +63,93 @@
 
     {if $categories|@count > 0}
         <div class="cats">
-        <{$config.item_level|default:'h2'}>{'Browse Our Store'|gettext}:</{$config.item_level|default:'h2'}>
-        {counter assign="ipcr" name="ipcr" start=1}
-        {foreach name="cats" from=$categories item="cat"}
-            {if $cat->is_active==1 || $user->isAdmin()}
-            
-                {if $smarty.foreach.cats.first || $open_c_row}
-                    <div class="category-row">
-                    {$open_c_row=0}
-                {/if}
-                        
-                <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
-                    {permissions}
-                        <div class="item-actions">
-                            {if $permissions.edit}
-                                {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
+            <{$config.item_level|default:'h2'}>{'Browse Our Store'|gettext}:</{$config.item_level|default:'h2'}>
+            {counter assign="ipcr" name="ipcr" start=1}
+            {foreach name="cats" from=$categories item="cat"}
+                {if $cat->is_active==1 || $user->isAdmin()}
+
+                    {if $smarty.foreach.cats.first || $open_c_row}
+                        <div class="category-row">
+                        {$open_c_row=0}
+                    {/if}
+
+                    <div class="cat{if $cat->is_active!=1} inactive{/if} clearfix">
+                        {permissions}
+                            <div class="item-actions">
+                                {if $permissions.edit}
+                                    {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
+                                {/if}
+                                {if $permissions.delete}
+                                    {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
+                                {/if}
+                            </div>
+                        {/permissions}
+                        <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
+                            {if $cat->getCategoryImage($cat->expFile[0]->id) != ""}
+                                {img file_id=$cat->getCategoryImage($cat->expFile[0]->id) w=100 class="cat-image"}
+                            {else}
+                                {img src="`$asset_path`images/no-image.jpg" w=100 class="cat-image"}
                             {/if}
-                            {if $permissions.delete}
-                                {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
-                            {/if}
-                        </div>
-                    {/permissions}
-                    <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link">
-                        {if $cat->getCategoryImage($cat->expFile[0]->id) != ""}
-                            {img file_id=$cat->getCategoryImage($cat->expFile[0]->id) w=100 class="cat-image"}
-                        {else}
-                            {img src="`$asset_path`images/no-image.jpg" w=100 class="cat-image"}
-                        {/if}
-                    </a>
-                    <h3>
-                        <a href="{link controller=store action=showall title=$cat->sef_url}">
-                            {$cat->title}
                         </a>
-                    </h3>
-                </div>
-                {if $smarty.foreach.cats.last || $ipcr%2==0}
+                        <h3>
+                            <a href="{link controller=store action=showall title=$cat->sef_url}">
+                                {$cat->title}
+                            </a>
+                        </h3>
                     </div>
-                    {$open_c_row=1}
+                    {if $smarty.foreach.cats.last || $ipcr%2==0}
+                        </div>
+                        {$open_c_row=1}
+                    {/if}
+                    {counter name="ipcr"}
                 {/if}
-                {counter name="ipcr"}
-            {/if}
-        {/foreach}
+            {/foreach}
 
-        {* close the row if left open. might happen for non-admins *}
-        {if $open_c_row==0}
-            </div>
-            {$open_c_row=1}
-        {/if}
-    </div>
-    {else}
-    <!--hr/-->
-    <{$config.item_level|default:'h2'}>{'All Products Under'|gettext} {$current_category->title}</{$config.item_level|default:'h2'}>
-
-    {$page->links}
-    {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
-    
-    {script unique="sort-submit" yui3mods="1"}
-    {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-        Y.all('select[name="sortme"]').on('change',function(e){
-            window.location = e.target.get('value');
-        });
-    });
-    {/literal}
-    {/script}
-   
-    <div class="products">
-        {foreach from=$page->records item=listing name=listings}
-            {if $smarty.foreach.listings.iteration%3==0}
-                {$positioninfo=" last-in-row"}
-            {else}
-                {$positioninfo=""}
+            {* close the row if left open. might happen for non-admins *}
+            {if $open_c_row==0}
+                </div>
+                {$open_c_row=1}
             {/if}
-            <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
-
-            {if $positioninfo!="" || $smarty.foreach.listings.last==true}
-                <div class="break">&#160;</div>
-            {/if}
-        {/foreach}
-    </div>
-    {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}    
-    {$page->links}
-    {permissions}
-        {if $permissions.create}
-        <div class="module-actions">
-            {icon class="add" action=create title="Add a new product" text="Add a New Product"}
         </div>
-      {/if}
-    {/permissions}
+    {else}
+        <!--hr/-->
+        <{$config.item_level|default:'h2'}>{'All Products Under'|gettext} {$current_category->title}</{$config.item_level|default:'h2'}>
+
+        {$page->links}
+        {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
+
+        {script unique="sort-submit" yui3mods="1"}
+        {literal}
+            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                Y.all('select[name="sortme"]').on('change',function(e){
+                    window.location = e.target.get('value');
+                });
+            });
+        {/literal}
+        {/script}
+
+        <div class="products">
+            {foreach from=$page->records item=listing name=listings}
+                {if $smarty.foreach.listings.iteration%3==0}
+                    {$positioninfo=" last-in-row"}
+                {else}
+                    {$positioninfo=""}
+                {/if}
+                <div class="product{$positioninfo}">{include file=$listing->getForm('storeListing')}</div>
+
+                {if $positioninfo!="" || $smarty.foreach.listings.last==true}
+                    <div class="break">&#160;</div>
+                {/if}
+            {/foreach}
+        </div>
+        {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
+        {$page->links}
+        {permissions}
+            {if $permissions.create}
+            <div class="module-actions">
+                {icon class="add" action=create title="Add a new product" text="Add a New Product"}
+            </div>
+          {/if}
+        {/permissions}
     {/if} 
 </div>

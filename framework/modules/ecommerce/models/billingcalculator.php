@@ -124,8 +124,6 @@ class billingcalculator extends expRecord {
 
     function createBillingTransaction($method,$amount,$result,$trax_state)
     {
-//        global $order, $db, $user;
-        
         $bt = new billingtransaction();
         $bt->billingmethods_id = $method->id;
         $bt->billingcalculator_id = $method->billingcalculator_id;

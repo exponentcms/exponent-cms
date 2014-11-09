@@ -32,7 +32,7 @@
     {/if}
     {$myloc=serialize($__loc)}
 
-    <div id="catnav">
+    <div id="catnav" class="catnav">
         <ul>
             <li><a href="{link controller=store action=showall}">{'Browse all Products'|gettext}</a></li>
             {foreach from=$ancestors item=ancestor name=path}
@@ -44,7 +44,7 @@
                         <strong>{$ancestor->title}</strong>
                     {/if}
                 </li>
-                {/foreach}      
+            {/foreach}
             {$childdepth=$depth+10}
             {foreach from=$categories item=category}
                 <li style="margin-left: {$childdepth}px">

@@ -529,7 +529,8 @@ class eventregistration extends expRecord {
      * @return bool
      */
     public function process($item, $affects_inventory=false) {
-        global $user, $db, $order;
+//        global $user, $db, $order;
+        global $user, $db;
 
         // save the names of the registrants to the eventregistration table too
         //FIXME we need to be dealing w/ eventregistration_registrants here also/primarily

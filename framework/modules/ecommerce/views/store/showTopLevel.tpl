@@ -13,6 +13,9 @@
  *
  *}
 
+{css unique="ecom-menu" link="`$asset_path`css/ecom-menu.css"}
+
+{/css}
 <div class="module store show-top-level">
     {$depth=0}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
@@ -49,7 +52,7 @@
             </div>
         {/permissions}
     {/if}
-	<div id="catnav">
+	<div id="catnav" class="catnav">
 		<ul>	
 			{foreach from=$categories item=category}
     			{if $category->is_active==1 || $user->is_acting_admin}

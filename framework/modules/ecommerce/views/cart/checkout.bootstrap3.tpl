@@ -35,11 +35,11 @@
                 link: ""
             ]
             3: [
-                title:  "{'Order Confirmation'|gettext}"
+                title:  "{'Confirmation'|gettext}"
                 link: ""
             ]
             4: [
-                title:  "{'Order Complete'|gettext}"
+                title:  "{'Complete'|gettext}"
                 link: ""
             ]
         ]
@@ -102,7 +102,7 @@
 
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
-            {chain controller=cart action=show view=show_cart_only}
+            {chain controller=cart action=cart_only}
         </div>
     </div>
     {clear}
@@ -307,14 +307,14 @@
                 <h2>{"Payment Information"|gettext}</h2>
                 <h3>{"Available Payment Methods"|gettext}</h3>
                 <div id="cart-{$id}" class="">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
                         {foreach from=$billing->calculator_views item=cviews name=tabs}
-                            <li{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                            <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
                         {/foreach}
                     </ul>
                     <div class="tab-content">
                         {foreach from=$billing->calculator_views item=cviews name=calcs}
-                            <div id="tab{$smarty.foreach.calcs.iteration}" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
+                            <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
                                 {include file=$cviews.view calcid=$cviews.id}
                             </div>
                         {/foreach}

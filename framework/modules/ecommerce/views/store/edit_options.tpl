@@ -14,8 +14,11 @@
  *}
 
 {if $record->parent_id == 0}
+    {control type="hidden" name="tab_loaded[options]" value=1}
+    {if count($record->childProduct)}
+        <h2>{'Child products inherit these settings.'|gettext}</h2>
+    {/if}
 	<h2>{'Add options to your product.'|gettext}</h2>
-	{control type="hidden" name="tab_loaded[options]" value=1}
     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
     <blockquote>
         {'By selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}

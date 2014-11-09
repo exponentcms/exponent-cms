@@ -50,7 +50,7 @@
 	            </div>
 	            <div id="tab3">
 	                {*{control type=files name=files subtype=images accept="image/*" value=$record->expFile}*}
-                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
+                    {control type=files label="Main Image"|gettext name=mainimages subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
 	            </div>
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity in stock"|gettext value=$record->quantity}

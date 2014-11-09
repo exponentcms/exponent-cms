@@ -63,8 +63,9 @@ class giftcard extends expRecord {
         return 1;
     }
 
-    function addToCart($params) {
-        global $order; //FIXME we do NOT want the global $order
+    function addToCart($params, $orderid = null) {
+        if ($orderid == null) global $order;
+        else $order = new order($orderid);
 
         expSession::set('params', $params);
         //get the configuration

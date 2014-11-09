@@ -31,7 +31,7 @@
             {/foreach}
         {else}
             {control type="text" name="control_name" label='Name'|gettext value="`$registrant->control_name`" required=1 focus=1}
-            {control type="text" name="value" label='Quantity'|gettext value="`$registrant->value`" required=1}
+            {control type="text" name="value" label='Quantity'|gettext value="`$registrant->value`" required=1 description='Changing the number registered will not change the total cost on the invoice'|gettext}
         {/if}
 
         {*FIXME no longer being stored in registrant record*}

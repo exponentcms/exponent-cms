@@ -53,11 +53,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                     link: ""
                 ]
                 3: [
-                    title:  "{'Order Confirmation'|gettext}"
+                    title:  "{'Confirmation'|gettext}"
                     link: ""
                 ]
                 4: [
-                    title:  "{'Order Complete'|gettext}"
+                    title:  "{'Complete'|gettext}"
                     link: ""
                 ]
             ]

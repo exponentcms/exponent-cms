@@ -35,11 +35,11 @@
                 link: ""
             ]
             3: [
-                title:  "{'Order Confirmation'|gettext}"
+                title:  "{'Confirmation'|gettext}"
                 link: ""
             ]
             4: [
-                title:  "{'Order Complete'|gettext}"
+                title:  "{'Complete'|gettext}"
                 link: ""
             ]
         ]
@@ -100,7 +100,7 @@
 
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
-            {chain controller=cart action=show view=show_cart_only}
+            {chain controller=cart action=cart_only}
         </div>
     </div>
     {clear}

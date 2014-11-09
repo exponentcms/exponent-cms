@@ -14,8 +14,11 @@
  *}
 
 {if $record->parent_id == 0}
+    {control type="hidden" name="tab_loaded[userinput]" value=1}
+    {if count($record->childProduct)}
+        <h2>{'Child products inherit these settings.'|gettext}</h2>
+    {/if}
 	<h2>{'User Input'|gettext}</h2>
-	{control type="hidden" name="tab_loaded[userinput]" value=1} 
 	<blockquote>
         {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}
     </blockquote>

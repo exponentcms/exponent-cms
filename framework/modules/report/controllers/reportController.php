@@ -875,7 +875,7 @@ class reportController extends expController {
     }
 
     function export_user_input_report() {
-        global $order;
+        $order = new order();
         $out = '"ITEM_NAME","QUANTITY","PERSONALIZATION"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -935,7 +935,7 @@ class reportController extends expController {
     }
 
     function export_inventory() {
-        global $order;
+        $order = new order();
         $out = '"BADDR_LAST_NM","ITEM_NAME","ITEM_DESC","ITEM_QUANTITY"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1327,7 +1327,7 @@ class reportController extends expController {
     }
 
     function export_odbc() {
-        global $order;
+        $order = new order();
         $out = '"order_id","shipping_method_id","shipping_option","shipping_cost","firstname","middlename","lastname","organization","address1","address2","city","state","zip","country","phone"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1376,7 +1376,7 @@ class reportController extends expController {
     }
 
     function export_order_items() {
-        global $order;
+        $order = new order();
         $out = '"order_id","quantity","SKU","product_title","firstname","middlename","lastname","organization","address1","address2","city","state","zip"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1423,7 +1423,7 @@ class reportController extends expController {
     }
 
     function export_status_report() {
-        global $order;
+        $order = new order();
         $out = '"ITEM_NAME","ITEM_DESC","ITEM_QUANTITY","ITEM_STATUS"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();

@@ -47,11 +47,7 @@
                                             {*{if $og->allow_multiple}*}
                                                 {*{optiondisplayer product=$listing options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
                                             {*{else}*}
-                                                {*{if $og->required}*}
-                                                    {*{optiondisplayer product=$listing options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}*}
-                                                {*{else}*}
-                                                    {*{optiondisplayer product=$listing options=$og->title view=dropdown display_price_as=diff selected=$params.options}*}
-                                                {*{/if}*}
+                                                {*{optiondisplayer product=$listing options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}*}
                                             {*{/if}*}
                                         {*</div>*}
                                     {*{/if}*}
@@ -92,7 +88,6 @@
                     {/form}
                 </div>
             {/if}
-
 
         {else}
             {if $listing->active_type == 1}
