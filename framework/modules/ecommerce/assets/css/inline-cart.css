@@ -1,5 +1,6 @@
 .cart.show-inline ul {
 	margin-left: 5px;
+	padding-left: 5px;
 }
 
 .cart.show-inline li {
@@ -91,7 +92,7 @@ a.quickcart {
 
 .cart.show-inline .quick-links li a.delete {
 	float: right;
-	right: -24px;
+	right: -10px;
 	margin: 5px;
 }
 

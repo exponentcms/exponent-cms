@@ -26,11 +26,11 @@
         <strong class="attribution">{'Welcome'|gettext} {attribution user=$user display=firstlast}</strong>
     {/if}
     <ul>
-        <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">{'View My Cart'|gettext} ({if $oicount}{$oicount} {'item'|plural:$oicount}{else}{'Empty'|gettext}{/if})</a></li>
-        {if $oicount > 0}
-            <li>
-                <a class="checkoutnow" href="{securelink controller=cart action=checkout}" rel="nofollow">{'Checkout Now'|gettext}</a>
-            </li>
+        {if !$config.hidecart}
+            <li><a class="viewcart" href="{link controller=cart action=show}" rel="nofollow">{'View My Cart'|gettext} ({if $oicount}{$oicount} {'item'|plural:$oicount}{else}{'Empty'|gettext}{/if})</a></li>
+            {if $oicount > 0}
+                <li><a class="checkoutnow" href="{securelink controller=cart action=checkout}" rel="nofollow">{'Checkout Now'|gettext}</a></li>
+            {/if}
         {/if}
         {if $user->id != '' && $user->id != 0}
             <li><a class="profile" href="{link module=users action=viewuser}">{'View My Account'|gettext}</a></li>

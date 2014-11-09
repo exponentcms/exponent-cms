@@ -43,4 +43,10 @@
             </li>
         {/foreach}
     </ul>
+    <div class="module-actions" style="padding:8px; 0">
+        {icon class="view" button=true size=large color=green controller=cart action=show text="View"|gettext title='View your Cart'|gettext}
+        {if $items|@count gt 0}
+            {icon class="shopping-cart" button=true size=large color=green controller=cart action=checkout secure=true text="Checkout"|gettext title='Checkout Now'|gettext}
+        {/if}
+    </div>
 </div>

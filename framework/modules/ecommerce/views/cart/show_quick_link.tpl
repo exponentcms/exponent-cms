@@ -33,17 +33,12 @@
                				{clear}
                			</li>
                		{foreachelse}
-                           <li>
-                               {message class=notice text='Your cart is empty'|gettext}
-                           </li>
-                       {/foreach}
+                        <li>
+                            {message class=notice text='Your cart is empty'|gettext}
+                        </li>
+                    {/foreach}
                	</ul>
                 <em>{"Cart Total"|gettext}: {$order->total|currency}</em>
-                <div class="module-actions" style="padding:8px; 0">
-                    {if $items|@count gt 0}
-                        {icon class="shopping-cart" button=true size=large color=green controller=cart action=checkout secure=true text="Checkout Now"|gettext}
-                    {/if}
-                </div>
             {else}
                 <ul>
                     {foreach from=$items item=item}
@@ -70,6 +65,12 @@
                     {"Total"|gettext}: <span class="carttotal">{$order->total|currency}</span>
                 </div>
             {/if}
+            <div class="module-actions" style="padding:8px; 0">
+                {icon class="view" button=true size=large color=green controller=cart action=show text="View"|gettext title='View your Cart'|gettext}
+                {if $items|@count gt 0}
+                    {icon class="shopping-cart" button=true size=large color=green controller=cart action=checkout secure=true text="Checkout"|gettext title='Checkout Now'|gettext}
+                {/if}
+            </div>
         </div>
     </div>
 </div>
