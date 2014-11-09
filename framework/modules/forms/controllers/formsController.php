@@ -261,7 +261,7 @@ class formsController extends expController {
             if (!empty($f)) {
                 $form = new form();
                 $form->id = $f->sef_url;
-                $form->horizontal = $this->config['style'];
+                $form->horizontal = !empty($this->config['style']);
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly = 0 AND is_static = 0','rank');

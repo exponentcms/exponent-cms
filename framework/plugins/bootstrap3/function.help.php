@@ -49,9 +49,9 @@ function smarty_function_help($params,&$smarty) {
         }
 
         echo '<a class="', $class, '" title="',$title,'" href="',$link,'" target="_blank"><i class="fa fa-question-circle ',expTheme::iconSize(),'"></i> ',$text,'</a>';
-        expCSS::pushToHead(array(
-		    "corecss"=>"admin-global",
-        ));
+//        expCSS::pushToHead(array(
+//		    "corecss"=>"admin-global",
+//        ));
     }
 }
 
