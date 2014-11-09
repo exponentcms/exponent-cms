@@ -95,7 +95,7 @@
 {function name=menu level=0}
     {if is_array($data.submenu)}
         <li class="dropdown-submenu">
-            <a href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
+            <a data-toggle="dropdown" href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
             <ul class="dropdown-menu">
                 {foreach from=$data.submenu.itemdata item=mitem name=sbmenutwo}
                     {menu data=$mitem}
@@ -203,13 +203,33 @@
         $('#workflow-toggle').on('click',workflowtoggle);
     });
 
-    $('.dropdown-toggle').click(function(e) {
+    $('.exp-skin .dropdown-toggle').click(function(e) {
         e.preventDefault();
         setTimeout($.proxy(function() {
             if ('ontouchstart' in document.documentElement) {
                 $(this).siblings('.dropdown-backdrop').off().remove();
             }
         }, this), 0);
+    });
+
+    /**
+      * NAME: Bootstrap 3 Triple Nested Sub-Menus
+      * This script will active Triple level multi drop-down menus in Bootstrap 3.*
+      */
+    $('.exp-skin ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {
+        // Avoid following the href location when clicking
+        event.preventDefault();
+        if ($(this).hasClass('tick')) {
+            $(this).removeClass('tick');
+            $(this).parent().removeClass('open');
+        } else {
+            $(this).addClass('tick');
+            // Avoid having the menu to close when clicking
+            event.stopPropagation();
+            // Re-add .open to parent sub-menu item
+            $(this).parent().addClass('open');
+            $(this).parent().find("ul").parent().find("li.dropdown").addClass('open');
+        }
     });
 
     $(document).ready(function(){
