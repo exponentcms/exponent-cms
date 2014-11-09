@@ -11,6 +11,23 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Added / Fixed / Changed for 2.3.2
 -----------------------
 ### Remove all YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.1
+  * !!! Fixes possible cross-site security issue
+  * adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
+  * adds bootstrap 2 multi-column container module views
+  * adds lightbox option to mediaplayer showall view, allows grid of icons
+  * adds optional 'date badge' to motd show view
+  * adds (fixes) bootstrap 3 form 'horizontal' controls (label beside control instead of above)
+  * updates many ecommerce features, especially for bootstrap 3
+    * new filter-able and color coded manage orders view
+    * completely revised bootstrap 'show order' view for easier order management
+    * adds ecommerce navigation 'breadcrumb'on store show and showall views
+    * adds checkout sequence 'breadcrumb' to show user checkout progress
+    * adds new shipping calculators - by item & by weight
+    * changes ecommerce 'meta' tags to display store name instead of site name
+    * now allows for either origin or destination sales tax; taxable shipping costs; entered tax rates may now be disabled
+  * adds optional 0.9x theme compatibility by setting OLD_THEME_COMPATIBLE constant
+  * updates database manager display to be 'responsive' for smaller screens
+  - includes all fixes from v2.3.1 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -36,7 +53,7 @@ Added / Fixed / Changed for 2.3.1
   - adds .less file compilation minification setting, and better error trapping on compilation error
   - fixes loading of ckeditor & tinymce if linked js is minified
   - adds new Portuguese translation
-  - includes all fixes from v2.3.0 patches 1 - 4 plus the following bug fixes
+  - includes all fixes from v2.3.0 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
