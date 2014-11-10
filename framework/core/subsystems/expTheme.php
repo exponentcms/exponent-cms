@@ -193,10 +193,6 @@ class expTheme {
 	        $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
         }
 
-        // clean up meta tag output
-        foreach ($metainfo as $key=>$value) {
-            $metainfo[$key] = expString::parseAndTrim($value, true);
-        }
         return $metainfo;
     }
 
@@ -315,12 +311,7 @@ class expTheme {
 //		$mobile = self::is_mobile();
 
 		// if we are in an action, get the particulars for the module
-        if (self::inAction()) {
-//            $module = isset($_REQUEST['module']) ? expString::sanitize(
-//                $_REQUEST['module']
-//            ) : expString::sanitize($_REQUEST['controller']);
-            $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
-        }
+		if (self::inAction()) $module = isset($_REQUEST['module']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize($_REQUEST['controller']);
 
 		// if we are in an action and have action maps to work with...
 		if (self::inAction() && (!empty($action_maps[$module]) && (array_key_exists($_REQUEST['action'], $action_maps[$module]) || array_key_exists('*', $action_maps[$module])))) {
@@ -458,9 +449,6 @@ class expTheme {
 	 * @return bool
 	 */
 	public static function runAction() {
-        // clean our passed parameters
-        expString::sanitize_array($_REQUEST);
-
 		if (self::inAction()) {
 			if (!AUTHORIZED_SECTION) {
 				echo SITE_403_HTML;
@@ -471,7 +459,7 @@ class expTheme {
 //			}
 
 			//FIXME: module/controller glue code..remove ASAP
-            $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
+			$module = empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize($_REQUEST['controller']);
 			$isController = expModules::controllerExists($module);
 
 			if ($isController && !isset($_REQUEST['_common'])) {
@@ -531,11 +519,9 @@ class expTheme {
 
    		$actfile = "/" . $module . "/actions/" . $action . ".php";
    		if (isset($params)) {
-//   			foreach ($params as $key => $value) {
-//                $_GET[$key] = $value;
-//                $_GET[$key] = expString::sanitize($value);
-//   			}
-            expString::sanitize_array($_GET);
+   			foreach ($params as $key => $value) {
+   				$_GET[$key] = $value;
+   			}
    		}
    		//if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
