@@ -262,7 +262,7 @@ class expString {
         if (!empty($data['controller']) && $data['controller'] == 'snippet') {
             $saved_params['body'] = $data['body'];
         }
-        array_walk_recursive($data, array('self','sanitize'));
+        array_walk($data, array('self','sanitize'));
         if (!empty($saved_params)) {
             $data = array_merge($data, $saved_params);
         }
