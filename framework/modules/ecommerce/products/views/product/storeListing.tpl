@@ -91,9 +91,9 @@
 
         {else}
             {if $listing->active_type == 1}
-                <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=grey}">{"View Item"|gettext}</a>
+                <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=grey size=large}">{"View Item"|gettext}</a>
             {elseif $listing->active_type == 2 && $user->isAdmin()}
-                <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=red}">{"View Item"|gettext}</a>
+                <a href="{link controller=store action=show title=$listing->sef_url}" class="exp-ecom-link {button_style color=red size=large}">{"View Item"|gettext}</a>
             {/if}
         {/if}
     </div>
@@ -138,9 +138,8 @@
         <!-- a href="{link controller=store action=show title=$listing->sef_url}" class="prod-img">
             {img file_id=$listing->expFile.mainimage[0]->id w=135}
         </a -->
-        <p class="bodycopy">
-            {*{$listing->summary}*}
+        <div class="bodycopy">
             {$listing->body}
-        </p>
+        </div>
     </div>
 </div>

@@ -568,9 +568,10 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 
         //FIXME not sure this is the correct sql, not sure what we are trying to pull out
-        $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_storeCategories sc ON psc.storecategories_id = sc.parent_id WHERE ';
-        $sql .= 'p.parent_id=0 AND sc.parent_id != 0';
+        $sql = 'SELECT DISTINCT(p.id),p.product_type FROM ' . DB_TABLE_PREFIX . '_product p ';
+        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories psc ON p.id = psc.product_id ';
+        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_storeCategories sc ON psc.storecategories_id = sc.parent_id ';
+        $sql .= 'WHERE p.parent_id=0 AND sc.parent_id != 0';
 
         expSession::set('product_export_query', $sql);
 

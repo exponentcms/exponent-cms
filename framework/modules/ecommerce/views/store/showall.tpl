@@ -19,10 +19,10 @@
  
 <div class="module store showall">
     <div class="category-breadcrumb">
-        <a href="{link controller=store action=showall}" title="View the Store"|gettext>{'Store'|gettext}</a>&#160;&raquo;&#160;
+        <a href="{link controller=store action=showall}" title="View the Store"|gettext>{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
         {foreach from=$ancestors item=ancestor name=path}
             {if !$smarty.foreach.path.last}
-                <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="View this Product Category"|gettext>{$ancestor->title}</a>&#160;&raquo;&#160;
+                <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="View this Product Category"|gettext>{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
             {else}
                 {$ancestor->title}
             {/if}
@@ -33,15 +33,15 @@
         <{$config.heading_level|default:'h1'}>{$current_category->title}</{$config.heading_level|default:'h1'}>
     {/if}
     {permissions}
-    <div class="module-actions">
-        {if $permissions.create}
-            {icon class="add" action=create text="Add a Product"|gettext}
-        {/if}
-        {if $permissions.manage}
-            {icon action=manage text="Manage Products"|gettext}
-            {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
-        {/if}
-    </div>
+        <div class="module-actions">
+            {if $permissions.create}
+                {icon class="add" action=create text="Add a Product"|gettext}
+            {/if}
+            {if $permissions.manage}
+                {icon action=manage text="Manage Products"|gettext}
+                {icon controller=storeCategory action=manage text="Manage Store Categories"|gettext}
+            {/if}
+        </div>
     {/permissions}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
