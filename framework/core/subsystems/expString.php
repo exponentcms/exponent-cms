@@ -257,7 +257,15 @@ class expString {
     {
         if (is_string($data)) return self::sanitize($data);
 
+        // code snippets must be allowed to pass <script> tags
+        $saved_params = array();
+        if (!empty($data['controller']) && $data['controller'] == 'snippet') {
+            $saved_params['body'] = $data['body'];
+        }
         array_walk_recursive($data, array('self','sanitize'));
+        if (!empty($saved_params)) {
+            $data = array_merge($data, $saved_params);
+        }
         return $data;
     }
 
