@@ -242,7 +242,7 @@ class expString {
         $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
 
         // remove old tag fragments
-        $data = str_replace(array('\">','\"/>'), '', $data);
+//        $data = str_replace(array('\">','\"/>'), '', $data);
         return $data;
     }
 
