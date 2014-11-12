@@ -32,6 +32,9 @@ class expTheme
         // Initialize the theme subsystem 1.0 compatibility layer
 //		require_once(BASE.'framework/core/compat/theme.php');
 
+        // Initialize the theme subsystem 1.0 compatibility layer if requested
+		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE) require_once(BASE.'framework/core/compat/theme.php');
+
         if (!defined('DISPLAY_THEME')) {
             /* exdoc
              * The directory and class name of the current active theme.  This may be different
@@ -289,6 +292,8 @@ class expTheme
         // favicon
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.ico')) {
             $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.ico" type="image/x-icon" ' . XHTML_CLOSING . '>' . "\n";
+        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.png')) {
+            $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.png" ' . XHTML_CLOSING . '>' . "\n";
         }
         // touch icons
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon.png')) {
@@ -297,6 +302,9 @@ class expTheme
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png')) {
             $str .= "\t" . '<link rel="apple-touch-icon-precomposed" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png" ' . XHTML_CLOSING . '>' . "\n";
         }
+
+        // when minification is used, the comment below gets replaced when the buffer is dumped
+        $str .= '<!-- MINIFY REPLACE -->';
 
         if ($config['meta']['ie_compat']) {
             // some IE 6 support
@@ -311,9 +319,6 @@ class expTheme
             // canvas support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
         }
-
-        // when minification is used, the comment below gets replaced when the buffer is dumped
-        $str .= '<!-- MINIFY REPLACE -->';
 
         return $str;
     }
@@ -381,6 +386,10 @@ class expTheme
             $metainfo['nofollow'] = empty($sectionObj->nofollow) ? false : $sectionObj->nofollow;
         }
 
+        // clean up meta tag output
+        foreach ($metainfo as $key=>$value) {
+            $metainfo[$key] = expString::parseAndTrim($value, true);
+        }
         return $metainfo;
     }
 
@@ -523,6 +532,7 @@ class expTheme
             $module = isset($_REQUEST['module']) ? expString::sanitize(
                 $_REQUEST['module']
             ) : expString::sanitize($_REQUEST['controller']);
+//            $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
         }
 
         // if we are in an action and have action maps to work with...
@@ -818,18 +828,20 @@ class expTheme
     {
         global $db;
 
-        if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
-            echo show_msg_queue();
         if ((!defined('SOURCE_SELECTOR') || SOURCE_SELECTOR == 1)) {
             $last_section = expSession::get("last_section");
             $section = $db->selectObject("section", "id=" . $last_section);
             // View authorization will be taken care of by the runAction and mainContainer functions
             if (self::inAction()) {
+                if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
+                    echo show_msg_queue();
                 self::runAction();
             } else {
                 if ($section == null) {
                     self::goDefaultSection();
                 } else {
+                    if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF)
+                        echo show_msg_queue();
                     self::mainContainer();
                 }
             }
