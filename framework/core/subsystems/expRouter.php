@@ -482,7 +482,7 @@ class expRouter {
 
         // pass off the name<=>value pairs
         foreach ($return_params['url_parts'] as $key => $value) {
-            $save_value = $value;
+            $save_value = expString::sanitize($value);
             $_REQUEST[$key] = $save_value;
             $_GET[$key] = $save_value;
         }
@@ -495,9 +495,9 @@ class expRouter {
         if ($this->url_style == 'sef') {
             $url .= substr(PATH_RELATIVE, 0, -1) . $this->sefPath;
         } else {
-            $url .= (empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI'];
+            $url .= urldecode((empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI']);
         }
-        return $url;
+        return expString::sanitize($url);
     }
 
     public static function encode($url) {
@@ -604,12 +604,13 @@ class expRouter {
             }
         } elseif ($this->url_type == 'post') {
             if (isset($_REQUEST['PHPSESSID'])) unset($_REQUEST['PHPSESSID']);
-            foreach ($_REQUEST as $name => $val) {
-                $params[$name] = $val;
+//            foreach ($_REQUEST as $name => $val) {
+//                $params[$name] = $val;
+//            }
+            $params = expString::sanitize_array($_REQUEST);
             }
-        }
-        //TODO: fully sanitize all params values here for 
-        if (isset($params['src'])) $params['src'] = htmlspecialchars($params['src']);
+        //TODO: fully sanitize all params values here for ---We already do this!
+//        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
         return $params;
     }
 
@@ -680,6 +681,9 @@ class expRouter {
                 }
             }
         }
+        if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
+        // santize it
+        $this->sefPath = expString::sanitize($this->sefPath);
     }
 
     public function getSection() {
