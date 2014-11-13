@@ -21,10 +21,10 @@
 // magic quotes feature was removed in php 5.4.0
 if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
 {
-    $_GET = json_decode(stripslashes(json_encode($_GET, JSON_HEX_APOS)), true);
-    $_POST = json_decode(stripslashes(json_encode($_POST, JSON_HEX_APOS)), true);
-    $_COOKIE = json_decode(stripslashes(json_encode($_COOKIE, JSON_HEX_APOS)), true);
-    $_REQUEST = json_decode(stripslashes(json_encode($_REQUEST, JSON_HEX_APOS)), true);
+    $_REQUEST = array_map('stripslashes', $_REQUEST);
+    $_GET = array_map('stripslashes', $_GET);
+    $_POST = array_map('stripslashes', $_POST);
+    $_COOKIE = array_map('stripslashes', $_COOKIE);
 }
 
 // for scripts that want to bootstrap minimally, we will need _realpath()
