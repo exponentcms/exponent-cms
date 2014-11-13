@@ -1047,6 +1047,11 @@
     margin-left: 0;
     margin-right: 0;
   }
+  .jstree-default-dark-responsive .addpage, .jstree-default-dark-responsive .addextpage,
+  .jstree-default-dark-responsive .addintpage, .jstree-default-dark-responsive .addfreeform,
+  .jstree-default-dark-responsive .addsapage {
+	background-size: 32px, 32px;
+  }
 }
 .jstree-default-dark {
   background: #333;
@@ -1093,23 +1098,23 @@
   background: transparent;
 }
 
-.jstree-default .addpage, .jstree-default-contextmenu .addpage {
+.jstree-default-dark .addpage, .jstree-default-dark-contextmenu .addpage {
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page.png);
     background-repeat: no-repeat;
 }
-.jstree-default .addextpage, .jstree-default-contextmenu .addextpage {
+.jstree-default-dark .addextpage, .jstree-default-dark-contextmenu .addextpage {
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page_world.png);
     background-repeat: no-repeat;
 }
-.jstree-default .addintpage, .jstree-default-contextmenu .addintpage {
+.jstree-default-dark .addintpage, .jstree-default-dark-contextmenu .addintpage {
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page_link.png);
     background-repeat: no-repeat;
 }
-.jstree-default .addfreeform, .jstree-default-contextmenu .addfreeform {
+.jstree-default-dark .addfreeform, .jstree-default-dark-contextmenu .addfreeform {
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page_edit.png);
     background-repeat: no-repeat;
 }
-.jstree-default .addsapage, .jstree-default-contextmenu .addsapage {
+.jstree-default-dark .addsapage, .jstree-default-dark-contextmenu .addsapage {
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page_go.png);
     background-repeat: no-repeat;
 }

@@ -1047,6 +1047,11 @@
     margin-left: 0;
     margin-right: 0;
   }
+  .jstree-default-responsive .addpage, .jstree-default-responsive .addextpage,
+  .jstree-default-responsive .addintpage, .jstree-default-responsive .addfreeform,
+  .jstree-default-responsive .addsapage {
+    background-size: 32px, 32px;
+  }
 }
 
 .jstree-default .addpage, .jstree-default-contextmenu .addpage {

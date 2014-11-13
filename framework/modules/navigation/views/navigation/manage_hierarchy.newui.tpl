@@ -57,6 +57,7 @@
                 },
                 'check_callback' : true,
                 'themes' : {
+                    'name': 'proton',
                     'responsive' : true,
                     'url' : true,
                     'dots' : false,
