@@ -493,9 +493,10 @@ class expTheme
 
         // if we are in an action, get the particulars for the module
         if (self::inAction()) {
-            $module = isset($_REQUEST['module']) ? expString::sanitize(
-                $_REQUEST['module']
-            ) : expString::sanitize($_REQUEST['controller']);
+//            $module = isset($_REQUEST['module']) ? expString::sanitize(
+//                $_REQUEST['module']
+//            ) : expString::sanitize($_REQUEST['controller']);
+            $module = isset($_REQUEST['module']) ? $_REQUEST['module'] : $_REQUEST['controller'];
         }
 
         // if we are in an action and have action maps to work with...
@@ -663,10 +664,14 @@ class expTheme
 //				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 //			}
 
+            // clean our passed parameters
+//            foreach ($_REQUEST as $key=>$param) {
+//                $_REQUEST[$key] = expString::sanitize($param);
+//            }
+            expString::sanitize_array($_REQUEST);
+
             //FIXME: module/controller glue code..remove ASAP
-            $module = empty($_REQUEST['controller']) ? expString::sanitize($_REQUEST['module']) : expString::sanitize(
-                $_REQUEST['controller']
-            );
+            $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
 //			$isController = expModules::controllerExists($module);
 
 //			if ($isController && !isset($_REQUEST['_common'])) {
@@ -737,10 +742,12 @@ class expTheme
 
         $actfile = "/" . $module . "/actions/" . $action . ".php";
         if (isset($params)) {
-            foreach ($params as $key => $value) {
-                $_GET[$key] = $value;
+//            foreach ($params as $key => $value) {
+////                $_GET[$key] = $value;
+//                $_GET[$key] = expString::sanitize($value);
+//            }
+            expString::sanitize_array($_GET);
             }
-        }
         //if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
         if (is_readable(BASE . "themes/" . DISPLAY_THEME . "/modules" . $actfile)) {
@@ -748,6 +755,10 @@ class expTheme
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
         } else {
+            // clean our passed parameters
+            foreach ($_REQUEST as $key=>$param) {
+                $_REQUEST[$key] = expString::sanitize($param);
+            }
 //   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
             notfoundController::handle_not_found();
             echo '<br /><hr size="1" />';
