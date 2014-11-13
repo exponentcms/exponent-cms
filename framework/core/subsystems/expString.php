@@ -231,15 +231,15 @@ class expString {
             $data = stripslashes($data);
         }
 
-//        // a mySQL connection is required before using this function
-//        if ($db->havedb) {
-//            $data = $db->escapeString($data);
-//        } else {
-//            $data = self::escape($data);
-//        }
-//
-//        // re-escape newlines
-//        $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
+        // a mySQL connection is required before using this function
+        if ($db->havedb) {
+            $data = $db->escapeString($data);
+        } else {
+            $data = self::escape($data);
+        }
+
+        // re-escape newlines
+        $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
 
         // remove old tag fragments
 //        $data = str_replace(array('\">','\"/>'), '', $data);
