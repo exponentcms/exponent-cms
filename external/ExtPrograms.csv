@@ -19,9 +19,9 @@ iCalCreator,2.2,kigkonsult.se/iCalcreator,2.2,Fixed $baseline to baseline bug
 lessphp,0.4.0,leafo.net/lessphp,0.4.0,will not compile bootstrap v3+
 less.php,1.7.0.2exp,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.0,twitter.github.com/bootstrap,3.3.0,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.3.1,twitter.github.com/bootstrap,3.3.1,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.0,bootswatch.com/,3.3.0,
+Bootswatch,3.3.1+1,bootswatch.com/,3.3.1+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.2.0,fortawesome.github.com/Font-Awesome,4.2.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,we add some system user checks in design.inc
@@ -46,7 +46,7 @@ validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.5.0,http://trentrichardson.com/examples/timepicker/,1.5.0,used by adminer
-DataTables,1.10.3,http://www.datatables.net,1.10.3,includes boostrap integration w/ renamed bootstrap3 versions
+DataTables,1.10.4,http://www.datatables.net,1.10.4,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.3,http://www.datatables.net,2.2.3,
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
 yadcf,0.8.5,https://github.com/vedmack/yadcf,0.8.5,
