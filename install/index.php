@@ -24,7 +24,7 @@ if (isset($_REQUEST['lang'])) {
 }
 if (isset($_POST['sc']['LANGUAGE'])) {
     if (!defined('LANGUAGE')) {
-        define('LANGUAGE', expString::sanitize($_POST['sc']['LANGUAGE']));
+        define('LANGUAGE', $_POST['sc']['LANGUAGE']);
     }
 }
 
