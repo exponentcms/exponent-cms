@@ -868,7 +868,7 @@ class order extends expRecord {
         $os = new order_status();
         $oss = $os->find('first', 'is_default=1');
         //eDebug($ots,true);
-        return $oss->id;
+        return !empty($oss->id) ? $oss->id : null;
     }
 
     /*public function setDefaultStatus() {
