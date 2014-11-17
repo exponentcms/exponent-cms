@@ -22,6 +22,10 @@ if (!defined('EXPONENT')) {
 
 global $db, $user, $router;
 
+$active = ECOM;
+if (empty($active))
+    return false;
+
 if (!$user->isAdmin()) {
     $viewregperms = $db->selectValue(
         'userpermission',

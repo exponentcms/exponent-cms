@@ -104,7 +104,6 @@ class controllertemplate extends basetemplate {
         $this->tpl->setTemplateDir($this->viewdir);
 
         $this->tpl->setCompileDir(BASE . 'tmp/views_c');
-//		$this->tpl->compile_id = md5($this->viewfile);
         $this->tpl->compile_id = framework() . '_' . md5($this->viewfile);
 
 		$this->tpl->assign("__view", $this->view);

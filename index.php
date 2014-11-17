@@ -51,9 +51,7 @@ $router->routeRequest();
 //if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
 //  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
 //  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
-if ($db->selectValue('modstate', 'active', 'module="store"') ||
-  $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
-  $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM) {
+if (ecom_active()) {
     define('ECOM',1);
     $order = order::getUserCart();  // set global store $order
     // global store config

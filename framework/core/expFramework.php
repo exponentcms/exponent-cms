@@ -240,7 +240,7 @@ $timer = null;
 $order = null;
 
 /**
- * Main module display logic/routine for MVC modules
+ * Main module action/display logic/routine; initializes/checks controller before calling action/method
  *
  * @param array $parms
  * @return bool|mixed|string
@@ -258,15 +258,12 @@ function renderAction(array $parms=array()) {
     }
 
     if (isset($parms['view'])) $parms['view'] = urldecode($parms['view']);
-    // Figure out the action to use...if the specified action doesn't exist then
-    // we look for the index action.
+    // Figure out the action to use...if the specified action doesn't exist then we look for the showall action.
     if ($controllerClass->hasMethod($parms['action'])) {
         $action = $parms['action'];
-        /* TODO:  Not sure if this needs to be here. FJD
+        /* TODO:  Not sure if we need to check for private methods to be here. FJD
 		$meth = $controllerClass->getMethod($action);
         if ($meth->isPrivate()) expQueue::flashAndFlow('error', gt('The requested action could not be performed: Action not found'));*/
-//    } elseif ($controllerClass->hasMethod('index')) {
-//        $action = 'index';
     } elseif ($controllerClass->hasMethod('showall')) {
         $parms['action'] = 'showall';
         $action = 'showall';
@@ -278,12 +275,12 @@ function renderAction(array $parms=array()) {
     $src = isset($parms['src']) ? $parms['src'] : null;
     $controller = new $fullControllerName($src, $parms);    
     
-    //Set up the template to use for this action
+    //Set up the correct template to use for this action
     global $template;
     $view = !empty($parms['view']) ? $parms['view'] : $action;
     $template = expTemplate::get_template_for_action($controller, $view, $controller->loc);
     
-     //setup some default models for this controller's actions to use
+    //setup default model(s) for this controller's actions to use
     foreach ($controller->getModels() as $model) {
         $controller->$model = new $model(null,false,false);   //added null,false,false to reduce unnecessary queries. FJD
         // flag for needing approval check
@@ -298,9 +295,10 @@ function renderAction(array $parms=array()) {
         }
     }
 
+// FIXME this is now handled by the template class during get_template_for_action since it only sets template variables
     // have the controller assign knowledge about itself to the template.
     // this has to be done after the controller gets the template for its actions
-//    $controller->moduleSelfAwareness();  // FIXME this is now handled by the template class during get_template_for_action
+//    $controller->moduleSelfAwareness();
 
     //if this controller is being called by a container then we should have a module title.
     if (isset($parms['moduletitle'])) {
@@ -313,8 +311,6 @@ function renderAction(array $parms=array()) {
         $template->assign('moduletitle', $db->selectValue('container', 'title', "internal='".serialize($title)."'"));
     }
 
-    // add the $_REQUEST values to the controller <- pb: took this out and passed in the params to the controller constructor above
-    //$controller->params = $parms;
     // check the perms for this action
     $perms = $controller->permissions();
     
@@ -324,6 +320,7 @@ function renderAction(array $parms=array()) {
     // the action. To safeguard, we'll catch if the action is update and change it either to create or
     // edit depending on whether an id param is passed to. that should be sufficient.
     $common_action = null;
+    //FIXME do we also need to account for actions with camelcase action/perm such as editItem ???
     if ($parms['action'] == 'update') {
         $perm_action = (!isset($parms['id']) || $parms['id'] == 0) ? 'create' : 'edit';
     } elseif ($parms['action'] == 'edit' && (!isset($parms['id']) || $parms['id'] == 0)) {
@@ -391,6 +388,7 @@ function renderAction(array $parms=array()) {
         }
     }
 
+    //FIXME? if the assoc $perm doesn't exist, the 'action' will ALWAYS be allowed, e.g., default is to allow action
     if (array_key_exists($perm_action, $perms)) {
         if (!expPermissions::check($perm_action, $controller->loc)) {
             if (expTheme::inAction()) {
@@ -432,11 +430,6 @@ function renderAction(array $parms=array()) {
     // register this controllers permissions to the view for in view perm checks
     $template->register_permissions(array_keys($perms), $controller->loc);
     
-    // pass this controllers config to the view
-//    $template->assign('config', $controller->config);
-    // assign the controllers basemodel to the view
-//    $template->assign('modelname', $controller->basemodel_name);
-
     // globalizing $user inside all templates
     $template->assign('user', $user);
 
@@ -885,6 +878,17 @@ function curPageURL() {
         $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     }
     return $pageURL;
+}
+
+/**
+ * Return status of e-commerce
+ */
+function ecom_active() {
+    global $db;
+
+    return ($db->selectValue('modstate', 'active', 'module="store"') ||
+        $db->selectValue('modstate', 'active', 'module="eventregistration"') ||
+        $db->selectValue('modstate', 'active', 'module="donation"') || FORCE_ECOM);
 }
 
 /**
