@@ -33,9 +33,9 @@ class expRecord {
     public $grouping_sql = '';
 
     // associated objects
-    public $has_extended_fields = array();
-    public $has_one = array();
-    public $has_many = array();
+    public $has_extended_fields = array();  // add single object db fields to this object (not the object methods)
+    public $has_one = array();  // associate single object w/ matching id
+    public $has_many = array();  // associate all objects w/ matching id's
     public $has_many_self = array();
     public $has_and_belongs_to_many = array();
     public $has_and_belongs_to_self = array();
@@ -57,7 +57,7 @@ class expRecord {
         'content_expTags'=>'expTag',
     );*/
     public $attachable_items_to_save;
-    // what associated objects should also receive attachments when associated
+    // what associated objects should also receive their attachments when associated
     public $get_attachable_for = array();
 
     // field validation settings
@@ -879,6 +879,11 @@ class expRecord {
         }
     }
 
+    /**
+     *  used for import/export
+     *
+     * @return array
+     */
     function getAttachableItemTables() {
         return $this->attachable_item_types;
     }
@@ -1114,10 +1119,10 @@ class expRecord {
      *
      * @return null|string
      */
-    public function getPoster() {
+    public function getPoster($display = null) {
         if (isset($this->poster)) {
             $user = new user($this->poster);
-            return user::getUserAttribution($user->id);
+            return user::getUserAttribution($user->id, $display);
         } else {
             return null;
         }
@@ -1132,6 +1137,7 @@ class expRecord {
      */
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
+        elseif ($type == 'publish') $getType = 'publish';
         else $getType = 'edited_at';
         if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;

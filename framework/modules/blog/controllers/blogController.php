@@ -296,7 +296,7 @@ class blogController extends expController {
     }
 
     /**
-     * additional check for display of search hit, only display non=draft
+     * additional check for display of search hit, only display non-draft
      *
      * @param $record
      *
