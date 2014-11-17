@@ -734,17 +734,18 @@ class expRecord {
     public function delete($where = '') {
         global $db;
 
-        if (empty($this->id)) return false;
+        $id = $this->identifier;
+        if (empty($this->$id)) return false;
         $this->beforeDelete();
-        $db->delete($this->tablename, 'id=' . $this->id);
+        $db->delete($this->tablename, $id . '=' . $this->$id);
         if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
         if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
 
         // delete attached items
         foreach ($this->attachable_item_types as $content_table=> $type) {
-            $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id);
+            $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->$id);
         }
-        //FIXME shouldn't we also delete associated items or leave them to the afterDelete method?
+        // leave associated items to the model afterDelete method?
         $this->afterDelete();
     }
 
