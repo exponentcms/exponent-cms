@@ -41,10 +41,10 @@ class navigationController extends expController {
         'view' => "View Page"
     );
     protected $remove_permissions = array(
-        'configure',
-        'create',
-        'delete',
-        'edit'
+//        'configure',
+//        'create',
+//        'delete',
+//        'edit'
     );
 //    public $codequality = 'beta';
 
@@ -930,7 +930,7 @@ class navigationController extends expController {
         expSession::clearAllUsersSessionCache('navigation');
     }
 
-    function add_section() {
+    function edit_section() {
         global $db, $user;
 
         $parent = new section($this->params['parent']);
