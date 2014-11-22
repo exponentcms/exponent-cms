@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showallorders" corecss="tables,datatables-tools"}
+{css unique="yadcf" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }

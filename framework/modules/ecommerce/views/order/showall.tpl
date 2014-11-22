@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="showallorders" corecss="tables,datatables-tools"}
+{css unique="yadcf" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -48,7 +48,7 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>{br}
     {/if}
-    <table id="orders" class="exp-skin-table">
+    <table id="orders">
         <thead>
             <tr>
                 <!--th><span>Purchased By</span></th-->
