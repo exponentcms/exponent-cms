@@ -448,7 +448,8 @@ class fileController extends expController {
         global $user;
 
         $error = false;
-        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
+//        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
+        $this->params['files'] = stripslashes($this->params['files']);
         $files = json_decode($this->params['files']);
         switch (json_last_error()) {  //FIXME json error checking/reporting, may no longer be needed
             case JSON_ERROR_NONE:
