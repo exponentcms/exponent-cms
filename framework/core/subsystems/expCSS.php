@@ -430,7 +430,7 @@ class expCSS {
                             }
                             return true;
                         } catch(Exception $e) {
-                            flash('error', gt('Less compiler') . ': ' .$e->getMessage());
+                            flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
                         }
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
