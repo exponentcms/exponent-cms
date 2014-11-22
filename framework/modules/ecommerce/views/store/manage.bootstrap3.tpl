@@ -38,6 +38,9 @@
     .yadcf-filter-wrapper {
         display: block;
     }
+    .row-detail .yadcf-filter-wrapper {
+        display: none;
+    }
 {/css}
 
 <div class="module store showall-uncategorized">
@@ -120,18 +123,17 @@
     </div>
 </div>
 
-{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.jqueryui,jquery.dataTables.yadcf'}
+{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
+        var responsiveHelper;
+        var breakpointDefinition = {
+            tablet: 1024,
+            phone : 480
+        };
         var tableContainer = $('#prods');
 
         var table = tableContainer.DataTable({
-            pagingType: "full_numbers",
-//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
-            dom: 'T<"clear">lfrtip',
-            tableTools: {
-                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
-            },
             jQueryUI: true,
             stateSave: true,
             columns: [
@@ -141,7 +143,20 @@
                 { type: 'text' },
                 { searchable: false, orderable: false },
             ],
-            //order: [4, 'desc']
+            //order: [4, 'desc'],
+            autoWidth: false,
+            preDrawCallback: function () {
+                // Initialize the responsive datatables helper once.
+                if (!responsiveHelper) {
+                    responsiveHelper = new ResponsiveDatatablesHelper(tableContainer, breakpointDefinition);
+                }
+            },
+            rowCallback: function (nRow) {
+                responsiveHelper.createExpandIcon(nRow);
+            },
+            drawCallback: function (oSettings) {
+                responsiveHelper.respond();
+            }
         });
 
         (function () {
@@ -155,6 +170,9 @@
                     _div.innerText.replace(/\n/g," ");
             };
         })();
+
+        var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
+        $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
 
         yadcf.init(table, [{
             column_number: 0,
@@ -179,7 +197,7 @@
             filter_type: "text",
             filter_default_label: "",
             select_type_options: {
-                width: '70px'
+                width: '30px'
             }
         }, {
             column_number: 3,
@@ -188,7 +206,7 @@
             filter_type: "text",
             filter_default_label: "",
             select_type_options: {
-                width: '70px'
+                width: '30px'
             }
         }]);
     } );
