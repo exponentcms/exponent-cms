@@ -86,7 +86,7 @@
 
     BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
 
-    BootstrapDialog.ZINDEX_BACKDROP = 1040;
+    BootstrapDialog.ZINDEX_BACKDROP = 0;  //FIXME fix
     BootstrapDialog.ZINDEX_MODAL = 1050;
 
     /**
