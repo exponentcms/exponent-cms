@@ -1,9 +1,21 @@
-// Spectrum Colorpicker v1.5.1
+// Spectrum Colorpicker v1.5.2
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
 
-(function (window, $, undefined) {
+(function (factory) {
+    "use strict";
+
+    if (typeof define === 'function' && define.amd) { // AMD
+        define(['jquery'], factory);
+    }
+    else if (typeof exports == "object" && typeof module == "object") { // CommonJS
+        module.exports = factory;
+    }
+    else { // Browser
+        factory(jQuery);
+    }
+})(function($, undefined) {
     "use strict";
 
     var defaultOpts = {
@@ -622,7 +634,7 @@
 
         function clickout(e) {
             // Return on right click.
-            if (e && e.type == "click" && e.button == 2) { return; }
+            if (e.button == 2) { return; }
 
             if (clickoutFiresChange) {
                 updateOriginalInput(true);
@@ -2252,4 +2264,4 @@
         }
     });
 
-})(window, jQuery);
+});

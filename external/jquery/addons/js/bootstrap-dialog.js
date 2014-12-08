@@ -78,15 +78,18 @@
     BootstrapDialog.DEFAULT_TEXTS['CANCEL'] = 'Cancel';
 
     BootstrapDialog.SIZE_NORMAL = 'size-normal';
+    BootstrapDialog.SIZE_WIDE = 'size-wide';    // size-wide is equal to modal-lg
     BootstrapDialog.SIZE_LARGE = 'size-large';
 
     BootstrapDialog.BUTTON_SIZES = {};
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_NORMAL] = '';
+    BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_WIDE] = '';
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_LARGE] = 'btn-lg';
 
     BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
 
-    BootstrapDialog.ZINDEX_BACKDROP = 0;  //FIXME fix
+    // Will be removed in later version, after Bootstrap Modal >= 3.3.0, updating z-index is unnecessary.
+    BootstrapDialog.ZINDEX_BACKDROP = 1040;
     BootstrapDialog.ZINDEX_MODAL = 1050;
 
     /**
@@ -145,19 +148,14 @@
     };
 
     /**
-     * Show scrollbar if the last visible dialog needs one.
+     * Determin if current version of Bootstrap Modal is greater than 3.3.0
+     * 
+     * @returns boolean
      */
-    BootstrapDialog.showScrollbar = function() {
-        var lastDialogInstance = null;
-        $.each(BootstrapDialog.dialogs, function(id, dialogInstance) {
-            lastDialogInstance = dialogInstance;
-        });
-        if (lastDialogInstance !== null && lastDialogInstance.isRealized() && lastDialogInstance.isOpened()) {
-            var bsModal = lastDialogInstance.getModal().data('bs.modal');
-            bsModal.checkScrollbar();
-            $('body').addClass('modal-open');
-            bsModal.setScrollbar();
-        }
+    BootstrapDialog.isModernModal = function() {
+        var modal = $.fn.modal.Constructor;
+
+        return typeof $.fn.modal.Constructor.VERSION !== 'undefined' && /3\.3\.\d+/.test($.fn.modal.Constructor.VERSION);
     };
 
     BootstrapDialog.prototype = {
@@ -322,6 +320,45 @@
         },
         setSize: function(size) {
             this.options.size = size;
+            this.updateSize();
+
+            return this;
+        },
+        updateSize: function() {
+            if (this.isRealized()) {
+                var dialog = this;
+
+                // Dialog size
+                this.getModal().removeClass(BootstrapDialog.SIZE_NORMAL)
+                .removeClass(BootstrapDialog.SIZE_WIDE)
+                .removeClass(BootstrapDialog.SIZE_LARGE);
+                this.getModal().addClass(this.getSize());
+
+                // Wider dialog.
+                this.getModalDialog().removeClass('modal-lg');
+                if (this.getSize() === BootstrapDialog.SIZE_WIDE) {
+                    this.getModalDialog().addClass('modal-lg');
+                }
+
+                // Button size
+                $.each(this.options.buttons, function(index, button) {
+                    var $button = dialog.getButton(button.id);
+                    var buttonSizes = ['btn-lg', 'btn-sm', 'btn-xs'];
+                    var sizeClassSpecified = false;
+                    if (typeof button['cssClass'] === 'string') {
+                        var btnClasses = button['cssClass'].split(' ');
+                        $.each(btnClasses, function(index, btnClass) {
+                            if ($.inArray(btnClass, buttonSizes) !== -1) {
+                                sizeClassSpecified = true;
+                            }
+                        });
+                    }
+                    if (!sizeClassSpecified) {
+                        $button.removeClass(buttonSizes.join(' '));
+                        $button.addClass(dialog.getButtonSize());
+                    }
+                });
+            }
 
             return this;
         },
@@ -558,7 +595,6 @@
         },
         createButton: function(button) {
             var $button = $('<button class="btn"></button>');
-            $button.addClass(this.getButtonSize());
             $button.prop('id', button.id);
 
             // Icon
@@ -757,30 +793,34 @@
         handleModalEvents: function() {
             this.getModal().on('show.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                if (typeof dialog.options.onshow === 'function') {
+                if (dialog.isModalEvent(event) && typeof dialog.options.onshow === 'function') {
                     return dialog.options.onshow(dialog);
                 }
             });
             this.getModal().on('shown.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                typeof dialog.options.onshown === 'function' && dialog.options.onshown(dialog);
+                dialog.isModalEvent(event) && typeof dialog.options.onshown === 'function' && dialog.options.onshown(dialog);
             });
             this.getModal().on('hide.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                if (typeof dialog.options.onhide === 'function') {
+                if (dialog.isModalEvent(event) && typeof dialog.options.onhide === 'function') {
                     return dialog.options.onhide(dialog);
                 }
             });
             this.getModal().on('hidden.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                typeof dialog.options.onhidden === 'function' && dialog.options.onhidden(dialog);
+                dialog.isModalEvent(event) && typeof dialog.options.onhidden === 'function' && dialog.options.onhidden(dialog);
                 dialog.isAutodestroy() && $(this).remove();
                 BootstrapDialog.moveFocus();
             });
 
             // Backdrop, I did't find a way to change bs3 backdrop option after the dialog is popped up, so here's a new wheel.
             this.getModal().on('click', {dialog: this}, function(event) {
-                event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                if (!BootstrapDialog.isModernModal()) {
+                    event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                } else {
+                    $(event.target).hasClass('modal-backdrop') && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                }
             });
 
             // ESC key support
@@ -798,6 +838,9 @@
             });
 
             return this;
+        },
+        isModalEvent: function(event) {
+            return typeof event.namespace !== 'undefined' && event.namespace === 'bs.modal';
         },
         makeModalDraggable: function() {
             if (this.options.draggable) {
@@ -829,6 +872,8 @@
         },
         /**
          * To make multiple opened dialogs look better.
+         * 
+         * Will be removed in later version, after Bootstrap Modal >= 3.3.0, updating z-index is unnecessary.
          */
         updateZIndex: function() {
             var dialogCount = 0;
@@ -845,9 +890,9 @@
         realize: function() {
             this.initModalStuff();
             this.getModal().addClass(BootstrapDialog.NAMESPACE)
-            .addClass(this.getSize())
             .addClass(this.getCssClass());
-            if(this.getDescription()){
+            this.updateSize();
+            if (this.getDescription()) {
                 this.getModal().attr('aria-describedby', this.getDescription());
             }
             this.getModalFooter().append(this.createFooterContent());
@@ -867,13 +912,14 @@
             this.updateMessage();
             this.updateClosable();
             this.updateAnimate();
+            this.updateSize();
 
             return this;
         },
         open: function() {
             !this.isRealized() && this.realize();
             this.getModal().modal('show');
-            this.updateZIndex();
+            !BootstrapDialog.isModernModal() && this.updateZIndex(); // Will be removed in later version.
             this.setOpened(true);
 
             return this;
@@ -884,9 +930,6 @@
                 delete BootstrapDialog.dialogs[this.getId()];
             }
             this.setOpened(false);
-
-            // Show scrollbar if the last visible dialog needs one.
-            BootstrapDialog.showScrollbar();
 
             return this;
         }
