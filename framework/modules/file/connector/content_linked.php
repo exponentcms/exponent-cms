@@ -32,11 +32,11 @@ global $router;
         <script type="text/javascript">
             function chosen() {
                 var f_url = window.opener.document.getElementById("f_href");
-                f_url.value = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo $_GET['cid']; ?>";
+                f_url.value = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo intval($_GET['cid']); ?>";
                 var f_extern = window.opener.document.getElementById("f_extern");
                 f_extern.checked = false;
                 var f_text = window.opener.document.getElementById("f_text");
-                f_text.innerHTML = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo $_GET['cid']; ?>";
+                f_text.innerHTML = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo intval($_GET['cid']); ?>";
                 window.close();
             };
   		</script>

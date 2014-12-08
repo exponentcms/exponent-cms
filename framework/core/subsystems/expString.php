@@ -264,6 +264,16 @@ class expString {
         if (!empty($saved_params)) {
             $data = array_merge($data, $saved_params);
         }
+        if (empty($data['route_sanitized'])) {
+            $tmp =1; // we got here NOT going through $router->routeRequest
+        }
+        if (empty($data['pre_sanitized'])) {
+            $tmp =1; // we got here NOT going through $router->convertPartsToParams
+        }
+        if (!empty($data['array_sanitized'])) {
+            $tmp =1;  // 2nd time through
+        }
+        $data['array_sanitized'] = true;
         return $data;
     }
 
