@@ -46,7 +46,6 @@ class navigationController extends expController {
 //        'delete',
 //        'edit'
     );
-//    public $codequality = 'beta';
 
     static function displayname() { return gt("Navigation"); }
 
@@ -57,7 +56,6 @@ class navigationController extends expController {
     function searchName() { return gt('Webpage'); }
 
     public function showall() {
-//        global $db, $user, $sectionObj, $sections;
         global $user, $sectionObj, $sections;
 
         expHistory::set('viewable', $this->params);
@@ -83,14 +81,12 @@ class navigationController extends expController {
     }
 
     public function breadcrumb() {
-//        global $db, $user, $sectionObj, $sections;
         global $sectionObj;
 
         expHistory::set('viewable', $this->params);
         $id      = $sectionObj->id;
         $current = null;
         // Show not only the location of a page in the hierarchy but also the location of a standalone page
-//        $current = $db->selectObject('section', ' id= ' . $id);
         $current = new section($id);
         if ($current->parent == -1) {  // standalone page
             $navsections = self::levelTemplate(-1, 0);
@@ -253,7 +249,6 @@ class navigationController extends expController {
      *
      * @internal param \The $int internal component of the location.
      * @return array
-     * @node     Subsystems:expCore
      */
     public static function initializeNavigation() {
         $sections = self::levelTemplate(0, 0);
@@ -272,7 +267,6 @@ class navigationController extends expController {
      * @return array
      */
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
-//        global $db, $user;
         global $user;
 
         if ($parent != 0) $parents[] = $parent;
@@ -280,7 +274,6 @@ class navigationController extends expController {
         $cache = expSession::getCacheValue('navigation');
         $sect = new section();
         if (!isset($cache['kids'][$parent])) {
-//            $kids                   = $db->selectObjects('section', 'parent=' . $parent);
             $kids = $sect->find('all','parent=' . $parent);
             $cache['kids'][$parent] = $kids;
             expSession::setCacheValue('navigation', $cache);
@@ -1127,7 +1120,6 @@ class navigationController extends expController {
 
     // create a psuedo global manage pages permission
     public static function checkPermissions($permission,$location) {
-//        global $exponent_permissions_r, $user, $db, $router;
         global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
