@@ -1,4 +1,4 @@
-// Spectrum Colorpicker v1.5.2
+// Spectrum Colorpicker v1.6.0
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
@@ -57,7 +57,8 @@
         theme: "sp-light",
         palette: [["#ffffff", "#000000", "#ff0000", "#ff8000", "#ffff00", "#008000", "#0000ff", "#4b0082", "#9400d3"]],
         selectionPalette: [],
-        disabled: false
+        disabled: false,
+        offset: null
     },
     spectrums = [],
     IE = !!/msie/i.exec( window.navigator.userAgent ),
@@ -872,7 +873,11 @@
 
             if (!flat) {
                 container.css("position", "absolute");
-                container.offset(getOffset(container, offsetElement));
+                if (opts.offset) {
+                    container.offset(opts.offset);
+                } else {
+                    container.offset(getOffset(container, offsetElement));
+                }
             }
 
             updateHelperLocations();
@@ -917,6 +922,11 @@
             offsetElement.addClass("sp-disabled");
         }
 
+        function setOffset(coord) {
+            opts.offset = coord;
+            reflow();
+        }
+
         initialize();
 
         var spect = {
@@ -927,6 +937,7 @@
             option: option,
             enable: enable,
             disable: disable,
+            offset: setOffset,
             set: function (c) {
                 set(c);
                 updateOriginalInput();
@@ -1032,7 +1043,7 @@
                     return stop();
                 }
 
-                var touches = e.originalEvent.touches;
+                var touches = e.originalEvent && e.originalEvent.touches;
                 var pageX = touches ? touches[0].pageX : e.pageX;
                 var pageY = touches ? touches[0].pageY : e.pageY;
 
@@ -1161,7 +1172,7 @@
         }
     };
 
-    // TinyColor v1.0.0
+    // TinyColor v1.1.1
     // https://github.com/bgrins/TinyColor
     // Brian Grinstead, MIT License
 
@@ -1191,6 +1202,7 @@
         }
 
         var rgb = inputToRGB(color);
+        this._originalInput = color,
         this._r = rgb.r,
         this._g = rgb.g,
         this._b = rgb.b,
@@ -1220,6 +1232,9 @@
         },
         isValid: function() {
             return this._ok;
+        },
+        getOriginalInput: function() {
+          return this._originalInput;
         },
         getFormat: function() {
             return this._format;
@@ -2037,6 +2052,7 @@
         plum: "dda0dd",
         powderblue: "b0e0e6",
         purple: "800080",
+        rebeccapurple: "663399",
         red: "f00",
         rosybrown: "bc8f8f",
         royalblue: "4169e1",
@@ -2184,6 +2200,7 @@
             hsl: new RegExp("hsl" + PERMISSIVE_MATCH3),
             hsla: new RegExp("hsla" + PERMISSIVE_MATCH4),
             hsv: new RegExp("hsv" + PERMISSIVE_MATCH3),
+            hsva: new RegExp("hsva" + PERMISSIVE_MATCH4),
             hex3: /^([0-9a-fA-F]{1})([0-9a-fA-F]{1})([0-9a-fA-F]{1})$/,
             hex6: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/,
             hex8: /^([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})([0-9a-fA-F]{2})$/
@@ -2224,6 +2241,9 @@
         }
         if ((match = matchers.hsv.exec(color))) {
             return { h: match[1], s: match[2], v: match[3] };
+        }
+        if ((match = matchers.hsva.exec(color))) {
+            return { h: match[1], s: match[2], v: match[3], a: match[4] };
         }
         if ((match = matchers.hex8.exec(color))) {
             return {
