@@ -351,7 +351,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
                 $capabilities[$keyword] = $params;
             }
         }
-
+        if (!isset($this->_capabilities['AUTH'])) $this->_capabilities['AUTH'] = array();
         return $capabilities;
     }
 
