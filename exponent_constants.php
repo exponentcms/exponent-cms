@@ -523,8 +523,8 @@ if (!defined('YUI2_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('JQUERY_RELATIVE')) {
-    define('JQUERY_VERSION', '1.11.1');
-    define('JQUERY2_VERSION', '2.1.1');
+    define('JQUERY_VERSION', '1.11.2');
+    define('JQUERY2_VERSION', '2.1.3');
     define('JQUERYUI_VERSION', '1.11.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -556,7 +556,7 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.3.0');
+    define('SWIFT_VERSION', '5.3.1');
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
 }
 
