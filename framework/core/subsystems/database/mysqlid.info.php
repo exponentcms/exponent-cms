@@ -26,13 +26,12 @@ if (!defined('EXPONENT')) exit('');
  * @package Subsystems
  * @subpackage Database
  */
- //TODO: investigate/fix PHP5 MySql function issues
 return array(
-    'name'=>'MySQL Database Backend',
-    'author'=>'James Hunt',
-    'description'=>'MySQL Database Backend.',
-    'is_valid'=>0,//'is_valid'=>(function_exists('mysql_connect') ? 1 : 0),
-    'version'=>expVersion::getVersion(true)
+	'name'=>'MySQLi Debugging Database Backend',
+	'author'=>'Dave Leffler',
+	'description'=>'MySQLi Database Backend which logs all MySQL calls.',
+	'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
+	'version'=>expVersion::getVersion(true)
 );
 
 ?>

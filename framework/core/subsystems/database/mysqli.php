@@ -43,7 +43,6 @@ class mysqli_database extends database {
      *   a distinctly new connection handle to the server.
      */
 
-//	function connect ($username, $password, $hostname, $database, $new=false) {
 	function __construct($username, $password, $hostname, $database, $new=false) {
 		if (strstr($hostname,':')) {
 			list ( $host, $port ) = @explode (":", $hostname);
