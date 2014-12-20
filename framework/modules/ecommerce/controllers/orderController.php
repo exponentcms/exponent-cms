@@ -199,7 +199,7 @@ class orderController extends expController {
 
         assign_to_template(array(
             'css'            => $css,
-            'printerfriendly'=> $pf,
+            'pf'             => $pf,
             'order'          => $order,
             'order_user'     => new user($order->user_id),
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??

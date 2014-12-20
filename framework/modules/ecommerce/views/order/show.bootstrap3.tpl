@@ -144,14 +144,14 @@
                             {permissions}
                             {if $permissions.manage}
                                 <div class="table-responsive">
-                                    <table class="table order-info">
-                                        <thead>
+                                    <table class="table order-info order-info2">
+                                        <thead id="change-status">
                                             <tr>
                                                 <!--th>The current status of this order is: {$order->getStatus()}</th-->
-                                                <th>{'Order Type and Order Status'|gettext}</th>
+                                                <th title="{'Click to change order type or status'|gettext}"><i class="fa fa-angle-double-down"></i> {'Order Type and Order Status'|gettext}</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="change-status-view" style="display:none;">
                                             <tr><td>
                                                 {form action=setStatus}
                                                     {control type="hidden" name="id" value=$order->id}
@@ -608,8 +608,8 @@
                         {/if}
                     </div>
                     <div class="well">
-                        <h4>{"Email the Customer about this order"|gettext}</h4>
-                        <div class="table-responsive">
+                        <div class="email-customer"><h4 id="email-customer" title="{'Click to create customer email'|gettext}"><i class="fa fa-angle-double-down"></i> {"Email the Customer about this order"|gettext}</h4></div>
+                        <div id="email-customer-view" class="table-responsive" style="display:none;">
                             <table class="table order-info">
                                 <thead>
                                     <tr>
@@ -836,7 +836,7 @@
 
                     <div class="row">
                         <div class="col-xs-6">
-                            warning
+                            {* FIXME warning *}
                         </div>
 
                         <div class="col-xs-6">
@@ -990,6 +990,13 @@
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
-
+    $(document).ready(function(){
+        $('#change-status').click(function() {
+            $("#change-status-view").toggle();
+        });
+        $('#email-customer').click(function() {
+            $("#email-customer-view").toggle();
+        });
+    });
 {/literal}
 {/script}
