@@ -1759,7 +1759,7 @@ class migrationController extends expController {
                     }
                 }
 				break;
-            case 'youtubemodule':  //FIXME must convert media player
+            case 'youtubemodule':  //must convert to media player
 				//check to see if it's already pulled in (circumvent !is_original)
                 $ploc = clone($iloc);
 				$ploc->mod = "media";
@@ -1795,7 +1795,7 @@ class migrationController extends expController {
 					}
 				}
 				break;
-            case 'mediaplayermodule':  //FIXME must now convert media player
+            case 'mediaplayermodule':  // must convert media player
 				//check to see if it's already pulled in (circumvent !is_original)
                 $ploc = clone($iloc);
 				$ploc->mod = "media";
@@ -2584,7 +2584,7 @@ class migrationController extends expController {
         $this->connect();  // now make sure the parameters work
 
 		if (isset($this->params['fix_database'])) $this->fix_database();
-        //FIXME we need to push the button.css file to head for coolwater theme?
+        //NOTE we need to push the button.css file to head for coolwater theme?
         expCSS::pushToHead(array(
 //      		    "unique"=>"button",
       		    "corecss"=>"button",

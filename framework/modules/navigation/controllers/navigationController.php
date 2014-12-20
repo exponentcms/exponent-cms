@@ -752,7 +752,6 @@ class navigationController extends expController {
 
 //        $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $navs        = $db->selectObjects('section', 'parent!=-1', 'rank');
-        //FIXME recode to use foreach $key=>$value
 //        $navcount = count($jnav);
 //        for ($i = 0; $i < $navcount; $i++) {
         foreach ($navs as $i=>$nav) {

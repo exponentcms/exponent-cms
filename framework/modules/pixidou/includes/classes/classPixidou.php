@@ -253,7 +253,7 @@
 		}
 	
 		public function __destruct(){
-//			$this->uploadedFile->clean();  //FIXME we have to KEEP the old file for undo, why is this even here?
+//			$this->uploadedFile->clean();  //NOTE we have to KEEP the old file for undo, why is this even here?
 		}
 	
 	}

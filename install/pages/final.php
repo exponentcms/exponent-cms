@@ -22,7 +22,7 @@ if (!defined('EXPONENT')) {
 
 // Post install cleanup
 //expSession::un_set('installer_config');
-//expTheme::removeSmartyCache();  //FIXME is this still necessary?
+//expTheme::removeSmartyCache();
 expSession::clearAllSessionData();
 //expTheme::removeCss();
 //expCSS::updateCoreCss(); // go ahead and rebuild the core .css files

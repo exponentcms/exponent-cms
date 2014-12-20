@@ -200,12 +200,6 @@ class giftcard extends expRecord {
         return $this->products_price;
     }
 
-//    public function update($params = array()) {
-//		//FIXME do we really need to sub class this since we just call parent?
-//        // eDebug($params, true);
-//        parent::update($params);
-//    }
-
     function getDefaultQuantity() {
         //TMP: Make this actually do something.
         return 1;

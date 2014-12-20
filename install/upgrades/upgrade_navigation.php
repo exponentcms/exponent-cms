@@ -113,8 +113,7 @@ class upgrade_navigation extends upgradescript {
         $srs = $db->selectObjects('sectionref','1');
    	    foreach ($srs as $sr) {
             if (expModules::controllerExists($sr->module)) {
-//                $sr->module = expModules::getControllerClassName($sr->module);  //FIXME long controller name
-                $sr->module = expModules::getModuleName($sr->module);  //FIXME long controller name
+                $sr->module = expModules::getModuleName($sr->module);
                 $db->updateObject($sr,'sectionref');
             }
    	    }

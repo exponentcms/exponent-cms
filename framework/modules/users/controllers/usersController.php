@@ -991,7 +991,6 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array();
-//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
             $modclass = expModules::getModuleClassName(($loc->mod));
             $mod = new $modclass();
             $perms = $mod->permissions($loc->int);
@@ -1091,7 +1090,6 @@ class usersController extends expController {
         if (!empty($this->params['mod']) && $user->isAdmin()) {
             $loc = expCore::makeLocation($this->params['mod'], isset($this->params['src']) ? $this->params['src'] : null, isset($this->params['int']) ? $this->params['int'] : null);
             $users = array(); // users = groups
-//        	$modclass = expModules::controllerExists($loc->mod) ? expModules::getControllerClassName($loc->mod) : $loc->mod;  //FIXME long controller name
             $modclass = expModules::getModuleClassName($loc->mod);
             $mod = new $modclass();
             $perms = $mod->permissions($loc->int);

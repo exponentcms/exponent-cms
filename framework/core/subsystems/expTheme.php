@@ -1108,7 +1108,6 @@ class expTheme
             $params['view'] = 'showall';
         }
 //	    if (isset($params['controller'])) {
-//            $controller = expModules::getControllerClassName($params['controller']);  //FIXME long controller name
         $controller = expModules::getModuleName($params['controller']);
 //            $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
         $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';

@@ -63,7 +63,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 	} else {
         if (!empty($params['anim'])) {
             $anim = 'ease';
-            //FIXME replace w/ system default?
+            //FIXME replace w/ a system default?
         } else {
             switch ($params['anim']) {
                 case 'back':

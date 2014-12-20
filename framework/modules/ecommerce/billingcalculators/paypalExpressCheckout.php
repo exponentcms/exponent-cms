@@ -169,7 +169,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
                 // TODO: build data from odrer
-//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated in 63.0
+//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //NOTE deprecated in 63.0
 //                'CURRENCYCODE'      => 'USD',
 //                'ITEMAMT'           => number_format($order->total, 2, '.', ''),
 //                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),

@@ -52,13 +52,6 @@ class expRss extends expRecord {
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
     }
     
-	// override the update function in order to make sure we don't save duplicate entries
-	// as save called from expController does not have an id set.
-//	public function update($params=array()){
-//		//FIXME do we really need to sub class this since we just call parent?
-//		parent::update($params);
-//	}
-	
     public function beforeSave() {
         if (!empty($this->module)) $this->module = expModules::getControllerName($this->module);
         parent::beforeSave();
