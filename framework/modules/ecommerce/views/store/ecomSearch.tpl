@@ -18,13 +18,13 @@
         z-index: 99!important;
     }
     #ac-input {
-        width: 100%;
+        width: 85%;
     }
 {/css}
 
 <div class="module ecommerce ecom-search yui3-skin-sam yui-skin-sam">
     <div id="search-autocomplete" class="control" style="z-index: 999;">
-        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label class="label" for="ac-input">{$moduletitle}</label>{/if}
+        {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label for="ac-input">{$moduletitle}</label>{/if}
         {*<input id="ac-input" type="text" class="text">*}
         {control name="ac-input" type="search" class="text" prepend="search"}
     </div>
