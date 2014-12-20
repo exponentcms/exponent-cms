@@ -137,7 +137,7 @@
             jQueryUI: true,
             stateSave: true,
             columns: [
-                { type: 'html', searchable: false },
+                { type: 'text', searchable: false },
                 { type: 'html' },
                 { type: 'text' },
                 { type: 'text' },
@@ -176,10 +176,10 @@
 
         yadcf.init(table, [{
             column_number: 0,
-            column_data_type: "html",
-            html_data_type: "text",
+            //column_data_type: "text",
+            //html_data_type: "text",
             filter_type: "multi_select",
-            filter_default_label: "",
+            //filter_default_label: "",
             select_type: 'select2'
         }, {
             column_number: 1,

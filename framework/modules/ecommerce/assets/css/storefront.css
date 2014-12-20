@@ -148,6 +148,10 @@ em.unavailable {
 	display: inline;
 }
 
+#sortmeControl label {
+	display: inline;
+}
+
 .store.showall .product .ecom-hover {
     position:absolute;
 	width: 100%;
