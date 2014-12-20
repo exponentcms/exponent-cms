@@ -1429,7 +1429,7 @@ class formsController extends expController {
             if (!empty($this->params['include_data'])) {
                 $tables[] = 'forms_'.$f->table_name;
             }
-            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);
+            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //TODO we need to echo inside call
             exit; // Exit, since we are exporting
         }
 //        expHistory::back();

@@ -139,6 +139,7 @@ class importexportController extends expController {
                 exit("");
             } else {
                 $errors = array();
+                //TODO this will crash on large .eql files
                 $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);
                 if (!empty($errors)) {
                     $message = gt('Importing encountered the following errors') . ':<br>';
@@ -177,6 +178,7 @@ class importexportController extends expController {
             $tables[] = $attach->tablename;
         }
         array_unshift($tables, $type->model_table);
+        //TODO this will crash on large .eql files
         $data = expFile::parseDatabase(BASE . $filename, $errors, $tables);
 
         // parse out attachments data using the content_id for easier access
@@ -320,7 +322,7 @@ class importexportController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($tables, 'export', $awhere);
+            echo expFile::dumpDatabase($tables, 'export', $awhere);  //TODO we need to echo inside call
             exit; // Exit, since we are exporting
         }
         expHistory::back();
