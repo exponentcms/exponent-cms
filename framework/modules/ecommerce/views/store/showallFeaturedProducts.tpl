@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module store showall showall-featured-products ipr{$config.images_per_row|default:3} listing-row">
-    {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
+    {if $moduletitle && count($page->records) && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
@@ -114,8 +114,8 @@
                 {/if}
                 {counter name="ipr"}
             {/if}
-        {foreachelse}
-           {message text='No Products were found!'|gettext}
+        {*{foreachelse}*}
+           {*{message text='No Products were found!'|gettext}*}
         {/foreach}
     </div>
 </div>
