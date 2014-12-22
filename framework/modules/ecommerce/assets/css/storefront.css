@@ -152,7 +152,8 @@ em.unavailable {
 	display: inline;
 }
 
-.store.showall .product .ecom-hover {
+.store.showall .product .ecom-hover,
+.store.show .product .ecom-hover {
     position:absolute;
 	width: 100%;
     left:auto;
@@ -161,7 +162,8 @@ em.unavailable {
 	display: none;
 }
 
-.store.showall .product:hover .ecom-hover {
+.store.showall .product:hover .ecom-hover,
+.store.show .product:hover .ecom-hover {
 	display: block;
 }
 

@@ -13,7 +13,7 @@
  *
  *}
  
-{css unique="storeListing" link="`$asset_path`css/storefront.css" corecss="button,clearfix"}
+{css unique="storefront" link="`$asset_path`css/storefront.css" corecss="button,clearfix"}
 
 {/css}
  

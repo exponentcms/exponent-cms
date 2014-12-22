@@ -13,11 +13,11 @@
  *
  *}
  
-{css unique="product-show" link="`$asset_path`css/storefront.css" corecss="button,tables"}
+{css unique="storefront" link="`$asset_path`css/storefront.css" corecss="button,tables"}
 
 {/css}
 
-{css unique="product-show" link="`$asset_path`css/ecom.css"}
+{css unique="ecom" link="`$asset_path`css/ecom.css"}
 
 {/css}
 
