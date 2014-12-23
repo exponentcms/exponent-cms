@@ -47,7 +47,7 @@
         {breadcrumb items=$breadcrumb active=1 style=flat}
     {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
-        <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="login-form one span6"{/if}>
+        <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="login-form one span4"{/if}>
             {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}
                 {$usertype="Customers"|gettext}
                 {$label="Email Address"|gettext|cat:":"}
@@ -67,7 +67,7 @@
             {/form}
         </div>
         {if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM}
-            <div class="new-user two span6">
+            <div class="new-user two span4">
                 <h2>{"New"|gettext} {$usertype}</h2>
                 <p>
                     {if $smarty.const.ECOM}

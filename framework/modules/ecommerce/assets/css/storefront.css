@@ -164,6 +164,7 @@ em.unavailable {
 
 .store.showall .product:hover .ecom-hover,
 .store.show .product:hover .ecom-hover {
+	opacity: 0.8;
 	display: block;
 }
 
