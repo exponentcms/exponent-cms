@@ -33,16 +33,16 @@
 		}
 	}
 
-	function isOneSelected() {
-		var elems = document.getElementsByTagName("input");
-		for (var key in elems) {
-			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
-				if (elems[key].checked) return true;
-			}
-		}
-		alert("{/literal}{'You must select at least one table to export.'|gettext}{literal}");
-		return false;
-	}
+//	function isOneSelected() {
+//		var elems = document.getElementsByTagName("input");
+//		for (var key in elems) {
+//			if (elems[key].type == "checkbox" && elems[key].name.substr(0,7) == "tables[") {
+//				if (elems[key].checked) return true;
+//			}
+//		}
+//		alert("{/literal}{'You must select at least one table to export.'|gettext}{literal}");
+//		return false;
+//	}
 
 	{/literal}
 	{/script}
