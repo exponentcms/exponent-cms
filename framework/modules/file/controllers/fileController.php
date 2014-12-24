@@ -739,8 +739,8 @@ class fileController extends expController {
         ));
     }
 
-    public function export_eql() {
-        global $db, $user;
+    public static function getTables() {
+        global $db;
 
         expDatabase::fix_table_names();
         $tables = $db->getTables();
@@ -753,19 +753,40 @@ class fileController extends expController {
         }
         $tables = array_map('tmp_removePrefix',$tables);
         usort($tables,'strnatcmp');
+        return $tables;
+    }
+
+    public function export_eql() {
+//        global $db, $user;
+        global $user;
+
+//        expDatabase::fix_table_names();
+//        $tables = $db->getTables();
+//        if (!function_exists('tmp_removePrefix')) {
+//        	function tmp_removePrefix($tbl) {
+//        		// we add 1, because DB_TABLE_PREFIX  no longer has the trailing
+//        		// '_' character - that is automatically added by the database class.
+//        		return substr($tbl,strlen(DB_TABLE_PREFIX)+1);
+//        	}
+//        }
+//        $tables = array_map('tmp_removePrefix',$tables);
+//        usort($tables,'strnatcmp');
 
         assign_to_template(array(
             'user' => $user,
-            'tables' => $tables,
+            'tables' => self::getTables(),
         ));
     }
 
     public function export_eql_process() {
 //        global $db;
 
-        if (!isset($this->params['tables'])) { // No checkboxes clicked, and got past the JS check
-        	echo gt('You must choose at least one table to export.');
-        } else { // All good
+        if (!isset($this->params['tables'])) { // No checkboxes clicked so we'll dump all tables
+            $this->params['tables'] = self::getTables();
+            $this->params['tables'] = array_flip($this->params['tables']);
+        }
+//        	echo gt('You must choose at least one table to export.');
+//        } else { // All good
         	$filename = str_replace(
         		array('__DOMAIN__','__DB__'),
         		array(str_replace('.','_',HOSTNAME),DB_NAME),
@@ -810,7 +831,7 @@ class fileController extends expController {
                 echo expFile::dumpDatabase(array_keys($this->params['tables']));  //TODO we need to echo inside call
         		exit; // Exit, since we are exporting
         	}
-        }
+//        }
     }
 
     public function import_files() {
