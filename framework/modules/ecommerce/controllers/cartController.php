@@ -25,12 +25,30 @@ class cartController extends expController {
     public $basemodel_name = 'order';
     private $checkout_steps = array('productinfo', 'specials', 'form', 'wizards', 'newsletter', 'confirmation', 'postprocess');
 
+    public $useractions = array(
+        'show'                         => 'Show Shopping Cart',
+    );
+
+        // hide the configs we don't need
+    public $remove_configs = array(
+        'aggregation',
+        'categories',
+        'comments',
+        'ealerts',
+        'facebook',
+        'files',
+        'pagination',
+        'rss',
+        'tags',
+        'twitter',
+    );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
+
     static function displayname() {
         return gt("e-Commerce Shopping Cart");
     }
 
     static function description() {
-        return gt("This is the cart users will add products from your store to.");
+        return gt("Displays the shopping cart contents from your store.");
     }
 
     function addItem() {
@@ -316,6 +334,14 @@ class cartController extends expController {
 
     }
 
+    function cart_only() {
+        $this->show();
+    }
+
+    function quickpay_donation_cart() {
+        $this->show();
+    }
+
     function checkout() {
         global $user, $order;
 
@@ -329,8 +355,9 @@ class cartController extends expController {
         $order->calculateGrandTotal();
         $order->validateDiscounts(array('controller'=> 'cart', 'action'=> 'checkout'));
 
-        if (!expSession::get('customer-signup') && !$user->isLoggedin()) {
+        if (!expSession::get('customer-signup') && !$user->isLoggedin()) {  // give opportunity to login or sign up
             expHistory::set('viewable', $this->params);
+            expSession::set('customer-login', true);
             flash('message', gt("Please select how you would like to continue with the checkout process."));
             expHistory::redirecto_login(makeLink(array('module'=> 'cart', 'action'=> 'checkout'), 'secure'),true);
         }
@@ -344,10 +371,10 @@ class cartController extends expController {
 
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
-        if (!$order->getDefaultOrderType()) {
+        if (!order::getDefaultOrderType()) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Type').' <a href="'.expCore::makeLink(array('controller'=>'order_type','action'=>'manage')).'">'.gt('Here').'</a>');
         }
-        if (!$order->getDefaultOrderStatus()) {
+        if (!order::getDefaultOrderStatus()) {
             flashAndFlow('error', gt('This store is not yet fully configured to allow checkouts.')."<br>".gt('You Must Create a Default Order Status').' <a href="'.expCore::makeLink(array('controller'=>'order_status','action'=>'manage')).'">'.gt('Here').'</a>');
         }
 
@@ -397,9 +424,8 @@ class cartController extends expController {
         $address = new address();
         //$addresses_dd = $address->dropdownByUser($user->id);
         $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
-        if (empty($shipAddress) || !$user->isLoggedin()) {
-            expSession::set('customer-signup', false);
-            flash('message', gt('Step One: enter your primary address info now.') .
+        if (empty($shipAddress) || !$user->isLoggedin()) {  // we're not logged in and don't have an address yet
+            flash('message', gt('Enter your primary address info now.') .
                 '<br><br>' .
                 gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.') .
                 '<br><br>' .
@@ -415,7 +441,7 @@ class cartController extends expController {
         }
 
         // we need to get the current shipping method rates
-        $shipping->getRates();
+        $shipping->getRates();  //FIXME this has a global $order
 
         if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
@@ -428,11 +454,11 @@ class cartController extends expController {
             'billing'             => $billing,
             'discounts'           => $discounts,
             'order'               => $order,
-            'order_types'         => $order->getOrderTypes(),
-            'default_order_type'  => $order->getDefaultOrderType(),
-            'order_statuses'      => $order->getOrderStatuses(),
-            'default_order_status'=> $order->getDefaultOrderStatus(),
-            'sales_reps'          => $order->getSalesReps()
+            'order_types'         => order::getOrderTypes(),
+            'default_order_type'  => order::getDefaultOrderType(),
+            'order_statuses'      => order::getOrderStatuses(),
+            'default_order_status'=> order::getDefaultOrderStatus(),
+            'sales_reps'          => order::getSalesReps()
             //'needs_address'=>$needs_address,
         ));
     }
@@ -513,7 +539,7 @@ class cartController extends expController {
             $opts = $billing->calculator->userFormUpdate($this->params);
             //$billing->calculator->preprocess($this->params);
             //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
-            //eDebug($order->getDefaultOrderType(),true);
+            //eDebug(order::getDefaultOrderType(),true);
 
             // call the billing method's preprocess in case it needs to prepare things.
             // eDebug($billing);
@@ -550,7 +576,6 @@ class cartController extends expController {
     }
 
     public function confirm() {
-//        global $order, $user, $db;
         global $order;
 
         //eDebug($this->params);
@@ -609,8 +634,15 @@ class cartController extends expController {
         // set the gift comments
         $order->update($this->params);
 
+        // save initial order status
+        $change = new order_status_changes();
+//        $change->from_status_id = null;
+        $change->to_status_id   = $order->order_status_id;
+        $change->orders_id      = $order->id;
+        $change->save();
+
         // get the biling & shipping info
-        $shipping = new shipping();
+//        $shipping = new shipping();
         $billing  = new billing();
 
         // finalize the total to bill
@@ -623,6 +655,7 @@ class cartController extends expController {
 //            $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $invNum);
             $result = $billing->calculator->process($billing->billingmethod, expSession::get('billing_options'), $this->params, $order);
         } else {
+            // manually perform createBillingTransaction() normally done within billing calculator process()
             $opts = expSession::get('billing_options');
             $object = new stdClass();
             $object->errorCode = $opts->result->errorCode = 0;
@@ -894,7 +927,7 @@ class cartController extends expController {
             } else {
                 foreach ($shipping->available_calculators as $calcid=> $name) {
                     $calc                                 = new $name($calcid);
-                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
+                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);  //FIXME shouldn't this be the order object?
                     //eDebug($shipping_items[$id]->prices[$id]);
                 }
             }
@@ -907,6 +940,7 @@ class cartController extends expController {
     }
 
     public function customerSignup() {
+        if (expSession::get('customer-login')) expSession::un_set('customer-login');
         expSession::set('customer-signup', true);
         redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
 //        $this->checkout();
@@ -1073,16 +1107,16 @@ class cartController extends expController {
         return false;
     }
 
-    function configure() {
-        expHistory::set('editable', $this->params);
-        $this->loc->src = "@globalcartsettings";
-        $config         = new expConfig($this->loc);
-        $this->config   = $config->config;
-        assign_to_template(array(
-            'config'=> $this->config,
-            'title' => $this->displayname()
-        ));
-    }
+//    function configure() {
+//        expHistory::set('editable', $this->params);
+//        $this->loc->src = "@globalcartsettings";
+//        $config         = new expConfig($this->loc);
+//        $this->config   = $config->config;
+//        assign_to_template(array(
+//            'config'=> $this->config,
+//            'title' => $this->displayname()
+//        ));
+//    }
 
     //this is ran after we alter the quantity of the cart, including
     //delete items or runing the updatequantity action
@@ -1175,13 +1209,40 @@ class cartController extends expController {
         expHistory::back();
     }
 
-    function saveconfig() {
-        // setup and save the config
-        $this->loc->mod = "cart";
-        $this->loc->src = "@globalcartsettings";
-        $this->loc->int = "";
-        parent::saveconfig();
+//    function saveconfig() {
+//        // setup and save the config
+//        $this->loc->mod = "cart";
+//        $this->loc->src = "@globalcartsettings";
+//        $this->loc->int = "";
+//        parent::saveconfig();
+//    }
+
+    /**
+     * get the metainfo for this module
+     *
+     * @return array
+     */
+    function metainfo() {
+        global $router;
+
+        if (empty($router->params['action'])) return false;
+
+        // figure out what metadata to pass back based on the action we are in.
+        $action = $router->params['action'];
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
+        switch ($action) {
+            default:
+                $metainfo['title'] = gt("Shopping Cart") . " - " . $storename;
+                $metainfo['keywords'] = SITE_KEYWORDS;
+                $metainfo['description'] = SITE_DESCRIPTION;
+                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+        }
+
+        return $metainfo;
     }
+
 }
 
 ?>

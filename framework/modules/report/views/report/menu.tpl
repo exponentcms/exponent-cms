@@ -20,8 +20,6 @@
 {css unique="ecom-dashboard2" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
-
-<div class="module report dashboard">
     <div class="leftcol">
 
         <div id="quickstats" class="panel">
@@ -53,12 +51,12 @@
                         {*{'Quick statistics on carts vs. orders.'|gettext}*}
                     {*</li>*}
                     <li>
-                        <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
-                        {'View and manage abandoned carts.'|gettext}
-                    </li>
-                    <li>
                         <strong><a href="{link action=current_carts}">{'Current Carts'|gettext}</a></strong>
                         {'View and manage current carts.'|gettext}
+                    </li>
+                    <li>
+                        <strong><a href="{link action=abandoned_carts}">{'Abandoned Carts'|gettext}</a></strong>
+                        {'View and manage abandoned carts.'|gettext}
                     </li>
                 </ul>
             </div>
@@ -146,52 +144,51 @@
                 </ul>
             </div>
         </div>
-
     </div>
 
-    {script unique="expand-panels" yui3mods=1}
-    {literal}
-        YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
+{script unique="expand-panels" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
         var panels = Y.all(".dashboard .panel");
         var expandHeight = [];
         var action = function(e){
-        e.halt();
+            e.halt();
 
-        var pBody = e.target.ancestor('.panel').one('.bd');
-        var pID = e.target.ancestor('.panel').getAttribute('id');
-        var cfg = {
-        node: pBody,
-        duration: 0.5,
-        easing: Y.Easing.easeOut
-        }
+            var pBody = e.target.ancestor('.panel').one('.bd');
+            var pID = e.target.ancestor('.panel').getAttribute('id');
+            var cfg = {
+                node: pBody,
+                duration: 0.5,
+                easing: Y.Easing.easeOut
+            }
 
-        if (e.target.getAttribute("class")=="collapse") {
-        cfg.to = { height: 0 };
-        cfg.from = { height: expandHeight[pID] };
-        pBody.setStyle('height',expandHeight[pID]+"px");
-        pBody.replaceClass('expanded','collapsed');
-        e.target.replaceClass('collapse','expand');
-        Y.Cookie.set(pID, "collapsed");
-        } else {
-        pBody.setStyle('height',0);
-        cfg.from = { height: 0 };
-        cfg.to = { height: expandHeight[pID] };
-        pBody.replaceClass('collapsed','expanded');
-        e.target.replaceClass('expand','collapse');
-        Y.Cookie.set(pID, "expanded");
-        }
-        var anim = new Y.Anim(cfg);
+            if (e.target.getAttribute("class")=="collapse") {
+                cfg.to = { height: 0 };
+                cfg.from = { height: expandHeight[pID] };
+                pBody.setStyle('height',expandHeight[pID]+"px");
+                pBody.replaceClass('expanded','collapsed');
+                e.target.replaceClass('collapse','expand');
+                Y.Cookie.set(pID, "collapsed");
+            } else {
+                pBody.setStyle('height',0);
+                cfg.from = { height: 0 };
+                cfg.to = { height: expandHeight[pID] };
+                pBody.replaceClass('collapsed','expanded');
+                e.target.replaceClass('expand','collapse');
+                Y.Cookie.set(pID, "expanded");
+            }
+            var anim = new Y.Anim(cfg);
 
-        anim.run();
+            anim.run();
         }
         panels.each(function(n,k){
-        n.delegate('click',action,'.hd a');
-        if (Y.Cookie.get(n.get('id'))==="collapsed") {
-        n.one('.hd a').replaceClass('collapse','expand');
-        n.one('.bd').addClass('collapsed');
-        };
-        expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
+            n.delegate('click',action,'.hd a');
+            if (Y.Cookie.get(n.get('id'))==="collapsed") {
+                n.one('.hd a').replaceClass('collapse','expand');
+                n.one('.bd').addClass('collapsed');
+            };
+            expandHeight[n.get('id')] = n.one('.bd ul').get('offsetHeight');
         });
-        });
-    {/literal}
+    });
+{/literal}
 {/script}

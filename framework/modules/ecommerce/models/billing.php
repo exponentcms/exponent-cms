@@ -53,7 +53,7 @@ class billing extends expRecord {
         if ($id==null)
         {   
             // since this is a new billingmethod object, lets initialize it with the users billing address.
-            global $order;                              
+            global $order;   //FIXME we do NOT want the global $order
             $address = new address();
             //FJD $defaultaddy = $address->find('first', 'user_id='.$user->id.' AND is_default=1');
             if (empty($order->billingmethod)) {
@@ -71,7 +71,7 @@ class billing extends expRecord {
         $this->address = new address($order->billingmethod[0]->addresses_id);
         //$this->address = new address($order->billingmethod[0]->id);
         $this->available_calculators = self::listAvailableCalculators();
-        $this->selectable_calculators = $this->selectableCalculators();
+        $this->selectable_calculators = self::selectableCalculators();
         $this->calculator_views = $this->getCalcViews();
         
         // if there is only one available calculator we'll force it on the user
@@ -125,15 +125,16 @@ class billing extends expRecord {
         return $calcs;
     }
 
-    public function selectableCalculators() {
+    public static function selectableCalculators() {
         global $db,$user;
+
         $calcs = array();
         foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calcObj) {
             $calcNameReal = $calcObj->calculator_name;
             $calc = new $calcNameReal($calcObj->id);
             if($user->isAdmin() || $calc->isRestricted() == false)
             {
-                $calcs[$calc->id] = $calc->user_title;
+                $calcs[$calc->id] = $calc->title;
             }
         }
         

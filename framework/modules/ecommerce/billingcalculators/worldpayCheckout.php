@@ -31,18 +31,6 @@ class worldpayCheckout extends billingcalculator {
         return "Worldpay Checkout";
     }
 
-    public function captureEnabled() {
-        return true;
-    }
-
-    public function voidEnabled() {
-        return true;
-    }
-
-    public function creditEnabled() {
-        return true;
-    }
-
     /**
      * The description that will be displayed in the payment methods selector admin screen
      *
@@ -52,12 +40,15 @@ class worldpayCheckout extends billingcalculator {
         return "Enabling this payment option will allow your customers to use their worldpay account to make purchases.";
     }
 
-    /**
-     * Does this billing calculator need some configuration to work?
-     *
-     * @return boolean
-     */
-    function hasConfig() {
+    public function captureEnabled() {
+        return true;
+    }
+
+    public function voidEnabled() {
+        return true;
+    }
+
+    public function creditEnabled() {
         return true;
     }
 
@@ -76,15 +67,6 @@ class worldpayCheckout extends billingcalculator {
      * @return boolean
      */
     function isOffsite() {
-        return true;
-    }
-
-    /**
-     * Is this billing calculator selectable in the payment methods. It may not be if it is meant more as base class for other calculators to extend from
-     *
-     * @return boolean
-     */
-    function isSelectable() {
         return true;
     }
 
@@ -145,8 +127,9 @@ class worldpayCheckout extends billingcalculator {
                 $object->result->message = "User has approved the payment at Worldpay";
                 $object->result->transId = $params['transId'];
                 $object->result->payment_status = "Pending";
-                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "Pending"));
-                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, 'success');
+//                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "Pending"));
+                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "complete"));
+                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, 'complete');  //FIXME 'complete' is proper?
                 redirect_to(array('controller' => 'cart', 'action' => 'process'));
             } else {
                 redirect_to(array('controller' => 'cart', 'action' => 'checkout'), true);
@@ -209,32 +192,6 @@ class worldpayCheckout extends billingcalculator {
     function getPaymentStatus($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->result->payment_status;
-    }
-
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
-    }
-
-    // credit transaction
-    function credit_transaction($method, $amount, $order) {
-
-    }
-
-    function userForm() {
-
-        return '';
-    }
-
-    function userView($opts) {
-        return '';
-    }
-
-    function userFormUpdate($params) {
-
     }
 
     function getAVSAddressVerified($billingmethod) {

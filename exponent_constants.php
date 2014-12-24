@@ -523,9 +523,9 @@ if (!defined('YUI2_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('JQUERY_RELATIVE')) {
-    define('JQUERY_VERSION', '1.11.1');
-    define('JQUERY2_VERSION', '2.1.1');
-    define('JQUERYUI_VERSION', '1.11.0');
+    define('JQUERY_VERSION', '1.11.2');
+    define('JQUERY2_VERSION', '2.1.3');
+    define('JQUERYUI_VERSION', '1.11.2');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -535,8 +535,8 @@ if (!defined('JQUERY_RELATIVE')) {
     if (!defined('JQUERY2_SCRIPT')) {
         define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
     } // local jQuery v2.x script
-//    define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
     if (!defined('JQUERYUI_SCRIPT')) {
+//        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
     } // local jQueryUI script
 }
@@ -546,7 +546,7 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.19');
+    define('SMARTY_VERSION', '3.1.21');
     define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
@@ -556,7 +556,7 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.2.1');
+    define('SWIFT_VERSION', '5.3.1');
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
 }
 

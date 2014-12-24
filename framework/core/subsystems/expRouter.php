@@ -172,6 +172,9 @@ class expRouter {
     }
 
     public function routeRequest() {
+        $_REQUEST['route_sanitized'] = true;//FIXME debug test
+        expString::sanitize_array($_REQUEST);
+
         // start splitting the URL into it's different parts
         $this->splitURL();
         // edebug($this,1);
@@ -263,7 +266,7 @@ class expRouter {
         if (!empty($this->sefPath)) {
             $this->url_style = 'sef';
             $this->url_parts = explode('/', $this->sefPath);     
-            
+
             //if (empty($this->url_parts[count($this->url_parts)-1])) array_pop($this->url_parts);
             if ($this->url_parts[count($this->url_parts)-1] == '') array_pop($this->url_parts);
             if (empty($this->url_parts[0])) array_shift($this->url_parts);
@@ -340,6 +343,7 @@ class expRouter {
             //if section is empty, we'll look for the page overrides first and route to 
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
+            // since we only received a single param and it wasn't a page, try for store category, or a product
             if (empty($section)) {
                 $sef_name = $this->url_parts[0];
                 //check for a category
@@ -625,7 +629,8 @@ class expRouter {
 ////                $params[$name] = $val;
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
-            $params = expString::sanitize_array($_REQUEST);
+//            $params = expString::sanitize_array($_REQUEST);
+            $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!
 //        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));

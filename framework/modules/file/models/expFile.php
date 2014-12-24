@@ -1678,6 +1678,7 @@ class expFile extends expRecord {
     public static function dumpDatabase($tables = null, $type = null, $opts = null) {
         global $db;
 
+        //FIXME we need to echo and/or write to file within this method to handle large database dumps
         $dump = EQL_HEADER . "\r\n";
         if ($type == null || $type == 'export') {
             $dump .= 'VERSION:' . EXPONENT . "\r\n\r\n";
@@ -1723,6 +1724,7 @@ class expFile extends expRecord {
                 $dump .= "\r\n";
             }
         }
+        //FIXME $dump may become too large and exhaust memory
         return $dump;
     }
 
@@ -1749,207 +1751,264 @@ class expFile extends expRecord {
 //        $errors = array();
 
         if (is_readable($file)) {
-            $lines = @file($file);
+            $eql = @fopen($file, "r");
+            if ($eql) {
+                //FIXME change to fgets($file)
+//                $lines = @file($file);
+                $line0 = fgets($eql);
+                $line1 = fgets($eql);
 
-            // Sanity check
-            if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {
-                $errors[] = gt('Not a valid EQL file');
-                return false;
-            }
+                // Sanity check
+//                if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {
+                if ($line1 === false || trim($line0) != EQL_HEADER) {
+                    $errors[] = gt('Not a valid EQL file');
+                    return false;
+                }
 
-            $version = explode(':', trim($lines[1]));
-            $eql_version = $version[1] + 0;
-            $current_version = EXPONENT + 0;
-            if ((array_key_exists(2, $version) && $type == null) || (array_key_exists(2, $version) && $version[2] != $type)) {
-                $eql_version = 0;  // trying to import wrong eql type
-            }
+//                $version = explode(':', trim($lines[1]));
+                $version = explode(':', trim($line1));
+                $eql_version = $version[1] + 0;
+                $current_version = EXPONENT + 0;
+                if ((array_key_exists(2, $version) && $type == null) || (array_key_exists(
+                            2,
+                            $version
+                        ) && $version[2] != $type)
+                ) {
+                    $eql_version = 0;  // trying to import wrong eql type
+                }
 
 //            $clear_function = '';
-            $fprefix = '';
-            // Check version and include necessary converters
-            if ($eql_version != $current_version) {
-                $errors[] = gt('EQL file was Not a valid EQL version');
-                return false;
-                //			$fprefix = 'expFile::'.implode('',explode('.',$eql_version)).'_';
-                //			if (function_exists($fprefix.'clearedTable')) {
-                //				$clear_function = $fprefix.'clearedTable';
-                //			}
-            }
+                $fprefix = '';
+                // Check version and include necessary converters
+                if ($eql_version != $current_version) {
+                    $errors[] = gt('EQL file was Not a valid EQL version');
+                    return false;
+                    //			$fprefix = 'expFile::'.implode('',explode('.',$eql_version)).'_';
+                    //			if (function_exists($fprefix.'clearedTable')) {
+                    //				$clear_function = $fprefix.'clearedTable';
+                    //			}
+                }
 
-            // make sure the database tables are up to date
-            expDatabase::install_dbtables();
+                // make sure the database tables are up to date
+                expDatabase::install_dbtables();
 
-            $table = '';
-            $oldformdata = array();
-            $itsoldformdata = false;
-            $newformdata = array();
-            $itsnewformdata = false;
-            for ($i = 2; $i < count($lines); $i++) {
-                $table_function = '';
-                $line_number = $i;
-                $line = trim($lines[$i]);
-                if ($line != '') {
-                    $pair = explode(':', $line);
-                    $pair[1] = implode(':', array_slice($pair, 1));
-                    $pair = array_slice($pair, 0, 2);
+                $table = '';
+                $oldformdata = array();
+                $itsoldformdata = false;
+                $newformdata = array();
+                $itsnewformdata = false;
+//                for ($i = 2; $i < count($lines); $i++) {
+                $line_number = 2;
+                while (($line = fgets($eql)) !== false) {
+                    $table_function = '';
+//                    $line_number = $i;
+                    $line_number++;
+//                    $line = trim($lines[$i]);
+                    $line = trim($line);
+                    if ($line != '') {
+                        $pair = explode(':', $line);
+                        $pair[1] = implode(':', array_slice($pair, 1));
+                        $pair = array_slice($pair, 0, 2);
 
-                    if ($pair[0] == 'TABLE') {
-                        $itsoldformdata = false;  // we are on a new table set
-                        $itsnewformdata = false;
-                        $table = $pair[1];
-                        if ($fprefix != '') {
-                            $table_function = $fprefix . $table;
-                        }
-                        if ($db->tableExists($table)) {
-                            if ($type == null) {
-                                $db->delete($table);  // drop/empty table records
+                        if ($pair[0] == 'TABLE') {
+                            $itsoldformdata = false;  // we are on a new table set
+                            $itsnewformdata = false;
+                            $table = $pair[1];
+                            if ($fprefix != '') {
+                                $table_function = $fprefix . $table;
                             }
+                            if ($db->tableExists($table)) {
+                                if ($type == null) {
+                                    $db->delete($table);  // drop/empty table records
+                                }
 //                            if ($clear_function != '') {
 //                                $clear_function($db, $table);
 //                            }
-                        } else {
-                            if (substr($table, 0, 12) == 'formbuilder_') {
-                                $formbuildertypes = array(
-                                    'address',
-                                    'control',
-                                    'form',
-                                    'report'
-                                );
-                                $ttype = substr($table, 12);
-                                if (!in_array($ttype, $formbuildertypes)) {
-                                    $itsoldformdata = true;
-                                }
-                            } elseif (substr($table,0,6) == 'forms_' && $table != 'forms_control') {
-                                $itsnewformdata = true;
-                            }
-                            //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
-                            $errors[] = sprintf(gt('Table "%s" not found in the database (line %d)'), $table, $line_number);
-                            //						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
-                            //							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
-                            //						} else {
-                            //							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
-                            //							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
-                            //							$db->createTable($table,$dd,$info);
-                            //						}
-                        }
-                    } else if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
-                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
-//						$tabledef = expUnserialize($pair[1]);
-                        $tabledef = @unserialize($pair[1]);
-                        if (!$db->tableExists($table)) {
-                            $db->createTable($table,$tabledef,array());
-                            $errors[] = sprintf(gt('*  However...we successfully recreated the "%s" Table from the EQL file'), $table);
-                        } else {
-                            $db->alterTable($table, $tabledef, array(), true);
-                        }
-                        $itsoldformdata = false;  // we've recreated the table using the tabledef
-                        $itsnewformdata = false;
-                    } else if ($pair[0] == 'RECORD') {
-                        if ($db->tableExists($table)) {
-                            // Here we need to check the conversion scripts.
-                            $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
-    //						$object = expUnserialize($pair[1]);
-                            $object = @unserialize($pair[1]);
-                            if ($type == 'Form') {
-                                if ($table == 'forms') {
-                                    $forms_id = $object->id = $db->max($table,'id') + 1;  // create a new record
-                                    $spare = new expRecord();
-                                    $spare->title = $object->title;
-                                    $spare->makeSefUrl();
-                                    $object->sef_url = $spare->sef_url;
-                                } elseif ($table == 'forms_control') {
-                                    $object->id = null;  // create a new record
-                                    $object->forms_id = $forms_id;  // assign to new form record
-                                } elseif (substr($table,6) == 'forms_') {
-                                    $object->id = null;  // create a new record
-                                }
-                            }
-                            if (!$object) $object = unserialize(stripslashes($pair[1]));
-                            if (function_exists($table_function)) {
-                                $table_function($db, $object);
                             } else {
-                                if (is_object($object)) {
-                                    $db->insertObject($object, $table);
+                                if (substr($table, 0, 12) == 'formbuilder_') {
+                                    $formbuildertypes = array(
+                                        'address',
+                                        'control',
+                                        'form',
+                                        'report'
+                                    );
+                                    $ttype = substr($table, 12);
+                                    if (!in_array($ttype, $formbuildertypes)) {
+                                        $itsoldformdata = true;
+                                    }
+                                } elseif (substr($table, 0, 6) == 'forms_' && $table != 'forms_control') {
+                                    $itsnewformdata = true;
+                                }
+                                //						if (!file_exists(BASE.'framework/core/definitions/'.$table.'.php')) {
+                                $errors[] = sprintf(
+                                    gt('Table "%s" not found in the database (line %d)'),
+                                    $table,
+                                    $line_number
+                                );
+                                //						} else if (!is_readable(BASE.'framework/core/definitions/'.$table.'.php')) {
+                                //							$errors[] = sprintf(gt('Data definition file for %s (%s) is not readable (line %d)'),$table,'framework/core/definitions/'.$table.'.php',$line_number);
+                                //						} else {
+                                //							$dd = include(BASE.'framework/core/definitions/'.$table.'.php');
+                                //							$info = (is_readable(BASE.'framework/core/definitions/'.$table.'.info.php') ? include(BASE.'framework/core/definitions/'.$table.'.info.php') : array());
+                                //							$db->createTable($table,$dd,$info);
+                                //						}
+                            }
+                        } else {
+                            if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
+                                $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+//						$tabledef = expUnserialize($pair[1]);
+                                $tabledef = @unserialize($pair[1]);
+                                if (!$db->tableExists($table)) {
+                                    $db->createTable($table, $tabledef, array());
+                                    $errors[] = sprintf(
+                                        gt('*  However...we successfully recreated the "%s" Table from the EQL file'),
+                                        $table
+                                    );
                                 } else {
-                                    $errors[] = sprintf(gt('Unable to decipher "%s" record (line %d)'), $pair[0], $line_number);
+                                    $db->alterTable($table, $tabledef, array(), true);
+                                }
+                                $itsoldformdata = false;  // we've recreated the table using the tabledef
+                                $itsnewformdata = false;
+                            } else {
+                                if ($pair[0] == 'RECORD') {
+                                    if ($db->tableExists($table)) {
+                                        // Here we need to check the conversion scripts.
+                                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                                        //						$object = expUnserialize($pair[1]);
+                                        $object = @unserialize($pair[1]);
+                                        if ($type == 'Form') {
+                                            if ($table == 'forms') {
+                                                $forms_id = $object->id = $db->max(
+                                                        $table,
+                                                        'id'
+                                                    ) + 1;  // create a new record
+                                                $spare = new expRecord();
+                                                $spare->title = $object->title;
+                                                $spare->makeSefUrl();
+                                                $object->sef_url = $spare->sef_url;
+                                            } elseif ($table == 'forms_control') {
+                                                $object->id = null;  // create a new record
+                                                $object->forms_id = $forms_id;  // assign to new form record
+                                            } elseif (substr($table, 6) == 'forms_') {
+                                                $object->id = null;  // create a new record
+                                            }
+                                        }
+                                        if (!$object) {
+                                            $object = unserialize(stripslashes($pair[1]));
+                                        }
+                                        if (function_exists($table_function)) {
+                                            $table_function($db, $object);
+                                        } else {
+                                            if (is_object($object)) {
+                                                $db->insertObject($object, $table);
+                                            } else {
+                                                $errors[] = sprintf(
+                                                    gt('Unable to decipher "%s" record (line %d)'),
+                                                    $pair[0],
+                                                    $line_number
+                                                );
+                                            }
+                                        }
+                                    } elseif ($itsoldformdata) {
+                                        $oldformdata[$table][] = $pair[1];  // store for later
+                                    } elseif ($itsnewformdata) {
+                                        $newformdata[$table][] = $pair[1];  // store for later
+                                    }
+                                } else {
+                                    $errors[] = sprintf(
+                                        gt('Invalid specifier type "%s" (line %d)'),
+                                        $pair[0],
+                                        $line_number
+                                    );
                                 }
                             }
-                        } elseif ($itsoldformdata) {
-                            $oldformdata[$table][] = $pair[1];  // store for later
-                        } elseif ($itsnewformdata) {
-                            $newformdata[$table][] = $pair[1];  // store for later
                         }
-                    } else {
-                        $errors[] = sprintf(gt('Invalid specifier type "%s" (line %d)'), $pair[0], $line_number);
                     }
                 }
-            }
 
-            // check for and process to rebuild old formbuilder module data table
-            if (!empty($oldformdata)) {
-                foreach ($oldformdata as $tablename=>$tabledata) {
-                    $oldform = $db->selectObject('formbuilder_form','table_name="'.substr($tablename,12).'"');
-                    if (!empty($oldform)) {
-                        // create the old table
-                        $table = self::updateFormbuilderTable($oldform);
+                // check for and process to rebuild old formbuilder module data table
+                if (!empty($oldformdata)) {
+                    foreach ($oldformdata as $tablename => $tabledata) {
+                        $oldform = $db->selectObject('formbuilder_form', 'table_name="' . substr($tablename, 12) . '"');
+                        if (!empty($oldform)) {
+                            // create the old table
+                            $table = self::updateFormbuilderTable($oldform);
 
-                        // populate the table
-                        foreach ($tabledata as $record) {
-                            $record = str_replace('\r\n', "\r\n", $record);
-                            $object = @unserialize($record);
-                            if (!$object) $object = unserialize(stripslashes($record));
-                            if (is_object($object)) {
-                                $db->insertObject($object, 'formbuilder_' . $table);
+                            // populate the table
+                            foreach ($tabledata as $record) {
+                                $record = str_replace('\r\n', "\r\n", $record);
+                                $object = @unserialize($record);
+                                if (!$object) {
+                                    $object = unserialize(stripslashes($record));
+                                }
+                                if (is_object($object)) {
+                                    $db->insertObject($object, 'formbuilder_' . $table);
+                                }
                             }
+                            $errors[] = sprintf(
+                                gt(
+                                    '*  However...we successfully recreated the "formbuilder_%s" Table from the EQL file'
+                                ),
+                                $table
+                            );
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "formbuilder_%s" Table from the EQL file'), $table);
                     }
                 }
-            }
 
-            // check for and process to rebuild new forms module data table
-            if (!empty($newformdata)) {
-                foreach ($newformdata as $tablename=>$tabledata) {
-                    $newform = $db->selectObject('forms','table_name="'.substr($tablename,6).'"');
-                    if (!empty($newform)) {
-                        // create the new table
-                        $form = new forms($newform->id);
-                        $table = $form->updateTable();
+                // check for and process to rebuild new forms module data table
+                if (!empty($newformdata)) {
+                    foreach ($newformdata as $tablename => $tabledata) {
+                        $newform = $db->selectObject('forms', 'table_name="' . substr($tablename, 6) . '"');
+                        if (!empty($newform)) {
+                            // create the new table
+                            $form = new forms($newform->id);
+                            $table = $form->updateTable();
 
-                        // populate the table
-                        foreach ($tabledata as $record) {
-                            $record = str_replace('\r\n', "\r\n", $record);
-                            $object = @unserialize($record);
-                            if (!$object) $object = unserialize(stripslashes($record));
-                            if (is_object($object)) {
+                            // populate the table
+                            foreach ($tabledata as $record) {
+                                $record = str_replace('\r\n', "\r\n", $record);
+                                $object = @unserialize($record);
+                                if (!$object) {
+                                    $object = unserialize(stripslashes($record));
+                                }
+                                if (is_object($object)) {
 //                                $db->insertObject($object, 'forms_' . $table);
-                                $form->insertRecord($object);
+                                    $form->insertRecord($object);
+                                }
                             }
+                            $errors[] = sprintf(
+                                gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'),
+                                $table
+                            );
                         }
-                        $errors[] = sprintf(gt('*  However...we successfully recreated the "forms_%s" Table from the EQL file'), $table);
                     }
                 }
-            }
 
-            // ensure the form data table exists and is current
+                // ensure the form data table exists and is current
 //            foreach ($db->selectObjects('forms') as $f) {
 //                if ($f->is_saved) $f->updateTable();
 //            }
-            $formmodel = new forms();
-            $forms = $formmodel->find('all');
-            foreach ($forms as $f) {
-                if ($f->is_saved) $f->updateTable();
-            }
+                $formmodel = new forms();
+                $forms = $formmodel->find('all');
+                foreach ($forms as $f) {
+                    if ($f->is_saved) {
+                        $f->updateTable();
+                    }
+                }
 
-            // rename mixed case tables if necessary
-            expDatabase::fix_table_names();
+                // rename mixed case tables if necessary
+                expDatabase::fix_table_names();
 //            if ($eql_version != $current_version) {
 //                $errors[] = gt('EQL file was Not a valid EQL version');
 //                return false;
 //            }
-            return true;
+                return true;
+            } else {
+                $errors[] = gt('Unable to read EQL file');
+                return false;
+            }
         } else {
-            $errors[] = gt('Unable to read EQL file');
+            $errors[] = gt('Unable to find EQL file');
             return false;
         }
     }
@@ -1974,7 +2033,7 @@ class expFile extends expRecord {
         $data = array();
 
         if (is_readable($file)) {
-            $lines = @file($file);
+            $lines = @file($file);  //TODO we may have to change this for handling large files via fgets()
 
             // Sanity check
             if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {

@@ -1,31 +1,105 @@
+.cart.show-inline ul {
+	margin-left: 5px;
+	padding-left: 5px;
+}
+
 .cart.show-inline li {
-    position:relative;
+	position: relative;
+	list-style: none;
+	margin-bottom: 5px;
 }
 
 .cart.show-inline li a.delete {
-    position:absolute;
-    right:5px;
-    top:5px;
-    overflow:hidden;
-    text-indent:-999px;
-    width:15px;
-    height:15px;
-    padding:0;
-    background: url(../../../../core/assets/images/delete.png) no-repeat 0 50%;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	overflow: hidden;
+	text-indent: -999px;
+	width: 15px;
+	height: 15px;
+	padding: 0;
+	/*background: url(../../../../core/assets/images/delete.png) no-repeat 0 50%;*/
+	background: url(../images/remove_from_cart.png) no-repeat 0 50%;
 }
 
 .cart.show-inline li .image {
-    float:left;
-    clear:both;
-    margin:0 5px 0 0;
+	float: left;
+	clear: both;
+	margin: 0 5px 0 0;
+	display: block;
 }
 
 .cart.show-inline li .title {
-    display:block;
+	display: block;
 }
 
 .cart.show-inline li:hover {
-    background:#c3c2c2;
+	background: #c3c2c2;
 }
 
+.cart.show-inline .total {
+	top: -32px;
+	position: relative;
+	float: right;
+	border-bottom: solid #000000 1px;
+}
 
+.quick-links {
+	position: relative;
+}
+
+a.quickcart {
+	display: block;
+	/*width: 121px;*/
+	/*height: 29px;*/
+	background: url(../images/view_cart.png) no-repeat;
+	text-decoration: none;
+	margin: 5px;
+	z-index: 1;
+}
+
+.quickcart span {
+	/*display: block;*/
+	/*right: 0;*/
+	/*width: 50px;*/
+	padding: 2px 2px 2px 22px;
+	font-weight: bold;
+	font-size: 16px;
+	text-decoration: none;
+}
+
+.quick-links .details {
+	display: none;
+	position: absolute;
+	top: 20px;
+	padding: 12px;
+	left: 0;
+	z-index: 10;
+	border: 1px solid #717171;
+	border-width: 0px 2px 2px 1px;
+}
+
+.quick-links:hover .details {
+	display: block;
+	background: #ffffff;
+	z-index: 999;
+}
+
+.cart.show-inline .quick-links .total {
+	top: 0;
+	margin-bottom: 5px;
+}
+
+.cart.show-inline .quick-links li a.delete {
+	float: right;
+	right: -10px;
+	margin: 5px;
+}
+
+/*.cart.show-inline .quick-links li {*/
+	/*margin-right: 12px;*/
+/*}*/
+
+/*.cart.show-inline .quick-links ul {*/
+	/*margin-left: 0;*/
+/*}*/

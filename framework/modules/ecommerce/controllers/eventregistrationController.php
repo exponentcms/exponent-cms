@@ -57,7 +57,7 @@ class eventregistrationController extends expController {
     );
 
     static function displayname() {
-        return gt("Online Event Registration");
+        return gt("e-Commerce Online Event Registration");
     }
 
     static function description() {
@@ -422,12 +422,14 @@ class eventregistrationController extends expController {
 
         // figure out what metadata to pass back based on the action we are in.
         $action   = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
         switch ($action) {
             case 'showall':
             case 'eventsCalendar':
             case 'upcomingEvents':
-                $metainfo['title']       = gt('Event Registration') . ' - ' . SITE_TITLE;
+                $metainfo['title']       = gt('Event Registration') . ' - ' . $storename;
                 $metainfo['keywords']    = gt('event registration online');
                 $metainfo['description'] = gt("Make an event registration");
                 break;
@@ -452,7 +454,7 @@ class eventregistrationController extends expController {
                         } else {
                             $keyw = SITE_KEYWORDS;
                         }
-                        $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
+                        $metainfo['title'] = empty($object->meta_title) ? $object->title . " - " . $storename : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
                         $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
@@ -462,7 +464,7 @@ class eventregistrationController extends expController {
                     break;
                 }
             default:
-                $metainfo['title']       = $this->displayname() . " - " . SITE_TITLE;
+                $metainfo['title']       = $this->displayname() . " - " . $storename;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }
@@ -778,6 +780,30 @@ class eventregistrationController extends expController {
         global $db, $user;
 
         $event = new eventregistration($this->params['event_id']);
+        // create a new order/invoice if needed
+        if (empty($this->params['id'])) {
+            //create new order
+            $orderc= expModules::getController('order');
+            $orderc->params = array(
+                'customer_type'   => 1,  // blank user/address
+                'addresses_id'    => 0,
+                'order_status_id' => order::getDefaultOrderStatus(),
+                'order_type_id'   => order::getDefaultOrderType(),
+                'no_redirect'     => true,
+            );
+            $orderc_id = $orderc->save_new_order();
+            //create new order item
+            $orderc->params = array(
+                'orderid'       => $orderc_id,
+                'product_id'    => $event->id,
+                'product_type'  => 'eventregistration',
+//                'products_price' => $event->getBasePrice(),
+//                'products_name'  => $event->title,
+                'quantity'      => $this->params['value'],
+                'no_redirect'     => true,
+            );
+            $orderi_id = $orderc->save_order_item();  // will redirect us to the new order view
+        }
         $f = new forms($event->forms_id);
         $registrant = new stdClass();
 //        if (!empty($this->params['id'])) $registrant = $db->selectObject('forms_' . $f->table_name, "id ='{$this->params['id']}'");
@@ -799,10 +825,12 @@ class eventregistrationController extends expController {
             if (!empty($registrant->id)) {
 //                $db->updateObject($registrant, 'forms_' . $f->table_name);
                 $f->updateRecord($registrant);
-            } else {
+            } else {  // create new registrant record
                 $loc_data = new stdClass();
-                $loc_data->order_id = 'admin-created';
-                $loc_data->orderitem_id = 'admin-created';
+//                $loc_data->order_id = 'admin-created';
+//                $loc_data->orderitem_id = 'admin-created';
+                $loc_data->order_id = $orderc_id;
+                $loc_data->orderitem_id = $orderi_id;
                 $loc_data->event_id = $this->params['event_id'];
                 $locdata = serialize($loc_data);
                 $registrant->ip = $_SERVER['REMOTE_ADDR'];
@@ -820,16 +848,20 @@ class eventregistrationController extends expController {
         } else {
 //            $registrant = $db->selectObject("eventregistration_registrants", "id ='{$this->params['id']}'");
             $registrant = $event->getRecord($this->params['id']);
+            if (!is_object($registrant)) $registrant = new stdClass();
             $registrant->control_name = $this->params['control_name'];
+            //FIXME if $registrant->value != $this->params['value'] update order/invoice w/ new quantity???
             $registrant->value = $this->params['value'];
             if (!empty($registrant->id)) {
 //                $db->updateObject($registrant, "eventregistration_registrants");
                 $event->updateRecord($registrant);
-            } else {
+            } else {  // create new registrant record
                 $registrant->event_id = $this->params['event_id'];
-                $registrant->connector_id = 'admin-created';
-                $registrant->orderitem_id = 'admin-created';
+//                $registrant->connector_id = 'admin-created';
+//                $registrant->orderitem_id = 'admin-created';
                 $registrant->registered_date = time();
+                $registrant->connector_id = $orderc_id;
+                $registrant->orderitem_id = $orderi_id;
 //                $db->insertObject($registrant, "eventregistration_registrants");
                 $event->insertRecord($registrant);
             }

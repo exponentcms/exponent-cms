@@ -61,7 +61,7 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
         $text = '<i class="icon-print '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('View Printer Friendly'));
 
         // spit out the link
-        echo $prepend.$router->printerFriendlyLink($text, $class, 800, 600, $view);
+        echo $prepend,$router->printerFriendlyLink($text, $class, 800, 600, $view);
     }
 }
 

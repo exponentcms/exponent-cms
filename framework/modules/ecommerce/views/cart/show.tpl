@@ -18,17 +18,49 @@
 {/css}
 
 <div id="myCart" class="module cart show hide">
-	<h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
+    {if $items|@count gt 0}
+        {assocarray}
+            {*breadcrumb: [{"Summary"|gettext}, {"Sign In"|gettext}, {"Order Confirmation"|gettext}, {"Order Complete"|gettext}, ]*}
+            {*test5: [*}
+                {*key1: "value1"*}
+                {*key2: "value2"*}
+            {*]*}
+            breadcrumb: [
+                0: [
+                    title: "{'Summary'|gettext}"
+                    link: ""
+                ]
+                1: [
+                    title:  "{'Sign In'|gettext}"
+                    link: ""
+                ]
+                2: [
+                    title:  "{'Shipping/Billing'|gettext}"
+                    link: ""
+                ]
+                3: [
+                    title:  "{'Confirmation'|gettext}"
+                    link: ""
+                ]
+                4: [
+                    title:  "{'Complete'|gettext}"
+                    link: ""
+                ]
+            ]
+        {/assocarray}
+        {breadcrumb items=$breadcrumb active=0 style=flat}
+    {/if}
+    <h1>{ecomconfig var='cart_title_text' default="Your Secure Shopping Cart"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='cart_description_text' default=""}</div>
     <div class="module-actions" style="padding:8px; 0">
         {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
         {$backlink = makeLink(expHistory::getBack(1))}
-        {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
+        {icon class="reply" button=true size=large link=$backlink text="Continue Shopping"|gettext}
         {if $items|@count gt 0}
             {*<a class="{button_style}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>*}
-            {icon class="shopping-cart" button=true controller=cart action=checkout secure=true text="Checkout Now"|gettext}
+            {icon class="shopping-cart" button=true size=large color=green controller=cart action=checkout secure=true text="Checkout Now"|gettext}
             {*<a class="{button_style color=red size=small}" style="float:right; margin-left: 18px;" href="{link action=empty_cart}" onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');">{'Empty Cart'|gettext}</a>*}
-            <span style="float:right; margin-left: 18px;">{icon class=delete button=true action=empty_cart onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');" text='Empty Cart'|gettext}</span>
+            <span style="float:right; margin-left: 18px;">{icon class=delete button=true size=large action=empty_cart onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');" text='Empty Cart'|gettext}</span>
         {/if}
     </div>
 	<div id="cartbox">        
@@ -43,7 +75,7 @@
 			</div>
 		</div>
         
-		{exp_include file="show_cart_only.tpl"}
+		{exp_include file="cart_only.tpl"}
         
         {if $items|@count gt 0}
             <table width="100%" id="cart-totals" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
@@ -88,7 +120,8 @@
                                 </td>
                             </tr>   
                         {/if}
-                      {/if}     
+                      {/if}
+                      {if !$order->shipping_taxed}
                       <tr class="{cycle values="odd, even"}">
                         <td width="90%" class="cart-totals-title">
                             {"Tax"|gettext} -
@@ -103,7 +136,8 @@
                         </td>
                         <td style="text-align:right;">{$order->tax|number_format:2}
                         </td>
-                    </tr>   
+                    </tr>
+                    {/if}
                     <tr class="{cycle values="odd, even"}">
                         <td class="cart-totals-title">
                             {if isset($discounts[0])}
@@ -127,6 +161,23 @@
                         {/if}
                         </td>
                     </tr>
+                    {if $order->shipping_taxed}
+                    <tr class="{cycle values="odd, even"}">
+                      <td width="90%" class="cart-totals-title">
+                          {"Tax"|gettext} -
+                          {foreach from=$order->taxzones item=zone}
+                              {$zone->name} ({$zone->rate}%):
+                          {foreachelse}
+                              ({'N/A'|gettext}):
+                          {/foreach}
+                      </td>
+                      <td>
+                          {currency_symbol}
+                      </td>
+                      <td style="text-align:right;">{$order->tax|number_format:2}
+                      </td>
+                    </tr>
+                    {/if}
                     {if $order->surcharge_total != 0}
                         <tr class="{cycle values="odd, even"}">
                             <td class="cart-totals-title">
@@ -168,10 +219,10 @@
 	</div>
     <div class="module-actions" style="padding:8px; 0">
         {*<a class="{button_style}" href="{backlink}">{"Continue Shopping"|gettext}</a>*}
-        {icon class="reply" button=true link=$backlink text="Continue Shopping"|gettext}
+        {icon class="reply" button=true size=large link=$backlink text="Continue Shopping"|gettext}
         {if $items|@count gt 0}
             {*<a class="{button_style}" style="margin-left: 18px;" href="{securelink controller=cart action=checkout}">{"Checkout Now"|gettext}</a>*}
-            {icon class="shopping-cart" button=true controller=cart action=checkout secure=true text="Checkout Now"|gettext}
+            {icon class="shopping-cart" button=true size=large color=green controller=cart action=checkout secure=true text="Checkout Now"|gettext}
         {/if}
     </div>
 </div>

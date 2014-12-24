@@ -53,7 +53,7 @@ if (!function_exists('smarty_function_message')) {
             $class = 'success';
         }
         $centered = empty($params['center']) ? '' : ' style="text-align:center"';
-        echo '<div class="alert alert-' . $class . $centered . '" role="alert">' . $text . '</div>';
+        echo '<div class="alert alert-', $class, $centered, '" role="alert">', $text, '</div>';
     }
 }
 

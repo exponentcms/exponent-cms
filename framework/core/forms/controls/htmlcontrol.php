@@ -40,13 +40,15 @@ if (!defined('EXPONENT')) exit('');
 
 	function toHTML($label,$name) {
 		if ($this->span) {
-			return '<div class="htmlcontrol control form-group">' . $this->html . '</div>';
+			return '<div class="htmlcontrol control form-group">' . ($this->horizontal&&bs3()?'<div class="col-sm-offset-2 col-sm-10">':'') . $this->html . ($this->horizontal&&bs3()?'</div>':'') . '</div>';
 		} else {
+            if ($this->horizontal&&bs3()) $this->html = '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
 			return parent::toHTML($label,$name);
 		}
 	}
 	
 	function controlToHTML($name,$label) {
+        if ($this->horizontal&&bs3()) return '<div class="col-sm-offset-2 col-sm-10">' . $this->html . '</div>';
 		return $this->html;
 	}
 	

@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="tree,panels"}
+{css unique="product-edit" link="`$asset_path`css/product_edit.css" corecss="admin-global,tree,panels"}
 
 {/css}
 
@@ -25,7 +25,7 @@
 {/script}
 {/if}
 
-<div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
+<div id="editproduct" class="module store edit yui-skin-sam exp-admin-skin">
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {$model_name|ucfirst}</h1>
     {else}
@@ -37,12 +37,12 @@
                 <strong>{'Child Products:'|gettext}</strong>
                 <ul>
                 {foreach from=$record->childProduct item=child}
-                    <li><a href="{link controller='store' action='edit' id=$child->id}">{$child->title} ({$child->model})</a></li>
+                    <li><a href="{link controller='store' action='edit' id=$child->id}" title="{$child->model}">{$child->title}</a></li>
                 {/foreach}
                 </ul>
             {/if}
         {else}
-            <strong>{'Parent Product:'|gettext}</strong> <a href="{link controller='store' action='edit' id=$record->parent_id}">{$parent->title}</a>
+            <strong>{'Parent Product:'|gettext}</strong> <a href="{link controller='store' action='edit' id=$record->parent_id}" title="{$parent->model}">{$parent->title}</a>
         {/if}
     </blockquote>
     {form action=update}

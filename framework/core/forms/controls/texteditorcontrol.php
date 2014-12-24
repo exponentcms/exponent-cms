@@ -48,7 +48,8 @@ class texteditorcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-		$html = "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$name\" name=\"$name\"";
+        $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
+		$html .= "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$name\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
@@ -67,6 +68,7 @@ class texteditorcontrol extends formcontrol {
 		$html .= htmlentities($this->default,ENT_COMPAT,LANG_CHARSET);
 		$html .= "</textarea>";
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        $html .= ($this->horizontal && bs3()) ? '</div>' : '';
 		return $html;
 	}
 	

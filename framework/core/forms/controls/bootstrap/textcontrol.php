@@ -61,7 +61,8 @@ class textcontrol extends formcontrol {
         } else {
             $extra_class = '';
         }
-        $html  = '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
+        $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
+        $html .= '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"', "&quot;", $this->default) . "\"";
         $html .= ($this->size ? " size=\"" . $this->size . "\"" : "");
         $html .= $this->multiple ? ' multiple="multiple"' : "";
@@ -82,6 +83,7 @@ class textcontrol extends formcontrol {
         if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         $html .= "/>";
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
+        $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
     }
 

@@ -1,5 +1,4 @@
 <?php
-//FIXME Deprecated! Not used
 ##################################################
 #
 # Copyright (c) 2004-2014 OIC Group, Inc.
@@ -33,11 +32,12 @@
  * @param \Smarty $smarty
  */
 function smarty_function_prod_images($params,&$smarty) {
-    //load up the img plugin
+    //load the {img} plugin
     foreach ($smarty->smarty->plugins_dir as $value) {
         $filepath = $value ."/function.img.php";
         if (file_exists($filepath)) {
             require_once $filepath;
+            break;
         }
     }
 
@@ -51,11 +51,12 @@ function smarty_function_prod_images($params,&$smarty) {
     //ref for additional images so we can play with the array
     $additionalImages = !empty($rec->expFile['images']) ? $rec->expFile['images'] : array();
 
-    $mainImages = !empty($additionalImages) ? array_merge($images,$additionalImages) : $images;
+    $mainImages = !empty($additionalImages) ? array_merge($images, $additionalImages) : $images;
     
-    $mainthmb = !empty($rec->expFile['mainthumbnail'][0]) ? $rec->expFile['mainthumbnail'][0] : $mainImages[0] ;
-    $addImgs = array_merge(array($mainthmb),$additionalImages);
-    
+//    $mainthmb = !empty($rec->expFile['mainthumbnail'][0]) ? $rec->expFile['mainthumbnail'][0] : $mainImages[0] ;
+//    $addImgs = array_merge(array($mainthmb),$additionalImages);
+    $addImgs = $additionalImages;
+
     //pulling in store configs. This is a placeholder for now, so we'll manually set them til we get that worked in.
     $config = $smarty->getTemplateVars('config');
     
@@ -71,14 +72,19 @@ function smarty_function_prod_images($params,&$smarty) {
         
     switch ($params['display']) {
         case 'single':
-            $html = '<a class="prod-img" href="'.makelink(array("controller"=>"store","action"=>"show","title"=>$rec->title)).'">';
-                $width = !empty($params['width']) ? $params['width'] : 100 ;
+        case 'thumbnail':
+        case 'featured':
+        default;
+            $class = "ecom-image";
+            $class .= !empty($params['class']) ? ' ' . $params['class'] : '' ;
+            $html = '<a class="prod-img" href="'.makelink(array("controller"=>"store","action"=>"show","title"=>$rec->title)).'" title="' . gt('View') . ' ' . $rec->title.'">';
+                $width = !empty($params['width']) ? $params['width'] : (!empty($config["listingwidth"]) ? $config["listingwidth"] : 100) ;
                 $imgparams = array("constraint"=>1,
                                    "file_id"=>$images[0]->id,
-                                   "w"=>$config["listingwidth"],
+                                   "w"=>$width,
                                    "h"=>$config["listingheight"],
                                    "return"=>1,
-                                   "class"=>"ecom-image"
+                                   "class"=>$class
                                    );
                                             
             if (!$images[0]->id) {
@@ -98,10 +104,10 @@ function smarty_function_prod_images($params,&$smarty) {
             }
             
             if (count($addImgs)>1) {
-                $adi .= '<ul class="thumbnails">';
+                $adi = '<ul class="thumbnails">';
                 for ($i=0; $i<count($addImgs); $i++) {
                     $thumbparams = array("h"=>$config['addthmbw'],"w"=>$config['addthmbh'],"zc"=>1,"file_id"=>$addImgs[$i]->id,"return"=>1,"class"=>"thumnail");
-                    $thmb .= '<li>'.smarty_function_img($thumbparams,$smarty).'</li>';
+                    $thmb = '<li>'.smarty_function_img($thumbparams,$smarty).'</li>';
                 }
                 $adi .= $thmb;
                 $adi .= '</ul>';
@@ -120,7 +126,7 @@ function smarty_function_prod_images($params,&$smarty) {
 
             for ($i=0; $i<count($mainImages); $i++) {
                 $imgparams = array("w"=>$config['displaywidth'],"file_id"=>$mainImages[$i]->id,"return"=>1,"class"=>"large-img");
-                $img .= '<li>'.smarty_function_img($imgparams,$smarty).'</li>';
+                $img = '<li>'.smarty_function_img($imgparams,$smarty).'</li>';
             }
             $html .= $img;
             $html .= '</ul>';
@@ -208,7 +214,6 @@ function smarty_function_prod_images($params,&$smarty) {
             }
             $html .= $swtch;
             $html .= '</ul>';
-
         break;
     }
 

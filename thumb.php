@@ -25,7 +25,7 @@ if (isset($_GET['id'])) {
     // Since bootstrap doesn't setup the session we need to define this
     // otherwise the expFile can't find it's table desc from cache.
     // Initialize the Database Subsystem
-    $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME);
+    $db = expDatabase::connect(DB_USER,DB_PASS,DB_HOST.':'.DB_PORT,DB_NAME,'',false,BASE . 'tmp/thumb_sql.log');
 
     $file_obj = new expFile(intval($_GET['id']));
     //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;

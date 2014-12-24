@@ -31,7 +31,7 @@
     {permissions}
         {if $user->is_admin || $user->is_acting_admin}
                <div class="module-actions">
-                   {icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
+                   {icon class="add" action=edit_section parent='0' text='Create a New Top Level Page'|gettext}
                </div>
         {/if}
     {/permissions}
@@ -57,6 +57,7 @@
                 },
                 'check_callback' : true,
                 'themes' : {
+                    'name': 'proton',
                     'responsive' : true,
                     'url' : true,
                     'dots' : false,

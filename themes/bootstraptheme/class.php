@@ -86,7 +86,7 @@ class bootstraptheme extends theme {
         if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
         if (empty($params['flyout_sidebar'])) $params['flyout_sidebar'] = '0';
-     parent::saveThemeConfig($params);
+        parent::saveThemeConfig($params);
    	}
 
 }

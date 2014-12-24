@@ -21,21 +21,21 @@
         </ul>
     </blockquote>
     <div id="ups-tabs" class="">
-        <ul class="nav nav-tabs">
-	        <li class="active"><a href="#tab1" data-toggle="tab"><em>{'UPS Settings'|gettext}</em></a></li>
-	        <li><a href="#tab2" data-toggle="tab"><em>{'Shipping Methods'|gettext}</em></a></li>
-	        <li><a href="#tab3" data-toggle="tab"><em>{'My Info'|gettext}</em></a></li>
-	        <li><a href="#tab4" data-toggle="tab"><em>{'Shipping Defaults'|gettext}</em></a></li>
+        <ul class="nav nav-tabs" role="tablist">
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'UPS Settings'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Shipping Methods'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'My Info'|gettext}</em></a></li>
+	        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Shipping Defaults'|gettext}</em></a></li>
         </ul>            
         <div class="tab-content">
-	        <div id="tab1" class="tab-pane fade in active">
+	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	            {control type="text" name="username" label="UPS Username"|gettext value=$calculator->configdata.username required=1}
                 {control type="password" name="password" label="Password"|gettext value=$calculator->configdata.password required=1}
                 {control type="text" name="shipfrom[shipperNumber]" label="Account #"|gettext value=$calculator->configdata.shipfrom.shipperNumber required=1}
 	            {control type="text" name="accessnumber" label="Access Key"|gettext value=$calculator->configdata.accessnumber required=1}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
 	        </div>
-	        <div id="tab2" class="tab-pane fade">
+	        <div id="tab2" role="tabpanel" class="tab-pane fade">
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Next Day Air"|gettext value="01" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air"|gettext value="02" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Ground"|gettext value="03" checked=$calculator->configdata.shipping_methods}
@@ -49,7 +49,7 @@
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Second Day Air AM"|gettext value="59" checked=$calculator->configdata.shipping_methods}
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$calculator->configdata.shipping_methods}
 	        </div>
-	        <div id="tab3" class="tab-pane fade">
+	        <div id="tab3" role="tabpanel" class="tab-pane fade">
 	            {control type="text" name="shipfrom[name]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.name}
                 {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone}
 	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1 required=1}
@@ -59,7 +59,7 @@
 	            {control type=state name="shipfrom[region]" label="State"|gettext value=$calculator->configdata.shipfrom.region required=1}
 	            {control type="text" name="shipfrom[postalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.postalCode required=1}
 	        </div>
-	        <div id="tab4" class="tab-pane fade">
+	        <div id="tab4" role="tabpanel" class="tab-pane fade">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}
 	            {control type="text" name="default_length" label="Standard Box Length (inches)"|gettext size=5 value=$calculator->configdata.default_length}
 	            {control type="text" name="default_height" label="Standard Box Height (inches)"|gettext size=5 value=$calculator->configdata.default_height}

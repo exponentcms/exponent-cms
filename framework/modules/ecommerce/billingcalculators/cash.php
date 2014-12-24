@@ -30,21 +30,7 @@ class cash extends billingcalculator {
         return gt("Enabling this payment option will allow your customers to pay by sending cash or check.");
     }
 
-    function hasConfig() {
-        return false;
-    }
-
-    function hasUserForm() {
-        return false;
-    }
-
-    function isOffsite() {
-        return false;
-    }
-
-    function isSelectable() {
-        return true;
-    }
+    function hasConfig() {return false;}
 
     public $title = 'Cash/Check';
     public $payment_type = 'Cash';
@@ -77,7 +63,6 @@ class cash extends billingcalculator {
         $cash_amount = new textcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
         $cash_amount->id = "cash_amount";
-
         $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
 
         return $form;
@@ -129,25 +114,6 @@ class cash extends billingcalculator {
         return $ret->result->payment_status;
     }
 
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
-    }
-
-    function getAVSAddressVerified($billingmethod) {
-        return '';
-    }
-
-    function getAVSZipVerified($billingmethod) {
-        return '';
-    }
-
-    function getCVVMatched($billingmethod) {
-        return '';
-    }
 }
 
 ?>

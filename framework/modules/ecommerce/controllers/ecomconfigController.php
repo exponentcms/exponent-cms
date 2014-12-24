@@ -50,6 +50,7 @@ class ecomconfigController extends expController {
     
     function update_optiongroup_master() {
         global $db;
+
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $og = new optiongroup_master($id);
         $oldtitle = $og->title;
@@ -83,6 +84,7 @@ class ecomconfigController extends expController {
     
     function delete_option_master() {
         global $db;
+
         $masteroption = new option_master($this->params['id']);
         
         // delete any implementations of this option master
@@ -104,6 +106,7 @@ class ecomconfigController extends expController {
     
     function update_option_master() {        
         global $db;
+
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $opt = new option_master($id);
         $oldtitle = $opt->title;
@@ -192,10 +195,10 @@ class ecomconfigController extends expController {
        if ($discount->discount_percent == "") $discount->discount_percent = 0;
        
         // get the shipping options and their methods
-        $shipping = new shipping();
         $shipping_services = array();
         $shipping_methods = array();
-        foreach ($shipping->available_calculators as $calcid=>$name) {
+//        $shipping = new shipping();
+        foreach (shipping::listAvailableCalculators() as $calcid=>$name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -265,6 +268,7 @@ class ecomconfigController extends expController {
     /*****************************************************************/
 	public function manage_groupdiscounts() {
 		global $db;
+
 		expHistory::set('manageable', $this->params);
 		$groups = group::getAllGroups();
 		$discounts = $db->selectObjects('discounts');
@@ -330,6 +334,20 @@ class ecomconfigController extends expController {
         ));
     }   
 
+    function saveconfig() {
+   		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
+   		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
+        if (isset($this->params['store']['address_country_id'])) {
+            $this->params['store']['country'] = $this->params['store']['address_country_id'];
+            unset($this->params['store']['address_country_id']);
+        }
+        if (isset($this->params['store']['address_region_id'])) {
+            $this->params['store']['state'] = $this->params['store']['address_region_id'];
+            unset($this->params['store']['address_region_id']);
+        }
+   		parent::saveconfig();
+   	}
+
 	/*****************************************************************/
     /***************  Upcharge Rate   *******************************/
     /*****************************************************************/
@@ -352,7 +370,6 @@ class ecomconfigController extends expController {
 	 }
 	 
 	 function update_upcharge() {
-       
         $this->loc->src = "@globalstoresettings";
         $config = new expConfig($this->loc);
 		$this->config = $config->config;
@@ -371,11 +388,6 @@ class ecomconfigController extends expController {
         expHistory::back();
     }
 	
-	function saveconfig() {
-		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
-		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
-		parent::saveconfig();
-	}
 }
 
 ?>

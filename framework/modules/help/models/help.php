@@ -33,8 +33,8 @@ class help extends expRecord {
      */
     public function __construct($params=array()) {
         parent::__construct($params);
-        $this->loc = expUnserialize($this->location_data);
-        $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
+        if (!empty($this->location_data)) $this->loc = expUnserialize($this->location_data);
+        if (!empty($this->help_version_id)) $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
     }
     
     // public function beforeSave($params=array()) {  

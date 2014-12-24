@@ -38,14 +38,6 @@ class passthru extends billingcalculator {
         return false;
     }
 
-    function isOffsite() {
-        return false;
-    }
-
-    function isSelectable() {
-        return true;
-    }
-
     function isRestricted() {
         return true;
     }
@@ -54,24 +46,24 @@ class passthru extends billingcalculator {
     public $payment_type = 'Passthru';
 
     //Called for billing medthod seletion screen, return true if it's a valid billing method.
-    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
-        return true;
-    }
+//    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
+//        return true;
+//    }
 
-    function post_process() {
-        return true;
-    }
+//    function post_process() {
+//        return true;
+//    }
 
     //Config Form
-    function form($config_object) {
-        $form = new form();
-        if (!$config_object) {
-            $config_object->give_change = true;
-        }
-        $form->register("give_change", gt("Give Change?"), new checkboxcontrol($config_object->give_change));
-        $form->register("submit", "", new buttongroupcontrol("Save", "", "Cancel"));
-        return $form->toHTML();
-    }
+//    function form($config_object) {
+//        $form = new form();
+//        if (!$config_object) {
+//            $config_object->give_change = true;
+//        }
+//        $form->register("give_change", gt("Give Change?"), new checkboxcontrol($config_object->give_change));
+//        $form->register("submit", "", new buttongroupcontrol("Save", "", "Cancel"));
+//        return $form->toHTML();
+//    }
 
     //process config form
 //	function update($values, $config_object) {  //FIXME doesn't match parent declaration update($params = array())
@@ -88,7 +80,7 @@ class passthru extends billingcalculator {
         return $form->toHTML();
     }
 
-    //process user input. This function should return an object of the user input.
+    //process user input. This function should return an object of the user input.  //FIXME never used
     //the returnd object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userProcess($values, $config_object, $user_data) {
@@ -114,14 +106,14 @@ class passthru extends billingcalculator {
         if (isset($opts->result)) return '';
         $ot = new order_type($opts->order_type);
         $os = new order_status($opts->order_status);
-        $sr1 = new sales_rep($opts->sales_rep_1_id);
-        $sr2 = new sales_rep($opts->sales_rep_2_id);
-        $sr3 = new sales_rep($opts->sales_rep_3_id);
+        if (!empty($opts->sales_rep_1_id)) $sr1 = new sales_rep($opts->sales_rep_1_id);
+        if (!empty($opts->sales_rep_2_id)) $sr2 = new sales_rep($opts->sales_rep_2_id);
+        if (!empty($opts->sales_rep_3_id)) $sr3 = new sales_rep($opts->sales_rep_3_id);
         $msg = gt('Order Type') . ': ' . $ot->title;
         $msg .= '<br>' . gt('Order Status') . ': ' . $os->title;
-        $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
-        $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
-        $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
+        if (!empty($sr1)) $msg .= '<br>' . gt('Sales Rep 1') . ': ' . $sr1->initials;
+        if (!empty($sr2)) $msg .= '<br>' . gt('Sales Rep 2') . ': ' . $sr2->initials;
+        if (!empty($sr3)) $msg .= '<br>' . gt('Sales Rep 3') . ': ' . $sr3->initials;
         //$order
         return $msg;
     }
@@ -132,9 +124,9 @@ class passthru extends billingcalculator {
         $obj = new stdClass();
         $obj->order_type = $params['order_type'];
         $obj->order_status = $params['order_status'];
-        $obj->sales_rep_1_id = $params['sales_rep_1_id'];
-        $obj->sales_rep_2_id = $params['sales_rep_2_id'];
-        $obj->sales_rep_3_id = $params['sales_rep_3_id'];
+        if (isset($params['sales_rep_1_id'])) $obj->sales_rep_1_id = $params['sales_rep_1_id'];
+        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_2_id = $params['sales_rep_2_id'];
+        if (isset($params['sales_rep_2_id'])) $obj->sales_rep_3_id = $params['sales_rep_3_id'];
         return $obj;
     }
 
@@ -164,6 +156,7 @@ class passthru extends billingcalculator {
         $object->CVV2MATCH = 'Pending';
         $object->traction_type = 'Pending';
         $trax_state = "authorization pending";
+        $trax_state->payment_status = $trax_state;
 
         //$opts2->billing_info = $opts;
         $opts2 = new stdClass();
@@ -256,6 +249,7 @@ class passthru extends billingcalculator {
         //$ret = expUnserialize($billingmethod->billing_options);
         return 'Manual';
     }
+
 }
 
 ?>

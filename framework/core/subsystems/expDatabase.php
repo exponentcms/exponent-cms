@@ -38,7 +38,7 @@ class expDatabase {
 	 * @param bool $new
 	 * @return \database the database object
 	 */
-	public static function connect($username,$password,$hostname,$database,$dbclass = '',$new=false) {
+	public static function connect($username,$password,$hostname,$database,$dbclass = '',$new=false,$log=null) {
 		if (!defined('DB_ENGINE')) {
 			$backends = array_keys(self::backends(1));
 			if (count($backends)) {
@@ -51,7 +51,7 @@ class expDatabase {
 		if ($dbclass == '' || $dbclass == null) $dbclass = DB_ENGINE;
 		(include_once(BASE.'framework/core/subsystems/database/'.$dbclass.'.php')) or exit(gt('The specified database backend').'  ('.$dbclass.') '.gt('is not supported by Exponent'));
 		$dbclass .= '_database';
-		$newdb = new $dbclass($username,$password,$hostname,$database,$new);
+		$newdb = new $dbclass($username,$password,$hostname,$database,$new,$log);
         if (!$newdb->tableExists('user')) {
             $newdb->havedb = false;
         }

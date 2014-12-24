@@ -107,7 +107,7 @@ class discounts extends expRecord {
     }
 
     function validateDiscount() {
-        global $order, $user;
+        global $order, $user; //FIXME we do NOT want the global $order
 
         $retMessage = "";
         if (!$this->isAvailable()) {

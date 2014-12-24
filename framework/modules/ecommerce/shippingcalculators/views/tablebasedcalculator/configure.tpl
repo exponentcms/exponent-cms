@@ -31,6 +31,7 @@
 <div id="tablebasedcalculator" class="module shipping configure hide">
     <blockquote>{'Shipping cost is based on order total and shipping speed'|gettext}</blockquote>
     <h4>{"Shipping Speeds"|gettext}</h4>
+    {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"|gettext}
     <ul id="shippingspeeds">
 		{foreach from=$calculator->shippingspeeds item=calc}
 			<li>
@@ -40,8 +41,6 @@
 			</li>
 		{/foreach}
     </ul>
-    {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"|gettext}
-    {br}{br}
 	<div class="{if !$calculator->shippingspeeds}hide{/if}">
         <hr>
         {br}
@@ -114,6 +113,7 @@
                 </tr>
             </tbody>
         </table>
+        {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Simple'|gettext}
 	</div>
     {br}
 </div>

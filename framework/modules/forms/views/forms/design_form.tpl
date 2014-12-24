@@ -17,9 +17,15 @@
 
 {/css}
 
-{if $config.style}
+{if $config.style && !bs3()}
     {css unique="formmod2" corecss="forms2col"}
 
+    {/css}
+{else}
+    {css unique="formmod2"}
+        .stepy-step label {
+        	margin         : 0;
+        }
     {/css}
 {/if}
 
@@ -81,7 +87,7 @@
         </blockquote>
         <p class="exp-skin">
             {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
-            {icon button=true link=$backlink text='Done'|gettext}
+            {icon button=true class=reply link=$backlink text='Done'|gettext}
         </p>
     {/if}
 </div>

@@ -25,6 +25,11 @@ class splitcreditcard extends creditcard {
         return 'Split Credit Card';
     }
 
+    function description() {
+        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
+	    will be split with part of it being stored in the database and the other part getting emailed to site administrator.";
+    }
+
     public function captureEnabled() {
         return true;
     }
@@ -37,34 +42,11 @@ class splitcreditcard extends creditcard {
         return true;
     }
 
-    function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	    will be split with part of it being stored in the database and the other part getting emailed to site administrator.";
-    }
-
-    function hasConfig() {
-        return true;
-    }
-
-    function hasUserForm() {
-        return true;
-    }
-
-    function isOffsite() {
-        return false;
-    }
-
-    function isSelectable() {
-        return true;
-    }
-
-    public $title = 'Credit Card';
-
     //TODO: I don't think this is used any more but i don't have a clue
     //Called for billing method selection screen, return true if it's a valid billing method.
-    function pre_process() {
-        return true;
-    }
+//    function pre_process() {
+//        return true;
+//    }
 
     //called when the order is submitted. Should return an object...
     function process($method, $opts, $params, $order) {
@@ -76,35 +58,37 @@ class splitcreditcard extends creditcard {
         if (empty($opts)) return false;
 
         $this->opts->cc_number = 'XXXX-XXXX-XXXX-' . substr($this->opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
 
         $object = new stdClass();
         $object->errorCode = 0;
+        $object->payment_status = 'complete';
         $this->opts->result = $object;
+//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
+        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
         return true;
     }
 
-    function postProcess($order, $params) {
-        return true;
-    }
+//    function postProcess($order, $params) {
+//        return true;
+//    }
 
     //Form for user input
-    function userForm() {
-        return parent::userForm();
-    }
+//    function userForm() {
+//        return parent::userForm();
+//    }
 
     //process user input. This function should return an object of the user input.
     //the returnd object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
-    function userFormUpdate($params) {
-        return parent::userFormUpdate($params);
-    }
+//    function userFormUpdate($params) {
+//        return parent::userFormUpdate($params);
+//    }
 
     //Should return html to display user data.
-    function userView($opts) {
-        return parent::userView($opts);
-    }
+//    function userView($opts) {
+//        return parent::userView($opts);
+//    }
 
     //Config Form
     function configForm() {
@@ -160,8 +144,14 @@ class splitcreditcard extends creditcard {
         return $html;*/
     }
 
+    /**
+     * Unused at this point
+     *
+     * @param $opts
+     * @return string
+     */
     function textmessage($opts) {
-        global $order;
+        global $order;   //FIXME we do NOT want the global $order
         //FIXME: hard coded text!!
         $message = "Order Number: $order->invoice_id\r\n";
         $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "\r\n";
@@ -170,8 +160,14 @@ class splitcreditcard extends creditcard {
         return $message;
     }
 
+    /**
+     * Unused at this point
+     *
+     * @param $opts
+     * @return string
+     */
     function htmlmessage($opts) {
-        global $order;
+        global $order;   //FIXME we do NOT want the global $order
         //FIXME: hard coded text!!
         $message = "Order Number: $order->invoice_id<br>";
         $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "<br>";
@@ -197,14 +193,6 @@ class splitcreditcard extends creditcard {
     function getPaymentStatus($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->result->payment_status;
-    }
-
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
     }
 
     function getAVSAddressVerified($billingmethod) {

@@ -157,7 +157,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
                 } else {
                     catvalue = cat.get('value');
                 }
-                var resize = Y.one('#resize').get('value');
+                var resize = Y.one('#resize').get('checked') != false;
                 var widthtxt = Y.one('#max_width');
                 if (widthtxt == null) {
                     width = 0;

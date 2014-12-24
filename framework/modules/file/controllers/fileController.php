@@ -448,7 +448,8 @@ class fileController extends expController {
         global $user;
 
         $error = false;
-        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
+//        if (get_magic_quotes_gpc()) $this->params['files'] = stripslashes($this->params['files']);  // magic quotes fix
+        $this->params['files'] = stripslashes($this->params['files']);
         $files = json_decode($this->params['files']);
         switch (json_last_error()) {  //FIXME json error checking/reporting, may no longer be needed
             case JSON_ERROR_NONE:
@@ -527,7 +528,7 @@ class fileController extends expController {
     public function upload() {
         
         // upload the file, but don't save the record yet...
-        if (!empty($this->params['resize'])) {
+        if ($this->params['resize'] != 'false') {
             $maxwidth = $this->params['max_width'];
         } else {
             $maxwidth = null;
@@ -779,6 +780,7 @@ class fileController extends expController {
         		if (!$eql = fopen ($path, "w")) {
         			flash('error',gt("Error opening eql file for writing")." ".$path);
         		} else {
+                    //TODO we need to write inside call passing $eql file pointer
                     $eqlfile = expFile::dumpDatabase(array_keys($this->params['tables']));
         			if (fwrite ($eql, $eqlfile)  === FALSE) {
         				flash('error',gt("Error writing to eql file")." ".$path);
@@ -805,7 +807,7 @@ class fileController extends expController {
         			header('Content-Disposition: attachment; filename="' . $filename . '"');
         			header('Pragma: no-cache');
         		}
-                echo expFile::dumpDatabase(array_keys($this->params['tables']));
+                echo expFile::dumpDatabase(array_keys($this->params['tables']));  //TODO we need to echo inside call
         		exit; // Exit, since we are exporting
         	}
         }

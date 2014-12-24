@@ -20,44 +20,70 @@
 {messagequeue}
 
 <div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
+    {assocarray}
+        breadcrumb: [
+            0: [
+                title: "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'show'))
+            ]
+            1: [
+                title:  "{'Sign In'|gettext}"
+                link: ""
+            ]
+            2: [
+                title:  "{'Shipping/Billing'|gettext}"
+                link: ""
+            ]
+            3: [
+                title:  "{'Confirmation'|gettext}"
+                link: ""
+            ]
+            4: [
+                title:  "{'Complete'|gettext}"
+                link: ""
+            ]
+        ]
+    {/assocarray}
+    {breadcrumb items=$breadcrumb active=2 style=flat}
     <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
-
     {if ecomconfig::getConfig('policy')!=""}
-        <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
-        <div id="storepolicies" style="z-index:9999">
-            <div class="yui3-widget-hd">
-                {"Store Policies"|gettext}
+        <div>
+            <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
+            <div id="storepolicies" style="z-index:9999">
+                <div class="yui3-widget-hd">
+                    {"Store Policies"|gettext}
+                </div>
+                <div class="yui3-widget-bd" style="overflow-y:scroll">
+                    {ecomconfig var='policy' default=""}
+                </div>
             </div>
-            <div class="yui3-widget-bd" style="overflow-y:scroll">
-                {ecomconfig var='policy' default=""}
-            </div>
+            {script unique="policypop" yui3mods=1}
+                {literal}
+                YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
+                    var policies = new Y.Panel({
+                        srcNode : '#storepolicies',
+                        headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
+                        width:"400px",
+                        height:"350px",
+                        centered:true,
+                        modal:true,
+                        visible:false,
+                        zIndex:999,
+                        constrain:true,
+    //                    close:true,
+                        render:true,
+                    });
+                    policies.plug(Y.Plugin.Drag, {
+                        handles: ['.yui3-widget-hd']
+                    });
+                    var showpanel = function(e){
+                        policies.show();
+                    };
+                    Y.one("#review-policy").on('click',showpanel);
+                });
+                {/literal}
+            {/script}
         </div>
-        {script unique="policypop" yui3mods=1}
-            {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
-                var policies = new Y.Panel({
-                    srcNode : '#storepolicies',
-                    headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
-                    width:"400px",
-                    height:"350px",
-                    centered:true,
-                    modal:true,
-                    visible:false,
-                    zIndex:999,
-                    constrain:true,
-//                    close:true,
-                    render:true,
-                });
-                policies.plug(Y.Plugin.Drag, {
-                    handles: ['.yui3-widget-hd']
-                });
-                var showpanel = function(e){
-                    policies.show();
-                };
-                Y.one("#review-policy").on('click',showpanel);
-            });
-            {/literal}
-        {/script}
     {/if}
 
     {* if $order->forced_shipping == true}
@@ -76,7 +102,7 @@
 
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
-            {chain controller=cart action=show view=show_cart_only}
+            {chain controller=cart action=cart_only}
         </div>
     </div>
     {clear}
@@ -281,14 +307,14 @@
                 <h2>{"Payment Information"|gettext}</h2>
                 <h3>{"Available Payment Methods"|gettext}</h3>
                 <div id="cart-{$id}" class="">
-                    <ul class="nav nav-tabs">
+                    <ul class="nav nav-tabs" role="tablist">
                         {foreach from=$billing->calculator_views item=cviews name=tabs}
-                            <li{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                            <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
                         {/foreach}
                     </ul>
                     <div class="tab-content">
                         {foreach from=$billing->calculator_views item=cviews name=calcs}
-                            <div id="tab{$smarty.foreach.calcs.iteration}" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
+                            <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
                                 {include file=$cviews.view calcid=$cviews.id}
                             </div>
                         {/foreach}
@@ -300,7 +326,7 @@
                     {form name="free" controller=cart action=preprocess}
                         {control type="hidden" name="billingcalculator_id" value=-1}
                         {control type="hidden" name="cash_amount" value=0}
-                        <button id="continue-checkout" type="submit" class="{button_style}">{"Continue Checkout"|gettext}</button>
+                        <button id="continue-checkout" type="submit" class="shopping-cart {button_style size=large}">{"Continue Checkout"|gettext}</button>
                     {/form}
                 </div>
             {/if}

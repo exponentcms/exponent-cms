@@ -35,6 +35,7 @@ class buttongroupcontrol extends formcontrol {
 	var $returntype = "";
 	var $class = "";
 	var $validateJS = "";
+    var $size = null;
 
 	static function name() { return "Button Group"; }
 
@@ -67,8 +68,8 @@ class buttongroupcontrol extends formcontrol {
 //                $btn_size = 'btn-mini';
 //                $icon_size = '';
 //            }
-            $btn_size = expTheme::buttonSize();
-            $icon_size = expTheme::iconSize();
+            $btn_size = expTheme::buttonSize($this->size);
+            $icon_size = expTheme::iconSize($this->size);
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'icon-save';
             } elseif (stripos($this->submit, 'log') !== false) {

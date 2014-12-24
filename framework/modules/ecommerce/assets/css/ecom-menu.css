@@ -1,0 +1,7 @@
+.catnav li.current {
+	font-weight: bold;
+}
+
+.catnav li.inactive {
+	color: #808080;
+}

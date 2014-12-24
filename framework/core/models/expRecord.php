@@ -33,9 +33,9 @@ class expRecord {
     public $grouping_sql = '';
 
     // associated objects
-    public $has_extended_fields = array();
-    public $has_one = array();
-    public $has_many = array();
+    public $has_extended_fields = array();  // add single object db fields to this object (not the object methods)
+    public $has_one = array();  // associate single object w/ matching id
+    public $has_many = array();  // associate all objects w/ matching id's
     public $has_many_self = array();
     public $has_and_belongs_to_many = array();
     public $has_and_belongs_to_self = array();
@@ -57,7 +57,7 @@ class expRecord {
         'content_expTags'=>'expTag',
     );*/
     public $attachable_items_to_save;
-    // what associated objects should also receive attachments when associated
+    // what associated objects should also receive their attachments when associated
     public $get_attachable_for = array();
 
     // field validation settings
@@ -112,7 +112,7 @@ class expRecord {
             if (is_numeric($params)) {
                 $this->build($db->selectArray($this->tablename, $this->identifier . '=' . $params, null, $supports_revisions));
                 $identifier = $this->identifier;
-                $params     = array($identifier=> $params); // Convert $params (given number value) into an key/value pair
+                $params     = array($identifier => $params); // Convert $params (given number value) into an key/value pair
             } else {
                 // try to look up by sef_url
                 $values = $db->selectArray($this->tablename, "sef_url='" . expString::sanitize($params) . "'", null, $supports_revisions, $needs_approval);
@@ -734,17 +734,18 @@ class expRecord {
     public function delete($where = '') {
         global $db;
 
-        if (empty($this->id)) return false;
+        $id = $this->identifier;
+        if (empty($this->$id)) return false;
         $this->beforeDelete();
-        $db->delete($this->tablename, 'id=' . $this->id);
+        $db->delete($this->tablename, $id . '=' . $this->$id);
         if (!empty($where)) $where .= ' AND ';  // for help in reranking, NOT deleting object
         if (property_exists($this, 'rank')) $db->decrement($this->tablename, 'rank', 1, $where . 'rank>=' . $this->rank . $this->grouping_sql);
 
         // delete attached items
         foreach ($this->attachable_item_types as $content_table=> $type) {
-            $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id);
+            $db->delete($content_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->$id);
         }
-        //FIXME shouldn't we also delete associated items or leave them to the afterDelete method?
+        // leave associated items to the model afterDelete method?
         $this->afterDelete();
     }
 
@@ -878,6 +879,11 @@ class expRecord {
         }
     }
 
+    /**
+     *  used for import/export
+     *
+     * @return array
+     */
     function getAttachableItemTables() {
         return $this->attachable_item_types;
     }
@@ -1113,10 +1119,10 @@ class expRecord {
      *
      * @return null|string
      */
-    public function getPoster() {
+    public function getPoster($display = null) {
         if (isset($this->poster)) {
             $user = new user($this->poster);
-            return user::getUserAttribution($user->id);
+            return user::getUserAttribution($user->id, $display);
         } else {
             return null;
         }
@@ -1131,6 +1137,7 @@ class expRecord {
      */
     public function getTimestamp($type = 0) {
         if ($type == 0) $getType = 'created_at';
+        elseif ($type == 'publish') $getType = 'publish';
         else $getType = 'edited_at';
         if (isset($this->$getType)) return expDateTime::format_date($this->$getType, DISPLAY_DATETIME_FORMAT);
         else return null;

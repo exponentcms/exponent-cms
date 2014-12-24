@@ -52,7 +52,7 @@ if ($user->username == '') {
     echo $errorstr;
 }
 
-if ($error) { //FIXME Shouldn't get this because of check in install-6.php unless browser jscript disabled
+if ($error) { //NOTE Shouldn't get this because of check in install-6.php unless browser jscript disabled
     flash('error', $errorstr);
     header('Location: index.php?page=install-6' . $errorflag);
     exit();

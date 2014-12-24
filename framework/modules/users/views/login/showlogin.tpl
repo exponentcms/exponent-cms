@@ -19,6 +19,33 @@
 
 {messagequeue}
 <div class="login default">
+    {if $checkout}
+        {assocarray}
+            breadcrumb: [
+                0: [
+                    title: "{'Summary'|gettext}"
+                    link: makeLink(array('controller'=>'cart','action'=>'show'))
+                ]
+                1: [
+                    title:  "{'Sign In'|gettext}"
+                    link: ""
+                ]
+                2: [
+                    title:  "{'Shipping/Billing'|gettext}"
+                    link: ""
+                ]
+                3: [
+                    title:  "{'Confirmation'|gettext}"
+                    link: ""
+                ]
+                4: [
+                    title:  "{'Complete'|gettext}"
+                    link: ""
+                ]
+            ]
+        {/assocarray}
+        {breadcrumb items=$breadcrumb active=1 style=flat}
+    {/if}
     {if $loggedin == false || $smarty.const.PREVIEW_READONLY == 1}
         <div{if $smarty.const.SITE_ALLOW_REGISTRATION || $smarty.const.ECOM} class="box login-form one"{/if}>
             {if $smarty.const.USER_REGISTRATION_USE_EMAIL || $smarty.const.ECOM}

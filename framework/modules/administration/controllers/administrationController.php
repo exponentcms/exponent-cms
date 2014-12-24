@@ -876,7 +876,7 @@ class administrationController extends expController {
         //display the upgrade scripts
         if (is_readable(BASE.'install/upgrades')) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
 
             // first build a list of valid upgrade scripts
             $oldscripts = array(
@@ -939,7 +939,7 @@ class administrationController extends expController {
         $upgrade_dir = BASE.'install/upgrades';
         if (is_readable($upgrade_dir)) {
             $i = 0;
-            if (is_readable(BASE.'install/include/upgradescript.php')) include_once(BASE.'install/include/upgradescript.php');
+            if (is_readable(BASE.'install/include/upgradescript.php')) include(BASE.'install/include/upgradescript.php');
             $dh = opendir($upgrade_dir);
 
             // first build a list of valid upgrade scripts
@@ -1198,14 +1198,24 @@ class administrationController extends expController {
 //        ksort($langs);
 
         // smtp protocol
-        $protocol = array('ssl'=>'SSL','tls'=>'TLS');
+        $protocol = array(
+            'ssl'=>'SSL',
+            'tls'=>'TLS'
+        );
 
         // Currency Format
         $currency = expSettings::dropdownData('currency');
 
         // attribution
-        $attribution = array('firstlast'=>'John Doe','lastfirst'=>'Doe, John','first'=>'John','username'=>'jdoe');
-        
+//        $attribution = array(
+//            'firstlast'=>'John Doe',
+//            'lastfirst'=>'Doe, John',
+//            'first'=>'John',
+//            'last'=>'Doe',
+//            'username'=>'jdoe'
+//        );
+        $attribution = expSettings::dropdownData('attribution');
+
         // These funcs need to be moved up in to new subsystems
         
         // Date/Time Format
@@ -1433,7 +1443,7 @@ class theme {
 				unset ($params[$key]);
 			}
 		}
-		if ($sv != '') {
+		if (!empty($sv)) {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config_".$sv.".php");
 		} else {
 			expSettings::saveValues($params, BASE."themes/".$theme."/config.php");

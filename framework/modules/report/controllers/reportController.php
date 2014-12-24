@@ -127,6 +127,8 @@ class reportController extends expController {
     }
 
     function dashboard() {
+        global $db;
+
         $quickrange = array(0 => gt('Last 24 Hours'), 1 => gt('Last 7 Days'), 2 => gt('Last 30 Days'));
         $this->setDateParams($this->params);
         if (!isset($this->params['quickrange'])) {
@@ -159,6 +161,9 @@ class reportController extends expController {
             $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
         }
 
+        $sql = "SELECT COUNT(*) as c FROM " . DB_TABLE_PREFIX . "_orders, " . DB_TABLE_PREFIX . "_sessionticket WHERE ticket = sessionticket_ticket";
+        $allCarts = $db->countObjectsBySql($sql);
+
         assign_to_template(array(
             'orders'             => $oar,
             'quickrange'         => $quickrange,
@@ -170,7 +175,8 @@ class reportController extends expController {
             'now_ampm'           => $this->now_ampm,
             'prev_hour'          => $this->prev_hour,
             'prev_min'           => $this->prev_min,
-            'prev_ampm'          => $this->prev_ampm
+            'prev_ampm'          => $this->prev_ampm,
+            'active_carts'       => $allCarts
         ));
     }
 
@@ -805,7 +811,7 @@ class reportController extends expController {
     }
 
     function show_payment_summary() {
-        global $order, $db;
+        global $db;
 
         $payments = billingmethod::$payment_types;
 
@@ -869,7 +875,7 @@ class reportController extends expController {
     }
 
     function export_user_input_report() {
-        global $order;
+        $order = new order();
         $out = '"ITEM_NAME","QUANTITY","PERSONALIZATION"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -929,7 +935,7 @@ class reportController extends expController {
     }
 
     function export_inventory() {
-        global $order;
+        $order = new order();
         $out = '"BADDR_LAST_NM","ITEM_NAME","ITEM_DESC","ITEM_QUANTITY"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1321,7 +1327,7 @@ class reportController extends expController {
     }
 
     function export_odbc() {
-        global $order;
+        $order = new order();
         $out = '"order_id","shipping_method_id","shipping_option","shipping_cost","firstname","middlename","lastname","organization","address1","address2","city","state","zip","country","phone"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1370,7 +1376,7 @@ class reportController extends expController {
     }
 
     function export_order_items() {
-        global $order;
+        $order = new order();
         $out = '"order_id","quantity","SKU","product_title","firstname","middlename","lastname","organization","address1","address2","city","state","zip"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();
@@ -1417,7 +1423,7 @@ class reportController extends expController {
     }
 
     function export_status_report() {
-        global $order;
+        $order = new order();
         $out = '"ITEM_NAME","ITEM_DESC","ITEM_QUANTITY","ITEM_STATUS"' . chr(13) . chr(10);
         //eDebug($this->params,true);
         $order_ids = array();

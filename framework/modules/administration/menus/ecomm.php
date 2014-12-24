@@ -20,15 +20,14 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
-global $user, $db;
+global $user;
 
 $active = ECOM;
 if (!$user->isAdmin() || empty($active)) {
     return false;
 }
 
-$new_status = $db->selectValue('order_status', 'id', 'is_default = 1');
-$new_orders = $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);
+$new_orders = order::getOrdersCount('new');
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new orders') . '</em>';
 } else {

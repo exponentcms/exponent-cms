@@ -35,10 +35,12 @@
 function smarty_function_scaffold($params,&$smarty) {
 	if (isset($params['model']) ) {
 		global $db;
+        //load the {control} plugin
         foreach ($smarty->smarty->plugins_dir as $value) {
             $filepath = $value ."/function.control.php";
             if (file_exists($filepath)) {
                 require_once $filepath;
+                break;
             }
         }
 

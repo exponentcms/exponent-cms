@@ -31,18 +31,6 @@ class paypalExpressCheckout extends billingcalculator {
         return gt("PayPal Express Checkout");
     }
 
-    public function captureEnabled() {
-        return true;
-    }
-
-    public function voidEnabled() {
-        return true;
-    }
-
-    public function creditEnabled() {
-        return true;
-    }
-
     /**
      * The description that will be displayed in the payment methods selector admin screen
      *
@@ -52,12 +40,15 @@ class paypalExpressCheckout extends billingcalculator {
         return gt("Enabling this payment option will allow your customers to use a PayPal account to make purchases. It requires a Merchant Account with PayPal in order to obtain an API signature.");
     }
 
-    /**
-     * Does this billing calculator need some configuration to work?
-     *
-     * @return boolean
-     */
-    function hasConfig() {
+    public function captureEnabled() {
+        return true;
+    }
+
+    public function voidEnabled() {
+        return true;
+    }
+
+    public function creditEnabled() {
         return true;
     }
 
@@ -76,15 +67,6 @@ class paypalExpressCheckout extends billingcalculator {
      * @return boolean
      */
     function isOffsite() {
-        return true;
-    }
-
-    /**
-     * Is this billing calculator selectable in the payment methods. It may not be if it is meant more as base class for other calculators to extend from
-     *
-     * @return boolean
-     */
-    function isSelectable() {
         return true;
     }
 
@@ -187,7 +169,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
                 // TODO: build data from odrer
-//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //FIXME deprecated in 63.0
+//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //NOTE deprecated in 63.0
 //                'CURRENCYCODE'      => 'USD',
 //                'ITEMAMT'           => number_format($order->total, 2, '.', ''),
 //                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
@@ -425,13 +407,15 @@ class paypalExpressCheckout extends billingcalculator {
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
             if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
             $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ":" . $nvpResArray[0]['LONGMESSAGE'];
+            $billing_options->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ":" . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
             $trax_state = "error";
         }
         //eDebug($billing_options,true);                                                               
-        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
+//        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
+        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $billing_options->result, $trax_state);
         return $billing_options->result;
 
@@ -479,21 +463,6 @@ class paypalExpressCheckout extends billingcalculator {
      */
     function delete($where = '') {
         return;
-    }
-
-    function userForm() {
-        return '';
-    }
-
-    //process user input. This function should return an object of the user input.
-    //the returned object will be saved in the session and passed to post_process.
-    //If need be this could use another method of data storage, as long post_process can get the data.
-    function userFormUpdate($params) {
-
-    }
-
-    function userView($opts) {
-        return '';
     }
 
     /**
@@ -652,14 +621,6 @@ class paypalExpressCheckout extends billingcalculator {
 
     function getCVVMatched($billingmethod) {
         return 'X';
-    }
-
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
     }
 
     // credit transaction

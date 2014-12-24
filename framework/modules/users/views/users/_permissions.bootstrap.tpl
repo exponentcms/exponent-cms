@@ -142,8 +142,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
 //                { sortable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { searchable: false, targets: [ '_all' ] },
 //                { sortable: false, targets: [ '_all' ] },
-                {targets: [ "sortme"], sortable: true },
-                {targets: [ 'nosort' ], sortable: false }
+                {targets: [ "sortme"], orderable: true },
+                {targets: [ 'nosort' ], orderable: false }
             ],
             autoWidth: false,
             preDrawCallback: function () {

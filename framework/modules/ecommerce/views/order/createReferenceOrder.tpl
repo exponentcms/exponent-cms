@@ -102,7 +102,7 @@
                         {control type=text name=shipping_total label="Shipping Total"|gettext value=$order->shipping_total}</td><td> * {"Total of shipping for this order."|gettext}
                     </td></tr>
                     <tr><td>
-                        {control type=text name=surcharge_total label="Surcharge Total"|gettext value=$order->surcharge_total} </td><td>* {"Total of per-product shipping surcharges."|gettext}
+                        {control type=text name=surcharge_total label="Surcharge Total"|gettext value=$order->surcharge_total} </td><td>* {"Total of per-product freight surcharges."|gettext}
                     </td></tr>
                     <tr><td>
                         {"You may enter the grand total manually, or select the checkbox below to auto calculate the grand total based on the other fields."|gettext}
@@ -113,7 +113,7 @@
                     </td></tr>
                 </tbody>
             </table>
-            <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Save Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
+            <div id="submit_order_item_formControl" class="control buttongroup"><input id="submit_order_item_form" class="submit button" type="submit" value="Create Reference Order" /><input class="cancel button" type="button" value="Cancel" onclick="history.back(1);" /></div>
         {/form}
     </div>
 </div>

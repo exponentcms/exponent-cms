@@ -28,32 +28,34 @@ class freeshippingcalculator extends shippingcalculator {
 	//overridden methods:
 	public function name() { return gt('Free'); }
 	public function description() { return gt('Offers free shipping on all orders'); }
-	public function hasUserForm() { return true; }
-	public function hasConfig() { return true; }
-	public function addressRequired() { return true; }
-	public function isSelectable() { return true; }
+    public function addressRequired() { return false; }
 
-    public $shippingmethods = array("01"=>"Free Shipping");
+    public $shippingmethods = array("01"=>"Free");
 
-    public function __construct($params = null)
-    {
+    public function __construct($params = null) {
         parent::__construct($params);
         if(isset($this->configdata['free_shipping_method_default_name']))
         {
             $this->shippingmethods["01"] = $this->configdata['free_shipping_method_default_name'];
         }
+        if(isset($this->configdata['shipping_service_name']))
+        {
+            $this->title = $this->configdata['shipping_service_name'];
+        }
     }
-    
+
+    public function meetsCriteria($shippingmethod) {
+        return true;
+    }
+
     public function getRates($order) {                        
-        if(isset($this->configdata['free_shipping_option_default_name']))
-        {
-            $title = $this->configdata['free_shipping_option_default_name'];
-        }
-        else
-        {
-            $title = "Free";
-        }
-	    $rates = array('01'=>array('id'=>'01','title'=>$title,'cost'=>0));        
+	    $rates = array(
+            '01'=>array(
+                'id'=>'01',
+                'title'=>$this->shippingmethods["01"],
+                'cost'=>0
+            )
+        );
 	    return $rates;
     }	
     
@@ -63,8 +65,12 @@ class freeshippingcalculator extends shippingcalculator {
 	
 	//process config form
 	function parseConfig($values) {
-	    $config_vars = array('free_shipping_option_default_name','free_shipping_method_default_name');
-	    foreach ($config_vars as $varname) {	        
+	    $config_vars = array(
+            'shipping_service_name',
+            'free_shipping_method_default_name'
+        );
+        $config = array();
+	    foreach ($config_vars as $varname) {
 	        $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
 	    }   	    
 		return $config;
@@ -73,6 +79,7 @@ class freeshippingcalculator extends shippingcalculator {
 	function availableMethods() {
 	    return $this->shippingmethods;
 	}
+
 }
 
 ?>

@@ -92,7 +92,7 @@ class genericcontrol extends formcontrol {
         $this->name = empty($this->name) ? $name : $this->name;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
-        $html .= ($this->type != 'hidden' && $this->horizontal == 1 ) ? '<div class="col-sm-10">' : '<div>';
+        $html .= ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
         $framework = expSession::get('framework');
         if ($framework == 'bootstrap') {
             if (!empty($this->prepend)) {

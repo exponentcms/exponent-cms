@@ -20,7 +20,7 @@ if (!defined('EXPONENT')) {
     exit('');
 }
 
-include_once('include/sanity.php');
+include('include/sanity.php');
 
 $status = sanity_checkFiles();
 // Run sanity checks

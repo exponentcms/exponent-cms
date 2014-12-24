@@ -125,7 +125,7 @@
        	
 		$columns = '<item>'.chr(13).chr(10);
 
-		$columns.='<title>';            
+		$columns.='<title>';  //FIXME g:title
 		$prod->feed_title = expString::convertXMLFeedSafeChar(html_entity_decode(strip_tags($prod->feed_title)));
 		$prod->feed_title = htmlspecialchars($prod->feed_title);
 		$prod->feed_title = expString::onlyReadables($prod->feed_title);
@@ -137,11 +137,11 @@
 		$columns.= $prod->feed_title;
 		$columns.='</title>'.chr(13).chr(10);
 
-		$columns.='<link>';
+		$columns.='<link>';  //FIXME g:link
 		$columns.=URL_FULL.strip_tags($prod->sef_url);
 		$columns.='</link>'.chr(13).chr(10);
 
-		$columns.='<description>';
+		$columns.='<description>';  //FIXME g:description
 		$columns.= str_ireplace('&','<![CDATA[&]]>',$prod->feed_body);
 		$columns.='</description>'.chr(13).chr(10);
 		
@@ -149,12 +149,12 @@
 		$columns.= URL_FULL.$prod->directory . $prod->filename;
 		$columns.='</g:image_link>'.chr(13).chr(10);
 
-		$columns.='<g:price>';
+		$columns.='<g:price>';  //FIXME add currency type <g:price>15.00 USD</g:price>
 		$columns.= $prod->base_price;
 		$columns.='</g:price>'.chr(13).chr(10);
 		
 		if($prod->use_special_price && !empty($prod->special_price)) {
-			$columns.='<g:sale_price>';
+			$columns.='<g:sale_price>';  //FIXME add currency type <g:price>15.00 USD</g:price>
 			$columns.= $prod->special_price;
 			$columns.='</g:sale_price>'.chr(13).chr(10);            
 		}
@@ -197,7 +197,7 @@
 		}
 	   
 		if(!empty($prod->google_product_type)) {
-			$columns.='<g:product_type>';
+			$columns.='<g:product_type>';  //FIXME g:product_type is our cat, g:google_product_category is their cat
 			$columns.= str_ireplace('&','<![CDATA[&]]>',$prod->google_product_type);
 			$columns.='</g:product_type>'.chr(13).chr(10);
 		} elseif(!empty($google_types)) {

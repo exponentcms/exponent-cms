@@ -36,6 +36,7 @@ class buttongroupcontrol extends formcontrol {
 	var $class = "";
 	var $validateJS = "";
     var $wide = false;
+    var $size = null;
 
 	static function name() { return "Button Group"; }
 
@@ -51,9 +52,9 @@ class buttongroupcontrol extends formcontrol {
 	    $disabled = $this->disabled != false ? " disabled" : "";
 		if ($this->submit . $this->reset . $this->cancel == "") return "";
 		$html = "<div id=\"".$name."Control\" class=\"buttongroup control form-group".$disabled."\">";
-		$html .= ($this->horizontal == 1 ) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
+		$html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 		$html .= $this->controlToHTML($name);
-		$html .= ($this->horizontal == 1 ) ? '</div>' : '';
+		$html .= ($this->horizontal) ? '</div>' : '';
 		$html .= "</div>";
 		return $html;
 	}
@@ -70,11 +71,11 @@ class buttongroupcontrol extends formcontrol {
 //                $btn_size = 'btn-xs';
 //                $icon_size = '';
 //            }
-            $btn_size = expTheme::buttonSize();
+            $btn_size = expTheme::buttonSize($this->size);
             if ($this->wide) {
                 $btn_size .= ' btn-block';
             }
-            $icon_size = expTheme::iconSize();
+            $icon_size = expTheme::iconSize($this->size);
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'fa fa-floppy-o';
             } elseif (stripos($this->submit, 'log') !== false) {

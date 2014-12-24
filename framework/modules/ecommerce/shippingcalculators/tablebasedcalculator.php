@@ -31,12 +31,17 @@ class tablebasedcalculator extends shippingcalculator {
 	
     public function name() { return gt('Simple'); }
     public function description() { return gt('Order Total Cost based shipping calculator'); }
-    public function hasUserForm() { return true; }
-    public function hasConfig() { return true; }
     public function addressRequired() { return false; }
-    public function isSelectable() { return true; }    
 
-    public function getRates($order) {   
+    public function __construct($params = null) {
+        parent::__construct($params);
+        if(isset($this->configdata['shipping_service_name']))
+        {
+            $this->title = $this->configdata['shipping_service_name'];
+        }
+    }
+
+    public function getRates($order) {
         $a = $order->total;        
 		
 		//get the rates
@@ -72,17 +77,27 @@ class tablebasedcalculator extends shippingcalculator {
         $rates = array();
 	    if(!empty($c)) {
 			for($i = 0; $i < count($c); $i++) {
-			
-				if (array_key_exists($currentMethod->state, $stateUpcharge)) { 
+				if (array_key_exists($currentMethod->state, $stateUpcharge)) {
 					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
 				}
-                if($i > 9) $rates[($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
-                else $rates[0 . ($i+1)] = array('id' => 0 . ($i+1), 'title' => @$this->shippingspeeds[$i]->speed, 'cost' => $c[$i]);
-				
-			}            
+                if($i > 9) $rates[($i+1)] = array(
+                    'id' => 0 . ($i+1),
+                    'title' => @$this->shippingspeeds[$i]->speed,
+                    'cost' => $c[$i]
+                );
+                else $rates[0 . ($i+1)] = array(
+                    'id' => 0 . ($i+1),
+                    'title' => @$this->shippingspeeds[$i]->speed,
+                    'cost' => $c[$i]
+                );
+			}
 		}
 	     
-        if(!count($rates)) $rates['01'] = array('id' => '01', 'title' => "Table Based Shipping is Currently NOT Configured", 'cost' => 0);
+        if(!count($rates)) $rates['01'] = array(
+            'id' => '01',
+            'title' => gt("Table Based Shipping is Currently NOT Configured"),
+            'cost' => 0
+        );
 		return $rates;
     }    
     
@@ -96,7 +111,11 @@ class tablebasedcalculator extends shippingcalculator {
 
 		$where = " shippingcalculator_id = {$values['id']}";
 		$speeds = $db->selectObjects("shippingspeeds", $where);
-        $config_vars = array('to', 'from');
+        $config_vars = array(
+            'to',
+            'from'
+        );
+        $config = array();
 		foreach($speeds as $item) {
 			$config_vars[] = str_replace(' ', '_', $item->speed);
 		}
@@ -125,7 +144,7 @@ class tablebasedcalculator extends shippingcalculator {
     }
     
     function availableMethods() {
-
+        $shippingmethods = array();
 		for($i = 0; $i < count($this->shippingspeeds); $i++) {
             if($i > 9 ) $shippingmethods[($i+1)] = $this->shippingspeeds[$i]->speed;
 			else $shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;
@@ -134,13 +153,17 @@ class tablebasedcalculator extends shippingcalculator {
         return $shippingmethods;
     }
 
+    public function editspeed() {
+        return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/editspeed.tpl';
+    }
+
     /**
      * Unused at this time
      *
      * @return int
      */
     public function getHandling() {
-        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;
+        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;  //FIXME handling is not set in config
     }
 
     /**
@@ -150,10 +173,6 @@ class tablebasedcalculator extends shippingcalculator {
      */
     public function getMessage() {
         return $this->configdata['message'];
-    }
-	
-	public function editspeed() {
-        return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/editspeed.tpl';
     }
 	
 }

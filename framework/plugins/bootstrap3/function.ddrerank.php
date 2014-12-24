@@ -92,9 +92,9 @@ if (!function_exists('smarty_function_ddrerank')) {
             $btn_size = expTheme::buttonStyle();
             $icon_size = expTheme::iconSize();
             if ($model != 'container') {  // make a button
-                echo '<a id="rerank' . $uniqueid . '" class="'.$btn_size.'" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-exchange fa-rotate-90 '.$icon_size.'"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank', $uniqueid, '" class="',$btn_size,'" data-toggle="modal" data-target="#panel', $uniqueid, '" href="#"><i class="fa fa-exchange fa-rotate-90 ',$icon_size,'"></i> ', gt("Order"), ' ', $params['label'], '</a>';
             } else {  // make a menu item
-                echo '<a id="rerank' . $uniqueid . '" class="" data-toggle="modal" data-target="#panel' . $uniqueid . '" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ' . gt("Order") . ' ' . $params['label'] . '</a>';
+                echo '<a id="rerank', $uniqueid, '" class="" data-toggle="modal" data-target="#panel', $uniqueid, '" href="#"><i class="fa fa-exchange fa-rotate-90 fa-fw"></i> ', gt("Order"), ' ', $params['label'], '</a>';
             }
 
             $html = '

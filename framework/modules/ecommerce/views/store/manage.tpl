@@ -13,8 +13,31 @@
  *
  *}
 
-{css unique="managestore" corecss="tables"}
-
+{css unique="yadcf" corecss="datatables-tools"}
+    table.dataTable thead > tr {
+        font-size-adjust: 0.4;
+    }
+    table.dataTable thead > tr > th {
+        padding-left: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
+        vertical-align: top;
+    }
+    .yadcf-filter-range-date-seperator {
+        display: block;
+    }
+    div.dataTables_paginate ul.pagination {
+        display: inline-flex;
+    }
+    input#yadcf-filter--prods-3.yadcf-filter {
+        width: 50px;
+    }
+    input#yadcf-filter--prods-2.yadcf-filter {
+        width: 50px;
+    }
+    .yadcf-filter-wrapper {
+        display: block;
+    }
 {/css}
 
 <div class="module store showall-uncategorized">
@@ -33,12 +56,16 @@
 		</div>
     {/permissions}
     <div id="products">
-		{pagelinks paginate=$page top=1}
-        <table id="prods" class="exp-skin-table" style="width:95%">
+		{*{pagelinks paginate=$page top=1}*}
+        <table id="prods" style="width:95%">
             <thead>
                 <tr>
                     {*<th></th>*}
-                    {$page->header_columns}
+                    {*{$page->header_columns}*}
+                    <th>{'Type'|gettext}</th>
+                    <th>{'Product Name'|gettext}</th>
+                    <th>{'Model #'|gettext}</th>
+                    <th>{'Price'|gettext}</th>
                     <th>{'Action'|gettext}</th>
                 </tr>
             </thead>
@@ -89,6 +116,81 @@
                 {/foreach}
             </tbody>
         </table>
-		{pagelinks paginate=$page bottom=1}
+		{*{pagelinks paginate=$page bottom=1}*}
     </div>
 </div>
+
+{script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.jqueryui,jquery.dataTables.yadcf'}
+{literal}
+    $(document).ready(function() {
+        var tableContainer = $('#prods');
+
+        var table = tableContainer.DataTable({
+            pagingType: "full_numbers",
+//            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
+            dom: 'T<"clear">lfrtip',
+            tableTools: {
+                sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
+            },
+            jQueryUI: true,
+            stateSave: true,
+            columns: [
+                { type: 'text', searchable: false },
+                { type: 'html' },
+                { type: 'text' },
+                { type: 'text' },
+                { searchable: false, orderable: false },
+            ],
+            //order: [1, 'asc'],
+        });
+
+        (function () {
+            var _div = document.createElement('div');
+
+            jQuery.fn.dataTable.ext.type.search.html = function ( data ) {
+                _div.innerHTML = data;
+
+                return _div.textContent ?
+                    _div.textContent.replace(/\n/g," ") :
+                    _div.innerText.replace(/\n/g," ");
+            };
+        })();
+
+        yadcf.init(table, [{
+            column_number: 0,
+            //column_data_type: "text",
+            //html_data_type: "text",
+            filter_type: "multi_select",
+            //filter_default_label: "",
+            select_type: 'select2'
+        }, {
+            column_number: 1,
+            column_data_type: "html",
+            html_data_type: "text",
+            filter_type: "text",
+            filter_default_label: "",
+            select_type_options: {
+                width: '70px'
+            }
+        }, {
+            column_number: 2,
+            column_data_type: "text",
+            html_data_type: "text",
+            filter_type: "text",
+            filter_default_label: "",
+            select_type_options: {
+                width: '70px'
+            }
+        }, {
+            column_number: 3,
+            column_data_type: "text",
+            html_data_type: "text",
+            filter_type: "text",
+            filter_default_label: "",
+            select_type_options: {
+                width: '70px'
+            }
+        }]);
+    } );
+{/literal}
+{/script}

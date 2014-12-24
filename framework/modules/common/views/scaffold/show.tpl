@@ -14,7 +14,7 @@
  *}
 
 <div class="scaffold show">
-    {if $smarty.const.DEVLEOPMENT}
+    {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
     <h1>{'Showing'|gettext} {$model_name}, id: {$object->id}</h1>

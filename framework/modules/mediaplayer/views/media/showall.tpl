@@ -15,6 +15,9 @@
 
 {uniqueid prepend="mediaplayer" assign="name"}
 
+{css unique="player" link="`$asset_path`css/player.css"}
+
+{/css}
 {css unique="mediaelement" link="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelementplayer.css"}
 
 {/css}
@@ -37,7 +40,7 @@
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
-    <div id="{$name}list">
+    <div id="{$name}list" class="yui3-g">
         {exp_include file='medialist.tpl'}
     </div>
 </div>
@@ -51,7 +54,7 @@
 {if $config.control_fullscreen}{{$control = "`$control`'fullscreen'"}}{/if}
 {if $control == ''}{$control = "'playpause','progress','current','duration','tracks','volume','fullscreen'"}{/if}
 
-{script unique="mediaelement-src" jquery="1" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
+{script unique="mediaelement-src" jquery="jquery.colorbox" src="`$smarty.const.PATH_RELATIVE`external/mediaelement/build/mediaelement-and-player.min.js"}
 {/script}
 
 {script unique="mediaplayer-`$name`"}
@@ -61,6 +64,42 @@
             $('#' + node.id + '-mode').html('mode: ' + player.pluginType);
         },
         features: [{/literal}{$control}{literal}]
+    });
+
+    $(document).ready(function(){
+        $('.openColorbox').click(function(e){
+            e.preventDefault();
+            var d = $(this);
+            var $c = d.parent().find('div.video.media');
+            var $t = d.parent().find('.media-title');
+            $.colorbox({
+                width: "auto",
+                inline: true,
+                href: $c,
+                title: $t.html(),
+                opacity: 0.5,
+                open: true,
+                onLoad: function(){
+                    $c.fadeIn()
+                },
+                onCleanup: function(){
+                    $c.hide()
+                }
+            })
+        });
+
+        //$("#openColorbox").colorbox({
+        //    inline:true,
+        //    width:"auto",
+        //    height:"auto",
+        //    href:$(this).next(),
+        //    onOpen: function() {
+        //        $.colorbox.element().next().show();
+        //    },
+        //    onClosed: function() {
+        //        $.colorbox.element().next().hide();
+        //    }
+        //});
     });
 {/literal}
 {/script}

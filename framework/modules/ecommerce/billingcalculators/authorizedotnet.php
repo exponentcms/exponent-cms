@@ -29,6 +29,11 @@ class authorizedotnet extends creditcard {
         return "Authorize.net Payment Gateway";
     }
 
+    function description() {
+        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
+	    an account with Authorize.net before you can use it to process credit cards.";
+    }
+
     public function captureEnabled() {
         return true;
     }
@@ -39,11 +44,6 @@ class authorizedotnet extends creditcard {
 
     public function creditEnabled() {
         return true;
-    }
-
-    function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
-	    an account with Authorize.net before you can use it to process credit cards.";
     }
 
     function hasConfig() {
@@ -179,7 +179,7 @@ class authorizedotnet extends creditcard {
 
         $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($opts)));
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
         return $object;
     }

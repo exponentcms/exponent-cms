@@ -40,12 +40,12 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
 		$module = isset($params['module']) ? $params['module'] : $smarty->getTemplateVars('__loc')->mod;
-		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;  //FIXME there is no 'con' property
+		$controller = isset($params['controller']) ? $params['controller'] : $smarty->getTemplateVars('__loc')->mod;
 		$method = isset($params['method']) ? $params['method'] : "POST";
 		$enctype = isset($params['enctype']) ? $params['enctype'] : 'multipart/form-data';
 
 		echo "<!-- Form Object 'form' -->\r\n";
-		echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/inputfilters.js.php"></script>'."\r\n";
+		echo '<script type="text/javascript" src="',PATH_RELATIVE,'framework/core/forms/js/inputfilters.js.php"></script>',"\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/controls/listbuildercontrol.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
@@ -196,15 +196,15 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             );
         }
 
-		echo '<form role="form" id="'.$id.'" name="'.$name.'" class="'.$params['class'] . $newui_class . ($params['horizontal']?' form-horizontal':'') .'" method="'.$method.'" action="'.PATH_RELATIVE.'index.php" enctype="'.$enctype.'">'."\r\n";
+		echo '<form role="form" id="',$id,'" name="',$name,'" class="',$params['class'], $newui_class, ($params['horizontal']?' form-horizontal':''),'" method="',$method,'" action="',PATH_RELATIVE,'index.php" enctype="',$enctype,'">',"\r\n";
 		if (!empty($controller)) {
-			echo '<input type="hidden" name="controller" id="controller" value="'.$controller.'" />'."\r\n";
+			echo '<input type="hidden" name="controller" id="controller" value="',$controller,'" />'."\r\n";
 		} else {
-			echo '<input type="hidden" name="module" id="module" value="'.$module.'" />'."\r\n";
+			echo '<input type="hidden" name="module" id="module" value="',$module,'" />'."\r\n";
 		}
-		echo '<input type="hidden" name="src" id="src" value="'.$smarty->getTemplateVars('__loc')->src.'" />'."\r\n";
-		echo '<input type="hidden" name="int" id="int" value="'.$smarty->getTemplateVars('__loc')->int.'" />'."\r\n";
-		if (isset($params['action']))  echo '<input type="hidden" name="action" id="action" value="'.$params['action'].'" />'."\r\n";
+		echo '<input type="hidden" name="src" id="src" value="',$smarty->getTemplateVars('__loc')->src,'" />',"\r\n";
+		echo '<input type="hidden" name="int" id="int" value="',$smarty->getTemplateVars('__loc')->int,'" />',"\r\n";
+		if (isset($params['action']))  echo '<input type="hidden" name="action" id="action" value="',$params['action'],'" />'."\r\n";
 
 		//echo the innards
 	} else {

@@ -81,8 +81,8 @@ class notfoundController extends expController {
 
     public static function handle_not_found() {
         header(':', true, 404);
-        echo '<h1>' . SITE_404_TITLE . '</h1><br />';
-        echo '<p>' . SITE_404_HTML . '</p>';
+        echo '<h1>', SITE_404_TITLE, '</h1><br />';
+        echo '<p>', SITE_404_HTML, '</p>';
     }
 
     public static function handle_not_authorized() {
@@ -92,7 +92,7 @@ class notfoundController extends expController {
 
     public static function handle_internal_error() {
         header(':', true, 500);
-        echo '<h1>' . gt('An Internal Server Error was Encountered!') . '</h1>';
+        echo '<h1>', gt('An Internal Server Error was Encountered!'), '</h1>';
     }
 
 }

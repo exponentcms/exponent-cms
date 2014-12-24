@@ -35,7 +35,8 @@ abstract class formcontrol {
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
-    var $horizontal = 0;
+    var $horizontal = false;
+    var $horizontal_top = false;
 
 	static function name() { return "formcontrol"; }
 
@@ -97,6 +98,7 @@ abstract class formcontrol {
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
             $class = empty($this->class) ? '' : $this->class;
+            if ($this->horizontal_top) $class .= ' col-sm-10 ';
 
             $html = "<div" . $divID . " class=\"" . $this->type . "-control control form-group " . $class . $disabled;
             $html .= !empty($this->required) ? ' required">' : '">';

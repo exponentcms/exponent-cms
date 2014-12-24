@@ -24,10 +24,12 @@ class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';
     public $icon = '';
     public $configdata = array();
+//    public function hasUserForm() { return true; }
+   	public function hasConfig() { return true; }
+   	public function addressRequired() { return true; }
+   	public function isSelectable() { return true; }
 
-    public function addressRequired() {
-        return true;
-    }
+    public $shippingmethods = array();
 
     public function __construct($params = null, $get_assoc = true, $get_attached = true) {
         parent::__construct($params, $get_assoc, $get_attached);
@@ -43,9 +45,28 @@ class shippingcalculator extends expRecord {
 
     }
 
-    public function meetsCriteria() {
+    public function meetsCriteria($shippingmethod) { //FIXME probably needs to be passed order object
         return true;
     }
+
+    public function getRates($order)
+    {
+        return array();
+    }
+
+    public function configForm()
+    {
+        return '';
+    }
+
+    function parseConfig($values)
+    {
+        return array();
+    }
+
+    function availableMethods() {
+   	    return array();
+   	}
 
     /**
      * Unused at this time

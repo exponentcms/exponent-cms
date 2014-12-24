@@ -33,14 +33,14 @@
         {control type=hidden name=_validate value=1}
         {control type=hidden name=active value=0}
         <div id="configure-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
             </ul>
             <div class="tab-content">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     {control type=text name=name label="Name"|gettext value=$section->name focus=1}
                     {control type=text name=sef_name label="SEF Name"|gettext value=$section->sef_name description='If you don\'t put in an SEF Name one will be generated based on the title provided. SEF names can only contain alpha-numeric characters, hyphens and underscores.'|gettext}
-                    {control type=text name="internal_id" label="Width in Columns"|gettext value=$section->internal_id default=3 description="Enter 1 to 5"|gettext description='The width of this top-level dropdown area'|gettext}
+                    {control type=number min=0 max=4 name="internal_id" label="Width in Columns"|gettext value=$section->internal_id default=3 description="Enter 0 to 4"|gettext description='The width of this top-level dropdown area, 0 or empty means a full-width single column'|gettext}
                     {*{control type="dropdown" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values="left,right" value=$section->external_link}*}
                     {control type="radiogroup" name="external_link" label="Dropdown Alignment"|gettext items="Left,Right"|gettxtlist values="left,right" value=$section->external_link|default:"left"}
                     {control type="checkbox" name="public" label="Public"|gettext|cat:"?" checked=$section->public|default:1 value=1 description='Should this page and menu item be visible to all users regardless of permissions?'|gettext}

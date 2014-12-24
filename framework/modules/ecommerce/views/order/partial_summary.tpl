@@ -75,6 +75,7 @@
                         <td align="right">{$order->total|currency}</td>
                     </tr>
                 {/if}
+                {if !$order->shipping_taxed}
                 <tr>
                     <td colspan="4" class="totals">
                         {'Tax'|gettext}:
@@ -86,10 +87,24 @@
                     </td>
                     <td>{$order->tax|currency}</td>
                 </tr>
+                {/if}
                 <tr>
                     <td colspan="4" class="totals">{'Shipping'|gettext}</td>
                     <td>{$order->shipping_total|currency}</td>
                 </tr>
+                {if $order->shipping_taxed}
+                <tr>
+                    <td colspan="4" class="totals">
+                        {'Tax'|gettext}:
+                        {foreach from=$order->taxzones item=zone}
+                            {br}{$zone->name} ({$zone->rate}%)
+                        {foreachelse}
+                            ({'Not Required'|gettext})
+                        {/foreach}
+                    </td>
+                    <td>{$order->tax|currency}</td>
+                </tr>
+                {/if}
                 <tr>
                     <td colspan="4" class="totals">{'Order Total'|gettext}</td>
                     <td>{$order->grand_total|currency}</td>

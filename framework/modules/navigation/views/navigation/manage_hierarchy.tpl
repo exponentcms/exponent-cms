@@ -31,7 +31,7 @@
 	{permissions}
 		{if $user->is_admin || $user->is_acting_admin}
             <div class="module-actions">
-                {icon class="add" action=add_section parent='0' text='Create a New Top Level Page'|gettext}
+                {icon class="add" action=edit_section parent='0' text='Create a New Top Level Page'|gettext}
             </div>
 		{/if}
 	{/permissions}
@@ -234,11 +234,11 @@ var YAHOO = Y.YUI2;
 	}
 	
 	function addTopNode (){
-		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=add_section&parent=0";
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_section&parent=0";
 	}
 
 	function addSubNode (){
-		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=add_section&parent="+currentMenuNode.data.id;
+		window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=edit_section&parent="+currentMenuNode.data.id;
 	}
 	
 	function addContentSubNode (){

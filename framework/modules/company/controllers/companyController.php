@@ -37,8 +37,8 @@ class companyController extends expController {
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
-    static function displayname() { return gt("Company Listings"); }
-    static function description() { return gt("Displays company listings"); }
+    static function displayname() { return gt("e-Commerce Manufacturer Listings"); }
+    static function description() { return gt("Displays product manufacturer listings"); }
 	static function hasSources() { return false; }
 	
 	function showall() {

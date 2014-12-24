@@ -14,7 +14,7 @@
  *}
 
 <div class="scaffold browseTags">
-    {if $smarty.const.DEVLEOPMENT}
+    {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
 	<h1>{$moduletitle|default:""}</h1>

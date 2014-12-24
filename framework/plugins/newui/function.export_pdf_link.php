@@ -66,7 +66,7 @@ if (!function_exists('smarty_function_export_pdf_link')) {
                 ) . '"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 
             // spit out the link
-            echo $prepend . $router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
+            echo $prepend, $router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
         }
     }
 }

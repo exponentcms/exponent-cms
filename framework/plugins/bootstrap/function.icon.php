@@ -165,10 +165,10 @@ if (!function_exists('smarty_function_icon')) {
             $name = '';
         }
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
-            echo '<a'.$name.' href="#" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            echo '<a',$name,' href="#" title="', $title, '" class=" btn ',$icon->type,' ',$btn_size,'"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
-            echo '><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
+            echo '><i class="icon-',$icon->class,' ',$icon_size,'"></i> ', $linktext, '</a>';
         } elseif ((!empty($params['action']) && $params['action'] != 'scriptaction') || $button) {
             if ($params['action'] == 'copy') {
                 $params['copy'] = true;
@@ -179,16 +179,16 @@ if (!function_exists('smarty_function_icon')) {
             } else {
                 $link = makeLink($params,$secure);
             }
-            echo '<a'.$name.' href="' . $link . '" title="' . $title . '" class=" btn '.$icon->type.' '.$btn_size.'"';
+            echo '<a',$name,' href="', $link, '" title="', $title, '" class=" btn ',$icon->type,' ',$btn_size,'"';
             if (($params['action'] == "delete" || $params['action'] == "merge" || $class == "delete" || $class == "merge") && empty($onclick))
-                echo ' onclick="return confirm(\'' . gt('Are you sure you want to') . ' ' . $params['action'] . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
+                echo ' onclick="return confirm(\'', gt('Are you sure you want to'), ' ', $params['action'], ' ', gt('this'), ' ', $smarty->getTemplateVars('model_name'), ' ', gt('item'), '?\');"';
 //            if ($params['action'] == "merge" && empty($onclick))
 //                echo ' onclick="return confirm(\'' . gt('Are you sure you want to merge this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') . '?\');"';
             if (!empty($onclick))
                 echo ' onclick="' . $onclick . '"';
-            echo '><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' . $linktext . '</a>';
+            echo '><i class="icon-',$icon->class,' ',$icon_size,'"></i> ', $linktext, '</a>';
         } else {
-            echo '<div'.$name.' class=" btn disabled '.$icon->type.' '.$btn_size.'"><i class="icon-'.$icon->class.' '.$icon_size.'"></i> ' .$linktext.'</div>';
+            echo '<div',$name,' class=" btn disabled ',$icon->type,' ',$btn_size,'"><i class="icon-',$icon->class,' ',$icon_size,'"></i> ',$linktext,'</div>';
         }
     }
 }

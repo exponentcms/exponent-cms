@@ -425,7 +425,7 @@ function smarty_function_img($params,&$smarty) {
         $itemprop = ' itemprop="image"';
     }
     if (empty($params['return'])) {
-    	echo '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$closing;
+    	echo '<img',$itemprop,$id,$class,$source,$dims,$alt,$style,$title,$closing;
     } else {
     	return '<img'.$itemprop.$id.$class.$source.$dims.$alt.$style.$title.$rel.$closing;
     }

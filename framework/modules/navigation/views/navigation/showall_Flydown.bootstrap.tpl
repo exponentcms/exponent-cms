@@ -16,9 +16,12 @@
 {css unique="z-dropdown-bootstrap" lesscss="`$asset_path`less/dropdown-bootstrap.less"}
 
 {/css}
+{css unique="mega" lesscss="`$asset_path`less/yamm2.less"}
+
+{/css}
 
 <!-- navigation bar/menu -->
-<div id="topnavbar" class="navigation navbar navbar-{if $smarty.const.MENU_LOCATION}{$smarty.const.MENU_LOCATION}{else}fixed-top{/if}">
+<div id="topnavbar" class="navigation yamm navbar navbar-{if $smarty.const.MENU_LOCATION}{$smarty.const.MENU_LOCATION}{else}fixed-top{/if}">
     <div class="navbar-inner">
         <div class="container">
             <!-- toggle for collapsed/mobile navbar content -->
@@ -52,6 +55,10 @@
             }
         }, this), 0);
     });
+
+    $(document).on('click', '.yamm .dropdown-menu', function(e) {
+        e.stopPropagation()
+    })
 
     $(document).ready(function(){
         function setTopPadding(admin) {

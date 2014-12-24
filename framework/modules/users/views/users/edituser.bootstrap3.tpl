@@ -30,17 +30,17 @@
 			{/if}
 	    </div>
 	    <div id="edituser-tabs" class="">
-		    <ul class="nav nav-tabs">
-		        <li class="active"><a href="#tab1" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
+		    <ul class="nav nav-tabs" role="tablist">
+		        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
                 {if !empty($groups->records)}
-                    <li><a href="#tab2" data-toggle="tab"><em>{"Group Membership"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{"Group Membership"|gettext}</em></a></li>
                 {/if}
                 {foreach from=$extensions item=extension}
-		            <li><a href="#tab{$extension->id+2}" data-toggle="tab"><em>{$extension->title}</em></a></li>
+		            <li role="presentation"><a href="#tab{$extension->id+2}" role="tab" data-toggle="tab"><em>{$extension->title}</em></a></li>
                 {/foreach}
 		    </ul>
 	        <div class="tab-content">
-	            <div id="tab1" class="tab-pane fade in active">
+	            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	                {*{if $edit_user->id == "" || $edit_user->id == 0}*}
                     {if empty($edit_user->id)}
                         {if $smarty.const.USER_REGISTRATION_USE_EMAIL == 0}
@@ -88,7 +88,7 @@
                     {/if}
 	            </div>
                 {if !empty($groups->records)}
-                <div id="tab2" class="tab-pane fade">
+                <div id="tab2" role="tabpanel" class="tab-pane fade">
                     {pagelinks paginate=$groups top=1}
                 	<table class="exp-skin-table">
                 	    <thead>
@@ -125,7 +125,7 @@
                 </div>
                 {/if}
 	            {foreach from=$extensions item=extension}
-                    <div id="tab{$extension->id+2}" class="tab-pane fade">
+                    <div id="tab{$extension->id+2}" role="tabpanel" class="tab-pane fade">
                         {if file_exists("`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl")}
                             {include file="`$smarty.const.THEME_ABSOLUTE`modules/users/views/extensions/`$extension->classname`.tpl"}
                         {elseif file_exists("`$smarty.const.BASE`framework/modules/users/views/extensions/`$extension->classname`.tpl")}

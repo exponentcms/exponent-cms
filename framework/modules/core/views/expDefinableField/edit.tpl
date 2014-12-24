@@ -18,7 +18,7 @@
 {/css}
 
 <div class="module expDefinableField edit">
-    2div class="form_header">
+    <div class="form_header">
         <h1>{if $is_edit == 1}{'Edit Definable Field'|gettext}{else}{'Create a New Definable Field'|gettext}{/if} - {$types}</h2>
     </div>
     {$form_html}

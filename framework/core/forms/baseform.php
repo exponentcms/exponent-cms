@@ -35,6 +35,7 @@ abstract class baseform {
 	var $action  = "";
 	var $enctype = "";
     var $style   = false;  // stacked/default or horizontal control labels
+    var $horizontal   = false;  // stacked/default or horizontal control labels
 
 	function __construct() {
 		//$this->action = SCRIPT_RELATIVE.SCRIPT_FILENAME;

@@ -65,6 +65,9 @@ class taxController extends expController {
                 " . DB_TABLE_PREFIX . "_tax_rate.id,
                 " . DB_TABLE_PREFIX . "_tax_zone.`name` AS zonename,
                 " . DB_TABLE_PREFIX . "_tax_rate.rate as rate,
+                " . DB_TABLE_PREFIX . "_tax_rate.shipping_taxed as shipping_taxed,
+                " . DB_TABLE_PREFIX . "_tax_rate.origin_tax as origin_tax,
+                " . DB_TABLE_PREFIX . "_tax_rate.inactive as inactive,
                 " . DB_TABLE_PREFIX . "_tax_class.`name` AS classname,
                 " . DB_TABLE_PREFIX . "_geo_country.`name` as country,
                 " . DB_TABLE_PREFIX . "_geo_region.`name` as state
@@ -94,6 +97,9 @@ class taxController extends expController {
             $record->class_id = $tax_rate->class_id;
             $record->classname = $tax_class->name;
             $record->rate = $tax_rate->rate;
+            $record->shipping_taxed = $tax_rate->shipping_taxed;
+            $record->origin_tax = $tax_rate->origin_tax;
+            $record->inactive = $tax_rate->inactive;
             $record->zone = $tax_rate->zone_id;
 //            $record->state = $tax_geo->region_id;
 //            $record->country = $tax_geo->country_id;
@@ -142,6 +148,9 @@ class taxController extends expController {
             $tax_rate->zone_id = $this->params['zone'];
             $tax_rate->class_id = $this->params['class'];
             $tax_rate->rate = $this->params['rate'];
+            $tax_rate->shipping_taxed = $this->params['shipping_taxed'];
+            $tax_rate->origin_tax = $this->params['origin_tax'];
+            $tax_rate->inactive = $this->params['inactive'];
             $db->insertObject($tax_rate, 'tax_rate');
 
             // Add data in the tax geo
@@ -162,6 +171,9 @@ class taxController extends expController {
             $tax_rate->zone_id = $this->params['zone'];
             $tax_rate->class_id = $this->params['class'];
             $tax_rate->rate = $this->params['rate'];
+            $tax_rate->shipping_taxed = $this->params['shipping_taxed'] == 1;
+            $tax_rate->origin_tax = $this->params['origin_tax'] == 1;
+            $tax_rate->inactive = $this->params['inactive'] == 1;
             $db->updateObject($tax_rate, 'tax_rate');
 
             // Update the Tax geo table

@@ -144,7 +144,7 @@ class user extends expRecord {
      * @return bool
      */
     public function isSystemAdmin() {
-        return $this->is_system_admin;
+        return $this->is_system_user;
     }
 
     /**
@@ -249,7 +249,7 @@ class user extends expRecord {
 
         //FIXME who should get a slingbar? any non-view permissions? new group setting?
         // check userpermissions to see if the user has the ability to edit anything
-        if ($db->selectValue('userpermission', 'uid', 'uid=\'' . $this->id . '\' AND permission!=\'view\'')) return true;
+        if (!empty($this->id) && $db->selectValue('userpermission', 'uid', 'uid=\'' . $this->id . '\' AND permission!=\'view\'')) return true;
         // check groups to see if assigned groups have the ability to edit anything
         foreach ($this->groups as $group) {
             if ($db->selectValue('grouppermission', 'gid', 'gid=\'' . $group->id . '\' AND permission!=\'view\'')) return true;
@@ -260,6 +260,25 @@ class user extends expRecord {
 
     public function isTempUser() {
         return is_numeric(expUtil::right($this->username, 10)) ? true : false;
+    }
+
+    public function customerInfo() {
+        global $db;
+
+        // build out a SQL query that gets all the data we need and is sortable.
+        $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
+        $sql .= 'FROM ' . DB_TABLE_PREFIX . '_orders o, ' . DB_TABLE_PREFIX . '_billingmethods b, ';
+        $sql .= DB_TABLE_PREFIX . '_order_status os, ';
+        $sql .= DB_TABLE_PREFIX . '_order_type ot ';
+        $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $this->id;
+        $customer = new stdClass();
+        $customer->records = $db->selectObjectsBySql($sql);
+        $customer->total_orders = count($customer->records);
+        $customer->total_spent = 0;
+        foreach ($customer->records as $invoice) {
+            $customer->total_spent += $invoice->grand_total;
+        }
+        return $customer;
     }
 
     /** exdoc
@@ -408,6 +427,9 @@ class user extends expRecord {
                  break;
              case "first":
                  $str = $u->firstname;
+                 break;
+             case "last":
+                 $str = $u->lastname;
                  break;
              case "username":
              default:

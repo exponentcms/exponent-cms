@@ -56,7 +56,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even">
+                    <tr class="{cycle values="odd, even"}">
                         <td>
                         {$order->billingmethod[0]->addresses_id|address}
                         </td>
@@ -113,7 +113,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even">
+                    <tr class="{cycle values="odd, even"}">
                         <td>
                             {$shipping->shippingmethod->addresses_id|address}
                             {if $shipping->shippingmethod->to != "" || $shipping->shippingmethod->from != "" || $shipping->shippingmethod->message != ""}
@@ -169,21 +169,22 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="even">
+                    <tr class="{cycle values="odd, even"}">
                         <td class="right">{'Subtotal'|gettext}:</td>
                         <td class="totals subtotal">{$order->subtotal|currency}</td>
                     </tr>
                         {if $order->total_discounts > 0}
-                        <tr class="odd">
+                        <tr class="{cycle values="odd, even"}">
                             <td class="right">{'Discounts'|gettext}:</td>
                             <td class="totals discounts">-{$order->total_discounts|currency}</td>
                         </tr>
-                        <tr class="even">
+                        <tr class="{cycle values="odd, even"}">
                             <td class="right">{'Total'|gettext}:</td>
                             <td class="totals subtotal">{$order->total|currency}</td>
                         </tr>
                         {/if}
-                    <tr class="odd">
+                    {if !$order->shipping_taxed}
+                    <tr class="{cycle values="odd, even"}">
                         <td class="right">
                             {"Tax"|gettext} -
                             {foreach from=$order->taxzones item=zone}
@@ -194,29 +195,43 @@
                         </td>
                         <td class="totals tax">{$order->tax|currency}</td>
                     </tr>
+                    {/if}
                         {if $order->shipping_required == true}
-                        <tr class="even">
+                        <tr class="{cycle values="odd, even"}">
                             <td class="right">{'Shipping'|gettext}:</td>
                             <td class="totals shipping">{$order->shipping_total_before_discounts|currency}</td>
                         </tr>
                             {if $order->shippingDiscount > 0}
-                            <tr class="odd">
+                            <tr class="{cycle values="odd, even"}">
                                 <td class="right">{'Shipping'|gettext}<br/>{'Discount'|gettext}:</td>
                                 <td class="totals shipping">-{$order->shippingDiscount|currency}</td>
                             </tr>
-                            <tr class="even">
+                            <tr class="{cycle values="odd, even"}">
                                 <td class="right">{'Total Shipping'|gettext}:</td>
                                 <td class="totals shipping">{$order->shipping_total|currency}</td>
                             </tr>
                             {/if}
                         {/if}
                         {if $order->surcharge_total != 0}
-                        <tr class="even">
+                        <tr class="{cycle values="odd, even"}">
                             <td class="right">{'Freight Surcharge'|gettext}:</td>
                             <td class="totals shipping">{$order->surcharge_total|currency}</td>
                         </tr>
                         {/if}
-                    <tr class="odd">
+                    {if !$order->shipping_taxed}
+                    <tr class="{cycle values="odd, even"}">
+                        <td class="right">
+                            {"Tax"|gettext} -
+                            {foreach from=$order->taxzones item=zone}
+                                {$zone->name} ({$zone->rate}%):
+                            {foreachelse}
+                                ({'N/A'|gettext}):
+                            {/foreach}
+                        </td>
+                        <td class="totals tax">{$order->tax|currency}</td>
+                    </tr>
+                    {/if}
+                    <tr class="{cycle values="odd, even"}">
                         <td class="right">{'Final Total'|gettext}:</td>
                         <td class="totals total">{$order->grand_total|currency}</td>
                     </tr>

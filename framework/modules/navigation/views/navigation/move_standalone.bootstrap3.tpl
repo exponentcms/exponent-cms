@@ -27,11 +27,11 @@
     {form action=reparent_standalone}
         {control type=hidden name=parent value=$parent}
         <div id="configure-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Page'|gettext}</em></a></li>
             </ul>
             <div class="tab-content">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
                     {control type="dropdown" name="page" label="Standalone Page"|gettext items=navigationController::levelDropdownControlArray(-1,0,array(),false,'manage') value=$page}
                 </div>

@@ -51,11 +51,11 @@
                 </div>
             {/permissions}
         {/if}
-	<div id="catnav">
+	<div id="catnav" class="catnav">
 		<ul>	
 			{foreach from=$categories item=category}
     			{if $category->is_active==1 || $user->is_acting_admin}
-                    <li class="{if $topcat->id==$category->id}current{/if}{if $category->is_active!=1} inactive{/if}">
+                    <li style="margin-left: {$category->depth * 10}px" class="{if $curcat->id==$category->id}current{/if}{if $category->is_active!=1} inactive{/if}">
                         <a href="{link controller=store action=showall title=$category->sef_url}">{$category->title} <span class="productsincategory">{$category->product_count}</span></a>
                     </li>
 				{/if}

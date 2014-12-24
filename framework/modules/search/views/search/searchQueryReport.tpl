@@ -104,9 +104,9 @@
         var userdropdown = Y.one('#userdropdown');
         userdropdown.on("change",function(e){
             if(e.target.get('value') == -1) {
-                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";
+                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/";  //FIXME requires SEF_URLs
             } else {
-                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');
+                window.location = EXPONENT.PATH_RELATIVE+"search/searchQueryReport/user_id/"+e.target.get('value');  //FIXME requires SEF_URLs
             }
         });
 	});

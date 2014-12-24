@@ -60,7 +60,7 @@ function smarty_function_export_pdf_link($params,&$smarty) {
         $text = '<i class="fa fa-book '.expTheme::iconSize().'"></i> ' . (isset($params['text']) ? $params['text'] : gt('Export as PDF'));
 
         // spit out the link
-        echo $prepend.$router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
+        echo $prepend, $router->exportAsPDFLink($text, $class, 800, 600, $view, $orientation, $limit);
     }
 }
 

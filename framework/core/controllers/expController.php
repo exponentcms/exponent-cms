@@ -31,8 +31,10 @@ abstract class expController {
     public $basemodel_name = ''; // holds classname of base model associated w/ this controller
     public $model_table = ''; // holds table name for base model
 
-    public $useractions = array(); // available user actions (methods) for this controller
+    public $useractions = array(); // available (displayed) user actions/methods for this module
     public $remove_configs = array(); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
+
+    // $permissions used to restrict access to module's actions/methods
     protected $permissions = array(  // standard set of permissions for all modules unless add'ed or remove'd
         'manage'    => 'Manage',
         'configure' => 'Configure',
@@ -42,16 +44,16 @@ abstract class expController {
         'approve'  => 'Approval',
     );
     protected $remove_permissions = array();  // $permissions not applicable for this module from above list
-    protected $add_permissions = array();  // additional $permissions for this module
+    protected $add_permissions = array();  // additional $permissions processed for this module
+    public $requires_login = array(); // actions/methods which ONLY require user be logged in to access...$permissions take priority
 
     public $filepath = ''; // location of this controller's files
-    public $viewpath = ''; // location of this controllers views
+    public $viewpath = ''; // location of this controllers views; defaults to controller file location
     public $relative_viewpath = ''; // relative location of controller's views
-    public $asset_path = ''; // location of this controller's assets
+    public $asset_path = ''; // location of this controller's assets; defaults to controller file location
 
-    public $requires_login = array(); // actions (methods) which require user be logged in to access
     public $config = array(); // holds module configuration settings
-    public $params = array(); // holds parameters passed to module
+    public $params = array(); // holds sanitized parameters passed to module
     public $loc = null; // module location object
 
     public $codequality = 'stable'; // code's level of stability
@@ -239,7 +241,7 @@ abstract class expController {
     }
 
     /**
-     * glue to make the view template aware of the module
+     * glue to make the view template aware of the module  //NOTE: DEPRECATED
      */
     function moduleSelfAwareness() {
         assign_to_template(array(
@@ -329,8 +331,10 @@ abstract class expController {
         ));
     }
 
+    /**
+     * return all tags used by module's items
+     */
     public function tags() {
-
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
@@ -364,8 +368,10 @@ abstract class expController {
         ));
     }
 
+    /**
+     * return all categories used by module's items
+     */
     public function categories() {
-
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
@@ -405,6 +411,9 @@ abstract class expController {
         ));
     }
 
+    /**
+     * return all comments used by module's items
+     */
     public function comments() {
 	    expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -459,7 +468,7 @@ abstract class expController {
     }
 
     /**
-     * view the item by referring to its title  DEPRECATED??
+     * view the item by referring to its title  //NOTE: DEPRECATED??
      */
     function showByTitle() {
         expHistory::set('viewable', $this->params);
@@ -491,7 +500,7 @@ abstract class expController {
     }
 
     /**
-     * view items referenced by tags  DEPRECATED??
+     * view items referenced by tags  //NOTE: DEPRECATED??
      */
     function showByTags() {
         global $db;
@@ -537,7 +546,7 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module (deprecated in favor of edit w/o id param)
+     * create an item in this module //NOTE: deprecated in favor of edit w/o id param
      */
     function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
@@ -734,7 +743,7 @@ abstract class expController {
     }
 
     /**
-     * rerank module items from ddrerank
+     * rerank module items, called from ddrerank
      */
     function manage_ranks() {
         $rank = 1;
@@ -937,7 +946,7 @@ abstract class expController {
     }
 
     /**
-     * get the items in an rss feed format
+     * get the module's items in an rss feed format
      *
      * this function is very general and will most of the time need to be overwritten and customized
      *
@@ -1107,7 +1116,7 @@ abstract class expController {
     }
 
     /**
-     * permission functions
+     * permission functions to aggregate a module's permissions based on add/remove permissions
      *
      * @return array
      */
@@ -1121,13 +1130,13 @@ abstract class expController {
         return $perms;
     }
 
-    // create a psuedo global manage pages permission
+    // create a psuedo global permission specific to the module; return true grants permission, false continues with other permission checks
     public static function checkPermissions($permission,$location) {
         return false;
     }
 
     /**
-     * get the models associated with this module
+     * get the model(s) associated with this module
      *
      * @return array
      */
@@ -1154,7 +1163,7 @@ abstract class expController {
     }
 
     /**
-     * add all module items to search index
+     * add module items to search index
      *
      * @return int
      */
@@ -1216,7 +1225,7 @@ abstract class expController {
     }
 
     /**
-     * remove module items from search index
+     * remove all module items from search index
      */
     function delete_search() {
         global $db;
@@ -1270,9 +1279,8 @@ abstract class expController {
         if (empty($router->params['action'])) return false;
 
         // figure out what metadata to pass back based on the action we are in.
-//        $action = $_REQUEST['action'];
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
         $modelname = $this->basemodel_name;
 
         switch ($action) {
@@ -1330,21 +1338,6 @@ abstract class expController {
         return $metainfo;
     }
 
-    // function showall_by_tags_meta($request) {
-    //     // look up the record.
-    //     if (isset($request['tag'])) {
-    //         $object = new expTag(expString::sanitize($request['tag']));
-    //         // set the meta info
-    //         if (!empty($object)) {
-    //             $metainfo = array('title' => '', 'keywords' => '', 'description' => '');
-    //             $metainfo['title'] = gt('Showing all Items tagged with') . " \"" . $object->title . "\"";
-    //             $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-    //             $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-    //             return $metainfo;
-    //         }
-    //     }
-    // }
-
     /**
      * Returns rich snippet PageMap meta data
      *
@@ -1357,12 +1350,17 @@ abstract class expController {
         return null;
     }
 
+    /**
+     * action specific metainfo
+     *
+     * @return array
+     */
     function showall_by_tags_meta($request) {
         global $router;
 
         // look up the record.
         if (isset($request['tag'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $tag = $request['tag'];
             // set the meta info
             $metainfo['title'] = gt('Showing all') . ' ' . ucwords($this->basemodel_name) . ' ' . gt('tagged as') . ' ' . $tag;
@@ -1376,12 +1374,17 @@ abstract class expController {
         }
     }
 
+    /**
+     * action specific metainfo
+     *
+     * @return array
+     */
     function showall_by_date_meta($request) {
         global $router;
 
         // look up the record.
         if (isset($request['month'])) {
-            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+            $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
             $mk = mktime(0, 0, 0, $request['month'], 01, $request['year']);
             $ts = strftime('%B, %Y', $mk);
             // set the meta info

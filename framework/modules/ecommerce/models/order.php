@@ -39,6 +39,7 @@ class order extends expRecord {
     public $taxzones = array();
     public $forced_shipping = false;
     public $product_forcing_shipping = '';  //FIXME we don't seem to use this
+    public $shipping_taxed = false;
 
 //    protected $attachable_item_types = array( //'content_expFiles'=>'expFile',
 //        //'content_expTags'=>'expTag',
@@ -64,10 +65,10 @@ class order extends expRecord {
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
                 $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
-                $requiresShipping = false;
-                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
-                    if ($oi->product->requiresShipping) $requiresShipping = true;
-                }
+//                $requiresShipping = false;
+//                foreach ($this->shippingmethods[$smid]->orderitem as $oi) {
+//                    if ($oi->product->requiresShipping) $requiresShipping = true;
+//                }
                 /*if ($requiresShipping == true) {
     	            $this->shipping_total += $this->shippingmethods[$smid]->shipping_cost;
 	            }  */
@@ -86,6 +87,7 @@ class order extends expRecord {
 
     private function setReturnCount($orig_referrer, $merge_array = array()) {
         global $router;
+
         if ($this->return_count != "") {
             $retArray = expUnserialize($this->return_count);
         } else {
@@ -130,20 +132,21 @@ class order extends expRecord {
 
         $sessAr = expSession::get('verify_shopper');
         // initialize this users cart if they have ecomm installed.
-        $active = $db->selectValue('modstate', 'active', 'module="store"' || ECOM);
+        $active = ECOM;
         if (!expModules::controllerExists('cart') || empty($active)) {
             // if ecomm is turned off, no cart.
             return null;
         } else if (isset($router->params['controller']) && $router->params['controller'] == 'order' &&
-            ($router->params['action'] == 'verifyReturnShopper' || $router->params['action'] == 'verifyAndRestoreCart' ||
-                $router->params['action'] == 'clearCart') &&
+            ($router->params['action'] == 'verifyReturnShopper' ||
+             $router->params['action'] == 'verifyAndRestoreCart' ||
+             $router->params['action'] == 'clearCart') &&
             (!isset($sessAr['validated']) || $sessAr['validated'] != true)
         ) {
             return new order();
         } else {
             // if ecomm is turned off, no cart.		    
             //$active = ;
-            if (empty($active)) return null;
+//            if (empty($active)) return null;
             $order = new order(); //initialize a new order object to use the find function from.
             $ticket = expSession::getTicketString(); //get this users session ticket. this is how we track anonymous users.
             // grab the origional referrer from the session table so that we can transfer it into the cart where it will be used for reporting purposes
@@ -155,6 +158,7 @@ class order extends expRecord {
             $sessioncart = $order->find('first', "invoice_id='' AND sessionticket_ticket='" . $ticket . "'");
 
             //check to see if the user is logged in, and if so grab their existing cart
+            $usercart = null;
             if (!empty($user) && $user->isLoggedIn()) {
                 $usercart = $order->find('first', "invoice_id='' AND user_id=" . $user->id);
             }
@@ -320,8 +324,10 @@ class order extends expRecord {
 
             $cart->item_count = 0;
             foreach ($cart->orderitem as $items) {
-                if ($items->product->requiresShipping && !$items->product->no_shipping) $cart->shipping_required = true;
-                if ($items->product->requiresBilling) $cart->billing_required = true;
+                if ($items->product->requiresShipping && !$items->product->no_shipping)
+                    $cart->shipping_required = true;
+                if ($items->product->requiresBilling)
+                    $cart->billing_required = true;
                 $cart->item_count += $items->quantity;
             }
 
@@ -494,6 +500,7 @@ class order extends expRecord {
 
     public function getBillingMethods() {
         global $db;
+
         return $db->selectColumn('billingmethods', 'id', 'orders_id=' . $this->id, null, true);
     }
 
@@ -522,7 +529,7 @@ class order extends expRecord {
          $this->tax = 0;
          foreach($this->orderitem as $item) {
              $taxclass = new taxclass($item->product->tax_class_id);
-             $item->products_tax = $taxclass->getProductTax($item);
+             $item->products_tax = taxclass::getProductTax($item);
              $this->tax += $item->products_tax;
          }
 
@@ -578,7 +585,7 @@ class order extends expRecord {
     }
 
     public function calculateGrandTotal() {
-        // calulate promo codes and group discounts
+        // calculate promo codes and group discounts
         //we need to tally up the cart, apply discounts, TAX that TOTAL somehow (different tax clases come into play), then add shipping
 
         //grab our discounts
@@ -655,13 +662,16 @@ class order extends expRecord {
             }
 
             // calculate the tax for this product
-            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
-            $this->orderitem[$i]->products_tax = $taxclass->getProductTax($this->orderitem[$i]);
+//            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
+            $this->orderitem[$i]->products_tax = taxclass::getProductTax($this->orderitem[$i]);
             $this->tax += $this->orderitem[$i]->products_tax * $this->orderitem[$i]->quantity;
 
             //save out the order item
             $this->orderitem[$i]->save();
         }
+
+        // figure out which tax zones apply to this order.
+        $this->taxzones = taxclass::getCartTaxZones($this);
 
         // add the "cart discounts" - percentage for sure, but straight can work also should be added after the final total is calculated,
         //including tax but not shipping                                                     
@@ -700,6 +710,15 @@ class order extends expRecord {
 
         $this->shipping_total_before_discounts = $this->shipping_total;
 
+        $this->shipping_taxed = false;
+        foreach ($this->taxzones as $tz) {  //FIXME not written for multiple shipments/destinations
+            if (!empty($tz->shipping_taxed)) {
+                $this->tax += round(($tz->rate * .01) * $this->shipping_total,2);
+                $this->shipping_taxed = true;
+                break;
+            }
+        }
+
         if (isset($cartDiscounts)) {
             foreach ($cartDiscounts as $od) {
                 $discount = new discounts($od->discounts_id);
@@ -715,8 +734,6 @@ class order extends expRecord {
 
         $estimate_shipping = true;
         if ($estimate_shipping && !$this->shipping_total) $this->shipping_total = shipping::estimateShipping($this);
-        // figure out which tax zones apply to this order.
-        $this->taxzones = taxclass::getCartTaxZones($this);
 
         $this->grand_total = ($this->subtotal - $this->total_discounts) + $this->tax + $this->shipping_total + $this->surcharge_total;
 
@@ -724,6 +741,11 @@ class order extends expRecord {
         //eDebug($this, true); 
     }
 
+    /**
+     * Return next invoice number and advance counter
+     *
+     * @return mixed|null
+     */
     public function getInvoiceNumber() {
         global $db;
 
@@ -781,7 +803,7 @@ class order extends expRecord {
         if (isset($params['order_type'])) {
             $this->order_type_id = $params['order_type'];
         } else {
-            $this->order_type_id = $this->getDefaultOrderType();
+            $this->order_type_id = self::getDefaultOrderType();
         }
         $this->save();
     }
@@ -792,7 +814,7 @@ class order extends expRecord {
         return $db->selectValue('order_type', 'title', 'id=' . $this->order_type_id);
     }
 
-    public function getOrderTypes() {
+    public static function getOrderTypes() {
         $ot = new order_type();
         $ots = $ot->find('all');
         $order_types = array();
@@ -802,7 +824,7 @@ class order extends expRecord {
         return $order_types;
     }
 
-    public function getDefaultOrderType() {
+    public static function getDefaultOrderType() {
         $ot = new order_type();
         $ots = $ot->find('first', 'is_default=1');
         //eDebug($ots,true);
@@ -821,7 +843,7 @@ class order extends expRecord {
         if (isset($params['order_status'])) {
             $this->order_status_id = $params['order_status'];
         } else {
-            $this->order_status_id = $this->getDefaultOrderStatus();
+            $this->order_status_id = self::getDefaultOrderStatus();
         }
         $this->save();
     }
@@ -832,7 +854,7 @@ class order extends expRecord {
         return $db->selectValue('order_status', 'title', 'id=' . $this->order_status_id);
     }
 
-    public function getOrderStatuses() {
+    public static function getOrderStatuses() {
         $os = new order_status();
         $oss = $os->find('all');
         $order_statuses = array();
@@ -842,11 +864,11 @@ class order extends expRecord {
         return $order_statuses;
     }
 
-    public function getDefaultOrderStatus() {
+    public static function getDefaultOrderStatus() {
         $os = new order_status();
         $oss = $os->find('first', 'is_default=1');
         //eDebug($ots,true);
-        return $oss->id;
+        return !empty($oss->id) ? $oss->id : null;
     }
 
     /*public function setDefaultStatus() {
@@ -857,7 +879,38 @@ class order extends expRecord {
        return;
     } */
 
-    public function getSalesReps() {
+    /**
+     * Return number of orders in requested state
+     *
+     * @param string $state
+     * @return int
+     */
+    public static function getOrdersCount($state='new') {
+        global $db;
+
+        if ($state == 'new') {
+            $new_status = order::getDefaultOrderStatus();
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id = ' . $new_status);  // complete orders w/ default status
+        } elseif ($state == 'placed' || $state == 'submitted' || $state == 'confirmed' || $state == 'purchased') {
+            return $db->countObjects('orders', 'purchased !=0');  // complete orders w/ any status
+        } elseif ($state == 'open') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status);
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id NOT IN (' . $closed_status . ')');
+        } elseif ($state == 'processing') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status) . ',' . order::getDefaultOrderStatus();
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id NOT IN (' . $closed_status . ')');  // complete orders w/ closed status
+        } elseif ($state == 'closed') {
+            $closed_status = $db->selectColumn('order_status', 'id', 'treat_as_closed=1');
+            $closed_status = implode(',',$closed_status);
+            return $db->countObjects('orders', 'purchased !=0 AND order_status_id IN (' . $closed_status . ')');  // complete orders w/ closed status
+        } else {
+            return $db->countObjects('orders', 'purchased=0');  // incomplete orders w/ any status
+        }
+    }
+
+    public static function getSalesReps() {
         $sr = new sales_rep();
         $srs = $sr->find('all');
         $sales_reps = array();

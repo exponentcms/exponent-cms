@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent v2.3.0</title>
+    <title>Exponent v2.3.2</title>
     <parser>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api/phpdoc</target>
@@ -24,7 +24,7 @@
         </paths>
     </logging>
     <transformations>
-         <template name="responsive" />
+         <template name="responsive-twig" />
     </transformations>
     <files>
         <directory>.</directory>

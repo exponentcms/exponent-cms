@@ -83,8 +83,8 @@
                 null,
                 null,
                 null,
-                { searchable: false, sortable: false },
-                { searchable: false, sortable: false },
+                { searchable: false, orderable: false },
+                { searchable: false, orderable: false },
             ]
         });
     } );

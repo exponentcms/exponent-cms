@@ -2,13 +2,13 @@
 
 /* ================================================
  * Make use of Bootstrap's modal more monkey-friendly.
- * 
+ *
  * For Bootstrap 3.
- * 
+ *
  * javanoob@hotmail.com
- * 
+ *
  * https://github.com/nakupanda/bootstrap3-dialog
- * 
+ *
  * Licensed under The MIT License.
  * ================================================ */
 (function(root, factory) {
@@ -74,16 +74,21 @@
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_SUCCESS] = 'Success';
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_WARNING] = 'Warning';
     BootstrapDialog.DEFAULT_TEXTS[BootstrapDialog.TYPE_DANGER] = 'Danger';
+    BootstrapDialog.DEFAULT_TEXTS['OK'] = 'OK';
+    BootstrapDialog.DEFAULT_TEXTS['CANCEL'] = 'Cancel';
 
     BootstrapDialog.SIZE_NORMAL = 'size-normal';
+    BootstrapDialog.SIZE_WIDE = 'size-wide';    // size-wide is equal to modal-lg
     BootstrapDialog.SIZE_LARGE = 'size-large';
 
     BootstrapDialog.BUTTON_SIZES = {};
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_NORMAL] = '';
+    BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_WIDE] = '';
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_LARGE] = 'btn-lg';
 
     BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
 
+    // Will be removed in later version, after Bootstrap Modal >= 3.3.0, updating z-index is unnecessary.
     BootstrapDialog.ZINDEX_BACKDROP = 1040;
     BootstrapDialog.ZINDEX_MODAL = 1050;
 
@@ -103,7 +108,8 @@
         spinicon: BootstrapDialog.ICON_SPINNER,
         autodestroy: true,
         draggable: false,
-        animate: true
+        animate: true,
+        description: ''
     };
 
     /**
@@ -142,19 +148,14 @@
     };
 
     /**
-     * Show scrollbar if the last visible dialog needs one.
+     * Determin if current version of Bootstrap Modal is greater than 3.3.0
+     * 
+     * @returns boolean
      */
-    BootstrapDialog.showScrollbar = function() {
-        var lastDialogInstance = null;
-        $.each(BootstrapDialog.dialogs, function(id, dialogInstance) {
-            lastDialogInstance = dialogInstance;
-        });
-        if (lastDialogInstance !== null && lastDialogInstance.isRealized() && lastDialogInstance.isOpened()) {
-            var bsModal = lastDialogInstance.getModal().data('bs.modal');
-            bsModal.checkScrollbar();
-            $('body').addClass('modal-open');
-            bsModal.setScrollbar();
-        }
+    BootstrapDialog.isModernModal = function() {
+        var modal = $.fn.modal.Constructor;
+
+        return typeof $.fn.modal.Constructor.VERSION !== 'undefined' && /3\.3\.\d+/.test($.fn.modal.Constructor.VERSION);
     };
 
     BootstrapDialog.prototype = {
@@ -187,8 +188,8 @@
             return this;
         },
         createModal: function() {
-            var $modal = $('<div class="modal" tabindex="-1"></div>');
-            $modal.prop('id', this.getId());
+            var $modal = $('<div class="modal" tabindex="-1" role="dialog" aria-hidden="true"></div>');
+            $modal.prop('id', this.getId()).attr('aria-labelledby', this.getId() + '_title');
 
             return $modal;
         },
@@ -319,6 +320,45 @@
         },
         setSize: function(size) {
             this.options.size = size;
+            this.updateSize();
+
+            return this;
+        },
+        updateSize: function() {
+            if (this.isRealized()) {
+                var dialog = this;
+
+                // Dialog size
+                this.getModal().removeClass(BootstrapDialog.SIZE_NORMAL)
+                .removeClass(BootstrapDialog.SIZE_WIDE)
+                .removeClass(BootstrapDialog.SIZE_LARGE);
+                this.getModal().addClass(this.getSize());
+
+                // Wider dialog.
+                this.getModalDialog().removeClass('modal-lg');
+                if (this.getSize() === BootstrapDialog.SIZE_WIDE) {
+                    this.getModalDialog().addClass('modal-lg');
+                }
+
+                // Button size
+                $.each(this.options.buttons, function(index, button) {
+                    var $button = dialog.getButton(button.id);
+                    var buttonSizes = ['btn-lg', 'btn-sm', 'btn-xs'];
+                    var sizeClassSpecified = false;
+                    if (typeof button['cssClass'] === 'string') {
+                        var btnClasses = button['cssClass'].split(' ');
+                        $.each(btnClasses, function(index, btnClass) {
+                            if ($.inArray(btnClass, buttonSizes) !== -1) {
+                                sizeClassSpecified = true;
+                            }
+                        });
+                    }
+                    if (!sizeClassSpecified) {
+                        $button.removeClass(buttonSizes.join(' '));
+                        $button.addClass(dialog.getButtonSize());
+                    }
+                });
+            }
 
             return this;
         },
@@ -342,7 +382,7 @@
         updateTitle: function() {
             if (this.isRealized()) {
                 var title = this.getTitle() !== null ? this.createDynamicContent(this.getTitle()) : this.getDefaultText();
-                this.getModalHeader().find('.' + this.getNamespace('title')).html('').append(title);
+                this.getModalHeader().find('.' + this.getNamespace('title')).html('').append(title).prop('id', this.getId() + '_title');
             }
 
             return this;
@@ -436,9 +476,9 @@
         },
         /**
          * If there is id provided for a button option, it will be in dialog.indexedButtons list.
-         * 
+         *
          * In that case you can use dialog.getButton(id) to find the button.
-         * 
+         *
          * @param {type} id
          * @returns {undefined}
          */
@@ -472,6 +512,14 @@
         },
         setAutodestroy: function(autodestroy) {
             this.options.autodestroy = autodestroy;
+        },
+        getDescription: function() {
+            return this.options.description;
+        },
+        setDescription: function(description) {
+            this.options.description = description;
+
+            return this;
         },
         getDefaultText: function() {
             return BootstrapDialog.DEFAULT_TEXTS[this.getType()];
@@ -547,7 +595,6 @@
         },
         createButton: function(button) {
             var $button = $('<button class="btn"></button>');
-            $button.addClass(this.getButtonSize());
             $button.prop('id', button.id);
 
             // Icon
@@ -593,9 +640,9 @@
         },
         /**
          * Dynamically add extra functions to $button
-         * 
+         *
          * Using '$this' to reference 'this' is just for better readability.
-         * 
+         *
          * @param {type} $button
          * @returns {_L13.BootstrapDialog.prototype}
          */
@@ -667,7 +714,7 @@
         },
         /**
          * Invoke this only after the dialog is realized.
-         * 
+         *
          * @param {type} enable
          * @returns {undefined}
          */
@@ -680,7 +727,7 @@
         },
         /**
          * Invoke this only after the dialog is realized.
-         * 
+         *
          * @returns {undefined}
          */
         updateClosable: function() {
@@ -746,30 +793,34 @@
         handleModalEvents: function() {
             this.getModal().on('show.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                if (typeof dialog.options.onshow === 'function') {
+                if (dialog.isModalEvent(event) && typeof dialog.options.onshow === 'function') {
                     return dialog.options.onshow(dialog);
                 }
             });
             this.getModal().on('shown.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                typeof dialog.options.onshown === 'function' && dialog.options.onshown(dialog);
+                dialog.isModalEvent(event) && typeof dialog.options.onshown === 'function' && dialog.options.onshown(dialog);
             });
             this.getModal().on('hide.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                if (typeof dialog.options.onhide === 'function') {
+                if (dialog.isModalEvent(event) && typeof dialog.options.onhide === 'function') {
                     return dialog.options.onhide(dialog);
                 }
             });
             this.getModal().on('hidden.bs.modal', {dialog: this}, function(event) {
                 var dialog = event.data.dialog;
-                typeof dialog.options.onhidden === 'function' && dialog.options.onhidden(dialog);
+                dialog.isModalEvent(event) && typeof dialog.options.onhidden === 'function' && dialog.options.onhidden(dialog);
                 dialog.isAutodestroy() && $(this).remove();
                 BootstrapDialog.moveFocus();
             });
 
             // Backdrop, I did't find a way to change bs3 backdrop option after the dialog is popped up, so here's a new wheel.
             this.getModal().on('click', {dialog: this}, function(event) {
-                event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                if (!BootstrapDialog.isModernModal()) {
+                    event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                } else {
+                    $(event.target).hasClass('modal-backdrop') && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+                }
             });
 
             // ESC key support
@@ -788,12 +839,15 @@
 
             return this;
         },
+        isModalEvent: function(event) {
+            return typeof event.namespace !== 'undefined' && event.namespace === 'bs.modal';
+        },
         makeModalDraggable: function() {
             if (this.options.draggable) {
                 this.getModalHeader().addClass(this.getNamespace('draggable')).on('mousedown', {dialog: this}, function(event) {
                     var dialog = event.data.dialog;
                     dialog.draggableData.isMouseDown = true;
-                    var dialogOffset = dialog.getModalContent().offset();
+                    var dialogOffset = dialog.getModalDialog().offset();
                     dialog.draggableData.mouseOffset = {
                         top: event.clientY - dialogOffset.top,
                         left: event.clientX - dialogOffset.left
@@ -807,7 +861,7 @@
                     if (!dialog.draggableData.isMouseDown) {
                         return;
                     }
-                    dialog.getModalContent().offset({
+                    dialog.getModalDialog().offset({
                         top: event.clientY - dialog.draggableData.mouseOffset.top,
                         left: event.clientX - dialog.draggableData.mouseOffset.left
                     });
@@ -818,26 +872,29 @@
         },
         /**
          * To make multiple opened dialogs look better.
+         * 
+         * Will be removed in later version, after Bootstrap Modal >= 3.3.0, updating z-index is unnecessary.
          */
         updateZIndex: function() {
             var dialogCount = 0;
             $.each(BootstrapDialog.dialogs, function(dialogId, dialogInstance) {
                 dialogCount++;
             });
-            if (dialogCount > 1) {
-                var $modal = this.getModal();
-                var $backdrop = $modal.data('bs.modal').$backdrop;
-                $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
-                $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
-            }
+            var $modal = this.getModal();
+            var $backdrop = $modal.data('bs.modal').$backdrop;
+            $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
+            $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
 
             return this;
         },
         realize: function() {
             this.initModalStuff();
             this.getModal().addClass(BootstrapDialog.NAMESPACE)
-            .addClass(this.getSize())
             .addClass(this.getCssClass());
+            this.updateSize();
+            if (this.getDescription()) {
+                this.getModal().attr('aria-describedby', this.getDescription());
+            }
             this.getModalFooter().append(this.createFooterContent());
             this.getModalHeader().append(this.createHeaderContent());
             this.getModalBody().append(this.createBodyContent());
@@ -855,13 +912,14 @@
             this.updateMessage();
             this.updateClosable();
             this.updateAnimate();
+            this.updateSize();
 
             return this;
         },
         open: function() {
             !this.isRealized() && this.realize();
             this.getModal().modal('show');
-            this.updateZIndex();
+            !BootstrapDialog.isModernModal() && this.updateZIndex(); // Will be removed in later version.
             this.setOpened(true);
 
             return this;
@@ -872,9 +930,6 @@
                 delete BootstrapDialog.dialogs[this.getId()];
             }
             this.setOpened(false);
-
-            // Show scrollbar if the last visible dialog needs one.
-            BootstrapDialog.showScrollbar();
 
             return this;
         }
@@ -900,7 +955,7 @@
 
     /**
      * Shortcut function: show
-     * 
+     *
      * @param {type} options
      * @returns the created dialog instance
      */
@@ -910,7 +965,7 @@
 
     /**
      * Alert window
-     * 
+     *
      * @returns the created dialog instance
      */
     BootstrapDialog.alert = function() {
@@ -920,7 +975,7 @@
             title: null,
             message: null,
             closable: true,
-            buttonLabel: 'OK',
+            buttonLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
             callback: null
         };
 
@@ -930,7 +985,7 @@
             options = $.extend(true, defaultOptions, {
                 message: arguments[0],
                 closable: false,
-                buttonLabel: 'OK',
+                buttonLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
                 callback: typeof arguments[1] !== 'undefined' ? arguments[1] : null
             });
         }
@@ -959,7 +1014,7 @@
 
     /**
      * Confirm window
-     * 
+     *
      * @param {type} message
      * @param {type} callback
      * @returns the created dialog instance
@@ -973,13 +1028,13 @@
                 'callback': callback
             },
             buttons: [{
-                    label: 'Cancel',
+                    label: BootstrapDialog.DEFAULT_TEXTS.CANCEL,
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(false);
                         dialog.close();
                     }
                 }, {
-                    label: 'OK',
+                    label: BootstrapDialog.DEFAULT_TEXTS.OK,
                     cssClass: 'btn-primary',
                     action: function(dialog) {
                         typeof dialog.getData('callback') === 'function' && dialog.getData('callback')(true);
@@ -991,7 +1046,7 @@
 
     /**
      * Warning window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */
@@ -1004,7 +1059,7 @@
 
     /**
      * Danger window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */
@@ -1017,7 +1072,7 @@
 
     /**
      * Success window
-     * 
+     *
      * @param {type} message
      * @returns the created dialog instance
      */

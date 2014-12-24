@@ -42,7 +42,7 @@ if (is_readable(BASE . 'themes')) {
                     -4,
                     4
                 ) == '.eql' && $file != 'sample.eql' && $file != 'ecommerce.eql'
-            ) { //FIXME we should add to ecommerce.eql for a full sample store
+            ) {
                 $filename = substr($file, 0, strlen($file) - 4);
                 echo '    <option value="' . $filename . '">' . ucwords($filename) . ' ' . gt('Site') . '</option>';
             }

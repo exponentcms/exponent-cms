@@ -93,7 +93,7 @@ class storeCategoryController extends expNestedNodeController {
                 }
             }
 
-            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $this->params['id']);
+            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $id);
 
             foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
                 $f_types[$item->id] = $item->title;
@@ -136,7 +136,6 @@ class storeCategoryController extends expNestedNodeController {
     }
 
     function saveconfig() {
-
         // unset some unneeded params
         unset($this->params['module']);
         unset($this->params['controller']);
@@ -426,6 +425,7 @@ class storeCategoryController extends expNestedNodeController {
         //     }
         // }
     }
+
 }
 
 ?>

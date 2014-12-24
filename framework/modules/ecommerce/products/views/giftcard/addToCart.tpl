@@ -25,7 +25,7 @@
         {control type="text" name="to" label="To:"|gettext value=$record->to}
         {control type="text" name="from" label="From:"|gettext value=$record->from}
         {control type="textarea" name="msg" label="Message:"|gettext rows=3 value=$record->msg}
-        {control type="buttongroup" name="add2cart" submit="Add to cart"|gettext}
+        {control type="buttongroup" name="add2cart" size=large color=blue submit="Add to cart"|gettext}
     {/form}
 </div>
 

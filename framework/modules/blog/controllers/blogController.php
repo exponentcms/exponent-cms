@@ -296,7 +296,7 @@ class blogController extends expController {
     }
 
     /**
-     * additional check for display of search hit, only display non=draft
+     * additional check for display of search hit, only display non-draft
      *
      * @param $record
      *
@@ -362,7 +362,7 @@ class blogController extends expController {
 //            }
 
             if (!empty($str)) {
-                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => '', 'nofollow' => '');
+                $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
                 $metainfo['title'] = gt('Showing all Blog Posts written by') ." \"" . $str . "\"";
 //                $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
                 $metainfo['keywords'] = $str;
@@ -376,99 +376,6 @@ class blogController extends expController {
         }
     }
 
-    //	function metainfo() {
-//        global $router;
-//        if (empty($router->params['action'])) return false;
-//
-//        // figure out what metadata to pass back based on the action
-//        // we are in.
-//        $action = $_REQUEST['action'];
-//        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'');
-//        $modelname = $this->basemodel_name;
-//        switch($action) {
-//            case 'showall':
-//                $metainfo = array('title'=>"Showing all - ".$this->displayname(), 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
-//            break;
-//            case 'show':
-//            case 'showByTitle':
-//                // look up the record.
-//                if (isset($_REQUEST['id']) || isset($_REQUEST['title'])) {
-//                    $lookup = isset($_REQUEST['id']) ? intval($_REQUEST['id']) :expString::sanitize($_REQUEST['title']);
-//                    $object = new $modelname($lookup);
-//                    // set the meta info
-//                    if (!empty($object)) {
-//                        $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
-//                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-//                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-//                    }
-//                }
-//            break;
-//            case 'showall_by_tags':
-//                // look up the record.
-//                if (isset($_REQUEST['tag'])) {
-//                    $object = new expTag(expString::sanitize($_REQUEST['tag']));
-//                    // set the meta info
-//                    if (!empty($object)) {
-//                        $metainfo['title'] = gt('Showing all Blog Posts tagged with') ." \"" . $object->title . "\"";
-//                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;
-//                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-//                    }
-//                }
-//            break;
-//            case 'showall_by_author':
-//                // look up the record.
-//                if (isset($_REQUEST['author'])) {
-//                    // set the meta info
-//                    $u = user::getUserByName(expString::sanitize($_REQUEST['author']));
-//
-//            		switch (DISPLAY_ATTRIBUTION) {
-//            			case "firstlast":
-//            				$str = $u->firstname . " " . $u->lastname;
-//            				break;
-//            			case "lastfirst":
-//            				$str = $u->lastname . ", " . $u->firstname;
-//            				break;
-//            			case "first":
-//            				$str = $u->firstname;
-//            				break;
-//            			case "username":
-//            			default:
-//            				$str = $u->username;
-//            				break;
-//            		}
-//
-//                    if (!empty($str)) {
-//                        $metainfo['title'] = gt('Showing all Blog Posts written by') ."\"" . $str . "\"";
-//                        $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-//                        $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-//                    }
-//                }
-//            break;
-//            case 'showall_by_date':
-//                // look up the record.
-//                if (isset($_REQUEST['month'])) {
-//                    $mk = mktime(0, 0, 0, $_REQUEST['month'], 01, $_REQUEST['year']);
-//                    $ts = strftime('%B, %Y',$mk);
-//                    // set the meta info
-//                    $metainfo['title'] = gt('Showing all Blog Posts written in') . $ts ;
-//                    $metainfo['keywords'] = empty($object->meta_keywords) ? SITE_KEYWORDS : $object->meta_keywords;  //FIXME $object not set
-//                    $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;
-//                }
-//            break;
-//            default:
-//                //check for a function in the controller called 'action'_meta and use it if so
-//                $functionName = $action."_meta";
-//                $mod = new $this->classname;
-//                if (method_exists($mod,$functionName)) {
-//                    $metainfo = $mod->$functionName($_REQUEST);
-//                } else {
-//                    $metainfo = array('title'=>$this->displayname()." - ".SITE_TITLE, 'keywords'=>SITE_KEYWORDS, 'description'=>SITE_DESCRIPTION);
-//                }
-//        }
-//
-//        return $metainfo;
-//    }
-	
 }
 
 ?>

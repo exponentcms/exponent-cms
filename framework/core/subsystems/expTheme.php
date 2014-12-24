@@ -29,8 +29,6 @@ class expTheme
     public static function initialize()
     {
         global $auto_dirs2;
-        // Initialize the theme subsystem 1.0 compatibility layer
-//		require_once(BASE.'framework/core/compat/theme.php');
 
         // Initialize the theme subsystem 1.0 compatibility layer if requested
 		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE) require_once(BASE.'framework/core/compat/theme.php');
@@ -118,7 +116,7 @@ class expTheme
         }
 
         // load primer, lessprimer, & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
+        if (!empty($config['css_primer']) || !empty($config['link']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
@@ -344,9 +342,9 @@ class expTheme
 
 //   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
         if (MOBILE && is_readable(BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php')) {
-            echo('<div style="text-align:center"><a href="' . makeLink(
+            echo '<div style="text-align:center"><a href="', makeLink(
                     array('module' => 'administration', 'action' => 'togglemobile')
-                ) . '">' . gt('View site in') . ' ' . (MOBILE ? "Classic" : "Mobile") . ' ' . gt('mode') . '</a></div>');
+                ), '">', gt('View site in'), ' ', (MOBILE ? "Classic" : "Mobile"), ' ', gt('mode'), '</a></div>';
         }
                 // load primer, lessprimer, & normalize CSS files
 
@@ -482,9 +480,9 @@ class expTheme
                     $params['src'] = $feed->src;
 //					echo "\t".'<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeRSSLink($params) . "\" />\n";
                     //FIXME need to use $feed instead of $params
-                    echo "\t" . '<link rel="alternate" type="application/rss+xml" title="' . $title . '" href="' . expCore::makeLink(
+                    echo "\t" . '<link rel="alternate" type="application/rss+xml" title="', $title, '" href="', expCore::makeLink(
                             array('controller' => 'rss', 'action' => 'feed', 'title' => $feed->sef_url)
-                        ) . "\" />\r\n";
+                        ), "\" />\r\n";
                 }
             }
         }
@@ -702,7 +700,13 @@ class expTheme
 //            foreach ($_REQUEST as $key=>$param) {  //FIXME need array sanitizer
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
-            expString::sanitize_array($_REQUEST);
+            if (empty($_REQUEST['route_sanitized'])) {
+                expString::sanitize_array($_REQUEST);
+            } elseif (empty($_REQUEST['array_sanitized'])) {
+                $tmp =1;  //FIXME we've already sanitized at this point
+            } else {
+                $tmp =1;  //FIXME we've already sanitized at this point
+            }
 
             //FIXME: module/controller glue code..remove ASAP
             $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
@@ -1104,7 +1108,6 @@ class expTheme
             $params['view'] = 'showall';
         }
 //	    if (isset($params['controller'])) {
-//            $controller = expModules::getControllerClassName($params['controller']);  //FIXME long controller name
         $controller = expModules::getModuleName($params['controller']);
 //            $params['view'] = isset($params['view']) ? $params['view'] : $params['action'];
         $params['title'] = isset($params['moduletitle']) ? $params['moduletitle'] : '';
@@ -1134,7 +1137,7 @@ class expTheme
         $module_scope[$params['source']][$controller] = new stdClass();
         $module_scope[$params['source']][$controller]->scope = $params['scope'];
 //            self::showModule(expModules::getControllerClassName($params['controller']),$params['view'],$params['title'],$params['source'],false,null,$params['chrome'],$requestvars);
-        self::showModule(
+        return self::showModule(
             $controller,
             $params['view'],
             $params['title'],
@@ -1189,7 +1192,7 @@ class expTheme
 //                self::showModule($module,$params['view'],$moduletitle,$src,false,null,$chrome);
 //            }
 //        }
-        return false;
+//        return false;
     }
 
     /** exdoc
@@ -1354,12 +1357,13 @@ class expTheme
                 $params['controller'] = $module;
                 $params['view'] = $view;
                 $params['moduletitle'] = $title;
-                renderAction($params);
+                return renderAction($params);
 //				} else {
 //					call_user_func(array($module,"show"),$view,$loc,$title);
 //				}
             } else {
                 echo sprintf(gt('The module "%s" was not found in the system.'), $module);
+                return false;
             }
         }
     }
@@ -1468,12 +1472,13 @@ class expTheme
         if (expSession::get('framework') == 'bootstrap') {
             switch ($class) {
                 case 'delete' :
-                case 'deletetitle' :
+                case 'delete-title' :
                     $class = "remove-sign";
                     $btn_type = "btn-danger"; // red
                     break;
                 case 'add' :
-                case 'addtitle' :
+                case 'add-title' :
+                case 'add-body' :
                 case 'switchtheme add' :
                     $class = "plus-sign";
                     $btn_type = "btn-success"; // green
@@ -1545,12 +1550,13 @@ class expTheme
         } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
             switch ($class) {
                 case 'delete' :
-                case 'deletetitle' :
+                case 'delete-title' :
                     $class = "times-circle";
                     $btn_type = "btn-danger";  // red
                     break;
                 case 'add' :
-                case 'addtitle' :
+                case 'add-title' :
+                case 'add-body' :
                 case 'switchtheme add' :
                     $class = "plus-circle";
                     $btn_type = "btn-success";  // green
@@ -1810,6 +1816,13 @@ class expTheme
         return $mobile_browser;
     }
 
+    /**
+     * Warn admin of obsolete theme methods
+     *
+     * @param string $newcall
+     * @param null $controller
+     * @param null $actionview
+     */
     public static function deprecated($newcall = "expTheme::module()", $controller = null, $actionview = null)
     {
         global $user;

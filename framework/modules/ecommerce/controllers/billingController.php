@@ -127,6 +127,7 @@ class billingController extends expController {
         $calc->update(array('config'=>$conf));
         expHistory::back();
     }
+
 }
 
 ?>

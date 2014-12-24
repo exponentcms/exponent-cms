@@ -52,9 +52,9 @@ class colorcontrol extends textcontrol {
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
 
-        $html = '';
-//		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
-//		$html .= !empty($this->required) ? ' required">' : '">';
+//        $html = '';
+        $html = '<div'.$divID.' class="'.$this->type.'-control control form-group'." ".$class." ".$disabled;
+		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {
             $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
@@ -62,14 +62,14 @@ class colorcontrol extends textcontrol {
             $labeltag = $label;
         }
 		if(empty($this->flip)){
-			$html .= (!empty($label)) ? "&#160;<label".(bs3()?" class=\"control-label\"":"")." style=\"display:inline-block\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "&#160;<label"." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\""." style=\"display:inline-block\">".$labeltag."</label>" : "";
 			$html .= $this->controlToHTML($name, $label);
 		} else {
 			$html .= $this->controlToHTML($name, $label);
-			$html .= (!empty($label)) ? "&#160;<label".(bs3()?" class=\"control-label\"":"")." style=\"display:inline-block\">".$labeltag."</label>" : "";
+			$html .= (!empty($label)) ? "&#160;<label"." class=\"".(bs3()||bs2()?"control-label":"label").($this->horizontal&&bs3()?' col-sm-2':'')."\""." style=\"display:inline-block\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
-//		$html .= "</div>";
+		$html .= "</div>";
 		return $html;
 	}
 

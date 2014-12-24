@@ -41,14 +41,6 @@ class paylater extends billingcalculator {
         return false;
     }
 
-    function isOffsite() {
-        return false;
-    }
-
-    function isSelectable() {
-        return true;
-    }
-
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {
         if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
@@ -77,7 +69,6 @@ class paylater extends billingcalculator {
         $cash_amount = new hiddenfieldcontrol(0, 20, false, 20, "money", true);
         $cash_amount->filter = 'money';
         $cash_amount->id = "cash_amount";
-
         $form .= $cash_amount->toHTML(gt("Cash Amount"), "cash_amount");
 
         return $form;
@@ -129,25 +120,6 @@ class paylater extends billingcalculator {
         return $ret->result->payment_status;
     }
 
-    function getPaymentMethod($billingmethod) {
-        return $this->title;
-    }
-
-    function showOptions() {
-        return;
-    }
-
-    function getAVSAddressVerified($billingmethod) {
-        return '';
-    }
-
-    function getAVSZipVerified($billingmethod) {
-        return '';
-    }
-
-    function getCVVMatched($billingmethod) {
-        return '';
-    }
 }
 
 ?>

@@ -29,19 +29,19 @@
         {control type="hidden" name="product_type_id" value=$record->product_type_id}
         
         <div id="editproduct-tabs" class="">
-            <ul class="nav nav-tabs">
-	            <li class="active"><a href="#tab1" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
-	            <li><a href="#tab2" data-toggle="tab"><em>{'Dates'|gettext}</em></a></li>
-	            <li><a href="#tab3" data-toggle="tab"><em>{'Pricing'|gettext}</em></a></li>
-                <li><a href="#tab4" data-toggle="tab"><em>{'Options'|gettext}</em></a></li>
-                <li><a href="#tab5" data-toggle="tab"><em>{'User Input'|gettext}</em></a></li>
-	            <li><a href="#tab6" data-toggle="tab"><em>{'Images & Files'|gettext}</em></a></li>
-	            <li><a href="#tab7" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
-				<li><a href="#tab8" data-toggle="tab"><em>{'Waiver'|gettext}</em></a></li>
-				<li><a href="#tab9" data-toggle="tab"><em>{'Status'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Dates'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Pricing'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Options'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'User Input'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Images & Files'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab7" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{'Waiver'|gettext}</em></a></li>
+				<li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{'Status'|gettext}</em></a></li>
             </ul>
             <div class="tab-content">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     {control type="text" name="title" label="Event Title"|gettext value=$record->title focus=1}
                     {control type="text" name="quantity" label="Number of seats available"|gettext filter=integer size=4 value=$record->quantity description='Zero or empty means unlimited or undefined'|gettext}
 					{control type="text" name="location" label="Event Location"|gettext value=$record->location}
@@ -49,7 +49,7 @@
                     {*{control type="textarea" name="summary" label="Event Summary"|gettext rows=3 cols=45 value=$record->summary}*}
                     {control type="editor" name="body" label="Event Description"|gettext height=250 value=$record->body}
                 </div>
-                <div id="tab2" class="tab-pane fade">
+                <div id="tab2" role="tabpanel" class="tab-pane fade">
                     <h2>{'Event Date/Time'|gettext}</h2>
 					{control type="yuicalendarcontrol" name="eventdate" label="Start Date of Event"|gettext value=$record->eventdate showtime=false}
                     {control type="datetimecontrol" name="event_starttime" label="Start Time"|gettext value=$record->event_starttime+$record->eventdate showdate=false}
@@ -59,7 +59,7 @@
 					{control type="yuicalendarcontrol" name="signup_cutoff" label="Registrations is closed after"|gettext value=$record->signup_cutoff showtime = true}
                     {* FIXME yuicalendarcontrol does NOT display time *}
                 </div>
-                <div id="tab3" class="tab-pane fade">
+                <div id="tab3" role="tabpanel" class="tab-pane fade">
                     {control type="text" name="base_price" label="Event Price"|gettext value=$record->base_price filter=money}
                     {*{group label="General Pricing"|gettext}*}
                         {*<table>*}
@@ -114,7 +114,7 @@
                         {icon controller="tax" action="manage" text="Manage Taxes"|gettext}
                     {/group}
                 </div>
-                <div id="tab4" class="tab-pane fade">
+                <div id="tab4" role="tabpanel" class="tab-pane fade">
                     <h2>{'Add options to your product.'|gettext}</h2>
                     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
                     <blockquote>
@@ -129,7 +129,7 @@
                     </blockquote>
                     {include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
                 </div>
-                <div id="tab5" class="tab-pane fade">
+                <div id="tab5" role="tabpanel" class="tab-pane fade">
   			        <h2>{'User Input'|gettext}</h2>
                       {*{ddrerank model="expDefinableField" items=$definablefields label="User Input Fields"|gettext id="definable_field_registrant" sortfield="name"}*}
                       {*{icon class="manage" controller="expDefinableField" action="manage"}*}
@@ -153,14 +153,14 @@
                       {control type="dropdown" name="forms_id" label="Registration Form"|gettext items=$forms value=$record->forms_id description='Used to collect user information'|gettext}
                       {control type="radiogroup" name="multi_registrant" label="Simultaneous Registration"|gettext items="Single Registration,Multiple Registration"|gettxtlist values="0,1" default=$record->multi_registrant|default:0 description='Should we allow multiple similar (same basic cost) registrations at one time?'|gettext}
                   </div>
-                <div id="tab6" class="tab-pane fade">
-                    {control type=files name=mainimages label="Main Images"|gettext subtype="mainimage" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Images to show for your event"|gettext}
+                <div id="tab6" role="tabpanel" class="tab-pane fade">
+                    {control type=files name=mainimages label="Main Image"|gettext subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder description="Image to show for your event"|gettext}
                     <div class="additional-images">
                         {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Additional images to show for your event"|gettext}
                     </div>
 					{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile folder=$config.upload_folder description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
                 </div>
-                <div id="tab7" class="tab-pane fade">
+                <div id="tab7" role="tabpanel" class="tab-pane fade">
                     <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                     {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical description='Helps get rid of duplicate search engine entries'|gettext}
@@ -170,12 +170,12 @@
                     {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex value=1 description='Should this page be indexed by search engines?'|gettext}
                     {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
-				<div id="tab8" class="tab-pane fade">
+				<div id="tab8" role="tabpanel" class="tab-pane fade">
 					{control type="checkbox" name="require_terms_and_condition" label="Require Waiver"|gettext value=1 checked=$record->require_terms_and_condition}
 					{control type="editor" name="terms_and_condition" label="Waiver"|gettext rows=8 cols=55 value=$record->terms_and_condition}
 					{control type="radiogroup" name="terms_and_condition_toggle" label=" " items="Always Show,Toggle"|gettxtlist values="0,1" default=$record->terms_and_condition_toggle|default:0}
 				</div>
-				<div id="tab9" class="tab-pane fade">
+				<div id="tab9" role="tabpanel" class="tab-pane fade">
 					{*<h2>{'Active/Inactive'|gettext}</h2>*}
 					{*{control type="radiogroup" name="active_type" label=" " items="Active,Inactive"|gettxtlist values="0,2" default=$record->active_type|default:0}*}
 					{*<h2>{'Status'|gettext}</h2>*}

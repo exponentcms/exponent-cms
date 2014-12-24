@@ -52,11 +52,7 @@
                             {if $og->allow_multiple}
                                 {optiondisplayer product=$oi->product options=$og->title view=checkboxes display_price_as=diff selected=$oi->selectedOpts}
                             {else}
-                                {if $og->required}
-                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts required=true}
-                                {else}
-                                    {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts}
-                                {/if}                                           
+                                {optiondisplayer product=$oi->product options=$og->title view=dropdown display_price_as=diff selected=$oi->selectedOpts required=$og->required}
                             {/if}
                         </div> 
                     {/if}

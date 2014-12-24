@@ -28,29 +28,29 @@
 	</div>
     {form controller="administration" action=update_siteconfig}
         <div id="{$config}" class="">
-            <ul class="nav nav-tabs">
-	            <li class="active"><a href="#tab1" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
-	            <li><a href="#tab2" data-toggle="tab"><em>{"Anti-Spam"|gettext}</em></a></li>
-	            <li><a href="#tab3" data-toggle="tab"><em>{"User Registration"|gettext}</em></a></li>
-	            <li><a href="#tab4" data-toggle="tab"><em>{"Comment Policies"|gettext}</em></a></li>
-	            <li><a href="#tab5" data-toggle="tab"><em>{"Display"|gettext}</em></a></li>
-                <li><a href="#tab6" data-toggle="tab"><em>{"File Manager"|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{"Anti-Spam"|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{"User Registration"|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{"Comment Policies"|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{"Display"|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{"File Manager"|gettext}</em></a></li>
 	            {if $user->isAdmin()}
-					<li><a href="#tab7" data-toggle="tab"><em>{"Mail Server"|gettext}</em></a></li>
-		            <li><a href="#tab8" data-toggle="tab"><em>{"Maintenance"|gettext}</em></a></li>
-		            <li><a href="#tab9" data-toggle="tab"><em>{"Security"|gettext}</em></a></li>
-					<li><a href="#tab10" data-toggle="tab"><em>{"Help Links"|gettext}</em></a></li>
-					<li><a href="#tab11" data-toggle="tab"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
-		            <li><a href="#tab12" data-toggle="tab"><em>{"Error Messages"|gettext}</em></a></li>
-		            <li><a href="#tab13" data-toggle="tab"><em>{"PDF Generation"|gettext}</em></a></li>
-					<li><a href="#tab14" data-toggle="tab"><em>{"Minify"|gettext}</em></a></li>
-					<li><a href="#tab15" data-toggle="tab"><em>{"Search Report"|gettext}</em></a></li>
-                    <li><a href="#tab16" data-toggle="tab"><em>{"e-Commerce"|gettext}</em></a></li>
-                    <li><a href="#tab17" data-toggle="tab"><em>{"Profiles"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab7" role="tab" data-toggle="tab"><em>{"Mail Server"|gettext}</em></a></li>
+		            <li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{"Maintenance"|gettext}</em></a></li>
+		            <li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{"Security"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab10" role="tab" data-toggle="tab"><em>{"Help Links"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab11" role="tab" data-toggle="tab"><em>{"WYSIWYG Editor"|gettext}</em></a></li>
+		            <li role="presentation"><a href="#tab12" role="tab" data-toggle="tab"><em>{"Error Messages"|gettext}</em></a></li>
+		            <li role="presentation"><a href="#tab13" role="tab" data-toggle="tab"><em>{"PDF Generation"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab14" role="tab" data-toggle="tab"><em>{"Minify"|gettext}</em></a></li>
+					<li role="presentation"><a href="#tab15" role="tab" data-toggle="tab"><em>{"Search Report"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab16" role="tab" data-toggle="tab"><em>{"e-Commerce"|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab17" role="tab" data-toggle="tab"><em>{"Profiles"|gettext}</em></a></li>
 	            {/if}
             </ul>            
             <div class="tab-content">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("general site configuration settings"|gettext) module="general-configuration"}
@@ -67,14 +67,15 @@
                     {control type="textarea" name="sc[SITE_KEYWORDS]" label='('|cat:('Meta'|gettext)|cat:') '|cat:('Keywords'|gettext) value=$smarty.const.SITE_KEYWORDS description='Comma separated phrases'|gettext}
 	                {control type="textarea" name="sc[SITE_DESCRIPTION]" label='('|cat:('Meta'|gettext)|cat:') '|cat:('Description'|gettext) value=$smarty.const.SITE_DESCRIPTION}
                 </div>
-                <div id="tab2" class="tab-pane fade">
+                <div id="tab2" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("anti-spam measure settings"|gettext) module="anti-spam-measures"}
                         </div>
 		                <h2>{"Anti-Spam Measures"|gettext}</h2>
                     </div>
-                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[SITE_USE_ANTI_SPAM]" id=use_antispam label="Use Anti-Spam measures?"|gettext checked=$smarty.const.SITE_USE_ANTI_SPAM value=1}
+                    <span id="antispam">
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     <blockquote>
@@ -83,8 +84,9 @@
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
                     {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
                     {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    </span>
                 </div>
-                <div id="tab3" class="tab-pane fade">
+                <div id="tab3" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("user registration settings"|gettext) module="user-registration"}
@@ -106,16 +108,18 @@
                     {/group}
                     {if function_exists('ldap_connect')}
                     {group label="LDAP Authentication"|gettext}
-                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" id=use_ldap label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                        <span id="ldap">
                         {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description=gt('Enter the hostname or IP of the LDAP server.')}
                         {control type="text" name="sc[LDAP_BASE_CONTEXT]" label="Base Context"|gettext value=$smarty.const.LDAP_BASE_CONTEXT description=gt('Enter the Base Context for this LDAP connection. (e.g., ou=users, dc=mycompanysite, dc=local)')}
                         {control type="text" name="sc[LDAP_BASE_DN]" label="Base Domain"|gettext value=$smarty.const.LDAP_BASE_DN description=gt('Enter the Base Domain for this LDAP connection. (e.g., mycompanysite.local)')}
                         {control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description=gt('The username or context for the binding to the LDAP Server to perform administration tasks.')}
                         {control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description=gt('Enter the password for the username/context listed above.')}
+                        </span>
                     {/group}
                     {/if}
                 </div>
-                <div id="tab4" class="tab-pane fade">
+                <div id="tab4" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("user comment policy settings"|gettext) module="user-comment-policies"}
@@ -129,7 +133,7 @@
                         {control type=email multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                     {/group}
                 </div>
-                <div id="tab5" class="tab-pane fade">
+                <div id="tab5" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("display settings"|gettext) module="display-settings"}
@@ -160,14 +164,14 @@
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
                 </div>
-                <div id="tab6" class="tab-pane fade">
+                <div id="tab6" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("file manager settings"|gettext) module="filemanager-settings"}
                         </div>
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
-                    {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder (test)"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
+                    {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
                     {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
@@ -185,7 +189,7 @@
                     {/group}
                 </div>
                 {if $user->is_admin==1}
-                <div id="tab7" class="tab-pane fade">
+                <div id="tab7" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("mail server settings"|gettext) module="mail-server-settings"}
@@ -193,8 +197,9 @@
 		                <h2>{"Mail Server Settings"|gettext}</h2>
                     </div>
                     {control type=email name="sc[SMTP_FROMADDRESS]" label="From Address"|gettext value=$smarty.const.SMTP_FROMADDRESS description='This MUST be in a valid email address format or sending mail may fail!'|gettext}
-                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
-	                ({"or"|gettext})
+                    {control type="checkbox" postfalse=1 name="sc[SMTP_USE_PHP_MAIL]" id=no_smtp label='Use simplified php mail() function instead of SMTP?'|gettext checked=$smarty.const.SMTP_USE_PHP_MAIL value=1}
+	                <span id="smtp">
+                    ({"or"|gettext})
                     {group label="SMTP Server Settings"|gettext}
                         {control type="text" name="sc[SMTP_SERVER]" label="SMTP Server"|gettext value=$smarty.const.SMTP_SERVER}
                         {control type="text" name="sc[SMTP_PORT]" label="SMTP Port"|gettext value=$smarty.const.SMTP_PORT}
@@ -203,8 +208,9 @@
                         {control type="password" name="sc[SMTP_PASSWORD]" label="SMTP Password"|gettext value=$smarty.const.SMTP_PASSWORD}
                         {control type="checkbox" postfalse=1 name="sc[SMTP_DEBUGGING]" label="Turn On SMTP Debugging?"|gettext checked=$smarty.const.SMTP_DEBUGGING value=1}
                     {/group}
+                    </span>
                 </div>
-                <div id="tab8" class="tab-pane fade">
+                <div id="tab8" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("site maintenance mode settings"|gettext) module="site-maintenance-mode-settings"}
@@ -214,7 +220,7 @@
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Place Site in Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
                 </div>
-                <div id="tab9" class="tab-pane fade">
+                <div id="tab9" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("security settings"|gettext) module="security-settings"}
@@ -230,7 +236,7 @@
                     {*{control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}*}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_PRIVACY]" label="Disable Privacy Check?"|gettext checked=$smarty.const.DISABLE_PRIVACY value=1 description='Exponent protects private page and module content; but this can prevent display of content in some scenarios'|gettext}
                 </div>
-                <div id="tab10" class="tab-pane fade">
+                <div id="tab10" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("help link settings"|gettext) module="help-link-settings"}
@@ -240,7 +246,7 @@
                     {control type="checkbox" postfalse=1 name="sc[HELP_ACTIVE]" label="Enable Help links to online documentation?"|gettext checked=$smarty.const.HELP_ACTIVE value=1}
                     {control type=url name="sc[HELP_URL]" label="URL for Help Documentation"|gettext value=$smarty.const.HELP_URL}
                 </div>
-                <div id="tab11" class="tab-pane fade">
+                <div id="tab11" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("WYSIWYG Editor Settings"|gettext) module="wysiwyg-editor-settings"}
@@ -258,7 +264,7 @@
                     <div id="alt-controlw" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE (test)"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
+                            {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
                                 {showmodule module=expHTMLEditor action=manage params=$paramc}
                             </div>
@@ -268,7 +274,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="tab12" class="tab-pane fade">
+                <div id="tab12" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("error message settings"|gettext) module="error-messages"}
@@ -280,7 +286,7 @@
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
-                <div id="tab13" class="tab-pane fade">
+                <div id="tab13" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">
 	                        {help text="Get Help with"|gettext|cat:" "|cat:("generating PDF settings"|gettext) module="pdf-generation"}
@@ -352,7 +358,7 @@
                         </div>
                     </div>
                 </div>
-				<div id="tab14" class="tab-pane fade">
+				<div id="tab14" role="tabpanel" class="tab-pane fade">
 					<div class="info-header">
 			            <div class="related-actions">
 				            {help text="Get Help with"|gettext|cat:" "|cat:("minification settings"|gettext) module="minify-configuration"}
@@ -373,7 +379,7 @@
                         {control type="checkbox" postfalse=1 name="sc[MINIFY_YUI2]" label="Combine YUI2 items?"|gettext checked=$smarty.const.MINIFY_YUI2 value=1}
                     {/group}
                 </div>
-				<div id="tab15" class="tab-pane fade">
+				<div id="tab15" role="tabpanel" class="tab-pane fade">
                     <div class="info-header">
                         <div class="related-actions">
                             {help text="Get Help with"|gettext|cat:" "|cat:("search report settings"|gettext) module="search-report-settings"}
@@ -385,7 +391,7 @@
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_AJAX_SEARCH]" label="Include ajax search in reports?"|gettext checked=$smarty.const.INCLUDE_AJAX_SEARCH value=1}
 					{control type="checkbox" postfalse=1 name="sc[INCLUDE_ANONYMOUS_SEARCH]" label="Include unregistered users search?"|gettext checked=$smarty.const.INCLUDE_ANONYMOUS_SEARCH value=1}
 				</div>
-                <div id="tab16" class="tab-pane fade">
+                <div id="tab16" role="tabpanel" class="tab-pane fade">
                     <div class="info-header">
                         <div class="related-actions">
                             {help text="Get Help with"|gettext|cat:" "|cat:("e-Commerce settings"|gettext) module="ecommerce-configuration"}
@@ -441,7 +447,7 @@
                                 <ul>
                                     <li>{'Create a Store Category'|gettext} <a href="{link controller=storeCategory action=manage}" title={'Manage Store Categories'|gettext}>{'here'|gettext}</a></li>
                                     <li>{'Create a Manufacturer'|gettext} <a href="{link controller=company action=showall}" title={'Manage Manufacturers'|gettext}>{'here'|gettext}</a></li>
-                                    <li>{'Create a Tax Class/Zone for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Tax Classes'|gettext}>{'here'|gettext}</a></li>
+                                    <li>{'Create a Tax Class/Zone/Rate for applicable sales tax(es)'|gettext} <a href="{link controller=tax action=manage}" title={'Manage Taxes'|gettext}>{'here'|gettext}</a></li>
                                     <li>{'Create the Product (product, donation, event, or gift card) and assign a category'|gettext} <a href="{link controller=store action=edit}" title={'Add a Product'|gettext}>{'here'|gettext}</a></li>
                                 </ul>
                             </ul>
@@ -453,7 +459,7 @@
                         </ol>
                     {/group}
                 </div>
-                <div id="tab17" class="tab-pane fade">
+                <div id="tab17" role="tabpanel" class="tab-pane fade">
                     <div class="info-header">
                         <div class="related-actions">
                             {help text="Get Help with"|gettext|cat:" "|cat:("configuration profiles"|gettext) module="configuration-profiles"}
@@ -501,6 +507,40 @@
             }
         }
     }
+{/literal}
+{/script}
+
+{script unique="editchecks" jquery=1}
+{literal}
+$('#use_antispam').change(function() {
+    if ($('#use_antispam').is(':checked') == false)
+        $("#antispam").hide("slow");
+    else {
+        $("#antispam").show("slow");
+    }
+});
+if ($('#use_antispam').is(':checked') == false)
+    $("#antispam").hide("slow");
+
+$('#use_ldap').change(function() {
+    if ($('#use_ldap').is(':checked') == false)
+        $("#ldap").hide("slow");
+    else {
+        $("#ldap").show("slow");
+    }
+});
+if ($('#use_ldap').is(':checked') == true)
+    $("#ldap").hide("slow");
+
+$('#no_smtp').change(function() {
+    if ($('#no_smtp').is(':checked') == true)
+        $("#smtp").hide("slow");
+    else {
+        $("#smtp").show("slow");
+    }
+});
+if ($('#no_smtp').is(':checked') == true)
+    $("#smtp").hide("slow");
 {/literal}
 {/script}
 

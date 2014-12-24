@@ -27,6 +27,7 @@
 .related-products .product {
 	margin-right : 4%;
 	text-align   : center;
+	position: relative;
 }
 
 .store.showall .ipr1 .product,
@@ -143,6 +144,30 @@ em.unavailable {
 	margin-right : 10px;
 }
 
+.store.showall .category-row a.cat-img-link h3 {
+	display: inline;
+}
+
+#sortmeControl label {
+	display: inline;
+}
+
+.store.showall .product .ecom-hover,
+.store.show .product .ecom-hover {
+    position:absolute;
+	width: 100%;
+    left:auto;
+    top:50%;
+    z-index:5;
+	display: none;
+}
+
+.store.showall .product:hover .ecom-hover,
+.store.show .product:hover .ecom-hover {
+	opacity: 0.8;
+	display: block;
+}
+
 /****************  show view  ***********************/
 /*  enlarged image  */
 .store.show .large-ecom-image {
@@ -187,6 +212,7 @@ em.unavailable {
 	-webkit-box-shadow    : 0 0 2px rgba(0, 0, 0, .5) inset;
 	text-shadow           : 1px 1px 1px #565;
 	width                 : 20px;
+	height                : 22px;
 	margin-right          : 4px;
 }
 

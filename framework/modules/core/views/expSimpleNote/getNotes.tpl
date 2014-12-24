@@ -56,11 +56,11 @@
                             {/if}
                         </div>
                     {/permissions}
-                <div class="bodycopy">
-                    <p>
-                        {$note->body}
-                    </p>
-                </div>
+                    <div class="bodycopy">
+                        <p>
+                            {$note->body}
+                        </p>
+                    </div>
                 </td>
             </tr>
             {/foreach}

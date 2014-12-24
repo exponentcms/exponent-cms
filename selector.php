@@ -87,7 +87,7 @@ if (is_readable(BASE.$page)) {
     if (!defined('EXPORT_AS_PDF')) define('EXPORT_AS_PDF','0');
 
 	// Include the rendering page.
-	include_once(BASE.$page);
+	include(BASE.$page);
 	expTheme::satisfyThemeRequirements();
 } else {
 	echo sprintf(gt('Page').' "%s" '.gt('not readable.'),BASE.$page);

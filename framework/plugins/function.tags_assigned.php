@@ -58,7 +58,7 @@ function smarty_function_tags_assigned($params,&$smarty) {
     }
     $link .= '</span>';
 
-    echo $prepend.$link;
+    echo $prepend,$link;
 }
 
 ?>

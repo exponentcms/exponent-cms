@@ -41,7 +41,7 @@ class donationController extends expController {
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
-    static function displayname() { return gt("Online Donations"); }
+    static function displayname() { return gt("e-Commerce Online Donations"); }
     static function description() { return gt("Allows you to accept donations on your website"); }
 
     function showall() {
@@ -55,21 +55,23 @@ class donationController extends expController {
     
     function metainfo() {
         global $router;
+
         if (empty($router->params['action'])) return false;
         
         // figure out what metadata to pass back based on the action we are in.
-//        $action   = $_REQUEST['action'];
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $ecc = new ecomconfig();
+        $storename = $ecc->getConfig('storename');
         switch($action) {
             case 'showall':
             case 'show':
-                $metainfo['title'] = gt('Online Donations') . ' - ' . SITE_TITLE;
+                $metainfo['title'] = gt('Online Donations') . ' - ' . $storename;
                 $metainfo['keywords'] = gt('donate online');
                 $metainfo['description'] = gt("Make a donation");
             break;
             default:
-                $metainfo['title'] = $this->displayname()." - ".SITE_TITLE;
+                $metainfo['title'] = $this->displayname()." - ".$storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }
@@ -90,7 +92,8 @@ class donationController extends expController {
     function delete() {
         redirect_to(array('controller'=>'donation', 'action'=>'showall'));
 //        $this->showall();
-    } 
+    }
+
 }
 
 ?>

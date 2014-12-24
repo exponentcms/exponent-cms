@@ -39,7 +39,7 @@ class expCat extends expRecord {
      */
     public function __construct($params=array()) {
         parent::__construct($params);
-        $this->grouping_sql = " AND module='".$this->module."'";
+        if (!empty($this->module)) $this->grouping_sql = " AND module='".$this->module."'";
     }
 
     /**
@@ -58,7 +58,7 @@ class expCat extends expRecord {
     }
 
     public function beforeSave() {
-        $this->grouping_sql = " AND module='".$this->module."'";
+        if (!empty($this->module)) $this->grouping_sql = " AND module='".$this->module."'";
         parent::beforeSave();
     }
 

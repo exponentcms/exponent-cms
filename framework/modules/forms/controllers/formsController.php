@@ -261,6 +261,7 @@ class formsController extends expController {
             if (!empty($f)) {
                 $form = new form();
                 $form->id = $f->sef_url;
+                $form->horizontal = !empty($this->config['style']);
                 if (!empty($this->params['id'])) {
                     $fc = new forms_control();
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly = 0 AND is_static = 0','rank');
@@ -890,6 +891,7 @@ class formsController extends expController {
             $controls = $f->forms_control;
 
             $form = new fakeform();
+            $form->horizontal = $this->config['style'];
             foreach ($controls as $c) {
 //                $ctl = unserialize($c->data);
                 $ctl = expUnserialize($c->data);
@@ -1183,7 +1185,7 @@ class formsController extends expController {
         global $router;
 
         if (empty($router->params['action'])) return false;
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => '', 'nofollow' => '');
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
 
         // figure out what metadata to pass back based on the action we are in.
         switch ($router->params['action']) {
@@ -1427,7 +1429,7 @@ class formsController extends expController {
             if (!empty($this->params['include_data'])) {
                 $tables[] = 'forms_'.$f->table_name;
             }
-            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);
+            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //TODO we need to echo inside call
             exit; // Exit, since we are exporting
         }
 //        expHistory::back();

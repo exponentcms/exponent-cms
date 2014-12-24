@@ -19,15 +19,15 @@
         {control type=hidden name=id value=$record->id}
         {control type=hidden name=rank value=$record->rank}
         <div id="editportfolio-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
                 {if $config.filedisplay}
-                    <li><a href="#tab2" data-toggle="tab"><em>{'Files'|gettext}</em></a></li>
+                    <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Files'|gettext}</em></a></li>
                 {/if}
-                <li><a href="#tab3" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
             </ul>            
             <div class="tab-content yui3-skin-sam">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     <h2>{'Portfolio Piece'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
                     {control type=html name=body label="Description"|gettext value=$record->body}
@@ -40,11 +40,11 @@
                     {/if}
                 </div>
                 {if $config.filedisplay}
-                    <div id="tab2" class="tab-pane fade">
+                    <div id="tab2" role="tabpanel" class="tab-pane fade">
                         {control type="files" name="files" label="Files"|gettext value=$record->expFile folder=$config.upload_folder}
                     </div>
                 {/if}
-                <div id="tab3" class="tab-pane fade">
+                <div id="tab3" role="tabpanel" class="tab-pane fade">
                      <h2>{'SEO Settings'|gettext}</h2>
                     {control type="text" name="sef_url" label="SEF URL"|gettext value=$record->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
                     {control type="text" name="canonical" label="Canonical URL"|gettext value=$record->canonical description='Helps get rid of duplicate search engine entries'|gettext}

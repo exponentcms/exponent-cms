@@ -14,6 +14,9 @@
  *}
 
 {control type="hidden" name="tab_loaded[pricing]" value=1}
+{if count($record->childProduct)}
+    <h2>{'Price is determined by Child products.'|gettext}</h2>
+{/if}
 {group label="General Pricing"|gettext}
     <table>
         <tr>

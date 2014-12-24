@@ -25,7 +25,7 @@
 {/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
-    {img file_id=$product->expFile.mainimage.0->id w=150 class="prod-img"}
+    {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}
     {$listing->body}
     <blockquote>
         <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
@@ -139,11 +139,7 @@
                             {if $og->allow_multiple}
                                 {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
                             {else}
-                                {if $og->required}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=true}          
-                                {else}
-                                    {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}          
-                                {/if}                                           
+                                {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}
                             {/if}
                         </div> 
                     {/if}
@@ -160,7 +156,7 @@
                     <div class="user-input {cycle values="odd,even"}">
                         {if $uif.use}
                              {if $uif.is_required}
-                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label='* '|cat:$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                              {else}
                                  {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
                              {/if}
@@ -170,6 +166,6 @@
                 {/foreach}
             </div>
         {/if}
-        {control type="buttongroup" submit="Add Item(s) to Order"|gettext}
+        {control type="buttongroup" size=large color=green submit="Add Item(s) to Order"|gettext}
     {/form}
 </div>

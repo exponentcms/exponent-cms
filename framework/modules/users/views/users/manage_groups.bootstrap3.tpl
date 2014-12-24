@@ -92,7 +92,7 @@
                 null,
                 null,
                 { searchable: false },
-                { searchable: false, sortable: false },
+                { searchable: false, orderable: false },
             ],
             autoWidth: false,
             preDrawCallback: function () {

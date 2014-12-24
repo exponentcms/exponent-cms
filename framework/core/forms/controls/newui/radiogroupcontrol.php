@@ -56,7 +56,7 @@ class radiogroupcontrol extends formcontrol {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
 		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= (!empty($label))?"<label class=\"control-label".($this->cols!=1?" show":"")."\">".$label."</label>":"";
+        $html .= (!empty($label))?"<label class=\"control-label".($this->horizontal?' col-sm-2':'').($this->cols!=1?" show":"")."\">".$label."</label>":"";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
@@ -65,6 +65,7 @@ class radiogroupcontrol extends formcontrol {
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
+        $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
 		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
 			
@@ -87,6 +88,7 @@ class radiogroupcontrol extends formcontrol {
             $html .= $radio->toHTML($rlabel, $name);
 		}
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
+        $html .= ($this->horizontal) ? '</div>' : '';
 		return $html;
 	}
 	

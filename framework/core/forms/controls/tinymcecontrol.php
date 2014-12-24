@@ -34,6 +34,7 @@ class tinymcecontrol extends formcontrol
     var $cols;
     var $maxchars;
     var $toolbar;
+    var $tb_collapsed = false;
 
     static function name()
     {
@@ -127,6 +128,7 @@ class tinymcecontrol extends formcontrol
                    toolbar_items_size: 'small',
                    statusbar: false,";
         }
+        if (!MOBILE && $this->tb_collapsed) $tb .= "menubar: false, toolbar_items_size: 'small',";
 
         if (empty($skin) || !is_dir(BASE . 'external/editors/tinymce/skins/' . $skin)) {
             $skin = 'lightgray';

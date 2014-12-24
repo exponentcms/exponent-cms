@@ -32,13 +32,13 @@ class shipping extends expRecord {
 	public $forced_shipping = false;  //FIXME we don't use this in shipping, only order?
 	
 	public function __construct() {
-        global $order, $user;
+        global $order, $user; //FIXME we do NOT want the global $order
 
         if (empty($order->id)) return false;
         
         $existing_shippingmethods = $order->getShippingMethods();        
-        $this->available_calculators = $this->listAvailableCalculators();
-        $this->selectable_calculators = $this->selectableCalculators();
+        $this->available_calculators = self::listAvailableCalculators();
+        $this->selectable_calculators = self::selectableCalculators();
         
         if (count($existing_shippingmethods) == 1) {
             if ($order->forcedShipping()) {
@@ -103,7 +103,7 @@ class shipping extends expRecord {
     }
 	
 	public function getRates() {
-	    global $order;
+	    global $order; //FIXME we do NOT want the global order
         
 	    if (!empty($this->calculator->id) && (!empty($this->shippingmethod->addresses_id) || !$this->calculator->addressRequired())) {	
 		    $this->pricelist = $this->calculator->getRates($order);
@@ -136,8 +136,19 @@ class shipping extends expRecord {
 		//return $pricelist;
 	}
 	
-	public function listAvailableCalculators() {
+//    public static function listAllCalculators() {
+//	    global $db;
+//	    $calcs = array();
+//	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
+//	        $calcs[$calc->id] = $calc->calculator_name;
+//	    }
+//
+//		return $calcs;
+//    }
+
+	public static function listAvailableCalculators() {
 	    global $db;
+
 	    $calcs = array();
 	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calc) {
 	        $calcs[$calc->id] = $calc->calculator_name;
@@ -146,27 +157,20 @@ class shipping extends expRecord {
 		return $calcs;
     }
     
-    public static function listAllCalculators() {
+    public static function selectableCalculators() {
 	    global $db;
+
 	    $calcs = array();
-	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
-	        $calcs[$calc->id] = $calc->calculator_name;
-	    }
-	    
-		return $calcs;
-    }
-    
-    public function selectableCalculators() {
-	    global $db;
-	    $calcs = array();
-	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calc) {
+	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calcObj) {
+            $calcNameReal = $calcObj->calculator_name;
+            $calc = new $calcNameReal($calcObj->id);
 	        $calcs[$calc->id] = $calc->title;
 	    }
 	    
 		return $calcs;
     }
     
-    static function estimateShipping($order)
+    public static function estimateShipping($order)
     {
         $c = new shippingcalculator();
         $calc = $c->find('first',"enabled=1 AND is_default=1");

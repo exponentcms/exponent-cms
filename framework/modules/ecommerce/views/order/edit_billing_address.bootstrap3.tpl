@@ -18,11 +18,11 @@
         {form action=save_payment_info}
             {control type="hidden" name="id" value=$orderid}
             <div id="editbilling-tabs" class="">
-                <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1" data-toggle="tab"><em>{'Edit Payment Info'|gettext}</em></a></li>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Edit Payment Info'|gettext}</em></a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1" class="tab-pane fade in active">
+                    <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                         {foreach from=$opts item=field key=key}
                             {control type="text" name="result[`$key`]" label=$key value=$field}
                         {/foreach}

@@ -118,7 +118,10 @@ class address extends expRecord {
             {
                 expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>Reset Password</a>.", expString::sanitize_array($_POST));
             }
+            $user->is_admin = false;
+            $user->is_acting_admin = false;
             $user->is_system_user = false;
+            $user->created_on = time();
             $user->save(true);
             $user->login($user->username,$password);
             $this->user_id = $user->id;

@@ -30,29 +30,29 @@
         {control type="hidden" name="product_type" value=$record->product_type}
         
         <div id="editproduct-tabs" class="">
-            <ul class="nav nav-tabs">
-	            <li class="active"><a href="#tab1" data-toggle="tab"><em>{'General Info'|gettext}</em></a></li>
-	            <li><a href="#tab2" data-toggle="tab"><em>{'Pricing'|gettext}</em></a></li>
-	            <li><a href="#tab3" data-toggle="tab"><em>{'Files & Images'|gettext}</em></a></li>
-	            <!--li><a href="#tab4" data-toggle="tab"><em>Quantity Info</em></a></li-->
-	            <!--li><a href="#tab5" data-toggle="tab"><em>Shipping Info</em></a></li-->
-	            <li><a href="#tab6" data-toggle="tab"><em>{'Categories'|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Info'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Pricing'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Files & Images'|gettext}</em></a></li>
+	            <!--li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>Quantity Info</em></a></li-->
+	            <!--li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>Shipping Info</em></a></li-->
+	            <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Categories'|gettext}</em></a></li>
             </ul>            
             <div class="tab-content">
-	            <div id="tab1" class="tab-pane fade in active">
+	            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	                {control type="text" name="model" label="Model #"|gettext value=$record->model focus=1}
 	                {control type="text" name="title" label="Donation Cause Title"|gettext value=$record->title}
 	                {*{control type="textarea" name="summary" label="Donation Cause Summary"|gettext rows=3 cols=45 value=$record->summary}*}
 	                {control type="editor" name="body" label="Donation Cause Description"|gettext height=250 value=$record->body}
 	            </div>
-	            <div id="tab2" class="tab-pane fade">
+	            <div id="tab2" role="tabpanel" class="tab-pane fade">
 	                {control type="text" name="base_price" label="Minimum/Quick dollar amount"|gettext value=$record->base_price filter=money description='Amount of a \'Quick\' donation, or minimum amount for a standard donation'|gettext}
 	            </div>
-	            <div id="tab3" class="tab-pane fade">
+	            <div id="tab3" role="tabpanel" class="tab-pane fade">
 	                {*{control type=files name=files subtype=images accept="image/*" value=$record->expFile}*}
-                    {control type=files label="Main Images"|gettext name=mainimages subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
+                    {control type=files label="Main Image"|gettext name=mainimages subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
 	            </div>
-	            <!--div id="tab4" class="tab-pane fade">
+	            <!--div id="tab4" role="tabpanel" class="tab-pane fade">
 	                {control type="text" name="quantity" label="Quantity in stock"|gettext value=$record->quantity}
 	                {control type="text" name="minimum_order_quantity" label="Minimum order quantity"|gettext value=$record->minimum_order_quantity}
 	                {control type="checkbox" checked=1 name="allow_partial" label="Allow partial quantities?"|gettext value=$record->allow_partial}
@@ -63,11 +63,11 @@
 	                    values="0,1,2,3"
 	                }
 	            </div-->
-	            <!--div id="tab5" class="tab-pane fade">
+	            <!--div id="tab5" role="tabpanel" class="tab-pane fade">
 	                {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
 	                {control type="text" name="weight" label="Item Weight"|gettext value=$record->weight}
 	            </div-->
-	            <div id="tab6" class="tab-pane fade">
+	            <div id="tab6" role="tabpanel" class="tab-pane fade">
                     {icon class="manage" controller="storeCategory" action="manage" text="Manage Store Categories"|gettext}
 	                {control type="tagtree" id="managecats" name="managecats" model="storeCategory" draggable=false checkable=true values=$record->storeCategory}
 	            </div>

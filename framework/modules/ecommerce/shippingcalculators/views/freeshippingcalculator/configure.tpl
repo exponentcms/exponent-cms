@@ -20,10 +20,10 @@
         </ul>            
         <div class="yui-content">
             <div id="tab1">
-                <blockquote>{'Offering Free Shipping implies every order ships for Free'|gettext}</blockquote>
-                {control type="text" name="free_shipping_method_default_name" label="Default Name for this Shipping Method"|gettext value=$calculator->configdata.free_shipping_method_default_name}
-                {control type="text" name="free_shipping_option_default_name" label="Default Name for the Selectable Shipping Option"|gettext value=$calculator->configdata.free_shipping_option_default_name}
-            </div>        
+                <blockquote>{'Offering Free Shipping means every order ships for Free'|gettext}</blockquote>
+                {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Free'|gettext}
+                {control type="text" name="free_shipping_method_default_name" label="Default Name for Shipping Method"|gettext value=$calculator->configdata.free_shipping_method_default_name}
+            </div>
         </div>
     </div>
 	<div class="loadingdiv">{'Loading'|gettext}</div>

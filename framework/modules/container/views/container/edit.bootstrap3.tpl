@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="edit-container" link="`$asset_path`css/add-content-bootstrap.css" corecss="admin-global"}
+{css unique="edit-container" link="`$asset_path`css/add-content-bootstrap.css"}
 
 {/css}
 

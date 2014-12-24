@@ -17,7 +17,7 @@
     <div id="shipping-method-options">
         <img class="shippingmethodimg" src="{$shipping->calculator->icon}">
         <div class="sm-info">
-            <strong class="selected-info">{$shipping->shippingmethod->option_title}
+            <strong class="selected-info">{$shipping->shippingmethod->option_title}&#160;
                 <em>{$shipping->shippingmethod->shipping_cost|currency}</em></strong>
             {if $shipping->pricelist|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
                 {group label="Available Options"|gettext}

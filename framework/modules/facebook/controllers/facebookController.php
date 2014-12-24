@@ -37,7 +37,7 @@ class facebookController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags''twitter',)
-    public $codequality = 'beta';
+//    public $codequality = 'beta';
 
     static function displayname() {
         return gt("Facebook");

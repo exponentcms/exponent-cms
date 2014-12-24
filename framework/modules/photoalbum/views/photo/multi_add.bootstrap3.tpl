@@ -21,11 +21,11 @@
     </blockquote>
     {form action=multi_update}
         <div id="editgallery-tabs" class="">
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab1"><em>{"General"|gettext}</em></a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{"General"|gettext}</em></a></li>
             </ul>
             <div class="tab-content yui3-skin-sam">
-                <div id="tab1" class="tab-pane fade in active">
+                <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     <h2>{'Photo Items'|gettext}</h2>
                     {control type=text name=title label="Base Title"|gettext value=$record->title description="(Optional) This will become the root title used for these photo album items."|gettext focus=1}
                     {control type="files" name="files" label="Files"|gettext accept="image/*" value=$record->expFile limit=64 folder=$config.upload_folder}

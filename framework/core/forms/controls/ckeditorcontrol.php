@@ -31,6 +31,7 @@ class ckeditorcontrol extends formcontrol {
     var $cols;
     var $maxchars;
     var $toolbar;
+    var $tb_collapsed = false;
 
     static function name() {
         return "CKEditor";
@@ -130,6 +131,7 @@ class ckeditorcontrol extends formcontrol {
             removePlugins : 'elementspath',
             resize_enabled : false,";
         }
+        if (!MOBILE && $this->tb_collapsed) $tb .= 'toolbarStartupExpanded : false,';
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
@@ -169,7 +171,8 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'stylesheetparser,tableresize,widget,image2," . $plugins . "',
+                    extraPlugins : 'stylesheetparser,tableresize,image2," . $plugins . "',
+                    removePlugins: 'image',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,

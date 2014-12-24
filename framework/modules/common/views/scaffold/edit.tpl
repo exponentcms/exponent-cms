@@ -14,7 +14,7 @@
  *}
 
 <div class="scaffold edit">
-    {if $smarty.const.DEVLEOPMENT}
+    {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
     {if $record->id != ""}
@@ -22,7 +22,6 @@
     {else}
         <h1>{'New'|gettext} {$model_name}</h1>
     {/if}
-
     {form action=update}
         {control name=controller type=hidden value=$controller}
         {scaffold model=$model_table item=$record}

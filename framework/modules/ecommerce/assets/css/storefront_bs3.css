@@ -1,0 +1,79 @@
+.store.showall .glyphicon {
+	margin-right: 5px;
+}
+
+.store.showall .thumbnail {
+	margin-bottom: 20px;
+	padding: 0px;
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.store.showall .item.list-group-item {
+	float: none;
+	width: 100%;
+	background-color: #fff;
+	margin-bottom: 10px;
+}
+
+.store.showall .item.list-group-item:nth-of-type(odd):hover,
+.store.showall .item.list-group-item:hover {
+	background: #428bca;
+}
+
+.store.showall .item.list-group-item .list-group-image {
+	margin-right: 10px;
+}
+
+.store.showall .item.list-group-item .thumbnail {
+	margin-bottom: 0px;
+}
+
+.store.showall .item.list-group-item .caption {
+	padding: 9px 9px 0px 9px;
+}
+
+.store.showall .item.list-group-item:nth-of-type(odd) {
+	background: #eeeeee;
+}
+
+.store.showall .item.list-group-item:before,
+.store.showall .item.list-group-item:after {
+	display: table;
+	content: " ";
+}
+
+.store.showall .item.list-group-item img {
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 5px;
+}
+
+.store.showall .item.list-group-item .list-group-item-heading,
+.store.showall .item.list-group-item .list-group-item-text {
+	text-align: left;
+}
+
+.store.showall .item.list-group-item .prod-price {
+	float: right;
+	margin-top: 20px;
+}
+
+.store.showall .product.item.list-group-item .ecom-hover {
+	display: block;
+	left: 40%;
+	top: 10%;
+}
+
+.store.showall .item.list-group-item:after {
+	clear: both;
+}
+
+.store.showall .list-group-item-text {
+	margin: 0 0 11px;
+}
+
+.store.showall .btn-group.list-grid {
+	margin-right: 10px;
+}

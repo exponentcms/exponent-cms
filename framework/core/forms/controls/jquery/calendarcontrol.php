@@ -109,6 +109,7 @@ class calendarcontrol extends formcontrol
         $date_input = new textcontrol($default);
         $date_input->id = $idname;
         $date_input->name = $idname;
+        if ($this->horizontal) $date_input->horizontal_top = true;
         $html = $date_input->toHTML(null, $name);
 
         $script = "

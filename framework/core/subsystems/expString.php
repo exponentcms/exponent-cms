@@ -227,7 +227,7 @@ class expString {
         $data = self::strip_tags_content(trim($data), '<script>', true);
 
         // apply stripslashes if magic_quotes_gpc is enabled
-        if(function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+        if(get_magic_quotes_gpc()) {
             $data = stripslashes($data);
         }
 
@@ -241,8 +241,6 @@ class expString {
         // re-escape newlines
         $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
 
-        // remove old tag fragments
-//        $data = str_replace(array('\">','\"/>'), '', $data);
         return $data;
     }
 
@@ -266,6 +264,16 @@ class expString {
         if (!empty($saved_params)) {
             $data = array_merge($data, $saved_params);
         }
+        if (empty($data['route_sanitized'])) {
+            $tmp =1; // we got here NOT going through $router->routeRequest
+        }
+        if (empty($data['pre_sanitized'])) {
+            $tmp =1; // we got here NOT going through $router->convertPartsToParams
+        }
+        if (!empty($data['array_sanitized'])) {
+            $tmp =1;  // 2nd time through
+        }
+        $data['array_sanitized'] = true;
         return $data;
     }
 
