@@ -135,7 +135,7 @@
             jQueryUI: true,
             stateSave: true,
             columns: [
-                { type: 'text', searchable: false },
+                { type: 'text' },
                 { type: 'html' },
                 { type: 'text' },
                 { type: 'text' },
