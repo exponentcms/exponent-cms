@@ -66,6 +66,15 @@ class help extends expRecord {
 			$params['section'] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $params['help_section'] .'"');
 			$params['src'] = $params['help_section'];
             $params['rank'] = 0;
+            // check for and update any child help docs to new section
+            if (isset($params['id'])) {
+                $child_docs = $this->find('all', 'parent='.$params['id']);
+                foreach ($child_docs as $key=>$doc) {
+                    $doc->section = $params['section'];
+                    $doc->src = $params['src'];
+                    $doc->save();
+                }
+            }
 		}
         parent::update($params);
     }
