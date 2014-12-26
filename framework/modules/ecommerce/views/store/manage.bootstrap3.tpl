@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="yadcf" corecss="datatables-tools"}
+{css unique="yadcf" link="`$smarty.const.PATH_RELATIVE`external/jquery/addons/css/select2-bootstrap.css" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
     }
@@ -137,7 +137,7 @@
             jQueryUI: true,
             stateSave: true,
             columns: [
-                { type: 'text', searchable: false },
+                { type: 'text' },
                 { type: 'html' },
                 { type: 'text' },
                 { type: 'text' },
