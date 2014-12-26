@@ -43,12 +43,9 @@ class helpController extends expController {
     static function isSearchable() { return true; }
 	
     function __construct($src=null, $params=array()) {
-//        global $db;
-
         parent::__construct($src,$params);
         // only set the system help version if it's not already set as a session variable
         if (!expSession::is_set('help-version')) {
-//            $version = $db->selectValue('help_version','version','is_current=1');
             $version = help_version::getCurrentHelpVersion();
             if (empty($version)) {
                 // there is no help version set to 'is_current'
@@ -120,18 +117,13 @@ class helpController extends expController {
      * Display a help document
      */
 	public function show() {
-//	    global $db;
-	
 	    expHistory::set('viewable', $this->params);
 	    $help = new help();
         if (empty($this->params['version']) || $this->params['version'] == 'current') {
-//	        $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
             $version_id = help_version::getCurrentHelpVersionId();
 	    } else {
-//	        $version_id = $db->selectValue('help_version', 'id', 'version=\''.$this->params['version'].'\'');
             $version_id = help_version::getHelpVersionId($this->params['version']);
             if (empty($version_id)) {
-//                $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
                 $version_id = help_version::getCurrentHelpVersionId();
             }
 	    }
@@ -140,7 +132,6 @@ class helpController extends expController {
         if (empty($doc)) {
             redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
         }
-//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$doc->location_data."'"));
         $config = expConfig::getConfig($doc->location_data);
 
 	    assign_to_template(array(
@@ -155,7 +146,6 @@ class helpController extends expController {
      * Create or Edit a help document
      */
 	public function edit() {
-//	    global $db, $sectionObj;
         global $db;
 
 	    expHistory::set('editable', $this->params);
@@ -167,7 +157,6 @@ class helpController extends expController {
         if (expSession::is_set('help-version')) {
             $version_id = expSession::get('help-version');  // version the site is currently using
         } else {
-//            $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
             $version_id = help_version::getCurrentHelpVersionId();
         }
 	    if (empty($help->help_version_id)) $help->help_version_id = $version_id;
@@ -180,7 +169,6 @@ class helpController extends expController {
         }
 
 		$sectionlist = array();
-//		$helpsections = $db->selectObjects('help',1);
         $helpsections = $help->find('all',1);
 		foreach ($helpsections as $helpsection) {
 			if (!empty($helpsection->location_data)) {
@@ -256,12 +244,11 @@ class helpController extends expController {
      * @return bool
      */
 	private static function copydocs($from, $to) {
-//	    global $db;
-	    	    
 	    $help = new help();
         $order = 'rank DESC';
         $old_parents = $help->getHelpParents($from);
         $new_parents = array();
+
         // copy parent help docs
 	    $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent=0',$order);
 	    foreach ($current_docs as $doc) {
@@ -305,24 +292,7 @@ class helpController extends expController {
    	        }
    	    }
 
-        // copy child help docs
-        $current_docs = $help->find('all', 'help_version_id='.$from.' AND parent!=0',$order);
-   	    foreach ($current_docs as $doc) {
-   	        unset($doc->id);
-            $doc->parent = $new_parents[$doc->parent];
-   	        $doc->help_version_id = $to;
-   	        $doc->save();
-   	        foreach($doc->expFile as $subtype=>$files) {
-   	            foreach($files as $file) {
-   	                $doc->attachItem($file, $subtype);
-   	            }
-
-   	        }
-   	    }
-
 	    // get version #'s for the two versions
-//	    $oldvers = $db->selectValue('help_version', 'version', 'id='.$from);
-//	    $newvers = $db->selectValue('help_version', 'version', 'id='.$to);
         $oldvers = help_version::getHelpVersion($from);
         $newvers = help_version::getHelpVersion($to);
 
@@ -408,8 +378,6 @@ class helpController extends expController {
      * Creates a new help version, possibly based on existing help version
      */
 	public function update_version() {
-//	    global $db;
-	    
 	    // get the current version
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
@@ -417,7 +385,6 @@ class helpController extends expController {
 	    // check to see if the we have a new current version and unset the old current version.
 	    if (!empty($this->params['is_current'])) {
 //	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
-//		    $db->toggle('help_version',"is_current",'is_current=1');
             help_version::clearHelpVersion();
 	    }
 	    expSession::un_set('help-version');
@@ -444,10 +411,7 @@ class helpController extends expController {
      * Switches current help version globally
      */
 	public function activate_version() {
-//	    global $db;
-
 	    // unset the old current version.
-//	    $db->toggle('help_version',"is_current",'is_current=1');
         help_version::clearHelpVersion();
 	    expSession::un_set('help-version');
 
@@ -466,12 +430,8 @@ class helpController extends expController {
      * Displays available help versions
      */
 	public function select_version() {
-//        global $db;
-
   	    $hv = expSession::get('help-version');
-//        $selected = $db->selectValue('help_version', 'id', 'version="'.$hv.'"');
         $selected = help_version::getHelpVersionId($hv);
-//   	    $versions = $db->selectDropdown('help_version','version',1,'version');
         $versions = help_version::getHelpVersionsDropdown();
    	    assign_to_template(array(
                'current_version'=>$hv,
@@ -484,12 +444,9 @@ class helpController extends expController {
      * Switches current help version temporarily
      */
 	public function switch_version() {
-//        global $db;
-
 	    // unset the current version.
 	    expSession::un_set('help-version');
         // set the requested version.
-//        $version = $db->selectValue('help_version','version','id="'.$this->params['version'].'"');
         $version = help_version::getHelpVersion($this->params['version']);
         expSession::set('help-version',$version);
 	    flash('message', gt('Now displaying Help version').' '.$version);
@@ -501,12 +458,10 @@ class helpController extends expController {
    	 * @return int
    	 */
    	function addContentToSearch() {
-//       global $db, $router;
         global $db;
 
        $count = 0;
        $help = new help();
-//       $where = 'help_version_id="'.$db->selectValue('help_version','id','is_current=1').'"';
        $where = 'help_version_id="'.help_version::getCurrentHelpVersionId().'"';
        $where .= (!empty($this->params['id'])) ? ' AND id='.$this->params['id'] : null;
        $content = $db->selectArrays($help->tablename,$where);
@@ -556,13 +511,10 @@ class helpController extends expController {
 
         $help = new help();
         if (empty($params['version']) || $params['version']=='current') {
-//            $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
             $version_id = help_version::getCurrentHelpVersionId();
         } else {
-//            $version_id = $db->selectValue('help_version', 'id', 'version="'.$params['version'].'"');
             $version_id = help_version::getHelpVersionId($params['version']);
             if (empty($version_id)) {
-//                $version_id = $db->selectValue('help_version', 'id', 'is_current=1');
                 $version_id = help_version::getCurrentHelpVersionId();
             }
         }
