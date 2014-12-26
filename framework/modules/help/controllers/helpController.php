@@ -169,7 +169,7 @@ class helpController extends expController {
         }
 
 		$sectionlist = array();
-        $helpsections = $help->find('all',1);
+        $helpsections = $help->find('all',"help_version_id=".$help->help_version_id);
 		foreach ($helpsections as $helpsection) {
 			if (!empty($helpsection->location_data)) {
 				$helpsrc = expUnserialize($helpsection->location_data);
