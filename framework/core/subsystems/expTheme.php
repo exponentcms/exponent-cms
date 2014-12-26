@@ -755,10 +755,6 @@ class expTheme
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
         } else {
-            // clean our passed parameters
-            foreach ($_REQUEST as $key=>$param) {
-                $_REQUEST[$key] = expString::sanitize($param);
-            }
 //   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
             notfoundController::handle_not_found();
             echo '<br /><hr size="1" />';

@@ -41,10 +41,10 @@ class navigationController extends expController {
         'view' => "View Page"
     );
     public $remove_permissions = array(
-        'configure',
-        'create',
-        'delete',
-        'edit'
+//        'configure',
+//        'create',
+//        'delete',
+//        'edit'
     );
 //    public $codequality = 'beta';
 
@@ -700,7 +700,7 @@ class navigationController extends expController {
 
         expHistory::set('manageable', $router->params);
         assign_to_template(array(
-            'canManageStandalones' => navigationController::canManageStandalones(),
+            'canManageStandalones' => self::canManageStandalones(),
             'sasections'           => $db->selectObjects('section', 'parent=-1'),
             'user'                 => $user,
             'canManagePagesets'    => $user->isAdmin(),
@@ -734,7 +734,7 @@ class navigationController extends expController {
         }
         $nav= array_values($nav);
 //        $nav[$navcount - 1]->last = true;
-        $nav[count($nav) - 1]->last = true;
+        if (count($nav)) $nav[count($nav) - 1]->last = true;
         echo expJavascript::ajaxReply(201, '', $nav);
         exit;
     }
@@ -856,11 +856,11 @@ class navigationController extends expController {
                 }
             }
         }
-        navigationController::checkForSectionalAdmins($move);
+        self::checkForSectionalAdmins($move);
         expSession::clearAllUsersSessionCache('navigation');
     }
 
-    function add_section() {
+    function edit_section() {
         global $db, $user;
 
         $parent = new section($this->params['parent']);
@@ -876,7 +876,8 @@ class navigationController extends expController {
         //FIXME we come here for new/edit content/standalone pages
         // FIXME: Allow non-administrative users to manage certain parts of the section hierarchy.
         //if ($user->is_acting_admin == 1 /*TODO: section admin*/) {
-        $section = null;
+//        $section = null;
+        $section = new stdClass();
         if (isset($this->params['id'])) {
             // Check to see if an id was passed in get.  If so, retrieve that section from
             // the database, and perform an edit on it.
@@ -1028,7 +1029,7 @@ class navigationController extends expController {
 
         $section = $db->selectObject('section', 'id=' . $this->params['id']);
         if ($section) {
-            navigationController::removeLevel($section->id);
+            self::removeLevel($section->id);
             $db->decrement('section', 'rank', 1, 'rank > ' . $section->rank . ' AND parent=' . $section->parent);
             $section->parent = -1;
             $db->updateObject($section, 'section');
@@ -1060,7 +1061,7 @@ class navigationController extends expController {
         global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
-        if (empty($location->src) && empty($location->int) && !empty($router->params['action']) && $router->params['action'] == 'manage') {
+        if (empty($location->src) && empty($location->int) && (!empty($router->params['action']) && $router->params['action'] == 'manage') || strpos($router->current_url, 'action=manage') !== false) {
             if (!empty($exponent_permissions_r['navigation'])) foreach ($exponent_permissions_r['navigation'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['manage'])) return true;
