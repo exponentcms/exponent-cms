@@ -8,6 +8,15 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Added / Fixed / Changed for 2.3.3
+-----------------------
+### Address any issues in v2.3.2
+  - includes all fixes from v2.3.2 patches
+### Known Issues
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Added / Fixed / Changed for 2.3.2
 -----------------------
 ### Address any issues in v2.3.1
