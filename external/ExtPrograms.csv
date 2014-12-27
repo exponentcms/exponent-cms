@@ -1,5 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swift,5.3.0,swiftmailer.org,5.3.1,we add  eDebugLogger plugin
+Swift,5.3.1,swiftmailer.org,5.3.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.21,smarty.net,3.1.21,
@@ -27,7 +27,7 @@ Font-Awesome,4.2.0,fortawesome.github.com/Font-Awesome,4.2.0,
 Adminer,4.1.0,www.adminer.org,4.1.0,we add some system user checks in design.inc
 SimpleAjaxUploader,1.11.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.11.0,also converted to yui module
 normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
-MediaElement.js,2.15.1,mediaelementjs.com/,2.16.3,
+MediaElement.js,2.16.3,mediaelementjs.com/,2.16.3,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.11,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
@@ -59,7 +59,7 @@ Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.1exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.1,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.2,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.2,
-Sortable,0.7.1,https://github.com/RubaXa/Sortable,0.7.1,
+Sortable,1.0.0,https://github.com/RubaXa/Sortable,1.0.0,
 jstree,3.0.8,https://github.com/vakata/jstree,3.0.8,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.1,
 impromptu,5.3.0,http://trentrichardson.com/Impromptu,5.3.0,
