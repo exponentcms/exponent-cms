@@ -64,11 +64,10 @@
             <div class="module-actions">
                 {if $permissions.edit}
                     {icon action=edit module=storeCategory record=$current_category title="Edit `$current_category->title`" text="Edit this Store Category"|gettext}{br}
+                {/if}
+                {if $permissions.manage}
                     {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"|gettext}{br}
                 {/if}
-                {*if $permissions.manage}
-                    {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
-                {/if*}
                 {*if $permissions.manage}
                     {icon action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}
                 {/if*}
@@ -108,6 +107,9 @@
                         <div class="item-actions">
                             {if $permissions.edit}
                                 {icon controller=storeCategory action=edit record=$cat title="Edit `$cat->title`"}
+                            {/if}
+                            {if $permissions.manage}
+                                {icon controller=storeCategory action=configure record=$cat title="Configure `$cat->title`"}
                             {/if}
                             {if $permissions.delete}
                                 {icon controller=storeCategory action=delete record=$cat title="Delete `$cat->title`" onclick="return confirm('"|cat:("Are you sure you want to delete this category?"|gettext)|cat:"');"}
