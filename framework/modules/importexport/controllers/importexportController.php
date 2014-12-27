@@ -541,29 +541,36 @@ class importexportController extends expController {
         //$createCats = array();
         $product = null;
         /*
-        0= id    
-        1=parent_id    
-        2=child_rank    
-        3=title    
-        4=model    
-        5=warehouse_location    
-        6=sef_url    
-        7=meta_title    
-        8=meta_keywords    
-        9=meta_description    
-        10=base_price    
-        11=special_price    
-        12=use_special_price    
-        13=active_type    
-        14=product_status_id    
-        15=category1    
-        16=category2    
-        17=category3    
-        18=category4    
-        19=surcharge                                        
-        20=rank   
-        21=feed_title
-        22=feed_body   
+            0= id
+            1=parent_id
+            2=child_rank
+            3=title
+            4=body
+            5=model
+            6=warehouse_location
+            7=sef_url
+//FIXME        this is where canonical should be
+            8=meta_title
+            9=meta_keywords
+            10=meta_description
+            11=tax_class_id
+            12=quantity
+            13=availability_type
+            14=base_price
+            15=special_price
+            16=use_special_price
+            17=active_type
+            18=product_status_id
+            19=category1
+            20=category2
+            21=category3
+            22=category4
+            ..
+            30=category12
+            31=surcharge
+            32=rank category_rank
+            33=feed_title
+            34=feed_body
         */
 
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
@@ -591,11 +598,12 @@ class importexportController extends expController {
             $product->parent_id = $data[1];
             $product->child_rank = $data[2];
             $product->title = stripslashes(stripslashes($data[3]));
-            $product->body = utf8_encode(stripslashes(reportController::parseAndTrimImport(($data[4]), true)));
+            $product->body = utf8_encode(stripslashes(expString::parseAndTrimImport(($data[4]), true)));
             //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));            
             $product->model = stripslashes(stripslashes($data[5]));
             $product->warehouse_location = stripslashes(stripslashes($data[6]));
             $product->sef_url = stripslashes(stripslashes($data[7]));
+//FIXME        this is where canonical should be
             $product->meta_title = stripslashes(stripslashes($data[8]));
             $product->meta_keywords = stripslashes(stripslashes($data[9]));
             $product->meta_description = stripslashes(stripslashes($data[10]));
@@ -634,26 +642,6 @@ class importexportController extends expController {
                     }
                 }
             }
-            /*[0] => id
-            [1] => parent_id
-            [2] => child_rank
-            [3] => title
-            [4] => model
-            [5] => warehouse_location
-            [6] => sef_url
-            [7] => meta_title
-            [8] => meta_keywords
-            [9] => meta_description
-            [10] => base_price
-            [11] => special_price
-            [12] => use_special_price
-            [13] => active_type
-            [14] => product_status_id
-            [15] => category1
-            [16] => category2
-            [17] => category3
-            [18] => category4
-            [19] => surcharge*/
 
             //eDebug($createCats,true);
             if (!empty($product->user_input_fields) && is_array($product->user_input_fields))

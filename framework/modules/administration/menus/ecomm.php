@@ -166,6 +166,30 @@ $ecom = array(
                                 )
                             ),
                         ),
+//                        array(
+//                            'text'      => gt("Export Products"),
+//                            'icon'      => 'fa-download',
+//                            'classname' => 'export',
+////                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+//                            'url'       => makeLink(
+//                                array(
+//                                    'controller' => 'store',
+//                                    'action'     => 'export'
+//                                )
+//                            ),
+//                        ),
+                        array(
+                            'text'      => gt("Import Products"),
+                            'icon'      => 'fa-upload',
+                            'classname' => 'import',
+//                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'import'
+                                )
+                            ),
+                        ),
                         array(
                             'text'      => gt("Manage Product Statuses"),
                             'icon'      => 'fa-cog',
@@ -409,18 +433,6 @@ $ecom = array(
                                 array(
                                     'controller' => 'ecomconfig',
                                     'action'     => 'manage_discounts'
-                                )
-                            ),
-                        ),
-                        array(
-                            'text'      => gt("Import Products"),
-                            'icon'      => 'fa-upload',
-                            'classname' => 'import',
-//                            'url'       => makeLink(array('controller' => 'importexport', 'action' => 'manage')),
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'store',
-                                    'action'     => 'import'
                                 )
                             ),
                         ),

@@ -607,7 +607,8 @@ class storeController extends expController {
 
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+//        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             //eDebug($sql);
@@ -636,7 +637,7 @@ class storeController extends expController {
             $out .= expString::outputField($p->model);
             $out .= expString::outputField($p->warehouse_location);
             $out .= expString::outputField($p->sef_url);
-            $out .= expString::outputField($p->canonical);
+//            $out .= expString::outputField($p->canonical);  FIXME this is NOT in the import sequence
             $out .= expString::outputField($p->meta_title);
             $out .= expString::outputField($p->meta_keywords);
             $out .= expString::outputField($p->meta_description);
@@ -673,7 +674,7 @@ class storeController extends expController {
                 $out .= expString::outputField($cp->model);
                 $out .= expString::outputField($cp->warehouse_location);
                 $out .= expString::outputField($cp->sef_url);
-                $out .= expString::outputField($cp->canonical);
+//                $out .= expString::outputField($cp->canonical);  FIXME this is NOT in the import sequence
                 $out .= expString::outputField($cp->meta_title);
                 $out .= expString::outputField($cp->meta_keywords);
                 $out .= expString::outputField($cp->meta_description);
@@ -685,7 +686,7 @@ class storeController extends expController {
                 $out .= expString::outputField($cp->use_special_price);
                 $out .= expString::outputField($cp->active_type);
                 $out .= expString::outputField($cp->product_status_id);
-                $out .= ',,,,,,,,,,,,';
+                $out .= ',,,,,,,,,,,,';  // for categories
                 $out .= expString::outputField($cp->surcharge);
                 $out .= ',,'; //for rank, feed title, feed body
                 $out .= chr(13) . chr(10);
@@ -2587,6 +2588,7 @@ class storeController extends expController {
             5=model
             6=warehouse_location
             7=sef_url
+//FIXME        this is where canonical should be
             8=meta_title
             9=meta_keywords
             10=meta_description
@@ -2605,7 +2607,7 @@ class storeController extends expController {
             ..
             30=category12
             31=surcharge
-            32=rank
+            32=rank category_rank
             33=feed_title
             34=feed_body
         */
@@ -2614,6 +2616,7 @@ class storeController extends expController {
             $count++;
 
             //eDebug($data, true);
+            //FIXME we need to account for the heading line??
             if (isset($data[0]) && $data[0] != 0) {
                 $product = new product($data[0], false, false);
                 if (empty($product->id)) {
@@ -2635,11 +2638,12 @@ class storeController extends expController {
             $product->parent_id = $data[1];
             $product->child_rank = $data[2];
             $product->title = stripslashes(stripslashes($data[3]));
-            $product->body = utf8_encode(stripslashes(reportController::parseAndTrimImport(($data[4]), true)));
+            $product->body = utf8_encode(stripslashes(expString::parseAndTrimImport(($data[4]), true)));
             //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));
             $product->model = stripslashes(stripslashes($data[5]));
             $product->warehouse_location = stripslashes(stripslashes($data[6]));
             $product->sef_url = stripslashes(stripslashes($data[7]));
+//FIXME        this is where canonical should be
             $product->meta_title = stripslashes(stripslashes($data[8]));
             $product->meta_keywords = stripslashes(stripslashes($data[9]));
             $product->meta_description = stripslashes(stripslashes($data[10]));

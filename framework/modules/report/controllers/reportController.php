@@ -930,7 +930,7 @@ class reportController extends expController {
             $out .= $line;
         }
         //eDebug($out,true);
-        $this->download($out, 'Inventory_Export_' . time() . '.csv', 'application/csv');
+        $this->download($out, 'User_Input_Export_' . time() . '.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
     }
 
@@ -1453,7 +1453,7 @@ class reportController extends expController {
                 $out .= $line;
             }
         }
-        $this->download($out, 'Inventory_Export_' . time() . '.csv', 'application/csv');
+        $this->download($out, 'Status_Export_' . time() . '.csv', 'application/csv');
     }
 
     function download($file, $name, $type) {
@@ -1721,7 +1721,8 @@ class reportController extends expController {
         global $db;
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+//        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             //eDebug($sql);
@@ -1750,7 +1751,7 @@ class reportController extends expController {
             $out .= $this->outputField($p->model);
             $out .= $this->outputField($p->warehouse_location);
             $out .= $this->outputField($p->sef_url);
-            $out .= $this->outputField($p->canonical);
+//            $out .= $this->outputField($p->canonical);  //FIXME this is NOT in import
             $out .= $this->outputField($p->meta_title);
             $out .= $this->outputField($p->meta_keywords);
             $out .= $this->outputField($p->meta_description);
@@ -1776,6 +1777,7 @@ class reportController extends expController {
             $out .= $this->outputField($rank);
             $out .= $this->outputField($p->feed_title);
             $out .= substr($this->outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
+
             foreach ($p->childProduct as $cp) {
                 //$p = new product($pid['id'], true, false);
                 //eDebug($p,true);
@@ -1787,7 +1789,7 @@ class reportController extends expController {
                 $out .= $this->outputField($cp->model);
                 $out .= $this->outputField($cp->warehouse_location);
                 $out .= $this->outputField($cp->sef_url);
-                $out .= $this->outputField($cp->canonical);
+//                $out .= $this->outputField($cp->canonical);  //FIXME this is NOT in import
                 $out .= $this->outputField($cp->meta_title);
                 $out .= $this->outputField($cp->meta_keywords);
                 $out .= $this->outputField($cp->meta_description);
@@ -1799,9 +1801,9 @@ class reportController extends expController {
                 $out .= $this->outputField($cp->use_special_price);
                 $out .= $this->outputField($cp->active_type);
                 $out .= $this->outputField($cp->product_status_id);
-                $out .= ',,,,,,,,,,,,';
+                $out .= ',,,,,,,,,,,,';  // for store categories
                 $out .= $this->outputField($cp->surcharge);
-                $out .= ',,'; //for rank, feed title, feed body
+                $out .= ',,'; // for rank, feed title, feed body
                 $out .= chr(13) . chr(10);
 
                 //echo($out);                  
@@ -1814,7 +1816,7 @@ class reportController extends expController {
         fwrite($outHandle, $out);
         fclose($outHandle);
 
-        echo "<br/><br/>Download the file here: <a href='" . PATH_RELATIVE . $outFile . "'>Product Export</a>";
+        echo "<br/><br/>".gt('Download the file here').": <a href='" . PATH_RELATIVE . $outFile . "'>".gt('Product Export')."</a>";
 
         /*eDebug(BASE . "tmp/export.csv");
         $db->sql($sql);
@@ -1880,12 +1882,13 @@ class reportController extends expController {
         $stats = new product_status();
         $stats = $stats->find('all');
 
-        $statuses = array();
+//        $statuses = array();
+        $statuses = array(0=>'');
         foreach ($stats as $stat) {
             $statuses[$stat->id] = $stat->title;
         }
 
-        eDebug($statuses);
+//        eDebug($statuses);
 
         set_time_limit(0);
         $baseProd = new product();
