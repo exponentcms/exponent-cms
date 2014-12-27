@@ -704,8 +704,8 @@ class expTheme
                 expString::sanitize_array($_REQUEST);
             } elseif (empty($_REQUEST['array_sanitized'])) {
                 $tmp =1;  //FIXME we've already sanitized at this point
-            } else {
-                $tmp =1;  //FIXME we've already sanitized at this point
+//            } else {
+//                $tmp =1;  //FIXME we've already sanitized at this point
             }
 
             //FIXME: module/controller glue code..remove ASAP
