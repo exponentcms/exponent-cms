@@ -21,7 +21,7 @@
 	{foreach from=$optiongroups item=group}
         <div class="panel">
             <div class="hd">
-                <h2>{$group->title}</h2><a href="#" class="expand">{'Expand'|gettext}</a>
+                <h2>{$group->title}</h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
             </div>
             <div class="bd collapsed">
                 <!-- cke lazy -->
@@ -88,17 +88,17 @@
         var action = function(e){
             e.halt();
             var pBody = e.target.ancestor('.panel').one('.bd');
-            var pWidgetE = e.target.ancestor('.panel').one('a.expand');
-            var pWidgetC = e.target.ancestor('.panel').one('a.collapse');
+            var pWidgetE = e.target.ancestor('.panel').one('a.yexpand');
+            var pWidgetC = e.target.ancestor('.panel').one('a.ycollapse');
 
-            if (e.target.getAttribute("class")=="collapse") {
+            if (e.target.getAttribute("class")=="ycollapse") {
                 pBody.replaceClass('expanded','collapsed');
-                e.target.replaceClass('collapse','expand');
-                if (pWidgetC != null) pWidgetC.replaceClass('collapse','expand');
+                e.target.replaceClass('ycollapse','yexpand');
+                if (pWidgetC != null) pWidgetC.replaceClass('ycollapse','yexpand');
             } else {
                 pBody.replaceClass('collapsed','expanded');
-                e.target.replaceClass('expand','collapse');
-                if (pWidgetE != null) pWidgetE.replaceClass('expand','collapse');
+                e.target.replaceClass('yexpand','ycollapse');
+                if (pWidgetE != null) pWidgetE.replaceClass('yexpand','ycollapse');
             }
         }
         Y.one('.options-partial').delegate('click', action, 'div.hd');

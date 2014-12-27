@@ -50,7 +50,7 @@
 	border-radius         : 4px;
 }
 
-.store.editproduct .hd a.collapse {
+.store.editproduct .hd a.ycollapse {
 	background  : url(../images/ecom-sprite.png) repeat-x -4px -386px;
 	position    : absolute;
 	text-indent : 20px;
@@ -62,7 +62,7 @@
 	right       : 1px;
 }
 
-.store.editproduct .hd a.expand {
+.store.editproduct .hd a.yexpand {
 	background  : url(../images/ecom-sprite.png) repeat-x -4px -413px;
 	position    : absolute;
 	text-indent : 20px;
