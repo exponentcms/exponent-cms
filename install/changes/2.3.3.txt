@@ -1,5 +1,6 @@
 version 2.3.3
 Address issues in v2.3.2
+  - adds 'configure category' link to ecommerce views where we can edit a store category
   - includes all fixes from v2.3.2 patches
 Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
