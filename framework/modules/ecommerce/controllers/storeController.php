@@ -2565,7 +2565,10 @@ class storeController extends expController {
         }
     }
 
-    function importProduct($file) {
+    function importProduct($file=null) {
+        if (empty($file->path)) {
+            $file->path = $_FILES['import_file']['tmp_name'];
+        }
         $handle = fopen($file->path, "r");
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);
