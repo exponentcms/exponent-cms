@@ -64,6 +64,7 @@
             <div class="module-actions">
                 {if $permissions.edit}
                     {icon action=edit module=storeCategory record=$current_category title="Edit `$current_category->title`" text="Edit this Store Category"|gettext}{br}
+                    {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"|gettext}{br}
                 {/if}
                 {*if $permissions.manage}
                     {icon action=configure module=storeCategory record=$current_category title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
