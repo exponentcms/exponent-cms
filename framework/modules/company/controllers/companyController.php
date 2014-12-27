@@ -52,8 +52,8 @@ class companyController extends expController {
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
             'columns'=>array(
-                gt('Title')=>'title',
-                gt('Link')=>'website'
+                gt('Manufacturer')=>'title',
+                gt('Website')=>'website'
             ),
         ));
         
