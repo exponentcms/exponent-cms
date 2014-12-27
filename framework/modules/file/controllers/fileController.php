@@ -373,6 +373,7 @@ class fileController extends expController {
     public function batchDelete() {
         global $user;
 
+        $this->params['files'] = stripslashes($this->params['files']);
         $files = json_decode($this->params['files']);
         $error = false;
         foreach ($files as $file) {
@@ -428,7 +429,7 @@ class fileController extends expController {
     public function upload() {
         
         // upload the file, but don't save the record yet...
-        if (!empty($this->params['resize'])) {
+        if ($this->params['resize'] != 'false') {
             $maxwidth = $this->params['max_width'];
         } else {
             $maxwidth = null;

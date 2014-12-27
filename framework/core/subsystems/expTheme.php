@@ -470,6 +470,12 @@ class expTheme {
 //				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
 //			}
 
+            // clean our passed parameters
+//            foreach ($_REQUEST as $key=>$param) {
+//                $_REQUEST[$key] = expString::sanitize($param);
+//            }
+            expString::sanitize_array($_REQUEST);
+
 			//FIXME: module/controller glue code..remove ASAP
             $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
 			$isController = expModules::controllerExists($module);

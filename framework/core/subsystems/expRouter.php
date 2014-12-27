@@ -172,6 +172,8 @@ class expRouter {
     }
 
     public function routeRequest() {
+        expString::sanitize_array($_REQUEST);
+
         // start splitting the URL into it's different parts
         $this->splitURL();
 
@@ -588,7 +590,7 @@ class expRouter {
     }
 
     public function convertPartsToParams() {
-
+        $params = array();
         if ($this->url_type == 'base') {
             $params['section'] = SITE_DEFAULT_SECTION;
         } elseif ($this->url_type == 'page') {
