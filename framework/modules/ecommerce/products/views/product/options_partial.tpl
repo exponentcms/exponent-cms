@@ -51,7 +51,7 @@
                     <tbody>
                         {foreach key=key from=$group->options item=option}
                             <tr class="{cycle values='odd,even' advance=false}">
-                                <td width="100%">
+                                <td width="80%">
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][id]" value=$option->id}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
@@ -61,7 +61,7 @@
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" value=$option->modtype}</td>
                                 <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" size=6 value=$option->amount}</td>
-                                <td>{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
+                                <td width="15%">{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
                             </tr>
                             <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title|strip:'_'}" style="display:none">
                                 <td colspan=5>

@@ -491,6 +491,7 @@ class remove_oldfiles extends upgradescript {
             "external/phpThumb/fonts/",
             "external/phpThumb/images/",
             "external/Respond-1.3.0/",
+            'external/SimpleAjaxUploader/',
             "external/Smarty/",
             "external/Smarty-2/",
             "external/Smarty-3.1.4/",

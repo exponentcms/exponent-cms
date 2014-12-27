@@ -91,7 +91,7 @@
     {/form}
 </div>
 
-{script unique="prodtabs" yui3mods="1"}
+{script unique="prodtabs" yui3mods="1" jquery='Sortable,SimpleAjaxUploader'}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
@@ -134,7 +134,7 @@
                    eval(n.get('innerHTML'));
                } else {
                    var url = n.get('src');
-                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")) {
+                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")||url.indexOf("SimpleAjaxUploader")) {
                        Y.Get.script(url);
                    };
                };
