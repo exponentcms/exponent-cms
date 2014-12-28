@@ -23,10 +23,10 @@
 
 <div class="module store showall">
     <div class="category-breadcrumb">
-        <a href="{link controller=store action=showall}" title="View the Store"|gettext>{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
+        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
         {foreach from=$ancestors item=ancestor name=path}
             {if !$smarty.foreach.path.last}
-                <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="View this Product Category"|gettext>{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
+                <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
             {else}
                 {$ancestor->title}
             {/if}
