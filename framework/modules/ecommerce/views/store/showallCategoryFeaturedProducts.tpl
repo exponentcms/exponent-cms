@@ -94,8 +94,8 @@
                         <a href="{link controller=store action=show title=$listing->sef_url}">
                             {if $listing->expFile.featured_image[0]->id != ""}
                                 {img file_id=$listing->expFile.featured_image[0]->id constraint=1 w=165 alt=$listing->title}
-                            {elseif $listing->expFile.images[0]->id != ""}
-                                {img file_id=$listing->expFile.images[0]->id constraint=1 w=165 alt=$listing->title}
+                            {elseif $listing->expFile.mainimage[0]->id != ""}
+                                {img file_id=$listing->expFile.mainimage[0]->id constraint=1 w=165 alt=$listing->title}
                             {else}
                                 {img src="`$asset_path`images/no-image.jpg" constraint=1 w=165 alt=$listing->title}
                             {/if}
