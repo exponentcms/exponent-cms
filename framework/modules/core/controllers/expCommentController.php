@@ -49,6 +49,7 @@ class expCommentController extends expController {
         
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $comment = new expComment($id);
+        //FIXME here is where we might sanitize the comment before displaying/editing it
 		assign_to_template(array(
 		    'content_id'=>$this->params['content_id'],
             'content_type'=>$this->params['content_type'],
@@ -96,6 +97,7 @@ class expCommentController extends expController {
 
         $refs[][] = array();
         foreach ($page->records as $record) {
+            //FIXME here is where we might sanitize the comments before displaying them
             $item = new $record->content_type($record->content_id);
             $refs[$record->content_type][$record->content_id] = $item->title;
         }
@@ -147,6 +149,7 @@ class expCommentController extends expController {
         // add username and avatar
         foreach ($comments->records as $key=>$record) {
             $commentor = new user($record->poster);
+            //FIXME here is where we might sanitize the comments before displaying them
             $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
@@ -288,6 +291,7 @@ class expCommentController extends expController {
           // add username and avatar
           foreach ($comments->records as $key=>$record) {
               $commentor = new user($record->poster);
+              //FIXME here is where we might sanitize the comments before displaying them
               $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
               $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
           }
@@ -340,6 +344,7 @@ class expCommentController extends expController {
         if (empty($require_approval)) {
             $this->expComment->approved=1;
         }
+        //FIXME here is where we might sanitize the comments before saving them
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
@@ -404,6 +409,7 @@ class expCommentController extends expController {
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    $comment = new expComment($this->params['id']);
+        //FIXME here is where we might sanitize the comments before approving them
 	    $comment->body = $this->params['body'];
 	    $comment->approved = $this->params['approved'];
 	    $comment->save();
@@ -442,6 +448,7 @@ class expCommentController extends expController {
                         $comment = new expComment($item);
                         if (!$comment->approved) {
                             $comment->approved = 1;
+                            //FIXME here is where we might sanitize the comments before approving them
                             $attached = $db->selectObject('content_expComments','expcomments_id='.$item);
                             $params['content_type'] = $attached->content_type;
                             $params['content_id'] = $attached->content_id;
