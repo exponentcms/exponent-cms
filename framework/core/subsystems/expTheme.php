@@ -686,6 +686,8 @@ class expTheme
      */
     public static function runAction()
     {
+        global $user;
+
         if (self::inAction()) {
             if (!AUTHORIZED_SECTION) {
 //				echo SITE_403_HTML;
@@ -701,7 +703,7 @@ class expTheme
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
             if (empty($_REQUEST['route_sanitized'])) {
-                expString::sanitize_array($_REQUEST);
+                if (!$user->isAdmin()) expString::sanitize_array($_REQUEST);
             } elseif (empty($_REQUEST['array_sanitized'])) {
                 $tmp =1;  //FIXME we've already sanitized at this point
 //            } else {
@@ -774,6 +776,7 @@ class expTheme
 
     public static function showAction($module, $action, $src = "", $params = array())
     { //FIXME only used by smarty functions, old school?
+        global $user;
 
         $loc = expCore::makeLocation($module, (isset($src) ? $src : ""), (isset($int) ? $int : ""));
 
@@ -783,7 +786,7 @@ class expTheme
 ////                $_GET[$key] = $value;
 //                $_GET[$key] = expString::sanitize($value);
 //            }
-            expString::sanitize_array($_GET);
+            if (!$user->isAdmin()) expString::sanitize_array($_GET);
         }
         //if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 
