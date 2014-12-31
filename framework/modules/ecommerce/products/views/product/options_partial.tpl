@@ -21,7 +21,7 @@
 	{foreach from=$optiongroups item=group}
         <div class="panel">
             <div class="hd">
-                <h2>{$group->title}</h2><a href="#" class="expand">{'Expand'|gettext}</a>
+                <h2>{$group->title}</h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
             </div>
             <div class="bd collapsed">
                 <!-- cke lazy -->
@@ -51,7 +51,7 @@
                     <tbody>
                         {foreach key=key from=$group->options item=option}
                             <tr class="{cycle values='odd,even' advance=false}">
-                                <td width="100%">
+                                <td width="80%">
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][id]" value=$option->id}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
@@ -61,7 +61,7 @@
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" value=$option->modtype}</td>
                                 <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" size=6 value=$option->amount}</td>
-                                <td>{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
+                                <td width="15%">{control type="radio" name="defaults[`$group->title`]" label="Default" value=$option->title checked=$option->is_default}</td>
                             </tr>
                             <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title|strip:'_'}" style="display:none">
                                 <td colspan=5>
@@ -88,17 +88,17 @@
         var action = function(e){
             e.halt();
             var pBody = e.target.ancestor('.panel').one('.bd');
-            var pWidgetE = e.target.ancestor('.panel').one('a.expand');
-            var pWidgetC = e.target.ancestor('.panel').one('a.collapse');
+            var pWidgetE = e.target.ancestor('.panel').one('a.yexpand');
+            var pWidgetC = e.target.ancestor('.panel').one('a.ycollapse');
 
-            if (e.target.getAttribute("class")=="collapse") {
+            if (e.target.getAttribute("class")=="ycollapse") {
                 pBody.replaceClass('expanded','collapsed');
-                e.target.replaceClass('collapse','expand');
-                if (pWidgetC != null) pWidgetC.replaceClass('collapse','expand');
+                e.target.replaceClass('ycollapse','yexpand');
+                if (pWidgetC != null) pWidgetC.replaceClass('ycollapse','yexpand');
             } else {
                 pBody.replaceClass('collapsed','expanded');
-                e.target.replaceClass('expand','collapse');
-                if (pWidgetE != null) pWidgetE.replaceClass('expand','collapse');
+                e.target.replaceClass('yexpand','ycollapse');
+                if (pWidgetE != null) pWidgetE.replaceClass('yexpand','ycollapse');
             }
         }
         Y.one('.options-partial').delegate('click', action, 'div.hd');

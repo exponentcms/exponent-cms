@@ -107,9 +107,11 @@ class expDefinableFieldController extends expController {
 		}
 
 		if (call_user_func(array($_POST['control_type'],'useGeneric')) == true) { 	
-			$ctl = call_user_func(array('genericcontrol','update'),expString::sanitize_array($_POST),$ctl);
+//			$ctl = call_user_func(array('genericcontrol','update'),expString::sanitize_array($_POST),$ctl);
+			$ctl = call_user_func(array('genericcontrol','update'),expString::sanitize($_POST),$ctl);
 		} else {
-			$ctl = call_user_func(array($_POST['control_type'],'update'),expString::sanitize_array($_POST),$ctl);
+//			$ctl = call_user_func(array($_POST['control_type'],'update'),expString::sanitize_array($_POST),$ctl);
+			$ctl = call_user_func(array($_POST['control_type'],'update'),expString::sanitize($_POST),$ctl);
 		}
 		
 		if ($ctl != null) {

@@ -20,7 +20,7 @@
 	border-radius         : 2px;
 }
 
-.options-partial .hd a.collapse {
+.options-partial .hd a.ycollapse {
 	background  : url(../images/ecom-sprite.png) repeat-x -4px -386px;
 	position    : absolute;
 	text-indent : 20px;
@@ -32,7 +32,7 @@
 	right       : 1px;
 }
 
-.options-partial .hd a.expand {
+.options-partial .hd a.yexpand {
 	background  : url(../images/ecom-sprite.png) repeat-x -4px -413px;
 	position    : absolute;
 	text-indent : 20px;
@@ -131,3 +131,6 @@
 	margin  : 0 10px;
 }
 
+.options-partial select.select.form-control {
+	width: auto;
+}

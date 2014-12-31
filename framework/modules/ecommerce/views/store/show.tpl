@@ -27,9 +27,9 @@
 
 <div class="module store show product">
     <div class="category-breadcrumb">
-        <a href="{link controller=store action=showall}" title="View the Store"|gettext>{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
+        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
         {foreach from=$ancestors item=ancestor name=path}
-            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="View this Product Category"|gettext>{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
+            <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
         {/foreach}
         {$product->title}
     </div>
@@ -347,7 +347,7 @@
 
         <div class="bodycopy">
             <span itemprop="description">
-            {$product->body}
+                {$product->body}
             </span>
         </div>
 
@@ -356,7 +356,7 @@
                 <h3>{"Additional Product Information"|gettext}</h3>
                 <ul>
                     {foreach from=$product->expFile.brochures item=doc}
-                        <li><a class="downloadfile" href="{link action=downloadfile id=$doc->id}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
+                        <li><a class="downloadfile" href="{link action=downloadfile id=$doc->id}" title="{'Click to download file'|gettext}">{if $doc->title}{$doc->title}{else}{$doc->filename}{/if}</a></li>
                     {/foreach}
                 </ul>
             </div>
@@ -423,7 +423,7 @@
          {/if}
 
         {clear}
-            {permissions}
+        {permissions}
             <div class="item-actions">
                 {if $permissions.create || $permissions.edit}
                     {icon class="add" action=edit parent_id=$product->id product_type='childProduct' text='Add Child Product'|gettext}
@@ -432,7 +432,7 @@
                     {icon class=delete action=deleteChildren record=$product text="Delete All Child Products"|gettext title="Delete `$product->title`'s Children" onclick="return confirm('Are you sure you want to delete ALL child products?  This is permanent.');"}
                 {/if}
             </div>
-            {/permissions}
+        {/permissions}
         {if $product->childProduct|@count >= 1}
             <div id="child-products" class="exp-ecom-table">
                 {form id="child-products-form" controller=cart action=addItem}

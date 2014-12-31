@@ -532,7 +532,8 @@ class expRecord {
         // run the validation as defined in the models
         if (!isset($this->validates)) return true;
         $messages = array();
-        $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
+//        $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
+        $post     = empty($_POST) ? array() : expString::sanitize($_POST);
         foreach ($this->validates as $validation=> $field) {
             foreach ($field as $key=> $value) {
                 $fieldname = is_numeric($key) ? $value : $key;

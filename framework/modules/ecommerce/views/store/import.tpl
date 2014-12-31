@@ -15,6 +15,10 @@
  
 <div class="module importexport import-product">
     <h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>
+    <blockquote>
+        {'This CSV file can be created using the E-commerce, Reports, Build a Product Report menu item and then selecting Export Products to CSV'|gettext}{br}
+        {icon class=export controller=report action=product_report }
+    </blockquote>
     {form action=importProduct}
         {control type="hidden" name="import_type" value=$type->baseclassname}
         {* control type=files name=import_file label="Upload .csv File to Import"|gettext limit=1 subtype="import_file" *}

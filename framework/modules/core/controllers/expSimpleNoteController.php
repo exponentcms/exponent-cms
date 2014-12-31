@@ -64,7 +64,8 @@ class expSimpleNoteController extends expController {
         
         $id = empty($this->params['id']) ? null : $this->params['id'];
         $simpleNote = new expSimpleNote($id);
-        
+        //FIXME here is where we might sanitize the note before displaying/editing it
+
         assign_to_template(array(
             'simplenote'=>$simpleNote,
             'user'=>$user,
@@ -110,6 +111,8 @@ class expSimpleNoteController extends expController {
             ),
         ));
         
+        //FIXME here is where we might sanitize the notes before displaying them
+
         assign_to_template(array(
             'page'=>$page,
             'require_login'=>$require_login,
@@ -161,6 +164,8 @@ class expSimpleNoteController extends expController {
             $unapproved = 0;
         }        
  
+        //FIXME here is where we might sanitize the notes before displaying them
+
         assign_to_template(array(
             'simplenotes'=>$simplenotes,
             'unapproved'=>$unapproved, 
@@ -200,6 +205,7 @@ class expSimpleNoteController extends expController {
         $this->expSimpleNote->approved = ($require_approval == 1 && !$user->isAdmin()) ? 0 : 1;
         
         // save the note
+        //FIXME here is where we might sanitize the note before saving it
         $this->expSimpleNote->update($this->params);
         
         // attach the note to the datatype it belongs to (blog, news, etc..);
@@ -273,6 +279,7 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         $simplenote = new expSimpleNote($this->params['id']);
+        //FIXME here is where we might sanitize the note before approving it
         $simplenote->body = $this->params['body'];
         $simplenote->approved = $this->params['approved'];
         $simplenote->save();

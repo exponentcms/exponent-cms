@@ -172,8 +172,20 @@ class expRouter {
     }
 
     public function routeRequest() {
-        $_REQUEST['route_sanitized'] = true;//FIXME debug test
-        expString::sanitize_array($_REQUEST);
+        global $user;
+
+        // strip out possible xss exploits via url
+        foreach ($_GET as $key=>$var) {
+            if (strpos($var,'">')) {
+                unset($_GET[$key]);
+                unset($_REQUEST[$key]);
+            }
+        }
+        if (!$user->isAdmin()) {
+            $_REQUEST['route_sanitized'] = true;//FIXME debug test
+//            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
+            expString::sanitize($_REQUEST);  // strip other exploits like sql injections
+        }
 
         // start splitting the URL into it's different parts
         $this->splitURL();
@@ -205,7 +217,7 @@ class expRouter {
                     }
                 }
             }
-        } elseif ($this->url_style == 'query' && SEF_URLS == 1 && !empty($_REQUEST['section'])  && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1) {
+        } elseif ($this->url_style == 'query' && SEF_URLS == 1 && !empty($_REQUEST['section']) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1) {
             // if we hit this it's an old school url coming in and we're trying to use SEF's. 
             // we will send a permanent redirect so the search engines don't freak out about 2 links pointing
             // to the same page.
@@ -298,6 +310,8 @@ class expRouter {
             if ($_SERVER['REQUEST_URI'] == PATH_RELATIVE) {
                 $this->url_type = 'base';
             } else {
+                $sefPath = explode('%22%3E',$_SERVER['REQUEST_URI']);  // remove any attempts to close the command
+                $_SERVER['REQUEST_URI'] = $sefPath[0];
                 $this->url_style = 'query';
             }
         } else {
@@ -630,7 +644,7 @@ class expRouter {
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
 //            $params = expString::sanitize_array($_REQUEST);
-            $_REQUEST['pre_sanitized'] = true;//FIXME debug test
+//            if (empty($data['route_sanitized'])) $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!
 //        if (isset($params['src'])) $params['src'] = expString::sanitize(htmlspecialchars($params['src']));
@@ -717,8 +731,9 @@ class expRouter {
             }            
         }
         if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
-        // santize it
-        $this->sefPath = expString::sanitize($this->sefPath);
+        // sanitize it
+        $sefPath = explode('">',$this->sefPath);  // remove any attempts to close the command
+        $this->sefPath = expString::sanitize($sefPath[0]);
     }
 
     public function getSection() {

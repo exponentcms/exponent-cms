@@ -39,9 +39,9 @@
                     {if $permissions.edit}
                         {icon class="edit" action=edit module=storeCategory id=$current_category->id title="Edit `$current_category->title`" text="Edit this Store Category"}{br}
                     {/if}
-                    {*{if $permissions.manage}*}
-                        {*{icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}*}
-                    {*{/if}*}
+                    {if $permissions.manage}
+                        {icon class="configure" action=configure module=storeCategory id=$current_category->id title="Configure `$current_category->title`" text="Configure this Store Category"}{br}
+                    {/if}
                     {*{if $permissions.manage}*}
                         {*{icon class="configure" action=configure module=ecomconfig hash="#tab2" title="Configure Categories Globally" text="Configure Categories Globally"}{br}*}
                     {*{/if}*}

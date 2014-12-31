@@ -8,6 +8,16 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Added / Fixed / Changed for 2.3.3
+-----------------------
+### Address any issues in v2.3.2
+  - adds 'configure category' link to ecommerce views where we can edit a store category
+  - includes all fixes from v2.3.2 patches
+### Known Issues
+  - eCommerce gift card & purchase order functionality have not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Added / Fixed / Changed for 2.3.2
 -----------------------
 ### Address any issues in v2.3.1
@@ -19,14 +29,13 @@ Added / Fixed / Changed for 2.3.2
   * adds (fixes) bootstrap 3 form 'horizontal' controls (label beside control instead of above)
   * fixes 'column' styling of several 'login' views
   * updates many ecommerce features, especially for bootstrap 3
-    * adds ecommerce navigation 'breadcrumb'on store show and showall views
+    * adds ecommerce navigation 'breadcrumb' on store show and showall views
     * adds bootstrap3 showall customer selectable 'list' view in addition to standard 'grid' view
     * adds product display 'sort by' control
     * adds customer checkout breadcrumb to indicate checkout progress
     * new filter-able and color coded manage orders view
     * completely revised bootstrap 'show order' view for easier order management
     * adds better sorting and filtering for manage products
-    * adds checkout sequence 'breadcrumb' to show user checkout progress
     * adds new shipping calculators - by item & by weight
     * changes ecommerce 'meta' tags to display store name instead of site name
     * now allows for either origin or destination sales tax; taxable shipping costs; entered tax rates may now be disabled

@@ -77,7 +77,8 @@ $warning = array();
     }
 
     //expSession::set("installer_config",$_POST['sc']);
-    $config = expString::sanitize_array($_POST['sc']);
+//    $config = expString::sanitize_array($_POST['sc']);
+    $config = expString::sanitize($_POST['sc']);
     //$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
 
     if (preg_match('/[^A-Za-z0-9]/', $config['db_table_prefix'])) {
@@ -309,7 +310,8 @@ $warning = array();
     if ($passed) {
         echoStart(gt('Saving Configuration'));
 
-        $config = expString::sanitize_array($_POST['sc']);
+//        $config = expString::sanitize_array($_POST['sc']);
+        $config = expString::sanitize($_POST['sc']);
         foreach ($config as $key => $value) {
             expSettings::change($key, addslashes($value));
         }

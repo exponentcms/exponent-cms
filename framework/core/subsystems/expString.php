@@ -217,30 +217,45 @@ class expString {
      * @return string
      */
     public static function sanitize(&$data) {
-        global $db;
-
-        if (empty($data)) return $data;
-
-        // remove whitespaces and tags
-//        $data = strip_tags(trim($data));
-        // remove whitespaces and script tags
-        $data = self::strip_tags_content(trim($data), '<script>', true);
-
-        // apply stripslashes if magic_quotes_gpc is enabled
-        if(get_magic_quotes_gpc()) {
-            $data = stripslashes($data);
-        }
-
-        // a mySQL connection is required before using this function
-        if ($db->havedb) {
-            $data = $db->escapeString($data);
+        if (is_array($data)) {
+            $saved_params = array();
+            if (!empty($data['controller']) && $data['controller'] == 'snippet') {
+                $saved_params['body'] = $data['body'];
+            }
+            foreach ($data as $var=>$val) {
+                $data[$var] = self::sanitize($val);
+            }
+            if (!empty($saved_params)) {
+                $data = array_merge($data, $saved_params);
+            }
         } else {
-            $data = self::escape($data);
+
+            global $db;
+
+            if (empty($data)) {
+                return $data;
+            }
+
+            // remove whitespaces and tags
+//            $data = strip_tags(trim($data));
+            // remove whitespaces and script tags
+            $data = self::strip_tags_content(trim($data), '<script>', true);
+
+            // apply stripslashes if magic_quotes_gpc is enabled
+            if (get_magic_quotes_gpc()) {
+                $data = stripslashes($data);
+            }
+
+            // a mySQL connection is required before using this function
+            if ($db->havedb) {
+                $data = $db->escapeString($data);
+            } else {
+                $data = self::escape($data);
+            }
+
+            // re-escape newlines
+            $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
         }
-
-        // re-escape newlines
-        $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
-
         return $data;
     }
 
@@ -267,9 +282,9 @@ class expString {
         if (empty($data['route_sanitized'])) {
             $tmp =1; // we got here NOT going through $router->routeRequest
         }
-        if (empty($data['pre_sanitized'])) {
-            $tmp =1; // we got here NOT going through $router->convertPartsToParams
-        }
+//        if (empty($data['pre_sanitized'])) {
+//            $tmp =1; // we got here NOT going through $router->convertPartsToParams
+//        }
         if (!empty($data['array_sanitized'])) {
             $tmp =1;  // 2nd time through
         }

@@ -368,9 +368,9 @@ class filemanagercontrol extends formcontrol {
 
             expJavascript::pushToFoot(array(
                 "unique"    => "filepicker".$name,
-                "src"       => PATH_RELATIVE . 'external/SimpleAjaxUploader/SimpleAjaxUploader.js',
+//                "src"       => PATH_RELATIVE . 'external/SimpleAjaxUploader/SimpleAjaxUploader.js',
 //                "yui3mods"  => "1",
-                "jquery"    => 'Sortable',
+                "jquery"    => 'Sortable,SimpleAjaxUploader',
                 "content"   => $js,
              ));
         return $html;
