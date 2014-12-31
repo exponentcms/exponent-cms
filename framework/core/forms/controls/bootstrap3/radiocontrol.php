@@ -127,7 +127,8 @@ class radiocontrol extends formcontrol {
     static function update($values, $object) {
         if ($object == null) $object = new radiocontrol();
         if ($values['groupname'] == "") {
-            $post = expString::sanitize_array($_POST);
+//            $post = expString::sanitize_array($_POST);
+            $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Group name is required.');
             expSession::set("last_POST",$post);
             return null;

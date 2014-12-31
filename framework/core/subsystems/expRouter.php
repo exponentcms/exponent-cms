@@ -183,7 +183,8 @@ class expRouter {
         }
         if (!$user->isAdmin()) {
             $_REQUEST['route_sanitized'] = true;//FIXME debug test
-            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
+//            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
+            expString::sanitize($_REQUEST);  // strip other exploits like sql injections
         }
 
         // start splitting the URL into it's different parts

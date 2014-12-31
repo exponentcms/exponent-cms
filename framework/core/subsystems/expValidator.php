@@ -535,7 +535,8 @@ class expValidator {
         if (is_object($file)) {
             return $db->insertObject($file,'file');
         } else {
-            $post = expString::sanitize_array($_POST);
+//            $post = expString::sanitize_array($_POST);
+            $post = expString::sanitize($_POST);
             $post['_formError'] = $file;
             flash('error',$file);
             expSession::set('last_POST',$post);
