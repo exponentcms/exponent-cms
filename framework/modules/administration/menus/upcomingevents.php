@@ -93,7 +93,7 @@ foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();
         $thisitem['text'] = $event->title . ' (' . $event->countRegistrants(
-            ) . ($event->quantity ? '/' . $event->quantity : '' . ')');
+            ) . ($event->quantity ? '/' . $event->quantity : '') . ')';
         $thisitem['url'] = $router->makeLink(
             array(
                 'controller' => 'eventregistration',
