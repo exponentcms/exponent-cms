@@ -27,7 +27,7 @@
 
 <div class="module store show product">
     <div class="category-breadcrumb">
-        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>{if count($ancestors)}&#160;&#160;&raquo;&#160;{/if}
+        <a href="{link controller=store action=showall}" title="{'View the Store'|gettext}">{'Store'|gettext}</a>&#160;&#160;&raquo;&#160;
         {foreach from=$ancestors item=ancestor name=path}
             <a href="{link controller=store action=showall title=$ancestor->sef_url}" title="{'View this Product Category'|gettext}">{$ancestor->title}</a>&#160;&#160;&raquo;&#160;
         {/foreach}
