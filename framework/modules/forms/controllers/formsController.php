@@ -1511,7 +1511,7 @@ class formsController extends expController {
     public function import_csv_mapper() {
         //Check to make sure the user filled out the required input.
         if (!is_numeric($this->params["rowstart"])) {
-            unset($this->params['rowstart']);
+            unset($this->params["rowstart"]);
             $this->params['_formError'] = gt('The starting row must be a number.');
             expSession::set("last_POST", $this->params);
             header("Location: " . $_SERVER['HTTP_REFERER']);
@@ -1562,6 +1562,7 @@ class formsController extends expController {
             //split the line into its columns
             $headerinfo = null;
             $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+            if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
             for ($x = 0; $x < $this->params["rowstart"]; $x++) {
                 $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
                 if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
@@ -1731,6 +1732,7 @@ class formsController extends expController {
         //split the line into its columns
         $headerinfo = null;
         $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
+        if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
             if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
