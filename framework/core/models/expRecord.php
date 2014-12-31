@@ -412,10 +412,11 @@ class expRecord {
      *
      * @param        $item
      * @param string $subtype
+     * @param bool   $replace
      *
      * @return bool
      */
-    public function attachItem($item, $subtype = '') { //FIXME only placed used is in helpController->copydocs, & migration
+    public function attachItem($item, $subtype = '', $replace = true) { //FIXME only placed used is in helpController->copydocs (though we don't have attachments), & migration
         global $db;
 
         // make sure we have the info we need..otherwise return
@@ -424,7 +425,7 @@ class expRecord {
 //        $refname = strtolower($item->classname).'s_id';  //FIXME plural vs single?
 //        $refname = strtolower($item->classname) . '_id'; //FIXME plural vs single?
         $refname = strtolower($item->tablename) . '_id';
-        $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
+        if ($replace) $db->delete($item->attachable_table, 'content_type="' . $this->classname . '" AND content_id=' . $this->id . ' AND ' . $refname . '=' . $item->id);
         $obj               = new stdClass();
         $obj->$refname     = $item->id;
         $obj->content_id   = $this->id;
