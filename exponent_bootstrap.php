@@ -21,10 +21,18 @@
 // magic quotes feature was removed in php 5.4.0
 if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
 {
-    $_REQUEST = array_map('stripslashes', $_REQUEST);
-    $_GET = array_map('stripslashes', $_GET);
-    $_POST = array_map('stripslashes', $_POST);
-    $_COOKIE = array_map('stripslashes', $_COOKIE);
+	/**
+	 * @param $value
+	 * @return mixed
+	 */
+	function stripslashes_deep($value) {
+		return is_array($value) ? array_map('stripslashes_deep', $value) : stripslashes($value);
+	}
+
+    $_REQUEST = array_map('stripslashes_deep', $_REQUEST);
+    $_GET = array_map('stripslashes_deep', $_GET);
+    $_POST = array_map('stripslashes_deep', $_POST);
+    $_COOKIE = array_map('stripslashes_deep', $_COOKIE);
 }
 
 // for scripts that want to bootstrap minimally, we will need _realpath()
