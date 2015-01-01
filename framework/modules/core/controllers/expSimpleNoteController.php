@@ -27,10 +27,10 @@ class expSimpleNoteController extends expController {
     protected $add_permissions = array(
         'approve'=>"Approve Comments"
     );
-    protected $remove_permissions = array(
-        'edit',
-        'create'
-    );
+//    protected $remove_permissions = array(
+//        'edit',
+//        'create'
+//    );
 
     static function displayname() { return gt("Simple Notes"); }
     static function description() { return gt("Use this module to add Simple Notes attached to something (product, order, etc)"); }
@@ -208,14 +208,15 @@ class expSimpleNoteController extends expController {
         //FIXME here is where we might sanitize the note before saving it
         $this->expSimpleNote->update($this->params);
         
-        // attach the note to the datatype it belongs to (blog, news, etc..);
-        $obj = new stdClass();
-        $obj->content_type = $this->params['content_type'];
-        $obj->content_id = $this->params['content_id'];
-        $obj->expsimplenote_id = $this->expSimpleNote->id;
-        if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
-        $db->insertObject($obj, $this->expSimpleNote->attachable_table);
-        
+        // attach the note to the datatype it belongs to (product, order, etc..);
+//        $obj = new stdClass();
+//        $obj->content_type = $this->params['content_type'];
+//        $obj->content_id = $this->params['content_id'];
+//        $obj->expsimplenote_id = $this->expSimpleNote->id;
+//        if(isset($this->params['subtype'])) $obj->subtype = $this->params['subtype'];
+//        $db->insertObject($obj, $this->expSimpleNote->attachable_table);
+        $this->expSimpleNote->attachNote($this->params['content_type'], $this->params['content_id'], $this->params['subtype']);
+
         $msg = gt('Your note has been added.');
         if ($require_approval == 1 && !$user->isAdmin()) {
             $msg .= ' '.gt('Your note is now pending approval. You will receive an email to').' ';
@@ -383,6 +384,7 @@ class expSimpleNoteController extends expController {
         
         return true;
     }
+
 }
 
 ?>
