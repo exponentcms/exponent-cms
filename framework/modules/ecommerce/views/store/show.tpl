@@ -192,11 +192,7 @@
                             {*{foreach from=$product->optiongroup item=og}*}
                                 {*{if $og->hasEnabledOptions()}*}
                                     {*<div class="option {cycle values="odd,even"}">*}
-                                        {*{if $og->allow_multiple}*}
-                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
-                                        {*{else}*}
-                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}*}
-                                        {*{/if}*}
+                                        {*{optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options required=$og->required}*}
                                     {*</div>*}
                                 {*{/if}*}
                             {*{/foreach}*}
@@ -377,11 +373,7 @@
                                  {*{if $og->hasEnabledOptions()}*}
                                      {*<div class="option {cycle values="odd,even"}">*}
                                          {*<h4>{$og->title}</h4>*}
-                                         {*{if $og->allow_multiple}*}
-                                             {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
-                                         {*{else}*}
-                                             {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}*}
-                                         {*{/if}*}
+                                         {*{optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options required=$og->required}*}
                                      {*</div>*}
                                  {*{/if}*}
                              {*{/foreach}*}
@@ -444,11 +436,7 @@
                                 {*{if $og->hasEnabledOptions()}*}
                                     {*<div class="option {cycle values="odd,even"}">*}
                                         {*<h4>{$og->title}</h4>*}
-                                        {*{if $og->allow_multiple}*}
-                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}*}
-                                        {*{else}*}
-                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}*}
-                                        {*{/if}*}
+                                        {*{optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options required=$og->required}*}
                                     {*</div>*}
                                 {*{/if}*}
                             {*{/foreach}*}

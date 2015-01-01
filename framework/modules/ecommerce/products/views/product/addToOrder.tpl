@@ -28,10 +28,10 @@
     {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}
     {$listing->body}
     <blockquote>
-        <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
+        <strong>{"Additional information is required before we can add to your order"|gettext}</strong>
         {br}{br}
-        {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
-        {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
+        {"If you are adding multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
+        {"If you would like different options or personalized fields for each item, please add them one at a time to your order."|gettext}
     </blockquote>
     {clear}
     {form controller=order action=save_new_order_item id="save_new_order_item_form"}
@@ -135,12 +135,8 @@
                 {foreach from=$product->optiongroup item=og}
                     {if $og->hasEnabledOptions()} 
                         <div class="option {cycle values="odd,even"}">
-                            {if $og->allow_multiple}
-                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
-                            {else}
-                                {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}
-                            {/if}
-                        </div> 
+                            {optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options required=$og->required}
+                        </div>
                     {/if}
                 {/foreach}
                 <span style="font-variant:small-caps;">* {"Selection required"|gettext}.</span>
@@ -154,12 +150,8 @@
                 {foreach from=$product->user_input_fields key=uifkey item=uif}
                     <div class="user-input {cycle values="odd,even"}">
                         {if $uif.use}
-                             {if $uif.is_required}
-                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                             {else}
-                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                             {/if}
-                             {if $uif.description != ''}{$uif.description}{/if}
+                            {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                            {if $uif.description != ''}{$uif.description}{/if}
                         {/if}
                     </div>
                 {/foreach}

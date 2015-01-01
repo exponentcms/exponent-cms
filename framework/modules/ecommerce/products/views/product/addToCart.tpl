@@ -53,12 +53,8 @@
                 {foreach from=$product->optiongroup item=og}
                     {if $og->hasEnabledOptions()}
                         <div class="option {cycle values="odd,even"}">
-                            {if $og->allow_multiple}
-                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
-                            {else}
-                                {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}
-                            {/if}
-                        </div> 
+                            {optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options required=$og->required}
+                        </div>
                     {/if}
                 {/foreach}
                 <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>
@@ -72,12 +68,8 @@
             {foreach from=$product->user_input_fields key=uifkey item=uif}  
                 <div class="user-input {cycle values="odd,even"}">
                     {if $uif.use}                   
-                         {if $uif.is_required}
-                             {control type=text name="user_input_fields[`$uifkey`]" size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {else}
-                             {control type=text name="user_input_fields[`$uifkey`]" size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                         {/if}
-                         {if $uif.description != ''}{$uif.description}{/if}
+                        {control type=text name="user_input_fields[`$uifkey`]" size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
+                        {if $uif.description != ''}{$uif.description}{/if}
                     {/if}
                 </div>
             {/foreach}

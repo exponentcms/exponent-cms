@@ -56,6 +56,13 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     if (!array_key_exists($default,$options)) $default = null;
     
     $view = $params['view'];
+    if ($view != 'checkboxes' && $view != 'dropdown') {
+        if (!empty($params['view'])) {
+            $view = 'checkboxes';
+        } else {
+            $view = 'dropdown';
+        }
+    }
     
     //if((isset() || $og->required == false) $includeblank = $params['includeblank'] ; 
     //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $og->required == true) $includeblank = false;

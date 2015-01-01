@@ -150,13 +150,7 @@
                             {foreach from=$product->optiongroup item=og}
                                 {if $og->hasEnabledOptions()}
                                     <div class="option {cycle values="odd,even"}">
-                                        {if $og->allow_multiple}
-                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=total selected=$params.options}*}
-                                            {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
-                                        {else}
-                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}*}
-                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
-                                        {/if}
+                                        {optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options}
                                     </div>
                                 {/if}
                             {/foreach}
