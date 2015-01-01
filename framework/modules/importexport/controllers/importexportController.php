@@ -574,6 +574,15 @@ class importexportController extends expController {
             32=rank category_rank
             33=feed_title
             34=feed_body
+            35=weight
+            36=height
+            37=width
+            38=length
+            39=companies_id
+            40=url to mainimage to download
+            41=url to additional image to download
+            ..
+            44=url to additional image to download
         */
 
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
@@ -626,6 +635,64 @@ class importexportController extends expController {
             $product->surcharge = $data[31];
             $product->feed_title = stripslashes(stripslashes($data[33]));
             $product->feed_body = stripslashes(stripslashes($data[34]));
+
+            if (!empty($data[35])) $product->weight = $data[35];
+            if (!empty($data[36])) $product->height = $data[36];
+            if (!empty($data[37])) $product->width = $data[37];
+            if (!empty($data[38])) $product->length = $data[38];
+            if (!empty($data[39])) $product->companies_id = $data[39];
+            if (!empty($data[40])) {
+                // import image from url
+                $_destFile = basename($data[4]);  // get filename from end of url
+                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+                $_destFullPath = BASE . $_destDir . $_destFile;
+                if (file_exists($_destFullPath)) {
+                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                    $_destFullPath = BASE . $_destDir . $_destFile;
+                }
+
+                expCore::saveData($data[40], $_destFullPath);  // download the image
+
+                if (file_exists($_destFullPath)) {
+                    $__oldumask = umask(0);
+                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                    umask($__oldumask);
+
+                    // Create a new expFile Object
+                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                    $_objFile = new expFile ($_fileParams);
+                    $_objFile->save();
+                    // attach/replace product main image with new expFile object
+                    $product->attachItem($_objFile, 'mainimage');
+                }
+            }
+            for ($i=41; $i<=44; $i++) {
+                if (!empty($data[$i])) {
+                    // import image from url
+                    $_destFile = basename($data[$i]);  // get filename from end of url
+                    $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+                    $_destFullPath = BASE . $_destDir . $_destFile;
+                    if (file_exists($_destFullPath)) {
+                        $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                        $_destFullPath = BASE . $_destDir . $_destFile;
+                    }
+
+                    expCore::saveData($data[$i], $_destFullPath);  // download the image
+
+                    if (file_exists($_destFullPath)) {
+                        $__oldumask = umask(0);
+                        chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                        umask($__oldumask);
+
+                        // Create a new expFile Object
+                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                        $_objFile = new expFile ($_fileParams);
+                        $_objFile->save();
+                        // attach product additional images with new expFile object
+                        $product->attachItem($_objFile, 'images', false);
+                    }
+                }
+            }
 
             if (empty($product->id)) $product->minimum_order_quantity = 1;
 

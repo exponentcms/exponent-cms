@@ -558,6 +558,21 @@ class expString {
         else return $eof;
     }
 
+    public static function stripLineEndings($val) {
+        return preg_replace('/\r\n/', ' ', trim($val));
+    }
+
+    public static function buildCategoryString($catID, $reset = false) {
+        static $cstr = '';
+        if ($reset) $cstr = '';
+        if (strlen($cstr) > 0) $cstr .= "::";
+        $cat = new storeCategory($catID);
+        //eDebug($cat);
+        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
+        $cstr .= $cat->title . "::";
+        return substr($cstr, 0, -2);
+    }
+
 }
 
 ?>
