@@ -34,44 +34,44 @@
         {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
     </blockquote>
     {clear}
-    {script unique="children-submit" yui3mods="1"}
-        {literal}
-        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            Y.one('#submit-chiprods').on('click',function(e){
-                e.halt();
-                var frm = Y.one('#child-products-form');
-                var chcks = frm.all('input[type="checkbox"]');
-                var txts = frm.all('input[type="text"]');
-                
-                bxchkd=0;
-                var msg = ""
-                
-                chcks.each(function(bx,key){
-                    if (bx.get('checked')) {
-                        bxchkd++;
-                        if (parseInt(txts.item(key).get('value'))<=0) {
-                            msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
-                        }
-                    };
-                });
-                
-                if (bxchkd==0 || msg!="") {
-                    alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
-                } else {
-                    frm.submit();
-                };
-            });
-        });
-        {/literal}
-    {/script}
     {form controller=order action=save_new_order_item id="save_new_order_item_form"}
         {control type=hidden name=product_id value=$product->id}
         {control type=hidden name=orderid value=$params.orderid}
         {control type=hidden name=product_type value=$product->classname}			        
         {control type=hidden name=options_shown value=$product->id}                    
         {if $product->childProduct|@count >= 1}
+            {script unique="children-submit" yui3mods="1"}
+            {literal}
+                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                    Y.one('#submit-itemSubmit').on('click',function(e){
+                        e.halt();
+                        var frm = Y.one('#save_new_order_item_form');
+                        var chcks = frm.all('input[type="checkbox"]');
+                        var txts = frm.all('input[type="text"]');
+
+                        bxchkd=0;
+                        var msg = ""
+
+                        chcks.each(function(bx,key){
+                            if (bx.get('checked')) {
+                                bxchkd++;
+                                if (parseInt(txts.item(key).get('value'))<=0) {
+                                    msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
+                                }
+                            };
+                        });
+
+                        if (bxchkd==0 || msg!="") {
+                            alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
+                        } else {
+                            frm.submit();
+                        };
+                    });
+                });
+                {/literal}
+             {/script}
             <div id="child-products" class="exp-ecom-table">
-               <table border="0" cellspacing="0" cellpadding="0">
+               <table border="0" cellspacing="0" cellpadding="0" width="100%">
                     <thead>
                         <tr>
                             <th>&#160;</th>
@@ -80,8 +80,8 @@
                             {foreach from=$product->extra_fields item=chiprodname}
                                 <th><span>{$chiprodname.name}</span></th>
                             {/foreach}
-                            <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                            <th>{'Action'|gettext}</th>
+                            <th style="text-align: right; padding-right: 10px"><strong>{"PRICE"|gettext}</strong></th>
+                            {*<th>{'Action'|gettext}</th>*}
                         </tr>
                     </thead>
                     <tbody>
@@ -96,7 +96,7 @@
                                 {** }*}
 
                                 {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                    <td><input class="form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
+                                    <td><input class="checkbox form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
                                     <td><input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
                                 {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
                                     <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Out Of Stock'|gettext}</a></span></td>
@@ -118,8 +118,7 @@
                                         <span>{currency_symbol}<input class="form-cotnrol" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
                                     {/if}
                                 </td>
-                                <td>
-                                </td>
+                                {*<td>&#160;</td>*}
                             </tr>
                         {/foreach}
                     </tbody>
@@ -166,6 +165,6 @@
                 {/foreach}
             </div>
         {/if}
-        {control type="buttongroup" size=large color=green submit="Add Item(s) to Order"|gettext}
+        {control type="buttongroup" id="submit-item" size=large color=green submit="Add Item(s) to Order"|gettext}
     {/form}
 </div>
