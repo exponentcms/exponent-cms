@@ -100,7 +100,7 @@ class cartController extends expController {
             }
         }
 
-        // should we through up a form to gather additional information before adding this item to the cart?
+        // should we throw up a form to gather additional information before adding this item to the cart?
 //        if (($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation" || $product->product_type == "eventregistration") && empty($this->params['quick'])) {
 //        if ($product->product_type != "giftcard" && empty($this->params['quick'])) {
         if (empty($this->params['quick'])) {

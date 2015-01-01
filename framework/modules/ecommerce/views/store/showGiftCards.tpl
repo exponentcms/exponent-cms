@@ -117,7 +117,6 @@
         };
         $('.radio-gift').change(function(ev) {
             $( "#options_shown" ).val(ev.target.value);
-            alert($( "#options_shown" ).val());
         });
         $( "#submit-giftcard" ).click(function() {
             $( "#addtocart" ).submit();
