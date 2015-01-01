@@ -31,7 +31,8 @@
         <div id="editproduct-tabs" class="">
             <ul class="nav nav-tabs" role="tablist">
 	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Info'|gettext}</em></a></li>
-	            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Files & Images'|gettext}</em></a></li>
+                <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Pricing'|gettext}</em></a></li>
+	            <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Files & Images'|gettext}</em></a></li>
             </ul>            
             <div class="tab-content">
 	            <div id="tab1" role="tabpanel" class="tab-pane fade in active">
@@ -39,8 +40,11 @@
 	                {*{control type="textarea" name="summary" label="Gift Card Summary"|gettext rows=3 cols=45 value=$record->summary}*}
 	                {control type="editor" name="body" label="Gift Card Description"|gettext height=250 value=$record->body}
 	            </div>
-	            <div id="tab2" role="tabpanel" class="tab-pane fade">
-	                {control type=files label="Main Images"|gettext name=files subtype="mainimage" accept="image/*" value=$record->expFile folder=$config.upload_folder}
+                <div id="tab2" role="tabpanel" class="tab-pane fade">
+   	                {control type="text" name="base_price" label="Purchase increment dollar amount"|gettext value=$record->base_price filter=money description='Enter the minimum/multiple amount for gift cards'|gettext}
+   	            </div>
+	            <div id="tab3" role="tabpanel" class="tab-pane fade">
+	                {control type=files label="Main Image"|gettext name=files subtype="mainimage" accept="image/*" value=$record->expFile limit=1 folder=$config.upload_folder}
 	            </div>
             </div>
         </div>
