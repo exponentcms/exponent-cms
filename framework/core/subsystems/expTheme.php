@@ -375,7 +375,8 @@ class expTheme
 //            $controller = new $classname();
             $controller = expModules::getController($router->url_parts[0]);
             $metainfo = $controller->metainfo();
-        } else {
+        }
+        if (empty($metainfo)) {
             $metainfo['title'] = empty($sectionObj->page_title) ? SITE_TITLE : $sectionObj->page_title;
             $metainfo['keywords'] = empty($sectionObj->keywords) ? SITE_KEYWORDS : $sectionObj->keywords;
             $metainfo['description'] = empty($sectionObj->description) ? SITE_DESCRIPTION : $sectionObj->description;
