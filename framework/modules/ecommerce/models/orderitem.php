@@ -86,7 +86,7 @@ class orderitem extends expRecord {
     public function getUserInputFields($style = 'br') {
         if (!empty($this->user_input_fields)) {
             //eDebug(expUnserialize($this->user_input_fields,true));
-            if ($style == 'br') $ret = '<br/>';
+            if ($style == 'br') $ret = ''; //$ret = '<br/>';
             else if ($style == 'list') $ret = '<ul>';
             foreach (expUnserialize($this->user_input_fields) as $uifarray) {
                 foreach ($uifarray as $uifkey => $uif) {
