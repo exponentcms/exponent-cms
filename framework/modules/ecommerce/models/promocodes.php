@@ -22,6 +22,9 @@
  */
 class promocodes extends expRecord {
     public $table = 'promocodes';
+    public $has_one = array(
+        'discounts',
+    );
     public $validates = array(
         'presence_of'=>array(
             'title'=>array('message'=>'You must give this code a title.'),

@@ -16,10 +16,12 @@
 {if $record->parent_id == 0}
     {control type="hidden" name="tab_loaded[options]" value=1}
     {if count($record->childProduct)}
-        <h2>{'Child products inherit these settings.'|gettext}</h2>
+        <h4><em>({'Child products inherit these settings.'|gettext})</em></h4>
     {/if}
 	<h2>{'Add options to your product.'|gettext}</h2>
     {icon class="manage" controller=ecomconfig action=options text="Manage Product Options"|gettext}{br}
+    {control type="checkbox" name="options[show_options]" id=show_options label="Display options on product page"|gettext value=1 checked=$record->show_options postfalse=1 description='Options will be displayed on the product page instead of a secondary page when adding item to cart'|gettext}
+    {control type="checkbox" name="options[segregate_options]" id=segregate_options label="Segregate required options?"|gettext value=1 checked=$record->segregate_options postfalse=1 description='Should we group the required and non-required options separately'|gettext}
     <blockquote>
         {'By selecting the checkbox in front of an option in an option group (the LABEL column), that option group and option will be added to the checkout process for this product.'|gettext}{br}
         <ul>
@@ -28,9 +30,9 @@
             <li><strong>{"Select Multiple"|gettext}</strong> - {'Presents the options as a checkbox group where the user may select multiple options'|gettext}</li>
             <li><strong>{"Default"|gettext}</strong> - {'Selecting the Default radio button for an option causes that option to become selected by default.'|gettext}</li>
         </ul>
-        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.  Click on the \'More\' link to enter the option\'s weight.'|gettext}{br}
+        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext} {*'Click on the \'More\' link to enter the option\'s weight.'|gettext*}{br}
     </blockquote>
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
-	<h2>{'Options'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+	<h4><em>({'Options'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}

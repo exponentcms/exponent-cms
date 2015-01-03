@@ -16,7 +16,7 @@
 {if $record->parent_id == 0}
     {control type="hidden" name="tab_loaded[images]" value=1}
     {if count($record->childProduct)}
-        <h2>{'Child products inherit these settings.'|gettext}</h2>
+        <h4><em>({'Child products inherit these settings.'|gettext})</em></h4>
     {/if}
     <div id="imagefunctionality">
         {control type="text" name="images[image_alt_tag]" label="Image Alt Tag"|gettext value=$record->image_alt_tag description="The image alt tag will be created dynamically by the system, however you may supply a custom one here:"|gettext}
@@ -49,7 +49,7 @@
         {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile folder=$config.upload_folder description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
     </div>
 {else}
-	<h2>{'Images'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+	<h4><em>({'Images'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
 {literal}

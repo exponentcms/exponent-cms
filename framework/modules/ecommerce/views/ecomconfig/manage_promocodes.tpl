@@ -25,24 +25,24 @@
 	
 	<h3>{'Add a new promo code'|gettext}</h3>
 	<table class="exp-skin-table">
-	<thead>
-	    <tr>
-	        <th>{'Name'|gettext}</th>
-		    <th>{'Promo Code'|gettext}</th>
-		    <th>{'Discount'|gettext}</th>
-		    <th>{'Action'|gettext}</th>
-		</tr>
-	</thead>
-	<tbody>
-	    <tr>
-	        {form action=update_promocode}
-                <td>{control type=text name=title label=" "}</td>
-                <td>{control type="text" name="promo_code" label="" label=" "}</td>
-                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
-                <td>{control type=buttongroup submit="Add Discount"|gettext}</td>
-	        {/form}
-	    </tr>
-	</tbody>
+		<thead>
+			<tr>
+				<th>{'Name'|gettext}</th>
+				<th>{'Promo Code'|gettext}</th>
+				<th>{'Discount'|gettext}</th>
+				<th>{'Action'|gettext}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				{form action=update_promocode}
+					<td>{control type=text name=title label=" "}</td>
+					<td>{control type="text" name="promo_code" label="" label=" "}</td>
+					<td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
+					<td>{control type=buttongroup submit="Add Discount"|gettext}</td>
+				{/form}
+			</tr>
+		</tbody>
 	</table>
 	
 	{if $promo_codes|@count > 0}
@@ -56,6 +56,7 @@
                 <th>{'Action'|gettext}</th>
             </tr>
 	    </thead>
+		<tbody>
             {foreach from=$promo_codes item=code}
                 <tr class="{cycle values='even,odd'}"">
                     {form action=update_promocode}

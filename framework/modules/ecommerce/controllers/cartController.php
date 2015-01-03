@@ -57,7 +57,6 @@ class cartController extends expController {
         $product_type = isset($this->params['product_type']) ? $this->params['product_type'] : 'product';
         $product      = new product();
 
-        //eDebug($this->params);
         //if we're trying to add a parent product ONLY, then we redirect to it's show view
         $c = new stdClass();
         if (isset($this->params['product_id']) && empty($this->params['children'])) $c = $product->find('first', 'parent_id=' . $this->params['product_id']);
@@ -100,34 +99,34 @@ class cartController extends expController {
             }
         }
 
-        // should we throw up a form to gather additional information before adding this item to the cart?
+        // if needed we throw up a form to gather additional information before adding this item to the cart
 //        if (($product->product_type == "product" || $product->product_type == "childProduct" || $product->product_type == "donation" || $product->product_type == "eventregistration") && empty($this->params['quick'])) {
 //        if ($product->product_type != "giftcard" && empty($this->params['quick'])) {
-        if (empty($this->params['quick'])) {
-            //FIXME should this be relegated to $product->addToCart???
-            if (($product->hasOptions() || $product->hasUserInputFields()) && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) {
-
-                // if we hit here it means this product type was missing some
-                // information it needs to add the item to the cart..so we need to help
-                // it display its addToCart form
-                /*redirect_to(array(
-                            'controller'=>'cart',
-                            'action'=>'displayForm',
-                            'form'=>'addToCart',
-                            'product_id'=>$this->params['product_id'],
-                            'product_type'=>$this->params['product_type'],
-                            'children'=>serialize($this->params['children']),
-                    ));*/
-                $product->displayForm('addToCart', $this->params);
-                return false;
-            }
-        }
+//        if (empty($this->params['quick'])) {
+//            //FIXME shouldn't this be relegated to $product->addToCart???
+//            if (($product->hasOptions() && (!isset($this->params['options_shown']) || $this->params['options_shown'] != $product->id)) ||
+//                ($product->hasUserInputFields() && (!isset($this->params['input_shown']) || $this->params['input_shown'] != $product->id))) {
+//                // if we hit here it means this product type was missing some
+//                // information it needs to add the item to the cart..so we need to help
+//                // it display its addToCart form
+//                /*redirect_to(array(
+//                            'controller'=>'cart',
+//                            'action'=>'displayForm',
+//                            'form'=>'addToCart',
+//                            'product_id'=>$this->params['product_id'],
+//                            'product_type'=>$this->params['product_type'],
+//                            'children'=>serialize($this->params['children']),
+//                    ));*/
+//                $product->displayForm('addToCart', $this->params);
+//                return false;
+//            }
+//        }
         //product either has no options, user input fields, or has already seen and passed the options page, so we try adding to cart
         //it will validate and fail back to the options page if data is incorrect for whatever reason (eg, bad form post)
-        //eDebug($this->params, true);
-        //$this->params['qty'] = 1; //REMOVE ME
         if ($product->addToCart($this->params)) {
+            // product was added
             if (ecomconfig::getConfig('show_cart') || !empty($this->params['quick'])) {
+                // adding an item displays the shopping cart
 //                global $order;
 //                $order->calculateGrandTotal();
 //                if (!$order->grand_total && !$order->shipping_required) {
@@ -141,6 +140,7 @@ class cartController extends expController {
                 //expHistory::lastNotEditable();
 //                }
             } else {
+                // quick added, so just provide message
                 if ($product->product_type == "donation") {
                     $type = ' '.gt('Donation');
                 } elseif ($product->product_type == "eventregistration") {
@@ -150,6 +150,8 @@ class cartController extends expController {
                 }
                 flash('message', gt("Added") . " " . $product->title . $type . " " . gt("to your cart.") . " <a href='" . $router->makeLink(array('controller'=> 'cart', 'action'=> 'checkout'), false, true) . "'>" . gt("Click here to checkout now.") . "</a>");
             }
+        } else {
+            return false;
         }
         expHistory::back();
     }

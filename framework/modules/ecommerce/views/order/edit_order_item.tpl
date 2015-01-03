@@ -43,33 +43,13 @@
                 <td>{control type=text name=quantity label="" value=$oi->quantity}</td>
             </tr>
         </table>
-        {if $oi->product->hasOptions()}
-            <div class="product-options">
-                <h2>{$oi->products_name} {'Options'|gettext}</h2>
-                {foreach from=$oi->product->optiongroup item=og}
-                    {if $og->hasEnabledOptions()} 
-                        <div class="option {cycle values="odd,even"}"> 
-                            {optiondisplayer product=$oi->product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$oi->selectedOpts required=$og->required}
-                        </div>
-                    {/if}
-                {/foreach}
-                <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>
-            </div>
-        {/if}
-        
-        {if !empty($oi->product->user_input_fields) && $oi->product->user_input_fields|@count>0 }
-            <div class="user-input-fields">
-                <h2>{'User Input Fields'|gettext}</h2>
-                {foreach from=$oi->product->user_input_fields key=uifkey item=uif}
-                    <div class="user-input {cycle values="odd,even"}">
-                        {if $uif.use}
-                            {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$oi->user_input_fields.$uifkey[$uif.name]}
-                            {if $uif.description != ''}{$uif.description}{/if}
-                        {/if}
-                    </div>
-                {/foreach}
-            </div>
-        {/if}
+
+        {* NOTE display product options *}
+        {exp_include file="options.tpl"}
+
+        {* NOTE display product user input fields *}
+        {exp_include file="input_fields.tpl"}
+
         {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

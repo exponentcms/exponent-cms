@@ -64,13 +64,20 @@
                                </button>
                                {if $listing->quantity <= 0}<span class="error">{$listing->availability_note}</span>{/if}
                            {elseif $listing->availability_type == 2}
-                               {if $user->isAdmin()}
+                               {if $listing->quantity - $listing->minimum_order_quantity >= 0}
                                    <input type="text" class="text form-control" size="5" value="{$listing->minimum_order_quantity|default:1}" name="quantity">
-                                   <button type="submit" class="add-to-cart-btn {button_style color=red size=large}" rel="nofollow">
+                                   <button type="submit" class="add-to-cart-btn {button_style color=blue size=large}" rel="nofollow">
                                        {"Add to Cart"|gettext}
                                    </button>
+                               {else}
+                                   {if $user->isAdmin()}
+                                       <input type="text" class="text form-control" size="5" value="{$listing->minimum_order_quantity|default:1}" name="quantity">
+                                       <button type="submit" class="add-to-cart-btn {button_style color=red size=large}" rel="nofollow">
+                                           {"Add to Cart"|gettext}
+                                       </button>
+                                   {/if}
+                                   <span class="error">{$listing->availability_note}</span>
                                {/if}
-                               {if $listing->quantity <= 0}<span class="error">{$listing->availability_note}</span>{/if}
                            {elseif $listing->active_type == 1}
                                {if $user->isAdmin()}
                                    <input type="text" class="text form-control" size="5" value="{$listing->minimum_order_quantity|default:1}" name="quantity">

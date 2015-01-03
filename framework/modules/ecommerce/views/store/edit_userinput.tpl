@@ -16,7 +16,7 @@
 {if $record->parent_id == 0}
     {control type="hidden" name="tab_loaded[userinput]" value=1}
     {if count($record->childProduct)}
-        <h2>{'Child products inherit these settings.'|gettext}</h2>
+		<h4><em>({'Child products inherit these settings.'|gettext})</em></h4>
     {/if}
 	<h2>{'User Input'|gettext}</h2>
 	<blockquote>
@@ -191,7 +191,7 @@
 	</div>
     {/group}
 {else}
-	<h2>{'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+	<h4><em>({'User Input Fields'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}
 
 {script unique="edituserinput" jquery=1}

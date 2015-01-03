@@ -16,7 +16,7 @@
 {if $record->parent_id == 0}
     {control type="hidden" name="tab_loaded[meta]" value=1}
     {if count($record->childProduct)}
-        <h2>{'Child products inherit these settings.'|gettext}</h2>
+        <h4><em>({'Child products inherit these settings.'|gettext})</em></h4>
     {/if}
     <h2>{'Meta Info'|gettext}</h2>
     {control type="text" name="meta[sef_url]" label="SEF URL"|gettext value=$record->sef_url description='If you don\'t put in an SEF URL one will be generated based on the title provided. SEF URLs can only contain alpha-numeric characters, hyphens, forward slashes, and underscores.'|gettext}
@@ -27,5 +27,5 @@
     {control type="checkbox" name="meta[meta_noindex]" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex value=1 description='Should this page be indexed by search engines?'|gettext}
     {control type="checkbox" name="meta[meta_nofollow]" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
 {else}
-	<h2>{'Meta Info Details'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+	<h4><em>({'Meta Info Details'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}

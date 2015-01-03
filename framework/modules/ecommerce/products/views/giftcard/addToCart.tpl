@@ -25,7 +25,7 @@
         {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_type" value=$params.product_type}
         {control type="hidden" name="product_id" value=$params.product_id}
-        {control type=hidden name="options_shown" value=$product->id}
+        {control type="hidden" name="options_shown" value=$product->id}
         {control type="text" id="dollar_amount" name="card_amount_txt" label="Dollar Amount:"|gettext value=$price size=7 filter=money}
         {control type="text" name="toname" label="To:"|gettext value=$record->to}
         {control type="text" name="fromname" label="From:"|gettext value=$record->from}

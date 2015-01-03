@@ -26,69 +26,70 @@
     {icon class=manage controller=ecomconfig action=manage_discounts text='Manage Discount Rules'|gettext}
 	<h3>{'Add a new group discount'|gettext}</h3>
 	<table class="exp-skin-table">
-	<thead>
-	    <tr>
-	        <th>{'Group'|gettext}</th>
-		    <th>{'Discount'|gettext}</th>
-		    <th>{'Don\'t allow'|gettext}{br}{'other'|gettext}{br}{'group discounts'|gettext}</th>
-		    <th>{'Action'|gettext}</th>
-		</tr>
-	</thead>
-	<tbody>
-	    <tr>
-	        {form action=update_groupdiscounts}
-                <td>{control type=dropdown name=group_id items=$groups label=" " key=id display=name includeblank="-- Select a group --"|gettext}</td>
-                <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
-                <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1}</td>
-                <td>{control type=buttongroup submit="Add"|gettext}</td>
-	        {/form}
-	    </tr>
-	</tbody>
+		<thead>
+			<tr>
+				<th>{'Group'|gettext}</th>
+				<th>{'Discount'|gettext}</th>
+				<th>{'Don\'t allow'|gettext}{br}{'other'|gettext}{br}{'group discounts'|gettext}</th>
+				<th>{'Action'|gettext}</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				{form action=update_groupdiscounts}
+					<td>{control type=dropdown name=group_id items=$groups label=" " key=id display=name includeblank="-- Select a group --"|gettext}</td>
+					<td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " includeblank="-- Select a Discount --"|gettext}</td>
+					<td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1}</td>
+					<td>{control type=buttongroup submit="Add"|gettext}</td>
+				{/form}
+			</tr>
+		</tbody>
 	</table>
 	
 	{if $group_discounts|@count > 0}
 	<h2>{'Modify existing group discount'|gettext}</h2>
-        {permissions}
-            <div class="module-actions">
-                {if $permissions.manage}
-                    {ddrerank items=$group_discounts model="groupdiscounts" label="Group Discounts"|gettext}
-                {/if}
-            </div>
-        {/permissions}
+	{permissions}
+		<div class="module-actions">
+			{if $permissions.manage}
+				{ddrerank items=$group_discounts model="groupdiscounts" label="Group Discounts"|gettext}
+			{/if}
+		</div>
+	{/permissions}
 	<table class="exp-skin-table">
 	    <thead>
-	    <tr>
-	        <th>{'Group'|gettext}</th>
-		    <th>{'Discount'|gettext}</th>
-		    <th>{'Don\'t allow other group discounts'|gettext}</th>
-		    <th>{'Order'|gettext}</th>
-		    <th>{'Action'|gettext}</th>
-	    </tr>
-	    </thead>
-	    {foreach from=$group_discounts item=discount name=items}
-			<tr class="{cycle values='even,odd'}"">
-			    {form action=update_groupdiscounts}
-	                {control type="hidden" name="id" value=$discount->id}
-                    <td>{control type=dropdown name=group_id items=$groups key=id display=name label=" " includeblank="-- Select a group --"|gettext value=$discount->group_id}</td>
-                    <td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$discount->discounts_id}</td>
-                    <td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
-                    <td>
-                        {if $permissions.manage}
-                            <div class="item-actions">
-                                {if $smarty.foreach.items.first == 0}
-                                    {icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
-                                {/if}
-                                {if $smarty.foreach.items.last == 0}
-                                    {icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
-                                {/if}
-                            {/if}
-                        </div>
-                    </td>
-                    <td>{control type=buttongroup submit="Update"|gettext}</td>
-	            {/form}
+			<tr>
+				<th>{'Group'|gettext}</th>
+				<th>{'Discount'|gettext}</th>
+				<th>{'Don\'t allow other group discounts'|gettext}</th>
+				<th>{'Order'|gettext}</th>
+				<th>{'Action'|gettext}</th>
 			</tr>
-		{/foreach}
-	</tbody>
+	    </thead>
+		<tbody>
+			{foreach from=$group_discounts item=discount name=items}
+				<tr class="{cycle values='even,odd'}"">
+					{form action=update_groupdiscounts}
+						{control type="hidden" name="id" value=$discount->id}
+						<td>{control type=dropdown name=group_id items=$groups key=id display=name label=" " includeblank="-- Select a group --"|gettext value=$discount->group_id}</td>
+						<td>{control type="dropdown" name="discounts_id" items=$discounts key=id display=title label=" " value=$discount->discounts_id}</td>
+						<td>{control type="checkbox" name="dont_allow_other_discounts" label=" " value=1 checked=$discount->dont_allow_other_discounts}</td>
+						<td>
+							{if $permissions.manage}
+								<div class="item-actions">
+									{if $smarty.foreach.items.first == 0}
+										{icon controller=ecomconfig action=rerank_groupdiscount img='up.png' record=$discount push=up}
+									{/if}
+									{if $smarty.foreach.items.last == 0}
+										{icon controller=ecomconfig action=rerank_groupdiscount img='down.png' record=$discount push=down}
+									{/if}
+								{/if}
+							</div>
+						</td>
+						<td>{control type=buttongroup submit="Update"|gettext}</td>
+					{/form}
+				</tr>
+			{/foreach}
+		</tbody>
 	</table>
 	{/if}
 </div>

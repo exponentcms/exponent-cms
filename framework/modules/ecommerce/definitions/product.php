@@ -162,6 +162,10 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	"is_featured"=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	"show_options"=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	"segregate_options"=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	"companies_id"=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>10),

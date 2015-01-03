@@ -29,7 +29,8 @@
         {permissions}
             <div class="module-actions">
                 <div class="msg-queue notice" style="text-align:center">
-                    <p>{'You MUST configure this module to use it!'|gettext} {icon action="configure"}</p></div>
+                    <p>{'You MUST configure this module to use it!'|gettext} {icon action="configure"}</p>
+                </div>
             </div>
         {/permissions}
     {/if}
