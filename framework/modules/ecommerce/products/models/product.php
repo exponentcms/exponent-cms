@@ -221,24 +221,31 @@ class product extends expRecord {
             }
         }
 
-        foreach ($this->optiongroup as $og) {
-            if ($og->required) {
-                $err = true;
-                if (!empty($params['options'][$og->id])) {
-                    foreach ($params['options'][$og->id] as $opt) {
-                        //eDebug($opt,true);
-                        //make sure at least one is not empty to cover both single and mult selects
-                        if (!empty($opt)) $err = false;
+        if ($this->hasOptions()) {
+            if (empty($params['options_shown'])) {
+                $params['option_error'] = true;
+            } else {
+                foreach ($this->optiongroup as $og) {
+                    if ($og->required) {
+                        $err = true;
+                        if (!empty($params['options'][$og->id])) {
+                            foreach ($params['options'][$og->id] as $opt) {
+                                //eDebug($opt,true);
+                                //make sure at least one is not empty to cover both single and mult selects
+                                if (!empty($opt)) {
+                                    $err = false;
+                                }
+                            }
+                        }
+                        if ($err) {
+                            $params['error'] .= 'You must select an option from the ' . $og->title . ' options below before you can add it to your cart. <br/>';
+                            $params['option_error'] = true;
+                        }
                     }
-                }
-                if ($err) {
-                    $params['error'] .= 'You must select an option from the ' . $og->title . ' options below before you can add it to your cart. <br/>';
-                    $params['option_error'] = true;
+                    //eDebug($og->title . ":" .$og->required);
                 }
             }
-            //eDebug($og->title . ":" .$og->required);
         }
-
         //check user input fields
         //$this->user_input_fields = expUnserialize($this->user_input_fields);
         //eDebug($this,true);
