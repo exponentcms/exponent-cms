@@ -44,6 +44,7 @@
             </tr>
         </table>
 
+        {$product = $oi->product}
         {* NOTE display product options *}
         {exp_include file="options.tpl"}
 
