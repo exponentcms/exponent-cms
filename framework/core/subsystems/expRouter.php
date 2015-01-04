@@ -643,7 +643,7 @@ class expRouter {
 ////                $params[$name] = $val;
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
-//            $params = expString::sanitize_array($_REQUEST);
+            $params = expString::sanitize($_REQUEST);
 //            if (empty($data['route_sanitized'])) $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!
