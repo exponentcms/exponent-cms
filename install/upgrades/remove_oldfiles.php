@@ -431,7 +431,7 @@ class remove_oldfiles extends upgradescript {
         // delete old directories
         $olddirs = array(
             "framework/subsystems/",
-            "framework/core/compat/",
+//            "framework/core/compat/",
             "framework/core/database/",
             "framework/core/datatypes/",
             "framework/core/datatypes/",
