@@ -227,6 +227,7 @@ class expLang {
         $from = $from1[0];
         $to1 = explode('_',$to);
         $to = $to1[0];
+        if ($to == 'nb') $to = 'no';  // Bing uses 'no' for norwegian
         $gt = new BingTranslateWrapper(BING_API);
         return $gt->translate(stripslashes($text), $from, $to);
     }
