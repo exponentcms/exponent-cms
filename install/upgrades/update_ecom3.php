@@ -62,7 +62,9 @@ class update_ecom3 extends upgradescript {
 		$db->delete("orders","`invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
 		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
 		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
-		return ($orders_count?$orders_count:gt('No'))." ".gt("orphaned Orders and")." ".($orderitems_count?$orderitems_count:gt('No'))." ".gt("orphaned Order Items were found and removed from the database.");
+		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
+		$db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
+		return ($orders_count?$orders_count:gt('No'))." ".gt("orphaned Orders").", ".($orderitems_count?$orderitems_count:gt('No'))." ".gt("orphaned Order Items and")." ".($shippingmethods_count?$shippingmethods_count:gt('No'))." ".gt("orphaned Shipping Methods")." ".gt("were found and removed from the database.");
 	}
 }
 
