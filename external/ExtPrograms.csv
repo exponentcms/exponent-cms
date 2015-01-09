@@ -28,13 +28,13 @@ Adminer,4.1.0,www.adminer.org,4.1.0,we add some system user checks in design.inc
 SimpleAjaxUploader,1.11.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.11.0,also converted to yui module
 normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
 MediaElement.js,2.16.3,mediaelementjs.com/,2.16.3,
-Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.11,
+Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.15,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.0b3,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images"
-mPDF,5.7.1,mpdf1.com,5.7.2,optional
+mPDF,5.7.1,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.4.6,ckeditor.com,4.4.6,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.7,tinymce.com,4.1.7,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
@@ -58,11 +58,11 @@ colorbox,1.5.14,http://www.jacklmoore.com/colorbox,1.5.14,using style #5 renamed
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.1exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.1,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
-pwstrength-bootstrap,1.2.2,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.2,
+pwstrength-bootstrap,1.2.3,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.3,
 Sortable,1.0.0,https://github.com/RubaXa/Sortable,1.0.0,
-jstree,3.0.8,https://github.com/vakata/jstree,3.0.8,added nav menu icons to stylesheet
+jstree,3.0.9,https://github.com/vakata/jstree,3.0.9,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.1,
-impromptu,5.3.0,http://trentrichardson.com/Impromptu,5.3.0,
+impromptu,6.0.0,http://trentrichardson.com/Impromptu,6.0.0,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.4.2,https://github.com/timschlechter/bootstrap-tagsinput,0.4.2,
 Typeahead,0.10.5,http://twitter.github.io/typeahead.js/,0.10.5,needed by bootstrap-tagsinput
