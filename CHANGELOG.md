@@ -13,8 +13,10 @@ Added / Fixed / Changed for 2.3.3
 ### Address any issues in v2.3.2
   - E-Commerce updates
     - adds 'configure category' link to ecommerce views where we can edit a store category
+    - adds user selectable product option display features (segregate required/non-required options, show on product page)
     - adds additional fields to product import/export; weight, width, height, length, manufacturer, and importing images by url
     - fixes several issues with simple notes for products & orders; adds simple wysiwyg formatting
+    - adds new optional upgrade script to trim orphan ecommerce database records (tables can grow huge)
   - includes all fixes from v2.3.2 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
