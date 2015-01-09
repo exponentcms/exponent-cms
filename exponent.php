@@ -57,6 +57,11 @@ if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
 // Validate the session and populate the $user variable
 if ($db->havedb) {
 	$user = new user();
+	//the default user is anonymous?
+//	if (!expSession::loggedIn()) {
+		//TODO: Maxims initial anonymous user implementation
+		//user::login("anonymous", "anonymous");
+//	}
 	expSession::validate();
 }
 

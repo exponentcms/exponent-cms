@@ -181,6 +181,10 @@ class expRouter {
                 unset($_REQUEST[$key]);
             }
         }
+        if (isset($_GET['id'])) {
+            $_GET['id'] = intval($_GET['id']);
+            $_REQUEST['id'] = intval($_REQUEST['id']);
+        }
         if (!$user->isAdmin()) {
             $_REQUEST['route_sanitized'] = true;//FIXME debug test
 //            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
@@ -235,7 +239,7 @@ class expRouter {
         }
     }
 
-    //FIXME what are we doing with this history?
+    //FIXME what are we doing with this history? saving each page load
     public function updateHistory($section=null) {
         global $db,$user;
 

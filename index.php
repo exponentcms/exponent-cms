@@ -46,22 +46,14 @@ if(DEVELOPMENT) $timer = new expTimer();
 // skip it and default back to the old way of doing things.
 $router->routeRequest();
 
-// initialize this users cart if they have ecom installed.
-// define whether or not ecom is enabled
-//if ($db->selectValue('modstate', 'active', 'module="storeController"') ||
-//  $db->selectValue('modstate', 'active', 'module="eventregistrationController"') ||
-//  $db->selectValue('modstate', 'active', 'module="donationController"') || FORCE_ECOM) {
+// define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
 if (ecom_active()) {
     define('ECOM',1);
     $order = order::getUserCart();  // set global store $order
-    // global store config
-    // We're forcing the location. Global store setting will always have this loc
-//    $storeConfig = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
 } else {
     define('ECOM',0);
 }
 
-if (isset($_GET['id'])) $_GET['id'] = intval($_GET['id']);
 if ($db->havedb) {
     $section = $router->getSection();
     $sectionObj = $router->getSectionObj($section);
@@ -69,7 +61,8 @@ if ($db->havedb) {
         redirect_to(substr($sectionObj->external_link, 0, 4) == 'http' ? $sectionObj->external_link : 'http://' . $sectionObj->external_link);
     }
 }
-if (ENABLE_TRACKING) $router->updateHistory($section);
+if (ENABLE_TRACKING)
+	$router->updateHistory($section);
 
 // set the output header
 if (expJavascript::requiresJSON()) {
@@ -85,11 +78,6 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	$template->output();
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
-	//the default user is anonymous
-//	if (!expSession::loggedIn()) {
-		//TODO: Maxims initial anonymous user implementation
-		//user::login("anonymous", "anonymous");
-//	}
 
 	// check to see if we need to install or upgrade the system
 	expVersion::checkVersion();
