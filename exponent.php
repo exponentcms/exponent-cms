@@ -59,7 +59,7 @@ if ($db->havedb) {
 	$user = new user();
 	//the default user is anonymous?
 //	if (!expSession::loggedIn()) {
-		//TODO: Maxims initial anonymous user implementation
+		//TODO: Maxims initial anonymous user implementation, we need an anonymous user record
 		//user::login("anonymous", "anonymous");
 //	}
 	expSession::validate();

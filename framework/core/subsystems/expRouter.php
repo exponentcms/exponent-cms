@@ -181,13 +181,13 @@ class expRouter {
                 unset($_REQUEST[$key]);
             }
         }
+        // conventional method to ensure the 'id' is an id
         if (isset($_GET['id'])) {
             $_GET['id'] = intval($_GET['id']);
             $_REQUEST['id'] = intval($_REQUEST['id']);
         }
         if (!$user->isAdmin()) {
             $_REQUEST['route_sanitized'] = true;//FIXME debug test
-//            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
             expString::sanitize($_REQUEST);  // strip other exploits like sql injections
         }
 

@@ -62,7 +62,6 @@ if (is_readable(BASE.$page)) {
 	}
 	
 	if (isset($_REQUEST['showmodules'])) {
-//		if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = expString::sanitize_array($_REQUEST['showmodules']);
 		if (is_array($_REQUEST['showmodules'])) $source_select['showmodules'] = expString::sanitize($_REQUEST['showmodules']);
 		else if ($_REQUEST['showmodules'] == 'all') $source_select['showmodules'] = null;
 		else $source_select['showmodules'] = explode(',',$_REQUEST['showmodules']);

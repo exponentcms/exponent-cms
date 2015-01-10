@@ -798,12 +798,10 @@ class administrationController extends expController {
         $emaillist = array_map('trim', $emaillist);
 
         if (empty($emaillist)) {
-//            $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
             $post     = empty($_POST) ? array() : expString::sanitize($_POST);
             expValidator::failAndReturnToForm(gt('No Mailing Recipients Selected!'), $post);
         }
         if (empty($this->params['subject']) && empty($this->params['body']) && empty($_FILES['attach']['size'])) {
-//            $post     = empty($_POST) ? array() : expString::sanitize_array($_POST);
             $post     = empty($_POST) ? array() : expString::sanitize($_POST);
             expValidator::failAndReturnToForm(gt('Nothing to Send!'), $post);
         }
