@@ -914,10 +914,10 @@ class reportController extends expController {
         unset($item);
         foreach ($items as $item) {
             $line = '';
-            //$line = $this->outputField("SMC Inventory - Laurie");         
-            $line .= $this->outputField($item['model']);
-            //$line.= $this->outputField($item['name']);
-            $line .= $this->outputField($item['qty']);
+            //$line = expString::outputField("SMC Inventory - Laurie");         
+            $line .= expString::outputField($item['model']);
+            //$line.= expString::outputField($item['name']);
+            $line .= expString::outputField($item['qty']);
             $ui = array();
             $uiInfo = '';
             foreach ($item['user_input_data'] as $tlArray) {
@@ -925,12 +925,11 @@ class reportController extends expController {
                     $uiInfo .= $ifKey . '=' . $if . " | ";
                 }
             }
-            $line .= $this->outputField(strtoupper(substr_replace($uiInfo, '', strrpos($uiInfo, ' |'), strlen(' |'))), '');
-            $line .= chr(13) . chr(10);
+            $line .= expString::outputField(strtoupper(substr_replace($uiInfo, '', strrpos($uiInfo, ' |'), strlen(' |'))), chr(13) . chr(10));
             $out .= $line;
         }
         //eDebug($out,true);
-        $this->download($out, 'User_Input_Export_' . time() . '.csv', 'application/csv');
+        self::download($out, 'User_Input_Export_' . time() . '.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
     }
 
@@ -974,24 +973,22 @@ class reportController extends expController {
         ksort($items, SORT_STRING);
         foreach ($top as $model => $item) {
             $line = '';
-            $line = $this->outputField("SMC Inventory - Laurie");
-            $line .= $this->outputField($model);
-            $line .= $this->outputField($item['name']);
-            $line .= $this->outputField($item['qty'], '');
-            $line .= chr(13) . chr(10);
+            $line = expString::outputField("SMC Inventory - Laurie");
+            $line .= expString::outputField($model);
+            $line .= expString::outputField($item['name']);
+            $line .= expString::outputField($item['qty'], chr(13) . chr(10));
             $out .= $line;
         }
         foreach ($items as $model => $item) {
             $line = '';
-            $line = $this->outputField("SMC Inventory - Laurie");
-            $line .= $this->outputField($model);
-            $line .= $this->outputField($item['name']);
-            $line .= $this->outputField($item['qty'], '');
-            $line .= chr(13) . chr(10);
+            $line = expString::outputField("SMC Inventory - Laurie");
+            $line .= expString::outputField($model);
+            $line .= expString::outputField($item['name']);
+            $line .= expString::outputField($item['qty'], chr(13) . chr(10));
             $out .= $line;
         }
         //eDebug($out,true);
-        $this->download($out, 'Inventory_Export_' . time() . '.csv', 'application/csv');
+        self::download($out, 'Inventory_Export_' . time() . '.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
 
     }
@@ -1186,6 +1183,7 @@ class reportController extends expController {
         // assign_to_template(array('page'=>$page)); 
     }
 
+    //FIXME deprecated here by move to expString
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str); 
 
@@ -1217,6 +1215,7 @@ class reportController extends expController {
         return $str;
     }
 
+    //FIXME deprecated here by move to expString
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
         global $db;
@@ -1252,6 +1251,7 @@ class reportController extends expController {
         return $str;
     }
 
+    //FIXME deprecated here by move to expString
     public static function parseAndTrim($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
         global $db;
@@ -1285,8 +1285,9 @@ class reportController extends expController {
         return $str;
     }
 
+    //FIXME deprecated here by move to expString
     function outputField($val, $eof = ',', $isHTML = false) {
-        $newVal = $this->parseAndTrimExport($val, $isHTML);
+        $newVal = expString::parseAndTrimExport($val, $isHTML);
         if ($newVal != '') return '"' . $newVal . '"' . $eof;
         else return $eof;
     }
@@ -1346,31 +1347,30 @@ class reportController extends expController {
         $orders = $order->find('all', 'id IN (' . $orders_string . ')');
         //eDebug($orders);
         foreach ($orders as $order) {
-            $line = $this->outputField($order->invoice_id);
+            $line = expString::outputField($order->invoice_id);
             foreach ($order->shippingmethods as $m) {
-                $line .= $this->outputField($m->id);
-                $line .= $this->outputField($m->option_title);
-                $line .= $this->outputField($order->shipping_total + $order->surcharge_total);
-                $line .= $this->outputField($m->firstname);
-                $line .= $this->outputField($m->middlename);
-                $line .= $this->outputField($m->lastname);
-                $line .= $this->outputField($m->organization);
-                $line .= $this->outputField($m->address1);
-                $line .= $this->outputField($m->address2);
-                $line .= $this->outputField($m->city);
+                $line .= expString::outputField($m->id);
+                $line .= expString::outputField($m->option_title);
+                $line .= expString::outputField($order->shipping_total + $order->surcharge_total);
+                $line .= expString::outputField($m->firstname);
+                $line .= expString::outputField($m->middlename);
+                $line .= expString::outputField($m->lastname);
+                $line .= expString::outputField($m->organization);
+                $line .= expString::outputField($m->address1);
+                $line .= expString::outputField($m->address2);
+                $line .= expString::outputField($m->city);
                 $state = new geoRegion($m->state);
                 //eDebug($state);
-                $line .= $this->outputField($state->code);
-                $line .= $this->outputField($m->zip);
-                $line .= $this->outputField('US');
-                $line .= $this->outputField($m->phone, '');
-                $line .= chr(13) . chr(10);
+                $line .= expString::outputField($state->code);
+                $line .= expString::outputField($m->zip);
+                $line .= expString::outputField('US');
+                $line .= expString::outputField($m->phone, chr(13) . chr(10));
                 break;
             }
             $out .= $line;
         }
         //eDebug($out,true);
-        $this->download($out, 'ODBC_Export.csv', 'application/csv');
+        self::download($out, 'ODBC_Export.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
 
     }
@@ -1397,27 +1397,26 @@ class reportController extends expController {
         foreach ($orders as $order) {
             $m = array_shift($order->shippingmethods);
             foreach ($order->orderitem as $orderitem) {
-                $line = $this->outputField($order->invoice_id);
-                $line .= $this->outputField($orderitem->quantity);
-                $line .= $this->outputField($orderitem->products_model);
-                $line .= $this->outputField($orderitem->products_name);
+                $line = expString::outputField($order->invoice_id);
+                $line .= expString::outputField($orderitem->quantity);
+                $line .= expString::outputField($orderitem->products_model);
+                $line .= expString::outputField($orderitem->products_name);
 
-                $line .= $this->outputField($m->firstname);
-                $line .= $this->outputField($m->middlename);
-                $line .= $this->outputField($m->lastname);
-                $line .= $this->outputField($m->organization);
-                $line .= $this->outputField($m->address1);
-                $line .= $this->outputField($m->address2);
-                $line .= $this->outputField($m->city);
+                $line .= expString::outputField($m->firstname);
+                $line .= expString::outputField($m->middlename);
+                $line .= expString::outputField($m->lastname);
+                $line .= expString::outputField($m->organization);
+                $line .= expString::outputField($m->address1);
+                $line .= expString::outputField($m->address2);
+                $line .= expString::outputField($m->city);
                 $state = new geoRegion($m->state);
-                $line .= $this->outputField($state->code);
-                $line .= $this->outputField($m->zip);
-                $line .= chr(13) . chr(10);
+                $line .= expString::outputField($state->code);
+                $line .= expString::outputField($m->zip, chr(13) . chr(10));
                 $out .= $line;
             }
         }
         //eDebug($out,true);
-        $this->download($out, 'Order_Item_Export.csv', 'application/csv');
+        self::download($out, 'Order_Item_Export.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
 
     }
@@ -1445,18 +1444,17 @@ class reportController extends expController {
             foreach ($order->orderitem as $oi) {
                 $model = preg_replace($pattern, '', preg_replace('/\s/', '', $oi->products_model));
                 $line = '';
-                $line .= $this->outputField($model);
-                $line .= $this->outputField($oi->products_name);
-                $line .= $this->outputField($oi->quantity);
-                $line .= $this->outputField($oi->products_status, '');
-                $line .= chr(13) . chr(10);
+                $line .= expString::outputField($model);
+                $line .= expString::outputField($oi->products_name);
+                $line .= expString::outputField($oi->quantity);
+                $line .= expString::outputField($oi->products_status, chr(13) . chr(10));
                 $out .= $line;
             }
         }
-        $this->download($out, 'Status_Export_' . time() . '.csv', 'application/csv');
+        self::download($out, 'Status_Export_' . time() . '.csv', 'application/csv');
     }
 
-    function download($file, $name, $type) {
+    static function download($file, $name, $type) {
         if (!headers_sent()) {
             //echo $file;
             //exit();
@@ -1485,6 +1483,7 @@ class reportController extends expController {
         die();
     }
 
+    //FIXME deprecated here by move to expString
     function stripLineEndings($val) {
         return preg_replace('/\r\n/', ' ', trim($val));
     }
@@ -1722,9 +1721,10 @@ class reportController extends expController {
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","heigth","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -1743,70 +1743,78 @@ class reportController extends expController {
             $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, false, $except, true);
 
             //eDebug($p,true);
-            $out .= $this->outputField($p->id);
-            $out .= $this->outputField($p->parent_id);
-            $out .= $this->outputField($p->child_rank);
-            $out .= $this->outputField($p->title);
-            $out .= $this->outputField($this->stripLineEndings($p->body), ",", true);
-            $out .= $this->outputField($p->model);
-            $out .= $this->outputField($p->warehouse_location);
-            $out .= $this->outputField($p->sef_url);
-//            $out .= $this->outputField($p->canonical);  //FIXME this is NOT in import
-            $out .= $this->outputField($p->meta_title);
-            $out .= $this->outputField($p->meta_keywords);
-            $out .= $this->outputField($p->meta_description);
-            $out .= $this->outputField($p->tax_class_id);
-            $out .= $this->outputField($p->quantity);
-            $out .= $this->outputField($p->availability_type);
-            $out .= $this->outputField($p->base_price);
-            $out .= $this->outputField($p->special_price);
-            $out .= $this->outputField($p->use_special_price);
-            $out .= $this->outputField($p->active_type);
-            $out .= $this->outputField($p->product_status_id);
+            $out .= expString::outputField($p->id);
+            $out .= expString::outputField($p->parent_id);
+            $out .= expString::outputField($p->child_rank);
+            $out .= expString::outputField($p->title);
+            $out .= expString::outputField(expString::stripLineEndings($p->body), ",", true);
+            $out .= expString::outputField($p->model);
+            $out .= expString::outputField($p->warehouse_location);
+            $out .= expString::outputField($p->sef_url);
+//            $out .= expString::outputField($p->canonical);  //FIXME this is NOT in import
+            $out .= expString::outputField($p->meta_title);
+            $out .= expString::outputField($p->meta_keywords);
+            $out .= expString::outputField($p->meta_description);
+            $out .= expString::outputField($p->tax_class_id);
+            $out .= expString::outputField($p->quantity);
+            $out .= expString::outputField($p->availability_type);
+            $out .= expString::outputField($p->base_price);
+            $out .= expString::outputField($p->special_price);
+            $out .= expString::outputField($p->use_special_price);
+            $out .= expString::outputField($p->active_type);
+            $out .= expString::outputField($p->product_status_id);
 
             $rank = 0;
             //eDebug($p);
             for ($x = 0; $x < 12; $x++) {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) {
-                    $out .= $this->outputField(self::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $out .= expString::outputField(expString::buildCategoryString($p->storeCategory[$x]->id, true));
                     $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
                 } else $out .= ',';
             }
-            $out .= $this->outputField($p->surcharge);
-            $out .= $this->outputField($rank);
-            $out .= $this->outputField($p->feed_title);
-            $out .= substr($this->outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
+            $out .= expString::outputField($p->surcharge);
+            $out .= expString::outputField($rank);
+            $out .= expString::outputField($p->feed_title);
+            $out .= expString::outputField($p->feed_body);
+            $out .= expString::outputField($p->weight);
+            $out .= expString::outputField($p->height);
+            $out .= expString::outputField($p->width);
+            $out .= expString::outputField($p->length);
+            $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
 
             foreach ($p->childProduct as $cp) {
                 //$p = new product($pid['id'], true, false);
                 //eDebug($p,true);
-                $out .= $this->outputField($cp->id);
-                $out .= $this->outputField($cp->parent_id);
-                $out .= $this->outputField($cp->child_rank);
-                $out .= $this->outputField($cp->title);
-                $out .= $this->outputField($this->stripLineEndings($cp->body));
-                $out .= $this->outputField($cp->model);
-                $out .= $this->outputField($cp->warehouse_location);
-                $out .= $this->outputField($cp->sef_url);
-//                $out .= $this->outputField($cp->canonical);  //FIXME this is NOT in import
-                $out .= $this->outputField($cp->meta_title);
-                $out .= $this->outputField($cp->meta_keywords);
-                $out .= $this->outputField($cp->meta_description);
-                $out .= $this->outputField($cp->tax_class_id);
-                $out .= $this->outputField($cp->quantity);
-                $out .= $this->outputField($cp->availability_type);
-                $out .= $this->outputField($cp->base_price);
-                $out .= $this->outputField($cp->special_price);
-                $out .= $this->outputField($cp->use_special_price);
-                $out .= $this->outputField($cp->active_type);
-                $out .= $this->outputField($cp->product_status_id);
+                $out .= expString::outputField($cp->id);
+                $out .= expString::outputField($cp->parent_id);
+                $out .= expString::outputField($cp->child_rank);
+                $out .= expString::outputField($cp->title);
+                $out .= expString::outputField(expString::stripLineEndings($cp->body));
+                $out .= expString::outputField($cp->model);
+                $out .= expString::outputField($cp->warehouse_location);
+                $out .= expString::outputField($cp->sef_url);
+//                $out .= expString::outputField($cp->canonical);  //FIXME this is NOT in import
+                $out .= expString::outputField($cp->meta_title);
+                $out .= expString::outputField($cp->meta_keywords);
+                $out .= expString::outputField($cp->meta_description);
+                $out .= expString::outputField($cp->tax_class_id);
+                $out .= expString::outputField($cp->quantity);
+                $out .= expString::outputField($cp->availability_type);
+                $out .= expString::outputField($cp->base_price);
+                $out .= expString::outputField($cp->special_price);
+                $out .= expString::outputField($cp->use_special_price);
+                $out .= expString::outputField($cp->active_type);
+                $out .= expString::outputField($cp->product_status_id);
                 $out .= ',,,,,,,,,,,,';  // for store categories
-                $out .= $this->outputField($cp->surcharge);
-                $out .= ',,'; // for rank, feed title, feed body
-                $out .= chr(13) . chr(10);
-
-                //echo($out);                  
+                $out .= expString::outputField($cp->surcharge);
+                $out .= ',,,'; // for rank, feed title, feed body
+                $out .= expString::outputField($cp->weight);
+                $out .= expString::outputField($cp->height);
+                $out .= expString::outputField($cp->width);
+                $out .= expString::outputField($cp->length);
+                $out .= expString::outputField($cp->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
+                //echo($out);
             }
 
         }
@@ -1869,6 +1877,7 @@ class reportController extends expController {
         $out = '"id","parent_id","model","warehouse_location","title","vendor","product_status","notes"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -1908,45 +1917,45 @@ class reportController extends expController {
                 continue;
             }*/
 
-            $out .= $this->outputField($p->id);
-            $out .= $this->outputField($p->parent_id);
-            $out .= $this->outputField($p->model);
-            $out .= $this->outputField($p->warehouse_location);
-            $out .= $this->outputField($p->title);
-            $out .= $this->outputField($p->company->title);
-            $out .= $this->outputField($statuses[$p->product_status_id]);
+            $out .= expString::outputField($p->id);
+            $out .= expString::outputField($p->parent_id);
+            $out .= expString::outputField($p->model);
+            $out .= expString::outputField($p->warehouse_location);
+            $out .= expString::outputField($p->title);
+            $out .= expString::outputField($p->company->title);
+            $out .= expString::outputField($statuses[$p->product_status_id]);
 
             $noteString = '';
             foreach ($p->expSimpleNote as $note) {
                 $noteString .= "(" . $note->name . " - " . date('M d Y H:i A', $note->created_at) . ") " . $note->body . "||";
             }
-            $out .= $this->outputField($noteString, '') . chr(13) . chr(10);
+            $out .= expString::outputField($noteString, chr(13) . chr(10));
 
             $cps = $baseProd->find('all', 'parent_id=' . $p->id, null, null, 0, true, true, $except, true);
             foreach ($cps as $cp) {
-                $out .= $this->outputField($cp->id);
-                $out .= $this->outputField($cp->parent_id);
-                $out .= $this->outputField($cp->model);
-                $out .= $this->outputField($cp->warehouse_location);
-                $out .= $this->outputField($cp->title);
-                $out .= $this->outputField($cp->company->title);
-                $out .= $this->outputField($statuses[$cp->product_status_id]);
+                $out .= expString::outputField($cp->id);
+                $out .= expString::outputField($cp->parent_id);
+                $out .= expString::outputField($cp->model);
+                $out .= expString::outputField($cp->warehouse_location);
+                $out .= expString::outputField($cp->title);
+                $out .= expString::outputField($cp->company->title);
+                $out .= expString::outputField($statuses[$cp->product_status_id]);
 
                 $noteString = '';
                 foreach ($cp->expSimpleNote as $note) {
                     $noteString .= "(" . $note->name . " - " . date('M d Y H:i A', $note->created_at) . ") " . $note->body . "||";
                 }
-                $out .= $this->outputField($noteString, '') . chr(13) . chr(10);
+                $out .= expString::outputField($noteString, chr(13) . chr(10));
             }
         }
 
         //eDebug($out,true);
-        $outFile = 'tmp/product_export_' . time() . '.csv';
+        $outFile = 'tmp/product_status_' . time() . '.csv';
         $outHandle = fopen(BASE . $outFile, 'w');
         fwrite($outHandle, $out);
         fclose($outHandle);
 
-        echo "<br/><br/>Download the file here: <a href='" . PATH_RELATIVE . $outFile . "'>Product Export</a>";
+        echo "<br/><br/>".gt('Download the file here').": <a href='" . PATH_RELATIVE . $outFile . "'>".gt('Product Export')."</a>";
 
         /*eDebug(BASE . "tmp/export.csv");
         $db->sql($sql);
@@ -1959,19 +1968,19 @@ class reportController extends expController {
 
     //public $catstring = '';
 
+    //FIXME deprecated here by move to expString
     public static function buildCategoryString($catID, $reset = false) {
         static $cstr = '';
         if ($reset) $cstr = '';
         if (strlen($cstr) > 0) $cstr .= "::";
         $cat = new storeCategory($catID);
         //eDebug($cat);
-        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
+        if (!empty($cat->parent_id)) expString::buildCategoryString($cat->parent_id);
         $cstr .= $cat->title . "::";
         return substr($cstr, 0, -2);
     }
 
     function product_report() {
-
         $pts = storeController::getProductTypes();
         $newPts = array();
         foreach ($pts as $pt) {

@@ -94,7 +94,6 @@ class external_address extends expRecord {
                 $validateUser = $user->setPassword($password,expString::sanitize($_POST['password2']));
                 if (!is_bool($validateUser))
                  {                    
-//                    expValidator::failAndReturnToForm($validateUser, expString::sanitize_array($_POST));
                     expValidator::failAndReturnToForm($validateUser, expString::sanitize($_POST));
                  }
             } else {
@@ -114,7 +113,6 @@ class external_address extends expRecord {
             $checkUser = $db->selectObject('user','username="' . $user->username . '"');
             if (isset($checkUser->id))
             {
-//                expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>".gt("Reset Password")."</a>.", expString::sanitize_array($_POST));
                 expValidator::failAndReturnToForm(gt("The email address you entered already exists as a user. If you have lost your password, you may reset it here:")." <a href='/users/reset_password'>".gt("Reset Password")."</a>.", expString::sanitize($_POST));
             }
             $user->is_admin = false;

@@ -320,7 +320,6 @@ class calendarcontrol extends formcontrol {
             $object->default = 0;
         }
         if ($values['identifier'] == "") {
-//            $post = expString::sanitize_array($_POST);
 			$post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST", $post);

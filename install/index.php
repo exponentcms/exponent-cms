@@ -50,7 +50,6 @@ if (isset($_POST['sc'])) {
     } else {
         // Initialize /framework/conf/config
         $values = array(
-//            'c'          => expString::sanitize_array($_POST['sc']),
             'c'          => expString::sanitize($_POST['sc']),
             'opts'       => array(),
             'configname' => 'Default',

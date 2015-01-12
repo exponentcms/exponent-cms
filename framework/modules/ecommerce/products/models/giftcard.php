@@ -64,6 +64,11 @@ class giftcard extends expRecord {
     }
 
     function addToCart($params, $orderid = null) {
+        if (empty($params['options_shown'])) {  //get options and user input if needed
+            $this->displayForm('addToCart', $params);
+            return false;
+        }
+
         if ($orderid == null) global $order;
         else $order = new order($orderid);
 
@@ -105,7 +110,7 @@ class giftcard extends expRecord {
                 expHistory::back();
             }
 
-            $item->products_name = expCore::getCurrencySymbol() . $params['card_amount'] . ' ' . $this->title . " Style Gift Card";
+            $item->products_name = expCore::getCurrencySymbol() . $item->products_price . ' ' . $this->title . " Style Gift Card";
 
             if (!empty($params['toname'])) {
                 $ed['To'] = isset($params['toname']) ? $params['toname'] : '';

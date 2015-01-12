@@ -88,7 +88,7 @@
                 {*{control type="hidden" name="quick" value="1"}*}
                 {if $product->spacesLeft() && $product->signup_cutoff >= time()}
                     <span class="tickets">
-                      <span class="hoffer">
+                    <span class="hoffer">
                     <span class="label">{'Registration Closes:'|gettext} </span>
                     <span class="value pricevaliduntil">{$product->signup_cutoff|format_date}</span>{br}
                     <span class="label">{'Seats Available:'|gettext} </span>
@@ -126,10 +126,10 @@
                             {/if}
                         </div>
                         {clear}
-                            {if $product->multi_registrant}
+                        {if $product->multi_registrant}
                         </div>
-                          {/if}
-                      </span>
+                        {/if}
+                    </span>
                     </span>
                     {if $product->multi_registrant && $product->quantity_discount_num_items}
                         <div class="label">
@@ -141,22 +141,18 @@
                         </div>
                     {/if}
 
+                    {* NOTE display product options *}
                     {if $product->hasOptions()}
                         {clear}
-                        <h4>{'Options'|gettext}</h4>
+                        {*FIXME segregate these options using options.tpl?*}
                         <div class="product-options">
+                            <h4>{'Options'|gettext}</h4>
                             {control type=hidden name="ticket_types" value="1"}
                             {control type=hidden name="options_shown" value=$product->id}
                             {foreach from=$product->optiongroup item=og}
                                 {if $og->hasEnabledOptions()}
                                     <div class="option {cycle values="odd,even"}">
-                                        {if $og->allow_multiple}
-                                            {*{optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=total selected=$params.options}*}
-                                            {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}
-                                        {else}
-                                            {*{optiondisplayer product=$product options=$og->title view=dropdown display_price_as=total selected=$params.options}*}
-                                            {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options}
-                                        {/if}
+                                        {optiondisplayer product=$product options=$og->title view=$og->allow_multiple display_price_as=diff selected=$params.options}
                                     </div>
                                 {/if}
                             {/foreach}

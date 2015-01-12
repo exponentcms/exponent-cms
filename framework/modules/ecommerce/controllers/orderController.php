@@ -803,7 +803,7 @@ exit();
             if (isset($this->params['email_subject'])) {
                 $email_subject = $this->params['email_subject'];
             } else {
-                $email_subject = 'Message from ' . ecomconfig::getConfig('storename') . ' about your order (#' . $order->invoice_id . ')';
+                $email_subject = gt('Message from') . ' ' . ecomconfig::getConfig('storename') . ' ' . gt('about your order') . ' (#' . $order->invoice_id . ')';
             }
 
             $mail = new expMail();
@@ -818,20 +818,22 @@ exit();
                 ));
             }
             $emailed_to     = implode(',', $email_addys);
+
+            // manually add/attach an expSimpleNote to the order
             $note           = new expSimpleNote();
-            $note->body     = "<strong>[action]: Emailed message to " . $emailed_to . ":</strong><br><br>" . $email_message;
+            $note->body     = "<strong>[" . gt('action') . "]: " . gt('Emailed message to') . " " . $emailed_to . ":</strong><br><br>" . $email_message;
             $note->approved = 1;
             $note->name     = $user->firstname . " " . $user->lastname;
             $note->email    = $user->email;
 
             $note->save();
             $note->refresh();
-            $noteObj                   = new stdClass();
-            $noteObj->expsimplenote_id = $note->id;
-            $noteObj->content_id       = $order->id;
-            $noteObj->content_type     = 'order';
-
-            $db->insertObject($noteObj, 'content_expSimpleNote');
+//            $noteObj                   = new stdClass();
+//            $noteObj->expsimplenote_id = $note->id;
+//            $noteObj->content_id       = $order->id;
+//            $noteObj->content_type     = 'order';
+//            $db->insertObject($noteObj, 'content_expSimpleNote');
+            $note->attachNote('order', $order->id);
 
             //eDebug($note,true);            
         } else {

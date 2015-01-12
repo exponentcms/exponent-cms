@@ -13,6 +13,7 @@
  *
  *}
 
+{* FIXME NEVER used since we now gather all input on the show eventregistration view *}
 {if $product->isAvailable()}
     <div class="module cart eventregistration addToCart">
         <h1>{'Register for'|gettext} {$product->title}</h1>

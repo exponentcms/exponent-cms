@@ -216,7 +216,6 @@ class checkboxcontrol extends formcontrol {
     static function update($values, $object) {
         if ($object == null) $object = new checkboxcontrol();
         if ($values['identifier'] == "") {
-//            $post = expString::sanitize_array($_POST);
 			$post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST", $post);

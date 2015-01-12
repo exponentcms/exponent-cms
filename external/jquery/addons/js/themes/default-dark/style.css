@@ -1047,11 +1047,6 @@
     margin-left: 0;
     margin-right: 0;
   }
-  .jstree-default-dark-responsive .addpage, .jstree-default-dark-responsive .addextpage,
-  .jstree-default-dark-responsive .addintpage, .jstree-default-dark-responsive .addfreeform,
-  .jstree-default-dark-responsive .addsapage {
-	background-size: 32px, 32px;
-  }
 }
 .jstree-default-dark {
   background: #333;

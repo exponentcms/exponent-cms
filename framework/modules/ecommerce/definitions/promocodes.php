@@ -31,7 +31,7 @@ return array(
     'promo_code'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>25),
-    'discount_id'=>array(
+    'discounts_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER)
 );
 

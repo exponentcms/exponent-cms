@@ -30,40 +30,38 @@
                             {icon action=edit class="add" content_id=$content_id content_type=$content_type tab=$tab text="Add a Note"|gettext}
                         {/if}
                     </div>
-                {if $unapproved > 0}
-                <div class="unapproved">
-                    || {'There are'|gettext} {$unapproved} {'notes awaiting approval'|gettext}.
-                    {icon action=manage content_id=$content_id content_type=$content_type tab=$tab text="Approve Notes"|gettext} ||
-                </div>
-                {/if}
-                {$simplenotes->links}
+                    {if $unapproved > 0}
+                    <div class="unapproved">
+                        || {'There are'|gettext} {$unapproved} {'notes awaiting approval'|gettext}.
+                        {icon action=manage content_id=$content_id content_type=$content_type tab=$tab text="Approve Notes"|gettext} ||
+                    </div>
+                    {/if}
+                    {$simplenotes->links}
                 </td>
             </tr>
             {if !$hidenotes && $simplenotes|@count > 0}
-            {foreach from=$simplenotes->records item=note name=simplenote}
-            <tr class="note {cycle values="odd,even"}">
-                <td>
-                <h3>
-                    <span class="attribution">{$note->name}</span> - <span class="date">{$note->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span>
-                </h3>
-                    {permissions}
-                        <div class="item-actions">
-                            {if $permissions.edit}
-                                {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit this note"|gettext}
-                            {/if}
-                            {if $permissions.delete}
-                                {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
-                            {/if}
-                        </div>
-                    {/permissions}
-                    <div class="bodycopy">
-                        <p>
-                            {$note->body}
-                        </p>
-                    </div>
-                </td>
-            </tr>
-            {/foreach}
+                {foreach from=$simplenotes->records item=note name=simplenote}
+                    <tr class="note {cycle values="odd,even"}">
+                        <td>
+                            <span class="attribution">{$note->name}</span> - <span class="date">{$note->edited_at|format_date:$smarty.const.DISPLAY_DATETIME_FORMAT}</span>
+                            {permissions}
+                                <div class="item-actions">
+                                    {if $permissions.edit}
+                                        {icon action=edit record=$note tab=$tab content_id=$content_id content_type=$content_type title="Edit this note"|gettext}
+                                    {/if}
+                                    {if $permissions.delete}
+                                        {icon action=delete record=$note tab=$tab content_id=$content_id content_type=$content_type title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
+                                    {/if}
+                                </div>
+                            {/permissions}
+                            <div class="bodycopy">
+                                <p>
+                                    {$note->body}
+                                </p>
+                            </div>
+                        </td>
+                    </tr>
+                {/foreach}
             {/if}
         </tbody>
     </table>

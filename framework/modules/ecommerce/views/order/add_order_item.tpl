@@ -13,6 +13,6 @@
  *
  *}
 
-<div class="module address edit address-form">        
+<div class="module product">
     {$product->displayForm('addToOrder',$params)}
 </div>

@@ -608,9 +608,10 @@ class storeController extends expController {
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","heigth","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -655,14 +656,20 @@ class storeController extends expController {
             for ($x = 0; $x < 12; $x++) {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) {
-                    $out .= expString::outputField(reportController::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $out .= expString::outputField(expString::buildCategoryString($p->storeCategory[$x]->id, true));
                     $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
                 } else $out .= ',';
             }
             $out .= expString::outputField($p->surcharge);
             $out .= expString::outputField($rank);
             $out .= expString::outputField($p->feed_title);
-            $out .= substr(expString::outputField($p->feed_body), 0, -1) . chr(13) . chr(10); //Removed the extra "," in the last element
+            $out .= expString::outputField($p->feed_body);
+            $out .= expString::outputField($p->weight);
+            $out .= expString::outputField($p->height);
+            $out .= expString::outputField($p->width);
+            $out .= expString::outputField($p->length);
+            $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
+
             foreach ($p->childProduct as $cp) {
                 //$p = new product($pid['id'], true, false);
                 //eDebug($p,true);
@@ -688,8 +695,12 @@ class storeController extends expController {
                 $out .= expString::outputField($cp->product_status_id);
                 $out .= ',,,,,,,,,,,,';  // for categories
                 $out .= expString::outputField($cp->surcharge);
-                $out .= ',,'; //for rank, feed title, feed body
-                $out .= chr(13) . chr(10);
+                $out .= ',,,'; //for rank, feed title, feed body
+                $out .= expString::outputField($cp->weight);
+                $out .= expString::outputField($cp->height);
+                $out .= expString::outputField($cp->width);
+                $out .= expString::outputField($cp->length);
+                $out .= expString::outputField($cp->companies_id, chr(13) . chr(10));
 
                 //echo($out);
             }
@@ -1472,7 +1483,7 @@ class storeController extends expController {
     function metainfo() {
         global $router;
 
-        if (empty($router->params['action'])) return false;
+        if (empty($router->params['action'])) return array();
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $router->params['action'];
@@ -2583,7 +2594,7 @@ class storeController extends expController {
         //$createCats = array();
         $product = null;
         /*
-            0= id
+            0=id
             1=parent_id
             2=child_rank
             3=title
@@ -2613,7 +2624,16 @@ class storeController extends expController {
             32=rank category_rank
             33=feed_title
             34=feed_body
-        */
+            35=weight
+            36=height
+            37=width
+            38=length
+            39=companies_id
+            40=url to mainimage to download
+            41=url to additional image to download
+            ..
+            44=url to additional image to download
+*/
 
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
@@ -2666,6 +2686,63 @@ class storeController extends expController {
             $product->surcharge = $data[31];
             $product->feed_title = stripslashes(stripslashes($data[33]));
             $product->feed_body = stripslashes(stripslashes($data[34]));
+            if (!empty($data[35])) $product->weight = $data[35];
+            if (!empty($data[36])) $product->height = $data[36];
+            if (!empty($data[37])) $product->width = $data[37];
+            if (!empty($data[38])) $product->length = $data[38];
+            if (!empty($data[39])) $product->companies_id = $data[39];
+            if (!empty($data[40])) {
+                // import image from url
+                $_destFile = basename($data[4]);  // get filename from end of url
+                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+                $_destFullPath = BASE . $_destDir . $_destFile;
+                if (file_exists($_destFullPath)) {
+                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                    $_destFullPath = BASE . $_destDir . $_destFile;
+                }
+
+                expCore::saveData($data[40], $_destFullPath);  // download the image
+
+                if (file_exists($_destFullPath)) {
+                    $__oldumask = umask(0);
+                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                    umask($__oldumask);
+
+                    // Create a new expFile Object
+                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                    $_objFile = new expFile ($_fileParams);
+                    $_objFile->save();
+                    // attach/replace product main image with new expFile object
+                    $product->attachItem($_objFile, 'mainimage');
+                }
+            }
+            for ($i=41; $i<=44; $i++) {
+                if (!empty($data[$i])) {
+                    // import image from url
+                    $_destFile = basename($data[$i]);  // get filename from end of url
+                    $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+                    $_destFullPath = BASE . $_destDir . $_destFile;
+                    if (file_exists($_destFullPath)) {
+                        $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                        $_destFullPath = BASE . $_destDir . $_destFile;
+                    }
+
+                    expCore::saveData($data[$i], $_destFullPath);  // download the image
+
+                    if (file_exists($_destFullPath)) {
+                        $__oldumask = umask(0);
+                        chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                        umask($__oldumask);
+
+                        // Create a new expFile Object
+                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                        $_objFile = new expFile ($_fileParams);
+                        $_objFile->save();
+                        // attach product additional images with new expFile object
+                        $product->attachItem($_objFile, 'images', false);
+                    }
+                }
+            }
 
             if (empty($product->id)) $product->minimum_order_quantity = 1;
 

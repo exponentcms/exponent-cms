@@ -28,39 +28,39 @@
 
     {$page->links}
     <table class="exp-skin-table">
-    <thead>
-        <tr>
-            {$page->header_columns}
-            <th>{'Actions'|gettext}</th>
-        </tr>
-    </thead>
-    <tbody>
-        {foreach from=$page->records item=simplenote}
-        <tr class="{cycle values="even, odd"}">
-            <td>
-                {if $simplenote->approved == 1}
-                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note"|gettext>
-                        {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}
-                    </a>
-                {else}
-                    <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note"|gettext>
-                        {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}
-                    </a>   
-                {/if}  
-            </td>
-            <td>{$simplenote->name}</td>
-            <td>{$simplenote->body}</td>
-            <td>
-				<div class="item-actions">
-					{icon class=edit action=approve record=$simplenote tab=$tab title="Edit this note"|gettext}
-					{icon action=delete record=$simplenote tab=$tab title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
-				</div>
-            </td>
-        </tr>
-        {foreachelse}
-        <tr><td>{'There are no notes awaiting approval'|gettext}</td></tr>
-        {/foreach}
-    </tbody>
+        <thead>
+            <tr>
+                {$page->header_columns}
+                <th>{'Actions'|gettext}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$page->records item=simplenote}
+            <tr class="{cycle values="even, odd"}">
+                <td>
+                    {if $simplenote->approved == 1}
+                        <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Disable this note"|gettext>
+                            {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_on.png'}
+                        </a>
+                    {else}
+                        <a href="{link action=approve_toggle id=$simplenote->id tab=$tab}" title="Approve this note"|gettext>
+                            {img src=$smarty.const.ICON_RELATIVE|cat:'toggle_off.png'}
+                        </a>
+                    {/if}
+                </td>
+                <td>{$simplenote->name}</td>
+                <td>{$simplenote->body}</td>
+                <td>
+                    <div class="item-actions">
+                        {icon class=edit action=approve record=$simplenote tab=$tab title="Edit this note"|gettext}
+                        {icon action=delete record=$simplenote tab=$tab title="Delete this note"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this note?"|gettext)|cat:"');"}
+                    </div>
+                </td>
+            </tr>
+            {foreachelse}
+                <tr><td>{'There are no notes awaiting approval'|gettext}</td></tr>
+            {/foreach}
+        </tbody>
     </table>        
     {$page->links}
 </div>

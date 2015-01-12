@@ -39,7 +39,7 @@ class update_ecom3 extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.3.2, an orders table record was added for each site visitor.  This script prunes the orders table and associated orphan records from other ecommerce tables."; }
+	function description() { return "Prior to v2.3.3, an orders table record was added for each site visitor.  This script prunes the orders table and associated orphan records from other ecommerce tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -61,8 +61,10 @@ class update_ecom3 extends upgradescript {
 		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orders` WHERE `invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
 		$db->delete("orders","`invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
 		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
-		$db->sql("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
-		return ($orders_count?$orders_count:gt('No'))." ".gt("orphaned Orders and")." ".($orderitems_count?$orderitems_count:gt('No'))." ".gt("orphaned Order Items were found and removed from the database.");
+		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
+		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
+		$db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
+		return ($orders_count?$orders_count:gt('No'))." ".gt("orphaned Orders").", ".($orderitems_count?$orderitems_count:gt('No'))." ".gt("orphaned Order Items and")." ".($shippingmethods_count?$shippingmethods_count:gt('No'))." ".gt("orphaned Shipping Methods")." ".gt("were found and removed from the database.");
 	}
 }
 

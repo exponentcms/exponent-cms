@@ -21,7 +21,7 @@
 	{foreach from=$optiongroups item=group}
         <div class="panel">
             <div class="hd">
-                <h2>{$group->title}</h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
+                <h2 title="{'Click to expand'|gettext}">{'Product Option'|gettext} - <strong>{$group->title}</strong></h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
             </div>
             <div class="bd collapsed">
                 <!-- cke lazy -->
@@ -29,7 +29,7 @@
                     <thead>
                         <tr>
                             <th colspan="5">
-                                <h2>{$group->title}</h2>
+                                {*<h2>{$group->title}</h2>*}
                                 {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
                                 {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
                                 {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
@@ -56,7 +56,7 @@
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
                                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                                    <a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>
+                                    {*<a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>*}
                                 </td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" value=$option->modtype}</td>

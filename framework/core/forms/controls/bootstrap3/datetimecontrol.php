@@ -200,7 +200,6 @@ class datetimecontrol extends formcontrol {
             $object->default = 0; //This will force the control to always show the current time as default
         }
         if ($values['identifier'] == "") {
-//            $post = expString::sanitize_array($_POST);
             $post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST", $post);

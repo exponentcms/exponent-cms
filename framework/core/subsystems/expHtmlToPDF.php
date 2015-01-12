@@ -536,7 +536,7 @@ class expWKPDF extends expHtmlToPDF
 }
 
 /**
- * This is the class expHtmlToPDF2
+ * This is the class expDOMPDF
  * a wrapper for using dompdf
  *
  * @package    Subsystems
@@ -715,7 +715,7 @@ class expDOMPDF extends expHtmlToPDF
 }
 
 /**
- * This is the class expHtmlToPDF3
+ * This is the class expMPDF
  * a wrapper for using mPDF
  *
  * @package    Subsystems

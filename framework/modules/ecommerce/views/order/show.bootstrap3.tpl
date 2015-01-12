@@ -645,7 +645,7 @@
                                 </tr>
                             </table>
                         </div>
-                        {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" tab="notes" title="Notes on this order"|gettext}
+                        {simplenote content_type="order" content_id=$order->id require_login="1" require_approval="0" require_notification="0" title="Notes on this order"|gettext}
                     </div>
                 </div>
             </div>

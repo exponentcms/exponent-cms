@@ -26,9 +26,9 @@
         {*control type="buttongroup" name="add2cart" submit="Pay now"*}
     {/form}
     {*<a id="paynow" class="add-to-cart-btn {button_style} rc-link" href="">{'Donate now'|gettext}<span></span></a> or*}
-    {icon id="paynow" class="add-to-cart-btn rc-link" button=true size=large color=blue action=scriptaction text=expCore::getCurrencySymbol()|cat:' '|cat:'Donate now'|gettext}<span></span></a> {'OR'|gettext}
+    {icon id="paynow" class="add-to-cart-btn rc-link" button=true size=large color=blue action=scriptaction title='Donate'|gettext text=expCore::getCurrencySymbol()|cat:' '|cat:'Donate now'|gettext}<span></span></a> {'OR'|gettext}
     {*<a id="continue" class="add-to-cart-btn {button_style} rc-link" href="{link controller=cart action=addItem}">{'Add to cart and continue shopping'|gettext}<span></span></a>*}
-    {icon id="continue" class="add-to-cart-btn rc-link" button=true size=large color=blue controller=cart action=addItem text='Add to cart and continue shopping'|gettext}<span></span>
+    {icon id="continue" class="add-to-cart-btn rc-link" button=true size=large color=blue controller=cart action=addItem title='Donate'|gettext text='Add to cart and continue shopping'|gettext}<span></span>
 </div>
 
 {*FIXME convert to yui3*}

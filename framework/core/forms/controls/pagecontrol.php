@@ -126,7 +126,6 @@ class pagecontrol extends formcontrol {
 //        if ($object == null) $object = new textcontrol();
         if ($object == null) $object = new $this_control();
         if ($values['identifier'] == "") {
-//            $post = expString::sanitize_array($_POST);
 			$post = expString::sanitize($_POST);
             $post['_formError'] = gt('Identifier is required.');
             expSession::set("last_POST",$post);

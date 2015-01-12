@@ -17,61 +17,60 @@
 
 {/css}
 {* edebug var=$product *}
-{if isset($params.error)}
-    <div id="msg-queue" class="common msg-queue">
-        <ul class="queue error"><li>{$params.error}</li></ul>
-    </div>
-    {br}
+{if !empty($params.error)}
+    {message class=error text=$params.error|gettext}
 {/if}
 <div class="module cart add-to-cart"> 
     <h1>{$product->title}</h1>
-    {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}
-    {$listing->body}
+    {if $product->expFile.mainimage[0]->id}
+        {img file_id=$product->expFile.mainimage[0]->id w=150 class="prod-img"}
+    {/if}
+    {*{$product->body}*}
     <blockquote>
-        <strong>{"Additional information is required before we can add to your cart"|gettext}</strong>
+        <strong>{"Additional information is required before we can add this to your order"|gettext}</strong>
         {br}{br}
-        {"If you are ordering multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
-        {"If you would like different options or personalized fields for each item, please add them one at a time to your cart."|gettext}
+        {"If you are adding multiple quantities of this item, the SAME information you select here will be applied to all of the items."|gettext}&#160;&#160;
+        {"If you would like different options or personalized fields for each item, please add them one at a time to your order."|gettext}
     </blockquote>
     {clear}
-    {script unique="children-submit" yui3mods="1"}
-        {literal}
-        YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-            Y.one('#submit-chiprods').on('click',function(e){
-                e.halt();
-                var frm = Y.one('#child-products-form');
-                var chcks = frm.all('input[type="checkbox"]');
-                var txts = frm.all('input[type="text"]');
-                
-                bxchkd=0;
-                var msg = ""
-                
-                chcks.each(function(bx,key){
-                    if (bx.get('checked')) {
-                        bxchkd++;
-                        if (parseInt(txts.item(key).get('value'))<=0) {
-                            msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
-                        }
-                    };
-                });
-                
-                if (bxchkd==0 || msg!="") {
-                    alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
-                } else {
-                    frm.submit();
-                };
-            });
-        });
-        {/literal}
-    {/script}
     {form controller=order action=save_new_order_item id="save_new_order_item_form"}
-        {control type=hidden name=product_id value=$product->id}
-        {control type=hidden name=orderid value=$params.orderid}
-        {control type=hidden name=product_type value=$product->classname}			        
-        {control type=hidden name=options_shown value=$product->id}                    
+        {control type="hidden" name="product_id" value=$product->id}
+        {control type="hidden" name="orderid" value=$params.orderid}
+        {control type="hidden" name="product_type" value=$product->classname}
+        {control type="hidden" name="options_shown" value=$product->id}
         {if $product->childProduct|@count >= 1}
+            {script unique="children-submit" yui3mods="1"}
+            {literal}
+                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                    Y.one('#submit-itemSubmit').on('click',function(e){
+                        e.halt();
+                        var frm = Y.one('#child-products');
+                        var chcks = frm.all('input[type="checkbox"]');
+                        var txts = frm.all('input[type="text"]');
+
+                        bxchkd=0;
+                        var msg = ""
+
+                        chcks.each(function(bx,key){
+                            if (bx.get('checked')) {
+                                bxchkd++;
+                                if (parseInt(txts.item(key).get('value'))<=0) {
+                                    msg = "{/literal}{"You\'ll also need a value greater than 0 for a quantity."|gettext}{literal}"
+                                }
+                            };
+                        });
+
+                        if (bxchkd==0 || msg!="") {
+                            alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
+                        } else {
+                            Y.one('#save_new_order_item_form').submit();
+                        };
+                    });
+                });
+                {/literal}
+             {/script}
             <div id="child-products" class="exp-ecom-table">
-               <table border="0" cellspacing="0" cellpadding="0">
+               <table border="0" cellspacing="0" cellpadding="0" width="100%">
                     <thead>
                         <tr>
                             <th>&#160;</th>
@@ -80,23 +79,21 @@
                             {foreach from=$product->extra_fields item=chiprodname}
                                 <th><span>{$chiprodname.name}</span></th>
                             {/foreach}
-                            <th style="text-align: right;"><strong>{"PRICE"|gettext}</strong></th>
-                            <th>{'Action'|gettext}</th>
+                            <th style="text-align: right; padding-right: 10px"><strong>{"PRICE"|gettext}</strong></th>
+                            {*<th>{'Action'|gettext}</th>*}
                         </tr>
                     </thead>
                     <tbody>
                         {foreach from=$product->childProduct item=chiprod}
                             <tr class="{cycle values="odd,even"}">
-
-                                {* *}
-                                    {*[0] => Always available even if out of stock.*}
-                                    {*[1] => Available but shown as backordered if out of stock.*}
-                                    {*[2] => Unavailable if out of stock.*}
-                                    {*[3] => Show as &quot;Call for Price&quot;.*}
-                                {** }*}
-
+                                {*
+                                    [0] => Always available even if out of stock.
+                                    [1] => Available but shown as backordered if out of stock.
+                                    [2] => Unavailable if out of stock.
+                                    [3] => Show as &quot;Call for Price&quot;.
+                                *}
                                 {if  $chiprod->active_type == 0 && $product->active_type == 0 && ($chiprod->availability_type == 0 || $chiprod->availability_type == 1 || ($chiprod->availability_type == 2 && ($chiprod->quantity - $chiprod->minimum_order_quantity >= 0))) }
-                                    <td><input class="form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
+                                    <td><input class="checkbox form-control" name="prod-check[]" type="checkbox" value="{$chiprod->id}"></td>
                                     <td><input class="form-control" name="prod-quantity[{$chiprod->id}]" type="text" value="{$chiprod->minimum_order_quantity}" size=3 maxlength=5></td>
                                 {elseif ($chiprod->availability_type == 2 && $chiprod->quantity <= 0) && $chiprod->active_type == 0}
                                     <td colspan="2"><span><a href="javascript:void();" rel=nofollow title="{$chiprod->availability_note}">{'Out Of Stock'|gettext}</a></span></td>
@@ -118,8 +115,7 @@
                                         <span>{currency_symbol}<input class="form-cotnrol" name="prod-price[{$chiprod->id}]" type="text" value="{$chiprod->base_price|number_format:2}" size=7 maxlength=9></span>
                                     {/if}
                                 </td>
-                                <td>
-                                </td>
+                                {*<td>&#160;</td>*}
                             </tr>
                         {/foreach}
                     </tbody>
@@ -129,43 +125,13 @@
             {control type=text name=qty label="Quantity" value=1}
             {control type=text name=products_price label="Products Price" value=$product->base_price filter=money}
         {/if}
-        
-        {if $product->hasOptions()}
-            <div class="product-options">
-                <h2>{$product->title} {'Options'|gettext}</h2>
-                {foreach from=$product->optiongroup item=og}
-                    {if $og->hasEnabledOptions()} 
-                        <div class="option {cycle values="odd,even"}">
-                            {if $og->allow_multiple}
-                                {optiondisplayer product=$product options=$og->title view=checkboxes display_price_as=diff selected=$params.options}           
-                            {else}
-                                {optiondisplayer product=$product options=$og->title view=dropdown display_price_as=diff selected=$params.options required=$og->required}
-                            {/if}
-                        </div> 
-                    {/if}
-                {/foreach}
-                <span style="font-variant:small-caps;">* {"Selection required"|gettext}.</span>
-            </div>
-        {/if}
-        
-        {if !empty($product->user_input_fields) && $product->user_input_fields|@count>0 }
-            <div class="user-input-fields">
-                <h2>{'Additional Information for'|gettext} {$product->title}</h2>
-                <blockquote>{'This item would like the following additional information. Items marked with an * are required:'|gettext}</blockquote>
-                {foreach from=$product->user_input_fields key=uifkey item=uif}
-                    <div class="user-input {cycle values="odd,even"}">
-                        {if $uif.use}
-                             {if $uif.is_required}
-                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                             {else}
-                                 {control type=text name='user_input_fields[$uifkey]' size=50 maxlength=$uif.max_length label=$uif.name|cat:':' required=$uif.is_required value=$params.user_input_fields.$uifkey}
-                             {/if}
-                             {if $uif.description != ''}{$uif.description}{/if}
-                        {/if}
-                    </div>
-                {/foreach}
-            </div>
-        {/if}
-        {control type="buttongroup" size=large color=green submit="Add Item(s) to Order"|gettext}
+
+        {* NOTE display product options *}
+        {exp_include file="options.tpl"}
+
+        {* NOTE display product user input fields *}
+        {exp_include file="input_fields.tpl"}
+
+        {control type="buttongroup" id="submit-item" size=large color=green submit="Add Item(s) to Order"|gettext}
     {/form}
 </div>

@@ -1182,7 +1182,7 @@ class migrationController extends expController {
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($ni['file_id'])) {
                             $file = new expFile($ni['file_id']);
-                            $news->attachitem($file,'');
+                            $news->attachItem($file,'');
                         }
                         if (isset($oldconfig->enable_tags) && $oldconfig->enable_tags = true) {
 	                        $params = null;;
@@ -1308,7 +1308,7 @@ class migrationController extends expController {
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							$file = new expFile($ri['file_id']);
-							$filedownload->attachitem($file,'downloadable');
+							$filedownload->attachItem($file,'downloadable');
 							// default is to create with current time						
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->migrated_at = $ri['edited'];
@@ -1390,7 +1390,7 @@ class migrationController extends expController {
 								@$this->msg['migrated'][$iloc->mod]['count']++;
 								@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 								$file = new expFile($gi['file_id']);
-								$photo->attachitem($file,'');
+								$photo->attachItem($file,'');
 								$photo->created_at = $gi['posted'];
 								$photo->migrated_at = $gi['posted'];
 								$photo->update(array("validate"=>false));								
@@ -1436,7 +1436,7 @@ class migrationController extends expController {
                                 @$this->msg['migrated'][$iloc->mod]['count']++;
                                 @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                                 $file = new expFile($gi['file_id']);
-                                $photo->attachitem($file,'');
+                                $photo->attachItem($file,'');
                                 $photo->update(array("validate"=>false));
                             }
                         }
@@ -1563,7 +1563,7 @@ class migrationController extends expController {
 						// this next section is moot since there are no attachments to blogs
                         // if (!empty($bi['file_id'])) {
                             // $file = new expFile($bi['file_id']);
-                            // $post->attachitem($file,'downloadable');
+                            // $post->attachItem($file,'downloadable');
                         // }
 
                         if (isset($oldconfig->enable_tags) && $oldconfig->enable_tags = true) {
@@ -1735,7 +1735,7 @@ class migrationController extends expController {
                         @$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
                         if (!empty($li['file_id'])) {
 							$file = new expFile($li['file_id']);
-							$listing->attachitem($file,'');
+							$listing->attachItem($file,'');
 						}
                         if (!empty($oldconfig) && $oldconfig->enable_categories == 1 && $li['category_id']) {
                             $params = null;
@@ -1830,10 +1830,10 @@ class migrationController extends expController {
 							@$this->msg['migrated'][$iloc->mod]['count']++;
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							$file = new expFile($mi['media_id']);
-							$movie->attachitem($file,'files');
+							$movie->attachItem($file,'files');
 							if (!empty($mi['alt_image_id'])) {
 								$file = new expFile($mi['alt_image_id']);
-								$movie->attachitem($file,'splash');					
+								$movie->attachItem($file,'splash');
 							}
 						}
 					}
@@ -1878,7 +1878,7 @@ class migrationController extends expController {
 						}
                         if (!empty($bi['file_id'])) {
                             $file = new expFile($bi['file_id']);
-                            $banner->attachitem($file,'');
+                            $banner->attachItem($file,'');
                         }
 						$banner->save();
 						@$this->msg['migrated'][$iloc->mod]['count']++;

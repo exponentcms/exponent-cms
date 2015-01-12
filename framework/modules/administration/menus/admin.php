@@ -318,7 +318,7 @@ if ($user->isAdmin() || !empty($groups)) {
                     'url'       => makeLink(
                         array(
                             'controller' => 'users',
-                            'action'     => 'import_users'
+                            'action'     => 'import'
                         )
                     ),
                 )

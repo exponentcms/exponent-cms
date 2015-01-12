@@ -56,11 +56,18 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     if (!array_key_exists($default,$options)) $default = null;
     
     $view = $params['view'];
+    if ($view != 'checkboxes' && $view != 'dropdown') {
+        if (!empty($params['view'])) {
+            $view = 'checkboxes';
+        } else {
+            $view = 'dropdown';
+        }
+    }
     
-    //if((isset() || $og->required == false) $includeblank = $params['includeblank'] ; 
-    //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $og->required == true) $includeblank = false;
+    //if((isset() || $group->required == false) $includeblank = $params['includeblank'] ;
+    //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $group->required == true) $includeblank = false;
     
-    $includeblank = $og->required == false && !isset($params['includeblank']) ? gt('-- Please Select an Option --') : $params['includeblank'];
+    $includeblank = $group->required == false && !isset($params['includeblank']) ? gt('-- Please Select an Option --') : $params['includeblank'];
     
     $template = expTemplate::get_common_template($view, $smarty->getTemplateVars('__loc'), 'options');
     $template->assign('product', $product);

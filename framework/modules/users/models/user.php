@@ -101,13 +101,16 @@ class user extends expRecord {
             //Update the last login timestamp for this user.
             $user->updateLastLogin();
         }
-//		$obj = new stdClass();
-//		$obj->user_id = $user->id;
-//		$obj->timestamp = time();
-//		$obj->ip_address = exponent_users_getRealIpAddr();
-//		$obj->authenticated = $authenticated;
-//		$db->insertObject($obj, "user_loginAttempts");
-//
+        if (ENABLE_TRACKING) {
+            // save user login attempts
+    		$obj = new stdClass();
+    		$obj->user_id = $user->id;
+    		$obj->timestamp = time();
+    		$obj->ip_address = self::getRealIpAddr();
+    		$obj->authenticated = $authenticated;
+    		$db->insertObject($obj, "user_loginAttempts");
+        }
+
 //		return $user;
     }
 
@@ -260,6 +263,23 @@ class user extends expRecord {
 
     public function isTempUser() {
         return is_numeric(expUtil::right($this->username, 10)) ? true : false;
+    }
+
+    function getRealIpAddr()
+    {
+        if (!empty($_SERVER['HTTP_CLIENT_IP']))   //check ip from share internet
+        {
+          $ip=$_SERVER['HTTP_CLIENT_IP'];
+        }
+        elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR']))   //to check ip is pass from proxy
+        {
+          $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
+        }
+        else
+        {
+          $ip=$_SERVER['REMOTE_ADDR'];
+        }
+        return $ip;
     }
 
     public function customerInfo() {

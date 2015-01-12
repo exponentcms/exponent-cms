@@ -149,6 +149,7 @@ table#cart table td {
 #cart .exp-dropmenu ul, .extra-data ul {
 	margin-top : 0;
 	margin-bottom: 0;
+	padding-left: 12px;
 }
 
 #cart .exp-dropmenu .type-icon {
@@ -158,7 +159,7 @@ table#cart table td {
     position:absolute;
     left:10px;
     top:-7px;
-    background: url(../../../framework/core/assets/images/panel/point.gif) no-repeat;
+    background: url(../../../../../framework/core/assets/images/panel/point.gif) no-repeat;
 }
 
 #cart .exp-dropmenu ul li {

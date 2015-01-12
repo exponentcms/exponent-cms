@@ -48,13 +48,14 @@
                     <td>
                         {group label="Select the style of your gift card"|gettext}
                             <h3>{'Card Style'|gettext}</h3>
-                            {foreach from = $giftcards item=giftcard}
+                            {foreach from=$giftcards item=giftcard name=gifts}
                                 <div class="picwrapper">
                                     {img file_id=$giftcard->expFile.mainimage[0]->id w=250 alt=$giftcard->image_alt_tag|default:"Image of `$giftcard->title`" title="`$giftcard->title`"  class="gc-preview"}
-                                    {if $records.product_id == $giftcard->id}
-                                        {control type="radio" name="product_id" label="`$giftcard->title`" value="`$giftcard->id`" checked=1}
+                                    {if $records.product_id == $giftcard->id || (empty($records.product_id) && $smarty.foreach.gifts.first)}
+                                        {control type="radio" class="radio-gift" name="product_id" label="`$giftcard->title`" value="`$giftcard->id`" checked=1}
+                                        {$option_set=$giftcard->id}
                                     {else}
-                                        {control type="radio" name="product_id" label="`$giftcard->title`" value="`$giftcard->id`"}
+                                        {control type="radio" class="radio-gift" name="product_id" label="`$giftcard->title`" value="`$giftcard->id`"}
                                     {/if}
                                 </div>
                             {foreachelse}
@@ -75,44 +76,50 @@
                         {group label="Select the amount of the gift card"|gettext}
                             <h3>{'Card Amount'|gettext}</h3>
                             {* FIXME Need to convert to smarty controls *}
-                            <div class="radio control" id="25dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="25" name="card_amount" id="25d" {if $records.card_amount == "25"}checked="checked"{/if}></td><td><label class="label " for="25d">$25</label></td></tr></tbody></table></div>
+                            <div class="radio control" id="25dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="25" name="card_amount" id="25d" {if $records.card_amount == "25"  || empty($records.card_amount) && empty($records.card_amount_txt)}checked="checked"{/if}></td><td><label class="label " for="25d">$25</label></td></tr></tbody></table></div>
                             <div class="radio control" id="50dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="50" name="card_amount" id="50d" {if $records.card_amount == "50"}checked="checked"{/if}></td><td><label class="label " for="50d">$50</label></td></tr></tbody></table></div>
                             <div class="radio control" id="75dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="75" name="card_amount" id="75d" {if $records.card_amount == "75"}checked="checked"{/if}></td><td><label class="label " for="75d">$75</label></td></tr></tbody></table></div>
                             <div class="radio control" id="100dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="100" name="card_amount" id="100d" {if $records.card_amount == "100"}checked="checked"{/if}></td><td><label class="label " for="100d">$100</label></td></tr></tbody></table></div>
                             <div class="radio control" id="150dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="150" name="card_amount" id="150d" {if $records.card_amount == "150"}checked="checked"{/if}></td><td><label class="label " for="150d">$150</label></td></tr></tbody></table></div>
                             <div class="radio control" id="200dControl"><table cellspacing="0" cellpadding="0" border="0"><tbody><tr><td class="input"><input type="radio" onclick="clearTxtField()" class="radio amount" value="200" name="card_amount" id="200d" {if $records.card_amount == "200"}checked="checked"{/if}></td><td><label class="label " for="200d">$200</label></td></tr></tbody></table></div>
                             <div class="text-control control  man_amount " id="card_amount_txtControl"><label class="label" for="card_amount_txt">{'Other Amount'|gettext}</label><input type="text" onchange="clearRadioButtons();" onpaste="return money_filter.onpaste(this, event);" onfocus="money_filter.onfocus(this);" onblur="money_filter.onblur(this);" onkeypress="return money_filter.on_key_press(this, event);" class="text man_amount form-control" size="6" value="{$records.card_amount_txt}" name="card_amount_txt" id="card_amount_txt"></div>
-                            <em>There is a {$config.minimum_gift_card_purchase|currency} {'Minimum on gift card purchases.'|gettext}</em>
+                            {if !empty($config.minimum_gift_card_purchase)}<em>{'There is a'|gettext} {$config.minimum_gift_card_purchase|currency} {'Minimum on gift card purchases.'|gettext}</em>{/if}
                         {/group}
                     </td>
                 </tr>
                 <tr>
                     <td>
                         {group label='Personalize your gift card'|gettext}
+                            {control type="hidden" name="options_shown" id="options_shown" value=$option_set}
                             <h3>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</h3>
                             <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text" class="text form-control" size="20" name="toname" value="{$records.toname}"></div>
                             <div class="text-control control  "><label class="label">{"From"|gettext}:</label><input type="text" class="text form-control" size="20" value="{$records.fromname}" name="fromname"></div>
-                            {*<br><em>{'Adding a custom message will add'|gettext} {currency_symbol}{$config.custom_message_product|number_format:2} {'to the price of your gift card.'|gettext}</em><br><br>*}
-                            <br><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em>
-                            <div class="text-control control "><label class="label">{"Custom Message (100 characters max)"|gettext}</label>{control type="textarea" name="msg" cols="45" rows="3"}{$records.msg}</textarea></div>
+                            {if !empty($config.custom_message_product)}<br><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em>{/if}
+                            <div class="text-control control "><label class="label">{"Custom Message (100 characters max)"|gettext}</label>{control type="textarea" name="msg" cols="45" rows="3" value=$records.msg}</textarea></div>
                         {/group}
                     </td>
                 </tr>
             </tbody>
         </table>
-
-        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="{button_style} exp-ecom-link" rel="nofollow"><strong><em>{'Add selected items to cart'|gettext}</em></strong></a>
+        <a id="submit-giftcard" href="javascript:{ldelim}{rdelim}" class="{button_style size=large color=blue} exp-ecom-link" rel="nofollow">{'Add selected gift card to cart'|gettext}</a>
 	{/form}
 </div>
 
-{script unique="giftcard-submit" yui3mods="1"}
+{script unique="giftcard-submit" jquery="1"}
 	{literal}
-		YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-			Y.one('#submit-giftcard').on('click',function(e){
-				e.halt();
-				var frm = Y.one('#addtocart');
-				frm.submit();
-			});
-		});
+        var clearTxtField = function() {
+            $('#card_amount_txt').val("");
+        };
+        var clearRadioButtons = function() {
+            $('.radio.amount').each(function() {
+                this.checked = false;
+            });
+        };
+        $('.radio-gift').change(function(ev) {
+            $( "#options_shown" ).val(ev.target.value);
+        });
+        $( "#submit-giftcard" ).click(function() {
+            $( "#addtocart" ).submit();
+        });
 	{/literal}
 {/script}

@@ -16,7 +16,7 @@
 {if $record->parent_id == 0}
     {control type="hidden" name="tab_loaded[model]" value=1}
     {if count($record->childProduct)}
-        <h2>{'Child products inherit these settings.'|gettext}</h2>
+        <h4><em>({'Child products inherit these settings.'|gettext})</em></h4>
     {/if}
     <h2>{'Product SKUS / Model'|gettext}</h2>
     {if !$record->id}
@@ -50,5 +50,5 @@
         </tbody>
     </table>
 {else}
-	<h2>{'Product SKUS / Model'|gettext} {'are inherited from this product\'s parent.'|gettext}</h2>
+	<h4><em>({'Product SKUS / Model'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}

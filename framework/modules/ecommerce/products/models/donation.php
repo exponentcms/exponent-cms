@@ -113,9 +113,11 @@ class donation extends product {
     }
 
     function addToCart($params, $orderid = null) {
-//	    if (empty($params['dollar_amount'])) {  //FIXME we don't ever pass this param
-//	        return false;
-//	    } else {
+        if (empty($params['quick']) && empty($params['options_shown'])) {  //get user input if needed
+            $this->displayForm('addToCart', $params);
+            return false;
+        }
+
         $item = new orderitem($params);
         if (empty($params['dollar_amount'])) $params['dollar_amount'] = $this->price;
         $item->products_price = expUtil::currency_to_float($params['dollar_amount']);
@@ -130,7 +132,6 @@ class donation extends product {
         $item->quantity = $this->getDefaultQuantity();
         $item->save();
         return true;
-//	    }
     }
 
     public function getSEFURL() {

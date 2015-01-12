@@ -181,9 +181,13 @@ class expRouter {
                 unset($_REQUEST[$key]);
             }
         }
+        // conventional method to ensure the 'id' is an id
+        if (isset($_GET['id'])) {
+            $_GET['id'] = intval($_GET['id']);
+            $_REQUEST['id'] = intval($_REQUEST['id']);
+        }
         if (!$user->isAdmin()) {
             $_REQUEST['route_sanitized'] = true;//FIXME debug test
-//            expString::sanitize_array($_REQUEST);  // strip other exploits like sql injections
             expString::sanitize($_REQUEST);  // strip other exploits like sql injections
         }
 
@@ -235,7 +239,7 @@ class expRouter {
         }
     }
 
-    //FIXME what are we doing with this history?
+    //FIXME what are we doing with this history? saving each page load
     public function updateHistory($section=null) {
         global $db,$user;
 
@@ -643,7 +647,7 @@ class expRouter {
 ////                $params[$name] = $val;
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
-//            $params = expString::sanitize_array($_REQUEST);
+            $params = expString::sanitize($_REQUEST);
 //            if (empty($data['route_sanitized'])) $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!
