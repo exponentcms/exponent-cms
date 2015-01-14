@@ -267,6 +267,37 @@ class photosController extends expController {
         expHistory::back();
     }
 
+    function delete_multi() {
+        expHistory::set('manageable', $this->params);
+        $order = isset($this->config['order']) ? $this->config['order'] : "rank";
+        $page = new expPaginator(array(
+            'model'=>'photo',
+            'where'=>$this->aggregateWhereClause(),
+            'order'=>$order,
+            'categorize'=>empty($this->config['usecategories']) ? false : $this->config['usecategories'],
+            'uncat'=>!empty($this->config['uncat']) ? $this->config['uncat'] : gt('Not Categorized'),
+            'groups'=>!isset($this->params['gallery']) ? array() : array($this->params['gallery']),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Title')=>'title'
+            ),
+        ));
+
+        assign_to_template(array(
+            'page'=>$page,
+        ));
+    }
+
+    function delete_multi_act() {
+        foreach ($this->params['pic'] as $pic_id=>$value) {
+            $obj = new photo($pic_id);
+            $obj->delete();
+        }
+        expHistory::back();
+    }
+
 }
 
 ?>
