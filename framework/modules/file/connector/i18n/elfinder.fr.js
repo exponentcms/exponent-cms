@@ -1,7 +1,7 @@
 /**
  * French translation
  * @author Régis Guyomarch <regisg@gmail.com>, Benoit Delachaux <benorde33@gmail.com>
- * @version 2012-08-11
+ * @version 2014-12-19
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.fr = {
@@ -64,7 +64,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errMove'              : 'Impossible de déplacer "$1".',
 			'errCopyInItself'      : 'Impossible de copier "$1" sur lui-même.',
 			'errRm'                : 'Impossible de supprimer "$1".',
-			'errExtract'           : 'Impossible d\'extraire les fichier de "$1".',
+			'errRmSrc'             : 'Unable remove source file(s).',
 			'errExtract'           : 'Imbossible d\'extraire les fichiers à partir de "$1".', // added 11.08.2012
 			'errArchive'           : 'Impossible de créer l\'archive.',
 			'errArcType'           : 'Type d\'archive non supporté.',
@@ -129,6 +129,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnClose'  : 'Fermer',
 			'btnSave'   : 'Sauvegarder',
 			'btnRm'     : 'Supprimer',
+			'btnApply'  : 'Apply',
 			'btnCancel' : 'Annuler',
 			'btnApply'  : 'Appliquer', // added 11.08.2013
 			'btnNo'     : 'Non',
@@ -152,6 +153,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfarchive'  : 'Création de l\'archive',
 			'ntfextract'  : 'Extraction des fichiers de l\'archive',
 			'ntfsearch'   : 'Recherche des fichiers',
+			'ntfresize'   : 'Resizing images',
 			'ntfsmth'     : 'Fait quelque chose',
 			'ntfloadimg'  : 'Chargement de l\' image',
 			'ntfnetmount' : 'Monte le volume réseau', // added 18.04.2012			
@@ -161,18 +163,44 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'dateUnknown' : 'Inconnue',
 			'Today'       : 'Aujourd\'hui',
 			'Yesterday'   : 'Hier',
-			'Jan'         : 'Jan',
-			'Feb'         : 'Fév',
-			'Mar'         : 'Mar',
-			'Apr'         : 'Avr',
-			'May'         : 'Mai',
-			'Jun'         : 'Jun',
-			'Jul'         : 'Jul',
-			'Aug'         : 'Aoû',
-			'Sep'         : 'Sep',
-			'Oct'         : 'Oct',
-			'Nov'         : 'Nov',
-			'Dec'         : 'Déc',
+			'msJan'       : 'Jan',
+			'msFeb'       : 'Fév',
+			'msMar'       : 'Mar',
+			'msApr'       : 'Avr',
+			'msMay'       : 'Mai',
+			'msJun'       : 'Jun',
+			'msJul'       : 'Jul',
+			'msAug'       : 'Aoû',
+			'msSep'       : 'Sep',
+			'msOct'       : 'Oct',
+			'msNov'       : 'Nov',
+			'msDec'       : 'Déc',
+			'January'     : 'January',
+			'February'    : 'February',
+			'March'       : 'March',
+			'April'       : 'April',
+			'May'         : 'May',
+			'June'        : 'June',
+			'July'        : 'July',
+			'August'      : 'August',
+			'September'   : 'September',
+			'October'     : 'October',
+			'November'    : 'November',
+			'December'    : 'December',
+			'Sunday'      : 'Sunday',
+			'Monday'      : 'Monday',
+			'Tuesday'     : 'Tuesday',
+			'Wednesday'   : 'Wednesday',
+			'Thursday'    : 'Thursday',
+			'Friday'      : 'Friday',
+			'Saturday'    : 'Saturday',
+			'Sun'         : 'Sun',
+			'Mon'         : 'Mon',
+			'Tue'         : 'Tue',
+			'Wed'         : 'Wed',
+			'Thu'         : 'Thu',
+			'Fri'         : 'Fri',
+			'Sat'         : 'Sat',
 
 			/******************************** sort variants ********************************/
 			'sortname'          : 'par nom', 
@@ -337,5 +365,5 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoMKV'    : 'Vidéo Matroska',
 			'kindVideoOGG'    : 'Vidéo Ogg'
 		}
-	}
+	};
 }

@@ -639,9 +639,9 @@ $.fn.elfindercwd = function(fm, options) {
                 var columns = fm.options.uiOptions.cwd.listView.columns;
                 for (var i = 0; i < columns.length; i++) {
                     if (fm.options.uiOptions.cwd.listView.columnsCustomName[columns[i]] != null) {
-                        customColsName +='<td>'+fm.options.uiOptions.cwd.listView.columnsCustomName[columns[i]]+'</td>';
+                        customColsName +='<td class="elfinder-cwd-view-th-'+columns[i]+'">'+fm.options.uiOptions.cwd.listView.columnsCustomName[columns[i]]+'</td>';
                     } else {
-                        customColsName +='<td>'+msg[columns[i]]+'</td>';
+                        customColsName +='<td class="elfinder-cwd-view-th-'+columns[i]+'">'+msg[columns[i]]+'</td>';
                     }
                 }
                 return customColsName;
@@ -671,7 +671,7 @@ $.fn.elfindercwd = function(fm, options) {
 
 				wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list');
 
-                list && cwd.html('<table><thead><tr class="ui-state-default"><td >'+msg.name+'</td>'+customColsNameBuild()+'</tr></thead><tbody/></table>');
+                list && cwd.html('<table><thead><tr class="ui-state-default"><td class="elfinder-cwd-view-th-name">'+msg.name+'</td>'+customColsNameBuild()+'</tr></thead><tbody/></table>');
 		
 				buffer = $.map(files, function(f) { return any || f.phash == phash ? f : null; });
 				
@@ -761,15 +761,17 @@ $.fn.elfindercwd = function(fm, options) {
                             p.trigger(evtUnselect);
                             trigger();
                         } else {
-                            p.trigger(evtSelect);
-                            trigger();
-                            p.trigger(fm.trigger('contextmenu', {
-                                'type'    : 'files',
-                                'targets' : fm.selected(),
-                                'x'       : e.originalEvent.touches[0].clientX,
-                                'y'       : e.originalEvent.touches[0].clientY
-                            }));
-                        }
+							if (e.target.nodeName != 'TD' || fm.selected().length > 0) {
+                                p.trigger(evtSelect);
+                                trigger();
+                                p.trigger(fm.trigger('contextmenu', {
+                                    'type'    : 'files',
+                                    'targets' : fm.selected(),
+                                    'x'       : e.originalEvent.touches[0].clientX,
+                                    'y'       : e.originalEvent.touches[0].clientY
+                                }));
+                            }
+						}
                     }, 500));
                 })
 				.delegate(fileSelector, 'touchmove.'+fm.namespace+' touchend.'+fm.namespace, function(e) {
@@ -840,7 +842,7 @@ $.fn.elfindercwd = function(fm, options) {
 				.bind('contextmenu.'+fm.namespace, function(e) {
 					var file = $(e.target).closest('.'+clFile);
 					
-					if (file.length) {
+					if (file.length && (e.target.nodeName != 'TD' || $.inArray(file.get(0).id, fm.selected()) > -1)) {
 						e.stopPropagation();
 						e.preventDefault();
                         if (!file.is('.'+clDisabled) && !file.data('touching')) {
@@ -1007,7 +1009,7 @@ $.fn.elfindercwd = function(fm, options) {
 				
 				if (l != list) {
 					list = l;
-					content(fm.files());
+					content(query ? lastSearch : fm.files(), !!query);
 
 					$.each(sel, function(i, h) {
 						selectFile(h);

@@ -96,7 +96,7 @@ elFinder.prototype.commands.info = function () {
             },
             count = [],
 			replSpinner = function(msg, name) { dialog.find('.'+spclass+'-'+name).parent().html(msg); },
-			id = fm.namespace+'-info-'+$.map(files, function(f) { return f.hash }).join('-'),
+			id = fm.namespace+'-info-'+$.map(files, function(f) { return f.hash; }).join('-'),
             dialog = fm.getUI().find('#' + id),
             size, tmb, file, title, dcnt;
 
@@ -220,7 +220,7 @@ elFinder.prototype.commands.info = function () {
             view = view.replace('{class}' , 'elfinder-cwd-icon-group');
             title = tpl.groupTitle.replace('{items}' , msg.items).replace('{num}' , cnt);
             dcnt = $.map(files ,function (f) {
-                return f.mime == 'directory' ? 1 : null
+                return f.mime == 'directory' ? 1 : null;
             }).length;
             if (!dcnt) {
                 size = 0;
@@ -236,8 +236,8 @@ elFinder.prototype.commands.info = function () {
                 content.push(row.replace(l , msg.kind).replace(v , msg.files));
                 content.push(row.replace(l , msg.size).replace(v , fm.formatSize(size)));
             } else {
-                content.push(row.replace(l , msg.kind).replace(v , dcnt == cnt ? msg.folders : msg.folders + ' ' + dcnt + ', ' + msg.files + ' ' + (cnt - dcnt)))
-				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'dim')));
+                content.push(row.replace(l , msg.kind).replace(v , dcnt == cnt ? msg.folders : msg.folders + ' ' + dcnt + ', ' + msg.files + ' ' + (cnt - dcnt)));
+				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'size')));
 				count = $.map(files, function(f) { return f.hash });
 
             }

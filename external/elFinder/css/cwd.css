@@ -17,11 +17,18 @@
 	cursor:default;
 	padding:0;
 	margin:0;
+	-ms-touch-action: auto;
+	touch-action: auto;
 	-moz-user-select: -moz-none;
 	-khtml-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-touch-callout:none; // disable long tap popup
+	user-select:          none; // disable long tap link
+	-webkit-user-select:  none;
+	-moz-user-select:     none;
+	-khtml-user-select:   none;
 }
 
 /* container active on dropenter */
@@ -190,11 +197,17 @@
 
 /*.elfinder-cwd-view-list { padding:0 0 4px 0; }*/
 
-.elfinder-cwd table { width:100%; border-collapse:collapse; border:0 solid; margin:0 0 10px 0; }
+.elfinder-cwd table { 
+	width: 100%;
+	border-collapse: separate;
+	border: 0 solid;
+	margin: 0 0 10px 0;
+	border-spacing: 0;
+}
 .elfinder .elfinder-cwd table thead tr { border-left:0 solid; border-top:0 solid; border-right:0 solid; }
 
 .elfinder .elfinder-cwd table td { 
-	padding:3px 12px;
+	padding:4px 12px;
 	white-space:pre;
 	overflow:hidden;
 	text-align:right;

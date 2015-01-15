@@ -649,7 +649,7 @@ $.fn.elfindercwd = function(fm, options) {
 
 				wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list');
 
-				list && cwd.html('<table><thead><tr class="ui-state-default"><td >'+msg.name+'</td><td>'+msg.perm+'</td><td>'+msg.mod+'</td><td>'+msg.size+'</td><td>'+msg.kind+'</td></tr></thead><tbody/></table>');
+				list && cwd.html('<table><thead><tr class="ui-state-default"><td class="elfinder-cwd-view-th-name">'+msg.name+'</td><td class="elfinder-cwd-view-th-perm">'+msg.perm+'</td><td class="elfinder-cwd-view-th-date">'+msg.mod+'</td><td class="elfinder-cwd-view-th-size">'+msg.size+'</td><td class="elfinder-cwd-view-th-kind">'+msg.kind+'</td></tr></thead><tbody/></table>');
 		
 				buffer = $.map(files, function(f) { return any || f.phash == phash ? f : null; });
 				
@@ -739,14 +739,16 @@ $.fn.elfindercwd = function(fm, options) {
 							p.trigger(evtUnselect);
 							trigger();
 						} else {
-							p.trigger(evtSelect);
-							trigger();
-							p.trigger(fm.trigger('contextmenu', {
-								'type'    : 'files',
-								'targets' : fm.selected(),
-								'x'       : e.originalEvent.touches[0].clientX,
-								'y'       : e.originalEvent.touches[0].clientY
-							}));
+							if (e.target.nodeName != 'TD' || fm.selected().length > 0) {
+								p.trigger(evtSelect);
+								trigger();
+								p.trigger(fm.trigger('contextmenu', {
+									'type'    : 'files',
+									'targets' : fm.selected(),
+									'x'       : e.originalEvent.touches[0].clientX,
+									'y'       : e.originalEvent.touches[0].clientY
+								}));
+							}
 						}
 					}, 500));
 				})
@@ -818,7 +820,7 @@ $.fn.elfindercwd = function(fm, options) {
 				.bind('contextmenu.'+fm.namespace, function(e) {
 					var file = $(e.target).closest('.'+clFile);
 					
-					if (file.length) {
+					if (file.length && (e.target.nodeName != 'TD' || $.inArray(file.get(0).id, fm.selected()) > -1)) {
 						e.stopPropagation();
 						e.preventDefault();
 						if (!file.is('.'+clDisabled) && !file.data('touching')) {
@@ -985,7 +987,7 @@ $.fn.elfindercwd = function(fm, options) {
 				
 				if (l != list) {
 					list = l;
-					content(fm.files());
+					content(query ? lastSearch : fm.files(), !!query);
 
 					$.each(sel, function(i, h) {
 						selectFile(h);

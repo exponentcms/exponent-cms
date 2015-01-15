@@ -11,6 +11,12 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Added / Fixed / Changed for 2.3.3
 -----------------------
 ### Address any issues in v2.3.2
+  - adds feature to delete multiple photo album items at one time
+  - updates elFinder to be the default file manager
+    - fixes 'create' and 'extract' archive files feature
+    - better 'touch' support
+    - better implementation of 'Places', the folder bookmarking feature
+    - changes logging to now only occur if both error reporting & logging are turned on
   - E-Commerce updates
     - adds 'configure category' link to ecommerce views where we can edit a store category
     - adds user selectable product option display features (segregate required/non-required options, show on product page)
