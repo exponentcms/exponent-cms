@@ -1084,7 +1084,7 @@ class administrationController extends expController {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
             $themeclass = $this->params['theme'];
-			$theme = new $themeclass();
+			$theme = new $themeclass($this->params);
 			$theme->configureTheme();
 		}
 	}
@@ -1385,6 +1385,13 @@ class theme {
 	function name() { return "theme"; }
 	function author() { return ""; }
 	function description() { return gt("The theme shell"); }
+
+    /**
+     * @param array $params
+     */
+    function __construct($params = array()) {
+        $this->params = $params;
+    }
 
 	/**
 	 * Method to Configure theme settings
