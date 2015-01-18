@@ -29,6 +29,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class checkboxcontrol extends formcontrol {
 
+    var $default = false;
+    var $value = "1";
     var $flip = false;
     var $jsHooks = array();
     var $class = "";
@@ -46,10 +48,10 @@ class checkboxcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_BOOLEAN);
     }
 
-    function __construct($default = 1, $flip = false, $required = false) {
-        $this->default  = $default;
+    function __construct($default = false, $flip = false, $required = false) {
+        $this->default  = $default; //checked
         $this->flip     = $flip;
-        $this->jsHooks  = array();
+//        $this->jsHooks  = array();
         $this->required = $required;
     }
 
@@ -57,7 +59,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
             $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->value.'"';
     		$html .= ' />';
     		return $html;
         } else {
@@ -92,7 +94,6 @@ class checkboxcontrol extends formcontrol {
         }
     }
 
-    //FIXME:  this is just here until we completely deprecate the old school checkbox
     //control calls in the old school forms
     function controlToHTML($name, $label) {
         $this->value = isset($this->value) ? $this->value : 1;
@@ -110,7 +111,7 @@ class checkboxcontrol extends formcontrol {
 
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
-        if (!empty($this->checked)) $html .= ' checked="checked"';
+        if (!empty($this->default)) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox form-control"' : ' class="checkbox form-control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -128,11 +129,12 @@ class checkboxcontrol extends formcontrol {
         }
 
         $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->default) . '" caption="' . $caption . '"';
+        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" caption="' . $caption . '"';
         if (!empty($this->onclick)) $html .= ' onclick="' . $this->onclick . '"';
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 
         $html .= ' />';
+        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
         return $html;
     }
 
