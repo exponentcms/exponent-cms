@@ -1011,11 +1011,12 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
  *
  * @param mixed $var the variable to dump
  * @param bool $halt if set to true will halt execution
+ * @param bool $disable_log if set to true will disable logging and force to screen
  * @return void
  */
-function eDebug($var, $halt=false){
+function eDebug($var, $halt=false, $disable_log=false){
 	if (DEVELOPMENT) {
-        if (LOGGER) {
+        if (LOGGER && !$disable_log) {
 //            if(is_array($var) || is_object($var)) {
 //                $pvar = print_r($var, true);
 //            } else {
@@ -1048,7 +1049,7 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 	if (DEVELOPMENT >= $minlevel) {
 		if (is_writable ($path) || !file_exists($path)) {
 			if (!$log = fopen ($path, "ab")) {
-				eDebug(gt("Error opening log file for writing."));
+				eDebug(gt("Error opening log file for writing."), false, true);
 			} else {
                 if(is_array($var) || is_object($var)) {
                     $pvar = print_r($var, true);
@@ -1056,12 +1057,12 @@ function eLog($var, $type='', $path='', $minlevel='0') {
                     $pvar = $var;
                 }
 				if (fwrite ($log, $type . ": " . $pvar . "\r\n") === FALSE) {
-					eDebug(gt("Error writing to log file")." (".$path.").");
+					eDebug(gt("Error writing to log file")." (".$path.").", false, true);
 				}
 				fclose ($log);
 			}
 		} else {
-			eDebug(gt("Log file"." (".$path)." ".gt("not writable."));
+			eDebug(gt("Log file"." (".$path)." ".gt("not writable."), false, true);
 		}
 	}
 }
