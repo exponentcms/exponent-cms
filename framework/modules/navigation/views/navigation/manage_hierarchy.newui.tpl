@@ -50,7 +50,7 @@
         $('#nav_jstree').jstree({
             'core' : {
                 'data' : {
-                    'url' : eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON2",
+                    'url' : eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON2&json=1",
                     'data' : function (node) {
                         return { 'id' : node.id };
                     }

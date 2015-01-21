@@ -55,6 +55,18 @@ class navigationController extends expController {
 
     function searchName() { return gt('Webpage'); }
 
+    /**
+     * @param null $src
+     * @param array $params
+     *
+     */
+    function __construct($src = null, $params = array())
+    {
+        parent::__construct($src, $params);
+        if (!empty($params['id']))  // we normally throw out the $loc->int EXCEPT with navigation pages
+            $this->loc = expCore::makeLocation($this->baseclassname, $src, $params['id']);
+    }
+
     public function showall() {
         global $user, $sectionObj, $sections;
 
@@ -770,7 +782,7 @@ class navigationController extends expController {
             if (!$view) unset($navs[$i]);
         }
         $navs= array_values($navs);
-        header('Content-Type: application/json; charset=utf8');
+//        header('Content-Type: application/json; charset=utf8');
 		echo json_encode($navs);
 //        echo expJavascript::ajaxReply(201, '', $navs);
         exit;

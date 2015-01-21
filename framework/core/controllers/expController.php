@@ -129,7 +129,6 @@ abstract class expController {
         $this->config = $config->config;
 
         $this->params = $params;
-
     }
 
     /**
