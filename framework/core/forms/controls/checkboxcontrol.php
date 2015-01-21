@@ -125,7 +125,7 @@ class checkboxcontrol extends formcontrol {
         }
         $html .= ' />';
 //        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
-        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->checked, null));
+//        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->checked, null));
         return $html;
     }
 
@@ -171,7 +171,7 @@ class checkboxcontrol extends formcontrol {
 
         $html .= ' />';
 //        if (!empty($this->description)) $html .= "<br><div class=\"control-desc\">".$this->description."</div>";
-        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
+//        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
         return $html;
     }
 

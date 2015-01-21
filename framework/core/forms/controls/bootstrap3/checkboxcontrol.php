@@ -134,7 +134,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 
         $html .= ' />';
-        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
+//        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
         return $html;
     }
 
