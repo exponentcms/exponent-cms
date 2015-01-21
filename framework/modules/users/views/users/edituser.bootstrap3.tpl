@@ -50,7 +50,7 @@
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1 focus=1}
                         {/if}
                         <div class="row">
-                            {control type=password name=pass1 label="Password"|gettext required=1}
+                            {control class="col-sm-4" type=password name=pass1 label="Password"|gettext required=1}
                             <div class="col-sm-4" style="padding-top: 8px;">
                                 <div class="pwstrength_viewport_progress"></div>
                             </div>

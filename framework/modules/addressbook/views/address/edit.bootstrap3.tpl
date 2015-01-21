@@ -108,7 +108,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                         {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                     </blockquote>
                     <div class="row">
-                        {control type="password" name="password" label="Password"|gettext required=true}
+                        {control class="col-sm-4" type="password" name="password" label="Password"|gettext required=true}
                         <div class="col-sm-4" style="padding-top: 8px;">
                             <div class="pwstrength_viewport_progress"></div>
                         </div>
