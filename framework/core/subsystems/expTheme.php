@@ -115,8 +115,8 @@ class expTheme
             define('XHTML_CLOSING', "");
         }
 
-        // load primer, lessprimer, & normalize CSS files
-        if (!empty($config['css_primer']) || !empty($config['link']) || !empty($config['lessprimer']) || !empty($config['normalize'])) {
+        // load primer, lessprimer, link (css) and lesscss & normalize CSS files
+        if (!empty($config['css_primer']) || !empty($config['lessprimer']) || !empty($config['link']) || !empty($config['lesscss']) || !empty($config['normalize'])) {
             expCSS::pushToHead($config);
         };
 
