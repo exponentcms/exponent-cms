@@ -33,8 +33,6 @@ function epb($buffer, $mode) {
 }
 
 ob_start('epb');
-$microtime_str = explode(' ',microtime());
-$i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the Exponent Framework
 require_once('exponent.php');
@@ -116,9 +114,8 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	}
 }
 
-//$microtime_str = explode(' ',microtime());
-//$i_end = $microtime_str[0] + $microtime_str[1];
-//echo "\r\n<!--".sprintf(gt('Execution time : %d seconds'),round($i_end - $i_start,4)).'-->';
+//write page build/load time if in DEVELOPMENT mode with logging
+if(DEVELOPMENT && LOGGER) eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();
