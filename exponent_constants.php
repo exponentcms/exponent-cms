@@ -51,12 +51,10 @@ if (!defined('PATH_RELATIVE')) {
 if (!defined('HOSTNAME')) {
     if (isset($_SERVER['HTTP_HOST'])) {
         define('HOSTNAME', $_SERVER['HTTP_HOST']);
+    } elseif (isset($_SERVER['SERVER_NAME'])) {
+        define('HOSTNAME', $_SERVER['SERVER_NAME']);
     } else {
-        if (isset($_SERVER['SERVER_NAME'])) {
-            define('HOSTNAME', $_SERVER['SERVER_NAME']);
-        } else {
-            define('HOSTNAME', '');
-        }
+        define('HOSTNAME', '');
     }
 }
 
@@ -412,7 +410,9 @@ define('MONEY', 406);
 define('ICAL_TYPE', 1);
 define('GOOGLE_TYPE', 2);
 
-define('TEMPLATE_FALLBACK_VIEW', BASE . 'framework/core/views/viewnotfound.tpl');
+if (!defined('TEMPLATE_FALLBACK_VIEW')) {
+    define('TEMPLATE_FALLBACK_VIEW', BASE . 'framework/core/views/viewnotfound.tpl');
+}
 
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
@@ -422,64 +422,62 @@ if (empty($_SERVER['HTTP_USER_AGENT'])) {
 }
 if (!defined('EXPONENT_USER_OS')) {
     // 1. Platform
-    if (strstr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
+    if (stristr($_SERVER['HTTP_USER_AGENT'], 'win')) {
         define('EXPONENT_USER_OS', 'Win');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'mac')) {
+        define('EXPONENT_USER_OS', 'Mac');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'linux')) {
+        define('EXPONENT_USER_OS', 'Linux');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'unix')) {
+        define('EXPONENT_USER_OS', 'Unix');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'os/2')) {
+        define('EXPONENT_USER_OS', 'OS/2');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
+        define('EXPONENT_USER_OS', 'iPhone');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad')) {
+        define('EXPONENT_USER_OS', 'iPad');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
+        define('EXPONENT_USER_OS', 'Android');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'webos')) {
+        define('EXPONENT_USER_OS', 'Mobile');
     } else {
-        if (strstr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
-            define('EXPONENT_USER_OS', 'Mac');
-        } else {
-            if (strstr($_SERVER['HTTP_USER_AGENT'], 'Linux')) {
-                define('EXPONENT_USER_OS', 'Linux');
-            } else {
-                if (strstr($_SERVER['HTTP_USER_AGENT'], 'Unix')) {
-                    define('EXPONENT_USER_OS', 'Unix');
-                } else {
-                    if (strstr($_SERVER['HTTP_USER_AGENT'], 'OS/2')) {
-                        define('EXPONENT_USER_OS', 'OS/2');
-                    } else {
-                        define('EXPONENT_USER_OS', 'Other');
-                    }
-                }
-            }
-        }
+        define('EXPONENT_USER_OS', 'Other');
     }
+}
 
+if (!defined('EXPONENT_USER_BROWSER')) {
     // 2. browser and version
     // (must check everything else before Mozilla)
     $log_version = array();
     if (preg_match('@Opera(/| )([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
         define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
         define('EXPONENT_USER_BROWSER', 'OPERA');
+    } elseif (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'IE');
+    } elseif (preg_match('@OmniWeb/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'OMNIWEB');
+    } elseif (preg_match('@(Konqueror/)(.*)(;)@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
+        define('EXPONENT_USER_BROWSER', 'KONQUEROR');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
+            && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
+            && preg_match('@Chrome/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version3)
+        ) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1] . '.' . $log_version3[1]);
+        define('EXPONENT_USER_BROWSER', 'CHROME');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
+            && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
+        ) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1]);
+        define('EXPONENT_USER_BROWSER', 'SAFARI');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'MOZILLA');
     } else {
-        if (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-            define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-            define('EXPONENT_USER_BROWSER', 'IE');
-        } else {
-            if (preg_match('@OmniWeb/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-                define('EXPONENT_USER_BROWSER', 'OMNIWEB');
-            } else {
-                if (preg_match('@(Konqueror/)(.*)(;)@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                    define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
-                    define('EXPONENT_USER_BROWSER', 'KONQUEROR');
-                } else {
-                    if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
-                        && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
-                    ) {
-                        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1]);
-                        define('EXPONENT_USER_BROWSER', 'SAFARI');
-                    } else {
-                        if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                            define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-                            define('EXPONENT_USER_BROWSER', 'MOZILLA');
-                        } else {
-                            define('EXPONENT_USER_BROWSER_VERSION', 0);
-                            define('EXPONENT_USER_BROWSER', 'OTHER');
-                        }
-                    }
-                }
-            }
-        }
+        define('EXPONENT_USER_BROWSER_VERSION', 0);
+        define('EXPONENT_USER_BROWSER', 'OTHER');
     }
 }
 
