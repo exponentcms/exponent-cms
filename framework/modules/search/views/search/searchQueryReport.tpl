@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="searchqueryreport" corecss="tables"}
+{css unique="searchqueryreport" corecss="tables,admin-global"}
 
 {/css}
 

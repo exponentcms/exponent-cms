@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="topsearchreport" corecss="tables"}
+{css unique="topsearchreport" corecss="tables,admin-global"}
 {literal}
     .fullbody #centercol {
         width: 422px;
