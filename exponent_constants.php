@@ -486,12 +486,10 @@ if (!defined('JS_RELATIVE')) {
      * The relative path to Exponent's core javascript.
      */
     define('JS_RELATIVE', PATH_RELATIVE . 'framework/core/assets/js/');
-//    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');  //TODO deprecated
     /** exdoc
      * The absolute url to Exponent's core javascript.
      */
     define('JS_URL', URL_FULL . 'framework/core/assets/js/');
-//   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
 }
 
 /**
@@ -499,9 +497,8 @@ if (!defined('JS_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('YUI3_RELATIVE')) {
-    define('YUI3_VERSION', '3.17.2');
+    define('YUI3_VERSION', '3.18.1');
     define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
-//	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
     define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');
 }
 
@@ -512,7 +509,6 @@ if (!defined('YUI3_RELATIVE')) {
 if (!defined('YUI2_RELATIVE')) {
     define('YUI2_VERSION', '2.9.0');
     define('YUI2_RELATIVE', PATH_RELATIVE . 'external/yui/2in3/dist/' . YUI2_VERSION . '/build/');
-//	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
     define('YUI2_URL', URL_FULL . 'external/yui/2in3/dist/' . YUI2_VERSION . '/build/');
 }
 
@@ -537,6 +533,12 @@ if (!defined('JQUERY_RELATIVE')) {
 //        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
     } // local jQueryUI script
+    if (!defined('JQUERYUI_THEME')) {
+        define('JQUERYUI_THEME', 'exponent');
+    } // jQueryUI theme
+    if (!defined('JQUERYUI_CSS')) {
+        define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
+    } // local jQueryUI stylesheet
 }
 
 /**

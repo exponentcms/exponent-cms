@@ -31,7 +31,8 @@ class expTheme
         global $auto_dirs2;
 
         // Initialize the theme subsystem 1.0 compatibility layer if requested
-		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE) require_once(BASE.'framework/core/compat/theme.php');
+		if (defined('OLD_THEME_COMPATIBLE') && OLD_THEME_COMPATIBLE)
+            require_once(BASE.'framework/core/compat/theme.php');
 
         if (!defined('DISPLAY_THEME')) {
             /* exdoc
@@ -74,12 +75,6 @@ class expTheme
         if (!defined('SWATCH')) {
             define('SWATCH', "''");
         } // Twitter Bootstrap theme
-        if (!defined('JQUERYUI_THEME')) {
-            define('JQUERYUI_THEME', 'exponent');
-        } // jQueryUI theme
-        if (!defined('JQUERYUI_CSS')) {
-            define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
-        } // local jQueryUI stylesheet
 
         // add our theme folder into autoload to prioritize custom (theme) modules
         array_unshift($auto_dirs2, BASE . 'themes/' . DISPLAY_THEME . '/modules');

@@ -38,7 +38,8 @@ ob_start('epb');
 require_once('exponent.php');
 
 //active global timer if in DEVELOPMENT mode
-if(DEVELOPMENT) $timer = new expTimer();    
+if(DEVELOPMENT)
+	$timer = new expTimer();
 
 // if the user has turned on sef_urls then we need to route the request, otherwise we can just 
 // skip it and default back to the old way of doing things.
@@ -115,7 +116,8 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 }
 
 //write page build/load time if in DEVELOPMENT mode with logging
-if(DEVELOPMENT && LOGGER) eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
+if(DEVELOPMENT && LOGGER)
+	eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();

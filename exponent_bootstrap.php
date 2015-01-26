@@ -59,7 +59,7 @@ include_once('overrides.php');
 require_once(dirname(__realpath(__FILE__)) . '/exponent_constants.php');
 
 // load the code version
-require_once(BASE.'exponent_version.php');
+require_once(BASE . 'exponent_version.php');
 
 /*
  * EXPONENT Constant
@@ -69,7 +69,7 @@ require_once(BASE.'exponent_version.php');
  */
 define('EXPONENT', EXPONENT_VERSION_MAJOR);
 
-// load the constants from the global config, theme config, and then default config settings
+// load the constants from the global config and then default config settings
 require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't have our autoloader loaded yet
 
 // Process PHP-wrapper settings (ini_sets and settings, and autoloader)
