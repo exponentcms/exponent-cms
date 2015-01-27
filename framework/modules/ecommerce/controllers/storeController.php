@@ -1776,9 +1776,11 @@ class storeController extends expController {
         echo "Validating file...<br/>";
 
         $checkhandle = fopen($file->path, "r");
+        // read in the header line
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
         $count = 1;
+        // read in the data lines
         while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
             $count++;
             if (count($checkdata) != $fieldCount) {
@@ -1792,9 +1794,11 @@ class storeController extends expController {
         echo "<br/>CSV File passed validation...<br/><br/>Detecting carrier type....<br/>";
         //exit();
         $handle = fopen($file->path, "r");
+
+        // read in the header line
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);      
-        $dataset = array();
+//        $dataset = array();
         $carrier = '';
         if (trim($data[0]) == 'ShipmentInformationShipmentID') {
             echo "Detected UPS file...<br/>";
@@ -1813,6 +1817,7 @@ class storeController extends expController {
 
         $oo = new order();
 
+        // read in the data lines
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
             $originalOrderId = $data[2];
@@ -2050,15 +2055,18 @@ class storeController extends expController {
 
         $checkhandle = fopen($file->path, "r");
         if ($this->params['type_of_address'][0] == 'am') {
+            // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, "\t");
             $fieldCount = count($checkdata);
         } else {
+            // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, ",");
             $fieldCount = count($checkdata);
         }
 
         $count = 1;
         if ($this->params['type_of_address'][0] == 'am') {
+            // read in the data lines
             while (($checkdata = fgetcsv($checkhandle, 10000, "\t")) !== FALSE) {
                 $count++;
                 //eDebug($checkdata);
@@ -2069,6 +2077,7 @@ class storeController extends expController {
                 }
             }
         } else {
+            // read in the data lines
             while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
                 $count++;
                 if (count($checkdata) != $fieldCount) {
@@ -2084,9 +2093,11 @@ class storeController extends expController {
         echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
         //exit();
         $handle = fopen($file->path, "r");
+
+        // read in the header line and discard it
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);      
-        $dataset = array();
+//        $dataset = array();
 
         //mc=1, nt=2, amm=3
 
@@ -2103,6 +2114,7 @@ class storeController extends expController {
         }
 
         if ($this->params['type_of_address'][0] == 'am') {
+            // read in the data lines
             while (($data = fgetcsv($handle, 10000, "\t")) !== FALSE) {
                 //eDebug($data,true);
                 $extAddy = new external_address();
@@ -2140,6 +2152,7 @@ class storeController extends expController {
                 $extAddy->save();
             }
         } else {
+            // read in the data lines
             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
                 eDebug($data);
                 $extAddy = new external_address();
@@ -2307,10 +2320,12 @@ class storeController extends expController {
             echo "Validating file...<br/>";
 
             $checkhandle = fopen($file->path, "r");
+            // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, ",");
             $fieldCount = count($checkdata);
             $count = 1;
 
+            // read in the data lines
             while (($checkdata = fgetcsv($checkhandle, 10000, ",")) !== FALSE) {
                 $count++;
                 if (count($checkdata) != $fieldCount) {
@@ -2324,10 +2339,12 @@ class storeController extends expController {
 
             echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
             $handle = fopen($file->path, "r");
+            // read in the header line
             $data = fgetcsv($handle, 10000, ",");
 
             //clear the db
             $db->delete('model_aliases_tmp');
+            // read in the data lines
             while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
 
                 $tmp = new stdClass();
@@ -2581,11 +2598,13 @@ class storeController extends expController {
             $file->path = $_FILES['import_file']['tmp_name'];
         }
         $handle = fopen($file->path, "r");
+
+        // read in the header line and discard it
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);
-        foreach ($data as $value) {
-            $dataset[$value] = '';
-        }
+//        foreach ($data as $value) {
+//            $dataset[$value] = '';
+//        }
 
         //eDebug($dataset,true);
         $count = 1;
@@ -2635,6 +2654,7 @@ class storeController extends expController {
             44=url to additional image to download
 */
 
+        // read in the data lines
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
 
