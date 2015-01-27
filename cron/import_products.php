@@ -30,6 +30,7 @@
         $nl = "\n";
         if (!empty($_SERVER['argc'])) for ($ac = 1; $ac < $_SERVER['argc']; $ac++) {
             if ($_SERVER['argv'][$ac] == '-c') {
+                $ac++;
                 $code_in = $_SERVER['argv'][$ac];
             } elseif (!empty($_SERVER['argv'][$ac])) {
                 $filename->path = BASE . $_SERVER['argv'][$ac];
