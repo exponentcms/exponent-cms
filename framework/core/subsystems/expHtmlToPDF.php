@@ -744,7 +744,7 @@ class expMPDF extends expHtmlToPDF
     public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/tmp/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/MPDF57/mpdf.php');
@@ -938,7 +938,7 @@ class expMPDF6 extends expHtmlToPDF
     public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/mpdf60/mpdf.php')) {
-            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/tmp/');
+            if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
             ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/mpdf60/mpdf.php');

@@ -313,11 +313,11 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'MPDF is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
+                                    {'MPDF 5 is an optional package, but a preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
                                     <ol>
                                         <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext} {'You should also download any updates and extract them to that same folder.'|gettext} <a href="http://www.mpdf1.com/mpdf/download" target="_blank">{'mPDF Downloads'|gettext}</a></li>
-                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/mpdf.zip" target="_blank">mpdf.zip</a>.
+                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf57.zip/download" target="_blank">mpdf57.zip</a>.
                                             {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
                                     </ol>
                                 </blockquote>
@@ -333,12 +333,10 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'MPDF 6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
+                                    {'MPDF 6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                     <ol>
                                         <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
-                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/mpdf6.zip" target="_blank">mpdf6.zip</a>.
-                                            {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
                                     </ol>
                                 </blockquote>
                             </div>
@@ -353,7 +351,7 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
+                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>
