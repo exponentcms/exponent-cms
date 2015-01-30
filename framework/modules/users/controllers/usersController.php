@@ -1291,10 +1291,16 @@ class usersController extends expController {
             for ($i = 0; $i < count($lineInfo); $i++) {
                 if ($headerinfo != null) {
                     $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                    if (array_key_exists($headerinfo[$i], $colNames)) {
+                        $default = $headerinfo[$i];
+                    } else {
+                        $default = "none";
+                    }
                 } else {
                     $title = $lineInfo[$i];
+                    $default = "none";
                 }
-                $form->register("column[$i]", $title, new dropdowncontrol("none", $colNames));
+                $form->register("column[$i]", $title, new dropdowncontrol($default, $colNames));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
