@@ -186,7 +186,7 @@ class expRouter {
             $_GET['id'] = intval($_GET['id']);
             $_REQUEST['id'] = intval($_REQUEST['id']);
         }
-        if (!$user->isAdmin()) {
+        if (empty($user) || (!empty($user) && !$user->isAdmin())) {  //FIXME why would $user be empty here unless $db is down?
             $_REQUEST['route_sanitized'] = true;//FIXME debug test
             expString::sanitize($_REQUEST);  // strip other exploits like sql injections
         }
