@@ -746,6 +746,7 @@ class expMPDF extends expHtmlToPDF
         if (file_exists(BASE . 'external/MPDF57/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
+            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/MPDF57/mpdf.php');
             $this->size = $paper_size;
@@ -940,6 +941,7 @@ class expMPDF6 extends expHtmlToPDF
         if (file_exists(BASE . 'external/mpdf60/mpdf.php')) {
             if (!defined("_MPDF_TEMP_PATH")) define("_MPDF_TEMP_PATH", BASE . 'tmp/');
             if (!defined("_MPDF_TTFONTDATAPATH")) define("_MPDF_TTFONTDATAPATH", BASE . 'tmp/ttfontdata/');
+            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             ini_set('display_errors', 0);  // warnings must be turned off for mPDF to work
             require_once(BASE . 'external/mpdf60/mpdf.php');
             $this->size = $paper_size;
