@@ -658,9 +658,9 @@ class product extends expRecord {
             //if it's in a category already we leave it
             //flip check the arrays - if not in one, we add. if vice versa, we delete:
             foreach ($catArray as $cat) {
+                $assoc = new stdClass();
                 if (!in_array($cat, $curCats)) {
                     //create new
-                    $assoc = new stdClass();
                     $assoc->storecategories_id = $cat;
                     $assoc->product_id = $id;
                     $assoc->product_type = $product_type;
