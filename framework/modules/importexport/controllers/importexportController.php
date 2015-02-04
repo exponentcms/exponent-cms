@@ -616,8 +616,20 @@ class importexportController extends expController {
                     case 'use_special_price':
                     case 'active_type':
                     case 'product_status_id':
-                    case 'companies_id':
                         $product->$key = intval($value);
+                        break;
+                    case 'companies_id':
+                        if (is_numeric($value)) {
+                            $product->$key = intval($value);
+                        } else {  // it's a company name, not a company id#
+                            $co = new company();
+                            $company = $co->find('first', 'title=' . $value);
+                            if (empty($company->id)) {
+                                $params['title'] = $value;
+                                $company->update();
+                            }
+                            $product->$key = $company->id;
+                        }
                         break;
                     case 'title':  // string
                     case 'model':
@@ -691,7 +703,8 @@ class importexportController extends expController {
                     case 'category11':
                     case 'category12':
                         if ($product->parent_id == 0) {
-                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
+//                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
+                            $rank = inval(str_replace('category', '', $key));
                             if (!empty($value)) $result = storeCategory::parseCategory($value);
                             else continue;
 

@@ -220,7 +220,7 @@ class storeCategoryController extends expNestedNodeController {
     }
 
     function export() {
-        $out = '"storeCategory"' . chr(13) . chr(10);
+        $out = '"storeCategory"' . chr(13) . chr(10);  //FIXME or should this simply be 'category'?
         $sc = new storeCategory();
         $cats = $sc->find('all');
         set_time_limit(0);
@@ -267,7 +267,7 @@ class storeCategoryController extends expNestedNodeController {
 
         // read in the header line
         $header = fgetcsv($handle, 10000, ",");
-        if (!in_array('storeCategory', $header)) {
+        if (!in_array('storeCategory', $header)) {  //FIXME or should this simply be 'category' and a rank?
             echo gt('Not a Store Category Import CSV File');
             exit();
         }
@@ -280,7 +280,7 @@ class storeCategoryController extends expNestedNodeController {
             $count++;
             $data = array_combine($header, $row);
 
-            if (empty($data['storeCategory'])) {
+            if (empty($data['storeCategory'])) {  //FIXME or should this simply be 'category' and a rank?
                 $errorSet[$count] = gt("is not a store category.");
                 continue;
             } else {

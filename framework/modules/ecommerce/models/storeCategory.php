@@ -209,7 +209,7 @@ class storeCategory extends expNestedNode {
 			}
 
 			if ($counter == $cats1count) {
-				return $ret;
+				return $ret;  // we've created/checked the nest of categories
 			}
 			$counter++;
 		}
