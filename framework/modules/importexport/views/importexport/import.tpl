@@ -47,7 +47,7 @@
                     </td>
                 </tr>
             {foreachelse}
-                <tr><td colspan=3>{'There doesn\'t appear to be any news modules installed to import news'|gettext}</td></tr>
+                <tr><td colspan=3>{'There doesn\'t appear to be any modules of this type installed to import items'|gettext}</td></tr>
             {/foreach}
             </tbody>
         </table>

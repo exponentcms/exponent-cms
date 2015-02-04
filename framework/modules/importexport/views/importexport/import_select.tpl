@@ -65,7 +65,7 @@
 
 {script unique="aggregation"}
     function selectAll(val) {
-        var checks = document.getElementsByName("news[]");
+        var checks = document.getElementsByName("items[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }

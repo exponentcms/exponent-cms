@@ -1769,7 +1769,7 @@ class reportController extends expController {
             for ($x = 0; $x < 12; $x++) {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) {
-                    $out .= expString::outputField(expString::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $out .= expString::outputField(storeCategory::buildCategoryString($p->storeCategory[$x]->id, true));
                     $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
                 } else $out .= ',';
             }
@@ -1968,14 +1968,14 @@ class reportController extends expController {
 
     //public $catstring = '';
 
-    //FIXME deprecated here by move to expString
+    //FIXME deprecated here by move to storeCategory
     public static function buildCategoryString($catID, $reset = false) {
         static $cstr = '';
         if ($reset) $cstr = '';
         if (strlen($cstr) > 0) $cstr .= "::";
         $cat = new storeCategory($catID);
         //eDebug($cat);
-        if (!empty($cat->parent_id)) expString::buildCategoryString($cat->parent_id);
+        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
         $cstr .= $cat->title . "::";
         return substr($cstr, 0, -2);
     }

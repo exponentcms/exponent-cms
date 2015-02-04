@@ -656,7 +656,7 @@ class storeController extends expController {
             for ($x = 0; $x < 12; $x++) {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) {
-                    $out .= expString::outputField(expString::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $out .= expString::outputField(storeCategory::buildCategoryString($p->storeCategory[$x]->id, true));
                     $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
                 } else $out .= ',';
             }
@@ -2564,35 +2564,6 @@ class storeController extends expController {
         ));
     }
 
-    function parseCategory($data) {
-        global $db;
-        if (!empty($data)) {
-            $cats1 = explode("::", trim($data));
-            //eDebug($cats1);
-            $cats1count = count($cats1);
-            $counter = 1;
-            $categories1 = array();
-            foreach ($cats1 as $cat) {
-                //eDebug($cat);
-                if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=0');
-                else $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=' . $categories1[$counter - 1]->id);
-                //eDebug($categories1);
-                if (empty($categories1[$counter]->id)) {
-                    return "'" . $cat . "' ".gt('of the set').": '" . $data . "' ".gt("is not a valid category").".";
-                }
-
-                if ($counter == $cats1count) {
-                    return $categories1[$counter]->id;
-                }
-                $counter++;
-            }
-            //eDebug($createCats);
-            //eDebug($categories1,true);
-        } else {
-            return gt("Category was empty.");
-        }
-    }
-
     function importProduct($file=null) {
         if (empty($file->path)) {
             $file = new stdClass();
@@ -2606,16 +2577,9 @@ class storeController extends expController {
             echo gt('Not a Product Import CSV File');
             exit();
         }
-        //eDebug($data);
-//        foreach ($data as $value) {
-//            $dataset[$value] = '';
-//        }
 
-        //eDebug($dataset,true);
         $count = 1;
         $errorSet = array();
-        $successSet = array();
-        //$createCats = array();
         $product = null;
         /*  original order of columns
             0=id
@@ -2788,7 +2752,7 @@ class storeController extends expController {
                     case 'category12':
                         if ($product->parent_id == 0) {
                             $rank = !empty($data['rank']) ? $data['rank'] : 1;
-                            if (!empty($value)) $result = $this->parseCategory($value);
+                            if (!empty($value)) $result = storeCategory::parseCategory($value);
                             else continue;
 
                             if (is_numeric($result)) {
@@ -2905,7 +2869,7 @@ class storeController extends expController {
 //                $createCats = array();
 //                $createCatsRank = array();
 //                for ($x = 19; $x <= 30; $x++) {
-//                    if (!empty($data[$x])) $result = $this->parseCategory($data[$x]);
+//                    if (!empty($data[$x])) $result = storeCategory::parseCategory($data[$x]);
 //                    else continue;
 //
 //                    if (is_numeric($result)) {

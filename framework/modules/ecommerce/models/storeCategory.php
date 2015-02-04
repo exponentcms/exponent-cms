@@ -30,6 +30,7 @@ class storeCategory extends expNestedNode {
 	
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 		global $db;
+
 		parent::__construct($params, $get_assoc, $get_attached);
 
 		// if this is an empty category object we'll set the lft to min & rgt to the max
@@ -43,6 +44,7 @@ class storeCategory extends expNestedNode {
 	
 	public function getEcomSubcategories() {
 		global $db;
+
 //		$subcats = array();
 		if (empty($this->id)) {
 			$children = $this->getTopLevel();
@@ -61,7 +63,13 @@ class storeCategory extends expNestedNode {
 
 		return $children;
 	}
-	
+
+	/**
+	 * Return an image object
+	 *
+	 * @param string $id specific expFile to return
+	 * @return string
+	 */
 	public function getCategoryImage($id = '') {
 		global $db;
 		
@@ -81,6 +89,7 @@ class storeCategory extends expNestedNode {
    
     public function getFirstImageId() {
         global $db;
+
         //$sql = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';   
         $sql = 'SELECT DISTINCT cf.expfiles_id, exp.directory, exp.filename FROM '.DB_TABLE_PREFIX.'_product as p '; 
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expFiles cf ON p.id = cf.content_id ';           
@@ -99,8 +108,113 @@ class storeCategory extends expNestedNode {
 				return $item->expfiles_id;
 			} 
 		}
-    }    
-    
+    }
+
+	/**
+	 * Return existing store category id of string nested category
+	 *   checks to ensure each level of nesting exists
+	 *
+	 * @param $data
+	 * @return string
+	 */
+	public static function parseCategory($data)
+	{
+		global $db;
+
+		if (!empty($data)) {
+			$cats1 = explode("::", trim($data));
+			//eDebug($cats1);
+			$cats1count = count($cats1);
+			$counter = 1;
+			$categories1 = array();
+			foreach ($cats1 as $cat) {
+				//eDebug($cat);
+				$categories1[$counter] = $db->selectObject(
+					'storeCategories',
+					'title="' . $cat . '" AND parent_id=' . ($counter == 1 ? 0 : $categories1[$counter - 1]->id)
+				);
+				//eDebug($categories1);
+				if (empty($categories1[$counter]->id)) {
+					return "'" . $cat . "' " . gt('of the set') . ": '" . $data . "' " . gt(
+						"is not a valid category"
+					) . ".";
+				}
+
+				if ($counter == $cats1count) {
+					return $categories1[$counter]->id;
+				}
+				$counter++;
+			}
+			//eDebug($createCats);
+			//eDebug($categories1,true);
+		} else {
+			return gt("Category was empty.");
+		}
+	}
+
+	/**
+	 * Convert nested store category into a string
+	 *
+	 * @param $catID
+	 * @param bool $reset
+	 * @return string
+	 */
+	public static function buildCategoryString($catID, $reset = false)
+	{
+		static $cstr = '';
+		if ($reset) {
+			$cstr = '';
+		}
+		if (strlen($cstr) > 0) {
+			$cstr .= "::";
+		}
+		$cat = new storeCategory($catID);
+		//eDebug($cat);
+		if (!empty($cat->parent_id)) {
+			self::buildCategoryString($cat->parent_id);
+		}
+		$cstr .= $cat->title . "::";
+		return substr($cstr, 0, -2);
+	}
+
+	/**
+	 * Convert string into a nested store category
+	 *
+	 * @param $data nested category string with :: separators
+	 * @return string
+	 */
+	public static function importCategoryString($data)
+	{
+		global $db;
+
+		$cats1 = explode("::", trim($data));
+		$cats1count = count($cats1);
+		$counter = 1;
+		$categories1 = array();
+		foreach ($cats1 as $cat) {
+			$categories1[$counter] = $db->selectObject(
+				'storeCategories',
+				'title="' . $cat . '" AND parent_id=' . ($counter == 1 ? 0 : $categories1[$counter - 1]->id)
+			);
+			$ret = false;
+			if (empty($categories1[$counter]->id)) {
+				$new_sc = new storeCategory(array('parent_id'=>$categories1[$counter - 1]->id));
+				$params = array();
+				$params['title'] = $cat;
+				$params['parent_id'] = $counter == 1 ? 0 : $categories1[$counter - 1]->id;
+				$params['is_active']= 1;
+				$new_sc->create($params);
+				$categories1[$counter] = $new_sc;
+				$ret = true;
+			}
+
+			if ($counter == $cats1count) {
+				return $ret;
+			}
+			$counter++;
+		}
+	}
+
 }
 
 ?>

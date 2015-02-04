@@ -49,6 +49,14 @@ class storeCategoryController extends expNestedNodeController {
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
 
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
+
     public function edit() {
         global $db;
 
@@ -209,6 +217,94 @@ class storeCategoryController extends expNestedNodeController {
         }
 
         parent::update();
+    }
+
+    function export() {
+        $out = '"storeCategory"' . chr(13) . chr(10);
+        $sc = new storeCategory();
+        $cats = $sc->find('all');
+        set_time_limit(0);
+        foreach ($cats as $cat) {
+            $out .= expString::outputField(storeCategory::buildCategoryString($cat->id, true), chr(13) . chr(10));
+        }
+
+        $filename = 'tmp/storecategory_export_' . time() . '.csv';
+
+        ob_end_clean();
+        ob_start("ob_gzhandler");
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+        echo $out;
+        exit; // Exit, since we are exporting
+    }
+
+    function import() {
+        assign_to_template(array(
+            'type' => $this
+        ));
+    }
+
+    function importCategory($file=null) {
+        if (empty($file->path)) {
+            $file = new stdClass();
+            $file->path = $_FILES['import_file']['tmp_name'];
+        }
+        $handle = fopen($file->path, "r");
+
+        // read in the header line
+        $header = fgetcsv($handle, 10000, ",");
+        if (!in_array('storeCategory', $header)) {
+            echo gt('Not a Store Category Import CSV File');
+            exit();
+        }
+
+        $count = 1;
+        $errorSet = array();
+
+        // read in the data lines
+        while (($row = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            $count++;
+            $data = array_combine($header, $row);
+
+            if (empty($data['storeCategory'])) {
+                $errorSet[$count] = gt("is not a store category.");
+                continue;
+            } else {
+                $result = storeCategory::importCategoryString($data['storeCategory']);
+                if ($result) {
+                    echo "Successfully added row " . $count . ", category: " . $data['storeCategory'] . "<br/>";
+                } else {
+                    echo "Already existed row " . $count . ", category: " . $data['storeCategory'] . "<br/>";
+                }
+            }
+        }
+
+        if (count($errorSet)) {
+            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
+            foreach ($errorSet as $rownum => $err) {
+                echo "Row: " . $rownum . ". Reason:<br/>";
+                if (is_array($err)) {
+                    foreach ($err as $e) {
+                        echo "--" . $e . "<br/>";
+                    }
+                } else echo "--" . $err . "<br/>";
+            }
+            echo "</style>";
+        }
     }
 
     function fix_categories() {
