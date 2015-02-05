@@ -343,7 +343,9 @@ class formsController extends expController {
                         } else {
                             // include the library and show the form control
                             require_once(BASE . 'external/recaptchalib.php');
-                            $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
+//                            $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
+                            $antispam .= '<div class="g-recaptcha" data-sitekey=" . RECAPTCHA_PUB_KEY . "></div>';
+                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '"></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                         }
                     }

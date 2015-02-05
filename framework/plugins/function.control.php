@@ -359,12 +359,14 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
-                        if (expSession::get('framework') == 'bootstrap3') {
-                            echo recaptcha_get_html_bs3(RECAPTCHA_PUB_KEY);
-                        } else {  // non-Bootstrap3
-                            echo '<script type="text/javascript"> var RecaptchaOptions = {theme : "', RECAPTCHA_THEME, '"}; </script>';
-                            echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
-                        }
+//                        if (expSession::get('framework') == 'bootstrap3') {
+//                            echo recaptcha_get_html_bs3(RECAPTCHA_PUB_KEY);
+//                        } else {  // non-Bootstrap3
+//                            echo '<script type="text/javascript"> var RecaptchaOptions = {theme : "', RECAPTCHA_THEME, '"}; </script>';
+//                            echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
+//                        }
+                        echo '<div class="g-recaptcha" data-sitekey=" . RECAPTCHA_PUB_KEY . "></div>';
+                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '"></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
                     }
                     return;
