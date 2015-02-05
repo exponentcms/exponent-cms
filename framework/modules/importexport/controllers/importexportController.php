@@ -704,7 +704,7 @@ class importexportController extends expController {
                     case 'category12':
                         if ($product->parent_id == 0) {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
-                            $rank = inval(str_replace('category', '', $key));
+                            $rank = intval(str_replace('category', '', $key));
                             if (!empty($value)) $result = storeCategory::parseCategory($value);
                             else continue;
 
