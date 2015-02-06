@@ -164,7 +164,7 @@
 {/literal}
 {/script}
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.3'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.4'}
 {literal}
     $(document).ready(function () {
         "use strict";
