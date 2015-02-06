@@ -196,20 +196,18 @@ class storeCategory extends expNestedNode {
 				'storeCategories',
 				'title="' . $cat . '" AND parent_id=' . ($counter == 1 ? 0 : $categories1[$counter - 1]->id)
 			);
-			$ret = false;
 			if (empty($categories1[$counter]->id)) {
-				$new_sc = new storeCategory(array('parent_id'=>$categories1[$counter - 1]->id));
+				$new_sc = new storeCategory(array('parent_id'=>(!empty($categories1[$counter - 1]->id)?$categories1[$counter - 1]->id:0)));
 				$params = array();
 				$params['title'] = $cat;
 				$params['parent_id'] = $counter == 1 ? 0 : $categories1[$counter - 1]->id;
 				$params['is_active']= 1;
 				$new_sc->create($params);
 				$categories1[$counter] = $new_sc;
-				$ret = true;
 			}
 
 			if ($counter == $cats1count) {
-				return $ret;  // we've created/checked the nest of categories
+				return $categories1[$counter]->id;  // we've created/checked the nest of categories
 			}
 			$counter++;
 		}

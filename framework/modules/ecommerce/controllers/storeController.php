@@ -2691,10 +2691,15 @@ class storeController extends expController {
                             $product->$key = $company->id;
                         }
                         break;
+                    case 'sef_url':
+                        $product->$key = stripslashes(stripslashes($value));
+                        if (!is_bool(expValidator::uniqueness_of('sef_url', $product, array()))) {
+                            $product->makeSefUrl();
+                        }
+                        break;
                     case 'title':  // string
                     case 'model':
                     case 'warehouse_location':
-                    case 'sef_url':
                     case 'meta_title':
                     case 'meta_keywords':
                     case 'meta_description':
@@ -2765,10 +2770,12 @@ class storeController extends expController {
                         if ($product->parent_id == 0) {
 //                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
                             $rank = intval(str_replace('category', '', $key));
-                            if (!empty($value)) $result = storeCategory::parseCategory($value);
+//                            if (!empty($value)) $result = storeCategory::parseCategory($value);
+                            if (!empty($value)) $result = storeCategory::importCategoryString($value);
                             else continue;
 
-                            if (is_numeric($result)) {
+//                            if (is_numeric($result)) {
+                            if ($result) {
                                 $createCats[] = $result;
                                 $createCatsRank[$result] = $rank;
                             } else {
@@ -2913,7 +2920,7 @@ class storeController extends expController {
                 $product->saveCategories($createCats, $createCatsRank);
                 //eDebug($createCatsRank);
             }
-            echo "Successfully imported row " . $count . ", product: " . $product->title . "<br/>";
+            echo "Successfully imported/updated row " . $count . ", product: " . $product->title . "<br/>";
             //eDebug($product);
 
         }
