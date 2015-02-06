@@ -13,7 +13,7 @@
  *
  *}
 
-{css unique="store-tree" corecss="tree"}
+{css unique="store-tree" corecss="tree,panels"}
 
 {/css}
 
