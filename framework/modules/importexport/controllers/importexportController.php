@@ -579,11 +579,15 @@ class importexportController extends expController {
                     //$product->save(false);
                 }
             } elseif ($header[0] == 'model') {
-                $p = new product();
-                $product = $p->find('first','model="' . $data['model'] . '"');
-                if (empty($product->id)) {
-                    $errorSet[$count] = gt("is not an existing product SKU/Model.");
-                    continue;
+                if (!empty($data['model'])) {
+                    $p = new product();
+                    $product = $p->find('first','model="' . $data['model'] . '"');
+                    if (empty($product->id)) {
+                        $errorSet[$count] = gt("is not an existing product SKU/Model.");
+                        continue;
+                    }
+                } else {
+                    $product = new product();
                 }
             }
 

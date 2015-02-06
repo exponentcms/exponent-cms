@@ -611,7 +611,7 @@ class storeController extends expController {
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (product_type="product")';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -661,7 +661,7 @@ class storeController extends expController {
                 } else $out .= ',';
             }
             $out .= expString::outputField($p->surcharge);
-            $out .= expString::outputField($rank);
+            $out .= expString::outputField($rank);  // no longer used
             $out .= expString::outputField($p->feed_title);
             $out .= expString::outputField($p->feed_body);
             $out .= expString::outputField($p->weight);
@@ -714,7 +714,7 @@ class storeController extends expController {
 //
 //        echo "<br/><br/>Download the file here: <a href='" . PATH_RELATIVE . $outFile . "'>Product Export</a>";
 
-        $filename = 'tmp/product_export_' . time() . '.csv';
+        $filename = 'product_export_' . time() . '.csv';
 
         ob_end_clean();
         ob_start("ob_gzhandler");
@@ -2646,11 +2646,15 @@ class storeController extends expController {
                     //$product->save(false);
                 }
             } elseif ($header[0] == 'model') {
-                $p = new product();
-                $product = $p->find('first','model="' . $data['model'] . '"');
-                if (empty($product->id)) {
-                    $errorSet[$count] = gt("is not an existing product SKU/Model.");
-                    continue;
+                if (!empty($data['model'])) {
+                    $p = new product();
+                    $product = $p->find('first','model="' . $data['model'] . '"');
+                    if (empty($product->id)) {
+                        $errorSet[$count] = gt("is not an existing product SKU/Model.");
+                        continue;
+                    }
+                } else {
+                    $product = new product();
                 }
             }
 

@@ -228,7 +228,7 @@ class storeCategoryController extends expNestedNodeController {
             $out .= expString::outputField(storeCategory::buildCategoryString($cat->id, true), chr(13) . chr(10));
         }
 
-        $filename = 'tmp/storecategory_export_' . time() . '.csv';
+        $filename = 'storecategory_export_' . time() . '.csv';
 
         ob_end_clean();
         ob_start("ob_gzhandler");
