@@ -31,7 +31,7 @@ var refreshDD = function () {
         //Y.log(dds[i].id);
         new EXPONENT.DragDropTree(dds[i].id.replace("dragtable",""));
     }
-}
+};
 
 var buildContextMenu = function(div) {
 
@@ -144,7 +144,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         nodebeingdragged.collapse();
         
         var draglabel = YAHOO.util.Dom.get(real.id.replace("dragtable","ygtvlabelel")).innerHTML;
-        this.ddclassindicator = "nodrop"
+        this.ddclassindicator = "nodrop";
         proxy.innerHTML = "<div id=\"dropindicator\" class=\""+this.ddclassindicator+"\">&#160;</div><span id=\"draglable\">"+draglabel+"</span>";
         this.setDelta(-10,-10);
     
@@ -165,7 +165,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             if (tree._nodes[n].children.length != 0) {
                 // Y.log("dragtable"+tree._nodes[n].children[0].index);
                 // Y.log("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index);
-                YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[0].index, 'topoflist')
+                YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[0].index, 'topoflist');
                 YAHOO.util.Dom.addClass("dragtable"+tree._nodes[n].children[tree._nodes[n].children.length-1].index, 'bottomoflist')
             };
         }
@@ -227,7 +227,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
         // this.destTop = [0,0];
         // this.destMiddle = [0,0];
         // this.destBottom = [0,0];
-        this.ddclassindicator = "nodrop"
+        this.ddclassindicator = "nodrop";
         var oldclass = YAHOO.util.Dom.get('dropindicator').getAttribute("class");
         YAHOO.util.Dom.replaceClass('dropindicator',oldclass,this.ddclassindicator);
         YAHOO.util.Dom.setStyle(destEl, 'background', 'none');
@@ -275,7 +275,7 @@ YAHOO.extend(EXPONENT.DragDropTree, YAHOO.util.DDProxy, {
             }, 
             0.2, 
             YAHOO.util.Easing.easeOut 
-        )
+        );
 
         var proxyid = proxy.id;
         var thisid = this.id;
@@ -333,6 +333,8 @@ YAHOO.widget.TaskNode = function(oData, oParent, expanded, checked, obj) {
     if (oData) { 
         this.init(oData, oParent, expanded);
         this.setUpLabel(oData);
+        this.href = obj.href;
+        this.image = obj.expFiles_id;
         this.checked = checked;
         this.draggable = obj.draggable;
         this.checkable = obj.checkable;
@@ -511,7 +513,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
      /**
       * Updates the state.  The checked property is true if the state is 1 or 2
       * 
-      * @param the new check state
+      * @param state the new check state
       */
      setCheckState: function(state) { 
          this.checkState = state;
@@ -615,7 +617,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          sb[sb.length] = ' class="' + this.labelStyle + ' context"';
          sb[sb.length] = ' href="' + this.href + '"';
          sb[sb.length] = ' target="' + this.target + '"';
-         sb[sb.length] = ' onclick="return ' + getNode + '.onLabelClick(' + getNode +')"';
+//         sb[sb.length] = ' onclick="return ' + getNode + '.onLabelClick(' + getNode +')"';
          if (this.hasChildren(true)) {
              sb[sb.length] = ' onmouseover="document.getElementById(\'';
              sb[sb.length] = this.getToggleElId() + '\').className=';
@@ -628,6 +630,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          }
          sb[sb.length] = (this.nowrap) ? ' nowrap="nowrap" ' : '';
          sb[sb.length] = ' >';
+         if (this.image != 0) sb[sb.length] = '<img class="filepic" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+this.image+'&amp;w=18&amp;h=18&amp;zc=1">&#160;';
          sb[sb.length] = this.label;
               
          //sb[sb.length] = this.lft+' | '+this.label+'-'+this.id+' | '+this.rgt;

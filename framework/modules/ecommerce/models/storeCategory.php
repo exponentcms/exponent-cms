@@ -110,6 +110,16 @@ class storeCategory extends expNestedNode {
 		}
     }
 
+	public function getFullTree() {
+		$tree = parent::getFullTree();
+		foreach($tree as $key=>$node) {  // add link and image
+			$tree[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
+			if (!empty($node->expFile[0]->id))
+				$tree[$key]->expFiles_id = $node->expFile[0]->id;
+		}
+		return $tree;
+	}
+
 	/**
 	 * Return existing store category id of string nested category
 	 *   checks to ensure each level of nesting exists
