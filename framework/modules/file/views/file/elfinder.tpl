@@ -308,12 +308,12 @@
                     {/literal}{else}{literal}
                     if ((file.length) == 1) {
                         myfile = file[0];
-                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.path);
+                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.id);
                     } else {
                         var batchIDs = {};
                         for (var i=0; i<file.length; i++) {
                             myfile = file[i];
-                            batchIDs[i] = myfile.path;
+                            batchIDs[i] = myfile.id;
                         }
                         window.opener.EXPONENT.passBackBatch{/literal}{$update}{literal}(batchIDs);
                     }

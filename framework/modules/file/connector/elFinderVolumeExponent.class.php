@@ -310,6 +310,7 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
                 } else {
                     $result['owner'] = gt('Unknown');
                 }
+                $result['id'] = $file->id;
                 $result['title'] = $file->title;
                 $result['alt'] = $file->alt;
                 $result['shared'] = !empty($file->shared);
