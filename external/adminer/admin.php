@@ -138,5 +138,5 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.1.0-mysql.php";
+include "./adminer-4.2.0-mysql.php";
 ?>
