@@ -196,16 +196,16 @@ class fileController extends expController {
                     if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
                         $bstrapview = $path . '/' . $actview . '.bootstrap.config';
                         if (file_exists($bstrapview)) {
-                            $view = $bstrapview;
+                            $actview = $bstrapview;
                         }
                     }
                     if ($framework == 'bootstrap3') {
                         $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
                         if (file_exists($bstrapview)) {
-                            $view = $bstrapview;
+                            $actview = $bstrapview;
                         }
                     }
-                    $template = new controllertemplate($this, $view);
+                    $template = new controllertemplate($this, $actview);
                     $config_found = true;
                 }
             }
