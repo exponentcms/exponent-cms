@@ -226,7 +226,7 @@ class usersController extends expController {
                 }
                 $db->insertObject($memb, 'groupmembership');
             }
-            if ($u->id == $user->id) expPermissions::triggerRefresh();
+            if ($u->id == $user->id) expSession::triggerRefresh();
         }
 
         // if this is a new account then we will check to see if we need to send 
@@ -339,8 +339,8 @@ class usersController extends expController {
         //cleans up any old sessions
         if (SESSION_TIMEOUT_ENABLE == true) {
             $db->delete('sessionticket', 'last_active < ' . (time() - SESSION_TIMEOUT));
-        } else {
-            $db->delete('sessionticket', '1');
+//        } else {
+//            $db->delete('sessionticket', '1');
         }
 
         if (isset($this->params['id']) && $this->params['id'] == 0) {
@@ -815,7 +815,7 @@ class usersController extends expController {
                 $db->insertObject($memb, 'groupmembership');
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 
@@ -1080,7 +1080,7 @@ class usersController extends expController {
                 expPermissions::load($user);
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 
@@ -1171,7 +1171,7 @@ class usersController extends expController {
                 expPermissions::grantGroup($g, $perms[$i], $loc);
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 

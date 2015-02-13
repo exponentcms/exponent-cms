@@ -158,6 +158,7 @@ class expSession {
 	 */
 	public static function validate() {
 		global $db, $user;
+
 		//FJD - create a ticket for every session instead of just logged in users
 		if (empty($_SESSION[SYS_SESSION_KEY]['ticket'])) {
 			$ticket = self::createTicket();
@@ -194,8 +195,9 @@ class expSession {
 		}
 
 		self::updateTicket($ticket, $user);
-		// Clean out old sessions from the sessionticket table.
-		$db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
+        if (SESSION_TIMEOUT_ENABLE == true)
+            // Clean out old sessions from the sessionticket table.
+            $db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
 
 		define('SITE_403_HTML', SITE_403_REAL_HTML);
 	}
@@ -210,6 +212,7 @@ class expSession {
 	 */
 	public static function updateTicket($ticket, $user){
 		global $db;
+
 		if (!empty($ticket->ticket)){
 			$ticket->uid = isset($user->id) ? $user->id : 0;
 			$ticket->last_active = time();
@@ -243,6 +246,7 @@ class expSession {
 		//	return $_SESSION[SYS_SESSION_KEY]['ticket'];
 		//} else return null;
 		global $db;
+
 		if (isset($_SESSION[SYS_SESSION_KEY]['ticket'])) {
 			if($db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'") != null ) {
 				return $_SESSION[SYS_SESSION_KEY]['ticket'];
@@ -341,6 +345,7 @@ class expSession {
 		//at this point either.  This just updates all sessionticket records to refresh=1
 
 		global $db;
+
         $sessionticket = new stdClass();
 		$sessionticket->refresh = 1;
 		$db->updateObject($sessionticket, 'sessionticket', '1');
@@ -396,6 +401,7 @@ class expSession {
 	 */
 	public static function clearAllSessionData(){
 		global $db;
+
 		$db->delete('sessionticket',"1");
 		unset($_SESSION[SYS_SESSION_KEY]);
 	}
@@ -422,6 +428,7 @@ class expSession {
 		$_SESSION[SYS_SESSION_KEY]['ticket'] = $ticket->ticket;
 
 		global $db;
+
 		$db->insertObject($ticket,'sessionticket');
 		return $ticket;
 	}
@@ -430,6 +437,38 @@ class expSession {
 		//should always be an array, even if single index
 		$_SESSION[SYS_SESSION_KEY]['cache'][$module] = $val;
 	}
+
+    /** exdoc
+   	 * This call will force all active session to reload their
+   	 * permission data.  This is useful if permissions are assigned
+   	 * or revoked, and is required to see these changes.
+        *
+   	 * @node Subsystems:expPermissions
+   	 */
+   	public static function triggerRefresh() {
+   		global $db;
+
+   		$obj = new stdClass();
+   		$obj->refresh = 1;
+   		$db->updateObject($obj,'sessionticket','true'); // force a global refresh
+   	}
+
+   	/** exdoc
+   	 * This call will force all active sessions for the given user to
+   	 * reload their permission data.  This is useful if permissions
+   	 * are assigned or revoked, and is required to see these changes.
+        *
+        * @param user/object $user
+        *
+   	 * @node Subsystems:expPermissions
+   	 */
+   	public static function triggerSingleRefresh($user) {  //FIXME not currently used
+   		global $db;
+
+   		$obj = new stdClass();
+   		$obj->refresh = 1;
+   		$db->updateObject($obj,'sessionticket','uid='.$user->id); // force a global refresh
+   	}
 
 }
 
