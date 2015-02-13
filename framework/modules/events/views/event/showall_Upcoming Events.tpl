@@ -19,7 +19,9 @@
 
 <div class="module events upcoming">
 	<div class="module-actions">
-		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
+        {if !$config.disable_links}
+    		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
+        {/if}
 		{permissions}
 			{if $permissions.manage}
 				&#160;&#160;|&#160;&#160;

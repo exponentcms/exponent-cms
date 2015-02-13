@@ -23,11 +23,13 @@
 <div class="module events show">
     <div class="vevent">
 	<div class="module-actions">
-		{icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
-        &#160;&#160;|&#160;&#160;
-		{icon class="weekviewlink" action=showall view=showall_Week time=$eventstart title='View Entire Week'|gettext text='View Week'|gettext}
-        &#160;&#160;|&#160;&#160;
-		{icon class="monthviewlink" action=showall time=$eventstart title='View Entire Month'|gettext text='View Month'|gettext}
+        {if !$config.disable_links}
+            {icon class="dayviewlink" action=showall view=showall_Day time=$eventstart title='View Entire Day'|gettext text='View Day'|gettext}
+            &#160;&#160;|&#160;&#160;
+            {icon class="weekviewlink" action=showall view=showall_Week time=$eventstart title='View Entire Week'|gettext text='View Week'|gettext}
+            &#160;&#160;|&#160;&#160;
+            {icon class="monthviewlink" action=showall time=$eventstart title='View Entire Month'|gettext text='View Month'|gettext}
+        {/if}
 		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
         {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
         {br}

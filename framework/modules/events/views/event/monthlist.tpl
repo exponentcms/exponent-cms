@@ -26,6 +26,7 @@
 	</p>
 	<dl class="viewweek">
 		{foreach from=$days item=items key=ts}
+            {$none=1}
 			{if_elements array=$items}
 				<dt>
 					<div class="sectiontitle"><strong>
@@ -33,7 +34,6 @@
 					</strong></div>
 				</dt>
 				<dd>
-                    {$none=1}
 					{foreach from=$items item=item}
                         {$none=0}
 						<div class="paragraph">
@@ -83,10 +83,9 @@
 						</div>
 					{/foreach}
 				</dd>
-				{if $none == 1}
-					<div class="paragraph"><dd><strong>{'No Events.'|gettext}</strong></dd></div>
-				{/if}
-				{br}
 			{/if_elements}
 		{/foreach}
+        {if $none == 1}
+            <div class="paragraph"><dd><strong>{'No Events.'|gettext}</strong></dd></div>
+        {/if}
 	</dl>

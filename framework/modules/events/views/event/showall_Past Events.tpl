@@ -19,9 +19,11 @@
 
 <div class="module events cal-admin">
 	<div class="module-actions">
-		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
-        &#160;&#160;|&#160;&#160;
-        {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+        {if !$config.disable_links}
+            {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
+            &#160;&#160;|&#160;&#160;
+            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+        {/if}
 		{permissions}
             <div class="module-actions">
                 {if $permissions.manage}

@@ -21,10 +21,12 @@
 
 <div class="module events default">
 	<div class="module-actions">
-		{*<span class="monthviewlink">{'Calendar View'|gettext}</span>*}
-        {icon class="monthviewlink" text='Calendar View'|gettext}
-        &#160;&#160;|&#160;&#160;
-        {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+        {if !$config.disable_links}
+            {*<span class="monthviewlink">{'Calendar View'|gettext}</span>*}
+            {icon class="monthviewlink" text='Calendar View'|gettext}
+            &#160;&#160;|&#160;&#160;
+            {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
+        {/if}
 		{permissions}
 			{if $permissions.manage}
 				&#160;&#160;|&#160;&#160;

@@ -21,9 +21,11 @@
 
 <div class="module events viewday">
 	<div class="module-actions">
-		{icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}
-        {nbsp count=2}|{nbsp count=2}
-		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+        {if !$config.disable_links}
+            {icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}
+            {nbsp count=2}|{nbsp count=2}
+            {icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+        {/if}
         {permissions}
             {if $permissions.manage}
                 {nbsp count=2}|{nbsp count=2}

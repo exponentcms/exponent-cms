@@ -312,3 +312,7 @@ a.cats {
     /* IE7 */
     filter     : alpha(opacity = 25);
 }
+
+.events .module-actions {
+	display: inline;
+}
