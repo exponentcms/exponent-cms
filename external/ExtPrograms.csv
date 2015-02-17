@@ -25,7 +25,7 @@ Bootswatch,3.3.2,bootswatch.com/,3.3.2,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.3.0,fortawesome.github.com/Font-Awesome,4.3.0,
 Adminer,4.2.0,www.adminer.org,4.2.0,we add some system user checks in design.inc
-SimpleAjaxUploader,1.11.0-exp,https://github.com/LPology/Simple-Ajax-Uploader,1.11.0,also converted to yui module
+SimpleAjaxUploader,2.0.0,https://github.com/LPology/Simple-Ajax-Uploader,2.0.0,also converted to yui module
 normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
 MediaElement.js,2.16.3,mediaelementjs.com/,2.16.3,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.16,
@@ -59,9 +59,9 @@ Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.1exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.1,added additional 'update' method and click update if inline
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.5,
-Sortable,1.0.1,https://github.com/RubaXa/Sortable,1.0.1,
+Sortable,1.1.0,https://github.com/RubaXa/Sortable,1.1.0,
 jstree,3.0.9,https://github.com/vakata/jstree,3.0.9,added nav menu icons to stylesheet
-bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.1,
+bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.2,
 impromptu,6.0.0,http://trentrichardson.com/Impromptu,6.0.0,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.4.2,https://github.com/timschlechter/bootstrap-tagsinput,0.4.2,
