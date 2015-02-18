@@ -75,6 +75,8 @@ class expTemplate {
 //		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
         $form->register(null,"",new htmlcontrol("<h2>".gt('Layout Configuration')."</h2>"),true,ucwords($view).' '.gt('View Configuration'));
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
 		$fh = fopen($form_file,"r");
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
 			$data = array();
@@ -91,6 +93,8 @@ class expTemplate {
 				$form->register("_viewconfig[".$data[0]."]",$data[1],new dropdowncontrol($values[$data[0]],$options),true,ucwords($view).' '.gt('View Configuration'));
 			}
 		}
+        fclose($fh);
+        ini_set('auto_detect_line_endings',$line_end);
 
 		$form->register("submit","",new buttongroupcontrol("Save","","Cancel"),true,'base');
 
@@ -106,6 +110,8 @@ class expTemplate {
 		}
 		if ($form_file == "") return array(); // no form file, no options
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
 		$fh = fopen($form_file,"r");
 		$options = array();
 		while (($control_data = fgetcsv($fh,65536,"\t")) !== false) {
@@ -115,6 +121,8 @@ class expTemplate {
 			}
 			$options[$data[0]] = $data[1];
 		}
+        fclose($fh);
+        ini_set('auto_detect_line_endings',$line_end);
 		return $options;
 	}
 

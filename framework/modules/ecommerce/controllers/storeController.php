@@ -1775,6 +1775,8 @@ class storeController extends expController {
         $file->path = $_FILES['batch_upload_file']['tmp_name'];
         echo "Validating file...<br/>";
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
         // read in the header line
         $checkdata = fgetcsv($checkhandle, 10000, ",");
@@ -1789,10 +1791,13 @@ class storeController extends expController {
                 exit();
             }
         }
-        fclose($checkhandle);
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>CSV File passed validation...<br/><br/>Detecting carrier type....<br/>";
         //exit();
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
 
         // read in the header line
@@ -2000,6 +2005,8 @@ class storeController extends expController {
 
             //eDebug($product);        
         }
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         assign_to_template(array(
             'errorSet'   => $errorSet,
@@ -2053,6 +2060,8 @@ class storeController extends expController {
             fclose($checkhandle);
         }*/
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
         if ($this->params['type_of_address'][0] == 'am') {
             // read in the header line
@@ -2089,9 +2098,12 @@ class storeController extends expController {
         }
 
         fclose($checkhandle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
         //exit();
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
 
         // read in the header line and discard it
@@ -2228,6 +2240,8 @@ class storeController extends expController {
                 }
             }
         }
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
         echo "Done!";
     }
 
@@ -2319,6 +2333,8 @@ class storeController extends expController {
             $file->path = $_FILES['modelaliases']['tmp_name'];
             echo "Validating file...<br/>";
 
+            $line_end = ini_get('auto_detect_line_endings');
+            ini_set('auto_detect_line_endings',TRUE);
             $checkhandle = fopen($file->path, "r");
             // read in the header line
             $checkdata = fgetcsv($checkhandle, 10000, ",");
@@ -2336,8 +2352,11 @@ class storeController extends expController {
             }
 
             fclose($checkhandle);
+            ini_set('auto_detect_line_endings',$line_end);
 
             echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
+            $line_end = ini_get('auto_detect_line_endings');
+            ini_set('auto_detect_line_endings',TRUE);
             $handle = fopen($file->path, "r");
             // read in the header line
             $data = fgetcsv($handle, 10000, ",");
@@ -2352,6 +2371,8 @@ class storeController extends expController {
                 $tmp->field2 = expString::onlyReadables($data[1]);
                 $db->insertObject($tmp, 'model_aliases_tmp');
             }
+            fclose($handle);
+            ini_set('auto_detect_line_endings',$line_end);
             redirect_to(array('controller' => 'store', 'action' => 'processModelAliases'));
             echo "Done!";
         }
@@ -2931,6 +2952,7 @@ class storeController extends expController {
 
         }
 
+        fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
 
         if (count($errorSet)) {

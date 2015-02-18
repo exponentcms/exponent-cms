@@ -342,6 +342,8 @@ class importexportController extends expController {
         $file->path = $_FILES['import_file']['tmp_name'];
         echo gt("Attempting import")."...<br/>";
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
@@ -356,6 +358,7 @@ class importexportController extends expController {
             }
         }
         fclose($checkhandle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>" . gt("CSV File passed validation") . "...<br/>";
 

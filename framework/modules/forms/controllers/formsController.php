@@ -1563,12 +1563,16 @@ class formsController extends expController {
 
             //split the line into its columns
             $headerinfo = null;
+            $line_end = ini_get('auto_detect_line_endings');
+            ini_set('auto_detect_line_endings',TRUE);
             $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
             if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
             for ($x = 0; $x < $this->params["rowstart"]; $x++) {
                 $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
                 if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
             }
+            fclose($fh);
+            ini_set('auto_detect_line_endings',$line_end);
 
             // get list of simple non-static controls if we are also creating a new form
             $types = expTemplate::listControlTypes(false);
@@ -1733,12 +1737,16 @@ class formsController extends expController {
 
         //split the line into its columns
         $headerinfo = null;
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
             $lineInfo = fgetcsv($fh, 2000, $this->params["delimiter"]);
             if ($x == 0 && !empty($this->params["use_header"])) $headerinfo = $lineInfo;
         }
+        fclose($fh);
+        ini_set('auto_detect_line_endings',$line_end);
 
         // pull in the form control definitions here
         $f = new forms($this->params['forms_id']);
@@ -1783,6 +1791,8 @@ class formsController extends expController {
     }
 
     public function import_csv_data_display() {
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $record = array();
         $records = array();
@@ -1813,6 +1823,9 @@ class formsController extends expController {
             }
             $linenum++;
         }
+        fclose($file);
+        ini_set('auto_detect_line_endings',$line_end);
+
         assign_to_template(array(
             "records" => $records,
             "params" => $this->params,
@@ -1822,6 +1835,8 @@ class formsController extends expController {
     public function import_csv_data_add() {
         global $user, $db;
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $recordsdone = 0;
         $linenum = 1;
@@ -1872,6 +1887,10 @@ class formsController extends expController {
             }
             $linenum++;
         }
+
+        fclose($file);
+        ini_set('auto_detect_line_endings',$line_end);
+
         // update multi-item forms controls
         if (!empty($multi_item_control_ids)) {
             foreach ($multi_item_control_ids as $key=>$control_id) {

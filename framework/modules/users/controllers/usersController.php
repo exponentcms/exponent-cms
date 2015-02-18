@@ -1257,6 +1257,8 @@ class usersController extends expController {
 
         //split the line into its columns
         $headerinfo = null;
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
@@ -1358,6 +1360,8 @@ class usersController extends expController {
     }
 
     public function import_users_display() {
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $userinfo = array();
         $userarray = array();
@@ -1489,6 +1493,8 @@ class usersController extends expController {
     }
 
     public function import_users_add() {
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $userinfo = array();
         $userarray = array();
@@ -1625,6 +1631,8 @@ class usersController extends expController {
             }
             $linenum++;
         }
+        fclose($file);
+        ini_set('auto_detect_line_endings',$line_end);
         assign_to_template(array(
             "userarray" => $userarray,
         ));
