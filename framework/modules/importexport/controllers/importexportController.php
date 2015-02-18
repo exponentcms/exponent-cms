@@ -502,6 +502,8 @@ class importexportController extends expController {
             $file = new stdClass();
             $file->path = $_FILES['import_file']['tmp_name'];
         }
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
 
         // read in the header line
@@ -861,6 +863,8 @@ class importexportController extends expController {
             //eDebug($product);
 
         }
+
+        ini_set('auto_detect_line_endings',$line_end);
 
         if (count($errorSet)) {
             echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
