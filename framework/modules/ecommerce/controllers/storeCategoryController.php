@@ -263,6 +263,10 @@ class storeCategoryController extends expNestedNodeController {
             $file = new stdClass();
             $file->path = $_FILES['import_file']['tmp_name'];
         }
+        if (empty($file->path)) {
+            echo gt('Not a Store Category Import CSV File');
+            return;
+        }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
@@ -271,7 +275,7 @@ class storeCategoryController extends expNestedNodeController {
         $header = fgetcsv($handle, 10000, ",");
         if (!in_array('storeCategory', $header)) {  //FIXME or should this simply be 'category' and a rank?
             echo gt('Not a Store Category Import CSV File');
-            exit();
+            return;
         }
 
         $count = 1;
@@ -283,7 +287,7 @@ class storeCategoryController extends expNestedNodeController {
             $data = array_combine($header, $row);
 
             if (empty($data['storeCategory'])) {  //FIXME or should this simply be 'category' and a rank?
-                $errorSet[$count] = gt("is not a store category.");
+                $errorSet[$count] = gt("Is not a store category.");
                 continue;
             } else {
                 $result = storeCategory::importCategoryString($data['storeCategory']);
@@ -298,16 +302,16 @@ class storeCategoryController extends expNestedNodeController {
         ini_set('auto_detect_line_endings',$line_end);
 
         if (count($errorSet)) {
-            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
+            echo "<br/><hr><br/><div style='color:red'><strong>".gt('The following records were NOT imported').":</strong><br/>";
             foreach ($errorSet as $rownum => $err) {
-                echo "Row: " . $rownum . ". Reason:<br/>";
+                echo "Row: " . $rownum;
                 if (is_array($err)) {
                     foreach ($err as $e) {
-                        echo "--" . $e . "<br/>";
+                        echo " -- " . $e . "<br/>";
                     }
-                } else echo "--" . $err . "<br/>";
+                } else echo " -- " . $err . "<br/>";
             }
-            echo "</style>";
+            echo "</div>";
         }
     }
 

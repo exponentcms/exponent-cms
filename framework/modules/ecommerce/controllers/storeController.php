@@ -2590,6 +2590,10 @@ class storeController extends expController {
             $file = new stdClass();
             $file->path = $_FILES['import_file']['tmp_name'];
         }
+        if (empty($file->path)) {
+            echo gt('Not a Product Import CSV File');
+            return;
+        }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
@@ -2598,7 +2602,7 @@ class storeController extends expController {
         $header = fgetcsv($handle, 10000, ",");
         if (!($header[0] == 'id' || $header[0] == 'model')) {
             echo gt('Not a Product Import CSV File');
-            exit();
+            return;
         }
 
         $count = 1;
@@ -2659,7 +2663,7 @@ class storeController extends expController {
                 if (isset($data['id']) && $data['id'] != 0) {
                     $product = new product($data['id'], false, false);
                     if (empty($product->id)) {
-                        $errorSet[$count] = gt("is not an existing product ID.");
+                        $errorSet[$count] = gt("Is not an existing product ID.");
                         continue;
                     }
                 } else {
@@ -2673,19 +2677,23 @@ class storeController extends expController {
                     $p = new product();
                     $product = $p->find('first','model="' . $data['model'] . '"');
                     if (empty($product->id)) {
-                        $errorSet[$count] = gt("is not an existing product SKU/Model.");
+                        $errorSet[$count] = gt("Is not an existing product SKU/Model.");
                         continue;
                     }
                 } else {
                     $product = new product();
                 }
             }
+            if ($product->product_type != 'product') {
+                $errorSet[$count] = gt("Existing product is wrong product type.");
+                continue;
+            }
 
             // new products must have a title
             if (empty($product->id)) {  // new product require mandatory values
                 $checkTitle = trim($data['title']);
                 if (empty($checkTitle)) {
-                    $errorSet[$count] = gt("No product name (title) supplied, skipping this record...");
+                    $errorSet[$count] = gt("No product name (title) supplied.");
                     continue;
                 }
                 $product->minimum_order_quantity = 1;
@@ -2952,21 +2960,21 @@ class storeController extends expController {
 
         }
 
-        fclose($handle);
-        ini_set('auto_detect_line_endings',$line_end);
-
         if (count($errorSet)) {
-            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
+            echo "<br/><hr><br/><div style='color:red'><strong>".gt('The following records were NOT imported').":</strong><br/>";
             foreach ($errorSet as $rownum => $err) {
-                echo "Row: " . $rownum . ". Reason:<br/>";
+                echo "Row: " . $rownum;
                 if (is_array($err)) {
                     foreach ($err as $e) {
-                        echo "--" . $e . "<br/>";
+                        echo " -- " . $e . "<br/>";
                     }
-                } else echo "--" . $err . "<br/>";
+                } else echo " -- " . $err . "<br/>";
             }
-            echo "</style>";
+            echo "</div>";
         }
+
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
     }
 
 }
