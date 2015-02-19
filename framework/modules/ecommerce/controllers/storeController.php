@@ -1791,7 +1791,7 @@ class storeController extends expController {
                 exit();
             }
         }
-        fclose($handle);
+        fclose($checkhandle);
         ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>CSV File passed validation...<br/><br/>Detecting carrier type....<br/>";
