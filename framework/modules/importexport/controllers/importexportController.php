@@ -631,7 +631,7 @@ class importexportController extends expController {
                     case 'companies_id':
                         if (is_numeric($value)) {
                             $product->$key = intval($value);
-                        } else {  // it's a company name, not a company id#
+                        } elseif (!empty($value)) {  // it's a company name, not a company id#
                             $co = new company();
                             $company = $co->find('first', 'title=' . $value);
                             if (empty($company->id)) {
@@ -735,7 +735,6 @@ class importexportController extends expController {
                         }
                         break;
                     default:
-                        //FIXME should we even get here??
                         if (property_exists('product', $key)) {
                             $product->key = $value;
                         }
