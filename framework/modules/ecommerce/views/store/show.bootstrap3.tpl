@@ -512,7 +512,7 @@
                 {/script}
                 </div>
             {/if}
-        </div>
+        {*</div>*}
 
         {if $product->crosssellItem|@count >= 1}
             <div class="col-sm-12">
@@ -553,6 +553,6 @@
                      {/foreach}
                  </div>
             </div>
-         {/if}
+        {/if}
     </div>
 </div>
