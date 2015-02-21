@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -196,8 +196,7 @@ class expSession {
 
 		self::updateTicket($ticket, $user);
         if (SESSION_TIMEOUT_ENABLE == true)
-            // Clean out old sessions from the sessionticket table.
-            $db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));
+            $db->delete('sessionticket','last_active < ' . (time() - SESSION_TIMEOUT));  // Clean out old sessions from the sessionticket table.
 
 		define('SITE_403_HTML', SITE_403_REAL_HTML);
 	}
