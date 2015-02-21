@@ -35,7 +35,9 @@ class buttongroupcontrol extends formcontrol {
 	var $returntype = "";
 	var $class = "";
 	var $validateJS = "";
-    var $size = null;
+    var $size = BTN_SIZE;
+    var $color = 'blue';
+    var $cancel_color = 'white';
 
 	static function name() { return "Button Group"; }
 
@@ -69,6 +71,7 @@ class buttongroupcontrol extends formcontrol {
 //                $icon_size = '';
 //            }
             $btn_size = expTheme::buttonSize($this->size);
+            $btn_color = expTheme::buttonColor($this->color);
             $icon_size = expTheme::iconSize($this->size);
             if (stripos($this->submit, 'save') !== false) {
                 $icon = 'icon-save';
@@ -77,7 +80,7 @@ class buttongroupcontrol extends formcontrol {
             } else {
                 $icon = 'icon-ok-circle';
             }
-			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn btn-primary '.$btn_size.' '.$this->class;
+			$html .= '<button type="submit" id="'.$this->id.'Submit" class="submit btn '.$btn_color.' '.$btn_size.' '.$this->class;
 			if ($this->disabled) $html .= " disabled";  // disabled class
 			$html .='" value="' . $this->submit . '"';
 			if ($this->disabled) $html .= " disabled";  // disabled attribute
@@ -97,10 +100,11 @@ class buttongroupcontrol extends formcontrol {
 		}
 		//if ($this->reset != "") $html .= '<input class="button" type="reset" value="' . $this->reset . '"' . ($this->disabled?" disabled":"") . ' />';
 		if ($this->cancel != "") {
+            $btn_color = expTheme::buttonColor($this->cancel_color);
 			if ($this->returntype == "") {
-				$html .= '<button type="cancel" class="cancel btn '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
+				$html .= '<button type="cancel" class="cancel btn '.$btn_color.' '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLastNotEditable().'\'; return false;"';
 			} else {
-			    $html .= '<button type="cancel" class="cancel btn '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
+			    $html .= '<button type="cancel" class="cancel btn '.$btn_color.' '.$btn_size.'" onclick="document.location.href=\''.expHistory::getLast($this->returntype).'\'; return false;"';
 			}
             $html .= ' ><i class="icon-ban-circle '.$icon_size.'"></i> ';
 			$html .= $this->cancel;
