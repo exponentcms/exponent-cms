@@ -91,6 +91,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errFtpMkdir'          : 'Não foi possível criar um diretório remoto no FTP: "$1"',
 			'errArchiveExec'       : 'Erro no arquivamento: "$1"',
 			'errExtractExec'       : 'Erro na extração dos arquivos: "$1"',
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Criar arquivo',
@@ -121,6 +122,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdresize'    : 'Redimencionar & Rodar',
 			'cmdsort'      : 'Ordenar',
 			'cmdnetmount'  : 'Montar unidade de rede', // added 18.04.2012
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Fechar',

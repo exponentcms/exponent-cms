@@ -741,9 +741,7 @@ class elFinder {
 		// get folders trees
 		if ($args['tree']) {
 			foreach ($this->volumes as $id => $v) {
-				if (($tree = $v->tree('', 0, $cwd['hash'])) != false) {
-					$files = array_merge($files, $tree);
-				}
+				$files[] = $v->file($v->root());
 			}
 		}
 
@@ -1597,7 +1595,7 @@ class elFinder {
 				break;
 			}
 			
-			fclose($fp);
+			is_resource($fp) && fclose($fp);
 			if (! is_uploaded_file($tmpname) && @ unlink($tmpname)) unset($GLOBALS['elFinderTempFiles'][$tmpname]);
 			$result['added'][] = $file;
 		}

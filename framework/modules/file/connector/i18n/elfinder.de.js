@@ -64,12 +64,12 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errCopy'              : 'Kann "$1" nicht kopieren.',
 			'errMove'              : 'Kann "$1" nicht verschieben.',
 			'errCopyInItself'      : '"$1" kann sich nicht in sich selbst kopieren.',
-			'errRm'                : 'Kann "$1" nicht enfernen.',
+			'errRm'                : 'Kann "$1" nicht entfernen.',
 			'errRmSrc'             : 'Kann Quelldatei(en) nicht entfernen.',
 			'errExtract'           : 'Kann "$1" nicht entpacken .',
 			'errArchive'           : 'Archiv konnte nicht erstellt werden.',
 			'errArcType'           : 'Archivtyp nicht untersützt.',
-			'errNoArchive'         : 'Bei der Datei handelt es nicht um ein Archiv oder der Archivtyp nicht unterstütz.',
+			'errNoArchive'         : 'Bei der Datei handelt es sich nicht um ein Archiv oder der Archivtyp wird nicht unterstütz.',
 			'errCmdNoSupport'      : 'Das Backend unterstütz diesen Befehl nicht.',
 			'errReplByChild'       : 'Der Ordner “$1” kann nicht durch etwas ersetzt werden, das ihn selbst enthält.',
 			'errArcSymlinks'       : 'Aus Sicherheitsgründen ist es verboten, ein Archiv mit symbolischen Links zu extrahieren.',
@@ -84,21 +84,21 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errNetMount'          : 'Verbindung mit "$1" nicht möglich.',
 			'errNetMountNoDriver'  : 'Nicht unterstütztes Protokoll.',
 			'errNetMountFailed'    : 'Verbindung fehlgeschlagen.',
-			'errNetMountHostReq'   : 'Host benötigz.',
+			'errNetMountHostReq'   : 'Host benötigt.',
 			'errSessionExpires'    : 'Ihre Sitzung ist aufgrund von Inaktivität abgelaufen',
 			'errCreatingTempDir'   : 'Erstellung des temporären Ordners nicht möglich: "$1"',
 			'errFtpDownloadFile'   : 'Download der Datei über FTP nicht möglich: "$1"',
 			'errFtpUploadFile'     : 'Upload der Datei zu FTP nicht möglich: "$1"',
 			'errFtpMkdir'          : 'Erstellung des Remote-Ordners auf FTP nicht möglich: "$1"',
-			'errArchiveExec'       : 'Fehler bei der Archivierung der Dateien: "$1"',
-			'errExtractExec'       : 'Fehler beim Extrahieren der Dateien: "$1"',
+			'errArchiveExec'       : 'Fehler beim archivieren der Dateien: "$1"',
+			'errExtractExec'       : 'Fehler beim extrahieren der Dateien: "$1"',
             'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Archiv erstellen',
 			'cmdback'      : 'Zurück',
 			'cmdcopy'      : 'Kopieren',
-			'cmdcut'       : 'Ausschreiden',
+			'cmdcut'       : 'Ausschneiden',
 			'cmddownload'  : 'Herunterladen',
 			'cmdduplicate' : 'Duplizieren',
 			'cmdedit'      : 'Datei bearbeiten',
@@ -143,7 +143,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfmkdir'    : 'Erstelle Ordner',
 			'ntfmkfile'   : 'Erstelle Dateien',
 			'ntfrm'       : 'Lösche Dateien',
-			'ntfcopy'     : 'Kopiere Dateien files',
+			'ntfcopy'     : 'Kopiere Dateien',
 			'ntfmove'     : 'Verschiebe Dateien',
 			'ntfprepare'  : 'Kopiervorgang initialisieren',
 			'ntfrename'   : 'Benenne Dateien um',
@@ -157,7 +157,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfsmth'     : 'Bin beschäftigt',
 			'ntfloadimg'  : 'Bild laden',
 			'ntfnetmount' : 'Mit Netzwerkspeicher verbinden',
-			'ntfdim'      : 'Acquiring image dimension',
+			'ntfdim'      : 'Bildgröße erfassen',
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'unbekannt',
@@ -307,6 +307,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindTAR'         : 'TAR Archiv',
 			'kindGZIP'        : 'GZIP Archiv',
 			'kindBZIP'        : 'BZIP Archiv',
+			'kindXZ'          : 'XZ Archiv',
 			'kindZIP'         : 'ZIP Archiv',
 			'kindRAR'         : 'RAR Archiv',
 			'kindJAR'         : 'Java JAR Datei',
@@ -365,5 +366,5 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoMKV'    : 'Matroska Film',
 			'kindVideoOGG'    : 'Ogg Film'
 		}
-	}
+	};
 }

@@ -315,9 +315,11 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		
 		$stat['mime']  = $dir ? 'directory' : $this->mimetype($path);
 		$stat['ts']    = filemtime($path);
-		$stat['read']  = is_readable($path);
-		$stat['write'] = is_writable($path);
-		if ($stat['read']) {
+		//logical rights first
+		$stat['read'] = is_readable($path)? null : false;
+		$stat['write'] = is_writable($path)? null : false;
+
+		if (is_null($stat['read'])) {
 			$stat['size'] = $dir ? 0 : $size;
 		}
 		
@@ -416,7 +418,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _fopen($path, $mode='rb') {
-		return @fopen($path, 'r');
+		return @fopen($path, $mode);
 	}
 	
 	/**
@@ -764,4 +766,17 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		return file_exists($path) ? $path : false;
 	}
 	
+	/******************** Over write functions *************************/
+	
+	/**
+	 * File path of local server side work file path
+	 *
+	 * @param  string $path
+	 * @return string
+	 * @author Naoki Sawada
+	 */
+	protected function getWorkFile($path) {
+		return $path;
+	}
+
 } // END class 

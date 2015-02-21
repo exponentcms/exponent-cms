@@ -155,7 +155,7 @@ $.fn.elfindercwd = function(fm, options) {
 				permsclass : function(f) {
 					return fm.perms2class(f);
 				},
-				perms : function(f) {
+				perm : function(f) {
 					return fm.formatPermissions(f);
 				},
 				dirclass : function(f) {
@@ -635,14 +635,17 @@ $.fn.elfindercwd = function(fm, options) {
 			},
 
             customColsNameBuild = function() {
-                var customColsName = '';
-                var columns = fm.options.uiOptions.cwd.listView.columns;
+				var name = '',
+				customColsName = '',
+				columns = fm.options.uiOptions.cwd.listView.columns,
+				names = $.extend({}, msg, fm.options.uiOptions.cwd.listView.columnsCustomName);
                 for (var i = 0; i < columns.length; i++) {
-                    if (fm.options.uiOptions.cwd.listView.columnsCustomName[columns[i]] != null) {
-                        customColsName +='<td class="elfinder-cwd-view-th-'+columns[i]+'">'+fm.options.uiOptions.cwd.listView.columnsCustomName[columns[i]]+'</td>';
+					if (typeof names[columns[i]] !== 'undefined') {
+						name = names[columns[i]];
                     } else {
-                        customColsName +='<td class="elfinder-cwd-view-th-'+columns[i]+'">'+msg[columns[i]]+'</td>';
+						name = fm.i18n(columns[i]);
                     }
+					customColsName +='<td class="elfinder-cwd-view-th-'+columns[i]+'">'+name+'</td>';
                 }
                 return customColsName;
             },
@@ -749,6 +752,9 @@ $.fn.elfindercwd = function(fm, options) {
 				// for touch device
                 .delegate(fileSelector, 'touchstart.'+fm.namespace, function(e) {
 					e.stopPropagation();
+					if (e.target.nodeName == 'INPUT') {
+						return;
+					}
                     var p = this.id ? $(this) : $(this).parents('[id]:first'),
                       sel = p.prevAll('.'+clSelected+':first').length +
                             p.nextAll('.'+clSelected+':first').length;
@@ -775,8 +781,11 @@ $.fn.elfindercwd = function(fm, options) {
                     }, 500));
                 })
 				.delegate(fileSelector, 'touchmove.'+fm.namespace+' touchend.'+fm.namespace, function(e) {
-					var p = this.id ? $(this) : $(this).parents('[id]:first');
 					e.stopPropagation();
+					if (e.target.nodeName == 'INPUT') {
+						return;
+					}
+					var p = this.id ? $(this) : $(this).parents('[id]:first');
 					clearTimeout(p.data('tmlongtap'));
 				})
 				// attach draggable

@@ -131,7 +131,6 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnRm'     : 'Supprimer',
 			'btnApply'  : 'Apply',
 			'btnCancel' : 'Annuler',
-			'btnApply'  : 'Appliquer', // added 11.08.2013
 			'btnNo'     : 'Non',
 			'btnYes'    : 'Oui',
 			'btnMount'  : 'Monter',  // added 18.04.2012
@@ -307,6 +306,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindTAR'         : 'Archive TAR',
 			'kindGZIP'        : 'Archive GZIP',
 			'kindBZIP'        : 'Archive BZIP',
+			'kindXZ'          : 'Archive XZ',
 			'kindZIP'         : 'Archive ZIP',
 			'kindRAR'         : 'Archive RAR',
 			'kindJAR'         : 'Fichier Java JAR',

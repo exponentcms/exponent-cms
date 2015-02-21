@@ -321,6 +321,7 @@ elFinder.prototype._options = {
 		cwd : {
 			// display parent folder with ".." name :)
 			oldSchool : false,
+
             // file info columns displayed
             listView : {
                 // name is always displayed, cols are ordered
@@ -332,6 +333,7 @@ elFinder.prototype._options = {
                 //     kind : 'Mime type'
                 // }
                 columnsCustomName : {}
+
             }
 		}
 	},

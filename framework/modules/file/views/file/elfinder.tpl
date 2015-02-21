@@ -54,8 +54,8 @@
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
@@ -70,8 +70,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/button.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/uploadButton.js"></script>

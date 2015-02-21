@@ -24,8 +24,8 @@
 	-webkit-user-select: none;
 	user-select: none;
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
-	-webkit-touch-callout:none; // disable long tap popup
-	user-select:          none; // disable long tap link
+	-webkit-touch-callout:none;
+	user-select:          none;
 	-webkit-user-select:  none;
 	-moz-user-select:     none;
 	-khtml-user-select:   none;
@@ -176,6 +176,7 @@
 .elfinder-cwd-icon-xml               { background-position: 0 -1000px; }
 .elfinder-cwd-icon-zip, 
 .elfinder-cwd-icon-x-zip, 
+.elfinder-cwd-icon-x-xz, 
 .elfinder-cwd-icon-x-7z-compressed   { background-position: 0 -1050px; }
 .elfinder-cwd-icon-x-gzip,  
 .elfinder-cwd-icon-x-tar             { background-position: 0 -1100px; }

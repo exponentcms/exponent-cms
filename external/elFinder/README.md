@@ -65,7 +65,11 @@ Downloads
  * [Django](https://github.com/mikery/django-elfinder)
  * [Ruby/Rails](https://github.com/phallstrom/el_finder)
  * [Java Servlet](https://github.com/Studio-42/elfinder-servlet)
+ * [Laravel](https://github.com/barryvdh/laravel-elfinder)
 
+3rd party Volume Drivers
+--------------------
+ * [League\Flysystem (PHP)](https://github.com/barryvdh/elfinder-flysystem-driver) (for elFinder 2.1+)
 
 Support
 -------

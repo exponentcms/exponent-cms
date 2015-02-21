@@ -1947,6 +1947,7 @@ elFinder.prototype = {
 			'application/x-awk'             : 'AWK',
 			'application/x-gzip'            : 'GZIP',
 			'application/x-bzip2'           : 'BZIP',
+			'application/x-xz'              : 'XZ',
 			'application/zip'               : 'ZIP',
 			'application/x-zip'               : 'ZIP',
 			'application/x-rar'             : 'RAR',
@@ -2379,7 +2380,7 @@ elFinder.prototype = {
 			xhr.addEventListener('load', function(e) {
 				var status = xhr.status, res, curr = 0, error = '';
 				
-				if (status != 200) {
+				if (status >= 400) {
 					if (status > 500) {
 											error = 'errResponse';
 					} else {

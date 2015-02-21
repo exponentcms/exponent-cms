@@ -91,6 +91,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errFtpMkdir'          : 'Unable to create remote directory on FTP: "$1"',
 			'errArchiveExec'       : 'Error while archiving files: "$1"',
 			'errExtractExec'       : 'Error while extracting files: "$1"',
+            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Lav arkiv',
@@ -121,7 +122,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdresize'    : 'Ændre størrelse',
 			'cmdsort'      : 'Sorter',
 			'cmdnetmount'  : 'Mount network volume',
-			
+            'cmdpixlr'     : 'Edit on Pixlr',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
+
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Luk',
 			'btnSave'   : 'Gem',
