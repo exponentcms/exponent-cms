@@ -30,7 +30,7 @@ return array(
 	'name'=>'MySQLi Debugging Database Backend',
 	'author'=>'Dave Leffler',
 	'description'=>'MySQLi Database Backend which logs all MySQL calls.',
-	'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
+    'is_valid'=>0,//'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
 	'version'=>expVersion::getVersion(true)
 );
 
