@@ -43,7 +43,7 @@
 {foreach from=$page->records item=mod key=src name=mod}
         <tr class="{cycle values="even,odd"}">
             <td width="20">
-                {control type="checkbox" name="aggregate[]" value=$mod->src checked=$config.aggregate}
+                {control type="checkbox" name="aggregate[]" value=$mod->src checked=in_array($mod->src,$config.aggregate)}
             </td>
             <td>
                 {$mod->title}
