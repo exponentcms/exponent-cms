@@ -121,7 +121,6 @@ class fileController extends expController {
     public function get_view_config() {
         global $template;
         
-        $framework = expSession::get('framework');
         // set paths we will search in for the view
         $paths = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
@@ -131,13 +130,13 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.tpl';
             if (is_readable($view)) {
-                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                if (bs(true)) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
-                if ($framework == 'bootstrap3') {
+                if (bs3(true)) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.tpl';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
@@ -157,7 +156,6 @@ class fileController extends expController {
     public function get_module_view_config() {
         global $template;
 
-        $framework = expSession::get('framework');
 //        $controller = new $this->params['mod'];
         $controller = expModules::getController($this->params['mod']);
         // set paths we will search in for the view
@@ -172,13 +170,13 @@ class fileController extends expController {
         foreach ($paths as $path) {
             $view = $path.'/'.$this->params['view'].'.config';
             if (is_readable($view)) {
-                if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                if (bs(true)) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
                     }
                 }
-                if ($framework == 'bootstrap3') {
+                if (bs3(true)) {
                     $bstrapview = $path.'/'.$this->params['view'].'.bootstrap3.config';
                     if (file_exists($bstrapview)) {
                         $view = $bstrapview;
@@ -193,13 +191,13 @@ class fileController extends expController {
             foreach ($paths as $path) {
                 $actview = $path.'/'.$parts[0].'.config';
                 if (is_readable($actview)) {
-                    if ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                    if (bs(true)) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
                         }
                     }
-                    if ($framework == 'bootstrap3') {
+                    if (bs3(true)) {
                         $bstrapview = $path . '/' . $actview . '.bootstrap3.config';
                         if (file_exists($bstrapview)) {
                             $actview = $bstrapview;
