@@ -50,7 +50,7 @@ elFinder.prototype.commands.pixlr = function() {
 				+ '&title=' + encodeURIComponent('pixlr_'+file.name)
 				+ '&exit=' + encodeURIComponent(exit);
 			
-			if (!window.open(url)) {
+			if (!window.open(url,'_self',false)) {  // open in same window
 				return dfrd.reject('errPopup');
 			}
 		},

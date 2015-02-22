@@ -1875,7 +1875,7 @@ class elFinder {
 			$script = '';
 			if ($node) {
 				$script .= '
-					var w = window.opener || weindow.parent || window
+					var w = window.opener || window.parent || window
 					var elf = w.document.getElementById(\''.$node.'\').elfinder;
 					if (elf) {
 						var data = '.$json.';
