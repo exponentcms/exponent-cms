@@ -341,6 +341,8 @@ $opts = array(
     ),
     'debug'  => DEVELOPMENT,
 //	'netVolumesSessionKey' => 'netVolumes',
+    'callbackWindowURL' => $_SERVER['HTTP_REFERER'],
+
     'roots'  => array(
         array(
             // 'id' => 'x5',
