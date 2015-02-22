@@ -175,7 +175,7 @@
 
         $().ready(function() {
             var funcNum = getUrlParam('CKEditorFuncNum');
-            var ulink = {/literal}{link controller=file action=picker ajax_action=1}{literal};
+            var ulink = '{/literal}{link controller=file action=picker ajax_action=1}{literal}';
             var update = getUrlParam('update');
             var filter = getUrlParam('filter');
 
