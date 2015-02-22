@@ -175,10 +175,13 @@
 
         $().ready(function() {
             var funcNum = getUrlParam('CKEditorFuncNum');
+            var ulink = {/literal}{link controller=file action=picker ajax_action=1}{literal};
+            var update = getUrlParam('update');
+            var filter = getUrlParam('filter');
 
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
-                urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
+                urlUpload: ulink+'&update='+update+'&filter='+filter,  // connector full URL
                 commandsOptions : {
                     edit : {
                         mimes : ['text/plain', 'text/html', 'text/javascript'],
