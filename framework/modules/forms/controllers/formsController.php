@@ -928,11 +928,11 @@ class formsController extends expController {
     public function edit_control() {
         $f = new forms($this->params['forms_id']);
         if ($f) {
-            if (expSession::get('framework') == 'bootstrap') {
+            if (bs2()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
-            } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+            } elseif (bs3()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));

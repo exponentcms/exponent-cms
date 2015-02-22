@@ -40,7 +40,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config;
+        global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config, $framework;
 
         $scripts = '';
         // remove duplicate scripts since it's inefficient and crashes minify
@@ -78,7 +78,7 @@ class expJavascript {
             $srt = array();
             $srt[$i] = '';
             if (!empty($yui3js)) $srt[$i] = YUI3_RELATIVE.'yui/yui-min.js,';
-            if (!empty($jqueryjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap') {
+            if (!empty($jqueryjs) || $framework == 'jquery' || bs()) {
 //                if (strlen($srt[$i])+strlen(JQUERY_SCRIPT)<= $strlen && $i <= MINIFY_MAX_FILES) {
 //                    $srt[$i] .= JQUERY_SCRIPT.",";
 //                } else {
@@ -98,9 +98,9 @@ class expJavascript {
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->';
                 }
-                if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
-                    if ($head_config['framework'] == 'bootstrap') {
+                if (bs()) {
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (newui()?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    if (bs2()) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -109,7 +109,7 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3') {
+                    } elseif (bs3(true)) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -118,7 +118,7 @@ class expJavascript {
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif (NEWUI) {
+                    } elseif (newui()) {
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
@@ -181,7 +181,7 @@ class expJavascript {
                 }
 
                 if (!empty($bootstrapjs)) {
-                    if ($head_config['framework'] == 'bootstrap' && !NEWUI) {
+                    if (bs2()) {
                         $bootstrappath = 'external/bootstrap/js/bootstrap-';
                     } else {
                         $bootstrappath = 'external/bootstrap3/js/';
@@ -226,7 +226,7 @@ class expJavascript {
                 $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'external/minify/min/index.php?f='.$link.'"></script>'."\r\n";
             }
         } else {
-            if (!empty($jqueryjs) || !empty($bootstrapjs) || $head_config['framework'] == 'jquery' || $head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3') {
+            if (!empty($jqueryjs) || !empty($bootstrapjs) || $framework == 'jquery' || bs(true)) {
                 $scripts .= "\t"."<!-- jQuery Scripts -->";
 //                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 $browser = expUtil::browser_info();
@@ -242,9 +242,9 @@ class expJavascript {
         <script src="'.JQUERY2_SCRIPT.'"></script>
     <!--<![endif]-->' . "\r\n";
                 }
-                if ((!empty($head_config['framework']) && ($head_config['framework'] == 'bootstrap' || $head_config['framework'] == 'bootstrap3')) || NEWUI) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (NEWUI?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
-                    if ($head_config['framework'] == 'bootstrap') {
+                if (bs()) {
+                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (newui()?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    if (bs2()) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -253,7 +253,7 @@ class expJavascript {
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif ($head_config['framework'] == 'bootstrap3') {
+                    } elseif (bs3(true)) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
                             "lessvars"=>$lessvars,
@@ -262,7 +262,7 @@ class expJavascript {
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
                         ));
-                    } elseif (NEWUI) {
+                    } elseif (newui()) {
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
                             "lessvars"=>$lessvars,
@@ -310,7 +310,7 @@ class expJavascript {
 
                 if (!empty($bootstrapjs)) {
                     $scripts .= "\t"."<!-- Twitter Bootstrap Scripts -->"."\r\n";
-                    if ($head_config['framework'] == 'bootstrap' && !NEWUI) {
+                    if (bs2()) {
                         $bootstrappath = 'external/bootstrap/js/bootstrap-';
                     } else {
                         $bootstrappath = 'external/bootstrap3/js/';

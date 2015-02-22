@@ -94,7 +94,7 @@ abstract class expController {
         array_pop($controllerpath);
         $controllerpath[count($controllerpath) - 1] = 'assets';
 //        $this->asset_path = PATH_RELATIVE.'framework/'.implode('/', array_slice($controllerpath, -3, 3))."/";
-        $depth = array_search('framework', $controllerpath);
+        $depth = array_search('framework', $controllerpath);  // is this a system file (or theme)?
         if (!$depth) $depth = array_search('themes', $controllerpath);
         $this->asset_path = PATH_RELATIVE . implode('/', array_slice($controllerpath, $depth)) . "/";
 

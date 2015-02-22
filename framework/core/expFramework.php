@@ -38,6 +38,12 @@ $validateTheme = array("headerinfo"=>false,"footerinfo"=>false);
  * @name $module_scope
  */
 $module_scope = array();
+/**
+ * Stores the theme framework
+ * @var integer $framework
+ * @name $framework
+ */
+$framework = null;
 
 // expLang
 /**
@@ -523,8 +529,6 @@ function get_model_for_controller($controller_name) {
 function get_common_template($view, $loc, $controllername='') {
     return expTemplate::get_common_template($view, $loc, $controllername);
 
-    $framework = expSession::get('framework');
-
     $controller = new stdClass();
     $controller->baseclassname = empty($controllername) ? 'common' : $controllername;
     $controller->loc = $loc;
@@ -533,16 +537,16 @@ function get_common_template($view, $loc, $controllername='') {
     $basenewuipath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.newui.tpl';
     $basepath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.tpl';
 
-    if ($framework == "bootstrap" || $framework == "bootstrap3") {
+    if (bs(true)) {
         $basebstrap3path = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap3.tpl';
         $basebstrappath = BASE . 'framework/modules/common/views/' . $controllername . '/' . $view . '.bootstrap.tpl';
         if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
-        } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+        } elseif (bs3(true) && file_exists($basebstrap3path)) {
             return new controllertemplate($controller, $basebstrap3path);
         } elseif (file_exists($basebstrappath)) {
             return new controllertemplate($controller, $basebstrappath);
-        } elseif(NEWUI && file_exists($basenewuipath)) {  //FIXME is this the correct sequence spot?
+        } elseif(newui() && file_exists($basenewuipath)) {  //FIXME is this the correct sequence spot?
             return new controllertemplate($controller,$basenewuipath);
         } elseif (file_exists($basepath)) {
             return new controllertemplate($controller, $basepath);
@@ -552,7 +556,7 @@ function get_common_template($view, $loc, $controllername='') {
     } else {
         if (file_exists($themepath)) {
             return new controllertemplate($controller,$themepath);
-        } elseif (NEWUI && file_exists($basenewuipath)) {
+        } elseif (newui() && file_exists($basenewuipath)) {
             return new controllertemplate($controller,$basenewuipath);
         } elseif(file_exists($basepath)) {
             return new controllertemplate($controller,$basepath);
@@ -630,7 +634,6 @@ function get_config_templates($controller, $loc) {
 function find_config_views($paths=array(), $excludes=array()) {
     return expTemplate::find_config_views($paths, $excludes);
 
-    $framework = expSession::get('framework');
     $views = array();
     foreach ($paths as $path) {
         if (is_readable($path)) {
@@ -642,13 +645,13 @@ function find_config_views($paths=array(), $excludes=array()) {
                         $fileparts = explode('_', $filename);
                         $views[$filename]['name'] = ucwords(implode(' ', $fileparts));
                         $views[$filename]['file'] = $path.'/'.$file;
-                        if (($framework == 'bootstrap' || $framework == 'bootstrap3') && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
+                        if ((bs(true)) && file_exists($path.'/'.$filename.'.bootstrap.tpl')) {
                             $views[$filename]['file'] = $path . '/' . $filename . '.bootstrap.tpl';
                         }
-                        if ($framework == 'bootstrap3' && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
+                        if (bs3() && file_exists($path.'/'.$filename.'.bootstrap3.tpl')) {
                             $views[$filename]['file'] = $path.'/'.$filename.'.bootstrap3.tpl';
                         }
-                        if (NEWUI && file_exists($path.'/'.$filename.'.newui.tpl')) {  //FIXME newui take priority
+                        if (newui() && file_exists($path.'/'.$filename.'.newui.tpl')) {  //FIXME newui take priority
                             $views[$filename]['file'] = $path.'/'.$filename.'.newui.tpl';
                         }
                     }
@@ -664,8 +667,6 @@ function find_config_views($paths=array(), $excludes=array()) {
 function get_template_for_action($controller, $action, $loc=null) {
     expTemplate::get_template_for_action($controller, $action, $loc);
 
-    $framework = expSession::get('framework');
-
     // set paths we will search in for the view
     $themepath = BASE.'themes/'.DISPLAY_THEME.'/modules/'.$controller->relative_viewpath.'/'.$action.'.tpl';
     $basepath = $controller->viewpath.'/'.$action.'.tpl';
@@ -679,21 +680,21 @@ function get_template_for_action($controller, $action, $loc=null) {
     $rootthemepath = BASE . 'themes/' . DISPLAY_THEME . '/modules/' . $controller->relative_viewpath . '/' . $root_action[0] . '.tpl';
     $rootbasepath = $controller->viewpath . '/' . $root_action[0] . '.tpl';
 
-    if (NEWUI) {
+    if (newui()) {
         if (file_exists($newuithemepath)) {
             return new controllertemplate($controller, $newuithemepath);
         } elseif (file_exists($basenewuipath)) {
             return new controllertemplate($controller, $basenewuipath);
         }
     }
-    if ($framework == "bootstrap" || $framework == "bootstrap3") {
+    if (bs(true)) {
         $rootbstrap3path = $controller->viewpath . '/' . $root_action[0] . '.bootstrap3.tpl';
         $basebstrap3path = $controller->viewpath . '/' . $action . '.bootstrap3.tpl';
         $rootbstrappath = $controller->viewpath . '/' . $root_action[0] . '.bootstrap.tpl';
         $basebstrappath = $controller->viewpath . '/' . $action . '.bootstrap.tpl';
         if (file_exists($themepath)) {
             return new controllertemplate($controller, $themepath);
-        } elseif ($framework == "bootstrap3" && file_exists($basebstrap3path)) {
+        } elseif (bs3(true) && file_exists($basebstrap3path)) {
             return new controllertemplate($controller, $basebstrap3path);
         } elseif (file_exists($basebstrappath)) {
             return new controllertemplate($controller, $basebstrappath);
@@ -702,7 +703,7 @@ function get_template_for_action($controller, $action, $loc=null) {
         } elseif ($root_action[0] != $action) {
             if (file_exists($rootthemepath)) {
                 return new controllertemplate($controller, $rootthemepath);
-            } elseif (file_exists($framework == "bootstrap3" && file_exists($rootbstrap3path))) {
+            } elseif (bs3(true) && file_exists($rootbstrap3path)) {
                 return new controllertemplate($controller, $rootbstrap3path);
             } elseif (file_exists($rootbstrappath)) {
                 return new controllertemplate($controller, $rootbstrappath);
@@ -726,8 +727,8 @@ function get_template_for_action($controller, $action, $loc=null) {
 
     // if we get here it means there were no views for the this action to be found.
     // we will check to see if we have a scaffolded version or else just grab a blank template.
-    if (file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . (NEWUI?'.newui':'') . '.tpl')) {
-        return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . (NEWUI?'.newui':'') . '.tpl');
+    if (file_exists(BASE . 'framework/modules/common/views/scaffold/' . $action . (newui()?'.newui':'') . '.tpl')) {
+        return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/' . $action . (newui()?'.newui':'') . '.tpl');
     } else {
         return new controllertemplate($controller, BASE . 'framework/modules/common/views/scaffold/blank.tpl');
     }
@@ -897,14 +898,16 @@ function ecom_active() {
  * @return bool
  */
 function framework() {
-    $framework = expSession::get('framework');
-    if (empty($framework)) {
-        if (NEWUI) {
-            $framework = 'newui';
-        } else {
-            $framework = 'yui';  // yui is the 2.x default framework
-        }
-    }
+    global $framework;
+
+//    $framework = expSession::get('framework');
+//    if (empty($framework)) {
+//        if (NEWUI) {
+//            $framework = 'newui';
+//        } else {
+//            $framework = 'yui';  // yui is the 2.x default framework
+//        }
+//    }
     return $framework;
 }
 
@@ -914,7 +917,9 @@ function framework() {
  * @return bool
  */
 function bs2() {
-    $framework = framework();
+    global $framework;
+
+//    $framework = framework();
     if ($framework == 'bootstrap') {
         return true;
     } else {
@@ -925,11 +930,34 @@ function bs2() {
 /**
  * Is the current framework Bootstrap v3 based?
  *
+ * @param bool $strict must be bootstrap3 and NOT newui
  * @return bool
  */
-function bs3() {
-    $framework = framework();
-    if ($framework == 'bootstrap3' || $framework == 'newui') {
+function bs3($strict = false) {
+    global $framework;
+
+//    $framework = framework();
+    if ($framework == 'bootstrap3') {
+        return true;
+    } elseif ($framework == 'newui' && !$strict) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+/**
+ * Is the current framework Bootstrap based?
+ *
+ * @param bool $strict must be bootstrap 2 or 3 and NOT newui
+ * @return bool
+ */
+function bs($strict = false) {
+    global $framework;
+
+    if ($framework == 'bootstrap3' || $framework == 'bootstrap') {
+        return true;
+    } elseif ($framework == 'newui' && !$strict) {
         return true;
     } else {
         return false;
@@ -942,7 +970,9 @@ function bs3() {
  * @return bool
  */
 function newui() {
-    if (framework() == 'newui') {
+    global $framework;
+
+    if ($framework == 'newui') {
         return true;
     } else {
         return false;

@@ -28,10 +28,8 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $less_vars;
 
         // normalize.css is always at the top
-        if (!empty($params['normalize'])){
-            if (!(!empty($params['framework']) && $params['framework'] == 'bootstrap3')) {
-                $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
-            }
+        if (!empty($params['normalize']) && !bs3()){
+            $css_primer[PATH_RELATIVE."external/normalize/normalize.css"] = PATH_RELATIVE."external/normalize/normalize.css";
         }
 
          // set up less variables

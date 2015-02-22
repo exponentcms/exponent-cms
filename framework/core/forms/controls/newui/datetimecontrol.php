@@ -94,7 +94,7 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = expSession::get('framework');
+            $framework = framework();
             if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
                 $html .= '<br /><label class="control-label label spacer"> </label>';
             }

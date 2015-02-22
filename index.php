@@ -97,11 +97,11 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 			expTheme::satisfyThemeRequirements();
 		} else {  // ajax request
             // set up controls search order based on framework
-            $framework = expSession::get('framework');
+//            $framework = framework();
             if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
             if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
             if ($framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
-            if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+            if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
 			expTheme::runAction();

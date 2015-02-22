@@ -64,13 +64,15 @@
                         {$form->title}
                     </td>
                     <td>
-                        {if $form->is_saved}
-                            {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
-                            {icon class="downloadfile" action=export_csv id=$form->id text="Export Data"|gettext title="Export Form Data as CSV"|gettext}
-                        {else}
-                            {'Data Not Saved'|gettext}
-                        {/if}
-                        {icon class="downloadfile" action=export_eql id=$form->id text="Export Form"|gettext title="Export Form Design as EQL"|gettext}
+                        <div class="item-actions">
+                            {if $form->is_saved}
+                                {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$form->count`)"}
+                                {icon class="downloadfile" action=export_csv id=$form->id text="Export Data"|gettext title="Export Form Data as CSV"|gettext}
+                            {else}
+                                {'Data Not Saved'|gettext}
+                            {/if}
+                            {icon class="downloadfile" action=export_eql id=$form->id text="Export Form"|gettext title="Export Form Design as EQL"|gettext}
+                        </div>
                     </td>
                     <td>
                         <div class="item-actions">

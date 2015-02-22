@@ -116,17 +116,16 @@ function smarty_compiler_exp_include($_params, &$compiler)
 
                     // see if there's an framework appropriate template variation
                     //FIXME we need to check for custom views and add full path for system views if coming from custom view
-                    $framework = framework();
                     if (file_exists(BASE . $themepath . $include_file . '.' . $type)) {
                         $include_file = BASE . $themepath . $include_file . '.' . $type;  // theme custom view gets priority
-                    } elseif ($framework == 'bootstrap' || $framework == 'bootstrap3') {
+                    } elseif (bs(true)) {
                         $tmp_include = $include_file;
                         $bs_file_found = false;
                         if (file_exists(BASE . $path . $include_file . '.bootstrap.' . $type)) {
                             $include_file = BASE . $path . $include_file . '.bootstrap.' . $type;  // bootstrap3 falls back to bootstrap
                             $bs_file_found = true;
                         }
-                        if ($framework == 'bootstrap3' && file_exists(
+                        if (bs3(true) && file_exists(
                                 BASE . $path . $tmp_include . '.bootstrap3.' . $type
                             )
                         ) {
@@ -136,7 +135,7 @@ function smarty_compiler_exp_include($_params, &$compiler)
                             $include_file = BASE . $path . $include_file . '.' . $type;  // fall back to plain
                         }
                     } else {
-                        if (NEWUI) {
+                        if (newui()) {
                             if (file_exists(BASE . $path . $include_file . '.newui.' . $type)) {
                                 $include_file = BASE . $path . $include_file . '.newui.' . $type;
                             } else {

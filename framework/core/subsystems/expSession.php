@@ -165,7 +165,8 @@ class expSession {
 		} else {
 			$ticket = $db->selectObject('sessionticket',"ticket='".$_SESSION[SYS_SESSION_KEY]['ticket']."'");
 		}
-        if (empty($ticket)) $ticket = self::createTicket();
+        if (empty($ticket))
+            $ticket = self::createTicket();
 
 		//if we don't have a ticket here, that means the browser passed the cookie, the session is still
 		// active, but the DATABASE tickets table was cleared.
@@ -188,7 +189,7 @@ class expSession {
 			$user->id = 0;
 		}
 
-		if (!empty($ticket->refresh)) {
+		if (!empty($ticket->refresh)) {  // clear user session cache and reload permissions
 			if (isset($user)) expPermissions::load($user);
 			self::clearCurrentUserSessionCache();
 			$ticket->refresh = 0;
@@ -346,7 +347,7 @@ class expSession {
 		global $db;
 
         $sessionticket = new stdClass();
-		$sessionticket->refresh = 1;
+		$sessionticket->refresh = 1;  // force user permissions & session cache reload
 		$db->updateObject($sessionticket, 'sessionticket', '1');
         self::clearCurrentUserSessionCache();
 
@@ -448,7 +449,7 @@ class expSession {
    		global $db;
 
    		$obj = new stdClass();
-   		$obj->refresh = 1;
+   		$obj->refresh = 1;  // force user permissions & session cache reload
    		$db->updateObject($obj,'sessionticket','true'); // force a global refresh
    	}
 
@@ -465,7 +466,7 @@ class expSession {
    		global $db;
 
    		$obj = new stdClass();
-   		$obj->refresh = 1;
+   		$obj->refresh = 1;  // force user permissions & session cache reload
    		$db->updateObject($obj,'sessionticket','uid='.$user->id); // force a global refresh
    	}
 

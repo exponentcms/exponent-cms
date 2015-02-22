@@ -175,12 +175,12 @@ class giftcard extends expRecord {
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
             BASE . 'framework/modules/ecommerce/products/views/product/',
         );
-        if (expSession::get('framework') == 'bootstrap') {
+        if (bs2()) {
             $vars = array(
                 '.bootstrap',
                 '',
             );
-        } elseif (expSession::get('framework') == 'bootstrap3') {
+        } elseif bs3(true)) {
             $vars = array(
                 '.bootstrap3',
                 '.bootstrap',

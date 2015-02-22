@@ -92,13 +92,12 @@ class genericcontrol extends formcontrol {
         $this->name = empty($this->name) ? $name : $this->name;
         $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
-        $framework = expSession::get('framework');
-        if ($framework == 'bootstrap') {
+        if (bs2()) {
             if (!empty($this->prepend)) {
                 $html .= '<div class="input-prepend">';
                 $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
             }
-        } elseif (NEWUI || $framework == 'bootstrap3') {
+        } elseif (bs3()) {
             if (!empty($this->prepend)) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
@@ -137,7 +136,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
-        if (($framework == 'bootstrap' || NEWUI || $framework == 'bootstrap3') && !empty($this->prepend)) {
+        if ((bs()) && !empty($this->prepend)) {
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";

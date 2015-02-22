@@ -69,8 +69,7 @@ class tagtreecontrol extends formcontrol {
         $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
         $html = "";
         if ($this->menu == "true") {
-            $framework = expSession::get('framework');
-            if ($framework == 'bootstrap') {
+            if (bs3()) {
 //                if (BTN_SIZE == 'large') {
 //                    $btn_size = 'btn-small';
 //                    $icon_size = 'icon-large';
@@ -78,6 +77,12 @@ class tagtreecontrol extends formcontrol {
 //                    $btn_size = 'btn-mini';
 //                    $icon_size = '';
 //                }
+                $btn_size = expTheme::buttonSize();
+                $icon_size = expTheme::iconSize();
+                if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="fa fa-plus-circle '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
+                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="expandall"><i class="fa fa-expand '.$icon_size.'"></i> ' . gt('Expand All') . '</a> ';
+                $html .= '<a class="btn btn-default '.$btn_size.'" href="#" id="collapseall"><i class="fa fa-compress '.$icon_size.'"></i> ' . gt('Collapse All') . '</a>';
+            } elseif (bs2()) {
                 $btn_size = expTheme::buttonSize();
                 $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="icon-plus-sign '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';

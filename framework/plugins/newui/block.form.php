@@ -36,7 +36,6 @@
  */
 if (!function_exists('smarty_block_form')) {
     function smarty_block_form($params,$content,&$smarty, &$repeat) {
-        $framework = expSession::get('framework');
         if(empty($content)){
             $name = isset($params['name']) ? $params['name'] : 'form';
             $id = empty($params['id']) ? $name : $params['id'];
@@ -72,7 +71,7 @@ if (!function_exists('smarty_block_form')) {
 //                    $btn_class .= ' ' . $btn_size;
 //                }
 //            }
-            if ($framework == 'bootstrap') {
+            if (bs2()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
@@ -85,7 +84,7 @@ if (!function_exists('smarty_block_form')) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (NEWUI || $framework == 'bootstrap3') {
+            } elseif (bs3()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
