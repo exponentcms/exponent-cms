@@ -341,6 +341,7 @@ $opts = array(
     ),
     'debug'  => DEVELOPMENT,
 //	'netVolumesSessionKey' => 'netVolumes',
+    'callbackWindowURL' => makeLink(array('controller'=>'file','action'=>'picker','ajax_action'=>1,'update'=>$router->params['update'])),
 
     'roots'  => array(
         array(
