@@ -179,7 +179,7 @@
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
-                callbackWindowURL: location.href,
+                callbackWindowURL: window.location.href,
                 commandsOptions : {
                     edit : {
                         mimes : ['text/plain', 'text/html', 'text/javascript'],
