@@ -292,7 +292,6 @@ function validName($name)
 }
 
 $opts = array(
-//    'locale' => 'en_US.UTF-8',
     'locale' => LOCALE . '.' . LANG_CHARSET,
     'bind'   => array(
         // '*' => 'logger',
@@ -304,9 +303,9 @@ $opts = array(
 //        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
-            //        'Plugin.Watermark.onUpLoadPreSave',
-            //        'Plugin.Normalizer.onUpLoadPreSave',
-            //        'Plugin.Sanitizer.onUpLoadPreSave'
+//            'Plugin.Watermark.onUpLoadPreSave',
+//            'Plugin.Normalizer.onUpLoadPreSave',
+//            'Plugin.Sanitizer.onUpLoadPreSave'
         )
     ),
     // global plugin configure (optional)

@@ -18,12 +18,13 @@ Added / Fixed / Changed for 2.3.3
     - better 'touch' support
     - better implementation of 'Places', the folder bookmarking feature
     - changes logging to now only occur if both error reporting & logging are turned on
+    - fixes interaction with Pixlr image editor
   - E-Commerce updates
     - adds a bootstrap3 product show view suitable for small device viewing
     - adds 'configure category' link to ecommerce views where we can edit a store category
     - adds user selectable product option display features (segregate required/non-required options, show on product page)
     - adds additional fields to product import/export; weight, width, height, length, manufacturer, and importing images by url
-    - updates import product to be more intelligent based on column header names; allows model/sku matching
+    - updates import product to be more intelligent based on column header names; allows model/sku matching; accepts Mac format files
     - add store category export/import
     - adds store category thumbnail display to manage store categories tree
     - adds a cron script to import products useful for updating inventory levels
