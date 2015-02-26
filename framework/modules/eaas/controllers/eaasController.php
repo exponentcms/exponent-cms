@@ -85,13 +85,13 @@ class eaasController extends expController {
             $this->config = $cfg->config;
 
             if(empty($cfg->id)) {
-                $ar = new expAjaxReply(550, 'Permission Denied', 'Your API key is bunk. I bet you\'ll figure it out.', null);
+                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration.', null);
                 $ar->send();
             } else {
                 if ($this->params['get']) {
                     $this->handleRequest();
                 } else {
-                    $ar = new expAjaxReply(200, 'ok', 'Your API key ia working', null);
+                    $ar = new expAjaxReply(200, 'ok', 'Your API key is working, no data requested', null);
                     $ar->send();
                 }
             }
@@ -133,7 +133,7 @@ class eaasController extends expController {
                 $ar->send();
                 break;
             default:
-                $ar = new expAjaxReply(400, 'Bad Request', 'no service for your request available', null);
+                $ar = new expAjaxReply(400, 'Bad Request', 'no service available for your request', null);
                 $ar->send();
                 break;
         }
