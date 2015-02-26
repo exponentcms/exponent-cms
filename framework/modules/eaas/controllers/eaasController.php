@@ -50,8 +50,7 @@ class eaasController extends expController {
         'blog'=>'Blog', 
         'photo'=>'Photos', 
         'media'=>'Media',
-        'youtube'=>'YouTube Videos',  //FIXME to be removed
-        'event'=>'Events', 
+        'event'=>'Events',
         'filedownload'=>'File Downloads', 
         'news'=>'News'
     );
@@ -75,7 +74,6 @@ class eaasController extends expController {
     }
 
     public function api() {
-
         if (empty($this->params['apikey'])) {
             $ar = new expAjaxReply(550, 'Permission Denied', 'You need an API key in order to access Exponent as a Service', null);
             $ar->send();
@@ -83,12 +81,11 @@ class eaasController extends expController {
             $key = expUnserialize(base64_decode(urldecode($this->params['apikey'])));
             $cfg = new expConfig($key);
             $this->config = $cfg->config;
-
             if(empty($cfg->id)) {
-                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration.', null);
+                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration missing.', null);
                 $ar->send();
             } else {
-                if ($this->params['get']) {
+                if (!empty($this->params['get'])) {
                     $this->handleRequest();
                 } else {
                     $ar = new expAjaxReply(200, 'ok', 'Your API key is working, no data requested', null);
@@ -99,6 +96,16 @@ class eaasController extends expController {
     }
 
     private function handleRequest() {
+        if (!key_exists($this->params['get'], $this->tabs)) {
+            $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
+            $ar->send();
+            return;
+        }
+        if (empty($this->config[$this->params['get'].'_aggregate'])) {
+            $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
+            $ar->send();
+            return;
+        }
         switch ($this->params['get']) {
             case 'aboutus':
                 $ar = new expAjaxReply(200, 'ok', $this->aboutUs(), null);
@@ -116,10 +123,6 @@ class eaasController extends expController {
                 $ar = new expAjaxReply(200, 'ok', $this->media(), null);
                 $ar->send();
                 break;
-//            case 'youtube':  //FIXME to be removed
-//                $ar = new expAjaxReply(200, 'ok', $this->youtube(), null);
-//                $ar->send();
-//                break;
             case 'filedownload':
                 $ar = new expAjaxReply(200, 'ok', $this->filedownload(), null);
                 $ar->send();
@@ -132,8 +135,8 @@ class eaasController extends expController {
                 $ar = new expAjaxReply(200, 'ok', $this->event(), null);
                 $ar->send();
                 break;
-            default:
-                $ar = new expAjaxReply(400, 'Bad Request', 'no service available for your request', null);
+            default:  // probably shouldn't evet get to this point
+                $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
                 $ar->send();
                 break;
         }
@@ -337,7 +340,7 @@ class eaasController extends expController {
         foreach ($this->tabs as $tab => $name) {
             // news tab
             if ($tab!='aboutus') {
-                $pullable[$tab] = expModules::listInstalledControllers($tab, $this->loc);
+                $pullable[$tab] = expModules::listInstalledControllers($tab);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',
                     'action' => $this->params['action'],
@@ -349,16 +352,16 @@ class eaasController extends expController {
                 ));
             }
 
-            $this->configImage($tab);
+            $this->configImage($tab);  // fix attached files for proper display of file manager control
         }
         // edebug($this->config['expFile']);
 
         assign_to_template(array(
-//                'config'=>$this->config, //FIXME already assigned in controllertemplate?
-                'pullable'=>$pullable,
-                'page'=>$page,
+            'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles
+            'pullable'=>$pullable,
+            'page'=>$page,
 //                'views'=>$views
-            ));
+        ));
     }
 
     private function configImage($tab) {

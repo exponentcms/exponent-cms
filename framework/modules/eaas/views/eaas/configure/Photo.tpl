@@ -35,7 +35,7 @@
 {foreach from=$page['photo']->records item=mod key=src name=mod}
         <tr class="{cycle values="even,odd"}">
             <td width="20">
-                {control type="checkbox" name="photo_aggregate[]" value=$mod->src checked=$config.photo_aggregate}
+                {control type="checkbox" name="photo_aggregate[]" value=$mod->src checked=in_array($mod->src,$config.photo_aggregate)}
             </td>
             <td>
                 {$mod->title}
