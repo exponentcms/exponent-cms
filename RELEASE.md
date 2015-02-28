@@ -8,8 +8,8 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-##2.3.3 - February 2015
+##2.3.4 - May 2015
 
 ----------
 
-### Address any issues in v2.3.2
+### Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.3
