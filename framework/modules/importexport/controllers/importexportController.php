@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -328,35 +328,6 @@ class importexportController extends expController {
         expHistory::back();
     }
 
-    function parseCategory($data) {
-        global $db;
-        if (!empty($data)) {
-            $cats1 = explode("::", trim($data));
-            //eDebug($cats1);
-            $cats1count = count($cats1);
-            $counter = 1;
-            $categories1 = array();
-            foreach ($cats1 as $cat) {
-                //eDebug($cat);
-                if ($counter == 1) $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=0');
-                else $categories1[$counter] = $db->selectObject('storeCategories', 'title="' . $cat . '" AND parent_id=' . $categories1[$counter - 1]->id);
-                //eDebug($categories1);
-                if (empty($categories1[$counter]->id)) {
-                    return "'" . $cat . "' ".gt('of the set').": '" . $data . "' ".gt("is not a valid category").".";
-                }
-
-                if ($counter == $cats1count) {
-                    return $categories1[$counter]->id;
-                }
-                $counter++;
-            }
-            //eDebug($createCats);
-            //eDebug($categories1,true);
-        } else {
-            return gt("Category was empty.");
-        }
-    }
-
     function validate() {
 //        global $db;
         //eDebug($this->params,true); 
@@ -371,6 +342,8 @@ class importexportController extends expController {
         $file->path = $_FILES['import_file']['tmp_name'];
         echo gt("Attempting import")."...<br/>";
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
         $checkdata = fgetcsv($checkhandle, 10000, ",");
         $fieldCount = count($checkdata);
@@ -385,6 +358,7 @@ class importexportController extends expController {
             }
         }
         fclose($checkhandle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>" . gt("CSV File passed validation") . "...<br/>";
 
@@ -528,23 +502,29 @@ class importexportController extends expController {
 
     function importProduct($file=null) {
         if (empty($file->path)) {
+            $file = new stdClass();
             $file->path = $_FILES['import_file']['tmp_name'];
         }
+        if (empty($file->path)) {
+            echo gt('Not a Product Import CSV File');
+            return;
+        }
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
-        $data = fgetcsv($handle, 10000, ",");
-        //eDebug($data);        
-        foreach ($data as $value) {
-            $dataset[$value] = '';
+
+        // read in the header line
+        $header = fgetcsv($handle, 10000, ",");
+        if (!($header[0] == 'id' || $header[0] == 'model')) {
+            echo gt('Not a Product Import CSV File');
+            return;
         }
 
-        //eDebug($dataset,true);
         $count = 1;
         $errorSet = array();
-        $successSet = array();
-        //$createCats = array();
         $product = null;
-        /*
-            0= id
+        /*  original order of columns
+            0=id
             1=parent_id
             2=child_rank
             3=title
@@ -579,174 +559,336 @@ class importexportController extends expController {
             37=width
             38=length
             39=companies_id
-            40=url to mainimage to download
-            41=url to additional image to download
+            40=image1 url to mainimage to download
+            41=image2 url to additional image to download
             ..
-            44=url to additional image to download
-        */
+            44=image5 url to additional image to download
+*/
 
-        while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+        // read in the data lines
+//        while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
+        while (($row = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
+            $createCats = array();
+            $createCatsRank = array();
+            $data = array_combine($header, $row);
 
             //eDebug($data, true);
-            if (isset($data[0]) && $data[0] != 0) {
-                $product = new product($data[0], false, false);
-                if (empty($product->id)) {
-                    $errorSet[$count] = $product->id . " ".gt("is not a valid product ID.");
-                    continue;
+            if ($header[0] == 'id') {
+                if (isset($data['id']) && $data['id'] != 0) {
+                    $product = new product($data['id'], false, false);
+                    if (empty($product->id)) {
+                        $errorSet[$count] = gt("Is not an existing product ID.");
+                        continue;
+                    }
+                } else {
+                    //$errorSet[$count] = "Product ID not supplied.";
+                    //continue;
+                    $product = new product();
+                    //$product->save(false);
                 }
-            } else {
-                //$errorSet[$count] = "Product ID not supplied.";
-                //continue;
-                $product = new product();
-                //$product->save(false);
+            } elseif ($header[0] == 'model') {
+                if (!empty($data['model'])) {
+                    $p = new product();
+                    $product = $p->find('first','model="' . $data['model'] . '"');
+                    if (empty($product->id)) {
+                        $errorSet[$count] = gt("Is not an existing product SKU/Model.");
+                        continue;
+                    }
+                } else {
+                    $product = new product();
+                }
             }
-
-            $checkTitle = trim($data[3]);
-            if (empty($checkTitle)) {
-                $errorSet[$count] = gt("No product name (title) supplied, skipping this record...");
+            if ($product->product_type != 'product') {
+                $errorSet[$count] = gt("Existing product is wrong product type.");
                 continue;
             }
-            $product->parent_id = $data[1];
-            $product->child_rank = $data[2];
-            $product->title = stripslashes(stripslashes($data[3]));
-            $product->body = utf8_encode(stripslashes(expString::parseAndTrimImport(($data[4]), true)));
-            //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));            
-            $product->model = stripslashes(stripslashes($data[5]));
-            $product->warehouse_location = stripslashes(stripslashes($data[6]));
-            $product->sef_url = stripslashes(stripslashes($data[7]));
-//FIXME        this is where canonical should be
-            $product->meta_title = stripslashes(stripslashes($data[8]));
-            $product->meta_keywords = stripslashes(stripslashes($data[9]));
-            $product->meta_description = stripslashes(stripslashes($data[10]));
 
-            $product->tax_class_id = $data[11];
-
-            $product->quantity = $data[12];
-
-            $product->availability_type = $data[13];
-
-            $product->base_price = $data[14];
-            $product->special_price = $data[15];
-            $product->use_special_price = $data[16];
-            $product->active_type = $data[17];
-            $product->product_status_id = $data[18];
-
-            $product->surcharge = $data[31];
-            $product->feed_title = stripslashes(stripslashes($data[33]));
-            $product->feed_body = stripslashes(stripslashes($data[34]));
-
-            if (!empty($data[35])) $product->weight = $data[35];
-            if (!empty($data[36])) $product->height = $data[36];
-            if (!empty($data[37])) $product->width = $data[37];
-            if (!empty($data[38])) $product->length = $data[38];
-            if (!empty($data[39])) $product->companies_id = $data[39];
-            if (!empty($data[40])) {
-                // import image from url
-                $_destFile = basename($data[4]);  // get filename from end of url
-                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
-                $_destFullPath = BASE . $_destDir . $_destFile;
-                if (file_exists($_destFullPath)) {
-                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
-                    $_destFullPath = BASE . $_destDir . $_destFile;
+            // new products must have a title
+            if (empty($product->id)) {  // new product require mandatory values
+                $checkTitle = trim($data['title']);
+                if (empty($checkTitle)) {
+                    $errorSet[$count] = gt("No product name (title) supplied.");
+                    continue;
                 }
-
-                expCore::saveData($data[40], $_destFullPath);  // download the image
-
-                if (file_exists($_destFullPath)) {
-                    $__oldumask = umask(0);
-                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
-                    umask($__oldumask);
-
-                    // Create a new expFile Object
-                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                    $_objFile = new expFile ($_fileParams);
-                    $_objFile->save();
-                    // attach/replace product main image with new expFile object
-                    $product->attachItem($_objFile, 'mainimage');
-                }
-            }
-            for ($i=41; $i<=44; $i++) {
-                if (!empty($data[$i])) {
-                    // import image from url
-                    $_destFile = basename($data[$i]);  // get filename from end of url
-                    $_destDir = UPLOAD_DIRECTORY_RELATIVE;
-                    $_destFullPath = BASE . $_destDir . $_destFile;
-                    if (file_exists($_destFullPath)) {
-                        $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
-                        $_destFullPath = BASE . $_destDir . $_destFile;
-                    }
-
-                    expCore::saveData($data[$i], $_destFullPath);  // download the image
-
-                    if (file_exists($_destFullPath)) {
-                        $__oldumask = umask(0);
-                        chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
-                        umask($__oldumask);
-
-                        // Create a new expFile Object
-                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                        $_objFile = new expFile ($_fileParams);
-                        $_objFile->save();
-                        // attach product additional images with new expFile object
-                        $product->attachItem($_objFile, 'images', false);
-                    }
-                }
+                $product->minimum_order_quantity = 1;
             }
 
-            if (empty($product->id)) $product->minimum_order_quantity = 1;
+            // parse $data columns
+            foreach ($data as $key=>$value) {
+                $value = trim($value);
+                switch ($key) {
+                    case 'parent_id': // integer
+                    case 'child_rank':
+                    case 'tax_class_id':
+                    case 'quantity':
+                    case 'availability_type':
+                    case 'use_special_price':
+                    case 'active_type':
+                    case 'product_status_id':
+                        $product->$key = intval($value);
+                        break;
+                    case 'companies_id':
+                        if (is_numeric($value)) {
+                            $product->$key = intval($value);
+                        } elseif (!empty($value)) {  // it's a company name, not a company id#
+                            $co = new company();
+                            $company = $co->find('first', 'title=' . $value);
+                            if (empty($company->id)) {
+                                $params['title'] = $value;
+                                $company->update();
+                            }
+                            $product->$key = $company->id;
+                        }
+                        break;
+                    case 'sef_url':
+                        $product->$key = stripslashes(stripslashes($value));
+                        if (!is_bool(expValidator::uniqueness_of('sef_url', $product, array()))) {
+                            $product->makeSefUrl();
+                        }
+                        break;
+                    case 'title':  // string
+                    case 'model':
+                    case 'warehouse_location':
+                    case 'meta_title':
+                    case 'meta_keywords':
+                    case 'meta_description':
+                    case 'feed_title':
+                    case 'feed_body':
+                        $product->$key = stripslashes(stripslashes($value));
+                        break;
+                    case 'body':
+                        $product->$key = utf8_encode(stripslashes(expString::parseAndTrimImport(($value), true)));
+                        break;
+                    case 'base_price':  // float
+                    case 'special_price':
+                    case 'surcharge':
+                    case 'weight':
+                    case 'height':
+                    case 'width':
+                    case 'length':
+                        $product->$key = floatval($value);
+                        break;
+                    case 'image1':
+                    case 'image2':
+                    case 'image3':
+                    case 'image4':
+                    case 'image5':
+                        // import image from url
+                        if (!empty($value)) {
+                            $product->save(false);
+                            $_destFile = basename($value);  // get filename from end of url
+                            $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+                            $_destFullPath = BASE . $_destDir . $_destFile;
+                            if (file_exists($_destFullPath)) {
+                                $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                                $_destFullPath = BASE . $_destDir . $_destFile;
+                            }
 
-            if ($product->parent_id == 0) {
-                $createCats = array();
-                $createCatsRank = array();
-                for ($x = 19; $x <= 30; $x++) {
-                    if (!empty($data[$x])) $result = $this->parseCategory($data[$x]);
-                    else continue;
+                            expCore::saveData($value, $_destFullPath);  // download the image
 
-                    if (is_numeric($result)) {
-                        $createCats[] = $result;
-                        $createCatsRank[$result] = $data[32];
-                    } else {
-                        $errorSet[$count][] = $result;
-                        continue 2;
-                    }
+                            if (file_exists($_destFullPath)) {
+                                $__oldumask = umask(0);
+                                chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                                umask($__oldumask);
+
+                                // Create a new expFile Object
+                                $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                                $_objFile = new expFile ($_fileParams);
+                                $_objFile->save();
+                                // attach product additional images with new expFile object
+                                if ($key == 'image1') {
+                                    $product->attachItem($_objFile, 'mainimage');
+                                } else {
+                                    $product->attachItem($_objFile, 'images', false);
+                                }
+                            }
+                        }
+                        break;
+                    case 'category1':
+                    case 'category2':
+                    case 'category3':
+                    case 'category4':
+                    case 'category5':
+                    case 'category6':
+                    case 'category7':
+                    case 'category8':
+                    case 'category9':
+                    case 'category10':
+                    case 'category11':
+                    case 'category12':
+                        if ($product->parent_id == 0) {
+//                            $rank = !empty($data['rank']) ? $data['rank'] : 1;
+                            $rank = intval(str_replace('category', '', $key));
+//                            if (!empty($value)) $result = storeCategory::parseCategory($value);
+                            if (!empty($value)) $result = storeCategory::importCategoryString($value);
+                            else continue;
+
+//                            if (is_numeric($result)) {
+                            if ($result) {
+                                $createCats[] = $result;
+                                $createCatsRank[$result] = $rank;
+                            } else {
+                                $errorSet[$count][] = $result;
+                                continue 2;
+                            }
+                        }
+                        break;
+                    default:
+                        if (property_exists('product', $key)) {
+                            $product->key = $value;
+                        }
                 }
             }
 
+//            $checkTitle = trim($data['title']);
+//            if (empty($checkTitle)) {
+//                $errorSet[$count] = gt("No product name (title) supplied, skipping this record...");
+//                continue;
+//            }
+//            $product->parent_id = $data[1];
+//            $product->child_rank = $data[2];
+//            $product->title = stripslashes(stripslashes($data[3]));
+//            $product->body = utf8_encode(stripslashes(expString::parseAndTrimImport(($data[4]), true)));
+//            //$product->body = utf8_encode(stripslashes(stripslashes(($data[4]))));
+//            $product->model = stripslashes(stripslashes($data[5]));
+//            $product->warehouse_location = stripslashes(stripslashes($data[6]));
+//            $product->sef_url = stripslashes(stripslashes($data[7]));
+////FIXME        this is where canonical should be
+//            $product->meta_title = stripslashes(stripslashes($data[8]));
+//            $product->meta_keywords = stripslashes(stripslashes($data[9]));
+//            $product->meta_description = stripslashes(stripslashes($data[10]));
+//
+//            $product->tax_class_id = $data[11];
+//
+//            $product->quantity = $data[12];
+//
+//            $product->availability_type = $data[13];
+//
+//            $product->base_price = $data[14];
+//            $product->special_price = $data[15];
+//            $product->use_special_price = $data[16];
+//            $product->active_type = $data[17];
+//            $product->product_status_id = $data[18];
+//
+//            $product->surcharge = $data[31];
+//            $product->feed_title = stripslashes(stripslashes($data[33]));
+//            $product->feed_body = stripslashes(stripslashes($data[34]));
+//            if (!empty($data[35])) $product->weight = $data[35];
+//            if (!empty($data[36])) $product->height = $data[36];
+//            if (!empty($data[37])) $product->width = $data[37];
+//            if (!empty($data[38])) $product->length = $data[38];
+//            if (!empty($data[39])) $product->companies_id = $data[39];
+//            if (!empty($data[40])) {
+//                // import image from url
+//                $_destFile = basename($data[40]);  // get filename from end of url
+//                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+//                $_destFullPath = BASE . $_destDir . $_destFile;
+//                if (file_exists($_destFullPath)) {
+//                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+//                    $_destFullPath = BASE . $_destDir . $_destFile;
+//                }
+//
+//                expCore::saveData($data[40], $_destFullPath);  // download the image
+//
+//                if (file_exists($_destFullPath)) {
+//                    $__oldumask = umask(0);
+//                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+//                    umask($__oldumask);
+//
+//                    // Create a new expFile Object
+//                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+//                    $_objFile = new expFile ($_fileParams);
+//                    $_objFile->save();
+//                    // attach/replace product main image with new expFile object
+//                    $product->attachItem($_objFile, 'mainimage');
+//                }
+//            }
+//            for ($i=41; $i<=44; $i++) {
+//                if (!empty($data[$i])) {
+//                    // import image from url
+//                    $_destFile = basename($data[$i]);  // get filename from end of url
+//                    $_destDir = UPLOAD_DIRECTORY_RELATIVE;
+//                    $_destFullPath = BASE . $_destDir . $_destFile;
+//                    if (file_exists($_destFullPath)) {
+//                        $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+//                        $_destFullPath = BASE . $_destDir . $_destFile;
+//                    }
+//
+//                    expCore::saveData($data[$i], $_destFullPath);  // download the image
+//
+//                    if (file_exists($_destFullPath)) {
+//                        $__oldumask = umask(0);
+//                        chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+//                        umask($__oldumask);
+//
+//                        // Create a new expFile Object
+//                        $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+//                        $_objFile = new expFile ($_fileParams);
+//                        $_objFile->save();
+//                        // attach product additional images with new expFile object
+//                        $product->attachItem($_objFile, 'images', false);
+//                    }
+//                }
+//            }
+//
+//            if (empty($product->id)) $product->minimum_order_quantity = 1;
+//
+//            if ($product->parent_id == 0) {
+//                $createCats = array();
+//                $createCatsRank = array();
+//                for ($x = 19; $x <= 30; $x++) {
+//                    if (!empty($data[$x])) $result = storeCategory::parseCategory($data[$x]);
+//                    else continue;
+//
+//                    if (is_numeric($result)) {
+//                        $createCats[] = $result;
+//                        $createCatsRank[$result] = $data[32];
+//                    } else {
+//                        $errorSet[$count][] = $result;
+//                        continue 2;
+//                    }
+//                }
+//            }
+
+            //NOTE: we manipulate existing user input fields to store them properly?
             //eDebug($createCats,true);
             if (!empty($product->user_input_fields) && is_array($product->user_input_fields))
                 $product->user_input_fields = serialize($product->user_input_fields);
-            //eDebug($product->user_input_fields);                
+            //eDebug($product->user_input_fields);
 
             if (!empty($product->user_input_fields) && !is_array($product->user_input_fields))
                 $product->user_input_fields = str_replace("'", "\'", $product->user_input_fields);
 
-            //eDebug($product->user_input_fields,true);                
-            $product->save(false);
+            //eDebug($product->user_input_fields,true);
+            $product->save(true);
             //eDebug($product->body);
 
-            //sort order and categories             
+            //sort order and categories
             if ($product->parent_id == 0) {
                 $product->saveCategories($createCats, $createCatsRank);
                 //eDebug($createCatsRank);
             }
-            echo "Successfully imported row " . $count . ", product: " . $product->title . "<br/>";
+            echo "Successfully imported/updated row " . $count . ", product: " . $product->title . "<br/>";
             //eDebug($product);
 
         }
 
         if (count($errorSet)) {
-            echo "<br/><hr><br/><style color:'red'>".gt('The following records were NOT imported').":<br/>";
-            foreach ($errorSet as $row => $err) {
-                echo "Row: " . $row . ". Reason:<br/>";
+            echo "<br/><hr><br/><div style='color:red'><strong>".gt('The following records were NOT imported').":</strong><br/>";
+            foreach ($errorSet as $rownum => $err) {
+                echo "Row: " . $rownum;
                 if (is_array($err)) {
                     foreach ($err as $e) {
-                        echo "--" . $e . "<br/>";
+                        echo " -- " . $e . "<br/>";
                     }
-                } else echo "--" . $err . "<br/>";
+                } else echo " -- " . $err . "<br/>";
             }
-            echo "</style>";
+            echo "</div>";
         }
+
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
     }
 
 }

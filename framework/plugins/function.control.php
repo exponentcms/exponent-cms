@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -161,8 +161,8 @@ function smarty_function_control($params, &$smarty) {
                 }
                 break;
             case "checkbox":
-                $value              = isset($params['value']) ? $params['value'] : null;
-                $control            = new checkboxcontrol($value);
+                $default            = isset($params['checked']) ? $params['checked'] : false;
+                $control            = new checkboxcontrol($default);
                 $control->postfalse = isset($params['postfalse']) ? 1 : 0;
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 $control->newschool = true;
@@ -359,12 +359,14 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
                         require_once(BASE . 'external/recaptchalib.php');
-                        if (expSession::get('framework') == 'bootstrap3') {
-                            echo recaptcha_get_html_bs3(RECAPTCHA_PUB_KEY);
-                        } else {  // non-Bootstrap3
-                            echo '<script type="text/javascript"> var RecaptchaOptions = {theme : "', RECAPTCHA_THEME, '"}; </script>';
-                            echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
-                        }
+//                        if (expSession::get('framework') == 'bootstrap3') {
+//                            echo recaptcha_get_html_bs3(RECAPTCHA_PUB_KEY);
+//                        } else {  // non-Bootstrap3
+//                            echo '<script type="text/javascript"> var RecaptchaOptions = {theme : "', RECAPTCHA_THEME, '"}; </script>';
+//                            echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
+//                        }
+                        echo '<div class="g-recaptcha" data-sitekey=" . RECAPTCHA_PUB_KEY . "></div>';
+                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '"></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
                     }
                     return;
@@ -454,15 +456,15 @@ function smarty_function_control($params, &$smarty) {
             }
 
             if ($params['type'] == 'checkbox') {
-                $realname         = str_replace('[]', '', $params['name']);
-                $control->default = $params['value'];
-                if (!empty($post[$realname])) {
-                    if (is_array($post[$realname])) {
-                        if (in_array($params['value'], $post[$realname])) $control->checked = true;
-                    } else {
-                        $control->checked = true;
-                    }
-                }
+//                $realname         = str_replace('[]', '', $params['name']);
+//                $control->default = $params['value'];
+//                if (!empty($post[$realname])) {
+//                    if (is_array($post[$realname])) {
+//                        if (in_array($params['value'], $post[$realname])) $control->checked = true;
+//                    } else {
+//                        $control->checked = true;
+//                    }
+//                }
             } elseif (isset($params['multiple'])) {
                 $realname = str_replace('[]', '', $params['name']);
                 if (!empty($post[$realname])) $control->default = $post[$realname];
@@ -476,7 +478,7 @@ function smarty_function_control($params, &$smarty) {
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'], 0, '.', ',');
             }
-            $control->default = $params['value'];
+            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value alwasy == default?
         }
 
         //if (isset($params['value'])) $control->default = $params['value'];

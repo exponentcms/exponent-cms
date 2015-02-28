@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -302,10 +302,14 @@ class expPaginator {
 		}
 			
 		// get the page parameters from the router to build the links
-		//$page_params = $router->params; //from Current Trunk
-//		$page_params = $this->cleanParams($router->params); //From Merge
-        $page_params = $router->params; //From Merge
-        if (!empty($page_params['search_string'])) $page_params['search_string'] = urlencode($page_params['search_string']);
+        $page_params = $router->params;
+//		$page_params = $this->cleanParams($router->params);
+        foreach (array("__utma", "__utmz", "route_sanitized") as $key) {
+            if (isset($page_params[$key]))
+                unset($page_params[$key]);
+        }
+        if (!empty($page_params['search_string']))
+            $page_params['search_string'] = urlencode($page_params['search_string']);
 
 		//if (empty($page_params['module'])) $page_params['module'] = $this->controller;
 		//if (empty($page_params['action'])) $page_params['action'] = $this->action;
@@ -335,7 +339,8 @@ class expPaginator {
 		if (!empty($this->action)) $page_params['action'] =  $this->action;
 		if (!empty($this->src)) $page_params['src'] =  $this->src;
 		
-		if (isset($page_params['section'])) unset($page_params['section']);
+		if (isset($page_params['section']))
+            unset($page_params['section']);
 
 		//build a 'more' link we can use in the headlines views.
 		$this->morelink = $router->makeLink($page_params, false, false, true);

@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -50,8 +50,7 @@ class expSettings
         @include_once(BASE . "framework/conf/config.php");
         if (!defined('SITE_TITLE')) { // check for upgrade from older file structure
             if (!file_exists(BASE . "framework/conf/config.php") && file_exists(BASE . "conf/config.php")) {
-                rename(BASE . "conf/config.php", BASE . "framework/conf/config.php"); //FIXME until 2.2.3
-//                copy(BASE."conf/config.php",BASE."framework/conf/config.php");      //FIXME remove in 2.2.3
+                rename(BASE . "conf/config.php", BASE . "framework/conf/config.php");
                 @include_once(BASE . "framework/conf/config.php");
             }
         }

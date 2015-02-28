@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -296,7 +296,7 @@
                     <div id="alt-control" class="alt-control">
                         <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF,dompdf,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expDOMPDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
+                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF,mPDF 6,dompdf,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expDOMPDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
                             <div id="none-div" class="alt-item" style="display:none;">
                                 <blockquote>
                                 {'Export as PDF will be unavailable since there is no PDF Generation Engine installed and configured.'|gettext}
@@ -313,12 +313,30 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'MPDF is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
+                                    {'MPDF 5 is an optional package, but a preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
                                     <ol>
                                         <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext} {'You should also download any updates and extract them to that same folder.'|gettext} <a href="http://www.mpdf1.com/mpdf/download" target="_blank">{'mPDF Downloads'|gettext}</a></li>
-                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/mpdf.zip" target="_blank">mpdf.zip</a>.
+                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf57.zip/download" target="_blank">mpdf57.zip</a>.
                                             {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
+                                    </ol>
+                                </blockquote>
+                            </div>
+                            <div id="expMPDF6-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/mpdf60/mpdf.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'mPDF 6 is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'mPDF 6 is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'MPDF 6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
+                                    <ol>
+                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
+                                            {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
                                     </ol>
                                 </blockquote>
                             </div>
@@ -333,7 +351,7 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://github.com/downloads/exponentcms/exponent-cms/dompdf.zip" target="_blank">dompdf.zip</a>.
+                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>

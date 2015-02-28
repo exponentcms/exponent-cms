@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -49,13 +49,18 @@ function smarty_function_breadcrumb($params,&$smarty) {
             $html .= '<a ';
         }
         if ($i == $active) $html .= ' class="active"';
-        $html .= '>';
         if (is_array($item)) {
             $title = $item['title'];
         } else {
             $title = $item;
         }
-        if ($i != $active) $title = '&#160;<span class="breadcrumb-title">' .$title . '</span>';
+        $html .= 'title="' . $title . ' ' . gt('Step') . '">';
+        if ($i != $active) {
+            $title = '&#160;<span class="breadcrumb-title">' .$title . '</span>';
+            if (bs3()) {
+                $title = '&#160;<span class="hidden-xs hidden-sm">' . $title . '</span>';
+            }
+        }
         $html .= $title . '</a>';
         $i++;
     }

@@ -125,9 +125,11 @@ elFinder.prototype._options = {
 	 * @type Array
 	 */
 	commands : [
-		'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook', 
+		'pixlr',
+		'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
 		'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy', 
-		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help', 'resize', 'sort', 'netmount', 'netunmount', 'pixlr', 'links'
+		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
+		'resize', 'sort', 'netmount', 'netunmount', 'places', 'links'
 	],
 	
 	/**
@@ -206,10 +208,12 @@ elFinder.prototype._options = {
 			ftp: {
 				inputs: {
 					host     : $('<input type="text"/>'),
-					port     : $('<input type="text"/>'),
+					port     : $('<input type="text" placeholder="21"/>'),
 					path     : $('<input type="text" value="/"/>'),
 					user     : $('<input type="text"/>'),
-					pass     : $('<input type="password"/>')
+					pass     : $('<input type="password"/>'),
+					encoding : $('<input type="text" placeholder="Optional"/>'),
+					locale   : $('<input type="text" placeholder="Optional"/>')
 				}
 			},
 			dropbox: {
@@ -317,6 +321,7 @@ elFinder.prototype._options = {
 		cwd : {
 			// display parent folder with ".." name :)
 			oldSchool : false,
+
             // file info columns displayed
             listView : {
                 // name is always displayed, cols are ordered
@@ -328,6 +333,7 @@ elFinder.prototype._options = {
                 //     kind : 'Mime type'
                 // }
                 columnsCustomName : {}
+
             }
 		}
 	},
@@ -465,6 +471,15 @@ elFinder.prototype._options = {
 	rememberLastDir : true,
 
 	/**
+	 * Clear historys(elFinder) on reload(not browser) function
+	 * Historys was cleared on Reload function on elFinder 2.0 (value is true)
+	 *
+	 * @type Boolean
+	 * @default  false
+	 */
+	reloadClearHistory : false,
+
+	/**
 	 * Use browser native history with supported browsers
 	 *
 	 * @type Boolean
@@ -537,11 +552,11 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'info', 'netunmount'],
+		navbar : ['open', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'places', 'info', 'netunmount'],
 		// current directory menu
 		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'sort', '|', 'info'],
 		// current directory file menu
-		files  : ['getfile', '|','open', 'quicklook', '|', 'download', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'info']
+		files  : ['getfile', '|','open', 'quicklook', '|', 'download', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info']
 	},
 
 	/**

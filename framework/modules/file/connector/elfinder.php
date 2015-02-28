@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -67,7 +67,7 @@ function debug($o)
 }
 
 /**
- * Smart logger function
+ * example logger function
  * Demonstrate how to work with elFinder event api
  *
  * @param  string   $cmd      command name
@@ -80,53 +80,55 @@ function debug($o)
  **/
 function logger($cmd, $result, $args, $elfinder)
 {
-
-    $log = sprintf("[%s] %s: %s \n", date('r'), strtoupper($cmd), var_export($result, true));
-    $logfile = BASE . 'tmp/elfinder.txt';
-    $dir = dirname($logfile);
-    if (!is_dir($dir) && !mkdir($dir)) {
-        return;
-    }
-    if (($fp = fopen($logfile, 'a'))) {
-        fwrite($fp, $log);
-        fclose($fp);
-    }
-    return;
-
-    foreach ($result as $key => $value) {
-        if (empty($value)) {
-            continue;
+    if (DEVELOPMENT && LOGGER) {
+        $log = sprintf("[%s] %s: %s \n", date('r'), strtoupper($cmd), var_export($result, true));
+        $logfile = BASE . 'tmp/elfinder.log';
+        $dir = dirname($logfile);
+        if (!is_dir($dir) && !mkdir($dir)) {
+            return;
         }
-        $data = array();
-        if (in_array($key, array('error', 'warning'))) {
-            array_push($data, implode(' ', $value));
-        } else {
-            if (is_array($value)) { // changes made to files
-                foreach ($value as $file) {
-                    $filepath = (isset($file['realpath']) ? $file['realpath'] : $elfinder->realpath($file['hash']));
-                    array_push($data, $filepath);
-                }
-            } else { // other value (ex. header)
-                array_push($data, $value);
-            }
+        if (($fp = fopen($logfile, 'a'))) {
+            fwrite($fp, $log);
+            fclose($fp);
         }
-        $log .= sprintf(' %s(%s)', $key, implode(', ', $data));
-    }
-    $log .= "\n";
-
-    $logfile = BASE . 'tmp/elfinder.txt';
-    $dir = dirname($logfile);
-    if (!is_dir($dir) && !mkdir($dir)) {
         return;
-    }
-    if (($fp = fopen($logfile, 'a'))) {
-        fwrite($fp, $log);
-        fclose($fp);
+
+//        // alternative logging method
+//        foreach ($result as $key => $value) {
+//            if (empty($value)) {
+//                continue;
+//            }
+//            $data = array();
+//            if (in_array($key, array('error', 'warning'))) {
+//                array_push($data, implode(' ', $value));
+//            } else {
+//                if (is_array($value)) { // changes made to files
+//                    foreach ($value as $file) {
+//                        $filepath = (isset($file['realpath']) ? $file['realpath'] : $elfinder->realpath($file['hash']));
+//                        array_push($data, $filepath);
+//                    }
+//                } else { // other value (ex. header)
+//                    array_push($data, $value);
+//                }
+//            }
+//            $log .= sprintf(' %s(%s)', $key, implode(', ', $data));
+//        }
+//        $log .= "\n";
+//
+//        $logfile = BASE . 'tmp/elfinder.log';
+//        $dir = dirname($logfile);
+//        if (!is_dir($dir) && !mkdir($dir)) {
+//            return;
+//        }
+//        if (($fp = fopen($logfile, 'a'))) {
+//            fwrite($fp, $log);
+//            fclose($fp);
+//        }
     }
 }
 
 /**
- * Simple logger function.
+ * example logger class
  * Demonstrate how to work with elFinder event api.
  *
  * @package elFinder
@@ -172,36 +174,39 @@ class elFinderSimpleLogger
      **/
     public function log($cmd, $result, $args, $elfinder)
     {
-        $log = $cmd . ' [' . date('d.m H:s') . "]\n";
+        if (DEVELOPMENT && LOGGER) {
+            $log = $cmd . ' [' . date('d.m H:s') . "]\n";
 
-        if (!empty($result['error'])) {
-            $log .= "\tERROR: " . implode(' ', $result['error']) . "\n";
-        }
-
-        if (!empty($result['warning'])) {
-            $log .= "\tWARNING: " . implode(' ', $result['warning']) . "\n";
-        }
-
-        if (!empty($result['removed'])) {
-            foreach ($result['removed'] as $file) {
-                // removed file contain additional field "realpath"
-                $log .= "\tREMOVED: " . $file['realpath'] . "\n";
+            if (!empty($result['error'])) {
+                $log .= "\tERROR: " . implode(' ', $result['error']) . "\n";
             }
-        }
 
-        if (!empty($result['added'])) {
-            foreach ($result['added'] as $file) {
-                $log .= "\tADDED: " . $elfinder->realpath($file['hash']) . "\n";
+            if (!empty($result['warning'])) {
+                $log .= "\tWARNING: " . implode(' ', $result['warning']) . "\n";
             }
-        }
 
-        if (!empty($result['changed'])) {
-            foreach ($result['changed'] as $file) {
-                $log .= "\tCHANGED: " . $elfinder->realpath($file['hash']) . "\n";
+            if (!empty($result['removed'])) {
+                foreach ($result['removed'] as $file) {
+                    // removed file contain additional field "realpath"
+                    $log .= "\tREMOVED: " . $file['realpath'] . "\n";
+                }
             }
-        }
 
-        $this->write($log);
+            if (!empty($result['added'])) {
+                foreach ($result['added'] as $file) {
+                    $log .= "\tADDED: " . $elfinder->realpath($file['hash']) . "\n";
+                }
+            }
+
+            if (!empty($result['changed'])) {
+                foreach ($result['changed'] as $file) {
+                    $log .= "\tCHANGED: " . $elfinder->realpath($file['hash']) . "\n";
+                }
+            }
+
+            $this->write($log);
+            $this->write(var_export($result, true), true);
+        }
     }
 
     /**
@@ -212,19 +217,22 @@ class elFinderSimpleLogger
      * @return void
      * @author Dmitry (dio) Levashov
      **/
-    protected function write($log)
+    protected function write($log, $eol=false)
     {
-
+        if ($eol)
+            $eol = "\n";
         if (($fp = @fopen($this->file, 'a'))) {
-            fwrite($fp, $log . "\n");
+            fwrite($fp, $log . $eol);
             fclose($fp);
         }
     }
 
 } // END class 
+//$logger = new elFinderSimpleLogger(BASE.'tmp/elfinder.log');
 
 /**
- * Simple function to demonstrate how to control file access using "accessControl" callback.
+ * example accessControl function
+ * to demonstrate how to control file access using "accessControl" callback.
  * This method will disable accessing files/folders starting from  '.' (dot)
  *
  * @param  string    $attr   attribute name (read|write|locked|hidden)
@@ -242,7 +250,7 @@ function access($attr, $path, $data, $volume, $isDir) {
 }
 
 /**
- * Access control example class
+ * example accessControl class
  *
  * @author Dmitry (dio) Levashov
  **/
@@ -273,31 +281,31 @@ class elFinderTestACL
     }
 
 } // END class 
-
 $acl = new elFinderTestACL();
 
-// example acceptedName function
+/**
+ * example acceptedName function
+ */
 function validName($name)
 {
     return strpos($name, '.') !== 0;
 }
 
-//$logger = new elFinderSimpleLogger(BASE.'tmp/elfinder.txt');
-
 $opts = array(
-    'locale' => 'en_US.UTF-8',
+    'locale' => LOCALE . '.' . LANG_CHARSET,
     'bind'   => array(
         // '*' => 'logger',
         'mkdir mkfile rename duplicate upload rm paste' => 'logger',
+//        'mkdir mkfile rename duplicate upload rm paste' => array($logger, 'log'),
 //        'mkdir.pre mkfile.pre rename.pre' => array(
 //            'Plugin.Normalizer.cmdPreprocess',
 //            'Plugin.Sanitizer.cmdPreprocess',
 //        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
-            //        'Plugin.Watermark.onUpLoadPreSave',
-            //        'Plugin.Normalizer.onUpLoadPreSave',
-            //        'Plugin.Normalizer.onUpLoadPreSave'
+//            'Plugin.Watermark.onUpLoadPreSave',
+//            'Plugin.Normalizer.onUpLoadPreSave',
+//            'Plugin.Sanitizer.onUpLoadPreSave'
         )
     ),
     // global plugin configure (optional)
@@ -332,6 +340,8 @@ $opts = array(
     ),
     'debug'  => DEVELOPMENT,
 //	'netVolumesSessionKey' => 'netVolumes',
+    'callbackWindowURL' => makeLink(array('controller'=>'file','action'=>'picker','ajax_action'=>1)),
+
     'roots'  => array(
         array(
             // 'id' => 'x5',
@@ -340,7 +350,7 @@ $opts = array(
             'URL'             => URL_FULL . 'files/',
             'alias'           => 'files',
             'disabled'        => array('netmount'),
-            'maxArcFilesSize' => 100,
+//            'maxArcFilesSize' => 100,
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
@@ -372,8 +382,8 @@ $opts = array(
                     'hidden'  => true,
                     'locked'  => true
                 )
-            ),
-        ),
+            )
+        )
     )
 );
 

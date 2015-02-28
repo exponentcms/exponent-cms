@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -307,6 +307,8 @@ class addressController extends expController {
             fclose($checkhandle);
         }*/
 
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $checkhandle = fopen($file->path, "r");
         if ($this->params['type_of_address'][0] == 'am') {
             $checkdata = fgetcsv($checkhandle, 10000, "\t");
@@ -339,9 +341,12 @@ class addressController extends expController {
         }
 
         fclose($checkhandle);
+        ini_set('auto_detect_line_endings',$line_end);
 
         echo "<br/>CSV File passed validation...<br/><br/>Importing....<br/><br/>";
         //exit();
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $handle = fopen($file->path, "r");
         $data = fgetcsv($handle, 10000, ",");
         //eDebug($data);
@@ -474,6 +479,8 @@ class addressController extends expController {
                 }
             }
         }
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
         echo "Done!";
     }
 

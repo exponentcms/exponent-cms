@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -19,7 +19,7 @@
         {control type="hidden" name="id" value=$u->id}
         {control type="hidden" name="username" value=$u->username}
         <div class="row">
-            {control type="password" name="new_password1" label="Type New Password"|gettext}
+            {control class="col-sm-4" type="password" name="new_password1" label="Type New Password"|gettext}
             <div class="col-sm-4" style="padding-top: 8px;">
                 <div class="pwstrength_viewport_progress"></div>
             </div>
@@ -30,7 +30,7 @@
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.3'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
 {literal}
     $(document).ready(function () {
         "use strict";

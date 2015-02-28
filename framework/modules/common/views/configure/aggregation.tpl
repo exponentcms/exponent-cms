@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -45,7 +45,7 @@
 {foreach from=$page->records item=mod}
         <tr class="{cycle values="even,odd"}">
             <td width="20">
-                {control type="checkbox" name="aggregate[]" value=$mod->src checked=$config.aggregate}
+                {control type="checkbox" name="aggregate[]" value=$mod->src checked=in_array($mod->src,$config.aggregate)}
             </td>
             <td>
                 {$mod->title}

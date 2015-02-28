@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -92,7 +92,7 @@ class datetimecontrol extends formcontrol {
             $html .= '</div>';
         }
         if ($this->showtime) {
-            $framework = expSession::get('framework');
+            $framework = framework();
             if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
                 $html .= '<br /><label class="'.(bs3()?"control-label":"label").' spacer"> </label>';
             }

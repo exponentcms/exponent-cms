@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,8 +20,7 @@
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
-//Fire off the clear all caches via an exponent action.
-//redirect_to(array("controller"=>"administration","action"=>"clear_all_caches"));
+//Fire off the clear all caches
 administrationController::clear_all_caches();
 
 ?>

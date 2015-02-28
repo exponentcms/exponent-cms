@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -23,8 +23,10 @@
     <div id="mini-{$name}">
         {exp_include file='minical.tpl'}
     </div>
-    {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
-	{br}
+    {if !$config.disable_links}
+        {icon class="monthviewlink" action=showall time=$now text='View Calendar'|gettext}
+    	{br}
+    {/if}
 	{permissions}
 		{if $permissions.create}
 			<div class="module-actions">

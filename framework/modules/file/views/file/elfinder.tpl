@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,7 +24,13 @@
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
 
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <script src="{$smarty.const.JQUERY_SCRIPT}" type="text/javascript" charset="utf-8"></script>
+    {*<script src="{$smarty.const.JQUERY_SCRIPT}" type="text/javascript" charset="utf-8"></script>*}
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
+    <!--<![endif]-->
     <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/jquery/css/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">*}
@@ -48,8 +54,8 @@
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
@@ -64,8 +70,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/button.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/uploadButton.js"></script>
@@ -93,7 +99,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/duplicate.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rename.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/help.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/help.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/getfile.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/mkdir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/mkfile.js"></script>
@@ -113,6 +120,7 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/pixlr.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/links.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
 
     <!-- elfinder languages -->
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}
@@ -170,6 +178,7 @@
 
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
+                urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
                 commandsOptions : {
                     edit : {
                         mimes : ['text/plain', 'text/html', 'text/javascript'],
@@ -203,9 +212,15 @@
                     }
                 },
 //                handlers : {
-//					getfile : function(e) {
-//						console.log(e.data.files)
-//					}
+//                    select : function(event, elfinderInstance) {
+//                        var selected = event.data.selected;
+//                            if (selected.length) {
+//                            // console.log(elfinderInstance.file(selected[0]))
+//                            }
+//                    }
+//					  getfile : function(e) {
+//					  	  console.log(e.data.files)
+//					  }
 //				  },
                 {/literal}{if $filter=='image'}{literal}
                 onlyMimes : ['image'],
@@ -231,7 +246,7 @@
                         ['extract', 'archive'],
                         ['search'],
                         ['view', 'sort'],
-                        ['links'],
+                        ['links', 'places'],
                         ['help']
                     ],
                     // directories tree options
@@ -271,7 +286,6 @@
                     {$h = 20}
                 {/if}
                 {literal}
-//                width : {/literal}{$smarty.const.FM_WIDTH - $w}{literal},
                 width : 'auto',
                 height : {/literal}{$smarty.const.FM_HEIGHT - $h}{literal},
                 resizable: false,
@@ -279,7 +293,6 @@
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
                     {/literal}{if $update=='ck'}{literal}
-//                    window.opener.CKEDITOR.tools.callFunction(funcNum, file.url);
                     window.opener.CKEDITOR.tools.callFunction( funcNum, file.url, function() {
                         var dialog = this.getDialog();
                         if ( dialog.getName() == 'image2' ) {
@@ -296,12 +309,12 @@
                     {/literal}{else}{literal}
                     if ((file.length) == 1) {
                         myfile = file[0];
-                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.path);
+                        window.opener.EXPONENT.passBackFile{/literal}{$update}{literal}(myfile.id);
                     } else {
                         var batchIDs = {};
                         for (var i=0; i<file.length; i++) {
                             myfile = file[i];
-                            batchIDs[i] = myfile.path;
+                            batchIDs[i] = myfile.id;
                         }
                         window.opener.EXPONENT.passBackBatch{/literal}{$update}{literal}(batchIDs);
                     }

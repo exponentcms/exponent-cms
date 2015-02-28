@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -72,7 +72,7 @@
         {$page->links}
         <blockquote>{'Select the item(s) to bulk process, then select the action below'|gettext}</blockquote>
         {control type="radiogroup" name="command" label="Bulk Action to take:"|gettext items="Approve,Disable (dis-approve),Delete"|gettxtlist values="1,2,3"}
-        {control type=buttongroup submit="Process Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable" onclick=" && confirmdelete(this.form)"}
+        {control type=buttongroup submit="Process Selected Items"|gettext cancel="Cancel"|gettext returntype="viewable" onclick="return confirmdelete(this.form)"}
     {/form}
 </div>
 

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -17,12 +17,12 @@
     <h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>
     <blockquote>
         {'This CSV file can be created using the E-commerce, Reports, Build a Product Report menu item and then selecting Export Products to CSV'|gettext}{br}
-        {icon class=export controller=report action=product_report }
+        {icon class=export controller=report action=product_report }{br}{br}
+        {'Or it can be created using the Exponent, Super-Admin Tools, Database, Import/Export Data menu item and then selecting Export Data, e-Commerce Store Front'|gettext}{br}
+        {icon class=export controller=store action=export }{br}{br}
     </blockquote>
     {form action=importProduct}
         {control type="hidden" name="import_type" value=$type->baseclassname}
-        {* control type=files name=import_file label="Upload .csv File to Import"|gettext limit=1 subtype="import_file" *}
-        {*<input type="file" name="import_file" size="50">*}
         {control type=uploader name=import_file size="50"}
         {control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}
     {/form}

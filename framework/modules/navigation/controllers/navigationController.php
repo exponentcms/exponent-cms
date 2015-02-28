@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -54,6 +54,18 @@ class navigationController extends expController {
     static function isSearchable() { return true; }
 
     function searchName() { return gt('Webpage'); }
+
+    /**
+     * @param null $src
+     * @param array $params
+     *
+     */
+    function __construct($src = null, $params = array())
+    {
+        parent::__construct($src, $params);
+        if (!empty($params['id']))  // we normally throw out the $loc->int EXCEPT with navigation pages
+            $this->loc = expCore::makeLocation($this->baseclassname, $src, $params['id']);
+    }
 
     public function showall() {
         global $user, $sectionObj, $sections;
@@ -750,10 +762,7 @@ class navigationController extends expController {
             3 => 'addfreeform',
         );
 
-//        $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $navs        = $db->selectObjects('section', 'parent!=-1', 'rank');
-//        $navcount = count($jnav);
-//        for ($i = 0; $i < $navcount; $i++) {
         foreach ($navs as $i=>$nav) {
             $navs[$i]->parent = $nav->parent?$nav->parent:'#';
             $navs[$i]->text = $nav->name;
@@ -767,10 +776,15 @@ class navigationController extends expController {
                 $view = $navs[$i]->public ? true : expPermissions::check('view', expCore::makeLocation('navigation', '', $navs[$i]->id));
             }
             $navs[$i]->link = expCore::makeLink(array('section' => $navs[$i]->id), '', $navs[$i]->sef_name);
-            if (!$view) unset($navs[$i]);
+            if (!$view) {
+//                unset($navs[$i]);  //FIXME this breaks jstree if we remove a parent and not the child
+                $attr = new stdClass();
+                $attr->class = 'hidden';  // bs3 class to hide elements
+                $navs[$i]->li_attr = $attr;
+            }
         }
         $navs= array_values($navs);
-        header('Content-Type: application/json; charset=utf8');
+//        header('Content-Type: application/json; charset=utf8');
 		echo json_encode($navs);
 //        echo expJavascript::ajaxReply(201, '', $navs);
         exit;

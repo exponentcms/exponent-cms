@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -226,7 +226,7 @@ class usersController extends expController {
                 }
                 $db->insertObject($memb, 'groupmembership');
             }
-            if ($u->id == $user->id) expPermissions::triggerRefresh();
+            if ($u->id == $user->id) expSession::triggerRefresh();
         }
 
         // if this is a new account then we will check to see if we need to send 
@@ -339,8 +339,8 @@ class usersController extends expController {
         //cleans up any old sessions
         if (SESSION_TIMEOUT_ENABLE == true) {
             $db->delete('sessionticket', 'last_active < ' . (time() - SESSION_TIMEOUT));
-        } else {
-            $db->delete('sessionticket', '1');
+//        } else {
+//            $db->delete('sessionticket', '1');
         }
 
         if (isset($this->params['id']) && $this->params['id'] == 0) {
@@ -815,7 +815,7 @@ class usersController extends expController {
                 $db->insertObject($memb, 'groupmembership');
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 
@@ -1080,7 +1080,7 @@ class usersController extends expController {
                 expPermissions::load($user);
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 
@@ -1171,7 +1171,7 @@ class usersController extends expController {
                 expPermissions::grantGroup($g, $perms[$i], $loc);
             }
         }
-        expPermissions::triggerRefresh();
+        expSession::triggerRefresh();
         expHistory::back();
     }
 
@@ -1257,6 +1257,8 @@ class usersController extends expController {
 
         //split the line into its columns
         $headerinfo = null;
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $fh = fopen(BASE . $directory . "/" . $file->filename, "r");
         if (!empty($this->params["use_header"])) $this->params["rowstart"]++;
         for ($x = 0; $x < $this->params["rowstart"]; $x++) {
@@ -1291,10 +1293,16 @@ class usersController extends expController {
             for ($i = 0; $i < count($lineInfo); $i++) {
                 if ($headerinfo != null) {
                     $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
+                    if (array_key_exists($headerinfo[$i], $colNames)) {
+                        $default = $headerinfo[$i];
+                    } else {
+                        $default = "none";
+                    }
                 } else {
                     $title = $lineInfo[$i];
+                    $default = "none";
                 }
-                $form->register("column[$i]", $title, new dropdowncontrol("none", $colNames));
+                $form->register("column[$i]", $title, new dropdowncontrol($default, $colNames));
             }
             $form->register("submit", "", new buttongroupcontrol(gt('Next'), "", gt('Cancel')));
 
@@ -1352,6 +1360,8 @@ class usersController extends expController {
     }
 
     public function import_users_display() {
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $userinfo = array();
         $userarray = array();
@@ -1483,6 +1493,8 @@ class usersController extends expController {
     }
 
     public function import_users_add() {
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");
         $userinfo = array();
         $userarray = array();
@@ -1619,6 +1631,8 @@ class usersController extends expController {
             }
             $linenum++;
         }
+        fclose($file);
+        ini_set('auto_detect_line_endings',$line_end);
         assign_to_template(array(
             "userarray" => $userarray,
         ));

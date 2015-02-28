@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -219,7 +219,7 @@ class form extends baseform {
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
-        if (expSession::get('framework') == 'bootstrap') {
+        if (bs2()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap"
             ));
@@ -232,7 +232,7 @@ class form extends baseform {
                 $btn_size = 'btn-small';
             }
             $btn_class .= ' ' . $btn_size;
-        } elseif (NEWUI || expSession::get('framework') == 'bootstrap3') {
+        } elseif (bs3()) {
             expCSS::pushToHead(array(
                 "corecss"=>"forms-bootstrap3"
             ));

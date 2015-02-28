@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -51,12 +51,10 @@ if (!defined('PATH_RELATIVE')) {
 if (!defined('HOSTNAME')) {
     if (isset($_SERVER['HTTP_HOST'])) {
         define('HOSTNAME', $_SERVER['HTTP_HOST']);
+    } elseif (isset($_SERVER['SERVER_NAME'])) {
+        define('HOSTNAME', $_SERVER['SERVER_NAME']);
     } else {
-        if (isset($_SERVER['SERVER_NAME'])) {
-            define('HOSTNAME', $_SERVER['SERVER_NAME']);
-        } else {
-            define('HOSTNAME', '');
-        }
+        define('HOSTNAME', '');
     }
 }
 
@@ -412,7 +410,9 @@ define('MONEY', 406);
 define('ICAL_TYPE', 1);
 define('GOOGLE_TYPE', 2);
 
-define('TEMPLATE_FALLBACK_VIEW', BASE . 'framework/core/views/viewnotfound.tpl');
+if (!defined('TEMPLATE_FALLBACK_VIEW')) {
+    define('TEMPLATE_FALLBACK_VIEW', BASE . 'framework/core/views/viewnotfound.tpl');
+}
 
 // Determines platform (OS), browser and version of the user
 // Based on a phpBuilder article:
@@ -422,64 +422,62 @@ if (empty($_SERVER['HTTP_USER_AGENT'])) {
 }
 if (!defined('EXPONENT_USER_OS')) {
     // 1. Platform
-    if (strstr($_SERVER['HTTP_USER_AGENT'], 'Win')) {
+    if (stristr($_SERVER['HTTP_USER_AGENT'], 'win')) {
         define('EXPONENT_USER_OS', 'Win');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'mac')) {
+        define('EXPONENT_USER_OS', 'Mac');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'linux')) {
+        define('EXPONENT_USER_OS', 'Linux');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'unix')) {
+        define('EXPONENT_USER_OS', 'Unix');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'os/2')) {
+        define('EXPONENT_USER_OS', 'OS/2');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'iphone')) {
+        define('EXPONENT_USER_OS', 'iPhone');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'ipad')) {
+        define('EXPONENT_USER_OS', 'iPad');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'android')) {
+        define('EXPONENT_USER_OS', 'Android');
+    } elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'webos')) {
+        define('EXPONENT_USER_OS', 'Mobile');
     } else {
-        if (strstr($_SERVER['HTTP_USER_AGENT'], 'Mac')) {
-            define('EXPONENT_USER_OS', 'Mac');
-        } else {
-            if (strstr($_SERVER['HTTP_USER_AGENT'], 'Linux')) {
-                define('EXPONENT_USER_OS', 'Linux');
-            } else {
-                if (strstr($_SERVER['HTTP_USER_AGENT'], 'Unix')) {
-                    define('EXPONENT_USER_OS', 'Unix');
-                } else {
-                    if (strstr($_SERVER['HTTP_USER_AGENT'], 'OS/2')) {
-                        define('EXPONENT_USER_OS', 'OS/2');
-                    } else {
-                        define('EXPONENT_USER_OS', 'Other');
-                    }
-                }
-            }
-        }
+        define('EXPONENT_USER_OS', 'Other');
     }
+}
 
+if (!defined('EXPONENT_USER_BROWSER')) {
     // 2. browser and version
     // (must check everything else before Mozilla)
     $log_version = array();
     if (preg_match('@Opera(/| )([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
         define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
         define('EXPONENT_USER_BROWSER', 'OPERA');
+    } elseif (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'IE');
+    } elseif (preg_match('@OmniWeb/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'OMNIWEB');
+    } elseif (preg_match('@(Konqueror/)(.*)(;)@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
+        define('EXPONENT_USER_BROWSER', 'KONQUEROR');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
+            && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
+            && preg_match('@Chrome/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version3)
+        ) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1] . '.' . $log_version3[1]);
+        define('EXPONENT_USER_BROWSER', 'CHROME');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
+            && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
+        ) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1]);
+        define('EXPONENT_USER_BROWSER', 'SAFARI');
+    } elseif (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
+        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
+        define('EXPONENT_USER_BROWSER', 'MOZILLA');
     } else {
-        if (preg_match('@MSIE ([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-            define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-            define('EXPONENT_USER_BROWSER', 'IE');
-        } else {
-            if (preg_match('@OmniWeb/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-                define('EXPONENT_USER_BROWSER', 'OMNIWEB');
-            } else {
-                if (preg_match('@(Konqueror/)(.*)(;)@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                    define('EXPONENT_USER_BROWSER_VERSION', $log_version[2]);
-                    define('EXPONENT_USER_BROWSER', 'KONQUEROR');
-                } else {
-                    if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)
-                        && preg_match('@Safari/([0-9]*)@', $_SERVER['HTTP_USER_AGENT'], $log_version2)
-                    ) {
-                        define('EXPONENT_USER_BROWSER_VERSION', $log_version[1] . '.' . $log_version2[1]);
-                        define('EXPONENT_USER_BROWSER', 'SAFARI');
-                    } else {
-                        if (preg_match('@Mozilla/([0-9].[0-9]{1,2})@', $_SERVER['HTTP_USER_AGENT'], $log_version)) {
-                            define('EXPONENT_USER_BROWSER_VERSION', $log_version[1]);
-                            define('EXPONENT_USER_BROWSER', 'MOZILLA');
-                        } else {
-                            define('EXPONENT_USER_BROWSER_VERSION', 0);
-                            define('EXPONENT_USER_BROWSER', 'OTHER');
-                        }
-                    }
-                }
-            }
-        }
+        define('EXPONENT_USER_BROWSER_VERSION', 0);
+        define('EXPONENT_USER_BROWSER', 'OTHER');
     }
 }
 
@@ -488,12 +486,10 @@ if (!defined('JS_RELATIVE')) {
      * The relative path to Exponent's core javascript.
      */
     define('JS_RELATIVE', PATH_RELATIVE . 'framework/core/assets/js/');
-//    define('JS_PATH',PATH_RELATIVE.'framework/core/assets/js/');  //TODO deprecated
     /** exdoc
      * The absolute url to Exponent's core javascript.
      */
     define('JS_URL', URL_FULL . 'framework/core/assets/js/');
-//   	define('JS_FULL',URL_FULL.'framework/core/assets/js/');  //TODO deprecated
 }
 
 /**
@@ -501,9 +497,8 @@ if (!defined('JS_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('YUI3_RELATIVE')) {
-    define('YUI3_VERSION', '3.17.2');
+    define('YUI3_VERSION', '3.18.1');
     define('YUI3_RELATIVE', PATH_RELATIVE . 'external/yui/' . YUI3_VERSION . '/build/');
-//	define('YUI3_PATH', PATH_RELATIVE.'external/yui/'.YUI3_VERSION.'/build/');  //TODO deprecated
     define('YUI3_URL', URL_FULL . 'external/yui/' . YUI3_VERSION . '/build/');
 }
 
@@ -514,7 +509,6 @@ if (!defined('YUI3_RELATIVE')) {
 if (!defined('YUI2_RELATIVE')) {
     define('YUI2_VERSION', '2.9.0');
     define('YUI2_RELATIVE', PATH_RELATIVE . 'external/yui/2in3/dist/' . YUI2_VERSION . '/build/');
-//	define('YUI2_PATH', PATH_RELATIVE.'external/yui/2in3/dist/'.YUI2_VERSION.'/build/');  //TODO deprecated
     define('YUI2_URL', URL_FULL . 'external/yui/2in3/dist/' . YUI2_VERSION . '/build/');
 }
 
@@ -525,7 +519,7 @@ if (!defined('YUI2_RELATIVE')) {
 if (!defined('JQUERY_RELATIVE')) {
     define('JQUERY_VERSION', '1.11.2');
     define('JQUERY2_VERSION', '2.1.3');
-    define('JQUERYUI_VERSION', '1.11.2');
+    define('JQUERYUI_VERSION', '1.11.3');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
     define('JQUERY_URL', URL_FULL . 'external/jquery/');
@@ -539,6 +533,12 @@ if (!defined('JQUERY_RELATIVE')) {
 //        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');
     } // local jQueryUI script
+    if (!defined('JQUERYUI_THEME')) {
+        define('JQUERYUI_THEME', 'exponent');
+    } // jQueryUI theme
+    if (!defined('JQUERYUI_CSS')) {
+        define('JQUERYUI_CSS', JQUERY_RELATIVE . 'css/' . JQUERYUI_THEME . '/jquery-ui.min.css');
+    } // local jQueryUI stylesheet
 }
 
 /**

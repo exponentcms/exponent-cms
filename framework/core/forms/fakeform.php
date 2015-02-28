@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -58,7 +58,7 @@ class fakeform extends form {
 			//expSession::un_set("last_POST");
 		}
 
-		global $router, $head_config;
+		global $router;
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         expJavascript::pushToFoot(array(
@@ -98,7 +98,7 @@ class fakeform extends form {
         $edit_icon_class = '';
         $delete_class = '';
         $delete_icon_class = '';
-        if ($head_config['framework'] == 'bootstrap') {
+        if (bs2()) {
             if (BTN_SIZE == 'large') {
                 $btn_size = '';  // actually default size, NOT true boostrap large
                 $icon_size = 'icon-large';
@@ -113,7 +113,7 @@ class fakeform extends form {
             $edit_icon_class = '<i class="icon-edit '.$icon_size.'"></i>';
             $delete_class = ' class="btn btn-danger '.$btn_size.'"';
             $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
-        } elseif (NEWUI || $head_config['framework'] == 'bootstrap3') {
+        } elseif (bs3()) {
             if (BTN_SIZE == 'large') {
                 $btn_size = '';
                 $icon_size = 'fa-lg';
@@ -137,14 +137,14 @@ class fakeform extends form {
 			if (!$this->controls[$name]->_readonly) {
 				//$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
 				$html .= '<a'.$edit_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'edit_control','id'=>$this->controls[$name]->_id,'forms_id'=>$forms_id)).'" title="'.gt('Edit this Control').'" >';
-                if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
+                if (bs()) {
                     $html .= $edit_icon_class;
                 } else {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.png" />';
                 }
 				$html .= '</a>';
 			} else {
-                if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
+                if (bs()) {
                     $html .= '<div class="btn btn-default disabled ' . $btn_size . '">'.$edit_icon_class.'</div>';
                 } else {
                     $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'edit.disabled.png" />';
@@ -159,7 +159,7 @@ class fakeform extends form {
 			else {
 				$html .= '<a'.$delete_class.' href="'.$router->makeLink(array('controller'=>'forms','action'=>'delete_control','id'=>$this->controls[$name]->_id)).'" title="'.gt('Delete this Control').'" onclick="return confirm(\'Are you sure you want to delete this?\');">';
 			}
-            if ($head_config['framework'] == 'bootstrap' || NEWUI || $head_config['framework'] == 'bootstrap3') {
+            if (bs()) {
                 $html .= $delete_icon_class;
             } else {
                 $html .= '<img style="border:none;" src="'.ICON_RELATIVE.'delete.png" />';

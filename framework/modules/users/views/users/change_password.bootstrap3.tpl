@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,7 +41,7 @@
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.3'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
 {literal}
     $(document).ready(function () {
         "use strict";

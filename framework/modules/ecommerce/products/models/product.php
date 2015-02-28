@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -515,12 +515,12 @@ class product extends expRecord {
             BASE . 'themes/' . DISPLAY_THEME . '/modules/ecommerce/products/views/product/',
             BASE . 'framework/modules/ecommerce/products/views/product/',
         );
-        if (expSession::get('framework') == 'bootstrap') {
+        if (bs2()) {
             $vars = array(
                 '.bootstrap',
                 '',
             );
-        } elseif (expSession::get('framework') == 'bootstrap3') {
+        } elseif (bs3(true)) {
             $vars = array(
                 '.bootstrap3',
                 '.bootstrap',
@@ -658,9 +658,9 @@ class product extends expRecord {
             //if it's in a category already we leave it
             //flip check the arrays - if not in one, we add. if vice versa, we delete:
             foreach ($catArray as $cat) {
+                $assoc = new stdClass();
                 if (!in_array($cat, $curCats)) {
                     //create new
-                    $assoc = new stdClass();
                     $assoc->storecategories_id = $cat;
                     $assoc->product_id = $id;
                     $assoc->product_type = $product_type;

@@ -25,7 +25,19 @@ class elFinder {
 	 **/
 	protected $volumes = array();
 	
+	/**
+	 * Network mount drivers
+	 * 
+	 * @var array
+	 */
 	public static $netDrivers = array();
+	
+	/**
+	 * elFinder global locale
+	 * 
+	 * @var string
+	 */
+	public static $locale = '';
 	
 	/**
 	 * Session key of net mount volumes
@@ -224,7 +236,11 @@ class elFinder {
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
 		
-		setlocale(LC_ALL, !empty($opts['locale']) ? $opts['locale'] : 'en_US.UTF-8');
+		// setlocale and global locale regists to elFinder::locale
+		self::$locale = !empty($opts['locale']) ? $opts['locale'] : 'en_US.UTF-8';
+		if (false === @setlocale(LC_ALL, self::$locale)) {
+			self::$locale = setlocale(LC_ALL, '');
+		}
 
 		// bind events listeners
 		if (!empty($opts['bind']) && is_array($opts['bind'])) {
@@ -291,7 +307,7 @@ class elFinder {
 			}
 		}
 
-		// if at least one redable volume - ii desu >_<
+		// if at least one readable volume - ii desu >_<
 		$this->loaded = !empty($this->default);
 	}
 	
@@ -725,9 +741,7 @@ class elFinder {
 		// get folders trees
 		if ($args['tree']) {
 			foreach ($this->volumes as $id => $v) {
-				if (($tree = $v->tree('', 0, $cwd['hash'])) != false) {
-					$files = array_merge($files, $tree);
-				}
+				$files[] = $v->file($v->root());
 			}
 		}
 
@@ -864,7 +878,7 @@ class elFinder {
 
 		if ($download) {
 			$disp = 'attachment';
-			$mime = 'application/octet-stream';
+			$mime = 'application/force-download';
 		} else {
 			$disp  = preg_match('/^(image|text)/i', $file['mime']) || $file['mime'] == 'application/x-shockwave-flash' 
 					? 'inline' 
@@ -1581,7 +1595,7 @@ class elFinder {
 				break;
 			}
 			
-			fclose($fp);
+			is_resource($fp) && fclose($fp);
 			if (! is_uploaded_file($tmpname) && @ unlink($tmpname)) unset($GLOBALS['elFinderTempFiles'][$tmpname]);
 			$result['added'][] = $file;
 		}
@@ -1861,7 +1875,7 @@ class elFinder {
 			$script = '';
 			if ($node) {
 				$script .= '
-					var w = window.opener || weindow.parent || window
+					var w = window.opener || window.parent || window
 					var elf = w.document.getElementById(\''.$node.'\').elfinder;
 					if (elf) {
 						var data = '.$json.';

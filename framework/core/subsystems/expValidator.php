@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -384,10 +384,18 @@ class expValidator {
                 }
                 
                 require_once(BASE.'external/recaptchalib.php');
-                
-                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$params["recaptcha_challenge_field"],$params["recaptcha_response_field"]);
+                $reCaptcha = new ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
-                if ($resp->is_valid) {
+//                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$params["recaptcha_challenge_field"],$params["recaptcha_response_field"]);
+                if ($params["g-recaptcha-response"]) {
+                    $resp = $reCaptcha->verifyResponse(
+                        $_SERVER["REMOTE_ADDR"],
+                        $params["g-recaptcha-response"]
+                    );
+                }
+
+//                if ($resp->is_valid) {
+                if (!empty($resp->success)) {
                     return true;
                 } else {
                     //Compatibility with old school form module - prb

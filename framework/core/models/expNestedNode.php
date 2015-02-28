@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -269,7 +269,7 @@ abstract class expNestedNode extends expRecord {
 		
 		$tree = array();
 		foreach($db->selectNestedTree($this->table) as $node) {
-            $obj = new $this->classname($node->id, false, false);
+            $obj = new $this->classname($node->id, false, true);
             $obj->depth = $node->depth;
 			$tree[] = $obj;
 		}

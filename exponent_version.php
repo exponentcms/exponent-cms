@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -20,7 +20,6 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 	// the RELEASE constant is changed by the build scripts at code freeze
 	define('RELEASE','RELEASE');
 	if (RELEASE != '%%RELEASE%%') {
-
 		/* exdoc
 		 * This is the major version number of Exponent; the 1 in 1.96.2-beta3
 		 */

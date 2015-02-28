@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,6 @@
  * @param $repeat
  */
 function smarty_block_form($params,$content,&$smarty, &$repeat) {
-    $framework = expSession::get('framework');
 	if(empty($content)){
 		$name = isset($params['name']) ? $params['name'] : 'form';
 		$id = empty($params['id']) ? $name : $params['id'];
@@ -51,7 +50,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 		// echo '<script type="text/javascript" src="'.PATH_RELATIVE.'js/PopupDateTimeControl.js"></script>'."\r\n";
 
 //        if (!NEWUI) {
-            if ($framework == 'bootstrap') {
+            if (bs2()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap"
                 ));
@@ -64,7 +63,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                     $btn_size = 'btn-small';
                 }
                 $btn_class .= ' ' . $btn_size;
-            } elseif (NEWUI || $framework == 'bootstrap3') {
+            } elseif (bs3()) {
                 expCSS::pushToHead(array(
                     "corecss"=>"forms-bootstrap3"
                 ));
@@ -84,7 +83,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 $btn_class = 'awesome ".BTN_SIZE." ".BTN_COLOR."';
             }
 //        }
-        if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') {
+        if (newui()) {
             $newui_class = ' exp-skin';
         } else {
             $newui_class = '';

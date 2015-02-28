@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -32,8 +32,7 @@
         {permissions}
             <div class="module-actions">
                 {if $permissions.create}
-                    {icon class="add-body" action=add text="Add more text at bottom"|gettext}
-                    <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text at bottom'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text at bottom'|gettext}</a>
+                    <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text at bottom'|gettext}"><i class="icon-plus-sign {$icon_size}"></i> {'Add more text at bottom'|gettext}</a>
                 {/if}
                 {if $permissions.manage}
                     {ddrerank items=$items model="text" label="Text Items"|gettext}
@@ -68,7 +67,7 @@
                             {icon action=edit record=$item}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            <a class="delete btn btn-danger {$btn_size}"" href="{link action=delete}" title="{'Delete this text item'|gettext}"><i class="icon-remove-sign {$icon_size}"></i> {'Delete'|gettext}</a>
+                            <a class="delete-item btn btn-danger {$btn_size}"" href="{link action=delete}" title="{'Delete this text item'|gettext}"><i class="icon-remove-sign {$icon_size}"></i> {'Delete'|gettext}</a>
                         {/if}
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                             {if $item->title}
@@ -100,8 +99,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class="add-body" action=add text="Add more text here"|gettext}
-                <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text here'|gettext}"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add more text here'|gettext}</a>
+                <a class="add-body btn btn-success {$btn_size}" href="{link action=add}" title="{'Add more text here'|gettext}"><i class="icon-plus-sign {$icon_size}"></i> {'Add more text here'|gettext}</a>
             {/if}
         </div>
     {/permissions}
@@ -299,7 +297,7 @@
     //                var msg = $.parseJSON(data);
                     newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                     newItem += '<div class="item-actions"><a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + msg.data + '/src/' + src + '"><i class="icon-edit {/literal}{$icon_size}{literal}"></i>  {/literal}{'Edit'|gettext}{literal}</a>';
-                    newItem += '<a class="btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + msg.data + '/src/' + src + '"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
+                    newItem += '<a class="delete-item btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + msg.data + '/src/' + src + '"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
                     newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
                     newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                     $('#textcontent-{/literal}{$name}{literal}').append(newItem);
@@ -334,7 +332,7 @@
             });
         });
 
-        $('#textmodule-{/literal}{$name}{literal}').on('click', '.delete', function(event) {
+        $('#textmodule-{/literal}{$name}{literal}').on('click', '.delete-item', function(event) {
             event.preventDefault();
             if (confirm('{/literal}{'Are you sure you want to delete this text item?'|gettext}{literal}')) {
                 ctrl = $(event.target).parent().parent();

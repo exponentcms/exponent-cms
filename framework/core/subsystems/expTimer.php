@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -45,12 +45,10 @@ class expTimer {
         $this->starttime = $this->_time();
     }
     
+    /*
+     * reset/restort timer and return current time
+     */
     public function stop() {
-        $this->endtime = $this->_time();
-        $this->_compute();    
-    }
-    
-    public function mark() {
         $this->endtime = $this->_time();
         $this->_compute();    
         $ret = $this->elapsed();
@@ -58,7 +56,24 @@ class expTimer {
         $this->start();
         return $ret;
     }
+
+    /*
+     * get current timer and optionally reset/restort
+     */
+    public function mark($reset = false) {
+        $this->endtime = $this->_time();
+        $this->_compute();    
+        $ret = $this->elapsed();
+        if ($reset) {
+            $this->clear();
+            $this->start();
+        }
+        return $ret;
+    }
     
+    /*
+     * zeroize all timer values
+     */
     public function clear() {
         $this->starttime   = 0;
         $this->endtime     = 0;
@@ -66,6 +81,9 @@ class expTimer {
         $this->timername   = "Not Named";
     }
     
+    /*
+     * return elapsed time
+     */
     public function elapsed() {
         return $this->elapsed;
     }
@@ -88,7 +106,6 @@ class expTimer {
     private function _compute() {
         $this->elapsed = (($this->endtime) - ($this->starttime));
     }
-
 
 }
 

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -21,7 +21,9 @@
 
 <div class="module events viewweek">
 	<div class="module-actions">
-		{icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+        {if !$config.disable_links}
+            {icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
+        {/if}
         {permissions}
             {if $permissions.manage}
                 &#160;&#160;|&#160;&#160;

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -33,14 +33,13 @@ function epb($buffer, $mode) {
 }
 
 ob_start('epb');
-$microtime_str = explode(' ',microtime());
-$i_start = $microtime_str[0] + $microtime_str[1];
 
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
 //active global timer if in DEVELOPMENT mode
-if(DEVELOPMENT) $timer = new expTimer();    
+if(DEVELOPMENT)
+	$timer = new expTimer();
 
 // if the user has turned on sef_urls then we need to route the request, otherwise we can just 
 // skip it and default back to the old way of doing things.
@@ -98,11 +97,11 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 			expTheme::satisfyThemeRequirements();
 		} else {  // ajax request
             // set up controls search order based on framework
-            $framework = expSession::get('framework');
+//            $framework = framework();
             if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
             if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
             if ($framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
-            if (NEWUI && $framework != 'bootstrap' && $framework != 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
+            if (newui()) array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/newui');
             array_unshift($auto_dirs, BASE . 'themes/' . DISPLAY_THEME . '/controls');
 
 			expTheme::runAction();
@@ -116,9 +115,9 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 	}
 }
 
-//$microtime_str = explode(' ',microtime());
-//$i_end = $microtime_str[0] + $microtime_str[1];
-//echo "\r\n<!--".sprintf(gt('Execution time : %d seconds'),round($i_end - $i_start,4)).'-->';
+//write page build/load time if in DEVELOPMENT mode with logging
+if(DEVELOPMENT && LOGGER)
+	eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();

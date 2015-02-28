@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -2591,7 +2591,7 @@ class migrationController extends expController {
       		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-        if(expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3'){
+        if(bs()){
             $btn_class = 'btn btn-default';
         } else {
             $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;

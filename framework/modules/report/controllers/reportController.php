@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1721,7 +1721,7 @@ class reportController extends expController {
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","heigth","length","companies_id"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
@@ -1769,7 +1769,7 @@ class reportController extends expController {
             for ($x = 0; $x < 12; $x++) {
                 $this->catstring = '';
                 if (isset($p->storeCategory[$x])) {
-                    $out .= expString::outputField(expString::buildCategoryString($p->storeCategory[$x]->id, true));
+                    $out .= expString::outputField(storeCategory::buildCategoryString($p->storeCategory[$x]->id, true));
                     $rank = $db->selectValue('product_storeCategories', 'rank', 'product_id=' . $p->id . ' AND storecategories_id=' . $p->storeCategory[$x]->id);
                 } else $out .= ',';
             }
@@ -1968,14 +1968,14 @@ class reportController extends expController {
 
     //public $catstring = '';
 
-    //FIXME deprecated here by move to expString
+    //FIXME deprecated here by move to storeCategory
     public static function buildCategoryString($catID, $reset = false) {
         static $cstr = '';
         if ($reset) $cstr = '';
         if (strlen($cstr) > 0) $cstr .= "::";
         $cat = new storeCategory($catID);
         //eDebug($cat);
-        if (!empty($cat->parent_id)) expString::buildCategoryString($cat->parent_id);
+        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
         $cstr .= $cat->title . "::";
         return substr($cstr, 0, -2);
     }

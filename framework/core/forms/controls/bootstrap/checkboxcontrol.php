@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -29,6 +29,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class checkboxcontrol extends formcontrol {
 
+    var $default = false;
+    var $value = "1";
     var $flip = false;
     var $jsHooks = array();
 
@@ -45,10 +47,10 @@ class checkboxcontrol extends formcontrol {
             DB_FIELD_TYPE=> DB_DEF_BOOLEAN);
     }
 
-    function __construct($default = 1, $flip = false, $required = false) {
-        $this->default  = $default;
+    function __construct($default = false, $flip = false, $required = false) {
+        $this->default  = $default; //checked
         $this->flip     = $flip;
-        $this->jsHooks  = array();
+//        $this->jsHooks  = array();
         $this->required = $required;
     }
 
@@ -64,7 +66,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
             $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->value.'"';
     		$html .= ' />';
     		return $html;
         } else {
@@ -102,7 +104,7 @@ class checkboxcontrol extends formcontrol {
 //        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         $html        = '<input' . $inputID . ' class="checkbox form-control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
-        if (!empty($this->checked)) $html .= ' checked="checked"';
+        if (!empty($this->default)) $html .= ' checked="checked"';
 //        if ($this->default) $html .= ' checked="checked"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -112,10 +114,11 @@ class checkboxcontrol extends formcontrol {
             $html .= ' ' . $type . '="' . $val . '"';
         }
         if (@$this->required) {
-            $html .= 'required="' . rawurlencode($this->default) . '" caption="' . rawurlencode($this->caption) . '" ';
+            $html .= 'required="' . rawurlencode($this->value) . '" caption="' . rawurlencode($this->caption) . '" ';
         }
         $html .= ' />';
 //        if (!empty($this->description)) $html .= "<div class=\"control-desc\">".$this->description."</div>";
+//        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->checked, null));
         return $html;
     }
 
@@ -144,7 +147,7 @@ class checkboxcontrol extends formcontrol {
 
         $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
-        if (!empty($this->checked)) $html .= ' checked="checked"';
+        if (!empty($this->default)) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox control"' : ' class="checkbox control"';
         if ($this->tabindex >= 0) $html .= ' tabindex="' . $this->tabindex . '"';
         if ($this->accesskey != "") $html .= ' accesskey="' . $this->accesskey . '"';
@@ -163,11 +166,12 @@ class checkboxcontrol extends formcontrol {
         //if (!empty($this->readonly)) $html .= ' disabled="disabled"';
 
         $caption = isset($this->caption) ? $this->caption : str_replace(array(":", "*"), "", ucwords($label));
-        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->default) . '" caption="' . $caption . '"';
+        if (!empty($this->required)) $html .= ' required="' . rawurlencode($this->value) . '" caption="' . $caption . '"';
         if (!empty($this->onclick)) $html .= ' onclick="' . $this->onclick . '"';
         if (!empty($this->onchange)) $html .= ' onchange="' . $this->onchange . '"';
 
         $html .= ' />';
+//        eLog('Checkbox:'.$name.', Value:\''.$this->value.'\', Checked:'.self::templateFormat($this->default, null));
         return $html;
     }
 

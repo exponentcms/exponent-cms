@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -13,23 +13,16 @@
  *
  *}
 
-{css unique="blog" link="`$asset_path`../../blog/assets/css/blog.css"}
-
-{/css}
-
-<div class="module blog showall">
-    {if $moduletitle && !$config.hidemoduletitle}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
-    
+<div class="module eaas showall">
     {permissions}
-		<div class="module-actions">
-			{if $permissions.configure}
-				{icon class=configure action=configure text="Configure Service"|gettext}
-			{/if}
-
-		</div>
+        {if $permissions.configure}
+            {if $moduletitle && !$config.hidemoduletitle}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
+            <div class="module-actions">
+                {icon class=configure action=configure text="Configure Service"|gettext}
+            </div>
+            <{$config.item_level|default:'h2'}>{'API Key'|gettext}</{$config.item_level|default:'h2'}>
+            <textarea class="form-control" style="width:100%; height:100px;">{$info.apikey}</textarea>
+            {*edebug var=$info*}
+        {/if}
     {/permissions}
-    <{$config.item_level|default:'h2'}>{'API Key'|gettext}</{$config.item_level|default:'h2'}>
-    <textarea class="form-control" style="width:100%; height:200px;">{$info.apikey}</textarea>
-    {*edebug var=$info*}
-
 </div>

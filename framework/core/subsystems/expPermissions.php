@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -521,27 +521,11 @@ class expPermissions {
      *
 	 * @node Subsystems:expPermissions
 	 */
-	public static function triggerRefresh() {
+	public static function triggerRefresh() {  //FIXME deprecated by moving into expSession
 		global $db;
 		$obj = new stdClass();
 		$obj->refresh = 1;
 		$db->updateObject($obj,'sessionticket','true'); // force a global refresh
-	}
-
-	/** exdoc
-	 * This call will force all active sessions for the given user to
-	 * reload their permission data.  This is useful if permissions
-	 * are assigned or revoked, and is required to see these changes.
-     *
-     * @param user/object $user
-     *
-	 * @node Subsystems:expPermissions
-	 */
-	public static function triggerSingleRefresh($user) {  //FIXME not currently used
-		global $db;
-		$obj = new stdClass();
-		$obj->refresh = 1;
-		$db->updateObject($obj,'sessionticket','uid='.$user->id); // force a global refresh
 	}
 
 }

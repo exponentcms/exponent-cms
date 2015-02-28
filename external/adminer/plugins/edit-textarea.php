@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -25,7 +25,7 @@ class AdminerEditTextarea {
 	
 	function editInput($table, $field, $attrs, $value) {
 		if (preg_match('~char|text~', $field["type"])) {
-			return "<textarea cols='30' rows='2' style='height: 1.2em;'$attrs>" . h($value) . '</textarea>';
+			return "<textarea cols='30' rows='2' style=''$attrs>" . h($value) . '</textarea>';
 		}
 	}
 	

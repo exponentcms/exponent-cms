@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@
 function smarty_function_button_style($params,&$smarty) {
     $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
     $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
-    if (expSession::get('framework') == 'bootstrap' || expSession::get('framework') == 'bootstrap3') {
+    if (bs()) {
 //        $btn_class = 'btn ' . expTheme::buttonColor($btn_color) . ' ' . expTheme::buttonSize($btn_size);
         $btn_class = expTheme::buttonStyle($btn_color, $btn_size);
     } else {

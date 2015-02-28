@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -279,9 +279,9 @@ class expString {
         if (!empty($saved_params)) {
             $data = array_merge($data, $saved_params);
         }
-        if (empty($data['route_sanitized'])) {
-            $tmp =1; // we got here NOT going through $router->routeRequest
-        }
+//        if (empty($data['route_sanitized'])) {
+//            $tmp =1; // we got here NOT going through $router->routeRequest
+//        }
 //        if (empty($data['pre_sanitized'])) {
 //            $tmp =1; // we got here NOT going through $router->convertPartsToParams
 //        }
@@ -560,17 +560,6 @@ class expString {
 
     public static function stripLineEndings($val) {
         return preg_replace('/\r\n/', ' ', trim($val));
-    }
-
-    public static function buildCategoryString($catID, $reset = false) {
-        static $cstr = '';
-        if ($reset) $cstr = '';
-        if (strlen($cstr) > 0) $cstr .= "::";
-        $cat = new storeCategory($catID);
-        //eDebug($cat);
-        if (!empty($cat->parent_id)) self::buildCategoryString($cat->parent_id);
-        $cstr .= $cat->title . "::";
-        return substr($cstr, 0, -2);
     }
 
 }

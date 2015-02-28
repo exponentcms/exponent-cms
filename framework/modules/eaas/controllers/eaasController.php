@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -35,7 +35,7 @@ class eaasController extends expController {
         'ealerts',
         'facebook',
         'files',
-        'module',
+//        'module',
         'pagination',
         'rss',
         'tags',
@@ -50,12 +50,13 @@ class eaasController extends expController {
         'blog'=>'Blog', 
         'photo'=>'Photos', 
         'media'=>'Media',
-        'youtube'=>'YouTube Videos',  //FIXME to be removed
-        'event'=>'Events', 
+        'event'=>'Events',
         'filedownload'=>'File Downloads', 
         'news'=>'News'
     );
 
+    protected $data = array();
+    
     static function displayname() { return gt("Exponent as a Service"); }
 
     static function description() { return gt("This module allows you make service calls and return JSON for parts of Exponent"); }
@@ -73,101 +74,85 @@ class eaasController extends expController {
     }
 
     public function api() {
-
         if (empty($this->params['apikey'])) {
             $ar = new expAjaxReply(550, 'Permission Denied', 'You need an API key in order to access Exponent as a Service', null);
             $ar->send();
         } else {
-
             $key = expUnserialize(base64_decode(urldecode($this->params['apikey'])));
-
             $cfg = new expConfig($key);
             $this->config = $cfg->config;
-
             if(empty($cfg->id)) {
-                $ar = new expAjaxReply(550, 'Permission Denied', 'Your API key is bunk. I bet you\'ll figure it out.', null);
+                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration missing.', null);
                 $ar->send();
-            } else{
-                if ($this->params['get']) {
+            } else {
+                if (!empty($this->params['get'])) {
                     $this->handleRequest();
                 } else {
-                    $ar = new expAjaxReply(200, 'ok', 'Your API key ia working', null);
+                    $ar = new expAjaxReply(200, 'ok', 'Your API key is working, no data requested', null);
                     $ar->send();
                 }
-            };
+            }
         }
     }
 
     private function handleRequest() {
+        if (!key_exists($this->params['get'], $this->tabs)) {
+            $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
+            $ar->send();
+            return;
+        }
+        if (empty($this->config[$this->params['get'].'_aggregate'])) {
+            $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
+            $ar->send();
+            return;
+        }
         switch ($this->params['get']) {
             case 'aboutus':
-                $data = $this->aboutUs();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->aboutUs(), null);
                 $ar->send();
                 break;
             case 'news':
-                $data = $this->news();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->news(), null);
                 $ar->send();
                 break;
             case 'photo':
-                $data = $this->photo();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->photo(), null);
                 $ar->send();
                 break;
             case 'media':
-                $data = $this->media();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
-                $ar->send();
-                break;
-            case 'youtube':  //FIXME to be removed
-                $data = $this->youtube();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->media(), null);
                 $ar->send();
                 break;
             case 'filedownload':
-                $data = $this->filedownload();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->filedownload(), null);
                 $ar->send();
                 break;
             case 'blog':
-                $data = $this->blog();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->blog(), null);
                 $ar->send();
                 break;
             case 'event':
-                $data = $this->event();
-                $ar = new expAjaxReply(200, 'ok', $data, null);
+                $ar = new expAjaxReply(200, 'ok', $this->event(), null);
                 $ar->send();
                 break;
-            default:
-                $ar = new expAjaxReply(400, 'Bad Request', 'no service for your request available', null);
+            default:  // probably shouldn't evet get to this point
+                $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
                 $ar->send();
                 break;
         }
     }
 
     private function aboutUs() {
-        $data = array();
-
-        $img = $this->getImage($this->params['get']);
-
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->data = array();  // initialize
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     private function news() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $news = new news($this->params['id']);
-            $data['records'] = $news;
-
+            $this->data['records'] = $news;
         } else {
             $news = new news();
 
@@ -180,57 +165,43 @@ class eaasController extends expController {
             
             $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
             $items = $news->find('all', $this->aggregateWhereClause('news'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
-    private function youtube() {  //FIXME must replace with media player and then removed
-        $data = array();
-        if (!empty($this->params['id'])) {
-            $youtube = new youtube($this->params['id']);
-            $data['records'] = $youtube;
-
-        } else {
-            $youtube = new youtube();
-
-            // figure out if should limit the results
-            if (isset($this->params['limit'])) {
-                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
-            } else {
-                $limit = '';
-            }       
-
-            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
-
-            $items = $youtube->find('all', $this->aggregateWhereClause('youtube'), $order, $limit);
-            $data['records'] = $items;
-        }
-
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
-    }
+//    private function youtube() {  //FIXME must replace with media player and then removed
+//        $this->data = array();  // initialize
+//        if (!empty($this->params['id'])) {
+//            $youtube = new youtube($this->params['id']);
+//            $this->data['records'] = $youtube;
+//        } else {
+//            $youtube = new youtube();
+//
+//            // figure out if should limit the results
+//            if (isset($this->params['limit'])) {
+//                $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
+//            } else {
+//                $limit = '';
+//            }
+//
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
+//
+//            $items = $youtube->find('all', $this->aggregateWhereClause('youtube'), $order, $limit);
+//            $this->data['records'] = $items;
+//        }
+//
+//        $this->getImageBody($this->params['get']);
+//        return $this->data;
+//    }
 
     private function media() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $media = new media($this->params['id']);
-            $data['records'] = $media;
-
+            $this->data['records'] = $media;
         } else {
             $media = new media();
 
@@ -244,25 +215,18 @@ class eaasController extends expController {
             $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
 
             $items = $media->find('all', $this->aggregateWhereClause('media'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     private function filedownload() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $filedownload = new filedownload($this->params['id']);
-            $data['records'] = $filedownload;
-
+            $this->data['records'] = $filedownload;
         } else {
             $filedownload = new filedownload();
 
@@ -276,25 +240,18 @@ class eaasController extends expController {
             $order = isset($this->params['order']) ? $this->params['order'] : 'created_at ASC';
 
             $items = $filedownload->find('all', $this->aggregateWhereClause('filedownload'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     private function photo() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $photo = new photo($this->params['id']);
-            $data['records'] = $photo;
-
+            $this->data['records'] = $photo;
         } else {
             $photo = new photo();
 
@@ -307,25 +264,18 @@ class eaasController extends expController {
             
             $order = isset($this->params['order']) ? $this->params['order'] : 'rank';
             $items = $photo->find('all', $this->aggregateWhereClause('photo'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     private function blog() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $blog = new blog($this->params['id']);
-            $data['records'] = $blog;
-
+            $this->data['records'] = $blog;
         } else {
             $blog = new blog();
 
@@ -338,25 +288,18 @@ class eaasController extends expController {
             
             $order = isset($this->params['order']) ? $this->params['order'] : 'publish DESC';
             $items = $blog->find('all', $this->aggregateWhereClause('blog'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     private function event() {
-        $data = array();
+        $this->data = array();  // initialize
         if (!empty($this->params['id'])) {
             $event = new event($this->params['id']);
-            $data['records'] = $event;
-
+            $this->data['records'] = $event;
         } else {
             $event = new event();
 
@@ -369,29 +312,24 @@ class eaasController extends expController {
             
             $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';
             $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);
-            $data['records'] = $items;
+            $this->data['records'] = $items;
         }
 
         if (!empty($this->params['groupbydate'])&&!empty($items)) {
-            $data['records'] = array();
+            $this->data['records'] = array();
             foreach ($items as $value) {
-                $data['records'][date('r',$value->eventdate[0]->date)][] = $value;
+                $this->data['records'][date('r',$value->eventdate[0]->date)][] = $value;
                 // edebug($value);
             }
         }
 
-        $img = $this->getImage($this->params['get']);
-        if ($img) {
-            $data['banner']['obj'] = $img;
-            $data['banner']['md5'] = md5_file($img->path);
-        }
-
-        $data['html'] = $this->config[$this->params['get'].'_body'];
-        return $data;
+        $this->getImageBody($this->params['get']);
+        return $this->data;
     }
 
     function configure() {
         expHistory::set('editable', $this->params);
+        parent::configure();
         $order = isset($this->params['order']) ? $this->params['order'] : 'section';
         $dir = isset($this->params['dir']) ? $this->params['dir'] : '';
         
@@ -402,7 +340,7 @@ class eaasController extends expController {
         foreach ($this->tabs as $tab => $name) {
             // news tab
             if ($tab!='aboutus') {
-                $pullable[$tab] = expModules::listInstalledControllers($tab, $this->loc);
+                $pullable[$tab] = expModules::listInstalledControllers($tab);
                 $page[$tab] = new expPaginator(array(
                     'controller'=>$tab.'Controller',
                     'action' => $this->params['action'],
@@ -414,16 +352,16 @@ class eaasController extends expController {
                 ));
             }
 
-            $this->configImage($tab);
+            $this->configImage($tab);  // fix attached files for proper display of file manager control
         }
         // edebug($this->config['expFile']);
 
         assign_to_template(array(
-//                'config'=>$this->config, //FIXME already assigned in controllertemplate?
-                'pullable'=>$pullable,
-                'page'=>$page,
-                'views'=>$views
-            ));
+            'config'=>$this->config, // though already assigned in controllertemplate, we need to update expFiles
+            'pullable'=>$pullable,
+            'page'=>$page,
+//                'views'=>$views
+        ));
     }
 
     private function configImage($tab) {
@@ -435,12 +373,15 @@ class eaasController extends expController {
         }
     }
 
-    private function getImage($tab) {
+    private function getImageBody($tab) {
         if (count(@$this->config['expFile'][$tab.'_image'])>1) {
-            return new expFile($this->config['expFile'][$tab.'_image'][0]);
-        } else {
-            return false;
+            $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
+            if ($img) {
+                $this->data['banner']['obj'] = $img;
+                $this->data['banner']['md5'] = md5_file($img->path);
+            }
         }
+        $this->data['html'] = $this->config[$tab.'_body'];
     }
 
     function aggregateWhereClause($type='') {
@@ -469,6 +410,7 @@ class eaasController extends expController {
 
         return $sql;
     }
+
 }
 
 ?>

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -24,7 +24,7 @@ class bootstraptheme extends theme {
 
 	function name() { return "Twitter Bootstrap 2 Theme"; }
 	function author() { return "David Leffler"; }
-	function description() { return "An HTML5 responsive grids theme based on <a href=\"http://http://twitter.github.com/bootstrap/\" target=\"_blank\">Twitter Bootstrap v 2</a>"; }
+	function description() { return "An HTML5 responsive grids theme based on <a href=\"http://getbootstrap.com/2.3.2/\" target=\"_blank\">Twitter Bootstrap v 2</a>"; }
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -50,7 +50,7 @@
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1 focus=1}
                         {/if}
                         <div class="row">
-                            {control type=password name=pass1 label="Password"|gettext required=1}
+                            {control class="col-sm-4" type=password name=pass1 label="Password"|gettext required=1}
                             <div class="col-sm-4" style="padding-top: 8px;">
                                 <div class="pwstrength_viewport_progress"></div>
                             </div>
@@ -164,7 +164,7 @@
 {/literal}
 {/script}
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.3'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
 {literal}
     $(document).ready(function () {
         "use strict";

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -48,6 +48,14 @@ class storeCategoryController extends expNestedNodeController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
+
+    static function canImportData() {
+        return true;
+    }
+
+    static function canExportData() {
+        return true;
+    }
 
     public function edit() {
         global $db;
@@ -209,6 +217,102 @@ class storeCategoryController extends expNestedNodeController {
         }
 
         parent::update();
+    }
+
+    function export() {
+        $out = '"storeCategory"' . chr(13) . chr(10);  //FIXME or should this simply be 'category'?
+        $sc = new storeCategory();
+        $cats = $sc->find('all');
+        set_time_limit(0);
+        foreach ($cats as $cat) {
+            $out .= expString::outputField(storeCategory::buildCategoryString($cat->id, true), chr(13) . chr(10));
+        }
+
+        $filename = 'storecategory_export_' . time() . '.csv';
+
+        ob_end_clean();
+        ob_start("ob_gzhandler");
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+        echo $out;
+        exit; // Exit, since we are exporting
+    }
+
+    function import() {
+        assign_to_template(array(
+            'type' => $this
+        ));
+    }
+
+    function importCategory($file=null) {
+        if (empty($file->path)) {
+            $file = new stdClass();
+            $file->path = $_FILES['import_file']['tmp_name'];
+        }
+        if (empty($file->path)) {
+            echo gt('Not a Store Category Import CSV File');
+            return;
+        }
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
+        $handle = fopen($file->path, "r");
+
+        // read in the header line
+        $header = fgetcsv($handle, 10000, ",");
+        if (!in_array('storeCategory', $header)) {  //FIXME or should this simply be 'category' and a rank?
+            echo gt('Not a Store Category Import CSV File');
+            return;
+        }
+
+        $count = 1;
+        $errorSet = array();
+
+        // read in the data lines
+        while (($row = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            $count++;
+            $data = array_combine($header, $row);
+
+            if (empty($data['storeCategory'])) {  //FIXME or should this simply be 'category' and a rank?
+                $errorSet[$count] = gt("Is not a store category.");
+                continue;
+            } else {
+                $result = storeCategory::importCategoryString($data['storeCategory']);
+                if ($result) {
+                    echo "Successfully added row " . $count . ", category: " . $data['storeCategory'] . "<br/>";
+                } else {
+                    echo "Already existed row " . $count . ", category: " . $data['storeCategory'] . "<br/>";
+                }
+            }
+        }
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
+
+        if (count($errorSet)) {
+            echo "<br/><hr><br/><div style='color:red'><strong>".gt('The following records were NOT imported').":</strong><br/>";
+            foreach ($errorSet as $rownum => $err) {
+                echo "Row: " . $rownum;
+                if (is_array($err)) {
+                    foreach ($err as $e) {
+                        echo " -- " . $e . "<br/>";
+                    }
+                } else echo " -- " . $err . "<br/>";
+            }
+            echo "</div>";
+        }
     }
 
     function fix_categories() {

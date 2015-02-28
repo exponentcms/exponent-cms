@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -30,7 +30,7 @@ return array(
 	'name'=>'MySQLi Debugging Database Backend',
 	'author'=>'Dave Leffler',
 	'description'=>'MySQLi Database Backend which logs all MySQL calls.',
-	'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
+    'is_valid'=>0,//'is_valid'=>(function_exists('mysqli_connect') ? 1 : 0),
 	'version'=>expVersion::getVersion(true)
 );
 

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2014 OIC Group, Inc.
+ * Copyright (c) 2004-2015 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -65,7 +65,7 @@
 
 {script unique="aggregation"}
     function selectAll(val) {
-        var checks = document.getElementsByName("news[]");
+        var checks = document.getElementsByName("items[]");
         for (var i = 0; i < checks.length; i++) {
           checks[i].checked = val;
         }

@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -289,7 +289,7 @@ class administrationController extends expController {
         }
         
 		assign_to_template(array(
-            'menu'=>(expSession::get('framework') == 'bootstrap3' || (NEWUI && expSession::get('framework') != 'bootstrap')) ? $sorted : json_encode($sorted),
+            'menu'=>(bs3()) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }
@@ -505,7 +505,7 @@ class administrationController extends expController {
 	public static function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
-        expSession::un_set('framework');
+//        expSession::un_set('framework');
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
 		expTheme::removeCss();
@@ -1052,7 +1052,7 @@ class administrationController extends expController {
 		    $message .= ' '.gt('with').' '.$this->params['sv'].' '.gt('style variation');
 	    }
 	    flash('message',$message);
-        expSession::un_set('framework');
+//        expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
 //        expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
@@ -1073,7 +1073,7 @@ class administrationController extends expController {
 		if ($this->params['theme'] != DISPLAY_THEME_REAL || $this->params['sv'] != THEME_STYLE_REAL) {
 			flash('notice',$message);
 		}
-        expSession::un_set('framework');
+//        expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
 //		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
@@ -1084,7 +1084,7 @@ class administrationController extends expController {
 		if (is_readable(BASE."themes/".$this->params['theme']."/class.php")) {
 			include_once(BASE."themes/".$this->params['theme']."/class.php");
             $themeclass = $this->params['theme'];
-			$theme = new $themeclass();
+			$theme = new $themeclass($this->params);
 			$theme->configureTheme();
 		}
 	}
@@ -1337,7 +1337,7 @@ class administrationController extends expController {
         if (empty($this->params['profile'])) return;
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
-        expSession::un_set('framework');
+//        expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
@@ -1385,6 +1385,13 @@ class theme {
 	function name() { return "theme"; }
 	function author() { return ""; }
 	function description() { return gt("The theme shell"); }
+
+    /**
+     * @param array $params
+     */
+    function __construct($params = array()) {
+        $this->params = $params;
+    }
 
 	/**
 	 * Method to Configure theme settings

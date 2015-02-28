@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -66,8 +66,7 @@ abstract class basetemplate {
         $this->tpl->cache_id = md5($this->viewfile);
 
         // set up plugin search order based on framework
-        $framework = expSession::get('framework');
-        if ($framework == 'bootstrap3') {
+        if (bs3(true)) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap3',
@@ -76,7 +75,7 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif ($framework == 'bootstrap') {
+        } elseif (bs2()) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/bootstrap',
@@ -84,7 +83,7 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif (NEWUI) {
+        } elseif (newui()) {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/newui',  // we leave out bootstrap3 & bootstrap on purpose
@@ -92,7 +91,7 @@ abstract class basetemplate {
                 BASE.'framework/plugins',
                 SMARTY_PATH.'plugins',
             ));
-        } elseif ($framework == 'jquery') {
+        } elseif (framework() == 'jquery') {
             $this->tpl->setPluginsDir(array(
                 BASE.'themes/'.DISPLAY_THEME.'/plugins',
                 BASE.'framework/plugins/jquery',

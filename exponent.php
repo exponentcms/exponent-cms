@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2014 OIC Group, Inc.
+# Copyright (c) 2004-2015 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -52,7 +52,8 @@ $available_controllers = expModules::initializeControllers();
 $history = new expHistory(); //<--This is the new flow subsystem
 
 // Initialize the javascript subsystem
-if (expJavascript::inAjaxAction()) set_error_handler('handleErrors');
+if (expJavascript::inAjaxAction())
+	set_error_handler('handleErrors');
 
 // Validate the session and populate the $user variable
 if ($db->havedb) {
