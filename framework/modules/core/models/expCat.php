@@ -102,12 +102,12 @@ class expCat extends expRecord {
     }
 
     /*
-     * Return array of all expTag records in system
+     * Return array of all expCat records in system
      */
     public static function selectAllCatContentType() {
         global $db;
 
-        return $db->selectColumn('content_expTags','content_type',null,null,true);
+        return $db->selectColumn('content_expCats','content_type',null,null,true);
     }
 
 }
