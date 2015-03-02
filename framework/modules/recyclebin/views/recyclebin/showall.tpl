@@ -19,6 +19,13 @@
 
 <div class="recyclebin orphan-content">
     <h1 class="main">{'Recycle Bin'|gettext}</h1>
+    {permissions}
+        <div class="module-actions">
+            {if $permissions.manage}
+                {icon class=delete action=remove_all text='Empty Recycle Bin'|gettext title='Empty the Recycle Bin'|gettext onclick="return confirm('Are you sure you want to permanently delete all modules and their content from the recyclebin?');window.close();"}
+            {/if}
+        </div>
+    {/permissions}
     {$oldmod = ''}
     {foreach from=$items item=item}
         {if $item->module != $oldmod}
