@@ -116,12 +116,15 @@ class expCatController extends expController {
         foreach ($cats->records as $record) {
             $cats->modules[$record->module][] = $record;
         }
+        if (SITE_FILE_MANAGER == 'elfinder') {
+            unset($cats->modules['file']);  // we're not using the traditional file manager
+        }
         if (!empty($this->params['model']) && $this->params['model'] == 'file') {
             $catlist[0] = gt('Root Folder');
         } else {
             $catlist[0] = gt('Uncategorized');
         }
-        if (!empty($cats->modules)) foreach ($cats->modules as $module) {
+        if (!empty($cats->modules)) foreach ($cats->modules as $key=>$module) {
             foreach ($module as $listing) {
                 $catlist[$listing->id] = $listing->title;
             }
