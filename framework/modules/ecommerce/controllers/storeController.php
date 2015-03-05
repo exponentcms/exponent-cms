@@ -215,6 +215,8 @@ class storeController extends expController {
             $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
         }
 
+        if (empty($router->params['title']))  // we need to pass on the category for proper paging
+            $router->params['title'] = $this->category->sef_url;
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
         if ($this->category->find('count') > 0) { // there are categories
             $page = new expPaginator(array(
