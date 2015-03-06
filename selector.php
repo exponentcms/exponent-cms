@@ -71,6 +71,9 @@ if (is_readable(BASE.$page)) {
 	
 	if (isset($_REQUEST['dest'])) {
 		$source_select['dest'] = expString::sanitize($_REQUEST['dest']);
+        if (stripos($source_select['dest'], 'javascript:') !== FALSE) {
+            $source_select['dest'] = substr($source_select['dest'], 0, stripos($source_select['dest'], 'javascript:'));
+        }
 	} else if (!isset($source_select['dest'])) {
 		$source_select['dest'] = null;
 	}
