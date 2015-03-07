@@ -33,6 +33,11 @@ class pixidouController extends expController {
     static function description() { return gt("Add and manage Exponent Files"); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }
 
+    static function hasSources()
+    {
+        return false;
+    }
+
     function editor() {
         global $user;
         

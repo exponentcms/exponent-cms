@@ -128,7 +128,7 @@ class recyclebinController extends expController
                 );  // delete recycle bin holder
             }
         }
-        flash('notice', gt('Recycle Bin Emptied'));
+        flash('notice', gt('Recycle Bin has been Emptied'));
         expHistory::back();
     }
 

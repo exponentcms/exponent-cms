@@ -168,7 +168,7 @@ abstract class expController {
     }
 
     /**
-     * does module have sources available?
+     * does module have sources available? or does it treat content globally
      *
      * @return bool
      */
@@ -180,16 +180,16 @@ abstract class expController {
      * does module have views available?
      *
      * @return bool
-     */
+     */  //NOTE: Never used - equivalent to !empty ($this->useractions) via expModules::listUserRunnableControllers()?
     static function hasViews() {
         return true;
     }
 
     /**
-     * does module have content available?
+     * does module have content (stored items) available?
      *
      * @return bool
-     */
+     */  //NOTE: Never used, better utilized/implemented as isSearchable()
     static function hasContent() {
         return true;
     }
@@ -204,7 +204,7 @@ abstract class expController {
     }
 
     /**
-     * is module content searchable?
+     * is module content searchable? should it be added to search index?
      *
      * @return bool
      */
@@ -234,14 +234,14 @@ abstract class expController {
      * does this module require configuration?
      *
      * @return bool
-     */
+     */  //NOTE: Never Used
     static function requiresConfiguration() {
         return false;
     }
 
     /**
-     * glue to make the view template aware of the module  //NOTE: DEPRECATED
-     */
+     * glue to make the view template aware of the module
+     */  //NOTE: DEPRECATED
     function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path' => $this->asset_path,
@@ -443,8 +443,6 @@ abstract class expController {
      * default view for individual item
      */
     function show() {
-//        global $db;
-
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
@@ -467,8 +465,8 @@ abstract class expController {
     }
 
     /**
-     * view the item by referring to its title  //NOTE: DEPRECATED??
-     */
+     * view the item by referring to its title
+     */  //NOTE: DEPRECATED??
     function showByTitle() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -499,8 +497,8 @@ abstract class expController {
     }
 
     /**
-     * view items referenced by tags  //NOTE: DEPRECATED??
-     */
+     * view items referenced by tags
+     */  //NOTE: DEPRECATED??
     function showByTags() {
         global $db;
 
@@ -545,8 +543,8 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module //NOTE: deprecated in favor of edit w/o id param
-     */
+     * create an item in this module
+     */ //NOTE: deprecated in favor of edit w/o id param
     function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
         //if (!empty($this->params['instance'])) $args['instance'] = $this->params['instance'];
@@ -590,8 +588,6 @@ abstract class expController {
      * merge/move aggregated item into this module
      */
     function merge() {
-//        global $db;
-
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
         $record = $this->$modelname->find($this->params['id']);
@@ -952,8 +948,6 @@ abstract class expController {
      * @return array
      */
     function getRSSContent() {
-//        global $db;
-
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
 //        $where = empty($where) ? '1' : $where;
@@ -1101,8 +1095,6 @@ abstract class expController {
      * download a file attached to item
      */
     function downloadfile() {
-//        global $db;
-
         if (!isset($this->config['allowdownloads']) || $this->config['allowdownloads'] == true) {
             //if ($db->selectObject('content_expFiles', 'content_type="'.$this->baseclassname.'" AND expfiles_id='.$this->params['id']) != null) {
             expFile::download($this->params['id']);
@@ -1243,25 +1235,20 @@ abstract class expController {
      * @param $loc
      */
     function delete_In($loc) {
-        $this->delete_instance();
+        $this->delete_instance($loc);
     }
 
     /**
      * delete module, config, and all its items
      */
     function delete_instance($loc = false) {
-//        global $db;
-
         $model = new $this->basemodel_name();
-//        $where = null;
         $where = 1;
-        if ($this->hasSources() || $loc) $where = "location_data='" . serialize($this->loc) . "'";
-        //FIXME we are only delete base table items, not other items or assoc/attached items
-//        $db->delete($model->tablename, $where);
-
+        if ($this->hasSources() || $loc)
+            $where = "location_data='" . serialize($this->loc) . "'";
         $items = $model->find('all',$where);
         foreach ($items as $item) {
-            $item->delete();
+            $item->delete();  // model should delete attachments and other associated objects
         }
         $cfg = new expConfig($this->loc);
         $cfg->delete();

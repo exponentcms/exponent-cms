@@ -53,6 +53,11 @@ class twitterController extends expController {
         return "Jonathan Worent - OIC Group, Inc";
     }
 
+    static function requiresConfiguration()
+    {
+        return true;
+    }
+
     public function showall() {
         if (!empty($this->config['consumer_key'])) {
             // create instance

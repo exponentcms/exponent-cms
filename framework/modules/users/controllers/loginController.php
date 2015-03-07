@@ -42,6 +42,10 @@ class loginController extends expController {
     static function displayname() { return gt("Login Manager"); }
     static function description() { return gt("This is the login management module. It allows for logging in, logging out, etc."); }
 
+    static function hasSources() {
+        return false;
+    }
+
 	/**
 	 * Display a login view
 	 */

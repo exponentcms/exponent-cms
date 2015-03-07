@@ -40,6 +40,10 @@ class ealertController extends expController {
     static function displayname() { return gt("E-Alerts"); }
     static function description() { return gt("This module will allow users to sign up for email alerts on a module by module basis."); }
     
+    static function hasSources() {
+        return false;
+    }
+
     public function showall() {
         $ealerts = new expeAlerts();
         $subscriptions = array();

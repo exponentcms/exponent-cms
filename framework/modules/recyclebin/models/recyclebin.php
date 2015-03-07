@@ -105,7 +105,7 @@ class recyclebin extends expRecord
     {
         global $db;
 
-        //FIXME we should only send module with sources or configs to the recycle bin NOT things like navigation or rss
+        //FIXME we should only send module with sources or configs to the recycle bin NOT things like rss, addressbook
         if ($loc->mod != 'container') {
             $oldSecRef = $db->selectObject(
                 "sectionref",

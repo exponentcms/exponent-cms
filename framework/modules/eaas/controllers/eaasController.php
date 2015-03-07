@@ -64,6 +64,11 @@ class eaasController extends expController {
     static function hasSources() { return false; }  // must be explicitly added by config['add_source'] or config['aggregate']
 //    static function isSearchable() { return true; }
 
+    static function requiresConfiguration()
+    {
+        return true;
+    }
+
     public function showall() {
         expHistory::set('viewable', $this->params);
         $info = array();
