@@ -1,4 +1,4 @@
-// Spectrum Colorpicker v1.6.0
+// Spectrum Colorpicker v1.6.1
 // https://github.com/bgrins/spectrum
 // Author: Brian Grinstead
 // License: MIT
@@ -359,6 +359,10 @@
             chooseButton.bind("click.spectrum", function (e) {
                 e.stopPropagation();
                 e.preventDefault();
+
+                if (IE && textInput.is(":focus")) {
+                    textInput.trigger('change');
+                }
 
                 if (isValid()) {
                     updateOriginalInput(true);
@@ -1172,7 +1176,7 @@
         }
     };
 
-    // TinyColor v1.1.1
+    // TinyColor v1.1.2
     // https://github.com/bgrins/TinyColor
     // Brian Grinstead, MIT License
 
@@ -1187,7 +1191,7 @@
         mathMax = math.max,
         mathRandom = math.random;
 
-    var tinycolor = function tinycolor (color, opts) {
+    var tinycolor = function(color, opts) {
 
         color = (color) ? color : '';
         opts = opts || { };
@@ -2276,7 +2280,6 @@
 
     window.tinycolor = tinycolor;
     })();
-
 
     $(function () {
         if ($.fn.spectrum.load) {

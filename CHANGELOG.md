@@ -11,6 +11,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Added / Fixed / Changed for 2.3.4
 -----------------------
 ### Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.3
+  - adds 'empty recycle bin' feature to remove all items in recycle bin
   - includes all fixes from v2.3.3 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
