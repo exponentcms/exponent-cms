@@ -2976,6 +2976,9 @@ class storeController extends expController {
 
         fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
+
+        // update search index
+        $this->addContentToSearch();
     }
 
 }

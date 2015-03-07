@@ -245,6 +245,10 @@ class importexportController extends expController {
             }
         }
         unlink($this->params['filename']);
+
+        // update search index
+        $type->addContentToSearch();
+
         flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
         expHistory::back();
     }
@@ -889,6 +893,9 @@ class importexportController extends expController {
 
         fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
+
+        // update search index
+        searchController::spider();
     }
 
 }
