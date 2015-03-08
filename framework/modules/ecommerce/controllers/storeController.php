@@ -1086,6 +1086,11 @@ class storeController extends expController {
 
     }
 
+    /**
+     * Add all products (products, event registrations, donations, & gift cards) to search index
+     *
+     * @return int
+     */
     function addContentToSearch() {
         global $db, $router;
 
@@ -1117,7 +1122,11 @@ class storeController extends expController {
                 }
 
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                $controller = $cnt['product_type'];
+                if ($controller == 'giftcard')
+                    $controller = 'product';
+//                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $controller, 'action' => 'show', 'title' => $cnt['sef_url'])));
 //                $search_record->ref_module = 'store';
                 $search_record->ref_module  = $this->baseclassname;
 //                $search_record->ref_type = $this->basemodel_name;
@@ -1125,6 +1134,10 @@ class storeController extends expController {
 //                $search_record->category = 'Products';
                 $prod = new $search_record->ref_type();
                 $search_record->category = $prod->product_name;
+                if ($search_record->ref_type == 'eventregistration') {
+                    $event = new eventregistration($origid);
+                    $search_record->title .= ' - ' . expDateTime::format_date($event->eventdate);
+                }
 
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
