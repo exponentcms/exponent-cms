@@ -1122,21 +1122,21 @@ class storeController extends expController {
                 }
 
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                $controller = $cnt['product_type'];
-                if ($controller == 'giftcard')
-                    $controller = 'product';
-//                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
-                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $controller, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                if ($controller == 'giftcard') {
+                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'showGiftCards')));
+                } else {
+//                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $cnt['product_type'], 'action' => 'show', 'title' => $cnt['sef_url'])));
+                }
 //                $search_record->ref_module = 'store';
                 $search_record->ref_module  = $this->baseclassname;
 //                $search_record->ref_type = $this->basemodel_name;
                 $search_record->ref_type = $cnt['product_type'];
 //                $search_record->category = 'Products';
-                $prod = new $search_record->ref_type();
+                $prod = new $search_record->ref_type($origid);
                 $search_record->category = $prod->product_name;
                 if ($search_record->ref_type == 'eventregistration') {
-                    $event = new eventregistration($origid);
-                    $search_record->title .= ' - ' . expDateTime::format_date($event->eventdate);
+                    $search_record->title .= ' - ' . expDateTime::format_date($prod->eventdate);
                 }
 
                 $search_record->original_id = $origid;
