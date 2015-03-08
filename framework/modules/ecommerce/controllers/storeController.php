@@ -1122,7 +1122,7 @@ class storeController extends expController {
                 }
 
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                if ($controller == 'giftcard') {
+                if ($cnt['product_type'] == 'giftcard') {
                     $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'showGiftCards')));
                 } else {
 //                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
