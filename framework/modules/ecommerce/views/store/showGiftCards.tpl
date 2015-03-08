@@ -91,10 +91,10 @@
                     <td>
                         {group label='Personalize your gift card'|gettext}
                             {control type="hidden" name="options_shown" id="options_shown" value=$option_set}
-                            <h3>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</h3>
+                            <h4>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</h4>
                             <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text" class="text form-control" size="20" name="toname" value="{$records.toname}"></div>
                             <div class="text-control control  "><label class="label">{"From"|gettext}:</label><input type="text" class="text form-control" size="20" value="{$records.fromname}" name="fromname"></div>
-                            {if !empty($config.custom_message_product)}<br><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em>{/if}
+                            {if !empty($config.custom_message_product)}<h4><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em></h4>{/if}
                             <div class="text-control control "><label class="label">{"Custom Message (100 characters max)"|gettext}</label>{control type="textarea" name="msg" cols="45" rows="3" value=$records.msg}</textarea></div>
                         {/group}
                     </td>
