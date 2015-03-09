@@ -105,6 +105,7 @@ class expTheme
                 $framework = 'yui';  // yui is the 2.x default framework
             }
         }
+        expSession::set('framework', $framework);
 
         if (!empty($config['lessvars'])) {
             $less_vars = $config['lessvars'];
@@ -641,11 +642,18 @@ class expTheme
 
     public static function getPrinterFriendlyTheme()
     {
+        global $framework;
+
         $common = 'framework/core/printer-friendly.php';
         $theme = 'themes/' . DISPLAY_THEME . '/printer-friendly.php';
+        $fw = expSession::get('framework');
+        if (empty($framework))
+            $framework = 'framework/core/printer-friendly.' . $fw . '.php';
 
         if (is_readable($theme)) {
             return $theme;
+        } elseif (is_readable($framework)) {
+            return $framework;
         } elseif (is_readable($common)) {
             return $common;
         } else {

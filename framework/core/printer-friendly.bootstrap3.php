@@ -1,12 +1,16 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<?php
+<?php 
     expTheme::head(array(
-    	"css_primer"=>false,
     	"css_core"=>array('button'),
-    	"css_links"=>true,
-    	"css_theme"=>false
+        "lessvars"=>array(
+            'menu_height'=>MENU_HEIGHT,
+            'menu_width'=>MENU_WIDTH,
+        ),
+        "css_links"=>true,
+    	"css_theme"=>false,
+        "framework"=>'bootstrap3'
     ));
     ?>
 	<style>
