@@ -426,7 +426,7 @@
                     </div>
                     <h4>{'Billing Information'|gettext}</h4>
                     <div class="table-responsive">
-                        <table class="table order-info">
+                        <table class="table table-striped order-info">
                             <tbody>
                             {foreach from=$order->billingmethod[0]->billingtransaction item=bt name=foo}
                                 <tr style="border-bottom: 1px solid gray;">
@@ -662,7 +662,7 @@
                         </span>
                     </div>
                     <div class="table-responsive">
-                        <table class="table order-items" border="0" cellspacing="0" cellpadding="0">
+                        <table class="table table-striped order-items" border="0" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
                                     <th>
@@ -842,7 +842,7 @@
                         <div class="col-xs-6">
                             <div class="panel panel-total">
                                 <div class="table-responsive">
-                                    <table class="table totals-info" border="0" cellspacing="0" cellpadding="0">
+                                    <table class="table table-striped totals-info" border="0" cellspacing="0" cellpadding="0">
                                         <thead>
                                             <tr>
                                                 {if !$pf}
