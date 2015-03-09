@@ -38,7 +38,6 @@ class linksController extends expController {
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
-    static function requiresConfiguration() { return true; }
     static function displayname() { return gt("Link Manager"); }
     static function description() { return gt("Add and manage a list of URLs"); }
     static function author() { return "Phillip Ball - OIC Group, Inc"; }

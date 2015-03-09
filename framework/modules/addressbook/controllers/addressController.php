@@ -51,6 +51,10 @@ class addressController extends expController {
     static function description() { return gt("Display and manage addresses of users on your site."); }
     static function canImportData() { return true;}
 
+    static function hasSources() {
+        return false;
+    }
+
     function showall() {
 //        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
         $this->myaddressbook();

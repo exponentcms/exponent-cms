@@ -180,7 +180,7 @@ class giftcard extends expRecord {
                 '.bootstrap',
                 '',
             );
-        } elseif bs3(true)) {
+        } elseif (bs3(true)) {
             $vars = array(
                 '.bootstrap3',
                 '.bootstrap',

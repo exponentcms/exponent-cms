@@ -69,10 +69,16 @@ class formsController extends expController {
         return gt('Form Data');
     }
 
+    static function requiresConfiguration()
+    {
+        return true;
+    }
+
     public function showall() {
 //        global $db;
 
         expHistory::set('viewable', $this->params);
+        $f = null;
         if (!empty($this->config)) {
             $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
         } elseif (!empty($this->params['title'])) {

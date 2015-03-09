@@ -22,7 +22,7 @@
         <div class="related-actions">
             {help text="Get Help with"|gettext|cat:" "|cat:("Managing Forms"|gettext) module="manage-site-forms"}
         </div>
-        <h2>{"Site Forms Manager"|gettext}</h2>
+        <h2>{if $select}{"Assign Form to Module"|gettext}{else}{"Site Forms Manager"|gettext}{/if}</h2>
     </div>
     <div class="module-actions">
         {icon class="add" action="edit_form" text="Create a New Form"|gettext}

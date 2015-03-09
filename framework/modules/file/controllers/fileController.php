@@ -728,6 +728,9 @@ class fileController extends expController {
             closedir($dir);
         }
 
+        // update search index
+        searchController::spider();
+
         // check to see if we need to install or upgrade the restored database
         expVersion::checkVersion();
 

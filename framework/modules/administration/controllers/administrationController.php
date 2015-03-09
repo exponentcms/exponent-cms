@@ -37,6 +37,10 @@ class administrationController extends expController {
     static function displayname() { return gt("Administration Controls"); }
     static function description() { return gt("This is the Administration Module"); }
 
+    static function hasSources() {
+        return false;
+    }
+
 	public function install_tables() {
 		$tables = expDatabase::install_dbtables();
 		ksort($tables);
