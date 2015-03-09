@@ -82,7 +82,7 @@ class search extends expRecord {
                 }*/
             } else if ($records[$i]->ref_type == 'section') {
                 $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
-                if (empty($section) || !navigationController::canView($section)) {
+                if (empty($section) || !section::canView($section)) {
                     unset($recs[$i]); // page is not available for viewing
                     //$records[$i]->canview = false;
                 }
@@ -100,7 +100,7 @@ class search extends expRecord {
                     $sectionref = $db->selectObject("sectionref", "module='" . $rloc->mod . "' AND source='" . $rloc->src . "'");
                     if (!empty($sectionref)) {
                         $section = $db->selectObject("section", "id=" . $sectionref->section);
-                        if (empty($section) || !(navigationController::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
+                        if (empty($section) || !(section::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
                             continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;

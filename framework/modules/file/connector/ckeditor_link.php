@@ -210,7 +210,7 @@
 		</table>
 <?PHP
 if ($user) {
-    $sections = navigationController::levelTemplate(0,0);
+    $sections = section::levelTemplate(0,0);
     $standalones = $db->selectObjects('section','parent = -1');
 ?>
 <strong><?PHP echo gt('Site Hierarchy'); ?></strong><hr size="1" />

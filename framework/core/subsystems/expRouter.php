@@ -769,12 +769,12 @@ class expRouter {
             $sectionObj = $db->selectObject('section','id='. intval($section));
         }
 //        $sectionObj = $db->selectObject('section','id='. intval($section));
-        if (!navigationController::canView($sectionObj)) {
+        if (!section::canView($sectionObj)) {
             define('AUTHORIZED_SECTION',0);
         } else {
             define('AUTHORIZED_SECTION',1);
         }
-        if (!navigationController::isPublic($sectionObj)) {
+        if (!section::isPublic($sectionObj)) {
             define('PUBLIC_SECTION',0);
         } else {
             define('PUBLIC_SECTION',1);
