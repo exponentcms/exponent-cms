@@ -1,0 +1,35 @@
+/* announcement view for news module */
+.events .announcement h2 {
+	text-align : center;
+}
+
+.events.announcement .item.announcement {
+	background-color      : #ffed9f;
+	color                 : black;
+	padding-left          : 20px;
+	margin                : 0 10px 20px;
+	border                : 4px;
+	border-style          : solid;
+	border-color          : #000000;
+	border-radius         : 10px;
+	-moz-border-radius    : 10px;
+	-webkit-border-radius : 10px;
+	display               : block;
+	-webkit-box-shadow    : 0px 0px 8px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow       : 0px 0px 8px rgba(0, 0, 0, 0.5);
+	box-shadow            : 0px 0px 8px rgba(0, 0, 0, 0.5);
+}
+
+.events.announcement .item.announcement.featured {
+	background-color: #ffb7a7;
+}
+
+.events.announcement > .item.announcement > h2 > a
+{
+	color: black;
+	text-decoration: none;
+}
+
+/*.events.announcement .item-actions a {*/
+	/*color : #60a165 !important;*/
+/*}*/
