@@ -155,22 +155,17 @@ class section extends expRecord {
     /**
      * Check for cascading page view permission, esp. if not public
      */
-    public static function canView($section) {
-        global $db;
-
-        if ($section == null) {
-            return false;
-        }
-        if ($section->public == 0) {
+    public function canView() {
+        if ($this->public == 0) {
             // Not a public section.  Check permissions.
-            return expPermissions::check('view', expCore::makeLocation('navigation', '', $section->id));
+            return expPermissions::check('view', expCore::makeLocation('navigation', '', $this->id));
         } else { // Is public.  check parents.
-            if ($section->parent <= 0) {
+            if ($this->parent <= 0) {
                 // Out of parents, and since we are still checking, we haven't hit a private section.
                 return true;
             } else {
-                $s = $db->selectObject('section', 'id=' . $section->parent);
-                return self::canView($s);
+                $s = new section($this->parent);
+                return $s->canView();
             }
         }
     }
@@ -178,37 +173,34 @@ class section extends expRecord {
     /**
      * Check to see if page is public with cascading
      */
-    public static function isPublic($s) {
-        if ($s == null) {
-            return false;
+    public function isPublic() {
+        $section = $this;
+        while ($section->public && $section->parent > 0) {
+            $section = new section($section->parent);
         }
-        while ($s->public && $s->parent > 0) {
-            $s = new section($s->parent);
-        }
-        $lineage = (($s->public) ? 1 : 0);
-        return $lineage;
+        return (($section->public) ? 1 : 0);
     }
 
     /**
      * Check to see if page is top level page
      */
-    public static function isTopLevel($s) {
-        return $s->parent == 0;
+    public function isTopLevel() {
+        return $this->parent == 0;
     }
 
     /**
      * Check to see if page is standalone
      */
-    public static function isStandalone($s) {
-        return $s->parent == -1;
+    public function isStandalone() {
+        return $this->parent == -1;
     }
 
     /**
      * return page parent
      */
-    public static function getParent($s) {
-        if ($s->parent != 0 && $s->parent != -1) {
-            return $s->parent;
+    public  function getParent() {
+        if ($this->parent != 0 && $this->parent != -1) {
+            return new section($this->parent);
         } else {
             return false;
         }
@@ -217,22 +209,25 @@ class section extends expRecord {
     /**
      * return page's top level parent
      */
-    public static function getTopParent($s) {
-        $parent = $s->parent;
+    public function getTopParent() {
+        $page = $this;
         do {
-            $ret = $parent->parent;
-            $parent = self::getParent($parent->parent);
-        } while ($parent !== false);
+            $ret = $page;
+            $page = $page->getParent();
+        } while ($page !== false);
         return $ret;
     }
 
     /**
      * return sibling pages including top level and standalone
      */
-    public static function getSiblings($s) {
-        global $db;
-
-        $siblings = $db->selectObjects('section', 'parent=' . $s->parent);
+    public function getSiblings($exclude_self = true) {
+        if ($exclude_self) {
+            $exclusion = ' AND id!=' . $this->id;
+        } else {
+            $exclusion = '';
+        }
+        $siblings = $this->find('all', 'parent=' . $this->parent . $exclusion);
         return $siblings;
     }
 

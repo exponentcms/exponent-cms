@@ -763,18 +763,18 @@ class expRouter {
         global $db;
 
         if ($section == "*") {
-            $controller = expModules::getModuleClassName($this->params['controller']);
-            $sectionObj = call_user_func($controller."::getSection",$this->params);
+            $sectionObj = call_user_func(expModules::getModuleClassName($this->params['controller']) . "::getSection", $this->params);
         } else {
-            $sectionObj = $db->selectObject('section','id='. intval($section));
+//            $sectionObj = $db->selectObject('section','id='. intval($section));
+            $sectionObj = new section(intval($section));
         }
 //        $sectionObj = $db->selectObject('section','id='. intval($section));
-        if (!section::canView($sectionObj)) {
+        if (!$sectionObj->canView()) {
             define('AUTHORIZED_SECTION',0);
         } else {
             define('AUTHORIZED_SECTION',1);
         }
-        if (!section::isPublic($sectionObj)) {
+        if (!$sectionObj->isPublic()) {
             define('PUBLIC_SECTION',0);
         } else {
             define('PUBLIC_SECTION',1);

@@ -525,7 +525,8 @@ class helpController extends expController {
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }
-	    $section = $db->selectObject('section','id='. intval($sid));
+//	    $section = $db->selectObject('section','id='. intval($sid));
+        $section = new section(intval($sid));
 	    return $section;
 	}
 	

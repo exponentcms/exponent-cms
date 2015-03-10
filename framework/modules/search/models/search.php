@@ -81,8 +81,9 @@ class search extends expRecord {
                     $records[$i]->score = $score;   
                 }*/
             } else if ($records[$i]->ref_type == 'section') {
-                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
-                if (empty($section) || !section::canView($section)) {
+//                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
+                $section = new section($records[$i]->original_id);
+                if (empty($section) || !$section->canView()) {
                     unset($recs[$i]); // page is not available for viewing
                     //$records[$i]->canview = false;
                 }
