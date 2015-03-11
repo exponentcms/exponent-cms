@@ -76,7 +76,9 @@
                                     <div class="bodycopy">
                                         {$cmt->body}
                                         {if $config.usescomments!=1 && !$config.disable_nested_comments}
-                                            <a class="comment-reply" title="{"Reply to this comment"|gettext}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
+                                            <div class="item-actions">
+                                                <a class="comment-reply" title="{"Reply to this comment"|gettext}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
+                                            </div>
                                         {/if}
                                     </div>
                                     {if isset($cmt->children)}
