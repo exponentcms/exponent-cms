@@ -932,7 +932,7 @@ class fileController extends expController {
         foreach (array_keys($files) as $file) {
             expFile::copyDirectoryStructure($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	copy($dest_dir.'/files/'.$file,BASE.'files/'.$file);
-        	$filecount += 1;
+        	$filecount++;
         }
 
         expSession::un_set('dest_dir');

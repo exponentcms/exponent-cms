@@ -44,8 +44,10 @@ function smarty_function_link($params,&$smarty) {
 	            unset($params['showby']);
 	        }
 	    }
-	   unset($params['parse_attrs']);
-	   unset($params['record']);
+	   unset(
+           $params['parse_attrs'],
+           $params['record']
+       );
 	}
 	// if the module wasn't passed in we will assume it is the same as the module for this view
 	if (!isset($params['module']) && !isset($params['controller'])) {

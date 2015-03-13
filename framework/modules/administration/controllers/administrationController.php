@@ -1442,13 +1442,15 @@ class theme {
 		if (strtolower($sv)=='default') {
 		   $sv='';
 		}
-		unset ($params['sv']);
-		unset ($params['controller']);
-		unset ($params['action']);
-        unset ($params['cid']);
-        unset ($params['scayt_verLang']);
-        unset ($params['slingbar-top']);
-        unset ($params['XDEBUG_SESSION']);
+		unset (
+            $params['sv'],
+            $params['controller'],
+            $params['action'],
+            $params['cid'],
+            $params['scayt_verLang'],
+            $params['slingbar-top'],
+            $params['XDEBUG_SESSION']
+        );
 		foreach ($params as $key=>$value) {
 			if ($key[0] == '_') {
 				unset ($params[$key]);

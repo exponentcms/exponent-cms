@@ -302,8 +302,10 @@ class expSession {
 		$db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
 
 		self::set('display_theme',DISPLAY_THEME_REAL);
-		unset($_SESSION[SYS_SESSION_KEY]['user']);
-		unset($_SESSION[SYS_SESSION_KEY]['ticket']);
+		unset(
+            $_SESSION[SYS_SESSION_KEY]['user'],
+            $_SESSION[SYS_SESSION_KEY]['ticket']
+        );
 		//unset($_SESSION[SYS_SESSION_KEY]['vars']);
 		self::un_set("permissions");
 		//redirect_to(array('section'=>SITE_DEFAULT_SECTION));

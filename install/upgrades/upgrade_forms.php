@@ -119,8 +119,10 @@ class upgrade_forms extends upgradescript {
                 $fcs = $db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
                 foreach ($fcs as $fc) {
                     $fc->forms_id = $newform->id;
-                    unset ($fc->id);
-                    unset ($fc->form_id);
+                    unset (
+                        $fc->id,
+                        $fc->form_id
+                    );
                     $fc->rank++;  // 2.0 index begins at 1
                     $db->insertObject($fc,'forms_control');
                 }
@@ -166,7 +168,7 @@ class upgrade_forms extends upgradescript {
                     $newconfig->location_data = $newmodinternal;
                     $newconfig->save();
                 }
-                $modules_converted += 1;
+                $modules_converted++;
             }
 	    }
 

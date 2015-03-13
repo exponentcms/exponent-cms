@@ -88,7 +88,7 @@ class blogController extends expController {
         $users = array();
         foreach ($blogs as $blog) {
             if (isset($users[$blog->poster])) {
-                $users[$blog->poster]->count += 1;
+                $users[$blog->poster]->count++;
             } else {
                 $users[$blog->poster] = new user($blog->poster);
                 $users[$blog->poster]->count = 1;
@@ -113,7 +113,7 @@ class blogController extends expController {
 	        $year = date('Y',$date);
 	        $month = date('n',$date);
 	        if (isset($blog_date[$year][$month])) {
-	            $blog_date[$year][$month]->count += 1;
+	            $blog_date[$year][$month]->count++;
 	        } else {
                 $count++;
                 if ($count > $limit) break;

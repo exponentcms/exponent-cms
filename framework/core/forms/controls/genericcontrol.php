@@ -136,7 +136,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
-        if ((bs()) && !empty($this->prepend)) {
+        if (!empty($this->prepend) && bs()) {
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";

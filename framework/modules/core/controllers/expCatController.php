@@ -91,7 +91,7 @@ class expCatController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>self::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
@@ -251,7 +251,7 @@ class expCatController extends expController {
                     $cats[$record->catid]->name = $record->cat;
                     $cats[$record->catid]->color = $record->color;
                 } else {
-                    $cats[$record->catid]->count += 1;
+                    $cats[$record->catid]->count++;
                 }
                 if (empty($grouplimit)) {
                     $cats[$record->catid]->records[] = $record;

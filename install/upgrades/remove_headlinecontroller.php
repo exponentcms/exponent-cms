@@ -85,7 +85,7 @@ class remove_headlinecontroller extends upgradescript {
 		    $cn->view = 'showall_headline';
 		    $cn->action = 'showall';
 	        $db->updateObject($cn,'container');
-	        $modules_converted += 1;
+	        $modules_converted++;
 	    }
 
 		// create a text item for each headline item
@@ -102,7 +102,7 @@ class remove_headlinecontroller extends upgradescript {
 			$text->created_at = $hl->created_at;
             $text->edited_at = $hl->edited_at;
 			$text->update();
-			$headlines_converted += 1;
+			$headlines_converted++;
 		}
 
 		// delete headline table

@@ -106,7 +106,7 @@ class upgrade_navigation extends upgradescript {
                 }
             }
 	        $db->updateObject($cn,'container');
-	        $modules_converted += 1;
+	        $modules_converted++;
 	    }
 
         // correct sectionref module field to full controller classname

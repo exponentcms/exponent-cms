@@ -112,7 +112,7 @@ class upgrade_simplepoll extends upgradescript {
                 $newconfig->save();
             }
 
-	        $modules_converted += 1;
+	        $modules_converted++;
 	    }
 
         // need to replace old module modstate with new SimplePoll module
@@ -140,8 +140,10 @@ class upgrade_simplepoll extends upgradescript {
 
             $oldanswers = $db->selectArrays('poll_answer', "question_id='".$qid."'");
             foreach ($oldanswers as $oi) {
-                unset ($oi['id']);
-                unset ($oi['question_id']);
+                unset (
+                    $oi['id'],
+                    $oi['question_id']
+                );
                 $newanswer = new simplepoll_answer($oi);
                 $newanswer->simplepoll_question_id = $question->id;
                 $newanswer->update();
@@ -149,14 +151,16 @@ class upgrade_simplepoll extends upgradescript {
 
             $oldblocks = $db->selectArrays('poll_timeblock', "question_id='".$qid."'");
             foreach ($oldblocks as $ob) {
-                unset ($ob['id']);
-                unset ($ob['question_id']);
+                unset (
+                    $ob['id'],
+                    $ob['question_id']
+                );
                 $newblock = new simplepoll_answer($ob);
                 $newblock->simplepoll_question_id = $question->id;
                 $newblock->update();
             }
 
-			$questions_converted += 1;
+			$questions_converted++;
 		}
 
 		// delete simplepollmodule tables

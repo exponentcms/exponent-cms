@@ -177,8 +177,10 @@ class expRouter {
         // strip out possible xss exploits via url
         foreach ($_GET as $key=>$var) {
             if (strpos($var,'">')) {
-                unset($_GET[$key]);
-                unset($_REQUEST[$key]);
+                unset(
+                    $_GET[$key],
+                    $_REQUEST[$key]
+                );
             }
         }
         // conventional method to ensure the 'id' is an id

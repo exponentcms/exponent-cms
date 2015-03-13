@@ -87,7 +87,7 @@ class fix_database extends upgradescript {
 				$sectionref->refcount = 0;
 				$db->updateObject($sectionref,"sectionref");
 				print_r(gt("Fixed").": ".$sectionref->module." - ".$sectionref->source."<br>");
-				$found += 1;
+				$found++;
 			}
 		}
 		if (!$found) {

@@ -145,17 +145,19 @@ if (!function_exists('smarty_function_icon')) {
         if (!empty($params['wide']) ) $icon->type .= ' btn-block';
 
         // we need to unset these vars before we pass the params array off to makeLink
-        unset($params['alt']);
-        unset($params['title']);
-        unset($params['text']);
-        unset($params['img']);
-        unset($params['class']);
-        unset($params['record']);
-        unset($params['style']);
-        unset($params['icon']);
-        unset($params['size']);
-        unset($params['color']);
-        unset($params['wide']);
+        unset(
+            $params['alt'],
+            $params['title'],
+            $params['text'],
+            $params['img'],
+            $params['class'],
+            $params['record'],
+            $params['style'],
+            $params['icon'],
+            $params['size'],
+            $params['color'],
+            $params['wide']
+        );
         $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
         unset($params['onclick']);
         $secure = !empty($params['secure']) ? $params['secure'] : false;

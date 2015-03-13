@@ -66,10 +66,12 @@ class update_countdown extends upgradescript {
             if (!empty($cfg['count'])) {
                 if (!empty($cfg['date-count'])) {  // v2.2.0 to v2.2.3 format
                     $cfg['count'] = calendarcontrol::parseData('count', $cfg);
-                    unset($cfg['date-count']);
-                    unset($cfg['time-h-count']);
-                    unset($cfg['time-m-count']);
-                    unset($cfg['ampm-count']);
+                    unset(
+                        $cfg['date-count'],
+                        $cfg['time-h-count'],
+                        $cfg['time-m-count'],
+                        $cfg['ampm-count']
+                    );
                 } elseif (strpos($cfg['count'], ' ') !== 0) {  // pre v2.2.0 format
                     $cfg['count'] = strtotime($cfg['count']);
                 }

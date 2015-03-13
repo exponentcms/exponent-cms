@@ -120,9 +120,11 @@ class upgrade_mediaplayer extends upgradescript {
 
             if (!empty($config->config)) {
                 $oldconfig = expUnserialize($config->config);
-                unset($oldconfig['autoplay']);
-                unset($oldconfig['control_mute']);
-                unset($oldconfig['video_style']);
+                unset(
+                    $oldconfig['autoplay'],
+                    $oldconfig['control_mute'],
+                    $oldconfig['video_style']
+                );
                 if (!empty($oldconfig)) {
                     $config->config = serialize($oldconfig);
                     $config->location_data = $cn->internal;
@@ -130,7 +132,7 @@ class upgrade_mediaplayer extends upgradescript {
                 }
             }
 
-            $fp_modules_converted += 1;
+            $fp_modules_converted++;
 	    }
 
         // convert each YouTube module and config to a media one
@@ -167,7 +169,7 @@ class upgrade_mediaplayer extends upgradescript {
                 }
             }
 
-            $yt_modules_converted += 1;
+            $yt_modules_converted++;
 	    }
 
 		// convert flowplayer items

@@ -257,7 +257,7 @@ class expPaginator {
                             $this->cats[$title]->count = 1;
                             $this->cats[$title]->name = $title;
                         } else {
-                            $this->cats[$title]->count += 1;
+                            $this->cats[$title]->count++;
                         }
                         $this->cats[$title]->records[] = $record;
                     }
@@ -274,7 +274,7 @@ class expPaginator {
                             $this->cats[$title]->count = 1;
                             $this->cats[$title]->name = $title;
                         } else {
-                            $this->cats[$title]->count += 1;
+                            $this->cats[$title]->count++;
                         }
                         $this->cats[$title]->records[] = $record;
                     }

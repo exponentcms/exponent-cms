@@ -24,7 +24,7 @@
 class search extends expRecord {
 
     public function beforeSave() {
-        $this->body = $this->removeHTML($this->body);
+        $this->body = self::removeHTML($this->body);
     }
 
     public static function removeHTML($str) {
@@ -100,8 +100,9 @@ class search extends expRecord {
 //                    }
                     $sectionref = $db->selectObject("sectionref", "module='" . $rloc->mod . "' AND source='" . $rloc->src . "'");
                     if (!empty($sectionref)) {
-                        $section = $db->selectObject("section", "id=" . $sectionref->section);
-                        if (empty($section) || !(section::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
+//                        $section = $db->selectObject("section", "id=" . $sectionref->section);
+                        $section = new section($sectionref->section);
+                        if (empty($section) || !($section->canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
                             continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;

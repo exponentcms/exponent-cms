@@ -84,7 +84,7 @@ class dropdowncontrol extends formcontrol {
             if (is_array($this->default)) {
                 if (in_array($value, $this->default)) $html .= " selected";
             } else {
-                if (!empty($this->default) && $value == $this->default) $html .= " selected";
+                if ($value == $this->default && !empty($this->default)) $html .= " selected";
             }
             $html .= '>' . $caption . '</option>';
         }

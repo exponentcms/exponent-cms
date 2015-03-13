@@ -461,9 +461,11 @@ class formsController extends expController {
         }
 
         // remove some post data we don't want to pass thru to the form
-        unset($this->params['controller']);
-        unset($this->params['action']);
-        unset($this->params['view']);
+        unset(
+            $this->params['controller'],
+            $this->params['action'],
+            $this->params['view']
+        );
         foreach ($this->params as $k => $v) {
         //    $this->params[$k]=htmlentities(htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET));
             $this->params[$k] = htmlspecialchars($v, ENT_COMPAT, LANG_CHARSET);

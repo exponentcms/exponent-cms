@@ -152,15 +152,17 @@ class expCSS {
         self::themeCSS();
 
         // at this point these params have already been processed
-        unset($head_config['xhtml']);
-        unset($head_config['lessprimer']);
-        unset($head_config['lesscss']);
-        unset($head_config['link']);
-        unset($head_config['lessvars']);
-        unset($head_config['normalize']);
-        unset($head_config['framework']);
-        unset($head_config['viewport']);
-        unset($head_config['meta']);
+        unset(
+            $head_config['xhtml'],
+            $head_config['lessprimer'],
+            $head_config['lesscss'],
+            $head_config['link'],
+            $head_config['lessvars'],
+            $head_config['normalize'],
+            $head_config['framework'],
+            $head_config['viewport'],
+            $head_config['meta']
+        );
 
         // we ALWAYS need the core and primer css
         if (!isset($head_config['css_core'])) {
@@ -188,7 +190,7 @@ class expCSS {
             $srt[$i] = "";
             foreach ($css_files as $file) {
                 if (!empty($file) && file_exists($_SERVER['DOCUMENT_ROOT'].$file)) {
-                    if (strlen($srt[$i])+strlen($file) <= $strlen && $i <= MINIFY_MAX_FILES) {
+                    if ($i <= MINIFY_MAX_FILES && strlen($srt[$i])+strlen($file) <= $strlen) {
                         $srt[$i] .= $file.",";
                     } else {
                         $i++;
@@ -412,9 +414,9 @@ class expCSS {
 
                         try {
                             $new_cache = $less->cachedCompile($cache, false);
-                            if (!file_exists(BASE . $css_fname) || !is_array(
-                                    $cache
-                                ) || $new_cache['updated'] > $cache['updated']
+                            if (!is_array($cache) ||
+//                                !file_exists(BASE . $css_fname) ||
+                                $new_cache['updated'] > $cache['updated']
                             ) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;

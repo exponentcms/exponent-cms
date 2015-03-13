@@ -79,7 +79,7 @@ class upgrade_mediaplayer2 extends upgradescript {
                 $newconfig['config']['youtube_aggregate'] = '';
                 $config->update($newconfig);
             }
-            $yt_modules_converted += 1;
+            $yt_modules_converted++;
 	    }
 
 		return ($yt_modules_converted?$yt_modules_converted:gt('No'))." ".gt("EAAS modules were updated to use Media Player.");

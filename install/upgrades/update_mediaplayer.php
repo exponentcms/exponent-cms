@@ -74,7 +74,7 @@ class update_mediaplayer extends upgradescript {
                 $mp->media_type = 'file';
             }
 	        $db->updateObject($mp,'media');
-            $mp_items_converted += 1;
+            $mp_items_converted++;
 	    }
 
         // update each File Download module as required
@@ -87,7 +87,7 @@ class update_mediaplayer extends upgradescript {
                 $fd->file_type = 'file';
             }
 	        $db->updateObject($fd,'filedownload');
-            $fd_items_converted += 1;
+            $fd_items_converted++;
 	    }
 
 		return ($mp_items_converted?$mp_items_converted:gt('No'))." ".gt("Media Player items were updated.") . ' ' . gt('and') . ' ' . ($fd_items_converted?$fd_items_converted:gt('No'))." ".gt("File Download items were updated.");

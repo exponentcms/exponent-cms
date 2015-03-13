@@ -173,7 +173,7 @@ class expRecord {
 //        if ($this->supports_revisions && $range != 'revisions') $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE $where)";
 //        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
         $supports_revisions = $this->supports_revisions && ENABLE_WORKFLOW;
-        if ($this->needs_approval && ENABLE_WORKFLOW) {
+        if (ENABLE_WORKFLOW && $this->needs_approval) {
             $needs_approval = $user->id;
         } else {
             $needs_approval = false;
@@ -301,7 +301,8 @@ class expRecord {
      * @return bool
      */
     public function refresh() {
-        if (empty($this->id)) return false;
+        if (empty($this->id))
+            return false;
         $this->__construct($this->id);
     }
 
@@ -386,7 +387,7 @@ class expRecord {
                 $this->$col = stripslashes($this->$col);
             }
             //}
-            if ($this->supports_revisions && ENABLE_WORKFLOW && $col == 'revision_id' && $this->$col == null)
+            if (ENABLE_WORKFLOW && $this->supports_revisions && $col == 'revision_id' && $this->$col == null)
                 $this->$col = 1;  // first revision is #1
         }
     }
@@ -464,7 +465,7 @@ class expRecord {
             $saveObj->$col = empty($this->$col) ? null : $this->$col;
         }
 
-        if ($this->supports_revisions && ENABLE_WORKFLOW && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
+        if (ENABLE_WORKFLOW && $this->supports_revisions && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
             $saveObj->approved = true;  // auto-approve item if use has approve perm
         }
         $identifier = $this->identifier;
@@ -1118,6 +1119,7 @@ class expRecord {
     /**
      * return the item poster
      *
+     * @param null $display
      * @return null|string
      */
     public function getPoster($display = null) {

@@ -173,9 +173,9 @@ class migrationController extends expController {
 //                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
-					$failed += 1;
+					$failed++;
 				} else {
-					$successful += 1;
+					$successful++;
 				}
 			}
 		}
@@ -201,9 +201,9 @@ class migrationController extends expController {
 //                unset($page->sef_name);
 				$ret = $db->insertObject($page, 'section');
 				if (empty($ret)) {
-					$failed += 1;
+					$failed++;
 				} else {
-					$successful += 1;
+					$successful++;
 				}
 			}
 		}
@@ -275,8 +275,10 @@ class migrationController extends expController {
         //import the files
         $oldfiles = $old_db->selectObjects('file');
         foreach ($oldfiles as $oldfile) {
-            unset($oldfile->name);
-            unset($oldfile->collection_id);
+            unset(
+                $oldfile->name,
+                $oldfile->collection_id
+            );
             $file = $oldfile;
             $file->directory = $file->directory."/";
             $db->insertObject($file,'expFiles');
@@ -547,8 +549,10 @@ class migrationController extends expController {
             $iloc = expUnserialize($module->internal);
             if (array_key_exists($iloc->mod, $this->new_modules)) {
                 // convert new modules added via container
-                unset($module->internal);
-                unset($module->action);
+                unset(
+                    $module->internal,
+                    $module->action
+                );
 //                unset($module->view);
                 $this->convert($iloc, $module);
 //            } else if (!in_array($iloc->mod, $this->deprecated_modules)) {
@@ -715,9 +719,9 @@ class migrationController extends expController {
 				$group = $old_db->selectObject('group', 'id='.$groupid);
 				$ret = $db->insertObject($group, 'group');
 				if (empty($ret)) {
-					$gfailed += 1;
+					$gfailed++;
 				} else {
-					$gsuccessful += 1;
+					$gsuccessful++;
 				}				
 			}
 		}
@@ -727,9 +731,9 @@ class migrationController extends expController {
 				$group = $old_db->selectObject('group', 'id='.$groupid);
 				$ret = $db->insertObject($group, 'group');
 				if (empty($ret)) {
-					$gfailed += 1;
+					$gfailed++;
 				} else {
-					$gsuccessful += 1;
+					$gsuccessful++;
 				}				
 			}
 		}
@@ -741,9 +745,9 @@ class migrationController extends expController {
 				$user = $old_db->selectObject('user', 'id='.$userid);
 				$ret = $db->insertObject($user, 'user');
 				if (empty($ret)) {
-					$failed += 1;
+					$failed++;
 				} else {
-					$successful += 1;
+					$successful++;
 				}				
 			}
 		}
@@ -753,9 +757,9 @@ class migrationController extends expController {
 				$user = $old_db->selectObject('user', 'id='.$userid);
 				$ret = $db->insertObject($user, 'user');
 				if (empty($ret)) {
-					$failed += 1;
+					$failed++;
 				} else {
-					$successful += 1;
+					$successful++;
 				}				
 			}
 		}
@@ -1816,12 +1820,14 @@ class migrationController extends expController {
 						$movie->title = $mi['name'];
 						if (empty($movie->title)) { $movie->title = 'Untitled'; }
                         $movie->body = $mi['description'];
-						unset ($mi['bgcolor']);
-						unset ($mi['alignment']);
-						unset ($mi['loop_media']);
-						unset ($mi['auto_rewind']);
-						unset ($mi['autoplay']);
-						unset ($mi['hide_controls']);
+						unset (
+                            $mi['bgcolor'],
+                            $mi['alignment'],
+                            $mi['loop_media'],
+                            $mi['auto_rewind'],
+                            $mi['autoplay'],
+                            $mi['hide_controls']
+                        );
 						$movie->location_data = serialize($loc);
 						$movie->poster = 1;
 						$movie->rank = 1;
@@ -1992,8 +1998,10 @@ class migrationController extends expController {
                         $question->save();
 
                         foreach ($oldanswers as $oi) {
-                            unset ($oi['id']);
-                            unset ($oi['question_id']);
+                            unset (
+                                $oi['id'],
+                                $oi['question_id']
+                            );
                             $newanswer = new simplepoll_answer($oi);
                             $newanswer->simplepoll_question_id = $question->id;
 //                            $question->simplepoll_answer[] = $newanswer;
@@ -2113,8 +2121,10 @@ class migrationController extends expController {
                     $cat = $cal->category_id;
                     unset($cal->category_id);
                     $tags = $cal->tags;
-                    unset($cal->tags);
-                    unset($cal->file_id);
+                    unset(
+                        $cal->tags,
+                        $cal->file_id
+                    );
                     $loc = expUnserialize($cal->location_data);
                     $loc->mod = "event";
                     $cal->location_data = serialize($loc);
@@ -2259,8 +2269,10 @@ class migrationController extends expController {
                     $fcs = $old_db->selectObjects('formbuilder_control',"form_id=".$oldform->id);
                     foreach ($fcs as $fc) {
                         $fc->forms_id = $newform->id;
-                        unset ($fc->id);
-                        unset ($fc->form_id);
+                        unset (
+                            $fc->id,
+                            $fc->form_id
+                        );
                         $db->insertObject($fc,'forms_control');
                     }
 
@@ -2566,13 +2578,15 @@ class migrationController extends expController {
 	function saveconfig() {
         
         // unset some unneeded params
-        unset($this->params['module']);
-        unset($this->params['controller']);
-        unset($this->params['src']);
-        unset($this->params['int']);
-        unset($this->params['id']);
-        unset($this->params['action']);
-        unset($this->params['PHPSESSID']);
+        unset(
+            $this->params['module'],
+            $this->params['controller'],
+            $this->params['src'],
+            $this->params['int'],
+            $this->params['id'],
+            $this->params['action'],
+            $this->params['PHPSESSID']
+        );
         
         // setup and save the config
         $config = new expConfig($this->loc);
@@ -2591,7 +2605,7 @@ class migrationController extends expController {
       		    ));
 		echo '<h2>'.gt('Migration Configuration Saved').'</h2><br />';
 		echo '<p>'.gt('We\'ve successfully connected to the Old database').'</p><br />';
-        if(bs()){
+        if (bs()) {
             $btn_class = 'btn btn-default';
         } else {
             $btn_class = "awesome " . BTN_SIZE . " " . BTN_COLOR;

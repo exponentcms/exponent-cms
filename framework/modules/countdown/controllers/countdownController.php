@@ -66,10 +66,12 @@ class countdownController extends expController {
     function saveconfig() {
         // get parsed data and unset calendarcontrol fields
         $this->params['count'] = calendarcontrol::parseData('count',$this->params);
-        unset($this->params['date-count']);
-        unset($this->params['time-h-count']);
-        unset($this->params['time-m-count']);
-        unset($this->params['ampm-count']);
+        unset(
+            $this->params['date-count'],
+            $this->params['time-h-count'],
+            $this->params['time-m-count'],
+            $this->params['ampm-count']
+        );
         parent::saveconfig();
     }
 }
