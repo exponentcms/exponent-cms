@@ -1,5 +1,7 @@
 version 2.3.4
 Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.3
+  - adds 'announcment' view to events module
+  - adds alternate color to featured items in announcement views
   - adds 'empty recycle bin' feature to remove all items in recycle bin
   - adds date to search hit for events and event registrations
   - after adding a new module which requires configuration, now displays the module configuration settings page
