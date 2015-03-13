@@ -27,7 +27,7 @@ Font-Awesome,4.3.0,fortawesome.github.com/Font-Awesome,4.3.0,
 Adminer,4.2.0,www.adminer.org,4.2.0,we add some system user checks in design.inc
 SimpleAjaxUploader,2.0.0,https://github.com/LPology/Simple-Ajax-Uploader,2.0.0,also converted to yui module 1.1.0
 normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
-MediaElement.js,2.16.3,mediaelementjs.com/,2.16.4,
+MediaElement.js,2.16.4,mediaelementjs.com/,2.16.4,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.16,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
@@ -36,11 +36,11 @@ excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by Ti
 dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,5.7.4/6.0.0,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.4.7,ckeditor.com,4.4.7,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.1.8,tinymce.com,4.1.8,add xenmce skin
+TinyMCE,4.1.9,tinymce.com,4.1.9,add xenmce skin
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.2,jquery.com,1.11.2,
 jQuery,2.1.3,jquery.com,2.1.3,
-jQueryUI,1.11.3,jqueryui.com,1.11.3,
+jQueryUI,1.11.4,jqueryui.com,1.11.4,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
