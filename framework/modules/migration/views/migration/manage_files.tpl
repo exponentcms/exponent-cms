@@ -19,7 +19,7 @@
 
 <div class="module migration manage-files">
  	{*<a class="{button_style}" href="{link module=migration action=manage_content}"><strong>{'Skip to Next Step -> Migrate Content'|gettext}</strong></a>*}
-    {icon button=true module=migration action=manage_content text={'Skip to Next Step -> Migrate Content'|gettext}
+    {icon button=true module=migration action=manage_content text='Skip to Next Step -> Migrate Content'|gettext}
     {br}{br}<hr />
     <div class="info-header">
         <div class="related-actions">
