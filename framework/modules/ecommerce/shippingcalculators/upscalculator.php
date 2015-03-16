@@ -103,7 +103,7 @@ class upscalculator extends shippingcalculator {
                         $package_items[$count]->h = $height;
                         $package_items[$count]->l = $length;
                         $package_items[$count]->name = $item->product->title;
-                        $count += 1;	    
+                        $count++;
                     } else {
                         $has_giftcard = true;
                     }
@@ -220,9 +220,9 @@ class upscalculator extends shippingcalculator {
 	    }
     }	
     
-   	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/upscalculator/configure.tpl';
-   	}
+//   	public function configForm() {
+//   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/upscalculator/configure.tpl';
+//   	}
 	
 	//process config form
 	function parseConfig($values) {
@@ -244,8 +244,10 @@ class upscalculator extends shippingcalculator {
 	        if ($varname == 'shipfrom') {
 	            $config[$varname]['state'] = geoRegion::getAbbrev($values[$varname]['address_region_id']);
 	            $config[$varname]['country'] = geoRegion::getCountryCode($values[$varname]['address_country_id']);
-                unset($config[$varname]['address_region_id']);
-                unset($config[$varname]['address_country_id']);
+                unset(
+                    $config[$varname]['address_region_id'],
+                    $config[$varname]['address_country_id']
+                );
 	        }
 	    }
 	    

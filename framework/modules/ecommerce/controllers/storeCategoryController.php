@@ -145,13 +145,15 @@ class storeCategoryController extends expNestedNodeController {
 
     function saveconfig() {
         // unset some unneeded params
-        unset($this->params['module']);
-        unset($this->params['controller']);
-        unset($this->params['src']);
-        unset($this->params['int']);
-        unset($this->params['id']);
-        unset($this->params['action']);
-        unset($this->params['PHPSESSID']);
+        unset(
+            $this->params['module'],
+            $this->params['controller'],
+            $this->params['src'],
+            $this->params['int'],
+            $this->params['id'],
+            $this->params['action'],
+            $this->params['PHPSESSID']
+        );
 
         // setup and save the config
         $this->loc->src = "@store-" . $this->params['cat-id'];
@@ -171,7 +173,7 @@ class storeCategoryController extends expNestedNodeController {
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
             $db->updateObject($prod, "product_storeCategories", "storecategories_id=" . $prod->storecategories_id . " AND product_id=" . $id);
-            $rank += 1;
+            $rank++;
         }
 
         expHistory::back();

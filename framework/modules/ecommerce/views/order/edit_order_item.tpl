@@ -30,10 +30,12 @@
                 <td>{'Item name:'|gettext}</td>
                 <td>{control type=textarea name=products_name cols=40 rows=2 label="" value=$oi->products_name focus=1}</td>
             </tr>
+            {if $oi->product_type == 'product'}
             <tr>
                 <td>{'Item model:'|gettext}</td>
                 <td>{$oi->products_model}</td>
             </tr>
+            {/if}
             <tr>
                 <td>{'Item price:'|gettext}</td>
                 <td>{control type=text name=products_price label="" value=$oi->products_price filter=money}</td>
@@ -46,10 +48,12 @@
 
         {$product = $oi->product}
         {* NOTE display product options *}
-        {exp_include file="options.tpl"}
+        {*{exp_include file="options.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/options.tpl"}
 
         {* NOTE display product user input fields *}
-        {exp_include file="input_fields.tpl"}
+        {*{exp_include file="input_fields.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/input_fields.tpl"}
 
         {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
     {/form}

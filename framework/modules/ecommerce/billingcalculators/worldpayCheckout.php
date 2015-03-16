@@ -142,10 +142,10 @@ class worldpayCheckout extends billingcalculator {
 
     }
 
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/worldpayCheckout/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/worldpayCheckout/configure.tpl';
+//        return $form;
+//    }
 
     /**
      * process config form

@@ -28,13 +28,13 @@ class payflowpro extends creditcard {
         return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards.";
     }
 
-    function hasConfig() {
-        return true;
-    }
+//    function hasConfig() {
+//        return true;
+//    }
 
-    function hasUserForm() {
-        return true;
-    }
+//    function hasUserForm() {
+//        return true;
+//    }
 
     function isOffsite() {
         return false;
@@ -755,10 +755,10 @@ class payflowpro extends creditcard {
     }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/payflowpro/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/payflowpro/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {

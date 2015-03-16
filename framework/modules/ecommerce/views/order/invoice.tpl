@@ -283,9 +283,9 @@
                     <th>
                         {"Description"|gettext}
                     </th>
-                    <th>
-                        {"Location"|gettext}
-                    </th>
+                    {*<th>*}
+                        {*{"Location"|gettext}*}
+                    {*</th>*}
                     <th>
                         {"Status"|gettext}
                     </th>
@@ -328,9 +328,9 @@
 							{*{$oi->getFormattedExtraData('list')}*}
 						{*{/if}*}
                     </td>
-                    <td>
-                        {$oi->products_warehouse_location}
-                    </td>
+                    {*<td>*}
+                        {*{$oi->products_warehouse_location}*}
+                    {*</td>*}
                     <td>
                         {$oi->products_status}
                     </td>

@@ -483,7 +483,7 @@ class order extends expRecord {
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id=' . $forced_calc);
         $calculator = new $calcname($forced_calc);
         $rates = $calculator->getRates($this);
-        if (!empty($forced_method)) {
+        if (!empty($forced_method) && isset($rates[$forced_method])) {
             $rate = $rates[$forced_method];
         } else {
             $rate = array_shift($rates);  // select first rate type as default

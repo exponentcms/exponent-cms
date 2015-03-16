@@ -193,7 +193,7 @@ class shippingController extends expController {
         $calc = new $calcname($this->params['id']);
         assign_to_template(array(
             'calculator'=>$calc,
-            'title'=>$this->displayname()
+            'title'=>self::displayname()
         ));
     }
     

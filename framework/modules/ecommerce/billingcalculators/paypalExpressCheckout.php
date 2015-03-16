@@ -163,7 +163,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'PWD'                                => $pwd,
                 'SIGNATURE'                          => $sig,
 //                'VERSION'           => '59.0',
-                'VERSION'                            => '114.0',
+                'VERSION'                            => '114.0',  //NOTE 121.0 current
 //                'ReturnUrl' => $returnURL,
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
@@ -303,7 +303,7 @@ class paypalExpressCheckout extends billingcalculator {
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
 //            'VERSION'       => '59.0',
-            'VERSION'                        => '114.0',
+            'VERSION'                        => '114.0',  //NOTE 121.0 current
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
             'TOKEN'                          => $billing_options->result->token,
@@ -433,10 +433,10 @@ class paypalExpressCheckout extends billingcalculator {
      * @return string The location of the config.tpl
      * TODO: this is hard coded. why? needs to pick up this like a controller does
      */
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/paypalExpressCheckout/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/paypalExpressCheckout/configure.tpl';
+//        return $form;
+//    }
 
     /**
      * process config form
@@ -703,7 +703,7 @@ class paypalExpressCheckout extends billingcalculator {
             $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
         }
 //        $version = urlencode('51.0');
-        $version = urlencode('114.0');
+        $version = urlencode('114.0');  //NOTE 121.0 current
 
         // Set the curl parameters.
         $ch = curl_init();

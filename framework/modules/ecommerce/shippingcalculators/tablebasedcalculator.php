@@ -101,9 +101,9 @@ class tablebasedcalculator extends shippingcalculator {
 		return $rates;
     }    
     
-    public function configForm() { 
-       return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/configure.tpl';
-    }
+//    public function configForm() {
+//       return BASE.'framework/modules/ecommerce/shippingcalculators/views/tablebasedcalculator/configure.tpl';
+//    }
     
     //process config form
     function parseConfig($values) {

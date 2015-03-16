@@ -1142,7 +1142,7 @@ class storeController extends expController {
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
                 $search_record->save();
-                $count += 1;
+                $count++;
             }
         }
         return $count;
@@ -1167,6 +1167,7 @@ class storeController extends expController {
         if (!empty($this->params['id'])) {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
+            if (empty($product_type)) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
         } else {
             if (empty($this->params['product_type'])) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
             $product_type = $this->params['product_type'];
@@ -1234,7 +1235,8 @@ class storeController extends expController {
 
         // get the shipping options and their methods
 //        $shipping = new shipping();
-        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+//        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+        foreach (shipping::listCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -1355,7 +1357,8 @@ class storeController extends expController {
 
         // get the shipping options and their methods
 //        $shipping = new shipping();
-        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+//        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+        foreach (shipping::listCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();

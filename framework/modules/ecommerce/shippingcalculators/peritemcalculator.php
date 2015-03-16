@@ -49,7 +49,8 @@ class peritemcalculator extends shippingcalculator {
         $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : '';
         $count = 0;
         foreach ($order->orderitem as $item) {
-            if (!$item->product->no_shipping) $count += $item->quantity;
+            if (!$item->product->no_shipping)
+                $count += $item->quantity;
         }
         $total = $count * $rate + $handling;
 	    $rates = array(
@@ -62,9 +63,9 @@ class peritemcalculator extends shippingcalculator {
 	    return $rates;
     }	
     
-   	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/peritemcalculator/configure.tpl';
-   	}
+//   	public function configForm() {
+//   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/peritemcalculator/configure.tpl';
+//   	}
 	
 	//process config form
 	function parseConfig($values) {

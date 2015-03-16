@@ -136,7 +136,8 @@
 	margin  : 0 10px;
 }
 
-.options-partial select.select.form-control {
+.options-partial select.select.form-control,
+.options-partial select.select.control {
 	width: auto;
 }
 
@@ -148,4 +149,12 @@
 
 .options-partial table.options .radio label {
 	margin-top: 10px;
+}
+
+.options-partial input.text.form-control {
+	width: 60px;
+}
+
+.options-partial select.select.control {
+	width: 50px;
 }

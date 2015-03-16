@@ -46,13 +46,13 @@ class authorizedotnet extends creditcard {
         return true;
     }
 
-    function hasConfig() {
-        return true;
-    }
+//    function hasConfig() {
+//        return true;
+//    }
 
-    function hasUserForm() {
-        return true;
-    }
+//    function hasUserForm() {
+//        return true;
+//    }
 
     function isOffsite() {
         return false;
@@ -290,10 +290,10 @@ class authorizedotnet extends creditcard {
     }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/authorizedotnet/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/authorizedotnet/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -313,18 +313,18 @@ class authorizedotnet extends creditcard {
 
     //This should return html to display config settings on the view billing method page
     function view($config_object) {
-        $html = "<br>Settings:<br/><hr>";
+        $html = "<br>" . gt("Settings") . ":<br/><hr>";
         $html .= "API Login ID: " . $config_object->username . "<br>";
         $html .= "Transaction Key: " . $config_object->transaction_key . "<br>";
         $html .= "Password: " . $config_object->password . "<br>";
         $html .= "Test Mode: " . (($config_object->test_mode) ? "Yes" : "No") . "<br>";
         $html .= "Process Mode: ";
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
             $html .= "Authorize and Capture<br>";
         }
-        $html .= "<br>Accepted Cards:<hr>";
+        $html .= "<br>" . gt("Accepted Cards") . ":<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";
         $html .= "Discover: " . (($config_object->accept_discover) ? "Yes" : "No") . "<br>";
         $html .= "Mastercard: " . (($config_object->accept_mastercard) ? "Yes" : "No") . "<br>";

@@ -56,7 +56,12 @@ class shippingcalculator extends expRecord {
 
     public function configForm()
     {
-        return '';
+        if (bs3(true)) {
+            $tpl = 'configure.bootstrap3.tpl';
+        } else {
+            $tpl = 'configure.tpl';
+        }
+        return BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . $tpl;
     }
 
     function parseConfig($values)

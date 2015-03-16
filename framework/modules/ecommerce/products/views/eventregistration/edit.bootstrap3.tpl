@@ -27,7 +27,8 @@
         {control type="hidden" name="id" value=$record->id}
         {control type="hidden" name="product_type" value=$record->product_type}
         {control type="hidden" name="product_type_id" value=$record->product_type_id}
-        
+        {control type="hidden" name="no_shipping" value=1}
+
         <div id="editproduct-tabs" class="">
             <ul class="nav nav-tabs" role="tablist">
 	            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>

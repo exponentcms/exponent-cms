@@ -527,8 +527,8 @@ class cartController extends expController {
 
         // if we encountered any errors we will return to the checkout page and show the errors
         if (!expQueue::isQueueEmpty('error')) {
-//            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-            $this->checkout();
+            redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//            $this->checkout();
         }
 
          // final the cart totals
@@ -570,8 +570,8 @@ class cartController extends expController {
 //        }
 
         if (empty($result->errorCode)) {  //if ($result->errorCode === "0" || $result->errorCode === 0)
-//			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
-            $this->confirm();
+			redirect_to(array('controller'=>'cart', 'action'=>'confirm'));
+//            $this->confirm();
         } else {
             flash('error', gt('An error was encountered while processing your transaction.') . '<br /><br />' . $result->message);
             expHistory::back();
@@ -872,6 +872,7 @@ class cartController extends expController {
 
     public function saveSplitShipping() {
         global $db;
+
         $addresses            = array();
         $orderitems_to_delete = '';
 
@@ -880,7 +881,7 @@ class cartController extends expController {
                 if (empty($addresses[$address_id][$id])) {
                     $addresses[$address_id][$id] = 1;
                 } else {
-                    $addresses[$address_id][$id] += 1;
+                    $addresses[$address_id][$id]++;
                 }
             }
 
@@ -894,8 +895,10 @@ class cartController extends expController {
 
             foreach ($orderitems as $orderitem_id => $qty) {
                 $orderitem = new orderitem($orderitem_id);
-                unset($orderitem->id);
-                unset($orderitem->shippingmethods_id);
+                unset(
+                    $orderitem->id,
+                    $orderitem->shippingmethods_id
+                );
                 $orderitem->shippingmethods_id = $shippingmethod->id;
                 $orderitem->quantity           = $qty;
                 $orderitem->save();
@@ -916,7 +919,7 @@ class cartController extends expController {
 
         $shipping_items = array();
         foreach ($shippingmethod_id as $id) {
-            $shipping_items[$id] = new stdClass();
+            $shipping_items[$id] = new order();
             $shipping_items[$id]->method    = new shippingmethod($id);
             $shipping_items[$id]->orderitem = $order->getOrderitemsByShippingmethod($id);
             foreach ($shipping_items[$id]->orderitem as $key=> $item) {
@@ -930,7 +933,7 @@ class cartController extends expController {
             } else {
                 foreach ($shipping->available_calculators as $calcid=> $name) {
                     $calc                                 = new $name($calcid);
-                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);  //FIXME shouldn't this be the order object?
+                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
                     //eDebug($shipping_items[$id]->prices[$id]);
                 }
             }
@@ -957,7 +960,7 @@ class cartController extends expController {
 
         // if they didn't fill out anything
         if (empty($this->params['methods'])) {
-            expValidator::failAndReturnToForm(gt("You did not pick  any shipping options"), $this->params);
+            expValidator::failAndReturnToForm(gt("You did not pick any shipping options"), $this->params);
         }
 
         // if they don't check all the radio buttons

@@ -22,6 +22,7 @@
  */
 class billingcalculator extends expRecord {
     public $table = 'billingcalculator';
+    public $configdata = array();
     function hasUserForm() {return true;}
     function hasConfig() {return true;}
     /**
@@ -43,7 +44,8 @@ class billingcalculator extends expRecord {
         parent::__construct($params, $get_assoc, $get_attached);
         
         // set the calculator
-        if (!empty($this->calculator_name)) $this->calculator = new $this->calculator_name();
+        if (!empty($this->calculator_name))
+            $this->calculator = new $this->calculator_name();
         
         // grab the config data for this calculator
         $this->configdata = empty($this->config) ? array() : unserialize($this->config);
@@ -79,7 +81,12 @@ class billingcalculator extends expRecord {
     }
 
     function configForm() {
-        return '';
+        if (bs3(true)) {
+            $tpl = 'configure.bootstrap3.tpl';
+        } else {
+            $tpl = 'configure.tpl';
+        }
+        return BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl;
     }
 
     function parseConfig($values) {

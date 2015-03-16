@@ -32,10 +32,10 @@
 {br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="{button_style color=green} next">
+           class="{button_style color=green size=large} next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
@@ -218,7 +218,7 @@
                             <td class="totals shipping">{$order->surcharge_total|currency}</td>
                         </tr>
                         {/if}
-                    {if !$order->shipping_taxed}
+                    {if $order->shipping_taxed}
                     <tr class="{cycle values="odd, even"}">
                         <td class="right">
                             {"Tax"|gettext} -
@@ -242,12 +242,13 @@
     {/if}
     </div>
 {clear}
+    {br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-            class="{button_style color=green} next">
+            class="{button_style color=green size=large} next">
             {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>

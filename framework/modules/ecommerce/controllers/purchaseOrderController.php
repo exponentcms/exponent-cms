@@ -81,11 +81,13 @@ class purchaseOrderController extends expController {
 			$state = new geoRegion($vendor->state);
 			$vendor->state = $state->name;
 			//Removed unnecessary fields
-			unset($vendor->title);
-			unset($vendor->table);
-			unset($vendor->tablename);
-			unset($vendor->classname);
-			unset($vendor->identifier);
+			unset(
+                $vendor->title,
+                $vendor->table,
+                $vendor->tablename,
+                $vendor->classname,
+                $vendor->identifier
+            );
 		
 			assign_to_template(array(
                 'vendor_title' => $vendor_title,

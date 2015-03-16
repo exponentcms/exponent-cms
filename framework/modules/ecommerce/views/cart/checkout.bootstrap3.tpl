@@ -134,8 +134,10 @@
                             {/foreach}
                         </ul>
                         {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext}
-                        {if $discounts[0]->isCartDiscount()}{$order->total_discounts|currency}.
-                            {else} {$order->shippingDiscount|currency}.
+                        {if $discounts[0]->isCartDiscount()}
+                            {$order->total_discounts|currency}.
+                        {else}
+                            {$order->shippingDiscount|currency}.
                         {/if}
                     </div>
                 {/if}
@@ -190,6 +192,7 @@
                                     {if $shipping->calculator->id!=$key}
                                         <a rel="{$key}"
                                            href="{link shippingcalculator_id=$key controller=shipping action=selectShippingCalculator}"
+                                           title="{'Select this shipping method'|gettext}"
                                            class="servopt">
                                             {$calc}
                                         </a>

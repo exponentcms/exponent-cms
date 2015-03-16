@@ -22,7 +22,7 @@
     </blockquote>
     <div id="ups-tabs" class="">
         <ul class="nav nav-tabs" role="tablist">
-	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'UPS Settings'|gettext}</em></a></li>
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Settings'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Shipping Methods'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'My Info'|gettext}</em></a></li>
 	        <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Shipping Defaults'|gettext}</em></a></li>

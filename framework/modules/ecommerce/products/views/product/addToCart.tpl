@@ -51,11 +51,13 @@
             {/foreach}
         {/foreach}
         {if !$product->show_options || !empty($params.option_error)}
-            {exp_include file="options.tpl"}
+            {*{exp_include file="options.tpl"}*}
+            {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/options.tpl"}
         {/if}
 
         {* NOTE display product user input fields *}
-        {exp_include file="input_fields.tpl"}
+        {*{exp_include file="input_fields.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/input_fields.tpl"}
 
         {control type="buttongroup" size=large color=blue submit="Add to cart"|gettext}
     {/form}

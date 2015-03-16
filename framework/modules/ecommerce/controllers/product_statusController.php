@@ -35,6 +35,7 @@ class product_statusController extends expController {
 			'model'=>'product_status',
 			'where'=>1,
             'limit'=>10,
+            'order'=>'rank',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['controller'],
             'action'=>$this->params['action'],
@@ -47,12 +48,10 @@ class product_statusController extends expController {
     
     public function showall() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
-//        $this->manage();
     }
     
     public function show() {
         redirect_to(array('controller'=>'product_status', 'action'=>'manage'));
-//        $this->manage();
     }
     
 }

@@ -30,12 +30,12 @@
 {/css}
 
 <div id="tablebasedcalculator" class="module shipping configure">
-    <div id="table-tabs" class="yui-navset exp-skin-tabview hide">
-        <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>{'General Settings'|gettext}</em></a></li>
+    <div id="table-tabs" class="">
+        <ul class="nav nav-tabs" role="tablist">
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Settings'|gettext}</em></a></li>
         </ul>
-        <div class="yui-content">
-            <div id="tab1">
+        <div class="tab-content">
+	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                 <blockquote>{'Shipping cost is based on order total and shipping speed'|gettext}</blockquote>
                 <h4>{"Shipping Speeds"|gettext}</h4>
                 {icon class="add" action="editspeed/id/`$calculator->id`" text="Create new Shipping Speed"|gettext}
@@ -50,7 +50,6 @@
                 </ul>
                 <div class="{if !$calculator->shippingspeeds}hide{/if}">
                     <hr>
-                    {br}
 
                     <div>
                         {* <a href="#" id="newrange">{"Add Range Set"|gettext}</a> *}
@@ -209,17 +208,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {/literal}
 {/script}
 
-{script unique="editform" yui3mods=1}
+{script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
-    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-        requires: ['history','tabview','event-custom']
-    };
-
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-        Y.expTabs({srcNode: '#table-tabs'});
-		Y.one('#table-tabs').removeClass('hide');
-		Y.one('.loadingdiv').remove();
-    });
+    $('.loadingdiv').remove();
 {/literal}
 {/script}

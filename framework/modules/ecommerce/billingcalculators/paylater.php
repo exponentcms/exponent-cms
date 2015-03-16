@@ -50,8 +50,6 @@ class paylater extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-//        global $order, $db, $user;
-
         $object = new stdClass();
         $object->errorCode = $opts->result->errorCode = 0;
 //        $opts->result = $object;

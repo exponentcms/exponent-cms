@@ -18,6 +18,6 @@
     {control type="radiogroup" name="status[active_type]" items=$record->active_display item_descriptions=$record->active_display_desc columns=1 default=$record->active_type|default:0}
 {/group}
 {group label="Status"|gettext}
-    {control type="dropdown" name="status[product_status_id]" frommodel=product_status items=$status_display value=$record->product_status_id}
+    {control type="dropdown" name="status[product_status_id]" frommodel=product_status items=$status_display orderby=rank value=$record->product_status_id}
     {icon controller="product_status" action="manage" text="Manage Product Statuses"|gettext}
 {/group}

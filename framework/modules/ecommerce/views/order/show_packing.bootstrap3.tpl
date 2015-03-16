@@ -215,6 +215,7 @@
             </thead>
             <tbody>
             {foreach from=$order->orderitem item=oi}
+                {if !$oi->product->no_shipping}
                 <tr class="{cycle values="odd, even"}">
                     <td>
                         {$oi->quantity}
@@ -251,6 +252,7 @@
                         </div>
                     {/permissions}
                 </tr>
+                {/if}
             {/foreach}
              {permissions}
                 <div class="item-permissions item-actions">

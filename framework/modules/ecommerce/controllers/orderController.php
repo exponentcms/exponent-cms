@@ -1435,26 +1435,36 @@ exit();
 
     function edit_order_item() {
         $oi = new orderitem($this->params['id'], true, true);
-        //oi->options = expUnserialize($oi->options);
+        if (empty($oi->id)) {
+            flash('error', gt('Order item doesn\'t exist.'));
+            expHistory::back();
+        }
         $oi->user_input_fields = expUnserialize($oi->user_input_fields);
+        $params['options'] = $oi->opts;
+        $params['user_input_fields'] = $oi->user_input_fields;
         $oi->product           = new product($oi->product->id, true, true);
         if ($oi->product->parent_id != 0) {
             $parProd = new product($oi->product->parent_id);
             //$oi->product->optiongroup = $parProd->optiongroup;   
             $oi->product = $parProd;
         }
-        $oi->selectedOpts = array();
-        if (!empty($oi->opts)) {
-            foreach ($oi->opts as $opt) {
-                $option = new option($opt[0]);
-                $og     = new optiongroup($option->optiongroup_id);
-                if (!is_array($oi->selectedOpts[$og->id])) $oi->selectedOpts[$og->id] = array($option->id);
-                else array_push($oi->selectedOpts[$og->id], $option->id);
-            }
-        }
+        //FIXME we don't use selectedOpts?
+//        $oi->selectedOpts = array();
+//        if (!empty($oi->opts)) {
+//            foreach ($oi->opts as $opt) {
+//                $option = new option($opt[0]);
+//                $og     = new optiongroup($option->optiongroup_id);
+//                if (!isset($oi->selectedOpts[$og->id]) || !is_array($oi->selectedOpts[$og->id]))
+//                    $oi->selectedOpts[$og->id] = array($option->id);
+//                else
+//                    array_push($oi->selectedOpts[$og->id], $option->id);
+//            }
+//        }
         //eDebug($oi->selectedOpts);
+
         assign_to_template(array(
-            'oi'=> $oi
+            'oi' => $oi,
+            'params' => $params
         ));
     }
 

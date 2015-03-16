@@ -19,7 +19,15 @@
 
 <div class="modules order_type showall">
 	<h1>{$moduletitle|default:"Product Status Administration"|gettext}</h1>
-	{icon class="add" action=create text='Create a new product status'|gettext}
+    <blockquote>
+        {'The top product status code will be used as the default product status'|gettext}
+    </blockquote>
+    {if $permissions.create}
+    	{icon class="add" action=create text='Create a new product status'|gettext}
+    {/if}
+    {if $permissions.manage}
+        {ddrerank items=$page->records model="product_status" label="Product Statuses"|gettext}
+    {/if}
 	<div id="orders">
 		{pagelinks paginate=$page top=1}
 		<table id="prods" class="exp-skin-table">

@@ -21,9 +21,9 @@
  */
 
 class splitcreditcard extends creditcard {
-    function name() {
-        return 'Split Credit Card';
-    }
+//    function name() {
+//        return 'Split Credit Card';
+//    }
 
     function description() {
         return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
@@ -57,15 +57,41 @@ class splitcreditcard extends creditcard {
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
 
+        //FIXME this is where we lose the split credit card data
+		// get the configuration data
+//		$config = unserialize($this->config);
+
+		$txtmessage = gt("The following order requires your attention") . "\r\n\r\n";
+        $txtmessage .= $this->textmessage($this->opts);
+
+		$htmlmessage = gt("The following order requires your attention") . "<br><br>";
+		$htmlmessage .= $this->htmlmessage($this->opts);
+
+		$addresses = explode(',', $this->config['notification_addy']);
+        foreach ($addresses as $address) {
+		    $mail = new expMail();
+		    $mail->quickSend(array(
+                'html_message'=>$htmlmessage,
+                'text_message'=>$txtmessage,
+                'to'=>trim($address),
+//				  'from'=>ecomconfig::getConfig('from_address'),
+//				  'from_name'=>ecomconfig::getConfig('from_name'),
+                'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
+                'subject'=>gt('Billing Information for an order placed on') . ' '.ecomconfig::getConfig('storename'),
+		    ));
+		}
         $this->opts->cc_number = 'XXXX-XXXX-XXXX-' . substr($this->opts->cc_number, -4);
 
         $object = new stdClass();
-        $object->errorCode = 0;
-        $object->payment_status = 'complete';
-        $this->opts->result = $object;
+        $object->errorCode = $opts->result->errorCode = 0;
+//        $object->payment_status = 'complete';
+//        $this->opts->result = $object;
+        $opts->result->payment_status = gt("authorization pending");
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
-        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
+        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => $opts->result->payment_status));
+//        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, $opts->result->payment_status);
         return true;
     }
 
@@ -91,10 +117,10 @@ class splitcreditcard extends creditcard {
 //    }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/splitcreditcard/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/splitcreditcard/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -152,11 +178,11 @@ class splitcreditcard extends creditcard {
      */
     function textmessage($opts) {
         global $order;   //FIXME we do NOT want the global $order
-        //FIXME: hard coded text!!
-        $message = "Order Number: $order->invoice_id\r\n";
-        $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "\r\n";
-        $message .= 'Credit Card CVV Number: ' . $opts->cvv . "\r\n";
-        $message .= 'Expires on: ' . $opts->exp_month . '/' . $opts->exp_year . "\r\n";
+
+        $message = gt('Order Number') . ": $order->invoice_id\r\n";
+        $message .= gt('Credit Card Number') . ': ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "\r\n";
+        $message .= gt('Credit Card CVV Number') . ': ' . $opts->cvv . "\r\n";
+        $message .= gt('Expires on') . ': ' . $opts->exp_month . '/' . $opts->exp_year . "\r\n";
         return $message;
     }
 
@@ -168,11 +194,11 @@ class splitcreditcard extends creditcard {
      */
     function htmlmessage($opts) {
         global $order;   //FIXME we do NOT want the global $order
-        //FIXME: hard coded text!!
-        $message = "Order Number: $order->invoice_id<br>";
-        $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "<br>";
-        $message .= 'Credit Card CVV Number: ' . $opts->cvv . "<br>";
-        $message .= 'Expires on: ' . $opts->exp_month . '/' . $opts->exp_year . "<br>";
+
+        $message = gt("Order Number") . ": $order->invoice_id<br>";
+        $message .= gt('Credit Card Number') . ': ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "<br>";
+        $message .= gt('Credit Card CVV Number') . ': ' . $opts->cvv . "<br>";
+        $message .= gt('Expires on') . ': ' . $opts->exp_month . '/' . $opts->exp_year . "<br>";
         return $message;
     }
 

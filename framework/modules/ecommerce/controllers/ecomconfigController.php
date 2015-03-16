@@ -150,7 +150,7 @@ class ecomconfigController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'  => $this->params['controller'],
             'action' => $this->params['action'],
-			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
+			'columns'=>array(gt('Enabled')=>'enabled',gt('Name')=>'title',gt('Type')=>'action_type',gt('Coupon Code')=>'coupon_code',gt('Valid Until')=>'enddate'),
         ));
 
         assign_to_template(array(
@@ -330,7 +330,7 @@ class ecomconfigController extends expController {
             'views'=>$views,
             'countries'=>$countries,
             'regions'=>$regions,
-            'title'=>$this->displayname()
+            'title'=>self::displayname()
         ));
     }   
 

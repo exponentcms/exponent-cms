@@ -464,7 +464,7 @@ class eventregistrationController extends expController {
                     break;
                 }
             default:
-                $metainfo['title']       = $this->displayname() . " - " . $storename;
+                $metainfo['title']       = self::displayname() . " - " . $storename;
                 $metainfo['keywords']    = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }

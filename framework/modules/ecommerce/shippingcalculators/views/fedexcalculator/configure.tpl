@@ -22,7 +22,7 @@
     </blockquote>
     <div id="fedex-tabs" class="yui-navset exp-skin-tabview hide">
         <ul class="yui-nav">
-	        <li class="selected"><a href="#tab1"><em>{'FedEx Settings'|gettext}</em></a></li>
+	        <li class="selected"><a href="#tab1"><em>{'General Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Shipping Methods'|gettext}</em></a></li>
 	        <li><a href="#tab3"><em>{'My Info'|gettext}</em></a></li>
 	        <li><a href="#tab4"><em>{'Shipping Defaults'|gettext}</em></a></li>
