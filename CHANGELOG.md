@@ -14,8 +14,8 @@ Added / Fixed / Changed for 2.3.4
   - adds 'announcment' view to events module
   - adds alternate color to featured items in announcement views
   - adds 'empty recycle bin' feature to remove all items in recycle bin
-  - adds date to search hit for events and event registrations
-  - after adding a new module which requires configuration, now displays the module configuration settings page
+  - adds most recent event date to search hit for events and event registrations
+  - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
@@ -25,6 +25,8 @@ Added / Fixed / Changed for 2.3.4
 Added / Fixed / Changed for 2.3.3
 -----------------------
 ### Address any issues in v2.3.2
+  * Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
+    - Compatible with PHP v5.3.x, 5.4.x, 5.5.x, and 5.6.x
   - adds feature to delete multiple photo album items at one time
   - adds a 'hide links' option to events module views
   - updates elFinder to be the default file manager
@@ -55,26 +57,26 @@ Added / Fixed / Changed for 2.3.2
 -----------------------
 ### Address any issues in v2.3.1
   * !!! Fixes possible cross-site security issue
-  * adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
-  * adds bootstrap 2 multi-column container module views
-  * adds lightbox option to mediaplayer showall view, allows grid of icons
-  * adds optional 'date badge' to motd show view
-  * adds (fixes) bootstrap 3 form 'horizontal' controls (label beside control instead of above)
-  * fixes 'column' styling of several 'login' views
-  * updates many ecommerce features, especially for bootstrap 3
-    * adds ecommerce navigation 'breadcrumb' on store show and showall views
-    * adds bootstrap3 showall customer selectable 'list' view in addition to standard 'grid' view
-    * adds product display 'sort by' control
-    * adds customer checkout breadcrumb to indicate checkout progress
-    * new filter-able and color coded manage orders view
-    * completely revised bootstrap 'show order' view for easier order management
-    * adds better sorting and filtering for manage products
-    * adds new shipping calculators - by item & by weight
-    * changes ecommerce 'meta' tags to display store name instead of site name
-    * now allows for either origin or destination sales tax; taxable shipping costs; entered tax rates may now be disabled
-      * US states sales tax tables now installed with store sample database
-  * adds optional 0.9x theme compatibility by setting OLD_THEME_COMPATIBLE constant
-  * updates database manager display to be 'responsive' for smaller screens
+  - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
+  - adds bootstrap 2 multi-column container module views
+  - adds lightbox option to mediaplayer showall view, allows grid of icons
+  - adds optional 'date badge' to motd show view
+  - adds (fixes) bootstrap 3 form 'horizontal' controls (label beside control instead of above)
+  - fixes 'column' styling of several 'login' views
+  - updates many ecommerce features, especially for bootstrap 3
+    - adds ecommerce navigation 'breadcrumb' on store show and showall views
+    - adds bootstrap3 showall customer selectable 'list' view in addition to standard 'grid' view
+    - adds product display 'sort by' control
+    - adds customer checkout breadcrumb to indicate checkout progress
+    - new filter-able and color coded manage orders view
+    - completely revised bootstrap 'show order' view for easier order management
+    - adds better sorting and filtering for manage products
+    - adds new shipping calculators - by item & by weight
+    - changes ecommerce 'meta' tags to display store name instead of site name
+    - now allows for either origin or destination sales tax; taxable shipping costs; entered tax rates may now be disabled
+      - US states sales tax tables now installed with store sample database
+  - adds optional 0.9x theme compatibility by setting OLD_THEME_COMPATIBLE constant
+  - updates database manager display to be 'responsive' for smaller screens
   - includes all fixes from v2.3.1 patches
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete

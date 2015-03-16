@@ -529,6 +529,7 @@ class remove_oldfiles extends upgradescript {
             'external/Swift-5.1.0/',
             'external/Swift-5.2.0/',
             'external/Swift-5.2.1/',
+            'external/Swift-5.3.1/',
             'external/yui3/',
             'external/lissa/',
             'external/yui/build/',

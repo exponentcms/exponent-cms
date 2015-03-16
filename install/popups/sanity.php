@@ -247,9 +247,9 @@
 	</td>
 </tr>
 <tr>
-	<td id="o_php" class="bodytext" style="font-weight: bold;" valign="top">PHP 5.2.1+</td>
+	<td id="o_php" class="bodytext" style="font-weight: bold;" valign="top">PHP 5.3.1+</td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('Because of some of the functions that Exponent uses, versions of PHP prior to 5.2.1 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.2.1.'); ?>
+		<?php echo gt('Because of some of the functions that Exponent uses, versions of PHP prior to 5.3.1 are not suitable.  Most functions that are supported in later versions have workarounds, but there are a few major bugs, and functions that can\'t be re-implemented in PHP prior to 5.3.1.'); ?>
 	</td>
 </tr>
 <tr>
