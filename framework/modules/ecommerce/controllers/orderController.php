@@ -837,7 +837,7 @@ exit();
 
             //eDebug($note,true);            
         } else {
-            flash('error', gt('The email address was NOT sent. An email address count not be found for this customer'));
+            flash('error', gt('The email was NOT sent. An email address was not found for this customer'));
             expHistory::back();
         }
 
@@ -881,22 +881,17 @@ exit();
         // we are in.
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
-        if (!empty($router->params['id'])) {
-            $order    = new order($router->params['id']);
-        } else {
-            $order    = '';
-        }
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
-            case 'showall':
-                $metainfo['title']       = gt("Managing Orders") . ' - ' . $storename;
-                $metainfo['keywords']    = SITE_KEYWORDS;
-                $metainfo['description'] = SITE_DESCRIPTION;
-                break;
             case 'myOrder':
             case 'show':
             case 'showByTitle':
+                if (!empty($router->params['id'])) {
+                    $order    = new order($router->params['id']);
+                } else {
+                    $order    = '';
+                }
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
                 $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
@@ -904,6 +899,7 @@ exit();
                 $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
                 $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;
+            case 'showall':
             case 'ordersbyuser':
             default:
                 $metainfo['title']       = gt("Order Management") . " - " . $storename;
@@ -1521,11 +1517,14 @@ exit();
         if ($oi->product->parent_id != 0) {
             $oi->product = new product($oi->product->parent_id, true, false);
         } else {
-            //reattach the product so we get the optoin fields and such
+            //reattach the product so we get the option fields and such
             $oi->product = new product($oi->product->id, true, false);
         }
 
-        //eDebug($oi->product,true);
+        if (isset($this->params['product_status_id'])) {
+            $ps = new product_status($this->params['product_status_id']);
+            $oi->products_status = $ps->title;
+        }
 
         $options = array();
         foreach ($oi->product->optiongroup as $og) {

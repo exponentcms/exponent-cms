@@ -14,10 +14,10 @@
  *}
 
 <div class="module order edit">
-    <h1>{'Editing order totals'|gettext}</h1>
-    
+    <h1>{'Editing order item'|gettext}</h1>
     {form action=save_order_item}
         {control type=hidden name=id value=$oi->id}
+        {control type=hidden name=orderid value=$oi->orders_id}
         <blockquote>
             {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
             {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
@@ -44,6 +44,12 @@
                 <td>{'Item quantity:'|gettext}</td>
                 <td>{control type=text name=quantity label="" value=$oi->quantity}</td>
             </tr>
+            {if $oi->product_type == 'product'}
+            <tr>
+                <td>{'Status:'|gettext}</td>
+                <td>{control type="dropdown" name="product_status_id" frommodel=product_status items=$status_display orderby=rank value=$oi->product_status_id}</td>
+            </tr>
+            {/if}
         </table>
 
         {$product = $oi->product}
