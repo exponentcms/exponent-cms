@@ -137,7 +137,7 @@ abstract class expController {
      * @return string
      */
     public function name() {
-        return self::displayname();
+        return $this->displayname();
     }
 
     /**
@@ -260,13 +260,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => self::hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => self::hasSources() == true ? $this->loc->src : null,
+            'src'        => $this->hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -488,7 +488,7 @@ abstract class expController {
      */
     public function showRandom() {
         expHistory::set('viewable', $this->params);
-        $where = self::hasSources() ? $this->aggregateWhereClause() : null;
+        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
         $limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
         $order = 'RAND()';
         assign_to_template(array(
@@ -637,7 +637,7 @@ abstract class expController {
         $modelname = $this->basemodel_name;
         $this->$modelname->update($this->params);
 
-        if (self::isSearchable()) {
+        if ($this->isSearchable()) {
             $this->addContentToSearch($this->params);
         }
 
@@ -689,7 +689,7 @@ abstract class expController {
         $rows = $obj->delete();
 
         // if this module is searchable lets delete spidered content
-        if (self::isSearchable()) {
+        if ($this->isSearchable()) {
             $search = new search();
 //            $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->classname . "'");
             $content = $search->find('first', 'original_id=' . $this->params['id'] . " AND ref_module='" . $this->baseclassname . "'");
@@ -717,13 +717,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => self::hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => isset($this->params['limit']) ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => self::hasSources() == true ? $this->loc->src : null,
+            'src'        => $this->hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -855,7 +855,7 @@ abstract class expController {
 //            'config'            => $this->config,  //FIXME already assigned in controllertemplate?
             'page'              => $page, // needed for aggregation list
             'views'             => $views,
-            'title'             => self::displayname(),
+            'title'             => $this->displayname(),
             'current_section'   => expSession::get('last_section'),
 //            'classname'         => $this->classname,  //FIXME $controller already assigned baseclassname (short vs long) in controllertemplate?
             'viewpath'          => $this->viewpath,
@@ -1145,7 +1145,7 @@ abstract class expController {
      * @return string
      */
     public function searchName() {
-        return self::displayname();
+        return $this->displayname();
     }
 
     /**
@@ -1226,7 +1226,7 @@ abstract class expController {
     public function delete_search() {
         global $db;
         // remove this modules entries from the search table.
-        if (self::isSearchable()) {
+        if ($this->isSearchable()) {
 //            $where = "ref_module='" . $this->classname . "' AND location_data='" . serialize($this->loc) . "'";
             $where = "ref_module='" . $this->baseclassname . "' AND location_data='" . serialize($this->loc) . "'";
 //            $test = $db->selectObjects('search', $where);
@@ -1250,7 +1250,7 @@ abstract class expController {
     public function delete_instance($loc = false) {
         $model = new $this->basemodel_name();
         $where = 1;
-        if ($loc || self::hasSources())
+        if ($loc || $this->hasSources())
             $where = "location_data='" . serialize($this->loc) . "'";
         $items = $model->find('all',$where);
         foreach ($items as $item) {
@@ -1277,7 +1277,7 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing") . " " . self::displayname() . ' - ' . SITE_TITLE;
+                $metainfo['title'] = gt("Showing") . " " . $this->displayname() . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
@@ -1320,7 +1320,7 @@ abstract class expController {
                 if (method_exists($mod, $functionName)) {
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo['title'] = self::displayname() . " - " . SITE_TITLE;
+                    $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
                     $metainfo['keywords'] = SITE_KEYWORDS;
                     $metainfo['description'] = SITE_DESCRIPTION;
                     $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
@@ -1419,7 +1419,7 @@ abstract class expController {
 
         $sql = '';
 
-        if (empty($this->config['add_source']) && !self::hasSources()) {
+        if (empty($this->config['add_source']) && !$this->hasSources()) {
             return $sql;
         }
 

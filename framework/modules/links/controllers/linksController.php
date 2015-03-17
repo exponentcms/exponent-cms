@@ -46,7 +46,7 @@ class linksController extends expController {
     function showall() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
-        $where = self::hasSources() ? $this->aggregateWhereClause() : null;
+        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
         $limit = isset($this->config['limit']) ? $this->config['limit'] : null;
         $order = isset($this->config['order']) ? $this->config['order'] : "rank";
         $links = $this->$modelname->find('all', $where, $order, $limit);

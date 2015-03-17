@@ -138,7 +138,7 @@ class searchController extends expController {
             'order'=>"title",
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>self::hasSources() == true ? $this->loc->src : null,
+            'src'=>$this->hasSources() == true ? $this->loc->src : null,
             'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
 
