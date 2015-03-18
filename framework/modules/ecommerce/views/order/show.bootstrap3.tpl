@@ -673,9 +673,9 @@
                                     <th>
                                         {"SKU"|gettext}
                                     </th>
-                                    <th>
-                                        {"Location"|gettext}
-                                    </th>
+                                    {*<th>*}
+                                        {*{"Location"|gettext}*}
+                                    {*</th>*}
                                     <th>
                                         {"Status"|gettext}
                                     </th>
@@ -721,9 +721,9 @@
                                     <td>
                                         {if $oi->products_model != ""}{$oi->products_model}{else}N/A{/if}
                                     </td>
-                                    <td>
-                                        {$oi->products_warehouse_location}
-                                    </td>
+                                    {*<td>*}
+                                        {*{$oi->products_warehouse_location}*}
+                                    {*</td>*}
                                     <td>
                                         {$oi->products_status}
                                     </td>
