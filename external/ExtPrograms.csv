@@ -19,9 +19,9 @@ iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.20.2,
 lessphp,0.4.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.2exp,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.2,twitter.github.com/bootstrap,3.3.2,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.3.4,twitter.github.com/bootstrap,3.3.4,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.2,bootswatch.com/,3.3.2,
+Bootswatch,3.3.4,bootswatch.com/,3.3.4,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.3.0,fortawesome.github.com/Font-Awesome,4.3.0,
 Adminer,4.2.0,www.adminer.org,4.2.0,we add some system user checks in design.inc
