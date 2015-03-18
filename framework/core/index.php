@@ -70,6 +70,7 @@
 		</div>
         <div class="themeerror">
             <?php echo gt('There is a problem using the current theme').'('.DISPLAY_THEME.'), '.gt('this is the system fallback theme!'); ?>
+            <?php echo '<a href="', makeLink(array('controller'=>'administration', 'action'=>'manage_themes')), '">', gt('Manage Themes'), '</a>'; ?>
         </div>
 	    <?php expTheme::foot(); ?>
 	</body>
