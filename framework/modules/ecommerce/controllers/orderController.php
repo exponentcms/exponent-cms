@@ -158,8 +158,12 @@ class orderController extends expController {
             $ord = new order();
             $order = $ord->find('first', 'invoice_id=' . $this->params['invoice']);
             $this->params['id'] = $order->id;
-        } else {
+        } elseif (!empty($this->params['id'])) {
             $order = new order($this->params['id']);
+        }
+        if (empty($order->id)) {
+            flash('notice', gt('That order does not exist.'));
+            expHistory::back();
         }
 
         // We're forcing the location. Global store setting will always have this loc
@@ -889,8 +893,10 @@ exit();
             case 'showByTitle':
                 if (!empty($router->params['id'])) {
                     $order    = new order($router->params['id']);
+                } elseif (!empty($router->params['invoice'])) {
+                    $order = $this->order->find('first', 'invoice_id=' . $router->params['invoice']);
                 } else {
-                    $order    = '';
+                    $order    = $this->order;
                 }
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;

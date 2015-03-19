@@ -118,10 +118,8 @@
   overflow-x:hidden;
 }
 
-#invoice #create_new_order #search_stringControl #search_internal{
-    width:515px;      
-}
-#invoice #create_new_order #search_stringControl #search_external{
+#invoice #create_new_order #search_stringControl #search_internal,
+#invoice #create_new_order #search_stringControl #search_external {
     width:515px;      
 }
 

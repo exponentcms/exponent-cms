@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="myaddress" corecss="common"}
+
+{/css}
+
 <address class="address show">
 	<span class="fullname">
         {$address->firstname} {$address->middlename} {$address->lastname}
@@ -27,12 +31,12 @@
         {else}
             {$address->state|statename}
         {/if}
-        {$address->zip}{br}
+        {$address->zip}
         {if $address->state == -2 || empty($address->state)}
-            {$address->country|countryname}
+            {br}{$address->country|countryname}
         {/if}
     </span>
-	{if $address->address_type}<span class="address_type">({$address->address_type})</span>{/if}
+	{if $address->address_type}<span class="address_type">(<em>{$address->address_type}</em>)</span>{/if}
 	<span class="phone">{$address->phone}</span>
 	<span class="email">{$address->email}</span>
 </address>
