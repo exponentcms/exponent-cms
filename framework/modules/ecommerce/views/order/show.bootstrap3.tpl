@@ -120,7 +120,7 @@
                     <div class="tab-content panel">
                         <div id="status" role="tabpanel" class="tab-pane fade in active">
                             <div class="table-responsive">
-                                <table class="table order-info">
+                                <table class="table table-striped order-info">
                                     <tbody>
                                     {foreach from=$order->order_status_changes item=change}
                                         <tr style="border-bottom: 1px solid gray;">
@@ -336,7 +336,7 @@
                             {count($order->billingmethod[0]->billingtransaction)}
                         </span>
                     </div>
-                    <div>
+                    <div class="payment-info">
                         <div class="odd">
                             <span class="pmt-label">
                                 {"Payment Method"|gettext}

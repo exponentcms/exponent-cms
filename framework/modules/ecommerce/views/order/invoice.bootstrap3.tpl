@@ -38,6 +38,9 @@
     .height {
         min-height: 260px;
     }
+    #invoice-data > div > div > table > tbody > tr > td.pmt-value {
+        text-align: right;
+    }
 </style>
 
 <div id="invoice row">
