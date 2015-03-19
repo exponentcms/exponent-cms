@@ -359,7 +359,7 @@ table.table.order-info2 > thead > tr > th:hover,
 .table-striped > tbody > tr:nth-child(even) > td,
 .table-striped > tbody > tr:nth-child(even) > th,
 .payment-info > div.even {
-	background-color: rgba(211, 255, 230, 0.42);
+	background-color: rgb(235, 235, 235);
 }
 
 div.table-responsive > table > thead > tr,
