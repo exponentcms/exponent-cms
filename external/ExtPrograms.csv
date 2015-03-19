@@ -45,7 +45,7 @@ stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate op
 validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
-timepicker,1.5.0,http://trentrichardson.com/examples/timepicker/,1.5.0,used by adminer
+timepicker,1.5.2,http://trentrichardson.com/examples/timepicker/,1.5.2,used by adminer
 DataTables,1.10.5,http://www.datatables.net,1.10.5,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.3,http://www.datatables.net,2.2.3,
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
@@ -62,7 +62,7 @@ pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstra
 Sortable,1.1.0,https://github.com/RubaXa/Sortable,1.1.0,
 jstree,3.0.9,https://github.com/vakata/jstree,3.0.9,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.2,
-impromptu,6.0.0,http://trentrichardson.com/Impromptu,6.0.0,
+impromptu,6.1.0,http://trentrichardson.com/Impromptu,6.1.0,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.4.2,https://github.com/timschlechter/bootstrap-tagsinput,0.4.2,
 Typeahead,0.10.5,http://twitter.github.io/typeahead.js/,0.10.5,needed by bootstrap-tagsinput

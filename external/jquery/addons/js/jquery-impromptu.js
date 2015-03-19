@@ -1,6 +1,6 @@
-/*! jQuery-Impromptu - v6.0.0 - 2014-12-27
+/*! jQuery-Impromptu - v6.1.0 - 2015-03-15
 * http://trentrichardson.com/Impromptu
-* Copyright (c) 2014 Trent Richardson; Licensed MIT */
+* Copyright (c) 2015 Trent Richardson; Licensed MIT */
 (function(root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
@@ -58,6 +58,7 @@
 		buttons: {
 			Ok: true
 		},
+		buttonTimeout: 1000,
 		loaded: function(e){},
 		submit: function(e,v,m,f){},
 		close: function(e,v,m,f){},
@@ -189,12 +190,12 @@
 			//build the box and fade
 			var msgbox = '<div class="'+ opts.prefix +'box '+ opts.classes.box +'">';
 			if(opts.useiframe && ($('object, applet').length > 0)) {
-				msgbox += '<iframe src="javascript:false;" style="display:block;position:absolute;z-index:-1;" class="'+ opts.prefix +'fade '+ opts.classes.fade +'"></iframe>';
+				msgbox += '<iframe src="javascript:false;" class="'+ opts.prefix +'fade '+ opts.classes.fade +'"></iframe>';
 			} else {
 				msgbox += '<div class="'+ opts.prefix +'fade '+ opts.classes.fade +'"></div>';
 			}
 			msgbox += '<div class="'+ opts.prefix +' '+ opts.classes.prompt +'">'+
-						'<form action="javascript:false;" onsubmit="return false;" class="'+ opts.prefix +'form '+ opts.classes.form +'">'+
+						'<form action="#" class="'+ opts.prefix +'form '+ opts.classes.form +'">'+
 							'<div class="'+ opts.prefix +'close '+ opts.classes.close +'">'+ opts.closeText +'</div>'+
 							'<div class="'+ opts.prefix +'states"></div>'+
 						'</form>'+
@@ -236,10 +237,19 @@
 			t.jqi.on('click', '.'+ opts.prefix +'buttons button', function(e){
 				var $t = $(this),
 					$state = $t.parents('.'+ opts.prefix +'state'),
-					stateobj = t.options.states[$state.data('jqi-name')],
+					statename = $state.data('jqi-name'),
+					stateobj = t.options.states[statename],
 					msg = $state.children('.'+ opts.prefix +'message'),
 					clicked = stateobj.buttons[$t.text()] || stateobj.buttons[$t.html()],
 					forminputs = {};
+
+				// disable for a moment to prevent multiple clicks
+				if(t.options.buttonTimeout > 0){
+					t.disableStateButtons(statename);
+					setTimeout(function(){
+						t.enableStateButtons(statename);
+					}, t.options.buttonTimeout);
+				}
 
 				// if for some reason we couldn't get the value
 				if(clicked === undefined){
@@ -348,6 +358,7 @@
 
 			t.jqif.click(fadeClicked);
 			t.jqi.find('.'+ opts.prefix +'close').click(function(){ t.close(); });
+			t.jqi.find('.'+ opts.prefix +'form').submit(function(){ return false; });
 			t.jqib.on("keydown",keyDownEventHandler)
 						.on('impromptu:loaded', opts.loaded)
 						.on('impromptu:close', opts.close)
@@ -422,7 +433,7 @@
 				arrow = '',
 				title = '',
 				opts = t.options,
-				$jqistates = $('.'+ opts.prefix +'states'),
+				$jqistates = t.jqi.find('.'+ opts.prefix +'states'),
 				buttons = [],
 				showHtml,defbtn,k,v,l,i=0;
 
@@ -440,10 +451,10 @@
 				showHtml = 'Error: html function must return text';
 			}
 
-			state += '<div class="'+ opts.prefix + 'state" data-jqi-name="'+ statename +'" style="display:none;">'+
+			state += '<div class="'+ opts.prefix + 'state" data-jqi-name="'+ statename +'">'+
 						arrow + title +
 						'<div class="'+ opts.prefix +'message '+ opts.classes.message +'">' + showHtml +'</div>'+
-						'<div class="'+ opts.prefix +'buttons '+ opts.classes.buttons +'"'+ ($.isEmptyObject(stateobj.buttons)? 'style="display:none;"':'') +'>';
+						'<div class="'+ opts.prefix +'buttons'+ ($.isEmptyObject(stateobj.buttons)? 'hide ':' ') + opts.classes.buttons +'">';
 
 			// state buttons may be in object or array, lets convert objects to arrays
 			if($.isArray(stateobj.buttons)){
@@ -473,12 +484,12 @@
 			
 			state += '</div></div>';
 
-			$state = $(state);
+			$state = $(state).css({display:'none'});
 
 			$state.on('impromptu:submit', stateobj.submit);
 
 			if(afterState !== undefined){
-				$jqistates.find('[data-jqi-name="'+afterState+'"]').after($state);
+				t.getState(afterState).after($state);
 			}
 			else{
 				$jqistates.append($state);
@@ -573,6 +584,38 @@
 		*/
 		getCurrentStateName: function() {
 			return this.currentStateName;
+		},
+
+		/**
+		* disableStateButtons - Disables the buttons in a state
+		* @param statename String - Name of the state containing buttons
+		* @param buttons Array - Array of button values to disable. By default all are disabled
+		* @param enable Boolean - True to enable the buttons instead of disabling (internally use only)
+		* @return Void
+		*/
+		disableStateButtons: function(statename, buttons, enable) {
+			var t = this;
+
+			if($.isArray(statename)){
+				buttons = statename;
+				statename = null;
+			}
+			
+			t.getState(statename || t.getCurrentStateName()).find('.'+ t.options.prefix + 'button').each(function(i,btn){
+				if(buttons === undefined || $.inArray(btn.value, buttons) !== -1){
+					btn.disabled = !enable;
+				}
+			});
+		},
+
+		/**
+		* enableStateButtons - Enables the buttons in a state
+		* @param statename String - Name of the state containing buttons. Defaults to current state
+		* @param buttons Array - Array of button values to enable. By default all are enabled
+		* @return Void
+		*/
+		enableStateButtons: function(statename, buttons) {
+			this.disableStateButtons(statename, buttons, true);
 		},
 
 		/**
@@ -742,7 +785,8 @@
 
 					$state.slideDown(jqiopts.promptspeed,function(){
 						var $t = $(this);
-
+						t.enableStateButtons();
+						
 						// if focus is a selector, find it, else its button index
 						if(typeof(stateobj.focus) === 'string'){
 							$t.find(stateobj.focus).eq(0).focus();
