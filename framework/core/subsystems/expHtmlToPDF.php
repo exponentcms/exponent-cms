@@ -565,6 +565,7 @@ class expDOMPDF extends expHtmlToPDF
     public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
         if (file_exists(BASE . 'external/dompdf/dompdf.php')) {
+            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
             require_once(BASE . 'external/dompdf/dompdf_config.inc.php');
             $this->pdf = new DOMPDF();
             $this->size = $paper_size;
