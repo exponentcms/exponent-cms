@@ -47,7 +47,7 @@
             {if $oi->product_type == 'product'}
             <tr>
                 <td>{'Status:'|gettext}</td>
-                <td>{control type="dropdown" name="product_status_id" frommodel=product_status items=$status_display orderby=rank value=$oi->product_status_id}</td>
+                <td>{control type="dropdown" name="product_status_id" frommodel=product_status items=$status_display orderby=rank value=$oi->products_status}</td>
             </tr>
             {/if}
         </table>

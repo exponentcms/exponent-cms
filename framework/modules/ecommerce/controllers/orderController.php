@@ -786,7 +786,7 @@ exit();
             ));
             $html = $template->render();
             if (!empty($this->params['include_invoice'])) {
-                $html .= '<br><hr><br>';
+                $html .= '<hr><br>';
                 $html .= renderAction(array('controller'=> 'order', 'action'=> 'show', 'view'=> 'email_invoice', 'id'=> $this->params['id'], 'printerfriendly'=> '1', 'no_output'=> 'true'));
             } else {
                 $html .= ecomconfig::getConfig('ecomfooter');
@@ -825,7 +825,7 @@ exit();
 
             // manually add/attach an expSimpleNote to the order
             $note           = new expSimpleNote();
-            $note->body     = "<strong>[" . gt('action') . "]: " . gt('Emailed message to') . " " . $emailed_to . ":</strong><br><br>" . $email_message;
+            $note->body     = "<strong>[" . gt('action') . "]: " . gt('Emailed message to') . " " . $emailed_to . ":</strong>" . $email_message;
             $note->approved = 1;
             $note->name     = $user->firstname . " " . $user->lastname;
             $note->email    = $user->email;

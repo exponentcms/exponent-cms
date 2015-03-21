@@ -13,7 +13,7 @@
  *
  *}
 
-{'An order you placed on the'|gettext} {$storename} {'website has been updated.  The status of your order has been changed to'|gettext} {$to_status}.{br}
+{'An order you placed on the'|gettext} {$storename} {'website has been updated.  The status of your order has been changed to'|gettext} '{$to_status}'.{br}
 <hr>
 {'Invoice'|gettext}: {$order->invoice_id}{br}
 {'Update Date/Time'|gettext}: {$date} {br}
@@ -26,9 +26,11 @@
 {if $include_shipping == true}
     <hr>
     {'Your order was shipped on'|gettext} {$order->shipped|format_date}.{br}
-    {'Carrier'|gettext}: {$carrier}{br}
+    {if $carrier != ''}
+        {'Carrier'|gettext}: {$carrier}{br}
+    {/if}
     {'Tracking Number'|gettext}: {$order->shipping_tracking_number}{br}{br}
-    {if $tracking_link != ''}
+    {if $carrier != ''}
         {'You may visit the shipping providers website to track your order by following this link'|gettext}:{br}
         {$tracking_link}
         {br}{br}

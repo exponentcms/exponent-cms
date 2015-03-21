@@ -148,7 +148,7 @@
                                         <thead id="change-status">
                                             <tr>
                                                 <!--th>The current status of this order is: {$order->getStatus()}</th-->
-                                                <th title="{'Click to change order type or status'|gettext}"><i class="fa fa-angle-double-down"></i> {'Order Type and Order Status'|gettext}</th>
+                                                <th title="{'Click to change order type or status'|gettext}"><i class="fa fa-angle-double-down"></i> {'Update Order Type and Order Status'|gettext}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="change-status-view" style="display:none;">
