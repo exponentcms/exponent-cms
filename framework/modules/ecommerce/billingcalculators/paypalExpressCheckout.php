@@ -22,14 +22,18 @@
 
 //TODO: make into php5 class with access modifiers proprities and all that jazz.
 class paypalExpressCheckout extends billingcalculator {
+
     /**
      * The name that will be displayes in the payment methods selector admin screen.
      *
      * @return string Then name of the billing calculator
      */
-    function name() {
-        return gt("PayPal Express Checkout");
-    }
+//    function name() {
+//        return $this->title;
+//    }
+
+    public $title = 'PayPal Express';
+    public $payment_type = 'PayPal';
 
     /**
      * The description that will be displayed in the payment methods selector admin screen
@@ -70,9 +74,6 @@ class paypalExpressCheckout extends billingcalculator {
         return true;
     }
 
-    public $title = 'PayPal';
-    public $payment_type = 'PayPal';
-
     /**
      * For paypal this will call out to the PP api and get a token then redirect to PP.
      * PP then redirects back the site with token in the url. We can pick up that token
@@ -108,7 +109,7 @@ class paypalExpressCheckout extends billingcalculator {
 //            $state = new geoRegion($method->state);
 //            $country = new geoCountry($state->country_id);
 
-            $config = unserialize($this->config);
+            $config = expUnserialize($this->config);
             //eDebug($config, true);  
             if ($config['testmode']) {
                 /**
@@ -227,7 +228,7 @@ class paypalExpressCheckout extends billingcalculator {
             } elseif ($nvpResArray['ACK'] == 'Error' || $nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning' || $nvpResArray['ACK'] == 'Warning') {
                 // paypal error
                 $object->errorCode = "";
-                $object->message = "The following errors occurred: ";
+                $object->message = gt("The following errors occurred") . ": ";
 
                 // its possible there are more than one error. 
                 foreach ($nvpResArray as $k => $v) {
@@ -247,7 +248,7 @@ class paypalExpressCheckout extends billingcalculator {
             } else {
                 // Approved
                 $object->errorCode = 0;
-                $object->message = "SetExpressCheckout successfully returned token.";
+                $object->message = gt("SetExpressCheckout successfully returned token.");
                 $object->token = $nvpResArray['TOKEN'];
                 $object->correlationID = $nvpResArray['CORRELATIONID'];
 
@@ -264,13 +265,13 @@ class paypalExpressCheckout extends billingcalculator {
             //eDebug($object,true);
             if ($object->result->token == $params['token']) {
                 $object->result->errorCode = 0;
-                $object->result->message = "User has approved the payment at PayPal";
+                $object->result->message = gt("User has approved the payment at PayPal");
                 $object->result->PayerID = $params['PayerID'];
                 $method->update(array('billing_options' => serialize($object)));
                 return $object;
             } else {
                 $object->result->errorCode = 1;
-                $object->result->message = "PayPal Token Mismatch";
+                $object->result->message = gt("PayPal Token Mismatch");
                 $object->result->PayerID = $params['PayerID'];
                 $method->update(array('billing_options' => serialize($object)));
                 return $object;
@@ -473,7 +474,7 @@ class paypalExpressCheckout extends billingcalculator {
      * @return array An associative array containing the PayPal response or a curl error.
      */
     function paypalApiCall($apiParams) {
-        $config = unserialize($this->config);
+        $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
             // Testing
@@ -593,8 +594,8 @@ class paypalExpressCheckout extends billingcalculator {
         return $ret->result->token;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
 //            return $ret->result->correlationID;
 //            return $ret->result->transactionID;
@@ -630,7 +631,7 @@ class paypalExpressCheckout extends billingcalculator {
         // eDebug($method, true);
         $billing_options = unserialize($method->billing_options);
         $billing_transaction_options = unserialize($method->billingtransaction[0]->billing_options);
-        $config = unserialize($this->config);
+        $config = expUnserialize($this->config);
 
         // Set request-specific fields.
 //        $transactionID = urlencode($billing_options->result->transactionID);
@@ -677,7 +678,7 @@ class paypalExpressCheckout extends billingcalculator {
             flash('message', gt('Refund Completed Successfully.'));
             redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
         } else {
-            exit('RefundTransaction failed: ' . $httpParsedResponseAr["L_LONGMESSAGE0"]);
+            exit(gt('Refund Transaction failed') . ': ' . $httpParsedResponseAr["L_LONGMESSAGE0"]);
         }
     }
 
@@ -693,7 +694,7 @@ class paypalExpressCheckout extends billingcalculator {
      */
     function PPHttpPost($methodName_, $nvpStr_) {
         $environment = 'sandbox';
-        $config = unserialize($this->config);
+        $config = expUnserialize($this->config);
         // Set up your API credentials, PayPal end point, and API version.
         $API_UserName = urlencode($config['username']);
         $API_Password = urlencode($config['password']);

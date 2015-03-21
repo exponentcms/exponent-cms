@@ -377,12 +377,12 @@
                             </span>
                             <span class="pmt-value">
                                 {if $billing->calculator != null}
-                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}
                                 {/if}
                             </span>
                         </div>
                         {if $billing->calculator != null}
-                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
+                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
                         {if  !empty($data)}
                         <div class="odd">
                             <span class="pmt-label">

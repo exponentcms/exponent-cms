@@ -595,25 +595,25 @@ class cartController extends expController {
 
         $opts = expSession::get('billing_options');
         //eDebug($opts,true);
-        if ($billing->calculator != null) {
-            $view_opts = $billing->calculator->userView($opts);
-        } else {
-            if (empty($opts)) {
-                $view_opts = false;
-            } else {
-                $billinginfo = gt("No Cost");
-                if (!empty($opts->payment_due)) {
-                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
-                }
-                $view_opts = $billinginfo;
-            }
-        }
+//        if ($billing->calculator != null) {
+//            $view_opts = $billing->calculator->userView($opts);
+//        } else {
+//            if (empty($opts)) {
+//                $view_opts = false;
+//            } else {
+//                $billinginfo = gt("No Cost");
+//                if (!empty($opts->payment_due)) {
+//                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//                }
+//                $view_opts = $billinginfo;
+//            }
+//        }
         assign_to_template(array(
             'shipping'   => $shipping,
             'billing'    => $billing,
             'order'      => $order,
             'total'      => $order->total,
-            'billinginfo'=> $view_opts,
+            'billinginfo'=> $billing->getBillingInfo($opts),
         ));
     }
 
@@ -651,7 +651,7 @@ class cartController extends expController {
         // finalize the total to bill
         $order->calculateGrandTotal();
         //eDebug($order,true);
-        $invNum = $order->getInvoiceNumber();
+        $order->invoice_id = $order->getInvoiceNumber(false);  // assign the next invoice id, but don't advance it yet
         // call the billing calculators process method - this will handle saving the billing options to the database.
 //        if (!($order->total == 0 && empty($order->shippingmethods))) {
         if ($billing->calculator != null) {
@@ -690,7 +690,9 @@ class cartController extends expController {
             //if ($invoice_num < ecomconfig::getConfig('starting_invoice_number')) $invoice_num += ecomconfig::getConfig('starting_invoice_number');
 
             // get the first order status and set it for this order
-            $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time(), 'comment'=> serialize($comment))); //FIXME $comment doesn't exist
+            $invNum = $order->getInvoiceNumber();  // payment was processed so advance the invoice #
+//            $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time(), 'comment'=> serialize($comment))); //FIXME $comment doesn't exist
+            $order->update(array('invoice_id'=> $invNum, 'purchased'=> time(), 'updated'=> time()));
             //$order->setDefaultStatus(); --FJD?
             //$order->setDefaultOrderType(); --FJD?
             $order->refresh();
@@ -712,25 +714,13 @@ class cartController extends expController {
             //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
         }
 
-        if ($billing->calculator != null) {
-            $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
-        } else {
-            if (empty($opts)) {
-                $billinginfo = false;
-            } else {
-                $billinginfo = gt("No Cost");
-                if (!empty($opts->payment_due)) {
-                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
-                }
-            }
-        }
-
-        if (!DEVELOPMENT) {
+//        if (!DEVELOPMENT) {
             // send email invoices to the admins & users if needed
-            if ($order->order_type->emails_customer) $invoice = renderAction(array('controller'=> 'order', 'action'=> 'email', 'id'=> $order->id));
-        } elseif ($user->isAdmin()) {
-            flash('message', gt('Development on, skipping email sending.'));
-        }
+        if ($order->order_type->emails_customer)
+            $invoice = renderAction(array('controller'=> 'order', 'action'=> 'email', 'id'=> $order->id));
+//        } elseif ($user->isAdmin()) {
+//            flash('message', gt('Development on, skipping email sending.'));
+//        }
         expSession::un_set('record');
         //assign_to_template(array('order'=>$order, 'billing'=>$billing, 'shipping'=>$shipping, 'result'=>$result, 'billinginfo'=>$billinginfo));
         flash('message', gt('Your order has been submitted.'));
@@ -828,7 +818,8 @@ class cartController extends expController {
             'billing'    => $billing,
             'order'      => $order,
             'total'      => $order->total,
-            'billinginfo'=> $billing->calculator->userView($opts),
+//            'billinginfo'=> $billing->calculator->userView($opts),
+            'billinginfo'=> $billing->getBillingInfo($opts),
             'nologin'    => 1
         ));
     }

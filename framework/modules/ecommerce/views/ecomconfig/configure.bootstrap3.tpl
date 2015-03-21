@@ -24,7 +24,7 @@
                     <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Cart'|gettext}</em></a></li>
                     <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'Display'|gettext}</em></a></li>
                     <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Invoices'|gettext}</em></a></li>
-                    <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Notifications'|gettext}</em></a></li>
+                    {*<li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{'Notifications'|gettext}</em></a></li>*}
                     <li role="presentation"><a href="#tab7" role="tab" data-toggle="tab"><em>{'Location'|gettext}</em></a></li>
                     <li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{'Product Feeds'|gettext}</em></a></li>
                     <li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{'Gift Cards'|gettext}</em></a></li>
@@ -94,7 +94,7 @@
                         <h2>{'Invoice Settings'|gettext}</h2>
                         {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
                         {control type="checkbox" name="enable_barcode" label="Enable Barcode?"|gettext value=1 checked=$config.enable_barcode}
-                        {control type="checkbox" name="email_invoice_to_user" id="invoice_email" label="Email a copy of the invoice to the user after purchase?"|gettext value=1 checked=$config.email_invoice_to_user}
+                        {control type="checkbox" name="email_invoice_to_user" id="invoice_email" label="Email a copy of the invoice to the customer after purchase?"|gettext value=1 checked=$config.email_invoice_to_user}
                         <span id="email_settings">
                         {group label='Invoice Email Settings'|gettext}
                             {control type="text" name="from_name" label="Email From Name"|gettext value=$config.from_name}
@@ -103,9 +103,9 @@
                             {control type="textarea" name="invoice_msg" label="Message to put in invoice email:"|gettext rows=5 cols=45 value=$config.invoice_msg}
                         {/group}
                         </span>
-                    </div>
-                    <div id="tab6" role="tabpanel" class="tab-pane fade">
-                        <h2>{'New Order Notifications'|gettext}</h2>
+                    {*</div>*}
+                    {*<div id="tab6" role="tabpanel" class="tab-pane fade">*}
+                        {*<h2>{'New Order Notifications'|gettext}</h2>*}
                         {control type="checkbox" name="email_invoice" label="Send email notification of new orders?"|gettext value=1 checked=$config.email_invoice}
                         {*{control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}*}
                         {control type=email name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}

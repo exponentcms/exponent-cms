@@ -208,6 +208,7 @@ class orderController extends expController {
             'order_user'     => new user($order->user_id),
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
             'billing'        => $billing,
+            'billinginfo'    => $billing->getBillingInfo(),
             'messages'       => $status_messages,
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
@@ -228,7 +229,8 @@ class orderController extends expController {
         global $user, $db;
 
         $order = new order($this->params['id']);
-        if ($order->purchased == 0) flashAndFlow('error', gt('You do not have permission to view this order.'));
+        if ($order->purchased == 0)
+            flashAndFlow('error', gt('You do not have permission to view this order.'));
 
         $this->loc->src = "@globalstoresettings";
 
@@ -289,13 +291,15 @@ class orderController extends expController {
                 expSession::set('orders_tracked', $trackingArray);
             }
         }
-        if (DEVELOPMENT != 0) $trackMe = false;
+        if (DEVELOPMENT != 0)
+            $trackMe = false;
         assign_to_template(array(
             'printerfriendly'=> $pf,
             'css'            => $css,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],
             'billing'        => $billing,
+            'billinginfo'    => $billing->getBillingInfo(),
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
             'tc'             => $trackMe,
@@ -311,12 +315,25 @@ class orderController extends expController {
         $template = expTemplate::get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
+//        if ($billing->calculator != null) {
+//            $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+//        } else {
+//            if (empty($opts)) {
+//                $billinginfo = false;
+//            } else {
+//                $billinginfo = gt("No Cost");
+//                if (!empty($opts->payment_due)) {
+//                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//                }
+//            }
+//        }
         $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
         assign_to_template(array(
-            'css'     => $css,
-            'order'   => $order,
-            'shipping'=> $order->orderitem[0],
-            'billing' => $billing
+            'css'         => $css,
+            'order'       => $order,
+            'shipping'    => $order->orderitem[0],
+            'billing'     => $billing,
+            'billinginfo' => $billing->getBillingInfo(),
         ));
 
         // build the html and text versions of the message
@@ -346,7 +363,7 @@ class orderController extends expController {
         if (ecomconfig::getConfig('email_invoice_to_user') == true && !empty($user->email)) {
             $usermsg = "<p>" . ecomconfig::getConfig('invoice_msg') . "<p>";
             $usermsg .= $html;
-            $usermsg .= ecomconfig::getConfig('ecomfooter');
+//            $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
             $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));

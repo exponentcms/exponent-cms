@@ -19,9 +19,9 @@
         {*{css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/print-invoice.css"}    *}
         {*{/css}*}
     {*{/if}*}
-    {*<style type="text/css">*}
-        {*{$css}*}
-    {*</style>*}
+    <style type="text/css">
+        {$css}
+    </style>
 {else}
     {*{css unique="invoice" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/invoice.css"}*}
     {*{/css}*}
@@ -32,7 +32,8 @@
     	background-color: rgb(235, 235, 235);
     }
     #invoice-data > div > div > table > thead,
-    #invoice-data > div > div > table {
+    #invoice-data > div > div > table,
+    #invoice-data > div > div > table.payment-info > tbody > tr > td {
     	border: solid #cacaca 1px;
     }
     .height {
@@ -383,6 +384,11 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {if !$permissions.edit_shipping_method || $pf}
+                            <tr><td>
+                                {$billinginfo}
+                            </td></tr>
+                        {else}
                         <tr class="odd">
                             <td class="pmt-label">
                                 {"Payment Method"|gettext}
@@ -423,12 +429,12 @@
                             </td>
                             <td class="pmt-value">
                                 {if $billing->calculator != null}
-                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}
                                 {/if}
                             </td>
                         </tr>
                         {if $billing->calculator != null}
-                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
+                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
                         {if  !empty($data)}
                         <tr class="odd">
                             <td class="pmt-label">
@@ -471,6 +477,7 @@
                                 </td></tr>
                             {/if}
                         {/permissions}
+                        {/if}
                     </tbody>
                 </table>
             </div>

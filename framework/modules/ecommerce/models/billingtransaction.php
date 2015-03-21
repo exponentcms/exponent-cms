@@ -43,8 +43,11 @@ class billingtransaction extends expRecord {
     {
         //$opts = expUnserialize($this->billing_options);
         //return $opts->PNREF;
-        if (empty($this->billingcalculator->calculator)) $this->billingcalculator->calculator = new $this->billingcalculator->classname();
-        return $this->billingcalculator->calculator->getPaymentReferenceNumber($this->billing_options);
+        if (empty($this->billingcalculator->calculator))
+            $this->billingcalculator->calculator = new $this->billingcalculator->classname();
+        $billingmethod = new billingmethod($this->billingmethods_id);
+//        return $this->billingcalculator->calculator->getPaymentReferenceNumber($this->billing_options);
+        return $this->billingcalculator->calculator->getPaymentReferenceNumber($billingmethod);
     }
 }
 

@@ -66,7 +66,7 @@
         <h2>{'Billing Information'|gettext}</h2>
 
         <div class="payment-info">
-        {$billinginfo}
+            {$billinginfo}
         </div>
         <div class="address-info">
             <table border="0" cellspacing="0" cellpadding="0">

@@ -23,6 +23,7 @@
 class billingcalculator extends expRecord {
     public $table = 'billingcalculator';
     public $configdata = array();
+    function name() {return $this->title;}
     function hasUserForm() {return true;}
     function hasConfig() {return true;}
     /**
@@ -51,7 +52,14 @@ class billingcalculator extends expRecord {
         $this->configdata = empty($this->config) ? array() : unserialize($this->config);
     }
 
-    //Called for billing method selection screen, return true if it's a valid billing method.
+    /**
+     * Called for billing method selection screen, return true if it's a valid billing method.
+     *
+     * @param $method
+     * @param $opts
+     * @param $params
+     * @param $order
+     */
     function preprocess($method, $opts, $params, $order) {
         return;
     }
@@ -69,14 +77,38 @@ class billingcalculator extends expRecord {
         return '';
     }
 
-    //Should return html to display user data.
-    function userView($opts) {
-        return '';
+    /**
+     * Should return html to display user data.
+     *
+     */
+    function userView($billingmethod) {
+//        return '';
+
+        // create a generic table of data
+        $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
+        $billinginfo .= '<tbody>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '<: /td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Authorization #") . ': </td><td class="pmt-value">' . $this->getPaymentAuthorizationNumber($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Reference #") . ': </td><td class="pmt-value">' . $this->getPaymentReferenceNumber($billing->$billingmethod) . '</td></tr>';
+        if  (!empty($this->getAVSAddressVerified($billingmethod) . $this->getAVSZipVerified($billingmethod) . $this->getCVVMatched($billingmethod))) {
+            $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("AVS Address Verified") . ': </td><td class="pmt-value">' . $this->getAVSAddressVerified($billingmethod) . '</td></tr>';
+            $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("AVS ZIP Verified") . ': </td><td class="pmt-value">' . $this->getAVSZipVerified($billingmethod) . '</td></tr>';
+            $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("CVV # Matched") . ': </td><td class="pmt-value">' . $this->getCVVMatched($billingmethod) . '</td></tr>';
+        }
+        $billinginfo .= '</tbody>';
+        $billinginfo .= '</table>';
+        return $billinginfo;
     }
 
-    //process user input. This function should return an object of the user input.
-    //the returned object will be saved in the session and passed to post_process.
-    //If need be this could use another method of data storage, as long post_process can get the data.
+    /**
+     * process user input. This function should return an object of the user input.
+     * the returned object will be saved in the session and passed to post_process.
+     * If need be this could use another method of data storage, as long post_process can get the data.
+     *
+     * @param $params
+     */
     function userFormUpdate($params) {
     }
 
@@ -97,7 +129,7 @@ class billingcalculator extends expRecord {
         return '';
     }
 
-    function getPaymentReferenceNumber($opts) {
+    function getPaymentReferenceNumber($billingmethod) {
         return '';
     }
 
@@ -107,14 +139,6 @@ class billingcalculator extends expRecord {
 
     function getPaymentMethod($billingmethod) {
         return $this->title;
-    }
-
-    function showOptions() {
-        return;
-    }
-
-    function credit_transaction($method, $amount, $order)
-    {
     }
 
     function getAVSAddressVerified($billingmethod) {
@@ -127,6 +151,14 @@ class billingcalculator extends expRecord {
 
     function getCVVMatched($billingmethod) {
         return '';
+    }
+
+    function showOptions() {
+        return;
+    }
+
+    function credit_transaction($method, $amount, $order)
+    {
     }
 
     function createBillingTransaction($method,$amount,$result,$trax_state)

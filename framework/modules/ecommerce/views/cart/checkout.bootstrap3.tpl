@@ -45,7 +45,8 @@
         ]
     {/assocarray}
     {breadcrumb items=$breadcrumb active=2 style=flat}
-    <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
+    <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
+    <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
         <div>
             <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
@@ -288,7 +289,7 @@
         </div>
         <div class="billingdetails separate">
             <h2>{"Your Billing Information"|gettext}</h2>
-            <h3>{"Your billing address"|gettext}</h3>
+            <h3>{"Billing Address"|gettext}</h3>
 
             <div class="billing-address">
                 <div id="bllAddSwp">
@@ -304,10 +305,10 @@
                 </div>
             </div>
             <div style="clear: both;"></div>
-        </div>
-        <div class="separate">
+        {*</div>*}
+        {*<div class="separate">*}
             {if $order->total}
-                <h2>{"Payment Information"|gettext}</h2>
+                {*<h2>{"Payment Information"|gettext}</h2>*}
                 <h3>{"Available Payment Methods"|gettext}</h3>
                 <div id="cart-{$id}" class="">
                     <ul class="nav nav-tabs" role="tablist">

@@ -22,9 +22,12 @@
 
 class creditcard extends billingcalculator {
 
-    function name() {
-        return 'Credit Card';
-    }
+//    function name() {
+//        return $this->title;
+//    }
+
+    public $title = 'Credit Card';
+    public $payment_type = 'Credit Card';
 
 //    function hasConfig() {
 //        return false;
@@ -37,9 +40,6 @@ class creditcard extends billingcalculator {
     function isSelectable() {
         return false;
     }
-
-    public $title = 'Credit Card';
-    public $payment_type = 'Credit Card';
 
     public $cards = array(
         "AmExCard" => "American Express",
@@ -128,9 +128,9 @@ class creditcard extends billingcalculator {
         if (empty($this->config)) {
             return;
         }
-        $configdata = unserialize($this->config);
+        $config = unserialize($this->config);
         $avaiablecards = array();
-        foreach ($configdata['accepted_cards'] as $card) {
+        foreach ($config['accepted_cards'] as $card) {
             $availablecards[$card] = $this->cards[$card];
         }
 
@@ -165,17 +165,22 @@ class creditcard extends billingcalculator {
     }
 
     //Should return html to display user data.
-    function userView($opts) {
+    function userView($billingmethod) {
+        $opts = expUnserialize($billingmethod->billing_options);
         if (empty($opts)) return false;
-        $html = '';
-        $html .= '<table id="ccinfo" border=0 cellspacing=0 cellpadding=0><thead>';
-        $html .= '<tr><th colspan="2">' . gt('You will be paying by') . ' ' . $this->payment_type . '</th></tr></thead>';
-        $html .= '<tbody><tr class="odd"><td class="left">' . gt('Type of Credit Card') . ': </td><td>' . $opts->cc_type . '</td></tr>';
-        $html .= '<tr class="even"><td class="left">' . gt('Credit Card Number') . ': </td><td>' . 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4) . '</td></tr>';
-        $html .= '<tr class="odd"><td class="left">' . gt('Expires on') . ': </td><td>' . $opts->exp_month . '/' . $opts->exp_year . '</td></tr>';
-        $html .= '<tr class="even"><td class="left">' . gt('CVV/Security Number') . ': </td><td>' . $opts->cvv . '</td></tr>';
-        $html .= '<tbody></table>';
-        return $html;
+
+        $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
+        $billinginfo .= '<tbody>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt('Type of Credit Card') . ': </td><td class="pmt-value">' . $this->cards[$opts->cc_type] . '</td></tr>';
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('Credit Card Number') . ': </td><td class="pmt-value">' . 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt('Expires on') . ': </td><td class="pmt-value">' . $opts->exp_month . '/' . $opts->exp_year . '</td></tr>';
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('CVV/Security Number') . ': </td><td class="pmt-value">' . $opts->cvv . '</td></tr>';
+//        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('CVV/Security Number') . ': </td><td class="pmt-value">' . $opts->cvv . '</td></tr>';
+        $billinginfo .= '</tbody>';
+        $billinginfo .= '</table>';
+
+        return $billinginfo;
     }
 
     /**
@@ -283,6 +288,22 @@ class creditcard extends billingcalculator {
             $total += $current_number;
         }
         return ($total % 10 == 0);
+    }
+
+    function formatCreditCard($cc, $cc_type) {
+        $cc = str_replace(array('-', ' '), '', $cc);
+        $cc_length = strlen($cc);
+        $newCreditCard = substr($cc, -4);
+
+        for ($i = $cc_length - 5; $i >= 0; $i--) {
+
+            if ((($i + 1) - $cc_length) % 4 == 0)
+                $newCreditCard = '-' . $newCreditCard;
+
+            $newCreditCard = $cc[$i] . $newCreditCard;
+        }
+
+        return $newCreditCard;
     }
 
 }

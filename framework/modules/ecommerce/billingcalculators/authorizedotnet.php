@@ -25,13 +25,16 @@ define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
 
 class authorizedotnet extends creditcard {
 
-    function name() {
-        return "Authorize.net Payment Gateway";
-    }
+//    function name() {
+//        return "Authorize.net Payment Gateway";
+//    }
+
+    public $title = 'Authorize.net Payment Gateway';
+    public $payment_type = 'Authorize.net';
 
     function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
-	    an account with Authorize.net before you can use it to process credit cards.";
+        return gt("Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
+	        an account with Authorize.net before you can use it to process credit cards.");
     }
 
     public function captureEnabled() {
@@ -96,7 +99,8 @@ class authorizedotnet extends creditcard {
             //"x_phone"=>empty($method->phone) ? '' : $method->phone,
             "x_phone"              => '309-680-5600',
             "x_email"              => $user->email,
-            "x_invoice_num"        => $order->getInvoiceNumber(),
+//            "x_invoice_num"        => $order->getInvoiceNumber(),  //FIXME this would doulble increment counter
+            "x_invoice_num"        => $order->invoice_id,
             "x_ship_to_first_name" => $shippingaddress->firstname,
             "x_ship_to_last_name"  => $shippingaddress->lastname,
             "x_ship_to_address"    => $shippingaddress->address1,
@@ -344,8 +348,8 @@ class authorizedotnet extends creditcard {
         return $ret->result->AUTHCODE;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->PNREF;
         } else {

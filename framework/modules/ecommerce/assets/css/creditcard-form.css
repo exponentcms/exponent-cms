@@ -25,16 +25,14 @@
 	margin-right: 4px;
 }
 
-#cc_numberControl input,
-#cc_typeControl select {
-	width: 150px;
+.creditcard-form #cc_numberControl input,
+.creditcard-form #cc_typeControl select,
+.creditcard-form #expirationControl select,
+.creditcard-form #cvvControl input {
+	width: 200px;
 }
 
-#cc_typeControl select {
-	width: 160px;
-}
-
-#continue-checkout {
+.creditcard-form #continue-checkoutSubmit {
 	margin: 10px 0 10px 140px;
 }
 

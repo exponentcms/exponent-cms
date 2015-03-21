@@ -158,6 +158,9 @@
                         {/if}
                     </td>
                     <td class="div-rows" style="width:46%;">
+                        {if !$permissions.edit_shipping_method || $pf}
+                            {$billinginfo}
+                        {else}
                         <div class="odd">
                             <span class="pmt-label">
                                 {"Payment Method"|gettext}
@@ -198,12 +201,12 @@
                             </span>
                             <span class="pmt-value">
                                 {if $billing->calculator != null}
-                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}
                                 {/if}
                             </span>
                         </div>
                         {if $billing->calculator != null}
-                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
+                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
                         {if  !empty($data)}
                         <div class="odd">
                             <span class="pmt-label">
@@ -243,7 +246,8 @@
                                     {icon class="edit" action=edit_payment_info id=$order->id title='Edit Payment Method'|gettext}
                                 </div>
                             {/if}
-                        {/permissions}                                  
+                        {/permissions}
+                        {/if}
                     </td>
                 </tr>
             </tbody>
