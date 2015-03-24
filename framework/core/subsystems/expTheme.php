@@ -591,8 +591,8 @@ class expTheme
             }
         }
         if (!is_readable($theme)) {
-            if (is_readable(BASE . 'themes/basetheme/index.php')) {
-                $theme = BASE . 'framework/core/index.php';
+            if (is_readable(BASE . 'framework/core/index.php')) {
+                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials theme
             }
         }
         return $theme;
@@ -646,14 +646,17 @@ class expTheme
 
         $common = 'framework/core/printer-friendly.php';
         $theme = 'themes/' . DISPLAY_THEME . '/printer-friendly.php';
-        $fw = expSession::get('framework');
-        if (empty($framework))
-            $framework = 'framework/core/printer-friendly.' . $fw . '.php';
+        if (empty($framework)) {
+            $fw = expSession::get('framework');
+            $fwprint = 'framework/core/printer-friendly.' . $fw . '.php';
+        } else {
+            $fwprint = 'framework/core/printer-friendly.' . $framework . '.php';
+        }
 
         if (is_readable($theme)) {
             return $theme;
-        } elseif (is_readable($framework)) {
-            return $framework;
+        } elseif (is_readable($fwprint)) {
+            return $fwprint;
         } elseif (is_readable($common)) {
             return $common;
         } else {
