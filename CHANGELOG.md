@@ -15,6 +15,7 @@ Added / Fixed / Changed for 2.3.4
   - adds alternate color to featured items in announcement views
   - adds 'empty recycle bin' feature to remove all items in recycle bin
   - adds most recent event date to search hit for events and event registrations
+  - reactivates split credit card ecommerce payment option
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches
 ### Known Issues

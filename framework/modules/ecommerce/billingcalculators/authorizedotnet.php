@@ -25,11 +25,11 @@ define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
 
 class authorizedotnet extends creditcard {
 
-//    function name() {
-//        return "Authorize.net Payment Gateway";
-//    }
+    function name() {
+        return gt("Authorize.net Payment Gateway");
+    }
 
-    public $title = 'Authorize.net Payment Gateway';
+//    public $use_title = 'Authorize.net Payment Gateway';
     public $payment_type = 'Authorize.net';
 
     function description() {

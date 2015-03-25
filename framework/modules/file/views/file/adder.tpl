@@ -24,7 +24,7 @@
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
 </head>
-<body class="exp-skin">
+<body{if !bs3()} class="exp-skin"{/if}>
 <div id="exp-adder">
     <h1>{"Add Existing Files"|gettext}</h1>
     <div id="actionbar">

@@ -19,7 +19,7 @@
 {uniqueid assign="id"}
 {messagequeue}
 
-<div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
+<div id="expresscheckout" class="cart checkout">
     {assocarray}
         breadcrumb: [
             0: [

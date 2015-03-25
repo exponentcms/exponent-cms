@@ -21,11 +21,11 @@
  */
 class payflowpro extends creditcard {
 
-//    function name() {
-//        return "PayPal Payflow Payment Gateway";
-//    }
+    function name() {
+        return gt("PayPal Payflow Payment Gateway");
+    }
 
-    public $title = 'PayPal Payflow Payment Gateway';
+//    public $use_title = 'PayPal Payflow Payment Gateway';
     public $payment_type = 'PayPal Payflow';
 
     function description() {

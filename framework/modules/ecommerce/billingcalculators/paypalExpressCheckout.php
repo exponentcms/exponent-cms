@@ -28,11 +28,11 @@ class paypalExpressCheckout extends billingcalculator {
      *
      * @return string Then name of the billing calculator
      */
-//    function name() {
-//        return $this->title;
-//    }
+    function name() {
+        return gt('PayPal Express');
+    }
 
-    public $title = 'PayPal Express';
+//    public $use_title = 'PayPal Express';
     public $payment_type = 'PayPal';
 
     /**
@@ -563,6 +563,7 @@ class paypalExpressCheckout extends billingcalculator {
         // Take note that the Key of the new array will be L_0, L_1... L_n The L_ forces the array to have a string index. 
         // If we let it have numeric indicies array_merge_recursive() wouldn't work as expected. Since "non-related data" is 
         // also in the multidimensional you'll be treating this thing as a associative array anyway so really this is easier 
+        $multiArr = array();
         foreach ($nvpArray as $k => $v) {
             // check if it has a number at the end of the key
             if (preg_match('/[0-9]+$/', $k, $matches)) {

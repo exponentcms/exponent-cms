@@ -23,11 +23,11 @@
 
 class cash extends billingcalculator {
 
-//    function name() {
-//        return $this->title;
-//    }
+    function name() {
+        return gt('Cash/Check');
+    }
 
-    public $title = 'Cash/Check';
+//    public $use_title = 'Cash/Check';
     public $payment_type = 'Cash';
 
     function description() {

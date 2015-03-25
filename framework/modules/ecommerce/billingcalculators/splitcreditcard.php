@@ -27,6 +27,10 @@ class splitcreditcard extends creditcard {
 	        will be split with part of it being stored in the database and the other part getting emailed to site administrator.");
     }
 
+    function isSelectable() {
+        return true;
+    }
+
     public function captureEnabled() {
         return true;
     }
@@ -132,28 +136,28 @@ class splitcreditcard extends creditcard {
     }
 
     //process config form
-    function update($params = array()) {
-        /*$config_object->email_contact = $values['email_contact'];
-        $config_object->email_subject = $values['email_subject'];
-        $config_object->email_intro = $values['email_intro'];
-
-        $config_object->accept_amex = (isset($values['accept_amex']) ? 1 : 0);
-        $config_object->accept_discover = (isset($values['accept_discover']) ? 1 : 0);
-        $config_object->accept_mastercard = (isset($values['accept_mastercard']) ? 1 : 0);
-        $config_object->accept_visa = (isset($values['accept_visa']) ? 1 : 0);
-        $config_object->email_customer = isset($values['email_customer']);
-        $config_object->email_customer_invoice = isset($values['email_customer_invoice']);
-        $config_object->email_other_invoice = $values['email_other_invoice'];
-        $config_object->email_customer_status_change = isset($values['email_customer_status_change']);
-        $config_object->email_other_status_change = $values['email_other_status_change'];
-        return $config_object;*/
-    }
+//    function update($params = array()) {
+//        /*$config_object->email_contact = $values['email_contact'];
+//        $config_object->email_subject = $values['email_subject'];
+//        $config_object->email_intro = $values['email_intro'];
+//
+//        $config_object->accept_amex = (isset($values['accept_amex']) ? 1 : 0);
+//        $config_object->accept_discover = (isset($values['accept_discover']) ? 1 : 0);
+//        $config_object->accept_mastercard = (isset($values['accept_mastercard']) ? 1 : 0);
+//        $config_object->accept_visa = (isset($values['accept_visa']) ? 1 : 0);
+//        $config_object->email_customer = isset($values['email_customer']);
+//        $config_object->email_customer_invoice = isset($values['email_customer_invoice']);
+//        $config_object->email_other_invoice = $values['email_other_invoice'];
+//        $config_object->email_customer_status_change = isset($values['email_customer_status_change']);
+//        $config_object->email_other_status_change = $values['email_other_status_change'];
+//        return $config_object;*/
+//    }
 
     //This is called when a billing method is deleted. It can be used to clean up if you
     //have any custom user_data storage.
-    function delete($where = '') {
-        return;
-    }
+//    function delete($where = '') {
+//        return;
+//    }
 
     //This should return html to display config settings on the view billing method page
     function view($config_object) {

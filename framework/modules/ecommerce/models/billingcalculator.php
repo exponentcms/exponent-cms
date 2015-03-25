@@ -23,7 +23,7 @@
 class billingcalculator extends expRecord {
     public $table = 'billingcalculator';
     public $configdata = array();
-    function name() {return $this->title;}
+    function name() {return $this->$payment_type;}
     function hasUserForm() {return true;}
     function hasConfig() {return true;}
     /**
@@ -38,12 +38,12 @@ class billingcalculator extends expRecord {
     public function creditEnabled() {return false; }
     public function isRestricted() { return false; }
 
-    public $title = '';
+//    public $use_title = '';
     public $payment_type = '';
 
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {        
         parent::__construct($params, $get_assoc, $get_attached);
-        
+
         // set the calculator
         if (!empty($this->calculator_name))
             $this->calculator = new $this->calculator_name();
@@ -91,8 +91,9 @@ class billingcalculator extends expRecord {
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '<: /td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Authorization #") . ': </td><td class="pmt-value">' . $this->getPaymentAuthorizationNumber($billingmethod) . '</td></tr>';
-        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Reference #") . ': </td><td class="pmt-value">' . $this->getPaymentReferenceNumber($billing->$billingmethod) . '</td></tr>';
-        if  (!empty($this->getAVSAddressVerified($billingmethod) . $this->getAVSZipVerified($billingmethod) . $this->getCVVMatched($billingmethod))) {
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Reference #") . ': </td><td class="pmt-value">' . $this->getPaymentReferenceNumber($billingmethod) . '</td></tr>';
+        $data = $this->getAVSAddressVerified($billingmethod) . $this->getAVSZipVerified($billingmethod) . $this->getCVVMatched($billingmethod);
+        if  (!empty($data)) {
             $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("AVS Address Verified") . ': </td><td class="pmt-value">' . $this->getAVSAddressVerified($billingmethod) . '</td></tr>';
             $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("AVS ZIP Verified") . ': </td><td class="pmt-value">' . $this->getAVSZipVerified($billingmethod) . '</td></tr>';
             $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("CVV # Matched") . ': </td><td class="pmt-value">' . $this->getCVVMatched($billingmethod) . '</td></tr>';
@@ -138,7 +139,7 @@ class billingcalculator extends expRecord {
     }
 
     function getPaymentMethod($billingmethod) {
-        return $this->title;
+        return $this->name();
     }
 
     function getAVSAddressVerified($billingmethod) {

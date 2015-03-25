@@ -73,7 +73,7 @@ class update_shipping_billing_calcs extends upgradescript {
                         $calcobj->update(
                             array(
                                 'title'=>$calcobj->name(),
-                                'user_title'=>$calcobj->title,
+//                                'user_title'=>$calcobj->name(),
                                 'body'=>$calcobj->description(),
                                 'calculator_name'=>$classname,
                             )

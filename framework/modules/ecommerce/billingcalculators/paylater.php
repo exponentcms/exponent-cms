@@ -23,11 +23,11 @@
 
 class paylater extends billingcalculator {
 
-//    function name() {
-//        return $this->title;
-//    }
+    function name() {
+        return gt('Bill Me');
+    }
 
-    public $title = 'Bill Me';
+//    public $use_title = 'Bill Me';
     public $payment_type = 'Billed';
 
     function description() {

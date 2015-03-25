@@ -22,11 +22,11 @@
 
 class creditcard extends billingcalculator {
 
-//    function name() {
-//        return $this->title;
-//    }
+    function name() {
+        return gt('Credit Card');
+    }
 
-    public $title = 'Credit Card';
+//    public $use_title = 'Credit Card';
     public $payment_type = 'Credit Card';
 
 //    function hasConfig() {
@@ -89,14 +89,21 @@ class creditcard extends billingcalculator {
 
         //$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
-        $form .= '<span class="credit-cards control"><label class="label"></label>';
-        foreach ($this->getAvailableCards() as $key=>$card) {
-            $form .= '<img src="'.PATH_RELATIVE . 'framework/modules/ecommerce/billingcalculators/icons/' . $this->card_images[$key] . '" />';
+        $form .= '<div class="credit-cards control form-group"><label class="' . (bs3()?'control-label col-sm-2':'label') . '"></label>';
+        if (bs3()) {
+            $form .= '<div class="col-sm-10">';
         }
-        $form .= '</span>';
+        foreach ($this->getAvailableCards() as $key=>$card) {
+            $form .= '<img id="' . $key . '" src="'.PATH_RELATIVE . 'framework/modules/ecommerce/billingcalculators/icons/' . $this->card_images[$key] . '" title="' . gt('Click to select this card type') . '" />';
+        }
+        if (bs3()) {
+            $form .= '</div>';
+        }
+        $form .= '</div>';
 
         $cardtypes = new dropdowncontrol("", $this->getAvailableCards());
         $cardtypes->id = "cc_type";
+        $cardtypes->horizontal = true;
         //$cvvhelp->id = "cvvhelp";
         //FIXME we need to display/obtain user information if we are doing a quickPay checkout???
         //$form .= $fname->toHTML("First Name", "first_name");
@@ -105,21 +112,35 @@ class creditcard extends billingcalculator {
 
         $cardnumber = new textcontrol("", 20, false, 20, "integer", true);
         $cardnumber->id = "cc_number";
+        $cardnumber->horizontal = true;
         $form .= $cardnumber->toHTML(gt("Card #"), "cc_number");
 
         //$form .= "<strong class=\"example\">Example: 1234567890987654</strong>";
 
         $expiration = new monthyearcontrol("", "");
         $expiration->id = "expiration";
+        $expiration->horizontal = true;
         $form .= $expiration->toHTML(gt("Expiration"), "expiration");
 
         $cvv = new textcontrol("", 4, false, 4, "integer", true);
         $cvv->id = "cvv";
         $cvv->size = 5;
+        $cvv->horizontal = true;
         $form .= $cvv->toHTML("CVV # <br /><a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>" . gt('What\'s this?') . "</a>", 'cvv');
         //$form .= $cvvhelp->toHTML('', 'cvvhelp');
         //$form .= "<a class=\"exp-ecom-link-dis continue\" href=\"#\" id=\"checkoutnow\"><strong><em>Continue Checkout</em></strong></a>";
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
+        // click card image to select card type
+        $src = "
+            $('.credit-cards img').click(function() {
+                $('#cc_type').val($(this).attr('id'));
+            });
+        ";
+        expJavascript::pushToFoot(array(
+            "unique"  => 'creditcard',
+            "jquery"=> 1,
+            "content"=> $src,
+        ));
 
         return $form;
     }
@@ -175,7 +196,6 @@ class creditcard extends billingcalculator {
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt('Type of Credit Card') . ': </td><td class="pmt-value">' . $this->cards[$opts->cc_type] . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('Credit Card Number') . ': </td><td class="pmt-value">' . 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4) . '</td></tr>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt('Expires on') . ': </td><td class="pmt-value">' . $opts->exp_month . '/' . $opts->exp_year . '</td></tr>';
-        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('CVV/Security Number') . ': </td><td class="pmt-value">' . $opts->cvv . '</td></tr>';
 //        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt('CVV/Security Number') . ': </td><td class="pmt-value">' . $opts->cvv . '</td></tr>';
         $billinginfo .= '</tbody>';
         $billinginfo .= '</table>';
@@ -231,7 +251,6 @@ class creditcard extends billingcalculator {
         }
 
         return false;
-
     }
 
     function validate_card_type($cc_num, $type) {

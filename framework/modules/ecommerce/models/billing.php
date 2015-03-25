@@ -100,7 +100,7 @@ class billing extends expRecord {
         
         $options = unserialize($this->billingmethod->billing_options);
 //        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
-        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($this->billingmethod);
+        $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
 
 		foreach($this->available_calculators as $key => $item) {
 			$calc  = new $item($key);
@@ -194,7 +194,10 @@ class billing extends expRecord {
     public function getBillingInfo($opts = null) {
         if ($this->calculator != null) {
 //            $billinginfo = $this->calculator->userView(unserialize($this->billingmethod->billing_options));
-            $billinginfo = $this->calculator->userView($this->billingmethod);
+            if (!empty($this->billingmethod->billing_options))
+                $billinginfo = $this->calculator->userView($this->billingmethod);
+            else
+                $billinginfo = '';
         } else {
             if (empty($opts)) {
                 $opts = expUnserialize($this->billingmethod->billing_options);

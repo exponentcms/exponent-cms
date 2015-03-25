@@ -27,7 +27,7 @@ class passthru extends billingcalculator {
         return gt("Passthru Payment");
     }
 
-    public $title = 'Pass-Thru';
+//    public $use_title = 'Pass-Thru';
     public $payment_type = 'Passthru';
 
     function description() {

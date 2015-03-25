@@ -28,11 +28,11 @@ class worldpayCheckout extends billingcalculator {
      *
      * @return string Then name of the billing calculator
      */
-//    function name() {
-//        return $this->title;
-//    }
+    function name() {
+        return gt('Worldpay Payment Gateway');
+    }
 
-    public $title = 'Worldpay Payment Gateway';
+//    public $use_title = 'Worldpay Payment Gateway';
     public $payment_type = 'Worldpay';
 
     /**

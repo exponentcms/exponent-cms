@@ -12,6 +12,13 @@
 	padding-right: 10px;
 }
 
+.creditcard-form .form-group {
+	min-height: 30px;
+	margin-bottom: 15px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .creditcard-form .control input,
 .creditcard-form .control select {
 
@@ -23,6 +30,7 @@
 
 .creditcard-form .credit-cards img {
 	margin-right: 4px;
+	margin-top: 10px;
 }
 
 .creditcard-form #cc_numberControl input,
@@ -32,7 +40,8 @@
 	width: 200px;
 }
 
-.creditcard-form #continue-checkoutSubmit {
+.creditcard-form #continue-checkoutSubmit,
+.creditcard-form #continue-checkout {
 	margin: 10px 0 10px 140px;
 }
 

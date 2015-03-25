@@ -16,7 +16,7 @@
 {css unique="general-ecom" link="`$asset_path`css/creditcard-form.css"}
 
 {/css}
-<div class="billing-method">
+<div class="billing-method creditcard-form">
     {if $order->total}
         {form controller=cart action=preprocess}
             {control type="hidden" name="billingcalculator_id" value=$calcid}
