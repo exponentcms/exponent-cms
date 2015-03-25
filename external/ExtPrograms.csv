@@ -4,11 +4,11 @@ ups-php,0.2,code.google.com/p/ups-php,0.2,
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.21,smarty.net,3.1.21,
 phpthumb,1.7.11,https://github.com/JamesHeinrich/phpThumb,1.7.13,"phpThumb.config.php - we set the cache folder, also several local bug fixes, reinstitued 'err' param & allow &amp in parsing"
-minify,2.2.0,github.com/mrclay/minify,2.2.1,modify config.php
+minify,2.2.1,github.com/mrclay/minify,2.2.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
-recaptchalib,1.0.0,https://github.com/google/ReCAPTCHA,1.1.1,new 2.0 api
+recaptchalib,1.1.1,https://github.com/google/ReCAPTCHA,1.1.1,new 2.0 api
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 Twitter model,2.3.1,classes.verkoyen.eu/twitter_oauth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
@@ -21,11 +21,11 @@ less.php,1.7.0.2exp,lessphp.gpeasy.com/,1.7.0.2,tweaked wrapper
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.4,twitter.github.com/bootstrap,3.3.4,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.4,bootswatch.com/,3.3.4+1,
+Bootswatch,3.3.4+1,bootswatch.com/,3.3.4+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.3.0,fortawesome.github.com/Font-Awesome,4.3.0,
-Adminer,4.2.0,www.adminer.org,4.2.0,we add some system user checks in design.inc
-SimpleAjaxUploader,2.0.0,https://github.com/LPology/Simple-Ajax-Uploader,2.0.1,also converted to yui module 1.1.0
+Adminer,4.2.1,www.adminer.org,4.2.1,we add some system user checks in design.inc
+SimpleAjaxUploader,2.0.1,https://github.com/LPology/Simple-Ajax-Uploader,2.0.1,also converted to yui module 1.1.0
 normalize.css,3.0.2,necolas.github.com/normalize.css/,3.0.2,auto included w/ bootstrap 3
 MediaElement.js,2.16.4,mediaelementjs.com/,2.16.4,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.20,
@@ -61,7 +61,7 @@ TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.5,
 Sortable,1.1.1,https://github.com/RubaXa/Sortable,1.1.1,
 jstree,3.0.10,https://github.com/vakata/jstree,3.0.10,added nav menu icons to stylesheet
-bootstrap3-dialog,1.34.0,https://github.com/nakupanda/bootstrap3-dialog,1.34.3,
+bootstrap3-dialog,1.34.3,https://github.com/nakupanda/bootstrap3-dialog,1.34.3,
 impromptu,6.1.0,http://trentrichardson.com/Impromptu,6.1.0,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.5.0,https://github.com/timschlechter/bootstrap-tagsinput,0.5.0,
