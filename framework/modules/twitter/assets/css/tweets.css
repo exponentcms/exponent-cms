@@ -1,0 +1,45 @@
+.twitter.showall .msg-queue notice {
+	text-align: center;
+}
+
+.twitter.showall .context {
+	margin-left: 58px;
+}
+
+.twitter.showall .tweet-context {
+	margin-left: -32px;
+	font-size: 13px;
+}
+
+.twitter.showall .tweet-context2 {
+	font-size: 13px;
+}
+
+.twitter.showall .tweet-content-icon {
+	margin-right: 4px;
+	display: inline-block;
+}
+
+.twitter.showall .item {
+	margin-bottom: 6px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #e1e8ed;
+}
+
+.twitter.showall .tweet-content {
+	margin-left: 58px;
+}
+
+.twitter.showall .tweet-image {
+	float: left;
+	margin-left: -58px;
+}
+
+.twitter.showall .img-rounded {
+	margin: 2px 5px;
+	border-radius: 5px;
+}
+
+.twitter.showall dd {
+	margin-left: 0;
+}
