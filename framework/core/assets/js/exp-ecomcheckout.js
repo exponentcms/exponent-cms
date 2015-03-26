@@ -13,7 +13,7 @@
  *
  */
 
-//FIXME convert to yui3
+//FIXME convert to yui3/jquery
 YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-animation','yui2-container','yui2-json','yui2-yahoo-dom-event', function(Y) {
     var YAHOO = Y.YUI2;
 

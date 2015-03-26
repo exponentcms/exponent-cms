@@ -61,14 +61,6 @@
                             </div>
                             {script unique="pickerpopper" yui3mods=1}
                             {literal}
-        //                    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container', function(Y) {
-        //                        var YAHOO=Y.YUI2;
-        //                        var panel = new YAHOO.widget.Panel("catpicker", { width:"500px", zIndex:10, visible:false, draggable:false, close:true, context:['showcats','tl','tr'] } );
-        //                        panel.render('create-prod-report');
-        //                        YAHOO.util.Event.on('showcats', 'click', panel.show, panel, true);
-        //                        YAHOO.util.Dom.removeClass('catpicker', 'hide');
-        //                    });
-
                             YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
                                 var panel = new Y.Panel({
                                     srcNode      : '#catpicker',

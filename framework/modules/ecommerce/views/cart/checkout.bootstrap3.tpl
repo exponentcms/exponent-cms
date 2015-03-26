@@ -50,39 +50,57 @@
     {if ecomconfig::getConfig('policy')!=""}
         <div>
             <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
-            <div id="storepolicies" style="z-index:9999">
-                <div class="yui3-widget-hd">
-                    {"Store Policies"|gettext}
-                </div>
-                <div class="yui3-widget-bd" style="overflow-y:scroll">
-                    {ecomconfig var='policy' default=""}
-                </div>
-            </div>
-            {script unique="policypop" yui3mods=1}
-                {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
-                    var policies = new Y.Panel({
-                        srcNode : '#storepolicies',
-                        headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
-                        width:"400px",
-                        height:"350px",
-                        centered:true,
-                        modal:true,
-                        visible:false,
-                        zIndex:999,
-                        constrain:true,
-    //                    close:true,
-                        render:true,
+            {*<div id="storepolicies" style="z-index:9999">*}
+                {*<div class="yui3-widget-hd">*}
+                    {*{"Store Policies"|gettext}*}
+                {*</div>*}
+                {*<div class="yui3-widget-bd" style="overflow-y:scroll">*}
+                    {*{ecomconfig var='policy' default=""}*}
+                {*</div>*}
+            {*</div>*}
+            {*{script unique="policypop" yui3mods=1}*}
+                {*{literal}*}
+                {*YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {*}
+                    {*var policies = new Y.Panel({*}
+                        {*srcNode : '#storepolicies',*}
+                        {*headerContent: '{/literal}{"Store Policies"|gettext}{literal}',*}
+                        {*width:"400px",*}
+                        {*height:"350px",*}
+                        {*centered:true,*}
+                        {*modal:true,*}
+                        {*visible:false,*}
+                        {*zIndex:999,*}
+                        {*constrain:true,*}
+    {*//                    close:true,*}
+                        {*render:true,*}
+                    {*});*}
+                    {*policies.plug(Y.Plugin.Drag, {*}
+                        {*handles: ['.yui3-widget-hd']*}
+                    {*});*}
+                    {*var showpanel = function(e){*}
+                        {*policies.show();*}
+                    {*};*}
+                    {*Y.one("#review-policy").on('click',showpanel);*}
+                {*});*}
+                {*{/literal}*}
+            {*{/script}*}
+            {script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}
+            {literal}
+                $(document).ready(function(){
+                    $('#review-policy').click(function() {
+                        BootstrapDialog.show({
+                            title: '{/literal}{'Store Policies'|gettext}{literal}',
+                            message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},
+                            buttons: [{
+                                label: 'Close',
+                                action: function(dialogRef){
+                                    dialogRef.close();
+                                }
+                            }]
+                        });
                     });
-                    policies.plug(Y.Plugin.Drag, {
-                        handles: ['.yui3-widget-hd']
-                    });
-                    var showpanel = function(e){
-                        policies.show();
-                    };
-                    Y.one("#review-policy").on('click',showpanel);
                 });
-                {/literal}
+            {/literal}
             {/script}
         </div>
     {/if}
@@ -340,38 +358,8 @@
             </div-->
     </div>
 </div>
-<!-- div id="loadingdiv" class="loadingdiv">Loading Checkout Page</div -->
 
-{* edebug var=$order *}
-{*  Kludged out while testing paypal *}
-{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
-//
-{/script*}
-
-{*{script unique="cart-`$id`" yui3mods="1"}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#cart-{/literal}{$id}{literal}'});*}
-		{*Y.one('#cart-{/literal}{$id}{literal}').removeClass('hide');*}
-		{*Y.one('.loadingdiv').remove();*}
-	{*});*}
-{*{/literal}*}
-{*{/script}*}
-
-{*{if $order->total}*}
-{*{script unique="cart-`$id`" jquery="jqueryui"}*}
-{*{literal}*}
-    {*$('#cart-{/literal}{$id}{literal}').tabs().next().remove();*}
-{*{/literal}*}
-{*{/script}*}
-{*{/if}*}
-
-{script unique="tabload" jquery=1 bootstrap="tab,transition"}
+{script unique="tabload" jquery=1}
 {literal}
     $('.loadingdiv').remove();
 {/literal}
