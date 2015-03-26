@@ -537,10 +537,14 @@ function smarty_function_control($params, &$smarty) {
         }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
-            echo $control->toHTML($params['label'], $params['model'] . '[' . $params['name'] . ']');
+            $control_output = $control->toHTML($params['label'], $params['model'] . '[' . $params['name'] . ']');
         } else {
-            echo $control->toHTML($params['label'], $params['name']);
+            $control_output = $control->toHTML($params['label'], $params['name']);
         }
+        if (!empty($params['json'])) {
+            $control_output = json_encode($control_output);
+        }
+        echo $control_output;
         /*
         //Write out the label for this control if the user specified a label and position is set to right
         if (isset($params['label']) && $params['labelpos'] == 'right') {

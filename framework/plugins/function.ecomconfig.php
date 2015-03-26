@@ -36,9 +36,13 @@
 function smarty_function_ecomconfig($params,&$smarty) {
         $ecc = new ecomconfig();
         $retval = $ecc->getConfig($params['var']);
-        if (empty($retval)) return $params['default'];
+        if (empty($retval))
+            return $params['default'];
         else {
-            if ($params['unescape']) $retval = stripcslashes($retval);
+            if ($params['unescape'])
+                $retval = stripcslashes($retval);
+            if ($params['json'])
+                $retval = json_encode($retval);
             return $retval;
         }
 }                           
