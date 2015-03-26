@@ -162,6 +162,7 @@ class remove_oldfiles extends upgradescript {
             'external/less.php/Version.php',
             'external/lessphp/plessc',
             'external/png-opacity.htc',
+            'external/recaptchalib.php',
             'external/SimpleAjaxUploader.js',
             // obsolete misc files
             'framework/conf/extensions/ldap.defaults.php',
@@ -491,6 +492,7 @@ class remove_oldfiles extends upgradescript {
             'external/magpierss/',
             'external/less.php/bin//',
             'external/lesshat/',
+            'external/minify/min_extras/',
             'external/phpThumb/demo/',
             'external/phpThumb/docs/',
             'external/phpThumb/fonts/',
