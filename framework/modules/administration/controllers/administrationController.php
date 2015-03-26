@@ -1169,7 +1169,7 @@ class administrationController extends expController {
         
         //THEMES FOR RECAPTCHA
         $as_themes = array(
-            "light"=>gt('DEFAULT LIGHT'),
+            "light"=>gt('Light (Default)'),
         	"dark"=>gt('Dark'),
         );
         
