@@ -173,7 +173,10 @@ function smarty_function_control($params, &$smarty) {
                 $control = new radiogroupcontrol();
                 // differentiate it from the old school forms
                 $control->newschool = true;
-                if (!empty($params['default'])) $control->default = $params['default'];
+                if (!empty($params['default']))
+                    $control->default = $params['default'];
+                elseif (!empty($params['value']))
+                    $control->default = $params['value'];
                 $control->cols      = $params['columns'];
 
                 // get the items to use as the radio button labels
@@ -474,7 +477,7 @@ function smarty_function_control($params, &$smarty) {
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'], 0, '.', ',');
             }
-            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value alwasy == default?
+            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
         }
 
         //if (isset($params['value'])) $control->default = $params['value'];
