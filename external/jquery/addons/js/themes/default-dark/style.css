@@ -1099,3 +1099,8 @@
     background-color: grey;
 	opacity: 0.4;
 }
+
+.jstree-default-dark a.jstree-anchor.inactive {
+	font-style: italic;
+	font-weight: normal;
+}

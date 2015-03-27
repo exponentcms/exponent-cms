@@ -1157,3 +1157,8 @@ filter: gray;
     background-color: grey;
 	opacity: 0.4;
 }
+
+.jstree-proton a.jstree-anchor.inactive {
+	font-style: italic;
+	font-weight: normal;
+}

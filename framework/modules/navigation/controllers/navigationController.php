@@ -767,7 +767,12 @@ class navigationController extends expController {
             $navs[$i]->parent = $nav->parent?$nav->parent:'#';
             $navs[$i]->text = $nav->name;
             $navs[$i]->icon = $icons[$nav->alias_type];
-            if (!$nav->active) $navs[$i]->icon .= ' inactive';
+            if (!$nav->active) {
+                $navs[$i]->icon .= ' inactive';
+                $attr = new stdClass();
+                $attr->class = 'inactive';  // class to obscure elements
+                $navs[$i]->a_attr = $attr;
+            }
             if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $navs[$i]->id))) {
                 $navs[$i]->manage = 1;
                 $view = true;
