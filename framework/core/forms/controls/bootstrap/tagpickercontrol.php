@@ -84,8 +84,8 @@ class tagpickercontrol extends formcontrol {
             $selectedtags .= $tag->title . ', ';
         }
         $textbox = new genericcontrol('text');
-        $textbox->id = 'expTag';
-        $textbox->name = 'expTag';
+        $textbox->id = $this->id;
+        $textbox->name = $this->id;
         $textbox->default = $selectedtags;
         $textbox->size = 45;
         $textbox->flip    = $this->flip;
@@ -98,7 +98,7 @@ class tagpickercontrol extends formcontrol {
             "jquery"=> 'bootstrap-tagsinput,typeahead.bundle',
         ));
         $script = "
-            var tags = [".$this->taglist."];
+            var tags = [" . $this->taglist . "];
             var exptags = new Bloodhound({
                 datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
                 queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -106,7 +106,7 @@ class tagpickercontrol extends formcontrol {
             });
             exptags.initialize();
 
-            $('#expTag').tagsinput({
+            $('#" . $this->id . "').tagsinput({
                 typeaheadjs: {
                     name: 'exptags',
                     displayKey: 'value',

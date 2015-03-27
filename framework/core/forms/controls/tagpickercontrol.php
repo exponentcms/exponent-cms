@@ -83,8 +83,8 @@ class tagpickercontrol extends formcontrol {
             $selectedtags .= $tag->title . ', ';
         }
         $textbox = new genericcontrol('text');
-        $textbox->id = 'expTag';
-        $textbox->name = 'expTag';
+        $textbox->id = $this->id;
+        $textbox->name = $this->id;
         $textbox->default = $selectedtags;
         $textbox->size = 45;
         $textbox->flip    = $this->flip;
@@ -94,8 +94,8 @@ class tagpickercontrol extends formcontrol {
 
         $script = "
             YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters',function(Y) {
-                var inputNode = Y.one('#expTag');
-                var tags = [".$this->taglist."];
+                var inputNode = Y.one('#" . $this->id . "');
+                var tags = [" . $this->taglist . "];
 
                 inputNode.plug(Y.Plugin.AutoComplete, {
                   activateFirstItem: true,
