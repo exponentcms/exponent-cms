@@ -71,3 +71,7 @@
 #submit-report {
     margin-left:300px;
 }
+
+ul.vakata-context.jstree-contextmenu {
+	z-index: 9999;
+}

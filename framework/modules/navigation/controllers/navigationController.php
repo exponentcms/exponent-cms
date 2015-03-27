@@ -878,7 +878,7 @@ class navigationController extends expController {
                     $db->updateObject($moveSec, 'section');
 //                    $moveSec->update();
                 }
-            } else {
+            } else {  // 'before', is this used?
                 //store ranks from the depth we're moving from.  Used to re-rank the level depth the moving section is moving from.
                 $oldRank   = $moveSec->rank;
                 $oldParent = $moveSec->parent;
