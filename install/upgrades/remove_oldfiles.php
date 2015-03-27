@@ -105,6 +105,7 @@ class remove_oldfiles extends upgradescript {
             'external/adminer/adminer-3.7.0-mysql-en.php',
             'external/adminer/adminer-3.7.1-mysql.php',
             'external/adminer/adminer-4.1.0-mysql.php',
+            'external/adminer/adminer-4.2.0-mysql.php',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
             'external/editors/FCKeditor.tpl',
@@ -426,6 +427,9 @@ class remove_oldfiles extends upgradescript {
             'framework/core/forms/controls/newui/yuicalendarcontrol.php',
             'framework/core/forms/controls/newui/yuidatetimecontrol.php',
             'framework/core/forms/controls/newui/yuieditorcontrol.php',
+            // other obsolete files
+            'framework/modules/twitter/assets/images/rt.png',
+            'framework/modules/twitter/assets/images/tweeted.png',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -530,8 +534,8 @@ class remove_oldfiles extends upgradescript {
             'external/Swift-5.0.1/',
             'external/Swift-5.1.0/',
             'external/Swift-5.2.0/',
-            'external/Swift-5.2.1/',
-            'external/Swift-5.3.1/',
+            'external/swiftmailer-5.2.1/',
+            'external/swiftmailer-5.3.1/',
             'external/yui3/',
             'external/lissa/',
             'external/yui/build/',
