@@ -27,10 +27,6 @@ if (!defined('EXPONENT')) exit('');
  */
 class genericcontrol extends formcontrol {
 
-    var $flip = false;
-    var $jsHooks = array();
-    var $multiple = false;
-
     static function name() { return "generic"; }
 
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {

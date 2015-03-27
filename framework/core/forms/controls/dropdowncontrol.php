@@ -29,11 +29,8 @@ class dropdowncontrol extends formcontrol {
 
     var $items = array();
     var $size = 1;
-    var $jsHooks = array();
     var $include_blank = false;
     var $type = 'select';
-    var $class = '';
-    var $multiple = false;
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }

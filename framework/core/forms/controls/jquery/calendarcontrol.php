@@ -34,7 +34,6 @@ class calendarcontrol extends formcontrol
 
 //    var $disable_text = "";
     var $showtime = true;
-    var $default = '';
     var $default_date = '';
     var $default_hour = '';
     var $default_min = '';
