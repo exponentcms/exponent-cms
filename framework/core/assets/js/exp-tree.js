@@ -13,7 +13,7 @@
  *
  */
 
-//FIXME convert to yui3
+//FIXME convert to yui3/jquery
 YUI.add('exp-tree', function(Y) {
 var YAHOO = Y.YUI2;
 
@@ -33,7 +33,7 @@ var refreshDD = function () {
     }
 };
 
-var buildContextMenu = function(div) {
+var buildContextMenu = function(div, addable) {
 
     function addSubNode (){
         window.location = eXp.PATH_RELATIVE+"index.php?controller="+applicationModule+"&action=adsubnode&id="+currentMenuNode.data.id;
@@ -102,15 +102,25 @@ var buildContextMenu = function(div) {
         }
     }
 
-    var navoptions = [
-            { classname:"addsubpage", text: "Add A Sub-Category", onclick: { fn: addSubNode } },
-            { classname:"editpage", text: "Edit This Category", onclick: { fn: editNode } },
-            { classname:"deletepage", text: "Delete This Category", onclick: { fn: deleteNode } },
-            { classname:"configurepage", text: "Configure This Category", onclick: { fn: configNode } }
+    if (addable) {
+        var navoptions = [
+            {classname: "addsubpage" , text: "Add A Sub-Category" , onclick: {fn: addSubNode}} ,
+            {classname: "editpage" , text: "Edit This Category" , onclick: {fn: editNode}} ,
+            {classname: "deletepage" , text: "Delete This Category" , onclick: {fn: deleteNode}} ,
+            {classname: "configurepage" , text: "Configure This Category" , onclick: {fn: configNode}}
             // { classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
             // { classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
-        ];                                                                  
-
+        ];
+    } else {
+        var navoptions = [
+            //{classname: "addsubpage" , text: "Add A Sub-Category" , onclick: {fn: addSubNode}} ,
+            {classname: "editpage" , text: "Edit This Category" , onclick: {fn: editNode}} ,
+            //{classname: "deletepage" , text: "Delete This Category" , onclick: {fn: deleteNode}} ,
+            {classname: "configurepage" , text: "Configure This Category" , onclick: {fn: configNode}}
+            // { classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
+            // { classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
+        ];
+    }
 
     var oContextMenu = new YAHOO.widget.ContextMenu("treecontext", {
                                                     trigger: div,
@@ -333,8 +343,8 @@ YAHOO.widget.TaskNode = function(oData, oParent, expanded, checked, obj) {
     if (oData) { 
         this.init(oData, oParent, expanded);
         this.setUpLabel(oData);
-        this.href = obj.href;
-        this.image = obj.expFiles_id;
+//        this.href = obj.href;
+        //this.image = obj.expFiles_id;
         this.checked = checked;
         this.draggable = obj.draggable;
         this.checkable = obj.checkable;
@@ -630,7 +640,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
          }
          sb[sb.length] = (this.nowrap) ? ' nowrap="nowrap" ' : '';
          sb[sb.length] = ' >';
-         if (this.image != 0) sb[sb.length] = '<img class="filepic" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+this.image+'&amp;w=18&amp;h=18&amp;zc=1">&#160;';
+         //if (this.image != 0) sb[sb.length] = '<img class="filepic" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+this.image+'&amp;w=18&amp;h=18&amp;zc=1">&#160;';
          sb[sb.length] = this.label;
               
          //sb[sb.length] = this.lft+' | '+this.label+'-'+this.id+' | '+this.rgt;
@@ -644,7 +654,7 @@ YAHOO.extend(YAHOO.widget.TaskNode, YAHOO.widget.TextNode, {
 
 });
 
-EXPONENT.DragDropTree.init = function(div,obj,mod,menu,expandonstart) {
+EXPONENT.DragDropTree.init = function(div,obj,mod,menu,expandonstart,addable) {
     applicationModule = mod;
     tree = new YAHOO.widget.TreeView(div);
     var root = tree.getRoot();
@@ -678,7 +688,7 @@ EXPONENT.DragDropTree.init = function(div,obj,mod,menu,expandonstart) {
     tree.subscribe("collapseComplete",refreshDD);
     tree.subscribe("nodemoved",refreshDD);
     if (menu) {
-        buildContextMenu(div);
+        buildContextMenu(div,addable);
     };
 };
 
