@@ -1055,3 +1055,8 @@
     background-image: url(../../../../../../framework/modules/navigation/assets/images/page_go.png);
     background-repeat: no-repeat;
 }
+
+.jstree-default i.jstree-icon.inactive {
+    background-color: grey;
+	opacity: 0.4;
+}

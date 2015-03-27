@@ -1152,3 +1152,8 @@ filter: gray;
 .jstree-proton-small .addsapage {
 	background-size: 16px, 16px;
 }
+
+.jstree-proton i.jstree-icon.inactive {
+    background-color: grey;
+	opacity: 0.4;
+}
