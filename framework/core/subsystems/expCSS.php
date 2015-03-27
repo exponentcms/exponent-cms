@@ -374,10 +374,8 @@ class expCSS {
             default :
                 if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
                     if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
-                        if (!is_file(
-                            BASE . 'external/' . $less_compiler . '/lessc.inc.php'
-                        )
-                        ) $less_compiler = 'lessphp';
+                        if (!is_file(BASE . 'external/' . $less_compiler . '/lessc.inc.php'))
+                            $less_compiler = 'lessphp';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         // load the cache
                         $less_cname = str_replace("/", "_", $less_pname);
@@ -413,20 +411,25 @@ class expCSS {
                         $less->setVariables($vars);
 
                         try {
+                            $file_updated = false;
                             $new_cache = $less->cachedCompile($cache, false);
                             if (!is_array($cache) ||
-//                                !file_exists(BASE . $css_fname) ||
                                 $new_cache['updated'] > $cache['updated']
                             ) {
                                 if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                    $file_updated = true;
+                                    // store compiler cache file
                                     $new_cache['vars'] = !empty($vars) ? $vars : null;
-                                    $css_loc = pathinfo(BASE . $css_fname);
-                                    if (!is_dir($css_loc['dirname'])) mkdir(
-                                        $css_loc['dirname']
-                                    ); // create /css output folder if it doesn't exist
-                                    file_put_contents(BASE . $css_fname, $new_cache['compiled']);
                                     file_put_contents($cache_fname, serialize($new_cache));
                                 }
+                            }
+                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                                // write compiled css file
+                                $css_loc = pathinfo(BASE . $css_fname);
+                                if (!is_dir($css_loc['dirname'])) mkdir(
+                                    $css_loc['dirname']
+                                ); // create /css output folder if it doesn't exist
+                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
                             }
                             return true;
                         } catch(Exception $e) {
