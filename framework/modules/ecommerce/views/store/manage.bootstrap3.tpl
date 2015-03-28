@@ -147,6 +147,7 @@
             ],
             //order: [1, 'asc'],
             autoWidth: false,
+            //scrollX: true,
             preDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {

@@ -51,7 +51,7 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>
     {/if}
-    <table id="orders">
+    <table class="responsive" id="orders">
         <thead>
             <tr>
                 <!--th><span>Purchased By</span></th-->
@@ -116,6 +116,7 @@
                 { searchable: false, orderable: false },
             ],
             order: [4, 'desc'],
+            //scrollX: true,
             autoWidth: false,
             preDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
