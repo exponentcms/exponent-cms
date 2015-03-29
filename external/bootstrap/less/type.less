@@ -36,9 +36,12 @@ a.muted:focus        { color: darken(@grayLight, 10%); }
 a.text-warning:hover,
 a.text-warning:focus { color: darken(@warningText, 10%); }
 
-.text-error          { color: @errorText; }
+.text-error,
+.text-danger		 { color: @errorText; }
 a.text-error:hover,
-a.text-error:focus   { color: darken(@errorText, 10%); }
+a.text-danger:hover,
+a.text-error:focus,
+a.text-danger:focus   { color: darken(@errorText, 10%); }
 
 .text-info           { color: @infoText; }
 a.text-info:hover,

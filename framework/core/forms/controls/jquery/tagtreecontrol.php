@@ -99,6 +99,21 @@ class tagtreecontrol extends formcontrol {
             }
 //        }
 
+        $icon = array(
+            'add' => '',
+            'edit' => '',
+            'delete' => '',
+            'configure' => ''
+        );
+        foreach ($icon as $key=>$icn) {
+            $text = expTheme::buttonIcon($key, 'large');
+            $icon[$key] = $text->prefix . $text->class . ' ' . $text->size;
+            if (bs3())
+                $icon[$key] .= ' fa-fw';
+            elseif (bs2())
+                $icon[$key] .= ' icon-fixed-width';
+        }
+
         $html .= '
 		<div id="' . $this->id . '" class="nodetree"></div>
 		<div id="' . $this->id . '-checks"></div>';
@@ -149,7 +164,7 @@ class tagtreecontrol extends formcontrol {
             'contextmenu' : {
                 'items' : {" . ($this->addable?"
                     'addone' : {
-                        'icon'				: 'fa fa-lg fa-fw fa-plus-circle text-success',
+                        'icon'				: '" . $icon['add'] . " text-success',
                         'label'				: '" . gt('Add a Sub-Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
@@ -159,7 +174,7 @@ class tagtreecontrol extends formcontrol {
                     },
                     ":"") . "
                     'editone' : {
-                        'icon'				: 'fa fa-lg fa-fw fa-edit',
+                        'icon'				: '" . $icon['edit'] . "',
                         'label'				: '" . gt('Edit this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
@@ -168,7 +183,7 @@ class tagtreecontrol extends formcontrol {
                                               }
                     }," . ($this->addable?"
                     'deleteone' : {
-                        'icon'				: 'fa fa-lg fa-fw fa-times-circle text-danger',
+                        'icon'				: '" . $icon['delete'] . " text-danger',
                         'label'				: '" . gt('Delete this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),
@@ -178,7 +193,7 @@ class tagtreecontrol extends formcontrol {
                     },
                     ":"") . "
                     'configureone' : {
-                        'icon'				: 'fa fa-lg fa-fw fa-cogs',
+                        'icon'				: '" . $icon['configure'] . "',
                         'label'				: '" . gt('Configure this Category') . "',
                         'action'			: function (data) {
                                                   var inst = $.jstree.reference(data.reference),

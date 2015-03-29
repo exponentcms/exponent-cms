@@ -1587,6 +1587,7 @@ class expTheme
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
+            $found->prefix = 'icon-';
             return $found;
         } elseif (bs3()) {
             switch ($class) {
@@ -1668,6 +1669,7 @@ class expTheme
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
+            $found->prefix = 'fa fa-';
             return $found;
         } else {
             return $class;
