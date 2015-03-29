@@ -23,7 +23,9 @@
 	{*{$form_html}*}
     <div>
         {form action=import_users_display}
-            {control type="hidden" name="column" value=$params.column}
+            {foreach from=$params.column key=k item=column}
+                {control type="hidden" name="column[`$k`]" value=$column}
+            {/foreach}
             {control type="hidden" name="delimiter" value=$params.delimiter}
             {control type="hidden" name="use_header" value=$params.use_header}
             {control type="hidden" name="filename" value=$params.filename}
