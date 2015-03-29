@@ -26,9 +26,10 @@
             {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
             {control type="hidden" id="addresses_id" name="addresses_id"}
             {br}
-            <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> {'New Customer'|gettext}{br}
-            <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
-            <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
+            <div id="customer_type">
+                <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> {'New Customer'|gettext}{br}
+                <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
+                <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
             {capture assign="callbacks"}
                 {literal}
 
@@ -120,6 +121,7 @@
             {/capture}
             {control type="autocomplete" controller="order" action="search_external" name="related_items2" value="Search other customer name or email" schema="id,source,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastname,organization,email" jsinject=$callbacks2}
             {br}
+            </div>
             <div id="submit_order_item_formControl" class="control buttongroup">
                 <input id="submit_order_item_form" class="submit button {button_style}" type="submit" value="Create New Order" />
                 <input class="cancel button {button_style}" type="button" value="Cancel" onclick="history.back(1);" />
@@ -127,3 +129,32 @@
         {/form}
     </div>
 </div>
+
+{script unique="neworder" yui3mods="node,node-event-simulate"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    var radioSwitchers = Y.all('#customer_type input[type="radio"]');
+    radioSwitchers.on('click',function(e){
+        var curval = e.target.get('value');
+        var intcust = Y.one("#search_internal").get('parentNode').get('parentNode');
+        var extcust = Y.one("#related_items2").get('parentNode').get('parentNode');
+        if (curval ==  1) {
+            intcust.setStyle('display','none');
+            extcust.setStyle('display','none');
+        } else if (curval ==  2) {
+            intcust.setStyle('display','block');
+            extcust.setStyle('display','none');
+        } else if (curval ==  3) {
+            intcust.setStyle('display','none');
+            extcust.setStyle('display','block');
+        }
+    });
+
+    radioSwitchers.each(function(node,k){
+        if(node.get('checked')==true){
+            node.simulate('click');
+        }
+    });
+});
+{/literal}
+{/script}
