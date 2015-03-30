@@ -72,10 +72,23 @@ class cash extends billingcalculator {
         $opts = expUnserialize($billingmethod->billing_options);
         if (empty($opts)) return false;
         $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0;
-        $billinginfo = gt("Paying by") . ' ' . $this->name() . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
-        if (!empty($opts->payment_due)) {
-            $billinginfo .= '<br>' . gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//        $billinginfo = gt("Paying by") . ' ' . $this->name() . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
+//        if (!empty($opts->payment_due)) {
+//            $billinginfo .= '<br>' . gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//        }
+//        return $billinginfo;
+
+        $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo .= '<thead><tr><th colspan="2">' . gt("Paying by") . ' ' . $this->name() . '</th></tr></thead>';
+        $billinginfo .= '<tbody>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '</td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
+//        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Paid") . ': </td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",") . '</td></tr>';
+        if  (!empty($opts->payment_due)) {
+            $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Due") . '</td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",") . '</td></tr>';
         }
+        $billinginfo .= '</tbody>';
+        $billinginfo .= '</table>';
         return $billinginfo;
     }
 
