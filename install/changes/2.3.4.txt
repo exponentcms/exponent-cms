@@ -13,6 +13,7 @@ Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme frame
   - store database sample now includes product options, discounts, and sample orders
   - reCaptcha anti-spam support updated to latest library
   - reactivates split credit card ecommerce payment option
+  - adds optional 'time till site returns' countdown clock to maintenance view
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches
 Known Issues

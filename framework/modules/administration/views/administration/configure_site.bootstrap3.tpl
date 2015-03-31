@@ -78,12 +78,14 @@
                     <span id="antispam">
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
-                    <blockquote>
-	                {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
-                    </blockquote>
-                    {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
-                    {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
-                    {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Secret Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    {group label="reCAPTCHA Settings"|gettext}
+                        <blockquote>
+                        {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
+                        </blockquote>
+                        {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="reCaptcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
+                        {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
+                        {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Secret Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    {/group}
                     </span>
                 </div>
                 <div id="tab3" role="tabpanel" class="tab-pane fade">
@@ -219,6 +221,11 @@
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Place Site in Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
+                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_USE_RETURN_TIME]" label="Display a countdown clock until site returns?"|gettext checked=$smarty.const.MAINTENANCE_USE_RETURN_TIME value=1}
+                    {group label="Maintenance Countdown Settings"|gettext}
+                        {control type="text" name="sc[MAINTENANCE_RETURN_TEXT]" label="Site will return message"|gettext value=$smarty.const.MAINTENANCE_RETURN_TEXT}
+                        {control type="popupdatetime" name="sc[MAINTENANCE_RETURN_TIME]" label="Site will return time"|gettext value=$smarty.const.MAINTENANCE_RETURN_TIME showdate=true}
+                    {/group}
                 </div>
                 <div id="tab9" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
@@ -266,10 +273,10 @@
                         <div class="alt-body">
                             {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
-                                {showmodule module=expHTMLEditor action=manage params=$paramc}
+                                {showmodule controller=expHTMLEditor action=manage params=$paramc}
                             </div>
                             <div id="tinymce-div" class="alt-item" style="display:none;">
-                                {showmodule module=expHTMLEditor action=manage params=$paramt}
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt}
                             </div>
                         </div>
                     </div>
