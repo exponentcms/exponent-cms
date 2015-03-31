@@ -171,6 +171,8 @@ class tinymcecontrol extends formcontrol
                     plugins : ['" . $plugins . "'],
                     " . $additionalConfig . "
                     " . $contentCSS . "
+                    relative_urls : false,
+                    remove_script_host : true,
                     document_base_url : '" . PATH_RELATIVE . "',
                     " . $tb . "
                     skin: '" . $skin . "',
