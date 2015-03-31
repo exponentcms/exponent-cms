@@ -51,6 +51,9 @@ class countdownController extends expController {
    	 * default view for individual item
    	 */
    	function show() {
+        if (!empty($this->params['count'])) {
+            $this->config = $this->params;
+        }
         if (!empty($this->config['count'])) {
             // parse out date into calendarcontrol fields 'date-count' 'time-h-count' 'time-m-count' 'ampm-count'
             $this->config['date-count'] = date('m/d/Y', $this->config['count']);

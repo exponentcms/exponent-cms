@@ -28,7 +28,7 @@
         {if $config.title}<h2 class="clocktitle">{$config.title}</h2>{/if}
         {$date = explode('/',$config['date-count'])}
         {if $config['ampm-count'] == 'pm'}{$hour = $config['time-h-count'] + 12}{else}{$hour = $config['time-h-count']}{/if}
-        <div id="countdown" data-date="{$date.2}-{$date.0}-{$date.1} {$hour}:{$config['time-m-count']}:00"></div>
+        <div id="countdown" data-date="{$date.2}-{$date.0}-{$date.1} {$hour}:{$config['time-m-count']}:00" style="max-height: 300px;"></div>
         <p id="note"></p>
     {/if}
 </div>
