@@ -42,7 +42,7 @@
                 {/if}
                 {if $permissions.manage}
                     {if !empty($filtered)}
-                        {br}<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px">{'Records Filtered'|gettext}: '{$filtered}'</span>
+                        {br}<span style="background-color: yellow; font-weight: bold;margin-bottom: 5px;padding: 4px;border: black 1px solid;">{'Records Filtered'|gettext}: '{$filtered}'</span>
                     {/if}
                 {/if}
             </div>
