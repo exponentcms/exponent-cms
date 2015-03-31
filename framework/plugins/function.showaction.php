@@ -31,7 +31,7 @@
  *
  * @param array $params
  * @param mixed $smarty
- */
+ */  //FIXME only used by old school?  DEPRECATED??
 function smarty_function_showaction($params,&$smarty) {
     expTheme::showAction($params['module'], $params['action'], $params['source'], $params['params']);
 }

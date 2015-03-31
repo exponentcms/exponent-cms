@@ -47,13 +47,13 @@
  *              test3: "this is a test"
  *              test4: ["test1", "test2", "test3"]
  *              test5: [
- *                  key1: "value1"
+ *                  key1: $smarty.const.PATH_RELATIVE
  *                  key2: "value2"
  *              ]
  *              test6: [
  *                  key1: "value1"
  *                  key2: [
- *                      subkey1: "subvalue1"
+ *                      subkey1: $config.passed_value  //$config.passed_value is set to 'value'
  *                      subkey2: "subvalue2"
  *                  ]
  *              ]
@@ -64,8 +64,8 @@
  *           $test2  [= 10]
  *           $test3  [= "this is a test"]
  *           $test4  [= array("test1", "test2", "test3")]
- *           $test5  [= array('key1'=>"value1", 'key2'=>"value2")]
- *           $test6  [= array('key1'=>"value1", 'key2'=>array('subkey1'=>"subvalue1", 'subkey2'=>"subvalue2"))]
+ *           $test5  [= array('key1'=>PATH_RELATIVE, 'key2'=>"value2")]
+ *           $test6  [= array('key1'=>"value1", 'key2'=>array('subkey1'=>"value", 'subkey2'=>"subvalue2"))]
  */
 function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
 {
@@ -90,6 +90,7 @@ function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
         foreach ($src as $_token) {
             $token = trim($_token);
             $last_char = substr($token, strlen($token) - 1, 1);
+            $first_char = substr($token, 0, 1);
             $stack[] = $items;
             switch ($last_char) {
                 case '[':
@@ -130,7 +131,15 @@ function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
                     }
                     break;
                 default:
-                    $msg .= $token;
+                    if ($first_char == '$') {
+                        if (strpos($token, '$smarty.const.') !== false) {
+                            $msg .= substr($token, 14);
+                        } else {
+                            $msg .= $smarty->getTemplateVars(substr($token, 1));
+                        }
+                    } else {
+                        $msg .= $token;
+                    }
                     break;
             }
         }

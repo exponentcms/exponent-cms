@@ -32,7 +32,7 @@
  * @param         $params
  * @param \Smarty $smarty
  * @return bool
- */
+ */  //FIXME old school way of calling?
 function smarty_function_chain($params,&$smarty) {
     if (empty($params['module']) && empty($params['controller']))  return false;
     
@@ -40,7 +40,7 @@ function smarty_function_chain($params,&$smarty) {
 
     $src = isset($params['src']) ? $params['src'] : $smarty->getTemplateVars('__loc')->src;
 
-    if (isset($params['module'])) {
+    if (isset($params['module'])) {  //FIXME old school only?
 //        $chrome = $params['chrome'] == "none" ? true : false;
         $chrome = empty($params['chrome']) ? true : false;
         $title = isset($params['title']) ? $params['title'] : '';
