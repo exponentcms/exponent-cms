@@ -24,7 +24,7 @@
         </li>
         {if $doc->children}
             {$params.parent = $doc->id}
-            {showmodule module=help view=side_childview source=$doc->loc->src params=$params}
+            {showmodule controller=help action=showall view=side_childview source=$doc->loc->src params=$params}
         {/if}
     {/foreach}
     </ul>

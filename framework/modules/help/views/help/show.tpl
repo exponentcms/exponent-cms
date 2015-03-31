@@ -80,7 +80,7 @@
 </div>
 {if $children}
     {$params.parent = $doc->id}
-    {showmodule module=help view=childview source=$doc->loc->src params=$params}
+    {showmodule controller=help action=showall view=childview source=$doc->loc->src params=$params}
 {elseif $doc->parent}
     {get_object object=help param=$doc->parent assign=parent}
     <div class="item childview">

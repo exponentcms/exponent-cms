@@ -48,7 +48,8 @@
             <p>{'You\'ve got'|gettext} <strong>{$order->orderitem|@count}</strong> item{if $order->orderitem|@count > 1}s{/if} {'in your cart.'|gettext} {br}
             <a id="expandcart" href="#" class="fox-link">{'Show them?'|gettext}<span></span></a></p>
             <div id="shoppingcartwrapper">
-                {chain controller=cart action=quickpay_donation_cart}
+                {*{chain controller=cart action=quickpay_donation_cart}*}
+                {showmodule controller=cart action=quickpay_donation_cart}
             </div>
         </div>
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
