@@ -20,69 +20,118 @@
  * @subpackage Controllers
  * @package Modules
  */
-
-class recyclebinController extends expController {
+class recyclebinController extends expController
+{
     protected $add_permissions = array(
-        'showall'   => 'View Recycle Bin',
-        'show'      => 'View Recycle Bin'
+        'showall' => 'View Recycle Bin',
+        'show' => 'View Recycle Bin'
     );
+
     //protected $remove_permissions = array('edit');
 
-    static function displayname() { return gt("Recycle Bin Manager"); }
-    static function description() { return gt("Manage modules that have been deleted from your web pages"); }
-    static function author() { return "Phillip Ball - OIC Group, Inc"; }
-    static function hasSources() { return false; }
-    static function hasContent() { return false; }
+    static function displayname()
+    {
+        return gt("Recycle Bin Manager");
+    }
 
-    function showall() {
-        global $template;
+    static function description()
+    {
+        return gt("Manage modules that have been deleted from your web pages");
+    }
 
+    static function author()
+    {
+        return "Phillip Ball - OIC Group, Inc";
+    }
+
+    static function hasSources()
+    {
+        return false;
+    }
+
+    static function hasContent()
+    {
+        return false;
+    }
+
+    function showall()
+    {
         expHistory::set('manageable', $this->params);
-        $orig_template = $template;
 
         //initialize a new recycle bin and grab the previously trashed items
         $bin = new recyclebin();
-        $orphans = $bin->moduleOrphans(null);
+        $orphans = $bin->moduleOrphans();
 
-        $template = $orig_template;
-        assign_to_template(array(
-            'items'=>$orphans
-        ));
+        assign_to_template(
+            array(
+                'items' => $orphans
+            )
+        );
     }
-    
-    public function show() {
-        global $template;
-        
-        $orig_template = $template;
-        
+
+    public function show()
+    {
         //instantiate an expRecord for the module in question
         //$mod = new $this->params['recymod']();
-        define('SOURCE_SELECTOR',1);
-        define('PREVIEW_READONLY',1); // for mods
-        
+        define('SOURCE_SELECTOR', 1);
+        define('PREVIEW_READONLY', 1); // for mods
+
         //initialize a new recycle bin and grab the previously trashed items
         $bin = new recyclebin();
         $orphans = $bin->moduleOrphans($this->params['recymod']);
 
-        $template = $orig_template;
-        assign_to_template(array(
-            'items'=>$orphans,
-            'module'=>$this->params['recymod']
-        ));
+        assign_to_template(
+            array(
+                'items' => $orphans,
+                'module' => $this->params['recymod']
+            )
+        );
     }
 
     /**
-     * Permanently remove a module and all it's items from the system
+     * Permanently remove a module from the recycle bin and all it's items from the system
      *
      */
-    public function remove() {
+    public function remove()
+    {
         global $db;
 
-        $mod = expModules::getController($this->params['mod'],$this->params['src']);
-        $mod->delete_instance();  // delete all assoc items
-        $db->delete('sectionref', "source='" . $this->params['src'] . "' and module='".$this->params['mod']."'");  // delete recycle bin holder
+        $mod = expModules::getController($this->params['mod'], $this->params['src']);
+        if ($mod != null) {
+            $mod->delete_instance();  // delete all assoc items
+            $db->delete(
+                'sectionref',
+                "source='" . $this->params['src'] . "' and module='" . $this->params['mod'] . "'"
+            );  // delete recycle bin holder
+            flash('notice', gt('Item removed from Recycle Bin'));
+        }
         expHistory::back();
     }
+
+    /**
+     * Permanently remove all modules from the recycle bin and all their items from the system
+     *
+     */
+    public function remove_all()
+    {
+        global $db;
+
+        $bin = new recyclebin();
+        $orphans = $bin->moduleOrphans();
+        foreach ($orphans as $orphan) {
+            $mod = expModules::getController($orphan->module, $orphan->source);
+            if ($mod != null) {
+                $mod->delete_instance();  // delete all assoc items
+                $db->delete(
+                    'sectionref',
+                    "source='" . $orphan->source . "' and module='" . $orphan->module . "'"
+                );  // delete recycle bin holder
+            }
+        }
+        flash('notice', gt('Recycle Bin has been Emptied'));
+        expHistory::back();
+    }
+
 }
 
 ?>

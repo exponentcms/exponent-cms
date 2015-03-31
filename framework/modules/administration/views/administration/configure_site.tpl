@@ -79,11 +79,11 @@
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
                     <blockquote>
-	                {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/whyrecaptcha" target="_blank">{"here"|gettext}</a>
+	                {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
                     </blockquote>
                     {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
-                    {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Public Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
-                    {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Private Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
+                    {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Secret Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
                     </span>
                 </div>
                 <div id="tab3">
@@ -368,7 +368,7 @@
                                 {control type="text" name="sc[HTMLTOPDF_PATH]" label="Full Path to the WKHTMLtoPDF Binary Utility"|gettext value=$smarty.const.HTMLTOPDF_PATH}
                                 {control type="text" name="sc[HTMLTOPDF_PATH_TMP]" label="Full Path to the WKHTMLtoPDF Temp Directory"|gettext value=$smarty.const.HTMLTOPDF_PATH_TMP}
                                 <blockquote>
-                                    {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://code.google.com/p/wkhtmltopdf/downloads/list" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
+                                    {'To obtain the WKHTMLtoPDF, you\'ll need to first download the appropriate binary application from'|gettext} <a href="http://wkhtmltopdf.org/downloads.html" target="_blank">{"wkhtmltopdf site"|gettext}</a>.
                                     {"and then install it on your server."|gettext}
                                 </blockquote>
                             </div>
@@ -487,7 +487,8 @@
                     {control type="dropdown" name="profiles" label="Load configuration profile"|gettext items=$profiles default=$smarty.const.CURRENTCONFIGNAME onchange="changeProfile(this.value)"}
                     {control type="text" name="profile_name" label="New Profile Name"|gettext value=$smarty.const.CURRENTCONFIGNAME}
                     {*<a class="{button_style}" href="#" onclick="saveProfile()"><strong>{'Save New Profile'|gettext}</strong></a>*}
-                    {icon button=true action=scriptaction onclick="saveProfile()" text='Save New Profile'|gettext}
+                    {icon button=true class=save action=scriptaction onclick="saveProfile()" text='Save New Profile'|gettext}
+                    {br}{br}
                 </div>
                 {/if}
             </div>

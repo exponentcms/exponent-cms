@@ -12,6 +12,13 @@
 	padding-right: 10px;
 }
 
+.creditcard-form .form-group {
+	min-height: 30px;
+	margin-bottom: 15px;
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .creditcard-form .control input,
 .creditcard-form .control select {
 
@@ -23,18 +30,18 @@
 
 .creditcard-form .credit-cards img {
 	margin-right: 4px;
+	margin-top: 10px;
 }
 
-#cc_numberControl input,
-#cc_typeControl select {
-	width: 150px;
+.creditcard-form #cc_numberControl input,
+.creditcard-form #cc_typeControl select,
+.creditcard-form #expirationControl select,
+.creditcard-form #cvvControl input {
+	width: 200px;
 }
 
-#cc_typeControl select {
-	width: 160px;
-}
-
-#continue-checkout {
+.creditcard-form #continue-checkoutSubmit,
+.creditcard-form #continue-checkout {
 	margin: 10px 0 10px 140px;
 }
 

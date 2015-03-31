@@ -22,14 +22,18 @@
 
 //TODO: make into php5 class with access modifiers properties and all that jazz.
 class worldpayCheckout extends billingcalculator {
+    
     /**
      * The name that will be displayes in the payment methods selector admin screen.
      *
      * @return string Then name of the billing calculator
      */
     function name() {
-        return "Worldpay Checkout";
+        return gt('Worldpay Payment Gateway');
     }
+
+//    public $use_title = 'Worldpay Payment Gateway';
+    public $payment_type = 'Worldpay';
 
     /**
      * The description that will be displayed in the payment methods selector admin screen
@@ -37,7 +41,7 @@ class worldpayCheckout extends billingcalculator {
      * @return string A short description
      */
     function description() {
-        return "Enabling this payment option will allow your customers to use their worldpay account to make purchases.";
+        return gt("Enabling this payment option will allow your customers to use their worldpay account to make purchases.");
     }
 
     public function captureEnabled() {
@@ -69,9 +73,6 @@ class worldpayCheckout extends billingcalculator {
     function isOffsite() {
         return true;
     }
-
-    public $title = 'Worldpay Checkout';
-    public $payment_type = 'Worldpay';
 
     function preprocess($method, $opts, $params, $order) {
 //        global $db, $user;
@@ -142,10 +143,10 @@ class worldpayCheckout extends billingcalculator {
 
     }
 
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/worldpayCheckout/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/worldpayCheckout/configure.tpl';
+//        return $form;
+//    }
 
     /**
      * process config form
@@ -180,8 +181,8 @@ class worldpayCheckout extends billingcalculator {
         return $ret->result->token;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->transId;
         } else {

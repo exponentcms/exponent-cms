@@ -483,7 +483,7 @@ class order extends expRecord {
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id=' . $forced_calc);
         $calculator = new $calcname($forced_calc);
         $rates = $calculator->getRates($this);
-        if (!empty($forced_method)) {
+        if (!empty($forced_method) && isset($rates[$forced_method])) {
             $rate = $rates[$forced_method];
         } else {
             $rate = array_shift($rates);  // select first rate type as default
@@ -746,7 +746,7 @@ class order extends expRecord {
      *
      * @return mixed|null
      */
-    public function getInvoiceNumber() {
+    public function getInvoiceNumber($increment=true) {
         global $db;
 
         $sin = ecomconfig::getConfig('starting_invoice_number');
@@ -761,18 +761,20 @@ class order extends expRecord {
         $invoice_num = $db->max('orders_next_invoice_id', 'next_invoice_id');
 
         //if it's not set or botched, then reset to the starting invoice number
-        $obj = new stdClass();
-        if (empty($invoice_num) || $invoice_num < $sin) {
-            $invoice_num = $sin;
-            //insert the table with the next available number
-            $obj->id = 1;
-            $obj->next_invoice_id = $invoice_num + 1;
-            $db->insertObject($obj, 'orders_next_invoice_id');
-        } else {
-            //update the table with the next available number
-            $obj->id = 1;
-            $obj->next_invoice_id = $invoice_num + 1;
-            $db->updateObject($obj, 'orders_next_invoice_id');
+        if ($increment) {
+            $obj = new stdClass();
+            if (empty($invoice_num) || $invoice_num < $sin) {
+                $invoice_num = $sin;
+                //insert the table with the next available number
+                $obj->id = 1;
+                $obj->next_invoice_id = $invoice_num + 1;
+                $db->insertObject($obj, 'orders_next_invoice_id');
+            } else {
+                //update the table with the next available number
+                $obj->id = 1;
+                $obj->next_invoice_id = $invoice_num + 1;
+                $db->updateObject($obj, 'orders_next_invoice_id');
+            }
         }
 
         //unlock the table and return.          

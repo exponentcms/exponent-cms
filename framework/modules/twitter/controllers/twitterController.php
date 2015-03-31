@@ -53,6 +53,11 @@ class twitterController extends expController {
         return "Jonathan Worent - OIC Group, Inc";
     }
 
+    static function requiresConfiguration()
+    {
+        return true;
+    }
+
     public function showall() {
         if (!empty($this->config['consumer_key'])) {
             // create instance
@@ -83,6 +88,8 @@ class twitterController extends expController {
                     $tweets[$key]['image'] = $value['user']['profile_image_url'];
                     $tweets[$key]['via'] = $value['source'];
                     if (!empty($this->mytwitteracct['id'])) $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
+                    if (!empty($value['retweeted']))
+                        $tweets[$key]['retweetedbyme'] = true;
                 } else {
                     // we're a retweet
                     $tweets[$key]['text'] = $this->twitterify(substr($value['text'], strpos($value['text'], ':') + 2)); // strip out RT text
@@ -92,9 +99,12 @@ class twitterController extends expController {
                         $tweets[$key]['via'] = $value['source'];
                         $tweets[$key]['retweetedbyme'] = true;
                     } else {
-                        $tweets[$key]['via'] = $value['source'] . ' (<img src="framework/modules/twitter/assets/images/rt.png" title="retweet by" alt="RT by"/> ' . $value['user']['screen_name'] . ')';
+//                        $tweets[$key]['via'] = $value['source'] . ' (<img src="'.PATH_RELATIVE.'/framework/modules/twitter/assets/images/rt.png" title="retweet by" alt="RT by"/> ' . $value['user']['screen_name'] . ')';
+                        $tweets[$key]['retweet'] = true;
                     }
                     if (!empty($this->mytwitteracct['id'])) $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
+                    if (!empty($value['retweeted']))
+                        $tweets[$key]['retweetedbyme'] = true;
                 }
                 $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
                 if (!isset($value['retweeted_status'])) {

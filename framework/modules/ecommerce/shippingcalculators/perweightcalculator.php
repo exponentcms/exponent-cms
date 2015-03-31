@@ -49,7 +49,8 @@ class perweightcalculator extends shippingcalculator {
         $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : '';
         $weight = 0;
         foreach ($order->orderitem as $item) {
-            if (!$item->product->no_shipping) $weight += $item->product->weight * $item->quantity;
+            if (!$item->product->no_shipping)
+                $weight += $item->product->weight * $item->quantity;
         }
         $total = $weight * $rate + $handling;
 	    $rates = array(
@@ -62,9 +63,9 @@ class perweightcalculator extends shippingcalculator {
 	    return $rates;
     }	
     
-   	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/perweightcalculator/configure.tpl';
-   	}
+//   	public function configForm() {
+//   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/perweightcalculator/configure.tpl';
+//   	}
 	
 	//process config form
 	function parseConfig($values) {

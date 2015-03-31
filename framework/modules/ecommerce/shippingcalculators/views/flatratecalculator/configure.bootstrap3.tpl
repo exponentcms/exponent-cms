@@ -16,7 +16,7 @@
 <div id="flatrate">
     <div id="flatrate-tabs" class="">
         <ul class="nav nav-tabs" role="tablist">
-	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General'|gettext}</em></a></li>
+	        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'General Settings'|gettext}</em></a></li>
         </ul>            
         <div class="tab-content">
 	        <div id="tab1" role="tabpanel" class="tab-pane fade in active">

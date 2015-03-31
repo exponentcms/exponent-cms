@@ -17,6 +17,17 @@
 ##################################################
 /** @define "BASE" "." */
 
+/**
+ * Minimum PHP version check
+ */
+//if (version_compare(PHP_VERSION, '5.3.1', 'lt')) {
+//    echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>
+//        PHP 5.3.1+ is required!  Please refer to the Exponent documentation for details:<br />
+//        <a href=\"http://docs.exponentcms.org/docs/current/requirements-running-exponent-cms\" target=\"_blank\">http://docs.exponentcms.org/</a>
+//        </h1>";
+//    die();
+//}
+
 // Following code allows magic_quotes to be on without screwing stuff up.
 // magic quotes feature was removed in php 5.4.0
 if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())

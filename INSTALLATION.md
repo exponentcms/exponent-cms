@@ -10,7 +10,7 @@ Installation of Exponent CMS 2.0
 Requirements
 - Linux-based web host (recommended)
 - Apache 2.0 or greater
-- PHP 5.2 or greater
+- PHP 5.3.x or greater
 - MySQL database
 
 ---------------------
@@ -41,7 +41,7 @@ content from 1.0 to 2.0.
     - Once the directory is on the server in the website's directory, the web-based installer takes over the process
       of configuring and setting up the CMS. To access the installer and finish setting up, visit your website, and go to
       index.php file in the install folder. For instance, if your website (www.example.com) stores its files in
-      ~/public_html/,     and you unpacked the archive there, go to http://www.example.com/install/index.php.
+      ~/public_html/, and you unpacked the archive there, go to http://www.example.com/install/index.php.
     - From there, just follow the instructions and the Exponent Install/Upgrade Wizard will configure and set up your
       new Exponent site.
 

@@ -26,7 +26,17 @@ if (!defined('EXPONENT')) exit('');
  */
 class tagtreecontrol extends formcontrol {
 
-    var $jsHooks = array();
+    var $values = array();
+    var $menu = true;
+    var $addable = true;
+    var $draggable = true;
+    var $checkable = true;
+    var $expandonstart = true;
+    var $controller_classname = null;
+    var $controller = null;
+    var $modelname = null;
+    var $model = null;
+    var $tags = array();
 
     static function name() {
         return "Nested Node Checkbox Dragdrop Tree";
@@ -45,12 +55,12 @@ class tagtreecontrol extends formcontrol {
             }
         }
 
-        $this->menu          = !empty($params['menu']) ? "true" : "false";
         $this->object        = $params['nodes'];
+        $this->menu          = !empty($params['menu']) ? true : false;
         $this->addable       = (bool)$params['addable'];
+        $this->expandonstart = empty($params['expandonstart']) ? false : true;
         $this->draggable     = $params['draggable'];
         $this->checkable     = $params['checkable'];
-        $this->expandonstart = empty($params['expandonstart']) ? "false" : "true";
 
         // setup the controller for this..if it wasn't passed in we'll default to expTag
         $this->controller_classname = expModules::getControllerClassName(isset($params['controller']) ? $params['controller'] : 'expTag');
@@ -68,15 +78,8 @@ class tagtreecontrol extends formcontrol {
     function toHTML($label, $name) {
         $link = expCore::makeLink(array("module"=> $this->controller->baseclassname, "action"=> "edit", "parent"=> 0));
         $html = "";
-        if ($this->menu == "true") {
+//        if ($this->menu == "true") {
             if (bs3()) {
-//                if (BTN_SIZE == 'large') {
-//                    $btn_size = 'btn-small';
-//                    $icon_size = 'icon-large';
-//                } else {
-//                    $btn_size = 'btn-mini';
-//                    $icon_size = '';
-//                }
                 $btn_size = expTheme::buttonSize();
                 $icon_size = expTheme::iconSize();
                 if ($this->addable) $html = '<a class="btn-success btn '.$btn_size.'" href="' . $link . '"><i class="fa fa-plus-circle '.$icon_size.'"></i> ' . gt('Add a Top Level Category') . '</a> ';
@@ -93,7 +96,7 @@ class tagtreecontrol extends formcontrol {
                 $html .= '<a href="#" id="expandall">' . gt('Expand All') . '</a> | ';
                 $html .= '<a href="#" id="collapseall">' . gt('Collapse All') . '</a>';
             }
-        }
+//        }
 
         $html .= '
 		<div id="' . $this->id . '" class="nodetree"></div>
@@ -123,7 +126,7 @@ class tagtreecontrol extends formcontrol {
 
             YUI(EXPONENT.YUI3_CONFIG).use('node','exp-tree', function(Y) {
     			var obj2json = " . $obj . ";
-				EXPONENT.DragDropTree.init('" . $this->id . "',obj2json,'" . $this->modelname . "','" . $this->menu . "','" . $this->expandonstart . "');
+				EXPONENT.DragDropTree.init('" . $this->id . "',obj2json,'" . $this->modelname . "','" . $this->menu . "','" . $this->expandonstart . "','" . $this->addable . "');
 				Y.one('.loadingdiv').remove();
 			});
 		";

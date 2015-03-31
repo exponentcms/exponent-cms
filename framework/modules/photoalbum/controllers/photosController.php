@@ -147,7 +147,7 @@ class photosController extends expController {
         foreach ($images as $image) {
             foreach($image->expTag as $tag) {
                 if (isset($used_tags[$tag->id])) {
-                    $used_tags[$tag->id]->count += 1;
+                    $used_tags[$tag->id]->count++;
                 } else {
                     $exptag = new expTag($tag->id);
                     $used_tags[$tag->id] = $exptag;

@@ -27,7 +27,7 @@ DirectoryIndex index.php
     RewriteRule ^([^.]+)$ $1.html [QSA]
 
     # Kludge out certain file types that we don't want to try to route thru the eXp router.
-    RewriteCond $1 !^(.*\.css|.*\.js|.*\.png|.*\.pdf|.*favicon\.ico|robots\.txt|.*\.shtml|.*\.htc) [NC]
+    RewriteCond $1 !^(.*\.css|.*\.js|.*\.pdf|.*favicon\.ico|robots\.txt|.*\.shtml|.*\.htc) [NC]
 
     # Kludge out image files that we don't want to try to route thru the eXp router.
     RewriteCond $1 !^(.*\.jpg|.*\.gif|.*\.png|.*\.jpeg|.*\.tiff|.*\.bmp) [NC]

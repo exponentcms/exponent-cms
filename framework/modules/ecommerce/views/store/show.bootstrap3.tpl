@@ -385,8 +385,8 @@
                         {exp_include file="options.tpl"}
                     {/if}
 
-                    <div id="child-products" class="exp-ecom-table">
-                        <table border="0" cellspacing="0" cellpadding="0">
+                    <div id="child-products">
+                        <table border="0" cellspacing="0" cellpadding="0" class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>&#160;</th>

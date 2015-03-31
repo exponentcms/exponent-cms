@@ -19,7 +19,7 @@
     
     {form action=saveconfig}
         {control type="hidden" name="id" value=$calculator->id}
-        {include file=$calculator->calculator->configForm()}
+        {include file=$calculator->configForm()}
         {control type="buttongroup" submit="Save Config"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

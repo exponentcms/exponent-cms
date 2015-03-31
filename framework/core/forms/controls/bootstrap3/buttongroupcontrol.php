@@ -33,8 +33,8 @@ class buttongroupcontrol extends formcontrol {
 	var $reset = "";
 	var $cancel = "";
 	var $returntype = "";
-	var $class = "";
 	var $validateJS = "";
+    var $onclick = null;
     var $wide = false;
     var $size = BTN_SIZE;
     var $color = 'blue';

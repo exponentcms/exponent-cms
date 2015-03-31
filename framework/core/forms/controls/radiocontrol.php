@@ -29,8 +29,6 @@ if (!defined('EXPONENT')) exit('');
  */
 class radiocontrol extends formcontrol {
 
-    var $flip = false;
-
     static function name() { return "Radio Button"; }
     
     function __construct($default = false, $value = "", $groupname="radiogroup", $flip=false, $onclick="") {

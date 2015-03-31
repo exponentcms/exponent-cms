@@ -71,11 +71,13 @@ class fedexcalculator extends shippingcalculator {
         if (!empty($this->configdata['shipfrom']['address2'])) $this->configdata['shipfrom']['StreetLines'][] = $this->configdata['shipfrom']['address2'];
         if (!empty($this->configdata['shipfrom']['address3'])) $this->configdata['shipfrom']['StreetLines'][] = $this->configdata['shipfrom']['address3'];
 
-        unset($this->configdata['shipfrom']['address1']);
-        unset($this->configdata['shipfrom']['address2']);
-        unset($this->configdata['shipfrom']['address3']);
-        unset($this->configdata['shipfrom']['state']);
-        unset($this->configdata['shipfrom']['country']);
+        unset(
+            $this->configdata['shipfrom']['address1'],
+            $this->configdata['shipfrom']['address2'],
+            $this->configdata['shipfrom']['address3'],
+            $this->configdata['shipfrom']['state'],
+            $this->configdata['shipfrom']['country']
+        );
 
         if (is_numeric($this->configdata['shipfrom']['StateOrProvinceCode'])) {
             $this->configdata['shipfrom']['StateOrProvinceCode'] = geoRegion::getAbbrev($this->configdata['shipfrom']['StateOrProvinceCode']);
@@ -129,7 +131,7 @@ class fedexcalculator extends shippingcalculator {
                     $package_items[$count]->h      = $height;
                     $package_items[$count]->l      = $length;
                     $package_items[$count]->name   = $item->product->title;
-                    $count += 1;
+                    $count++;
                 }
             }
         }
@@ -286,9 +288,9 @@ class fedexcalculator extends shippingcalculator {
         }
     }
 
-    public function configForm() {
-        return BASE . 'framework/modules/ecommerce/shippingcalculators/views/fedexcalculator/configure.tpl';
-    }
+//    public function configForm() {
+//        return BASE . 'framework/modules/ecommerce/shippingcalculators/views/fedexcalculator/configure.tpl';
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -311,8 +313,10 @@ class fedexcalculator extends shippingcalculator {
             if ($varname == 'shipfrom') {
                 $config[$varname]['StateOrProvinceCode'] = geoRegion::getAbbrev($values[$varname]['address_region_id']);
    	            $config[$varname]['CountryCode'] = geoRegion::getCountryCode($values[$varname]['address_country_id']);
-                unset($config[$varname]['address_region_id']);
-                unset($config[$varname]['address_country_id']);
+                unset(
+                    $config[$varname]['address_region_id'],
+                    $config[$varname]['address_country_id']
+                );
             }
         }
 

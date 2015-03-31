@@ -20,11 +20,6 @@
 <div id="myCart" class="module cart show hide">
     {if $items|@count gt 0}
         {assocarray}
-            {*breadcrumb: [{"Summary"|gettext}, {"Sign In"|gettext}, {"Order Confirmation"|gettext}, {"Order Complete"|gettext}, ]*}
-            {*test5: [*}
-                {*key1: "value1"*}
-                {*key2: "value2"*}
-            {*]*}
             breadcrumb: [
                 0: [
                     title: "{'Summary'|gettext}"
@@ -200,18 +195,20 @@
                         <td style="text-align:right;">{$order->grand_total|number_format:2}
                         </td>
                     </tr>
-                    {if !isset($noactivediscounts)}                                                
-                        <tr class="{cycle values="odd, even"}">
-                            <td colspan="3">
-                                <div class="input-code">
-                                    {form action="addDiscountToCart"}
-                                        {control type="text" name="coupon_code" label="Enter a Discount Code"|gettext}
-                                        {control type="buttongroup" submit="Apply Code"|gettext}
-                                    {/form}
-                                </div>
-                                {clear}
-                            </td>
-                        </tr>
+                    {if !$noactivediscounts}
+                        {if !$discounts}
+                            <tr class="{cycle values="odd, even"}">
+                                <td colspan="3">
+                                    <div class="input-code">
+                                        {form action="addDiscountToCart"}
+                                            {control type="text" name="coupon_code" label="Enter a Discount Code"|gettext}
+                                            {control type="buttongroup" submit="Apply Code"|gettext}
+                                        {/form}
+                                    </div>
+                                    {clear}
+                                </td>
+                            </tr>
+                        {/if}
                    {/if}
                 </tbody>
             </table>       

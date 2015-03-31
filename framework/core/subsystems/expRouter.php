@@ -177,8 +177,10 @@ class expRouter {
         // strip out possible xss exploits via url
         foreach ($_GET as $key=>$var) {
             if (strpos($var,'">')) {
-                unset($_GET[$key]);
-                unset($_REQUEST[$key]);
+                unset(
+                    $_GET[$key],
+                    $_REQUEST[$key]
+                );
             }
         }
         // conventional method to ensure the 'id' is an id
@@ -647,7 +649,7 @@ class expRouter {
 ////                $params[$name] = $val;
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
-            $params = expString::sanitize($_REQUEST);
+            if (empty($_REQUEST['route_sanitized'])) $params = expString::sanitize($_REQUEST);
 //            if (empty($data['route_sanitized'])) $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!
@@ -763,18 +765,18 @@ class expRouter {
         global $db;
 
         if ($section == "*") {
-            $controller = expModules::getModuleClassName($this->params['controller']);
-            $sectionObj = call_user_func($controller."::getSection",$this->params);
+            $sectionObj = call_user_func(expModules::getModuleClassName($this->params['controller']) . "::getSection", $this->params);
         } else {
-            $sectionObj = $db->selectObject('section','id='. intval($section));
+//            $sectionObj = $db->selectObject('section','id='. intval($section));
+            $sectionObj = new section(intval($section));
         }
 //        $sectionObj = $db->selectObject('section','id='. intval($section));
-        if (!navigationController::canView($sectionObj)) {
+        if (!$sectionObj->canView()) {
             define('AUTHORIZED_SECTION',0);
         } else {
             define('AUTHORIZED_SECTION',1);
         }
-        if (!navigationController::isPublic($sectionObj)) {
+        if (!$sectionObj->isPublic()) {
             define('PUBLIC_SECTION',0);
         } else {
             define('PUBLIC_SECTION',1);

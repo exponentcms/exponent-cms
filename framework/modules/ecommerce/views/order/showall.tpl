@@ -102,6 +102,7 @@
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
             jQueryUI: true,
+            scrollX: true,
             stateSave: true,
             columns: [
                 { type: 'html' },

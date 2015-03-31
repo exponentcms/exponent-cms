@@ -53,7 +53,7 @@ class fix_sectionref extends upgradescript {
 	 * @return bool
 	 */
 	function upgrade() {
-        $ret = navigationController::rebuild_sectionrefs();
+        $ret = sectionref::rebuild_sectionrefs();
         if (empty($ret)) $ret = gt('No sectionref problems were discovered');
         return $ret;
 	}

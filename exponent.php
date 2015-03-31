@@ -83,6 +83,6 @@ $router = new expRouter();
 
 // Initialize the navigation hierarchy
 if ($db->havedb)
-	$sections = navigationController::initializeNavigation();
+	$sections = section::initializeNavigation();
 
 ?>

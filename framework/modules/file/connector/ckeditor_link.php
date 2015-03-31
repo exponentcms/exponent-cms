@@ -106,9 +106,17 @@
                 if (update == 'ck') {
                     var funcNum = getUrlParam('CKEditorFuncNum');
                     var partNum = getUrlParam('CKEditor');
-                    window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                    if (EXPONENT.SEF_URLS) {
+                        window.location.href=EXPONENT.PATH_RELATIVE+'file/picker/ajax_action/1/update/ck/CKEditor/'+partNum+'/CKEditorFuncNum/'+funcNum+'/langCode/en/';
+                    } else {
+                        window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=ck&CKEditor='+partNum+'&CKEditorFuncNum='+funcNum+'&langCode=en';
+                    }
                 } else if (update == 'tiny') {
-                    window.location.href=EXPONENT.PATH_RELATIVE+'file/picker?ajax_action=1&update=tiny';
+                    if (EXPONENT.SEF_URLS) {
+                        window.location.href = EXPONENT.PATH_RELATIVE + 'file/picker/ajax_action/1/update/tiny/';
+                    } else {
+                        window.location.href = EXPONENT.PATH_RELATIVE + 'file/picker?ajax_action=1&update=tiny';
+                    }
                 }
             }
 
@@ -210,7 +218,7 @@
 		</table>
 <?PHP
 if ($user) {
-    $sections = navigationController::levelTemplate(0,0);
+    $sections = section::levelTemplate(0,0);
     $standalones = $db->selectObjects('section','parent = -1');
 ?>
 <strong><?PHP echo gt('Site Hierarchy'); ?></strong><hr size="1" />

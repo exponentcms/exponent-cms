@@ -173,7 +173,7 @@ class upgrade_calendar extends upgradescript {
                 $newconfig->location_data = $newmodinternal;
                 $newconfig->save();
             }
-	        $modules_converted += 1;
+	        $modules_converted++;
 	    }
 
         // convert each eventdate
@@ -189,11 +189,13 @@ class upgrade_calendar extends upgradescript {
 	    $cals = $db->selectObjects('calendar',"1");
 	    foreach ($cals as $cal) {
             $old_id = $cal->id;
-            unset($cal->id);
-            unset($cal->approved);
-            unset($cal->category_id);
-            unset($cal->tags);
-            unset($cal->file_id);
+            unset(
+                $cal->id,
+                $cal->approved,
+                $cal->category_id,
+                $cal->tags,
+                $cal->file_id
+            );
             $loc = expUnserialize($cal->location_data);
             $loc->mod = "event";
             $cal->location_data = serialize($loc);

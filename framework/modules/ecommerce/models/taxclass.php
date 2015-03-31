@@ -30,10 +30,14 @@ class taxclass extends expRecord {
     public static function getProductTax($item) {
         global $db;
 
-        if (empty($item->shippingmethod->country) && empty($item->shippingmethod->state)) return false;
-
+        // do we have the info we need to get taxes?
+        if (empty($item->shippingmethod->country) && empty($item->shippingmethod->state))
+            return false;
+        if (!$db->countObjects('tax_rate'))
+            return false;
         $global_config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        if ($db->countObjects('taxrate') && empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
+        if (empty($global_config->config['store']['country']))
+            flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
 
         // find any zones that match the state we are shipping this item to.
         $my_zone = $db->selectValue('tax_geo', 'zone_id', 'country_id='.intval($global_config->config['store']['country']).' AND region_id='.intval($global_config->config['store']['state']));
@@ -42,7 +46,8 @@ class taxclass extends expRecord {
         
         // first locate any local origin tax
         $rate = $db->selectValue('tax_rate', 'rate', 'zone_id='.$my_zone.' AND origin_tax=1 AND inactive!=1 AND class_id='.$item->product->tax_class_id);
-        if (empty($rate)) $rate = $db->selectValue('tax_rate', 'rate', 'zone_id IN ('.implode(',', $zones).') AND inactive!=1 AND class_id='.$item->product->tax_class_id);
+        if (empty($rate))
+            $rate = $db->selectValue('tax_rate', 'rate', 'zone_id IN ('.implode(',', $zones).') AND inactive!=1 AND class_id='.$item->product->tax_class_id);
         //$item->products_tax = round(($rate * .01) * $item->products_price_adjusted,2); // * $item->quantity ;
         return round(($rate * .01) * $item->products_price_adjusted, 2); // * $item->quantity ;
         //$item->save();
@@ -54,7 +59,8 @@ class taxclass extends expRecord {
         global $db;
 
         $global_config = new expConfig(expCore::makeLocation("ecomconfig","@globalstoresettings",""));
-        if ($db->countObjects('taxrate') && empty($global_config->config['store']['country'])) flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
+        if ($db->countObjects('tax_rate') && empty($global_config->config['store']['country']))
+            flashAndFlow('error', gt('This store is not yet fully configured with a store address.')."<br>".gt('You Must Enter a Store Address').' <a href="'.expCore::makeLink(array('controller'=>'ecomconfig','action'=>'configure')).'">'.gt('Here').'</a>');
 
         $zones = array();
         foreach ($order->orderitem as $item) {

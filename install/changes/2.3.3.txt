@@ -1,5 +1,7 @@
 version 2.3.3
 Address issues in v2.3.2
+  * !!! Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
+    - Compatible with PHP v5.3.x, 5.4.x, 5.5.x, and 5.6.x
   - adds feature to delete multiple photo album items at one time
   - adds a 'hide links' option to events module views
   - updates elFinder to be the default file manager

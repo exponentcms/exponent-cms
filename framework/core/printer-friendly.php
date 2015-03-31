@@ -1,14 +1,13 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<?php 
+<?php
     expTheme::head(array(
     	"css_primer"=>false,
     	"css_core"=>array('button'),
     	"css_links"=>true,
     	"css_theme"=>false
-        )
-    );
+    ));
     ?>
 	<style>
 	    html,body {

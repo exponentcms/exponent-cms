@@ -1356,6 +1356,7 @@ class usersController extends expController {
             'uname_options' => $unameOptions,
             'pword_options' => $pwordOptions,
             'pword_disabled' => $disabled,
+            'params' => $this->params
         ));
     }
 
@@ -1489,7 +1490,6 @@ class usersController extends expController {
             "userarray" => $userarray,
             "params" => $this->params,
         ));
-//        unlink(BASE . $this->params["filename"]);
     }
 
     public function import_users_add() {

@@ -158,8 +158,12 @@ class orderController extends expController {
             $ord = new order();
             $order = $ord->find('first', 'invoice_id=' . $this->params['invoice']);
             $this->params['id'] = $order->id;
-        } else {
+        } elseif (!empty($this->params['id'])) {
             $order = new order($this->params['id']);
+        }
+        if (empty($order->id)) {
+            flash('notice', gt('That order does not exist.'));
+            expHistory::back();
         }
 
         // We're forcing the location. Global store setting will always have this loc
@@ -204,6 +208,7 @@ class orderController extends expController {
             'order_user'     => new user($order->user_id),
 //            'shipping'       => $order->orderitem[0],  //FIXME what about new orders with no items??
             'billing'        => $billing,
+            'billinginfo'    => $billing->getBillingInfo(),
             'messages'       => $status_messages,
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
@@ -224,7 +229,8 @@ class orderController extends expController {
         global $user, $db;
 
         $order = new order($this->params['id']);
-        if ($order->purchased == 0) flashAndFlow('error', gt('You do not have permission to view this order.'));
+        if ($order->purchased == 0)
+            flashAndFlow('error', gt('You do not have permission to view this order.'));
 
         $this->loc->src = "@globalstoresettings";
 
@@ -285,13 +291,15 @@ class orderController extends expController {
                 expSession::set('orders_tracked', $trackingArray);
             }
         }
-        if (DEVELOPMENT != 0) $trackMe = false;
+        if (DEVELOPMENT != 0)
+            $trackMe = false;
         assign_to_template(array(
             'printerfriendly'=> $pf,
             'css'            => $css,
             'order'          => $order,
             'shipping'       => $order->orderitem[0],
             'billing'        => $billing,
+            'billinginfo'    => $billing->getBillingInfo(),
             'order_type'     => $order_type,
 //            'storeConfig'    => $storeConfig->config,
             'tc'             => $trackMe,
@@ -307,12 +315,25 @@ class orderController extends expController {
         $template = expTemplate::get_template_for_action($this, 'email_invoice', $this->loc);
         $order    = new order($this->params['id']);
         $billing  = new billing($this->params['id']);
+//        if ($billing->calculator != null) {
+//            $billinginfo = $billing->calculator->userView(unserialize($billing->billingmethod->billing_options));
+//        } else {
+//            if (empty($opts)) {
+//                $billinginfo = false;
+//            } else {
+//                $billinginfo = gt("No Cost");
+//                if (!empty($opts->payment_due)) {
+//                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//                }
+//            }
+//        }
         $css = file_get_contents(BASE.'framework/modules/ecommerce/assets/css/print-invoice.css');
         assign_to_template(array(
-            'css'     => $css,
-            'order'   => $order,
-            'shipping'=> $order->orderitem[0],
-            'billing' => $billing
+            'css'         => $css,
+            'order'       => $order,
+            'shipping'    => $order->orderitem[0],
+            'billing'     => $billing,
+            'billinginfo' => $billing->getBillingInfo(),
         ));
 
         // build the html and text versions of the message
@@ -342,7 +363,7 @@ class orderController extends expController {
         if (ecomconfig::getConfig('email_invoice_to_user') == true && !empty($user->email)) {
             $usermsg = "<p>" . ecomconfig::getConfig('invoice_msg') . "<p>";
             $usermsg .= $html;
-            $usermsg .= ecomconfig::getConfig('ecomfooter');
+//            $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
             $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
@@ -782,7 +803,7 @@ exit();
             ));
             $html = $template->render();
             if (!empty($this->params['include_invoice'])) {
-                $html .= '<br><hr><br>';
+                $html .= '<hr><br>';
                 $html .= renderAction(array('controller'=> 'order', 'action'=> 'show', 'view'=> 'email_invoice', 'id'=> $this->params['id'], 'printerfriendly'=> '1', 'no_output'=> 'true'));
             } else {
                 $html .= ecomconfig::getConfig('ecomfooter');
@@ -821,7 +842,7 @@ exit();
 
             // manually add/attach an expSimpleNote to the order
             $note           = new expSimpleNote();
-            $note->body     = "<strong>[" . gt('action') . "]: " . gt('Emailed message to') . " " . $emailed_to . ":</strong><br><br>" . $email_message;
+            $note->body     = "<strong>[" . gt('action') . "]: " . gt('Emailed message to') . " " . $emailed_to . ":</strong>" . $email_message;
             $note->approved = 1;
             $note->name     = $user->firstname . " " . $user->lastname;
             $note->email    = $user->email;
@@ -837,7 +858,7 @@ exit();
 
             //eDebug($note,true);            
         } else {
-            flash('error', gt('The email address was NOT sent. An email address count not be found for this customer'));
+            flash('error', gt('The email was NOT sent. An email address was not found for this customer'));
             expHistory::back();
         }
 
@@ -881,22 +902,19 @@ exit();
         // we are in.
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
-        if (!empty($router->params['id'])) {
-            $order    = new order($router->params['id']);
-        } else {
-            $order    = '';
-        }
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
-            case 'showall':
-                $metainfo['title']       = gt("Managing Orders") . ' - ' . $storename;
-                $metainfo['keywords']    = SITE_KEYWORDS;
-                $metainfo['description'] = SITE_DESCRIPTION;
-                break;
             case 'myOrder':
             case 'show':
             case 'showByTitle':
+                if (!empty($router->params['id'])) {
+                    $order    = new order($router->params['id']);
+                } elseif (!empty($router->params['invoice'])) {
+                    $order = $this->order->find('first', 'invoice_id=' . $router->params['invoice']);
+                } else {
+                    $order    = $this->order;
+                }
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
                 $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
@@ -904,6 +922,7 @@ exit();
                 $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
                 $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;
+            case 'showall':
             case 'ordersbyuser':
             default:
                 $metainfo['title']       = gt("Order Management") . " - " . $storename;
@@ -1435,26 +1454,36 @@ exit();
 
     function edit_order_item() {
         $oi = new orderitem($this->params['id'], true, true);
-        //oi->options = expUnserialize($oi->options);
+        if (empty($oi->id)) {
+            flash('error', gt('Order item doesn\'t exist.'));
+            expHistory::back();
+        }
         $oi->user_input_fields = expUnserialize($oi->user_input_fields);
+        $params['options'] = $oi->opts;
+        $params['user_input_fields'] = $oi->user_input_fields;
         $oi->product           = new product($oi->product->id, true, true);
         if ($oi->product->parent_id != 0) {
             $parProd = new product($oi->product->parent_id);
             //$oi->product->optiongroup = $parProd->optiongroup;   
             $oi->product = $parProd;
         }
-        $oi->selectedOpts = array();
-        if (!empty($oi->opts)) {
-            foreach ($oi->opts as $opt) {
-                $option = new option($opt[0]);
-                $og     = new optiongroup($option->optiongroup_id);
-                if (!is_array($oi->selectedOpts[$og->id])) $oi->selectedOpts[$og->id] = array($option->id);
-                else array_push($oi->selectedOpts[$og->id], $option->id);
-            }
-        }
+        //FIXME we don't use selectedOpts?
+//        $oi->selectedOpts = array();
+//        if (!empty($oi->opts)) {
+//            foreach ($oi->opts as $opt) {
+//                $option = new option($opt[0]);
+//                $og     = new optiongroup($option->optiongroup_id);
+//                if (!isset($oi->selectedOpts[$og->id]) || !is_array($oi->selectedOpts[$og->id]))
+//                    $oi->selectedOpts[$og->id] = array($option->id);
+//                else
+//                    array_push($oi->selectedOpts[$og->id], $option->id);
+//            }
+//        }
         //eDebug($oi->selectedOpts);
+
         assign_to_template(array(
-            'oi'=> $oi
+            'oi' => $oi,
+            'params' => $params
         ));
     }
 
@@ -1511,11 +1540,14 @@ exit();
         if ($oi->product->parent_id != 0) {
             $oi->product = new product($oi->product->parent_id, true, false);
         } else {
-            //reattach the product so we get the optoin fields and such
+            //reattach the product so we get the option fields and such
             $oi->product = new product($oi->product->id, true, false);
         }
 
-        //eDebug($oi->product,true);
+        if (isset($this->params['product_status_id'])) {
+            $ps = new product_status($this->params['product_status_id']);
+            $oi->products_status = $ps->title;
+        }
 
         $options = array();
         foreach ($oi->product->optiongroup as $og) {

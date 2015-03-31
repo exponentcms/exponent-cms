@@ -309,7 +309,7 @@ class faqController extends expController {
                 $search_record->category = $this->searchName();
                 $search_record->ref_type = $this->searchCategory();
                 $search_record->save();
-                $count += 1;
+                $count++;
             }
          }
 

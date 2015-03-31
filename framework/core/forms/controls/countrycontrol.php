@@ -28,6 +28,7 @@ if (!defined('EXPONENT')) exit('');
 class countrycontrol extends dropdowncontrol {
 
     static function name() { return "Drop Down List - Countries"; }
+
     static function isSimpleControl() {
         global $db;
 

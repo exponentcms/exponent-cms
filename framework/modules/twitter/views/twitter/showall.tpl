@@ -13,6 +13,10 @@
  *
  *}
 
+{css unique="tweets"  link="`$asset_path`css/tweets.css"}
+
+{/css}
+
 <div class="module twitter showall">
 	{if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
 	{permissions}
@@ -28,7 +32,7 @@
     {if empty($config.consumer_key) && $permissions.configure}
         {permissions}
             <div class="module-actions">
-                <div class="msg-queue notice" style="text-align:center">
+                <div class="msg-queue notice">
                     <p>{'You MUST configure this module to use it!'|gettext} {icon action="configure"}</p>
                 </div>
             </div>
@@ -52,29 +56,45 @@
     {/if}
 	<dl>
 		{foreach from=$items item=item}
-			<div class="item">
-                {if $config.showimage}
-                    <div style="float:left;">
-                        {img src="`$item.image`" style="margin:2px 5px 100% 0px;"}
-                        {if $item.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-37px;left:-60px;margin-right:-18px"}{/if}
+            {if !empty($item.retweet)}
+                <div class="context">
+                    <div class="tweet-context">
+                        <span class="tweet-content-icon">{if bs()}{icon img='retweet.png' size=small color=green}{else}{icon img='retweet_on.png' size=small color=green}{/if}</span>
+                        <span><a href="https://twitter.com/{$item.user.screen_name}">{$item.user.name}</a> {'retweeted'|gettext}</span>
                     </div>
-                {elseif $item.retweetedbyme}
-                    {img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="float:left; margin:2px 5px 100% 0px;"}
-                {/if}
-                <dt><em class="date">{$item.created_at|relative_date}{if $config.showattrib} {'via'|gettext} {$item.via}, {$item.screen_name} {'wrote'|gettext}:{/if}</em></dt>
-                <dd>
-                    {$item.text}
-                    {permissions}
-                        <div class="item-actions">
-                            {if $permissions.create && !$item.ours && !$item.retweetedbyme}
-                                &#160;{icon img='retweet.png' id=$item.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
-                            {/if}
-                            {if $permissions.delete && $item.ours && !$item.retweeted_status}
-                                &#160;{icon class=delete id=$item.id action=delete_tweet}
-                            {/if}
+                </div>
+            {/if}
+            <div class="item">
+                <div class="tweet-content">
+                    {if $config.showimage}
+                        <div class="tweet-image">
+                            {img src="`$item.image`" class="img-rounded"}
+                            {*{if $item.retweetedbyme}{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="position:relative;top:-16px;left:-58px;"}{/if}*}
                         </div>
-                    {/permissions}
-                </dd>
+                    {*{elseif $item.retweetedbyme}*}
+                        {*{img src="`$smarty.const.PATH_RELATIVE`framework/modules/twitter/assets/images/tweeted.png" style="float:left; margin:2px 5px;"}*}
+                    {/if}
+                    <dt><em class="date">{$item.created_at|relative_date}{if $config.showattrib}{if !empty($item.via)} {'via'|gettext} {$item.via},{/if} <a href="https://twitter.com/{$item.screen_name}">@{$item.screen_name}</a> {'wrote'|gettext}:{/if}</em></dt>
+                    <dd>
+                        {$item.text}
+                        {permissions}
+                            <div class="item-actions">
+                                {if $permissions.create && !$item.ours && !$item.retweetedbyme}
+                                    &#160;{icon img='retweet.png' id=$item.id action=create_retweet title="Retweet"|gettext onclick="return confirm('"|cat:("Are you sure you want to retweet this item?"|gettext)|cat:"');"}
+                                {/if}
+                                {if $permissions.delete && $item.ours && !$item.retweeted_status}
+                                    &#160;{icon class=delete id=$item.id action=delete_tweet}
+                                {/if}
+                                {if $item.retweetedbyme}
+                                    <div class="tweet-context2">
+                                        <span class="tweet-content-icon">{if bs()}{icon img='retweet.png' size=small color=green}{else}{icon img='retweet_on.png' size=small color=green}{/if}</span>
+                                        <span>{'Retweeted by Me'|gettext}</span>
+                                    </div>
+                                {/if}
+                            </div>
+                        {/permissions}
+                    </dd>
+                </div>
 			</div>
 			{clear}
 		{/foreach}

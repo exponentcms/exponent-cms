@@ -95,8 +95,10 @@ class form extends baseform {
 	function unregister($name) {
 		if (in_array($name,$this->controlIdx)) {
 			$control = $this->controls[$name];
-			unset($this->controls[$name]);
-			unset($this->controlLbl[$name]);
+			unset(
+                $this->controls[$name],
+                $this->controlLbl[$name]
+            );
 //            unset($this->tabs[$name]);
 
 			$tmp = array_flip($this->controlIdx);
@@ -311,7 +313,7 @@ class form extends baseform {
 //                }
 //                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
 //            }
-            if (get_class($this->controls[$name]) == 'pagecontrol' && $rank) {
+            if ($rank && get_class($this->controls[$name]) == 'pagecontrol') {
                 $html .= '</fieldset>';
             }
 //            if ($this->tabs[$name] != 'base') {

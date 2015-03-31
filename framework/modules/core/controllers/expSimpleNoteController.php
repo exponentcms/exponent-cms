@@ -76,7 +76,7 @@ class expSimpleNoteController extends expController {
             'formtitle'=>$formtitle,
             'content_type'=>$this->params['content_type'],
             'content_id'=>$this->params['content_id'],
-            'tab'=>$this->params['tab']
+            'tab'=>empty($this->params['tab'])?0:$this->params['tab']
         ));
     }    
     

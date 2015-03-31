@@ -15,11 +15,6 @@
 
 <div class="module order show">
     {assocarray}
-        {*breadcrumb: [{"Summary"|gettext}, {"Sign In"|gettext}, {"Order Confirmation"|gettext}, {"Order Complete"|gettext}, ]*}
-        {*test5: [*}
-            {*key1: "value1"*}
-            {*key2: "value2"*}
-        {*]*}
         breadcrumb: [
             0: [
                 title: "{'Summary'|gettext}"

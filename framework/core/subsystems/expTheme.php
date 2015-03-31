@@ -105,6 +105,7 @@ class expTheme
                 $framework = 'yui';  // yui is the 2.x default framework
             }
         }
+        expSession::set('framework', $framework);
 
         if (!empty($config['lessvars'])) {
             $less_vars = $config['lessvars'];
@@ -590,8 +591,8 @@ class expTheme
             }
         }
         if (!is_readable($theme)) {
-            if (is_readable(BASE . 'themes/basetheme/index.php')) {
-                $theme = BASE . 'framework/core/index.php';
+            if (is_readable(BASE . 'framework/core/index.php')) {
+                $theme = BASE . 'framework/core/index.php';  // use the fallback bare essentials theme
             }
         }
         return $theme;
@@ -641,11 +642,21 @@ class expTheme
 
     public static function getPrinterFriendlyTheme()
     {
+        global $framework;
+
         $common = 'framework/core/printer-friendly.php';
         $theme = 'themes/' . DISPLAY_THEME . '/printer-friendly.php';
+        if (empty($framework)) {
+            $fw = expSession::get('framework');
+            $fwprint = 'framework/core/printer-friendly.' . $fw . '.php';
+        } else {
+            $fwprint = 'framework/core/printer-friendly.' . $framework . '.php';
+        }
 
         if (is_readable($theme)) {
             return $theme;
+        } elseif (is_readable($fwprint)) {
+            return $fwprint;
         } elseif (is_readable($common)) {
             return $common;
         } else {
@@ -1576,6 +1587,7 @@ class expTheme
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
+            $found->prefix = 'icon-';
             return $found;
         } elseif (bs3()) {
             switch ($class) {
@@ -1657,6 +1669,7 @@ class expTheme
             $found->type = $btn_type;
             $found->class = $class;
             $found->size = self::iconSize($size);
+            $found->prefix = 'fa fa-';
             return $found;
         } else {
             return $class;

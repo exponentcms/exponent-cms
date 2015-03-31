@@ -26,12 +26,15 @@ define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
 class authorizedotnet extends creditcard {
 
     function name() {
-        return "Authorize.net Payment Gateway";
+        return gt("Authorize.net Payment Gateway");
     }
 
+//    public $use_title = 'Authorize.net Payment Gateway';
+    public $payment_type = 'Authorize.net';
+
     function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
-	    an account with Authorize.net before you can use it to process credit cards.";
+        return gt("Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It does require
+	        an account with Authorize.net before you can use it to process credit cards.");
     }
 
     public function captureEnabled() {
@@ -46,13 +49,13 @@ class authorizedotnet extends creditcard {
         return true;
     }
 
-    function hasConfig() {
-        return true;
-    }
+//    function hasConfig() {
+//        return true;
+//    }
 
-    function hasUserForm() {
-        return true;
-    }
+//    function hasUserForm() {
+//        return true;
+//    }
 
     function isOffsite() {
         return false;
@@ -96,7 +99,8 @@ class authorizedotnet extends creditcard {
             //"x_phone"=>empty($method->phone) ? '' : $method->phone,
             "x_phone"              => '309-680-5600',
             "x_email"              => $user->email,
-            "x_invoice_num"        => $order->getInvoiceNumber(),
+//            "x_invoice_num"        => $order->getInvoiceNumber(),  //FIXME this would doulble increment counter
+            "x_invoice_num"        => $order->invoice_id,
             "x_ship_to_first_name" => $shippingaddress->firstname,
             "x_ship_to_last_name"  => $shippingaddress->lastname,
             "x_ship_to_address"    => $shippingaddress->address1,
@@ -290,10 +294,10 @@ class authorizedotnet extends creditcard {
     }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/authorizedotnet/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/authorizedotnet/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -313,18 +317,18 @@ class authorizedotnet extends creditcard {
 
     //This should return html to display config settings on the view billing method page
     function view($config_object) {
-        $html = "<br>Settings:<br/><hr>";
+        $html = "<br>" . gt("Settings") . ":<br/><hr>";
         $html .= "API Login ID: " . $config_object->username . "<br>";
         $html .= "Transaction Key: " . $config_object->transaction_key . "<br>";
         $html .= "Password: " . $config_object->password . "<br>";
         $html .= "Test Mode: " . (($config_object->test_mode) ? "Yes" : "No") . "<br>";
         $html .= "Process Mode: ";
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
             $html .= "Authorize and Capture<br>";
         }
-        $html .= "<br>Accepted Cards:<hr>";
+        $html .= "<br>" . gt("Accepted Cards") . ":<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";
         $html .= "Discover: " . (($config_object->accept_discover) ? "Yes" : "No") . "<br>";
         $html .= "Mastercard: " . (($config_object->accept_mastercard) ? "Yes" : "No") . "<br>";
@@ -344,8 +348,8 @@ class authorizedotnet extends creditcard {
         return $ret->result->AUTHCODE;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->PNREF;
         } else {

@@ -31,8 +31,12 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $flip = false;
-    var $jsHooks = array();
+    var $newschool = false;
+    var $postfalse = false;
+    var $filter = '';
+    var $caption = '';
+    var $onchange = '';
+    var $onclick = '';
 
     static function name() {
         return "Options - Checkbox";

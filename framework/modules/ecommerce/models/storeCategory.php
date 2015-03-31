@@ -114,8 +114,13 @@ class storeCategory extends expNestedNode {
 		$tree = parent::getFullTree();
 		foreach($tree as $key=>$node) {  // add link and image
 			$tree[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
-			if (!empty($node->expFile[0]->id))
-				$tree[$key]->expFiles_id = $node->expFile[0]->id;
+            $tree[$key]->parent = $node->parent_id?$node->parent_id:'#';
+			if (!empty($node->expFile[0]->id)) {  // add thumbnail
+                $tree[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1">&#160;' . $node->title;
+                $tree[$key]->title = $tree[$key]->text;
+            } else {
+                $tree[$key]->text = $node->title;
+            }
 		}
 		return $tree;
 	}

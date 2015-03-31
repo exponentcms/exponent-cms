@@ -37,6 +37,10 @@ class administrationController extends expController {
     static function displayname() { return gt("Administration Controls"); }
     static function description() { return gt("This is the Administration Module"); }
 
+    static function hasSources() {
+        return false;
+    }
+
 	public function install_tables() {
 		$tables = expDatabase::install_dbtables();
 		ksort($tables);
@@ -1165,11 +1169,8 @@ class administrationController extends expController {
         
         //THEMES FOR RECAPTCHA
         $as_themes = array(
-            "red"=>gt('DEFAULT RED'),
-        	"white"=>gt('White'),
-        	"blackglass"=>gt('Black Glass'),
-        	"clean"=>gt('Clean (very generic)'),
-        	//"custom"=>'Custom' --> THIS MAY BE COOL TO ADD LATER...
+            "light"=>gt('Light (Default)'),
+        	"dark"=>gt('Dark'),
         );
         
         // Available Themes
@@ -1237,7 +1238,7 @@ class administrationController extends expController {
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 
         // Homepage Dropdown
-        $section_dropdown = navigationController::levelDropdownControlArray(0, 0, array(), false, 'view', true);
+        $section_dropdown = section::levelDropdownControlArray(0, 0, array(), false, 'view', true);
 
         // Timezone Dropdown
         $list = DateTimeZone::listAbbreviations();
@@ -1438,13 +1439,15 @@ class theme {
 		if (strtolower($sv)=='default') {
 		   $sv='';
 		}
-		unset ($params['sv']);
-		unset ($params['controller']);
-		unset ($params['action']);
-        unset ($params['cid']);
-        unset ($params['scayt_verLang']);
-        unset ($params['slingbar-top']);
-        unset ($params['XDEBUG_SESSION']);
+		unset (
+            $params['sv'],
+            $params['controller'],
+            $params['action'],
+            $params['cid'],
+            $params['scayt_verLang'],
+            $params['slingbar-top'],
+            $params['XDEBUG_SESSION']
+        );
 		foreach ($params as $key=>$value) {
 			if ($key[0] == '_') {
 				unset ($params[$key]);

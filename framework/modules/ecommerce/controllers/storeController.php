@@ -215,6 +215,8 @@ class storeController extends expController {
             $dir = !empty($this->params['dir']) ? $this->params['dir'] : 'ASC';
         }
 
+        if (empty($router->params['title']))  // we need to pass on the category for proper paging
+            $router->params['title'] = $this->category->sef_url;
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : (!empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10);
         if ($this->category->find('count') > 0) { // there are categories
             $page = new expPaginator(array(
@@ -1084,6 +1086,11 @@ class storeController extends expController {
 
     }
 
+    /**
+     * Add all products (products, event registrations, donations, & gift cards) to search index
+     *
+     * @return int
+     */
     function addContentToSearch() {
         global $db, $router;
 
@@ -1115,19 +1122,27 @@ class storeController extends expController {
                 }
 
                 $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
-                $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                if ($cnt['product_type'] == 'giftcard') {
+                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => 'store', 'action' => 'showGiftCards')));
+                } else {
+//                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
+                    $search_record->view_link = str_replace(URL_FULL, '', $router->makeLink(array('controller' => $cnt['product_type'], 'action' => 'show', 'title' => $cnt['sef_url'])));
+                }
 //                $search_record->ref_module = 'store';
                 $search_record->ref_module  = $this->baseclassname;
 //                $search_record->ref_type = $this->basemodel_name;
                 $search_record->ref_type = $cnt['product_type'];
 //                $search_record->category = 'Products';
-                $prod = new $search_record->ref_type();
+                $prod = new $search_record->ref_type($origid);
                 $search_record->category = $prod->product_name;
+                if ($search_record->ref_type == 'eventregistration') {
+                    $search_record->title .= ' - ' . expDateTime::format_date($prod->eventdate);
+                }
 
                 $search_record->original_id = $origid;
                 //$search_record->location_data = serialize($this->loc);
                 $search_record->save();
-                $count += 1;
+                $count++;
             }
         }
         return $count;
@@ -1152,6 +1167,7 @@ class storeController extends expController {
         if (!empty($this->params['id'])) {
             // if we have an id lets pull the product type from the products table.
             $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
+            if (empty($product_type)) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
         } else {
             if (empty($this->params['product_type'])) redirect_to(array('controller' => 'store', 'action' => 'picktype'));
             $product_type = $this->params['product_type'];
@@ -1219,7 +1235,8 @@ class storeController extends expController {
 
         // get the shipping options and their methods
 //        $shipping = new shipping();
-        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+//        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+        foreach (shipping::listCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -1340,7 +1357,8 @@ class storeController extends expController {
 
         // get the shipping options and their methods
 //        $shipping = new shipping();
-        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+//        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
+        foreach (shipping::listCalculators() as $calcid => $name) {
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -2974,6 +2992,9 @@ class storeController extends expController {
 
         fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
+
+        // update search index
+        $this->addContentToSearch();
     }
 
 }

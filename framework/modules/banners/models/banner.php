@@ -34,12 +34,12 @@ class banner extends expRecord {
         ));
         
     public function increaseImpressions() {
-        $this->impressions += 1;
+        $this->impressions++;
         $this->save();
     }
     
     public function increaseClicks() {
-        $this->clicks += 1;
+        $this->clicks++;
         $this->save();
     }
 

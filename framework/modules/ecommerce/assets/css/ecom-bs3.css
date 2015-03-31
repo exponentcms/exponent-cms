@@ -3,26 +3,26 @@
 @import url("//fonts.googleapis.com/css?family=Ubuntu+Condensed");
 
 .order-status .panel {
-    position: relative;
-    padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #E6E6E6;
-    background-color: #FFF;
-    border-radius: 5px;
-    box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 3px #FFF inset;
+	position: relative;
+	padding: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #E6E6E6;
+	background-color: #FFF;
+	border-radius: 5px;
+	box-shadow: 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 0px 0px 3px #FFF inset;
 }
 
 .order-status .panel .panel-heading,
 .order-status .panel #dash_version .panel-heading,
 .order-status .panel .message-item-initial .message-item-initial-body .panel-heading,
 .order-status .panel .timeline .timeline-item .timeline-caption .timeline-panel .panel-heading {
-    font-family: "Ubuntu Condensed",Helvetica,Arial,sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: #555;
-    height: 32px;
+	font-family: "Ubuntu Condensed", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	color: #555;
+	height: 32px;
 	margin-bottom: 12px;
 }
 
@@ -30,51 +30,51 @@
 .order-status #dash_version .panel-heading,
 .order-status .message-item-initial .message-item-initial-body .panel-heading,
 .order-status .timeline .timeline-item .timeline-caption .timeline-panel .panel-heading {
-    font-family: "Ubuntu Condensed",Helvetica,Arial,sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    white-space: nowrap;
-    color: #555;
+	font-family: "Ubuntu Condensed", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	font-size: 14px;
+	white-space: nowrap;
+	color: #555;
 }
 
 .order-status .panel h3:not(.modal-title),
 .order-status .panel .panel-heading {
-    border-width: medium medium 1px;
-    border-style: none none solid;
-    border-color: -moz-use-text-color -moz-use-text-color #EEE;
-    -moz-border-top-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    border-image: none;
-    /*font-size: 1.2em;*/
-    /*line-height: 2.2em;*/
-    /*height: 2.2em;*/
-    text-transform: uppercase;
-    padding: 5px 0px 0px 5px;
-    margin: -20px -16px 15px;
+	border-width: medium medium 1px;
+	border-style: none none solid;
+	border-color: -moz-use-text-color -moz-use-text-color #EEE;
+	-moz-border-top-colors: none;
+	-moz-border-right-colors: none;
+	-moz-border-bottom-colors: none;
+	-moz-border-left-colors: none;
+	border-image: none;
+	/*font-size: 1.2em;*/
+	/*line-height: 2.2em;*/
+	/*height: 2.2em;*/
+	text-transform: uppercase;
+	padding: 5px 0px 0px 5px;
+	margin: -20px -16px 15px;
 }
 
 .order-status h3:not(.modal-title) .panel-heading-action .btn-group,
-.order-status .panel-heading .panel-heading-action .btn-group{
-	position:absolute;
-	white-space:nowrap;
-	top:-2px;
-	right:2px
+.order-status .panel-heading .panel-heading-action .btn-group {
+	position: absolute;
+	white-space: nowrap;
+	top: -2px;
+	right: 2px
 }
 
 .order-status h3:not(.modal-title) .panel-heading-action .btn-group a.btn,
-.order-status .panel-heading .panel-heading-action .btn-group a.btn{
-	float:none;
+.order-status .panel-heading .panel-heading-action .btn-group a.btn {
+	float: none;
 	padding: 2px 5px;
 	margin-top: 5px;
 }
 
-.order-status h3:not(.modal-title) .panel-heading-action>a.btn,
-.order-status .panel-heading .panel-heading-action>a.btn{
-	position:absolute;
-	top:0;
-	right:2px;
+.order-status h3:not(.modal-title) .panel-heading-action > a.btn,
+.order-status .panel-heading .panel-heading-action > a.btn {
+	position: absolute;
+	top: 0;
+	right: 2px;
 }
 
 .order-status .order-info.table {
@@ -86,87 +86,87 @@
 }
 
 .order-stats .box-stats:hover {
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .order-stats .box-stats {
-    display: block;
-    /*height: 24px;*/
-    margin-bottom: 10px;
+	display: block;
+	/*height: 24px;*/
+	margin-bottom: 10px;
 }
 
 .order-stats .box-stats .kpi-content {
-    width: 100%;
-    position: relative;
-    padding-left: 52px;
-    float: left;
+	width: 100%;
+	position: relative;
+	padding-left: 52px;
+	float: left;
 }
 
 .order-stats .box-stats .kpi-content i {
-    position: absolute;
-    top: 0px;
-    font-size: 32px;
-    text-align: center;
-    color: #FFF;
-    width: 44px;
-    height: 44px;
-    line-height: 44px;
-    left: 0px;
-    border-radius: 3px;
+	position: absolute;
+	top: 0px;
+	font-size: 32px;
+	text-align: center;
+	color: #FFF;
+	width: 44px;
+	height: 44px;
+	line-height: 44px;
+	left: 0px;
+	border-radius: 3px;
 }
 
 .order-stats .box-stats .kpi-content .title {
-    display: block;
-    color: #666;
+	display: block;
+	color: #666;
 }
 
 .order-stats .box-stats .kpi-content .value {
-    display: block;
-    clear: both;
-    font-size: 1.3em;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+	display: block;
+	clear: both;
+	font-size: 1.3em;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
 }
 
 .order-stats .color3 i,
 .order-stats .color3 .boxchart-overlay {
-    background-color: #9E5BA1;
-    box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
+	background-color: #9E5BA1;
+	box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .order-stats .color3 .value {
-    color: #9E5BA1;
+	color: #9E5BA1;
 }
 
 .order-stats .color4 i,
 .order-stats .color4 .boxchart-overlay {
-    background-color: #95CC6B;
-    box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
+	background-color: #95CC6B;
+	box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .order-stats .color4 .value {
-    color: #95CC6B;
+	color: #95CC6B;
 }
 
 .order-stats .color2 i,
 .order-stats .color2 .boxchart-overlay {
-    background-color: #FF5450;
-    box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
+	background-color: #FF5450;
+	box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .order-stats .color2 .value {
-    color: #FF5450;
+	color: #FF5450;
 }
 
 .order-stats .color1 i,
 .order-stats .color1 .boxchart-overlay {
-    background-color: #2BA8E3;
-    box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
+	background-color: #2BA8E3;
+	box-shadow: 0px -3px 0px rgba(0, 0, 0, 0.2) inset;
 }
 
 .order-stats .color1 .value {
-    color: #2BA8E3;
+	color: #2BA8E3;
 }
 
 .order-status .panel-heading .badge,
@@ -175,15 +175,15 @@
 .order-status .panel-heading .module-badge-popular,
 .order-status .panel-heading .module-badge-partner,
 .order-status .panel-heading .module-badge-bought {
-    color: #555;
-    font-size: 1.1em;
-    line-height: 1.2em;
-    padding: 0px 10px;
-    font-weight: 700;
-    border: 1px solid #D9D9D9;
-    background-color: #FFF;
-    margin-left: 0.4em;
-    border-radius: 20px;
+	color: #555;
+	font-size: 1.1em;
+	line-height: 1.2em;
+	padding: 0px 10px;
+	font-weight: 700;
+	border: 1px solid #D9D9D9;
+	background-color: #FFF;
+	margin-left: 0.4em;
+	border-radius: 20px;
 }
 
 .order-status .nav-tabs li .badge,
@@ -192,143 +192,144 @@
 .order-status .nav-tabs li .module-badge-popular,
 .order-status .nav-tabs li .module-badge-partner,
 .order-status .nav-tabs li .module-badge-bought {
-    background-color: #FFF;
-    border: 2px solid #EEE;
-    color: #666;
+	background-color: #FFF;
+	border: 2px solid #EEE;
+	color: #666;
 }
 
 .order-status .panel-heading span.badge.alert-danger {
-    background-color: #F2DEDE;
-    border-color: #EBCCD1;
-    color: #A94442;
+	background-color: #F2DEDE;
+	border-color: #EBCCD1;
+	color: #A94442;
 }
 
 .address {
-    font-weight: normal;
+	font-weight: normal;
 }
 
 /****************  ecomerce table  ***********************/
 .exp-ecom-table {
-    position:relative;
-    color:#000000;
+	position: relative;
+	color: #000000;
 }
 
 .exp-ecom-table table {
-    width:100%;
-    border:1px solid #83aa53;
-/*    border-width:0 1px 1px 1px;*/
+	width: 100%;
+	border: 1px solid #83aa53;
+	/*    border-width:0 1px 1px 1px;*/
 }
 
 .exp-ecom-table .radio table {
-    border:none;
-/*    border-width:0 1px 1px 1px;*/
+	border: none;
+	/*    border-width:0 1px 1px 1px;*/
 }
 
 .exp-ecom-table table.collapse {
-    width:10%;
+	width: 10%;
 }
 
 .exp-ecom-table table thead tr {
-    background:url(../images/ecom-sprite.png) repeat-x #486F11 0 -1px;
+	background: url(../images/ecom-sprite.png) repeat-x #486F11 0 -1px;
 }
 
 .exp-ecom-table table th,
 .exp-ecom-table table.nowrap th,
 .exp-ecom-table table.nowrap td {
-    white-space:nowrap;
+	white-space: nowrap;
 }
 
 .exp-ecom-table table th {
-    text-shadow:1px 1px 0 #9c9;
-    color:#333;
+	text-shadow: 1px 1px 0 #9c9;
+	color: #333;
 }
 
 .exp-ecom-table table td,
 .exp-ecom-table table th {
-    text-align:left;
-    vertical-align:top;
-    padding:4px;
+	text-align: left;
+	vertical-align: top;
+	padding: 4px;
 }
 
 .exp-ecom-table.columnize table td {
-    border-right:1px solid #b4caa3;
+	border-right: 1px solid #b4caa3;
 }
 
 .exp-ecom-table table td.right {
-    text-align:right;
-    width:10%;
-    white-space:nowrap;
+	text-align: right;
+	width: 10%;
+	white-space: nowrap;
 }
 
 .exp-ecom-table table th h1 {
-    text-align:center;
-    color:#ffffff;
-    text-shadow:1px 1px #333333;
-    margin:0;
-    font-size:130%;
+	text-align: center;
+	color: #ffffff;
+	text-shadow: 1px 1px #333333;
+	margin: 0;
+	font-size: 130%;
 }
 
 .exp-ecom-table table th a {
-    color:#071939;
-    text-decoration:none;
-    display:block;
+	color: #071939;
+	text-decoration: none;
+	display: block;
 }
 
 .exp-ecom-table table td {
-    background:#edffdf;
+	background: #edffdf;
 }
 
 .exp-ecom-table .cke_skin_kama table td {
-    background:inherit;
+	background: inherit;
 }
 
 .exp-ecom-table .hover tbody tr:hover td,
 .exp-ecom-table .hover tbody tr:hover th {
-   background:#d5e3f3;
+	background: #d5e3f3;
 }
 
 .exp-ecom-table .div-rows div.even,
 .exp-ecom-table tr.even td {
-    background:#dfffc6;
+	background: #dfffc6;
 }
 
 .exp-ecom-table .div-rows div.odd,
 .exp-ecom-table tr.odd td {
-    background:#cce9b5;
+	background: #cce9b5;
 }
 
 .exp-ecom-table .payment-info th,
 .exp-ecom-table .shipping-info th {
-    width:50%;
+	width: 50%;
 }
 
 .exp-ecom-table .div-rows {
-    padding:0px;
+	padding: 0px;
 }
 
 .exp-ecom-table .div-rows div span.pmt-label {
-    display:inline-block;
-    text-align:right;
-    width:170px;
-    padding:5px;
-    font-weight:bold;
-    color:#555555;
+	display: inline-block;
+	text-align: right;
+	width: 170px;
+	padding: 5px;
+	font-weight: bold;
+	color: #555555;
 }
 
 .exp-ecom-table .div-rows div span.pmt-value {
-    font-style:italic;
+	font-style: italic;
 }
 
 .exp-ecom-table .extra-data {
-    margin-left: 20px;
+	margin-left: 20px;
 }
 
 /****************  other ecomerce styles  ***********************/
 .coupon-color {
-    background-color:#33CC00;
+	background-color: #33CC00;
 }
-.surcharge{
-    font-size: 8px;    
+
+.surcharge {
+	font-size: 8px;
 }
 
 .additional.thumbnails ul li img.thumbnail:hover {
@@ -337,11 +338,31 @@
 
 table.table.order-info2 > thead > tr > th,
 .email-customer h4 {
-    background-color: lightgrey;
-    padding: 8px;
+	background-color: lightgrey;
+	padding: 8px;
 }
 
 table.table.order-info2 > thead > tr > th:hover,
 .email-customer h4:hover {
-    background-color: palegoldenrod;
+	background-color: palegoldenrod;
+}
+
+.payment-info > div > span.pmt-label  {
+	font-weight: bolder;
+}
+
+.payment-info > div > span.pmt-value  {
+	float: right;
+	margin-right: 80px;
+}
+
+.table-striped > tbody > tr:nth-child(even) > td,
+.table-striped > tbody > tr:nth-child(even) > th,
+.payment-info > div.even {
+	background-color: rgb(235, 235, 235);
+}
+
+div.table-responsive > table > thead > tr,
+div.table-responsive > table {
+	border: solid #cacaca 1px;
 }

@@ -67,7 +67,7 @@ class billingController extends expController {
                         if ($calcobj->isSelectable() == true) {
                             $obj = new billingcalculator(array(
                                 'title'=>$calcobj->name(),
-                                'user_title'=>$calcobj->title,
+//                                'user_title'=>$calcobj->title,
                                 'body'=>$calcobj->description(), 
                                 'calculator_name'=>$classname,
                                 'enabled'=>false));

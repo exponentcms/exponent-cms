@@ -26,10 +26,15 @@ if (!defined('EXPONENT')) exit('');
  */
 abstract class formcontrol {
 
+    var $id = null;
+    var $name = "";
 	var $accesskey = "";
+    var $class = "";
 	var $default = "";
 	var $disabled = false;
     var $required = false;  
+    var $multiple = false;
+    var $flip = false;
     var $is_hidden = false;
     var $focus = false;
 	var $tabindex = -1;
@@ -37,6 +42,7 @@ abstract class formcontrol {
 	var $type = 'text';
     var $horizontal = false;
     var $horizontal_top = false;
+    var $jsHooks = array();
 
 	static function name() { return "formcontrol"; }
 

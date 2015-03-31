@@ -29,7 +29,6 @@ if (!defined('EXPONENT')) exit('');
  */
 class radiogroupcontrol extends formcontrol {
 
-	var $flip = false;
 	var $items = array();
 //	var $spacing = 100;
 	var $cols = 1;

@@ -118,14 +118,16 @@ function smarty_function_icon($params, &$smarty) {
     $linktext = $img . $text;
 
     // we need to unset these vars before we pass the params array off to makeLink
-    unset($params['alt']);
-    unset($params['title']);
-    unset($params['text']);
-    unset($params['img']);
-    unset($params['class']);
-    unset($params['record']);
-    unset($params['style']);
-    unset($params['icon']);
+    unset(
+        $params['alt'],
+        $params['title'],
+        $params['text'],
+        $params['img'],
+        $params['class'],
+        $params['record'],
+        $params['style'],
+        $params['icon']
+    );
     $onclick = !empty($params['onclick']) ? $params['onclick'] : '';
     unset($params['onclick']);
     $secure = !empty($params['secure']) ? $params['secure'] : false;
@@ -142,8 +144,10 @@ function smarty_function_icon($params, &$smarty) {
         $btn_size = !empty($params['size']) ? $params['size'] : BTN_SIZE;
         $btn_color = !empty($params['color']) ? $params['color'] : BTN_COLOR;
         $class = "awesome " . $btn_size . " " . $btn_color . ' ' . $class;
-        unset($params['size']);
-        unset($params['color']);
+        unset(
+            $params['size'],
+            $params['color']
+        );
     }
     if(!empty($params['action']) && $params['action'] == 'scriptaction') {
         echo '<a',$name,' href="#" title="', $title, '" class="', $class, '"';

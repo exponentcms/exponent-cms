@@ -51,8 +51,10 @@ blockquote {
 .text-warning        { color: @orange; }
 a.text-warning:hover { color: darken(@orange, 10%); }
 
-.text-error          { color: @red; }
-a.text-error:hover   { color: darken(@red, 10%); }
+.text-error,
+.text-danger         { color: @red; }
+a.text-error:hover,
+a.text-danger:hover  { color: darken(@red, 10%); }
 
 .text-info           { color: @purple; }
 a.text-info:hover    { color: darken(@purple, 10%); }

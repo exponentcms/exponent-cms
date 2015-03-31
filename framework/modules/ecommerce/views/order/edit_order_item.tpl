@@ -14,10 +14,10 @@
  *}
 
 <div class="module order edit">
-    <h1>{'Editing order totals'|gettext}</h1>
-    
+    <h1>{'Editing order item'|gettext}</h1>
     {form action=save_order_item}
         {control type=hidden name=id value=$oi->id}
+        {control type=hidden name=orderid value=$oi->orders_id}
         <blockquote>
             {'You may change the item quantity here, price, as well as edit the options and user input fields.'|gettext}{br}
             {'If you would like to change the product, please delete it and add the correct item.'|gettext}{br}
@@ -30,10 +30,12 @@
                 <td>{'Item name:'|gettext}</td>
                 <td>{control type=textarea name=products_name cols=40 rows=2 label="" value=$oi->products_name focus=1}</td>
             </tr>
+            {if $oi->product_type == 'product'}
             <tr>
                 <td>{'Item model:'|gettext}</td>
                 <td>{$oi->products_model}</td>
             </tr>
+            {/if}
             <tr>
                 <td>{'Item price:'|gettext}</td>
                 <td>{control type=text name=products_price label="" value=$oi->products_price filter=money}</td>
@@ -42,14 +44,22 @@
                 <td>{'Item quantity:'|gettext}</td>
                 <td>{control type=text name=quantity label="" value=$oi->quantity}</td>
             </tr>
+            {if $oi->product_type == 'product'}
+            <tr>
+                <td>{'Status:'|gettext}</td>
+                <td>{control type="dropdown" name="product_status_id" frommodel=product_status items=$status_display orderby=rank value=$oi->products_status}</td>
+            </tr>
+            {/if}
         </table>
 
         {$product = $oi->product}
         {* NOTE display product options *}
-        {exp_include file="options.tpl"}
+        {*{exp_include file="options.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/options.tpl"}
 
         {* NOTE display product user input fields *}
-        {exp_include file="input_fields.tpl"}
+        {*{exp_include file="input_fields.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/input_fields.tpl"}
 
         {control type=buttongroup submit="Save Order Item Change"|gettext cancel="Cancel"|gettext}
     {/form}

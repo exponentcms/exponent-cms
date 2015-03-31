@@ -120,7 +120,7 @@
                     <div class="tab-content panel">
                         <div id="status" role="tabpanel" class="tab-pane fade in active">
                             <div class="table-responsive">
-                                <table class="table order-info">
+                                <table class="table table-striped order-info">
                                     <tbody>
                                     {foreach from=$order->order_status_changes item=change}
                                         <tr style="border-bottom: 1px solid gray;">
@@ -148,7 +148,7 @@
                                         <thead id="change-status">
                                             <tr>
                                                 <!--th>The current status of this order is: {$order->getStatus()}</th-->
-                                                <th title="{'Click to change order type or status'|gettext}"><i class="fa fa-angle-double-down"></i> {'Order Type and Order Status'|gettext}</th>
+                                                <th title="{'Click to change order type or status'|gettext}"><i class="fa fa-angle-double-down"></i> {'Update Order Type and Order Status'|gettext}</th>
                                             </tr>
                                         </thead>
                                         <tbody id="change-status-view" style="display:none;">
@@ -336,7 +336,7 @@
                             {count($order->billingmethod[0]->billingtransaction)}
                         </span>
                     </div>
-                    <div>
+                    <div class="payment-info">
                         <div class="odd">
                             <span class="pmt-label">
                                 {"Payment Method"|gettext}
@@ -377,12 +377,12 @@
                             </span>
                             <span class="pmt-value">
                                 {if $billing->calculator != null}
-                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
+                                    {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}
                                 {/if}
                             </span>
                         </div>
                         {if $billing->calculator != null}
-                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
+                        {$data = $billing->calculator->getAVSAddressVerified($billing->billingmethod)|cat:$billing->calculator->getAVSZipVerified($billing->billingmethod)|cat:$billing->calculator->getCVVMatched($billing->billingmethod)}
                         {if  !empty($data)}
                         <div class="odd">
                             <span class="pmt-label">
@@ -426,7 +426,7 @@
                     </div>
                     <h4>{'Billing Information'|gettext}</h4>
                     <div class="table-responsive">
-                        <table class="table order-info">
+                        <table class="table table-striped order-info">
                             <tbody>
                             {foreach from=$order->billingmethod[0]->billingtransaction item=bt name=foo}
                                 <tr style="border-bottom: 1px solid gray;">
@@ -662,7 +662,7 @@
                         </span>
                     </div>
                     <div class="table-responsive">
-                        <table class="table order-items" border="0" cellspacing="0" cellpadding="0">
+                        <table class="table table-striped order-items" border="0" cellspacing="0" cellpadding="0">
                             <thead>
                                 <tr>
                                     <th>
@@ -673,9 +673,9 @@
                                     <th>
                                         {"SKU"|gettext}
                                     </th>
-                                    <th>
-                                        {"Location"|gettext}
-                                    </th>
+                                    {*<th>*}
+                                        {*{"Location"|gettext}*}
+                                    {*</th>*}
                                     <th>
                                         {"Status"|gettext}
                                     </th>
@@ -721,9 +721,9 @@
                                     <td>
                                         {if $oi->products_model != ""}{$oi->products_model}{else}N/A{/if}
                                     </td>
-                                    <td>
-                                        {$oi->products_warehouse_location}
-                                    </td>
+                                    {*<td>*}
+                                        {*{$oi->products_warehouse_location}*}
+                                    {*</td>*}
                                     <td>
                                         {$oi->products_status}
                                     </td>
@@ -842,7 +842,7 @@
                         <div class="col-xs-6">
                             <div class="panel panel-total">
                                 <div class="table-responsive">
-                                    <table class="table totals-info" border="0" cellspacing="0" cellpadding="0">
+                                    <table class="table table-striped totals-info" border="0" cellspacing="0" cellpadding="0">
                                         <thead>
                                             <tr>
                                                 {if !$pf}

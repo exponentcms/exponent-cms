@@ -66,14 +66,14 @@
                     <td class="top-brdr">{$order->subtotal|currency}</td>
                 </tr>
                 {if $order->total_discounts > 0}
-                    <tr>
-                        <td colspan="4" class="totals">{'Discounts'|gettext}</td>
-                        <td align="right">-{$order->total_discounts|currency}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="totals">{'Total'|gettext}</td>
-                        <td align="right">{$order->total|currency}</td>
-                    </tr>
+                <tr>
+                    <td colspan="4" class="totals">{'Discounts'|gettext}</td>
+                    <td align="right">-{$order->total_discounts|currency}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" class="totals">{'Total'|gettext}</td>
+                    <td align="right">{$order->total|currency}</td>
+                </tr>
                 {/if}
                 {if !$order->shipping_taxed}
                 <tr>
@@ -108,7 +108,6 @@
                 <tr>
                     <td colspan="4" class="totals">{'Order Total'|gettext}</td>
                     <td>{$order->grand_total|currency}</td>
-                </tr>
                 </tr>
             {/if}
         </tbody>

@@ -44,9 +44,9 @@ class instorepickupcalculator extends shippingcalculator {
 	    return $rates;
     }	
     
-   	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/instorepickupcalculator/configure.tpl';
-   	}
+//   	public function configForm() {
+//   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/instorepickupcalculator/configure.tpl';
+//   	}
 	
 	//process config form
 	function parseConfig($values) {

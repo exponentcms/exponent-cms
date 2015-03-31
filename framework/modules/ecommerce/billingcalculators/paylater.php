@@ -22,16 +22,17 @@
 /** @define "BASE" "../../../.." */
 
 class paylater extends billingcalculator {
+
     function name() {
-        return gt("Bill Me");
+        return gt('Bill Me');
     }
+
+//    public $use_title = 'Bill Me';
+    public $payment_type = 'Billed';
 
     function description() {
         return gt("Enabling this payment option will allow your customers to pay when picking up purchase.");
     }
-
-    public $title = 'Bill Me';
-    public $payment_type = 'Billed';
 
     function hasConfig() {
         return false;
@@ -50,8 +51,6 @@ class paylater extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-//        global $order, $db, $user;
-
         $object = new stdClass();
         $object->errorCode = $opts->result->errorCode = 0;
 //        $opts->result = $object;
@@ -75,13 +74,27 @@ class paylater extends billingcalculator {
     }
 
     //Should return html to display user data.
-    function userView($opts) {
+    function userView($billingmethod) {
+        $opts = expUnserialize($billingmethod->billing_options);
         if (empty($opts)) return false;
         $cash = !empty($opts->cash_amount) ? $opts->cash_amount : 0;
-        $billinginfo = gt("Cash") . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
-        if (!empty($opts->payment_due)) {
-            $billinginfo .= '<br>' . gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//        $billinginfo = gt("Paying Later") . ": " . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",");
+//        if (!empty($opts->payment_due)) {
+//            $billinginfo .= '<br>' . gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+//        }
+//        return $billinginfo;
+
+        $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
+        $billinginfo .= '<thead><tr><th colspan="2">' . gt("Paying Later") . '</th></tr></thead>';
+        $billinginfo .= '<tbody>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '</td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
+//        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Paid") . ': </td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",") . '</td></tr>';
+        if  (!empty($opts->payment_due)) {
+            $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Due") . '</td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",") . '</td></tr>';
         }
+        $billinginfo .= '</tbody>';
+        $billinginfo .= '</table>';
         return $billinginfo;
     }
 
@@ -105,9 +118,8 @@ class paylater extends billingcalculator {
         return $ret->result->token;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
-
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->transId;
         } else {

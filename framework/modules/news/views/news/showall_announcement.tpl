@@ -46,7 +46,7 @@
    	{/if}
     {$myloc=serialize($__loc)}
     {foreach from=$page->records item=item}
-        <div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+        <div class="item announcement{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}{if $item->is_featured} featured{/if}">
             <{$config.item_level|default:'h2'}>{$item->title}</{$config.item_level|default:'h2'}>
             {if $item->isRss != true}
                 {permissions}

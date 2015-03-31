@@ -31,7 +31,7 @@
         {icon class=add controller="ecomconfig" action="edit_discount" text="Create a New Store Discount"|gettext}
             
         {if $page|@count > 0}
-            <h3>{"Modify existing discount"|gettext}</h3>
+            <h3>{"Modify existing store discounts"|gettext}</h3>
            {pagelinks paginate=$page top=1}
 			<table id="discounts" class="exp-skin-table">
 				<thead>
@@ -54,6 +54,9 @@
                                 </td>
                                 <td>
                                     {$listing->title}
+                                </td>
+                                <td>
+                                    {$listing->actions[$listing->action_type]}
                                 </td>
                                 <td>
                                     {$listing->coupon_code}

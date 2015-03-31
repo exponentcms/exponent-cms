@@ -146,6 +146,17 @@ class shipping extends expRecord {
 //		return $calcs;
 //    }
 
+    public static function listCalculators() {
+   	    global $db;
+
+   	    $calcs = array();
+   	    foreach ($db->selectObjects('shippingcalculator') as $calc) {
+   	        $calcs[$calc->id] = $calc->calculator_name;
+   	    }
+
+   		return $calcs;
+       }
+
 	public static function listAvailableCalculators() {
 	    global $db;
 

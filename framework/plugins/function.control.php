@@ -173,7 +173,10 @@ function smarty_function_control($params, &$smarty) {
                 $control = new radiogroupcontrol();
                 // differentiate it from the old school forms
                 $control->newschool = true;
-                if (!empty($params['default'])) $control->default = $params['default'];
+                if (!empty($params['default']))
+                    $control->default = $params['default'];
+                elseif (!empty($params['value']))
+                    $control->default = $params['value'];
                 $control->cols      = $params['columns'];
 
                 // get the items to use as the radio button labels
@@ -358,15 +361,11 @@ function smarty_function_control($params, &$smarty) {
                         // skip it for logged on users based on config
                     } else {
                         // include the library and show the form control
-                        require_once(BASE . 'external/recaptchalib.php');
-//                        if (expSession::get('framework') == 'bootstrap3') {
-//                            echo recaptcha_get_html_bs3(RECAPTCHA_PUB_KEY);
-//                        } else {  // non-Bootstrap3
-//                            echo '<script type="text/javascript"> var RecaptchaOptions = {theme : "', RECAPTCHA_THEME, '"}; </script>';
-//                            echo recaptcha_get_html(RECAPTCHA_PUB_KEY);
-//                        }
-                        echo '<div class="g-recaptcha" data-sitekey=" . RECAPTCHA_PUB_KEY . "></div>';
-                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '"></script>';
+//                        require_once(BASE . 'external/recaptchalib.php');
+                        require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
+                        $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                        echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
                     }
                     return;
@@ -478,7 +477,7 @@ function smarty_function_control($params, &$smarty) {
             } elseif (!empty($params['filter']) && $params['filter'] == 'integer') {
                 $params['value'] = number_format($params['value'], 0, '.', ',');
             }
-            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value alwasy == default?
+            if ($params['type'] != 'checkbox' && $params['type'] != 'radio' && $params['type'] != 'radiogroup') $control->default = $params['value']; //FIXME is value always == default?
         }
 
         //if (isset($params['value'])) $control->default = $params['value'];
@@ -538,10 +537,14 @@ function smarty_function_control($params, &$smarty) {
         }
         //write out the control itself...and then we're done. 
         if (isset($params['model'])) {
-            echo $control->toHTML($params['label'], $params['model'] . '[' . $params['name'] . ']');
+            $control_output = $control->toHTML($params['label'], $params['model'] . '[' . $params['name'] . ']');
         } else {
-            echo $control->toHTML($params['label'], $params['name']);
+            $control_output = $control->toHTML($params['label'], $params['name']);
         }
+        if (!empty($params['json'])) {
+            $control_output = json_encode($control_output);
+        }
+        echo $control_output;
         /*
         //Write out the label for this control if the user specified a label and position is set to right
         if (isset($params['label']) && $params['labelpos'] == 'right') {

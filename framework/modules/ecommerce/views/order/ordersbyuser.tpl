@@ -26,6 +26,7 @@
                 <tr>
                     {$page->header_columns}
                     <th><span>{'Total'|gettext}</span></th>
+                    <th><span>{'Order Status'|gettext}</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,7 @@
                         <td>{$listing->purchased|format_date}</td>
                         <td><a href="{link action=myOrder id=$listing->id}">{$listing->invoice_id}</a></td>
                         <td>{$listing->billingmethod[0]->billing_cost|currency}</td>
+                        <td>{$listing->order_status->title}</td>
                     </tr>
                 {foreachelse}
                     <tr>

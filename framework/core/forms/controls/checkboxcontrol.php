@@ -31,8 +31,12 @@ class checkboxcontrol extends formcontrol {
 
     var $default = false;
     var $value = "1";
-    var $flip = false;
-    var $jsHooks = array();
+    var $newschool = false;
+    var $postfalse = false;
+    var $filter = '';
+    var $caption = '';
+    var $onchange = '';
+    var $onclick = '';
 
     static function name() {
         return "Options - Checkbox";
@@ -87,7 +91,7 @@ class checkboxcontrol extends formcontrol {
                 $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML(
                     $name
                 );
-                if (!empty($label) && $label != ' ') {
+                if ($label != ' ' && !empty($label)) {
 //                $html .= "<label" . $for . " class=\"label\" style=\"text-align:left; white-space:nowrap; display:inline; width:auto;\">" . $label . "</label>";
 //                $html .= "<div class=\"label\" style=\"width:auto; display:inline;\">";
                     $html .= "<label" . $for . " class=\"label\" style=\"width:auto; display:inline;\">";

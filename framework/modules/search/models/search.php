@@ -24,7 +24,7 @@
 class search extends expRecord {
 
     public function beforeSave() {
-        $this->body = $this->removeHTML($this->body);
+        $this->body = self::removeHTML($this->body);
     }
 
     public static function removeHTML($str) {
@@ -81,11 +81,17 @@ class search extends expRecord {
                     $records[$i]->score = $score;   
                 }*/
             } else if ($records[$i]->ref_type == 'section') {
-                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
-                if (empty($section) || !navigationController::canView($section)) {
+//                $section = $db->selectObject('section', 'id=' . $records[$i]->original_id);
+                $section = new section($records[$i]->original_id);
+                if (empty($section) || !$section->canView()) {
                     unset($recs[$i]); // page is not available for viewing
                     //$records[$i]->canview = false;
                 }
+            } else if ($records[$i]->ref_module == 'event') {  // add (closest) date to title/link
+                $event = $db->selectObject('eventdate', 'event_id=' . $records[$i]->original_id . ' ORDER BY ABS( DATEDIFF( date, NOW() ) )');
+                $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
+                $loc = expUnserialize($event->location_data);
+                $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id,'src' => $loc->src)));
             } else {
                 $rloc = unserialize($records[$i]->location_data);
                 if (!empty($rloc)) {
@@ -94,8 +100,9 @@ class search extends expRecord {
 //                    }
                     $sectionref = $db->selectObject("sectionref", "module='" . $rloc->mod . "' AND source='" . $rloc->src . "'");
                     if (!empty($sectionref)) {
-                        $section = $db->selectObject("section", "id=" . $sectionref->section);
-                        if (empty($section) || !(navigationController::canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
+//                        $section = $db->selectObject("section", "id=" . $sectionref->section);
+                        $section = new section($sectionref->section);
+                        if (empty($section) || !($section->canView($section) && !$db->selectObject('container', 'internal="' . $records[$i]->location_data . '" AND is_private=1'))) { // check page visibility
                             unset($recs[$i]); // item is not available for viewing
                             continue; // skip rest of checks for this record
                             //$records[$i]->canview = false;

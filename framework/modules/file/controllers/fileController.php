@@ -728,6 +728,9 @@ class fileController extends expController {
             closedir($dir);
         }
 
+        // update search index
+        searchController::spider();
+
         // check to see if we need to install or upgrade the restored database
         expVersion::checkVersion();
 
@@ -929,7 +932,7 @@ class fileController extends expController {
         foreach (array_keys($files) as $file) {
             expFile::copyDirectoryStructure($dest_dir.'/files/'.$file,BASE.'files/'.$file);
         	copy($dest_dir.'/files/'.$file,BASE.'files/'.$file);
-        	$filecount += 1;
+        	$filecount++;
         }
 
         expSession::un_set('dest_dir');

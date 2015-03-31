@@ -95,7 +95,7 @@ class filedownloadController extends expController {
             expHistory::back();
         }        
         
-        $fd->downloads += 1;
+        $fd->downloads++;
         $fd->save();
         
         // this will set the id to the id of the actual file..makes the download go right.

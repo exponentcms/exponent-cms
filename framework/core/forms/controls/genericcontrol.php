@@ -27,10 +27,6 @@ if (!defined('EXPONENT')) exit('');
  */
 class genericcontrol extends formcontrol {
 
-    var $flip = false;
-    var $jsHooks = array();
-    var $multiple = false;
-
     static function name() { return "generic"; }
 
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
@@ -136,7 +132,7 @@ class genericcontrol extends formcontrol {
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'"';
 
         $html .= ' />';
-        if ((bs()) && !empty($this->prepend)) {
+        if (!empty($this->prepend) && bs()) {
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";

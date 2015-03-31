@@ -32,7 +32,6 @@ class textcontrol extends formcontrol {
     var $pattern = "";
     var $size = 40;
     var $maxlength = "";
-    var $multiple = false;
 
     static function name() { return "Text Box"; }
     static function isSimpleControl() { return true; }

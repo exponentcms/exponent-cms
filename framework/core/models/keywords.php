@@ -30,7 +30,7 @@ class keywords {
 
 		foreach($words as $word) {
         	if (!empty($word)) {
-    		    $keywords[$word] = empty($keywords[$word]) ? 1 : $keywords[$word] += 1;
+    		    $keywords[$word] = empty($keywords[$word]) ? 1 : $keywords[$word]++;
 			}
         }
 

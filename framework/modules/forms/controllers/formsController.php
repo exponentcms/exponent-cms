@@ -69,10 +69,16 @@ class formsController extends expController {
         return gt('Form Data');
     }
 
+    static function requiresConfiguration()
+    {
+        return true;
+    }
+
     public function showall() {
 //        global $db;
 
         expHistory::set('viewable', $this->params);
+        $f = null;
         if (!empty($this->config)) {
             $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
         } elseif (!empty($this->params['title'])) {
@@ -152,7 +158,7 @@ class formsController extends expController {
                 'records' => $items,
                 'where'   => 1,
 //                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
-                'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : 'id',
+                'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order'])?$this->config['order']:'id'),
                 'dir'     => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
                 'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
                 'controller'=>$this->baseclassname,
@@ -342,10 +348,11 @@ class formsController extends expController {
                             // skip it for logged on users based on config
                         } else {
                             // include the library and show the form control
-                            require_once(BASE . 'external/recaptchalib.php');
-//                            $antispam .= recaptcha_get_html(RECAPTCHA_PUB_KEY);
-                            $antispam .= '<div class="g-recaptcha" data-sitekey=" . RECAPTCHA_PUB_KEY . "></div>';
-                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '"></script>';
+//                            require_once(BASE . 'external/recaptchalib.php');
+                            require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
+                            $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                            $antispam .= '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                         }
                     }
@@ -455,9 +462,11 @@ class formsController extends expController {
         }
 
         // remove some post data we don't want to pass thru to the form
-        unset($this->params['controller']);
-        unset($this->params['action']);
-        unset($this->params['view']);
+        unset(
+            $this->params['controller'],
+            $this->params['action'],
+            $this->params['view']
+        );
         foreach ($this->params as $k => $v) {
         //    $this->params[$k]=htmlentities(htmlspecialchars($v,ENT_COMPAT,LANG_CHARSET));
             $this->params[$k] = htmlspecialchars($v, ENT_COMPAT, LANG_CHARSET);
@@ -465,7 +474,6 @@ class formsController extends expController {
         expSession::set('forms_data_' . $this->params['id'], $this->params);
 
         assign_to_template(array(
-//            'recaptcha_theme' => RECAPTCHA_THEME,
             'responses'       => $responses,
             'postdata'        => $this->params,
         ));

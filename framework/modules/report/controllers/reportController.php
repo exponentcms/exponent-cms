@@ -147,7 +147,7 @@ class reportController extends expController {
                 $oar[$order->order_type->title]['num_items'] = null;
             }
             $oar[$order->order_type->title]['grand_total'] += $order->grand_total;
-            $oar[$order->order_type->title]['num_orders'] += 1;
+            $oar[$order->order_type->title]['num_orders']++;
             $oar[$order->order_type->title]['num_items'] += count($order->orderitem);
 
             if (empty($oar[$order->order_type->title][$order->order_status->title])) {
@@ -157,7 +157,7 @@ class reportController extends expController {
                 $oar[$order->order_type->title][$order->order_status->title]['num_items'] = null;
             }
             $oar[$order->order_type->title][$order->order_status->title]['grand_total'] += $order->grand_total;
-            $oar[$order->order_type->title][$order->order_status->title]['num_orders'] += 1;
+            $oar[$order->order_type->title][$order->order_status->title]['num_orders']++;
             $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
         }
 
@@ -831,13 +831,15 @@ class reportController extends expController {
 
         $payment_summary = array();
         // $Credit Cards
-        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . DB_TABLE_PREFIX . "_billingmethods, " . DB_TABLE_PREFIX . "_billingcalculator WHERE " . DB_TABLE_PREFIX . "_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+//        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . DB_TABLE_PREFIX . "_billingmethods, " . DB_TABLE_PREFIX . "_billingcalculator WHERE " . DB_TABLE_PREFIX . "_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title FROM " . DB_TABLE_PREFIX . "_billingmethods, " . DB_TABLE_PREFIX . "_billingcalculator WHERE " . DB_TABLE_PREFIX . "_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
         $res = $db->selectObjectsBySql($sql);
         if (!empty($res)) {
             foreach ($res as $item) {
                 $options = unserialize($item->billing_options);
                 if (!empty($item->billing_cost)) {
-                    if ($item->user_title == 'Credit Card') {
+//                    if ($item->user_title == 'Credit Card') {
+                    if ($item->title == 'Credit Card') {  //FIXME this is translated??
                         if (!empty($options->cc_type)) {
                             //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
                             @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;

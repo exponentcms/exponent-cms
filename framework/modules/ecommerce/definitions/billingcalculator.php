@@ -28,9 +28,9 @@ return array(
 	'title'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
-	'user_title'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
+//	'user_title'=>array(
+//		DB_FIELD_TYPE=>DB_DEF_STRING,
+//		DB_FIELD_LEN=>100),
 	'body'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>10000),

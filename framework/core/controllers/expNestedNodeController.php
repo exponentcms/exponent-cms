@@ -47,18 +47,21 @@ class expNestedNodeController extends expController {
 	}
 	
 	function reorder() {
-//		global $db;
-		if (empty($this->params['type'])) return false;
+		if (empty($this->params['type']))
+            return false;
 	
 		$movenode = new $this->basemodel_name($this->params['move']);
 		switch($this->params['type']) {
+            case 'b':  // process jstree data
 			case 'addbefore':
 				$movenode->moveBefore($this->params['target']);
 				break;
-			case 'addafter':
+            case 'a':  // process jstree data
+			case 'addafter':  // dropped after
 				$movenode->moveAfter($this->params['target']);
 				break;
-			case 'append':
+            case 'i':  // process jstree data
+			case 'append':  // dropped on top of
 				$movenode->moveInto($this->params['target']);
 				break;
 		}

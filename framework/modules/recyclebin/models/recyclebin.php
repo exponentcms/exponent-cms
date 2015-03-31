@@ -20,7 +20,6 @@
  * @subpackage Models
  * @package    Modules
  */
-
 class recyclebin extends expRecord
 {
     public $table = 'sectionref';
@@ -34,9 +33,11 @@ class recyclebin extends expRecord
      *
      * @return array
      */
-    public function moduleOrphans($module)
+    public function moduleOrphans($module = null)
     {
-        global $db;
+        global $db, $template;
+
+        $orig_template = $template;  // we are going to load a lot of different views
 
         // we only want a preview, not an admin view
         $level = 99;
@@ -67,9 +68,9 @@ class recyclebin extends expRecord
                 $orphans[$i]->html = renderAction(
                     array(
                         'controller' => $orphans[$i]->module,
-                        'action'     => 'showall',
-                        'src'        => $orphans[$i]->source,
-                        "no_output"  => true
+                        'action' => 'showall',
+                        'src' => $orphans[$i]->source,
+                        "no_output" => true
                     )
                 );
 //                } else {
@@ -88,6 +89,8 @@ class recyclebin extends expRecord
         }
         expSession::set("uilevel", $level);
 
+        $template = $orig_template;  // restore original view
+
         return $orphans;
     }
 
@@ -95,14 +98,14 @@ class recyclebin extends expRecord
      * Decrement the reference count for a given sectionref location.  This is used by the Container and Navigation Modules,
      * and probably won't be needed by 95% of the code in Exponent.
      *
-     * @param object  $loc     The location object to decrement references for.
+     * @param object $loc The location object to decrement references for.
      * @param integer $section The id of the section that the location exists in.
      */
     public static function sendToRecycleBin($loc, $section)
     {
         global $db;
 
-        //FIXME we should only send module with sources or configs to the recycle bin NOT things like navigation or rss
+        //FIXME we should only send module with sources or configs to the recycle bin NOT things like rss, addressbook
         if ($loc->mod != 'container') {
             $oldSecRef = $db->selectObject(
                 "sectionref",
@@ -134,7 +137,7 @@ class recyclebin extends expRecord
      * Increment the reference count for a given sectionref location.  This is used by the Container Module,
      * and probably won't be needed by 95% of the code in Exponent.
      *
-     * @param object  $loc     The location object to increment references for.
+     * @param object $loc The location object to increment references for.
      * @param integer $section The id of the section that the location exists in.
      *
      * @return string

@@ -27,7 +27,6 @@ if (!defined('EXPONENT')) exit('');
  */
 class passwordcontrol extends formcontrol {
 
-	var $default = "";
 	var $size = 0;
 	var $maxlength = "";
 	

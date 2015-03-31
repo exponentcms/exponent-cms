@@ -198,9 +198,11 @@ class importexportController extends expController {
 
         foreach ($selected as $select) {
             $current_id = $data[$type->model_table]->records[$select]['id'];
-            unset($data[$type->model_table]->records[$select]['id']);
-            unset($data[$type->model_table]->records[$select]['sef_url']);
-            unset($data[$type->model_table]->records[$select]['rank']);
+            unset(
+                $data[$type->model_table]->records[$select]['id'],
+                $data[$type->model_table]->records[$select]['sef_url'],
+                $data[$type->model_table]->records[$select]['rank']
+            );
             $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
             $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
             $item->update();
@@ -245,6 +247,10 @@ class importexportController extends expController {
             }
         }
         unlink($this->params['filename']);
+
+        // update search index
+        $type->addContentToSearch();
+
         flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
         expHistory::back();
     }
@@ -889,6 +895,9 @@ class importexportController extends expController {
 
         fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
+
+        // update search index
+        searchController::spider();
     }
 
 }

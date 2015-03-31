@@ -43,9 +43,9 @@ class flatratecalculator extends shippingcalculator {
 	    return $rates;
     }	
     
-   	public function configForm() { 
-   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/flatratecalculator/configure.tpl';
-   	}
+//   	public function configForm() {
+//   	    return BASE.'framework/modules/ecommerce/shippingcalculators/views/flatratecalculator/configure.tpl';
+//   	}
 	
 	//process config form
 	function parseConfig($values) {

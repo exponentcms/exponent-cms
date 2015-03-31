@@ -27,9 +27,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class tagpickercontrol extends formcontrol {
 
-    var $flip = false;
-    var $jsHooks = array();
     var $record = array();
+    var $subtype = '';
     var $taglist = '';
 
     static function name() {
@@ -85,8 +84,8 @@ class tagpickercontrol extends formcontrol {
             $selectedtags .= $tag->title . ', ';
         }
         $textbox = new genericcontrol('text');
-        $textbox->id = 'expTag';
-        $textbox->name = 'expTag';
+        $textbox->id = $this->id;
+        $textbox->name = $this->id;
         $textbox->default = $selectedtags;
         $textbox->size = 45;
         $textbox->flip    = $this->flip;
@@ -99,8 +98,8 @@ class tagpickercontrol extends formcontrol {
             "jquery"=> 'jqueryui,tag-it',
         ));
         $script = "
-            $('#expTag').tagit({
-                availableTags: [".$this->taglist."],
+            $('#" . $this->id . "').tagit({
+                availableTags: [" . $this->taglist . "],
                 allowSpaces: true
             });
         ";

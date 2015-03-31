@@ -99,8 +99,9 @@ class billing extends expRecord {
         $this->billingmethod = $order->billingmethod[0];
         
         $options = unserialize($this->billingmethod->billing_options);
-        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
-		
+//        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
+        $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
+
 		foreach($this->available_calculators as $key => $item) {
 			$calc  = new $item($key);
 			$this->form[$key] = $calc->userForm();
@@ -189,6 +190,30 @@ class billing extends expRecord {
         //parent::update()
                                     
     } */
+
+    public function getBillingInfo($opts = null) {
+        if ($this->calculator != null) {
+//            $billinginfo = $this->calculator->userView(unserialize($this->billingmethod->billing_options));
+            if (!empty($this->billingmethod->billing_options))
+                $billinginfo = $this->calculator->userView($this->billingmethod);
+            else
+                $billinginfo = '';
+        } else {
+            if (empty($opts)) {
+                $opts = expUnserialize($this->billingmethod->billing_options);
+            }
+            if (empty($opts)) {
+                $billinginfo = false;
+            } else {
+                $billinginfo = gt("No Cost");
+                if (!empty($opts->payment_due)) {
+                    $billinginfo .= '<br>'.gt('Payment Due') . ': ' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",");
+                }
+            }
+        }
+        return $billinginfo;
+    }
+
 }
 
 ?>

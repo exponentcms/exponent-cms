@@ -494,7 +494,7 @@ class helpController extends expController {
            $search_record->category = $this->searchName();
            $search_record->ref_type = $this->searchCategory();
            $search_record->save();
-           $count += 1;
+           $count++;
         }
 
         return $count;
@@ -525,7 +525,8 @@ class helpController extends expController {
         if (!expSession::get('last_section')) {
             expSession::set('last_section',$sid);
         }
-	    $section = $db->selectObject('section','id='. intval($sid));
+//	    $section = $db->selectObject('section','id='. intval($sid));
+        $section = new section(intval($sid));
 	    return $section;
 	}
 	

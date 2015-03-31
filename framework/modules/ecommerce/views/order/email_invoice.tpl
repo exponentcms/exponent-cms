@@ -14,19 +14,21 @@
  *}
 
 <style type="text/css" media="screen">
-    {literal}
-        .address.show span {
-            display:block;
-        }
-        span.pmt-label {
-            color: #555555;
-            display: inline-block;
-            font-weight: bold;
-            padding: 5px;
-            text-align: right;
-            width: 170px;
-        }
-    {/literal}
+    {*{literal}*}
+        {*.address.show span {*}
+            {*display:block;*}
+        {*}*}
+        {*span.pmt-label,*}
+        {*td.pmt-label {*}
+            {*color: #555555;*}
+            {*display: inline-block;*}
+            {*font-weight: bold;*}
+            {*padding: 5px;*}
+            {*text-align: right;*}
+            {*width: 170px;*}
+        {*}*}
+    {*{/literal}*}
+    {$css}
 </style>
 
 <div id="invoice" style="color:#000000; font-size:100%; position:relative; text-align: left; margin: 0px; padding: 0px;">   
@@ -97,62 +99,63 @@
                         {$shipping->shippingmethod->option_title}
                     </td>
                     <td class="div-rows" style="border:1px solid #DEDEDE; text-align:left; vertical-align:top; padding:0.5em;">
-                        <div class="odd">
-                            <span class="pmt-label">
-                                {"Payment Method"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getPaymentMethod($billing->billingmethod)}
-                            </span>
-                        </div>
-                        <div class="even">
-                            <span class="pmt-label">
-                                {"Payment Status"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getPaymentStatus($billing->billingmethod)}
-                            </span>
-                        </div>
-                        <div class="odd">
-                            <span class="pmt-label">
-                                {"Payment Authorization #"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}
-                            </span>
-                        </div>
-                        <div class="even">
-                            <span class="pmt-label">
-                                {"Payment Reference #"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getPaymentReferenceNumber($billing->billingmethod->billing_options)}
-                            </span>
-                        </div>
-                        <div class="odd">
-                            <span class="pmt-label">
-                                {"AVS Address Verified"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getAVSAddressVerified($billing->billingmethod)}
-                            </span>
-                        </div>
-                        <div class="even">
-                            <span class="pmt-label">
-                                {"AVS ZIP Verified"|gettext}
-                            </span>
-                                <span class="pmt-value">
-                            {$billing->calculator->getAVSZipVerified($billing->billingmethod)}
-                            </span>
-                        </div>
-                        <div class="odd">
-                            <span class="pmt-label">
-                                {"CVV # Matched"|gettext}
-                            </span>
-                            <span class="pmt-value">
-                                {$billing->calculator->getCVVMatched($billing->billingmethod)}
-                            </span>
-                        </div>                       
+                        {$billinginfo}
+                        {*<div class="odd">*}
+                            {*<span class="pmt-label">*}
+                                {*{"Payment Method"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getPaymentMethod($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="even">*}
+                            {*<span class="pmt-label">*}
+                                {*{"Payment Status"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getPaymentStatus($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="odd">*}
+                            {*<span class="pmt-label">*}
+                                {*{"Payment Authorization #"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getPaymentAuthorizationNumber($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="even">*}
+                            {*<span class="pmt-label">*}
+                                {*{"Payment Reference #"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getPaymentReferenceNumber($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="odd">*}
+                            {*<span class="pmt-label">*}
+                                {*{"AVS Address Verified"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getAVSAddressVerified($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="even">*}
+                            {*<span class="pmt-label">*}
+                                {*{"AVS ZIP Verified"|gettext}*}
+                            {*</span>*}
+                                {*<span class="pmt-value">*}
+                            {*{$billing->calculator->getAVSZipVerified($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>*}
+                        {*<div class="odd">*}
+                            {*<span class="pmt-label">*}
+                                {*{"CVV # Matched"|gettext}*}
+                            {*</span>*}
+                            {*<span class="pmt-value">*}
+                                {*{$billing->calculator->getCVVMatched($billing->billingmethod)}*}
+                            {*</span>*}
+                        {*</div>                       *}
                     </td>
                 </tr>
             </tbody>

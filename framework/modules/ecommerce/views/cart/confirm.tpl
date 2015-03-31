@@ -26,16 +26,39 @@
 {/css}
 
 <div class="module cart confirm exp-ecom-table">
+    {assocarray}
+        breadcrumb: [
+            0: [
+                title: "{'Summary'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'show'))
+            ]
+            1: [
+                title:  "{'Sign In'|gettext}"
+                link: ""
+            ]
+            2: [
+                title:  "{'Shipping/Billing'|gettext}"
+                link: makeLink(array('controller'=>'cart','action'=>'checkout'))
+            ]
+            3: [
+                title:  "{'Confirmation'|gettext}"
+                link: ""
+            ]
+            4: [
+                title:  "{'Complete'|gettext}"
+                link: ""
+            ]
+        ]
+    {/assocarray}
+    {breadcrumb items=$breadcrumb active=3 style=flat}
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
-
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
-{br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-           class="{button_style color=green} next">
+           class="{button_style color=green size=large} next">
         {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>
@@ -44,7 +67,7 @@
         <h2>{'Billing Information'|gettext}</h2>
 
         <div class="payment-info">
-        {$billinginfo}
+            {$billinginfo}
         </div>
         <div class="address-info">
             <table border="0" cellspacing="0" cellpadding="0">
@@ -218,7 +241,7 @@
                             <td class="totals shipping">{$order->surcharge_total|currency}</td>
                         </tr>
                         {/if}
-                    {if !$order->shipping_taxed}
+                    {if $order->shipping_taxed}
                     <tr class="{cycle values="odd, even"}">
                         <td class="right">
                             {"Tax"|gettext} -
@@ -242,12 +265,13 @@
     {/if}
     </div>
 {clear}
+    {br}
     <div class="confirmationlinks">
         <a href="{if $nologin}{link controller=cart action=process nologin=1}{else}{link controller=cart action=process}{/if}"
-            class="{button_style color=green} next">
+            class="{button_style color=green size=large} next">
             {"Looks good, submit my order!"|gettext} &raquo;
         </a>
-        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow} back">
+        <a href="{securelink controller=cart action=checkout}" class="{button_style color=yellow size=large} back">
             &laquo; {"Let me edit something"|gettext}
         </a>
     </div>

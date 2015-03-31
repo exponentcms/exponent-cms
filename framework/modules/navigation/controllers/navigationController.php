@@ -101,7 +101,7 @@ class navigationController extends expController {
         // Show not only the location of a page in the hierarchy but also the location of a standalone page
         $current = new section($id);
         if ($current->parent == -1) {  // standalone page
-            $navsections = self::levelTemplate(-1, 0);
+            $navsections = section::levelTemplate(-1, 0);
             foreach ($navsections as $section) {
                 if ($section->id == $id) {
                     $current = $section;
@@ -109,7 +109,7 @@ class navigationController extends expController {
                 }
             }
         } else {
-            $navsections = self::levelTemplate(0, 0);
+            $navsections = section::levelTemplate(0, 0);
             foreach ($navsections as $section) {
                 if ($section->id == $id) {
                     $current = $section;
@@ -123,6 +123,7 @@ class navigationController extends expController {
         ));
     }
 
+    //FIXME DEPRECATED moved to section model
     public static function navhierarchy($notyui=false) {
         global $sections;
 
@@ -169,10 +170,12 @@ class navigationController extends expController {
         return $json_array;
     }
 
+    //FIXME DEPRECATED moved to section model
     public static function navtojson() {
         return json_encode(self::navhierarchy());
     }
 
+    //FIXME DEPRECATED moved to section model
     public static function getChildren(&$i, $notyui=false) {
         global $sections;
 
@@ -245,6 +248,7 @@ class navigationController extends expController {
         }
     }
 
+    //FIXME DEPRECATED moved to section model
     public static function hasChildren($i) {
         global $sections;
 
@@ -255,15 +259,10 @@ class navigationController extends expController {
     /** exdoc
      * Creates a location object, based off of the three arguments passed, and returns it.
      *
-     * @internal param \The $mo module component of the location.
-     *
-     * @internal param \The $src source component of the location.
-     *
-     * @internal param \The $int internal component of the location.
      * @return array
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function initializeNavigation() {
-        $sections = self::levelTemplate(0, 0);
+        $sections = section::levelTemplate(0, 0);
         return $sections;
     }
 
@@ -277,7 +276,7 @@ class navigationController extends expController {
      * @param array $parents
      *
      * @return array
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
         global $user;
 
@@ -338,7 +337,7 @@ class navigationController extends expController {
                 }
                 //$child->numChildren = $db->countObjects('section','parent='.$child->id);
                 $nodes[] = $child;
-                $nodes   = array_merge($nodes, self::levelTemplate($child->id, $depth + 1, $parents));
+                $nodes   = array_merge($nodes, section::levelTemplate($child->id, $depth + 1, $parents));
             }
         }
         return $nodes;
@@ -356,7 +355,7 @@ class navigationController extends expController {
      * @param bool   $addinternalalias
      *
      * @return array
-     */
+     */  //NOTE DEPRECATED moved to section model, HOWEVER still used in theme config
     public static function levelDropdownControlArray($parent, $depth = 0, $ignore_ids = array(), $full = false, $perm = 'view', $addstandalones = false, $addinternalalias = true) {
         global $db;
 
@@ -547,7 +546,8 @@ class navigationController extends expController {
 
     }
 
-    function process_subsections($parent_section, $subtpl) { //FIXME is this only for deprecated templates?
+     //FIXME is this only for deprecated templates?
+    function process_subsections($parent_section, $subtpl) {
         global $db, $router;
 
         $section              = new stdClass();
@@ -569,7 +569,7 @@ class navigationController extends expController {
      * Delete page and send its contents to the recycle bin
      *
      * @param $parent
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function deleteLevel($parent) {
         global $db;
 
@@ -603,7 +603,7 @@ class navigationController extends expController {
      * Move content page and its children to stand-alones
      *
      * @param $parent
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function removeLevel($parent) {
         global $db;
 
@@ -617,7 +617,7 @@ class navigationController extends expController {
 
     /**
      * Check for cascading page view permission, esp. if not public
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function canView($section) {
         global $db;
 
@@ -640,7 +640,7 @@ class navigationController extends expController {
 
     /**
      * Check to see if page is public with cascading
-     */
+     */ //FIXME DEPRECATED moved to section model
     public static function isPublic($s) {
         if ($s == null) {
             return false;
@@ -656,7 +656,7 @@ class navigationController extends expController {
         global $user;
 
         if ($user->isAdmin()) return true;
-        $standalones = self::levelTemplate(-1, 0);
+        $standalones = section::levelTemplate(-1, 0);
         //		$canmanage = false;
         foreach ($standalones as $standalone) {
             $loc = expCore::makeLocation('navigation', '', $standalone->id);
@@ -676,7 +676,7 @@ class navigationController extends expController {
         global $db;
 
         $section = $db->selectObject('section', 'id=' . $id);
-        $branch  = self::levelTemplate($id, 0);
+        $branch  = section::levelTemplate($id, 0);
         array_unshift($branch, $section);
         $allusers  = array();
         $allgroups = array();
@@ -721,7 +721,7 @@ class navigationController extends expController {
     public static function returnChildrenAsJSON() {
         global $db;
 
-        //$nav = self::levelTemplate(intval($_REQUEST['id'], 0));
+        //$nav = section::levelTemplate(intval($_REQUEST['id'], 0));
         $id         = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
         $nav        = $db->selectObjects('section', 'parent=' . $id, 'rank');
         //FIXME $manage_all is moot w/ cascading perms now?
@@ -767,6 +767,12 @@ class navigationController extends expController {
             $navs[$i]->parent = $nav->parent?$nav->parent:'#';
             $navs[$i]->text = $nav->name;
             $navs[$i]->icon = $icons[$nav->alias_type];
+            if (!$nav->active) {
+                $navs[$i]->icon .= ' inactive';
+                $attr = new stdClass();
+                $attr->class = 'inactive';  // class to obscure elements
+                $navs[$i]->a_attr = $attr;
+            }
             if (expPermissions::check('manage', expCore::makeLocation('navigation', '', $navs[$i]->id))) {
                 $navs[$i]->manage = 1;
                 $view = true;
@@ -872,7 +878,7 @@ class navigationController extends expController {
                     $db->updateObject($moveSec, 'section');
 //                    $moveSec->update();
                 }
-            } else {
+            } else {  // 'before', is this used?
                 //store ranks from the depth we're moving from.  Used to re-rank the level depth the moving section is moving from.
                 $oldRank   = $moveSec->rank;
                 $oldParent = $moveSec->parent;
@@ -1105,7 +1111,7 @@ class navigationController extends expController {
 
         $section = $db->selectObject('section', 'id=' . $this->params['id']);
         if ($section) {
-            self::removeLevel($section->id);
+            section::removeLevel($section->id);
             $db->decrement('section', 'rank', 1, 'rank > ' . $section->rank . ' AND parent=' . $section->parent);
             $section->parent = -1;
             $db->updateObject($section, 'section');
@@ -1148,7 +1154,7 @@ class navigationController extends expController {
 
     /**
      * Rebuild the sectionref table as a list of modules on a page
-     */
+     */ //FIXME DEPRECATED moved to sectionref model
     public static function rebuild_sectionrefs() {
         global $db;
 

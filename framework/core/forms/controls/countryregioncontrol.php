@@ -31,7 +31,6 @@ class countryregioncontrol extends formcontrol {
 	var $maxlength = "";
     var $include_blank = false;
     var $type = 'select';
-    var $multiple = false;
 
 	static function name() { return "Country / Region Selector"; }
 

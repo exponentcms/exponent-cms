@@ -27,7 +27,7 @@
 
     {/script}
 </head>
-<body class="exp-skin">
+<body{if !bs3()} class="exp-skin"{/if}>
     <div id="exp-uploader">
         <h1>{"Upload Files"|gettext}</h1>
         <div id="actionbar">

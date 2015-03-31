@@ -31,6 +31,8 @@ class orderitem extends expRecord {
         if (!empty($params['id']) || is_numeric($params)) {
             parent::__construct($params, $get_assoc, $get_attached);
             $prodtype = $this->product_type;
+            if (empty($prodtype))
+                $prodtype = "product";
             $this->product = new $prodtype($this->product_id, false, true);
         } elseif (isset($params['product_id']) && isset($params['product_type'])) {
             // see if this is an existing item in the cart

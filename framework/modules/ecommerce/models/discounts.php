@@ -42,6 +42,7 @@ class discounts extends expRecord {
     -- % discount for whole cart
     -- Fixed discount for whole cart
     -- Free Shipping
+    -- Fixed discount for shipping
     -- Buy X get Y free (must have items in cart, per conditions)  (not implemented yet)
     
     */
@@ -64,14 +65,18 @@ class discounts extends expRecord {
         //if never_expired return false
         //if current datetime is within being and end valid dates, return false
         //else return true        
-        if (!$this->enabled) return false;
-        if ($this->never_expires == true) return true;
+        if (!$this->enabled)
+            return false;
+        if ($this->never_expires == true)
+            return true;
 
         /* eDebug(time());
          eDebug($this->startdate_time);
          eDebug($this->enddate_time, true);    */
-        if (time() >= $this->startdate_time && time() <= $this->enddate_time) return true;
-        else return false;
+        if (time() >= $this->startdate_time && time() <= $this->enddate_time)
+            return true;
+        else
+            return false;
     }
 
     /*public static function getUsersDiscounts(&$order) {
@@ -110,9 +115,8 @@ class discounts extends expRecord {
         global $order, $user; //FIXME we do NOT want the global $order
 
         $retMessage = "";
-        if (!$this->isAvailable()) {
+        if (!$this->isAvailable())
             return gt("This discount code you entered is currently unavailable.");
-        }
 
         //check discounts rules
         //.5 isExpired
@@ -138,7 +142,8 @@ class discounts extends expRecord {
             }
             //eDebug($required_groups);
             //eDebug($users_groups);
-            if (!$inARequiredGroup) return gt("This discount is not available to your user group.");
+            if (!$inARequiredGroup)
+                return gt("This discount is not available to your user group.");
         }
 
         //5. check minimum order amount

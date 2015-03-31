@@ -2,7 +2,7 @@
     margin:5px 0;
 }
 
-a.awesome.next {
+.confirmationlinks a.next {
     float:right;
 }
 
@@ -47,7 +47,6 @@ a.awesome.next {
 .purchased-totals table {
     float:right;
 }
-
 
 .exp-ecom-table table td.totals {
     text-align:right;

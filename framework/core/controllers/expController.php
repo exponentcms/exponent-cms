@@ -65,7 +65,7 @@ abstract class expController {
      * @return expController
      *
      */
-    function __construct($src = null, $params = array()) {
+    public function __construct($src = null, $params = array()) {
         // setup some basic information about this class
         $this->classinfo = new ReflectionClass($this);
         $this->classname = $this->classinfo->getName();
@@ -114,12 +114,12 @@ abstract class expController {
         $this->loc = expCore::makeLocation($this->baseclassname, $src, null);
 
         // flag for needing approval check
-        if ($this->$modelname->supports_revisions && ENABLE_WORKFLOW) {
+        if (ENABLE_WORKFLOW && $this->$modelname->supports_revisions) {
             $uilevel = 99;
             if (expSession::exists("uilevel")) $uilevel = expSession::get("uilevel");
             if (!expPermissions::check('approve', $this->loc)) {
                 $this->$modelname->needs_approval = true;
-            } elseif (isset($uilevel) && $uilevel == UILEVEL_PREVIEW) {
+            } elseif ($uilevel == UILEVEL_PREVIEW && isset($uilevel)) {
                 $this->$modelname->needs_approval = true;  // 'preview' should provide a true preview
             }
         }
@@ -136,7 +136,7 @@ abstract class expController {
      *
      * @return string
      */
-    function name() {
+    public function name() {
         return $this->displayname();
     }
 
@@ -145,7 +145,7 @@ abstract class expController {
      *
      * @return string
      */
-    static function displayname() {
+    public static function displayname() {
         return gt("Exponent Base Controller");
     }
 
@@ -154,7 +154,7 @@ abstract class expController {
      *
      * @return string
      */
-    static function description() {
+    public static function description() {
         return gt("This is the base controller which most Exponent modules inherit their methods from.");
     }
 
@@ -163,16 +163,16 @@ abstract class expController {
      *
      * @return string
      */
-    static function author() {
+    public static function author() {
         return "OIC Group, Inc";
     }
 
     /**
-     * does module have sources available?
+     * does module have sources available? or does it treat content globally
      *
      * @return bool
      */
-    static function hasSources() {
+    public static function hasSources() {
         return true;
     }
 
@@ -180,17 +180,17 @@ abstract class expController {
      * does module have views available?
      *
      * @return bool
-     */
-    static function hasViews() {
+     */  //NOTE: Never used - equivalent to !empty ($this->useractions) via expModules::listUserRunnableControllers()?
+    public static function hasViews() {
         return true;
     }
 
     /**
-     * does module have content available?
+     * does module have content (stored items) available?
      *
      * @return bool
-     */
-    static function hasContent() {
+     */  //NOTE: Never used, better utilized/implemented as isSearchable()
+    public static function hasContent() {
         return true;
     }
 
@@ -199,16 +199,16 @@ abstract class expController {
      *
      * @return bool
      */
-    static function supportsWorkflow() {
+    public static function supportsWorkflow() {
         return false;
     }
 
     /**
-     * is module content searchable?
+     * is module content searchable? should it be added to search index?
      *
      * @return bool
      */
-    static function isSearchable() {
+    public static function isSearchable() {
         return false;
     }
 
@@ -217,7 +217,7 @@ abstract class expController {
      *
      * @return bool
      */
-    static function canImportData() {
+    public static function canImportData() {
         return false;
     }
 
@@ -226,7 +226,7 @@ abstract class expController {
      *
      * @return bool
      */
-    static function canExportData() {
+    public static function canExportData() {
         return false;
     }
 
@@ -234,15 +234,15 @@ abstract class expController {
      * does this module require configuration?
      *
      * @return bool
-     */
-    static function requiresConfiguration() {
+     */  //NOTE: Never Used
+    public static function requiresConfiguration() {
         return false;
     }
 
     /**
-     * glue to make the view template aware of the module  //NOTE: DEPRECATED
-     */
-    function moduleSelfAwareness() {
+     * glue to make the view template aware of the module
+     */  //NOTE: DEPRECATED
+    public function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path' => $this->asset_path,
             'model_name' => $this->basemodel_name,
@@ -255,7 +255,7 @@ abstract class expController {
     /**
      * default module view method for all items
      */
-    function showall() {
+    public function showall() {
         expHistory::set('viewable', $this->params);
 
         $page = new expPaginator(array(
@@ -342,7 +342,7 @@ abstract class expController {
         foreach ($items as $item) {
             foreach ($item->expTag as $tag) {
                 if (isset($used_tags[$tag->id])) {
-                    $used_tags[$tag->id]->count += 1;
+                    $used_tags[$tag->id]->count++;
                 } else {
                     $exptag = new expTag($tag->id);
                     $used_tags[$tag->id] = $exptag;
@@ -383,14 +383,14 @@ abstract class expController {
         foreach ($items as $item) {
             if (!empty($item->expCat)) {
                 if (isset($used_cats[$item->expCat[0]->id])) {
-                    $used_cats[$item->expCat[0]->id]->count += 1;
+                    $used_cats[$item->expCat[0]->id]->count++;
                 } else {
                     $expcat = new expCat($item->expCat[0]->id);
                     $used_cats[$item->expCat[0]->id] = $expcat;
                     $used_cats[$item->expCat[0]->id]->count = 1;
                 }
             } else {
-                $used_cats[0]->count += 1;
+                $used_cats[0]->count++;
             }
         }
 
@@ -442,9 +442,7 @@ abstract class expController {
     /**
      * default view for individual item
      */
-    function show() {
-//        global $db;
-
+    public function show() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
 
@@ -467,9 +465,9 @@ abstract class expController {
     }
 
     /**
-     * view the item by referring to its title  //NOTE: DEPRECATED??
-     */
-    function showByTitle() {
+     * view the item by referring to its title
+     */  //NOTE: DEPRECATED??
+    public function showByTitle() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
         // first we'll check to see if this matches the sef_url field...if not then we'll look for the
@@ -499,9 +497,9 @@ abstract class expController {
     }
 
     /**
-     * view items referenced by tags  //NOTE: DEPRECATED??
-     */
-    function showByTags() {
+     * view items referenced by tags
+     */  //NOTE: DEPRECATED??
+    public function showByTags() {
         global $db;
 
         // set the history point for this action
@@ -545,9 +543,9 @@ abstract class expController {
     }
 
     /**
-     * create an item in this module //NOTE: deprecated in favor of edit w/o id param
-     */
-    function create() {
+     * create an item in this module
+     */ //NOTE: deprecated in favor of edit w/o id param
+    public function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
         //if (!empty($this->params['instance'])) $args['instance'] = $this->params['instance'];
         if (!empty($this->params['src'])) $args['src'] = $this->params['src'];
@@ -557,7 +555,7 @@ abstract class expController {
     /**
      * edit item in module, also used to copy items
      */
-    function edit() {
+    public function edit() {
         expHistory::set('editable', $this->params);
         $taglist = expTag::getAllTags();
         $modelname = $this->basemodel_name;
@@ -589,9 +587,7 @@ abstract class expController {
     /**
      * merge/move aggregated item into this module
      */
-    function merge() {
-//        global $db;
-
+    public function merge() {
         expHistory::set('editable', $this->params);
         $modelname = $this->basemodel_name;
         $record = $this->$modelname->find($this->params['id']);
@@ -608,7 +604,7 @@ abstract class expController {
     /**
      * update (save) item in module
      */
-    function update() {
+    public function update() {
         global $db;
 
         //check for and handle tags
@@ -682,7 +678,7 @@ abstract class expController {
     /**
      * delete item in module
      */
-    function delete() {
+    public function delete() {
         $modelname = $this->basemodel_name;
         if (empty($this->params['id'])) {
             flash('error', gt('Missing id for the') . ' ' . $modelname . ' ' . gt('you would like to delete'));
@@ -706,7 +702,7 @@ abstract class expController {
     /**
      * rerank items in model
      */
-    function rerank() {
+    public function rerank() {
         $modelname = $this->basemodel_name;
         $obj = new $modelname($this->params['id']);
         $obj->rerank($this->params['push']);
@@ -716,7 +712,7 @@ abstract class expController {
     /**
      * display module management view
      */
-    function manage() {
+    public function manage() {
         expHistory::set('manageable', $this->params);
 
         $page = new expPaginator(array(
@@ -744,14 +740,14 @@ abstract class expController {
     /**
      * rerank module items, called from ddrerank
      */
-    function manage_ranks() {
+    public function manage_ranks() {
         $rank = 1;
         foreach ($this->params['rerank'] as $id) {
             $modelname = $this->params['model'];
             $obj = new $modelname($id);
             $obj->rank = $rank;
             $obj->save(false, true);
-            $rank += 1;
+            $rank++;
         }
 
         redirect_to($this->params['lastpage']);
@@ -760,7 +756,7 @@ abstract class expController {
     /**
      * Configure the module
      */
-    function configure() {
+    public function configure() {
         global $db;
 
         expHistory::set('editable', $this->params);
@@ -872,7 +868,7 @@ abstract class expController {
     /**
      * save module configuration
      */
-    function saveconfig() {
+    public function saveconfig() {
         global $db;
 
         // update module title/action/view
@@ -886,13 +882,15 @@ abstract class expController {
                 $db->updateObject($container, 'container');
                 expSession::clearAllUsersSessionCache('containermodule');
             }
-            unset($this->params['container_id']);
-            unset($this->params['moduletitle']);
-            unset($this->params['modcntrol']);
-            unset($this->params['actions']);
-            unset($this->params['views']);
-            unset($this->params['actions']);
-            unset($this->params['is_private']);
+            unset(
+                $this->params['container_id'],
+                $this->params['moduletitle'],
+                $this->params['modcntrol'],
+                $this->params['actions'],
+                $this->params['views'],
+                $this->params['actions'],
+                $this->params['is_private']
+            );
         }
 
         // create a new RSS object if enable is checked.
@@ -927,14 +925,16 @@ abstract class expController {
         }
 
         // unset some unneeded params
-        unset($this->params['module']);
-        unset($this->params['controller']);
-        unset($this->params['src']);
-        unset($this->params['int']);
-        unset($this->params['id']);
-        unset($this->params['cid']);
-        unset($this->params['action']);
-        unset($this->params['PHPSESSID']);
+        unset(
+            $this->params['module'],
+            $this->params['controller'],
+            $this->params['src'],
+            $this->params['int'],
+            $this->params['id'],
+            $this->params['cid'],
+            $this->params['action'],
+            $this->params['PHPSESSID']
+        );
 
         // setup and save the config
         $config = new expConfig($this->loc);
@@ -951,9 +951,7 @@ abstract class expController {
      *
      * @return array
      */
-    function getRSSContent() {
-//        global $db;
-
+    public function getRSSContent() {
         // setup the where clause for looking up records.
         $where = $this->aggregateWhereClause();
 //        $where = empty($where) ? '1' : $where;
@@ -989,7 +987,7 @@ abstract class expController {
     /**
      * method to display an rss feed from this module
      */
-    function rss() {
+    public function rss() {
         require_once(BASE . 'external/feedcreator.class.php');
 
         $id = isset($this->params['title']) ? $this->params['title'] : (isset($this->params['id']) ? $this->params['id'] : null);
@@ -998,12 +996,12 @@ abstract class expController {
             $id = array('module' => $module, 'src' => $this->params['src']);
         }
         $site_rss = new expRss($id);
-        if (!empty($site_rss->id) && $site_rss->enable_rss == true) {
+        if ($site_rss->enable_rss == true && !empty($site_rss->id)) {
             $site_rss->title = empty($site_rss->title) ? gt('RSS for') . ' ' . URL_FULL : $site_rss->title;
             $site_rss->feed_desc = empty($site_rss->feed_desc) ? gt('This is an RSS syndication from') . ' ' . HOSTNAME : $site_rss->feed_desc;
-            if (isset($site_rss->rss_cachetime)) {
-                $ttl = $site_rss->rss_cachetime;
-            }
+//            if (isset($site_rss->rss_cachetime)) {
+//                $ttl = $site_rss->rss_cachetime;
+//            }
             if ($site_rss->rss_cachetime == 0) {
                 $site_rss->rss_cachetime = 1440;
             }
@@ -1100,9 +1098,7 @@ abstract class expController {
     /**
      * download a file attached to item
      */
-    function downloadfile() {
-//        global $db;
-
+    public function downloadfile() {
         if (!isset($this->config['allowdownloads']) || $this->config['allowdownloads'] == true) {
             //if ($db->selectObject('content_expFiles', 'content_type="'.$this->baseclassname.'" AND expfiles_id='.$this->params['id']) != null) {
             expFile::download($this->params['id']);
@@ -1119,7 +1115,7 @@ abstract class expController {
      *
      * @return array
      */
-    function permissions() {
+    public function permissions() {
         //set the permissions array
         $perms = array();
         foreach ($this->permissions as $perm => $name) {
@@ -1130,7 +1126,7 @@ abstract class expController {
     }
 
     // create a psuedo global permission specific to the module; return true grants permission, false continues with other permission checks
-    public static function checkPermissions($permission,$location) {
+    public static function checkPermissions($permission, $location) {
         return false;
     }
 
@@ -1139,7 +1135,7 @@ abstract class expController {
      *
      * @return array
      */
-    function getModels() {
+    public function getModels() {
         return isset($this->models) ? $this->models : array($this->basemodel_name);
     }
 
@@ -1148,7 +1144,7 @@ abstract class expController {
      *
      * @return string
      */
-    function searchName() {
+    public function searchName() {
         return $this->displayname();
     }
 
@@ -1157,7 +1153,7 @@ abstract class expController {
      *
      * @return string
      */
-    function searchCategory() {
+    public function searchCategory() {
         return $this->basemodel_name;
     }
 
@@ -1166,7 +1162,7 @@ abstract class expController {
      *
      * @return int
      */
-    function addContentToSearch() {
+    public function addContentToSearch() {
 //        global $db, $router;
         global $db;
 
@@ -1192,7 +1188,8 @@ abstract class expController {
             $search_record->original_id = $origid;
             $search_record->posted = empty($cnt['created_at']) ? null : $cnt['created_at'];
             // get the location data for this content
-            if (isset($cnt['location_data'])) $loc = expUnserialize($cnt['location_data']);
+            if (isset($cnt['location_data']))
+                $loc = expUnserialize($cnt['location_data']);
             $src = isset($loc->src) ? $loc->src : null;
             if (!empty($cnt['sef_url'])) {
                 $link = str_replace(URL_FULL, '', makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $cnt['sef_url'])));
@@ -1206,7 +1203,7 @@ abstract class expController {
             $search_record->category = $this->searchName();
             $search_record->ref_type = $this->searchCategory();
             $search_record->save();
-            $count += 1;
+            $count++;
         }
 
         return $count;
@@ -1226,7 +1223,7 @@ abstract class expController {
     /**
      * remove all module items from search index
      */
-    function delete_search() {
+    public function delete_search() {
         global $db;
         // remove this modules entries from the search table.
         if ($this->isSearchable()) {
@@ -1242,26 +1239,22 @@ abstract class expController {
      *
      * @param $loc
      */
-    function delete_In($loc) {
-        $this->delete_instance();
+    public function delete_In($loc) {
+        $this->delete_instance($loc);
     }
 
     /**
      * delete module, config, and all its items
+     * @param bool $loc
      */
-    function delete_instance($loc = false) {
-//        global $db;
-
+    public function delete_instance($loc = false) {
         $model = new $this->basemodel_name();
-//        $where = null;
         $where = 1;
-        if ($this->hasSources() || $loc) $where = "location_data='" . serialize($this->loc) . "'";
-        //FIXME we are only delete base table items, not other items or assoc/attached items
-//        $db->delete($model->tablename, $where);
-
+        if ($loc || $this->hasSources())
+            $where = "location_data='" . serialize($this->loc) . "'";
         $items = $model->find('all',$where);
         foreach ($items as $item) {
-            $item->delete();
+            $item->delete();  // model should delete attachments and other associated objects
         }
         $cfg = new expConfig($this->loc);
         $cfg->delete();
@@ -1272,7 +1265,7 @@ abstract class expController {
      *
      * @return array
      */
-    function metainfo() {
+    public function metainfo() {
         global $router;
 
         if (empty($router->params['action'])) return false;
@@ -1345,16 +1338,17 @@ abstract class expController {
      *
      * @return null
      */
-    function meta_rich($request, $object) {
+    public function meta_rich($request, $object) {
         return null;
     }
 
     /**
      * action specific metainfo
      *
+     * @param $request
      * @return array
      */
-    function showall_by_tags_meta($request) {
+    public function showall_by_tags_meta($request) {
         global $router;
 
         // look up the record.
@@ -1371,14 +1365,16 @@ abstract class expController {
             $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
             return $metainfo;
         }
+        return null;
     }
 
     /**
      * action specific metainfo
      *
+     * @param $request
      * @return array
      */
-    function showall_by_date_meta($request) {
+    public function showall_by_date_meta($request) {
         global $router;
 
         // look up the record.
@@ -1396,12 +1392,13 @@ abstract class expController {
             $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
             return $metainfo;
         }
+        return null;
     }
 
     /**
      * approve module item
      */
-    function approve() {
+    public function approve() {
         $modelname = $this->basemodel_name;
         $lookup = isset($this->params['id']) ? $this->params['id'] : $this->params['title'];
         $object = new $modelname($lookup);
@@ -1417,12 +1414,12 @@ abstract class expController {
      *
      * @return string
      */
-    function aggregateWhereClause($type='') {
+    public function aggregateWhereClause($type='') {
         global $user;
 
         $sql = '';
 
-        if (!$this->hasSources() && empty($this->config['add_source'])) {
+        if (empty($this->config['add_source']) && !$this->hasSources()) {
             return $sql;
         }
 
@@ -1439,7 +1436,7 @@ abstract class expController {
             $sql .= ')';
         }
         $model = $this->basemodel_name;
-        if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
+        if (ENABLE_WORKFLOW && $this->$model->needs_approval) {
             if ($user->id) {
                 $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
             } else {

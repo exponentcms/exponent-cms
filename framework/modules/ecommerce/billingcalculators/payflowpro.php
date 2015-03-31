@@ -20,21 +20,25 @@
  * @package    Modules
  */
 class payflowpro extends creditcard {
+
     function name() {
-        return "PayPal Payflow Payment Gateway";
+        return gt("PayPal Payflow Payment Gateway");
     }
+
+//    public $use_title = 'PayPal Payflow Payment Gateway';
+    public $payment_type = 'PayPal Payflow';
 
     function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards.";
+        return gt("Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  It requires a PayPal Payflow Merchant Account before you can use it to process credit cards.");
     }
 
-    function hasConfig() {
-        return true;
-    }
+//    function hasConfig() {
+//        return true;
+//    }
 
-    function hasUserForm() {
-        return true;
-    }
+//    function hasUserForm() {
+//        return true;
+//    }
 
     function isOffsite() {
         return false;
@@ -755,10 +759,10 @@ class payflowpro extends creditcard {
     }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/payflowpro/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/payflowpro/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -839,8 +843,8 @@ class payflowpro extends creditcard {
         return $ret->result->AUTHCODE;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->PNREF;
         } else {

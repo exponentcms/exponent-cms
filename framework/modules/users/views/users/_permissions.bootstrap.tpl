@@ -146,6 +146,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y
                 {targets: [ 'nosort' ], orderable: false }
             ],
             autoWidth: false,
+            //scrollX: true,
             preDrawCallback: function () {
                 // Initialize the responsive datatables helper once.
                 if (!responsiveHelper) {

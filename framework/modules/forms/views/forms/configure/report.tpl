@@ -32,4 +32,5 @@
     {control type=editor name='report_def' label='Custom E-Mail, Single and Portfolio View Template'|gettext value=$config.report_def rows=10 cols=60
         plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`,"
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
+    {control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
 {/group}

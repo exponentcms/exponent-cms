@@ -29,11 +29,8 @@ class dropdowncontrol extends formcontrol {
 
     var $items = array();
     var $size = 1;
-    var $jsHooks = array();
     var $include_blank = false;
     var $type = 'select';
-    var $class = '';
-    var $multiple = false;
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }
@@ -81,7 +78,7 @@ class dropdowncontrol extends formcontrol {
             if (is_array($this->default)) {
                 if (in_array($value, $this->default)) $html .= " selected";
             } else {
-                if (!empty($this->default) && $value == $this->default) $html .= " selected";
+                if ($value == $this->default && !empty($this->default)) $html .= " selected";
             }
             $html .= '>' . $caption . '</option>';
         }

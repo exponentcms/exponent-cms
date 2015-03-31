@@ -26,16 +26,22 @@ if (!defined('EXPONENT')) exit('');
  */
 abstract class formcontrol {
 
+    var $id = null;
+    var $name = "";
 	var $accesskey = "";
+    var $class = "";
 	var $default = "";
 	var $disabled = false;
     var $required = false;
+    var $multiple = false;
+    var $flip = false;
     var $is_hidden = false;
     var $focus = false;
 	var $tabindex = -1;
 	var $inError = 0; // This will ONLY be set by the parent form.
 	var $type = 'text';
     var $horizontal = false;
+    var $jsHooks = array();
 
 	static function name() { return "formcontrol"; }
 

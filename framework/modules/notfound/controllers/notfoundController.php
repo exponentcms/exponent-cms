@@ -45,8 +45,10 @@ class notfoundController extends expController {
 
         header(':', true, 404);
         $params = $router->params;
-        unset($params['controller']);
-        unset($params['action']);
+        unset(
+            $params['controller'],
+            $params['action']
+        );
         $terms = empty($params[0]) ? '' : $params[0];
         if (empty($terms) && !empty($params['title'])) $terms = $params['title'];
         expCSS::pushToHead(array(

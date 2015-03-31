@@ -21,13 +21,14 @@
  */
 
 class splitcreditcard extends creditcard {
-    function name() {
-        return 'Split Credit Card';
-    }
 
     function description() {
-        return "Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
-	    will be split with part of it being stored in the database and the other part getting emailed to site administrator.";
+        return gt("Enabling this payment option will allow your customers to use their credit card to make purchases on your site.  The credit card number
+	        will be split with part of it being stored in the database and the other part getting emailed to site administrator.");
+    }
+
+    function isSelectable() {
+        return true;
     }
 
     public function captureEnabled() {
@@ -57,15 +58,43 @@ class splitcreditcard extends creditcard {
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
 
-        $this->opts->cc_number = 'XXXX-XXXX-XXXX-' . substr($this->opts->cc_number, -4);
+        //FIXME this is where we lose the split credit card data
+		// get the configuration data
+		$config = unserialize($this->config);
+
+		$txtmessage = gt("The following order requires your attention") . "\r\n\r\n";
+        $txtmessage .= $this->textmessage($this->opts);
+
+		$htmlmessage = gt("The following order requires your attention") . "<br><br>";
+		$htmlmessage .= $this->htmlmessage($this->opts);
+
+		$addresses = explode(',', $config['notification_addy']);
+        foreach ($addresses as $address) {
+		    $mail = new expMail();
+		    $mail->quickSend(array(
+                'html_message'=>$htmlmessage,
+                'text_message'=>$txtmessage,
+                'to'=>trim($address),
+//				  'from'=>ecomconfig::getConfig('from_address'),
+//				  'from_name'=>ecomconfig::getConfig('from_name'),
+                'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
+                'subject'=>gt('Billing Information for an order placed on') . ' '.ecomconfig::getConfig('storename'),
+		    ));
+		}
+        $this->opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($this->opts->cc_number, -4);
 
         $object = new stdClass();
-        $object->errorCode = 0;
-        $object->payment_status = 'complete';
-        $this->opts->result = $object;
+        $object->errorCode = $opts->result->errorCode = 0;
+//        $object->payment_status = 'complete';
+//        $this->opts->result = $object;
+        $opts->result->payment_status = gt("authorization pending");
+        $opts->result->token = '';
+        $opts->result->transId = '';
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
-        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
+        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => $opts->result->payment_status));
+//        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, $opts->result->payment_status);
         return true;
     }
 
@@ -91,10 +120,10 @@ class splitcreditcard extends creditcard {
 //    }
 
     //Config Form
-    function configForm() {
-        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/splitcreditcard/configure.tpl';
-        return $form;
-    }
+//    function configForm() {
+//        $form = BASE . 'framework/modules/ecommerce/billingcalculators/views/splitcreditcard/configure.tpl';
+//        return $form;
+//    }
 
     //process config form
     function parseConfig($values) {
@@ -107,28 +136,28 @@ class splitcreditcard extends creditcard {
     }
 
     //process config form
-    function update($params = array()) {
-        /*$config_object->email_contact = $values['email_contact'];
-        $config_object->email_subject = $values['email_subject'];
-        $config_object->email_intro = $values['email_intro'];
-
-        $config_object->accept_amex = (isset($values['accept_amex']) ? 1 : 0);
-        $config_object->accept_discover = (isset($values['accept_discover']) ? 1 : 0);
-        $config_object->accept_mastercard = (isset($values['accept_mastercard']) ? 1 : 0);
-        $config_object->accept_visa = (isset($values['accept_visa']) ? 1 : 0);
-        $config_object->email_customer = isset($values['email_customer']);
-        $config_object->email_customer_invoice = isset($values['email_customer_invoice']);
-        $config_object->email_other_invoice = $values['email_other_invoice'];
-        $config_object->email_customer_status_change = isset($values['email_customer_status_change']);
-        $config_object->email_other_status_change = $values['email_other_status_change'];
-        return $config_object;*/
-    }
+//    function update($params = array()) {
+//        /*$config_object->email_contact = $values['email_contact'];
+//        $config_object->email_subject = $values['email_subject'];
+//        $config_object->email_intro = $values['email_intro'];
+//
+//        $config_object->accept_amex = (isset($values['accept_amex']) ? 1 : 0);
+//        $config_object->accept_discover = (isset($values['accept_discover']) ? 1 : 0);
+//        $config_object->accept_mastercard = (isset($values['accept_mastercard']) ? 1 : 0);
+//        $config_object->accept_visa = (isset($values['accept_visa']) ? 1 : 0);
+//        $config_object->email_customer = isset($values['email_customer']);
+//        $config_object->email_customer_invoice = isset($values['email_customer_invoice']);
+//        $config_object->email_other_invoice = $values['email_other_invoice'];
+//        $config_object->email_customer_status_change = isset($values['email_customer_status_change']);
+//        $config_object->email_other_status_change = $values['email_other_status_change'];
+//        return $config_object;*/
+//    }
 
     //This is called when a billing method is deleted. It can be used to clean up if you
     //have any custom user_data storage.
-    function delete($where = '') {
-        return;
-    }
+//    function delete($where = '') {
+//        return;
+//    }
 
     //This should return html to display config settings on the view billing method page
     function view($config_object) {
@@ -152,11 +181,12 @@ class splitcreditcard extends creditcard {
      */
     function textmessage($opts) {
         global $order;   //FIXME we do NOT want the global $order
-        //FIXME: hard coded text!!
-        $message = "Order Number: $order->invoice_id\r\n";
-        $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "\r\n";
-        $message .= 'Credit Card CVV Number: ' . $opts->cvv . "\r\n";
-        $message .= 'Expires on: ' . $opts->exp_month . '/' . $opts->exp_year . "\r\n";
+
+        $message = gt('Order Number') . ": $order->invoice_id\r\n";
+//        $message .= gt('Credit Card Type') . ': ' . $this->cards[$opts->cc_type] . "\r\n";
+        $message .= gt('Credit Card Number') . ': ' . substr(self::formatCreditCard($opts->cc_number, $opts->cc_type), 0, -4) . 'xxxx' . "\r\n";
+        $message .= gt('Credit Card CVV Number') . ': ' . $opts->cvv . "\r\n";
+        $message .= gt('Expires on') . ': ' . $opts->exp_month . '/' . $opts->exp_year . "\r\n";
         return $message;
     }
 
@@ -168,11 +198,12 @@ class splitcreditcard extends creditcard {
      */
     function htmlmessage($opts) {
         global $order;   //FIXME we do NOT want the global $order
-        //FIXME: hard coded text!!
-        $message = "Order Number: $order->invoice_id<br>";
-        $message .= 'Credit Card Number: ' . substr($opts->cc_number, 0, -4) . 'XXXX' . "<br>";
-        $message .= 'Credit Card CVV Number: ' . $opts->cvv . "<br>";
-        $message .= 'Expires on: ' . $opts->exp_month . '/' . $opts->exp_year . "<br>";
+
+        $message = gt("Order Number") . ": $order->invoice_id<br>";
+//        $message .= gt('Credit Card Type') . ': ' . $this->cards[$opts->cc_type] . "<br>";
+        $message .= gt('Credit Card Number') . ': ' . substr(self::formatCreditCard($opts->cc_number, $opts->cc_type), 0, -4) . 'xxxx' . "<br>";
+        $message .= gt('Credit Card CVV Number') . ': ' . $opts->cvv . "<br>";
+        $message .= gt('Expires on') . ': ' . $opts->exp_month . '/' . $opts->exp_year . "<br>";
         return $message;
     }
 
@@ -181,8 +212,8 @@ class splitcreditcard extends creditcard {
         return $ret->result->token;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->transId;
         } else {
@@ -197,6 +228,11 @@ class splitcreditcard extends creditcard {
 
     function getAVSAddressVerified($billingmethod) {
         return 'X';
+    }
+
+    function getPaymentMethod($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
+        return $this->cards[$ret->cc_type] . ' - ' . substr($ret->cc_number, -4);
     }
 
     function getAVSZipVerified($billingmethod) {

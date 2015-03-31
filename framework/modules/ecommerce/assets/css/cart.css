@@ -294,11 +294,20 @@ table#cart table td {
 	border-radius         : 3px;
 	background            : #559;
 	color                 : #fff;
+	color      : #707070;
+	background : #efefef;
+}
+
+#expresscheckout a.servopt:hover {
+	background            : #7d7dc4;
+	color                 : #fff;
 }
 
 #expresscheckout span.servopt {
 	color      : #999999;
 	background : #efefef;
+	background            : #559;
+	color                 : #fff;
 }
 
 /****************  quicklinks  ***********************/

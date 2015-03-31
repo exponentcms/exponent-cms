@@ -324,13 +324,16 @@ class containerController extends expController {
         $this->params['external'] = serialize($this->loc);
         unset($this->params['module']);
 
-        $hidetitle = $this->params['hidemoduletitle'];
+        $hidetitle = !empty($this->params['hidemoduletitle']);
         unset($this->params['hidemoduletitle']);
 
-        $modelname = $this->basemodel_name;
-        $this->$modelname->update($this->params);
+        $controller = expModules::getControllerClassName($this->params['modcntrol']);
+        $needs_config = $controller::requiresConfiguration() && empty($this->params['id']);
+//        $modelname = $this->basemodel_name;
+        $this->container->update($this->params);
 
-        $modconfig = new expConfig(expUnserialize($this->$modelname->internal));
+        $cont_loc = expUnserialize($this->container->internal);
+        $modconfig = new expConfig($cont_loc);
         if ($modconfig->id || $hidetitle) {
             $modconfig->config['hidemoduletitle'] = $hidetitle;
             $modconfig->update();
@@ -340,7 +343,15 @@ class containerController extends expController {
         define('PREVIEW_READONLY',0); // for mods
 
         expSession::clearAllUsersSessionCache('containers');
-        expHistory::back();
+        if (!$needs_config) {
+            expHistory::back();
+        } else {
+            if ($controller == 'formsController') {
+                redirect_to(array('controller'=>$controller,'action'=>'manage','select'=>true,'src'=>$cont_loc->src));
+            } else {
+                redirect_to(array('controller'=>$controller,'action'=>'configure','src'=>$cont_loc->src));
+            }
+        }
     }
 
     public function delete_instance($loc = false) {

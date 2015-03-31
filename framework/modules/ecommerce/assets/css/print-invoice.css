@@ -1,86 +1,102 @@
 #invoice * {
-    color:#000000;
+	color: #000000;
 }
 
 #barcode {
-    position:absolute;
-    top:0;
-    right:0;
+	position: absolute;
+	top: 0;
+	right: 0;
 }
 
 #invoice {
-    position:relative;
-    color:#000000;
-    font-size:10px;
-    font-family: "Trebuchet MS",Arial,sans-serif;
+	position: relative;
+	color: #000000;
+	font-size: 10px;
+	font-family: "Trebuchet MS", Arial, sans-serif;
 }
 
 #invoice table {
-    width:100%;
-    border:0;
+	width: 100%;
+	border: 0;
 }
 
 #invoice h1 {
-font-size: 200%;
+	font-size: 200%;
 }
 
 #invoice table thead tr {
-    background:#dddddd;
+	background: #dddddd;
 }
 
 #invoice table td,
 #invoice table th {
-    text-align:left;
-    vertical-align:top;
+	text-align: left;
+	vertical-align: top;
 }
 
 #invoice table td {
-    background:#FFFFFF;
+	background: #FFFFFF;
 }
+
 #invoice table td,
 #invoice table th {
-    border:1px solid #dddddd;
-    padding:5px;
+	border: 1px solid #dddddd;
+	padding: 5px;
 }
 
 #invoice address span {
-    display:block;
-    font-size: 14px;
-    font-style:normal;    
+	display: block;
+	font-size: 14px;
+	font-style: normal;
 }
 
 #invoice .div-rows div.even,
 #invoice tr.even td {
-    background:#FFFFFF;
+	background: #FFFFFF;
 }
 
 #invoice .div-rows div.odd,
 #invoice tr.odd td {
-    background:#FFFFFF;
+	background: #FFFFFF;
 }
 
 #invoice .payment-info th,
 #invoice .shipping-info th {
-    width:50%;
+	width: 50%;
 }
 
 #invoice .div-rows {
-    padding:0px;
+	padding: 0px;
 }
 
-#invoice .div-rows div span.pmt-label {
-    display:inline-block;
-    text-align:right;
-    width:170px;
-    padding:2px;
-    color:#555555;
+#invoice .div-rows div span.pmt-label,
+#invoice .div-rows td.pmt-label,
+#ccinfo > tbody > tr > td.pmt-label {
+	display: inline-block;
+	text-align: right;
+	width: 170px;
+	padding: 2px;
+	color: #555555;
 }
 
-#invoice .div-rows div span.pmt-value {
-    font-style:italic;
+#invoice .div-rows div span.pmt-value,
+#invoice .div-rows td.pmt-value,
+#ccinfo > tbody > tr > td.pmt-value {
+	font-style: italic;
+}
+
+table#ccinfo td,
+table#ccinfo th {
+	border: 0;
+	padding: 0;
+}
+
+table#ccinfo thead tr {
+	background: #FFFFFF;
+	font-style: normal;
 }
 
 .exp-dropmenu ul, .extra-data ul {
-	margin-top : 0;
+	margin-top: 0;
 	margin-bottom: 0;
 }

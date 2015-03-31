@@ -134,6 +134,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
+            scrollX: true,
             columnDefs: [
 //                { searchable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },
 //                { sortable: true, targets: [ {/literal}{if !$is_group}0, 1, 2{else}0{/if}{literal} ] },

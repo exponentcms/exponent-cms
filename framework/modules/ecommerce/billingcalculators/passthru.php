@@ -22,9 +22,13 @@
 /** @define "BASE" "../../../.." */
 
 class passthru extends billingcalculator {
+
     function name() {
         return gt("Passthru Payment");
     }
+
+//    public $use_title = 'Pass-Thru';
+    public $payment_type = 'Passthru';
 
     function description() {
         return gt("Enabling this payment option will allow you or your customers to bypass payment processing at the cart and allow payment methods after the order is processed, such as cash, check, pay in store, or manually process via credit card.") . "<br>** " . gt("This is a restricted payment option and only accessible by site admins.");
@@ -41,9 +45,6 @@ class passthru extends billingcalculator {
     function isRestricted() {
         return true;
     }
-
-    public $title = 'Pass-Thru';
-    public $payment_type = 'Passthru';
 
     //Called for billing medthod seletion screen, return true if it's a valid billing method.
 //    function pre_process($config_object, $order, $billaddress, $shippingaddress) {
@@ -101,8 +102,9 @@ class passthru extends billingcalculator {
     }
 
     //Should return html to display user data.
-    function userView($opts) {
-        //eDebug($opts,true);
+    function userView($billingmethod) {
+        $opts = expUnserialize($billingmethod->billing_options);
+           //eDebug($opts,true);
         if (isset($opts->result)) return '';
         $ot = new order_type($opts->order_type);
         $os = new order_status($opts->order_status);
@@ -216,8 +218,8 @@ class passthru extends billingcalculator {
         return $ret->result->authorization_code;
     }
 
-    function getPaymentReferenceNumber($opts) {
-        $ret = expUnserialize($opts);
+    function getPaymentReferenceNumber($billingmethod) {
+        $ret = expUnserialize($billingmethod->billing_options);
         if (isset($ret->result)) {
             return $ret->result->PNREF;
         } else {

@@ -25,14 +25,14 @@ class AdminerEditTextSerializedarea {
 
 	function selectVal(&$val, $link, $field) {
 //		if (ereg("_html", $field["field"]) && $val != '&nbsp;') {
-		if (preg_match("~location_data|internal|external|config|data~", $field["field"])) {
+		if (preg_match("~location_data|internal|external|config|billing_options|data~", $field["field"])) {
 			$val = '<div title="'.htmlentities(print_r(self::expUnserialize(html_entity_decode($val)),true)).'">'.$val.'</div>';
 		}
 	}
 	
 	function editInput($table, $field, $attrs, $value) {
 //		if (ereg('text', $field["type"])) {
-		if (preg_match("~location_data|internal|external|config|data~", $field["field"])) {
+		if (preg_match("~location_data|internal|external|config|billing_options|data~", $field["field"])) {
 //			return '<input value="' . h($value) . '" title="' . htmlentities(print_r(self::expUnserialize($value),true)) . '" maxlength=250 size=40 $attrs>';
             return "<textarea title=\"" . htmlentities(print_r(self::expUnserialize($value),true)) . "\" cols='38' rows='2'$attrs>" . h($value) . '</textarea>';
 		}

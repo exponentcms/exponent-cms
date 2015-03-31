@@ -31,8 +31,10 @@ if (isset($_GET['id'])) {
     //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;
     $_GET['src'] = $file_obj->path;
 
-    unset($_GET['id']);
-    unset($_GET['square']);
+    unset(
+        $_GET['id'],
+        $_GET['square']
+    );
 }
 require_once(BASE."external/phpThumb/phpThumb.php");
 

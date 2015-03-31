@@ -127,10 +127,12 @@
         {/if}
 
         {* NOTE display product options *}
-        {exp_include file="options.tpl"}
+        {*{exp_include file="options.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/options.tpl"}
 
         {* NOTE display product user input fields *}
-        {exp_include file="input_fields.tpl"}
+        {*{exp_include file="input_fields.tpl"}*}
+        {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/input_fields.tpl"}
 
         {control type="buttongroup" id="submit-item" size=large color=green submit="Add Item(s) to Order"|gettext}
     {/form}

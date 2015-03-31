@@ -35,20 +35,20 @@ class standalonetemplate extends basetemplate {
         // substitute a framework variation if available
         if (bs(true)) {
             $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap.tpl';
-            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+            if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($this->viewfile), 0, -4);
             }
         }
         if (bs3(true)) {
             $bstrpview = substr($this->viewfile, 0, -4) . '.bootstrap3.tpl';
-            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+            if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($this->viewfile), 0, -4);
             }
         } elseif (newui()) {
             $bstrpview = substr($this->viewfile, 0, -4) . '.newui.tpl';
-            if (!strpos($this->viewfile, THEME_ABSOLUTE) && file_exists($bstrpview)) {
+            if (file_exists($bstrpview) && !strpos($this->viewfile, THEME_ABSOLUTE)) {
                 $this->viewfile = $bstrpview;
                 $this->view = substr(basename($this->viewfile), 0, -4);
             }

@@ -278,12 +278,12 @@ class product extends expRecord {
         }
 
         if ($orderid == null) {
-            if ($params['error'] != '' || !empty($params['input_error'])) {
+            if ($params['error'] != '' || !empty($params['option_error']) || !empty($params['input_error'])) {
                 $this->displayForm('addToCart', $params);
                 return false;
             }
         } else {
-            if ($params['error'] != '' || !empty($params['input_error'])) {
+            if ($params['error'] != '' || !empty($params['option_error']) || !empty($params['input_error'])) {
                 $this->displayForm('addToOrder', $params);
                 return false;
             }

@@ -29,7 +29,7 @@ class expAjaxReply {
 	public $redirecturl = null;
 
 	public function __construct($replyCode=200, $replyText='Ok', $data=null, $redirecturl=null) {
-		$this->packet = $this->makePacket($replyCode, $replyText, $data);
+		$this->packet = self::makePacket($replyCode, $replyText, $data);
 		$this->redirecturl = $redirecturl;
 	}
 

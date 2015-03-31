@@ -33,7 +33,7 @@
             <div class="tab-content">
                 <div id="tab1" role="tabpanel" class="tab-pane fade in active">
                     {control type="checkbox" name="new_window" label="Open in New Window"|gettext|cat:"?" checked=$section->new_window value=1}
-                    {control type="dropdown" name="page" label="Standalone Page"|gettext items=navigationController::levelDropdownControlArray(-1,0,array(),false,'manage') value=$page}
+                    {control type="dropdown" name="page" label="Standalone Page"|gettext items=section::levelDropdownControlArray(-1,0,array(),false,'manage') value=$page}
                 </div>
             </div>
         </div>

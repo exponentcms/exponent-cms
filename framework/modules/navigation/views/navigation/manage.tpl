@@ -28,8 +28,8 @@
 	        {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="yui-content">
-        	<div id="tab1">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_hierarchy.tpl"}</div>
-	        {if $canManageStandalones}<div id="tab2">{include file="`$smarty.const.BASE`framework/modules/navigation/views/navigation/manage_standalone.tpl"}</div>{/if}
+        	<div id="tab1">{exp_include file="manage_hierarchy.tpl"}</div>
+	        {if $canManageStandalones}<div id="tab2">{exp_include file="manage_standalone.tpl"}</div>{/if}
 	    </div>
 	</div>
 	<div class="loadingdiv">{'Loading Pages'|gettext}</div>

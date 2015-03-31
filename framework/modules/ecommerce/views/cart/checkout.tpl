@@ -45,7 +45,8 @@
         ]
     {/assocarray}
     {breadcrumb items=$breadcrumb active=2 style=flat}
-    <h1>{$moduletitle|default:"Express Checkout"|gettext}</h1>
+    <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
+    <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
         <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
         <div id="storepolicies" style="z-index:9999">
@@ -132,8 +133,10 @@
                             {/foreach}
                         </ul>
                         {if $discounts|@count==1}{'This coupon is'|gettext} {else}{'These coupons are'|gettext} {/if} {'saving you'|gettext}
-                        {if $discounts[0]->isCartDiscount()}{$order->total_discounts|currency}.
-                            {else} {$order->shippingDiscount|currency}.
+                        {if $discounts[0]->isCartDiscount()}
+                            {$order->total_discounts|currency}.
+                        {else}
+                            {$order->shippingDiscount|currency}.
                         {/if}
                     </div>
                 {/if}
@@ -188,6 +191,7 @@
                                     {if $shipping->calculator->id!=$key}
                                         <a rel="{$key}"
                                            href="{link shippingcalculator_id=$key controller=shipping action=selectShippingCalculator}"
+                                           title="{'Select this shipping method'|gettext}"
                                            class="servopt">
                                             {$calc}
                                         </a>
@@ -283,7 +287,7 @@
         </div>
         <div class="billingdetails separate">
             <h2>{"Your Billing Information"|gettext}</h2>
-            <h3>{"Your billing address"|gettext}</h3>
+            <h3>{"Billing Address"|gettext}</h3>
 
             <div class="billing-address">
                 <div id="bllAddSwp">
@@ -299,10 +303,10 @@
                 </div>
             </div>
             <div style="clear: both;"></div>
-        </div>
-        <div class="separate">
+        {*</div>*}
+        {*<div class="separate">*}
             {if $order->total}
-                <h2>{"Payment Information"|gettext}</h2>
+                {*<h2>{"Payment Information"|gettext}</h2>*}
                 <h3>{"Available Payment Methods"|gettext}</h3>
                 <div id="cart-{$id}" class="yui-navset">
                     <ul class="yui-nav">

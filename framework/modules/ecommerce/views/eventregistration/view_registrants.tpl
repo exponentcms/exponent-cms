@@ -182,6 +182,7 @@
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
+            scrollX: true,
             columnDefs: [
                 { searchable: false, targets: [ -1 ] },
                 { orderable: false, targets: [ -1 ] },
