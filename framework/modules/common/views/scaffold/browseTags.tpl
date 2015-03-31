@@ -17,7 +17,7 @@
     {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
-	<h1>{$moduletitle|default:""}</h1>
+    <h1>{$moduletitle|default:"Browse Tags for"|gettext|cat:" `$model_name`"}</h1>
 
     {foreach from=$tags item=tag names=tags}
         <a href="{link action=browseTags tags=$tag->id}">{$tag->title}</a>

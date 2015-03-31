@@ -17,7 +17,7 @@
     {if $smarty.const.DEVELOPMENT}
         <h4>{'This is the scaffold view'|gettext}</h4>
     {/if}
-	<h1>{$moduletitle|default:"Listings for"|gettext|cat:" `$model_name`"}</h1>
+	<h1>{$moduletitle|default:"Tag Listings for"|gettext|cat:" `$model_name`"}</h1>
 
 	{permissions}
 		<div class="module-actions">
