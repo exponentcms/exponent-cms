@@ -33,6 +33,7 @@ class popupdatetimecontrol extends formcontrol
 
     var $disable_text = "";
     var $showtime = true;
+    var $showdate = true;
 
     static function name()
     {
