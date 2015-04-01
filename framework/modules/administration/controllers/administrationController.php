@@ -1323,6 +1323,7 @@ class administrationController extends expController {
         if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
             flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'));
         } else {
+            $this->params['sc']['MAINTENANCE_RETURN_TIME'] = yuicalendarcontrol::parseData('MAINTENANCE_RETURN_TIME', $this->params['sc']);
             foreach ($this->params['sc'] as $key => $value) {
 //            expSettings::change($key, addslashes($value));
                 expSettings::change($key, $value);

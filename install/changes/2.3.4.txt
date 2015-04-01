@@ -15,6 +15,7 @@ Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme frame
   - reactivates split credit card ecommerce payment option
   - adds optional 'time till site returns' countdown clock to maintenance view
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
+    -- login removed from maintenance view unless attempting to logon or if db is down
   - includes all fixes from v2.3.3 patches
 Known Issues
   - eCommerce purchase order functionality has not been tested/may not be complete

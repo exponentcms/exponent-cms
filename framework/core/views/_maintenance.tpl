@@ -63,11 +63,12 @@
             {/if}
             {if $db_down}
                 <h3 style="color:red">{'Database is currently Off-line!'|gettext}</h3>
+            {elseif $login}
+                {* NOTE no database, so we can't log on! *}
+                {showmodule controller=login action=showlogin view=showlogin_stacked moduletitle="Administrators Login"|gettext}
             {/if}
-            {*<h3>{'Administrator Login'|gettext}</h3>*}
-            {showmodule controller=login action=showlogin view=showlogin_stacked moduletitle="Administrators Login"|gettext}
         </div>
         <div style="float:right;">{'Powered by'|gettext} <a style="color:black;" href="http://www.exponentcms.org">ExponentCMS</a></div>
-        {expTheme::foot()}
+        {expTheme::foot()}  {* NOTE we need to output css & javascript *}
     </body>
 </html>

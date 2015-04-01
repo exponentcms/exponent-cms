@@ -224,7 +224,7 @@
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_USE_RETURN_TIME]" label="Display a countdown clock until site returns?"|gettext checked=$smarty.const.MAINTENANCE_USE_RETURN_TIME value=1}
                     {group label="Maintenance Countdown Settings"|gettext}
                         {control type="text" name="sc[MAINTENANCE_RETURN_TEXT]" label="Site will return message"|gettext value=$smarty.const.MAINTENANCE_RETURN_TEXT}
-                        {control type="popupdatetime" name="sc[MAINTENANCE_RETURN_TIME]" label="Site will return time"|gettext value=$smarty.const.MAINTENANCE_RETURN_TIME showdate=true}
+                        {control type="yuicalendar" name="sc[MAINTENANCE_RETURN_TIME]" label="Site will return time"|gettext value=$smarty.const.MAINTENANCE_RETURN_TIME}
                     {/group}
                 </div>
                 <div id="tab9" role="tabpanel" class="tab-pane fade">

@@ -71,9 +71,13 @@ if (expJavascript::requiresJSON()) {
 }
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
+//if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction()) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
+    if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'login') {
+        $template->assign("login", true);
+    }
 	$template->output();
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));

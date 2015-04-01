@@ -25,6 +25,7 @@ Version 2.3.4
   - reCaptcha anti-spam support updated to latest library
   - reactivates split credit card ecommerce payment option
   - adds optional 'time till site returns' countdown clock to maintenance view
+    -- login removed from maintenance view unless attempting to logon or if db is down
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches
 ### Known Issues
