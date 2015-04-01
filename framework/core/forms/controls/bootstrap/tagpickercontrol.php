@@ -83,7 +83,8 @@ class tagpickercontrol extends formcontrol {
         foreach ($this->record->expTag as $tag) {
             $selectedtags .= $tag->title . ', ';
         }
-        $textbox = new genericcontrol('text');
+//        $textbox = new genericcontrol('text');
+        $textbox = new textcontrol();
         $textbox->id = $this->id;
         $textbox->name = $this->id;
         $textbox->default = $selectedtags;

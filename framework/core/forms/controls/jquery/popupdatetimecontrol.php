@@ -195,6 +195,7 @@ class popupdatetimecontrol extends formcontrol
                     step: 15,
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
                     onChangeDateTime:function(dp,input){
+                        $('#" . $idname . "').val(input.val());
                         $('#" . $idname . "_span').html(input.val());
                     }
                   });
@@ -216,9 +217,14 @@ class popupdatetimecontrol extends formcontrol
 
     static function parseData($original_name, $formvalues)
     {
-        if (!isset($formvalues[$original_name . '_disabled'])) {
-//			return strtotime($formvalues[$original_name]);
-            return $formvalues[$original_name];
+//        if (!isset($formvalues[$original_name . '_disabled'])) {
+////			return strtotime($formvalues[$original_name]);
+//            return $formvalues[$original_name];
+//        } else {
+//            return 0;
+//        }
+        if (!empty($formvalues[$original_name])) {
+            return strtotime($formvalues[$original_name]);
         } else {
             return 0;
         }
