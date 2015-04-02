@@ -89,7 +89,7 @@ class paylater extends billingcalculator {
         $billinginfo .= '<tbody>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '</td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
 //        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
-        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Paid") . ': </td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",") . '</td></tr>';
+        $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Amount Paid") . ': </td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($cash, 2, ".", ",") . '</td></tr>';
         if  (!empty($opts->payment_due)) {
             $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Amount Due") . '</td><td class="pmt-value">' . expCore::getCurrencySymbol() . number_format($opts->payment_due, 2, ".", ",") . '</td></tr>';
         }
