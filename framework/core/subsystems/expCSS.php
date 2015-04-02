@@ -316,79 +316,71 @@ class expCSS {
      * @return bool
      */
     public static function auto_compile_less($less_pname, $css_fname, $vars=array()) {
-        if (defined('LESS_COMPILER')) {
-            $less_compiler = strtolower(LESS_COMPILER);
-        } else {
-            $less_compiler = 'lessphp';
-        }
-        switch ($less_compiler) {
-            case 'iless':
-//                if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
-////                    include_once(BASE.'external/lessphp/lessc.inc.php');
-//                    include_once(BASE.'external/phpless/Less.php');
-//                    // load the cache
-//                    $less_cname = str_replace("/","_",$less_pname);
-//                    $cache_fname = BASE.'tmp/css/'.$less_cname.".cache";
-//                    $cache = BASE.$less_pname;
-//                    if (file_exists($cache_fname)) {
-//                        $cache = unserialize(file_get_contents($cache_fname));
-//                        if (!empty($cache['vars']) && $vars != $cache['vars']) {
-//                            $cache = BASE.$less_pname;
-//                        }
-//                    }
-////                    $less = new lessc;
-//                    $less = new Less_Parser();
-//                    $less->SetCacheDir(BASE.'tmp/css/');
-//                    $less->setVariables($vars);
-//                    // we need to convert $vars array to a less string
-//                    $lvars = '';
-//                    foreach ($vars as $key=>$param) {
-//                        $lvars .= '@' . $key . ":" . $param . ";";
-//                    }
-//                    $less->parse($lvars);
-//
-//                    $new_cache = $less->cachedCompile($cache, false);
-//                    if (!file_exists(BASE.$css_fname) || !is_array($cache) || $new_cache['updated'] > $cache['updated']) {
-//                        if (!empty($new_cache['compiled'])) {
-//                            $new_cache['vars'] = !empty($vars)?$vars:null;
-//                            $css_loc = pathinfo(BASE.$css_fname);
-//                            if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
-//                            file_put_contents(BASE.$css_fname, $new_cache['compiled']);
-//                            file_put_contents($cache_fname, serialize($new_cache));
-//                        }
-//                    }
-//
-//                    $less->parseFile($cache);
-//                    $new_cache = $less->getCss();
-//                    $css_loc = pathinfo(BASE.$css_fname);
-//                    if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
-//                    file_put_contents(BASE.$css_fname, $new_cache);
-//                    return true;
-//                } else {
-//                    flash('notice',$less_pname. ' ' . gt('does not exist!'));
-//                    return false;
-//                }
-//                break;
-            case 'less.php':
-            case 'lessphp':
-            default :
-                if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
-                    if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
-                        if (!is_file(BASE . 'external/' . $less_compiler . '/lessc.inc.php'))
-                            $less_compiler = 'lessphp';
-                        include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
-                        // load the cache
-                        $less_cname = str_replace("/", "_", $less_pname);
-                        $cache_fname = BASE . 'tmp/css/' . $less_cname . ".cache";
-                        $cache = BASE . $less_pname;
-                        if (file_exists($cache_fname)) {
-                            $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
-                                $cache = BASE . $less_pname;
-                            }
+        if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
+            if (defined('LESS_COMPILER')) {
+                $less_compiler = strtolower(LESS_COMPILER);
+            } else {
+                $less_compiler = 'less.php';
+            }
+            switch ($less_compiler) {
+                case 'iless':
+                    if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+                        require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
+                        ILess_Autoloader::register();
+
+                        $less = new ILess_Parser(
+                            array(),  // option
+                            // cache implementation
+                            new ILess_Cache_FileSystem(array(
+                                'cache_dir' => BASE . 'tmp/css/',
+                            )
+                        ));
+                        if (DEVELOPMENT && LESS_COMPILER_MAP) {
+                            $less->setEnvironment(array(
+                                'sourceMap'         => true,  // output .map file?
+                                'sourceMapOptions' => array(
+                                    'sourceRoot' => '/',
+                                    // an optional name of the generated code that this source map is associated with.
+                                    'filename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+                                    // url of the map
+                                    'url' => PATH_RELATIVE . 'tmp/css/' . $less_cname . ".map",
+                                    // absolute path to a file to write the map to
+                                    'write_to' =>  BASE . 'tmp/css/' . $less_cname . ".map",
+                                    // output source contents?
+                                    'source_contents' => false,
+                                    // base path for filename normalization
+                                    'base_path' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+                                ),
+                            ));
                         }
+                        if (MINIFY==1 && MINIFY_LESS==1) {
+                            $less->setEnvironment(array(
+                                'compress'         => true,  // compress output file?
+                            ));
+                        }
+                        $less->setVariables($vars);
+
+                        $less->parseFile(BASE . $less_pname);
+                        //FIXME check for new compilation here
+                        $new_cache = $less->getCss();
+                        $css_loc = pathinfo(BASE . $css_fname);
+                        if (!is_dir($css_loc['dirname'])) mkdir($css_loc['dirname']);  // create /css output folder if it doesn't exist
+                        file_put_contents(BASE . $css_fname, $new_cache);
+                        return true;
+                    } else {
+                        flash('notice', $less_pname. ' ' . gt('does not exist!'));
+                        return false;
+                    }
+                    break;
+                case 'less.php':
+                case 'lessphp':
+                default :
+                    if (is_file(BASE . $less_pname) && substr($less_pname, -5, 5) == ".less") {
+//                        if (!is_file(BASE . 'external/' . $less_compiler . '/lessc.inc.php'))
+//                            $less_compiler = 'less.php';
+                        include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         $less = new lessc;
-                        if (DEVELOPMENT && $less_compiler == 'less.php' && LESS_COMPILER_MAP) {
+                        if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler == 'less.php') {
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
                                 'sourceMap'         => true,  // output .map file?
@@ -403,12 +395,23 @@ class expCSS {
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
                             ));
                         }
-                        if (MINIFY==1&&MINIFY_LESS==1) {
+                        if (MINIFY==1 && MINIFY_LESS==1 && $less_compiler == 'less.php') {
                             $less->setOptions(array(
                                 'compress'         => true,  // compress output file?
                             ));
                         }
                         $less->setVariables($vars);
+
+                        // load the cache
+                        $less_cname = str_replace("/", "_", $less_pname);
+                        $cache_fname = BASE . 'tmp/css/' . $less_cname . ".cache";
+                        $cache = BASE . $less_pname;
+                        if (file_exists($cache_fname)) {
+                            $cache = unserialize(file_get_contents($cache_fname));
+                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                                $cache = BASE . $less_pname;  // force a compile if the vars have changed
+                            }
+                        }
 
                         try {
                             $file_updated = false;
@@ -439,9 +442,9 @@ class expCSS {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
                         return false;
                     }
-                } else {
-                    return true;  // the .css file already exists and we're not in develeopment
-                }
+            }
+        } else {
+            return true;  // the .css file already exists and we're not in develeopment
         }
     }
 
