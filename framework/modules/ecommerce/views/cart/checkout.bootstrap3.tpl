@@ -89,6 +89,7 @@
                 $(document).ready(function(){
                     $('#review-policy').click(function() {
                         BootstrapDialog.show({
+                            size: BootstrapDialog.SIZE_WIDE,
                             title: '{/literal}{'Store Policies'|gettext}{literal}',
                             message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},
                             buttons: [{
