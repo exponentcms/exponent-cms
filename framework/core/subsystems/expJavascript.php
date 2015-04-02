@@ -126,6 +126,31 @@ class expJavascript {
                     }
                 }
 
+                if (!empty($bootstrapjs)) {
+                    if (bs2()) {
+                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                    } else {
+                        $bootstrappath = 'external/bootstrap3/js/';
+                    }
+                    foreach ($bootstrapjs as $mod) {
+                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
+                            if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
+                                $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
+                            } else {
+                                $i++;
+                                $srt[$i] = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
+                            }
+                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                            if (strlen($srt[$i])+strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
+                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                            } else {
+                                $i++;
+                                $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
+                            }
+                        }
+                    }
+                }
+
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         if (strlen($srt[$i])+strlen(JQUERYUI_SCRIPT) <= $strlen && $i <= MINIFY_MAX_FILES) {
@@ -175,31 +200,6 @@ class expJavascript {
                            		    "css_primer"=>JQUERY_RELATIVE.'addons/css/'.$mod.'.css',
                            		    )
                            		);
-                            }
-                        }
-                    }
-                }
-
-                if (!empty($bootstrapjs)) {
-                    if (bs2()) {
-                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
-                    } else {
-                        $bootstrappath = 'external/bootstrap3/js/';
-                    }
-                    foreach ($bootstrapjs as $mod) {
-                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
-                            if (strlen($srt[$i])+strlen(PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
-                                $srt[$i] .= PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
-                            } else {
-                                $i++;
-                                $srt[$i] = PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js'.",";
-                            }
-                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                            if (strlen($srt[$i])+strlen(PATH_RELATIVE . $bootstrappath . $mod . '.js')<= $strlen && $i <= MINIFY_MAX_FILES) {
-                                $srt[$i] .= PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
-                            } else {
-                                $i++;
-                                $srt[$i] = PATH_RELATIVE . $bootstrappath . $mod . '.js' . ",";
                             }
                         }
                     }
@@ -269,6 +269,22 @@ class expJavascript {
                         ));                    }
                 }
 
+                if (!empty($bootstrapjs)) {
+                    $scripts .= "\t"."<!-- Twitter Bootstrap Scripts -->"."\r\n";
+                    if (bs2()) {
+                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                    } else {
+                        $bootstrappath = 'external/bootstrap3/js/';
+                    }
+                    foreach ($bootstrapjs as $mod) {
+                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
+                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                            $scripts .= "\t".'<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                        }
+                    }
+                }
+
                 if (!empty($jqueryjs)) foreach ($jqueryjs as $mod) {
                     if ($mod == 'jqueryui') {
                         $scripts .= "\t".'<script type="text/javascript" src="'.JQUERYUI_SCRIPT.'"></script>'."\r\n";
@@ -304,22 +320,6 @@ class expJavascript {
                            		    )
                            		);
                             }
-                        }
-                    }
-                }
-
-                if (!empty($bootstrapjs)) {
-                    $scripts .= "\t"."<!-- Twitter Bootstrap Scripts -->"."\r\n";
-                    if (bs2()) {
-                        $bootstrappath = 'external/bootstrap/js/bootstrap-';
-                    } else {
-                        $bootstrappath = 'external/bootstrap3/js/';
-                    }
-                    foreach ($bootstrapjs as $mod) {
-                        if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js')) {
-                            $scripts .= "\t".'<script type="text/javascript" src="'.PATH_RELATIVE.'themes/'.DISPLAY_THEME.'/js/'.$mod.'.js"></script>'."\r\n";
-                        } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
-                            $scripts .= "\t".'<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
                         }
                     }
                 }
