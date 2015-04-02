@@ -491,6 +491,13 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected $dirsCache = array();
 	
+	/**
+	 * Reference of $_SESSION[elFinder::$sessionCacheKey][$this->id]
+	 * 
+	 * @var array
+	 */
+	protected $sessionCache;
+	
 	/*********************************************************************/
 	/*                            INITIALIZATION                         */
 	/*********************************************************************/
@@ -609,6 +616,14 @@ abstract class elFinderVolumeDriver {
 		} else {
 			$this->encoding = null;
 		}
+		
+		$argInit = ($_SERVER['REQUEST_METHOD'] === 'POST')? !empty($_POST['init']) : !empty($_GET['init']);
+		
+		// session cache
+		if ($argInit || ! isset($_SESSION[elFinder::$sessionCacheKey][$this->id])) {
+			$_SESSION[elFinder::$sessionCacheKey][$this->id] = array();
+		}
+		$this->sessionCache = &$_SESSION[elFinder::$sessionCacheKey][$this->id];
 		
 		// default file attribute
 		$this->defaults = array(
@@ -743,6 +758,11 @@ abstract class elFinderVolumeDriver {
 		}
 
 		$this->rootName = empty($this->options['alias']) ? $this->basenameCE($this->root) : $this->options['alias'];
+
+		// This get's triggered if $this->root == '/' and alias is empty.
+		// Maybe modify _basename instead?
+		if ($this->rootName === '') $this->rootName = $this->separator;
+
 		$root = $this->stat($this->root);
 		
 		if (!$root) {
@@ -1169,7 +1189,7 @@ abstract class elFinderVolumeDriver {
 			}
 			
 			array_unshift($tree, $stat);
-			if (!$lineal && ($path != $this->root)) {
+			if (!$lineal) {
 				foreach ($this->gettree($path, 0) as $dir) {
 					if (!in_array($dir, $tree)) {
 						$tree[] = $dir;
@@ -2256,7 +2276,7 @@ abstract class elFinderVolumeDriver {
 	 * @return mixed
 	 * @author Naoki Sawada
 	 */
-	public function convEncIn($var, $restoreLocale = false, $unknown = '_') {
+	public function convEncIn($var = null, $restoreLocale = false, $unknown = '_') {
 		return (!$this->encoding)? $var : $this->convEnc($var, 'UTF-8', $this->encoding, $this->options['locale'], $restoreLocale, $unknown);
 	}
 	
@@ -2269,7 +2289,7 @@ abstract class elFinderVolumeDriver {
 	 * @return mixed
 	 * @author Naoki Sawada
 	 */
-	public function convEncOut($var, $restoreLocale = true, $unknown = '_') {
+	public function convEncOut($var = null, $restoreLocale = true, $unknown = '_') {
 		return (!$this->encoding)? $var : $this->convEnc($var, $this->encoding, 'UTF-8', $this->options['locale'], $restoreLocale, $unknown);
 	}
 	
@@ -2393,6 +2413,23 @@ abstract class elFinderVolumeDriver {
 		return $size;
 	}
 	
+	/**
+	 * Delete dirctory trees
+	 *
+	 * @param string $localpath path need convert encoding to server encoding
+	 * @return boolean
+	 * @author Naoki Sawada
+	 */
+	protected function delTree($localpath) {
+		foreach ($this->_scandir($localpath) as $p) {
+			@set_time_limit(30);
+			$stat = $this->stat($this->convEncOut($p));
+			$this->convEncIn();
+			($stat['mime'] === 'directory')? $this->delTree($p) : $this->_unlink($p);
+		}
+		return $this->_rmdir($localpath);
+	}
+	
 	/*********************** file stat *********************/
 	
 	/**
@@ -2480,12 +2517,22 @@ abstract class elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function stat($path) {
-		if ($path === false) {
+		if ($path === false || is_null($path)) {
 			return false;
 		}
-		return isset($this->cache[$path])
+		$is_root = ($path === $this->root);
+		if ($is_root) {
+			if (isset($this->sessionCache['rootstat'])) {
+				return $this->cache[$path] = unserialize(base64_decode($this->sessionCache['rootstat']));
+			}
+		}
+		$ret = isset($this->cache[$path])
 			? $this->cache[$path]
 			: $this->updateCache($path, $this->convEncOut($this->_stat($this->convEncIn($path))));
+		if ($is_root) {
+			$this->sessionCache['rootstat'] = base64_encode(serialize($ret));
+		}
+		return $ret;
 	}
 	
 	/**
@@ -2852,6 +2899,7 @@ abstract class elFinderVolumeDriver {
 		$result = array();
 
 		foreach($this->scandirCE($path) as $p) {
+			@set_time_limit(30);
 			$stat = $this->stat($p);
 
 			if (!$stat) { // invalid links
@@ -3048,16 +3096,11 @@ abstract class elFinderVolumeDriver {
 		}
 		
 		if ($stat['mime'] == 'directory') {
-			foreach ($this->scandirCE($path) as $p) {
-				$name = $this->basenameCE($p);
-				if ($name != '.' && $name != '..' && !$this->remove($p)) {
-					return false;
-				}
-			}
-			if ($this->convEncOut(!$this->_rmdir($this->convEncIn($path)))) {
+			$ret = $this->delTree($this->convEncIn($path));
+			$this->convEncOut();
+			if (!$ret) {
 				return $this->setError(elFinder::ERROR_RM, $this->path($path));
 			}
-			
 		} else {
 			if ($this->convEncOut(!$this->_unlink($this->convEncIn($path)))) {
 				return $this->setError(elFinder::ERROR_RM, $this->path($path));
@@ -3558,6 +3601,7 @@ abstract class elFinderVolumeDriver {
 	protected function rmTmb($stat) {
 		if ($stat['mime'] === 'directory') {
 			foreach ($this->scandirCE($this->decode($stat['hash'])) as $p) {
+				@set_time_limit(30);
 				$name = $this->basenameCE($p);
 				$name != '.' && $name != '..' && $this->rmTmb($this->stat($p));
 			}
@@ -3689,8 +3733,9 @@ abstract class elFinderVolumeDriver {
 			return $arcs;
 		}
 		
-		if ($use_cache && isset($_SESSION['ELFINDER_ARCHIVERS_CACHE']) && is_array($_SESSION['ELFINDER_ARCHIVERS_CACHE'])) {
-			return $_SESSION['ELFINDER_ARCHIVERS_CACHE'];
+		$sessionKey = elFinder::$sessionCacheKey . ':ARCHIVERS_CACHE';
+		if ($use_cache && isset($_SESSION[$sessionKey]) && is_array($_SESSION[$sessionKey])) {
+			return $_SESSION[$sessionKey];
 		}
 		
 		$this->procExec('tar --version', $o, $ctar);
@@ -3743,19 +3788,19 @@ abstract class elFinderVolumeDriver {
 		$this->procExec('7za --help', $o, $c);
 		if ($c == 0) {
 			$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7za', 'argc' => 'a', 'ext' => '7z');
-			$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7za', 'argc' => 'e -y', 'ext' => '7z');
+			$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7za', 'argc' => 'x -y', 'ext' => '7z');
 			
 			if (empty($arcs['create']['application/zip'])) {
 				$arcs['create']['application/zip'] = array('cmd' => '7za', 'argc' => 'a -tzip', 'ext' => 'zip');
 			}
 			if (empty($arcs['extract']['application/zip'])) {
-				$arcs['extract']['application/zip'] = array('cmd' => '7za', 'argc' => 'e -tzip -y', 'ext' => 'zip');
+				$arcs['extract']['application/zip'] = array('cmd' => '7za', 'argc' => 'x -tzip -y', 'ext' => 'zip');
 			}
 			if (empty($arcs['create']['application/x-tar'])) {
 				$arcs['create']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'a -ttar', 'ext' => 'tar');
 			}
 			if (empty($arcs['extract']['application/x-tar'])) {
-				$arcs['extract']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'e -ttar -y', 'ext' => 'tar');
+				$arcs['extract']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'x -ttar -y', 'ext' => 'tar');
 			}
 		} else if (substr(PHP_OS,0,3) === 'WIN') {
 			// check `7z` for Windows server.
@@ -3763,25 +3808,46 @@ abstract class elFinderVolumeDriver {
 			$this->procExec('7z', $o, $c);
 			if ($c == 0) {
 				$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7z', 'argc' => 'a', 'ext' => '7z');
-				$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7z', 'argc' => 'e -y', 'ext' => '7z');
+				$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7z', 'argc' => 'x -y', 'ext' => '7z');
 				
 				if (empty($arcs['create']['application/zip'])) {
 					$arcs['create']['application/zip'] = array('cmd' => '7z', 'argc' => 'a -tzip', 'ext' => 'zip');
 				}
 				if (empty($arcs['extract']['application/zip'])) {
-					$arcs['extract']['application/zip'] = array('cmd' => '7z', 'argc' => 'e -tzip -y', 'ext' => 'zip');
+					$arcs['extract']['application/zip'] = array('cmd' => '7z', 'argc' => 'x -tzip -y', 'ext' => 'zip');
 				}
 				if (empty($arcs['create']['application/x-tar'])) {
 					$arcs['create']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'a -ttar', 'ext' => 'tar');
 				}
 				if (empty($arcs['extract']['application/x-tar'])) {
-					$arcs['extract']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'e -ttar -y', 'ext' => 'tar');
+					$arcs['extract']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'x -ttar -y', 'ext' => 'tar');
 				}
 			}
 		}
 		
-		$_SESSION['ELFINDER_ARCHIVERS_CACHE'] = $arcs;
+		$_SESSION[$sessionKey] = $arcs;
 		return $arcs;
+	}
+
+	/**
+	 * Remove directory recursive on local file system
+	 *
+	 * @param string $dir Target dirctory path
+	 * @return boolean
+	 * @author Naoki Sawada
+	 */
+	public function rmdirRecursive($dir) {
+		if (is_dir($dir)) {
+			foreach (array_diff(scandir($dir), array('.', '..')) as $file) {
+				@set_time_limit(30);
+				$path = $dir . '/' . $file;
+				(is_dir($path)) ? $this->rmdirRecursive($path) : @unlink($path);
+			}
+			return @rmdir($dir);
+		} else if (is_file($dir)) {
+			return @unlink($dir);
+		}
+		return false;
 	}
 
 	/**==================================* abstract methods *====================================**/

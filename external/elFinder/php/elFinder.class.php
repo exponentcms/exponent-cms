@@ -40,6 +40,13 @@ class elFinder {
 	public static $locale = '';
 	
 	/**
+	 * elFinder global sessionCacheKey
+	 * 
+	 * @var string
+	 */
+	public static $sessionCacheKey = '';
+	
+	/**
 	 * Session key of net mount volumes
 	 * @var string
 	 */
@@ -235,6 +242,15 @@ class elFinder {
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
+		self::$sessionCacheKey = !empty($opts['sessionCacheKey']) ? $opts['sessionCacheKey'] : 'elFinderCaches';
+		
+		// check session cache
+		$_optsMD5 = md5(serialize($opts['roots']));
+		if (! isset($_SESSION[self::$sessionCacheKey]) || $_SESSION[self::$sessionCacheKey]['_optsMD5'] !== $_optsMD5) {
+			$_SESSION[self::$sessionCacheKey] = array(
+				'_optsMD5' => $_optsMD5
+			);
+		}
 		
 		// setlocale and global locale regists to elFinder::locale
 		self::$locale = !empty($opts['locale']) ? $opts['locale'] : 'en_US.UTF-8';
@@ -291,16 +307,20 @@ class elFinder {
 			if (class_exists($class)) {
 				$volume = new $class();
 
-				if ($volume->mount($o)) {
-					// unique volume id (ends on "_") - used as prefix to files hash
-					$id = $volume->id();
-					
-					$this->volumes[$id] = $volume;
-					if (!$this->default && $volume->isReadable()) {
-						$this->default = $this->volumes[$id]; 
+				try {
+					if ($volume->mount($o)) {
+						// unique volume id (ends on "_") - used as prefix to files hash
+						$id = $volume->id();
+						
+						$this->volumes[$id] = $volume;
+						if (!$this->default && $volume->isReadable()) {
+							$this->default = $this->volumes[$id]; 
+						}
+					} else {
+						$this->mountErrors[] = 'Driver "'.$class.'" : '.implode(' ', $volume->error());
 					}
-				} else {
-					$this->mountErrors[] = 'Driver "'.$class.'" : '.implode(' ', $volume->error());
+				} catch (Exception $e) {
+					$this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
 				}
 			} else {
 				$this->mountErrors[] = 'Driver "'.$class.'" does not exists';
@@ -428,16 +448,16 @@ class elFinder {
 
 	private function session_expires() {
 		
-		if (!isset($_SESSION['LAST_ACTIVITY'])) {
-			$_SESSION['LAST_ACTIVITY'] = time();
+		if (!isset($_SESSION[self::$sessionCacheKey . ':LAST_ACTIVITY'])) {
+			$_SESSION[self::$sessionCacheKey . ':LAST_ACTIVITY'] = time();
 			return false;
 		}
 
-		if ( ($this->timeout > 0) && (time() - $_SESSION['LAST_ACTIVITY'] > $this->timeout) ) {
+		if ( ($this->timeout > 0) && (time() - $_SESSION[self::$sessionCacheKey . ':LAST_ACTIVITY'] > $this->timeout) ) {
 			return true;
 		}
 
-		$_SESSION['LAST_ACTIVITY'] = time();
+		$_SESSION[self::$sessionCacheKey . ':LAST_ACTIVITY'] = time();
 		return false;	
 	}
 	
@@ -767,6 +787,9 @@ class elFinder {
 			$result['uplMaxSize'] = ini_get('upload_max_filesize');
 			$result['uplMaxFile'] = ini_get('max_file_uploads');
 			$result['netDrivers'] = array_keys(self::$netDrivers);
+			if ($volume) {
+				$result['cwd']['root'] = $volume->root();
+			}
 		}
 		
 		return $result;

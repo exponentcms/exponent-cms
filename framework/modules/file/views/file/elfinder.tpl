@@ -181,7 +181,7 @@
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
                 commandsOptions : {
                     edit : {
-                        mimes : ['text/plain', 'text/html', 'text/javascript'],
+                        mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
                         editors : [
                             {
                                 mimes : ['text/html'],

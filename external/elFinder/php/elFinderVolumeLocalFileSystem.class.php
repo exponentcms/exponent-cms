@@ -630,6 +630,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				if ($name != '.' && $name != '..') {
 					$p = $path.DIRECTORY_SEPARATOR.$name;
 					if (is_link($p) || !$this->nameAccepted($name)) {
+						$this->setError(elFinder::ERROR_SAVE, $name);
 						return true;
 					}
 					if (is_dir($p) && $this->_findSymlinks($p)) {
@@ -659,12 +660,16 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _extract($path, $arc) {
 		
 		if ($this->quarantine) {
-			$dir     = $this->quarantine.DIRECTORY_SEPARATOR.str_replace(' ', '_', microtime()).basename($path);
+
+			$dir     = $this->quarantine.DIRECTORY_SEPARATOR.md5(basename($path).mt_rand());
 			$archive = $dir.DIRECTORY_SEPARATOR.basename($path);
 			
 			if (!@mkdir($dir)) {
 				return false;
 			}
+			
+			// insurance unexpected shutdown
+			register_shutdown_function(array($this, 'rmdirRecursive'), realpath($dir));
 			
 			chmod($dir, 0777);
 			
@@ -694,29 +699,26 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			
 			// find symlinks
 			$symlinks = $this->_findSymlinks($dir);
-			// remove arc copy
-			$this->remove($dir);
 			
 			if ($symlinks) {
-				return $this->setError(elFinder::ERROR_ARC_SYMLINKS);
+				$this->delTree($dir);
+				return $this->setError(array_merge($this->error, array(elFinder::ERROR_ARC_SYMLINKS)));
 			}
 
 			// check max files size
 			if ($this->options['maxArcFilesSize'] > 0 && $this->options['maxArcFilesSize'] < $this->archiveSize) {
+				$this->delTree($dir);
 				return $this->setError(elFinder::ERROR_ARC_MAXSIZE);
 			}
 			
-			
-			
 			// archive contains one item - extract in archive dir
-			if (count($ls) == 1) {
-				$this->_unpack($path, $arc);
-				$result = dirname($path).DIRECTORY_SEPARATOR.$ls[0];
-				
-
+			$src = $dir.DIRECTORY_SEPARATOR.$ls[0];
+			if (count($ls) === 1 && is_file($src)) {
+				$name = $ls[0];
 			} else {
 				// for several files - create new directory
 				// create unique name for directory
+				$src = $dir;
 				$name = basename($path);
 				if (preg_match('/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/i', $name, $m)) {
 					$name = substr($name, 0,  strlen($name)-strlen($m[0]));
@@ -725,17 +727,16 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				if (file_exists($test) || is_link($test)) {
 					$name = $this->uniqueName(dirname($path), $name, '-', false);
 				}
-				
-				$result  = dirname($path).DIRECTORY_SEPARATOR.$name;
-				$archive = $result.DIRECTORY_SEPARATOR.basename($path);
-
-				if (!$this->_mkdir(dirname($path), $name) || !copy($path, $archive)) {
-					return false;
-				}
-				
-				$this->_unpack($archive, $arc);
-				@unlink($archive);
 			}
+			
+			$result  = dirname($path).DIRECTORY_SEPARATOR.$name;
+
+			if (! @rename($src, $result)) {
+				$this->delTree($dir);
+				return false;
+			}
+			
+			is_dir($dir) && $this->delTree($dir);
 			
 			return file_exists($result) ? $result : false;
 		}
@@ -777,6 +778,17 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 */
 	protected function getWorkFile($path) {
 		return $path;
+	}
+
+	/**
+	 * Delete dirctory trees
+	 *
+	 * @param string $localpath path need convert encoding to server encoding
+	 * @return boolean
+	 * @author Naoki Sawada
+	 */
+	protected function delTree($localpath) {
+		return $this->rmdirRecursive($localpath);
 	}
 
 } // END class 
