@@ -168,6 +168,7 @@
                                 var yesbtn = "{/literal}{"Delete Page"|gettext}{literal}";
                             }
                             BootstrapDialog.show({
+                                type: BootstrapDialog.TYPE_DANGER,
                                 title: "{/literal}{'Remove'|gettext}{literal} \""+obj.text+"\" {/literal}{'from hierarchy'|gettext}{literal}",
                                 message: message,
                                 buttons: [{
