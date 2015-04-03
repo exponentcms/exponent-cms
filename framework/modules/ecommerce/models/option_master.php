@@ -31,17 +31,22 @@ class option_master extends expRecord {
 		
 	public function __construct($params=null, $get_assoc=true, $get_attached=true) {
 	    global $db;
+
 	    parent::__construct($params, $get_assoc, $get_attached);
         if (!empty($this->id)) {
             $this->timesImplemented = $db->countObjects('option', 'enable=1 AND option_master_id='.$this->id);
         } else {
             $this->timesImplemented = 0;
         }
+        if (!empty($this->product_id))
+            $this->grouping_sql = " AND optiongroup_master_id='".$this->optiongroup_master_id."'";
 	}
     
     public function update($params=array())
     {
         global $db;
+
+        $this->grouping_sql = " AND optiongroup_master_id='".$this->optiongroup_master_id."'";
         //need to accomodate rank so can't call parent
         //eDebug($params, true);
         //$this->beforeSave();        
@@ -64,9 +69,13 @@ class option_master extends expRecord {
             $obj->rank = $params['rank'];
             $db->updateObject($obj, 'option_master');   
         } 
-           
     }
-	
+
+    public function beforeSave() {
+        $this->grouping_sql = " AND optiongroup_master_id='".$this->optiongroup_master_id."'";
+        parent::beforeSave();
+    }
+
 }
 
 ?>

@@ -876,13 +876,23 @@ function createValidId($id) {
 }
 
 function curPageURL() {
-    $pageURL = 'http';
-    if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
-    $pageURL .= "://";
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+    if (expJavascript::inAjaxAction()) {
+        $new_request = $_REQUEST;
+        unset($new_request['ajax_action']);
+        if ($new_request['controller'] == 'store' && $new_request['action'] == 'edit')
+            unset($new_request['view']);
+        $pageURL = makeLink($new_request);
     } else {
-        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $pageURL = 'http';
+        if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
+            $pageURL .= "s";
+        }
+        $pageURL .= "://";
+        if ($_SERVER["SERVER_PORT"] != "80") {
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        } else {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        }
     }
     return $pageURL;
 }

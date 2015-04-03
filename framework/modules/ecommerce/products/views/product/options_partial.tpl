@@ -28,23 +28,23 @@
                 <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
                     <thead>
                         <tr>
-                            <th colspan="2">
+                            <th>
                                 {*<h2>{$group->title}</h2>*}
                                 {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
                                 {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
                                 {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
                                 {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
                             </th>
-                            <th colspan="4">
+                            {*<th colspan="4">*}
                                 {*{control type="hidden" name="optiongroups[`$group->title`][rank]" value=$group->rank}*}
-                                {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
-                            </th>
-                        </tr>
-                        <tr>
+                                {*{control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}*}
+                            {*</th>*}
+                        {*</tr>*}
+                        {*<tr>*}
                             <th colspan="2">
                                 {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple description='Displayed as a dropdown'|gettext}
                             </th>
-                            <th colspan="4">
+                            <th colspan="3">
                                 {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Multiple"|gettext value=1 checked=$group->allow_multiple description='Displayed as checkboxes'|gettext}
                             </th>
                         </tr>

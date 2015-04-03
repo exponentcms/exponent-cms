@@ -34,6 +34,9 @@
         </ul>
         {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext} {*'Click on the \'More\' link to enter the option\'s weight.'|gettext*}{br}
     </blockquote>
+    {if $permissions.manage}
+        {ddrerank items=$record->optiongroup only="product_id=`$record->id`" model=optiongroup label=$record->title|cat:' '|cat:'Options'|gettext}
+    {/if}
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
 	<h4><em>({'Options'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>

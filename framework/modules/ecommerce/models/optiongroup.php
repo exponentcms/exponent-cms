@@ -56,6 +56,18 @@ class optiongroup extends expRecord {
             }            
             usort($this->option, array("optiongroup_master", "sortOptions"));
         }
+        if (!empty($this->product_id))
+            $this->grouping_sql = " AND product_id='".$this->product_id."'";
+    }
+
+    function update($params=array()) {
+        $this->grouping_sql = " AND product_id='".$this->product_id."'";
+        parent::update($params);
+    }
+
+    public function beforeSave() {
+        $this->grouping_sql = " AND product_id='".$this->product_id."'";
+        parent::beforeSave();
     }
 
     public function save($validate=false, $force_no_revisions = false)
