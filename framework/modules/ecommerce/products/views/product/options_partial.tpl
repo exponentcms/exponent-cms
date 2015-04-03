@@ -65,7 +65,7 @@
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
                                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
-                                    {*<a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>*}
+                                    <a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>
                                 </td>
                                 <td>{control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][show_input]" label='Needs Input'|gettext value=1 checked=$option->show_input}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>

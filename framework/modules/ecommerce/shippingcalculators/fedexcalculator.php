@@ -118,7 +118,9 @@ class fedexcalculator extends shippingcalculator {
         foreach ($order->orderitem as $item) {
             for ($i = 0; $i < $item->quantity; $i++) {
                 if (empty($item->product->no_shipping) && $item->product->requiresShipping == true) {
-                    $lbs    = empty($item->product->weight) ? $this->configdata['default_max_weight'] : $item->product->weight;
+//                    $lbs    = empty($item->product->weight) ? $this->configdata['default_max_weight'] : $item->product->weight;
+                    // calculate option weight
+                    $lbs    = empty($item->getWeight()) ? $this->configdata['default_max_weight'] : $item->getWeight();
                     $width  = empty($item->product->width) ? $this->configdata['default_width'] : $item->product->width;
                     $height = empty($item->product->height) ? $this->configdata['default_height'] : $item->product->height;
                     $length = empty($item->product->length) ? $item->product->width : $item->product->length;
