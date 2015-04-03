@@ -147,8 +147,8 @@
 	margin-bottom: 0;
 }
 
-.options-partial table.options .radio label {
-	margin-top: 10px;
+.options-partial table.options .radio input {
+	margin-top: 2px;
 }
 
 .options-partial input.text.form-control {
