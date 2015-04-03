@@ -120,7 +120,7 @@ class checkboxcontrol extends formcontrol {
             $html .= '<input type="hidden" name="' . $name . '" value="0" />';
         }
 
-        $html .= '<input' . $idname . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
+        $html .= '<input id="' . $idname . '" type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->default)) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox form-control"' : ' class="checkbox form-control"';
