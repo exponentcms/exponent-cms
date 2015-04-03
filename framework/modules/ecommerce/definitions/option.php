@@ -48,6 +48,8 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_default'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'show_input'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

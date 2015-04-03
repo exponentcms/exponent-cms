@@ -23,8 +23,9 @@
 class optiongroup extends expRecord {
 	public $has_many = array('option');
    
-   public $default_sort_field = 'rank';
-   public $default_sort_direction = 'ASC';
+    public $default_sort_field = 'rank';
+    public $default_sort_direction = 'ASC';
+    public $input_needed = false;
    
 //    protected $attachable_item_types = array();
 	
@@ -35,6 +36,7 @@ class optiongroup extends expRecord {
         
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         global $db;
+
         parent::__construct($params, $get_assoc, $get_attached);
         if (!empty($this->id)) {
             $this->timesImplemented = $db->countObjects('optiongroup', 'optiongroup_master_id='.$this->id);
@@ -48,15 +50,18 @@ class optiongroup extends expRecord {
             foreach ($this->option as &$opt)
             {
                 $om = new option_master($opt->option_master_id);
-                $opt->rank = $om->rank;    
+                $opt->rank = $om->rank;
+                if ($opt->show_input)
+                    $this->input_needed = true;
             }            
             usort($this->option, array("optiongroup_master", "sortOptions"));
         }
     }
-    
+
     public function save($validate=false, $force_no_revisions = false)
     {
         global $db;
+
         $obj = new stdClass();
         $obj->id = $this->id;
         $obj->optiongroup_master_id = $this->optiongroup_master_id;
@@ -98,6 +103,7 @@ class optiongroup extends expRecord {
         else if ($a->rank > $b->rank) return 1;
         else if ($a->rank == $b->rank) return 0; 
     }
+
 }
 
 ?>

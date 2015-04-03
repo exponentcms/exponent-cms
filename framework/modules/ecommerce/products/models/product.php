@@ -225,6 +225,8 @@ class product extends expRecord {
             if (empty($params['options_shown'])) {
                 $params['option_error'] = true;
             } else {
+                $optional_input = false;
+                $needs_input = false;
                 foreach ($this->optiongroup as $og) {
                     if ($og->required) {
                         $err = true;
@@ -243,6 +245,16 @@ class product extends expRecord {
                         }
                     }
                     //eDebug($og->title . ":" .$og->required);
+                    if ($og->input_needed) {
+                        $optional_input = true;
+                        foreach ($params['options'][$og->id] as $opt) {
+                            //see if the selected option requires user input
+                            $opt_input = new option($opt);
+                            if (!empty($opt_input->show_input)) {
+                                $needs_input = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -251,7 +263,7 @@ class product extends expRecord {
         //eDebug($this,true);
 //        if (!empty($this->user_input_fields)) foreach ($this->user_input_fields as $uifkey => $uif) {
         if ($this->hasUserInputFields()) {
-            if (empty($params['input_shown'])) {
+            if (($optional_input && $needs_input) | (!$optional_input && empty($params['input_shown']))) {
                 $params['input_error'] = true;
             } else {
                 $user_input_info = array();

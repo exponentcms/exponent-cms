@@ -28,7 +28,7 @@
                 <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
                     <thead>
                         <tr>
-                            <th colspan="1">
+                            <th colspan="2">
                                 {*<h2>{$group->title}</h2>*}
                                 {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
                                 {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
@@ -41,7 +41,7 @@
                             </th>
                         </tr>
                         <tr>
-                            <th colspan="1">
+                            <th colspan="2">
                                 {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple description='Displayed as a dropdown'|gettext}
                             </th>
                             <th colspan="4">
@@ -49,7 +49,8 @@
                             </th>
                         </tr>
                         <tr class="column-label">
-                            <th>{'Display as Option'|gettext}</th>
+                            <th>{'Option Available'|gettext}</th>
+                            <th>{'User Input'|gettext}</th>
                             <th>{'Adjust'|gettext}</th>
                             <th>{'Modifier'|gettext}</th>
                             <th>{'Amount'|gettext}</th>
@@ -59,13 +60,14 @@
                     <tbody>
                         {foreach key=key from=$group->options item=option}
                             <tr class="{cycle values='odd,even' advance=false}">
-                                <td width="50%">
+                                <td>
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][id]" value=$option->id}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
                                     {control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][enable]" label=$option->title value=1 checked=$option->enable}
                                     {*<a rel="mo-{$key}-{$group->title|strip:'_'}" class="togglelink" href="#">+{'More'|gettext}...</a>*}
                                 </td>
+                                <td>{control type="checkbox" name="optiongroups[`$group->title`][options][`$option->title`][show_input]" label='Needs Input'|gettext value=1 checked=$option->show_input}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][updown]" items="+,-" values="+,-" value=$option->updown}</td>
                                 <td>{control type="dropdown" name="optiongroups[`$group->title`][options][`$option->title`][modtype]" items="$,%" values="$,%" value=$option->modtype}</td>
                                 <td>{control type="text" name="optiongroups[`$group->title`][options][`$option->title`][amount]" size=6 value=$option->amount}</td>
