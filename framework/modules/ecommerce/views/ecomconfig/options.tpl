@@ -17,6 +17,9 @@
     .optiontable {
         border:1px solid red;
         margin : 12px;
+    }
+    .optiontable td,
+    .optiontable th {
         padding : 12px;
     }
 {/css}
@@ -40,10 +43,10 @@
                     <tr>
                         <th>
                             <h3>
-                                {$group->title}
+                                {$group->title} <span class="badge" title="{'Number times used'|gettext}">{$group->timesImplemented}</span>
                             </h3>
                         </th>
-                        <th> </th>
+                        {*<th> </th>*}
                         <th>
                             {icon class=edit action=edit_optiongroup_master record=$group}
                             {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
@@ -52,15 +55,15 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan=3>
+                        <td colspan=2>
                             {icon class=add action=edit_option_master optiongroup_master_id=$group->id text='Add an option to'|gettext|cat:' '|cat:$group->title}
                             {foreach name=options from=$group->option_master item=optname}
                                 <tr>
                                     <td>
                                         {*({$optname->id}) {$optname->title}({$optname->rank})*}
-                                        {$optname->title}
+                                        {$optname->title} <span class="badge" title="{'Number times used'|gettext}">{$optname->timesImplemented}</span>
                                     </td>
-                                    <td> </td>
+                                    {*<td> </td>*}
                                     <td>
                                         {icon class=edit action=edit_option_master record=$optname}
                                         {if $optname->timesImplemented > 0}

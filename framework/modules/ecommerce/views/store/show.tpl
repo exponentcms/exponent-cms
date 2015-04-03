@@ -373,6 +373,10 @@
                 {* NOTE display product options *}
                 {if $product->show_options}
                     {exp_include file="options.tpl"}
+                    <div>
+                        <strong>{'Total Cost of Options'|gettext}:</strong>
+                        <span id="item-price">$0.00</span>
+                    </div>
                 {/if}
 
                 <div id="child-products" class="exp-ecom-table">
@@ -474,7 +478,6 @@
             {literal}
             YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                 Y.one('#submit-chiprodsSubmit').on('click',function(e){
-                    e.halt();
                     var frm = Y.one('#child-products');
                     var chcks = frm.all('input[type="checkbox"]');
                     var txts = frm.all('input[type="text"]');
@@ -493,8 +496,9 @@
 
                     if (bxchkd==0 || msg!="") {
                         alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
+                        e.halt();
                     } else {
-                        Y.one('#child-products-form').submit();
+//                        Y.one('#child-products-form').submit();
                     };
                 });
             });

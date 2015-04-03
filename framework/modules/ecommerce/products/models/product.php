@@ -238,7 +238,7 @@ class product extends expRecord {
                             }
                         }
                         if ($err) {
-                            $params['error'] .= 'You must select an option from the ' . $og->title . ' options below before you can add it to your cart. <br/>';
+                            $params['error'] .= gt('You must select an option from the') . ' ' . $og->title . ' ' . gt('options below before you can add this to your cart.') . ' <br/>';
                             $params['option_error'] = true;
                         }
                     }
@@ -260,7 +260,7 @@ class product extends expRecord {
                         if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length']) {
                             //flash('error', 'test');
                             //redirect_to(array('controller'=>cart, 'action'=>'displayForm', 'form'=>'addToCart', 'product_id'=>$this->id, 'product_type'=>$this->product_type));
-                            $params['error'] .= $uif['name'] . ' field has a minimum requirement of ' . $uif['min_length'] . ' characters.<br/>';
+                            $params['error'] .= $uif['name'] . ' ' . gt('field has a minimum requirement of') . ' ' . $uif['min_length'] . ' ' . gt('characters.') . '<br/>';
                         } else {
                             if (strlen(
                                     $params['user_input_fields'][$uifkey]
@@ -268,7 +268,7 @@ class product extends expRecord {
                             ) {
                                 //flash('error', );
                                 //redirect_to(array('controller'=>cart, 'action'=>'displayForm', 'form'=>'addToCart', 'product_id'=>$this->id, 'product_type'=>$this->product_type));
-                                $params['error'] .= $uif['name'] . ' field has a maximum requirement of ' . $uif['max_length'] . ' characters.<br/>';
+                                $params['error'] .= $uif['name'] . ' ' . gt('field has a maximum requirement of') . ' ' . $uif['max_length'] . ' ' . gt('characters.') . '<br/>';
                             }
                         }
                     }
@@ -354,7 +354,7 @@ class product extends expRecord {
                     $cost = $selected_option->modtype == '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
                     $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
                     $price = $price + $cost;
-                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount);
+                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $selected_option->optionweight);
                 }
             }
         }

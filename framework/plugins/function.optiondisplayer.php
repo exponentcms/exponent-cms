@@ -66,7 +66,8 @@ function smarty_function_optiondisplayer($params,&$smarty) {
     
     //if((isset() || $group->required == false) $includeblank = $params['includeblank'] ;
     //elseif((isset($params['includeblank']) && $params['includeblank'] == false) || $group->required == true) $includeblank = false;
-    
+
+    // only include a blank if not 'required', otherwise we need to display it, or if forced by param
     $includeblank = $group->required == false && !isset($params['includeblank']) ? gt('-- Please Select an Option --') : $params['includeblank'];
     
     $template = expTemplate::get_common_template($view, $smarty->getTemplateVars('__loc'), 'options');

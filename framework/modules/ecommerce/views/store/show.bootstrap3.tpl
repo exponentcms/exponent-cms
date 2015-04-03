@@ -317,7 +317,7 @@
                          {control type="hidden" name="product_type" value="`$product->product_type`"}
                          {*control name="qty" type="text" value="`$product->minimum_order_quantity`" size=3 maxlength=5 class="lstng-qty"*}
 
-                         {* NOTE display product options *}
+                     {* NOTE display product options *}
                      <div class="col-sm-6">
                          {if $product->show_options}
                              {exp_include file="options.tpl"}
@@ -384,6 +384,10 @@
                     {* NOTE display product options *}
                     {if $product->show_options}
                         {exp_include file="options.tpl"}
+                        <div>
+                            <strong>{'Total Cost of Options'|gettext}:</strong>
+                            <span id="item-price">$0.00</span>
+                        </div>
                     {/if}
 
                     <div id="child-products">
@@ -485,7 +489,6 @@
                 {literal}
                 YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
                     Y.one('#submit-chiprodsSubmit').on('click',function(e){
-                        e.halt();
                         var frm = Y.one('#child-products');
                         var chcks = frm.all('input[type="checkbox"]');
                         var txts = frm.all('input[type="text"]');
@@ -504,8 +507,9 @@
 
                         if (bxchkd==0 || msg!="") {
                             alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
+                            e.halt();
                         } else {
-                            Y.one('#child-products-form').submit();
+//                            Y.one('#child-products-form').submit();
                         };
                     });
                 });
@@ -517,7 +521,7 @@
 
         {if $product->crosssellItem|@count >= 1}
             <div class="col-sm-12">
-                 <div class="products ipr{$config.images_per_row|default:3} related-products">
+                 <div class="products related-products">
                      <{$config.item_level|default:'h2'}>{"Related Items"|gettext}</{$config.item_level|default:'h2'}>
 
                      {counter assign="ipr" name="ipr" start=1}

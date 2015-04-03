@@ -21,37 +21,45 @@
 	{foreach from=$optiongroups item=group}
         <div class="panel">
             <div class="hd">
-                <h2 title="{'Click to expand'|gettext}">{'Product Option'|gettext} - <strong>{$group->title}</strong></h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
+                <h2 title="{'Click to expand'|gettext}">{'Product Options'|gettext} - <strong>{$group->title}</strong></h2><a href="#" class="yexpand">{'Expand'|gettext}</a>
             </div>
             <div class="bd collapsed">
                 <!-- cke lazy -->
                 <table class="options exp-skin-table" summary="{$group->title} {'Product Options'|gettext}">
                     <thead>
                         <tr>
-                            <th colspan="5">
+                            <th colspan="1">
                                 {*<h2>{$group->title}</h2>*}
                                 {control type="hidden" name="optiongroups[`$group->title`][id]" value=$group->id}
                                 {control type="hidden" name="optiongroups[`$group->title`][title]" value=$group->title}
                                 {control type="hidden" name="optiongroups[`$group->title`][optiongroup_master_id]" value=$group->optiongroup_master_id}
-                                {control type="hidden" name="optiongroups[`$group->title`][rank]" value=$group->rank}
-                                {*{control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}*}
                                 {control type="checkbox" nowrap=true name="optiongroups[`$group->title`][required]" label="Required"|gettext value=1 checked=$group->required}
+                            </th>
+                            <th colspan="4">
+                                {*{control type="hidden" name="optiongroups[`$group->title`][rank]" value=$group->rank}*}
+                                {control type="text" name="optiongroups[`$group->title`][rank]" label="Rank"|gettext size="3" value=$group->rank}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th colspan="1">
                                 {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Single"|gettext value=0 checked=$group->allow_multiple description='Displayed as a dropdown'|gettext}
+                            </th>
+                            <th colspan="4">
                                 {control type="radio" nowrap=true name="optiongroups[`$group->title`][allow_multiple]" label="Select Multiple"|gettext value=1 checked=$group->allow_multiple description='Displayed as checkboxes'|gettext}
                             </th>
                         </tr>
                         <tr class="column-label">
-                            <th>{'Label'|gettext}</th>
+                            <th>{'Display as Option'|gettext}</th>
                             <th>{'Adjust'|gettext}</th>
                             <th>{'Modifier'|gettext}</th>
                             <th>{'Amount'|gettext}</th>
-                            <th>{'Default'|gettext}</th>
+                            <th id="option-{$group->id}" title="{'Click to clear default'|gettext}">{'Default'|gettext}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {foreach key=key from=$group->options item=option}
                             <tr class="{cycle values='odd,even' advance=false}">
-                                <td width="80%">
+                                <td width="50%">
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][id]" value=$option->id}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][title]" value=$option->title}
                                     {control type="hidden" name="optiongroups[`$group->title`][options][`$option->title`][option_master_id]" value=$option->option_master_id}
@@ -65,7 +73,7 @@
                             </tr>
                             <tr class="{cycle values='odd,even'}" id="mo-{$key}-{$group->title|strip:'_'}" style="display:none">
                                 <td colspan=5>
-                                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight"|gettext size=6 value=$option->amount}
+                                    {control type="text" name="optiongroups[`$group->title`][options][`$option->title`][optionweight]" label="Option Weight"|gettext size=6 value=$option->optionweight}
                                 </td>
                             </tr>
                         {foreachelse}
@@ -77,6 +85,14 @@
                 </table>
             </div>
         </div>
+        {script unique="default-clear-"|cat:$group->id jquery=1}
+        {literal}
+            $('#option-{/literal}{$group->id}{literal}').on('click', function(){
+                $('input[name="defaults[{/literal}{$group->title}{literal}]"').removeAttr('checked');
+            });
+        {/literal}
+        {/script}
+
     {foreachelse}
         {message class=notice text="There are no product options setup yet."|gettext}
     {/foreach}
