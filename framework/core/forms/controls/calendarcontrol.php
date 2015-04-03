@@ -87,7 +87,7 @@ class calendarcontrol extends formcontrol {
             $this->default_min = date('i', $this->default);
             $this->default_ampm = date('a', $this->default);
         }
-        $idname = str_replace(array('[',']',']['),'_',$name);
+        $idname = createValidId($name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
             <div id=\"calendar-container-" . $idname . "\" class=\"yui3-skin-sam\"> </div>

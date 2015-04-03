@@ -49,12 +49,12 @@ class dropdowncontrol extends formcontrol {
     }
     
     function controlToHTML($name,$label=null) {
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
 
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '<div style="display:inline">';
 
-        $html .= '<select'.$inputID.' name="' . $name;
+        $html .= '<select'.$idname.' name="' . $name;
         if ($this->multiple) $html.= '[]';
         $html .= ($this->size > 1) ? '" size="' . $this->size . '"' : '"';
         $html .= ' class="select form-control '.$this->class.' '.$disabled.'"';

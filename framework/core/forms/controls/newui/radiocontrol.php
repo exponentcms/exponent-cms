@@ -42,17 +42,17 @@ class radiocontrol extends formcontrol {
 
     function toHTML($label,$name) {
         if (!empty($this->id)) {
-		    $divID  = ' id="'.$this->id.'Control"';
-		    $for = ' for="'.$this->id.'"';
+		    $divID  = $this->id.'Control';
+		    $for = $this->id;
 		} else {
-//		    $divID  = '';
-            $divID  = ' id="'.$name.'Control"';
-//		    $for = ' for="'.$name.'"';
-            $for = ' for="'.$name.$this->value.'"';
+            $divID  = $name.'Control';
+            $for = $name.$this->value;
 		}
-        $html = '<div'.$divID.' class="radio '.($this->cols!=1?" radio-inline":"");
+        $divID = createValidId($divID);
+        $for = createValidId($for);
+        $html = '<div id="'.$divID.'" class="radio '.($this->cols!=1?" radio-inline":"");
         $html .= (!empty($this->required)) ? ' required">' : '">';
-        $html .= "<label".$for." class=\"control-label\">";
+        $html .= '<label for"' . $for . '" class="control-label">';
         if ($this->flip) $html .= $label;
         $html .= !empty($this->newschool) ? $this->controlToHTML_newschool($name, $label) : $this->controlToHTML($name);
         if (!$this->flip) $html .= $label;
@@ -64,7 +64,8 @@ class radiocontrol extends formcontrol {
     }
     
     function controlToHTML($name,$label=null) {
-        $html = '<input class="radiobutton" type="radio" value="' . $this->value .'" id="' . $this->groupname . $this->value . '" name="' . $this->groupname . '"';
+        $idname = createValidId($this->groupname . $this->value);
+        $html = '<input class="radiobutton" type="radio" value="' . $this->value .'" id="' . $idname . '" name="' . $this->groupname . '"';
         if ($this->default) $html .= ' checked="checked"';
         if ($this->onclick != "") {
             $html .= ' onclick="'.$this->onclick.'"';
@@ -74,10 +75,11 @@ class radiocontrol extends formcontrol {
     }
     
     function controlToHTML_newschool($name, $label) {
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+//        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
         $this->name = empty($this->name) ? $name : $this->name;
         $this->id = empty($this->id) ? $name.$this->value : $this->id;
-        $html = '<input'.$inputID.' type="radio" name="' . $this->name . '" id="' . $this->id . '" value="'.$this->value.'"';
+        $idname = createValidId($this->id);
+        $html = '<input type="radio" name="' . $this->name . '" id="' . $idname . '" value="'.$this->value.'"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->checked)) $html .= ' checked="checked"';
         $this->class = !empty($this->class) ? $this->class : "";

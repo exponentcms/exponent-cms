@@ -79,7 +79,7 @@ class popupdatetimecontrol extends formcontrol
 
     function controlToHTML($name, $label)
     {
-        $idname = str_replace(array('[', ']', ']['), '_', $name);
+        $idname = createValidId($name);
         if ($this->default == 0) {
             $this->default = time();
         }

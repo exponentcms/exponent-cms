@@ -864,9 +864,15 @@ function expProcessBuffer($buffer, $mode=null) {
     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }
 
-function createValidId ($id) {
-    $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    return str_replace($badvals, "",$id);
+/**
+ * Ensure we have a valid html 'id' attribute
+ *
+ * @param $id
+ * @return mixed
+ */
+function createValidId($id) {
+    $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");  //FIXME do we need to update this to HTML5 and only include the space?
+    return str_replace($badvals, "_", trim($id));
 }
 
 function curPageURL() {

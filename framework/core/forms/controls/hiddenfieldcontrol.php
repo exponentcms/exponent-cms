@@ -40,8 +40,8 @@ class hiddenfieldcontrol extends formcontrol {
 
 	function controlToHTML($name=null,$label=null) {
         $this->name = empty($this->name) ? $name : $this->name;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.$this->default.'"';
 		$html .= ' />';
 		return $html;
 	}

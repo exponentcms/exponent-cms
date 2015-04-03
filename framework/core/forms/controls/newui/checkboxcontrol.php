@@ -61,24 +61,28 @@ class checkboxcontrol extends formcontrol {
     function toHTML($label, $name) {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
-            $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->value.'"';
+            $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+    		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.$this->value.'"';
     		$html .= ' />';
     		return $html;
         } else {
             if (!empty($this->id)) {
-                $divID = ' id="' . $this->id . 'Control"';
-                $for   = ' for="' . $this->id . '"';
+                $divID = $this->id . 'Control';
+                $for = $this->id;
             } else {
-    //            $divID = '';
-                $divID = ' id="' . $name . 'Control"';
-    //            $for   = '';
-                $for   = ' for="' . $name . '"';
+                $divID = $name . 'Control';
+                if (substr($name, -2) == '[]') {
+                    $for   = $name . $this->value;
+                } else {
+                    $for   = $name;
+                }
             }
+            $divID = createValidId($divID);
+            $for = ' for="' . createValidId($for) . '"';
             if (empty($label)) {
                 $for = '';
             }
-            $html = "<div" . $divID . " class=\"checkbox control form-group";
+            $html = '<div id="' . $divID . '" class="checkbox control form-group';
             $html .= (!empty($this->required)) ? ' required">' : '">';
             $html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 
@@ -101,9 +105,13 @@ class checkboxcontrol extends formcontrol {
     function controlToHTML($name, $label) {
         $this->value = isset($this->value) ? $this->value : 1;
 
-        $inputID    = (!empty($this->id)) ? ' id="' . $this->id . '"' : "";
+        $idname     = (!empty($this->id)) ? $this->id  : $name;
+        if (substr($this->name,-2) == '[]') {
+            $idname .= $this->value;
+        }
+        $idname = createValidId($idname);
+
         $this->name = empty($this->name) ? $name : $this->name;
-        if (empty($inputID)) $inputID = ' id="' . $this->name . '"';
 
         $html = "";
         // hidden value to force a false value in to the post array
@@ -112,7 +120,7 @@ class checkboxcontrol extends formcontrol {
             $html .= '<input type="hidden" name="' . $name . '" value="0" />';
         }
 
-        $html .= '<input' . $inputID . ' type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
+        $html .= '<input id="' . $idname . '" type="checkbox" name="' . $this->name . '" value="' . $this->value . '"';
         if (!empty($this->size)) $html .= ' size="' . $this->size . '"';
         if (!empty($this->default)) $html .= ' checked="checked"';
         $html .= !empty($this->class) ? ' class="' . $this->class . ' checkbox form-control"' : ' class="checkbox form-control"';

@@ -53,7 +53,6 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-//            $divID  = '';
             $divID  = ' id="'.$name.'Control"';
             $for = '';
         }
@@ -86,7 +85,7 @@ class genericcontrol extends formcontrol {
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
         $html .= ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
         if (bs2()) {
@@ -100,7 +99,7 @@ class genericcontrol extends formcontrol {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
             }
         }
-        $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
+        $html .= '<input'.$idname.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
         $html .= ' class="'.$this->type. " " . $this->class . ' form-control"';

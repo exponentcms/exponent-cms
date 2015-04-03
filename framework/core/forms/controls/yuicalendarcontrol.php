@@ -67,7 +67,7 @@ class yuicalendarcontrol extends formcontrol {
 //    }
 
     function controlToHTML($name, $label = null) {
-        $idname = str_replace(array('[',']',']['),'_',$name);
+        $idname = createValidId($name);
         if (is_numeric($this->default)) {
             $default = date('m/d/Y', $this->default);
         } else {
