@@ -336,6 +336,7 @@ class expCSS {
                             )
                         ));
                         if (DEVELOPMENT && LESS_COMPILER_MAP) {
+                            $less_cname = str_replace("/", "_", $less_pname);
                             $less->setEnvironment(array(
                                 'sourceMap'         => true,  // output .map file?
                                 'sourceMapOptions' => array(
@@ -380,6 +381,18 @@ class expCSS {
 //                            $less_compiler = 'less.php';
                         include_once(BASE . 'external/' . $less_compiler . '/lessc.inc.php');
                         $less = new lessc;
+
+                        // load the cache
+                        $less_cname = str_replace("/", "_", $less_pname);
+                        $cache_fname = BASE . 'tmp/css/' . $less_cname . ".cache";
+                        $cache = BASE . $less_pname;
+                        if (file_exists($cache_fname)) {
+                            $cache = unserialize(file_get_contents($cache_fname));
+                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                                $cache = BASE . $less_pname;  // force a compile if the vars have changed
+                            }
+                        }
+
                         if (DEVELOPMENT && LESS_COMPILER_MAP && $less_compiler == 'less.php') {
                             $less->setOptions(array(
 //                                'outputSourceFiles' => true,  // include css source in .map file?
@@ -395,23 +408,14 @@ class expCSS {
 //                                'sourceMapRootpath' => PATH_RELATIVE . $less_pname,  // tacked onto ALL source files in .map
                             ));
                         }
+
                         if (MINIFY==1 && MINIFY_LESS==1 && $less_compiler == 'less.php') {
                             $less->setOptions(array(
                                 'compress'         => true,  // compress output file?
                             ));
                         }
-                        $less->setVariables($vars);
 
-                        // load the cache
-                        $less_cname = str_replace("/", "_", $less_pname);
-                        $cache_fname = BASE . 'tmp/css/' . $less_cname . ".cache";
-                        $cache = BASE . $less_pname;
-                        if (file_exists($cache_fname)) {
-                            $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
-                                $cache = BASE . $less_pname;  // force a compile if the vars have changed
-                            }
-                        }
+                        $less->setVariables($vars);
 
                         try {
                             $file_updated = false;
@@ -437,6 +441,7 @@ class expCSS {
                             return true;
                         } catch(Exception $e) {
                             flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
+                            return false;
                         }
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
