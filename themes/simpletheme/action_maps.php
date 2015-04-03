@@ -24,19 +24,20 @@ if (!defined('EXPONENT')) {
 // the action may be a wildcard (meaning all methods) by using an asterisk '*'
 return array(
 //    'cart'=>array(                      // the 'cart' module
-//        '*'=>'Full Size'                // ANY method will use the 'Full Size' subtheme
+//        'checkout'=>'Full Size',        // 'checkout' action will use the 'Full Size' subtheme
+//        'confirm'=>'Full Size',         // 'confirm' action will use the 'Full Size' subtheme
 //    ),
 //    'order'=>array(                     // the 'order' module
-//        '*'=>'Full Size'                // ANY method will use the 'Full Size' subtheme
+//        '*'=>'Full Size'                // ANY action will use the 'Full Size' subtheme
 //    ),
 //    'report'=>array(                    // the 'report' module
-//        '*'=>'Full Size'                // ANY method will use the 'Full Size' subtheme
+//        '*'=>'Full Size'                // ANY action will use the 'Full Size' subtheme
 //    ),
 //    'store'=>array(                     // the 'store' module
-//        'manage'=>'Full Size'           // 'manage' method will use the 'Full Size' subtheme
+//        'manage'=>'Full Size'           // 'manage' action will use the 'Full Size' subtheme
 //    ),
 //    '*'=>array(                         // ANY module
-//        'showall_by_tags'=>'Tags View'  // showall_by_tags method will use the 'Tags View' subtheme
+//        'showall_by_tags'=>'Tags View'  // showall_by_tags action will use the 'Tags View' subtheme
 //    ),
 //    'news'=>array(
 //        'show'=>'Large Banner'

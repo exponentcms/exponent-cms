@@ -428,6 +428,7 @@ class cartController extends expController {
         //$addresses_dd = $address->dropdownByUser($user->id);
         $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
         if (empty($shipAddress) || !$user->isLoggedin()) {  // we're not logged in and don't have an address yet
+            expSession::set('customer-signup', false);
             flash('message', gt('Enter your primary address info now.') .
                 '<br><br>' .
                 gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.') .
