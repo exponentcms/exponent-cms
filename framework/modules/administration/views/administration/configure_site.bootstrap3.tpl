@@ -507,17 +507,6 @@
 
 {script unique="`$config`" yui3mods=1}
 {literal}
-//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-//        requires: ['history','tabview','event-custom']
-//    };
-
-//	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        Y.expTabs({srcNode: '#{/literal}{$config}{literal}'});
-//        Y.one('#{/literal}{$config}{literal}').removeClass('hide');
-//        Y.one('.loadingdiv').remove();
-//	});
-
     function changeProfile(val) {
         if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}')) {
             window.location = EXPONENT.PATH_RELATIVE+"administration/change_profile/profile/" + val;

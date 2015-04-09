@@ -115,7 +115,7 @@ class checkboxcontrol extends formcontrol {
         }
         $idname = createValidId($idname);
 
-//        $html        = '<input' . $inputID . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
+//        $html        = '<input' . $idname . ' class="checkbox control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         $html        = '<input id="' . $idname . '" class="checkbox form-control" type="checkbox" name="' . $name . '" value="' . $this->value . '"';
         if (!$this->flip) $html .= ' style="float:left;"';
         if (!empty($this->default)) $html .= ' checked="checked"';

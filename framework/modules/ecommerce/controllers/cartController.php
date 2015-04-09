@@ -898,8 +898,8 @@ class cartController extends expController {
         }
 
         $db->delete('orderitems', 'id IN (' . $orderitems_to_delete . ')');
-//        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
-        $this->selectShippingMethods();
+        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
+//        $this->selectShippingMethods();
     }
 
     public function selectShippingMethods() {
@@ -974,8 +974,8 @@ class cartController extends expController {
             $order->shippingmethods[] = $shippingmethod->id;
         }
 
-//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     function createaddress() {
@@ -1003,8 +1003,8 @@ class cartController extends expController {
 
         }
 
-//		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     function getSpecials() {

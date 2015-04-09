@@ -32,7 +32,8 @@
             <li><strong>{"User Input"|gettext}</strong> - {'Selecting the User Input checkbox will only display user input entry if that option is chosen.'|gettext}</li>
             <li><strong>{"Default"|gettext}</strong> - {'Selecting the Default radio button for an option causes that option to become selected by default.'|gettext}</li>
         </ul>
-        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext} {*'Click on the \'More\' link to enter the option\'s weight.'|gettext*}{br}
+        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext}{br}
+        {'Click on the \'More\' link to enter the option\'s weight.'|gettext}{br}
     </blockquote>
     {if $permissions.manage}
         {ddrerank items=$record->optiongroup only="product_id=`$record->id`" model=optiongroup label=$record->title|cat:' '|cat:'Options'|gettext}

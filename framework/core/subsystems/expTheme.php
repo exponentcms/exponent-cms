@@ -1565,6 +1565,9 @@ class expTheme
                 case 'clean' :
                     $class = 'check';
                     break;
+                case 'userperms' :
+                    $class = 'user';
+                    break;
                 case 'groupperms' :
                     $class = 'group';
                     break;
@@ -1646,6 +1649,9 @@ class expTheme
                     break;
                 case 'trash' :
                     $class = "trash-o";
+                    break;
+                case 'userperms' :
+                    $class = 'user';
                     break;
                 case 'groupperms' :
                     $class = 'group';
