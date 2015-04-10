@@ -40,7 +40,7 @@ class expJavascript {
 	}
 	
 	public static function parseJSFiles() {
-        global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config, $framework;
+        global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config, $framework, $less_vars;
 
         $scripts = '';
         // remove duplicate scripts since it's inefficient and crashes minify
@@ -99,29 +99,34 @@ class expJavascript {
     <!--<![endif]-->';
                 }
                 if (bs()) {
-                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (newui()?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+//                    $lessvars = array_merge(array('swatch'=>SWATCH), array('themepath'=>'"' . (newui()?'':$theme_variables) . '"'), !empty($head_config['lessvars']) ? $head_config['lessvars'] : array());
+                    $less_vars = array_merge(
+                        array('swatch' => SWATCH),
+                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+                        $less_vars
+                    );
                     if (bs2()) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap/less/bootstrap.less",
-                            "lessvars"=>$lessvars,
+                            "lessvars"=>$less_vars,
                         ));
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/bootstrap/less/responsive.less",
-                            "lessvars"=>$lessvars,
+                            "lessvars"=>$less_vars,
                         ));
                     } elseif (bs3(true)) {
                         expCSS::pushToHead(array(
                    		    "lessprimer"=>"external/bootstrap3/less/bootstrap.less",
-                            "lessvars"=>$lessvars,
+                            "lessvars"=>$less_vars,
                         ));
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
-                            "lessvars"=>$lessvars,
+                            "lessvars"=>$less_vars,
                         ));
                     } elseif (newui()) {
                         expCSS::pushToHead(array(
                             "lessprimer"=>"external/font-awesome4/less/font-awesome.less",
-                            "lessvars"=>$lessvars,
+                            "lessvars"=>$less_vars,
                         ));
                     }
                 }
@@ -243,42 +248,47 @@ class expJavascript {
     <!--<![endif]-->' . "\r\n";
                 }
                 if (bs()) {
-                    $lessvars = array_merge(
+//                    $lessvars = array_merge(
+//                        array('swatch' => SWATCH),
+//                        array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
+//                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+//                    );
+                    $less_vars = array_merge(
                         array('swatch' => SWATCH),
                         array('themepath' => '"' . (newui() ? '' : $theme_variables) . '"'),
-                        !empty($head_config['lessvars']) ? $head_config['lessvars'] : array()
+                        $less_vars
                     );
                     if (bs2()) {
                         expCSS::pushToHead(
                             array(
                                 "lessprimer" => "external/bootstrap/less/bootstrap.less",
-                                "lessvars" => $lessvars,
+                                "lessvars" => $less_vars,
                             )
                         );
                         expCSS::pushToHead(
                             array(
                                 "lessprimer" => "external/bootstrap/less/responsive.less",
-                                "lessvars" => $lessvars,
+                                "lessvars" => $less_vars,
                             )
                         );
                     } elseif (bs3(true)) {
                         expCSS::pushToHead(
                             array(
                                 "lessprimer" => "external/bootstrap3/less/bootstrap.less",
-                                "lessvars" => $lessvars,
+                                "lessvars" => $less_vars,
                             )
                         );
                         expCSS::pushToHead(
                             array(
                                 "lessprimer" => "external/font-awesome4/less/font-awesome.less",
-                                "lessvars" => $lessvars,
+                                "lessvars" => $less_vars,
                             )
                         );
                     } elseif (newui()) {
                         expCSS::pushToHead(
                             array(
                                 "lessprimer" => "external/font-awesome4/less/font-awesome.less",
-                                "lessvars" => $lessvars,
+                                "lessvars" => $less_vars,
                             )
                         );
                     }

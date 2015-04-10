@@ -234,10 +234,10 @@ class expCSS {
     }
 
     public static function themeCSS() {
-        global $css_theme, $head_config;
+        global $css_theme, $head_config, $less_vars;
 
         // compile any theme .less files to css
-        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
+//        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
         $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less/';
         if (THEME_STYLE!="") {
             $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less_'.THEME_STYLE.'/';
@@ -361,51 +361,56 @@ class expCSS {
                         }
                         $less->setVariables($vars);
 
-                        // create your cache key
-                        $cacheKey = md5(BASE . $less_pname);
-                        $importer = $less->getImporter();
-                        $cache = $less->getCache();
-                        $rebuild = true;
-                        $cssLastModified = -1;
-                        if ($cache->has($cacheKey)) {
-                            $rebuild = false;
-                            list($css, $importedFiles) = $cache->get($cacheKey);
-                            // we need to check if the file has been modified
-                            foreach ($importedFiles as $importedFileArray) {
-                                list($lastModifiedBefore, $path, $currentFileInfo) = $importedFileArray;
-                                $lastModified = $importer->getLastModified($path, $currentFileInfo);
-                                $cssLastModified = max($lastModified, $cssLastModified);
-                                if ($lastModifiedBefore != $lastModified) {
-                                    $rebuild = true;
-                                    // no need to continue, we will rebuild the CSS
-                                    break;
+                        try {
+                            // create your cache key
+                            $cacheKey = md5(BASE . $less_pname);
+                            $importer = $less->getImporter();
+                            $cache = $less->getCache();
+                            $rebuild = true;
+                            $cssLastModified = -1;
+                            if ($cache->has($cacheKey)) {
+                                $rebuild = false;
+                                list($css, $importedFiles) = $cache->get($cacheKey);
+                                // we need to check if the file has been modified
+                                foreach ($importedFiles as $importedFileArray) {
+                                    list($lastModifiedBefore, $path, $currentFileInfo) = $importedFileArray;
+                                    $lastModified = $importer->getLastModified($path, $currentFileInfo);
+                                    $cssLastModified = max($lastModified, $cssLastModified);
+                                    if ($lastModifiedBefore != $lastModified) {
+                                        $rebuild = true;
+                                        // no need to continue, we will rebuild the CSS
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                        if ($rebuild) {
-                            $less->parseFile(BASE . $less_pname);
-                            $css = $less->getCSS();
-                            // what have been imported?
-                            $importedFiles = array();
-                            foreach ($importer->getImportedFiles() as $importedFile) {
-                                $importedFiles[] = array(
-                                    $importedFile[0]->getLastModified(),
-                                    $importedFile[1],
-                                    $importedFile[2]
-                                );
-                                $cssLastModified = max($cssLastModified, $importedFile[0]->getLastModified());
+                            if ($rebuild) {
+                                $less->parseFile(BASE . $less_pname);
+                                $css = $less->getCSS();
+                                // what have been imported?
+                                $importedFiles = array();
+                                foreach ($importer->getImportedFiles() as $importedFile) {
+                                    $importedFiles[] = array(
+                                        $importedFile[0]->getLastModified(),
+                                        $importedFile[1],
+                                        $importedFile[2]
+                                    );
+                                    $cssLastModified = max($cssLastModified, $importedFile[0]->getLastModified());
+                                }
+                                $cache->set($cacheKey, array($css, $importedFiles));
                             }
-                            $cache->set($cacheKey, array($css, $importedFiles));
+                            if ($rebuild || !file_exists(BASE . $css_fname)) {
+                                // write compiled css file
+                                $css_loc = pathinfo(BASE . $css_fname);
+                                if (!is_dir($css_loc['dirname'])) mkdir(
+                                    $css_loc['dirname']
+                                ); // create /css output folder if it doesn't exist
+                                file_put_contents(BASE . $css_fname, $css);
+                            }
+                            return true;
+                        } catch(Exception $e) {
+                            flash('error', gt('Less compiler') . ': ' . $less_pname . ': ' . $e->getMessage());
+                            return false;
                         }
-                        if ($rebuild || !file_exists(BASE . $css_fname)) {
-                            // write compiled css file
-                            $css_loc = pathinfo(BASE . $css_fname);
-                            if (!is_dir($css_loc['dirname'])) mkdir(
-                                $css_loc['dirname']
-                            ); // create /css output folder if it doesn't exist
-                            file_put_contents(BASE . $css_fname, $css);
-                        }
-                        return true;
                     } else {
                         flash('notice', $less_pname. ' ' . gt('does not exist!'));
                         return false;

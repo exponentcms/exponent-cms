@@ -107,6 +107,7 @@ class expTheme
         }
         expSession::set('framework', $framework);
 
+        // set the global less variables from the head config
         if (!empty($config['lessvars'])) {
             $less_vars = $config['lessvars'];
         } else {
