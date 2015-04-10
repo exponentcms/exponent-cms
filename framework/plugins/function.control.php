@@ -96,6 +96,7 @@ function smarty_function_control($params, &$smarty) {
             case "uploader":
                 $control = new uploadcontrol();
                 if (!empty($params['accept'])) $control->accept = $params['accept'];
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 break;
             case "files":
                 if (!empty($params['olduploader'])) {

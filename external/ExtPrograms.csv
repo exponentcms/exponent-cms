@@ -69,6 +69,7 @@ bootstrap-tagsinput,0.5.0,https://github.com/timschlechter/bootstrap-tagsinput,0
 Typeahead,0.10.5,http://twitter.github.io/typeahead.js/,0.10.5,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.2,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.2,
 select2,3.5.2,https://github.com/ivaynberg/select2,3.5.2,
+Jasny Bootstrap,3.1.3,http://jasny.github.io/bootstrap,3.1.3,only using fileinput at this time
 ,,,,
 Not included yet,,,,
 Webshim,1.15.7,https://github.com/aFarkas/webshim,1.15.7,
