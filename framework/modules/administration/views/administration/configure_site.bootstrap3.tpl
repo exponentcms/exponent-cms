@@ -544,7 +544,7 @@ $('#use_ldap').change(function() {
         $("#ldap").show("slow");
     }
 });
-if ($('#use_ldap').is(':checked') == true)
+if ($('#use_ldap').is(':checked') == false)
     $("#ldap").hide("slow");
 
 $('#no_smtp').change(function() {
