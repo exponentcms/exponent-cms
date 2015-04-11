@@ -162,6 +162,8 @@ if (!function_exists('smarty_function_icon')) {
         //eDebug($params);
         if (!empty($params['name'])) {
             $name = ' id="'.$params['name'].'"';
+        } elseif (!empty($params['id'])) {
+            $name = ' id="'.$params['id'].'"';
         } else {
             $name = '';
         }
