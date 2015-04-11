@@ -46,25 +46,11 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-        $html = '';
-        if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
-//		$html .= "<input type=\"file\" name=\"$name\"";
-//		if (isset($this->class)) {
-//            $html .= ' class="form-control ' . $this->class . '"';
-//        } else {
-//            $html .= ' class="form-control"';
-//        }
-//        if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
-//		$html .= $this->disabled ? " disabled " : "";
-//        $html .= $this->focus ? " autofocus" : "";
-//		$html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\" " : "";
-//		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
-//		$html .= "/>";
-//        if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
-
         $html .= '<div class="fileupload fileupload-new" data-provides="fileupload">';
+        if (!empty($this->default))
+            $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
         $html .= '  <div class="input-append">';
         $html .= '<div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">' . gt('Select file') . '</span><span class="fileupload-exists">' . gt('Change') . '</span><input type="file" name="' . $name . '" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . gt('Remove') . '</a>';
         $html .= '  </div>';

@@ -46,25 +46,11 @@ class uploadcontrol extends formcontrol {
 	}
 
 	function controlToHTML($name,$label) {
-        $html = '';
-        if (!empty($this->default)) $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
-//		$html .= "<input type=\"file\" name=\"$name\"";
-//		if (isset($this->class)) {
-//            $html .= ' class="form-control ' . $this->class . '"';
-//        } else {
-//            $html .= ' class="form-control"';
-//        }
-//        if (!empty($this->accept)) $html .= ' accept="'.$this->accept.'"';
-//		$html .= $this->disabled ? " disabled " : "";
-//        $html .= $this->focus ? " autofocus" : "";
-//		$html .= $this->tabindex >= 0 ? " tabindex=\"".$this->tabindex."\" " : "";
-//		$html .= ($this->accesskey != "") ? " accesskey=\"".$this->accesskey."\" " : "";
-//		$html .= "/>";
-//        if (!empty($this->default)) $html .= ' ('.basename($this->default).')';
-
         $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
+        if (!empty($this->default))
+            $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>';
         $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $name . '"></span>';
         $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
