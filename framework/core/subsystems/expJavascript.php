@@ -561,6 +561,10 @@ class expJavascript {
 		return  $js . ")";
 	}
 
+    /**
+     * Create a YUI2 Panel?
+     * @param $params
+     */  //NOTE: Deprecated
     public static function panel($params) {
         $content = "<div class=\"pnlmsg\">".htmlentities($params['content'])."</div>";
         $id = "exppanel".$params['id'];

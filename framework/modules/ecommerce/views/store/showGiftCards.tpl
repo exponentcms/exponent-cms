@@ -92,8 +92,8 @@
                         {group label='Personalize your gift card'|gettext}
                             {control type="hidden" name="options_shown" id="options_shown" value=$option_set}
                             <h4>{'The \'To\' and \'From\' name may be added at no additional charge.'|gettext}</h4>
-                            <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text" class="text form-control" size="20" name="toname" value="{$records.toname}"></div>
-                            <div class="text-control control  "><label class="label">{"From"|gettext}:</label><input type="text" class="text form-control" size="20" value="{$records.fromname}" name="fromname"></div>
+                            <div class="text-control control  "><label class="label">{"To:"|gettext}</label><input type="text" class="text form-control" size="20" name="toname" id="toname" value="{$records.toname}"></div>
+                            <div class="text-control control  "><label class="label">{"From"|gettext}:</label><input type="text" class="text form-control" size="20" value="{$records.fromname}" name="fromname" id="fromname"></div>
                             {if !empty($config.custom_message_product)}<h4><em>{'Adding a custom message will add'|gettext} {$config.custom_message_product|currency} {'to the price of your gift card.'|gettext}</em></h4>{/if}
                             <div class="text-control control "><label class="label">{"Custom Message (100 characters max)"|gettext}</label>{control type="textarea" name="msg" cols="45" rows="3" value=$records.msg}</textarea></div>
                         {/group}
@@ -122,4 +122,25 @@
             $( "#addtocart" ).submit();
         });
 	{/literal}
+{/script}
+
+{script unique="a2cgc" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+        var bp = {/literal}{$config.minimum_gift_card_purchase}{literal};
+        var da = Y.one('#card_amount_txt');
+        da.on('blur', function(e,o){
+            var newint = parseInt(e.target.get('value').replace('$',""));
+            e.target.set('value','{/literal}{currency_symbol}{literal}'+Math.ceil(newint/bp)*bp+'.00');
+        });
+
+        Y.all('#toname','#fromname').on('keyup', function(e){
+            var targ = e.target;
+            var junk = [':',')','-','!','@','#','$','%','^','&','*','(',')','_','+','=','-','`','~','{','}','|','[',']','\\',':','"',';','\'','<','>','?',',','.','/'];
+            for (var jk in junk ) {
+                targ.set('value', targ.get('value').replace(junk[jk],""));
+            }
+        });
+    });
+{/literal}
 {/script}

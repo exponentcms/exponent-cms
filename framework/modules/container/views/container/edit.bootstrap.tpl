@@ -90,7 +90,6 @@
     {literal}
 
     YUI(EXPONENT.YUI_CONFIG).use("node","event","io","json-parse",function(Y){
-        //var YAHOO=Y.YUI2;
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var is_edit = {/literal}{$is_edit}{literal} //are we editing?
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
@@ -140,15 +139,11 @@
                 return "{/literal}{"No value matching the one provided was found in this radio group"|gettext}{literal}";
             },
             getSelectValue: function (selectid) {
-    //                var selectmenu = YAHOO.util.Dom.get(selectid);
                 var selectmenu = Y.one('#'+selectid);
-                //return selectmenu.options[selectmenu.selectedIndex].value;
                 return selectmenu.get('value');
             },
             setSelectValue: function (selectid,setVal) {
-    //                var selectmenu = YAHOO.util.Dom.get(selectid);
                 var selectmenu = Y.one('#'+selectid);
-                //return selectmenu.value = setVal;
                 return selectmenu.set('value',setVal);
             },
             grabForm: function (formId){
@@ -304,7 +299,6 @@
         }
 
         var handleSuccessAction = function(ioId, o) {
-            //var opts = YAHOO.lang.JSON.parse(o.responseText);
             var opts = Y.JSON.parse(o.responseText);
             actionpicker.set('innerHTML','');
             el = Y.Node.create('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
@@ -333,7 +327,6 @@
             actionpicker.set('disabled',1);
             EXPONENT.resetViews();
             var uri = EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getaction&ajax_action=1';
-            //YAHOO.util.Connect.asyncRequest('POST', uri, { success: handleSuccessAction }, 'mod=' + EXPONENT.curMod);
             var cfg = {
                 data : 'mod=' + EXPONENT.curMod,
                 on: {
@@ -342,29 +335,9 @@
                 }
             };
             var request = Y.io(uri, cfg);
-                //{success: function(o) {
-                //    var opts = YAHOO.lang.JSON.parse(o.responseText);
-                //    actionpicker.set('innerHTML','');
-                //    el = Y.Node.create('<option value="0">{/literal}{"Select an Action"|gettext}{literal}</option>');
-                    //actionpicker.appendChild(el);
-                    //for(var action in opts) {
-                    //    el = document.createElement('option');
-                    //    el.appendChild(document.createTextNode(opts[action]));
-                    //    el.setAttribute('value', action);
-                    //    actionpicker.appendChild(el);
-                    //}
-                    //actionpicker.removeAttribute('disabled');
-                    //actionpicker.ancestor('div.control').removeClass('disabled');
-                    //if (is_edit) {
-                    //    EXPONENT.forms.setSelectValue(actionpicker.get("id"),current_action);
-                    //    EXPONENT.handleActionChange();
-                    //}
-                //}}, 'controller=container&action=getaction&ajax_action=1&mod=' + EXPONENT.curMod
-            //);
         }
 
         var handleSuccessView = function(ioId, o) {
-            //var opts = YAHOO.lang.JSON.parse(o.responseText);
             var opts = Y.JSON.parse(o.responseText);
             viewpicker.set('innerHTML','');
             el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
@@ -385,9 +358,7 @@
 
         EXPONENT.writeViews = function() {
             viewpicker.removeAttribute('disabled');
-//                var uri = EXPONENT.PATH_RELATIVE+'index.php'
             var uri = EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1'
-            //YAHOO.util.Connect.asyncRequest('POST', uri, { success: handleSuccessView }, 'mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value'));
             var cfg = {
                 data : 'mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value'),
                 on: {
@@ -396,25 +367,6 @@
                 }
             };
             var request = Y.io(uri, cfg);
-                //{success: function(o) {
-                //    var opts = YAHOO.lang.JSON.parse(o.responseText);
-                //    viewpicker.set('innerHTML','');
-                //    el = Y.Node.create('<option value="0">{/literal}{"Select a View"|gettext}{literal}</option>');
-                    //viewpicker.appendChild(el);
-                    //for(var view in opts) {
-                    //        el = document.createElement('option');
-                    //        el.appendChild(document.createTextNode(opts[view]));
-                    //        el.setAttribute('value', view);
-                    //        viewpicker.appendChild(el);
-                    //}
-                    //viewpicker.removeAttribute('disabled');
-                    //viewpicker.ancestor('div.control').removeClass('disabled');
-                    //if (is_edit) {
-                    //    EXPONENT.forms.setSelectValue(viewpicker.get("id"),current_view);
-                    //    EXPONENT.handleViewChange();
-                    //}
-//                    }}, 'controller=container&action=getactionviews&ajax_action=1&mod=' + EXPONENT.curMod + '&act=' + actionpicker.get('value') + '&actname=' + actionpicker.get('value')
-//                );
         }
 
         if (!is_edit) {

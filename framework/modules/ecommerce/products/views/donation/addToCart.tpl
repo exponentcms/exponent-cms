@@ -32,31 +32,57 @@
 </div>
 
 {*FIXME convert to yui3*}
+{*{script unique="a2cgc" yui3mods=1}*}
+{*{literal}*}
+{*YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {*}
+    {*var YAHOO=Y.YUI2;*}
+    {*YAHOO.util.Event.onDOMReady(function(){*}
+        {*var links = YAHOO.util.Dom.getElementsByClassName('rc-link', 'a');*}
+
+        {*YAHOO.util.Event.on(links, 'click', function (e) {*}
+            {*YAHOO.util.Event.stopEvent(e);*}
+            {*var targ = YAHOO.util.Event.getTarget(e);*}
+            {*if (targ.id === 'continue') {*}
+                {*YAHOO.util.Dom.get('quick').value = 0;*}
+            {*}*}
+            {*YAHOO.util.Dom.get('donationamt').submit(); *}
+        {*});*}
+
+        {*var bp = {/literal}{$product->base_price};{literal}*}
+        {*var da = YAHOO.util.Dom.get('dollar_amount');*}
+        {*YAHOO.util.Event.on(da, 'blur', function(e,o){*}
+            {*//Y.log(this.value);*}
+            {*var newint = parseInt(this.value.replace('$',"").replace(',',""));*}
+            {*if (newint < bp) {*}
+                {*this.value = '{/literal}{currency_symbol}{literal}'+bp+".00";*}
+            {*}*}
+        {*}, da, true);*}
+    {*});*}
+{*});*}
+{*{/literal}*}
+{*{/script}*}
+
 {script unique="a2cgc" yui3mods=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
-    var YAHOO=Y.YUI2;
-    YAHOO.util.Event.onDOMReady(function(){
-        var links = YAHOO.util.Dom.getElementsByClassName('rc-link', 'a');
+YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    var links = Y.all('a.rc-link');
 
-        YAHOO.util.Event.on(links, 'click', function (e) {
-            YAHOO.util.Event.stopEvent(e);
-            var targ = YAHOO.util.Event.getTarget(e);
-            if (targ.id === 'continue') {
-                YAHOO.util.Dom.get('quick').value = 0;
-            }
-            YAHOO.util.Dom.get('donationamt').submit(); 
-        });
+    links.on('click', function (e) {
+        e.halt();
+        var targ = e.target;
+        if (targ.get('id') === 'continue') {
+            Y.one('#quick').value = 0;
+        }
+        Y.one('#donationamt').submit();
+    });
 
-        var bp = {/literal}{$product->base_price};{literal}
-        var da = YAHOO.util.Dom.get('dollar_amount');
-        YAHOO.util.Event.on(da, 'blur', function(e,o){
-            //Y.log(this.value);
-            var newint = parseInt(this.value.replace('$',"").replace(',',""));
-            if (newint < bp) {
-                this.value = '{/literal}{currency_symbol}{literal}'+bp+".00";
-            }
-        }, da, true);
+    var bp = {/literal}{$product->base_price};{literal}
+    var da = Y.one('#dollar_amount');
+    da.on('blur', function(e,o){
+        var newint = parseInt(e.target.get('value').replace('$',"").replace(',',""));
+        if (newint < bp) {
+            e.target.set('value','{/literal}{currency_symbol}{literal}'+bp+'.00');
+        }
     });
 });
 {/literal}
