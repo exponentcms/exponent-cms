@@ -195,21 +195,4 @@
     }
   })
 
-    $(document).ready(function (e) {
-        $('[data-provides="fileinput"]').each(function () {
-            this.$element = $(this);
-
-            this.$input = this.$element.find(':file');
-            if (this.$input.length === 0) return;
-
-            this.name = this.$input.attr('name');
-
-            this.$hidden = this.$element.find('input[type=hidden][name="'+this.name+'"]');
-            if (this.$hidden.length === 0) return;
-
-            this.$element.find('.fileinput-filename').text(this.$hidden.val());
-            this.$element.addClass('fileupload-exists').removeClass('fileupload-new');
-        })
-    })
-
 }(window.jQuery);

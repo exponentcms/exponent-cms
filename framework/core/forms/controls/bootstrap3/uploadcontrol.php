@@ -48,14 +48,18 @@ class uploadcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
-        $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
         if (!empty($this->default)) {
+            $html .= '<div class="fileinput fileinput-exists input-group" data-provides="fileinput">';
             $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
             $fi_name = '';
+            $fi_file = $this->default;
         } else {
+            $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
             $fi_name = $name;
+            $fi_file = '';
         }
-        $html .= '  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>';
+        $html .= '  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> ';
+        $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
         $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"></span>';
         $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
         $html .= '</div>';
