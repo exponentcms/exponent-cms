@@ -22,8 +22,8 @@
  */
 
 class order_statusController extends expController {
-    static function displayname() { return gt("e-Commerce Status Codes"); }
-    static function description() { return gt("Manage e-Commerce status codes"); }
+    static function displayname() { return gt("e-Commerce Order Statuses"); }
+    static function description() { return gt("Manage e-Commerce order status codes"); }
     static function hasSources() { return false; }
     static function hasContent() { return false; }
     

@@ -23,7 +23,7 @@
 
 class storeCategoryController extends expNestedNodeController {
     static function displayname() {
-        return gt("Store Category Manager");
+        return gt("e-Commerce Category Manager");
     }
 
     static function description() {

@@ -12,7 +12,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
-{css unique="definable-field-manage" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/tables.css"}
+{*{css unique="definable-field-manage" link="`$smarty.const.PATH_RELATIVE`framework/core/assets/css/tables.css"}*}
+{css unique="definable-field-manage" corecss="tables"}
 
 {/css}
 <div class="module expDefinableField manage">
