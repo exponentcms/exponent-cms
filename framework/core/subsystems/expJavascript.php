@@ -495,8 +495,10 @@ class expJavascript {
 		$js = "function $name(";
 		$js1 = "";
 		foreach (get_object_vars($object) as $var=>$val) {
-			$js .= "var_$var, ";
-			$js1 .= "\tthis.var_$var = var_$var;\n";
+//			$js .= "var_$var, ";
+//			$js1 .= "\tthis.var_$var = var_$var;\n";
+            $js .= "$var, ";
+            $js1 .= "\tthis.$var = $var;\n";
 			if (is_object($val)) {
 				$otherclasses[] = array($name . "_" . $var, $val);
 			}
