@@ -425,6 +425,30 @@ class expJavascript {
             // }
     	}
 
+        if (isset($params['yui2mods']) && !strstr($params['content'],"YUI(")) {
+            if (empty($params['yui3mods']))
+                $params['yui3mods'] = 1;
+            $yui2mods = !empty($params['yui2mods'])?$params['yui2mods']:$params['yuimodules'];
+            $toreplace = array('"',"'"," ");
+            $stripmodquotes = str_replace($toreplace, "", $yui2mods);
+            $splitmods = explode(",",$stripmodquotes);
+
+            $y3wrap = "YUI(EXPONENT.YUI3_CONFIG).use(";
+            $y3wrap .= "'yui2-yahoo-dom-event', ";
+            foreach ($splitmods as $mod) {
+                if ($mod=="menu") {
+                    $y3wrap .= "'yui2-container', ";
+                }
+                $y3wrap .= "'yui2-".$mod."', ";
+            }
+            $y3wrap .= "function(Y) {\r\n";
+            $y3wrap .= "var YAHOO=Y.YUI2;";
+            $y3wrap .= $params['content'];
+            $y3wrap .= "});";
+
+            $params['content'] = $y3wrap;
+        }
+
 		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
             $yui3js["yui"] = "yui";
@@ -574,6 +598,7 @@ class expJavascript {
         $type  = !empty($params['type']) ? $params['type'] : "info";
         $dialog  = !empty($params['dialog']) ? explode(":",$params['dialog']) : "";
         $header  = !empty($params['header']) ? $params['header'] : "&#160;";
+        //$footer  = !empty($params['footer']) ? $params['footer'] : "&#160;";
         $renderto  = !empty($params['renderto']) ? $params['renderto'] : 'document.body';
         $on  = !empty($params['on']) ? $params['on'] : 'load';
         $onnogo  = !empty($params['onnogo']) ? $params['onnogo'] : '';
@@ -625,9 +650,9 @@ class expJavascript {
                 close:".$close." } );";
 
             $script .= $id.".setHeader('".$header."');";
-            $script .= "var pnlcontent = ".$content.";";
+            $script .= "var pnlcontent = '".$content."';";
 
-                $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);";
+            $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);";
 
             $script .= $id.".setFooter('".$footer."</div>');";
             $script .= $id.".render(".$renderto.");";
@@ -656,6 +681,9 @@ class expJavascript {
             "content"=>$script,
             "src"=>""
          ));
+        expCSS::pushToHead(array(
+            "corecss"=>"panels",
+        ));
     }
 
 }
