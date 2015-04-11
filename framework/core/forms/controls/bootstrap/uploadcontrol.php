@@ -49,10 +49,14 @@ class uploadcontrol extends formcontrol {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
         $html .= '<div class="fileupload fileupload-new" data-provides="fileupload">';
-        if (!empty($this->default))
+        if (!empty($this->default)) {
             $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
+            $fi_name = '';
+        } else {
+            $fi_name = $name;
+        }
         $html .= '  <div class="input-append">';
-        $html .= '<div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">' . gt('Select file') . '</span><span class="fileupload-exists">' . gt('Change') . '</span><input type="file" name="' . $name . '" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . gt('Remove') . '</a>';
+        $html .= '<div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> <span class="fileupload-preview"></span></div><span class="btn btn-file"><span class="fileupload-new">' . gt('Select file') . '</span><span class="fileupload-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . gt('Remove') . '</a>';
         $html .= '  </div>';
         $html .= '</div>';
 

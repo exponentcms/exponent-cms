@@ -49,10 +49,14 @@ class uploadcontrol extends formcontrol {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
 
         $html .= '<div class="fileinput fileinput-new input-group" data-provides="fileinput">';
-        if (!empty($this->default))
+        if (!empty($this->default)) {
             $html .= '<input type="hidden"  name="'.$name.'" value="'.$this->default.'" />';
+            $fi_name = '';
+        } else {
+            $fi_name = $name;
+        }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>';
-        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $name . '"></span>';
+        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"></span>';
         $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
         $html .= '</div>';
 
