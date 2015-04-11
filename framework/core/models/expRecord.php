@@ -121,7 +121,6 @@ class expRecord {
                 $this->build($values);
                 $params = array('title'=> $params);
             }
-
         } else {
             // Otherwise we assume that in inbound is an array or Object to be processed as is.        
             $this->build($params);
