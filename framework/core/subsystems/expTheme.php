@@ -1586,6 +1586,9 @@ class expTheme
                     $class = "check";
                     $btn_type = "btn-success"; // green
                     break;
+                case 'ajax' :
+                    $class = "spinner icon-spin";
+                    break;
             }
             $found = new stdClass();
             $found->type = $btn_type;
@@ -1671,6 +1674,9 @@ class expTheme
                     $class = "check";
                     $btn_type = "btn-success"; // green
                     break;
+                case 'ajax' :
+                    $class = "spinner fa-spin";
+                    break;
             }
             $found = new stdClass();
             $found->type = $btn_type;
@@ -1680,6 +1686,22 @@ class expTheme
             return $found;
         } else {
             return $class;
+        }
+    }
+
+    /**
+     * Return the full icon style string for the current framework
+     *
+     * @param        $class
+     *
+     * @return string
+     */
+    public static function iconStyle($class) {
+        $style = self::buttonIcon($class);
+        if (!empty($style->prefix)) {
+            return $style->prefix . $style->class;
+        } else {
+            return $style;
         }
     }
 

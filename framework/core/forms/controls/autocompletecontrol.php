@@ -53,7 +53,7 @@ class autocompletecontrol extends formcontrol {
             </div>
         ';
         
-//FIXME convert to yui3
+//FIXME convert to yui3/jquery
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-animation','yui2-autocomplete','yui2-connection','yui2-datasource', function(Y) {
             YAHOO = Y.YUI2;

@@ -18,14 +18,13 @@
         z-index: 99!important;
     }
     #ac-input {
-        width: 85%;
+        width: 80%;
     }
 {/css}
 
 <div class="module ecommerce ecom-search yui3-skin-sam yui-skin-sam">
     <div id="search-autocomplete" class="control" style="z-index: 999;">
         {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<label for="ac-input">{$moduletitle}</label>{/if}
-        {*<input id="ac-input" type="text" class="text">*}
         {control name="ac-input" type="search" class="text" prepend="search"}
     </div>
 </div>
@@ -47,8 +46,9 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
             // title
             template += ' <strong class="title">'+result.title+'</strong>';
             // model/SKU
-            if (result.model) template += ' <em class="title">SKU: '+result.model+'</em></div>';
-//            template += '<div style="clear:both;"></pre>';
+            if (result.model) template += ' <em class="title">SKU: '+result.model+'</em>';
+            //template += '<div style="clear:both;">';
+            template += '</pre>';
 
             return template;
         });
@@ -66,6 +66,14 @@ YUI(EXPONENT.YUI3_CONFIG).use("datasource-io","datasource-jsonschema","autocompl
         requestTemplate: '&query={query}'
     });
     
+    autocomplete.ac.on('query', function (e) {
+        Y.one('#ac-inputControl span i').removeClass('{/literal}{expTheme::iconStyle('search')}{literal}').addClass('{/literal}{expTheme::iconStyle('ajax')}{literal}');
+    });
+
+    autocomplete.ac.on('results', function (e) {
+        Y.one('#ac-inputControl span i').removeClass('{/literal}{expTheme::iconStyle('ajax')}{literal}').addClass('{/literal}{expTheme::iconStyle('search')}{literal}');
+    });
+
     autocomplete.ac.on('select', function (e) {
         window.location = EXPONENT.PATH_RELATIVE+"store/show/title/"+e.result.raw.sef_url;  //FIXME requires SEF_URLs
         return e.result.raw.title;

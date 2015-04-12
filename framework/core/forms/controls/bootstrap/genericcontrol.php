@@ -88,13 +88,11 @@ class genericcontrol extends formcontrol {
         $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
         $html .= ($this->type != 'hidden' && $this->horizontal) ? '<div class="col-sm-10">' : '<div>';
-        if (bs2()) {
-            if (!empty($this->prepend)) {
+        if (!empty($this->prepend)) {
+            if (bs2()) {
                 $html .= '<div class="input-prepend">';
                 $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            }
-        } elseif (bs3()) {
-            if (!empty($this->prepend)) {
+            } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
             }
