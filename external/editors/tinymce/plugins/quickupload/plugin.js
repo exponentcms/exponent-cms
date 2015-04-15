@@ -33,53 +33,56 @@ tinymce.PluginManager.add('quickupload', function(editor) {
 	editor.on('init', function(){
 		var id = editor.id + '_quickupload';
 		var btn = document.getElementById(id);
-		var ico = btn.childNodes[0].childNodes[0];
-		var tooltip = editor.theme.panel.controlIdLookup[id];
+        if (btn) {
+            var ico = btn.childNodes[0].childNodes[0];
+            var tooltip = editor.theme.panel.controlIdLookup[id];
 
-		var uploader = new plupload.Uploader({
-			runtimes : 'html5,flash,silverlight,html4',
-			browse_button : id,
-			url : url,
-			filters : {
-				max_file_size : filesize ? filesize : "1mb",
-				mime_types: [{title : "Image files", extensions : "jpg,jpeg,gif,png"}],
-			},
-			multipart_params: postdata,
-			multi_selection: false,
-			flash_swf_url : basepath+'Moxie.swf',
-			silverlight_xap_url : basepath+'Moxie.xap',
-			init: {
-				Init: function(up) {
-					return true;
-				},
+            var uploader = new plupload.Uploader({
+                runtimes: 'html5,flash,silverlight,html4' ,
+                browse_button: id ,
+                url: url ,
+                filters: {
+                    max_file_size: filesize ? filesize : "1mb" ,
+                    mime_types: [{title: "Image files" , extensions: "jpg,jpeg,gif,png"}] ,
+                } ,
+                multipart_params: postdata ,
+                multi_selection: false ,
+                flash_swf_url: basepath + 'Moxie.swf' ,
+                silverlight_xap_url: basepath + 'Moxie.xap' ,
+                init: {
+                    Init: function (up) {
+                        return true;
+                    } ,
 
-				FilesAdded: function(up, files) {
-					ico.className = 'mce-ico mce-i-restoredraft';
-					tooltip.settings.tooltip = "Uploading..";
-					up.start();
-				},
+                    FilesAdded: function (up , files) {
+                        ico.className = 'mce-ico mce-i-restoredraft';
+                        tooltip.settings.tooltip = "Uploading..";
+                        up.start();
+                    } ,
 
-				UploadProgress: function(up, file) {
-					tooltip.settings.tooltip = file.percent+"%";
-				},
+                    UploadProgress: function (up , file) {
+                        tooltip.settings.tooltip = file.percent + "%";
+                    } ,
 
-				FileUploaded: function(up, file, res) {
-					ico.className = 'mce-ico mce-i-image';
-					tooltip.settings.tooltip = "Insert/edit image";
-					var file = callback(res, file, up);
-					if (!file) return;
-					editor.focus();
-					editor.selection.setContent(editor.dom.createHTML('img', {src:file}));
-				},
+                    FileUploaded: function (up , file , res) {
+                        ico.className = 'mce-ico mce-i-image';
+                        tooltip.settings.tooltip = "Insert/edit image";
+                        var file = callback(res , file , up);
+                        if (!file) return;
+                        editor.focus();
+                        editor.selection.setContent(editor.dom.createHTML('img' , {src: file}));
+                    } ,
 
-				UploadComplete: function(up, files) {},
+                    UploadComplete: function (up , files) {
+                    } ,
 
-				Error: function(up, err) {
-					error_call(err, up);
-				}
-			}
-		});
+                    Error: function (up , err) {
+                        error_call(err , up);
+                    }
+                }
+            });
 
-		uploader.init();
+            uploader.init();
+        }
 	});
 });
