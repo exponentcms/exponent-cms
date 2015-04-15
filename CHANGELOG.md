@@ -17,6 +17,7 @@ Version 2.3.4
   - adds alternate color to featured items in announcement views
   - updates twitter view to more closely resemble twitter.com
   - adds 'empty recycle bin' feature to remove all items in recycle bin
+  - add quick image upload button to TinyMCE editor
   - adds most recent event date to search hit for events and event registrations
   - updates several bootstrap3 ecommerce views to more closely follow bootstrap3 styling
     -- newly styled invoices and packing slips
