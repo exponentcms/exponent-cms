@@ -91,6 +91,7 @@ class searchController extends expController {
         // reinitialize search index
 	    $db->delete('search');
 
+        $mods = array();
         // old school modules
 //	    foreach (expModules::modules_list() as $mod) {
 ////		    $name = @call_user_func(array($mod,'name'));
@@ -101,8 +102,10 @@ class searchController extends expController {
 //	    }
 
         // 2.0 modules
-	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
-		    $controller = new $ctlname();		    
+//	    foreach (expModules::listControllers() as $ctlname=>$ctl) {
+        foreach (expModules::getActiveControllersList() as $ctl) {
+            $ctlname = expModules::getModuleClassName($ctl);
+		    $controller = new $ctlname();
 		    if (method_exists($controller,'isSearchable') && $controller->isSearchable()) {
 //			    $mods[$controller->name()] = $controller->addContentToSearch();
                 $mods[$controller->searchName()] = $controller->addContentToSearch();
