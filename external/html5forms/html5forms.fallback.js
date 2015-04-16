@@ -16,21 +16,34 @@
  */
 var initSlider = function() {			
 	$('input[type=range]').each(function() {
-		var $input = $(this);
-		var $slider = $('<div id="' + $input.attr('id') + '" class="' + $input.attr('class') + '"></div>');
-//		var step = $input.attr('step');
-		var valu = $input.attr('value');
+		var input = $(this);
+		var slider = $('<div id="' + input.attr('id') + '" class="' + input.attr('class') + '"></div>');
+        var min = parseInt(input.attr('min'));
+        if (isNaN(min) || typeof min == 'undefined') {
+            min = 0;
+        }
+        var max = parseInt(input.attr('max'));
+        if (isNaN(max) || typeof max == 'undefined') {
+            max = 100;
+        }
+        var step = parseInt(input.attr('step'));
+        if (isNaN(step) || typeof step == 'undefined') {
+            step = 1;
+        }
+        var value = parseInt(input.attr('value'));
+        if (isNaN(value) || typeof value == 'undefined') {
+            value = 0;
+        }
 
-		$input.after($slider).hide();
+		input.after(slider).hide();
 
-		$slider.slider({
-			min: $input.attr('min'),
-			max: $input.attr('max'),
-			step: $input.attr('step'),
-            value: $input.attr('value'),
+		slider.slider({
+			min:   min,
+			max:   max,
+			step:  step,
+            value: value,
 			change: function(e, ui) {
-//				$(this).val(ui.value);
-                $(this).prev().val(ui.value);
+                $(this).prev().val(ui.value);  // set original input value
 			}
 		});
 	});

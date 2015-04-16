@@ -63,7 +63,7 @@ class fakeform extends form {
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms-1mod',
-            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
+            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms-2eh',

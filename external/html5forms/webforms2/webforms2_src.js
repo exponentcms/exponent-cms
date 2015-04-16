@@ -480,10 +480,10 @@ $wf2 = {
 			// the form has a data-webforms2-force-js-validation attribute
 			// set to "true" *or* the browser has a bad implementation.
 			if(frm.checkValidity && !$wf2.hasBadImplementation && $wf2.getAttributeValue(frm, 'data-webforms2-force-js-validation') != 'true') {
-			    console.log('sdsd')
+			    //console.log('sdsd')
 				continue;
 			}
-			console.log('fff')
+			//console.log('fff')
 			frm.checkValidity = $wf2.formCheckValidity;
 			
 			if(frm.addEventListener)
