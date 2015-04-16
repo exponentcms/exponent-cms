@@ -122,6 +122,7 @@ class remove_oldfiles extends upgradescript {
             'external/editors/connector/link.php',
             'external/editors/connector/popup.js',
             'external/editors/connector/section_linked.php',
+            'external/html5forms/modernizr-262.js',
             'external/jquery/js/jquery-1.8.3.js',
             'external/jquery/js/jquery-1.8.3.min.js',
             'external/jquery/js/jquery-1.9.0.js',
