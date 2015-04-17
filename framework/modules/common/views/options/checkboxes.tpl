@@ -25,9 +25,9 @@
     {/foreach}
 </div>
 
-{script unique="optionselector" yui3mods=1}
+{script unique="optionselector" yui3mods="node,node-event-simulate"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var pricediv = document.getElementById("item-price");
         if (pricediv != null) {
             var baseprice = pricediv.innerHTML.replace("$", "");

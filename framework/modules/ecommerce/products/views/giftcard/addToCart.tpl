@@ -62,9 +62,9 @@
 {*{/literal}*}
 {*{/script}*}
 
-{script unique="a2cgc" yui3mods=1}
+{script unique="a2cgc" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var bp = {/literal}{$price}{literal};
         var da = Y.one('#dollar_amount');
         da.on('blur', function(e,o){

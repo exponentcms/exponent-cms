@@ -505,7 +505,7 @@
     {/form}
 </div>
 
-{script unique="`$config`" yui3mods=1}
+{script unique="`$config`"}
 {literal}
     function changeProfile(val) {
         if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}')) {
@@ -561,7 +561,7 @@ if ($('#no_smtp').is(':checked') == true)
 
 {script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchersw = Y.all('#alt-controlw input[type="radio"]');
     radioSwitchersw.on('click',function(e){
         Y.all("#alt-controlw .alt-item").setStyle('display','none');
@@ -580,7 +580,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
 
 {script unique="pdf-type" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#alt-control input[type="radio"]');
     radioSwitchers.on('click',function(e){
         Y.all("#alt-control .alt-item").setStyle('display','none');

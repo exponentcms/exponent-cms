@@ -238,9 +238,9 @@
     </div>
 </div>
 
-{script unique="editform" yui3mods=1}
+{script unique="editform" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var switchMethods = function () {
             var dd = Y.one('#required_shipping_calculator_id');
             var ddval = dd.get('value');
@@ -263,14 +263,14 @@
 {/literal}
 {/script}
 
-{script unique="authtabs" yui3mods=1}
+{script unique="authtabs" yui3mods="get,exptabs,node-load,event-simulate"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-	 YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs", "node-load","event-simulate", function(Y) {
+	 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#childtabs'});
 		Y.one('#childtabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

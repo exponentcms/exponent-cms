@@ -29,6 +29,8 @@ class genericcontrol extends formcontrol {
 
     static function name() { return "generic"; }
 
+    var $placeholder = "";
+
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
         $this->type = (empty($type)) ? "text" : $type;
         $this->default = $default;

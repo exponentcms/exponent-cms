@@ -82,9 +82,9 @@
 //</form>
 {/form}
 
-{script unique="permission-checking" yui3mods=1}
+{script unique="permission-checking" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var manage = Y.all('input.manage');
 
     var checkSubs = function(row) {

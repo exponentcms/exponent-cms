@@ -79,9 +79,9 @@
 {/if}
 
 {if !$hcview}
-{script unique="edit-module" yui3mods=1}
+{script unique="edit-module" yui3mods="node,event,node-event-delegate,io,json-parse"}
 {literal}
-    YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "json-parse", function (Y) {
+    YUI(EXPONENT.YUI_CONFIG).use('*', function (Y) {
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
         var current_view = {/literal}{if $container->view}"{$container->view}"{else}false{/if}{literal}; //Do we have an existing view

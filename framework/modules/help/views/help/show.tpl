@@ -112,21 +112,6 @@
     </div>
 {/if}
 
-{*{script unique="editform" yui3mods=1}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#showhelp-tabs'});*}
-		{*Y.one('#showhelp-tabs').removeClass('hide');*}
-		{*Y.one('.loadingdiv').remove();*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
-
 {script unique="`$id`" jquery="jqueryui"}
 {literal}
     $('#showhelp-tabs-{/literal}{$id}{literal}').tabs().next().remove();

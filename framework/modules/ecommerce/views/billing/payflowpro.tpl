@@ -26,9 +26,9 @@
     {/form}
 </div>
 
-{script unique="continue-checkout" yui3mods="1"}
+{script unique="continue-checkout" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {    
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     Y.one('#continue-checkout{/literal}$key{literal}').on('click',function(e){
         e.halt();
         Y.one('#ccinfoform{/literal}$key{literal}').submit();

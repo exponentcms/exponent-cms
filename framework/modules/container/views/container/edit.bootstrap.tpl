@@ -86,10 +86,10 @@
     {/if}
     {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
 
-    {script unique="addmodule" yui3mods=1}
+    {script unique="addmodule" yui3mods="node,event,io,json-parse"}
     {literal}
 
-    YUI(EXPONENT.YUI_CONFIG).use("node","event","io","json-parse",function(Y){
+    YUI(EXPONENT.YUI_CONFIG).use('*',function(Y){
         var modpicker = Y.one('#modcntrol'); // the module selection dropdown
         var is_edit = {/literal}{$is_edit}{literal} //are we editing?
         var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action

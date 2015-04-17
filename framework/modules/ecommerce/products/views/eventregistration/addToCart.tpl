@@ -38,10 +38,10 @@
     </div>
 
     {*FIXME convert to yui3*}
-    {script unique="eventreg" yui3mods="1"}
+    {script unique="eventreg" yui3mods="yui2-yahoo-dom-event"}
     {literal}
         //YAHOO.util.Event.onDOMReady(function(){
-        YUI(EXPONENT.YUI3_CONFIG).use('yui2-yahoo-dom-event', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             var YAHOO = Y.YUI2;
             var addNewRegs = {
                 addcounter : 0,

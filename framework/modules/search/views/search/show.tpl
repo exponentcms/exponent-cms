@@ -27,18 +27,3 @@
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
     {/form}
 </div>
-{*{script unique="search" yui3mods="yui"}*}
-{*{literal}*}
-{*YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {*}
-    {*Y.one('#search_string').on({*}
-        {*'focus':function(e){*}
-            {*e.target.set('value',(e.target.get('value')=='{/literal}{$config.default_txt|default:"Keywords"|gettext}{literal}')?'':e.target.get('value'));*}
-        {*},*}
-        {*'blur':function(e){*}
-            {*e.target.set('value',(e.target.get('value')=='')?'{/literal}{$config.default_txt|default:"Keywords"|gettext}{literal}':e.target.get('value'));*}
-        {*}*}
-    {*});*}
-{*});*}
-
-{*{/literal}*}
-{*{/script}*}

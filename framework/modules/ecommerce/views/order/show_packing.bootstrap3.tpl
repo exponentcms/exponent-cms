@@ -282,78 +282,71 @@
                             <tr>
                                 {*<td colspan="8" style='text-align: right;'><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->*}
                                 <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
-                                {capture assign="callbacks"}
-                                {literal}
+                                    {capture assign="callbacks"}
+                                    {literal}
+                                    // the text box for the title
+                                    var tagInput = Y.one('#add_new_item');
 
-                                // the text box for the title
-                                var tagInput = Y.one('#add_new_item');
+                                    // the UL to append to
+                                    var tagUL = Y.one('#new_items');
 
-                                // the UL to append to
-                                var tagUL = Y.one('#new_items');
+                                    var appendToList = function(e) {
+                                        var val = e.result.raw.id;
+                                        tagUL.appendChild(createHTML(val));
+                                        return true;
+                                    }
 
-                                // the Add Link
-                                var tagAddToList = Y.one('#addToRelProdList');
+                                    var removeLI = function(e) {
+                                        e.target.set('value', '');
+                                        tagUL.get('children').remove();
+                                    }
 
+                                    var createHTML = function(val) {
+                                        var f = '<form role="form" id=addItem method=post>';
+                                            f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
+                                            f += '<input type=hidden name=module id=module value=order>';
+                                            f += '<input type=hidden name=action id=action value=add_order_item>';
+                                            f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
+                                            f += '<input type=submit class="add {/literal}{expTheme::buttonStyle('green')}{literal}" name=submit value="Add This Item">';
+                                            f += '</form>';
+                                        var newLI = Y.Node.create(f);
+                                        return newLI;
+                                    }
 
-                                var onRequestData = function( oSelf , sQuery , oRequest) {
-                                    tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/subsystems/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
-                                }
+                                    tagInput.on('click',removeLI);
 
-                                var onRGetDataBack = function( oSelf , sQuery , oRequest) {
-                                    tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});
-                                }
+                                    // format the results coming back in from the query
+                                    autocomplete.ac.set('resultFormatter', function(query, results) {
+                                        return Y.Array.map(results, function (result) {
+                                            var result = result.raw;
 
-                                var appendToList = function(e,args) {
-                                    tagUL.appendChild(createHTML(args[2]));
-                                    return true;
-                                }
+                                            var template;
+                                            // image
+                                            if (result.fileid) {
+                                                template = '<pre><img width="30" height="30" class="srch-img" src="'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+result.fileid+'&w=30&h=30&zc=1" />';
+                                            } else {
+                                                template = '<pre><img width="30" height="30" class="srch-img" src="'+EXPONENT.PATH_RELATIVE+'framework/modules/ecommerce/assets/images/no-image.jpg" />';
+                                            }
+                                            // title
+                                            template += ' <strong class="title">'+result.title+'</strong>';
+                                            // model/SKU
+                                            if (result.model) template += ' <em class="title">SKU: '+result.model+'</em>';
+                                            //template += '<div style="clear:both;">';
+                                            template += '</pre>';
 
-                                var removeLI = function(e) {
-                                    var t = e.target;
-                                    if (t.test('a')) tagUL.removeChild(t.get('parentNode'));
-                                }
+                                            return template;
+                                        });
+                                    })
 
-                                var createHTML = function(val) {
-                                    var f = '<form role="form" id=addItem method=post>';
-                                        f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
-                                        f += '<input type=hidden name=module id=module value=order>';
-                                        f += '<input type=hidden name=action id=action value=add_order_item>';
-                                        f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                        f += '<input type=submit name=submit value="Add This Item">';
-                                        f += '</form>';
-                                    var newLI = Y.Node.create(f);
-                                    return newLI;
-                                }
-
-                                //tagAddToList.on('click',appendToList);
-                                tagUL.on('click',removeLI);
-
-                                // makes formatResult work mo betta
-                                oAC.resultTypeList = false;
-
-                                //AC.useShadow = true;
-                                //oAC.autoHighlight  = true;
-                                //oAC.typeAhead = true;
-
-                                oAC.maxResultsDisplayed   = 30;
-
-                                // when we start typing...?
-                                oAC.dataRequestEvent.subscribe(onRequestData);
-                                oAC.dataReturnEvent.subscribe(onRGetDataBack);
-
-                                // format the results coming back in from the query
-                                oAC.formatResult = function(oResultData, sQuery, sResultMatch) {
-                                    return '(' + oResultData.model + ') ' + oResultData.title;
-                                }
-
-                                // what should happen when the user selects an item?
-                                oAC.itemSelectEvent.subscribe(appendToList);
-
-                                {/literal}
-                                {/capture}
-                                {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item"|gettext value="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" jsinject=$callbacks}
-                                <div id="new_items">
-                                </div>
+                                    // what should happen when the user selects an item?
+                                    autocomplete.ac.on('select', function (e) {
+                                        appendToList(e);
+                                    });
+                                    {/literal}
+                                    {/capture}
+                                    {control type="autocomplete" controller="store" action="search" name="add_new_item" label="Add a new item"|gettext placeholder="Search title or SKU to add an item" schema="title,id,sef_url,expFile,model" searchmodel="product" searchoncol="title,model" maxresults=30 jsinject=$callbacks}
+                                    <div id="new_items">
+                                    </div>
                                 </td>
                             </tr>
                         {/if}

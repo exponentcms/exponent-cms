@@ -1696,10 +1696,14 @@ class expTheme
      *
      * @return string
      */
-    public static function iconStyle($class) {
+    public static function iconStyle($class, $text = null) {
         $style = self::buttonIcon($class);
         if (!empty($style->prefix)) {
-            return $style->prefix . $style->class;
+            if ($text) {
+                return '<i class="' .$style->prefix . $style->class . '"> '. $text . "</i>";
+            } else {
+                return $style->prefix . $style->class;
+            }
         } else {
             return $style;
         }

@@ -36,10 +36,10 @@
 	{/permissions}
 </div>
 
-{script unique=$name yui3mods="1"}
+{script unique=$name yui3mods="node,io,node-event-delegate"}
 {literal}
 
-YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var minical = Y.one('#mini-{/literal}{$name}{literal}');
     var cfg = {
     			method: "POST",

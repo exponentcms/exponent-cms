@@ -126,18 +126,6 @@ if (!function_exists('smarty_function_getchromemenu')) {
 
         $list .= '</ul>';
 
-//        expCSS::pushToHead(array(
-//            "unique"=>"admin-container",
-//            "link"=>PATH_RELATIVE."framework/modules/container/assets/css/admin-container.css",
-//            )
-//        );
-//
-//        expJavascript::pushToFoot(array(
-//            "unique"=>'container-chrome',
-//            "yui3mods"=>'node',
-//            "src"=>JS_RELATIVE."exp-container.js"
-//         ));
-
         echo $list;
     }
 }

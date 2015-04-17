@@ -138,7 +138,7 @@ function smarty_function_prod_images($params,&$smarty) {
 
             // javascripting
             $js = "
-                YUI(EXPONENT.YUI3_CONFIG).use('node','anim', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     // set up the images with correct z-indexes to put the first image on top
                     var imgs = Y.all('.ecom-images img.large-img');
                     var thumbs = Y.all('.thumbnails img');
@@ -196,8 +196,7 @@ function smarty_function_prod_images($params,&$smarty) {
             ";
             expJavascript::pushToFoot(array(
                 "unique"=>'imgswatches',
-//                "yui2mods"=>null,
-                "yui3mods"=>1,
+                "yui3mods"=>"node,anim",
                 "content"=>$js,
                 "src"=>""
              ));

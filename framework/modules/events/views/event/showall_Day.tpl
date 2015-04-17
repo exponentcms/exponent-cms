@@ -65,7 +65,7 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' yui3mods=1}
+{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,io,node-event-delegate"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
     'gallery-calendar': {
@@ -77,7 +77,7 @@ EXPONENT.YUI3_CONFIG.modules = {
         type: 'css'
     }
 }
-YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','io','node-event-delegate',function(Y){
+YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
     var monthcal = Y.one('#day-{/literal}{$name}{literal}');
     var cfg = {

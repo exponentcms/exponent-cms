@@ -100,9 +100,9 @@
     {/foreach}
 </div>
 
-{script unique="expand-panels" yui3mods=1}
+{script unique="expand-panels" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var action = function(e){
             e.halt();
             var pBody = e.target.ancestor('.panel').one('.bd');

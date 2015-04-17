@@ -208,13 +208,13 @@ class ckeditorcontrol extends formcontrol {
         ";
 
         expJavascript::pushToFoot(array(
+            "unique"  => "ckeditor",
+            "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
+        ));
+        expJavascript::pushToFoot(array(
             "unique"  => "000-cke" . $name,
             "jquery"=> "1",
             "content" => $content,
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => "ckeditor",
-            "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
         ));
 
         $html = "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";

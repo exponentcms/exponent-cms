@@ -96,27 +96,6 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{*{script unique="`$tabs`" yui3mods="1"}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#{/literal}{$tabs}{literal}'});*}
-		{*Y.one('#{/literal}{$tabs}{literal}').removeClass('hide');*}
-		{*Y.one('.loadingdiv').remove();*}
-	{*});*}
-{*{/literal}*}
-{*{/script}*}
-
-{*{script unique="`$tabs`" jquery="jqueryui"}*}
-{*{literal}*}
-    {*$('#{/literal}{$tabs}{literal}').tabs().next().remove();*}
-{*{/literal}*}
-{*{/script}*}
-
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
     $('.loadingdiv').remove();

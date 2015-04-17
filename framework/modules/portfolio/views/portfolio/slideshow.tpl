@@ -122,7 +122,7 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="ss-`$name`" yui3mods="anim"}
+{script unique="ss-`$name`" yui3mods="gallery-yui-slideshow"}
 {literal}
 
 EXPONENT.YUI3_CONFIG.modules = {
@@ -136,7 +136,7 @@ EXPONENT.YUI3_CONFIG.modules = {
     }
 }
 
-YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
     {
         interval:{/literal}{$config.speed|default:5}000{literal},

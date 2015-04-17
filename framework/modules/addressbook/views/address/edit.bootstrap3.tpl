@@ -17,9 +17,9 @@
 
 {/css}
 
-{script unique="hidePasswordFields" yui3mods=1}
+{script unique="hidePasswordFields" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     // start coding
     var checkbox = Y.one('#remember_me'); //the checkbox
     if (checkbox){

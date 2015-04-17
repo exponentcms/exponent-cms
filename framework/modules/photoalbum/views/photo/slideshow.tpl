@@ -125,36 +125,34 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="ss-`$name`" yui3mods="anim"}
+{script unique="ss-`$name`" yui3mods="gallery-yui-slideshow"}
 {literal}
+    EXPONENT.YUI3_CONFIG.modules = {
+        'gallery-yui-slideshow': {
+            fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
+            requires: ['anim','node','slideshow-css'],
+        },
+        'slideshow-css': {
+            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/yui3-slideshow.css',
+            type: 'css'
+        }
+    }
 
-EXPONENT.YUI3_CONFIG.modules = {
-	'gallery-yui-slideshow': {
-		fullpath: '{/literal}{$asset_path}js/yui3-slideshow.js{literal}',
-        requires: ['anim','node','slideshow-css'],
-    },
-    'slideshow-css': {
-        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/yui3-slideshow.css',
-        type: 'css'
-	}
-}
-
-YUI(EXPONENT.YUI3_CONFIG).use('gallery-yui-slideshow', function(Y) {
-    var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
-    {
-        interval:{/literal}{$config.speed|default:5}000{literal},
-//        autoplay:{/literal}{$config.autoplay|default:true}{literal},
-        ti:'{/literal}{$config.anim_in|default:"fadeIn"}{literal}',
-        to:'{/literal}{$config.anim_out|default:"fadeOut"}{literal}',
-        duration:{/literal}{$config.duration|default:0.5}{literal},
-        nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
-        previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
-        playButton:"#ss-{/literal}{$name}{literal} .play_slide",
-        pauseButton:"#ss-{/literal}{$name}{literal} .pause_slide",
-        pagination:"#ss-{/literal}{$name}{literal} .slideshow-pagination a"
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        var oSlideshow = new Y.Slideshow('#ss-{/literal}{$name}{literal} .slideshow-frame',
+        {
+            interval:{/literal}{$config.speed|default:5}000{literal},
+    //        autoplay:{/literal}{$config.autoplay|default:true}{literal},
+            ti:'{/literal}{$config.anim_in|default:"fadeIn"}{literal}',
+            to:'{/literal}{$config.anim_out|default:"fadeOut"}{literal}',
+            duration:{/literal}{$config.duration|default:0.5}{literal},
+            nextButton:"#ss-{/literal}{$name}{literal} .next_slide",
+            previousButton:"#ss-{/literal}{$name}{literal} .prev_slide",
+            playButton:"#ss-{/literal}{$name}{literal} .play_slide",
+            pauseButton:"#ss-{/literal}{$name}{literal} .pause_slide",
+            pagination:"#ss-{/literal}{$name}{literal} .slideshow-pagination a"
+        });
     });
-});
-
 {/literal}
 {/script}
 {/if}

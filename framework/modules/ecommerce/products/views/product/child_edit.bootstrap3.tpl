@@ -238,9 +238,9 @@
     </div>
 </div>
 
-{script unique="editform" yui3mods=1}
+{script unique="editform" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var switchMethods = function () {
             var dd = Y.one('#required_shipping_calculator_id');
             var ddval = dd.get('value');

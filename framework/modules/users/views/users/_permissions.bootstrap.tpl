@@ -82,9 +82,9 @@
 {*</form>*}
 {/form}
 
-{script unique="permission-checking" yui3mods=1}
+{script unique="permission-checking" yui3mods="node,event,node-event-delegate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', "event", "node-event-delegate", function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var checkSubs = function(row) {
         row.each(function(n,k){
             if (!n.hasClass('manage')) {

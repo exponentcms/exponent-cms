@@ -22,9 +22,9 @@
 </div>
 <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'View Panel'|gettext}</a>
 
-{script unique="flyoutsidebarYUI" type="text/javascript" yui3mods="1"}
+{script unique="flyoutsidebarYUI" type="text/javascript" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
  Y.on('domready', function() {
 	Y.one('.triggerlogin').on('click', function() {
 		Y.one('.flyout').toggleView();

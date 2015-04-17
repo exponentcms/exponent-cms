@@ -72,7 +72,7 @@
     {/form}
 </div>
 
-{script unique="edittags" yui3mods=1}
+{script unique="edittags"}
 {literal}
     function selectAllp(val) {
         var checks = document.getElementsByName("change_tag[]");

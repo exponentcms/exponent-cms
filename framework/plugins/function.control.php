@@ -376,12 +376,15 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "autocomplete":
                 $control              = new autocompletecontrol();
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->width       = !empty($params['width']) ? $params['width'] : "320px";
                 $control->schema      = "'" . str_replace(",", "','", $params['schema']) . "'";
-                $control->value   = isset($params['value']) ? $params['value'] : null;
+                $control->value       = isset($params['value']) ? $params['value'] : null;
                 $control->controller  = empty($params['controller']) ? "search" : $params['controller'];
                 $control->action      = empty($params['action']) ? "autocomplete" : $params['action'];
                 $control->searchmodel = empty($params['searchmodel']) ? "text" : $params['searchmodel'];
                 $control->searchoncol = empty($params['searchoncol']) ? "title" : $params['searchoncol'];
+                $control->maxresults  = empty($params['maxresults']) ? 12 : $params['maxresults'];
                 $control->jsinject    = empty($params['jsinject']) ? "" : $params['jsinject'];
                 break;
 //            case "massmail":

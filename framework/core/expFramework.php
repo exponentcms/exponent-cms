@@ -145,7 +145,7 @@ $js2foot = array();
  * @var array $yui3js
  * @name $yui3js
  */
-$yui3js = array();
+$yui3js = false;
 /**
  * Stores the jquery javascript files list
  * @var array $jqueryjs
@@ -1068,7 +1068,7 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            } else {
 //                $pvar = $var;
 //            }
-//            echo("<script>YUI().use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
+//            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
             echo "<pre>";

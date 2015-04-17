@@ -124,9 +124,9 @@
 	{/literal}
 {/script}
 
-{script unique="a2cgc" yui3mods=1}
+{script unique="a2cgc" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var bp = {/literal}{$config.minimum_gift_card_purchase}{literal};
         var da = Y.one('#card_amount_txt');
         da.on('blur', function(e,o){

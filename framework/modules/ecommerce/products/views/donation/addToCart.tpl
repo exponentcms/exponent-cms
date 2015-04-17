@@ -62,9 +62,9 @@
 {*{/literal}*}
 {*{/script}*}
 
-{script unique="a2cgc" yui3mods=1}
+{script unique="a2cgc" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var links = Y.all('a.rc-link');
 
     links.on('click', function (e) {

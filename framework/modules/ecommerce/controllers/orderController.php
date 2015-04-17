@@ -1916,6 +1916,10 @@ exit();
         }
     }
 
+    /**
+     * AJAX search for internal (addressController) addresses
+     *
+     */
     public function search() {
 //        global $db, $user;
         global $db;
@@ -1927,11 +1931,18 @@ exit();
             "*' IN BOOLEAN MODE) ";
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
+        foreach ($res as $key=>$record) {
+            $res[$key]->title = $record->firstname . ' ' . $record->lastname;
+        }
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
 
+    /**
+     * Ajax search for external addresses
+     *
+     */
     public function search_external() {
 //        global $db, $user;
         global $db;
@@ -1943,6 +1954,9 @@ exit();
             "*' IN BOOLEAN MODE) ";
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
+        foreach ($res as $key=>$record) {
+            $res[$key]->title = $record->firstname . ' ' . $record->lastname;
+        }
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();

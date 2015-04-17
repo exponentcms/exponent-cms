@@ -80,7 +80,6 @@
 {if !$hcview}
     {script unique="edit-module" jquery=1}
     {literal}
-        //YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "json-parse", function (Y) {
         $(document).ready(function() {
             var modpicker = $('#modcntrol'); // the module selection dropdown
             var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action

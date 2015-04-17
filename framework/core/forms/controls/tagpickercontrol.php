@@ -94,7 +94,7 @@ class tagpickercontrol extends formcontrol {
         $textbox->class    = $this->class;
 
         $script = "
-            YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters',function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y) {
                 var inputNode = Y.one('#" . $this->id . "');
                 var tags = [" . $this->taglist . "];
 
@@ -144,7 +144,7 @@ class tagpickercontrol extends formcontrol {
 
         expJavascript::pushToFoot(array(
             "unique"  => 'exptag-' . $name,
-            "yui3mods"=> 1,
+            "yui3mods"=> "autocomplete,autocomplete-filters,autocomplete-highlighters",
             "content" => $script,
         ));
 

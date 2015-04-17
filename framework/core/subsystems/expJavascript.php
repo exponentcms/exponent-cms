@@ -395,25 +395,10 @@ class expJavascript {
     public static function pushToFoot($params) {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
-        // if within an ajax call, immediately output the javascript
-        //FIXME we only output straight javascript code and links, no jquery/yui module wrapper/loading
-    	if (self::inAjaxAction()) {
-		    echo "<div class=\"io-execute-response\">";
-    	    if ($params['src']) {
-                echo '<script type="text/javascript" src="',$params['src'],'"></script>';
-    	    }
-		    echo "
-		    <script id=\"",$params['unique'],"\" type=\"text/javascript\" charset=\"utf-8\">
-		      ",$params['content'],"
-		    </script>
-		    </div>
-		    ";
-		    return true;
-    	}
-
     	if (!empty($params['src'])) {
     	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
     	    $src = $params['src'];
+            //FIXME we need to allow for an array of scripts with unique+index as name
     	    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
                 $expJS[$params['unique']] = array(
 					"name" => $params['unique'],
@@ -425,11 +410,12 @@ class expJavascript {
             // }
     	}
 
+        // insert the yui2mods wrapper if needed
         if (isset($params['yui2mods']) && !strstr($params['content'],"YUI(")) {
             if (empty($params['yui3mods']))
                 $params['yui3mods'] = 1;
-            $yui2mods = !empty($params['yui2mods'])?$params['yui2mods']:$params['yuimodules'];
-            $toreplace = array('"',"'"," ");
+            $yui2mods = !empty($params['yui2mods']) ? $params['yui2mods'] : null;
+            $toreplace = array('"',"'"," ");  // strip quotes
             $stripmodquotes = str_replace($toreplace, "", $yui2mods);
             $splitmods = explode(",",$stripmodquotes);
 
@@ -449,23 +435,34 @@ class expJavascript {
             $params['content'] = $y3wrap;
         }
 
+        // do universal yui3mods replace
 		if (isset($params['content']) && stristr($params['content'],"use('*',") && isset($params['yui3mods'])) {
             $params['content'] = str_replace("use('*',",('use(\''.str_replace(',','\',\'',$params['yui3mods']).'\','),$params['content']);
-            $yui3js["yui"] = "yui";
+            $yui3js = 1;
 		}
-        if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
 
     	if(!empty($params['yui3mods'])){
-            $toreplace = array('"',"'"," ");
-            $stripmodquotes = str_replace($toreplace, "", $params['yui3mods']);               
+//            $toreplace = array('"',"'"," ");
+//            $stripmodquotes = str_replace($toreplace, "", $params['yui3mods']);
+//            $splitmods = explode(",",$stripmodquotes);
+//            foreach ($splitmods as $val){
+//                $yui3js[$val] = $val;
+//            }
+            if (empty($yui3js)) eDebug($yui3js,true);
+            $yui3js = 1;
+        }
+
+        if(!empty($params['bootstrap'])){
+            $toreplace = array('"',"'"," ");  // strip quotes
+            $stripmodquotes = str_replace($toreplace, "", $params['bootstrap']);
             $splitmods = explode(",",$stripmodquotes);
             foreach ($splitmods as $val){
-                $yui3js[$val] = $val;
+                $bootstrapjs[$val] = $val;
             }
         }
 
         if(!empty($params['jquery'])){
-            $toreplace = array('"',"'"," ");
+            $toreplace = array('"',"'"," ");  // strip quotes
             $stripmodquotes = str_replace($toreplace, "", $params['jquery']);
             $splitmods = explode(",",$stripmodquotes);
             foreach ($splitmods as $val){
@@ -473,15 +470,91 @@ class expJavascript {
             }
         }
 
-        if(!empty($params['bootstrap'])){
-            $toreplace = array('"',"'"," ");
-            $stripmodquotes = str_replace($toreplace, "", $params['bootstrap']);
-            $splitmods = explode(",",$stripmodquotes);
+        if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
 
-            foreach ($splitmods as $val){
-                $bootstrapjs[$val] = $val;
+        // if within an ajax call, output the javascript
+    	if (self::inAjaxAction()) {
+		    echo "<div class=\"io-execute-response\">";
+            if (!empty($params['bootstrap'])) {
+                // we assume jquery is already loaded
+                $scripts = '';
+                if (bs2()) {
+                    $bootstrappath = 'external/bootstrap/js/bootstrap-';
+                } else {
+                    $bootstrappath = 'external/bootstrap3/js/';
+                }
+                foreach ($bootstrapjs as $mod) {
+                    if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                    } elseif (file_exists(BASE . $bootstrappath . $mod . '.js')) {
+                        $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . $bootstrappath . $mod . '.js"></script>' . "\r\n";
+                    }
+                }
+                echo $scripts;
+       	    }
+            if (!empty($params['jquery'])) {
+                // we assume jquery is already loaded along with requested bootstrap scripts
+                $scripts = '';
+                foreach ($jqueryjs as $mod) {
+                    if ($mod == 'jqueryui') {
+                        $scripts .= '<script type="text/javascript" src="' . JQUERYUI_SCRIPT . '"></script>' . "\r\n";
+                        expCSS::pushToHead(
+                            array(
+                                'css_primer' => JQUERYUI_CSS
+                            )
+                        );
+                    } else {
+                        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js')) {
+                            $scripts .= '<script type="text/javascript" src="' . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/js/' . $mod . '.js"></script>' . "\r\n";
+                            if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less')) {
+                                expCSS::pushToHead(
+                                    array(
+//                           		    "unique"=>$mod,
+                                        "lesscss" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/less/' . $mod . '.less',
+                                    )
+                                );
+                            } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css')) {
+                                expCSS::pushToHead(
+                                    array(
+//                           		    "unique"=>$mod,
+                                        "link" => PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/css/' . $mod . '.css',
+                                    )
+                                );
+                            }
+                        } elseif (file_exists(JQUERY_PATH . 'addons/js/' . $mod . '.js')) {
+                            $scripts .= '<script type="text/javascript" src="' . JQUERY_RELATIVE . 'addons/js/' . $mod . '.js"></script>' . "\r\n";
+                            if (file_exists(JQUERY_PATH . 'addons/less/' . $mod . '.less')) {
+                                expCSS::pushToHead(
+                                    array(
+                                        "lessprimer" => JQUERY_RELATIVE . 'addons/less/' . $mod . '.less',
+                                    )
+                                );
+                            } elseif (file_exists(JQUERY_PATH . 'addons/css/' . $mod . '.css')) {
+                                expCSS::pushToHead(
+                                    array(
+                                        "css_primer" => JQUERY_RELATIVE . 'addons/css/' . $mod . '.css',
+                                    )
+                                );
+                            }
+                        }
+                    }
+                }
+                echo $scripts;
+       	    }
+    	    if (!empty($params['src'])) {
+                echo '<script type="text/javascript" src="',$params['src'],'"></script>';
+    	    }
+            if (!empty($params['content'])) {
+                echo "
+                <script id=\"", $params['unique'], "\" type=\"text/javascript\" charset=\"utf-8\">
+                  ", $params['content'], "
+                </script>";
             }
-        }
+            echo "
+		    </div>
+		    ";
+		    return true;
+    	}
     }
 
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {

@@ -115,7 +115,7 @@ class popupdatetimecontrol extends formcontrol {
                 }
             }
 
-            YUI(EXPONENT.YUI3_CONFIG).use('gallery-calendar','datatype-date',function(Y){
+            YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
                 var today = new Date(".$this->default."*1000);
 
                 //Popup
@@ -153,7 +153,7 @@ class popupdatetimecontrol extends formcontrol {
 
         expJavascript::pushToFoot(array(
             "unique"  => 'popcal' . $idname,
-            "yui3mods"=> 1,
+            "yui3mods"=> "gallery-calendar,datatype-date",
             "content" => $script,
         ));
 		return $html;

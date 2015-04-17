@@ -274,9 +274,9 @@
 </div>
 </div>
 
-{script unique="expanding-text" yui3mods="yui"}
+{script unique="expanding-text" yui3mods="anim-easing,node,anim"}
 {literal}
-    YUI().use("anim-easing","node","anim", function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         // This is for the terms and condition toogle
         if (Y.one('.more-text') != null) {
             var content = Y.one('.more-text').plug(Y.Plugin.NodeFX, {
@@ -309,9 +309,9 @@
 {/literal}
 {/script}
 {if $product->multi_registrant && $product->forms_id}
-{script unique="multi-registrants" yui3mods="yui"}
+{script unique="multi-registrants" yui3mods="anim-easing,node,io"}
 {literal}
-    YUI().use("anim-easing","node","io", function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var addcounter = 0;
 
         function addRow(tableID) {

@@ -22,9 +22,9 @@
 </div>
 
 {if !empty($config.ajax_paging)}
-{script unique="`$name`itemajax" yui3mods="1"}
+{script unique="`$name`itemajax" yui3mods="node,io,node-event-delegate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var newsitem = Y.one('#{/literal}{$name}{literal}item');
     var cfg = {
     			method: "POST",

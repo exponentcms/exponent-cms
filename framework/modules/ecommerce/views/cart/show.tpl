@@ -156,6 +156,18 @@
                         {/if}
                         </td>
                     </tr>
+                    {if $order->surcharge_total != 0}
+                        <tr class="{cycle values="odd, even"}">
+                            <td class="cart-totals-title">
+                                {"Freight Surcharge"|gettext}
+                            </td>
+                            <td>
+                                {currency_symbol}
+                            </td>
+                            <td style="text-align:right;">{$order->surcharge_total|number_format:2}
+                            </td>
+                        </tr>
+                    {/if}
                     {if $order->shipping_taxed}
                     <tr class="{cycle values="odd, even"}">
                       <td width="90%" class="cart-totals-title">
@@ -172,18 +184,6 @@
                       <td style="text-align:right;">{$order->tax|number_format:2}
                       </td>
                     </tr>
-                    {/if}
-                    {if $order->surcharge_total != 0}
-                        <tr class="{cycle values="odd, even"}">
-                            <td class="cart-totals-title">
-                                {"Freight Surcharge"|gettext}
-                            </td>
-                            <td>
-                                {currency_symbol}
-                            </td>
-                            <td style="text-align:right;">{$order->surcharge_total|number_format:2}
-                            </td>
-                        </tr>
                     {/if}
                     <tr class="{cycle values="odd, even"}">
                         <td class="cart-totals-title">
@@ -225,9 +225,9 @@
 </div>
 <div class="loadingdiv">{"Loading Cart"|gettext}</div>
 
-{script unique="editform" yui3mods=1}
+{script unique="editform" yui3mods="node"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 		Y.one('#myCart').removeClass('hide');
 		Y.one('.loadingdiv').remove();
     });

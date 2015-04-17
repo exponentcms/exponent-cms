@@ -67,7 +67,7 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' yui3mods=1}
+{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,node-event-delegate"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
@@ -80,7 +80,7 @@ EXPONENT.YUI3_CONFIG.modules = {
 	}
 }
 
-YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',function(Y){
+YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
     var monthcal = Y.one('#month-{/literal}{$name}{literal}');
 
@@ -106,9 +106,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','gallery-calendar','node-event-delegate',fu
 {/script}
 
 {if $config.ajax_paging}
-{script unique=$name|cat:'-ajax' yui3mods=1}
+{script unique=$name|cat:'-ajax' yui3mods="node,io,node-event-delegate"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate',function(Y){
+    YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     var monthcal = Y.one('#month-{/literal}{$name}{literal}');
     var cfg = {
                 method: "POST",

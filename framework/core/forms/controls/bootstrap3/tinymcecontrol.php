@@ -277,9 +277,8 @@ class tinymcecontrol extends formcontrol
 
         expJavascript::pushToFoot(
             array(
-                "unique" => "000-tinymce" . $name,
-                "jquery" => "1",
-                "content" => $content,
+                "unique" => "tinymcepu",
+                "src"=>PATH_RELATIVE."external/editors/tinymce/plugins/quickupload/plupload.full.min.js"
             )
         );
         expJavascript::pushToFoot(
@@ -290,8 +289,9 @@ class tinymcecontrol extends formcontrol
         );
         expJavascript::pushToFoot(
             array(
-                "unique" => "tinymcepu",
-                "src"=>PATH_RELATIVE."external/editors/tinymce/plugins/quickupload/plupload.full.min.js"
+                "unique" => "000-tinymce" . $name,
+                "jquery" => "1",
+                "content" => $content,
             )
         );
 

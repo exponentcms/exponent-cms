@@ -135,32 +135,30 @@
 </div>
 
 {if $slides|@count > 1}
-{script unique="ss-`$name`" yui3mods="node, anim"}
+{script unique="ss-`$name`" yui3mods="slide"}
 {literal}
-
-EXPONENT.YUI3_CONFIG.modules = {
-	'slide': {
-		fullpath: '{/literal}{$asset_path}js/slide.js{literal}',
-		requires: ['node','anim','slider-css']
-	},
-    'slider-css': {
-        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/slider.css',
-        type: 'css'
+    EXPONENT.YUI3_CONFIG.modules = {
+        'slide': {
+            fullpath: '{/literal}{$asset_path}js/slide.js{literal}',
+            requires: ['node','anim','slider-css']
+        },
+        'slider-css': {
+            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/photoalbum/assets/css/slider.css',
+            type: 'css'
+        }
     }
-}
 
-YUI(EXPONENT.YUI3_CONFIG).use('slide',function(Y){
-	new Y.Slide('ss-{/literal}{$name}{literal}',{
-		autoSlide:true,
-		eventype:'mouseover',
-		effect:'{/literal}{$config.anim|default:fade}{literal}',
-		selectedClass:'on',
-		timeout:{/literal}{$config.speed|default:5}000{literal},
-		speed:0.{/literal}{$config.interval|default:5}{literal},
-        touchmove:true,
-	});
-});
-
+    YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
+        new Y.Slide('ss-{/literal}{$name}{literal}',{
+            autoSlide:true,
+            eventype:'mouseover',
+            effect:'{/literal}{$config.anim|default:fade}{literal}',
+            selectedClass:'on',
+            timeout:{/literal}{$config.speed|default:5}000{literal},
+            speed:0.{/literal}{$config.interval|default:5}{literal},
+            touchmove:true,
+        });
+    });
 {/literal}
 {/script}
 {/if}

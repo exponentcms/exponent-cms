@@ -105,12 +105,9 @@ class expCSS {
         
         // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
-            if (is_array($params['link'])) {
-                foreach ($params['link'] as $link) {
-                    $css_links[$link] = $link;
-                }
-            } elseif (is_string($params['link'])) {
-                $css_links[$params['link']] = $params['link'];
+            $params['link'] = is_array($params['link']) ? $params['link'] : array($params['link']);
+            foreach ($params['link'] as $link) {
+                $css_links[$link] = $link;
             }
         };
         
@@ -121,22 +118,24 @@ class expCSS {
         }
 
         // if within an ajax call, immediately output the css
-        //FIXME we ONLY output links, NO inline styles in $params['css'], nor any less, etc... processing
+        //FIXME we ONLY output corecss, links, and inline styles in $params['css']... with less processing
         if (expJavascript::inAjaxAction()) {
+            // we make several assumptions since we are only running a single action
 		    echo "<div class=\"io-execute-response\">";
-            if (isset($params['corecss'])&&!empty($css_core)){
+            if (!empty($css_core)){
                 foreach ($css_core as $path) {
                     echo '<link rel="stylesheet" type="text/css" href="',$path,'">';
                 }
             }
-            if (!empty($params['link'])){
-                if (is_array($params['link'])) {
-                    foreach ($params['link'] as $link) {
-                        echo '<link rel="stylesheet" type="text/css" href="',$link,'">';
-                    }
-                } elseif (is_string($params['link'])) {
-                    echo '<link rel="stylesheet" type="text/css" href="',$params['link'],'">';
+            if (!empty($css_links)) {
+                foreach ($css_links as $link) {
+                    echo '<link rel="stylesheet" type="text/css" href="',$link,'">';
                 }
+            }
+            if (!empty($params['css'])) {
+                echo '<style type="text/css" media="screen">';
+                echo trim($params['css']);
+                echo '</style>' . "\n";
             }
 		    echo "</div>";
             return true;

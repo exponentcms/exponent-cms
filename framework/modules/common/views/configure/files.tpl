@@ -49,9 +49,9 @@
     {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}
 
-{script unique="fileviewconfig" yui3mods="1"}
+{script unique="fileviewconfig" yui3mods="node,io"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load File Config'},

@@ -53,7 +53,7 @@
 </div>
 
 {if $config.lightbox}
-{script unique="shadowbox" yui3mods=1}
+{script unique="shadowbox" yui3mods="gallery-lightbox"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
@@ -66,7 +66,7 @@
        }
     }
 
-    YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.Lightbox.init();
     });
 {/literal}
@@ -74,9 +74,9 @@
 {/if}
 
 {if $config.ajax_paging}
-{script unique="`$name`listajax" yui3mods="1"}
+{script unique="`$name`listajax" yui3mods="node,io,node-event-delegate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var photolist = Y.one('#{/literal}{$name}{literal}list');
     var cfg = {
     			method: "POST",

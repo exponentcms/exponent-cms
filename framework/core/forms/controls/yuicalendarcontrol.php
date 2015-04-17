@@ -85,7 +85,7 @@ class yuicalendarcontrol extends formcontrol {
         ";
 
         $script = "
-            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','node-event-simulate',function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y) {
 //            YUI(EXPONENT.YUI3_CONFIG).use('calendar','datatype-date','gallery-input-calendar-sync','event-valuechange',function(Y) {
                 // Create a new instance of calendar, placing it in
                 // #mycalendar container, setting its width to 340px,
@@ -146,7 +146,7 @@ class yuicalendarcontrol extends formcontrol {
 
         expJavascript::pushToFoot(array(
             "unique"  => 'zzyuical-' . $idname,
-            "yui3mods"=> 1,
+            "yui3mods"=> "calendar,datatype-date,node-event-simulate",
             "content" => $script,
         ));
         return $html;

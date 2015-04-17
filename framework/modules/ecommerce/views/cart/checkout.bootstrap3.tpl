@@ -58,32 +58,6 @@
                     {*{ecomconfig var='policy' default=""}*}
                 {*</div>*}
             {*</div>*}
-            {*{script unique="policypop" yui3mods=1}*}
-                {*{literal}*}
-                {*YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {*}
-                    {*var policies = new Y.Panel({*}
-                        {*srcNode : '#storepolicies',*}
-                        {*headerContent: '{/literal}{"Store Policies"|gettext}{literal}',*}
-                        {*width:"400px",*}
-                        {*height:"350px",*}
-                        {*centered:true,*}
-                        {*modal:true,*}
-                        {*visible:false,*}
-                        {*zIndex:999,*}
-                        {*constrain:true,*}
-    {*//                    close:true,*}
-                        {*render:true,*}
-                    {*});*}
-                    {*policies.plug(Y.Plugin.Drag, {*}
-                        {*handles: ['.yui3-widget-hd']*}
-                    {*});*}
-                    {*var showpanel = function(e){*}
-                        {*policies.show();*}
-                    {*};*}
-                    {*Y.one("#review-policy").on('click',showpanel);*}
-                {*});*}
-                {*{/literal}*}
-            {*{/script}*}
             {script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}
             {literal}
                 $(document).ready(function(){

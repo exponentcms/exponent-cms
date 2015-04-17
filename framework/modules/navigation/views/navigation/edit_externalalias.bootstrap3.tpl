@@ -53,20 +53,6 @@
         <div class="loadingdiv">{'Loading Pages'|gettext}</div>
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
-{*{script unique="configure" yui3mods=1}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-    {*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#configure-tabs'});*}
-        {*Y.one('#configure-tabs').removeClass('hide');*}
-        {*Y.one('.loadingdiv').remove();*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
 </div>
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}

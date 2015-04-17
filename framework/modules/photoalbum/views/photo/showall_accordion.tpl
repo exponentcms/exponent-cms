@@ -103,7 +103,7 @@
     </div>
 </div>
 
-{script unique="expand-panels-`$id`" yui3mods="1"}
+{script unique="expand-panels-`$id`" yui3mods="node,anim,gallery-lightbox"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
    'gallery-lightbox' : {
@@ -116,7 +116,7 @@ EXPONENT.YUI3_CONFIG.modules = {
    }
 }
 
-YUI(EXPONENT.YUI3_CONFIG).use('node','anim','gallery-lightbox', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var panels = Y.all("#photo-{/literal}{$id}{literal}.dashboard .panel");
     var expandHeight = [];
     var exclusiveExp = {/literal}{if $config.initial_view==1||$config.initial_view==3}true{else}false{/if}{literal};

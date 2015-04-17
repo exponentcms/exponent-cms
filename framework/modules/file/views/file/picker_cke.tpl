@@ -75,11 +75,11 @@
 </div>
 
 {*FIXME convert to yui3*}
-{script unique="picker" yui3mods="1"}
+{script unique="picker" yui3mods="node,yui2-yahoo-dom-event,yui2-container,yui2-json,yui2-datasource,yui2-connection,yui2-autocomplete,yui2-element,yui2-paginator,yui2-datatable,yui2-calendar"}
 {literal}
 // this.moveTo(1,1);
 // this.resizeTo(screen.width,screen.height);
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-container','yui2-json','yui2-datasource','yui2-connection','yui2-autocomplete','yui2-element','yui2-paginator','yui2-datatable', 'yui2-calendar', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var YAHOO=Y.YUI2;
     EXPONENT.fileManager = function() {
 //        var queryString = '&results=50&output=json'; //autocomplete query

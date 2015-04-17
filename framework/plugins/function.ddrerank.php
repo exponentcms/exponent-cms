@@ -154,7 +154,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         echo $html;
 
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             var panel = new Y.Panel({
                 srcNode      : '#panel" . $uniqueid . "',
                 width        : 500,
@@ -309,7 +309,7 @@ function smarty_function_ddrerank($params, &$smarty) {
         if (!expTheme::inPreview()) {
             expJavascript::pushToFoot(array(
                 "unique"   => $uniqueid,
-                "yui3mods" => 1,
+                "yui3mods" => "node,dd,dd-plugin,dd-scroll,panel",
                 "content"  => $script,
             ));
         }

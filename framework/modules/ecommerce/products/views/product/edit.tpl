@@ -21,11 +21,13 @@
 {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
 {/script}
 {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
+{script unique="tinymcepu" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/plugins/quickupload/plupload.full.min.js"}
+{/script}
 {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
 {/script}
 {/if}
 
-<div id="editproduct" class="module store edit yui-skin-sam exp-skin exp-admin-skin">
+<div id="editproduct" class="module store edit yui3-skin-sam exp-skin exp-admin-skin">
     {if $record->id != ""}
         <h1>{'Edit Information for'|gettext}{if $record->childProduct|@count != 0} {'Parent'|gettext}{/if}{if $record->parent_id != 0} {'Child'|gettext}{/if} {$model_name|ucfirst}</h1>
     {else}
@@ -91,14 +93,14 @@
     {/form}
 </div>
 
-{script unique="prodtabs" yui3mods="1"}
+{script unique="prodtabs" yui3mods="get,exptabs,tabview,node-load,event-simulate,cookie"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-    YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs",'tabview',"node-load","event-simulate",'cookie', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
        
 //       var lastTab = !Y.Lang.isNull(Y.Cookie.get("edit-tab")) ? Y.Cookie.get("edit-tab") : 0;
        var tabs = Y.all('#dynamicload li a');

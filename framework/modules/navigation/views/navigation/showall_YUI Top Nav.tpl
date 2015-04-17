@@ -64,9 +64,9 @@
 </div>
 
 {*FIXME convert to yui3*}
-{script yui3mods=1 unique=$id}
+{script unique=$id yui3mods="yui2-container,yui2-menu"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('yui2-container','yui2-menu', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var YAHOO=Y.YUI2;
 
         var menubar = new YAHOO.widget.MenuBar(

@@ -57,9 +57,9 @@
                 {ecomconfig var='policy' default=""}
             </div>
         </div>
-        {script unique="policypop" yui3mods=1}
+        {script unique="policypop" yui3mods="panel,dd-plugin"}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 var policies = new Y.Panel({
                     srcNode : '#storepolicies',
                     headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
@@ -343,24 +343,9 @@
 
 {* edebug var=$order *}
 {*  Kludged out while testing paypal *}
-{*script unique="shoppingcartcheckout" yuimodules="animation,container,json" src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
+{*script unique="shoppingcartcheckout" yui3mods=1 src="`$smarty.const.JS_RELATIVE`exp-ecomcheckout.js"}
 //
 {/script*}
-
-{*{script unique="cart-`$id`" yui3mods="1"}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#cart-{/literal}{$id}{literal}'});*}
-		{*Y.one('#cart-{/literal}{$id}{literal}').removeClass('hide');*}
-		{*Y.one('.loadingdiv').remove();*}
-	{*});*}
-{*{/literal}*}
-{*{/script}*}
 
 {*{if $order->total}*}
 {script unique="cart-`$id`" jquery="jqueryui"}

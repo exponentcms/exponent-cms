@@ -43,9 +43,9 @@
 </div>
 
 {*FIXME convert to yui3*}
-{script yui3mods="1" unique="DDTreeNav" }
+{script unique="DDTreeNav" yui3mods="node,yui2-yahoo-dom-event,yui2-treeview,yui2-menu,yui2-animation,yui2-dragdrop,yui2-json,yui2-container,yui2-connection"}
 {literal} 
-YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event','yui2-treeview','yui2-menu','yui2-animation','yui2-dragdrop','yui2-json','yui2-container','yui2-connection', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 var YAHOO = Y.YUI2;    
 
 //////////////////////////////////////////////////////////////////////////////
