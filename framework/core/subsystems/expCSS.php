@@ -133,7 +133,7 @@ class expCSS {
                 }
             }
             if (!empty($params['css'])) {
-                echo '<style type="text/css" media="screen">';
+                echo '<style type="text/css" media="screen">';  //FIXME is ths only for the screen???
                 echo trim($params['css']);
                 echo '</style>' . "\n";
             }

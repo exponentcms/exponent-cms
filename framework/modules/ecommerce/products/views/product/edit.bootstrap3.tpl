@@ -19,11 +19,14 @@
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
 {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+
 {/script}
 {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
 {script unique="tinymcepu" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/plugins/quickupload/plupload.full.min.js"}
+
 {/script}
 {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
+console.log('tinymce');
 {/script}
 {/if}
 
@@ -93,7 +96,7 @@
     {/form}
 </div>
 
-{script unique="prodtabs" yui3mods="get,exptabs,tabview,node-load,event-simulate,cookie" jquery='Sortable,SimpleAjaxUploader'}
+{script unique="prodtabs" yui3mods="get,exptabs,tabview,node-load,event-simulate,cookie" jquery='Sortable,SimpleAjaxUploader,jstree'}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
@@ -136,9 +139,9 @@
                    eval(n.get('innerHTML'));
                } else {
                    var url = n.get('src');
-                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")||url.indexOf("SimpleAjaxUploader")) {
+//                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")||url.indexOf("SimpleAjaxUploader")) {
                        Y.Get.script(url);
-                   };
+//                   };
                };
            });
            // css

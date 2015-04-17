@@ -131,14 +131,14 @@
                             eval(n.get('innerHTML'));
                         } else {
                             var url = n.get('src');
-                            if (url.indexOf("ckeditor")) {
+//                            if (url.indexOf("ckeditor")) {
                                 $.getScript(url);
-                            }
+//                            }
                         }
                     });
                     $('#moduleViewConfig link').each(function (n) {
                         var url = n.get('href');
-                        $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" />");
+                        $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                     });
                 } else {
                     $('#moduleViewConfig #loadingview').remove();

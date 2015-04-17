@@ -50,9 +50,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-                    if (url.indexOf("ckeditor")) {
+//                    if (url.indexOf("ckeditor")) {
                         Y.Get.script(url);
-                    };
+//                    };
                 };
             });
             blogitem.all('link').each(function(n){

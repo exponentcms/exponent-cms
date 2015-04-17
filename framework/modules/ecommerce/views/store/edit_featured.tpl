@@ -27,9 +27,11 @@
 	<h4><em>({'Featured Details'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>
 {/if}
 
-{script unique="general" yui3mods=1}
+{script unique="general" yui3mods="node,event-custom"}
 {literal}
-    Y.Global.fire('lazyload:cke');
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        Y.Global.fire('lazyload:cke');
+    });
 {/literal}
 {/script}
 

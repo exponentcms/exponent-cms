@@ -19,11 +19,14 @@
 
 {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
 {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+
 {/script}
 {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
 {script unique="tinymcepu" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/plugins/quickupload/plupload.full.min.js"}
+
 {/script}
 {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
+
 {/script}
 {/if}
 
@@ -136,9 +139,9 @@
                    eval(n.get('innerHTML'));
                } else {
                    var url = n.get('src');
-                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")) {
+//                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")) {
                        Y.Get.script(url);
-                   };
+//                   };
                };
            });
            // css
