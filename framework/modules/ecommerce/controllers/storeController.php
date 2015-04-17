@@ -1237,6 +1237,7 @@ class storeController extends expController {
 //        $shipping = new shipping();
 //        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
         foreach (shipping::listCalculators() as $calcid => $name) {
+            //FIXME must make sure (custom) calculator exists
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
