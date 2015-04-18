@@ -43,39 +43,49 @@
  *          'fade' seconds duration of popup 'fade' in/out, defaults to false
  *          'modal' should the popup be 'modal', defaults to true
  *          'draggable' should the popup be 'draggable', defaults to false
- *          'fixedcenter' should the popup be centered, defaults to true
- *          'renderto' where to draw the popup, defaults to 'document.body'
- *          'constraintoviewport' should popup be constrained to the viewport, defaults to true
- *          'zindex' depth of popup, defaults to '50'
  *
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
- */  //NOTE: Deprecated due to expJavascript::panel() (yui2) use?  replace w/ modal?
+ */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-		$params['content'] = $content;
-        if (empty($params['trigger']) && !empty($params['text'])) {
-            $params['trigger'] = $params['id'];
-            echo '<a href="#" id="' . $params['id'] . '">' . $params['text'] . '</a>';
-        }
+        $content = str_replace("\r\n", '', trim($content));
+        echo '<a href="#" id="' . $params['id'] . '">' . $params['text'] . '</a>';
         if (isset($params['type'])) {
             if ($params['type'] == 'warning') {
-                $params['type'] = 'alert';
+                $type = 'BootstrapDialog.TYPE_WARNING';
             } elseif ($params['type'] == 'danger') {
-                $params['type'] = 'error';
+                $type = 'BootstrapDialog.TYPE_DANGER';
             }
+        } else {
+            $type = 'BootstrapDialog.TYPE_INFO';
         }
-        if (isset($params['title'])) {
-            $params['header'] = $params['title'];
-            unset($params['title']);
-        }
-        if (isset($params['buttons'])) {
-            $params['dialog'] = $params['buttons'];
-            unset($params['buttons']);
-        }
-        $params['fade'] = 0.25;
-		expJavascript::panel($params);
+        $script = "
+            $(document).ready(function(){
+                $('#".$params['id']."').click(function() {
+                    BootstrapDialog.show({
+                        size: BootstrapDialog.SIZE_WIDE,
+                        type: ".$type.",
+                        title: '".$params['title']."',
+                        message: '".$content."',
+                        buttons: [{
+                            label: '".$params['buttons']."',
+                            action: function(dialogRef){
+                                dialogRef.close();
+                            }
+                        }]
+                    });
+                });
+            });
+        ";
+        expJavascript::pushToFoot(array(
+            "unique"=>'pop-'.$params['name'],
+            "bootstrap"=>'modal,transition,tab',
+            "jquery"=>"bootstrap-dialog",
+            "content"=>$script,
+         ));
+
 	}
 }
 

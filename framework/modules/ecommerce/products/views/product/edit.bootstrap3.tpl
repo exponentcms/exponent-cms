@@ -26,7 +26,7 @@
 
 {/script}
 {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
-console.log('tinymce');
+
 {/script}
 {/if}
 
@@ -109,12 +109,14 @@ console.log('tinymce');
        var tabs = Y.all('#dynamicload li a');
        var cdiv = Y.one('#loadcontent');
 
-       tabs.each(function(n,k){
+       // initialize each tab container as empty
+       tabs.each(function(n, k){
            cdiv.append('<div id="exptab-'+k+'" class="exp-ajax-tab"></div>');
        });
 
        var cTabs = cdiv.all('.exp-ajax-tab');
-       
+
+       // load the selected tab
        var loadTab = function (e){
            e.halt();
            var tab = e.currentTarget;
@@ -127,17 +129,21 @@ console.log('tinymce');
            tabs.removeClass('current');
            tab.addClass('current');
            cTabs.hide();
-           if (!cTab.hasChildNodes()) {
-               cTab.load(puri,parseScripts);
+           if (!cTab.hasChildNodes()) {  // if the tab is empty
+               cTab.load(puri, parseScripts);  // load the tab and process the content
            };
            cTab.show();
        }
-       
-       var parseScripts = function (id,o){
+
+       // process the scripts and css links
+       var parseScripts = function (id, o){
+           // process the javascript
            this.all('script').each(function(n){
                if(!n.get('src')){
+                   // execute inline code
                    eval(n.get('innerHTML'));
                } else {
+                   // attach script src link
                    var url = n.get('src');
 //                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")||url.indexOf("SimpleAjaxUploader")) {
                        Y.Get.script(url);
@@ -146,20 +152,23 @@ console.log('tinymce');
            });
            // css
            //Y.log(tab.all('.io-execute-response link'));
+           // attach the stylesheets to the page
            this.all('link').each(function(n){
                var url = n.get('href');
                Y.Get.css(url);
            });
        }
-       
+
+       // load the tab when it's clicked on
        tabs.on('click',loadTab);
 
        // load all the tabs if we are copying in order to save all the data
        if ({/literal}{if $copy}1{else}0{/if}{literal}) {
-           tabs.each(function(n,k){
+           tabs.each(function(n, k){
                n.simulate('click');
            });
        };
+       // click on the 1st tab initially
 //       tabs.item(lastTab).simulate('click');
        tabs.item(0).simulate('click');
 

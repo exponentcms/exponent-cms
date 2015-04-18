@@ -48,41 +48,43 @@
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
-        <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
-        <div id="storepolicies" style="z-index:9999">
-            <div class="yui3-widget-hd">
-                {"Store Policies"|gettext}
-            </div>
-            <div class="yui3-widget-bd" style="overflow-y:scroll">
-                {ecomconfig var='policy' default=""}
-            </div>
-        </div>
-        {script unique="policypop" yui3mods="panel,dd-plugin"}
-            {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-                var policies = new Y.Panel({
-                    srcNode : '#storepolicies',
-                    headerContent: '{/literal}{"Store Policies"|gettext}{literal}',
-                    width:"400px",
-                    height:"350px",
-                    centered:true,
-                    modal:true,
-                    visible:false,
-                    zIndex:999,
-                    constrain:true,
-//                    close:true,
-                    render:true,
-                });
-                policies.plug(Y.Plugin.Drag, {
-                    handles: ['.yui3-widget-hd']
-                });
-                var showpanel = function(e){
-                    policies.show();
-                };
-                Y.one("#review-policy").on('click',showpanel);
-            });
-            {/literal}
-        {/script}
+        {pop id="review_policy" text="Review Store Policies"|gettext title="Store Policies"|gettext buttons="Close"|gettext width="400px"}
+            {ecomconfig var='policy' default=""}
+        {/pop}
+        {*<div id="storepolicies" style="z-index:9999">*}
+            {*<div class="yui3-widget-hd">*}
+                {*{"Store Policies"|gettext}*}
+            {*</div>*}
+            {*<div class="yui3-widget-bd" style="overflow-y:scroll">*}
+                {*{ecomconfig var='policy' default=""}*}
+            {*</div>*}
+        {*</div>*}
+        {*{script unique="policypop" yui3mods="panel,dd-plugin"}*}
+            {*{literal}*}
+            {*YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {*}
+                {*var policies = new Y.Panel({*}
+                    {*srcNode : '#storepolicies',*}
+                    {*headerContent: '{/literal}{"Store Policies"|gettext}{literal}',*}
+                    {*width:"400px",*}
+                    {*height:"350px",*}
+                    {*centered:true,*}
+                    {*modal:true,*}
+                    {*visible:false,*}
+                    {*zIndex:999,*}
+                    {*constrain:true,*}
+{*//                    close:true,*}
+                    {*render:true,*}
+                {*});*}
+                {*policies.plug(Y.Plugin.Drag, {*}
+                    {*handles: ['.yui3-widget-hd']*}
+                {*});*}
+                {*var showpanel = function(e){*}
+                    {*policies.show();*}
+                {*};*}
+                {*Y.one("#review-policy").on('click',showpanel);*}
+            {*});*}
+            {*{/literal}*}
+        {*{/script}*}
     {/if}
 
     {* if $order->forced_shipping == true}

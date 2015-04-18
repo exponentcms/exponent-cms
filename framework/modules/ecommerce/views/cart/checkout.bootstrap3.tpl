@@ -49,7 +49,10 @@
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
         <div>
-            <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
+            {pop id="review_policy" text="Review Store Policies"|gettext title="Store Policies"|gettext buttons="Close"|gettext}
+                {ecomconfig var='policy' default=""}
+            {/pop}
+            {*<a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>*}
             {*<div id="storepolicies" style="z-index:9999">*}
                 {*<div class="yui3-widget-hd">*}
                     {*{"Store Policies"|gettext}*}
@@ -58,25 +61,25 @@
                     {*{ecomconfig var='policy' default=""}*}
                 {*</div>*}
             {*</div>*}
-            {script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}
-            {literal}
-                $(document).ready(function(){
-                    $('#review-policy').click(function() {
-                        BootstrapDialog.show({
-                            size: BootstrapDialog.SIZE_WIDE,
-                            title: '{/literal}{'Store Policies'|gettext}{literal}',
-                            message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},
-                            buttons: [{
-                                label: 'Close',
-                                action: function(dialogRef){
-                                    dialogRef.close();
-                                }
-                            }]
-                        });
-                    });
-                });
-            {/literal}
-            {/script}
+            {*{script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}*}
+            {*{literal}*}
+                {*$(document).ready(function(){*}
+                    {*$('#review-policy').click(function() {*}
+                        {*BootstrapDialog.show({*}
+                            {*size: BootstrapDialog.SIZE_WIDE,*}
+                            {*title: '{/literal}{'Store Policies'|gettext}{literal}',*}
+                            {*message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},*}
+                            {*buttons: [{*}
+                                {*label: 'Close',*}
+                                {*action: function(dialogRef){*}
+                                    {*dialogRef.close();*}
+                                {*}*}
+                            {*}]*}
+                        {*});*}
+                    {*});*}
+                {*});*}
+            {*{/literal}*}
+            {*{/script}*}
         </div>
     {/if}
 

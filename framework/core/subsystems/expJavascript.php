@@ -663,9 +663,9 @@ class expJavascript {
     /**
      * Create a YUI2 Panel?
      * @param $params
-     */  //NOTE: Deprecated
+     */  //NOTE: Deprecated yui2
     public static function panel($params) {
-        $content = "<div class=\"pnlmsg\">".htmlentities($params['content'])."</div>";
+        $content = "<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>";
         $id = "exppanel".$params['id'];
         $width  = !empty($params['width']) ? $params['width'] : "300px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
@@ -673,7 +673,7 @@ class expJavascript {
         $header  = !empty($params['header']) ? $params['header'] : "&#160;";
         //$footer  = !empty($params['footer']) ? $params['footer'] : "&#160;";
         $renderto  = !empty($params['renderto']) ? $params['renderto'] : 'document.body';
-        $on  = !empty($params['on']) ? $params['on'] : 'load';
+        $on  = !empty($params['on']) ? $params['on'] : 'click';
         $onnogo  = !empty($params['onnogo']) ? $params['onnogo'] : '';
         $onyesgo  = !empty($params['onyesgo']) ? $params['onyesgo'] : '';
         $trigger  = !empty($params['trigger']) ? '"'.$params['trigger'].'"' : 'selfpop';
@@ -705,10 +705,10 @@ class expJavascript {
             $script .= "};";
 
             $script .= "var ".$id." = new YAHOO.widget.SimpleDialog('".$id."', { ";
-            $script .= "buttons: [ { text:'".$dialog[0]."', handler:handleYes, isDefault:true },{ text:'".$dialog[1]."',  handler:handleNo } ],";
+            $script .= "buttons: [ { text:'".$dialog[0]."', handler:handleYes, isDefault:true }," . (!empty($dialog[1])?"{ text:'".$dialog[1]."',  handler:handleNo }":"") . " ],";
             //$script .= "text: 'Do you want to continue?',";
         } else {
-            $script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { ";
+            $script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { " . "\r\n";
         }
 //FIXME $hide & $footer are not defined below
         $script .= "fixedcenter:".$fixedcenter.",
@@ -720,23 +720,23 @@ class expJavascript {
                 "width:'".$width."',
                 visible:false,
                 constraintoviewport:".$constraintoviewport.",
-                close:".$close." } );";
+                close:".$close." } );" . "\r\n";
 
-            $script .= $id.".setHeader('".$header."');";
-            $script .= "var pnlcontent = '".$content."';";
+            $script .= $id.".setHeader('".$header."');" . "\r\n";
+            $script .= "var pnlcontent = '".$content."';" . "\r\n";
 
-            $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);";
+            $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);" . "\r\n";
 
             $script .= $id.".setFooter('".$footer."</div>');";
-            $script .= $id.".render(".$renderto.");";
-            $script .= "YAHOO.util.Dom.addClass('".$id."','exp-".$type."');";
+            $script .= $id.".render(".$renderto.");" . "\r\n";
+            $script .= "YAHOO.util.Dom.addClass('".$id."','exp-".$type."');" . "\r\n";
             if ($hide==false) {
-                $script .= "YAHOO.util.Dom.addClass('".$id."','".$hide."');";
+                $script .= "YAHOO.util.Dom.addClass('".$id."','".$hide."');" . "\r\n";
             }
 
         switch ($trigger) {
             case 'selfpop':
-            $script .= "YAHOO.util.Event.onDOMReady(".$id.".show, ".$id.", true);";
+            $script .= "YAHOO.util.Event.onDOMReady(".$id.".show, ".$id.", true);" . "\r\n";
                 break;
 
             default:
@@ -750,9 +750,7 @@ class expJavascript {
         self::pushToFoot(array(
             "unique"=>'pop-'.$params['name'],
             "yui2mods"=>'animation,container',
-//            "yui3mods"=>null,
             "content"=>$script,
-            "src"=>""
          ));
         expCSS::pushToHead(array(
             "corecss"=>"panels",
