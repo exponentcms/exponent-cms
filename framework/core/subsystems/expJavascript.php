@@ -428,11 +428,12 @@ class expJavascript {
                 $y3wrap .= "'yui2-".$mod."', ";
             }
             $y3wrap .= "function(Y) {\r\n";
-            $y3wrap .= "var YAHOO=Y.YUI2;";
+            $y3wrap .= "var YAHOO=Y.YUI2;\r\n";
             $y3wrap .= $params['content'];
             $y3wrap .= "});";
 
             $params['content'] = $y3wrap;
+            $yui3js = 1;
         }
 
         // do universal yui3mods replace
@@ -448,7 +449,6 @@ class expJavascript {
 //            foreach ($splitmods as $val){
 //                $yui3js[$val] = $val;
 //            }
-            if (empty($yui3js)) eDebug($yui3js,true);
             $yui3js = 1;
         }
 
