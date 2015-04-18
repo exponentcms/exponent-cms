@@ -149,7 +149,7 @@
 {script unique="expand-panels" yui3mods="node,cookie,anim"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-        var panels = Y.all(".dashboard .panel");
+        var panels = Y.all(".dashboard .leftcol .panel");
         var expandHeight = [];
         var action = function(e){
             e.halt();
