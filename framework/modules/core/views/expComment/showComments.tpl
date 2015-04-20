@@ -28,9 +28,9 @@
                 {if $permissions.approve}
                     <div {if $unapproved > 0}class="unapproved msg-queue notice"{/if}>
                         <div class="msg">
-                            {icon action=manage content_id=$content_id content_type=$content_type text='Manage Comments'|gettext}
+                            {icon action=manage content_id=$content_id content_type=$content_type text='Manage'|gettext|cat:' '|cat:$type|cat:'s'}
                             {if $unapproved > 0}
-                            | {'There are'|gettext} {$unapproved} {'comments awaiting approval'|gettext}
+                            | {'There are'|gettext} {$unapproved} {$type|plural:$unapproved} {'awaiting approval'|gettext}
                             {/if}
                         </div>
                     </div>
@@ -66,22 +66,25 @@
                                     {permissions}
                                         <div class="item-actions">
                                             {if $permissions.edit}
-                                                {icon action=edit record=$cmt content_id=$content_id content_type=$content_type title="Edit this comment"|gettext}
+                                                {icon action=edit record=$cmt content_id=$content_id content_type=$content_type title="Edit this"|gettext|cat:' '|cat:$type|lower}
                                             {/if}
                                             {if $permissions.delete}
-                                                {icon action=delete record=$cmt title="Delete this comment"|gettext onclick="return confirm('"|cat:("Are you sure you want to delete this comment?"|gettext)|cat:"');"}
+                                                {icon action=delete record=$cmt title="Delete this"|gettext|cat:' '|cat:$type onclick="return confirm('"|cat:("Are you sure you want to delete this"|gettext)|cat:$type|cat:"?');"}
                                             {/if}
                                         </div>
                                     {/permissions}
                                     <div class="bodycopy">
+                                        {if $depth == 0 && $ratings}
+                                            {rating content_type=$content_type subtype="quality" label="Product Rating"|gettext content_id=$content_id readonly=1 user=$cmt->poster}
+                                        {/if}
                                         {$cmt->body}
-                                        {if $config.usescomments!=1 && !$config.disable_nested_comments}
+                                        {if $config.usescomments!=1 && !$config.disable_nested_comments && !$ratings}
                                             <div class="item-actions">
-                                                <a class="comment-reply" title="{"Reply to this comment"|gettext}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
+                                                <a class="comment-reply" title="{"Reply to this"|gettext|cat:' '|cat:$type}" onclick="EXPONENT.changeParent({$cmt->id},'{if $cmt->name != ''}{$cmt->name}{else}{$cmt->username}{/if}');" href="#commentinput">{'Reply'|gettext}</a>
                                             </div>
                                         {/if}
                                     </div>
-                                    {if isset($cmt->children)}
+                                    {if isset($cmt->children) && !$ratings}
                                         {nestcomments cmts=$cmt->children parentuser=$cmt->name depth=$depth+1}
                                     {/if}
                                 </div>
@@ -94,12 +97,12 @@
         {elseif $config.hidecomments==1}
             {permissions}
                 <div class="hide-comments">
-                    {"Comments have been disabled"|gettext}
+                    {$type}s {"have been disabled"|gettext}
                 </div>
             {/permissions}
         {elseif $config.usescomments!=1}
             <div class="no-comments">
-                {"No comments yet"|gettext}
+                {"No"|gettext} {$type} {"yet"|gettext}
             </div>
         {/if}
     	{*$comments->links <-- We need to fix pagination*}
@@ -111,9 +114,9 @@
 	{/if}
 </div>
 
-{script unique=$name yui3mods="1" jquery=1}
+{script unique=$name yui3mods="node"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         EXPONENT.changeParent = function(e,n) {
             Y.one('#body').focus();
             var labels = document.getElementsByTagName("label");
@@ -122,7 +125,7 @@
                 lookup[labels[i].htmlFor] = labels[i];
             }
             Y.one('#parent_id').set('value', e);
-            lookup['body'].innerHTML = "{/literal}{'Reply to'|gettext}{literal} "+n+"'s {/literal}{'Comment'|gettext}{literal}";
+            lookup['body'].innerHTML = "{/literal}{'Reply to'|gettext}{literal} "+n+"'s {/literal}{$type}{literal}";
         };
     });
 {/literal}

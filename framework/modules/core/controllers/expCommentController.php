@@ -169,7 +169,9 @@ class expCommentController extends expController {
         }        
         
         $this->config = $this->params['config'];
-        
+        $type = !empty($this->params['type']) ? $this->params['type'] : gt('Comment');
+        $ratings = !empty($this->params['ratings']) ? true : false;
+
         assign_to_template(array(
             'comments'=>$comments,
             'config'=>$this->params['config'],
@@ -181,6 +183,8 @@ class expCommentController extends expController {
 			'hidecomments'=>$this->params['hidecomments'],
 			'title'=>$this->params['title'],
 			'formtitle'=>$this->params['formtitle'],
+            'type'=>$type,
+            'ratings'=>$ratings,
             'require_login'=>$require_login,
             'require_approval'=>$require_approval,
             'require_notification'=>$require_notification,

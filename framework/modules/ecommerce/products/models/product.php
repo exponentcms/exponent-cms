@@ -61,7 +61,7 @@ class product extends expRecord {
 
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
-//        'content_expComments'=>'expComment',
+        'content_expComments'=>'expComment',
 //        'content_expDefinableFields'=> 'expDefinableField',
         'content_expFiles'      => 'expFile',
         'content_expRatings'    => 'expRating',
@@ -221,11 +221,11 @@ class product extends expRecord {
             }
         }
 
+        $optional_input = false;
         if ($this->hasOptions()) {
             if (empty($params['options_shown'])) {
                 $params['option_error'] = true;
             } else {
-                $optional_input = false;
                 $needs_input = false;
                 foreach ($this->optiongroup as $og) {
                     if ($og->required) {
@@ -777,6 +777,10 @@ class product extends expRecord {
             return;
         }
 
+        if (empty($params['id'])) {
+            eDebug($params);
+            return;
+        }
         //Get the product
         $product = $db->selectObject('product', 'id =' . $params['id']);
 

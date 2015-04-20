@@ -105,7 +105,7 @@
                 {/if}
 
                 {if $config.enable_lightbox}
-                    {script unique="thumbswap-shadowbox" yui3mods=1}
+                    {script unique="thumbswap-shadowbox" yui3mods="node-event-simulate,gallery-lightbox"}
                     {literal}
                         EXPONENT.YUI3_CONFIG.modules = {
                             'gallery-lightbox' : {
@@ -118,7 +118,7 @@
                             }
                         }
 
-                        YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
+                        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                             Y.Lightbox.init();
 
                             if (Y.one('#enlarged-image-link') != null) {
@@ -155,9 +155,9 @@
                     {/literal}
                     {/script}
                 {/if}
-                {script unique="thumbswap-shadowbox2" yui3mods=1}
+                {script unique="thumbswap-shadowbox2" yui3mods="node"}
                 {literal}
-                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                         var thumbs = Y.all('.thumbnails li img.thumbnail');
                         var swatches = Y.all('.swatches li img.swatch');
                         var mainimg = Y.one('#enlarged-image');
@@ -288,7 +288,10 @@
             </div>
             {/if*}
             {if $config.enable_ratings_and_reviews}
-                {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
+                <div class="reviews well">
+                    {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1 readonly=1}
+                    {comments_count record=$product type='Review'|gettext}
+                </div>
             {/if}
 
             <div class="bodycopy">
@@ -485,9 +488,9 @@
                     </div>
                 {/form}
 
-                {script unique="children-submit" yui3mods="1"}
+                {script unique="children-submit" yui3mods="node"}
                 {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     Y.one('#submit-chiprodsSubmit').on('click',function(e){
                         var frm = Y.one('#child-products');
                         var chcks = frm.all('input[type="checkbox"]');
@@ -529,7 +532,7 @@
                      {foreach name=listings from=$product->crosssellItem item=listing}
 
                          {if $smarty.foreach.listings.first || $open_row}
-                             <div class="product-row">
+                             <div class="">
                              {$open_row=0}
                          {/if}
 
@@ -560,4 +563,9 @@
             </div>
         {/if}
     </div>
+    {if $config.enable_ratings_and_reviews}
+        <div class="col-sm-12">
+            {comments record=$product type='Review'|gettext title='Reviews'|gettext formtitle='Leave a review'|gettext ratings=1}
+        </div>
+    {/if}
 </div>

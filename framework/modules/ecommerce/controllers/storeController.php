@@ -45,7 +45,7 @@ class storeController extends expController {
     public $remove_configs = array(
         'aggregation',
         'categories',
-        'comments',
+//        'comments',
         'ealerts',
         'facebook',
         'files',
@@ -93,6 +93,10 @@ class storeController extends expController {
 
     static function isSearchable() {
         return true;
+    }
+
+    public function searchName() {
+        return gt('e-Commerce Item');
     }
 
     static function canImportData() {
@@ -1609,6 +1613,10 @@ class storeController extends expController {
         ));
     }
 
+    /**
+     * AJAX search for products by model/sku
+     */
+
     function search_by_model() {
         global $db, $user;
 
@@ -1630,6 +1638,10 @@ class storeController extends expController {
         $ar->send();
     }
 
+    /**
+     * AJAX search for products by title, description, or model/sku
+     *
+     */
     public function search() {
         global $db, $user;
 
@@ -1705,6 +1717,10 @@ class storeController extends expController {
         $ar->send();
     }
 
+    /**
+     * AJAX search for products by title, description, or model/sku
+     *
+     */
     public function searchNew() {
         global $db, $user;
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);

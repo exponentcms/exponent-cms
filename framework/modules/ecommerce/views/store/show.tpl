@@ -105,7 +105,7 @@
             {/if}
 
             {if $config.enable_lightbox}
-                {script unique="thumbswap-shadowbox" yui3mods=1}
+                {script unique="thumbswap-shadowbox" yui3mods="node-event-simulate,gallery-lightbox"}
                 {literal}
                     EXPONENT.YUI3_CONFIG.modules = {
                         'gallery-lightbox' : {
@@ -118,7 +118,7 @@
                         }
                     }
 
-                    YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                         Y.Lightbox.init();
 
                         if (Y.one('#enlarged-image-link') != null) {
@@ -155,9 +155,9 @@
                 {/literal}
                 {/script}
             {/if}
-            {script unique="thumbswap-shadowbox2" yui3mods=1}
+            {script unique="thumbswap-shadowbox2" yui3mods="node"}
             {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     var thumbs = Y.all('.thumbnails li img.thumbnail');
                     var swatches = Y.all('.swatches li img.swatch');
                     var mainimg = Y.one('#enlarged-image');
@@ -265,7 +265,10 @@
         </div>
         {/if*}
         {if $config.enable_ratings_and_reviews}
-            {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
+            <div class="reviews">
+                {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
+                {comments_count record=$product type='Review'|gettext}
+            </div>
         {/if}
 
         {if $product->main_image_functionality=="iws"}
@@ -474,9 +477,9 @@
                 </div>
             {/form}
 
-            {script unique="children-submit" yui3mods="1"}
+            {script unique="children-submit" yui3mods="node"}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.one('#submit-chiprodsSubmit').on('click',function(e){
                     var frm = Y.one('#child-products');
                     var chcks = frm.all('input[type="checkbox"]');
@@ -545,4 +548,9 @@
              </div>
          {/if}
     </div>
+    {if $config.enable_ratings_and_reviews}
+        <div>
+            {comments record=$product type='Review'|gettext title='Reviews'|gettext formtitle='Leave a review'|gettext ratings=1}
+        </div>
+    {/if}
 </div>

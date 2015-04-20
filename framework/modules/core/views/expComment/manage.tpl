@@ -76,7 +76,8 @@
     {/form}
 </div>
 
-{script unique="manage-comments" yui3mods="1"}
+{script unique="manage-comments"}
+{literal}
     function selectAllp(val) {
         var checks = document.getElementsByName("bulk_select[]");
         for (var i = 0; i < checks.length; i++) {
@@ -89,4 +90,5 @@
             return confirm("{'Are you sure you want to delete all selected comments?'|gettext}");
         else return true;
     }
+{/literal}
 {/script}
