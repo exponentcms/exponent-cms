@@ -101,7 +101,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
 
         if(o.responseText){
             monthcal.setContent(o.responseText);

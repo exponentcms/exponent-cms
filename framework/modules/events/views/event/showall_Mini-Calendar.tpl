@@ -52,7 +52,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical evnav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical evnav");
 
         if(o.responseText){
             minical.setContent(o.responseText);

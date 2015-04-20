@@ -70,7 +70,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "portfolioitems nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "portfolioitems nav");
 
         if(o.responseText){
                 portfoliolist.setContent(o.responseText);

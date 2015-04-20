@@ -41,7 +41,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "blogitem nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "blogitem nav");
 
         if(o.responseText){
             blogitem.setContent(o.responseText);

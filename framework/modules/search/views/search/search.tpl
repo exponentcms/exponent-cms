@@ -39,7 +39,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "Searchitems nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "Searchitems nav");
 
         if(o.responseText){
             searchlist.setContent(o.responseText);

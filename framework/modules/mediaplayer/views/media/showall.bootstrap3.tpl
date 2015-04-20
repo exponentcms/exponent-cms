@@ -109,18 +109,12 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var medialist = Y.one('#{/literal}{$name}{literal}list');
-    var cfg = {
-    			method: "POST",
-    			headers: { 'X-Transaction': 'Load Mediaitems'},
-    			arguments : { 'X-Transaction': 'Load Mediaitems'}
-    		};
-
     src = '{/literal}{$__loc->src}{literal}';
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=media&action=showall&view=medialist&ajax_action=1&src="+src;
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "mediaitems nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "mediaitems nav");
 
         if(o.responseText){
                 medialist.setContent(o.responseText);
@@ -149,12 +143,21 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	};
 
 	//Subscribe our handlers to IO's global custom events:
-	Y.on('io:success', handleSuccess);
-	Y.on('io:failure', handleFailure);
+//	Y.on('io:success', handleSuccess);
+//	Y.on('io:failure', handleFailure);
 
     medialist.delegate('click', function(e){
         e.halt();
-        cfg.data = "page="+e.currentTarget.get('rel');
+        var cfg = {
+              method: "POST",
+		      headers: { 'X-Transaction': 'Load Mediaitems'},
+	          arguments : { 'X-Transaction': 'Load Mediaitems'},
+              data : "page="+e.currentTarget.get('rel'),
+              on: {
+                      success:handleSuccess,
+                      failure:handleFailure
+                  }
+              }
         var request = Y.io(sUrl, cfg);
         medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
     }, 'a.pager');
