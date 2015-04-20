@@ -38,6 +38,11 @@
     .yadcf-filter-wrapper {
         display: block;
     }
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc  {
+        background-image: none;
+    }
 {/css}
 
 <div class="module store showall-uncategorized">
@@ -134,7 +139,10 @@
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
-            jQueryUI: true,
+            //jQueryUI: true,
+            //renderer: {
+            //    "header": "bootstrap"
+            //},
             scrollX: true,
             stateSave: true,
             columns: [
