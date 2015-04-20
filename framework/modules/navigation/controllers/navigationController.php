@@ -745,7 +745,9 @@ class navigationController extends expController {
         $nav= array_values($nav);
 //        $nav[$navcount - 1]->last = true;
         if (count($nav)) $nav[count($nav) - 1]->last = true;
-        echo expJavascript::ajaxReply(201, '', $nav);
+//        echo expJavascript::ajaxReply(201, '', $nav);
+        $ar = new expAjaxReply(201, '', $nav);
+        $ar->send();
         exit;
     }
 

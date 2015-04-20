@@ -557,6 +557,7 @@ class expJavascript {
     	}
     }
 
+    //FIXME deprecated in favor of expAjaxReply
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
 		$ajaxObj['replyCode'] = $replyCode;
 		$ajaxObj['replyText'] = $replyText;

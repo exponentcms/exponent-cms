@@ -345,7 +345,7 @@ var YAHOO = Y.YUI2;
 
 	function loadNodeData(node, fnLoadComplete)	 {
 		var nodeid = encodeURI(node.data.id);
-		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON&id=" + nodeid;
+		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON&json=1&id=" + nodeid;
 		var callback = {
 			success: function(oResponse) {
 				var oResults = YAHOO.lang.JSON.parse(oResponse.responseText);
@@ -433,7 +433,7 @@ var YAHOO = Y.YUI2;
 	}
 	
 	function initTree (){
-		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON&id="+0;
+		var sUrl = eXp.PATH_RELATIVE+"index.php?ajax_action=1&module=navigation&action=returnChildrenAsJSON&json=1&id="+0;
 		var callback = {
 			success: function(oResponse) {
 				var oResults = YAHOO.lang.JSON.parse(oResponse.responseText);
