@@ -144,9 +144,9 @@
     {literal}
         // Helper function to get parameters from the query string for CKEditor
         function getUrlParam(paramName) {
+            // need to parse sef url also
+            var pathArray = window.location.pathname.split( '/' );
             if (paramName == 'update' || paramName == 'filter') {
-               // need to parse sef url also
-                var pathArray = window.location.pathname.split( '/' );
                 if (paramName == 'update') {
                     var parmu = pathArray.indexOf('update');
                     if (parmu > 0) return pathArray[parmu+1];
@@ -155,9 +155,14 @@
                     if (parmf > 0) return pathArray[parmf+1];
                 }
             }
-            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-            var match = window.location.search.match(reParam) ;
-            return (match && match.length > 1) ? match[1] : '' ;
+            if (EXPONENT.SEF_URLS) {
+                var parmf = pathArray.indexOf(paramName);
+                if (parmf > 0) return pathArray[parmf+1];
+            } else {
+                var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+                var match = window.location.search.match(reParam) ;
+                return (match && match.length > 1) ? match[1] : '' ;
+            }
         }
 
         // Helper function to get parameters from the query string for TinyMCE
