@@ -51,7 +51,7 @@ class optiongroup extends expRecord {
             {
                 $om = new option_master($opt->option_master_id);
                 $opt->rank = $om->rank;
-                if ($opt->show_input)
+                if (!empty($opt->show_input))
                     $this->input_needed = true;
             }            
             usort($this->option, array("optiongroup_master", "sortOptions"));
