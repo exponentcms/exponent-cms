@@ -1023,7 +1023,7 @@ class administrationController extends expController {
                         $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
                     }
 
-    				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
+    				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? PATH_RELATIVE . "themes/$file/preview.jpg" : YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png";
 				    $t->mobile = is_readable(BASE."themes/$file/mobile/index.php") ? true : false;
     				$themes[$file] = $t;
     			}
