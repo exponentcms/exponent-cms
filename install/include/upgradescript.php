@@ -44,7 +44,7 @@ abstract class upgradescript {
      * @return string
      */
     function description() {
-        return gt("This Script attempts to") . " " . self::name() . ".";
+        return gt("This Script attempts to") . " " . $this->name() . ".";
     }
 
     /**
