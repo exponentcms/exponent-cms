@@ -46,7 +46,7 @@ stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate op
 validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
-timepicker,1.5.2,http://trentrichardson.com/examples/timepicker/,1.5.2,used by adminer
+timepicker,1.5.3,http://trentrichardson.com/examples/timepicker/,1.5.3,used by adminer
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 DataTables,1.10.6,http://www.datatables.net,1.10.6,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,
