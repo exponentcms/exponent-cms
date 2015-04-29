@@ -2,6 +2,11 @@ ul .slideshow-frame li.slide {
 	list-style: none;
 }
 
+.slide > img,
+.slide > a > img {
+  width: 100%;
+}
+
 ul .slideshow-container {
 	margin : 0;
 	padding : 0;
