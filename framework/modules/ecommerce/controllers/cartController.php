@@ -166,6 +166,7 @@ class cartController extends expController {
     function updateQuantity() {
         global $order;
         if (expJavascript::inAjaxAction()) {
+            //FIXME though currently unused we don't account for minimym nor multiple quantity settings
             $id      = str_replace('quantity-', '', $this->params['id']);
             $item    = new orderitem($id);
             $updates = new stdClass();

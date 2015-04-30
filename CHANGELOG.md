@@ -22,6 +22,7 @@ Version 2.3.4
   - now only indexes content from active modules instead of every module
   - updates several bootstrap3 ecommerce views to more closely follow bootstrap3 styling
     -- newly styled invoices and packing slips
+  - now allows product option; must be purchased in multiple quantities
   - ecommerce invoice payment info is now more customer friendly when not managing order(s)
   - store database sample now includes product options, discounts, and sample orders
   - reCaptcha anti-spam support updated to latest library
