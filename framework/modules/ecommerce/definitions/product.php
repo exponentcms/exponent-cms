@@ -171,6 +171,8 @@ return array(
 		DB_INDEX=>10),
 	"minimum_order_quantity"=>array(
     	DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    "multiple_order_quantity"=>array(
+       	DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'product_type'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,

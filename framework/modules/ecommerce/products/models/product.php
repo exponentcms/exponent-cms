@@ -189,6 +189,7 @@ class product extends expRecord {
                 $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
                 $qty = $params['qty'];
             }
+            //FIXME adjust multiple quantity here
         } else {
             foreach ($params['children'] as $idKey => $childQty) {
                 $cprod = new childProduct($idKey);
@@ -218,6 +219,7 @@ class product extends expRecord {
                     $params['children'][$idKey] += $cprod->minimum_order_quantity - ($childQty + $qCheck);
                     //$qty = $params['qty'];
                 }
+                //FIXME adjust multiple quantity here for child products???
             }
         }
 
@@ -395,6 +397,7 @@ class product extends expRecord {
         eDebug($product->minimum_order_quantity);*/
 
         $item->quantity += is_numeric($params['qty']) && $params['qty'] >= $product->minimum_order_quantity ? $params['qty'] : $product->minimum_order_quantity;
+        //FIXME adjust multiple quantity here
         if ($item->quantity < 1) $item->quantity = 1;
         // eDebug($item->quantity,true);
         //eDebug($params);
