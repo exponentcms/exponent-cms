@@ -212,7 +212,8 @@ class blogController extends expController {
 	}
 
     /**
-     * view items referenced by tags  DEPRECATED??
+     * view items referenced by tags
+     * @deprecated
      */
     function showByTags() {
         global $db;

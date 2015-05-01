@@ -1,5 +1,4 @@
 <?php
-//FIXME Deprecated! Not used
 ##################################################
 #
 # Copyright (c) 2004-2015 OIC Group, Inc.
@@ -20,6 +19,7 @@
  * Smarty plugin
  * @package Smarty-Plugins
  * @subpackage Function
+ * @deprecated Not used
  */
 
 /**

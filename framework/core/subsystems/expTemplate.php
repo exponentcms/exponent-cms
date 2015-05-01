@@ -48,13 +48,17 @@ class expTemplate {
 		return array_shift($viewfilepath);
 	}
 
-	//FIXME DEPRECATED: backward compatibility wrapper
+    /**
+     * @deprecated backward compatibility wrapper
+     */
 	public static function getModuleViewFile($name, $view, $recurse=true) {  //FIXME Not Used 2.2???
 		return self::getViewFile("modules", $name, $view);
 	}
 
-	//FIXME DEPRECATED: backward compatibility wrapper
-	public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
+    /** exdoc
+     * @deprecated  backward compatibility wrapper
+     */
+    public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$resolved_path = null;
 		$resolved_path = self::resolveFilePaths("modules", $module , "form" , $view);
@@ -101,7 +105,9 @@ class expTemplate {
 		return $form;
 	}
 
-	//FIXME DEPRECATED: backward compatibility wrapper
+    /** exdoc
+     * @deprecated  backward compatibility wrapper
+     */
 	public static function getViewConfigOptions($module,$view) {  //FIXME Not Used 2.2???
 		$form_file = "";
 		$filepath = array_shift(self::resolveFilePaths("modules", $module, "form", $view));
@@ -165,13 +171,15 @@ class expTemplate {
 	 * @param string $module The classname of the module to get views for.
 	 * @return array
 	 * @node Subsystems:Template
+     * @deprecated backward compatibility wrapper
 	 */
-	//FIXME DEPRECATED: backward compatibility wrapper
 	public static function listModuleViews($module) {  //FIXME only used by container 2.0 edit action
 		return self::buildNameList("modules", $module, "tpl", "[!_]*");
 	}
 
-    //FIXME DEPRECATED, previously held view static config variables, e.g., calendar view type
+    /** exdoc
+     * @deprecated previously held view static config variables, e.g., calendar view type
+     */
 	public static function getViewParams($viewfile) {
 		$base = substr($viewfile,0,-4);
 		$vparam = null;

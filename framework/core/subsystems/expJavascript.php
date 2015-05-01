@@ -557,7 +557,9 @@ class expJavascript {
     	}
     }
 
-    //FIXME deprecated in favor of expAjaxReply
+    /**
+     * @deprecated in favor of expAjaxReply
+     */
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
 		$ajaxObj['replyCode'] = $replyCode;
 		$ajaxObj['replyText'] = $replyText;
@@ -664,7 +666,8 @@ class expJavascript {
     /**
      * Create a YUI2 Panel?
      * @param $params
-     */  //NOTE: Deprecated yui2
+     * @deprecated yui2
+     */
     public static function panel($params) {
         $content = "<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>";
         $id = "exppanel".$params['id'];

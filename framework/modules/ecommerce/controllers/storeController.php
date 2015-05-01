@@ -299,7 +299,10 @@ class storeController extends expController {
         }
     }
 
-    function upcomingEvents() {  //FIXME Deprecated, moved to eventregistration
+    /**
+     * @deprecated moved to eventregistration
+     */
+    function upcomingEvents() {
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -329,7 +332,10 @@ class storeController extends expController {
         ));
     }
 
-    function eventsCalendar() {  //FIXME Deprecated, moved to eventregistration
+    /**
+     * @deprecated moved to eventregistration
+     */
+    function eventsCalendar() {
         global $db, $user;
 
         expHistory::set('viewable', $this->params);
@@ -437,8 +443,9 @@ class storeController extends expController {
 
     /*
     * Helper function for the Calendar view
+     * @deprecated moved to eventregistration
     */
-    function getEventsForDates($edates, $sort_asc = true) {  //FIXME Deprecated, moved to eventregistration
+    function getEventsForDates($edates, $sort_asc = true) {
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -752,7 +759,10 @@ class storeController extends expController {
         "' */
     }
 
-    function showallByManufacturer() {  //FIXME Deprecated??, moved to company??
+    /**
+     * @deprecated moved to company
+     */
+    function showallByManufacturer() {
         expHistory::set('viewable', $this->params);
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
@@ -779,7 +789,10 @@ class storeController extends expController {
         ));
     }
 
-    function showallManufacturers() {  //FIXME Deprecated??, moved to company??
+    /**
+     * @deprecated moved to company
+     */
+    function showallManufacturers() {
         global $db;
         expHistory::set('viewable', $this->params);
         $sql = 'SELECT comp.* FROM ' . DB_TABLE_PREFIX . '_companies as comp JOIN ' . DB_TABLE_PREFIX . '_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';

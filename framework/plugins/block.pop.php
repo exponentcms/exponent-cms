@@ -20,6 +20,7 @@
  * Smarty plugin
  * @package Smarty-Plugins
  * @subpackage Block
+ * @deprecated due to expJavascript::panel() (yui2) use?  replace w/ modal?
  */
 
 /**
@@ -51,7 +52,7 @@
  * @param $content
  * @param \Smarty $smarty
  * @param $repeat
- */  //NOTE: Deprecated due to expJavascript::panel() (yui2) use?  replace w/ modal?
+ */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
 		$params['content'] = $content;

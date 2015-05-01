@@ -933,7 +933,6 @@ class expTheme
         #   }
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module, in a section-sensitive way.
      *
@@ -946,6 +945,7 @@ class expTheme
      *
      * @return void
      * @node Subsystems:Theme
+     * @deprecated
      */
     public static function showSectionalModule(
         $module,
@@ -983,7 +983,6 @@ class expTheme
         self::showModule($module, $view, $title, $src, false, null, $hide_menu);
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module in such a way that the current
      * section displays the same content as its top-level parent and all of the top-level parent's
@@ -997,6 +996,7 @@ class expTheme
      * @param bool   $hide_menu
      *
      * @node Subsystems:Theme
+     * @deprecated
      */
     public static function showTopSectionalModule(
         $module,
@@ -1026,7 +1026,6 @@ class expTheme
         self::showModule($module, $view, $title, $prefix . $section->id, false, null, $hide_menu);
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific controller, in a section-sensitive way.
      *
@@ -1040,6 +1039,7 @@ class expTheme
      * @internal param bool $hide_menu
      * @return void
      * @node     Subsystems:Theme
+     * @deprecated
      */
     public static function showSectionalController($params = array())
     { //FIXME not used in base system (custom themes?)
@@ -1055,7 +1055,9 @@ class expTheme
         self::module($params);
     }
 
-    //FIXME Deprecated
+    /**
+     * @deprecated
+     */
     public static function showController($params = array())
     {
         $module = !empty($params['module']) ? $params['module'] : $params['controller'];

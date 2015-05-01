@@ -520,8 +520,9 @@ class expPermissions {
 	 * or revoked, and is required to see these changes.
      *
 	 * @node Subsystems:expPermissions
+     * @deprecated by moving into expSession
 	 */
-	public static function triggerRefresh() {  //FIXME deprecated by moving into expSession
+	public static function triggerRefresh() {
 		global $db;
 		$obj = new stdClass();
 		$obj->refresh = 1;

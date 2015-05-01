@@ -17,7 +17,6 @@
 ##################################################
 /** @define "BASE" "../../.." */
 
-//FIXME DEPRECATED
 /**
  * Form Template Wrapper
  *
@@ -25,6 +24,7 @@
  *
  * @package Subsystems-Forms
  * @subpackage Template
+ * @deprecated
  */
 class formtemplate extends basetemplate {  //FIXME only used by calendarmodule for feedback forms
 
