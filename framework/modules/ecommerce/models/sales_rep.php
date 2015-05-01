@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class sales_rep extends expRecord {
     public $table = 'sales_reps';

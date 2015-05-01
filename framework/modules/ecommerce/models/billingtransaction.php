@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class billingtransaction extends expRecord {
     public $has_one = array('billingcalculator'); 

@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class optiongroup extends expRecord {
 	public $has_many = array('option');

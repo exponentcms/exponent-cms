@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class groupdiscounts extends expRecord {
     public $table = 'groupdiscounts';

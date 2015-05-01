@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class option extends expRecord {
 //    protected $attachable_item_types = array();

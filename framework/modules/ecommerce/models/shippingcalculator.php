@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package    Core
+ * @package    Modules
  */
 class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';

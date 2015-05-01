@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class model_alias extends expRecord {
 	public $table = 'model_aliases';

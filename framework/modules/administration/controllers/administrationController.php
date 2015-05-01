@@ -1377,7 +1377,7 @@ class administrationController extends expController {
 /**
  * This is the base theme class
  *
- * @subpackage Core-Controllers
+ * @subpackage Controllers
  * @package Modules
  */
 class theme {

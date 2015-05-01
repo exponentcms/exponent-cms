@@ -19,7 +19,7 @@
  * This is the class expRss
  *
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 /** @define "BASE" "../../../" */
 

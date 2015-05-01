@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class promocodes extends expRecord {
     public $table = 'promocodes';
