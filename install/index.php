@@ -16,6 +16,17 @@
 #
 ##################################################
 
+/**
+ * Minimum PHP version check
+ */
+if (version_compare(PHP_VERSION, '5.3.1', 'lt')) {
+    echo "<h1 style='padding:10px;border:5px solid #992222;color:red;background:white;position:absolute;top:100px;left:300px;width:400px;z-index:999'>
+        PHP 5.3.1+ is required!  Please refer to the Exponent documentation for details:<br />
+        <a href=\"http://docs.exponentcms.org/docs/current/requirements-running-exponent-cms\" target=\"_blank\">http://docs.exponentcms.org/</a>
+        </h1>";
+    die();
+}
+
 ob_start();
 
 // Jumpstart to Initialize the installer language before it's set to default
