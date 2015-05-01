@@ -558,7 +558,7 @@ class expJavascript {
     }
 
     /**
-     * @deprecated in favor of expAjaxReply
+     * @deprecated 2.3.4 in favor of expAjaxReply
      */
 	public static function ajaxReply($replyCode=200, $replyText='Ok', $data) {
 		$ajaxObj['replyCode'] = $replyCode;

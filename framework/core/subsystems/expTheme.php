@@ -945,7 +945,7 @@ class expTheme
      *
      * @return void
      * @node Subsystems:Theme
-     * @deprecated
+     * @deprecated 2.2.1
      */
     public static function showSectionalModule(
         $module,
@@ -996,7 +996,7 @@ class expTheme
      * @param bool   $hide_menu
      *
      * @node Subsystems:Theme
-     * @deprecated
+     * @deprecated 2.2.1
      */
     public static function showTopSectionalModule(
         $module,
@@ -1039,7 +1039,7 @@ class expTheme
      * @internal param bool $hide_menu
      * @return void
      * @node     Subsystems:Theme
-     * @deprecated
+     * @deprecated 2.2.1
      */
     public static function showSectionalController($params = array())
     { //FIXME not used in base system (custom themes?)
@@ -1056,7 +1056,7 @@ class expTheme
     }
 
     /**
-     * @deprecated
+     * @deprecated 2.2.1
      */
     public static function showController($params = array())
     {

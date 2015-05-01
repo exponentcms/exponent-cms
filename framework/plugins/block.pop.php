@@ -20,7 +20,6 @@
  * Smarty plugin
  * @package Smarty-Plugins
  * @subpackage Block
- * @deprecated due to expJavascript::panel() (yui2) use?  replace w/ modal?
  */
 
 /**

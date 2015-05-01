@@ -124,7 +124,7 @@ class navigationController extends expController {
     }
 
     /**
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function navhierarchy($notyui=false) {
         global $sections;
@@ -173,14 +173,14 @@ class navigationController extends expController {
     }
 
     /**
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function navtojson() {
         return json_encode(self::navhierarchy());
     }
 
     /**
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function getChildren(&$i, $notyui=false) {
         global $sections;
@@ -255,7 +255,7 @@ class navigationController extends expController {
     }
 
     /**
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function hasChildren($i) {
         global $sections;
@@ -268,7 +268,7 @@ class navigationController extends expController {
      * Creates a location object, based off of the three arguments passed, and returns it.
      *
      * @return array
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function initializeNavigation() {
         $sections = section::levelTemplate(0, 0);
@@ -285,7 +285,7 @@ class navigationController extends expController {
      * @param array $parents
      *
      * @return array
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function levelTemplate($parent, $depth = 0, $parents = array()) {
         global $user;
@@ -365,7 +365,7 @@ class navigationController extends expController {
      * @param bool   $addinternalalias
      *
      * @return array
-     * @deprecated moved to section model, HOWEVER still used in theme config
+     * @deprecated 2.3.4 moved to section model, HOWEVER still used in theme config
      */
     public static function levelDropdownControlArray($parent, $depth = 0, $ignore_ids = array(), $full = false, $perm = 'view', $addstandalones = false, $addinternalalias = true) {
         global $db;
@@ -507,7 +507,7 @@ class navigationController extends expController {
      * @param int $depth  variable to hold level of recursion
      *
      * @return array
-     * @deprecated this only for deprecated templates
+     * @deprecated 2.0.0 this only for deprecated templates
      */
     public static function getTemplateHierarchyFlat($parent, $depth = 1) {
         global $db;
@@ -527,7 +527,7 @@ class navigationController extends expController {
     }
 
     /**
-     * @deprecated this only for deprecated templates
+     * @deprecated 2.0.0 this only for deprecated templates
      */
     public static function process_section($section, $template) {
         global $db;
@@ -560,7 +560,7 @@ class navigationController extends expController {
     }
 
     /**
-     * @deprecated this only for deprecated templates
+     * @deprecated 2.0.0 this only for deprecated templates
      */
     function process_subsections($parent_section, $subtpl) {
         global $db, $router;
@@ -584,7 +584,7 @@ class navigationController extends expController {
      * Delete page and send its contents to the recycle bin
      *
      * @param $parent
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function deleteLevel($parent) {
         global $db;
@@ -619,7 +619,7 @@ class navigationController extends expController {
      * Move content page and its children to stand-alones
      *
      * @param $parent
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function removeLevel($parent) {
         global $db;
@@ -634,7 +634,7 @@ class navigationController extends expController {
 
     /**
      * Check for cascading page view permission, esp. if not public
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function canView($section) {
         global $db;
@@ -658,7 +658,7 @@ class navigationController extends expController {
 
     /**
      * Check to see if page is public with cascading
-     * @deprecated moved to section model
+     * @deprecated 2.3.4 moved to section model
      */
     public static function isPublic($s) {
         if ($s == null) {
@@ -1175,7 +1175,7 @@ class navigationController extends expController {
 
     /**
      * Rebuild the sectionref table as a list of modules on a page
-     * @deprecated moved to sectionref model
+     * @deprecated 2.3.4 moved to sectionref model
      */
     public static function rebuild_sectionrefs() {
         global $db;

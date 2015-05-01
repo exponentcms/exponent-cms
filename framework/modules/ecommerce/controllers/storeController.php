@@ -300,7 +300,7 @@ class storeController extends expController {
     }
 
     /**
-     * @deprecated moved to eventregistration
+     * @deprecated 2.0.0 moved to eventregistration
      */
     function upcomingEvents() {
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
@@ -333,7 +333,7 @@ class storeController extends expController {
     }
 
     /**
-     * @deprecated moved to eventregistration
+     * @deprecated 2.0.0 moved to eventregistration
      */
     function eventsCalendar() {
         global $db, $user;
@@ -443,7 +443,7 @@ class storeController extends expController {
 
     /*
     * Helper function for the Calendar view
-     * @deprecated moved to eventregistration
+     * @deprecated 2.0.0 moved to eventregistration
     */
     function getEventsForDates($edates, $sort_asc = true) {
         global $db;
@@ -760,7 +760,7 @@ class storeController extends expController {
     }
 
     /**
-     * @deprecated moved to company
+     * @deprecated 2.3.3 moved to company
      */
     function showallByManufacturer() {
         expHistory::set('viewable', $this->params);
@@ -790,7 +790,7 @@ class storeController extends expController {
     }
 
     /**
-     * @deprecated moved to company
+     * @deprecated 2.3.3 moved to company
      */
     function showallManufacturers() {
         global $db;

@@ -49,14 +49,14 @@ class expTemplate {
 	}
 
     /**
-     * @deprecated backward compatibility wrapper
+     * @deprecated 2.2.0 backward compatibility wrapper
      */
 	public static function getModuleViewFile($name, $view, $recurse=true) {  //FIXME Not Used 2.2???
 		return self::getViewFile("modules", $name, $view);
 	}
 
     /** exdoc
-     * @deprecated  backward compatibility wrapper
+     * @deprecated 2.2.0 backward compatibility wrapper
      */
     public static function getViewConfigForm($module,$view,$form,$values) {  //FIXME Not Used 2.2???
 		$form_file = "";
@@ -106,7 +106,7 @@ class expTemplate {
 	}
 
     /** exdoc
-     * @deprecated  backward compatibility wrapper
+     * @deprecated 2.2.0 backward compatibility wrapper
      */
 	public static function getViewConfigOptions($module,$view) {  //FIXME Not Used 2.2???
 		$form_file = "";
