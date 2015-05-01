@@ -20,7 +20,7 @@
  *
  * This is the MySQLi-specific implementation of the database class.
  * @package Subsystems
- * @subpackage Database = mysqli
+ * @subpackage Database
  */
 /** @define "BASE" "../.." */
 
