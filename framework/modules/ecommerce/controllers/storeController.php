@@ -1671,7 +1671,7 @@ class storeController extends expController {
         $terms = explode(" ", $this->params['query']);
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
         $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
@@ -1686,7 +1686,7 @@ class storeController extends expController {
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
@@ -1700,7 +1700,7 @@ class storeController extends expController {
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '" . $this->params['query'] . "%' ";
@@ -1744,7 +1744,7 @@ class storeController extends expController {
         $sql .= "CASE when p.model like '" . $this->params['query'] . "%' then 1 else 0 END as modelmatch, ";
         $sql .= "CASE when p.title like '%" . $this->params['query'] . "%' then 1 else 0 END as titlematch ";
         $sql .= "from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
