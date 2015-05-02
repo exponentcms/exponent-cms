@@ -186,6 +186,7 @@ class remove_oldfiles extends upgradescript {
             'themes/basetheme/sample.tar.gz',
             'themes/bootstrap3theme/modules/navigation/views/navigation/showall_Bootstrap Top Nav.tpl',
             'themes/bootstrap3theme/less/bootstrapcontrols.less',
+            'themes/bootstraptheme/less/bootstrapcontrols.less',
             'themes/coolwatertheme/sample.eql',
             'themes/coolwatertheme/sample.tar.gz',
             'themes/multioptiontheme/sample.eql',

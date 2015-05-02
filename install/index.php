@@ -89,6 +89,7 @@ if (isset($_POST['install_sample'])) {
             $return = $tar->extract(BASE);
         }
     }
+    //FIXME we need to output this into an element and not simply out on the page
     if (DEVELOPMENT && !empty($errors)) {
         echo '<h2>' . gt('Errors were encountered populating the site database.') . '</h2><ul>';
         foreach ($errors as $e) {
