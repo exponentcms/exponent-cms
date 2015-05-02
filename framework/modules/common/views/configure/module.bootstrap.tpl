@@ -149,9 +149,6 @@
         }
 
         var handleSuccessView = function (ioId, o) {
-            //Y.log(o.responseText);
-            //Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
-
             if (o.responseText) {
                 Y.one('#moduleViewConfig').setContent(o.responseText);
                 Y.one('#moduleViewConfig').all('script').each(function (n) {
@@ -159,9 +156,7 @@
                         eval(n.get('innerHTML'));
                     } else {
                         var url = n.get('src');
-//                        if (url.indexOf("ckeditor")) {
-                            Y.Get.script(url);
-//                        }
+                        Y.Get.script(url);
                     }
                 });
                 Y.one('#moduleViewConfig').all('link').each(function (n) {

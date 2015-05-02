@@ -61,9 +61,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=get_view_config&ajax_action=1";
 
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
-//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
-        
         if(o.responseText){
             Y.one('#fileViewConfig').setContent(o.responseText);
                 Y.one('#fileViewConfig').all('script').each(function(n){
@@ -71,9 +68,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-//                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-//                    };
+                    Y.Get.script(url);
                 };
             });
                 Y.one('#fileViewConfig').all('link').each(function(n){

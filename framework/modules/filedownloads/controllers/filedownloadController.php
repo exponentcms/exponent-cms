@@ -77,7 +77,8 @@ class filedownloadController extends expController {
 		assign_to_template(array(
             'page'=>$page,
             'items'=>$page->records,
-            'rank'=>($order==='rank')?1:0
+            'rank'=>($order==='rank')?1:0,
+            'params'=>$this->params,
         ));
     }
 

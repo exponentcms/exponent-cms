@@ -75,6 +75,7 @@ class blogController extends expController {
 		            
 		assign_to_template(array(
             'page'=>$page,
+            'params'=>$this->params,
         ));
         if (isset($this->params['cat'])) assign_to_template(array(
             'moduletitle' => gt('Posts filed under') . ' ' . (empty($page->records[0]->expCat[0]->title) ? $this->config['uncat'] : $page->records[0]->expCat[0]->title),
@@ -200,6 +201,7 @@ class blogController extends expController {
 	    // populate the location data in the template now.
 //        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
         $config = expConfig::getConfig($record->location_data);
+//        $config = $this->config;//FIXME??
 
         $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
         $record->next = $record->find('first',$nextwhere);
@@ -208,7 +210,9 @@ class blogController extends expController {
 
 	    assign_to_template(array(
             'record'=>$record,
-            'config'=>$config));
+            'config'=>$config,
+            'params'=>$this->params
+        ));
 	}
 
     /**

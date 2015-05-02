@@ -67,7 +67,7 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,node-event-delegate"}
+{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,node-event-delegate" jquery="jquery.history"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
 	'gallery-calendar': {
@@ -105,11 +105,20 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 {/literal}
 {/script}
 
-{if $config.ajax_paging}
-{script unique=$name|cat:'-ajax' yui3mods="node,io,node-event-delegate"}
+{if $smarty.const.AJAX_PAGING}
+{script unique=$name|cat:'-ajax' yui3mods="node,io,node-event-delegate,history"}
 {literal}
     YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     var monthcal = Y.one('#month-{/literal}{$name}{literal}');
+    var page_parm = '';
+    if (EXPONENT.SEF_URLS) {
+        page_parm = '/time/';
+    } else {
+        page_parm = '&time=';
+    }
+    var History = window.History;
+    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.time}{literal}});
+    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Minical'},
@@ -120,9 +129,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
-//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
-
         if(o.responseText){
             monthcal.setContent(o.responseText);
             monthcal.all('script').each(function(n){
@@ -130,9 +136,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-//                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-//                    };
+                    Y.Get.script(url);
                 };
             });
             monthcal.all('link').each(function(n){
@@ -146,7 +150,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal evnav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "monthcal nav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:
@@ -155,10 +159,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 
     monthcal.delegate('click', function(e){
         e.halt();
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
     }, 'a.evnav');
+
+    // Watches the browser history for changes
+    window.addEventListener('popstate', function(e) {
+        state = History.getState()
+        if (state.data.name == '{/literal}{$name}{literal}') {
+            // moving to a new month
+            cfg.data = "time="+state.data.rel;
+            var request = Y.io(sUrl, cfg);
+            monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+        }
+    });
 });
 {/literal}
 {/script}

@@ -162,6 +162,7 @@ class eventController extends expController {
                         $totaldays = 1;
                         $next = expDateTime::endOfDayTimestamp($startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
+                        $this->params['time'] = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-3 days', $startperiod),
                             "prev_timestamp2" => strtotime('-2 days', $startperiod),
@@ -169,6 +170,7 @@ class eventController extends expController {
                             "next_timestamp"  => strtotime('+1 days', $startperiod),
                             "next_timestamp2" => strtotime('+2 days', $startperiod),
                             "next_timestamp3" => strtotime('+3 days', $startperiod),
+                            'params'      => $this->params
                         ));
                         break;
                     case "week":
@@ -177,6 +179,7 @@ class eventController extends expController {
                         $next = strtotime('+7 days', $startperiod);
 //                        $next = expDateTime::endOfWeekTimestamp($startperiod);
                         if (!empty($this->config['starttype'])) $startperiod = $time;
+                        $this->params['time'] = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-21 days', $startperiod),
                             "prev_timestamp2" => strtotime('-14 days', $startperiod),
@@ -184,6 +187,7 @@ class eventController extends expController {
                             "next_timestamp"  => $next,
                             "next_timestamp2" => strtotime('+14 days', $startperiod),
                             "next_timestamp3" => strtotime('+21 days', $startperiod),
+                            'params'      => $this->params
                         ));
                         break;
                     case "twoweek":
@@ -206,13 +210,15 @@ class eventController extends expController {
                         $totaldays = date('t', $time);
                         $next = strtotime('+1 months', $startperiod);
 //                        $next = expDateTime::endOfMonthTimestamp($startperiod);
+                        $this->params['time'] = $time;
                         assign_to_template(array(
                             "prev_timestamp3" => strtotime('-3 months', $startperiod),
                             "prev_timestamp2" => strtotime('-2 months', $startperiod),
                             "prev_timestamp"  => strtotime('-1 months', $startperiod),
                             "next_timestamp"  => $next,
                             "next_timestamp2" => strtotime('+2 months', $startperiod),
-                            "next_timestamp3" => strtotime('+3 months', $startperiod)
+                            "next_timestamp3" => strtotime('+3 months', $startperiod),
+                            'params'      => $this->params
                         ));
                         break;
                 }
@@ -309,6 +315,7 @@ class eventController extends expController {
                     $monthly[$week][$i + $endofmonth] = array();
                     $counts[$week][$i + $endofmonth] = -1;
                 }
+                $this->params['time'] = $time;
                 assign_to_template(array(
                     "currentweek" => $currentweek,
                     "monthly"     => $monthly,
@@ -320,7 +327,8 @@ class eventController extends expController {
                     "nextmonth2"  => strtotime('+2 months', $timefirst),
                     "nextmonth3"  => strtotime('+3 months', $timefirst),
                     "now"         => $timefirst,
-                    "today"       => expDateTime::startOfDayTimestamp(time())
+                    "today"       => expDateTime::startOfDayTimestamp(time()),
+                    'params'      => $this->params
                 ));
                 break;
             case "administration":

@@ -145,9 +145,7 @@
                } else {
                    // attach script src link
                    var url = n.get('src');
-//                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")||url.indexOf("SimpleAjaxUploader")) {
-                       Y.Get.script(url);
-//                   };
+                   Y.Get.script(url);
                };
            });
            // css

@@ -104,11 +104,23 @@
 {/literal}
 {/script}
 
-{if $config.ajax_paging}
-{script unique="`$name`listajax" yui3mods="node,io,node-event-delegate"}
+{if $smarty.const.AJAX_PAGING}
+{if empty($params.page)}
+    {$params.page = 1}
+{/if}
+{script unique="`$name`listajax" yui3mods="node,io,node-event-delegate" jquery="jquery.history"}
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var medialist = Y.one('#{/literal}{$name}{literal}list');
+    var page_parm = '';
+    if (EXPONENT.SEF_URLS) {
+        page_parm = '/page/';
+    } else {
+        page_parm = '&page=';
+    }
+    var History = window.History;
+    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.page}{literal}});
+    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Mediaitems'},
@@ -119,9 +131,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=media&action=showall&view=medialist&ajax_action=1&src="+src;
 
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
-//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "mediaitems nav");
-
         if(o.responseText){
                 medialist.setContent(o.responseText);
                 medialist.all('script').each(function(n){
@@ -129,9 +138,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-//                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-//                    };
+                    Y.Get.script(url);
                 };
             });
             medialist.all('link').each(function(n){
@@ -154,10 +161,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     medialist.delegate('click', function(e){
         e.halt();
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
     }, 'a.pager');
+
+    // Watches the browser history for changes
+    window.addEventListener('popstate', function(e) {
+        state = History.getState()
+        if (state.data.name == '{/literal}{$name}{literal}') {
+            // moving to a new page
+            cfg.data = "page="+state.data.rel;
+            var request = Y.io(sUrl, cfg);
+            medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
+        }
+    });
 });
 {/literal}
 {/script}

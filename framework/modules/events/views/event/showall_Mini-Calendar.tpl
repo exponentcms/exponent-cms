@@ -52,7 +52,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical evnav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
 
         if(o.responseText){
             minical.setContent(o.responseText);
@@ -77,7 +77,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical evnav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical nav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:

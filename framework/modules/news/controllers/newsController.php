@@ -82,7 +82,8 @@ class newsController extends expController {
         assign_to_template(array(
             'page'=>$page,
             'items'=>$page->records,
-            'rank'=>($order==='rank')?1:0
+            'rank'=>($order==='rank')?1:0,
+            'params'=>$this->params,
         ));
     }
 
@@ -142,6 +143,7 @@ class newsController extends expController {
         $record = new news($id);
 //        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
         $config = expConfig::getConfig($record->location_data);
+//        $config = $this->config;//FIXME??
 
         $order = !empty($config['order']) ? $config['order'] : 'publish DESC';
         if (strstr($order," ")) {
@@ -163,7 +165,8 @@ class newsController extends expController {
 
         assign_to_template(array(
             'record'=>$record,
-            'config'=>$config
+            'config'=>$config,
+            'params'=>$this->params
         ));
     }
 

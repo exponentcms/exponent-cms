@@ -266,13 +266,11 @@
             {showmodule controller=snippet action=showall source="prodsnip`$product->id`"}
 
             {if $product->minimum_order_quantity > 1}
-                {br}
                 <p>
                     <span>{"This item has a minimum order quantity of"|gettext} {$product->minimum_order_quantity}</span>
                 </p>
             {/if}
             {if $product->multiple_order_quantity > 1}
-                {br}
                 <p>
                     <span>{"This item must be ordered in quantities of"|gettext} {$product->multiple_order_quantity}</span>
                 </p>

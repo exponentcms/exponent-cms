@@ -139,9 +139,7 @@
                    eval(n.get('innerHTML'));
                } else {
                    var url = n.get('src');
-//                   if (url.indexOf("ckeditor")||url.indexOf("tinymce")) {
-                       Y.Get.script(url);
-//                   };
+                   Y.Get.script(url);
                };
            });
            // css

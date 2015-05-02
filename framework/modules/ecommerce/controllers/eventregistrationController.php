@@ -217,6 +217,7 @@ class eventregistrationController extends expController {
             $counts[$week][$i + $endofmonth] = -1;
         }
 
+        $this->params['time'] = $time;
         assign_to_template(array(
             'currentweek' => $currentweek,
             'monthly'     => $monthly,
@@ -228,7 +229,8 @@ class eventregistrationController extends expController {
             "nextmonth2"  => strtotime('+2 months', $timefirst),
             "nextmonth3"  => strtotime('+3 months', $timefirst),
             'now'         => $timefirst,
-            "today"       => expDateTime::startOfDayTimestamp(time())
+            "today"       => expDateTime::startOfDayTimestamp(time()),
+            'params'      => $this->params
         ));
     }
 

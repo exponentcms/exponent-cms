@@ -81,7 +81,8 @@ class searchController extends expController {
 
         assign_to_template(array(
             'page'=>$page,
-            'terms'=>$terms
+            'terms'=>$terms,
+            'params'=>$this->params,
         ));
     }
     

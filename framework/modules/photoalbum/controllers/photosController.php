@@ -69,6 +69,7 @@ class photosController extends expController {
                     
         assign_to_template(array(
             'page'=>$page,
+            'params'=>$this->params,
         ));
     }
     
