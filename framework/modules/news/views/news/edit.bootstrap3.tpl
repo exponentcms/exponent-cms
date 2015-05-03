@@ -75,7 +75,7 @@
     {/form}
     {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}
     {if count($revisions) > 1}
-        {toggle unique='text-edit' label='Revisons'|gettext collapsed=true}
+        {toggle unique='text-edit' label='Revisions'|gettext collapsed=true}
             {foreach from=$revisions item=revision name=revision}
                 {$class = ''}
                 {if $revision->revision_id == $record->revision_id}{$class = 'current-revision revision'}{else}{$class = 'revision'}{/if}

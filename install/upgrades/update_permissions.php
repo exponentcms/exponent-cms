@@ -72,7 +72,7 @@ class update_permissions extends upgradescript {
             $count++;
 	    }
 
-        return ($count?$count:gt('No'))." ".gt('Old permission module names were udated to the short format.');
+        return ($count?$count:gt('No'))." ".gt('Old permission module names were updated to the short format.');
 	}
 }
 

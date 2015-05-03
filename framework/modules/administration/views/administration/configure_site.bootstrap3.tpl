@@ -162,7 +162,7 @@
                         {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format"|gettext items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
                         {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {/group}
-	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
+	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default time zone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
                     {control type="checkbox" name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
@@ -323,7 +323,7 @@
                                 <blockquote>
                                     {'MPDF 5 is an optional package, but a preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
                                     <ol>
-                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
+                                        <li>{'Download the basic library'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext} {'You should also download any updates and extract them to that same folder.'|gettext} <a href="http://www.mpdf1.com/mpdf/download" target="_blank">{'mPDF Downloads'|gettext}</a></li>
                                         <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf57.zip/download" target="_blank">mpdf57.zip</a>.
                                             {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
@@ -343,7 +343,7 @@
                                 <blockquote>
                                     {'MPDF 6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                     <ol>
-                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
+                                        <li>{'Download the basic library'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
                                     </ol>
                                 </blockquote>

@@ -229,6 +229,8 @@ class expLang {
         $to = $to1[0];
         if ($to == 'nb') $to = 'no';  // Bing uses 'no' for norwegian
         $gt = new BingTranslateWrapper(BING_API);
+        /* Enable the cache */
+        $gt->cacheEnabled(true);
         return $gt->translate(stripslashes($text), $from, $to);
     }
 
@@ -236,6 +238,7 @@ class expLang {
         include_once(BASE.'external/BingTranslate.class.php');
         include_once(BASE.'external/bingapi.php');
         $gt = new BingTranslateWrapper(BING_API);
+        /* Enable the cache */
         return $gt->LanguagesSupported();
     }
 

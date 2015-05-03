@@ -43,10 +43,10 @@
         {/if}
 		{control type=dropdown name=skin label="Toolbar Skin"|gettext items=$skins values=$skins value=$record->skin default=$skin}
         {if $editor == 'ckeditor'}
-            {control type="checkbox" postfalse=1 name=scayt_on label="Autostart SpellCheck"|gettext checked=$record->scayt_on value=1}
+            {control type="checkbox" postfalse=1 name=scayt_on label="Autostart Spell Check"|gettext checked=$record->scayt_on value=1}
             {control type="checkbox" postfalse=1 name=paste_word label="Allow Formatted Pasting from MS Word"|gettext checked=$record->paste_word value=1}
         {elseif $editor == 'tinymce'}
-            {control type="checkbox" postfalse=1 name=scayt_on label="Disable Browser SpellCheck"|gettext checked=$record->scayt_on value=1}
+            {control type="checkbox" postfalse=1 name=scayt_on label="Disable Browser Spell Check"|gettext checked=$record->scayt_on value=1}
         {/if}
         <h4><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h4>
         <blockquote><em>({'Please visit the help page for entry format requirements!'|gettext})</em></blockquote>
