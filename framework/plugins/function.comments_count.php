@@ -46,7 +46,8 @@ function smarty_function_comments_count($params,&$smarty) {
         $link = '#exp-comments';
     } else {
         $linkparams = array();
-        $linkparams['controller'] = $item->classname;
+//        $linkparams['controller'] = $item->classname;
+        $linkparams['controller'] = $smarty->getTemplateVars('__loc')->mod;
         $linkparams['action'] = 'show';
         $linkparams['title'] = $item->sef_url;
         $link = expCore::makeLink($linkparams).'#exp-comments';
@@ -54,9 +55,10 @@ function smarty_function_comments_count($params,&$smarty) {
 
     $prepend = isset($params['prepend']) ? $params['prepend'] : '';
     $class = isset($params['class']) ? $params['class'] : 'comments';
+    $type = isset($params['type']) ? $params['type'] : gt('Comment');
 
     // spit out the link
-    echo $prepend,'<a class="',$class,'" href="',$link,'" title="',gt('View Comments'),'">',count($item->expComment),' ',(count($item->expComment)==1?gt("Comment"):gt("Comments")),'</a>';
+    echo $prepend,'<a class="',$class,'" href="',$link,'" title="',gt('View'),' ',$type,'s','">',count($item->expComment),' ',$type,(count($item->expComment)==1?'':'s'),'</a>';
 }
 
 ?>

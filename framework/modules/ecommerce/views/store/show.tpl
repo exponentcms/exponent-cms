@@ -105,7 +105,7 @@
             {/if}
 
             {if $config.enable_lightbox}
-                {script unique="thumbswap-shadowbox" yui3mods=1}
+                {script unique="thumbswap-shadowbox" yui3mods="node-event-simulate,gallery-lightbox"}
                 {literal}
                     EXPONENT.YUI3_CONFIG.modules = {
                         'gallery-lightbox' : {
@@ -118,7 +118,7 @@
                         }
                     }
 
-                    YUI(EXPONENT.YUI3_CONFIG).use('node-event-simulate','gallery-lightbox', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                         Y.Lightbox.init();
 
                         if (Y.one('#enlarged-image-link') != null) {
@@ -155,9 +155,9 @@
                 {/literal}
                 {/script}
             {/if}
-            {script unique="thumbswap-shadowbox2" yui3mods=1}
+            {script unique="thumbswap-shadowbox2" yui3mods="node"}
             {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     var thumbs = Y.all('.thumbnails li img.thumbnail');
                     var swatches = Y.all('.swatches li img.swatch');
                     var mainimg = Y.one('#enlarged-image');
@@ -239,12 +239,17 @@
             </p>
         {/if}
 
-        {chain controller="snippet" action="showall" source="prodsnip`$product->id`"}
+        {*{chain controller="snippet" action="showall" source="prodsnip`$product->id`"}*}
+        {showmodule controller=snippet action=showall source="prodsnip`$product->id`"}
 
         {if $product->minimum_order_quantity > 1}
-            {br}
             <p>
                 <span>{"This item has a minimum order quantity of"|gettext} {$product->minimum_order_quantity}</span>
+            </p>
+        {/if}
+        {if $product->multiple_order_quantity > 1}
+            <p>
+                <span>{"This item must be ordered in quantities of"|gettext} {$product->multiple_order_quantity}</span>
             </p>
         {/if}
 
@@ -264,7 +269,10 @@
         </div>
         {/if*}
         {if $config.enable_ratings_and_reviews}
-            {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
+            <div class="reviews">
+                {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
+                {comments_count record=$product type='Review'|gettext}
+            </div>
         {/if}
 
         {if $product->main_image_functionality=="iws"}
@@ -372,6 +380,10 @@
                 {* NOTE display product options *}
                 {if $product->show_options}
                     {exp_include file="options.tpl"}
+                    <div>
+                        <strong>{'Total Cost of Options'|gettext}:</strong>
+                        <span id="item-price">$0.00</span>
+                    </div>
                 {/if}
 
                 <div id="child-products" class="exp-ecom-table">
@@ -469,11 +481,10 @@
                 </div>
             {/form}
 
-            {script unique="children-submit" yui3mods="1"}
+            {script unique="children-submit" yui3mods="node"}
             {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.one('#submit-chiprodsSubmit').on('click',function(e){
-                    e.halt();
                     var frm = Y.one('#child-products');
                     var chcks = frm.all('input[type="checkbox"]');
                     var txts = frm.all('input[type="text"]');
@@ -492,8 +503,9 @@
 
                     if (bxchkd==0 || msg!="") {
                         alert('{/literal}{"You need to check at least 1 product before it can be added to your cart"|gettext}{literal}'+msg);
+                        e.halt();
                     } else {
-                        Y.one('#child-products-form').submit();
+//                        Y.one('#child-products-form').submit();
                     };
                 });
             });
@@ -540,4 +552,9 @@
              </div>
          {/if}
     </div>
+    {if $config.enable_ratings_and_reviews}
+        <div>
+            {comments record=$product type='Review'|gettext title='Reviews'|gettext formtitle='Leave a review'|gettext ratings=1}
+        </div>
+    {/if}
 </div>

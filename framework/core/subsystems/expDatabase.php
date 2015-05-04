@@ -231,7 +231,7 @@ class expDatabase {
 * This is the class database
 *
 * This is the generic implementation of the database class.
-* @subpackage Database = database
+* @subpackage Database
 * @package Subsystems
 */
 

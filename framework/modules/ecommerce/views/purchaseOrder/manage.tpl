@@ -88,9 +88,9 @@
 	</div>
 </div>
 
-{script unique="purchase-orders" yui3mods=1}
+{script unique="purchase-orders" yui3mods="node,io-base,json-parse"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io-base', 'json-parse', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	var vendors = Y.all('.purchaseorder.manage .leftcol ul li a');
 	var purchaseOrderTable = Y.one("#purchaseOrderDynmicData");
 	var filterVendor = function (e) {

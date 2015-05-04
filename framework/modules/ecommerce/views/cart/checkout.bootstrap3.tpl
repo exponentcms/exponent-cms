@@ -49,7 +49,10 @@
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
         <div>
-            <a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>
+            {pop id="review_policy" text="Review Store Policies"|gettext title="Store Policies"|gettext buttons="Close"|gettext}
+                {ecomconfig var='policy' default=""}
+            {/pop}
+            {*<a href="#" id="review-policy">{"Review Store Policies"|gettext}</a>*}
             {*<div id="storepolicies" style="z-index:9999">*}
                 {*<div class="yui3-widget-hd">*}
                     {*{"Store Policies"|gettext}*}
@@ -58,50 +61,25 @@
                     {*{ecomconfig var='policy' default=""}*}
                 {*</div>*}
             {*</div>*}
-            {*{script unique="policypop" yui3mods=1}*}
-                {*{literal}*}
-                {*YUI(EXPONENT.YUI3_CONFIG).use('panel', 'dd-plugin', function(Y) {*}
-                    {*var policies = new Y.Panel({*}
-                        {*srcNode : '#storepolicies',*}
-                        {*headerContent: '{/literal}{"Store Policies"|gettext}{literal}',*}
-                        {*width:"400px",*}
-                        {*height:"350px",*}
-                        {*centered:true,*}
-                        {*modal:true,*}
-                        {*visible:false,*}
-                        {*zIndex:999,*}
-                        {*constrain:true,*}
-    {*//                    close:true,*}
-                        {*render:true,*}
+            {*{script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}*}
+            {*{literal}*}
+                {*$(document).ready(function(){*}
+                    {*$('#review-policy').click(function() {*}
+                        {*BootstrapDialog.show({*}
+                            {*size: BootstrapDialog.SIZE_WIDE,*}
+                            {*title: '{/literal}{'Store Policies'|gettext}{literal}',*}
+                            {*message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},*}
+                            {*buttons: [{*}
+                                {*label: 'Close',*}
+                                {*action: function(dialogRef){*}
+                                    {*dialogRef.close();*}
+                                {*}*}
+                            {*}]*}
+                        {*});*}
                     {*});*}
-                    {*policies.plug(Y.Plugin.Drag, {*}
-                        {*handles: ['.yui3-widget-hd']*}
-                    {*});*}
-                    {*var showpanel = function(e){*}
-                        {*policies.show();*}
-                    {*};*}
-                    {*Y.one("#review-policy").on('click',showpanel);*}
                 {*});*}
-                {*{/literal}*}
+            {*{/literal}*}
             {*{/script}*}
-            {script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}
-            {literal}
-                $(document).ready(function(){
-                    $('#review-policy').click(function() {
-                        BootstrapDialog.show({
-                            title: '{/literal}{'Store Policies'|gettext}{literal}',
-                            message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},
-                            buttons: [{
-                                label: 'Close',
-                                action: function(dialogRef){
-                                    dialogRef.close();
-                                }
-                            }]
-                        });
-                    });
-                });
-            {/literal}
-            {/script}
         </div>
     {/if}
 
@@ -121,7 +99,8 @@
 
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
-            {chain controller=cart action=cart_only}
+            {*{chain controller=cart action=cart_only}*}
+            {showmodule controller=cart action=cart_only}
         </div>
     </div>
     {clear}

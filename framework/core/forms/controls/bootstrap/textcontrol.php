@@ -54,14 +54,15 @@ class textcontrol extends formcontrol {
 
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 25;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$name.'"';
+        $idname  = (!empty($this->id)) ? $this->id : $name;
+        $idname = createValidId($idname);
         if ($this->type != 'text') {
             $extra_class = ' ' . $this->type;
         } else {
             $extra_class = '';
         }
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
-        $html .= '<input' . $inputID . ' class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
+        $html .= '<input id="' . $idname . '" class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"', "&quot;", $this->default) . "\"";
         $html .= ($this->size ? " size=\"" . $this->size . "\"" : "");
         $html .= $this->multiple ? ' multiple="multiple"' : "";

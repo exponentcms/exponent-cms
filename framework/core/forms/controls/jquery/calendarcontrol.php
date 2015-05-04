@@ -102,7 +102,7 @@ class calendarcontrol extends formcontrol
         $this->default = strtotime($this->default_date . ' ' . $this->default_hour . ':' . $this->default_min . ' ' . $this->default_ampm);
         $default = date('n/j/Y g:i a', $this->default);
 
-        $idname = str_replace(array('[', ']', ']['), '_', $name);
+        $idname = createValidId($name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
 
         $date_input = new textcontrol($default);

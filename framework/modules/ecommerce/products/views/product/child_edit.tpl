@@ -146,8 +146,9 @@
                         {control type="hidden" name="tab_loaded[quantity]" value=1}
                         {control type="text" name="quantity[quantity]" label="Quantity in stock"|gettext value=$record->quantity}
                         {control type="text" name="quantity[minimum_order_quantity]" label="Minimum order quantity"|gettext value=$record->minimum_order_quantity|default:1}
-                        {control type="checkbox" name="quantity[allow_partial]" label="Allow partial quantities?"|gettext value=1 checked=$record->allow_partial}
-                        {control type="checkbox" name="quantity[is_hidden]" label="Hide Product"|gettext value=$record->is_hidden}
+                        {control type="text" name="quantity[multiple_order_quantity]" label="Must be ordered in multiples of"|gettext value=$record->multiple_order_quantity|default:1} {* FIXME not in child product*}
+                        {*{control type="checkbox" name="quantity[allow_partial]" label="Allow partial quantities?"|gettext value=1 checked=$record->allow_partial}*}
+                        {*{control type="checkbox" name="quantity[is_hidden]" label="Hide Product"|gettext value=$record->is_hidden}*}
                         {control type="radiogroup" name="quantity[availability_type]" label="Quantity Display"|gettext items=$record->quantity_display default=$record->availability_type|default:0}
                         {control type="textarea" name="quantity[availability_note]" label="* "|cat:("Note to display per above selection"|gettext) rows=5 cols=45 value=$record->availability_note}
                     </div>
@@ -238,9 +239,9 @@
     </div>
 </div>
 
-{script unique="editform" yui3mods=1}
+{script unique="editform" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var switchMethods = function () {
             var dd = Y.one('#required_shipping_calculator_id');
             var ddval = dd.get('value');
@@ -263,14 +264,14 @@
 {/literal}
 {/script}
 
-{script unique="authtabs" yui3mods=1}
+{script unique="authtabs" yui3mods="get,exptabs,node-load,event-simulate"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-	 YUI(EXPONENT.YUI3_CONFIG).use("get", "exptabs", "node-load","event-simulate", function(Y) {
+	 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#childtabs'});
 		Y.one('#childtabs').removeClass('hide');
         Y.one('.loadingdiv').remove();

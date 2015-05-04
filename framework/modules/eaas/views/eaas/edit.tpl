@@ -69,9 +69,9 @@
     {/form}   
 </div>
 
-{script unique="blogtabs" yui3mods=1}
+{script unique="blogtabs" yui3mods="autocomplete,autocomplete-filters,autocomplete-highlighters,tabview"}
 {literal}
-	YUI(EXPONENT.YUI3_CONFIG).use('autocomplete','autocomplete-filters','autocomplete-highlighters','tabview', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	    var tabview = new Y.TabView({srcNode:'#editblog-tabs'});
 	    tabview.render();
 		Y.one('#editblog-tabs').removeClass('hide');

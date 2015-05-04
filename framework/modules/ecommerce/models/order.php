@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package    Core
+ * @package    Modules
  */
 class order extends expRecord {
     protected $table = 'orders';

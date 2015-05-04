@@ -107,6 +107,7 @@ class expTheme
         }
         expSession::set('framework', $framework);
 
+        // set the global less variables from the head config
         if (!empty($config['lessvars'])) {
             $less_vars = $config['lessvars'];
         } else {
@@ -932,7 +933,6 @@ class expTheme
         #   }
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module, in a section-sensitive way.
      *
@@ -945,6 +945,7 @@ class expTheme
      *
      * @return void
      * @node Subsystems:Theme
+     * @deprecated 2.2.1
      */
     public static function showSectionalModule(
         $module,
@@ -982,7 +983,6 @@ class expTheme
         self::showModule($module, $view, $title, $src, false, null, $hide_menu);
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific module in such a way that the current
      * section displays the same content as its top-level parent and all of the top-level parent's
@@ -996,6 +996,7 @@ class expTheme
      * @param bool   $hide_menu
      *
      * @node Subsystems:Theme
+     * @deprecated 2.2.1
      */
     public static function showTopSectionalModule(
         $module,
@@ -1025,7 +1026,6 @@ class expTheme
         self::showModule($module, $view, $title, $prefix . $section->id, false, null, $hide_menu);
     }
 
-    //FIXME Deprecated
     /** exdoc
      * Calls the necessary methods to show a specific controller, in a section-sensitive way.
      *
@@ -1039,6 +1039,7 @@ class expTheme
      * @internal param bool $hide_menu
      * @return void
      * @node     Subsystems:Theme
+     * @deprecated 2.2.1
      */
     public static function showSectionalController($params = array())
     { //FIXME not used in base system (custom themes?)
@@ -1054,7 +1055,9 @@ class expTheme
         self::module($params);
     }
 
-    //FIXME Deprecated
+    /**
+     * @deprecated 2.2.1
+     */
     public static function showController($params = array())
     {
         $module = !empty($params['module']) ? $params['module'] : $params['controller'];
@@ -1565,6 +1568,9 @@ class expTheme
                 case 'clean' :
                     $class = 'check';
                     break;
+                case 'userperms' :
+                    $class = 'user';
+                    break;
                 case 'groupperms' :
                     $class = 'group';
                     break;
@@ -1581,6 +1587,9 @@ class expTheme
                 case 'approve' :
                     $class = "check";
                     $btn_type = "btn-success"; // green
+                    break;
+                case 'ajax' :
+                    $class = "spinner icon-spin";
                     break;
             }
             $found = new stdClass();
@@ -1647,6 +1656,9 @@ class expTheme
                 case 'trash' :
                     $class = "trash-o";
                     break;
+                case 'userperms' :
+                    $class = 'user';
+                    break;
                 case 'groupperms' :
                     $class = 'group';
                     break;
@@ -1664,6 +1676,9 @@ class expTheme
                     $class = "check";
                     $btn_type = "btn-success"; // green
                     break;
+                case 'ajax' :
+                    $class = "spinner fa-spin";
+                    break;
             }
             $found = new stdClass();
             $found->type = $btn_type;
@@ -1673,6 +1688,26 @@ class expTheme
             return $found;
         } else {
             return $class;
+        }
+    }
+
+    /**
+     * Return the full icon style string for the current framework
+     *
+     * @param        $class
+     *
+     * @return string
+     */
+    public static function iconStyle($class, $text = null) {
+        $style = self::buttonIcon($class);
+        if (!empty($style->prefix)) {
+            if ($text) {
+                return '<i class="' .$style->prefix . $style->class . '"> '. $text . "</i>";
+            } else {
+                return $style->prefix . $style->class;
+            }
+        } else {
+            return $style;
         }
     }
 

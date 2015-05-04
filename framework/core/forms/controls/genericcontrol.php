@@ -27,6 +27,8 @@ if (!defined('EXPONENT')) exit('');
  */
 class genericcontrol extends formcontrol {
 
+    var $placeholder = "";
+
     static function name() { return "generic"; }
 
     function __construct($type="", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
@@ -53,7 +55,6 @@ class genericcontrol extends formcontrol {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
-//            $divID  = '';
             $divID  = ' id="'.$name.'Control"';
             $for = '';
         }
@@ -86,20 +87,20 @@ class genericcontrol extends formcontrol {
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
-        $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
+        $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : ' id="'.$this->name.'"';
         $html = '';
-        if (bs2()) {
-            if (!empty($this->prepend)) {
+        if (!empty($this->prepend)) {
+            if (bs2()) {
                 $html .= '<div class="input-prepend">';
                 $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
-            }
-        } elseif (bs3()) {
-            if (!empty($this->prepend)) {
+            } elseif (bs3()) {
                 $html .= '<div class="input-group">';
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
+            } else {
+                $html .= '<span class="add-on"><i class="'.$this->prepend.'"></i></span>';
             }
         }
-        $html .= '<input'.$inputID.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
+        $html .= '<input'.$idname.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
         $html .= ' class="'.$this->type. " form-control " . $this->class . '"';

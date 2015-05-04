@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class external_address extends expRecord {
 	public $table = 'external_addresses';

@@ -80,7 +80,7 @@
 </div>
 {if $children}
     {$params.parent = $doc->id}
-    {showmodule module=help view=childview source=$doc->loc->src params=$params}
+    {showmodule controller=help action=showall view=childview source=$doc->loc->src params=$params}
 {elseif $doc->parent}
     {get_object object=help param=$doc->parent assign=parent}
     <div class="item childview">
@@ -111,27 +111,6 @@
         </dl>
     </div>
 {/if}
-
-{*{script unique="editform" yui3mods=1}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#showhelp-tabs'});*}
-		{*Y.one('#showhelp-tabs').removeClass('hide');*}
-		{*Y.one('.loadingdiv').remove();*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
-
-{*{script unique="`$id`" jquery="jqueryui"}*}
-{*{literal}*}
-    {*$('#showhelp-tabs-{/literal}{$id}{literal}').tabs().next().remove();*}
-{*{/literal}*}
-{*{/script}*}
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}

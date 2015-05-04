@@ -64,9 +64,9 @@
                         {/if}
                     </div>
                 </div>
-                {script unique="z-index" yui3mods="1"}
+                {script unique="z-index" yui3mods="node"}
                 {literal}
-                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                         var opts = Y.all(".options");
                         opts.each(function(n,k){
                             n.setStyle('zIndex',opts.size()-k);

@@ -98,7 +98,7 @@ class filemanagercontrol extends formcontrol {
                 fullpath: EXPONENT.URL_FULL+'external/yui/SimpleAjaxUploader-yui.js'
             };
 
-            YUI(EXPONENT.YUI3_CONFIG).use('dd-constrain','dd-proxy','dd-drop','json','io','SimpleAjaxUploader', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
                 var fl = Y.one('#filelist".$name."');
@@ -482,7 +482,7 @@ class filemanagercontrol extends formcontrol {
 
             expJavascript::pushToFoot(array(
                 "unique"=>"filepicker".$name,
-                "yui3mods"=>"1",
+                "yui3mods"=>"dd-constrain,dd-proxy,dd-drop,json,io,SimpleAjaxUploader",
                 "content"=>$js,
              ));
         return $html;

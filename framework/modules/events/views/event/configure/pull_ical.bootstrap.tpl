@@ -49,9 +49,9 @@
         <li id="noicalfeeds">{'You don\'t have any iCal feeds configured'|gettext}</li>
     </ul>
 
-    {script unique="icalfeedpicker3" yui3mods=1}
+    {script unique="icalfeedpicker3" yui3mods="node,io"}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         if (Y.one('#icalpull-feeds').get('children').size() > 1) Y.one('#noicalfeeds').setStyle('display','none');
         Y.one('#addtoicallist').on('click', function(e){
             e.halt();

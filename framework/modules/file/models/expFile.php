@@ -16,12 +16,6 @@
 ##################################################
 
 /**
- * @subpackage Models
- * @package    Core
- */
-/** @define "BASE" "../../.." */
-
-/**
  * Class to handle files at the File System Level and updating
  * the record for each file.
  *
@@ -32,9 +26,10 @@
  * import via child classes.
  *
  * @subpackage Models
- * @package    Core
+ * @package    Modules
  *
  */
+/** @define "BASE" "../../.." */
 class expFile extends expRecord {
 
 // ==========================================================

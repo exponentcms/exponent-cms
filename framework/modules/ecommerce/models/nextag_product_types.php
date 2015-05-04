@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class nextag_product_types extends product_type {
 	public $table = 'nextag_product_types';

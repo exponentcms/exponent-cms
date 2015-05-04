@@ -118,9 +118,9 @@
     </div>
 </div>
 
-{script unique="children-submit" yui3mods="1"}
+{script unique="children-submit" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.one('#submit_order_item_form').on('click',function(e){
             e.halt();
             var frm = Y.one('#order_item_form');

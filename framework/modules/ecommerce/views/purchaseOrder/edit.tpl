@@ -96,9 +96,9 @@
     </table>
 </div>
 
-{script unique="purchase-orders" yui3mods=1}
+{script unique="purchase-orders" yui3mods="node,event,io"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var vendorSelect = Y.one('#vendorSelect');
     var addRow = Y.one('#addPOItem');
     var ctrlRow = Y.one('.controlrow');

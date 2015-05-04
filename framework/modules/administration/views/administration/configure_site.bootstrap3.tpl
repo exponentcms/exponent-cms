@@ -78,12 +78,14 @@
                     <span id="antispam">
                     {control type="checkbox" postfalse=1 name="sc[ANTI_SPAM_USERS_SKIP]" label="Skip using Anti-Spam measures for Logged-In Users?"|gettext checked=$smarty.const.ANTI_SPAM_USERS_SKIP value=1}
                     {control type="dropdown" name="sc[ANTI_SPAM_CONTROL]" label="Anti-Spam Method"|gettext items=$as_types default=$smarty.const.ANTI_SPAM_CONTROL}
-                    <blockquote>
-	                {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
-                    </blockquote>
-                    {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="re-Captcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
-                    {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
-                    {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Secret Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    {group label="reCAPTCHA Settings"|gettext}
+                        <blockquote>
+                        {'To obtain the reCAPTCHA \'keys\', you\'ll need to first have a'|gettext} <a href="http://www.google.com/" target="_blank">{"Google account"|gettext}</a> {"to log in, then setup up a reCAPTCHA account for your domain(s)"|gettext} <a href="http://www.google.com/recaptcha/admin" target="_blank">{"here"|gettext}</a>
+                        </blockquote>
+                        {control type="dropdown" name="sc[RECAPTCHA_THEME]" label="reCaptcha Theme"|gettext items=$as_themes default=$smarty.const.RECAPTCHA_THEME}
+                        {control type="text" name="sc[RECAPTCHA_PUB_KEY]" label="reCAPTCHA Site Key"|gettext value=$smarty.const.RECAPTCHA_PUB_KEY}
+                        {control type="text" name="sc[RECAPTCHA_PRIVATE_KEY]" label="reCAPTCHA Secret Key"|gettext value=$smarty.const.RECAPTCHA_PRIVATE_KEY}
+                    {/group}
                     </span>
                 </div>
                 <div id="tab3" role="tabpanel" class="tab-pane fade">
@@ -160,9 +162,10 @@
                         {control type="dropdown" name="sc[DISPLAY_TIME_FORMAT]" label="Time Format"|gettext items=$time_format default=$smarty.const.DISPLAY_TIME_FORMAT}
                         {control type="dropdown" name="sc[DISPLAY_START_OF_WEEK]" label="Start of Week"|gettext items=$start_of_week default=$smarty.const.DISPLAY_START_OF_WEEK}
                     {/group}
-	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default timezone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
+	                {control type="dropdown" name="sc[DISPLAY_DEFAULT_TIMEZONE]" label="Default time zone for this site"|gettext|cat:(' <br />'|cat:("CAUTION: Changes may affect calendars and other features using date functions."|gettext)) items=$timezones default=$smarty.const.DISPLAY_DEFAULT_TIMEZONE}
                     {control type="radiogroup" name="sc[SLINGBAR_TOP]" label="Default Admin Slingbar Position" items="Top of Viewport,Bottom of Viewport"|gettxtlist values="1,0" default=$smarty.const.SLINGBAR_TOP}
 					{control type="text" name="sc[THUMB_QUALITY]" label="Thumbnail JPEG Quality"|gettext|cat:" (0 - 95)" value=$smarty.const.THUMB_QUALITY|default:75 size="2"}
+                    {control type="checkbox" name="sc[AJAX_PAGING]" label="Use ajax paging if available"|gettext value=1 checked=$smarty.const.AJAX_PAGING description='Can decrease paging loading time'|gettext}
                 </div>
                 <div id="tab6" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
@@ -219,6 +222,11 @@
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_MODE]" label="Place Site in Maintenance Mode?"|gettext checked=$smarty.const.MAINTENANCE_MODE value=1}
                     {control type="html" name="sc[MAINTENANCE_MSG_HTML]" label="Maintenance Mode Message"|gettext value=$smarty.const.MAINTENANCE_MSG_HTML}
+                    {control type="checkbox" postfalse=1 name="sc[MAINTENANCE_USE_RETURN_TIME]" label="Display a countdown clock until site returns?"|gettext checked=$smarty.const.MAINTENANCE_USE_RETURN_TIME value=1}
+                    {group label="Maintenance Countdown Settings"|gettext}
+                        {control type="text" name="sc[MAINTENANCE_RETURN_TEXT]" label="Site will return message"|gettext value=$smarty.const.MAINTENANCE_RETURN_TEXT}
+                        {control type="yuicalendar" name="sc[MAINTENANCE_RETURN_TIME]" label="Site will return time"|gettext value=$smarty.const.MAINTENANCE_RETURN_TIME}
+                    {/group}
                 </div>
                 <div id="tab9" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
@@ -266,10 +274,10 @@
                         <div class="alt-body">
                             {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
                             <div id="ckeditor-div" class="alt-item" style="display:none;">
-                                {showmodule module=expHTMLEditor action=manage params=$paramc}
+                                {showmodule controller=expHTMLEditor action=manage params=$paramc}
                             </div>
                             <div id="tinymce-div" class="alt-item" style="display:none;">
-                                {showmodule module=expHTMLEditor action=manage params=$paramt}
+                                {showmodule controller=expHTMLEditor action=manage params=$paramt}
                             </div>
                         </div>
                     </div>
@@ -315,7 +323,7 @@
                                 <blockquote>
                                     {'MPDF 5 is an optional package, but a preferred generator.  To obtain it, you must first download, then install it using one of the methods below.'|gettext}
                                     <ol>
-                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
+                                        <li>{'Download the basic library'|gettext} <a href="http://mpdf1.com/repos/MPDF57.zip" target="_blank">MPDF57.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext} {'You should also download any updates and extract them to that same folder.'|gettext} <a href="http://www.mpdf1.com/mpdf/download" target="_blank">{'mPDF Downloads'|gettext}</a></li>
                                         <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf57.zip/download" target="_blank">mpdf57.zip</a>.
                                             {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
@@ -335,7 +343,7 @@
                                 <blockquote>
                                     {'MPDF 6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                     <ol>
-                                        <li>{'Download the basic libary'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
+                                        <li>{'Download the basic library'|gettext} <a href="http://mpdf1.com/repos/MPDF60.zip" target="_blank">MPDF60.zip</a>
                                             {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
                                     </ol>
                                 </blockquote>
@@ -498,19 +506,8 @@
     {/form}
 </div>
 
-{script unique="`$config`" yui3mods=1}
+{script unique="`$config`"}
 {literal}
-//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-//        requires: ['history','tabview','event-custom']
-//    };
-
-//	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
-//        Y.expTabs({srcNode: '#{/literal}{$config}{literal}'});
-//        Y.one('#{/literal}{$config}{literal}').removeClass('hide');
-//        Y.one('.loadingdiv').remove();
-//	});
-
     function changeProfile(val) {
         if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}')) {
             window.location = EXPONENT.PATH_RELATIVE+"administration/change_profile/profile/" + val;
@@ -548,7 +545,7 @@ $('#use_ldap').change(function() {
         $("#ldap").show("slow");
     }
 });
-if ($('#use_ldap').is(':checked') == true)
+if ($('#use_ldap').is(':checked') == false)
     $("#ldap").hide("slow");
 
 $('#no_smtp').change(function() {
@@ -565,7 +562,7 @@ if ($('#no_smtp').is(':checked') == true)
 
 {script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchersw = Y.all('#alt-controlw input[type="radio"]');
     radioSwitchersw.on('click',function(e){
         Y.all("#alt-controlw .alt-item").setStyle('display','none');
@@ -584,7 +581,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
 
 {script unique="pdf-type" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#alt-control input[type="radio"]');
     radioSwitchers.on('click',function(e){
         Y.all("#alt-control .alt-item").setStyle('display','none');

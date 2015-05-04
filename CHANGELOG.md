@@ -10,20 +10,26 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 Version 2.3.4
 -------------
-### Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.3
+### Finish removing YUI2 code/widgets, plus address any issues in v2.3.3
   * !!! fixes an XSS vulnerability in source_selector.php/selector.php
   * regression fix for issues caused by previous security fix (json data could be corrupted) unable to delete files, etc..
   - adds 'announcment' view to events module
-  - adds alternate color to featured items in announcement views
+  - adds alternate color to 'featured' items in announcement views
   - updates twitter view to more closely resemble twitter.com
+  - updates optional ajax paging to be seo friendly; site-wide setting now on display tab of site configuration
   - adds 'empty recycle bin' feature to remove all items in recycle bin
+  - add quick image upload button to TinyMCE editor
   - adds most recent event date to search hit for events and event registrations
+  - now only indexes content from active modules instead of every module
   - updates several bootstrap3 ecommerce views to more closely follow bootstrap3 styling
     -- newly styled invoices and packing slips
-  - ecommerce invoice payment info is now more customer friendly unless managing order(s)
-  - store database sample now includes product options, discounts, and sample orders
+  - new product option: must be purchased in multiple quantities
+  - ecommerce invoice payment info is now more customer friendly when not managing order(s)
+  - ecommerce store database sample now includes product options, discounts, and sample orders
   - reCaptcha anti-spam support updated to latest library
   - reactivates split credit card ecommerce payment option
+  - adds optional 'time till site returns' countdown clock to maintenance view
+    -- login removed from maintenance view unless attempting to logon or if db is down
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
   - includes all fixes from v2.3.3 patches
 ### Known Issues

@@ -53,7 +53,7 @@
 {/if}
 {script unique="mainimagefunctionality" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#imagefunctionality input[type="radio"]');
     radioSwitchers.on('click',function(e){
         Y.all(".imngfuncbody").setStyle('display','none');

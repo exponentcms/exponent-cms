@@ -137,7 +137,7 @@
                     </tr>
                     <tr class="even">
                         <td>
-                            {control type=radiogroup label='By Zipcode:'|gettext columns=2 name="bl-sp-zip" items="Billing,or Shipping:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
+                            {control type=radiogroup label='By Zip code:'|gettext columns=2 name="bl-sp-zip" items="Billing,or Shipping:"|gettxtlist values="b,s"  default=$record->bl-sp-zip|default:"s"}
                             {*{control type="text" name="zip" size=7 value=$record->zip class="collapse"}*}
                             {control type="text" name="zip" size=7 value=$record->zip class="align"}
                         </td>

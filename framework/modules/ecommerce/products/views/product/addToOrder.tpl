@@ -39,9 +39,9 @@
         {control type="hidden" name="product_type" value=$product->classname}
         {control type="hidden" name="options_shown" value=$product->id}
         {if $product->childProduct|@count >= 1}
-            {script unique="children-submit" yui3mods="1"}
+            {script unique="children-submit" yui3mods="node"}
             {literal}
-                YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+                YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                     Y.one('#submit-itemSubmit').on('click',function(e){
                         e.halt();
                         var frm = Y.one('#child-products');

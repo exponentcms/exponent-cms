@@ -107,13 +107,8 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="`$id`" yui3mods="1"}
+{script unique="`$id`" yui3mods="gallery-lightbox"}
 {literal}
-//    EXPONENT.YUI3_CONFIG.modules.exptabs = {
-//        fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
-//        requires: ['history','tabview','event-custom']
-//    };
-
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
@@ -125,7 +120,7 @@
        }
     }
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs','gallery-lightbox', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 //        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
 //		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
 //		Y.one('.loadingdiv').remove();
@@ -133,12 +128,6 @@
 	});
 {/literal}
 {/script}
-
-{*{script unique="photos-`$id`" jquery="jqueryui"}*}
-{*{literal}*}
-    {*$('#photos-{/literal}{$id}{literal}').tabs().next().remove();*}
-{*{/literal}*}
-{*{/script}*}
 
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}

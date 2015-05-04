@@ -71,9 +71,13 @@ if (expJavascript::requiresJSON()) {
 }
 
 // Check to see if we are in maintenance mode.
-if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
+//if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) || $_REQUEST['controller'] != 'login') && !expJavascript::inAjaxAction()) {
+if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !(!empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'login' && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'login')) {
 	//only admins/acting_admins are allowed to get to the site, all others get the maintenance view
 	$template = new standalonetemplate('_maintenance');
+    if (!empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'login') {
+        $template->assign("login", true);
+    }
 	$template->output();
 } else {
 	if (MAINTENANCE_MODE > 0) flash('error', gt('Maintenance Mode is Enabled'));
@@ -98,6 +102,9 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && (!isset($_REQUEST['controller']) ||
 		} else {  // ajax request
             // set up controls search order based on framework
 //            $framework = framework();
+            if (empty($framework)) {
+                $framework = expSession::get('framework');
+            }
             if ($framework == 'jquery' || $framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/jquery');
             if ($framework == 'bootstrap' || $framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap');
             if ($framework == 'bootstrap3') array_unshift($auto_dirs, BASE . 'framework/core/forms/controls/bootstrap3');
@@ -124,7 +131,7 @@ if (EXPORT_AS_PDF == 1) {
 
     // convert to PDF
     $pdf = new expHtmlToPDF('Letter',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);
-    $pdf->createpdf(HTML2PDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
+    $pdf->createpdf(HTMLTOPDF_OUTPUT?'D':'I',$sectionObj->name.".pdf");
     echo '<script type="text/javascript">
         <!--
         setTimeout("self.close();",10000);

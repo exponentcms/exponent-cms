@@ -20,7 +20,7 @@
  *
  * This is the Postgres-specific implementation of the database class.
  * @package Subsystems
- * @subpackage Database = Postgres
+ * @subpackage Database
  */
 /** @define "BASE" "../.." */
 

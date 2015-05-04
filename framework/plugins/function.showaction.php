@@ -20,6 +20,7 @@
  * Smarty plugin
  * @package Smarty-Plugins
  * @subpackage Function
+ * @deprecated only used by old school?
  */
 
 /**
@@ -31,7 +32,7 @@
  *
  * @param array $params
  * @param mixed $smarty
- */
+  */
 function smarty_function_showaction($params,&$smarty) {
     expTheme::showAction($params['module'], $params['action'], $params['source'], $params['params']);
 }

@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class product_status extends expRecord {
     public $table = 'product_status';

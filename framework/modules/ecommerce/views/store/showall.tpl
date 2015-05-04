@@ -197,9 +197,9 @@
     {/if}
 </div>
 
-{script unique="expanding-text" yui3mods="yui"}
+{script unique="expanding-text" yui3mods="anim-easing,node,anim"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use("anim-easing","node","anim", function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     
     var modules = Y.all('.showall.store .bodycopy');
 

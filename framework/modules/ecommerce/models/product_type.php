@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class product_type extends expNestedNode {
     public $table = 'product_type';

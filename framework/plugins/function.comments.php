@@ -40,8 +40,10 @@ function smarty_function_comments($params,&$smarty) {
     $hideform = !empty($config['usescomments']) ? true : (!empty($params['record']->disable_comments) ? true : false);  // we don't want new comments
    	$hidecomments = !empty($config['hidecomments']) ? true : (!empty($params['record']->disable_comments) ? true : false);  // we don't want to show comments
     if ($hideform && $hidecomments) return;  // we don't need to display anything
-	$title = empty($params['title']) ? 'Comments' : $params['title'];
-	$formtitle = empty($params['formtitle']) ? 'Leave a comment' : $params['formtitle'];
+	$title = empty($params['title']) ? gt('Comments') : $params['title'];
+	$formtitle = empty($params['formtitle']) ? gt('Leave a comment') : $params['formtitle'];
+    $type = empty($params['type']) ? gt('Comments') : $params['type'];
+    $ratings = !empty($params['ratings']) ? true : false;
 
     /* The global constants can be overridden by passing appropriate params */
     $require_login = empty($params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $params['require_login'];
@@ -60,6 +62,8 @@ function smarty_function_comments($params,&$smarty) {
 			'hidecomments'=>$hidecomments,
 			'title'=>$title,
 			'formtitle'=>$formtitle,
+            'type'=>$type,
+            'ratings'=>$ratings,
             'require_login'=>$require_login,
             'require_approval'=>$require_approval,
             'require_notification'=>$require_notification,

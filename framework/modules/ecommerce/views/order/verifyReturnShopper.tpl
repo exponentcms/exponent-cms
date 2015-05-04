@@ -45,9 +45,9 @@
         
 </div>
 
-{script unique="verify-submit-form" yui3mods="1"}
+{script unique="verify-submit-form" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     //alert("HERE");
     Y.one('#submit-verify').on('click',function(e){
     //alert("Here");

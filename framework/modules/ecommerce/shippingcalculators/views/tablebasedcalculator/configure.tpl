@@ -129,9 +129,9 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="shipping-table" yui3mods=1}
+{script unique="shipping-table" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var stb = Y.one('#shippingtable tbody');
     var andup = stb.one('.last');
     var addrange = Y.one('#newrange');
@@ -209,14 +209,14 @@ YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 {/literal}
 {/script}
 
-{script unique="editform" yui3mods=1}
+{script unique="editform" yui3mods="exptabs"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#table-tabs'});
 		Y.one('#table-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

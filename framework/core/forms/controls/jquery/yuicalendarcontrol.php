@@ -88,7 +88,7 @@ class yuicalendarcontrol extends formcontrol
 
     function controlToHTML($name, $label = null)
     {
-        $idname = str_replace(array('[', ']', ']['), '_', $name);
+        $idname = createValidId($name);
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
                 $default = date('n/j/Y', $this->default);
@@ -125,7 +125,7 @@ class yuicalendarcontrol extends formcontrol
                 });
                 $('#" . $idname . "').datetimepicker('update');
             });
-            YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.Global.on('lazyload:cke', function() {
                     $('#" . $idname . "').datetimepicker('update');
                 });
@@ -138,7 +138,7 @@ class yuicalendarcontrol extends formcontrol
         expJavascript::pushToFoot(
             array(
                 "unique"   => '00yuical-' . $idname,
-                "yui3mods" => "1",
+                "yui3mods" => "node,event-custom",
                 "jquery"   => "jquery.datetimepicker",
                 "content"  => $script,
             )

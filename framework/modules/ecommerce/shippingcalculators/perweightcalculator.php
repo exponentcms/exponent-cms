@@ -49,8 +49,11 @@ class perweightcalculator extends shippingcalculator {
         $handling = !empty($this->configdata['handling']) ? $this->configdata['handling'] : '';
         $weight = 0;
         foreach ($order->orderitem as $item) {
-            if (!$item->product->no_shipping)
-                $weight += $item->product->weight * $item->quantity;
+            if (!$item->product->no_shipping) {
+                // calculate option weight
+//                $weight += $item->product->weight * $item->quantity;
+                $weight += $item->getWeight() * $item->quantity;
+            }
         }
         $total = $weight * $rate + $handling;
 	    $rates = array(

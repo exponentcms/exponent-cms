@@ -35,9 +35,9 @@
         <li id="nogooglefeeds">{'You don\'t have any Google Calendar feeds configured'|gettext}</li>
     </ul>
 
-    {script unique="googlefeedpicker3" yui3mods=1}
+    {script unique="googlefeedpicker3" yui3mods="node,io"}
     {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         if (Y.one('#googlepull-feeds').get('children').size() > 1) Y.one('#nogooglefeeds').setStyle('display','none');
         Y.one('#addtogooglelist').on('click', function(e){
             e.halt();

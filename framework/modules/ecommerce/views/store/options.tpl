@@ -25,7 +25,7 @@
                         </div>
                     {/if}
                 {/foreach}
-                <span style="font-variant:small-caps;">* {'Selection required'|gettext}</span>
+                <span style="font-variant:small-caps;"><span class="required" title="{'This entry is required'|gettext}">*&#160;</span>{'Selection required'|gettext}</span>
             {else}
                 {$optional_opts = 1}
                 {if $product->hasRequiredOptions()}
@@ -42,7 +42,7 @@
                             {/if}
                         {/if}
                     {/foreach}
-                    <span style="font-variant:small-caps;">* {'Selection required'|gettext}.</span>
+                    <span style="font-variant:small-caps;"><span class="required" title="{'This entry is required'|gettext}">*&#160;</span>{'Selection required'|gettext}.</span>
                 {/if}
                 {if $optional_opts}
                     <h4>{'Optional Features'|gettext}</h4>

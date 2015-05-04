@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class taxclass extends expRecord {
     public $table = 'tax_class';

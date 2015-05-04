@@ -30,7 +30,7 @@
 {*control type=dropdown name=order label="Sort Order"|gettext items="$sortopts" value=$config.order*}
 {*{control type=dropdown name=order label="Sort By"|gettext items="Date Added, Date Added Descending, Date Updated, Date Updated Descending, Date Published, Date Published Descending, Rank"|gettxtlist values="created_at,created_at DESC,edited_at,edited_at DESC,publish,publish DESC,rank" value=$config.order|default:'publish DESC'}*}
 {control type="checkbox" name="only_featured" label="Only show Featured Events"|gettext value=1 checked=$config.only_featured}
-{control type="checkbox" name="disable_links" label="Hide Links to other Views"|gettext description="Hide display of 'month', 'list' etc.. views"|gettext value=1 checked=$config.disable_links}
+{control type="checkbox" name="disable_links" label="Hide Links to other Views"|gettext description='Hide display of \'month\', \'list\' etc.. views'|gettext value=1 checked=$config.disable_links}
 {control type="checkbox" name="printlink" label="Display Printer-Friendly and Export-to-PDF Links"|gettext description="Export-to-PDF feature requires optional pdf engine add-on"|gettext value=1 checked=$config.printlink}
 {control type="checkbox" name="enable_feedback" label="Enable Event Feedback Option"|gettext value=1 checked=$config.enable_feedback}
 {control type="checkbox" name="enable_images" label="Enable Attached Images"|gettext value=1 checked=$config.enable_images}
@@ -39,7 +39,7 @@
 {else}
     {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}
-{control type="checkbox" name="ajax_paging" label="Use ajax paging if available"|gettext value=1 checked=$config.ajax_paging description='Can decrease paging loading time, but may cause SEO issues'|gettext}
+{*{control type="checkbox" name="ajax_paging" label="Use ajax paging if available"|gettext value=1 checked=$config.ajax_paging description='Can decrease paging loading time, but may cause SEO issues'|gettext}*}
 {if $smarty.const.ECOM}
 {control type="checkbox" name="aggregate_registrations" label="Aggregate Event Registrations"|gettext value=1 checked=$config.aggregate_registrations}
 {*{control type=color name=registrations_color label="Color for Event Registrations"|gettext value=$config.registrations_color hide=1 flip=1}*}

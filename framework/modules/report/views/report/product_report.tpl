@@ -21,7 +21,7 @@
 {/css}
 
 {form controller="report" action="generateProductReport" id="reportform" name="reportform"}
-    <div id="create-prod-report" class="module report build-report yui-skin-sam">
+    <div id="create-prod-report" class="module report build-report">
         <div id="report-form" class="exp-ecom-table">
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
@@ -59,9 +59,9 @@
                                     </div>
                                 </div>
                             </div>
-                            {script unique="pickerpopper" yui3mods=1}
+                            {script unique="pickerpopper" yui3mods="node,panel,dd,dd-plugin"}
                             {literal}
-                            YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
+                            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                                 var panel = new Y.Panel({
                                     srcNode      : '#catpicker',
                                     width        : 500,

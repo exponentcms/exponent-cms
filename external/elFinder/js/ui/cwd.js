@@ -136,8 +136,8 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @type Object
 			 **/
 			templates = {
-				icon : '<div id="{hash}" class="'+clFile+' {permsclass} {dirclass} ui-corner-all" title="{tooltip}"><div class="elfinder-cwd-file-wrapper ui-corner-all"><div class="elfinder-cwd-icon {mime} ui-corner-all" unselectable="on" {style}/>{marker}</div><div class="elfinder-cwd-filename" title="{name}">{name}</div></div>',
-				row  : '<tr id="{hash}" class="'+clFile+' {permsclass} {dirclass}" title="{tooltip}"><td><div class="elfinder-cwd-file-wrapper"><span class="elfinder-cwd-icon {mime}"/>{marker}<span class="elfinder-cwd-filename">{name}</span></div></td>'+customColsBuild()+'</tr>',
+				icon : '<div id="{hash}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass} ui-corner-all" title="{tooltip}"><div class="elfinder-cwd-file-wrapper ui-corner-all"><div class="elfinder-cwd-icon {mime} ui-corner-all" unselectable="on" {style}/>{marker}</div><div class="elfinder-cwd-filename" title="{name}">{name}</div></div>',
+				row  : '<tr id="{hash}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass}" title="{tooltip}"><td><div class="elfinder-cwd-file-wrapper"><span class="elfinder-cwd-icon {mime}"/>{marker}<span class="elfinder-cwd-filename">{name}</span></div></td>'+customColsBuild()+'</tr>',
 			},
 			
 			permsTpl = fm.res('tpl', 'perms'),
@@ -674,7 +674,7 @@ $.fn.elfindercwd = function(fm, options) {
 
 				wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list');
 
-				list && cwd.html('<table><thead><tr class="ui-state-default"><td class="elfinder-cwd-view-th-name">'+msg.name+'</td>'+customColsNameBuild()+'</tr></thead><tbody/></table>');
+				list && cwd.html('<table><thead><tr class="ui-state-default'+(fm.UA.Touch? ' elfinder-touch' : '')+'"><td class="elfinder-cwd-view-th-name">'+msg.name+'</td>'+customColsNameBuild()+'</tr></thead><tbody/></table>');
 		
 				buffer = $.map(files, function(f) { return any || f.phash == phash ? f : null; });
 				
@@ -759,8 +759,9 @@ $.fn.elfindercwd = function(fm, options) {
 					  sel = p.prevAll('.'+clSelected+':first').length +
 					        p.nextAll('.'+clSelected+':first').length;
 					cwd.data('longtap', null);
-					p.data('touching', true);
-					p.data('tmlongtap', setTimeout(function(){
+					p.addClass(clHover)
+					.data('touching', true)
+					.data('tmlongtap', setTimeout(function(){
 						// long tap
 						cwd.data('longtap', true);
 						if (p.is('.'+clSelected) && sel > 0) {
@@ -787,6 +788,9 @@ $.fn.elfindercwd = function(fm, options) {
 					}
 					var p = this.id ? $(this) : $(this).parents('[id]:first');
 					clearTimeout(p.data('tmlongtap'));
+					if (e.type == 'touchmove') {
+						p.removeClass(clHover);
+					}
 				})
 				// attach draggable
 				.delegate(fileSelector, 'mouseenter.'+fm.namespace, function(e) {
@@ -846,7 +850,7 @@ $.fn.elfindercwd = function(fm, options) {
 				})
 				.delegate(fileSelector, 'mouseenter.'+fm.namespace+' mouseleave.'+fm.namespace, function(e) {
 					fm.trigger('hover', {hash : $(this).attr('id'), type : e.type});
-					$(this).toggleClass('ui-state-hover');
+					$(this).toggleClass(clHover, (e.type == 'mouseenter'));
 				})
 				.bind('contextmenu.'+fm.namespace, function(e) {
 					var file = $(e.target).closest('.'+clFile);

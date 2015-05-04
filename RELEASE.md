@@ -12,4 +12,4 @@ For a complete list of the changes made from release to release, see the [CHANGE
 
 ----------
 
-### Finish removing YUI2 code/widgets, remove YUI3 code from Bootstrap 3 theme framework, plus address any issues in v2.3.3
+### Finish removing YUI2 code/widgets, plus address any issues in v2.3.3

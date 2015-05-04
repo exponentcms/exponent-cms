@@ -60,22 +60,22 @@ margin:{$config.spacing}px;
 {/foreach}
 
 {if $config.lightbox && !expJavascript::inAjaxAction()}
-{script unique="shadowbox" yui3mods=1}
+{script unique="shadowbox" yui3mods="gallery-lightbox"}
 {literal}
-EXPONENT.YUI3_CONFIG.modules = {
-    'gallery-lightbox' : {
-       fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-       requires : ['base','node','anim','selector-css3','lightbox-css']
-    },
-    'lightbox-css': {
-        fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
-        type: 'css'
+    EXPONENT.YUI3_CONFIG.modules = {
+        'gallery-lightbox' : {
+           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
+           requires : ['base','node','anim','selector-css3','lightbox-css']
+        },
+        'lightbox-css': {
+            fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
+            type: 'css'
+        }
     }
-}
 
-YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
-    Y.Lightbox.init();    
-});
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        Y.Lightbox.init();
+    });
 {/literal}
 {/script}
 {/if}

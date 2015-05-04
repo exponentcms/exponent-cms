@@ -1023,7 +1023,7 @@ class administrationController extends expController {
                         $t->style_variations = array_merge(array('Default'=>'Default'),$t->style_variations);
                     }
 
-    				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? "themes/$file/preview.jpg" : "themes/" . DISPLAY_THEME . "/noprev.jpg";
+    				$t->preview = is_readable(BASE."themes/$file/preview.jpg") ? PATH_RELATIVE . "themes/$file/preview.jpg" : YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png";
 				    $t->mobile = is_readable(BASE."themes/$file/mobile/index.php") ? true : false;
     				$themes[$file] = $t;
     			}
@@ -1323,6 +1323,7 @@ class administrationController extends expController {
         if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
             flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Site Configuration settings.'));
         } else {
+            $this->params['sc']['MAINTENANCE_RETURN_TIME'] = yuicalendarcontrol::parseData('MAINTENANCE_RETURN_TIME', $this->params['sc']);
             foreach ($this->params['sc'] as $key => $value) {
 //            expSettings::change($key, addslashes($value));
                 expSettings::change($key, $value);
@@ -1376,7 +1377,7 @@ class administrationController extends expController {
 /**
  * This is the base theme class
  *
- * @subpackage Core-Controllers
+ * @subpackage Controllers
  * @package Modules
  */
 class theme {

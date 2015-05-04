@@ -145,7 +145,7 @@ $js2foot = array();
  * @var array $yui3js
  * @name $yui3js
  */
-$yui3js = array();
+$yui3js = false;
 /**
  * Stores the jquery javascript files list
  * @var array $jqueryjs
@@ -525,7 +525,9 @@ function get_model_for_controller($controller_name) {
     }
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function get_common_template($view, $loc, $controllername='') {
     return expTemplate::get_common_template($view, $loc, $controllername);
 
@@ -566,7 +568,9 @@ function get_common_template($view, $loc, $controllername='') {
     }
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function get_config_templates($controller, $loc) {
     return expTemplate::get_config_templates($controller, $loc);
 
@@ -630,7 +634,9 @@ function get_config_templates($controller, $loc) {
     return $views;
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function find_config_views($paths=array(), $excludes=array()) {
     return expTemplate::find_config_views($paths, $excludes);
 
@@ -663,7 +669,9 @@ function find_config_views($paths=array(), $excludes=array()) {
     return $views;
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function get_template_for_action($controller, $action, $loc=null) {
     expTemplate::get_template_for_action($controller, $action, $loc);
 
@@ -734,7 +742,9 @@ function get_template_for_action($controller, $action, $loc=null) {
     }
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function get_action_views($ctl, $action, $human_readable) {
     expTemplate::get_action_views($ctl, $action, $human_readable);
 
@@ -778,7 +788,9 @@ function get_action_views($ctl, $action, $human_readable) {
     return $views;
 }
 
-//FIXME DEPRECATED, moved to expTemplate subsystem
+/**
+ * @deprecated 2.3.3 moved to expTemplate subsystem
+ */
 function get_filedisplay_views() {
     expTemplate::get_filedisplay_views();
 
@@ -864,19 +876,35 @@ function expProcessBuffer($buffer, $mode=null) {
     return (str_replace("<!-- MINIFY REPLACE -->", $cssForHead, $buffer));
 }
 
-function createValidId ($id) {
-    $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
-    return str_replace($badvals, "",$id);
+/**
+ * Ensure we have a valid html 'id' attribute
+ *
+ * @param $id
+ * @return mixed
+ */
+function createValidId($id) {
+    $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");  //FIXME do we need to update this to HTML5 and only include the space?
+    return str_replace($badvals, "_", trim($id));
 }
 
 function curPageURL() {
-    $pageURL = 'http';
-    if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
-    $pageURL .= "://";
-    if ($_SERVER["SERVER_PORT"] != "80") {
-        $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$_SERVER["REQUEST_URI"];
+    if (expJavascript::inAjaxAction()) {
+        $new_request = $_REQUEST;
+        unset($new_request['ajax_action']);
+        if ($new_request['controller'] == 'store' && $new_request['action'] == 'edit')
+            unset($new_request['view']);
+        $pageURL = makeLink($new_request);
     } else {
-        $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
+        $pageURL = 'http';
+        if (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] == "on") {
+            $pageURL .= "s";
+        }
+        $pageURL .= "://";
+        if ($_SERVER["SERVER_PORT"] != "80") {
+            $pageURL .= $_SERVER["SERVER_NAME"] . ":" . $_SERVER["SERVER_PORT"] . $_SERVER["REQUEST_URI"];
+        } else {
+            $pageURL .= $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"];
+        }
     }
     return $pageURL;
 }
@@ -1052,7 +1080,7 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            } else {
 //                $pvar = $var;
 //            }
-//            echo("<script>YUI().use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
+//            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
             echo "<pre>";

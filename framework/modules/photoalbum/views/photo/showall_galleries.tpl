@@ -90,7 +90,7 @@
 </div>
 
 {if $config.lightbox}
-{script unique="shadowbox" yui3mods=1}
+{script unique="shadowbox" yui3mods="gallery-lightbox"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules = {
        'gallery-lightbox' : {
@@ -103,7 +103,7 @@
        }
     }
 
-    YUI(EXPONENT.YUI3_CONFIG).use('gallery-lightbox', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.Lightbox.init();
     });
 {/literal}

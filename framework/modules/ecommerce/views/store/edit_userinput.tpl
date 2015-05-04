@@ -20,7 +20,8 @@
     {/if}
 	<h2>{'User Input'|gettext}</h2>
 	<blockquote>
-        {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}
+        {'You may define fields here that the user is required to fill out when purchasing this product.  For instance, to supply a value to be imprinted on an item.'|gettext}{br}
+        {'If a product option is set for \'User Input\', this will only be displayed if the customer selects that/those option(s).'|gettext}
     </blockquote>
     {group label="User Field 1"|gettext}
 	{control class="userInputToggle" type="checkbox" name="user_input_use[0]" id=userinput1 label="Show Field"|gettext value=1 checked=$record->user_input_fields.0.use}

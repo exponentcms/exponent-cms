@@ -87,8 +87,8 @@ abstract class formcontrol {
     function toHTML($label,$name) {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
-            $inputID  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $inputID . ' name="' . $this->name . '" value="'.$this->default.'"';
+            $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
+    		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.$this->default.'"';
     		$html .= ' />';
     		return $html;
         } else {
@@ -96,7 +96,6 @@ abstract class formcontrol {
                 $divID = ' id="' . $this->id . 'Control"';
                 $for = ' for="' . $this->id . '"';
             } else {
-//		    $divID  = '';
                 $divID = ' id="' . $name . 'Control"';
                 $for = '';
             }

@@ -156,7 +156,7 @@
     gt("Authors");
     gt("Dates");
     gt('Display Banner(s)');
-    gt('Show my addressbook');
+//    gt('Show my addressbook');
     gt('All Products and Categories');
     gt('Products - Only show Featured');
     gt('Products - By Manufacturer');

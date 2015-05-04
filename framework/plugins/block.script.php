@@ -38,32 +38,32 @@ function smarty_block_script($params,$content,&$smarty, &$repeat) {
 	if ($content) {
 		if (empty($params['unique'])) die("<strong style='color:red'>".gt("The 'unique' parameter is required for the {script} plugin.")."</strong>");
 
-        if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {
-            $params['yui3mods'] = 1;
-            $yui2mods = !empty($params['yui2mods'])?$params['yui2mods']:$params['yuimodules'];
-            $toreplace = array('"',"'"," ");
-            $stripmodquotes = str_replace($toreplace, "", $yui2mods);               
-            $splitmods = explode(",",$stripmodquotes);
+//        if ((isset($params['yui2mods']) || isset($params['yuimodules'])) && !strstr($content,"YUI(")) {
+//            $params['yui3mods'] = 1;
+//            $yui2mods = !empty($params['yui2mods'])?$params['yui2mods']:$params['yuimodules'];
+//            $toreplace = array('"',"'"," ");
+//            $stripmodquotes = str_replace($toreplace, "", $yui2mods);
+//            $splitmods = explode(",",$stripmodquotes);
+//
+//            $y3wrap = "YUI(EXPONENT.YUI3_CONFIG).use(";
+//            $y3wrap .= "'yui2-yahoo-dom-event', ";
+//            foreach ($splitmods as $mod) {
+//                if ($mod=="menu") {
+//                    $y3wrap .= "'yui2-container', ";
+//                }
+//                $y3wrap .= "'yui2-".$mod."', ";
+//            }
+//            $y3wrap .= "function(Y) {\r\n";
+//            $y3wrap .= "var YAHOO=Y.YUI2;";
+//            $y3wrap .= $content;
+//            $y3wrap .= "});";
+//
+//            $content = $y3wrap;
+//        }
 
-            $y3wrap = "YUI(EXPONENT.YUI3_CONFIG).use(";            
-            $y3wrap .= "'yui2-yahoo-dom-event', ";
-            foreach ($splitmods as $mod) {
-                if ($mod=="menu") {
-                    $y3wrap .= "'yui2-container', ";
-                }
-                $y3wrap .= "'yui2-".$mod."', ";
-            }
-            $y3wrap .= "function(Y) {\r\n";
-            $y3wrap .= "var YAHOO=Y.YUI2;";
-            $y3wrap .= $content;
-            $y3wrap .= "});";
-            
-            $content = $y3wrap;
-        }
-		
         expJavascript::pushToFoot(array(
             "unique"=>$params['unique'],
-            //"yui2mods"=>$params['yui2mods']?$params['yui2mods']:$params['yuimodules'],
+            "yui2mods"=>!empty($params['yui2mods'])?$params['yui2mods']:(!empty($params['yuimodules']) ? $params['yuimodules'] : null),
             "yui3mods"=>!empty($params['yui3mods']) ? $params['yui3mods'] : null,
             "jquery"=>!empty($params['jquery']) ? $params['jquery'] : null,
             "bootstrap"=>!empty($params['bootstrap']) ? $params['bootstrap'] : null,

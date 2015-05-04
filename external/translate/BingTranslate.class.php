@@ -71,7 +71,7 @@ class BingTranslateWrapper
      * Cache directory to cache translation
      * @var string
      */
-    private $_cache_directory = './cache/';
+    private $_cache_directory = '../tmp/cache/';
     
     /**
      * Enable or disable cache

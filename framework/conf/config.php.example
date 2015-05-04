@@ -126,6 +126,6 @@ define("ANTI_SPAM_CONTROL",'recaptcha');
 define("RECAPTCHA_THEME",'light');
 define("RECAPTCHA_PUB_KEY",'');
 define("RECAPTCHA_PRIVATE_KEY",'');
-define("HTML2PDF_OUTPUT",'0');
+define("HTMLTOPDF_OUTPUT",'0');
 define("DB_ENGINE",'mysqli');
 ?>

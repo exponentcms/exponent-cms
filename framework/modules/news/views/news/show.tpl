@@ -21,11 +21,20 @@
     </div>
 </div>
 
-{if !empty($config.ajax_paging)}
-{script unique="`$name`itemajax" yui3mods="1"}
+{if $smarty.const.AJAX_PAGING}
+{script unique="`$name`itemajax" yui3mods="node,io,node-event-delegate" jquery="jquery.history"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var newsitem = Y.one('#{/literal}{$name}{literal}item');
+    var page_parm = '';
+    if (EXPONENT.SEF_URLS) {
+        page_parm = '/title/';
+    } else {
+        page_parm = '&title=';
+    }
+    var History = window.History;
+    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.title}{literal}});
+    var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitem'},
@@ -36,9 +45,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=news&action=show&view=newsitem&ajax_action=1&src="+src;
 
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "newsitem nav");
-
         if(o.responseText){
             newsitem.setContent(o.responseText);
             newsitem.all('script').each(function(n){
@@ -46,9 +52,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-                    };
+                    Y.Get.script(url);
                 };
             });
             newsitem.all('link').each(function(n){
@@ -71,10 +75,22 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
     newsitem.delegate('click', function(e){
         e.halt();
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
-    }, 'a.nav');
+    }, 'a.newsnav');
+
+    // Watches the browser history for changes
+    window.addEventListener('popstate', function(e) {
+        state = History.getState()
+        if (state.data.name == '{/literal}{$name}{literal}') {
+            // moving to a new item
+            cfg.data = "title="+state.data.rel;
+            var request = Y.io(sUrl, cfg);
+            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+        }
+    });
 });
 {/literal}
 {/script}

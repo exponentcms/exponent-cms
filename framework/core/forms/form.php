@@ -255,7 +255,7 @@ class form extends baseform {
         };
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms-1mod',
-            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-262.js',
+            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
         ));
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms-2eh',

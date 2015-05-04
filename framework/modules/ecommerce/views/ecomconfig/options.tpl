@@ -17,6 +17,16 @@
     .optiontable {
         border:1px solid red;
         margin : 12px;
+    }
+    .optiontable thead {
+        border-bottom:1px solid red;
+        background-color:rgba(237, 199, 185, 1);
+    }
+    .optiontable tr {
+        border-bottom:1px solid red;
+    }
+    .optiontable td,
+    .optiontable th {
         padding : 12px;
     }
 {/css}
@@ -29,9 +39,9 @@
                 {if $permissions.create}
                     {icon class=add action=edit_optiongroup_master text="Create new option group"|gettext}
                 {/if}
-                {if $permissions.manage}
-                    {ddrerank items=$optiongroups model="option_master" label="Product Options"|gettext}
-                {/if}
+                {*{if $permissions.manage}*}
+                    {*{ddrerank items=$optiongroups model="option_master" label="Product Options"|gettext}*}
+                {*{/if}*}
             </div>
         {/permissions}
         {foreach from=$optiongroups item=group}
@@ -40,10 +50,9 @@
                     <tr>
                         <th>
                             <h3>
-                                {$group->title}
+                                {$group->title} <span class="badge" title="{'Number times used'|gettext}">{$group->timesImplemented}</span>
                             </h3>
                         </th>
-                        <th> </th>
                         <th>
                             {icon class=edit action=edit_optiongroup_master record=$group}
                             {icon class=delete action=delete_optiongroup_master record=$group onclick="return confirm('This option group is being used by `$group->timesImplemented` products. Deleting this option group will also delete all of the options related to it. Are you sure you want to delete this option group?');"}
@@ -51,30 +60,28 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td colspan=3>
-                            {icon class=add action=edit_option_master optiongroup_master_id=$group->id text='Add an option to'|gettext|cat:' '|cat:$group->title}
+                    {*<tr>*}
+                        {*<td colspan=2>*}
+                            {*{icon class=add action=edit_option_master optiongroup_master_id=$group->id text='Add an option to'|gettext|cat:' '|cat:$group->title}*}
                             {foreach name=options from=$group->option_master item=optname}
                                 <tr>
                                     <td>
-                                        {*({$optname->id}) {$optname->title}({$optname->rank})*}
-                                        {$optname->title}
+                                        {$optname->title} <span class="badge" title="{'Number times used'|gettext}">{$optname->timesImplemented}</span>
                                     </td>
-                                    <td> </td>
                                     <td>
-                                        {icon class=edit action=edit_option_master record=$optname}
-                                        {if $optname->timesImplemented > 0}
-                                            {icon class=delete action=delete_option_master record=$optname onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}
-                                        {else}
-                                            {icon class=delete action=delete_option_master record=$optname onclick="return true;"}
-                                        {/if}
+                                        {*{icon class=edit action=edit_option_master record=$optname}*}
+                                        {*{if $optname->timesImplemented > 0}*}
+                                            {*{icon class=delete action=delete_option_master record=$optname onclick="alert('This option is being used by `$optname->timesImplemented` products. You may not delete this option until they are removed from the products.'); return false;"}*}
+                                        {*{else}*}
+                                            {*{icon class=delete action=delete_option_master record=$optname onclick="return true;"}*}
+                                        {*{/if}*}
                                     </td>
                                 </tr>
                             {foreachelse}
                                 {br}{'This option group doesn\'t have any options yet.'|gettext}
                             {/foreach}
-                        </td>
-                    </tr>
+                        {*</td>*}
+                    {*</tr>*}
                 </tbody>
             </table>
         {foreachelse}

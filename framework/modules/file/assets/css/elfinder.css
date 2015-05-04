@@ -1,3 +1,7 @@
 .elfinder-button-icon-links     {
 	background:url('../../../file/assets/images/select.gif')  no-repeat!important;
 }
+
+.elfinder-info-tb .ui-button {
+    float: right;
+}

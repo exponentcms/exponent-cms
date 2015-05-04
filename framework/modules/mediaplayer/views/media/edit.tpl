@@ -59,7 +59,7 @@
 
 {script unique="media-type" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#alt-control input[type="radio"]');
     radioSwitchers.on('click',function(e){
         Y.all(".alt-item").setStyle('display','none');

@@ -36,10 +36,10 @@
 	{/permissions}
 </div>
 
-{script unique=$name yui3mods="1"}
+{script unique=$name yui3mods="node,io,node-event-delegate"}
 {literal}
 
-YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var minical = Y.one('#mini-{/literal}{$name}{literal}');
     var cfg = {
     			method: "POST",
@@ -52,7 +52,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical evnav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
 
         if(o.responseText){
             minical.setContent(o.responseText);
@@ -61,9 +61,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-                    if (url.indexOf("ckeditor")) {
+//                    if (url.indexOf("ckeditor")) {
                         Y.Get.script(url);
-                    };
+//                    };
                 };
             });
             minical.all('link').each(function(n){
@@ -77,7 +77,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io','node-event-delegate', function(Y) {
 
 	//A function handler to use for failed requests:
 	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical evnav");
+		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "minical nav");
 	};
 
 	//Subscribe our handlers to IO's global custom events:

@@ -425,9 +425,9 @@ class orderController extends expController {
          * to do this same thing as below using html2pdf
          * //FIXME uncomment to implement, comment out above
         require_once(BASE.'external/html2pdf_v4.03/html2pdf.class.php');
-        $html2pdf = new HTML2PDF('P', 'LETTER', substr(LOCALE,0,2));
+        $html2pdf = new HTMLTPDF('P', 'LETTER', substr(LOCALE,0,2));
         $html2pdf->writeHTML($invoice);
-        $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTML2PDF_OUTPUT?'D':'');
+        $html2pdf->Output($org_name . "_Invoice" . ".pdf",HTMLTOPDF_OUTPUT?'D':'');
         exit();
          */
         /**
@@ -438,7 +438,7 @@ class orderController extends expController {
         $mypdf->load_html($invoice);
         $mypdf->set_paper('letter','portrait');
         $mypdf->render();
-        $mypdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTML2PDF_OUTPUT));
+        $mypdf->stream($org_name . "_Invoice" . ".pdf",array('Attachment'=>HTMLTOPDF_OUTPUT));
         exit();
          */
         /**
@@ -1916,6 +1916,10 @@ exit();
         }
     }
 
+    /**
+     * AJAX search for internal (addressController) addresses
+     *
+     */
     public function search() {
 //        global $db, $user;
         global $db;
@@ -1927,11 +1931,18 @@ exit();
             "*' IN BOOLEAN MODE) ";
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
+        foreach ($res as $key=>$record) {
+            $res[$key]->title = $record->firstname . ' ' . $record->lastname;
+        }
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
 
+    /**
+     * Ajax search for external addresses
+     *
+     */
     public function search_external() {
 //        global $db, $user;
         global $db;
@@ -1943,6 +1954,9 @@ exit();
             "*' IN BOOLEAN MODE) ";
         $sql .= "order by match (a.firstname,a.lastname,a.email,a.organization)  against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) ASC LIMIT 12";
         $res = $db->selectObjectsBySql($sql);
+        foreach ($res as $key=>$record) {
+            $res[$key]->title = $record->firstname . ' ' . $record->lastname;
+        }
         //eDebug($sql);
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();

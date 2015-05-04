@@ -55,7 +55,7 @@
 	            <!--div id="tab4">
 	                {control type="text" name="quantity" label="Quantity in stock"|gettext value=$record->quantity}
 	                {control type="text" name="minimum_order_quantity" label="Minimum order quantity"|gettext value=$record->minimum_order_quantity}
-	                {control type="checkbox" checked=1 name="allow_partial" label="Allow partial quantities?"|gettext value=$record->allow_partial}
+	                {*{control type="checkbox" checked=1 name="allow_partial" label="Allow partial quantities?"|gettext value=$record->allow_partial}*}
 	                {control type="checkbox" name="is_available" label="Is this product available?"|gettext value=$record->is_available}
 	                {control type="text" name="availability_note" label="Note to display when product is not available"|gettext value=$record->availability_note}
 	                {control type="radiogroup" name="availability_type" label="Quantity Display"|gettext
@@ -79,14 +79,14 @@
     {/form}
 </div>
 
-{script unique="authtabs" yui3mods=1}
+{script unique="authtabs" yui3mods="exptabs"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#editproduct-tabs'});
 		Y.one('#editproduct-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();

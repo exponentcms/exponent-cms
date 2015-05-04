@@ -163,14 +163,14 @@
 </div>
 {clear}
 
-{script unique="`$id`" yui3mods="1"}
+{script unique="`$id`" yui3mods="exptabs"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-    YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
         Y.one('#{/literal}{$id}{literal}').removeClass('hide');
         Y.one('.loadingdiv').remove();

@@ -122,7 +122,7 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="payment-summary" yui3mods=1}
+{script unique="payment-summary" yui3mods="charts,exptabs"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules.exptabs = {
     fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
@@ -132,7 +132,7 @@ EXPONENT.YUI3_CONFIG.modules.exptabs = {
 var renderIntoTabview,
     handlerArray = [];
 
-YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     mytab = Y.expTabs({srcNode: '#payments'});
     var tabhistory = Y.expTabs({srcNode: '#payments'});
     Y.one('#payments').removeClass('hide');

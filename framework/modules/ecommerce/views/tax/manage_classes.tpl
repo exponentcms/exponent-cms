@@ -41,7 +41,7 @@
                     {$class->name}
                 </td>
                 <td class="module-actions">
-                    {icon action=edit_class record=$class img="edit.png" title='Edit tax class|gettext'|gettext}
+                    {icon action=edit_class record=$class img="edit.png" title='Edit tax class'|gettext}
                     {icon action=delete_class record=$class img="delete.png" title='Delete tax class along with rates'|gettext}
                 </td>
             </tr>

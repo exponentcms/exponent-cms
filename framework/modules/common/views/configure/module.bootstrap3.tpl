@@ -80,7 +80,6 @@
 {if !$hcview}
     {script unique="edit-module" jquery=1}
     {literal}
-        //YUI(EXPONENT.YUI_CONFIG).use("node", "event", "node-event-delegate", "io", "json-parse", function (Y) {
         $(document).ready(function() {
             var modpicker = $('#modcntrol'); // the module selection dropdown
             var current_action = {/literal}{if $container->action}"{$container->action}"{else}false{/if}{literal}; //Do we have an existing action
@@ -135,14 +134,14 @@
                             eval(n.get('innerHTML'));
                         } else {
                             var url = n.get('src');
-                            if (url.indexOf("ckeditor")) {
+//                            if (url.indexOf("ckeditor")) {
                                 $.getScript(url);
-                            }
+//                            }
                         }
                     });
                     $('#moduleViewConfig link').each(function (n) {
                         var url = n.get('href');
-                        $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" />");
+                        $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                     });
                 } else {
                     $('#moduleViewConfig #loadingview').remove();

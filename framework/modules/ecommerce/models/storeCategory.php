@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class storeCategory extends expNestedNode {
 	public $table = 'storeCategories';

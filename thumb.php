@@ -29,7 +29,8 @@ if (isset($_GET['id'])) {
 
     $file_obj = new expFile(intval($_GET['id']));
     //$_GET['src'] = "/" . $file_obj->directory.$file_obj->filename;
-    $_GET['src'] = $file_obj->path;
+//    $_GET['src'] = $file_obj->path;
+    $_GET['src'] = $file_obj->path_relative;  // fix for using v1.7.12+
 
     unset(
         $_GET['id'],

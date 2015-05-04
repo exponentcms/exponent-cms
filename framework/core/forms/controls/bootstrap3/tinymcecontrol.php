@@ -52,6 +52,8 @@ class tinymcecontrol extends formcontrol
 
     function controlToHTML($name, $label)
     {
+        global $user;
+
         $contentCSS = '';
         $cssabs = BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
         $css = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
@@ -74,7 +76,31 @@ class tinymcecontrol extends formcontrol
         $plugins = "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" .
                 ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                 ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" .
-                ",emoticons,paste,textcolor,visualblocks,importcss";
+                ",emoticons,paste,textcolor,visualblocks,importcss,quickupload";
+        if (!$user->globalPerm('prevent_uploads')) {
+            $upload = "plupload_basepath	: './plugins/quickupload',
+                                upload_url			: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',
+                                upload_post_params	: {
+                                    action:'upload',
+                                    ajax_action:'1',
+                                    json:'1'
+                                },
+                                upload_file_size	: '5mb',
+                                upload_callback		: function(res, file, up) {
+                                    if (res.status == 200) {
+                                        var response = JSON.parse(res.response);
+                                        return response.data;  //image path
+                                    } else {
+                                        return false;
+                                    }
+                                },
+                                upload_error		: function(err, up) {
+                                    console.log(err.status);
+                                    console.log(err.message);
+                                },";
+        } else {
+            $upload = '';
+        }
         if (!empty($settings)) {
 //            $tb = stripSlashes($settings->data);
             $tb_raw = explode("\n", $settings->data);
@@ -112,7 +138,7 @@ class tinymcecontrol extends formcontrol
             } else {
                 $tb = "
                 toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
-                toolbar2: 'link unlink image | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
+                toolbar2: 'link unlink image quickupload | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
                 if (!empty($this->plugin)) {
                     $plugs = explode(',',trim($this->plugin));
                     $tb .= ' |';
@@ -176,6 +202,7 @@ class tinymcecontrol extends formcontrol
                     " . $tb . "
                     skin: '" . $skin . "',
                     image_advtab: true,
+                    " . $upload . "
                     browser_spellcheck : " . $sc_brw_off . " ,
                     importcss_append: true,
                     style_formats: [
@@ -250,16 +277,21 @@ class tinymcecontrol extends formcontrol
 
         expJavascript::pushToFoot(
             array(
-                "unique" => "000-tinymce" . $name,
-//                "yui3mods" => "1",
-                "jquery" => "1",
-                "content" => $content,
+                "unique" => "tinymcepu",
+                "src"=>PATH_RELATIVE."external/editors/tinymce/plugins/quickupload/plupload.full.min.js"
             )
         );
         expJavascript::pushToFoot(
             array(
                 "unique" => "tinymce",
                 "src"=>PATH_RELATIVE."external/editors/tinymce/tinymce.min.js"
+            )
+        );
+        expJavascript::pushToFoot(
+            array(
+                "unique" => "000-tinymce" . $name,
+                "jquery" => "1",
+                "content" => $content,
             )
         );
 

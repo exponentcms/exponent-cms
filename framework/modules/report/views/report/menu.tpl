@@ -146,10 +146,10 @@
         </div>
     </div>
 
-{script unique="expand-panels" yui3mods=1}
+{script unique="expand-panels" yui3mods="node,cookie,anim"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','cookie','anim', function(Y) {
-        var panels = Y.all(".dashboard .panel");
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        var panels = Y.all(".dashboard .leftcol .panel");
         var expandHeight = [];
         var action = function(e){
             e.halt();

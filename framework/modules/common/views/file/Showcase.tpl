@@ -61,9 +61,9 @@ margin:{$config.spacing}px;
 </div>
 
 {if ($config.pio && !$params.is_listing) || !$config.pio}
-{script unique="showcase" yui3mods=1}
+{script unique="showcase" yui3mods="node,event"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','event', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var thumbs = Y.all('.thumb-imgs .image-link');
     
     thumbs.on('click',function(e){

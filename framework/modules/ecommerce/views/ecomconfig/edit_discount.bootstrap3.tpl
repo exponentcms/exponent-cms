@@ -83,9 +83,9 @@
     </div>
 </div>
 
-{script unique="discountedit" yui3mods=1}
+{script unique="discountedit" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var switchMethods = function () {
             var dd = Y.one('#required_shipping_calculator_id');
             var ddval = dd.get('value');
@@ -108,9 +108,9 @@
 {/literal}
 {/script}
 
-{script unique="discountedit2" yui3mods=1}
+{script unique="discountedit2" yui3mods="node"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var switchMethods2 = function () {
             var dd = Y.one('#action_type');
             var ddval = dd.get('value');

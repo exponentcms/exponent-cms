@@ -87,7 +87,8 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		this.headerText = headerText;
 
 		//Attribut of the data object to display if overrideFunc is null;
-		this.attribute = "var_"+attribute;
+//		this.attribute = "var_"+attribute;
+        this.attribute = attribute;
 
 		//Callback Function. Should expect a dataobject and return a string
 		//This will be called for each row and the return data will be displayed.
@@ -207,6 +208,15 @@ function smarty_block_paginate($params,$content,&$smarty) {
 
 			setCookie(this.name + "_filters",sCookie);
 
+            var ptTable = document.getElementById(this.tableName);
+            row = document.createElement("div");
+            row.innerHTML = this.drawPagePicker('pp') + '<br>';
+            row.innerHTML += this.drawPageTextPicker() + '<br>';
+            row.innerHTML += this.drawPageStats('') + '<br>';
+            row.innerHTML += this.drawFilterForm();
+            row.innerHTML += this.drawSearchForm();
+            ptTable.parentNode.replaceChild(row, ptTable.nextSibling);
+
 			this.drawTable();
 		}
 
@@ -254,9 +264,13 @@ function smarty_block_paginate($params,$content,&$smarty) {
 					});
 				}
 			} else {
+                var cols = this.columns;
+                var col = this.columns[index];
 				var attr = this.columns[index].attribute;
 				if (attr != "") {
 					this.filteredData.sort(function(a,b) {
+                        tmpa = a[attr];
+                        tmpb = b[attr];
 						return (asc)*(a[attr].toLowerCase() > b[attr].toLowerCase() ? -1 : 1);
 					});
 				}
@@ -296,6 +310,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 			var cell_content;
 
 			row = document.createElement("tr");
+            row.setAttribute("class","row");
 
 			for (var data in this.columns) {
 				cell = document.createElement("th");
@@ -482,6 +497,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		}
 
 		this.drawFilterForm = function() {
+            this.filters = [{name:'d'},{name:'e'}];
 			var sID = "ff_" + (Math.floor(Math.random() * 10000));
 			this.controls[sID] = "";
 			if (this.filters.length) {
@@ -531,16 +547,16 @@ function smarty_block_paginate($params,$content,&$smarty) {
 				radio_all.setAttribute("name", sID + "_match");
 
 				cell.appendChild(radio_any);
-				cell.appendChild(document.createTextNode(<?php echo gt("Match Any Criteria"); ?>));
+				cell.appendChild(document.createTextNode('<?php echo gt("Match Any Criteria"); ?>'));
 				cell.appendChild(document.createElement("br"));
 
 				cell.appendChild(radio_all);
-				cell.appendChild(document.createTextNode(<?php echo gt("Match All Criteria"); ?>));
+				cell.appendChild(document.createTextNode('<?php echo gt("Match All Criteria"); ?>'));
 				cell.appendChild(document.createElement("br"));
 
 				var btn = document.createElement("input");
 				btn.setAttribute("type","button");
-				btn.setAttribute("value",<?php echo gt("Filter"); ?>);
+				btn.setAttribute("value",'<?php echo gt("Filter"); ?>');
 				btn.setAttribute("onclick","paginate.applyFilter('" + sID + "'); return false;");
 				cell.appendChild(btn);
 				return cell.innerHTML;
@@ -554,8 +570,7 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		}
 
 		this.drawForms = function() {
-			this.drawFilterForm();
-			this.drawSearchForm();
+			return this.drawFilterForm() + this.drawSearchForm();
 		}
 	}
 
@@ -580,9 +595,10 @@ function smarty_block_paginate($params,$content,&$smarty) {
 		}
 
 		echo "paginate.filteredData = paginate.allData;\n";
+	} else {
+        echo $content;
 	}
 
-	echo $content;
 	?>
 	var page = getCookie(paginate.name + "_page");
 	if (page != null) {

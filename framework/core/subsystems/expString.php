@@ -320,7 +320,7 @@ class expString {
     /**\
      * Replace any non-ascii character with its hex code with NO active db connection
      */
-    function escape($value) {
+    public static function escape($value) {
         $return = '';
         for($i = 0; $i < strlen($value); ++$i) {
             $char = $value[$i];

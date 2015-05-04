@@ -71,7 +71,7 @@
 
             {if $item->children}
                 {$params.parent = $item->id}
-                {showmodule module=help view=side_childview source=$item->loc->src params=$params}
+                {showmodule controller=help action=showall view=side_childview source=$item->loc->src params=$params}
             {/if}
         </div>
     {/foreach}

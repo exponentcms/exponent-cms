@@ -93,7 +93,7 @@ class yuidatetimecontrol extends formcontrol
 
     function controlToHTML($name, $label = null)
     {
-        $idname = str_replace(array('[', ']', ']['), '_', $name);
+        $idname = createValidId($name);
 //        $datectl  = new yuicalendarcontrol($this->default, '', false);
         $datectl = new yuicalendarcontrol($this->default, $this->showdate, $this->showtime);
 //        $timectl = new datetimecontrol($this->default, false);
@@ -188,7 +188,7 @@ class yuidatetimecontrol extends formcontrol
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
-        $form->register("showtime",gt('Show tTme'), new checkboxcontrol($object->showtime,false));
+        $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
         
         $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
         return $form;

@@ -22,9 +22,9 @@
 </div>
 
 {*FIXME convert to yui3*}
-{script unique="admin99" yui3mods="yui"}
+{script unique="admin99" yui3mods="node,dd,anim,event-custom,cookie,yui2-yahoo-dom-event,yui2-menu,yui2-connection,yui2-container"}
 {literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('node','dd','anim','event-custom','cookie','yui2-yahoo-dom-event','yui2-menu','yui2-connection','yui2-container', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
          var YAHOO=Y.YUI2;
          var aItemData = [
             {/literal}{$menu}{literal},

@@ -38,6 +38,11 @@
     .yadcf-filter-wrapper {
         display: block;
     }
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc  {
+        background-image: none;
+    }
 {/css}
 
 <div class="module store showall-uncategorized">
@@ -80,7 +85,7 @@
                             {elseif $listing->product_type == "donation"}
                                 <a href={link controller=donation action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                             {elseif $listing->product_type == "giftcard"}
-                                <a href={link controller=store action=showGiftCards title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
+                                <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                             {else}
                                 <a href={link controller=store action=show title=$listing->sef_url}>{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}{br}{$listing->title}</a>
                                 {*{img file_id=$listing->expFile.mainimage[0]->id square=true h=50}*}
@@ -134,7 +139,10 @@
             tableTools: {
                 sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf"
             },
-            jQueryUI: true,
+            //jQueryUI: true,
+            //renderer: {
+            //    "header": "bootstrap"
+            //},
             scrollX: true,
             stateSave: true,
             columns: [

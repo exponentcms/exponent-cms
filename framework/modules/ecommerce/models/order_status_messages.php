@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class order_status_messages extends expRecord {
     public $table = 'order_status_messages';

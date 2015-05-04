@@ -49,9 +49,9 @@
     {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}
 
-{script unique="fileviewconfig" yui3mods="1"}
+{script unique="fileviewconfig" yui3mods="node,io"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load File Config'},
@@ -61,9 +61,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=file&action=get_view_config&ajax_action=1";
 
 	var handleSuccess = function(ioId, o){
-		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "example");
-        
         if(o.responseText){
             Y.one('#fileViewConfig').setContent(o.responseText);
                 Y.one('#fileViewConfig').all('script').each(function(n){
@@ -71,9 +68,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('node','io', function(Y) {
                     eval(n.get('innerHTML'));
                 } else {
                     var url = n.get('src');
-                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-                    };
+                    Y.Get.script(url);
                 };
             });
                 Y.one('#fileViewConfig').all('link').each(function(n){

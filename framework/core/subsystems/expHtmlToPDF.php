@@ -754,7 +754,7 @@ class expMPDF extends expHtmlToPDF
             $this->orient = strtoupper(substr($orientation, 0, 1));
             $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
             $this->pdf->setBasePath(URL_BASE);
-            $this->pdf->debug = DEVELOPMENT;
+            $this->pdf->debug = HTMLTOPDF_DEBUG;
             if (!empty($html)) {
                 if ($use_file) {
                     $this->pdf->WriteHTML(file_get_contents($html));
@@ -949,7 +949,7 @@ class expMPDF6 extends expHtmlToPDF
             $this->orient = strtoupper(substr($orientation, 0, 1));
             $this->pdf = new mPDF(null, $this->size, 0, 15, 15, 16, 16, 9, 9, $this->orient);
             $this->pdf->setBasePath(URL_BASE);
-            $this->pdf->debug = DEVELOPMENT;
+            $this->pdf->debug = HTMLTOPDF_DEBUG;
             if (!empty($html)) {
                 if ($use_file) {
                     $this->pdf->WriteHTML(file_get_contents($html));

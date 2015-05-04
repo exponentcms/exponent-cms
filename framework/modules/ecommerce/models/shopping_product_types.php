@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class shopping_product_types extends product_type {
 	public $table = 'shopping_product_types';

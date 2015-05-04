@@ -60,7 +60,7 @@ if (!function_exists('smarty_function_ddrerank')) {
         } elseif (property_exists($obj, 'location_data')) {
             $locsql = "location_data='" . serialize($loc) . "'";
         } else {
-            $locsql = null;
+            $locsql = '1';
         }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
             $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
@@ -102,7 +102,7 @@ if (!function_exists('smarty_function_ddrerank')) {
           <div class="modal-dialog">
             <div class="modal-content">
             <form role="form" method="post" action="' . PATH_RELATIVE . '">
-              <div class="modal-header">
+              <div class="modal-header bg-primary">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">' . gt('Close') . '</span></button>
                 <h4 class="modal-title" id="myModalLabel' . $uniqueid . '">' . gt('Set Order of') . ' ' . $params['label'] . '</h4>
               </div>
@@ -145,7 +145,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                     <div class="modal-footer">';
 //                    <a href="#" class="btn btn-default '.$btn_size.'" name=alpha' . $uniqueid . ' id=alpha' . $uniqueid . ' style="float:left;"><i class="fa fa-sort '.$icon_size.'"></i> ' . gt('Sort List Alphabetically') . '</a>
                 $html .= '
-                    <button type="submit" class="btn btn-primary '.$btn_size.'"><i class="fa fa-floppy-o '.$icon_size.'"></i> ' . gt('Save') . '</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o '.$icon_size.'"></i> ' . gt('Save') . '</button>
                     </div>
                   </form>
                 </div>

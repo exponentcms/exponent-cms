@@ -87,7 +87,7 @@ class calendarcontrol extends formcontrol {
             $this->default_min = date('i', $this->default);
             $this->default_ampm = date('a', $this->default);
         }
-        $idname = str_replace(array('[',']',']['),'_',$name);
+        $idname = createValidId($name);
         $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
         $html        = "
             <div id=\"calendar-container-" . $idname . "\" class=\"yui3-skin-sam\"> </div>
@@ -109,7 +109,7 @@ class calendarcontrol extends formcontrol {
         ";
 
         $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 //        YUI(EXPONENT.YUI3_CONFIG).use('node','calendar','datatype-date','panel','dd-plugin','gallery-calendar-jumpnav',function(Y) {
             // Our calendar bounding div id
             var boundingBoxId = '#calendar-container-" . $idname . "',
@@ -222,7 +222,7 @@ class calendarcontrol extends formcontrol {
         "; // end JS
         expJavascript::pushToFoot(array(
             "unique"  => 'zzcal' . $idname,
-            "yui3mods"=> 1,
+            "yui3mods"=> "node,calendar,datatype-date",
             "content" => $script,
         ));
 

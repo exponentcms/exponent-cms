@@ -42,10 +42,14 @@ return array(
 		DB_FIELD_LEN=>200),
 	'amount'=>array(
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'optionweight'=>array(
+        DB_FIELD_TYPE=>DB_DEF_DECIMAL),
 	'enable'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	'is_default'=>array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+    'show_input'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

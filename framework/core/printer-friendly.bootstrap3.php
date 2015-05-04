@@ -48,7 +48,9 @@
 	    <a href="#" onclick="window.print();return false;" class="awesome small blue" title=<?php echo gt("Print this page"); ?>><?php echo gt("Print This Page"); ?></a>
 	</div>
     <?php } ?>
-	<?php expTheme::main(); ?>
+    <div class="container">
+    	<?php expTheme::main(); ?>
+    </div>
 </body>
 <?php expTheme::foot(); ?>
 </html>

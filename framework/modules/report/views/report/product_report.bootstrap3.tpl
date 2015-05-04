@@ -21,7 +21,7 @@
 {/css}
 
 {form controller="report" action="generateProductReport" id="reportform" name="reportform"}
-    <div id="create-prod-report" class="module report build-report yui-skin-sam">
+    <div id="create-prod-report" class="module report build-report">
         <div id="report-form" class="exp-ecom-table">
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>

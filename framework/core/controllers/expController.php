@@ -241,7 +241,8 @@ abstract class expController {
 
     /**
      * glue to make the view template aware of the module
-     */  //NOTE: DEPRECATED
+     * @deprecated
+     */
     public function moduleSelfAwareness() {
         assign_to_template(array(
             'asset_path' => $this->asset_path,
@@ -466,7 +467,8 @@ abstract class expController {
 
     /**
      * view the item by referring to its title
-     */  //NOTE: DEPRECATED??
+     * @deprecated
+     */
     public function showByTitle() {
         expHistory::set('viewable', $this->params);
         $modelname = $this->basemodel_name;
@@ -498,7 +500,8 @@ abstract class expController {
 
     /**
      * view items referenced by tags
-     */  //NOTE: DEPRECATED??
+     * @deprecated
+     */
     public function showByTags() {
         global $db;
 
@@ -544,7 +547,8 @@ abstract class expController {
 
     /**
      * create an item in this module
-     */ //NOTE: deprecated in favor of edit w/o id param
+     * @deprecated in favor of edit w/o id param
+     */
     public function create() {
         $args = array('controller' => $this->params['controller'], 'action' => 'edit');
         //if (!empty($this->params['instance'])) $args['instance'] = $this->params['instance'];

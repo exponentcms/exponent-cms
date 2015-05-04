@@ -139,7 +139,8 @@ class expPaginator {
 	    // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
 //		    "unique"=>"pagination",
-		    "link"=>PATH_RELATIVE."framework/core/assets/css/pagination.css",
+//		    "link"=>PATH_RELATIVE."framework/core/assets/css/pagination.css",
+            'corecss'=>'pagination'
 		    )
 		);
 		
@@ -492,31 +493,38 @@ class expPaginator {
                     $this->header_columns .= '<span>'.$colname.'</span>';
                     $this->columns[$colname] = ' ';
                 } else if($colname=="actupon") {
-                    $this->header_columns .= '<input type=checkbox name=selall value=1 class="select-all"/>';
+                    $this->header_columns .= '<input type=checkbox name=selall id=selall value=1 class="select-all"/>';
                     
+//                    $js = "
+//                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+//                        Y.all('input[type=checkbox]').on('click',function(e){
+//                            if (e.target.test('.select-all')) {
+//                                if (!e.target.get('checked')) {
+//                                    this.each(function(n){
+//                                        n.set('checked',false);
+//                                    });
+//                                } else {
+//                                    this.each(function(n){
+//                                        n.set('checked',true);
+//                                    });
+//                                };
+//                            };
+//                        });
+//                    });
+//                    ";
+
                     $js = "
-                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
-                        Y.all('input[type=checkbox]').on('click',function(e){
-                            if (e.target.test('.select-all')) {
-                                if (!e.target.get('checked')) {
-                                    this.each(function(n){
-                                        n.set('checked',false);
-                                    });
-                                } else {
-                                    this.each(function(n){
-                                        n.set('checked',true);
-                                    });
-                                };
-                            };
-                        });
+                    $('#selall').change(function () {
+                        $('input[name=\"act-upon[]\"]').prop('checked', this.checked);
                     });
                     ";
-                    
+
                     expJavascript::pushToFoot(array(
                         "unique"=>'select-all',
-                        "yui3mods"=>1,
+//                        "yui3mods"=>1,
+                        "jquery"=>1,
                         "content"=>$js,
-                        "src"=>""
+//                        "src"=>""
                      ));
 
                 } else {

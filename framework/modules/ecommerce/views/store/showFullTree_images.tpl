@@ -120,9 +120,9 @@
         {$page->links}
         {control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort}
 
-        {script unique="sort-submit" yui3mods="1"}
+        {script unique="sort-submit" yui3mods="node"}
         {literal}
-            YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+            YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.all('select[name="sortme"]').on('change',function(e){
                     window.location = e.target.get('value');
                 });

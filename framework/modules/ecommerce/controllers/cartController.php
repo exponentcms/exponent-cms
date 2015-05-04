@@ -97,6 +97,13 @@ class cartController extends expController {
             } else {
 
             }
+            // adjust multiple quantity here
+            if (((int)$this->params['quantity']) % $product->multiple_order_quantity) {
+                flash('message', gt("Please enter a quantity in multiples of") . ' ' . $product->multiple_order_quantity);
+                redirect_to(array('controller'=> 'store', 'action'=> 'show', 'id'=> $this->params['product_id']));
+            } else {
+
+            }
         }
 
         // if needed we throw up a form to gather additional information before adding this item to the cart
@@ -159,6 +166,7 @@ class cartController extends expController {
     function updateQuantity() {
         global $order;
         if (expJavascript::inAjaxAction()) {
+            //FIXME though currently unused we don't account for minimym nor multiple quantity settings
             $id      = str_replace('quantity-', '', $this->params['id']);
             $item    = new orderitem($id);
             $updates = new stdClass();
@@ -219,6 +227,12 @@ class cartController extends expController {
                 if ($newqty < $item->product->minimum_order_quantity) {
                     $qtyMessage = $item->product->title . ' has a minimum order quantity of ' . $item->product->minimum_order_quantity . '. The quantity has been adjusted and added to your cart.<br/><br/>';
                     $newqty     = $item->product->minimum_order_quantity;
+                }
+                // adjust multiple quantity here
+                if ($newqty % $item->product->multiple_order_quantity) {
+                    $qtyMessage = $item->product->title . ' must be ordered in multiples of ' . $item->product->multiple_order_quantity . '. The quantity has been adjusted up and added to your cart.<br/><br/>';
+                    $offset = $newqty % $item->product->multiple_order_quantity;
+                    $newqty     = $newqty - $offset + $item->product->multiple_order_quantity;
                 }
 
                 $itemMessage = '';
@@ -428,6 +442,7 @@ class cartController extends expController {
         //$addresses_dd = $address->dropdownByUser($user->id);
         $shipAddress = $address->find('first', 'user_id=' . $user->id . ' AND is_shipping=1');
         if (empty($shipAddress) || !$user->isLoggedin()) {  // we're not logged in and don't have an address yet
+            expSession::set('customer-signup', false);
             flash('message', gt('Enter your primary address info now.') .
                 '<br><br>' .
                 gt('You may also optionally provide a password if you would like to return to our store at a later time to view your order history or make additional purchases.') .
@@ -897,8 +912,8 @@ class cartController extends expController {
         }
 
         $db->delete('orderitems', 'id IN (' . $orderitems_to_delete . ')');
-//        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
-        $this->selectShippingMethods();
+        redirect_to(array('controller'=>'cart', 'action'=>'selectShippingMethods'));
+//        $this->selectShippingMethods();
     }
 
     public function selectShippingMethods() {
@@ -973,8 +988,8 @@ class cartController extends expController {
             $order->shippingmethods[] = $shippingmethod->id;
         }
 
-//        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+        redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     function createaddress() {
@@ -1002,8 +1017,8 @@ class cartController extends expController {
 
         }
 
-//		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
-        $this->checkout();
+		redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
+//        $this->checkout();
     }
 
     function getSpecials() {

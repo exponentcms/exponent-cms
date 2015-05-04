@@ -18,13 +18,13 @@
 {/css}
 
 <div class="module exp-container flyout" style="display: none;" hidden="true">
-    {showmodule module='container' view="Default" source="@flyoutsidebar" chrome=true}
+    {showmodule controller=container action=showall source="@flyoutsidebar" chrome=true}
 </div>
 <a class="triggerlogin" href="#" title="{'Click to open this panel'|gettext}">{'View Panel'|gettext}</a>
 
-{script unique="flyoutsidebarYUI" type="text/javascript" yui3mods="1"}
+{script unique="flyoutsidebarYUI" type="text/javascript" yui3mods="node"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
  Y.on('domready', function() {
 	Y.one('.triggerlogin').on('click', function() {
 		Y.one('.flyout').toggleView();

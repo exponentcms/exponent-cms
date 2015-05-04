@@ -38,6 +38,11 @@
     .yadcf-filter-wrapper {
         display: block;
     }
+    table.dataTable thead .sorting,
+    table.dataTable thead .sorting_asc,
+    table.dataTable thead .sorting_desc  {
+        background-image: none;
+    }
 {/css}
 
 <div class="modules order showall">

@@ -87,7 +87,7 @@ class yuicalendarcontrol extends formcontrol
 
     function controlToHTML($name, $label = null)
     {
-        $idname = str_replace(array('[', ']', ']['), '_', $name);
+        $idname = createValidId($name);
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
                 $default = date('n/j/Y', $this->default);

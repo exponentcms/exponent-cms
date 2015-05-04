@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package    Core
+ * @package    Modules
  */
 class orderitem extends expRecord {
     public $table = 'orderitems';
@@ -125,6 +125,18 @@ class orderitem extends expRecord {
         return $price;
         
     }*/
+
+    function getWeight() {
+        $weight = $this->product->weight;
+        if (count($this->opts))
+        {
+            foreach ($this->opts as $opt) {
+                $selected_option = new option($opt[0]);
+                $weight += $selected_option->optionweight;
+            }
+        }
+        return $weight;
+    }
 
     function merge($params) {
         // check to see if this item was in the old cart we are merging..if so we will 

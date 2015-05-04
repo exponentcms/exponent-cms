@@ -20,7 +20,7 @@
  *
  * This is the MySQLi-specific DEBUGGING implementation of the database class.
  * @package Subsystems
- * @subpackage Database = mysqlid (debug)
+ * @subpackage Database
  */
 /** @define "BASE" "../.." */
 

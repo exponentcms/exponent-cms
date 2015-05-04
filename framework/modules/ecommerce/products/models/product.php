@@ -61,7 +61,7 @@ class product extends expRecord {
 
     protected $attachable_item_types = array(
 //        'content_expCats'=>'expCat',
-//        'content_expComments'=>'expComment',
+        'content_expComments'=>'expComment',
 //        'content_expDefinableFields'=> 'expDefinableField',
         'content_expFiles'      => 'expFile',
         'content_expRatings'    => 'expRating',
@@ -189,6 +189,7 @@ class product extends expRecord {
                 $params['qty'] += $this->minimum_order_quantity - ($qty + $qCheck);
                 $qty = $params['qty'];
             }
+            //FIXME adjust multiple quantity here
         } else {
             foreach ($params['children'] as $idKey => $childQty) {
                 $cprod = new childProduct($idKey);
@@ -218,13 +219,16 @@ class product extends expRecord {
                     $params['children'][$idKey] += $cprod->minimum_order_quantity - ($childQty + $qCheck);
                     //$qty = $params['qty'];
                 }
+                //FIXME adjust multiple quantity here for child products???
             }
         }
 
+        $optional_input = false;
         if ($this->hasOptions()) {
             if (empty($params['options_shown'])) {
                 $params['option_error'] = true;
             } else {
+                $needs_input = false;
                 foreach ($this->optiongroup as $og) {
                     if ($og->required) {
                         $err = true;
@@ -238,11 +242,21 @@ class product extends expRecord {
                             }
                         }
                         if ($err) {
-                            $params['error'] .= 'You must select an option from the ' . $og->title . ' options below before you can add it to your cart. <br/>';
+                            $params['error'] .= gt('You must select an option from the') . ' ' . $og->title . ' ' . gt('options below before you can add this to your cart.') . ' <br/>';
                             $params['option_error'] = true;
                         }
                     }
                     //eDebug($og->title . ":" .$og->required);
+                    if ($og->input_needed) {
+                        $optional_input = true;
+                        foreach ($params['options'][$og->id] as $opt) {
+                            //see if the selected option requires user input
+                            $opt_input = new option($opt);
+                            if (!empty($opt_input->show_input)) {
+                                $needs_input = true;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -251,7 +265,7 @@ class product extends expRecord {
         //eDebug($this,true);
 //        if (!empty($this->user_input_fields)) foreach ($this->user_input_fields as $uifkey => $uif) {
         if ($this->hasUserInputFields()) {
-            if (empty($params['input_shown'])) {
+            if (($optional_input && $needs_input) | (!$optional_input && empty($params['input_shown']))) {
                 $params['input_error'] = true;
             } else {
                 $user_input_info = array();
@@ -260,7 +274,7 @@ class product extends expRecord {
                         if (strlen($params['user_input_fields'][$uifkey]) < $uif['min_length']) {
                             //flash('error', 'test');
                             //redirect_to(array('controller'=>cart, 'action'=>'displayForm', 'form'=>'addToCart', 'product_id'=>$this->id, 'product_type'=>$this->product_type));
-                            $params['error'] .= $uif['name'] . ' field has a minimum requirement of ' . $uif['min_length'] . ' characters.<br/>';
+                            $params['error'] .= $uif['name'] . ' ' . gt('field has a minimum requirement of') . ' ' . $uif['min_length'] . ' ' . gt('characters.') . '<br/>';
                         } else {
                             if (strlen(
                                     $params['user_input_fields'][$uifkey]
@@ -268,7 +282,7 @@ class product extends expRecord {
                             ) {
                                 //flash('error', );
                                 //redirect_to(array('controller'=>cart, 'action'=>'displayForm', 'form'=>'addToCart', 'product_id'=>$this->id, 'product_type'=>$this->product_type));
-                                $params['error'] .= $uif['name'] . ' field has a maximum requirement of ' . $uif['max_length'] . ' characters.<br/>';
+                                $params['error'] .= $uif['name'] . ' ' . gt('field has a maximum requirement of') . ' ' . $uif['max_length'] . ' ' . gt('characters.') . '<br/>';
                             }
                         }
                     }
@@ -354,7 +368,7 @@ class product extends expRecord {
                     $cost = $selected_option->modtype == '$' ? $selected_option->amount : $this->getBasePrice() * ($selected_option->amount * .01);
                     $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
                     $price = $price + $cost;
-                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount);
+                    $options[] = array($selected_option->id, $selected_option->title, $selected_option->modtype, $selected_option->updown, $selected_option->amount, $selected_option->optionweight);
                 }
             }
         }
@@ -383,6 +397,7 @@ class product extends expRecord {
         eDebug($product->minimum_order_quantity);*/
 
         $item->quantity += is_numeric($params['qty']) && $params['qty'] >= $product->minimum_order_quantity ? $params['qty'] : $product->minimum_order_quantity;
+        //FIXME adjust multiple quantity here
         if ($item->quantity < 1) $item->quantity = 1;
         // eDebug($item->quantity,true);
         //eDebug($params);
@@ -765,6 +780,10 @@ class product extends expRecord {
             return;
         }
 
+        if (empty($params['id'])) {
+            eDebug($params);
+            return;
+        }
         //Get the product
         $product = $db->selectObject('product', 'id =' . $params['id']);
 

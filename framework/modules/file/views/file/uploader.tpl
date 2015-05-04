@@ -72,9 +72,9 @@
         <span id="overallProgress"></span>
     </div>
 
-{script unique="uploader2" yui3mods="1"}
+{script unique="uploader2" yui3mods="uploader,io,json-parse"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     Y.one("#overallProgress").set("text", "Uploader type: " + Y.Uploader.TYPE);
     var usr = {/literal}{obj2json obj=$user}{literal}; //user
     var uploadBtn = Y.one("#uploadLink");
@@ -289,7 +289,7 @@ YUI(EXPONENT.YUI3_CONFIG).use("uploader","io",'json-parse', function(Y) {
 
 	var handleSuccess = function(ioId, o){
 //		Y.log(o.responseText);
-		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "sermon nav");
+//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "sermon nav");
 
         if(o.responseText){
             var folderlist = Y.one('#select_folder'); // the views dropdown

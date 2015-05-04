@@ -124,3 +124,8 @@
 .additional.thumbnails ul li img.thumbnail:hover {
 	cursor: pointer;
 }
+
+.reviews {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}

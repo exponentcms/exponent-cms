@@ -13,19 +13,11 @@
  *
  *}
 
-{css unique="carts_accordion" link="`$asset_path`css/accordion.css" corecss="tables"}
-
-{/css}
-{css unique="current_carts" link="`$asset_path`css/current_carts.css"}
+{css unique="carts_accordion" link="`$asset_path`css/current_carts.css" corecss="tables,accordion"}
 
 {/css}
 
-{*FIXME needs to be converted to yui3*}
-<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/utilities/utilities.js"></script>
-<script type="text/javascript" src="{$asset_path}js/bubbling.js"></script>
-<script type="text/javascript" src="{$asset_path}js/accordion.js"></script>
-
-<div class="module report dashboard">
+<div class="module report dashboard showall-accordion">
     {exp_include file='menu.tpl'}
 
 	<div class="rightcol">
@@ -69,10 +61,13 @@
 			</div>
 			
 			{if $cartsWithoutItems|@count gt 1}
-				{br}
-				<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
-					<div class="yui-cms-item yui-panel">
-						<div class="hd"><h2>{"Abandoned Carts w/out Products and User Information"|gettext}</h2></div>
+				{*{br}*}
+				<div class="exp-skin-table exp-ecom-table">
+					<div id="empty-carts" class="panel">
+						<div class="hd">
+                            <h2>{"Abandoned Carts w/out Products and User Information"|gettext}</h2>
+                            <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
+                        </div>
 						<div class="bd" id="yuievtautoid-0" style="height: 0px;">
 							<table border="0" cellspacing="0" cellpadding="0" width="50%">
 								<thead>
@@ -99,18 +94,18 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="actions">
-							<a class="accordionToggleItem" href="#">&#160;</a>
-						</div>
 					</div>
 				</div>
 			{/if}
 			
 			{if $cartsWithItems|@count gt 1}
-				{br}
-				<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
-					<div class="yui-cms-item yui-panel">
-						<div class="hd"><h2>{"Abandoned Carts w/ Products"|gettext}</h2></div>
+				{*{br}*}
+				<div class="exp-skin-table exp-ecom-table">
+					<div id="full-carts" class="panel">
+						<div class="hd">
+                            <h2>{"Abandoned Carts w/ Products"|gettext}</h2>
+                            <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
+                        </div>
 						<div class="bd" id="yuievtautoid-0" style="height: 0px;">
 							<table border="0" cellspacing="0" cellpadding="0" width="50%">
 								<thead>
@@ -165,17 +160,17 @@
 								</tbody>
 							</table>
 						</div>
-						<div class="actions">
-							<a class="accordionToggleItem" href="#">&#160;</a>
-						</div>
 					</div>
 				</div>
 			{/if}
         {if $cartsWithItemsAndInfo|@count gt 1}
-			{br}
-			<div class="exp-skin-table exp-ecom-table yui-cms-accordion multiple fade fixIE">
-				<div class="yui-cms-item yui-panel">
-					<div class="hd"><h2>{"Abandoned Carts w/ Products and User Information"|gettext}</h2></div>
+			{*{br}*}
+			<div class="exp-skin-table exp-ecom-table">
+				<div id="active-carts" class="panel">
+					<div class="hd">
+                        <h2>{"Abandoned Carts w/ Products and User Information"|gettext}</h2>
+                        <a href="#" class="expand" title="{'Collapse/Expand'|gettext}">{'The List'|gettext}</a>
+                    </div>
 					<div class="bd" id="yuievtautoid-0" style="height: 0px;">
 						<table border="0" cellspacing="0" cellpadding="0" width="50%">
 							<thead>
@@ -228,15 +223,73 @@
 							</tbody>
 						</table>
 					</div>
-					
-					<div class="actions">
-						<a class="accordionToggleItem" href="#">&#160;</a>
-					</div>
 				</div>
 			</div>
 		{/if}
-
 		</div>
     </div>
     {clear}
 </div>
+
+{script unique="expand-panels-`$id`" yui3mods="node,anim"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+    var panels = Y.all(".dashboard .rightcol .panel");
+    var expandHeight = [];
+    var exclusiveExp = false;
+    var action = function(e){
+        e.halt();
+        var pBody = e.target.ancestor('.panel').one('.bd');
+        var pID = e.target.ancestor('.panel').getAttribute('id');
+        var savedState = e.target.ancestor('.panel').one('.hd a').getAttribute("class");
+        var cfg = {
+            node: pBody,
+            duration: 0.5,
+            easing: Y.Easing.easeOut
+        }
+
+        if (exclusiveExp) {
+            panels.each(function(n,k){
+                var cfg = {
+                    node: n.one('.bd'),
+                    duration: 0.5,
+                    easing: Y.Easing.easeOut
+                }
+                n.one('.hd a').replaceClass('collapse','expand');
+                n.one('.bd').replaceClass('expanded','collapsed');
+                cfg.to = { height: 0 };
+                var anim = new Y.Anim(cfg);
+                anim.run();
+            });
+        }
+
+        if (savedState=="collapse") {
+            cfg.to = { height: 0 };
+            cfg.from = { height: expandHeight[pID] };
+            pBody.setStyle('height',expandHeight[pID]+"px");
+            pBody.replaceClass('expanded','collapsed');
+            e.target.ancestor('.panel').one('.hd a').replaceClass('collapse','expand');
+        } else {
+            pBody.setStyle('height',0);
+            cfg.from = { height: 0 };
+            cfg.to = { height: expandHeight[pID] };
+            pBody.replaceClass('collapsed','expanded');
+            e.target.ancestor('.panel').one('.hd a').replaceClass('expand','collapse');
+        }
+        var anim = new Y.Anim(cfg);
+        anim.run();
+    }
+    panels.each(function(n,k){
+        n.delegate('click',action,'.hd a');
+//            n.one('.hd a').replaceClass('collapse','expand');
+//            n.one('.bd').addClass('collapsed');
+        expandHeight[n.get('id')] = n.one('.bd table').get('offsetHeight');
+    });
+    Y.Global.on('lazyload:cke', function() {
+        panels.each(function(n,k){
+            expandHeight[n.get('id')] = n.one('.bd table').get('offsetHeight');
+        });
+    });
+});
+{/literal}
+{/script}

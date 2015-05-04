@@ -34,14 +34,14 @@
  */
 function smarty_function_rating($params,&$smarty) {
     global $user,$db;
-    
+
     expCSS::pushToHead(array(
         "corecss"=>"ratings",
 	    )
 	);
-	
+
     $params['subtype'] = isset($params['subtype'])?$params['subtype']:$params['content_type'];
-    
+
     $total_rating = 0;
     if (!empty($params['record']->expRating[$params['subtype']])) {
         foreach ($params['record']->expRating[$params['subtype']] as $rating) {
@@ -53,8 +53,22 @@ function smarty_function_rating($params,&$smarty) {
         $rating_count = count($params['record']->expRating[$params['subtype']]);
         $total_average = number_format($total_rating/$rating_count,1);
     } else {
-        $rating_count = 0;
-        $total_average = 0;
+        if (empty($params['record'])) {
+            //FIXME we need to be able to get a expRating record based on:
+            $myRatingcnt = $db->selectObject('content_expRatings',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND content_id=".$params['content_id']." AND poster=".$params['user']);
+            if (empty($myRatingcnt)) {
+                $rating_count = 0;
+                $total_average = 0;
+            } else {
+                $myRating = $db->selectObject('expRatings',"id=".$myRatingcnt->expratings_id);
+                $rating_count = 1;
+                $total_average = $myRating->rating;
+            }
+            $params['record']->id = $params['content_id'];
+        } else {
+            $rating_count = 0;
+            $total_average = 0;
+        }
     }
     $avg_percent = round($total_average*100/5)+1;
     $html = '
@@ -63,7 +77,7 @@ function smarty_function_rating($params,&$smarty) {
                 <strong>'.$params['label'].'</strong>
                 <div id="user-rating-'.$params['subtype'].'" class="star-bar">
                     <div id="star-average-'.$params['subtype'].'" class="star-average" style="width:'.$avg_percent.'%"></div>';
-    if ($user->isLoggedIn()) {
+    if ($user->isLoggedIn() && empty($params['readonly'])) {
         $html.='<div id="my-ratings-'.$params['subtype'].'" class="my-ratings">
                     <span rel="1" id="u-star1" class="u-star st1'.($myrate>=1?" selected":"").'">
                         <span rel="2" id="u-star2" class="u-star st2'.($myrate>=2?" selected":"").'">
@@ -76,35 +90,41 @@ function smarty_function_rating($params,&$smarty) {
                         </span>
                     </span>
                 </div>';
-                
+
     }
-    if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.' '.gt('avg. by').'</span> <span class="raters">'.$rating_count.' '.gt('people').'</span></em></div>';
-    else $html .= '</div><em><span class="avg"> </span> <span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
+    if (empty($params['user'])) {
+        if ($rating_count) $html.='</div><em><span class="avg">'.$total_average.' '.gt('avg. by').'</span> <span class="raters">'.$rating_count.' '.gt('people').'</span></em></div>';
+        else $html .= '</div><em><span class="avg"> </span> <span class="raters">'.gt('Be the first to rate this item.').'</em></div>';
+    }
 
     $rated = $db->selectValue('content_expRatings','expratings_id',"content_type='".$params['content_type']."' AND subtype='".$params['subtype']."' AND poster='".$user->id."'");
     $rated_val = $db->selectValue('expRatings','rating',"id='".$rated."' AND poster='".$user->id."'");
+    if ($user->isLoggedIn() && empty($params['readonly'])) {
+        $html .= '
+            <div class="rating-form">
+                <form role="form" id="ratingform-' . $params['subtype'] . '" action="index.php" method="post">
+                    <input type="hidden" name="action" value="update" />
+                    <input type="hidden" name="controller" value="expRating" />
+                    <input type="hidden" name="content_type" value="' . $params['content_type'] . '" />
+                    <input type="hidden" name="subtype" value="' . $params['subtype'] . '" />
+                    <input type="hidden" name="content_id" value="' . $params['record']->id . '" />';
+
+        $control = new radiogroupcontrol();
+        // differentiate it from the old school forms
+        $control->newschool = true;
+        $control->cols = 0;
+        $control->default = $rated_val;
+        $control->items = array_combine(explode(',', "1,2,3,4,5"), explode(',', "1,2,3,4,5"));
+
+        $html .= $control->toHTML('', 'rating');
+
+        $html .= '<button>' . gt("Save Rating") . '</button>
+                </form>
+            </div>
+        ';
+    }
     $html .= '
-        <div class="rating-form">
-            <form role="form" id="ratingform-'.$params['subtype'].'" action="index.php" method="post">
-                <input type="hidden" name="action" value="update" />
-                <input type="hidden" name="controller" value="expRating" />
-                <input type="hidden" name="content_type" value="'.$params['content_type'].'" />
-                <input type="hidden" name="subtype" value="'.$params['subtype'].'" />
-                <input type="hidden" name="content_id" value="'.$params['record']->id.'" />';
-
-                $control = new radiogroupcontrol();
-                // differentiate it from the old school forms
-                $control->newschool = true;
-                $control->cols = 0;
-                $control->default = $rated_val;
-                $control->items = array_combine(explode(',',"1,2,3,4,5"),explode(',',"1,2,3,4,5"));
-
-                $html .= $control->toHTML('','rating');
-
-            $html.='<button>'.gt("Save Rating").'</button>
-            </form>
         </div>
-    </div>
     ';
     if (isset($params['itemprop'])) {
         $html .= '<span itemprop="review" itemscope itemtype="http://data-vocabulary.org/Review-aggregate" class="hide">
@@ -114,7 +134,7 @@ function smarty_function_rating($params,&$smarty) {
 
     if (empty($myrate)) $myrate = 0;
     $content = "
-    YUI(EXPONENT.YUI3_CONFIG).use('node','event','io', 'json-parse', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var myrating = '".$myrate."';
         var ratingcount = '".$rating_count."';
         var total_rating = '".$total_rating."';
@@ -169,7 +189,7 @@ function smarty_function_rating($params,&$smarty) {
                 e.target.addClass('selected').ancestors('.u-star').addClass('selected');
                 var form = Y.one('#ratingform-".$params['subtype']."');
 //                form.one('[value='+myrating+']').set('checked','checked');
-                form.one('#rating'+myrating).set('checked','checked');
+                form.one('#rating_'+myrating).set('checked','checked');
                 save_rating();
                 //form.submit();
             }
@@ -192,10 +212,10 @@ function smarty_function_rating($params,&$smarty) {
     });
     ";
 
-    if ($user->isLoggedIn()) {
+    if ($user->isLoggedIn() && empty($params['readonly'])) {
         expJavascript::pushToFoot(array(
             "unique"=>'ratings'.$params['subtype'],
-            "yui3mods"=>"yui",
+            "yui3mods"=>"node,event,io,json-parse",
             "content"=>$content,
          ));
     }    

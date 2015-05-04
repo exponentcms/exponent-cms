@@ -85,7 +85,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 		echo '</div></div></div>';
 
         $script = "
-    YUI(EXPONENT.YUI3_CONFIG).use('anim', function(Y) {
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         var module = Y.one('#".$params['unique']."');
         ";
         if (!empty($summary)) $script .= "
@@ -184,7 +184,7 @@ function smarty_block_toggle($params,$content,&$smarty, &$repeat) {
 
         expJavascript::pushToFoot(array(
             "unique"  => 'toggle-' . $params['unique'],
-            "yui3mods"=> 1,
+            "yui3mods"=> "anim",
             "content" => $script,
         ));
         expCSS::pushToHead(array(

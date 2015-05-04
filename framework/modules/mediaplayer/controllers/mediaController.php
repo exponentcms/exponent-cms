@@ -60,7 +60,8 @@ class mediaController extends expController {
         
         assign_to_template(array(
             'page'=>$page,
-            'items'=>$page->records
+            'items'=>$page->records,
+            'params'=>$this->params,
         ));
     }
 

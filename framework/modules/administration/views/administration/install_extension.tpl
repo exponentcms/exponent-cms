@@ -126,14 +126,14 @@
 </div>
 <div class="loadingdiv">{'Loading'|gettext}</div>
 
-{script unique="uploadextension" yui3mods=1}
+{script unique="uploadextension" yui3mods="exptabs"}
 {literal}
     EXPONENT.YUI3_CONFIG.modules.exptabs = {
         fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
         requires: ['history','tabview','event-custom']
     };
 
-	YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {
+	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         Y.expTabs({srcNode: '#extension-tabs'});
        Y.one('#extension-tabs').removeClass('hide');
        Y.one('.loadingdiv').remove();

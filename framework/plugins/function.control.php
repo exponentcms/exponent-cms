@@ -96,6 +96,7 @@ function smarty_function_control($params, &$smarty) {
             case "uploader":
                 $control = new uploadcontrol();
                 if (!empty($params['accept'])) $control->accept = $params['accept'];
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 break;
             case "files":
                 if (!empty($params['olduploader'])) {
@@ -375,12 +376,15 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "autocomplete":
                 $control              = new autocompletecontrol();
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->width       = !empty($params['width']) ? $params['width'] : "320px";
                 $control->schema      = "'" . str_replace(",", "','", $params['schema']) . "'";
-                $control->value   = isset($params['value']) ? $params['value'] : null;
+                $control->value       = isset($params['value']) ? $params['value'] : null;
                 $control->controller  = empty($params['controller']) ? "search" : $params['controller'];
                 $control->action      = empty($params['action']) ? "autocomplete" : $params['action'];
                 $control->searchmodel = empty($params['searchmodel']) ? "text" : $params['searchmodel'];
                 $control->searchoncol = empty($params['searchoncol']) ? "title" : $params['searchoncol'];
+                $control->maxresults  = empty($params['maxresults']) ? 12 : $params['maxresults'];
                 $control->jsinject    = empty($params['jsinject']) ? "" : $params['jsinject'];
                 break;
 //            case "massmail":
@@ -510,10 +514,12 @@ function smarty_function_control($params, &$smarty) {
 //        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
         $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '');
-        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
+//        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
+        $control->id  = $params['id'];
         //echo $control->id;
         if ($params['type'] != 'radio') {
-            if (empty($control->id)) $control->id = $params['name'];
+            // auto-create an 'id' from the name param and 'name' from the id param if needed
+            if (empty($control->id)) $control->id = createValidId($params['name']);
             if (empty($control->name)) $control->name = $params['id'];
         }
 

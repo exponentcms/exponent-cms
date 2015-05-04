@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class billingmethod extends expRecord {
     public $table = 'billingmethods';

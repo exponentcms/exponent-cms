@@ -147,7 +147,7 @@ class faqController extends expController {
 
         $faq = new faq();
         $faq->update($this->params);
-        flash('message', gt('Your question has been submitted. Some one should get back to you shortly. Thank you.'));
+        flash('message', gt('Your question has been submitted. Someone should get back to you shortly. Thank you.'));
 
         // send and email notification
 //        if ($this->config['notify_of_new_question'] && !$user->isAdmin()) {

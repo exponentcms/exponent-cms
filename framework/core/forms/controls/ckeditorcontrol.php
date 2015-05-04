@@ -151,7 +151,7 @@ class ckeditorcontrol extends formcontrol {
                                     'Trebuchet MS/Trebuchet MS, Helvetica, sans-serif;' +
                                     'Verdana/Verdana, Geneva, sans-serif'";
         $content = "
-        YUI(EXPONENT.YUI3_CONFIG).use('yui','node','event-custom', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             Y.Global.on(\"lazyload:cke\", function () {
                 if(!Y.Lang.isUndefined(EXPONENT.editor" . createValidId($name) . ")){
                     return true;
@@ -214,16 +214,16 @@ class ckeditorcontrol extends formcontrol {
         ";
 
         expJavascript::pushToFoot(array(
+            "unique"  => "ckeditor",
+            "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
+        ));
+        expJavascript::pushToFoot(array(
             "unique"  => "000-cke" . $name,
-            "yui3mods"=> "1",
+            "yui3mods"=> "node,event-custom",
             "content" => $content,
             //"src"=>PATH_RELATIVE."external/ckeditor/ckeditor.js"
         ));
 //        $html = "<script src=\"" . PATH_RELATIVE . "external/editors/ckeditor/ckeditor.js\"></script>";
-        expJavascript::pushToFoot(array(
-            "unique"  => "ckeditor",
-            "src"=>PATH_RELATIVE."external/editors/ckeditor/ckeditor.js"
-        ));
         // $html .= ($this->lazyload==1)?"<!-- cke lazy -->":"";
         $html = "<!-- cke lazy -->";
         $html .= "<textarea class=\"textarea\" id=\"" . createValidId($name) . "\" name=\"$name\"";

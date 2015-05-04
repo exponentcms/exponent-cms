@@ -28,10 +28,16 @@
             <li><strong>{"Required"|gettext}</strong> - {'By default, the user is NOT required to make a selection.  However, selecting the Required checkbox will force the user to make a selection from that option group.'|gettext}</li>
             <li><strong>{"Select Single"|gettext}</strong> - {'Presents the option group as a dropdown field where the user may select one and only option.'|gettext}</li>
             <li><strong>{"Select Multiple"|gettext}</strong> - {'Presents the options as a checkbox group where the user may select multiple options'|gettext}</li>
+            <li><strong>{"Option Available"|gettext}</strong> - {'Presents selected option with product.'|gettext}</li>
+            <li><strong>{"User Input"|gettext}</strong> - {'Selecting the User Input checkbox will only display user input entry if that option is chosen.'|gettext}</li>
             <li><strong>{"Default"|gettext}</strong> - {'Selecting the Default radio button for an option causes that option to become selected by default.'|gettext}</li>
         </ul>
-        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext} {*'Click on the \'More\' link to enter the option\'s weight.'|gettext*}{br}
+        {'You may also enter any cost adjustments (up/down, dollars/percentage) for that option.'|gettext}{br}
+        {'Click on the \'More\' link to enter the option\'s weight.'|gettext}{br}
     </blockquote>
+    {if $permissions.manage}
+        {ddrerank items=$record->optiongroup only="product_id=`$record->id`" model=optiongroup label=$record->title|cat:' '|cat:'Options'|gettext}
+    {/if}
 	{include file="`$smarty.const.BASE`framework/modules/ecommerce/products/views/product/options_partial.tpl"}
 {else}
 	<h4><em>({'Options'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>

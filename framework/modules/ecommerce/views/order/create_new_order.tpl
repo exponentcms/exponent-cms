@@ -31,95 +31,51 @@
                 <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
                 <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
             {capture assign="callbacks"}
-                {literal}
+            {literal}
+            // the text box for the title
+            var tagInput = Y.one('#search_internal');
+            var theAddressesId = Y.one('#addresses_id');
 
-                // the text box for the title
-                var tagInput = Y.one('#search_internal');
-                var theAddressesId = Y.one('#addresses_id');
-                var existingRadio = Y.one('#customer_type2');
+            // format the results coming back in from the query
+            autocomplete.ac.set('resultFormatter', function(query, results) {
+                return Y.Array.map(results, function (result) {
+                    var result = result.raw;
+                    return '<pre>' + result.firstname + ' ' + result.middlename + ' ' + result.lastname + ' - ' + result.email + '</pre>';
+                });
+            })
 
-                var onRequestData = function( oSelf , sQuery , oRequest) {
-                    existingRadio.set('checked',true);
-                    tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
-                }
-
-                var onRGetDataBack = function( oSelf , sQuery , oRequest) {
-                    tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});
-                }
-
-                var setProduct = function(e,args) {
-                    theAddressesId.set('value',args[2].id);
-                    tagInput.set('value',args[2].firstname + ' ' + args[2].middlename + ' ' + args[2].lastname + ' - ' + args[2].email);
-                    return true;
-                }
-
-                // makes formatResult work mo betta
-                oAC.resultTypeList = false;
-
-                oAC.maxResultsDisplayed  = 12;
-
-                // when we start typing...?
-                oAC.dataRequestEvent.subscribe(onRequestData);
-                oAC.dataReturnEvent.subscribe(onRGetDataBack);
-
-                // format the results coming back in from the query
-                oAC.formatResult = function(oResultData, sQuery, sResultMatch) {
-                    return oResultData.firstname + ' ' + oResultData.middlename + ' ' + oResultData.lastname + ' - ' + oResultData.email;
-                }
-
-                // what should happen when the user selects an item?
-                oAC.itemSelectEvent.subscribe(setProduct);
-
-                {/literal}
+            // what should happen when the user selects an item?
+            autocomplete.ac.on('select', function (e) {
+                theAddressesId.set('value',parseInt(e.result.raw.id));
+            });
+            {/literal}
             {/capture}
-            {control type="autocomplete" controller="order" action="search" name="search_internal" value="Search customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
+            {control type="autocomplete" controller="order" action="search" name="search_internal" placeholder="Search customer name or email" schema="id,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastnamename,organization,email" jsinject=$callbacks}
 
             {capture assign="callbacks2"}
-                {literal}
+            {literal}
+            // the text box for the title
+            var tagInput = Y.one('#search_external');
+            var theAddressesId = Y.one('#addresses_id');
 
-                // the text box for the title
-                var tagInput = Y.one('#related_items2');
-                var theAddressesId = Y.one('#addresses_id');
-                var existingRadio = Y.one('#customer_type3');
+            // format the results coming back in from the query
+            autocomplete.ac.set('resultFormatter', function(query, results) {
+                return Y.Array.map(results, function (result) {
+                    var result = result.raw;
+                    if (result.source == 1) $src = "[SMC]";
+                    if (result.source == 2) $src = "[MCP]";
+                    if (result.source == 3) $src = "[Amazon]";
+                    return '<pre>' + result.firstname + ' ' + result.middlename + ' ' + result.lastname + ' - ' + result.email + '<br>' +  $src + '</pre>';
+                });
+            })
 
-                var onRequestData = function( oSelf , sQuery , oRequest) {
-                    existingRadio.set('checked',true);
-                    tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
-                }
-
-                var onRGetDataBack = function( oSelf , sQuery , oRequest) {
-                    tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});
-                }
-
-                var setProduct = function(e,args) {
-                    theAddressesId.set('value',args[2].id);
-                    tagInput.set('value',args[2].firstname + ' ' + args[2].middlename + ' ' + args[2].lastname + ' - ' + args[2].email);
-                    return true;
-                }
-
-                // makes formatResult work mo betta
-                oAC.resultTypeList = false;
-
-                oAC.maxResultsDisplayed  = 12;
-
-                // when we start typing...?
-                oAC.dataRequestEvent.subscribe(onRequestData);
-                oAC.dataReturnEvent.subscribe(onRGetDataBack);
-
-                // format the results coming back in from the query
-                oAC.formatResult = function(oResultData, sQuery, sResultMatch) {
-                    if (oResultData.source == 1) $src = "[SMC]";
-                    if (oResultData.source == 2) $src = "[MCP]";
-                    if (oResultData.source == 3) $src = "[Amazon]";
-                    return oResultData.firstname + ' ' + oResultData.middlename + ' ' + oResultData.lastname + ' - ' + oResultData.email + $src;
-                }
-
-                // what should happen when the user selects an item?
-                oAC.itemSelectEvent.subscribe(setProduct);
-
-                {/literal}
+            // what should happen when the user selects an item?
+            autocomplete.ac.on('select', function (e) {
+                theAddressesId.set('value',parseInt(e.result.raw.id));
+            });
+            {/literal}
             {/capture}
-            {control type="autocomplete" controller="order" action="search_external" name="related_items2" value="Search other customer name or email" schema="id,source,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastname,organization,email" jsinject=$callbacks2}
+            {control type="autocomplete" controller="order" action="search_external" name="search_external" placeholder="Search other customer name or email" schema="id,source,firstname,middlename,lastname,organization,email" searchmodel="addresses" searchoncol="firstname,lastname,organization,email" jsinject=$callbacks2}
             {br}
             </div>
             <div id="submit_order_item_formControl" class="control buttongroup">
@@ -132,12 +88,12 @@
 
 {script unique="neworder" yui3mods="node,node-event-simulate"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#customer_type input[type="radio"]');
     radioSwitchers.on('click',function(e){
         var curval = e.target.get('value');
         var intcust = Y.one("#search_internal").get('parentNode').get('parentNode');
-        var extcust = Y.one("#related_items2").get('parentNode').get('parentNode');
+        var extcust = Y.one("#search_external").get('parentNode').get('parentNode');
         if (curval ==  1) {
             intcust.setStyle('display','none');
             extcust.setStyle('display','none');

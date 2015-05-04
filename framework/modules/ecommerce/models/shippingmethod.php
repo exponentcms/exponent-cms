@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class shippingmethod extends expRecord {
 	public $table = 'shippingmethods';

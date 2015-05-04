@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class bing_product_types extends product_type {
 	public $table = 'bing_product_types';

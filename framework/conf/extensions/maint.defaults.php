@@ -18,6 +18,9 @@
 
 if (!defined('MAINTENANCE_MODE')) define('MAINTENANCE_MODE','0');
 if (!defined('MAINTENANCE_MSG_HTML')) define('MAINTENANCE_MSG_HTML',exponent_unhtmlentities('This site is currently down for maintenance.'));
+if (!defined('MAINTENANCE_USE_RETURN_TIME')) define('MAINTENANCE_USE_RETURN_TIME','0');
+if (!defined('MAINTENANCE_RETURN_TEXT')) define('MAINTENANCE_RETURN_TEXT','The web site will return in');
+if (!defined('MAINTENANCE_RETURN_TIME')) define('MAINTENANCE_RETURN_TIME','0');
 
 if (!defined('DEVELOPMENT')) define('DEVELOPMENT','0');
 if (!defined('LOGGER')) define('LOGGER','0');

@@ -32,7 +32,7 @@
         {'If you would like different options or personalized fields for each item, please add them one at a time to your cart.'|gettext}
     </blockquote>
     {clear}
-    {form controller=cart action=addItem id="options-uifields"}
+    {form id="addtocart`$product->id`" controller=cart action=addItem}
         {control type="hidden" name="controller" value=cart}
         {control type="hidden" name="product_id" value=$product->id}
         {control type="hidden" name="product_type" value=$product->classname}
@@ -53,12 +53,16 @@
         {if !$product->show_options || !empty($params.option_error)}
             {*{exp_include file="options.tpl"}*}
             {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/options.tpl"}
+            <div>
+                <strong>{'Total Cost of Options'|gettext}:</strong>
+                <span id="item-price">$0.00</span>
+            </div>
         {/if}
 
         {* NOTE display product user input fields *}
         {*{exp_include file="input_fields.tpl"}*}
         {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/store/input_fields.tpl"}
-
+        {br}
         {control type="buttongroup" size=large color=blue submit="Add to cart"|gettext}
     {/form}
 </div>

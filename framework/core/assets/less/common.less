@@ -25,6 +25,17 @@ a img {
     display:none!important;
 }
 
+/****************  loading div style  ***********************/
+
+.loadingdiv {
+	text-align  : center;
+	padding     : 20px 0 60px 0;
+	color       : #333;
+	font-weight : bold;
+	font-style  : italic;
+	background  : url(../images/loading1.gif) no-repeat 50% 50%;
+}
+
 /****************  common visitor-facing styles  ***********************/
 
 a.ajax,
@@ -42,7 +53,9 @@ a.downloadfile,
 input.downloadfile,
 .button.uploadfile,
 a.report,
-a.view {
+a.view,
+.search-control > span > i.search,
+.search-control > span > i.ajax {
     padding:3px 3px 3px 20px;
 //    display:inline-block;
     *display:inline;
@@ -123,11 +136,13 @@ a.report {
     background: url(../images/report.png) no-repeat 0 50%;
 }
 
-a.view {
+a.view,
+.search-control > span > i.search {
     background: url(../images/view.png) no-repeat 0 50%;
 }
 
-a.ajax {
+a.ajax,
+.search-control > span > i.ajax {
     background: url(../images/ajax-loader.gif) no-repeat 0 50%;
 }
 

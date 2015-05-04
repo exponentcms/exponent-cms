@@ -45,7 +45,7 @@ class storeController extends expController {
     public $remove_configs = array(
         'aggregation',
         'categories',
-        'comments',
+//        'comments',
         'ealerts',
         'facebook',
         'files',
@@ -93,6 +93,10 @@ class storeController extends expController {
 
     static function isSearchable() {
         return true;
+    }
+
+    public function searchName() {
+        return gt('e-Commerce Item');
     }
 
     static function canImportData() {
@@ -295,7 +299,10 @@ class storeController extends expController {
         }
     }
 
-    function upcomingEvents() {  //FIXME Deprecated, moved to eventregistration
+    /**
+     * @deprecated 2.0.0 moved to eventregistration
+     */
+    function upcomingEvents() {
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -325,7 +332,10 @@ class storeController extends expController {
         ));
     }
 
-    function eventsCalendar() {  //FIXME Deprecated, moved to eventregistration
+    /**
+     * @deprecated 2.0.0 moved to eventregistration
+     */
+    function eventsCalendar() {
         global $db, $user;
 
         expHistory::set('viewable', $this->params);
@@ -416,6 +426,7 @@ class storeController extends expController {
             $counts[$week][$i + $endofmonth] = -1;
         }
 
+        $this->params['time'] = $time;
         assign_to_template(array(
             'currentweek' => $currentweek,
             'monthly'     => $monthly,
@@ -427,14 +438,16 @@ class storeController extends expController {
             "nextmonth2"  => strtotime('+2 months', $timefirst),
             "nextmonth3"  => strtotime('+3 months', $timefirst),
             'now'         => $timefirst,
-            "today"       => expDateTime::startOfDayTimestamp(time())
+            "today"       => expDateTime::startOfDayTimestamp(time()),
+            'params'      => $this->params
         ));
     }
 
     /*
     * Helper function for the Calendar view
+     * @deprecated 2.0.0 moved to eventregistration
     */
-    function getEventsForDates($edates, $sort_asc = true) {  //FIXME Deprecated, moved to eventregistration
+    function getEventsForDates($edates, $sort_asc = true) {
         global $db;
         $events = array();
         foreach ($edates as $edate) {
@@ -748,7 +761,10 @@ class storeController extends expController {
         "' */
     }
 
-    function showallByManufacturer() {  //FIXME Deprecated??, moved to company??
+    /**
+     * @deprecated 2.3.3 moved to company
+     */
+    function showallByManufacturer() {
         expHistory::set('viewable', $this->params);
 
         $limit = !empty($this->config['limit']) ? $this->config['limit'] : 10;
@@ -775,7 +791,10 @@ class storeController extends expController {
         ));
     }
 
-    function showallManufacturers() {  //FIXME Deprecated??, moved to company??
+    /**
+     * @deprecated 2.3.3 moved to company
+     */
+    function showallManufacturers() {
         global $db;
         expHistory::set('viewable', $this->params);
         $sql = 'SELECT comp.* FROM ' . DB_TABLE_PREFIX . '_companies as comp JOIN ' . DB_TABLE_PREFIX . '_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
@@ -1237,6 +1256,7 @@ class storeController extends expController {
 //        $shipping = new shipping();
 //        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
         foreach (shipping::listCalculators() as $calcid => $name) {
+            //FIXME must make sure (custom) calculator exists
             $calc = new $name($calcid);
             $shipping_services[$calcid] = $calc->title;
             $shipping_methods[$calcid] = $calc->availableMethods();
@@ -1608,6 +1628,10 @@ class storeController extends expController {
         ));
     }
 
+    /**
+     * AJAX search for products by model/sku
+     */
+
     function search_by_model() {
         global $db, $user;
 
@@ -1629,6 +1653,10 @@ class storeController extends expController {
         $ar->send();
     }
 
+    /**
+     * AJAX search for products by title, description, or model/sku
+     *
+     */
     public function search() {
         global $db, $user;
 
@@ -1643,7 +1671,7 @@ class storeController extends expController {
         $terms = explode(" ", $this->params['query']);
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
         $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
@@ -1658,7 +1686,7 @@ class storeController extends expController {
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
@@ -1672,7 +1700,7 @@ class storeController extends expController {
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type='product' AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " (p.model like '" . $this->params['query'] . "%' ";
@@ -1704,6 +1732,10 @@ class storeController extends expController {
         $ar->send();
     }
 
+    /**
+     * AJAX search for products by title, description, or model/sku
+     *
+     */
     public function searchNew() {
         global $db, $user;
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
@@ -1712,7 +1744,7 @@ class storeController extends expController {
         $sql .= "CASE when p.model like '" . $this->params['query'] . "%' then 1 else 0 END as modelmatch, ";
         $sql .= "CASE when p.title like '%" . $this->params['query'] . "%' then 1 else 0 END as titlematch ";
         $sql .= "from " . $db->prefix . "product as p INNER JOIN " .
-            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id INNER JOIN " . $db->prefix .
+            $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";

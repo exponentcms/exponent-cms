@@ -41,8 +41,10 @@
 	{control type="editor" name="general[body]" label="Product Description"|gettext height=250 value=$record->body} {* FIXME not in child product*}
 {/if}
 
-{script unique="general" yui3mods=1}
+{script unique="general" yui3mods="node,event-custom"}
 {literal}
-    Y.Global.fire('lazyload:cke');
+    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
+        Y.Global.fire('lazyload:cke');
+    });
 {/literal}
 {/script}

@@ -83,7 +83,7 @@
     <div class="loadingdiv">{'Loading'|gettext}</div>
 </div>
 
-{script unique="topsearch" yui3mods=1}
+{script unique="topsearch" yui3mods="charts,exptabs"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules.exptabs = {
     fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',
@@ -93,7 +93,7 @@ EXPONENT.YUI3_CONFIG.modules.exptabs = {
 var renderIntoTabview,
     handlerArray = [];
 
-YUI(EXPONENT.YUI3_CONFIG).use('charts','exptabs', function(Y) {
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var tabhistory = Y.expTabs({srcNode: '#topsearch'});
     Y.one('#topsearch').removeClass('hide');
     Y.one('.loadingdiv').remove();

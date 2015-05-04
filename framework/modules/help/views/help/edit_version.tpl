@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module help edit yui-skin-sam">
+<div class="module help edit">
     {if $record->id != ""}
         <h1>{'Editing Version'|gettext} {$record->version}</h1>
     {else}

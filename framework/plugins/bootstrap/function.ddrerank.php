@@ -60,7 +60,7 @@ if (!function_exists('smarty_function_ddrerank')) {
         } elseif (property_exists($obj, 'location_data')) {
             $locsql = "location_data='" . serialize($loc) . "'";
         } else {
-            $locsql = null;
+            $locsql = '1';
         }
 //            $params['items'] = $obj->find('all',"location_data='".serialize($loc)."'".$only,"rank");
             $params['items'] = $obj->find('all', $locsql . $only, "rank"); // we MUST re-pull since we only received one page of $items
@@ -177,7 +177,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             echo $html;
 
             $script = "
-        YUI(EXPONENT.YUI3_CONFIG).use('node','dd','dd-plugin','dd-scroll','panel', function(Y) {
+        YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             var panel = new Y.Panel({
                 srcNode      : '#panel" . $uniqueid . "',
                 width        : 500,
@@ -372,7 +372,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             if (!expTheme::inPreview()) {
                 expJavascript::pushToFoot(array(
                     "unique"   => $uniqueid,
-                    "yui3mods" => 1,
+                    "yui3mods" => "node,dd,dd-plugin,dd-scroll,panel",
                     "content"  => $script,
                 ));
             }

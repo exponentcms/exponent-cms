@@ -18,7 +18,7 @@
 
 /**
  * @subpackage Models
- * @package Core
+ * @package Modules
  */
 class purchase_order extends expRecord {
     public $table = 'purchase_order';

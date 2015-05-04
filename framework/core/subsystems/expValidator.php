@@ -542,8 +542,8 @@ class expValidator {
      *
 	 * @param $file
 	 * @return mixed
+     * @deprecated
 	 */
-    //FIXME Deprecated
 	public static function uploadSuccessful($file) {
         global $db;
 

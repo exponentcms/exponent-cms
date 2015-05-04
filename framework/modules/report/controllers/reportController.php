@@ -1185,7 +1185,9 @@ class reportController extends expController {
         // assign_to_template(array('page'=>$page)); 
     }
 
-    //FIXME deprecated here by move to expString
+    /**
+     * @deprecated 2.3.3 moved to expString
+     */
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str); 
 
@@ -1217,7 +1219,9 @@ class reportController extends expController {
         return $str;
     }
 
-    //FIXME deprecated here by move to expString
+    /**
+     * @deprecated 2.3.3 moved to expString
+     */
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
         global $db;
@@ -1253,7 +1257,9 @@ class reportController extends expController {
         return $str;
     }
 
-    //FIXME deprecated here by move to expString
+    /**
+     * @deprecated 2.3.3 moved to expString
+     */
     public static function parseAndTrim($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
         global $db;
@@ -1287,7 +1293,9 @@ class reportController extends expController {
         return $str;
     }
 
-    //FIXME deprecated here by move to expString
+    /**
+     * @deprecated 2.3.3 moved to expString
+     */
     function outputField($val, $eof = ',', $isHTML = false) {
         $newVal = expString::parseAndTrimExport($val, $isHTML);
         if ($newVal != '') return '"' . $newVal . '"' . $eof;
@@ -1485,7 +1493,9 @@ class reportController extends expController {
         die();
     }
 
-    //FIXME deprecated here by move to expString
+    /**
+     * @deprecated 2.3.3 moved to expString
+     */
     function stripLineEndings($val) {
         return preg_replace('/\r\n/', ' ', trim($val));
     }
@@ -1970,7 +1980,9 @@ class reportController extends expController {
 
     //public $catstring = '';
 
-    //FIXME deprecated here by move to storeCategory
+    /**
+     * @deprecated 2.3.4 moved to storeCategory
+     */
     public static function buildCategoryString($catID, $reset = false) {
         static $cstr = '';
         if ($reset) $cstr = '';

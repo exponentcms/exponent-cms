@@ -76,21 +76,6 @@
     </div>
 </div>
 
-{*{script unique="cat-tabs" src="`$smarty.const.PATH_RELATIVE`framework/core/forms/controls/listbuildercontrol.js" yui3mods=1}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules.exptabs = {*}
-        {*fullpath: EXPONENT.JS_RELATIVE+'exp-tabs.js',*}
-        {*requires: ['history','tabview','event-custom']*}
-    {*};*}
-
-    {*YUI(EXPONENT.YUI3_CONFIG).use('exptabs', function(Y) {*}
-        {*Y.expTabs({srcNode: '#cattabs'});*}
-        {*Y.one('#cattabs').removeClass('hide');*}
-        {*Y.one('.loadingdiv').remove();*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
-
 {script unique="tabload" jquery=1 bootstrap="tab,transition"}
 {literal}
     $('.loadingdiv').remove();
