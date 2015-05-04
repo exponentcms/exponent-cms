@@ -23,15 +23,30 @@
 
 output("Updating the Exponent Language System!\n");
 
+for ($ac=1; $ac < $_SERVER['argc']; $ac++) {
+	if ($_SERVER['argv'][$ac] == '-t'){
+        $trans_only = true;  // only do translation, NO pharse extraction
+	} else { // set translation type
+        if (!defined('TRANSLATE')) {
+            define('TRANSLATE', $_SERVER['argv'][$ac]);
+        }
+	}
+}
+if (!defined('TRANSLATE')) {
+    define('TRANSLATE', '');
+}
+
+if (!$trans_only) {
 // Update the default phrase library by extracting the English phrases
-output("Extracting phrases from the root folder!\n");
-exec ('php ./lang_extract.php -r ..',$output);
-output($output);
-unset ($output);
-output("Now extracting phrases from the folders!\n");
-exec ('php ./lang_extract.php ../cron ../framework ../install ../themes', $output);
-output($output);
-unset ($output);
+    output("Extracting phrases from the root folder!\n");
+    exec('php ./lang_extract.php -r ..', $output);
+    output($output);
+    unset ($output);
+    output("Now extracting phrases from the folders!\n");
+    exec('php ./lang_extract.php ../cron ../framework ../install ../themes', $output);
+    output($output);
+    unset ($output);
+}
 
 //Update each language file based on default language and then attempt to translate
 

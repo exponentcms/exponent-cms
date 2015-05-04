@@ -221,22 +221,33 @@ class expLang {
    	}
 
     public static function translate($text, $from = 'en', $to = 'fr') {
-        include_once(BASE.'external/BingTranslate.class.php');
-        include_once(BASE.'external/bingapi.php');
         $from1 = explode('_',$from);
         $from = $from1[0];
         $to1 = explode('_',$to);
         $to = $to1[0];
         if ($to == 'nb') $to = 'no';  // Bing uses 'no' for norwegian
-        $gt = new BingTranslateWrapper(BING_API);
-        /* Enable the cache */
-        $gt->cacheEnabled(true);
+
+        if (defined('TRANSLATE') && TRANSLATE == 'BING') {
+            include_once(BASE.'external/translate/BingTranslate.class.php');
+            include_once(BASE.'external/translate/bingapi.php');
+            $gt = new BingTranslateWrapper(BING_API);
+        } elseif (defined('TRANSLATE') && TRANSLATE == 'Azure') {
+            require_once(BASE.'external/translate/config.inc.php'); // remainder of settings
+            require_once(BASE.'external/translate/MicrosoftTranslator.class.php');
+            include_once(BASE.'external/translate/bingapi.php');
+            $gt = new MicrosoftTranslator(ACCOUNT_KEY);
+        } else {
+            require_once(BASE.'external/translate/mstranslation.class.php');
+            include_once(BASE.'external/translate/bingapi.php');
+            $gt = new TranslateMe(ACCOUNT_KEY);
+        }
+
         return $gt->translate(stripslashes($text), $from, $to);
     }
 
     public static function getLangs() {
-        include_once(BASE.'external/BingTranslate.class.php');
-        include_once(BASE.'external/bingapi.php');
+        include_once(BASE.'external/translate/BingTranslate.class.php');
+        include_once(BASE.'external/translate/bingapi.php');
         $gt = new BingTranslateWrapper(BING_API);
         /* Enable the cache */
         return $gt->LanguagesSupported();
