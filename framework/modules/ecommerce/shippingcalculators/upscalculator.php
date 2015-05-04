@@ -93,7 +93,8 @@ class upscalculator extends shippingcalculator {
                     if ($item->product_type != 'giftcard') {
 //                        $lbs = empty($item->product->weight) ? $this->configdata['default_max_weight'] : $item->product->weight;
                         // calculate option weight
-                        $lbs    = empty($item->getWeight()) ? $this->configdata['default_max_weight'] : $item->getWeight();
+                        $item_weight = $item->getWeight();
+                        $lbs    = empty($item_weight) ? $this->configdata['default_max_weight'] : $item_weight;
                         $width = empty($item->product->width) ? $this->configdata['default_width'] : $item->product->width;
                         $height = empty($item->product->height) ? $this->configdata['default_height'] : $item->product->height;
                         $length = empty($item->product->length) ? $this->configdata['default_length'] : $item->product->length;
