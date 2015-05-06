@@ -134,6 +134,14 @@ function smarty_function_getnav($params,&$smarty) {
                 $nav = 0;
             }
             break;
+        case "top" :
+            $nav = section::navhierarchy(!empty($params['notyui'])?true:false);
+            foreach ($nav as $key=>$value) {
+                unset($nav[$key]->itemdata);
+                unset($nav[$key]->maxdepth);
+                unset($nav[$key]->maxitems);
+            }
+            break;
         case "hierarchy" :
             $nav = section::navhierarchy(!empty($params['notyui'])?true:false);
             break;
