@@ -55,27 +55,31 @@
         </div>
     {/permissions}
     {foreach from=$items item=item}
-        <div class="item announcement{if $item->is_featured} featured{/if}">
+        {*<div class="item announcement{if $item->is_featured} featured{/if}">*}
+        <div class="item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
+            <div class="panel-heading">
+                <{$config.item_level|default:'h2'} class="panel-title">
+                    {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
+                    <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
+                        {if substr($item->location_data,1,8) != 'calevent'}
+                            href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
+                        {/if}
+                        >{$item->title} {br}
+                        {if $item->is_allday == 1}
+                            <span class="dtstart">{$item->eventstart|format_date}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
+                         {else}
+                            <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
+                         {/if}
+                    </a>
+                </{$config.item_level|default:'h2'}>
+            </div>
+            <div class="panel-body">
             {if !empty($item->expFile[0]->url)}
                 <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
                     {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
                     {clear}
                 </div>
             {/if}
-            <{$config.item_level|default:'h2'}>
-                {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
-                <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
-                    {if substr($item->location_data,1,8) != 'calevent'}
-                        href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
-                    {/if}
-                    >{$item->title} {br}
-                    {if $item->is_allday == 1}
-                        <span class="dtstart">{$item->eventstart|format_date}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
-                     {else}
-                        <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:"%l:%M %p"}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
-                     {/if}
-                </a>
-            </{$config.item_level|default:'h2'}>
            <span class="hide">
                {'Location'|gettext}:
                <span class="location">
@@ -106,6 +110,7 @@
                 {$item->body}
             </div>
             {clear}
+            </div>
         </div>
     {/foreach}
 </div>
