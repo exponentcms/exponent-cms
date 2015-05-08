@@ -94,7 +94,7 @@
             }
             if ($(document.body).width() >= {/literal}{$smarty.const.MENU_WIDTH}{literal} - 15) {  // non-collapsed navbar
                 if ($('#topnavbar.navbar-fixed-top').length != 0) {  // fixed top menu
-////                    $(document.body).css('padding-top', $('#topnavbar').height() + 10 + $adminbar);
+//                    $(document.body).css('padding-top', $('#topnavbar').height() + 10 + $adminbar);
                     if (admin) {
                         $('#topnavbar.navbar-fixed-top').css('margin-top', $adminbar);
                         $(document.body).css('margin-top', $('#topnavbar').height() + $adminbar);

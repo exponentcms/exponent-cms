@@ -1,17 +1,17 @@
 /* announcement view for events module */
-.events .announcement h2,
-.events .announcement h3,
-.events .announcement h4,
-.events .announcement h5,
-.events .announcement h6 {
+.events.announcement h2,
+.events.announcement h3,
+.events.announcement h4,
+.events.announcement h5,
+.events.announcement h6 {
 	text-align : center;
 }
 
-.events.announcement > .item.announcement > h2 > a,
-.events.announcement > .item.announcement > h3 > a,
-.events.announcement > .item.announcement > h4 > a,
-.events.announcement > .item.announcement > h5 > a,
-.events.announcement > .item.announcement > h6 > a {
+.events.announcement > .item > h2 > a,
+.events.announcement > .item > h3 > a,
+.events.announcement > .item > h4 > a,
+.events.announcement > .item > h5 > a,
+.events.announcement > .item > h6 > a {
 	color: black;
 	text-decoration: none;
 }

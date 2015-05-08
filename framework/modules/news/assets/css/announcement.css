@@ -1,9 +1,9 @@
 /* announcement view for news module */
-.news .announcement h2,
-.news .announcement h3,
-.news .announcement h4,
-.news .announcement h5,
-.news .announcement h6 {
+.news.announcement h2,
+.news.announcement h3,
+.news.announcement h4,
+.news.announcement h5,
+.news.announcement h6 {
 	text-align : center;
 }
 
