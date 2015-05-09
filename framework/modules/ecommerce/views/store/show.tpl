@@ -271,7 +271,7 @@
         {if $config.enable_ratings_and_reviews}
             <div class="reviews">
                 {rating content_type="product" subtype="quality" label="Product Rating"|gettext record=$product itemprop=1}
-                {comments_count record=$product type='Review'|gettext}
+                {comments_count record=$product show=1 type='Review'|gettext}
             </div>
         {/if}
 
