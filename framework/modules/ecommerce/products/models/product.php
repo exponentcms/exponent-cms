@@ -780,10 +780,10 @@ class product extends expRecord {
             return;
         }
 
-        if (empty($params['id'])) {
-            eDebug($params);
-            return;
-        }
+//        if (empty($params['id'])) {
+//            eDebug($params);
+//            return;
+//        }
         //Get the product
         $product = $db->selectObject('product', 'id =' . $params['id']);
 

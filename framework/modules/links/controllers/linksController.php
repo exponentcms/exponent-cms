@@ -64,7 +64,7 @@ class linksController extends expController {
         }
         assign_to_template(array(
             'items'=>$links,
-//            'rank'=>($order==='rank')?1:0
+            'rank'=>($order==='rank')?1:0
         ));
     }
     
