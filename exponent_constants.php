@@ -517,8 +517,8 @@ if (!defined('YUI2_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('JQUERY_RELATIVE')) {
-    define('JQUERY_VERSION', '1.11.2');
-    define('JQUERY2_VERSION', '2.1.3');
+    define('JQUERY_VERSION', '1.11.3');
+    define('JQUERY2_VERSION', '2.1.4');
     define('JQUERYUI_VERSION', '1.11.4');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');

@@ -39,8 +39,8 @@ mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.4.7,ckeditor.com,4.4.7,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.10,tinymce.com,4.1.10,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
-jQuery1,1.11.2,jquery.com,1.11.2,
-jQuery,2.1.3,jquery.com,2.1.3,
+jQuery1,1.11.3,jquery.com,1.11.3,
+jQuery,2.1.4,jquery.com,2.1.4,
 jQueryUI,1.11.4,jqueryui.com,1.11.4,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
