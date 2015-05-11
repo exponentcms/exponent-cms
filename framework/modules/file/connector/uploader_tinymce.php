@@ -47,7 +47,7 @@ if (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_
 }
 
 //extensive suitability check before doing anything with the file...
-if (($_FILES['file'] == "none") OR (empty($_FILES['file']['name']))) {
+if ((!empty($_FILES['file']) && ($_FILES['file'] == "none")) OR (empty($_FILES['file']['name']))) {
     $ar = new expAjaxReply(300, gt("No file uploaded."));
 } else {
     if ($_FILES['file']["size"] == 0) {

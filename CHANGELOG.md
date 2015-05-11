@@ -11,7 +11,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.3.5
 -------------
 ### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
-  -
+  - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - includes all fixes from v2.3.4 patches
 ### Known Issues
   - eCommerce purchase order functionality has not been tested/may not be complete
