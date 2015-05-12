@@ -108,8 +108,10 @@ class containerController extends expController {
         $containers = array();
 
 //        if (!isset($cache[$container_key])) {
+            // is this module visible?
+            $view_perm = expPermissions::check('view', expCore::makeLocation($loc->mod, $loc->src));
             foreach ($db->selectObjects('container', "external='" . $container_key . "'") as $c) {
-                if ($c->is_private == 0 || expPermissions::check('view', expCore::makeLocation($loc->mod, $loc->src, $c->id))) {
+                if ($c->is_private == 0 || $view_perm) {
                     $containers[$c->rank] = $c;
                 }
             }
