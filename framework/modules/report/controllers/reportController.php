@@ -421,7 +421,10 @@ class reportController extends expController {
             ),
         ));
 
-        $action_items = array('print_orders' => 'Print', 'export_odbc' => 'Export ODBC File');
+        $action_items = array(
+            'print_orders' => 'Print Orders',
+            'export_odbc' => 'Export Shipping File'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -803,7 +806,15 @@ class reportController extends expController {
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 
-        $action_items = array('print_orders' => 'Print', 'export_odbc' => 'Export ODBC File', 'export_status_report' => 'Export Status Report', 'export_inventory' => 'Export Inventory File', 'export_user_input_report' => 'Export User Input File', 'export_order_items' => 'Export Order Items File', 'show_payment_summary' => 'Show Payment & Tax Summary');
+        $action_items = array(
+            'print_orders' => 'Print Orders',
+            'export_odbc' => 'Export Shipping File',
+            'export_status_report' => 'Export Status File',
+            'export_inventory' => 'Export Inventory File',
+            'export_user_input_report' => 'Export User Input File',
+            'export_order_items' => 'Export Order Items File',
+            'show_payment_summary' => 'Show Payment & Tax Summary'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -1175,7 +1186,10 @@ class reportController extends expController {
                 'Status'=>'order_status_id',
             )
         ));            */
-        $action_items = array('batch_export' => 'Export Products to CSV', 'status_export' => 'Export Status Report to CSV');
+        $action_items = array(
+            'batch_export' => 'Export Products to CSV',
+            'status_export' => 'Export Status Report to CSV'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -1369,18 +1383,20 @@ class reportController extends expController {
                 $line .= expString::outputField($m->address1);
                 $line .= expString::outputField($m->address2);
                 $line .= expString::outputField($m->city);
-                $state = new geoRegion($m->state);
+//                $state = new geoRegion($m->state);
                 //eDebug($state);
-                $line .= expString::outputField($state->code);
+//                $line .= expString::outputField($state->code);
+                $line .= expString::outputField(geoRegion::getAbbrev($m->state));
                 $line .= expString::outputField($m->zip);
-                $line .= expString::outputField('US');
+//                $line .= expString::outputField('US');
+                $line .= expString::outputField(geoRegion::getCountryCode($m->country));
                 $line .= expString::outputField($m->phone, chr(13) . chr(10));
                 break;
             }
             $out .= $line;
         }
         //eDebug($out,true);
-        self::download($out, 'ODBC_Export.csv', 'application/csv');
+        self::download($out, 'Shipping_Export.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
 
     }

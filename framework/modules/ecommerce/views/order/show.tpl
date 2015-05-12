@@ -41,7 +41,6 @@
                     {/if}
                     {permissions}
                         {if $permissions.manage}
-                            {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
                             <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
                     {/permissions} 
@@ -123,6 +122,11 @@
                         {if !$order->shipping_required}
                             {'No Shipping Required'|gettext}
                         {else}
+                            {permissions}
+                                {if $permissions.manage}
+                                    {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                                {/if}
+                            {/permissions}
                             {form action=update_shipping}
                                 {control type="hidden" name="id" value=$order->id}
                                 {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
@@ -145,6 +149,7 @@
                             {/if}
                         </td></tr>
                     {/if}
+                    </tbody>
                  </table>
             </div>
             <div id="billinfo">

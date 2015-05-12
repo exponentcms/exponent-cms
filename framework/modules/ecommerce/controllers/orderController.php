@@ -565,7 +565,7 @@ exit();
             $pdfer->set_grayscale(true);
 //            $pdfer->render();
             eDebug("Done rendering PDF " . $timer->mark());
-            exit();
+//            exit();
             ob_clean();
             $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
             exit();

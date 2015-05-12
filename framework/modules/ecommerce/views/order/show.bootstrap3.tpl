@@ -93,7 +93,6 @@
                         {/if}
                         {permissions}
                             {if $permissions.manage}
-                                {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
                                 <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Order'|gettext}</a>
                             {/if}
                         {/permissions}
@@ -252,6 +251,11 @@
                     </ul>
                     <div class="tab-content panel">
                         <div id="shipping" role="tabpanel" class="tab-pane fade in active">
+                            {permissions}
+                                {if $permissions.manage}
+                                    {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                                {/if}
+                            {/permissions}
                             <div class="table-responsive">
                                 <table class="table" style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                                     <tr style="border: 0px; padding: 0px; margin:0px;">
