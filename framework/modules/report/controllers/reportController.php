@@ -423,7 +423,7 @@ class reportController extends expController {
 
         $action_items = array(
             'print_orders' => 'Print Orders',
-            'export_odbc' => 'Export Shipping File'
+            'export_odbc' => 'Export Shipping Data to CSV'
         );
         assign_to_template(array(
             'page'         => $page,
@@ -808,11 +808,11 @@ class reportController extends expController {
 
         $action_items = array(
             'print_orders' => 'Print Orders',
-            'export_odbc' => 'Export Shipping File',
-            'export_status_report' => 'Export Status File',
-            'export_inventory' => 'Export Inventory File',
-            'export_user_input_report' => 'Export User Input File',
-            'export_order_items' => 'Export Order Items File',
+            'export_odbc' => 'Export Shipping Data to CSV',
+            'export_status_report' => 'Export Order Status Data to CSV',
+            'export_inventory' => 'Export Inventory Data to CSV',
+            'export_user_input_report' => 'Export User Input Data to CSV',
+            'export_order_items' => 'Export Order Items Data to CSV',
             'show_payment_summary' => 'Show Payment & Tax Summary'
         );
         assign_to_template(array(
@@ -1187,8 +1187,8 @@ class reportController extends expController {
             )
         ));            */
         $action_items = array(
-            'batch_export' => 'Export Products to CSV',
-            'status_export' => 'Export Status Report to CSV'
+            'batch_export' => 'Export Product List to CSV',
+            'status_export' => 'Export Product Status Report to CSV'
         );
         assign_to_template(array(
             'page'         => $page,
