@@ -33,7 +33,7 @@ class update_ecom3 extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Prune orphaned records from the orders tables"; }
+	static function name() { return "Prune abandoned cart records from the orders tables"; }
 
 	/**
 	 * generic description of upgrade script
