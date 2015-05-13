@@ -50,14 +50,16 @@
 	            {control type="checkbox" name="shipping_methods[]" label="UPS Saver"|gettext value="65" checked=$calculator->configdata.shipping_methods}
 	        </div>
 	        <div id="tab3" role="tabpanel" class="tab-pane fade">
-	            {control type="text" name="shipfrom[name]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.name}
-                {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone}
-	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1 required=1}
-	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2}
-	            {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
-	            {control type="text" name="shipfrom[city]" label="City"|gettext value=$calculator->configdata.shipfrom.city required=1}
-	            {control type=state name="shipfrom[region]" label="State"|gettext value=$calculator->configdata.shipfrom.region required=1}
-	            {control type="text" name="shipfrom[postalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.postalCode required=1}
+                {ecomconfig var=store assign=store}
+                {ecomconfig var=storename assign=storename}
+                {control type="text" name="shipfrom[name]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.name|default:$storename}
+                {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone|default:$store.phone}
+   	            {control type="text" name="shipfrom[address1]" label="Address"|gettext value=$calculator->configdata.shipfrom.address1|default:$store.address1 required=1}
+   	            {control type="text" name="shipfrom[address2]" label=" " value=$calculator->configdata.shipfrom.address2|default:$store.address2}
+                {control type="text" name="shipfrom[address3]" label=" " value=$calculator->configdata.shipfrom.address3}
+   	            {control type="text" name="shipfrom[city]" label="City"|gettext value=$calculator->configdata.shipfrom.city|default:$store.city required=1}
+                {control type="countryregion" name="shipfrom[address]" label="Country/State"|gettext country_default=$calculator->configdata.shipfrom.country|default:$store.country region_default=$calculator->configdata.shipfrom.state|default:$store.state includeblank="-- Choose a State --"|gettext required=1}
+   	            {control type="text" name="shipfrom[postalCode]" label="Zip Code"|gettext size=10 value=$calculator->configdata.shipfrom.postalCode|default:$store.postalCode required=1}
 	        </div>
 	        <div id="tab4" role="tabpanel" class="tab-pane fade">
 	            {control type="text" name="default_width" label="Standard Box Width (inches)"|gettext size=5 value=$calculator->configdata.default_width}

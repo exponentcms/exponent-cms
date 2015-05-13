@@ -44,7 +44,11 @@ function smarty_function_ecomconfig($params,&$smarty) {
             if ($params['json']) {
                 $retval = str_replace('\r\n','', $retval = json_encode($retval));
             }
-            return $retval;
+            if ($params['assign']) {
+                $smarty->assign($params['assign'], $retval);
+            } else {
+                return $retval;
+            }
         }
 }                           
 ?>
