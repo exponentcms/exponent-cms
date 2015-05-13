@@ -509,7 +509,8 @@
 {script unique="`$config`"}
 {literal}
     function changeProfile(val) {
-        if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}')) {
+        var configname = document.getElementById("profile_name").value;
+        if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}'+' ('+configname+')')) {
             window.location = EXPONENT.PATH_RELATIVE+"administration/change_profile/profile/" + val;
         } else {
             document.getElementById("profiles").value = '';

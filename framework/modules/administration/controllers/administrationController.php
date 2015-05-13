@@ -1344,7 +1344,7 @@ class administrationController extends expController {
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
-        flash('message', gt("New Configuration Profile Loaded"));
+        flash('message', gt("New Configuration Profile Loaded") . ' (' . $this->params['profile'] . ')');
         redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
 
