@@ -276,7 +276,7 @@ class upscalculator extends shippingcalculator {
 	    $addy['address3'] = isset($params->address3) ? $params->address3 : '';
 	    $addy['city'] = isset($params->city) ? $params->city : '';
 	    $addy['state'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-	    $addy['countryCode'] = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
+	    $addy['countryCode'] = isset($params->country) ? geoRegion::getCountryCode($params->country) : '';
 	    $addy['postalCode'] = isset($params->zip) ? $params->zip : '';
 	    $addy['phone'] = isset($params->phone) ? $params->phone : '';
 	    return $addy;

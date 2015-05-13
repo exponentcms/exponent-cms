@@ -341,7 +341,7 @@ class fedexcalculator extends shippingcalculator {
         if (isset($params->address2)) $addy['Streetlines'][] = $params->address2;
         $addy['City']                = isset($params->city) ? $params->city : '';
         $addy['StateOrProvinceCode'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-        $addy['CountryCode']         = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
+        $addy['CountryCode']         = isset($params->country) ? geoRegion::getCountryCode($params->country) : '';
         $addy['PostalCode']          = isset($params->zip) ? $params->zip : '';
         return $addy;
     }
