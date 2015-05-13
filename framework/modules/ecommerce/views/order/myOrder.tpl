@@ -45,7 +45,6 @@
     {printer_friendly_link class="{button_style}" text="Print this invoice"|gettext view="show_printable" show=1}
     {permissions}
         {if $permissions.manage}
-            {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
             <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
         {/if}
     {/permissions}

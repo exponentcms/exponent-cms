@@ -252,7 +252,7 @@
                     <div class="tab-content panel">
                         <div id="shipping" role="tabpanel" class="tab-pane fade in active">
                             {permissions}
-                                {if $permissions.manage}
+                                {if $permissions.manage && $order->shipping_required}
                                     {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
                                 {/if}
                             {/permissions}

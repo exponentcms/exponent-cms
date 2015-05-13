@@ -109,6 +109,13 @@
                 </table>
             </div>
             <div id="shipinfo">
+                <div id="buttons">
+                    {permissions}
+                        {if $permissions.manage && $order->shipping_required}
+                            {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                        {/if}
+                    {/permissions}
+                </div>
                 <h2>{"Shipping and Tracking"|gettext}</h2>
                  <table class="order-info">
                     <thead>
@@ -122,11 +129,6 @@
                         {if !$order->shipping_required}
                             {'No Shipping Required'|gettext}
                         {else}
-                            {permissions}
-                                {if $permissions.manage}
-                                    {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
-                                {/if}
-                            {/permissions}
                             {form action=update_shipping}
                                 {control type="hidden" name="id" value=$order->id}
                                 {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
