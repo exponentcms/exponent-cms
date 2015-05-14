@@ -33,13 +33,13 @@ class update_ecom3 extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Prune abandoned cart records from the orders tables"; }
+	static function name() { return "Prune abandoned cart records"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Prior to v2.3.3, an orders table record was added for each site visitor.  This script prunes the orders table and associated orphan records from other ecommerce tables."; }
+	function description() { return "An orders table record is added as the shopping cart for each site visitor which can make it huge.  This script prunes abandoned orders older than 60 days from the orders table and associated orphan records from other ecommerce tables."; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -48,7 +48,7 @@ class update_ecom3 extends upgradescript {
 	function needed() {
         global $db;
 
-		return $db->countObjects('orders');  // only needed if there if orders table is populated
+		return $db->countObjects('orders', "invoice_id = '0' OR purchased = 0");  // only needed if there if orders table is populated
 	}
 
 	/**
@@ -58,8 +58,9 @@ class update_ecom3 extends upgradescript {
 	function upgrade() {
 	    global $db;
 
-		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orders` WHERE `invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
-		$db->delete("orders","`invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
+        // purchased == 0 or invoice_id == 0 on unsubmitted orders
+		$orders_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orders` WHERE `invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now()-5184000) AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
+		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
 		$orderitems_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_orderitems` WHERE `orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
 		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
 		$shippingmethods_count = $db->countObjectsBySql("SELECT COUNT(*) as c FROM `".DB_TABLE_PREFIX."_shippingmethods` WHERE `id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");

@@ -1554,6 +1554,7 @@ class reportController extends expController {
             $this->params['quickrange'] = 0;
         }
 
+        // purchased == 0 or invoice_id == 0 on unsubmitted orders
         $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
         $sql .= "(SELECT ticket FROM " . DB_TABLE_PREFIX . "_sessionticket) ORDER BY edited_at DESC";
         // echo $sql;
@@ -1604,9 +1605,9 @@ class reportController extends expController {
         // exit();
         $summary['totalcarts'] = $allCarts['count'];
         $summary['valueproducts'] = $valueproducts;
-        $summary['cartsWithoutItems'] = $allCarts['count'] ? round(($cartsWithoutItems['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
-        $summary['cartsWithItems'] = $allCarts['count'] ? round(($cartsWithItems['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
-        $summary['cartsWithItemsAndInfo'] = $allCarts['count'] ? round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
+        $summary['cartsWithoutItems'] = round(($allCarts['count'] ? $cartsWithoutItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
+        $summary['cartsWithItems'] = round(($allCarts['count'] ? $cartsWithItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
+        $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 
         assign_to_template(array(
             'quickrange'            => $quickrange,
@@ -1616,6 +1617,15 @@ class reportController extends expController {
             'cartsWithItems'        => $cartsWithItems,
             'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
         ));
+    }
+
+    function pruge_abandoned_carts()
+    {
+        global $db;
+
+        $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
+        $db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
+        $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
     }
 
     function current_carts() {

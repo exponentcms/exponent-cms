@@ -45,16 +45,16 @@
 							<td>{$summary.valueproducts|currency}</td>
 						</tr>
 						<tr class="odd">
-							<td>{"Active Carts w/out Products"|gettext}</td>
-							<td>{$summary.cartsWithoutItems}</td>
+							<td>{"Carts w/o Products"|gettext}</td>
+							<td>{$cartsWithoutItems.count} ({$summary.cartsWithoutItems})</td>
 						</tr>
 						<tr class="even">
-							<td>{"Active Carts w/ Products"|gettext}</td>
-							<td>{$summary.cartsWithItems}</td>
+							<td>{"Carts w/ Products"|gettext}</td>
+							<td>{$cartsWithItems.count} ({$summary.cartsWithItems})</td>
 						</tr>
 						<tr class="odd">
-							<td>{"Active Carts w/ Products and User Info"|gettext}</td>
-							<td>{$summary.cartsWithItemsAndInfo}</td>
+							<td>{"Carts w/ Products and User Info"|gettext}</td>
+							<td>{$cartsWithItemsAndInfo.count} ({$summary.cartsWithItemsAndInfo})</td>
 						</tr>
 					</tbody>
 				</table>
@@ -227,6 +227,7 @@
 			</div>
 		{/if}
 		</div>
+        {*{icon action='pruge_abandoned_carts' class="delete" text='Pruge All Abandoned Carts'|gettext}*}
     </div>
     {clear}
 </div>
