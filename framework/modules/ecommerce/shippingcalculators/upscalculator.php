@@ -114,7 +114,7 @@ class upscalculator extends shippingcalculator {
             }
         }
         
-        // kludge for the giftcard shipping
+        //FIXME kludge for the giftcard shipping
         if (count($package_items) == 0 && $has_giftcard) {
             $rates = array(
                 "03"=>array("id"=>"03", "title"=>"UPS Ground", "cost"=>5.00),
@@ -199,7 +199,7 @@ class upscalculator extends shippingcalculator {
 
 	    $rateFromUPS = $upsRate->sendRateRequest();
 	    
-	    $handling = empty($has_giftcard) ? 0 : 5;
+	    $handling = empty($has_giftcard) ? 0 : 5;  //FIXME adding a $5 fee if shipping a gift card???
         if (empty($rateFromUPS)) {
 //            return 0;
             return array();
@@ -208,7 +208,7 @@ class upscalculator extends shippingcalculator {
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
-	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
+//	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
 	                $rates[$rate['Service']['Code']['VALUE']] = array(
                         'id' => $rate['Service']['Code']['VALUE'],
                         'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],

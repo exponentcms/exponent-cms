@@ -112,6 +112,7 @@ class tablebasedcalculator extends shippingcalculator {
 		$where = " shippingcalculator_id = {$values['id']}";
 		$speeds = $db->selectObjects("shippingspeeds", $where);
         $config_vars = array(
+            'handling',
             'to',
             'from'
         );
@@ -122,7 +123,7 @@ class tablebasedcalculator extends shippingcalculator {
 		// eDebug($config_vars, true);
         $sorted_config = array();
         foreach ($config_vars as $varname) {
-            if ($varname == 'rate') {
+            if ($varname == 'rate' || $varname == 'handling') {
                 $config[$varname] = isset($values[$varname]) ? expUtil::currency_to_float($values[$varname]) : null;
             } else {
                 $config[$varname] = isset($values[$varname]) ? $values[$varname] : null;
@@ -163,7 +164,7 @@ class tablebasedcalculator extends shippingcalculator {
      * @return int
      */
     public function getHandling() {
-        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;  //FIXME handling is not set in config
+        return isset($this->configdata['handling']) ? $this->configdata['handling'] : 0;
     }
 
     /**

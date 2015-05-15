@@ -24,8 +24,8 @@
         <ul class="yui-nav">
 	        <li class="selected"><a href="#tab1"><em>{'General Settings'|gettext}</em></a></li>
 	        <li><a href="#tab2"><em>{'Shipping Methods'|gettext}</em></a></li>
-	        <li><a href="#tab3"><em>{'My Info'|gettext}</em></a></li>
-	        <li><a href="#tab4"><em>{'Shipping Defaults'|gettext}</em></a></li>
+	        <li><a href="#tab3"><em>{'Shipping Origin'|gettext}</em></a></li>
+	        <li><a href="#tab4"><em>{'Packaging Defaults'|gettext}</em></a></li>
         </ul>            
         <div class="yui-content">
 	        <div id="tab1">

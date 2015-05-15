@@ -120,6 +120,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    {*{control type="text" name="handling" label="Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling description='Charge added to each shipment regardless of total cost'|gettext}*}
                     {control type="text" name="shipping_service_name" label="Default Name for Shipping Service"|gettext value=$calculator->configdata.shipping_service_name|default:'Simple'|gettext}
                 </div>
                 {br}
