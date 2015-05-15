@@ -52,7 +52,7 @@ DataTables,1.10.7,http://www.datatables.net,1.10.7,includes boostrap integration
 DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
 yadcf,0.8.7,https://github.com/vedmack/yadcf,0.8.7,
-spectrum,1.6.2,http://bgrins.github.io/spectrum/,1.6.2,
+spectrum,1.7.0,http://bgrins.github.io/spectrum/,1.7.0,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
