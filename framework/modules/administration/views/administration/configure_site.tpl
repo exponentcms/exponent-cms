@@ -520,7 +520,7 @@
 	});
 
     function changeProfile(val) {
-        var configname = document.getElementById("profile_name").value;
+        var configname = document.getElementById("profiles").value;
         if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}'+' ('+configname+')')) {
             window.location = EXPONENT.PATH_RELATIVE+"administration/change_profile/profile/" + val;
         } else {
