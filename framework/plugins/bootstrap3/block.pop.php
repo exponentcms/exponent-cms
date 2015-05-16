@@ -51,7 +51,33 @@
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
         $content = json_encode(str_replace("\r\n", '', trim($content)));
-        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle('file', $params['text']) . '</a>';
+        if (isset($params['ajax'])) {
+            $content = json_encode("function(dialogRef) {
+                    var message = $('<div><i class=\"fa fa-spinner fa-spin\"></i> ".gt('Loading')."...</div>');
+                    $.ajax({
+                        url: '" . $params['ajax'] . "',
+                        data: {ajax_action:1},
+                        context: {
+                            theDialogWeAreUsing: dialogRef
+                        },
+                        success: function(content) {
+                            this.theDialogWeAreUsing.setMessage(content.replace(%s,'').replace(%t,''));
+                        }
+                    });
+                    return message;
+                }
+            ");
+            // clean up code for passing to javascript via json
+            $content = trim(str_replace('\r\n', '', $content) , '"');
+            $content = str_replace('%s', '/\r\n/g', $content);
+            $content = str_replace('%t', '/[\r\n]/g', $content);
+        }
+        if (isset($params['icon'])) {
+            $icon = $params['icon'];
+        } else {
+            $icon = 'file';
+        }
+        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
         if (isset($params['type'])) {
             if ($params['type'] == 'warning') {
                 $type = 'BootstrapDialog.TYPE_WARNING';

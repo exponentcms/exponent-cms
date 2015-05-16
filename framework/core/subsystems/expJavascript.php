@@ -671,7 +671,7 @@ class expJavascript {
     public static function panel($params) {
         $content = json_encode("<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>");
         $id = "exppanel".$params['id'];
-        $width  = !empty($params['width']) ? $params['width'] : "600px";
+        $width  = !empty($params['width']) ? $params['width'] : "800px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
         $dialog  = !empty($params['dialog']) ? explode(":",$params['dialog']) : "";
         $header  = !empty($params['header']) ? $params['header'] : "&#160;";

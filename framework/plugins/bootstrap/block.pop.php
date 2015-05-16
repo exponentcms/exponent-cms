@@ -51,7 +51,12 @@
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
         $content = json_encode(str_replace("\r\n", '', trim($content)));
-        $width  = !empty($params['width']) ? $params['width'] : "600px";
+        if (isset($params['icon'])) {
+            $icon = $params['icon'];
+        } else {
+            $icon = 'file';
+        }
+        $width  = !empty($params['width']) ? $params['width'] : "800px";
         echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle('file', $params['text']) . '</a>';
         if (isset($params['type'])) {
             $type = $params['type'];
