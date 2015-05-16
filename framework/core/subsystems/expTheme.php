@@ -1702,7 +1702,7 @@ class expTheme
         $style = self::buttonIcon($class);
         if (!empty($style->prefix)) {
             if ($text) {
-                return '<i class="' .$style->prefix . $style->class . '"> '. $text . "</i>";
+                return '<i class="' .$style->prefix . $style->class . '"></i> '. $text;
             } else {
                 return $style->prefix . $style->class;
             }
