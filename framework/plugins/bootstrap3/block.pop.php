@@ -57,6 +57,8 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
                 $type = 'BootstrapDialog.TYPE_WARNING';
             } elseif ($params['type'] == 'danger') {
                 $type = 'BootstrapDialog.TYPE_DANGER';
+            } else {
+                $type = 'BootstrapDialog.TYPE_INFO';
             }
         } else {
             $type = 'BootstrapDialog.TYPE_INFO';

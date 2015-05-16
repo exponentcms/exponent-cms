@@ -139,3 +139,11 @@ div.jqi .jqititle {
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 }
+
+div.jqi .jqititle.warning {
+	background-color: #e6d168;
+}
+
+div.jqi .jqititle.error {
+	background-color: #e66155;
+}

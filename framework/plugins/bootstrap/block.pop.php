@@ -51,22 +51,26 @@
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
         $content = json_encode(str_replace("\r\n", '', trim($content)));
+        $width  = !empty($params['width']) ? $params['width'] : "600px";
         echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle('file', $params['text']) . '</a>';
         if (isset($params['type'])) {
-            if ($params['type'] == 'warning') {
-                $type = 'BootstrapDialog.TYPE_WARNING';
-            } elseif ($params['type'] == 'danger') {
-                $type = 'BootstrapDialog.TYPE_DANGER';
-            }
+            $type = $params['type'];
         } else {
-            $type = 'BootstrapDialog.TYPE_INFO';
+            $type = '';
         }
+
         $script = "
             $(document).ready(function(){
                 $('#".$params['id']."').click(function() {
                     var message = ".$content.";
                     $.prompt(message, {
                         title: '".$params['title']."',
+                        position: {
+                            width: '" . $width . "'
+                        },
+                        classes: {
+                            title: '".$type."',
+                        },
                         buttons: {'".$params['buttons']."': true},
                         submit: function(e,v,m,f){
                             // use e.preventDefault() to prevent closing when needed or return false.
@@ -77,7 +81,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
             });
         ";
         expJavascript::pushToFoot(array(
-            "unique"=>'pop-'.$params['name'],
+            "unique"=>'pop-'.$params['id'],
             "jquery"=>"jquery-impromptu",
             "content"=>$script,
          ));
