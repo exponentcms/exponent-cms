@@ -50,8 +50,8 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = str_replace("\r\n", '', trim($content));
-        echo '<a href="#" id="' . $params['id'] . '">' . $params['text'] . '</a>';
+        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle('file', $params['text']) . '</a>';
         if (isset($params['type'])) {
             if ($params['type'] == 'warning') {
                 $type = 'BootstrapDialog.TYPE_WARNING';
@@ -64,7 +64,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
         $script = "
             $(document).ready(function(){
                 $('#".$params['id']."').click(function() {
-                    var message = '".$content."';
+                    var message = ".$content.";
                     $.prompt(message, {
                         title: '".$params['title']."',
                         buttons: {'".$params['buttons']."': true},
