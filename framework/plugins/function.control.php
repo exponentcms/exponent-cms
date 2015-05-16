@@ -163,6 +163,10 @@ function smarty_function_control($params, &$smarty) {
                 break;
             case "checkbox":
                 $default            = isset($params['checked']) ? $params['checked'] : false;
+                if (isset($params['checked']) && is_array($params['checked'])) {
+                    $value     = isset($params['value']) ? $params['value'] : 1;
+                    $default        = in_array($value,$params['checked']) ? true : false;
+                }
                 $control            = new checkboxcontrol($default);
                 $control->postfalse = isset($params['postfalse']) ? 1 : 0;
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
