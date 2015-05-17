@@ -43,7 +43,9 @@ if(DEVELOPMENT)
 
 // if the user has turned on sef_urls then we need to route the request, otherwise we can just 
 // skip it and default back to the old way of doing things.
-$router->routeRequest();
+if ($db->havedb) {
+    $router->routeRequest();
+}
 
 // define whether or not ecom is enabled &initialize this users cart if they have ecom installed.
 if (ecom_active()) {
