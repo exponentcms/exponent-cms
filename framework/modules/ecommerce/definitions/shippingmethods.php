@@ -25,6 +25,10 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
+    //FIXME needed for has_many assignment
+//    'orders_id'=>array(
+//        DB_FIELD_TYPE=>DB_DEF_ID,
+//        DB_INDEX=>10),
 	'addresses_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID),
 	'firstname'=>array(
@@ -76,18 +80,33 @@ return array(
 		DB_FIELD_LEN=>100),
 	'shipping_cost'=>array(
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-	'to'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'from'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
-	'message'=>array(
-		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>1000),
     'carrier'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
+    'delivery' => array(
+        DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
+    //FIXME we probably will need to add a package rate id & tracking number
+//    "shipment_id" => array(
+//        DB_FIELD_TYPE => DB_DEF_STRING,
+//        DB_FIELD_LEN => 100
+//    ),
+//    "shipped" => array(
+//        DB_FIELD_TYPE => DB_DEF_TIMESTAMP
+//    ),
+//    "shipping_tracking_number" => array(
+//        DB_FIELD_TYPE => DB_DEF_STRING,
+//        DB_FIELD_LEN => 100
+//    ),
+    // shipping gift message
+    'to'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>100),
+   	'from'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>100),
+   	'message'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>1000),
 );
 
 ?>

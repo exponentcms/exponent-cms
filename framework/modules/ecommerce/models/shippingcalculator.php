@@ -24,6 +24,8 @@ class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';
     public $icon = '';
     public $configdata = array();
+    public $multiple_carriers = false;
+
 //    public function hasUserForm() { return true; }
    	public function hasConfig() { return true; }
    	public function addressRequired() { return true; }

@@ -45,9 +45,7 @@ class upscalculator extends shippingcalculator {
         "65"=>"UPS Saver",
     );
 
-    public function getRates($order) {  //FIXME isn't this an order object?
-//        global $order;  //FIXME this is the current user order object, NOT the edited order object
-        
+    public function getRates($order) {
         // Require the main ups class and upsRate
         include_once(BASE.'external/ups-php/classes/class.ups.php');
         include_once(BASE.'external/ups-php/classes/class.upsRate.php');
@@ -282,10 +280,10 @@ class upscalculator extends shippingcalculator {
 	    return $addy;
 	}
 	
-	public static function sortByVolume($a, $b) {
-//	    eDebug($a);
-	    return ($a->volume > $b->volume ? -1 : 1);
-	}
+//	public static function sortByVolume($a, $b) {
+////	    eDebug($a);
+//	    return ($a->volume > $b->volume ? -1 : 1);
+//	}
 
 }
 

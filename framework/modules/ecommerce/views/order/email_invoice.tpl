@@ -65,8 +65,14 @@
                     <td style="border:1px solid #DEDEDE;">
                         {if $order->shipped}
                             {$order->shipped|format_date:"%A, %B %e, %Y":"Not Shipped Yet"}
+                            {if $shipping->shippingmethod->delivery}
+                                {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                            {/if}
                         {else}
                             {"Not Shipped Yet"|gettext}
+                            {if $shipping->shippingmethod->delivery}
+                                {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                            {/if}
                         {/if}
                     </td>
                 </tr>

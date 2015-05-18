@@ -95,8 +95,8 @@
         </div>
     </div>
 
+    <h2>{"Your Items"|gettext}</h2>
     <div class="cartitems separate">
-
         <!-- p>You have <strong>{$order->item_count}</strong> item{if $order->item_count > 1}s{/if} in your cart. <a id="expandcart" href="#" class="exp-ecom-link">[Click here to show your cart]<span></span></a></p -->
         <div id="shoppingcartwrapper">
             {*{chain controller=cart action=cart_only}*}
@@ -173,14 +173,65 @@
                     {/if}
 
                     {*if $order->orderitem|@count>1 && $shipping->splitshipping == false && $order->forced_shipping == false}
-                        <a id="miltiaddresslink" class="exp-ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
+                        <a id="multiaddresslink" class="exp-ecom-link {if hideMultiShip == 1}hide{/if}" href="{link action=splitShipping}">Ship to multiple addresses</a>
                     {/if*}
+
+                    {if $shipping->splitshipping == false}
+                        {clear}
+                        <h3>{"Shipping Address"|gettext}</h3>
+                        <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
+
+                        <div class="shipping-address">
+                            <div id="shpAddSwp">
+                                {if $shipping->address->id == ''}
+                                    {"No address yet"|gettext}
+                                {else}
+                                    {$shipping->address|address}
+                                {/if}
+                            </div>
+
+                            <div class="bracket{if !$shipping->address->id} hide{/if}">
+                                {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
+                                {*{icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Addresses"|gettext}*}
+                                {capture assign="link"}{link controller=address action=myaddressbook}{/capture}
+                                {pop id="edit_shipping_address" text="Change or Add Addresses"|gettext title="Edit Addresses"|gettext icon=adjust buttons="Close"|gettext ajax=$link}
+                                    load
+                                {/pop}
+                            </div>
+                        </div>
+                        {clear}
+                    {else}
+                        {* else, we have split shipping *}
+                        <a id="multiaddresslink" class="ecomlink-link" href="{link action=splitShipping}">{"Edit Shipping Information"|gettext}</a>
+                        {foreach from=$shipping->splitmethods item=method}
+                            <div class="splitaddress">
+                                <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
+                                <!--a class="ordermessage {button_style}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
+                                <address>
+                                    {$method->firstname} {$method->middlename} {$method->lastname}{br}
+                                    {$method->address1}{br}
+                                    {if $method->address2 != ""}{$method->address2}{br}{/if}
+                                    {$method->city},
+                                    {if $method->state == -2}
+                                        {$method->non_us_state}
+                                    {else}
+                                        {$method->state|statename:abv}
+                                    {/if}
+                                    , {$method->zip}
+                                    {if $method->state == -2}
+                                        {br}{$method->country|countryname}
+                                    {/if}
+                                </address>
+                            </div>
+                        {/foreach}
+                    {/if}
+                    {* end split shipping *}
 
                     {if $shipping->selectable_calculators|@count > 1}{$multicalc=1}{/if}
                     {if !$shipping->address->id}{$noShippingPrices=1}{/if}
 
                     {if $multicalc}
-                        <h3>{"Available Shipping Methods"|gettext}</h3>
+                        <h3>{"Shipping Methods"|gettext}</h3>
 
                         <div class="separate">
                             {if $order->forced_shipping == true}
@@ -230,58 +281,58 @@
 
                         <div id="shipping-services">
                             <h3>{"Selected Shipping Option"|gettext}</h3>
-                            {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
+                            {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.bootstrap3.tpl"}
                         </div>
 
-                        <h3>{"Shipping Address"|gettext}</h3>
-                        <!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->
+                        {*<h3>{"Shipping Address"|gettext}</h3>*}
+                        {*<!--p>Would you like to <a class="ordermessage" href="#" rel="{$shipping->shippingmethod->id}">add a gift message</a> to this Order?</p-->*}
 
-                        <div class="shipping-address">
-                            <div id="shpAddSwp">
-                                {if $shipping->address->id == ''}
-                                    {"No address yet"|gettext}
-                                {else}
-                                    {$shipping->address|address}
-                                {/if}
-                            </div>
+                        {*<div class="shipping-address">*}
+                            {*<div id="shpAddSwp">*}
+                                {*{if $shipping->address->id == ''}*}
+                                    {*{"No address yet"|gettext}*}
+                                {*{else}*}
+                                    {*{$shipping->address|address}*}
+                                {*{/if}*}
+                            {*</div>*}
 
-                            <div class="bracket{if !$shipping->address->id} hide{/if}">
+                            {*<div class="bracket{if !$shipping->address->id} hide{/if}">*}
                                 {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
-                                {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
-                            </div>
-                        </div>
+                                {*{icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}*}
+                            {*</div>*}
+                        {*</div>*}
                         {clear}
                     {else}
 
                         {* else, we have split shipping *}
-                        <a id="miltiaddresslink" class="ecomlink-link"
-                           href="{link action=splitShipping}">{"Edit Shipping Information"|gettext}</a>
+                        {*<a id="multiaddresslink" class="ecomlink-link"*}
+                           {*href="{link action=splitShipping}">{"Edit Shipping Information"|gettext}</a>*}
 
-                        {foreach from=$shipping->splitmethods item=method}
-                            <div class="splitaddress">
-                                <h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>
-                                <!--a class="ordermessage {button_style}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->
-                                <address>
-                                    {$method->firstname} {$method->middlename} {$method->lastname}{br}
-                                    {$method->address1}{br}
-                                    {if $method->address2 != ""}{$method->address2}{br}{/if}
-                                    {$method->city},
-                                    {if $method->state == -2}
-                                        {$method->non_us_state}
-                                    {else}
-                                        {$method->state|statename:abv}
-                                    {/if}
-                                    , {$method->zip}
-                                    {if $method->state == -2}
-                                        {br}{$method->country|countryname}
-                                    {/if}
-                                </address>
-                            </div>
-                        {/foreach}
+                        {*{foreach from=$shipping->splitmethods item=method}*}
+                            {*<div class="splitaddress">*}
+                                {*<h4>{$order->countOrderitemsByShippingmethod($method->id)} {'items will be shipped to:'|gettext}</h4>*}
+                                {*<!--a class="ordermessage {button_style}" href="#" rel="{$method->id}"><strong><em>Add a Gift Message to this Order</em></strong></a-->*}
+                                {*<address>*}
+                                    {*{$method->firstname} {$method->middlename} {$method->lastname}{br}*}
+                                    {*{$method->address1}{br}*}
+                                    {*{if $method->address2 != ""}{$method->address2}{br}{/if}*}
+                                    {*{$method->city},*}
+                                    {*{if $method->state == -2}*}
+                                        {*{$method->non_us_state}*}
+                                    {*{else}*}
+                                        {*{$method->state|statename:abv}*}
+                                    {*{/if}*}
+                                    {*, {$method->zip}*}
+                                    {*{if $method->state == -2}*}
+                                        {*{br}{$method->country|countryname}*}
+                                    {*{/if}*}
+                                {*</address>*}
+                            {*</div>*}
+                        {*{/foreach}*}
 
                     {/if}
+                    {* end split shipping *}
                 </div>
-                {* end split shipping *}
             {/if} {* end shipping required check *}
         </div>
         <div class="billingdetails separate">
@@ -298,7 +349,11 @@
                 </div>
                 <div class="bracket">
                     {*<a class="{button_style}" href="{link controller=address action=myaddressbook}"><strong><em>{"Change or Add Address"|gettext}</em></strong></a>*}
-                    {icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Address"|gettext}
+                    {*{icon class=adjust button=true controller=address action=myaddressbook text="Change or Add Addresses"|gettext}*}
+                    {capture assign="link"}{link controller=address action=myaddressbook}{/capture}
+                    {pop id="edit_billing_address" text="Change or Add Addresses"|gettext title="Edit Addresses"|gettext icon=adjust buttons="Close"|gettext ajax=$link}
+                        load
+                    {/pop}
                 </div>
             </div>
             <div style="clear: both;"></div>
@@ -306,21 +361,35 @@
         {*<div class="separate">*}
             {if $order->total}
                 {*<h2>{"Payment Information"|gettext}</h2>*}
-                <h3>{"Available Payment Methods"|gettext}</h3>
-                <div id="cart-{$id}" class="">
-                    <ul class="nav nav-tabs" role="tablist">
+                {if $billing->calculator_views|@count > 1}
+                    <h3>{"Payment Methods"|gettext}</h3>
+                    <div id="cart-{$id}" class="">
+                        <ul class="nav nav-tabs" role="tablist">
+                            {foreach from=$billing->calculator_views item=cviews name=tabs}
+                                <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                            {/foreach}
+                        </ul>
+                        <div class="tab-content">
+                            {foreach from=$billing->calculator_views item=cviews name=calcs}
+                                <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
+                                    {include file=$cviews.view calcid=$cviews.id}
+                                </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                {else}
+                    <h3>{"Payment Method"|gettext}</h3>
+                    <div id="cart-{$id}" class="">
                         {foreach from=$billing->calculator_views item=cviews name=tabs}
-                            <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$billing->selectable_calculators[$cviews.id]}</a></li>
+                            <strong class="selected-info">{$billing->selectable_calculators[$cviews.id]}</strong>
                         {/foreach}
-                    </ul>
-                    <div class="tab-content">
                         {foreach from=$billing->calculator_views item=cviews name=calcs}
                             <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
                                 {include file=$cviews.view calcid=$cviews.id}
                             </div>
                         {/foreach}
                     </div>
-                </div>
+                {/if}
                 <div class="loadingdiv">{'Loading'|gettext}</div>
             {else}
                 <div class="billing-method">

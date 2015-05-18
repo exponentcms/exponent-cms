@@ -38,31 +38,22 @@ return array(
         DB_FIELD_LEN => 255,
         DB_INDEX => 10
     ),
-    "to" => array(
-        DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN => 100
-    ),
-    "from" => array(
-        DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN => 100
-    ),
-    "comments" => array(
-        DB_FIELD_TYPE => DB_DEF_STRING,
-        DB_FIELD_LEN => 100000
-    ),
     "updated" => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP
     ),
     "purchased" => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP
     ),
+    //FIXME we may need to move this to the shippingmethod
     "shipped" => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP
     ),
+    //FIXME we may need to move this to the shippingmethod
     "shipping_tracking_number" => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
         DB_FIELD_LEN => 100
     ),
+    //FIXME here because we currently only allow one package?
     "shippingmethods_id" => array(
         DB_FIELD_TYPE => DB_DEF_ID
     ),
@@ -128,6 +119,19 @@ return array(
     ),
     'shipping_taxed' => array(
         DB_FIELD_TYPE => DB_DEF_BOOLEAN
+    ),
+    //deprecated order gift message??
+    "to" => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100
+    ),
+    "from" => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100
+    ),
+    "comments" => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100000
     ),
 );
 

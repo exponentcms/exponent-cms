@@ -258,9 +258,9 @@
                             {/permissions}
                             <div class="table-responsive">
                                 <table class="table" style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
-                                    <tr style="border: 0px; padding: 0px; margin:0px;">
+                                    <tr style="border: 0px; padding: 0px; margin:0px;vertical-align: top">
                                         <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
-                                            <strong>{"Shipping Method"|gettext}</strong>{br}
+                                            <strong>{"Shipping Method"|gettext}</strong>
                                             {$shipping->shippingmethod->option_title}
                                             {permissions}
                                                 <div class="item-permissions">
@@ -272,7 +272,7 @@
                                         </td>
                                         <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
                                             {if $shipping->shippingmethod->carrier != ''}
-                                            <strong>{"Carrier"|gettext}:</strong>{br}
+                                            <strong>{"Carrier"|gettext}:</strong>
                                             {$shipping->shippingmethod->carrier}
                                             {/if}
                                         </td>
@@ -283,9 +283,15 @@
                                         {'No Shipping Required'|gettext}
                                     {else}
                                         {$order->shipped|format_date:"%A, %B %e, %Y":"Not Shipped Yet"}
+                                        {if $shipping->shippingmethod->delivery}
+                                            {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                                        {/if}
                                     {/if}
                                 {else}
                                     {"Not Shipped Yet"|gettext}
+                                    {if $shipping->shippingmethod->delivery}
+                                        {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                                    {/if}
                                 {/if}
                             </div>
                         </div>

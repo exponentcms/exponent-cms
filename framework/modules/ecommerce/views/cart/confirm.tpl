@@ -126,7 +126,7 @@
             </ul>
             <hr>
         {/foreach*}
-            {else}
+        {else}
             <table border="0" cellspacing="0" cellpadding="0">
                 <thead>
                     <tr>
@@ -153,7 +153,7 @@
         {/if}
     {/if}
 
-        <!--div {if $shipping->splitshipping == true}class="hide"{/if}>
+    <!--div {if $shipping->splitshipping == true}class="hide"{/if}>
     <h2>Are you sending this order as gift?:</h2>
     <p>If you are send this order as a gift to someone you can put a note to the recipient</p>
     </div-->

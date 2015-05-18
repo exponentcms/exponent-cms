@@ -733,6 +733,8 @@ exit();
                         $carrierTrackingLink = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=";
                     } elseif ($order->shippingmethod->carrier == 'FedEx') {
                         $carrierTrackingLink = "http://www.fedex.com/Tracking?action=track&tracknumbers=";
+                    } elseif ($order->shippingmethod->carrier == 'USPS') {
+                        $carrierTrackingLink = "https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=";
                     }
 
                     assign_to_template(array(
