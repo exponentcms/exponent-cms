@@ -595,26 +595,31 @@ class paypalExpressCheckout extends billingcalculator {
         // Set request-specific fields.
 //        $transactionID = urlencode($billing_options->result->transactionID);
         $transactionID = urlencode($billing_options->result->transId);
-        $refundType = urlencode('Full'); // or 'Partial'
+        if ($amount > $order->grand_total) {
+            $amount = $order->grand_total;
+        }
+        if ($amount == $order->grand_total) {
+            $refundType = urlencode('Full');
+        } else {
+            $refundType = urlencode('Partial');
+        }
         $memo = "Transaction Refunded"; // required if Partial.
-//        $currencyID    = urlencode('USD'); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
         $currencyID = urlencode(ECOM_CURRENCY); // or other currency ('GBP', 'EUR', 'JPY', 'CAD', 'AUD')
 
         // Add request-specific fields to the request string.
-        $nvpStr = "&TRANSACTIONID=$transactionID&REFUNDTYPE=$refundType&CURRENCYCODE=$currencyID";
+        $nvpStr = "&TRANSACTIONID=$transactionID&CURRENCYCODE=$currencyID";
 
         if (isset($memo)) {
             $nvpStr .= "&NOTE=$memo";
         }
 
-        //FIXME we hard set 'FullRefund' above, so this code is never called
+        $nvpStr = $nvpStr . "&REFUNDTYPE=$refundType";
         if (strcasecmp($refundType, 'Partial') == 0) {
             if (!isset($amount)) {
                 exit('Partial Refund Amount is not specified.');
             } else {
                 $nvpStr = $nvpStr . "&AMT=$amount";
             }
-
             if (!isset($memo)) {
                 exit('Partial Refund Memo is not specified.');
             }
