@@ -85,18 +85,23 @@ return array(
         DB_FIELD_LEN=>100),
     'delivery' => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
-    //FIXME we probably will need to add a package rate id & tracking number
+    //FIXME we probably will need to add a package rate id, tracking number, etc...
 //    "shipment_id" => array(
 //        DB_FIELD_TYPE => DB_DEF_STRING,
-//        DB_FIELD_LEN => 100
-//    ),
+//        DB_FIELD_LEN => 100),
 //    "shipped" => array(
-//        DB_FIELD_TYPE => DB_DEF_TIMESTAMP
-//    ),
+//        DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
 //    "shipping_tracking_number" => array(
 //        DB_FIELD_TYPE => DB_DEF_STRING,
-//        DB_FIELD_LEN => 100
-//    ),
+//        DB_FIELD_LEN => 100),
+//    "weight"=>array(
+//        DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+//    "height"=>array(
+//     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+//    "width"=>array(
+//     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+//    "length"=>array(
+//   	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     // shipping gift message
     'to'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,

@@ -326,7 +326,7 @@ class authorizedotnet extends creditcard {
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
             $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         }
         $html .= "<br>" . gt("Accepted Cards") . ":<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";

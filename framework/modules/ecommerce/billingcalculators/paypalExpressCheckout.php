@@ -163,31 +163,18 @@ class paypalExpressCheckout extends billingcalculator {
                 'USER'                               => $uname,
                 'PWD'                                => $pwd,
                 'SIGNATURE'                          => $sig,
-//                'VERSION'           => '59.0',
-                'VERSION'                            => '114.0',  //NOTE 121.0 current
-//                'ReturnUrl' => $returnURL,
+                'VERSION'                            => '114.0',  //NOTE 122.0 current
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
-                // TODO: build data from odrer
-//                'AMT'               => number_format($order->grand_total, 2, '.', ''), //NOTE deprecated in 63.0
-//                'CURRENCYCODE'      => 'USD',
-//                'ITEMAMT'           => number_format($order->total, 2, '.', ''),
-//                'SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
-//                'TAXAMT'            => number_format($order->tax, 2, '.', ''),
-//                'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',  // currency code
+                // TODO: build data from order
+                'PAYMENTREQUEST_0_PAYMENTACTION'     => $config['process_mode'],
                 'PAYMENTREQUEST_0_CURRENCYCODE'      => ECOM_CURRENCY, // currency code
                 'PAYMENTREQUEST_0_ITEMAMT'           => number_format($order->total, 2, '.', ''), // total item cost
                 'PAYMENTREQUEST_0_SHIPPINGAMT'       => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''), // total shipping cost
                 'PAYMENTREQUEST_0_TAXAMT'            => number_format($order->tax, 2, '.', ''), // total tax cost
                 'PAYMENTREQUEST_0_AMT'               => number_format($order->grand_total, 2, '.', ''), // total amount
                 'ADDROVERRIDE'                       => '1',
-//                'SHIPTONAME'        => $shipname,
-//                'SHIPTOSTREET'      => $shipstreet,
-//                'SHIPTOCITY'        => $shippingaddress->city,
-//                'SHIPTOSTATE'       => $shipping_state->code,
-//                'SHIPTOCOUNTRYCODE' => $shipping_country->iso_code_2letter,
-//                'SHIPTOZIP'         => $shippingaddress->zip,
                 'PAYMENTREQUEST_0_SHIPTONAME'        => $shipname,
                 'PAYMENTREQUEST_0_SHIPTOSTREET'      => $shipstreet,
                 'PAYMENTREQUEST_0_SHIPTOCITY'        => $shippingaddress->city,
@@ -197,11 +184,6 @@ class paypalExpressCheckout extends billingcalculator {
             );
 
             for ($n = 0; $n < count($order->orderitem); $n++) {
-//                $data['L_NAME' . $n]   = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//                $data['L_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
-//                $data['L_QTY' . $n]    = $order->orderitem[$n]->quantity;
-//                $data['L_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
-//                $data['L_AMT' . $n]    = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
                 $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
                 $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
                 $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
@@ -303,27 +285,15 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-//            'VERSION'       => '59.0',
-            'VERSION'                        => '114.0',  //NOTE 121.0 current
+            'VERSION'                        => '114.0',  //NOTE 122.0 current
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
             'TOKEN'                          => $billing_options->result->token,
             'PAYERID'                        => $billing_options->result->PayerID,
-//            'AMT'           => number_format($order->grand_total, 2, '.', ''),
-//            'CURRENCYCODE'  => 'USD',
-//            'INVNUM'        => $invoice_number,
-//            'CUSTOM'        => 'Invoice #' . $invoice_number,
-//            'PAYMENTACTION' => $config['process_mode'],
-//            'ITEMAMT'       => number_format($order->total, 2, '.', ''),
-//            'SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
-//            'TAXAMT'        => number_format($order->tax, 2, '.', ''),
-//            'PAYMENTREQUEST_0_CURRENCYCODE' => 'USD',
-            'PAYMENTREQUEST_0_CURRENCYCODE'  => ECOM_CURRENCY,
-//            'PAYMENTREQUEST_0_INVNUM'        => $invoice_number,
-//            'PAYMENTREQUEST_0_CUSTOM'        => 'Invoice #' . $invoice_number,
             'PAYMENTREQUEST_0_INVNUM'        => $order->invoice_id,
             'PAYMENTREQUEST_0_CUSTOM'        => 'Invoice #' . $order->invoice_id,
             'PAYMENTREQUEST_0_PAYMENTACTION' => $config['process_mode'],
+            'PAYMENTREQUEST_0_CURRENCYCODE'  => ECOM_CURRENCY,
             'PAYMENTREQUEST_0_ITEMAMT'       => number_format($order->total, 2, '.', ''),
             'PAYMENTREQUEST_0_SHIPPINGAMT'   => number_format($order->shipping_total + $order->surcharge_total, 2, '.', ''),
             'PAYMENTREQUEST_0_TAXAMT'        => number_format($order->tax, 2, '.', ''),
@@ -333,11 +303,6 @@ class paypalExpressCheckout extends billingcalculator {
         $it = 0;
         $tt = 0;
         for ($n = 0; $n < count($order->orderitem); $n++) {
-//            $data['L_NAME' . $n]   = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//            $data['L_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
-//            $data['L_QTY' . $n]    = $order->orderitem[$n]->quantity;
-//            $data['L_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
-//            $data['L_AMT' . $n]    = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
             $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
             $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
             $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
@@ -386,13 +351,6 @@ class paypalExpressCheckout extends billingcalculator {
             $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
             $billing_options->result->timestamp = $nvpResArray['TIMESTAMP'];
             $billing_options->result->note = $nvpResArray['NOTE']; //FIXME, what can we do with the note returned?
-//            $billing_options->result->paymenttype   = $nvpResArray['PAYMENTTYPE'];
-//            $billing_options->result->fee_amt = $nvpResArray['FEEAMT'];
-//            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
-//            $billing_options->result->pending_reason = $nvpResArray['PENDINGREASON'];
-//            $billing_options->result->reason_code = $nvpResArray['REASONCODE'];
-//            $billing_options->result->transactionID = $nvpResArray['TRANSACTIONID'];
-//            $transaction_state = $nvpResArray['PAYMENTSTATUS'];
             $billing_options->result->paymenttype = $nvpResArray['PAYMENTINFO_0_PAYMENTTYPE'];
             $billing_options->result->fee_amt = $nvpResArray['PAYMENTINFO_0_FEEAMT'];
             $billing_options->result->payment_status = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
@@ -625,7 +583,7 @@ class paypalExpressCheckout extends billingcalculator {
         return 'X';
     }
 
-    // credit transaction
+    // credit (refund) transaction
     function credit_transaction($method, $amount, $order) {
 //        global $order, $db;
 
@@ -649,6 +607,7 @@ class paypalExpressCheckout extends billingcalculator {
             $nvpStr .= "&NOTE=$memo";
         }
 
+        //FIXME we hard set 'FullRefund' above, so this code is never called
         if (strcasecmp($refundType, 'Partial') == 0) {
             if (!isset($amount)) {
                 exit('Partial Refund Amount is not specified.');
@@ -705,7 +664,7 @@ class paypalExpressCheckout extends billingcalculator {
             $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
         }
 //        $version = urlencode('51.0');
-        $version = urlencode('114.0');  //NOTE 121.0 current
+        $version = urlencode('114.0');  //NOTE 122.0 current
 
         // Set the curl parameters.
         $ch = curl_init();

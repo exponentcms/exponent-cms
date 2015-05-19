@@ -790,9 +790,9 @@ class payflowpro extends creditcard {
         $html .= "Test Mode: " . (($config_object->test_mode) ? "Yes" : "No") . "<br>";
         $html .= "Process Mode: ";
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         }
         $html .= "<br>Accepted Cards:<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";
