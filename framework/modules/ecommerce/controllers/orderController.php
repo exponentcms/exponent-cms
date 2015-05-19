@@ -116,14 +116,18 @@ class orderController extends expController {
 //            $status_where .= ')';
             $sql .= $status_where;
 //        }
-        $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+        if (!empty(ECOM_LARGE_DB)) {
+            $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+        } else {
+            $limit = 0;
+        }
         //eDebug($sql, true);
         $page = new expPaginator(array(
             //'model'=>'order',
             'sql'       => $sql,
             'order'     => 'purchased',
             'dir'       => 'DESC',
-//            'limit'     => $limit,
+            'limit'     => $limit,
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
             'action'    => $this->params['action'],

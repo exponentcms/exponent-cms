@@ -558,10 +558,15 @@ class storeController extends expController {
     function manage() {
         expHistory::set('manageable', $this->params);
 
+        if (!empty(ECOM_LARGE_DB)) {
+            $limit = !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10;
+        } else {
+            $limit = 0;
+        }
         $page = new expPaginator(array(
             'model'      => 'product',
             'where'      => 'parent_id=0',
-//            'limit'      => !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10,
+            'limit'      => $limit,
             'order'      => (isset($this->params['order']) ? $this->params['order'] : 'title'),
             'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'ASC'),
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
