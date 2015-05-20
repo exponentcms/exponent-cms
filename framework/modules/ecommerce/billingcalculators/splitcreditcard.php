@@ -31,17 +31,17 @@ class splitcreditcard extends creditcard {
         return true;
     }
 
-    public function captureEnabled() {
-        return true;
-    }
+//    public function captureEnabled() {
+//        return true;
+//    }
 
-    public function voidEnabled() {
-        return true;
-    }
+//    public function voidEnabled() {
+//        return true;
+//    }
 
-    public function creditEnabled() {
-        return true;
-    }
+//    public function creditEnabled() {
+//        return true;
+//    }
 
     //TODO: I don't think this is used any more but i don't have a clue
     //Called for billing method selection screen, return true if it's a valid billing method.

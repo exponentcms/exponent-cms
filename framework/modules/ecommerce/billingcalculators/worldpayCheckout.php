@@ -44,17 +44,17 @@ class worldpayCheckout extends billingcalculator {
         return gt("Enabling this payment option will allow your customers to use their worldpay account to make purchases.");
     }
 
-    public function captureEnabled() {
-        return true;
-    }
+//    public function captureEnabled() {
+//        return true;
+//    }
 
-    public function voidEnabled() {
-        return true;
-    }
+//    public function voidEnabled() {
+//        return true;
+//    }
 
-    public function creditEnabled() {
-        return true;
-    }
+//    public function creditEnabled() {
+//        return true;
+//    }
 
     /**
      * Does this billing calculator have a User Form?
