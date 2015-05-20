@@ -88,7 +88,8 @@
 	text-transform : capitalize;
 }
 
-#admintoolbar li.events a.yuimenubaritemlabel, #admintoolbar li.events a.yuimenuitemlabel {
+#admintoolbar li.events a.yuimenubaritemlabel,
+#admintoolbar li.events a.yuimenuitemlabel {
 	background : url(../images/admintoolbar/calendar_1.png) no-repeat 5px 40%;
 }
 
@@ -114,6 +115,7 @@
 	background : url(../images/admintoolbar/layout_content.png) no-repeat 5px 50%;
 }
 
+#admintoolbar li.order a.yuimenubaritemlabel,
 #admintoolbar li.orders a.yuimenuitemlabel {
 	background : url(../images/admintoolbar/doc_page.png) no-repeat 5px 50%;
 }

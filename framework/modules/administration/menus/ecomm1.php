@@ -118,11 +118,11 @@ expCSS::pushToHead(
 );
 
 return array(
-    'text' => '<span class="orders label label-success">' . $new_orders . '</span>',
+    'text' => ' <span class="orders label label-success">' . $new_orders . '</span>',
     'icon' => 'fa-list-ul',
-    'classname' => 'orders',
+    'classname' => 'order',
     'submenu' => array(
-        'id' => 'events',
+        'id' => 'orders',
         'itemdata' => $items,
     )
 );
