@@ -56,7 +56,7 @@ spectrum,1.7.0,http://bgrins.github.io/spectrum/,1.7.0,
 tag-it,2,http://aehlke.github.io/tag-it/,2,renamed css file to same as js file for our loader
 multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
-colorbox,1.6.0,http://www.jacklmoore.com/colorbox,1.6.1,using style #5 renamed to jquery.colorbox.css
+colorbox,1.6.1,http://www.jacklmoore.com/colorbox,1.6.1,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.3exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.3,added additional 'update' method and click update if inline
 pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.5,
@@ -71,7 +71,7 @@ bootstrap-duallistbox,3.0.2,https://github.com/istvan-ujjmeszaros/bootstrap-dual
 select2,3.5.2,https://github.com/ivaynberg/select2,4.0.0,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using fileinput at this time
 Jasny Bootstrap,3.1.3,http://jasny.github.io/bootstrap,3.1.3,only using fileinput at this time
-easypost sdk,2.1.0,"https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=2&cad=rja&uact=8&ved=0CCUQFjAB&url=https%3A%2F%2Fgithub.com%2FEasyPost%2Feasypost-php&ei=CPdZVfLfIJHboATX0YPQCg&usg=AFQjCNEplkxQXmlPYbtXGVt3xMRz1F78tw&sig2=NsGS2OGCMXh7z5K3uGKBGw&bvm=bv.93564037,d.cGU",2.1.0,
+easypost sdk,2.1.0,https://github.com/EasyPost/easypost-php,2.1.0,
 ,,,,
 Not included yet,,,,
 Webshim,1.15.7,https://github.com/aFarkas/webshim,1.15.7,
