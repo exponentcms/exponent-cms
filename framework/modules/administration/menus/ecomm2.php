@@ -78,6 +78,7 @@ $items = array(
                 'product_type' => 'eventregistration'
             )
         ),
+        'divider' => true,
     )
 );
 $ev = new eventregistration();

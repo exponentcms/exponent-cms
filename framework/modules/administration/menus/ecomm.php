@@ -28,6 +28,7 @@ if (!$user->isAdmin() || empty($active)) {
 }
 
 $new_orders = order::getOrdersCount('new');
+$open_orders = order::getOrdersCount('open');
 if ($new_orders > 0) {
     $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new orders') . '</em>';
 } else {
@@ -42,7 +43,7 @@ $ecom = array(
         'id'       => 'ecomm',
         'itemdata' => array(
             array(
-                'text'      => $newo . '<form role="form" id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt(
+                'text'      => $newo . '<form role="form" id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input class="form-control" style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt(
                         "Order Quickfinder"
                     ) . '"></form>',
                 'info'      => '1',
@@ -67,8 +68,8 @@ $ecom = array(
                     'id'       => 'ordermenu',
                     'itemdata' => array(
                         array(
-                            'text'      => gt("View Orders") . " <em>(" . $new_orders . "  " . gt(
-                                    "New Orders"
+                            'text'      => gt("Manage Orders") . " <em>(" . $open_orders . "  " . gt(
+                                    "Open Orders"
                                 ) . ")</em>",
                             'icon'      => 'fa-search',
                             'classname' => 'search',
