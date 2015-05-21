@@ -453,7 +453,7 @@
                                         {$bt->getPoster()}
                                     </td>
                                     <td>
-                                        {if $bt->transaction_state == "authorized"}
+                                        {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
                                             {if $bt->captureEnabled() == true}
                                                 {form action=captureAuthorization}
                                                     {control type="hidden" name="id" value=$order->id}
@@ -468,7 +468,7 @@
                                                 {/form}
                                             {/if}
                                         {/if}
-                                        {if $bt->transaction_state == "complete"}
+                                        {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
                                             {if $billing->calculator != null && $bt->creditEnabled() == true}
                                                 {form action=creditTransaction}
                                                     {control type="hidden" name="id" value=$order->id}

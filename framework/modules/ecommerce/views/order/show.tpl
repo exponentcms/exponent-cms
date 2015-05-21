@@ -161,7 +161,7 @@
                     <table class="order-info">
                     <thead>
                         <tr>
-                            <th colspan="2">{'Transaction state:'|gettext} {$bt->transaction_state}.</th>
+                            <th colspan="2">{'Transaction state:'|gettext} {$bt->transaction_state}</th>
                         </tr> 
                     </thead>
                     <tbody>     
@@ -182,7 +182,7 @@
                     {if $permissions.manage && $smarty.foreach.foo.first}
                         <tr>
                             <td>
-                            {if $bt->transaction_state == "authorized"}
+                            {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
                                 {if $bt->captureEnabled() == true}
                                     {form action=captureAuthorization}
                                         {control type="hidden" name="id" value=$order->id}
