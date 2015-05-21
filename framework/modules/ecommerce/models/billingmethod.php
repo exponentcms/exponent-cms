@@ -39,12 +39,13 @@ class billingmethod extends expRecord {
                 'paylater' => 'Billed'
             );
 
-    /*function __construct($params=null, $get_assoc=true, $get_attached=true) {
-        global $db;
-        parent::__construct(null, true,true);
-        eDebug($this);
-        $this->billingtransaction = array_reverse($this->billingtransaction);    
-    }*/
+    function __construct($params=null, $get_assoc=true, $get_attached=true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+//        $this->billingtransaction = array_reverse($this->billingtransaction);
+
+//         // unpack the billing_options data
+        $this->billing_options = empty($this->billing_options) ? array() : unserialize($this->billing_options);
+    }
      
 	public function setAddress($address) {
 		$address = is_numeric($address) ? new address($address) : $address;

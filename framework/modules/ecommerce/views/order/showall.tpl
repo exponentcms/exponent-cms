@@ -90,7 +90,7 @@
                     <td>
                         <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
                     </td>
-                    <td style="text-align:right;"><span style="padding:3px;border-radius:5px;background-color:{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}darkseagreen{else}lightgray{/if};" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
+                    <td style="text-align:right;"><span style="padding:3px;border-radius:5px;background-color:{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}darkseagreen{else}lightgray{/if};" title="{if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                     <td>{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>

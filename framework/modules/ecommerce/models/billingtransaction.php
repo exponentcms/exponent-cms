@@ -23,7 +23,14 @@
 class billingtransaction extends expRecord {
     public $has_one = array('billingcalculator'); 
 	public $table = 'billingtransactions';
-    
+
+    public function __construct($params=null, $get_assoc=true, $get_attached=true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+
+        // unpack the billing_options data
+        $this->billing_options = empty($this->billing_options) ? array() : expUnserialize($this->billing_options);
+    }
+
     public function captureEnabled() 
     {
         return $this->billingcalculator->calculator->captureEnabled(); 
@@ -31,12 +38,12 @@ class billingtransaction extends expRecord {
     
     public function voidEnabled() 
     {
-        return $this->billingcalculator->calculator->captureEnabled();
+        return $this->billingcalculator->calculator->voidEnabled();
     }
     
     public function creditEnabled() 
     {
-        return $this->billingcalculator->calculator->captureEnabled(); 
+        return $this->billingcalculator->calculator->creditEnabled();
     }
     
     public function getRefNum()

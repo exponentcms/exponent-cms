@@ -62,7 +62,7 @@ class billing extends expRecord {
             }
             $billingAddy = $address->find('first', 'user_id='.$user->id.' AND is_billing=1');
             $order->billingmethod[0]->setAddress($billingAddy);
-        }else{
+        } else {
             $order = new order($id);        
             if (empty($order->id)) return false;                    
         }
@@ -98,7 +98,7 @@ class billing extends expRecord {
         
         $this->billingmethod = $order->billingmethod[0];
         
-        $options = unserialize($this->billingmethod->billing_options);
+        $options = expUnserialize($this->billingmethod->billing_options);
 //        $this->info = empty($this->calculator->id) ? '' : $this->calculator->userView($options);
         $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
 

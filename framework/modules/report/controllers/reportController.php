@@ -847,7 +847,7 @@ class reportController extends expController {
         $res = $db->selectObjectsBySql($sql);
         if (!empty($res)) {
             foreach ($res as $item) {
-                $options = unserialize($item->billing_options);
+                $options = expUnserialize($item->billing_options);
                 if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
                     if ($item->title == 'Credit Card') {  //FIXME this is translated??
