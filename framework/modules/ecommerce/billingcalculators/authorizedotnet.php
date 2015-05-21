@@ -58,7 +58,7 @@ class authorizedotnet extends creditcard {
         return true;
     }
 
-    function process($method, $opts, $params, $order, $invNum) {
+    function process($method, $opts, $params, $order) {
 
 //        global $order, $db, $user;
         global $db, $user;
