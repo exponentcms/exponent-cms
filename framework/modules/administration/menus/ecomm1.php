@@ -109,7 +109,8 @@ expCSS::pushToHead(
        padding: 2px 3px;
        line-height: .9;
    }
-    .exp-skin .navbar-inverse .badge.alert-success {
+    .exp-skin .navbar-inverse .badge.alert-success,
+    .yuimenuitemlabel .badge.alert-success {
       background-color: #dff0d8;
       border-color: #d6e9c6;
       color: #468847;
@@ -122,7 +123,7 @@ return array(
     'icon' => 'fa-list-ul',
     'classname' => 'order',
     'submenu' => array(
-        'id' => 'orders',
+        'id' => 'orders2',
         'itemdata' => $items,
     )
 );

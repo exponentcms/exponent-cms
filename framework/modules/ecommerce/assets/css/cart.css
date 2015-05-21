@@ -372,6 +372,7 @@ table#cart table td {
 
 #shipping-method-options .shippingmethodimg {
 	float : left;
+	margin-right: 22px;
 }
 
 #shipping-method-options .sm-info {
