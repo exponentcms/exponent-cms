@@ -88,7 +88,7 @@ class billingcalculator extends expRecord {
         $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
         $billinginfo .= '<tbody>';
-        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '<: /td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . ': </td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Authorization #") . ': </td><td class="pmt-value">' . $this->getPaymentAuthorizationNumber($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Reference #") . ': </td><td class="pmt-value">' . $this->getPaymentReferenceNumber($billingmethod) . '</td></tr>';

@@ -98,7 +98,7 @@ class cartController extends expController {
 
             }
             // adjust multiple quantity here
-            if (((int)$this->params['quantity']) % $product->multiple_order_quantity) {
+            if ($product->multiple_order_quantity && ((int)$this->params['quantity']) % $product->multiple_order_quantity) {
                 flash('message', gt("Please enter a quantity in multiples of") . ' ' . $product->multiple_order_quantity);
                 redirect_to(array('controller'=> 'store', 'action'=> 'show', 'id'=> $this->params['product_id']));
             } else {

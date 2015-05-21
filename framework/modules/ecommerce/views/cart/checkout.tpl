@@ -281,7 +281,11 @@
 
                         <div id="shipping-services">
                             <h3>{"Selected Shipping Option"|gettext}</h3>
-                            {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
+                            {if bs2()}
+                                {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.bootstrap.tpl"}
+                            {else}
+                                {include file="`$smarty.const.BASE`framework/modules/ecommerce/views/shipping/renderOptions.tpl"}
+                            {/if}
                         </div>
 
                         {*<h3>{"Shipping Address"|gettext}</h3>*}
