@@ -45,28 +45,58 @@
 	background : url(../images/admintoolbar/ecom.png) no-repeat 5px 40%;
 }
 
-#admintoolbar li.ecom form {
-	display        : inline-block;
-	*display       : inline;
-	zoom           : 1;
-	vertical-align : top;
-	margin         : 0;
+/*#admintoolbar li.ecom form {*/
+	/*display        : inline-block;*/
+	/**display       : inline;*/
+	/*zoom           : 1;*/
+	/*vertical-align : top;*/
+	/*margin         : 0;*/
+/*}*/
+
+/*#admintoolbar li.ecom form input {*/
+	/*margin-left           : 5px;*/
+	/*margin-bottom         : 0;*/
+	/*font-size             : 10px;*/
+	/*height:10px;*/
+	/*padding               : 3px;*/
+	/*line-height           : 12px;*/
+	/*position              : relative;*/
+	/*top                   : -4px;*/
+	/*background            : #dde;*/
+	/*-moz-border-radius    : 3px; *//* FF1+ */
+	/*-webkit-border-radius : 3px; *//* Saf3+, Chrome */
+	/*border-radius         : 3px;*/
+	/*border                : 1px solid #0D1740;*/
+/*}*/
+
+li > a > .orders.label,
+li > a > .event.label {
+	/*position: absolute;*/
+	/*top: 9px;*/
+	text-align: center;
+	font-size: 9px;
+	padding: 2px 3px;
+	line-height: .9;
+	margin-left: -5px;
 }
 
-#admintoolbar li.ecom form input {
-	margin-left           : 5px;
-	margin-bottom         : 0;
-	font-size             : 10px;
-	/*height:10px;*/
-	padding               : 3px;
-	line-height           : 12px;
-	position              : relative;
-	top                   : -4px;
-	background            : #dde;
-	-moz-border-radius    : 3px; /* FF1+ */
-	-webkit-border-radius : 3px; /* Saf3+, Chrome */
-	border-radius         : 3px;
-	border                : 1px solid #0D1740;
+.yuimenuitemlabel .badge {
+	margin-left: 5px;
+}
+
+.yuimenuitemlabel .badge.alert-success {
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+	color: #468847;
+}
+
+#orders2 form,
+#orders2 input.form-control,
+#ecomm form,
+#orderQuickfinder input.form-control {
+	min-width: 200px;
+	padding-top: 3px;
+    margin-bottom: 0;
 }
 
 #admintoolbar input[type="text"] {

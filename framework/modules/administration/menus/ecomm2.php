@@ -108,21 +108,6 @@ foreach ($events as $event) {
     }
 }
 
-expCSS::pushToHead(
-    array(
-        "unique" => 'event_note',
-        "css" => '
-   .navbar .nav>li>a>.event.label {
-       position: absolute;
-       top: 9px;
-       text-align: center;
-       font-size: 9px;
-       padding: 2px 3px;
-       line-height: .9;
-   }',
-    )
-);
-
 if (bs3()) {
     $items = array_merge($items1, $items2);
 } else {
