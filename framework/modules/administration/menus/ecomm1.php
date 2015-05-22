@@ -41,7 +41,7 @@ $recent_orders = $order->find('all', 'purchased !=0 AND order_status_id = ' . $n
 // BUILD THE MENU
 /////////////////////////////////////////////////////////////////////////
 
-$items = array(
+$items1 = array(
     array(
         'text' => $newo . '<form role="form" id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input class="form-control" style="padding-top: 3px;" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt(
                 "Order Quickfinder"
@@ -50,7 +50,7 @@ $items = array(
         'classname' => 'order-qf',
     ),
 );
-$items[] = array(
+$items1[] = array(
     'text' => gt("Manage Orders") . " <em>(" . $open_orders . "  " . gt(
             "Open Orders"
         ) . ")</em>",
@@ -63,8 +63,8 @@ $items[] = array(
         )
     ),
 );
-$items[] = array(
-    'text' => gt("Create Order"),
+$items1[] = array(
+    'text' => gt("Create an Order"),
     'icon' => 'fa-plus-circle',
     'classname' => 'add',
     'url' => makeLink(
@@ -76,15 +76,12 @@ $items[] = array(
     'divider' => true,
 );
 
+$items2 = array();
 foreach ($recent_orders as $ord) {
-    $items[] = array(
-        'text' => count($ord->orderitem) . ' ' . gt('item') . (count($ord->orderitem) > 1 ? 's' : '') . ' ' . gt(
-                'ordered on'
-            ) . ' ' . expDateTime::format_date($ord->purchased) . ' <span class="badge ' . ((strtolower(
-                    $ord->billingmethod[0]->transaction_state
-                ) == 'complete' || strtolower(
-                    $ord->billingmethod[0]->transaction_state
-                ) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrencySymbol() . $ord->grand_total . '</span>',
+    $items2[] = array(
+        'text' => count($ord->orderitem) . ' ' . gt('item') . (count($ord->orderitem) > 1 ? 's' : '') . ' ' . gt('ordered on') . ' ' . expDateTime::format_date($ord->purchased) .
+            ' <span class="badge ' . ((strtolower($ord->billingmethod[0]->transaction_state) == 'complete' ||
+            strtolower($ord->billingmethod[0]->transaction_state) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrencySymbol() . $ord->grand_total . '</span>',
         'icon' => 'fa-file text-success',
         'classname' => 'search',
         'url' => makeLink(
@@ -118,6 +115,11 @@ expCSS::pushToHead(
     )
 );
 
+if (bs3()) {
+    $items = array_merge($items1, $items2);
+} else {
+    $items = array($items1, $items2);
+}
 return array(
     'text' => ' <span class="orders label label-success">' . $new_orders . '</span>',
     'icon' => 'fa-list-ul',

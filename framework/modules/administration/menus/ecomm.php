@@ -81,7 +81,7 @@ $ecom = array(
                             ),
                         ),
                         array(
-                            'text'      => gt("Create Order"),
+                            'text'      => gt("Create an Order"),
                             'icon'      => 'fa-plus-circle',
                             'classname' => 'add',
                             'url'       => makeLink(
@@ -146,17 +146,6 @@ $ecom = array(
                     'id'       => 'prodscats',
                     'itemdata' => array(
                         array(
-                            'text'      => gt("Add a Product"),
-                            'icon'      => 'fa-plus-circle',
-                            'classname' => 'add',
-                            'url'       => makeLink(
-                                array(
-                                    'controller' => 'store',
-                                    'action'     => 'create'
-                                )
-                            ),
-                        ),
-                        array(
                             'text'      => gt("Manage Products"),
                             'icon'      => 'fa-cog',
                             'classname' => 'manage',
@@ -164,6 +153,17 @@ $ecom = array(
                                 array(
                                     'controller' => 'store',
                                     'action'     => 'manage'
+                                )
+                            ),
+                        ),
+                        array(
+                            'text'      => gt("Add a Product"),
+                            'icon'      => 'fa-plus-circle',
+                            'classname' => 'add',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action'     => 'create'
                                 )
                             ),
                         ),
@@ -247,6 +247,39 @@ $ecom = array(
                                 )
                             )
                         ),
+                    ),
+                ),
+            ),
+            array(
+                'text'    => gt("Events"),
+                'icon'      => 'fa-calendar',
+                'classname' => 'events',
+                'submenu' => array(
+                    'id'       => 'purchase-order',
+                    'itemdata' => array(
+                        array(
+                            'text'      => gt('Manage Event Registrations'),
+                            'icon'      => 'fa-calendar-o',
+                            'classname' => 'events',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'eventregistration',
+                                    'action' => 'manage'
+                                )
+                            ),
+                        ),
+                        array(
+                            'text'      => gt('Add an event'),
+                            'icon'      => 'fa-plus-circle',
+                            'classname' => 'add',
+                            'url'       => makeLink(
+                                array(
+                                    'controller' => 'store',
+                                    'action' => 'edit',
+                                    'product_type' => 'eventregistration'
+                                )
+                            ),
+                        )
                     ),
                 ),
             ),
