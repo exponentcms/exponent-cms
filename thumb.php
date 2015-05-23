@@ -36,7 +36,7 @@ if (isset($_GET['id'])) {
         $_GET['id'],
         $_GET['square']
     );
-} else if (isset($_GET['src']) && substr($_GET['src'],0,1) != '/') {
+} else if (isset($_GET['src']) && substr($_GET['src'],0,1) != '/' && substr($_GET['src'],0,4) != 'http') {
     $_GET['src'] = PATH_RELATIVE . $_GET['src'];  //kludge since phpThumb v1.17.2+ needs a full path to work correctly
 }
 require_once(BASE."external/phpThumb/phpThumb.php");
