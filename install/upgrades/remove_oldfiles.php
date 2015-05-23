@@ -339,6 +339,9 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/ecommerce/definitions/external_addresses.php',
             'framework/modules/ecommerce/models/external_address.php',
              // ecommerce renamed views
+            'framework/modules/administration/menus/upcomingevents.php',
+            'framework/modules/administration/menus/user.php',
+            'framework/modules/administration/menus/z-navigation.php',
             'framework/modules/ecommerce/views/store/showall_featured_products.tpl',
             'framework/modules/ecommerce/views/store/events_calendar.tpl',
             'framework/modules/ecommerce/views/store/search_by_model_old.tpl',
