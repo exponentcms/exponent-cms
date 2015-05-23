@@ -3,7 +3,7 @@ Swift,5.4.0,swiftmailer.org,5.4.0,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.21,smarty.net,3.1.21,
-phpthumb,1.7.11,https://github.com/JamesHeinrich/phpThumb,1.7.14-201503301816,phpThumb.config.php - we set the cache folder and allow &amp in parsing
+phpthumb,1.7.14-201503301816,https://github.com/JamesHeinrich/phpThumb,1.7.14-201503301816,phpThumb.config.php - we set the cache folder and allow &amp in parsing
 minify,2.2.1,github.com/mrclay/minify,2.2.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,

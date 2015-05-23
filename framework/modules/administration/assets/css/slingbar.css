@@ -78,16 +78,25 @@ li > a > .event.label {
 	padding: 2px 3px;
 	line-height: .9;
 	margin-left: -5px;
+	padding:3px;
+	border-radius:5px;
+	background-color:lightgray;
+	color: #000000;
 }
 
 .yuimenuitemlabel .badge {
-	margin-left: 5px;
+	padding:3px;
+	border-radius:5px;
+	background-color:lightgray;
+	color: #000000;
 }
 
+li > a > .orders.label.label-success,
+li > a > .event.label.label-success,
 .yuimenuitemlabel .badge.alert-success {
 	background-color: #dff0d8;
 	border-color: #d6e9c6;
-	color: #468847;
+	color: #285028;
 }
 
 #orders2 form,
