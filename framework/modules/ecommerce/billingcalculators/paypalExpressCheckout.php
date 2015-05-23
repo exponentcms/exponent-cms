@@ -200,42 +200,42 @@ class paypalExpressCheckout extends billingcalculator {
 
             $nvpResArray = $this->paypalApiCall($data);
 
-            $object = new stdClass();
+//            $object = new stdClass();
             if (!empty($nvpResArray['curl_error'])) {
                 //curl error
-                $object->errorCode = $nvpResArray['curl_errno']; //Response reason code
-                $object->message = $nvpResArray['curl_error'];
+                $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+                $opts->result->message = $nvpResArray['curl_error'];
 
-                $opts->result = $object;
+//                $opts->result = $object;
                 $billingmethod->update(array('billing_options' => serialize($opts)));
             } elseif ($nvpResArray['ACK'] == 'Error' || $nvpResArray['ACK'] == 'Failure' || $nvpResArray['ACK'] == 'FailureWithWarning' || $nvpResArray['ACK'] == 'Warning') {
                 // paypal error
-                $object->errorCode = "";
-                $object->message = gt("The following errors occurred") . ": ";
+                $opts->result->errorCode = "";
+                $opts->result->message = gt("The following errors occurred") . ": ";
 
                 // its possible there are more than one error. 
                 foreach ($nvpResArray as $k => $v) {
                     if (is_array($v)) {
-                        $object->errorCode .= $v['ERRORCODE'] . ", ";
-                        $object->message .= $v['LONGMESSAGE'] . ", ";
+                        $opts->result->errorCode .= $v['ERRORCODE'] . ", ";
+                        $opts->result->message .= $v['LONGMESSAGE'] . ", ";
 //                        $object->errorCode .= $v['L_ERRORCODE0'].", ";
 //                        $object->message .= $v['L_LONGMESSAGE0'].", ";
                     }
                 }
                 // remove the trailing ", " (comma space)
-                $object->errorCode = preg_replace("/,\s$/", "", $object->errorCode);
-                $object->message = preg_replace("/,\s$/", ".", $object->message);
+                $opts->result->errorCode = preg_replace("/,\s$/", "", $opts->result->errorCode);
+                $opts->result->message = preg_replace("/,\s$/", ".", $opts->result->message);
 
-                $opts->result = $object;
+//                $opts->result = $object;
                 $billingmethod->update(array('billing_options' => serialize($opts)));
             } else {
                 // Approved
-                $object->errorCode = 0;
-                $object->message = gt("SetExpressCheckout successfully returned token.");
-                $object->token = $nvpResArray['TOKEN'];
-                $object->correlationID = $nvpResArray['CORRELATIONID'];
+                $opts->result->errorCode = 0;
+                $opts->result->message = gt("SetExpressCheckout successfully returned token.");
+                $opts->result->token = $nvpResArray['TOKEN'];
+                $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
 
-                $opts->result = $object;
+//                $opts->result = $object;
                 $billingmethod->update(array('billing_options' => serialize($opts)));
 
                 // redirect to PayPal checkout
@@ -244,32 +244,30 @@ class paypalExpressCheckout extends billingcalculator {
         } else {  // 2nd time through before displaying checkout confirm
             //eDebug($params);
             //eDebug($billingmethod);
-            $object = expUnserialize($billingmethod->billing_options);
+//            $object = expUnserialize($billingmethod->billing_options);
             //eDebug($object,true);
-            if ($object->result->token == $params['token']) {
-                $object->result->errorCode = 0;
-                $object->result->message = gt("User has approved the payment at PayPal");
-                $object->result->PayerID = $params['PayerID'];
-                $object->result->payment_status = 'pending';
-                $object->result->transId = gt('not yet assigned');
-                $billingmethod->update(array('billing_options' => serialize($object)));
-                return $object;
+            if ($opts->result->token == $params['token']) {
+                $opts->result->errorCode = 0;
+                $opts->result->message = gt("User has approved the payment at PayPal");
+                $opts->result->PayerID = $params['PayerID'];
+                $opts->result->payment_status = 'pending';
+                $opts->result->transId = gt('not yet assigned');
+                $billingmethod->update(array('billing_options' => serialize($opts)));
+                return $opts->result;
             } else {
-                $object->result->errorCode = 1;
-                $object->result->message = gt("PayPal Token Mismatch");
-                $object->result->PayerID = $params['PayerID'];
-                $billingmethod->update(array('billing_options' => serialize($object)));
-                return $object;
+                $opts->result->errorCode = 1;
+                $opts->result->message = gt("PayPal Token Mismatch");
+                $opts->result->PayerID = $params['PayerID'];
+                $billingmethod->update(array('billing_options' => serialize($opts)));
+                return $opts->result;
             }
         }
-        return $object;
+        return $opts->result;
     }
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-//        global $order, $db, $user;
-
-        $billing_options = expUnserialize($billingmethod->billing_options);
+//        $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
@@ -291,8 +289,8 @@ class paypalExpressCheckout extends billingcalculator {
             'VERSION'                        => '122.0',  //NOTE 122.0 current
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
-            'TOKEN'                          => $billing_options->result->token,
-            'PAYERID'                        => $billing_options->result->PayerID,
+            'TOKEN'                          => $opts->result->token,
+            'PAYERID'                        => $opts->result->PayerID,
             'PAYMENTREQUEST_0_INVNUM'        => $order->invoice_id,
             'PAYMENTREQUEST_0_CUSTOM'        => 'Invoice #' . $order->invoice_id,
             'PAYMENTREQUEST_0_PAYMENTACTION' => $config['process_mode'],
@@ -330,8 +328,8 @@ class paypalExpressCheckout extends billingcalculator {
         //around to check for succcess ONLY and then default to an error otherwise    
         if (!empty($nvpResArray['curl_error'])) {
             //curl error            
-            $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
-            $billing_options->result->message = $nvpResArray['curl_error'];
+            $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+            $opts->result->message = $nvpResArray['curl_error'];
 
             //$opts->result = $object;                
             $transaction_state = "Temporary Failure";
@@ -344,57 +342,58 @@ class paypalExpressCheckout extends billingcalculator {
             [CURRENCYCODE] => USD [PAYMENTSTATUS] => Pending [PENDINGREASON] => paymentreview [REASONCODE] => None 
             [PROTECTIONELIGIBILITY] => Ineligible 
             */
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = 0;
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
-                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+                $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
 //                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
             } else {
-                $billing_options->result->message = $nvpResArray['ACK'];
+                $opts->result->message = $nvpResArray['ACK'];
             }
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $billing_options->result->timestamp = $nvpResArray['TIMESTAMP'];
-            $billing_options->result->note = $nvpResArray['NOTE']; //FIXME, what can we do with the note returned?
-            $billing_options->result->transId = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
-            $billing_options->result->paymenttype = $nvpResArray['PAYMENTINFO_0_PAYMENTTYPE'];
-            $billing_options->result->amt = $nvpResArray['PAYMENTINFO_0_AMT'];
-            $billing_options->result->fee_amt = $nvpResArray['PAYMENTINFO_0_FEEAMT'];
-            $billing_options->result->settle_amt = $nvpResArray['PAYMENTINFO_0_SETTLEAMT'];
-            $billing_options->result->payment_status = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
-            $billing_options->result->pending_reason = $nvpResArray['PAYMENTINFO_0_PENDINGREASON'];
-            $billing_options->result->reason_code = $nvpResArray['PAYMENTINFO_0_REASONCODE'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->timestamp = $nvpResArray['TIMESTAMP'];
+            $opts->result->note = $nvpResArray['NOTE']; //FIXME, what can we do with the note returned?
+            $opts->result->transId = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
+            $opts->result->paymenttype = $nvpResArray['PAYMENTINFO_0_PAYMENTTYPE'];
+            $opts->result->amt = $nvpResArray['PAYMENTINFO_0_AMT'];
+            $opts->result->fee_amt = $nvpResArray['PAYMENTINFO_0_FEEAMT'];
+            $opts->result->settle_amt = $nvpResArray['PAYMENTINFO_0_SETTLEAMT'];
+            $opts->result->payment_status = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
+            $opts->result->pending_reason = $nvpResArray['PAYMENTINFO_0_PENDINGREASON'];
+            $opts->result->reason_code = $nvpResArray['PAYMENTINFO_0_REASONCODE'];
 //            $billing_options->result->transactionID = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
             $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
 //            $trax_state = "complete";//FIXME only true if mode is 'sale'
-            $trax_state = $billing_options->result->payment_status;
-            if ($trax_state == 'Pending' && $billing_options->result->pending_reason == 'authorization') {
+            $trax_state = $opts->result->payment_status;
+            if ($trax_state == 'Pending' && $opts->result->pending_reason == 'authorization') {
                 $trax_state = 'authorized';  // authorized awaiting capture
             } elseif ($trax_state == 'Completed') {
                 $trax_state = 'complete';  // captured
             }
         } else {  // PayPal error response
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = $nvpResArray[0]['ERRORCODE'];
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
-            if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
-            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
-            $billing_options->result->payment_status = 'error';
+            if (!$opts->result->errorCode)
+                $opts->result->errorCode = "1010";
+            $opts->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+            $opts->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
 //            $trax_state = "error";
-            $trax_state = $billing_options->result->payment_status;
+            $trax_state = $opts->result->payment_status;
         }
         //eDebug($billing_options,true);                                                               
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
-        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $billing_options->result, $trax_state);
-        return $billing_options->result;
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
 
     }
 
     function delayed_capture($billingmethod, $amount , $order) {
-        $billing_options = expUnserialize($billingmethod->billing_options);
+        $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
@@ -413,7 +412,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'AUTHORIZATIONID'                => $billing_options->result->transId,
+            'AUTHORIZATIONID'                => $opts->result->transId,
             'AMT'                            => number_format($amount, 2, '.', ''),
             'COMPLETETYPE'                   => 'Complete',  // or 'NotComplete'
             // optional parameters
@@ -426,30 +425,30 @@ class paypalExpressCheckout extends billingcalculator {
         $nvpResArray = $this->paypalApiCall($data);
 
         if (!empty($nvpResArray['curl_error'])) {  //curl error
-            $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
-            $billing_options->result->message = $nvpResArray['curl_error'];
+            $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+            $opts->result->message = $nvpResArray['curl_error'];
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
         } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = 0;
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
-                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+                $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
-                $billing_options->result->message = $nvpResArray['ACK'];
+                $opts->result->message = $nvpResArray['ACK'];
             }
-            $billing_options->result->transId = $nvpResArray['TRANSACTIONID'];
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $billing_options->result->timestamp = $nvpResArray['ORDERTIME'];
-            $billing_options->result->paymenttype = $nvpResArray['PAYMENTTYPE'];
-            $billing_options->result->amt = $nvpResArray['AMT'];
-            $billing_options->result->fee_amt = $nvpResArray['FEEAMT'];
-            $billing_options->result->settle_amt = $nvpResArray['SETTLEAMT'];
-            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
-            $billing_options->result->pending_reason = $nvpResArray['PENDINGREASON'];
+            $opts->result->transId = $nvpResArray['TRANSACTIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->timestamp = $nvpResArray['ORDERTIME'];
+            $opts->result->paymenttype = $nvpResArray['PAYMENTTYPE'];
+            $opts->result->amt = $nvpResArray['AMT'];
+            $opts->result->fee_amt = $nvpResArray['FEEAMT'];
+            $opts->result->settle_amt = $nvpResArray['SETTLEAMT'];
+            $opts->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
+            $opts->result->pending_reason = $nvpResArray['PENDINGREASON'];
             $transaction_state = $nvpResArray['PAYMENTSTATUS'];
-            $trax_state = $billing_options->result->payment_status;
+            $trax_state = $opts->result->payment_status;
             if ($trax_state == 'Completed') {
                 if ($amount != $order->grand_total) { //FIXME what about multiple captures?
                     $trax_state = 'authorized';  // awaiting additional capture
@@ -458,28 +457,29 @@ class paypalExpressCheckout extends billingcalculator {
                 }
             }
         } else {  // PayPal error response
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = $nvpResArray[0]['ERRORCODE'];
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
-            if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
-            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
-            $billing_options->result->payment_status = 'error';
+            if (!$opts->result->errorCode)
+                $opts->result->errorCode = "1010";
+            $opts->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+            $opts->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
 //            $trax_state = "error";
-            $trax_state = $billing_options->result->payment_status;
+            $trax_state = $opts->result->payment_status;
         }
 
         //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
-        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $billing_options->result, $trax_state);
-        return $billing_options->result;
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     function void_transaction($billingmethod, $order) {
-        $billing_options = expUnserialize($billingmethod->billing_options);
+        $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
@@ -498,7 +498,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'AUTHORIZATIONID'                => $billing_options->result->transId,
+            'AUTHORIZATIONID'                => $opts->result->transId,
             // optional parameters
             'VERSION'                        => '122.0',  //NOTE 122.0 current
             'NOTE'                           => '',
@@ -507,49 +507,50 @@ class paypalExpressCheckout extends billingcalculator {
         $nvpResArray = $this->paypalApiCall($data);
 
         if (!empty($nvpResArray['curl_error'])) {  //curl error
-            $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
-            $billing_options->result->message = $nvpResArray['curl_error'];
+            $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+            $opts->result->message = $nvpResArray['curl_error'];
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
         } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = 0;
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
-                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+                $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
-                $billing_options->result->message = $nvpResArray['ACK'];
+                $opts->result->message = $nvpResArray['ACK'];
             }
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $billing_options->result->transId = $nvpResArray['AUTHORIZATIONID'];
-//            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->transId = $nvpResArray['AUTHORIZATIONID'];
+//            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];  //FIXME we probably need a payment_status
 //            $billing_options->result->pending_reason = $nvpResArray['PENDINGREASON'];
             $transaction_state = "void";
             $trax_state = "void";
         } else {  // PayPal error response
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = $nvpResArray[0]['ERRORCODE'];
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
-            if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
-            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
-            $billing_options->result->payment_status = 'error';
+            if (!$opts->result->errorCode)
+                $opts->result->errorCode = "1010";
+            $opts->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+            $opts->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
 //            $trax_state = "error";
-            $trax_state = $billing_options->result->payment_status;
+            $trax_state = $opts->result->payment_status;
         }
 
         //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
-        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, 0, $billing_options->result, $trax_state);
-        return $billing_options->result;
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($billingmethod, 0, $opts->result, $trax_state);
+        return $opts->result;
     }
 
     // credit (refund) transaction
     function credit_transaction($billingmethod, $amount, $order) {
-        $billing_options = expUnserialize($billingmethod->billing_options);
+        $opts = expUnserialize($billingmethod->billing_options);
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
@@ -577,7 +578,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'TRANSACTIONID'                  => $billing_options->result->transId,
+            'TRANSACTIONID'                  => $opts->result->transId,
             'REFUNDTYPE'                     => $refundType,
             'AMT'                            => $amount,
             // optional parameters
@@ -589,49 +590,50 @@ class paypalExpressCheckout extends billingcalculator {
         $nvpResArray = $this->paypalApiCall($data);
 
         if (!empty($nvpResArray['curl_error'])) {  //curl error
-            $billing_options->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
-            $billing_options->result->message = $nvpResArray['curl_error'];
+            $opts->result->errorCode = $nvpResArray['curl_errno']; //Response reason code
+            $opts->result->message = $nvpResArray['curl_error'];
 
             $transaction_state = "Temporary Failure";
             $trax_state = "error";
         } else if ($nvpResArray['ACK'] == 'Success' || $nvpResArray['ACK'] == 'SuccessWithWarning') {
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = 0;
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = 0;
             if ($nvpResArray['ACK'] == 'SuccessWithWarning') {
-                $billing_options->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+                $opts->result->message = $nvpResArray['ACK'] . ": " . $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
             } else {
-                $billing_options->result->message = $nvpResArray['ACK'];
+                $opts->result->message = $nvpResArray['ACK'];
             }
-            $billing_options->result->transId = $nvpResArray['REFUNDTRANSACTIONID'];
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
-            $billing_options->result->fee_amt = $nvpResArray['FEEREFUNDAMT'];
-            $billing_options->result->gross_amt = $nvpResArray['GROSSREFUNDAMT'];
-            $billing_options->result->net_amt = $nvpResArray['NETREFUNDAMT'];
-            $billing_options->result->amt = $nvpResArray['TOTALREFUNDEDAMT'];
-            $billing_options->result->info = $nvpResArray['REFUNDINFO'];
-//            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];
+            $opts->result->transId = $nvpResArray['REFUNDTRANSACTIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->fee_amt = $nvpResArray['FEEREFUNDAMT'];
+            $opts->result->gross_amt = $nvpResArray['GROSSREFUNDAMT'];
+            $opts->result->net_amt = $nvpResArray['NETREFUNDAMT'];
+            $opts->result->amt = $nvpResArray['TOTALREFUNDEDAMT'];
+            $opts->result->info = $nvpResArray['REFUNDINFO'];
+//            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];  //FIXME we probably need a payment_status
 //            $billing_options->result->pending_reason = $nvpResArray['PENDINGREASON'];
             $transaction_state = "refunded";
             $trax_state = "refunded";
         } else {  // PayPal error response
-            $billing_options->result->status = $nvpResArray['ACK'];
-            $billing_options->result->errorCode = $nvpResArray[0]['ERRORCODE'];
+            $opts->result->status = $nvpResArray['ACK'];
+            $opts->result->errorCode = $nvpResArray[0]['ERRORCODE'];
 //            $billing_options->result->errorCode = $nvpResArray[0]['L_ERRORCODE0'];
-            if (!$billing_options->result->errorCode) $billing_options->result->errorCode = "1010";
-            $billing_options->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
-            $billing_options->result->payment_status = 'error';
+            if (!$opts->result->errorCode)
+                $opts->result->errorCode = "1010";
+            $opts->result->message = $nvpResArray[0]['SHORTMESSAGE'] . ": " . $nvpResArray[0]['LONGMESSAGE'];
+            $opts->result->payment_status = 'error';
 //            $billing_options->result->message = $nvpResArray[0]['L_SHORTMESSAGE0'] . ": " . $nvpResArray[0]['L_LONGMESSAGE0']; ;
-            $billing_options->result->correlationID = $nvpResArray['CORRELATIONID'];
+            $opts->result->correlationID = $nvpResArray['CORRELATIONID'];
             $transaction_state = "Failure";
 //            $trax_state = "error";
-            $trax_state = $billing_options->result->payment_status;
+            $trax_state = $opts->result->payment_status;
         }
 
         //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
-        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $billing_options->result, $trax_state);
-        return $billing_options->result;
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
 
 
 

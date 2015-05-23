@@ -53,7 +53,7 @@ class splitcreditcard extends creditcard {
     function process($method, $opts, $params, $order) {
 //        global $order, $db, $user;
 
-        $this->opts = $opts;
+//        $this->opts = $opts;
 
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
@@ -63,10 +63,10 @@ class splitcreditcard extends creditcard {
 		$config = unserialize($this->config);
 
 		$txtmessage = gt("The following order requires your attention") . "\r\n\r\n";
-        $txtmessage .= $this->textmessage($this->opts);
+        $txtmessage .= $this->textmessage($opts);
 
 		$htmlmessage = gt("The following order requires your attention") . "<br><br>";
-		$htmlmessage .= $this->htmlmessage($this->opts);
+		$htmlmessage .= $this->htmlmessage($opts);
 
 		$addresses = explode(',', $config['notification_addy']);
         foreach ($addresses as $address) {
@@ -81,21 +81,22 @@ class splitcreditcard extends creditcard {
                 'subject'=>gt('Billing Information for an order placed on') . ' '.ecomconfig::getConfig('storename'),
 		    ));
 		}
-        $this->opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($this->opts->cc_number, -4);
+        $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
 
-        $object = new stdClass();
-        $object->errorCode = $opts->result->errorCode = 0;
+//        $object = new stdClass();
+//        $object->errorCode = $opts->result->errorCode = 0;
 //        $object->payment_status = 'complete';
 //        $this->opts->result = $object;
+        $opts->result->errorCode = 0;
         $opts->result->payment_status = gt("authorization pending");
-        $opts->result->token = '';
+//        $opts->result->token = '';
         $opts->result->transId = '';
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
-        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => $opts->result->payment_status));
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
 //        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, $opts->result->payment_status);
-        return true;
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+        return $opts->result;
     }
 
 //    function postProcess($order, $params) {

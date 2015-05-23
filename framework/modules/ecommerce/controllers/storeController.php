@@ -1979,7 +1979,7 @@ class storeController extends expController {
                     $successSet[$count]['carrier'] = $carrier;
                 }
             } //if we hit this else, it means we have an order that is not in an authorized state
-            //so we do not try to process it = still set shipping though.
+            //so we do not try to process it = still set shipping though.  //FIXME what about 'complete'?
             else {
                 $successSet[$count]['message'] = 'No processing necessary for order:' . $data[2] . '. Setting shipping information.';
                 $successSet[$count]['order_id'] = $data[2];

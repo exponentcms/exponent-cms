@@ -165,14 +165,15 @@ class billingcalculator extends expRecord {
     {
     }
 
-    function createBillingTransaction($method,$amount,$result,$trax_state)
+    function createBillingTransaction($method, $amount, $result, $trax_state)
     {
         $bt = new billingtransaction();
         $bt->billingmethods_id = $method->id;
         $bt->billingcalculator_id = $method->billingcalculator_id;
         $bt->billing_cost = $amount;
-        $bt->billing_options  = serialize($result);
-        $bt->extra_data = '';
+        $bt->billing_options  = serialize($result);  //FIXME this is only the 'results' property unlike $bm???
+        $bt->extra_data = '';  //FIXME what is this used for?
+        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
         $bt->transaction_state = $trax_state;
         //$bt->result = $result;    
         $bt->save();

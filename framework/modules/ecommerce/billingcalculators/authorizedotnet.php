@@ -91,7 +91,7 @@ class authorizedotnet extends creditcard {
             "x_state"              => $state->code,
             "x_zip"                => $method->zip,
             "x_country"            => $country->iso_code_2letter,
-            //"x_phone"=>empty($method->phone) ? '' : $method->phone,
+            //"x_phone"=>empty($method->phone) ? '' : $method->phone,  //FIXME
             "x_phone"              => '309-680-5600',
             "x_email"              => $user->email,
             "x_invoice_num"        => $order->invoice_id,
@@ -117,7 +117,11 @@ class authorizedotnet extends creditcard {
             $data['x_email_customer'] = 'FALSE';
         }
 
-        $data['x_type'] = "AUTH_ONLY";
+        if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
+            $data['x_type'] = "AUTH_CAPTURE";
+        } else if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_ONLY) {
+            $data['x_type'] = "AUTH_ONLY";
+        }
 
         //Check if it is test mode and assign the proper url        
         if ($config['testmode']) {
@@ -151,47 +155,51 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
 
-        $object = new stdClass();
+//        $object = new stdClass();
         if ($response[0] == 1) { //Approved !!!
-            $object->errorCode = 0;
-            $object->message = $response[3] . " Approval Code: " . $response[4];
-            $object->status = 'Approved';
-            $object->AUTHCODE = $response[4];
-            $object->AVSResponse = $response[5];
-            $object->HASH = $response[37];
-            $object->CVVResponse = $response[38];
-            $object->PNREF = $response[6];
+            $opts->result->errorCode = 0;
+            $opts->result->message = $response[3] . " Approval Code: " . $response[4];
+            $opts->result->status = 'Approved';
+            $opts->result->AUTHCODE = $response[4];
+            $opts->result->AVSResponse = $response[5];
+            $opts->result->HASH = $response[37];
+            $opts->result->CVVResponse = $response[38];
+            $opts->result->PNREF = $response[6];
 //            $object->transactionID = $response[6];
-            $object->transId = $response[6];
-            $object->correlationID = $response[7];
-            $trax_state = "authorized";
+            $opts->result->transId = $response[6];
+            $opts->result->correlationID = $response[7];
+            if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
+                $trax_state = "complete";
+            } else if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_ONLY) {
+                $trax_state = "authorized";
+            }
         } else {
-            $object->errorCode = $response[2]; //Response reason code
-            $object->message = $response[3];
+            $opts->result->errorCode = $response[2]; //Response reason code
+            $opts->result->message = $response[3];
             $trax_state = "error";
         }
 
-        $opts->result = $object;
+//        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
         $method->update(array('billing_options' => serialize($opts)));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
-        return $object;
+        return $opts->result;
     }
 
     function credit_transaction($method, $amount, $order) {
         global $user;
 
         $config = unserialize($this->config);
-        $billing_options = unserialize($method->billing_options);
+        $opts = unserialize($method->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
             'x_tran_key'       => $config['transaction_key'],
             'x_type'           => 'VOID',
             'x_amount'         => $amount,
-            'x_card_num'       => substr($billing_options->cc_number, -4),
+            'x_card_num'       => substr($opts->cc_number, -4),
 //            'x_trans_id'       => urlencode($billing_options->result->transactionID),
-            'x_trans_id'       => urlencode($billing_options->result->transId),
+            'x_trans_id'       => urlencode($opts->result->transId),
             'x_relay_response' => 'FALSE',
             'x_delim_data'     => 'TRUE',
             "x_delim_char"     => '|'
@@ -234,8 +242,8 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
         if ($response[2] == 1) { //if it is completed
-            $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => 'voided'));
-            $this->createBillingTransaction($method, urldecode($response[9]), $billing_options->result, 'voided');
+            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+            $this->createBillingTransaction($method, urldecode($response[9]), $opts->result, 'voided');
 
             flash('message', gt('Void Completed Successfully.'));
             redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
@@ -246,9 +254,9 @@ class authorizedotnet extends creditcard {
                 'x_tran_key'       => $config['transaction_key'],
                 'x_type'           => 'CREDIT',
                 'x_amount'         => $amount,
-                'x_card_num'       => substr($billing_options->cc_number, -4),
+                'x_card_num'       => substr($opts->cc_number, -4),
 //                'x_trans_id'       => urlencode($billing_options->result->transactionID),
-                'x_trans_id'       => urlencode($billing_options->result->transId),
+                'x_trans_id'       => urlencode($opts->result->transId),
                 'x_relay_response' => 'FALSE',
                 'x_delim_data'     => 'TRUE',
                 "x_delim_char"     => '|'
@@ -275,8 +283,8 @@ class authorizedotnet extends creditcard {
 
             $response = explode("|", $authorize);
 
-            $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => 'refunded'));
-            $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $billing_options->result, 'refunded');
+            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
+            $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'refunded');
 
             flash('message', gt('Refund Completed Successfully.'));
             redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
@@ -288,7 +296,7 @@ class authorizedotnet extends creditcard {
         global $user;
 
         $config = unserialize($this->config);
-        $billing_options = unserialize($method->billing_options);
+        $opts = unserialize($method->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -296,10 +304,10 @@ class authorizedotnet extends creditcard {
             'x_type'           => 'PRIOR_AUTH_CAPTURE',
 				
             'x_amount'         => $amount,
-            'x_card_num'       => substr($billing_options->cc_number, -4),
+            'x_card_num'       => substr($opts->cc_number, -4),
 		//		'x_trans_id'       => $transaction_id,
 //            'x_trans_id'       => urlencode($billing_options->result->transactionID),
-            'x_trans_id'       => urlencode($billing_options->result->transId),
+            'x_trans_id'       => urlencode($opts->result->transId),
             'x_relay_response' => 'FALSE',
             'x_delim_data'     => 'TRUE',
             "x_delim_char"     => '|'
@@ -342,21 +350,20 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
 
-        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => 'complete'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $billing_options->result, 'complete');
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
+        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'complete');
 
         flash('message', gt('Captured Transaction Successfully.'));
         redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
      
     }
 
-
 	function void_transaction($method, $order) {
 
         global $user;
 
         $config = unserialize($this->config);
-        $billing_options = unserialize($method->billing_options);
+        $opts = unserialize($method->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -364,10 +371,10 @@ class authorizedotnet extends creditcard {
             'x_type'           => 'Void',
 
             'x_amount'         => $amount,
-            'x_card_num'       => substr($billing_options->cc_number, -4),
+            'x_card_num'       => substr($opts->cc_number, -4),
 		//		'x_trans_id'       => $transaction_id,
 //            'x_trans_id'       => urlencode($billing_options->result->transactionID),
-            'x_trans_id'       => urlencode($billing_options->result->transId),
+            'x_trans_id'       => urlencode($opts->result->transId),
             'x_relay_response' => 'FALSE',
             'x_delim_data'     => 'TRUE',
             "x_delim_char"     => '|'
@@ -410,11 +417,11 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
 
-        $billing_options->result->traction_type = 'Void';
-        $method->update(array('billing_options' => serialize($billing_options), 'transaction_state' => 'void'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $billing_options->result, 'void');
+        $opts->result->traction_type = 'Void';
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'void'));
+        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'void');
 
-        return true;
+        return $opts->result;
 
     }
 
@@ -451,7 +458,7 @@ class authorizedotnet extends creditcard {
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
             $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
-            $html .= gt("Authorize and Capture") . "<br>";
+            $html .= gt("Authorize Only") . "<br>";
         }
         $html .= "<br>" . gt("Accepted Cards") . ":<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";

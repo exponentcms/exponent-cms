@@ -369,7 +369,7 @@
                             {/foreach}
                         </ul>
                         <div class="yui-content">
-                            {foreach from=$billing->calculator_views item=cviews name=calcs}
+                            {foreach from=$billing->calculator_views key=key item=cviews name=calcs}
                                 <div id="tab{$smarty.foreach.calcs.iteration}">
                                     {include file=$cviews.view calcid=$cviews.id}
                                 </div>

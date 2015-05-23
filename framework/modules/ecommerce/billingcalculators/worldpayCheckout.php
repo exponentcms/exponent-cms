@@ -75,8 +75,6 @@ class worldpayCheckout extends billingcalculator {
     }
 
     function preprocess($method, $opts, $params, $order) {
-//        global $db, $user;
-
         if (!isset($params['transStatus'])) {
             // make sure we have some billing options saved.
             if (empty($method)) {
@@ -119,18 +117,16 @@ class worldpayCheckout extends billingcalculator {
             $url = $worldpay_url . '?' . $datapost;
             header('location: ' . $url);
             exit();
-
         } else {
-
-            $object = expUnserialize($method->billing_options);
+//            $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
             if ($params['transStatus'] == 'Y') {
-                $object->result->errorCode = 0;
-                $object->result->message = "User has approved the payment at Worldpay";
-                $object->result->transId = $params['transId'];
-                $object->result->payment_status = "Pending";
-//                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "Pending"));
-                $method->update(array('billing_options' => serialize($object), 'transaction_state' => "complete"));
-                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, 'complete');  //FIXME 'complete' is proper?
+                $opts->result->errorCode = 0;
+                $opts->result->message = "User has approved the payment at Worldpay";
+                $opts->result->transId = $params['transId'];
+                $opts->result->payment_status = "Pending";
+//                $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "Pending"));
+                $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "complete"));
+                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'complete');  //FIXME 'complete' is proper?
                 redirect_to(array('controller' => 'cart', 'action' => 'process'));
             } else {
                 redirect_to(array('controller' => 'cart', 'action' => 'checkout'), true);

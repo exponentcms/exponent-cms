@@ -383,7 +383,7 @@
                         {foreach from=$billing->calculator_views item=cviews name=tabs}
                             <strong class="selected-info">{$billing->selectable_calculators[$cviews.id]}</strong>
                         {/foreach}
-                        {foreach from=$billing->calculator_views item=cviews name=calcs}
+                        {foreach from=$billing->calculator_views key=key item=cviews name=calcs}
                             <div id="tab{$smarty.foreach.calcs.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.calcs.first} in active{/if}">
                                 {include file=$cviews.view calcid=$cviews.id}
                             </div>

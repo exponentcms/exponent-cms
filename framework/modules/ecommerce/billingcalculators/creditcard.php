@@ -89,7 +89,7 @@ class creditcard extends billingcalculator {
 
         //$cvvhelp = new htmlcontrol("<a href='http://en.wikipedia.org/wiki/Card_Verification_Value' target='_blank'>What's this?</a>");
 
-        $form .= '<div class="credit-cards control form-group"><label class="' . (bs3()?'control-label col-sm-2':'label') . '"></label>';
+        $form .= '<div class="' . $this->calculator_name . ' credit-cards control form-group"><label class="' . (bs3()?'control-label col-sm-2':'label') . '"></label>';
         if (bs3()) {
             $form .= '<div class="col-sm-10">';
         }
@@ -102,13 +102,13 @@ class creditcard extends billingcalculator {
         $form .= '</div>';
 
         $cardtypes = new dropdowncontrol("", $this->getAvailableCards());
-        $cardtypes->id = "cc_type";
+        $cardtypes->id = "cc_type_" . $this->calculator_name;
         $cardtypes->horizontal = true;
         //$cvvhelp->id = "cvvhelp";
         //FIXME we need to display/obtain user information if we are doing a quickPay checkout???
         //$form .= $fname->toHTML("First Name", "first_name");
         //$form .= $lname->toHTML("Last Name", "last_name");
-        $form .= $cardtypes->toHTML(gt("Card Type"), "cc_type");
+        $form .= $cardtypes->toHTML(gt("Card Type"), "cc_type_" . $this->calculator_name);
 
         $cardnumber = new textcontrol("", 20, false, 20, "integer", true);
         $cardnumber->id = "cc_number";
@@ -132,12 +132,12 @@ class creditcard extends billingcalculator {
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
         // click card image to select card type
         $src = "
-            $('.credit-cards img').click(function() {
-                $('#cc_type').val($(this).attr('id'));
+            $('." .$this->calculator_name  . " .credit-cards img').click(function() {
+                $('#cc_type_" . $this->calculator_name ."').val($(this).attr('id'));
             });
         ";
         expJavascript::pushToFoot(array(
-            "unique"  => 'creditcard',
+            "unique"  => 'creditcard-' . $this->calculator_name,
             "jquery"=> 1,
             "content"=> $src,
         ));
@@ -150,8 +150,8 @@ class creditcard extends billingcalculator {
             return;
         }
         $config = unserialize($this->config);
-        $avaiablecards = array();
-        foreach ($config['accepted_cards'] as $card) {
+        $availablecards = array();
+        if (!empty($config['accepted_cards'])) foreach ($config['accepted_cards'] as $card) {
             $availablecards[$card] = $this->cards[$card];
         }
 

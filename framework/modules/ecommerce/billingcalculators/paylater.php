@@ -51,8 +51,9 @@ class paylater extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-        $object = new stdClass();
-        $object->errorCode = $opts->result->errorCode = 0;
+//        $object = new stdClass();
+//        $object->errorCode = $opts->result->errorCode = 0;
+        $opts->result->errorCode = 0;
 //        $opts->result = $object;
         $opts->result->payment_status = gt("complete");
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
