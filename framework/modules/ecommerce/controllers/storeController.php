@@ -558,7 +558,7 @@ class storeController extends expController {
     function manage() {
         expHistory::set('manageable', $this->params);
 
-        if (!empty(ECOM_LARGE_DB)) {
+        if (ECOM_LARGE_DB) {
             $limit = !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10;
         } else {
             $limit = 0;

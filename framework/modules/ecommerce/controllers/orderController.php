@@ -116,7 +116,7 @@ class orderController extends expController {
 //            $status_where .= ')';
             $sql .= $status_where;
 //        }
-        if (!empty(ECOM_LARGE_DB)) {
+        if (ECOM_LARGE_DB) {
             $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
         } else {
             $limit = 0;
