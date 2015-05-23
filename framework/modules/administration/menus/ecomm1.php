@@ -28,7 +28,7 @@ if (empty($active)) {
 $new_orders = order::getOrdersCount('new');
 $open_orders = order::getOrdersCount('open');
 if ($new_orders > 0) {
-    $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new orders') . '</em>';
+    $newo = '<em class="newalert">' . $new_orders . ' ' . gt('new order') . ($new_orders>1?'s':'') . '</em>';
 } else {
     $newo = '';
 };

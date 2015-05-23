@@ -85,7 +85,7 @@ $ev = new eventregistration();
 $allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
 $events = array();
 foreach ($allevents as $event) {
-    if ($event->eventdate > time()) {
+    if ($event->eventenddate > time()) {
         $events[] = $event;
     }
 }
