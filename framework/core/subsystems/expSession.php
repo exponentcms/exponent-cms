@@ -297,7 +297,8 @@ class expSession {
 		$ticket = $db->delete('sessionticket', "ticket='" . $_SESSION[SYS_SESSION_KEY]['ticket'] . "'");
 
 		// Clean out orphan ecommerce records created for every user visit
-		$db->delete("orders","`invoice_id` = '0' AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
+        //FIXME is this data used to measure abandoned carts
+		$db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
 		$db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
 		$db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
 

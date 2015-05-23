@@ -183,7 +183,7 @@ switch ($page) {
     case 'install-5':
         $masthead = gt("New Installation");
         $page_text = gt(
-            'Your theme is your site\'s look and feel. Select what you\'d like you site to look like from the list of themes.'
+            'Your theme is your site\'s look and feel. Select what you\'d like your site to look like from the list of themes. You may also give your site some sample content.'
         );
         break;
     case 'install-6':

@@ -103,7 +103,7 @@ class shipping extends expRecord {
     }
 	
 	public function getRates() {
-	    global $order; //FIXME we do NOT want the global order
+	    global $order; // we only call this with the global order during checkout
         
 	    if (!empty($this->calculator->id) && (!empty($this->shippingmethod->addresses_id) || !$this->calculator->addressRequired())) {	
 		    $this->pricelist = $this->calculator->getRates($order);
@@ -113,25 +113,45 @@ class shipping extends expRecord {
 
 		// if the user hasn't selected a shipping option yet we will default one for him now.
 		if ((!empty($this->shippingmethod->id) && (is_array($this->pricelist) && (count($this->pricelist) > 0)))) {
-		    if(empty($this->shippingmethod->option)) {
-		        $opt = current($this->pricelist);
+            if(empty($this->shippingmethod->option)) {
+                $opt = current($this->pricelist);
+                if ($this->calculator->multiple_carriers) {
+                    $opt = current($opt);
+                    $carrier = explode(':',$opt['id']);
+                }
                 if ($this->forced_shipping) {
                     $option = $this->shippingmethod->option;
                 } else {
                     $option = $opt['id'];
                 }
-		        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
-		    } else {                       
-		        if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {                    
-		            $opt = !empty($this->pricelist[$this->shippingmethod->option]) ? $this->pricelist[$this->shippingmethod->option] : '';
-                    if ($this->forced_shipping) {
-                        $option = $this->shippingmethod->option;
-                    } else {
-                        $option = $opt['id'];
+                $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'])); //updates SECOND created shipping method w/ rates, as that was the one set to $this->shippingmethod
+                if ($this->calculator->multiple_carriers) {
+                    $this->shippingmethod->update(array('carrier'=>$carrier[0],'delivery'=>$opt['delivery']));
+                }
+            } else {
+                if (!$this->calculator->multiple_carriers) {
+                    if ($this->shippingmethod->shipping_cost != $this->pricelist[$this->shippingmethod->option]['cost']) {
+                        $opt = !empty($this->pricelist[$this->shippingmethod->option]) ? $this->pricelist[$this->shippingmethod->option] : '';
+                        if ($this->forced_shipping) {
+                            $option = $this->shippingmethod->option;
+                        } else {
+                            $option = $opt['id'];
+                        }
+                        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
                     }
-		            $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));
-		        }
-		    }
+                } else {
+                    $carrier = explode(':',$this->shippingmethod->option);
+                    if ($this->shippingmethod->shipping_cost != $this->pricelist[$carrier[0]][$carrier[1]]['cost']) {
+                        $opt = !empty($this->pricelist[$carrier[0]][$carrier[1]]) ? $this->pricelist[$carrier[0]][$carrier[1]] : '';
+                        if ($this->forced_shipping) {
+                            $option = $this->shippingmethod->option;
+                        } else {
+                            $option = $opt['id'];
+                        }
+                        $this->shippingmethod->update(array('option'=>$option,'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost'],'carrier'=>$carrier[0],'delivery'=>$opt['delivery']));
+                    }
+                }
+            }
 		}		
 		//return $pricelist;
 	}

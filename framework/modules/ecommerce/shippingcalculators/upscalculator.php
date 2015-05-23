@@ -45,9 +45,7 @@ class upscalculator extends shippingcalculator {
         "65"=>"UPS Saver",
     );
 
-    public function getRates($order) {  //FIXME isn't this an order object?
-//        global $order;  //FIXME this is the current user order object, NOT the edited order object
-        
+    public function getRates($order) {
         // Require the main ups class and upsRate
         include_once(BASE.'external/ups-php/classes/class.ups.php');
         include_once(BASE.'external/ups-php/classes/class.upsRate.php');
@@ -114,7 +112,7 @@ class upscalculator extends shippingcalculator {
             }
         }
         
-        // kludge for the giftcard shipping
+        //FIXME kludge for the giftcard shipping
         if (count($package_items) == 0 && $has_giftcard) {
             $rates = array(
                 "03"=>array("id"=>"03", "title"=>"UPS Ground", "cost"=>5.00),
@@ -199,7 +197,7 @@ class upscalculator extends shippingcalculator {
 
 	    $rateFromUPS = $upsRate->sendRateRequest();
 	    
-	    $handling = empty($has_giftcard) ? 0 : 5;
+	    $handling = empty($has_giftcard) ? 0 : 5;  //FIXME adding a $5 fee if shipping a gift card???
         if (empty($rateFromUPS)) {
 //            return 0;
             return array();
@@ -208,7 +206,7 @@ class upscalculator extends shippingcalculator {
 	        $available_methods = $this->availableMethods();
 	        foreach ($rateFromUPS['RatingServiceSelectionResponse']['RatedShipment'] as $rate) {
 	            if (array_key_exists($rate['Service']['Code']['VALUE'], $available_methods)) {
-	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
+//	                $rates[$rate['Service']['Code']['VALUE']] = $rate['TotalCharges']['MonetaryValue']['VALUE'];
 	                $rates[$rate['Service']['Code']['VALUE']] = array(
                         'id' => $rate['Service']['Code']['VALUE'],
                         'title' => $this->shippingmethods[$rate['Service']['Code']['VALUE']],
@@ -276,16 +274,16 @@ class upscalculator extends shippingcalculator {
 	    $addy['address3'] = isset($params->address3) ? $params->address3 : '';
 	    $addy['city'] = isset($params->city) ? $params->city : '';
 	    $addy['state'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-	    $addy['countryCode'] = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
+	    $addy['countryCode'] = isset($params->country) ? geoRegion::getCountryCode($params->country) : '';
 	    $addy['postalCode'] = isset($params->zip) ? $params->zip : '';
 	    $addy['phone'] = isset($params->phone) ? $params->phone : '';
 	    return $addy;
 	}
 	
-	public static function sortByVolume($a, $b) {
-//	    eDebug($a);
-	    return ($a->volume > $b->volume ? -1 : 1);
-	}
+//	public static function sortByVolume($a, $b) {
+////	    eDebug($a);
+//	    return ($a->volume > $b->volume ? -1 : 1);
+//	}
 
 }
 

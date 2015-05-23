@@ -116,14 +116,18 @@ class orderController extends expController {
 //            $status_where .= ')';
             $sql .= $status_where;
 //        }
-        $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+        if (!empty(ECOM_LARGE_DB)) {
+            $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
+        } else {
+            $limit = 0;
+        }
         //eDebug($sql, true);
         $page = new expPaginator(array(
             //'model'=>'order',
             'sql'       => $sql,
             'order'     => 'purchased',
             'dir'       => 'DESC',
-//            'limit'     => $limit,
+            'limit'     => $limit,
             'page'      => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=> $this->params['controller'],
             'action'    => $this->params['action'],
@@ -565,7 +569,7 @@ exit();
             $pdfer->set_grayscale(true);
 //            $pdfer->render();
             eDebug("Done rendering PDF " . $timer->mark());
-            exit();
+//            exit();
             ob_clean();
             $pdfer->createpdf('D', $org_name . "_Invoice" . ".pdf");
             exit();
@@ -733,6 +737,8 @@ exit();
                         $carrierTrackingLink = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=";
                     } elseif ($order->shippingmethod->carrier == 'FedEx') {
                         $carrierTrackingLink = "http://www.fedex.com/Tracking?action=track&tracknumbers=";
+                    } elseif ($order->shippingmethod->carrier == 'USPS') {
+                        $carrierTrackingLink = "https://tools.usps.com/go/TrackConfirmAction_input?qtc_tLabels1=";
                     }
 
                     assign_to_template(array(
@@ -1009,12 +1015,13 @@ exit();
         //$order = new order($this->params['id']);
         $billing = new billing($this->params['id']);
         $opts    = expUnserialize($billing->billingmethod->billing_options);
-        //FIXME what about the most recent transaction?
+        //FIXME what about the most recent transaction?  $billing->billingmethod is the most current transaction
         //eDebug($billing);
 //        eDebug($opts);
         assign_to_template(array(
             'orderid'=> $this->params['id'],
             'opts'   => $opts->result  //FIXME credit card doesn't have a result
+            //FIXME do we also need to pass $billing->billingmethod->billing_cost & $billing->billingmethod->transaction_state'???
         ));
     }
 
@@ -1033,19 +1040,26 @@ exit();
         $billingmethod      = $billing->billingmethod;
         $billingtransaction = $billingmethod->billingtransaction[0];
 
+        // update billing method
         $bmopts                         = expUnserialize($billingmethod->billing_options);
         $bmopts->result                 = $obj;
         $billingmethod->billing_options = serialize($bmopts);
-        if (!empty($this->params['result']['payment_status'])) $billingmethod->transaction_state = $this->params['result']['payment_status'];
+        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
+        if (!empty($this->params['result']['payment_status']))
+            $billingmethod->transaction_state = $this->params['result']['payment_status'];
+        //FIXME we need to set/update $billingmethod->billing_cost also??
         $billingmethod->save();
 
+        // add new billing transaction
         $btopts                              = expUnserialize($billingtransaction->billing_options);
         $btopts->result                      = $obj;
         $billingtransaction->billing_options = serialize($btopts);
-        if (!empty($this->params['result']['payment_status'])) $billingtransaction->transaction_state = $this->params['result']['payment_status'];
+        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
+        if (!empty($this->params['result']['payment_status']))
+            $billingtransaction->transaction_state = $this->params['result']['payment_status'];
         $billingtransaction->id = null;
         $order = new order($this->params['id']);
-        $billingtransaction->billing_cost = $order->grand_total;
+        $billingtransaction->billing_cost = $order->grand_total;  //FIXME should it always be the grand total???
         $billingtransaction->save();
 
 //        flashAndFlow('message', gt('Payment info updated.'));
@@ -1055,7 +1069,8 @@ exit();
 
     function edit_shipping_method() {
         //$order = new order($this->params['id']);
-        if (!isset($this->params['id'])) flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $order = new order($this->params['id']);
         $s     = array_pop($order->shippingmethods);
         $sm    = new shippingmethod($s->id);
@@ -1067,8 +1082,10 @@ exit();
     }
 
     function save_shipping_method() {
-        if (!isset($this->params['id'])) flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
-        if (!isset($this->params['sid'])) flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
+        if (!isset($this->params['sid']))
+            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $sm               = new shippingmethod($this->params['sid']);
         $sm->option_title = $this->params['shipping_method_title'];
         $sm->carrier      = $this->params['shipping_method_carrier'];

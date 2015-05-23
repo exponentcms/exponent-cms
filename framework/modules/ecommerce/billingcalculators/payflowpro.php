@@ -203,44 +203,44 @@ class payflowpro extends creditcard {
         $response = $this->parseResponse($result); //result arrray
 
         $trax_state = '';
-        $object = new stdClass();
-        $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
-        $object->message = "Transaction failed. Error #-1";
+//        $object = new stdClass();
+        $opts->result->errorCode = -1; //if totally fails, this doesn't get set and passes through
+        $opts->result->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0) // Approved !!!
         {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
-            $object->PNREF = $response['PNREF'];
-            $object->AUTHCODE = $response['AUTHCODE'];
-            $object->AVSADDR = $response['AVSADDR'];
-            $object->AVSZIP = $response['AVSZIP'];
-            $object->CVV2MATCH = $response['CVV2MATCH'];
-            $object->HOSTCODE = $response['HOSTCODE'];
-            $object->PROCAVS = $response['PROCAVS'];
-            $object->traction_type = 'Sale';
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
+            $opts->result->PNREF = $response['PNREF'];
+            $opts->result->AUTHCODE = $response['AUTHCODE'];
+            $opts->result->AVSADDR = $response['AVSADDR'];
+            $opts->result->AVSZIP = $response['AVSZIP'];
+            $opts->result->CVV2MATCH = $response['CVV2MATCH'];
+            $opts->result->HOSTCODE = $response['HOSTCODE'];
+            $opts->result->PROCAVS = $response['PROCAVS'];
+            $opts->result->traction_type = 'Sale';
             $trax_state = "complete";
         } else {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
-            $object->PNREF = $response['PNREF'];
-            $object->AUTHCODE = $response['AUTHCODE'];
-            $object->AVSADDR = $response['AVSADDR'];
-            $object->AVSZIP = $response['AVSZIP'];
-            $object->CVV2MATCH = $response['CVV2MATCH'];
-            $object->HOSTCODE = $response['HOSTCODE'];
-            $object->PROCAVS = $response['PROCAVS'];
-            $object->traction_type = 'Sale';
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
+            $opts->result->PNREF = $response['PNREF'];
+            $opts->result->AUTHCODE = $response['AUTHCODE'];
+            $opts->result->AVSADDR = $response['AVSADDR'];
+            $opts->result->AVSZIP = $response['AVSZIP'];
+            $opts->result->CVV2MATCH = $response['CVV2MATCH'];
+            $opts->result->HOSTCODE = $response['HOSTCODE'];
+            $opts->result->PROCAVS = $response['PROCAVS'];
+            $opts->result->traction_type = 'Sale';
             $trax_state = "error";
         }
 
         $opts->result->payment_status = $trax_state;
-        $opts->result = $object;
+//        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, $trax_state);
-        return $object;
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     // Authorization
@@ -355,44 +355,44 @@ class payflowpro extends creditcard {
 
         //eDebug($response,true);
         $trax_state = '';
-        $object = new stdClass();
-        $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
-        $object->message = "Transaction failed. Error #-1";
+//        $object = new stdClass();
+        $opts->result->errorCode = -1; //if totally fails, this doesn't get set and passes through
+        $opts->result->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0) // Approved !!!
         {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
-            $object->PNREF = $response['PNREF'];
-            $object->AUTHCODE = $response['AUTHCODE'];
-            $object->AVSADDR = $response['AVSADDR'];
-            $object->AVSZIP = $response['AVSZIP'];
-            $object->CVV2MATCH = $response['CVV2MATCH'];
-            $object->HOSTCODE = $response['HOSTCODE'];
-            $object->PROCAVS = $response['PROCAVS'];
-            $object->traction_type = 'Authorization';
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
+            $opts->result->PNREF = $response['PNREF'];
+            $opts->result->AUTHCODE = $response['AUTHCODE'];
+            $opts->result->AVSADDR = $response['AVSADDR'];
+            $opts->result->AVSZIP = $response['AVSZIP'];
+            $opts->result->CVV2MATCH = $response['CVV2MATCH'];
+            $opts->result->HOSTCODE = $response['HOSTCODE'];
+            $opts->result->PROCAVS = $response['PROCAVS'];
+            $opts->result->traction_type = 'Authorization';
             $trax_state = "authorized";
         } else {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
-            $object->PNREF = $response['PNREF'];
-            $object->AUTHCODE = $response['AUTHCODE'];
-            $object->AVSADDR = $response['AVSADDR'];
-            $object->AVSZIP = $response['AVSZIP'];
-            $object->CVV2MATCH = $response['CVV2MATCH'];
-            $object->HOSTCODE = $response['HOSTCODE'];
-            $object->PROCAVS = $response['PROCAVS'];
-            $object->traction_type = 'Authorization';
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
+            $opts->result->PNREF = $response['PNREF'];
+            $opts->result->AUTHCODE = $response['AUTHCODE'];
+            $opts->result->AVSADDR = $response['AVSADDR'];
+            $opts->result->AVSZIP = $response['AVSZIP'];
+            $opts->result->CVV2MATCH = $response['CVV2MATCH'];
+            $opts->result->HOSTCODE = $response['HOSTCODE'];
+            $opts->result->PROCAVS = $response['PROCAVS'];
+            $opts->result->traction_type = 'Authorization';
             $trax_state = "error";
         }
 
         $opts->result->payment_status = $trax_state;
-        $opts->result = $object;
+//        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, $trax_state);
-        return $object;
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     // delayed capture
@@ -483,10 +483,10 @@ class payflowpro extends creditcard {
         $response = $this->parseResponse($result); //result arrray
 
         // eDebug($response,true);
-        $object = new stdClass();
+//        $object = new stdClass();
         $trax_state = '';
-        $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
-        $object->message = "Transaction failed. Error #-1";
+        $opts->result->errorCode = -1; //if totally fails, this doesn't get set and passes through
+        $opts->result->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0) // Approved !!!
         {
             $opts->result->request_id = $request_id;
@@ -498,12 +498,11 @@ class payflowpro extends creditcard {
             $opts->result->amount_captured = $amount;
             $trax_state = "complete";
             $opts->result->payment_status = $trax_state;
-            $object = $opts->result;
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+//            $object = $opts->result;
         } else {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
             $opts->result->AUTHCODE = $response['AUTHCODE'];
             $opts->result->AVSADDR = $response['AVSADDR'];
@@ -512,11 +511,11 @@ class payflowpro extends creditcard {
             $opts->result->PROCAVS = $response['PROCAVS'];
             $opts->result->traction_type = 'Capture'; */
             $trax_state = "error";
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         }
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         //don't wnat to update if the capture failed, as we can always try again
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $object, $trax_state);
-        return $object;
+        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     // void_transaction
@@ -598,10 +597,10 @@ class payflowpro extends creditcard {
         $response = $this->parseResponse($result); //result array
 
         //eDebug($response,true);
-        $object = new stdClass();
+//        $object = new stdClass();
         $trax_state = '';
-        $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
-        $object->message = "Transaction failed. Error #-1";
+        $opts->result->errorCode = -1; //if totally fails, this doesn't get set and passes through
+        $opts->result->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0) // Approved !!!
         {
             $opts->result->request_id = $request_id;
@@ -617,12 +616,11 @@ class payflowpro extends creditcard {
             //$opts->result->amount_captured = $amount;
             $trax_state = "void";
             $opts->result->payment_status = $trax_state;
-            $object = $opts->result;
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+//            $object = $opts->result;
         } else {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
             $opts->result->AUTHCODE = $response['AUTHCODE'];
             $opts->result->AVSADDR = $response['AVSADDR'];
@@ -631,11 +629,11 @@ class payflowpro extends creditcard {
             $opts->result->PROCAVS = $response['PROCAVS'];
             $opts->result->traction_type = 'Capture'; */
             $trax_state = "error";
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         }
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         //don't wnat to update if the capture failed, as we can always try again
-        $this->createBillingTransaction($method, 0, $object, $trax_state);
-        return $object;
+        $this->createBillingTransaction($method, 0, $opts->result, $trax_state);
+        return $opts->result;
     }
 
     // credit transaction
@@ -717,11 +715,11 @@ class payflowpro extends creditcard {
 
         $response = $this->parseResponse($result); //result arrray
         //eDebug($response,true); 
-        $object = new stdClass();
+//        $object = new stdClass();
         $trax_amount = 0;
         $trax_state = '';
-        $object->errorCode = -1; //if totally fails, this doesn't get set and passes through
-        $object->message = "Transaction failed. Error #-1";
+        $opts->result->errorCode = -1; //if totally fails, this doesn't get set and passes through
+        $opts->result->message = "Transaction failed. Error #-1";
         if (isset($response['RESULT']) && $response['RESULT'] == 0) // Approved !!!
         {
             $opts->result->request_id = $request_id;
@@ -735,14 +733,14 @@ class payflowpro extends creditcard {
             $opts->result->PROCAVS = $response['PROCAVS'];*/
             $opts->result->traction_type = 'Credit';
             $opts->result->amount_captured = $amount;
-            $trax_state = "credited";
+//            $trax_state = "credited";
+            $trax_state = "refunded";
             $opts->result->payment_status = $trax_state;
-            $object = $opts->result;
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+//            $object = $opts->result;
         } else {
-            $object->request_id = $request_id;
-            $object->errorCode = $response['RESULT'];
-            $object->message = $response['RESPMSG'];
+            $opts->result->request_id = $request_id;
+            $opts->result->errorCode = $response['RESULT'];
+            $opts->result->message = $response['RESPMSG'];
             /*$opts->result->PNREF = $response['PNREF'];
             $opts->result->AUTHCODE = $response['AUTHCODE'];
             $opts->result->AVSADDR = $response['AVSADDR'];
@@ -751,11 +749,11 @@ class payflowpro extends creditcard {
             $opts->result->PROCAVS = $response['PROCAVS'];
             $opts->result->traction_type = 'Capture'; */
             $trax_state = "error";
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         }
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         //don't wnat to update if the capture failed, as we can always try again
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $object, $trax_state);
-        return $object;
+        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     //Config Form
@@ -790,9 +788,9 @@ class payflowpro extends creditcard {
         $html .= "Test Mode: " . (($config_object->test_mode) ? "Yes" : "No") . "<br>";
         $html .= "Process Mode: ";
         if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize and Capture") . "<br>";
         } else if ($config_object->process_mode == ECOM_AUTHORIZENET_AUTH_ONLY) {
-            $html .= "Authorize and Capture<br>";
+            $html .= gt("Authorize Only") . "<br>";
         }
         $html .= "<br>Accepted Cards:<hr>";
         $html .= "American Express: " . (($config_object->accept_amex) ? "Yes" : "No") . "<br>";

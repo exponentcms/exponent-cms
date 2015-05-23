@@ -27,11 +27,12 @@
         <div class="yui-content">
 	        <div id="tab1">
 	            {control type="text" name="vendor" label="Vendor (Merchant)"|gettext value=$calculator->configdata.vendor}
+                (or)
 	            {control type="text" name="user" label="User"|gettext value=$calculator->configdata.user}
 	            {control type="text" name="partner" label="Partner"|gettext value=$calculator->configdata.partner}
 	            {control type="password" name="password" label="Password"|gettext value=$calculator->configdata.password}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
-	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only"|gettxtlist values="S,A" default=$calculator->configdata.process_mode}
+	            {control type="radiogroup" name="process_mode" label="Processing Mode" items="Authorize and Capture, Authorize Only"|gettxtlist values="S,A" default=$calculator->configdata.process_mode|default:'S'}
 	        </div>
 	        <div id="tab2">
 	            {control type="checkbox" name="accepted_cards[]" label="Master Card" value="MasterCard"|gettext checked=$calculator->configdata.accepted_cards}

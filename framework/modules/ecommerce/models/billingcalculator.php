@@ -88,7 +88,7 @@ class billingcalculator extends expRecord {
         $billinginfo = '<table id="ccinfo"' . (bs3()?' class=" table"':'') . ' border=0 cellspacing=0 cellpadding=0>';
         $billinginfo .= '<thead><tr><th colspan="2">' . gt('Paying by') . ' ' . $this->name() . '</th></tr></thead>';
         $billinginfo .= '<tbody>';
-        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . '<: /td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
+        $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Method") . ': </td><td class="pmt-value">' . $this->getPaymentMethod($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Status") . ': </td><td class="pmt-value">' . $this->getPaymentStatus($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="odd"><td class="pmt-label">' . gt("Payment Authorization #") . ': </td><td class="pmt-value">' . $this->getPaymentAuthorizationNumber($billingmethod) . '</td></tr>';
         $billinginfo .= '<tr class="even"><td class="pmt-label">' . gt("Payment Reference #") . ': </td><td class="pmt-value">' . $this->getPaymentReferenceNumber($billingmethod) . '</td></tr>';
@@ -116,6 +116,9 @@ class billingcalculator extends expRecord {
     function configForm() {
         if (bs3(true)) {
             $tpl = 'configure.bootstrap3.tpl';
+            if (!file_exists(BASE . 'framework/modules/ecommerce/billingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
+                $tpl = 'configure.tpl';
+            }
         } else {
             $tpl = 'configure.tpl';
         }
@@ -162,14 +165,15 @@ class billingcalculator extends expRecord {
     {
     }
 
-    function createBillingTransaction($method,$amount,$result,$trax_state)
+    function createBillingTransaction($method, $amount, $result, $trax_state)
     {
         $bt = new billingtransaction();
         $bt->billingmethods_id = $method->id;
         $bt->billingcalculator_id = $method->billingcalculator_id;
         $bt->billing_cost = $amount;
-        $bt->billing_options  = serialize($result);
-        $bt->extra_data = '';
+        $bt->billing_options  = serialize($result);  //FIXME this is only the 'results' property unlike $bm???
+        $bt->extra_data = '';  //FIXME what is this used for?
+        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
         $bt->transaction_state = $trax_state;
         //$bt->result = $result;    
         $bt->save();

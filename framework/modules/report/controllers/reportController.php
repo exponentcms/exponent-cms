@@ -421,7 +421,10 @@ class reportController extends expController {
             ),
         ));
 
-        $action_items = array('print_orders' => 'Print', 'export_odbc' => 'Export ODBC File');
+        $action_items = array(
+            'print_orders' => 'Print Orders',
+            'export_odbc' => 'Export Shipping Data to CSV'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -803,7 +806,15 @@ class reportController extends expController {
         //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 
-        $action_items = array('print_orders' => 'Print', 'export_odbc' => 'Export ODBC File', 'export_status_report' => 'Export Status Report', 'export_inventory' => 'Export Inventory File', 'export_user_input_report' => 'Export User Input File', 'export_order_items' => 'Export Order Items File', 'show_payment_summary' => 'Show Payment & Tax Summary');
+        $action_items = array(
+            'print_orders' => 'Print Orders',
+            'export_odbc' => 'Export Shipping Data to CSV',
+            'export_status_report' => 'Export Order Status Data to CSV',
+            'export_inventory' => 'Export Inventory Data to CSV',
+            'export_user_input_report' => 'Export User Input Data to CSV',
+            'export_order_items' => 'Export Order Items Data to CSV',
+            'show_payment_summary' => 'Show Payment & Tax Summary'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -836,7 +847,7 @@ class reportController extends expController {
         $res = $db->selectObjectsBySql($sql);
         if (!empty($res)) {
             foreach ($res as $item) {
-                $options = unserialize($item->billing_options);
+                $options = expUnserialize($item->billing_options);
                 if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
                     if ($item->title == 'Credit Card') {  //FIXME this is translated??
@@ -1175,7 +1186,10 @@ class reportController extends expController {
                 'Status'=>'order_status_id',
             )
         ));            */
-        $action_items = array('batch_export' => 'Export Products to CSV', 'status_export' => 'Export Status Report to CSV');
+        $action_items = array(
+            'batch_export' => 'Export Product List to CSV',
+            'status_export' => 'Export Product Status Report to CSV'
+        );
         assign_to_template(array(
             'page'         => $page,
             'action_items' => $action_items
@@ -1369,18 +1383,20 @@ class reportController extends expController {
                 $line .= expString::outputField($m->address1);
                 $line .= expString::outputField($m->address2);
                 $line .= expString::outputField($m->city);
-                $state = new geoRegion($m->state);
+//                $state = new geoRegion($m->state);
                 //eDebug($state);
-                $line .= expString::outputField($state->code);
+//                $line .= expString::outputField($state->code);
+                $line .= expString::outputField(geoRegion::getAbbrev($m->state));
                 $line .= expString::outputField($m->zip);
-                $line .= expString::outputField('US');
+//                $line .= expString::outputField('US');
+                $line .= expString::outputField(geoRegion::getCountryCode($m->country));
                 $line .= expString::outputField($m->phone, chr(13) . chr(10));
                 break;
             }
             $out .= $line;
         }
         //eDebug($out,true);
-        self::download($out, 'ODBC_Export.csv', 'application/csv');
+        self::download($out, 'Shipping_Export.csv', 'application/csv');
         // [firstname] => Fred [middlename] => J [lastname] => Dirkse [organization] => OIC Group, Inc. [address1] => PO Box 1111 [address2] => [city] => Peoria [state] => 23 [zip] => 61653 [country] => [phone] => 309-555-1212 begin_of_the_skype_highlighting              309-555-1212      end_of_the_skype_highlighting  [email] => fred@oicgroup.net [shippingcalculator_id] => 4 [option] => 01 [option_title] => 8-10 Day [shipping_cost] => 5.95
 
     }
@@ -1538,6 +1554,7 @@ class reportController extends expController {
             $this->params['quickrange'] = 0;
         }
 
+        // purchased == 0 or invoice_id == 0 on unsubmitted orders
         $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
         $sql .= "(SELECT ticket FROM " . DB_TABLE_PREFIX . "_sessionticket) ORDER BY edited_at DESC";
         // echo $sql;
@@ -1588,9 +1605,9 @@ class reportController extends expController {
         // exit();
         $summary['totalcarts'] = $allCarts['count'];
         $summary['valueproducts'] = $valueproducts;
-        $summary['cartsWithoutItems'] = $allCarts['count'] ? round(($cartsWithoutItems['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
-        $summary['cartsWithItems'] = $allCarts['count'] ? round(($cartsWithItems['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
-        $summary['cartsWithItemsAndInfo'] = $allCarts['count'] ? round(($cartsWithItemsAndInfo['count'] / $allCarts['count']) * 100, 2) . '%' : 0;
+        $summary['cartsWithoutItems'] = round(($allCarts['count'] ? $cartsWithoutItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
+        $summary['cartsWithItems'] = round(($allCarts['count'] ? $cartsWithItems['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
+        $summary['cartsWithItemsAndInfo'] = round(($allCarts['count'] ? $cartsWithItemsAndInfo['count'] / $allCarts['count'] : 0) * 100, 2) . '%';
 
         assign_to_template(array(
             'quickrange'            => $quickrange,
@@ -1600,6 +1617,15 @@ class reportController extends expController {
             'cartsWithItems'        => $cartsWithItems,
             'cartsWithItemsAndInfo' => $cartsWithItemsAndInfo
         ));
+    }
+
+    function pruge_abandoned_carts()
+    {
+        global $db;
+
+        $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
+        $db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
+        $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
     }
 
     function current_carts() {

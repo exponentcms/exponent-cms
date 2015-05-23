@@ -192,6 +192,8 @@ class expHistory {
   	public static function set($url_type, $params) {
   	    global $history;
 
+        if (expJavascript::inAjaxAction()) return;  // don't set history on an ajax call
+
   	    $history->setHistory($url_type, $params);
 	}
 	

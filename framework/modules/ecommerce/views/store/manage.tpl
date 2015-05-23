@@ -13,6 +13,7 @@
  *
  *}
 
+{if !$smarty.const.ECOM_LARGE_DB}
 {css unique="yadcf" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
@@ -44,6 +45,11 @@
         background-image: none;
     }
 {/css}
+{else}
+{css unique="managestore" corecss="tables"}
+
+{/css}
+{/if}
 
 <div class="module store showall-uncategorized">
     <h1>{'Manage Products'|gettext}</h1>
@@ -61,16 +67,21 @@
 		</div>
     {/permissions}
     <div id="products">
-		{*{pagelinks paginate=$page top=1}*}
-        <table id="prods" style="width:95%">
+        {if $smarty.const.ECOM_LARGE_DB}
+		{pagelinks paginate=$page top=1}
+        {/if}
+        <table id="prods" style="width:95%;"{if $smarty.const.ECOM_LARGE_DB} class="exp-skin-table"{/if}>
             <thead>
                 <tr>
                     {*<th></th>*}
-                    {*{$page->header_columns}*}
+                    {if $smarty.const.ECOM_LARGE_DB}
+                    {$page->header_columns}
+                    {else}
                     <th>{'Type'|gettext}</th>
                     <th>{'Product Name'|gettext}</th>
                     <th>{'Model #'|gettext}</th>
                     <th>{'Price'|gettext}</th>
+                    {/if}
                     <th>{'Action'|gettext}</th>
                 </tr>
             </thead>
@@ -123,10 +134,13 @@
                 {/foreach}
             </tbody>
         </table>
-		{*{pagelinks paginate=$page bottom=1}*}
+        {if $smarty.const.ECOM_LARGE_DB}
+		{pagelinks paginate=$page bottom=1}
+        {/if}
     </div>
 </div>
 
+{if !$smarty.const.ECOM_LARGE_DB}
 {script unique="manage-products" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.jqueryui,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
@@ -205,3 +219,4 @@
     } );
 {/literal}
 {/script}
+{/if}

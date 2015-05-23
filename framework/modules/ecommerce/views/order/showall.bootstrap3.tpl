@@ -13,6 +13,7 @@
  *
  *}
 
+{if !$smarty.const.ECOM_LARGE_DB}
 {css unique="yadcf" link="`$smarty.const.JQUERY_RELATIVE`addons/css/select2-bootstrap.css" corecss="datatables-tools"}
     table.dataTable thead > tr {
         font-size-adjust: 0.4;
@@ -47,6 +48,11 @@
         background-image: none;
     }
 {/css}
+{else}
+{css unique="showallorders" corecss="tables"}
+
+{/css}
+{/if}
 
 <div class="modules order showall">
 	<h1>{$moduletitle|default:"Store Order Administration"|gettext}</h1>
@@ -56,11 +62,16 @@
     {else}
         {br}<a href="{link action=showall showclosed=0}">{'Hide closed orders'|gettext}</a>
     {/if}
-    <table class="responsive" id="orders">
+    {if $smarty.const.ECOM_LARGE_DB}
+    {pagelinks paginate=$page top=1}
+    {/if}
+    <table class="responsive{if $smarty.const.ECOM_LARGE_DB} exp-skin-table{/if}" id="orders">
         <thead>
             <tr>
                 <!--th><span>Purchased By</span></th-->
-                {*{$page->header_columns}*}
+                {if $smarty.const.ECOM_LARGE_DB}
+                {$page->header_columns}
+                {else}
                 <th data-class="expand">{'Customer'|gettext}</th>
                 <th>{'Inv #'|gettext}</th>
                 <th>{'Total'|gettext}</th>
@@ -69,6 +80,7 @@
                 <th data-hide="phone,tablet">{'Type'|gettext}</th>
                 <th data-hide="phone">{'Status'|gettext}</th>
                 <th data-hide="phone,tablet">{'Ref'|gettext}</th>
+                {/if}
             </tr>
         </thead>
         <tbody>
@@ -81,7 +93,7 @@
                     <td>
                         <a href="{link action=show id=$listing->id}">{$listing->invoice_id}</a>
                     </td>
-                    <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}alert-success{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
+                    <td style="text-align:right;"><span class="badge {if $listing->paid|lower == 'complete' || $listing->paid|lower == 'paid'}alert-success{/if}" title="{if $listing->paid|lower == 'complete' ||  $listing->paid|lower == 'paid'}{'Paid'|gettext}{else}{'Payment Due'|gettext}{/if}">{$listing->grand_total|currency}</span></td>
                     <td>{billingcalculator::getCalcTitle($listing->method)}</td>
                     <td>{$listing->purchased|format_date:"%m/%d/%Y %I:%M%p"}</td>
                     <td>{$listing->order_type}</td>
@@ -95,8 +107,12 @@
             {/foreach}
         </tbody>
     </table>
+    {if $smarty.const.ECOM_LARGE_DB}
+    {pagelinks paginate=$page bottom=1}
+    {/if}
 </div>
 
+{if !$smarty.const.ECOM_LARGE_DB}
 {script unique="manage-orders" jquery='jqueryui,select2,jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive,jquery.dataTables.yadcf'}
 {literal}
     $(document).ready(function() {
@@ -205,3 +221,4 @@
     });
 {/literal}
 {/script}
+{/if}

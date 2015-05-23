@@ -45,15 +45,15 @@ class cash extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-        $object = new stdClass();
-        $object->errorCode = $opts->result->errorCode = 0;
+//        $object = new stdClass();
+        $opts->result->errorCode = $opts->result->errorCode = 0;
 //        $opts->result = $object;
 //        $opts->result->payment_status = "Pending";
         $opts->result->payment_status = gt("complete");
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
         $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
-        return $object;
+        return $opts->result;
     }
 
     function userForm($config_object = null, $user_data = null) {

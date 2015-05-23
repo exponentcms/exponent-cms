@@ -50,23 +50,32 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = str_replace("\r\n", '', trim($content));
-        echo '<a href="#" id="' . $params['id'] . '">' . $params['text'] . '</a>';
-        if (isset($params['type'])) {
-            if ($params['type'] == 'warning') {
-                $type = 'BootstrapDialog.TYPE_WARNING';
-            } elseif ($params['type'] == 'danger') {
-                $type = 'BootstrapDialog.TYPE_DANGER';
-            }
+        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        if (isset($params['icon'])) {
+            $icon = $params['icon'];
         } else {
-            $type = 'BootstrapDialog.TYPE_INFO';
+            $icon = 'file';
         }
+        $width  = !empty($params['width']) ? $params['width'] : "800px";
+        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle('file', $params['text']) . '</a>';
+        if (isset($params['type'])) {
+            $type = $params['type'];
+        } else {
+            $type = '';
+        }
+
         $script = "
             $(document).ready(function(){
                 $('#".$params['id']."').click(function() {
-                    var message = '".$content."';
+                    var message = ".$content.";
                     $.prompt(message, {
                         title: '".$params['title']."',
+                        position: {
+                            width: '" . $width . "'
+                        },
+                        classes: {
+                            title: '".$type."',
+                        },
                         buttons: {'".$params['buttons']."': true},
                         submit: function(e,v,m,f){
                             // use e.preventDefault() to prevent closing when needed or return false.
@@ -77,7 +86,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
             });
         ";
         expJavascript::pushToFoot(array(
-            "unique"=>'pop-'.$params['name'],
+            "unique"=>'pop-'.$params['id'],
             "jquery"=>"jquery-impromptu",
             "content"=>$script,
          ));

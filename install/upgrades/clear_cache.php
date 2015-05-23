@@ -52,14 +52,14 @@ class clear_cache extends upgradescript {
 	function upgrade() {
 		// work our way through all the tmp files and remove them
 		$files = array(
+            BASE.'tmp/cache',  // smarty rendering cache (not currently active)
 			BASE.'tmp/css',  // exponent minified css cache
+            BASE.'tmp/extensionuploads', // extensions are uploaded here, includes subfolders
+            BASE.'tmp/img_cache', // phpThumb cache includes subfolders
 			BASE.'tmp/minify', // minify cache
 			BASE.'tmp/pixidou', // pixidou cache
 		    BASE.'tmp/rsscache',  // SimplePie cache
 		    BASE.'tmp/views_c',  // smarty compiler cache
-		    BASE.'tmp/cache',  // smarty rendering cache (not currently active)
-			BASE.'tmp/img_cache', // phpThumb cache includes subfolders
-			BASE.'tmp/extensionuploads', // extensions are uploaded here, includes subfolders
 		);
 
         // delete the files.

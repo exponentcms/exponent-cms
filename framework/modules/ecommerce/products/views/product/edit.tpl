@@ -36,20 +36,22 @@
     {else}
         <h1>{'New'|gettext} {$model_name}</h1>
     {/if}
-    <blockquote>
         {if $record->parent_id == 0}
             {if $record->childProduct|count}
-                <strong>{'Child Products:'|gettext}</strong>
-                <ul>
-                {foreach from=$record->childProduct item=child}
-                    <li><a href="{link controller='store' action='edit' id=$child->id}" title="{$child->model}">{$child->title}</a></li>
-                {/foreach}
-                </ul>
+                <blockquote>
+                    <strong>{'Child Products:'|gettext}</strong>
+                    <ul>
+                    {foreach from=$record->childProduct item=child}
+                        <li><a href="{link controller='store' action='edit' id=$child->id}" title="{$child->model}">{$child->title}</a></li>
+                    {/foreach}
+                    </ul>
+                </blockquote>
             {/if}
         {else}
-            <strong>{'Parent Product:'|gettext}</strong> <a href="{link controller='store' action='edit' id=$record->parent_id}" title="{$parent->model}">{$parent->title}</a>
+            <blockquote>
+                <strong>{'Parent Product:'|gettext}</strong> <a href="{link controller='store' action='edit' id=$record->parent_id}" title="{$parent->model}">{$parent->title}</a>
+            </blockquote>
         {/if}
-    </blockquote>
     {form action=update}
         {control type="hidden" name="id" value=$record->id}
 		<!-- if it copied -->

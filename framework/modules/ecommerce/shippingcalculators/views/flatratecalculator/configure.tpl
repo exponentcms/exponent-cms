@@ -21,7 +21,7 @@
         <div class="yui-content">
 	        <div id="tab1">
                 <blockquote>{'Apply a single shipping rate to every order regardless of size or total cost'|gettext}</blockquote>
-	            {control type="text" name="rate" label="Flat Rate Shipping & Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.rate description='This single rate applies to the entire order'|gettext}
+	            {control type="text" name="rate" label="Flat Rate Shipping & Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.rate|default:0 description='This single rate applies to the entire order'|gettext}
 	            {*{control type="textarea" name="out_of_zone_message" label="Message to Out-of-Zone Buyers"|gettext size=15 value=$calculator->configdata.out_of_zone_message}*}
 	        </div>
         </div>

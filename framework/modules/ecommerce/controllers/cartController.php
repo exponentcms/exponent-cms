@@ -98,7 +98,7 @@ class cartController extends expController {
 
             }
             // adjust multiple quantity here
-            if (((int)$this->params['quantity']) % $product->multiple_order_quantity) {
+            if ($product->multiple_order_quantity && ((int)$this->params['quantity']) % $product->multiple_order_quantity) {
                 flash('message', gt("Please enter a quantity in multiples of") . ' ' . $product->multiple_order_quantity);
                 redirect_to(array('controller'=> 'store', 'action'=> 'show', 'id'=> $this->params['product_id']));
             } else {
@@ -459,7 +459,7 @@ class cartController extends expController {
         }
 
         // we need to get the current shipping method rates
-        $shipping->getRates();  //FIXME this has a global $order
+        $shipping->getRates();
 
         if ((!defined('ENABLE_SSL') || ENABLE_SSL==0) && (!defined('DISABLE_SSL_WARNING') || DISABLE_SSL_WARNING==0)) flash('error', gt('This page appears to be unsecured!  Personal information may become compromised!'));
 
@@ -599,7 +599,7 @@ class cartController extends expController {
         //eDebug($this->params);
         if (empty($order->orderitem)) flashAndFlow('error',gt('There are no items in your cart.'));
 
-        // final the cart totals       
+        // finalize the cart totals
         $order->calculateGrandTotal();
 
         //eDebug($order);

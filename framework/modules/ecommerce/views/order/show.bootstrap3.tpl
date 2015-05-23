@@ -93,7 +93,6 @@
                         {/if}
                         {permissions}
                             {if $permissions.manage}
-                                {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
                                 <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Order'|gettext}</a>
                             {/if}
                         {/permissions}
@@ -252,11 +251,16 @@
                     </ul>
                     <div class="tab-content panel">
                         <div id="shipping" role="tabpanel" class="tab-pane fade in active">
+                            {permissions}
+                                {if $permissions.manage && $order->shipping_required}
+                                    {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                                {/if}
+                            {/permissions}
                             <div class="table-responsive">
                                 <table class="table" style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
-                                    <tr style="border: 0px; padding: 0px; margin:0px;">
+                                    <tr style="border: 0px; padding: 0px; margin:0px;vertical-align: top">
                                         <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
-                                            <strong>{"Shipping Method"|gettext}</strong>{br}
+                                            <strong>{"Shipping Method"|gettext}</strong>
                                             {$shipping->shippingmethod->option_title}
                                             {permissions}
                                                 <div class="item-permissions">
@@ -268,7 +272,7 @@
                                         </td>
                                         <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
                                             {if $shipping->shippingmethod->carrier != ''}
-                                            <strong>{"Carrier"|gettext}:</strong>{br}
+                                            <strong>{"Carrier"|gettext}:</strong>
                                             {$shipping->shippingmethod->carrier}
                                             {/if}
                                         </td>
@@ -279,9 +283,15 @@
                                         {'No Shipping Required'|gettext}
                                     {else}
                                         {$order->shipped|format_date:"%A, %B %e, %Y":"Not Shipped Yet"}
+                                        {if $shipping->shippingmethod->delivery}
+                                            {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                                        {/if}
                                     {/if}
                                 {else}
                                     {"Not Shipped Yet"|gettext}
+                                    {if $shipping->shippingmethod->delivery}
+                                        {br}{'Estimated Delivery Date'|gettext}: {$shipping->shippingmethod->delivery|date_format}
+                                    {/if}
                                 {/if}
                             </div>
                         </div>
@@ -443,7 +453,7 @@
                                         {$bt->getPoster()}
                                     </td>
                                     <td>
-                                        {if $bt->transaction_state == "authorized"}
+                                        {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
                                             {if $bt->captureEnabled() == true}
                                                 {form action=captureAuthorization}
                                                     {control type="hidden" name="id" value=$order->id}
@@ -458,7 +468,7 @@
                                                 {/form}
                                             {/if}
                                         {/if}
-                                        {if $bt->transaction_state == "complete"}
+                                        {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
                                             {if $billing->calculator != null && $bt->creditEnabled() == true}
                                                 {form action=creditTransaction}
                                                     {control type="hidden" name="id" value=$order->id}

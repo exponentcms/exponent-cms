@@ -54,7 +54,7 @@ class shippingController extends expController {
 
 		$shipping = new shipping();
 		$id = $this->params['option'];
-		$rates = $shipping->calculator->getRates($order);
+		$rates = $shipping->calculator->getRates($order);  //FIXME a lot of work just to get one set of data since we'll be doing it again for cart/checkout redisplay...maybe cache???
 		$rate = $rates[$id];
 		$shipping->shippingmethod->update(array('option'=>$id,'option_title'=>$rate['title'],'shipping_cost'=>$rate['cost']));
 		$ar = new expAjaxReply(200, 'ok', array('title'=>$rate['title'], 'cost'=>number_format($rate['cost'], 2)), array('controller'=>'cart', 'action'=>'checkout'),true);
@@ -85,17 +85,27 @@ class shippingController extends expController {
 		$ar->send();		
 	}
 	
-	function renderOptions() {
+	function renderOptions() {  //FIXME do we ever call this?
 //	    global $db, $order;
         global $order; //FIXME we do NOT want the global $order
 
 	    $shipping = new shipping();
+        //FIXME perhaps check for cached rates if calculator didn't change???
         $shipping->pricelist = $shipping->calculator->getRates($order);
-        
+        $shipping->multiple_carriers = $shipping->calculator->multiple_carriers;
+
         if (empty($shipping->shippingmethod->option)) {
-            $opt = current($shipping->pricelist);
+            if ($shipping->multiple_carriers) {
+                $opt = current($shipping->pricelist[0]);
+            } else {
+                $opt = current($shipping->pricelist);
+            }
         } else {
-            $opt = $shipping->pricelist[$shipping->shippingmethod->option];
+            if ($shipping->multiple_carriers) {
+                $opt = $shipping->pricelist[0][$shipping->shippingmethod->option];
+            } else {
+                $opt = $shipping->pricelist[$shipping->shippingmethod->option];
+            }
         }
         
         $shipping->shippingmethod->update(array('option'=>$opt['id'],'option_title'=>$opt['title'],'shipping_cost'=>$opt['cost']));

@@ -1,13 +1,22 @@
 /*global tinymce:true */
 
-tinymce.PluginManager.add('quickupload', function(editor) {
+tinymce.PluginManager.add('quickupload', function(editor, url) {
+
+    editor.addButton('quickupload', {
+   		//icon: 'image',
+        icon: 'quickupload',
+        image       : url + '/img/quick_button.gif',
+   		id: editor.id + '_quickupload',
+   		tooltip: 'Quick upload image',
+   //		stateSelector: 'img:not([data-mce-object],[data-mce-placeholder])'
+   	});
 
 	// plupload base js folder
 	// use for include swf or xap
 	var basepath = editor.settings.plupload_basepath;
 
 	// upload post url
-	var url = editor.settings.upload_url;
+	var purl = editor.settings.upload_url;
 
 	// callback of uploaded
 	// one arg is plupload xhr response, return false or a image path.
@@ -22,14 +31,6 @@ tinymce.PluginManager.add('quickupload', function(editor) {
 	// filesize
 	var filesize = editor.settings.upload_file_size;
 
-
-	editor.addButton('quickupload', {
-		icon: 'image',
-		id: editor.id + '_quickupload',
-		tooltip: 'Quick upload image',
-//		stateSelector: 'img:not([data-mce-object],[data-mce-placeholder])'
-	});
-
 	editor.on('init', function(){
 		var id = editor.id + '_quickupload';
 		var btn = document.getElementById(id);
@@ -40,7 +41,7 @@ tinymce.PluginManager.add('quickupload', function(editor) {
             var uploader = new plupload.Uploader({
                 runtimes: 'html5,flash,silverlight,html4' ,
                 browse_button: id ,
-                url: url ,
+                url: purl ,
                 filters: {
                     max_file_size: filesize ? filesize : "1mb" ,
                     mime_types: [{title: "Image files" , extensions: "jpg,jpeg,gif,png"}] ,

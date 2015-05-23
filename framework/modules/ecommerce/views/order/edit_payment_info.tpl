@@ -31,6 +31,7 @@
                             {/if}
                         {/foreach}
                         {/group}
+                        {*FIXME do we need 'billing_cost' & 'transaction_state' (by dropdown)???*}
                         {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
                     </div>
                 </div>

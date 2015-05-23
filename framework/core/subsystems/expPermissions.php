@@ -160,7 +160,17 @@ class expPermissions {
         // check for inherited 'manage' permission from current page and its parents
         if ($ploc->mod != 'navigation') {
             global $sectionObj;
-            if (self::check('manage',expCore::makeLocation('navigation','',$sectionObj->id))) {
+            if (in_array('view', $permission)) {
+                $page_perm = array(
+                    'manage',
+                    'view',
+                );
+            } else {
+                $page_perm = array(
+                    'manage'
+                );
+            }
+            if (self::check($page_perm,expCore::makeLocation('navigation','',$sectionObj->id))) {
 				return true;
 			}
 		} else {

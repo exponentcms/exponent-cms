@@ -50,13 +50,41 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = str_replace("\r\n", '', trim($content));
-        echo '<a href="#" id="' . $params['id'] . '">' . $params['text'] . '</a>';
+        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        if (isset($params['ajax'])) {
+            $content = json_encode("function(dialogRef) {
+                    var message = $('<div><i class=\"fa fa-spinner fa-spin\"></i> ".gt('Loading')."...</div>');
+                    $.ajax({
+                        url: '" . $params['ajax'] . "',
+                        data: {ajax_action:1},
+                        context: {
+                            theDialogWeAreUsing: dialogRef
+                        },
+                        success: function(content) {
+                            this.theDialogWeAreUsing.setMessage(content.replace(%s,'').replace(%t,''));
+                        }
+                    });
+                    return message;
+                }
+            ");
+            // clean up code for passing to javascript via json
+            $content = trim(str_replace('\r\n', '', $content) , '"');
+            $content = str_replace('%s', '/\r\n/g', $content);
+            $content = str_replace('%t', '/[\r\n]/g', $content);
+        }
+        if (isset($params['icon'])) {
+            $icon = $params['icon'];
+        } else {
+            $icon = 'file';
+        }
+        echo '<a class="' . expTheme::buttonStyle() . '" href="#" id="' . $params['id'] . '">' . expTheme::iconStyle($icon, $params['text']) . '</a>';
         if (isset($params['type'])) {
             if ($params['type'] == 'warning') {
                 $type = 'BootstrapDialog.TYPE_WARNING';
             } elseif ($params['type'] == 'danger') {
                 $type = 'BootstrapDialog.TYPE_DANGER';
+            } else {
+                $type = 'BootstrapDialog.TYPE_INFO';
             }
         } else {
             $type = 'BootstrapDialog.TYPE_INFO';
@@ -68,7 +96,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
                         size: BootstrapDialog.SIZE_WIDE,
                         type: ".$type.",
                         title: '".$params['title']."',
-                        message: '".$content."',
+                        message: ".$content.",
                         buttons: [{
                             label: '".$params['buttons']."',
                             action: function(dialogRef){
@@ -80,7 +108,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
             });
         ";
         expJavascript::pushToFoot(array(
-            "unique"=>'pop-'.$params['name'],
+            "unique"=>'pop-'.$params['id'],
             "bootstrap"=>'modal,transition,tab',
             "jquery"=>"bootstrap-dialog",
             "content"=>$script,

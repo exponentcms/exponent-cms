@@ -113,6 +113,9 @@
                         class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
             </li>
         {/if}
+        {if $data.divider}
+            <li class="divider"> </li>
+        {/if}
     {/if}
 {/function}
 

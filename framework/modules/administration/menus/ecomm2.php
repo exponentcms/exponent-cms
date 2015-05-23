@@ -55,9 +55,9 @@ if ($db->countObjects('product', 'product_type="eventregistration"') == 0) {
     return false;
 }
 
-$items = array(
+$items1 = array(
     array(
-        'text'      => gt('View All Event Registrations'),
+        'text'      => gt('Manage Event Registrations'),
         'icon'      => 'fa-calendar-o',
         'classname' => 'events',
         'url'       => makeLink(
@@ -78,17 +78,19 @@ $items = array(
                 'product_type' => 'eventregistration'
             )
         ),
+        'divider' => true,
     )
 );
 $ev = new eventregistration();
 $allevents = $ev->find('all', 'product_type="eventregistration" && active_type=0');
 $events = array();
 foreach ($allevents as $event) {
-    if ($event->eventdate > time()) {
+    if ($event->eventenddate > time()) {
         $events[] = $event;
     }
 }
 $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventdate', 'order' => 'ASC'));
+$items2 = array();
 foreach ($events as $event) {
     if (!empty($event->title)) {
         $thisitem = array();
@@ -102,16 +104,21 @@ foreach ($events as $event) {
         );
         $thisitem['classname'] = 'event';
         $thisitem['icon'] = 'fa-info';
-        $items[] = $thisitem;
+        $items2[] = $thisitem;
     }
 }
 
+if (bs3()) {
+    $items = array_merge($items1, $items2);
+} else {
+    $items = array($items1, $items2);
+}
 return array(
-    'text'      => gt('Upcoming Events'),
+    'text'      => ' <span class="event label label-default">' . count($events) . '</span>',
     'icon'      => 'fa-calendar',
     'classname' => 'events',
     'submenu'   => array(
-        'id'       => 'events',
+        'id'       => 'event2',
         'itemdata' => $items,
     )
 );

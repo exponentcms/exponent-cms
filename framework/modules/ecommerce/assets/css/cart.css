@@ -190,7 +190,8 @@ table#cart table td {
 }
 
 .cart.checkout h2 {
-	padding       : 5px 0;
+	padding       : 4px 0;
+	padding-left  : 4px;
 	border        : 1px solid #999;
 	border-width  : 1px 0;
 	background    : #f2f1c3;
@@ -371,6 +372,7 @@ table#cart table td {
 
 #shipping-method-options .shippingmethodimg {
 	float : left;
+	margin-right: 22px;
 }
 
 #shipping-method-options .sm-info {

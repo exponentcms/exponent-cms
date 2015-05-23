@@ -41,7 +41,6 @@
                     {/if}
                     {permissions}
                         {if $permissions.manage}
-                            {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
                             <a class="{button_style}" href="{link controller='order' action='createReferenceOrder' id=$order->id}">{'Spawn Reference Order'|gettext}</a>
                         {/if}
                     {/permissions} 
@@ -110,6 +109,13 @@
                 </table>
             </div>
             <div id="shipinfo">
+                <div id="buttons">
+                    {permissions}
+                        {if $permissions.manage && $order->shipping_required}
+                            {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                        {/if}
+                    {/permissions}
+                </div>
                 <h2>{"Shipping and Tracking"|gettext}</h2>
                  <table class="order-info">
                     <thead>
@@ -145,6 +151,7 @@
                             {/if}
                         </td></tr>
                     {/if}
+                    </tbody>
                  </table>
             </div>
             <div id="billinfo">
@@ -154,7 +161,7 @@
                     <table class="order-info">
                     <thead>
                         <tr>
-                            <th colspan="2">{'Transaction state:'|gettext} {$bt->transaction_state}.</th>
+                            <th colspan="2">{'Transaction state:'|gettext} {$bt->transaction_state}</th>
                         </tr> 
                     </thead>
                     <tbody>     
@@ -175,7 +182,7 @@
                     {if $permissions.manage && $smarty.foreach.foo.first}
                         <tr>
                             <td>
-                            {if $bt->transaction_state == "authorized"}
+                            {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
                                 {if $bt->captureEnabled() == true}
                                     {form action=captureAuthorization}
                                         {control type="hidden" name="id" value=$order->id}

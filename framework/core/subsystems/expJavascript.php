@@ -669,9 +669,9 @@ class expJavascript {
      * @deprecated yui2
      */
     public static function panel($params) {
-        $content = "<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>";
+        $content = json_encode("<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>");
         $id = "exppanel".$params['id'];
-        $width  = !empty($params['width']) ? $params['width'] : "300px";
+        $width  = !empty($params['width']) ? $params['width'] : "800px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
         $dialog  = !empty($params['dialog']) ? explode(":",$params['dialog']) : "";
         $header  = !empty($params['header']) ? $params['header'] : "&#160;";
@@ -727,7 +727,7 @@ class expJavascript {
                 close:".$close." } );" . "\r\n";
 
             $script .= $id.".setHeader('".$header."');" . "\r\n";
-            $script .= "var pnlcontent = '".$content."';" . "\r\n";
+            $script .= "var pnlcontent = ".$content.";" . "\r\n";
 
             $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);" . "\r\n";
 
@@ -752,7 +752,7 @@ class expJavascript {
         }
 
         self::pushToFoot(array(
-            "unique"=>'pop-'.$params['name'],
+            "unique"=>'pop-'.$params['id'],
             "yui2mods"=>'animation,container',
             "content"=>$script,
          ));

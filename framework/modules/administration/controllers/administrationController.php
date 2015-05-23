@@ -387,7 +387,7 @@ class administrationController extends expController {
         } else {
             $newvalue = (DEVELOPMENT == 1) ? 0 : 1;
             expSettings::change('DEVELOPMENT', $newvalue);
-            expTheme::removeCss();
+//            expTheme::removeCss();
             expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
             $message = ($newvalue) ? gt("Exponent is now in 'Development' mode") : gt(
                 "Exponent is no longer in 'Development' mode"
@@ -509,7 +509,7 @@ class administrationController extends expController {
 	public static function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
-//        expSession::un_set('framework');
+        expSession::un_set('framework');
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
 		expTheme::removeCss();
@@ -1344,7 +1344,7 @@ class administrationController extends expController {
         expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
-        flash('message', gt("New Configuration Profile Loaded"));
+        flash('message', gt("New Configuration Profile Loaded") . ' (' . $this->params['profile'] . ')');
         redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
 

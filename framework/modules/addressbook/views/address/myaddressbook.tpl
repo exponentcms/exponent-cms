@@ -22,8 +22,11 @@
     <blockquote>
         {'Click the'|gettext} <strong>{'Add New Address'|gettext}</strong> {'link below if you\'d like to add a new address to use for either your billing or shipping address'|gettext}.{br}
         {'To change your billing or shipping address for this order, simply select the button next to the address you\'d like to set in either the billing or shipping address column'|gettext}.{br}
-        {'A green button indicates your selection'|gettext}.{br}{br}
+        {'A green button indicates your selection'|gettext}.
+        {if !expJavascript::inAjaxAction()}
+        {br}{br}
         {'When you are done, simply click the \'Done\' button below to go back to the checkout process'|gettext}.
+        {/if}
     </blockquote>
     <div class="module-actions">
         {icon class=add action=edit text="Add New Address"|gettext}
@@ -82,9 +85,11 @@
 			{/foreach}
 		</tbody>
     </table>
+    {if !expJavascript::inAjaxAction()}
     <div class="module-actions">
         {*<a class="{button_style}" href="{backlink}">{"Done"|gettext}</a>*}
         {$backlink = makeLink(expHistory::getBack(1))}
         {icon button=true class="reply" link=$backlink text="Done"|gettext}
     </div>
+    {/if}
 </div>

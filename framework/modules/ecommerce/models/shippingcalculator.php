@@ -24,6 +24,8 @@ class shippingcalculator extends expRecord {
     public $table = 'shippingcalculator';
     public $icon = '';
     public $configdata = array();
+    public $multiple_carriers = false;
+
 //    public function hasUserForm() { return true; }
    	public function hasConfig() { return true; }
    	public function addressRequired() { return true; }
@@ -58,6 +60,9 @@ class shippingcalculator extends expRecord {
     {
         if (bs3(true)) {
             $tpl = 'configure.bootstrap3.tpl';
+            if (!file_exists(BASE . 'framework/modules/ecommerce/shippingcalculators/views/' . $this->calculator_name . '/' . $tpl)) {
+                $tpl = 'configure.tpl';
+            }
         } else {
             $tpl = 'configure.tpl';
         }

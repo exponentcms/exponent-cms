@@ -425,6 +425,7 @@
                         <h2>{"e-Commerce Configuration"|gettext}</h2>
                     </div>
                     {control type="checkbox" postfalse=1 name="sc[FORCE_ECOM]" label="Activate e-Commerce?"|gettext checked=$smarty.const.FORCE_ECOM value=1}
+                    {control type="checkbox" postfalse=1 name="sc[ECOM_LARGE_DB]" label="Allow Large e-Commerce Tables?"|gettext checked=$smarty.const.ECOM_LARGE_DB value=1 description='This will prevent manage product/order problems, but disable the filter/search features'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_SSL_WARNING]" label="Disable Unsecure Checkout Warning?"|gettext checked=$smarty.const.DISABLE_SSL_WARNING value=1 description='Normally a warning is displayed when attempting to checkout on an unsecured site.'|gettext}
                     {control type="dropdown" name="sc[ECOM_CURRENCY]" label="Default Currency"|gettext items=$currency default=$smarty.const.ECOM_CURRENCY}
                     {group label="Getting e-Commerce up and running"|gettext}
@@ -509,7 +510,8 @@
 {script unique="`$config`"}
 {literal}
     function changeProfile(val) {
-        if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}')) {
+        var configname = document.getElementById("profiles").value;
+        if (confirm('{/literal}{'Are you sure you want to load a new profile?'|gettext}{literal}'+' ('+configname+')')) {
             window.location = EXPONENT.PATH_RELATIVE+"administration/change_profile/profile/" + val;
         } else {
             document.getElementById("profiles").value = '';

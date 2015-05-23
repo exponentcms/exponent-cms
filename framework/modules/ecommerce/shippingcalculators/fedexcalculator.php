@@ -40,8 +40,7 @@ class fedexcalculator extends shippingcalculator {
         "FEDEX_GROUND"       => "FedEx Ground - 1-5 Business Days"
     );
 
-    public function getRates($order) {  //FIXME isn't this an order object?
-//        global $order;  //FIXME this is the current user order object, NOT the edited order object
+    public function getRates($order) {
 //        require_once(BASE . 'external/fedex-php/fedex-common.php');
         //require_once('fedex-common.php');
 
@@ -341,15 +340,15 @@ class fedexcalculator extends shippingcalculator {
         if (isset($params->address2)) $addy['Streetlines'][] = $params->address2;
         $addy['City']                = isset($params->city) ? $params->city : '';
         $addy['StateOrProvinceCode'] = isset($params->state) ? geoRegion::getAbbrev($params->state) : '';
-        $addy['CountryCode']         = isset($params->state) ? geoRegion::getCountryCode($params->country) : '';
+        $addy['CountryCode']         = isset($params->country) ? geoRegion::getCountryCode($params->country) : '';
         $addy['PostalCode']          = isset($params->zip) ? $params->zip : '';
         return $addy;
     }
 
-    public static function sortByVolume($a, $b) {
-//        eDebug($a);
-        return ($a->volume > $b->volume ? -1 : 1);
-    }
+//    public static function sortByVolume($a, $b) {
+////        eDebug($a);
+//        return ($a->volume > $b->volume ? -1 : 1);
+//    }
 
 }
 

@@ -148,27 +148,27 @@ class passthru extends billingcalculator {
     function process($method, $opts, $params, $order) {
 //        global $order;
 
-        $object = new stdClass();
-        $object->errorCode = 0;
-        $object->message = 'Authorization pending.';
-        $object->PNREF = 'Pending';
-        $object->authorization_code = 'Pending';
-        $object->AVSADDR = 'Pending';
-        $object->AVSZIP = 'Pending';
-        $object->CVV2MATCH = 'Pending';
-        $object->traction_type = 'Pending';
+//        $object = new stdClass();
+        $opts->result->errorCode = 0;
+        $opts->result->message = 'Authorization pending.';
+        $opts->result->PNREF = 'Pending';
+        $opts->result->authorization_code = 'Pending';
+        $opts->result->AVSADDR = 'Pending';
+        $opts->result->AVSZIP = 'Pending';
+        $opts->result->CVV2MATCH = 'Pending';
+        $opts->result->traction_type = 'Pending';
         $trax_state = "authorization pending";
         $trax_state->payment_status = $trax_state;
 
         //$opts2->billing_info = $opts;
-        $opts2 = new stdClass();
-        $opts2->result = $object;
+//        $opts2 = new stdClass();
+//        $opts2->result = $object;
         //eDebug($opts,true);
         /*$opts->result = $object;        
         $opts->cc_number = 'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4);*/
-        $method->update(array('billing_options' => serialize($opts2), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $object, $trax_state);
-        return $object;
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        return $opts->result;
     }
 
     function postProcess($order, $params) {

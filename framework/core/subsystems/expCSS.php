@@ -496,7 +496,7 @@ class expCSS {
     }
 
     /**
-     * Rebuild the entire set of 'core' .css files by pushign them all to the head (this one time)
+     * Rebuild the entire set of 'core' .css files by pushing them all to the head (this one time)
      */
     public static function updateCoreCss(){
         $dir = BASE . 'framework/core/assets/less';

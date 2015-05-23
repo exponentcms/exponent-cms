@@ -828,6 +828,7 @@ function object2Array($object=null) {
 
 function expUnserialize($serial_str) {
     if ($serial_str === 'Array') return null;  // empty array string??
+    if (is_array($serial_str) || is_object($serial_str)) return $serial_str;  // already unserialized
 //    $out1 = @preg_replace('!s:(\d+):"(.*?)";!se', "'s:'.strlen('$2').':\"$2\";'", $serial_str );
     $out = preg_replace_callback(
         '!s:(\d+):"(.*?)";!s',

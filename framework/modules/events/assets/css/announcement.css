@@ -1,6 +1,19 @@
-/* announcement view for news module */
-.events .announcement h2 {
+/* announcement view for events module */
+.events.announcement h2,
+.events.announcement h3,
+.events.announcement h4,
+.events.announcement h5,
+.events.announcement h6 {
 	text-align : center;
+}
+
+.events.announcement > .item > h2 > a,
+.events.announcement > .item > h3 > a,
+.events.announcement > .item > h4 > a,
+.events.announcement > .item > h5 > a,
+.events.announcement > .item > h6 > a {
+	color: black;
+	text-decoration: none;
 }
 
 .events.announcement .item.announcement {
@@ -21,13 +34,7 @@
 }
 
 .events.announcement .item.announcement.featured {
-	background-color: #ffb7a7;
-}
-
-.events.announcement > .item.announcement > h2 > a
-{
-	color: black;
-	text-decoration: none;
+	background-color: #ffd3c9;
 }
 
 /*.events.announcement .item-actions a {*/

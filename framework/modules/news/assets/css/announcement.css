@@ -1,5 +1,9 @@
 /* announcement view for news module */
-.news .announcement h2 {
+.news.announcement h2,
+.news.announcement h3,
+.news.announcement h4,
+.news.announcement h5,
+.news.announcement h6 {
 	text-align : center;
 }
 
@@ -21,7 +25,7 @@
 }
 
 .news.announcement .item.announcement.featured {
-	background-color: #ffb7a7;
+	background-color: #ffd3c9;
 }
 
 /*.news.announcement .item-actions a {*/

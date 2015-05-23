@@ -89,7 +89,7 @@ function smarty_function_prod_images($params,&$smarty) {
                                             
             if (!$images[0]->id) {
                 unset($imgparams['file_id']);
-                $imgparams['src'] = 'framework/modules/ecommerce/assets/images/no-image.jpg';
+                $imgparams['src'] = PATH_RELATIVE . 'framework/modules/ecommerce/assets/images/no-image.jpg';
                 $imgparams['alt'] = gt('No image found for').' '.$rec->title;
             }
             $img = smarty_function_img($imgparams,$smarty);
