@@ -61,7 +61,7 @@ function smarty_function_google_map($params,&$smarty) {
     $height = !empty($params['height']) ? $params['height'] : '190';
     $html = '<div id="gmap-' . $params['unique'] .'" class="" style="height:' . $height . 'px"></div>';
     $script = "
-    if (typeof google !== 'undefined) {
+    if (typeof google !== 'undefined') {
         var geocoder = new google.maps.Geocoder();
         var " . $params['unique'] . "_map;
 
