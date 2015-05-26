@@ -517,13 +517,13 @@ function smarty_function_control($params, &$smarty) {
         $control->name  = $params['name'];
 //        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
-        $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '');
+        $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '', $params['value']);
 //        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
         $control->id  = $params['id'];
         //echo $control->id;
         if ($params['type'] != 'radio') {
             // auto-create an 'id' from the name param and 'name' from the id param if needed
-            if (empty($control->id)) $control->id = createValidId($params['name']);
+            if (empty($control->id)) $control->id = createValidId($params['name'], $params['value']);
             if (empty($control->name)) $control->name = $params['id'];
         }
 

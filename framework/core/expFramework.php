@@ -883,9 +883,12 @@ function expProcessBuffer($buffer, $mode=null) {
  * @param $id
  * @return mixed
  */
-function createValidId($id) {
+function createValidId($id, $value='') {
     $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");  //FIXME do we need to update this to HTML5 and only include the space?
-    return str_replace($badvals, "_", trim($id));
+    if (strpos($id, '[]') !== false)
+        $id .= $value;
+    $new_id = str_replace($badvals, "_", trim($id));
+    return $new_id;
 }
 
 function curPageURL() {
