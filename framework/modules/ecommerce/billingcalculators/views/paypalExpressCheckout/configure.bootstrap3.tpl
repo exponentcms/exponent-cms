@@ -33,7 +33,7 @@
                     <li><strong>{'Sale'|gettext}</strong> – {'the funds are credited to the merchants account immediately at the end of the checkout flow.'|gettext}</li>
                     <li><strong>{'Authorization'|gettext}</strong> – {'the merchant obtains an authorization (a hold) for the transaction amount and the merchant must then capture the funds against this authorization at a later date. Authorizations are valid for up to 3 days. The fund capture can then be done from the PayPal account.'|gettext}</li>
                     <li><strong>{'Order'|gettext}</strong> – {'the merchant does not have a hold on the funds. The merchant must later authorize against the order and then capture the funds.'|gettext}</li>
-                    <li><strong style="color:red;">{'Note'|gettext}</strong>! {'There is no interface within Exponent to capture, authorize, reauthorize, or void transactions initiated by the Authorization and Order modes.'|gettext} <a href="https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/authcapture/" target="_blank">{'Using PayPal Authorization & Capture'|gettext}</a></li>
+                    <li><strong style="color:red;">{'Note'|gettext}</strong>! {'There is no interface within Exponent to authorize or reauthorize transactions initiated by the Authorization and Order modes.'|gettext} <a href="https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/authcapture/" target="_blank">{'Using PayPal Authorization & Capture'|gettext}</a></li>
                 </ul>
                 <hr>
 	            {control type="checkbox" name="testmode" label="Enable Sandbox (Test) Mode?"|gettext value=1 checked=$calculator->configdata.testmode}
