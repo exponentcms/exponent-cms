@@ -284,7 +284,7 @@ class authorizedotnet extends creditcard {
             $response = explode("|", $authorize);
 
             $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
-            $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'refunded');
+            $this->createBillingTransaction($method, -(number_format($amount, 2, '.', '')), $opts->result, 'refunded');
 
             flash('message', gt('Refund Completed Successfully.'));
             redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));

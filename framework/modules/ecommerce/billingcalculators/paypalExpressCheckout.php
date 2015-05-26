@@ -632,7 +632,7 @@ class paypalExpressCheckout extends billingcalculator {
         //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($billingmethod, -(number_format($amount, 2, '.', '')), $opts->result, $trax_state);
         return $opts->result;
 
 

@@ -752,7 +752,7 @@ class payflowpro extends creditcard {
         }
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));  //FIXME not sure this is correct, but we need to update billingmethod
         //don't wnat to update if the capture failed, as we can always try again
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($method, -(number_format($amount, 2, '.', '')), $opts->result, $trax_state);
         return $opts->result;
     }
 
