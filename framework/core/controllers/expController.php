@@ -58,6 +58,8 @@ abstract class expController {
 
     public $codequality = 'stable'; // code's level of stability
 
+    public $rss_is_podcast = false;
+
     /**
      * @param null  $src
      * @param array $params
@@ -1056,7 +1058,8 @@ abstract class expController {
             $rss->ttl = $site_rss->rss_cachetime;
             $rss->link = "http://" . HOSTNAME . PATH_RELATIVE;
             $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
-            if ($site_rss->module == "filedownload") {
+//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+            if ($this->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = ORGANIZATION_NAME;
                 $rss->itunes->image = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
@@ -1086,13 +1089,15 @@ abstract class expController {
             $rss->pubDate = $pubDate;
 
 //        	header("Content-type: text/xml");
-            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+            if ($this->rss_is_podcast) {
                 echo $rss->createFeed("PODCAST");
             } else {
                 echo $rss->createFeed("RSS2.0");
             }
         } else {
-            echo gt("This RSS feed is not available.");
+            flash('notice', gt("This RSS feed is not available."));
+            expHistory::back();
         }
 
         //Read the file out directly

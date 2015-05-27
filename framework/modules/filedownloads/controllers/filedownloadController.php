@@ -33,6 +33,8 @@ class filedownloadController extends expController {
         'rss', // because we do this as a custom tab within the module
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
+    public $rss_is_podcast = true;
+
     static function displayname() { return gt("File Downloads"); }
     static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
