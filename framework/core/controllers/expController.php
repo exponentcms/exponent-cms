@@ -1059,7 +1059,7 @@ abstract class expController {
             $rss->link = "http://" . HOSTNAME . PATH_RELATIVE;
             $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
 //            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
-            if ($this->rss_is_podcast) {
+            if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = ORGANIZATION_NAME;
                 $rss->itunes->image = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
@@ -1090,7 +1090,7 @@ abstract class expController {
 
 //        	header("Content-type: text/xml");
 //            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
-            if ($this->rss_is_podcast) {
+            if ($site_rss->rss_is_podcast) {
                 echo $rss->createFeed("PODCAST");
             } else {
                 echo $rss->createFeed("RSS2.0");
