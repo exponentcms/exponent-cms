@@ -536,6 +536,8 @@ class expSettings
      *
      * @param string $profile The name of the Profile to remove.
      *
+     * @return string
+     *
      * @node Subsystems:Config
      */
     public static function createProfile($profile)
@@ -554,6 +556,7 @@ class expSettings
         $baseprofile = self::parse();  // get current configuration plus missing defaults
         unset($baseprofile['CURRENTCONFIGNAME']); // don't save profile name within actual profile
         self::saveValues($baseprofile, BASE . "framework/conf/profiles/" . $profile . ".php");
+        return $profile;
     }
 
     /** exdoc
