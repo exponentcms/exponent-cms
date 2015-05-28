@@ -21,7 +21,7 @@
  * @package Modules
  */
 class shipping extends expRecord {
-	public $table = 'shipping';
+//	public $table = 'shipping';
 	public $available_calculators = array();
 	public $calculator = null;
 	public $shippingmethod = null;

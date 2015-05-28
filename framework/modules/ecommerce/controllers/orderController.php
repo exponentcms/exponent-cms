@@ -119,7 +119,7 @@ class orderController extends expController {
         if (ECOM_LARGE_DB) {
             $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
         } else {
-            $limit = 0;
+            $limit = 0;  // we'll paginate on the page
         }
         //eDebug($sql, true);
         $page = new expPaginator(array(
@@ -1015,12 +1015,11 @@ exit();
         //$order = new order($this->params['id']);
         $billing = new billing($this->params['id']);
         $opts    = expUnserialize($billing->billingmethod->billing_options);
-        //FIXME what about the most recent transaction?  $billing->billingmethod is the most current transaction
         //eDebug($billing);
 //        eDebug($opts);
         assign_to_template(array(
             'orderid'=> $this->params['id'],
-            'opts'   => $opts->result  //FIXME credit card doesn't have a result
+            'opts'   => $opts,  //FIXME credit card doesn't have a result
             //FIXME do we also need to pass $billing->billingmethod->billing_cost & $billing->billingmethod->transaction_state'???
         ));
     }
@@ -1042,16 +1041,20 @@ exit();
 
         // update billing method
         $bmopts                         = expUnserialize($billingmethod->billing_options);
+        $bmopts->billing_cost           = $this->params['billing_cost'];
+        $bmopts->transaction_state      = $this->params['transaction_state'];
         $bmopts->result                 = $obj;
         $billingmethod->billing_options = serialize($bmopts);
         //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
         if (!empty($this->params['result']['payment_status']))
-            $billingmethod->transaction_state = $this->params['result']['payment_status'];
+            $billingmethod->transaction_state = $this->params['result']['payment_status'];  //FIXME should this be discrete??
         //FIXME we need to set/update $billingmethod->billing_cost also??
         $billingmethod->save();
 
         // add new billing transaction
         $btopts                              = expUnserialize($billingtransaction->billing_options);
+        $btopts->billing_cost                = $this->params['billing_cost'];
+        $btopts->transaction_state           = $this->params['transaction_state'];
         $btopts->result                      = $obj;
         $billingtransaction->billing_options = serialize($btopts);
         //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due

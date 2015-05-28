@@ -30,6 +30,8 @@ class shippingcalculator extends expRecord {
    	public function hasConfig() { return true; }
    	public function addressRequired() { return true; }
    	public function isSelectable() { return true; }
+    public function labelsEnabled() {return false; }
+    public function pickupEnabled() {return false; }
 
     public $shippingmethods = array();
 

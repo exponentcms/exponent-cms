@@ -14,6 +14,7 @@
  *}
 
 <div class="module order edit">
+    {edebug var=$opts}
     <div id="editpayment">
         {form action=save_payment_info}
             {control type="hidden" name="id" value=$orderid}
@@ -23,12 +24,17 @@
                 </ul>
                 <div class="tab-content">
                     <div id="tab1" role="tabpanel" class="tab-pane fade in active">
-                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->transId focus=1}
+                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->result->transId focus=1}
+                        {*FIXME do we need 'billing_cost' & also 'transaction_state' (by dropdown)???*}
+                        {control type="text" name="billing_cost" label='Transaction Cost'|gettext value=$opts->billing_cost description='Refunds are negative amounts'|gettext}
+                        {control type="dropdown" name="transaction_state" label="Transaction State"|gettext items="Authorization Pending,Authorized,Complete,Voided,Refunded,Payment Due,Paid,Error"|gettxtlist values="authorization pending,authorized,complete,voided,refunded,payment due,paid,error"|gettxtlist default=$opts->transaction_state}
                         {group label="Payment Statuses"|gettext}
-                        {foreach from=$opts item=field key=key}
+                        {foreach from=$opts->result item=field key=key}
                             {if $key != 'transId'}
                                 {control type="text" name="result[`$key`]" label=$key|replace:"_":" "|ucwords value=$field}
                             {/if}
+                        {foreachelse}
+                            {'None'|gettext}
                         {/foreach}
                         {/group}
                         {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}

@@ -29,6 +29,7 @@ return array(
 //    'orders_id'=>array(
 //        DB_FIELD_TYPE=>DB_DEF_ID,
 //        DB_INDEX=>10),
+    // shipping address
 	'addresses_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID),
 	'firstname'=>array(
@@ -70,6 +71,7 @@ return array(
 	'email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150),
+    // shipping details
 	'shippingcalculator_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 	'option'=>array(
@@ -86,6 +88,10 @@ return array(
     'delivery' => array(
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
     //FIXME we probably will need to add a package rate id, tracking number, etc...
+//    'shipping_options'=>array(
+//   		DB_FIELD_TYPE=>DB_DEF_STRING,
+//   		DB_FIELD_LEN=>10000),
+//or
 //    "shipment_id" => array(
 //        DB_FIELD_TYPE => DB_DEF_STRING,
 //        DB_FIELD_LEN => 100),

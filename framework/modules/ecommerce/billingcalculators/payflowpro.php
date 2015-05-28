@@ -67,7 +67,7 @@ class payflowpro extends creditcard {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = unserialize($this->config);
         //eDebug($config,true);
         switch ($config['process_mode']) {
@@ -391,7 +391,7 @@ class payflowpro extends creditcard {
 //        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($method, number_format(0, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 
@@ -614,7 +614,7 @@ class payflowpro extends creditcard {
             $opts->result->PROCAVS = $response['PROCAVS'];*/
             $opts->result->traction_type = 'Void';
             //$opts->result->amount_captured = $amount;
-            $trax_state = "void";
+            $trax_state = "voided";
             $opts->result->payment_status = $trax_state;
 //            $object = $opts->result;
         } else {

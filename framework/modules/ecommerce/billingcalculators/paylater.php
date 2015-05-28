@@ -44,6 +44,7 @@ class paylater extends billingcalculator {
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($method, $opts, $params, $order) {
+        $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
         if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
         $method->update(array('billing_options' => serialize($opts)));
@@ -51,7 +52,7 @@ class paylater extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-//        $object = new stdClass();
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
 //        $object->errorCode = $opts->result->errorCode = 0;
         $opts->result->errorCode = 0;
 //        $opts->result = $object;
@@ -59,7 +60,7 @@ class paylater extends billingcalculator {
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
 //        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+        $this->createBillingTransaction($method, number_format(0, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts;
     }
 

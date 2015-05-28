@@ -19,19 +19,23 @@
             {control type="hidden" name="id" value=$orderid}
             <div id="editpayment-tabs" class="yui-navset exp-skin-tabview hide">
                 <ul class="yui-nav">
-                <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
+                    <li class="selected"><a href="#tab1"><em>{'Edit Payment Info'|gettext}</em></a></li>
                 </ul>
                 <div class="yui-content">
                     <div id="tab1">
-                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->transId focus=1}
+                        {control type="text" name="result[transId]" label="Payment Reference #"|gettext value=$opts->result->transId focus=1}
+                        {*FIXME do we need 'billing_cost' & also 'transaction_state' (by dropdown)???*}
+                        {control type="text" name="billing_cost" label='Transaction Cost'|gettext value=$opts->billing_cost description='Refunds are negative amounts'|gettext}
+                        {control type="dropdown" name="transaction_state" label="Transaction State"|gettext items="Authorization Pending,Authorized,Complete,Voided,Refunded,Payment Due,Paid,Error"|gettxtlist values="authorization pending,authorized,complete,voided,refunded,payment due,paid,error"|gettxtlist default=$opts->transaction_state}
                         {group label="Payment Statuses"|gettext}
-                        {foreach from=$opts item=field key=key}
+                        {foreach from=$opts->result item=field key=key}
                             {if $key != 'transId'}
                                 {control type="text" name="result[`$key`]" label=$key|replace:"_":" "|ucwords value=$field}
                             {/if}
+                        {foreachelse}
+                            {'None'|gettext}
                         {/foreach}
                         {/group}
-                        {*FIXME do we need 'billing_cost' & 'transaction_state' (by dropdown)???*}
                         {control type="buttongroup" submit="Save Payment Info"|gettext cancel="Cancel"|gettext}
                     </div>
                 </div>

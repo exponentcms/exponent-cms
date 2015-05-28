@@ -118,7 +118,7 @@ class worldpayCheckout extends billingcalculator {
             header('location: ' . $url);
             exit();
         } else {
-//            $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
+            $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
             if ($params['transStatus'] == 'Y') {
                 $opts->result->errorCode = 0;
                 $opts->result->message = "User has approved the payment at Worldpay";
@@ -126,7 +126,7 @@ class worldpayCheckout extends billingcalculator {
                 $opts->result->payment_status = "Pending";
 //                $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "Pending"));
                 $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "complete"));
-                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'complete');  //FIXME 'complete' is proper?
+                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'complete');  //FIXME is 'complete' and $grand_total proper?
                 redirect_to(array('controller' => 'cart', 'action' => 'process'));
             } else {
                 redirect_to(array('controller' => 'cart', 'action' => 'checkout'), true);

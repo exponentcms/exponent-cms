@@ -51,9 +51,7 @@ class splitcreditcard extends creditcard {
 
     //called when the order is submitted. Should return an object...
     function process($method, $opts, $params, $order) {
-//        global $order, $db, $user;
-
-//        $this->opts = $opts;
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
 
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
@@ -95,7 +93,7 @@ class splitcreditcard extends creditcard {
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
 //        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+        $this->createBillingTransaction($method, number_format(0, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts->result;
     }
 

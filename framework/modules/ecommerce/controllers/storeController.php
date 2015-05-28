@@ -561,7 +561,7 @@ class storeController extends expController {
         if (ECOM_LARGE_DB) {
             $limit = !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10;
         } else {
-            $limit = 0;
+            $limit = 0;  // we'll paginate on the page
         }
         $page = new expPaginator(array(
             'model'      => 'product',

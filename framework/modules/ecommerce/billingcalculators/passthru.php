@@ -133,6 +133,7 @@ class passthru extends billingcalculator {
     }
 
     function preprocess($method, $opts, $params, $order) {
+        $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
         $method->update(array('billing_options' => serialize($opts)));
         if (isset($params['sales_rep_1_id'])) $order->sales_rep_1_id = $params['sales_rep_1_id'];
         if (isset($params['sales_rep_2_id'])) $order->sales_rep_2_id = $params['sales_rep_2_id'];
@@ -146,9 +147,7 @@ class passthru extends billingcalculator {
 
 //    function process($method, $opts, $params, $invoice_number) {
     function process($method, $opts, $params, $order) {
-//        global $order;
-
-//        $object = new stdClass();
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $opts->result->errorCode = 0;
         $opts->result->message = 'Authorization pending.';
         $opts->result->PNREF = 'Pending';
@@ -167,7 +166,7 @@ class passthru extends billingcalculator {
         /*$opts->result = $object;        
         $opts->cc_number = 'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4);*/
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($method, number_format(0, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 

@@ -554,7 +554,7 @@ class cartController extends expController {
 
         // get the billing options..this is usually the credit card info entered by the user
         if ($billing->calculator != null) {
-            $opts = $billing->calculator->userFormUpdate($this->params);
+            $opts = $billing->calculator->userFormUpdate($this->params);  //FIXME seems to return empty
             //$billing->calculator->preprocess($this->params);
             //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
             //eDebug(order::getDefaultOrderType(),true);
@@ -573,7 +573,7 @@ class cartController extends expController {
             $billing->billingmethod->update(array('billing_options' => serialize($opts)));
         }
         //eDebug($opts);
-        expSession::set('billing_options', $opts);
+        expSession::set('billing_options', $opts);  //FIXME $opts is usually empty
         //$o = expSession::get('billing_options');
         //eDebug($o,true);
         //eDebug($this->params,true);
@@ -828,7 +828,7 @@ class cartController extends expController {
 
         $opts = $billing->calculator->userFormUpdate($this->params);
         $order->calculateGrandTotal();
-        expSession::set('billing_options', $opts);
+        expSession::set('billing_options', $opts);  //FIXME $opts is usually empty
         assign_to_template(array(
             'billing'    => $billing,
             'order'      => $order,

@@ -28,6 +28,7 @@ return array(
 	'billingmethods_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>10),	
+    // copy of billingmethods record as history trail
 	'billingcalculator_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
 	'billing_cost'=>array(

@@ -23,8 +23,8 @@
 class order extends expRecord {
     protected $table = 'orders';
 
-    public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');
-    public $has_one = array('order_status', 'order_type', 'shippingmethod');
+    public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');  // we also manually associate shippingmethods and their orderitems
+    public $has_one = array('order_status', 'order_type', 'shippingmethod');  //FIXME in reality we only have one billingmethod???
     public $get_assoc_for = array('orderitem', 'billingmethod', 'order_discounts');
 
     public $total = 0;

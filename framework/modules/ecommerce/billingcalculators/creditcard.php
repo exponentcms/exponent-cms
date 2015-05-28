@@ -217,6 +217,7 @@ class creditcard extends billingcalculator {
      * @return mixed An object indicating pass of failure.
      */
     function preprocess($method, $opts, $params, $order) {
+        $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
         //just save the opts
         $method->update(array('billing_options' => serialize($opts)));
         //eDebug($method,true);

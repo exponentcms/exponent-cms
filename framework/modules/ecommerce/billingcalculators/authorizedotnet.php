@@ -59,10 +59,9 @@ class authorizedotnet extends creditcard {
     }
 
     function process($method, $opts, $params, $order) {
-
-//        global $order, $db, $user;
         global $db, $user;
 
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         // make sure we have some billing options saved.
         if (empty($method) || empty($opts)) return false;
 
@@ -170,8 +169,10 @@ class authorizedotnet extends creditcard {
             $opts->result->correlationID = $response[7];
             if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
                 $trax_state = "complete";
+                $billingcost = $order->grand_total;
             } else if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_ONLY) {
                 $trax_state = "authorized";
+                $billingcost = 0;
             }
         } else {
             $opts->result->errorCode = $response[2]; //Response reason code
@@ -182,7 +183,7 @@ class authorizedotnet extends creditcard {
 //        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
         $method->update(array('billing_options' => serialize($opts)));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($method, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 
@@ -362,6 +363,7 @@ class authorizedotnet extends creditcard {
 
         global $user;
 
+        $amount = 0;  //FIXME initialize the amount??
         $config = unserialize($this->config);
         $opts = unserialize($method->billing_options);
 
@@ -418,8 +420,8 @@ class authorizedotnet extends creditcard {
         $response = explode("|", $authorize);
 
         $opts->result->traction_type = 'Void';
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'void'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'void');
+        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'voided');
 
         return $opts->result;
 
