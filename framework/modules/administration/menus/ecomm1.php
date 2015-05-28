@@ -16,14 +16,12 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) {
+if (!defined('EXPONENT'))
     exit('');
-}
 
 $active = ECOM;
-if (empty($active)) {
+if (empty($active))
     return false;
-}
 
 $new_orders = order::getOrdersCount('new');
 $open_orders = order::getOrdersCount('open');

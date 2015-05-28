@@ -16,16 +16,14 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) {
+if (!defined('EXPONENT'))
     exit('');
-}
 
 global $user;
 
 $active = ECOM;
-if (!$user->isAdmin() || empty($active)) {
+if (!$user->isAdmin() || empty($active))
     return false;
-}
 
 $new_orders = order::getOrdersCount('new');
 $open_orders = order::getOrdersCount('open');

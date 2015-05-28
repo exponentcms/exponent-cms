@@ -16,9 +16,8 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) {
+if (!defined('EXPONENT'))
     exit('');
-}
 
 global $user, $db;
 
@@ -26,9 +25,8 @@ global $user, $db;
 // FIGURE OUT IF WE"RE IN PREVIEW MODE OR NOT
 /////////////////////////////////////////////////////////////////////////
 $level = 99;
-if (expSession::is_set('uilevel')) {
+if (expSession::is_set('uilevel'))
     $level = expSession::get('uilevel');
-}
 
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU

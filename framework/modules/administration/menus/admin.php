@@ -16,15 +16,13 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) {
+if (!defined('EXPONENT'))
     exit('');
-}
 
 global $user, $db;
 
-if ($user->globalPerm('hide_exp_menu')) {
-    return array();
-}
+if ($user->globalPerm('hide_exp_menu'))
+    return false;
 
 $my_version = gt("Exponent Version") . " : " . expVersion::getVersion(true, false, false) . "<br />";
 if (EXPONENT_VERSION_TYPE != '') {
@@ -41,6 +39,7 @@ if (bs3()) {
     $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">';
     $admin_icon = '';
 }
+
 if ($user->isAdmin()) {
     $expAdminMenu = array(
         'text'      => $admin_text,
