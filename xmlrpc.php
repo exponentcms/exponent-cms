@@ -407,7 +407,7 @@ function getRecentPosts($xmlrpcmsg)
                         'postid' => new xmlrpcval($posts[$i]->id, 'string'),
                         'dateCreated' => new xmlrpcval($posts[$i]->publish, 'dateTime.iso8601'),
                         'title' => new xmlrpcval($posts[$i]->title, 'string'),
-//	  			      'description'        => new xmlrpcval($posts[$i]->body, 'string'),
+	  			        'description'        => new xmlrpcval($posts[$i]->body, 'string'),
 //  				  'categories'        => new xmlrpcval(array(new xmlrpcval($posts[$i]->selected_tags, 'string')), 'array'),
                         'publish' => new xmlrpcval((($posts[$i]->private) ? 0 : 1), 'boolean')
                     ), 'struct'
@@ -465,7 +465,6 @@ function newMediaObject($xmlrpcmsg)
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
     if (userLogin($username, $password, null, 'create') == true) {
-        elog($src,'media');
         $file = $xmlrpcmsg->getParam(3);
         $filename = $file->structMem('name')->scalarval();
         $filename = substr($filename, (strrpos($filename, "/") + 1));
@@ -540,7 +539,7 @@ $a = array(
         "function" => "deletePost",
         "signature" => $deletePost_sig,
         "docstring" => $deletePost_doc
-    )
+    ),
 );
 
 $s = new xmlrpc_server($a, false);
