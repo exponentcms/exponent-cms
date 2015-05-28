@@ -22,5 +22,6 @@ if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
 if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
 if (!defined('ENABLE_SSL')) define('ENABLE_SSL','0');
 if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','1');
+if (!defined('USE_XMLRPC')) define('USE_XMLRPC','0');
 
 ?>

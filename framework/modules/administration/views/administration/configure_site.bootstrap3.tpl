@@ -243,6 +243,7 @@
                     {*{control type="text" name="sc[NONSSL_URL]" label="Non-SSL URL Base"|gettext value=$smarty.const.NONSSL_URL}*}
                     {*{control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}*}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_PRIVACY]" label="Disable Privacy Check?"|gettext checked=$smarty.const.DISABLE_PRIVACY value=1 description='Exponent protects private page and module content; but this can prevent display of content in some scenarios'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[USE_XMLRPC]" label="Activate Remote Blog Editing?"|gettext checked=$smarty.const.USE_XMLRPC value=1 description='Allows access to xmlrpc.php to create and edit blog posts on an external application'|gettext}
                 </div>
                 <div id="tab10" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
