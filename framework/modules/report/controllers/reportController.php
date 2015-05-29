@@ -850,7 +850,7 @@ class reportController extends expController {
                 $options = expUnserialize($item->billing_options);
                 if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
-                    if ($item->title == 'Credit Card') {  //FIXME this is translated??
+                    if ($item->title == 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
                         if (!empty($options->cc_type)) {
                             //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
                             @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
@@ -872,18 +872,35 @@ class reportController extends expController {
         $payment_values = implode(",", $payment_values_arr);
 
         //tax
-        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
-        $tax_res = $db->selectObjectBySql($tax_sql);
-
+//        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
+//        $tax_res = $db->selectObjectBySql($tax_sql);
         $tax_types = taxController::getTaxRates();
-        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
+//        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
+
+        $ord = new order();
+        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")");
+
+        $taxes = array();
+        foreach ($tax_res2 as $tt) {
+            $key = key($tt->taxzones);
+            if (!empty($key)) {
+                $tname = $tt->taxzones[$key]->name;
+                if (!isset($taxes[$key]['format'])) {
+                    $taxes[$key] = array();
+                    $taxes[$key]['total'] =0;
+                }
+                $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
+                $taxes[$key]['total'] += $tt->tax;
+            }
+        }
 
         assign_to_template(array(
             'payment_summary' => $payment_summary,
             'payments_key'    => $payments_key,
             'payment_values'  => $payment_values,
-            'tax_total'       => !empty($tax_res->tax_total) ? $tax_res->tax_total : 0,
-            'tax_type'        => $tax_type_formatted
+//            'tax_total'       => !empty($tax_res->tax_total) ? $tax_res->tax_total : 0,
+//            'tax_type'        => $tax_type_formatted,
+            'taxes'           => $taxes
         ));
     }
 
