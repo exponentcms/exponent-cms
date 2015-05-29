@@ -16,17 +16,14 @@
 #
 ##################################################
 
-//define('SCRIPT_EXP_RELATIVE', '');
-//define('SCRIPT_FILENAME', 'xmlrpc.php');
-
 // Initialize the Exponent Framework
 require_once('exponent.php');
 
-// don't continue unless turned on
+// don't continue unless xmlrpc is turned on
 if (!(defined('USE_XMLRPC') && USE_XMLRPC == 1))
     exit;
 
-// These three files are from the PHP-XMLRPC library.
+// These three files are from the PHP-XMLRPC library
 require_once('external/xmlrpc/xmlrpc.php');
 require_once('external/xmlrpc/xmlrpcs.php');
 require_once('external/xmlrpc/xmlrpc_wrappers.php');
@@ -38,14 +35,16 @@ class xmlrpc_server_methods_container
 {
 }
 
-// Internal User Login function	
+/**
+ * Internal User Login function
+ */
 function userLogin($username, $password, $src, $area)
 {
     global $db, $user;
 
-    if ($user->isLoggedIn()) {
+    if ($user->isLoggedIn())
         return true;
-    }
+
     // This is where you would check to see if the username and password are valid
     // and whether the user has rights to perform this action ($area) 'create' or 'edit' or 'delete'
     // Return true if so. Or false if the login info is wrong.
@@ -61,19 +60,22 @@ function userLogin($username, $password, $src, $area)
         $user->updateLastLogin();
     }
 
-    if ($user->isLoggedIn()) {
+    if ($user->isLoggedIn())
         return true;
-    } else {
+    else
         return false;
-    }
 }
 
+/*
+ * Original method from 0.9x to get all existing modules
+ */
 function exp_getModuleInstancesByType($type = null)
 {
-    if (empty($type)) {
+    if (empty($type))
         return array();
-    }
+
     global $db;
+
     $refs = $db->selectObjects('sectionref', 'module="' . $type . '"');
     $modules = array();
     foreach ($refs as $ref) {
@@ -85,18 +87,29 @@ function exp_getModuleInstancesByType($type = null)
             $modules[$ref->source][] = $mod;
         }
     }
-
     return $modules;
 }
 
-// Get List of User Blogs function	
-$getUsersBlogs_sig = array(array($xmlrpcArray, $xmlrpcString, $xmlrpcString, $xmlrpcString));
+/**
+ * Get List of User Blogs function
+ */
+$getUsersBlogs_sig = array(
+    array(
+        $xmlrpcArray,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString
+    )
+);
 $getUsersBlogs_doc = 'Returns a list of weblogs to which an author has posting privileges.';
 function getUsersBlogs($xmlrpcmsg)
 {
     global $db;
+
+//    $appkey = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
+    eLog($username,'user1');
 
     if (userLogin($username, $password, null, 'create') == true) {
         // setup the list of blogs.
@@ -126,12 +139,22 @@ function getUsersBlogs($xmlrpcmsg)
     }
 }
 
-// Create a New Post function	
-$newPost_sig = array(array($xmlrpcBoolean, $xmlrpcString, $xmlrpcString, $xmlrpcString, $xmlrpcStruct, $xmlrpcBoolean));
+/**
+ * Create a New Post function
+ */
+$newPost_sig = array(
+    array(
+        $xmlrpcBoolean,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcStruct,
+        $xmlrpcBoolean
+    )
+);
 $newPost_doc = 'Post a new item to the blog.';
 function newPost($xmlrpcmsg)
 {
-    global $db, $user;
     $src = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -144,9 +167,6 @@ function newPost($xmlrpcmsg)
             $description = $content->structMem('description')->scalarval();
             //$dateCreated = $content->structMem('dateCreated')->serialize();   // Not all clients send dateCreated info. So add if statement here if you want to use it.
             //$timestamp = iso8601_decode($dateCreated);  // To convert to unix timestamp
-//			if($content->structMem('categories')->arraySize() > 0) {
-//				$categories = $content->structMem('categories')->arrayMem(0)->scalarval();
-//			}
             $categories = array();
             for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
                 $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
@@ -154,7 +174,6 @@ function newPost($xmlrpcmsg)
             $published = $xmlrpcmsg->getParam(4)->scalarval();
 
             $post = new blog();
-            $iloc = new stdClass();
 
             $post->title = $title;
             $post->body = htmlspecialchars_decode(htmlentities($description, ENT_NOQUOTES));
@@ -166,7 +185,7 @@ function newPost($xmlrpcmsg)
             foreach ($categories as $cat) {
                 $ecat= new expCat($cat);
                 if (empty($ecat->id)) {
-                    // doesn't exist so add it
+                    // cat doesn't exist so add it
                     $ecat->title = $cat;
                     $ecat->module = 'blog';
                     $ecat->update();
@@ -188,7 +207,9 @@ function newPost($xmlrpcmsg)
     }
 }
 
-// Edit a Post function	
+/**
+ * Edit a Post function
+ */
 $editPost_sig = array(
     array(
         $xmlrpcBoolean,
@@ -202,7 +223,7 @@ $editPost_sig = array(
 $editPost_doc = 'Edit an item on the blog.';
 function editPost($xmlrpcmsg)
 {
-    global $db, $user;
+    global $db;
 
     $postid = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
@@ -210,7 +231,6 @@ function editPost($xmlrpcmsg)
 
     $post = new blog($postid);
     $loc = unserialize($post->location_data);
-    $iloc = expCore::makeLocation($loc->mod, $loc->src);
     if (userLogin($username, $password, $loc->src, 'edit') == true) {
         if (expPermissions::check('edit', $loc)) {
             $content = $xmlrpcmsg->getParam(3);
@@ -218,11 +238,6 @@ function editPost($xmlrpcmsg)
             $description = $content->structMem('description')->scalarval();
             //$dateCreated = $content->structMem('dateCreated')->serialize();   // Not all clients send dateCreated info. So add if statement here if you want to use it.
             //$timestamp = iso8601_decode($dateCreated);  // To convert to unix timestamp
-            // if($content->structMem('categories')->arraySize() > 0) {
-            // $categories = $content->structMem('categories')->arrayMem(0)->scalarval();
-            // }
-            // $published = $xmlrpcmsg->getParam(4)->scalarval();
-            // if($content->structMem('categories')->arraySize() > 0) {
             $categories = array();
             for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
                 $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
@@ -239,7 +254,7 @@ function editPost($xmlrpcmsg)
             foreach ($categories as $cat) {
                 $ecat= new expCat($cat);
                 if (empty($ecat->id)) {
-                    // doesn't exist so add it
+                    // cat doesn't exist so add it
                     $ecat->title = $cat;
                     $ecat->module = 'blog';
                     $ecat->update();
@@ -259,13 +274,20 @@ function editPost($xmlrpcmsg)
     }
 }
 
-// Get a Post function	
-$getPost_sig = array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcString));
+/**
+ * Get a Post function
+ */
+$getPost_sig = array(
+    array(
+        $xmlrpcStruct,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString
+    )
+);
 $getPost_doc = 'Get an item on the blog.';
 function getPost($xmlrpcmsg)
 {
-    global $db;
-
     $postid = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -273,7 +295,6 @@ function getPost($xmlrpcmsg)
     //convert $postid to $src
     $post = new blog(intval($postid));
     $loc = unserialize($post->location_data);
-    $iloc = expCore::makeLocation($loc->mod, $loc->src);
     if (userLogin($username, $password, $loc->src, 'edit') == true) {
         if (expPermissions::check('edit', $loc)) {
             $cat = array();
@@ -303,7 +324,9 @@ function getPost($xmlrpcmsg)
     }
 }
 
-// Delete a Post function	
+/**
+ * Delete a Post function
+ */
 $deletePost_sig = array(
     array(
         $xmlrpcBoolean,
@@ -335,12 +358,22 @@ function deletePost($xmlrpcmsg)  //FiXME we don't seem to ever use this
     }
 }
 
-// Get a List of Recent Posts function	
-$getRecentPosts_sig = array(array($xmlrpcArray, $xmlrpcString, $xmlrpcString, $xmlrpcString, $xmlrpcInt));
+/**
+ * Get a List of Recent Posts function
+ */
+$getRecentPosts_sig = array(
+    array(
+        $xmlrpcArray,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcInt
+    )
+);
 $getRecentPosts_doc = 'Get the recent posts on the blog.';
 function getRecentPosts($xmlrpcmsg)
 {
-    global $db;
+    global $user;
 
     $src = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
@@ -351,67 +384,33 @@ function getRecentPosts($xmlrpcmsg)
         if (expPermissions::check('edit', $loc)) {
             $numposts = $xmlrpcmsg->getParam(3)->scalarval();
 
-            $structArray = array();
-
             // If this module has been configured to aggregate then setup the where clause to pull
             // posts from the proper blogs.
-//			$config = $db->selectObject('weblogmodule_config',"location_data='".serialize($loc)."'");
-            $locsql = "(location_data='" . serialize($loc) . "'";
-            // if (!empty($config->aggregate)) {
-            // $locations = unserialize($config->aggregate);
-            // foreach ($locations as $source) {
-            // $tmploc = null;
-            // $tmploc->mod = 'weblogmodule';
-            // $tmploc->src = $source;
-            // $tmploc->int = '';
-            // $locsql .= " OR location_data='".serialize($tmploc)."'";
-            // }
-            // }
-            $locsql .= ')';
-
-//			$where = '(is_draft = 0 OR poster = '.$user_id.") AND ".$locsql;
-            $where = $locsql;
-//echo $where;			
-//			if (!exponent_permissions_check('view_private',$loc)) $where .= ' AND is_private = 0';
-
-//			$posts = $db->selectObjects('blog',$where . ' ORDER BY posted DESC '.$db->limit($numposts,0));
+            $config = new expConfig($loc);
+            $where = "(location_data='" . serialize($loc) . "'";
+             if (!empty($config->config['aggregate'])) {
+                 foreach ($config->config['aggregate'] as $source) {
+                     $tmploc = expCore::makeLocation('blog', $source);
+                     $where .= " OR location_data='".serialize($tmploc)."'";
+                 }
+             }
+            $where .= ')';
             $blog = new blog();
             $posts = $blog->find('all', $where, 'publish DESC', $numposts);
-//echo print_r($posts);
+            $structArray = array();
             for ($i = 0; $i < count($posts); $i++) {
-//				$ploc = exponent_core_makeLocation($loc->mod,$loc->src,$posts[$i]->id);
-
-//				$posts[$i]->permissions = array(
-//					'administrate'=>exponent_permissions_check('administrate',$ploc),
-//					'edit'=>exponent_permissions_check('edit',$ploc),
-//					'delete'=>exponent_permissions_check('delete',$ploc),
-//					'comment'=>exponent_permissions_check('comment',$ploc),
-//					'edit_comments'=>exponent_permissions_check('edit_comments',$ploc),
-//					'delete_comments'=>exponent_permissions_check('delete_comments',$ploc),
-//					'view_private'=>exponent_permissions_check('view_private',$ploc),
-//				);
-//				$comments = $db->selectObjects('weblog_comment','parent_id='.$posts[$i]->id);
-//				usort($comments,'exponent_sorting_byPostedDescending');
-//				$posts[$i]->comments = $comments;
-//				$posts[$i]->total_comments = count($comments);
-
-                //Get the tags for this weblogitem
-//				$selected_tags = array();
-//				$tag_ids = unserialize($posts[$i]->tags);
-//				if(is_array($tag_ids) && count($tag_ids)>0) {$selected_tags = $db->selectObjectsInArray('tags', $tag_ids, 'name');}
-//				$posts[$i]->tags = $selected_tags;
-//				$posts[$i]->selected_tags = $selected_tags;
-
-                $structArray[] = new xmlrpcval(
-                    array(
-                        'postid' => new xmlrpcval($posts[$i]->id, 'string'),
-                        'dateCreated' => new xmlrpcval($posts[$i]->publish, 'dateTime.iso8601'),
-                        'title' => new xmlrpcval($posts[$i]->title, 'string'),
-	  			        'description'        => new xmlrpcval($posts[$i]->body, 'string'),
-//  				  'categories'        => new xmlrpcval(array(new xmlrpcval($posts[$i]->selected_tags, 'string')), 'array'),
-                        'publish' => new xmlrpcval((($posts[$i]->private) ? 0 : 1), 'boolean')
-                    ), 'struct'
-                );
+                if (expPermissions::check('edit', $loc) || (expPermissions::check('create', $loc) && $posts[$i]->poster == $user->id)) {
+                    $structArray[] = new xmlrpcval(
+                        array(
+                            'postid' => new xmlrpcval($posts[$i]->id, 'string'),
+                            'dateCreated' => new xmlrpcval($posts[$i]->publish, 'dateTime.iso8601'),
+                            'title' => new xmlrpcval($posts[$i]->title, 'string'),
+                            'description' => new xmlrpcval($posts[$i]->body, 'string'),
+    //  				  'categories'        => new xmlrpcval(array(new xmlrpcval($posts[$i]->selected_tags, 'string')), 'array'),
+                            'publish' => new xmlrpcval((($posts[$i]->private) ? 0 : 1), 'boolean')
+                        ), 'struct'
+                    );
+                }
             }
             return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
         } else {
@@ -422,13 +421,20 @@ function getRecentPosts($xmlrpcmsg)
     }
 }
 
-// Get a List of Categories function	
-$getCategories_sig = array(array($xmlrpcArray, $xmlrpcString, $xmlrpcString, $xmlrpcString));
+/**
+ * Get a List of Categories function
+ */
+$getCategories_sig = array(
+    array(
+        $xmlrpcArray,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString
+    )
+);
 $getCategories_doc = 'Get the categories on the blog.';
 function getCategories($xmlrpcmsg)
 {
-    global $db;
-
     $src = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -455,12 +461,22 @@ function getCategories($xmlrpcmsg)
     }
 }
 
-// Upload a Media File function	
-$newMediaObject_sig = array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcString, $xmlrpcStruct));
+/**
+ * Upload a Media File function
+ */
+$newMediaObject_sig = array(
+    array(
+        $xmlrpcStruct,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcStruct
+    )
+);
 $newMediaObject_doc = 'Upload media files onto the blog server.';
 function newMediaObject($xmlrpcmsg)
 {
-    $src = $xmlrpcmsg->getParam(0)->scalarval();  //NOTE new?
+//    $src = $xmlrpcmsg->getParam(0)->scalarval();  //NOTE new?
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
 
@@ -475,9 +491,8 @@ function newMediaObject($xmlrpcmsg)
         $dest = UPLOAD_DIRECTORY;
         $uploaddir = BASE . $dest;
         //Check to see if the directory exists.  If not, create the directory structure.
-        if (!file_exists(BASE . $dest)) {
+        if (!file_exists(BASE . $dest))
             expFile::makeDirectory($dest);
-        }
         if (fwrite(fopen($uploaddir . $filename, "wb"), base64_decode($bits)) == false) {
             return new xmlrpcresp(0, $xmlrpcerruser + 1, "File Failed to Write");
         } else {
@@ -492,10 +507,12 @@ function newMediaObject($xmlrpcmsg)
     }
 }
 
-// Create XML-RPC Server function	
+/**
+ * Create XML-RPC Server function
+ */
 $o = new xmlrpc_server_methods_container;
 $a = array(
-    'blogger.getUsersBlogs' => array(
+    'metaWeblog.getUsersBlogs' => array(
         'function' => 'getUsersBlogs',
         'docstring' => $getUsersBlogs_doc,
         'signature' => $getUsersBlogs_sig
@@ -515,6 +532,11 @@ $a = array(
         "signature" => $getPost_sig,
         "docstring" => $getPost_doc
     ),
+    'metaWeblog.deletePost' => array(
+        "function" => "deletePost",
+        "signature" => $deletePost_sig,
+        "docstring" => $deletePost_doc
+    ),
     "metaWeblog.getRecentPosts" => array(
         "function" => "getRecentPosts",
         "signature" => $getRecentPosts_sig,
@@ -529,12 +551,17 @@ $a = array(
         "function" => "newMediaObject",
         "signature" => $newMediaObject_sig,
         "docstring" => $newMediaObject_doc
-    ),/*
-		'blogger.getUserInfo' => array(
-			'function' => 'getUserInfo',
-			'docstring' => 'Returns information about an author in the system.',
-			'signature' => array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcString))
-		),*/
+    ),
+//    'blogger.getUserInfo' => array(
+//        'function' => 'getUserInfo',
+//        'docstring' => 'Returns information about an author in the system.',
+//        'signature' => array(array($xmlrpcStruct, $xmlrpcString, $xmlrpcString, $xmlrpcString))
+//    ),
+    'blogger.getUsersBlogs' => array(
+        'function' => 'getUsersBlogs',
+        'docstring' => $getUsersBlogs_doc,
+        'signature' => $getUsersBlogs_sig
+    ),
     'blogger.deletePost' => array(
         "function" => "deletePost",
         "signature" => $deletePost_sig,
@@ -546,5 +573,4 @@ $s = new xmlrpc_server($a, false);
 $s->setdebug(2);
 
 $s->service();
-// that should do all we need!
 ?>
