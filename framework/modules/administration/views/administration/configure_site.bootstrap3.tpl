@@ -244,6 +244,7 @@
                     {*{control type="text" name="sc[SSL_URL]" label="SSL URL Base"|gettext value=$smarty.const.SSL_URL}*}
                     {control type="checkbox" postfalse=1 name="sc[DISABLE_PRIVACY]" label="Disable Privacy Check?"|gettext checked=$smarty.const.DISABLE_PRIVACY value=1 description='Exponent protects private page and module content; but this can prevent display of content in some scenarios'|gettext}
                     {control type="checkbox" postfalse=1 name="sc[USE_XMLRPC]" label="Activate Remote Blog Editing?"|gettext checked=$smarty.const.USE_XMLRPC value=1 description='Allows access to xmlrpc.php to create and edit blog posts on an external application'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[NO_XMLRPC_DESC]" label="MS Word Remote Blog Editing Fix?"|gettext checked=$smarty.const.NO_XMLRPC_DESC value=1 description='MS Word won/t display recent posts list if it\s too long, so we truncate the descriptions'|gettext}
                 </div>
                 <div id="tab10" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
