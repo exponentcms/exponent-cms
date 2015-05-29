@@ -179,6 +179,7 @@ class authorizedotnet extends creditcard {
             $opts->result->message = $response[3];
             $trax_state = "error";
         }
+        $opts->result->payment_status = $trax_state;
 
 //        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
@@ -282,8 +283,12 @@ class authorizedotnet extends creditcard {
             $authorize = curl_exec($ch);
             curl_close($ch);
 
-            $response = explode("|", $authorize);
+            $response = explode("|", $authorize); //FIXME waht to do with this?
 
+            $opts->result->errorCode = 0;
+            $opts->result->payment_status = gt("refunded");
+            $opts->result->transId = '';
+            $opts->result->message = "Transaction Refunded";
             $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
             $this->createBillingTransaction($method, -(number_format($amount, 2, '.', '')), $opts->result, 'refunded');
 
@@ -349,8 +354,12 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize);
+        $response = explode("|", $authorize); //FIXME waht to do with this?
 
+         $opts->result->errorCode = 0;
+         $opts->result->payment_status = gt("complete");
+         $opts->result->transId = '';
+         $opts->result->message = "Transaction Captured";
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
         $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'complete');
 
@@ -417,9 +426,13 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize);
+        $response = explode("|", $authorize); //FIXME waht to do with this?
 
         $opts->result->traction_type = 'Void';
+        $opts->result->errorCode = 0;
+        $opts->result->payment_status = gt("voided");
+        $opts->result->transId = '';
+        $opts->result->message = "Transaction Voided";
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
         $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'voided');
 

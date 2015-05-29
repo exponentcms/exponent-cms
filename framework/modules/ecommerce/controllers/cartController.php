@@ -680,6 +680,7 @@ class cartController extends expController {
             $opts->result->payment_status = gt("complete");
             if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
             $billing->billingmethod->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
+
 //            $this->createBillingTransaction($billing->billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
             $amount = number_format($order->grand_total, 2, '.', '');
             $bt = new billingtransaction();

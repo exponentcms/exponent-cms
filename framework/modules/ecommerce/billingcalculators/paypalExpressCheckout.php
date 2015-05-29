@@ -185,7 +185,8 @@ class paypalExpressCheckout extends billingcalculator {
 
             for ($n = 0; $n < count($order->orderitem); $n++) {
                 $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($order->orderitem[$n]->products_desc) > 127 ? substr($order->orderitem[$n]->products_desc, 0, 124) . "..." : $order->orderitem[$n]->products_desc;
+                $desc = strip_tags($order->orderitem[$n]->product->body);
+                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
                 $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
                 $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
                 $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
@@ -305,7 +306,8 @@ class paypalExpressCheckout extends billingcalculator {
         $tt = 0;
         for ($n = 0; $n < count($order->orderitem); $n++) {
             $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//            $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($order->orderitem[$n]->products_desc) > 127 ? substr($order->orderitem[$n]->products_desc, 0, 124) . "..." : $order->orderitem[$n]->products_desc;
+            $desc = strip_tags($order->orderitem[$n]->product->body);
+            $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
             $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
             $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
             $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');

@@ -757,23 +757,28 @@ class order extends expRecord {
         //should be just a few milliseconds.
         $db->lockTable("orders_next_invoice_id");
 
-        //get the next id record
+        //get the next invoice number
         $invoice_num = $db->max('orders_next_invoice_id', 'next_invoice_id');
 
-        //if it's not set or botched, then reset to the starting invoice number
+        $obj = new stdClass();
+        $obj->id = 1;
+        if (empty($invoice_num)) {
+            $invoice_num = $sin;
+            //no number so initialize the table with the starting number
+            $obj->next_invoice_id = $sin;
+            $db->insertObject($obj, 'orders_next_invoice_id');
+        }
+
         if ($increment) {
-            $obj = new stdClass();
             if (empty($invoice_num) || $invoice_num < $sin) {
                 $invoice_num = $sin;
-                //insert the table with the next available number
-                $obj->id = 1;
-                $obj->next_invoice_id = $invoice_num + 1;
-                $db->insertObject($obj, 'orders_next_invoice_id');
-            } else {
-                //update the table with the next available number
-                $obj->id = 1;
-                $obj->next_invoice_id = $invoice_num + 1;
-                $db->updateObject($obj, 'orders_next_invoice_id');
+            }
+            //update the table with the next available number
+            $obj->next_invoice_id = $invoice_num + 1;
+            $db->updateObject($obj, 'orders_next_invoice_id');
+        } else {
+            if (empty($invoice_num) || $invoice_num < $sin) {
+                $invoice_num = $sin;
             }
         }
 

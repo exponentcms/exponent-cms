@@ -87,6 +87,7 @@ class splitcreditcard extends creditcard {
 //        $this->opts->result = $object;
         $opts->result->errorCode = 0;
         $opts->result->payment_status = gt("authorization pending");
+        $opts->result->message = "User selected a credit card";
 //        $opts->result->token = '';
         $opts->result->transId = '';
 //        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
@@ -206,10 +207,10 @@ class splitcreditcard extends creditcard {
         return $message;
     }
 
-    function getPaymentAuthorizationNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
-    }
+//    function getPaymentAuthorizationNumber($billingmethod) {
+//        $ret = expUnserialize($billingmethod->billing_options);
+//        return $ret->result->token;  //FIXME we don't store a 'token'
+//    }
 
     function getPaymentReferenceNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);

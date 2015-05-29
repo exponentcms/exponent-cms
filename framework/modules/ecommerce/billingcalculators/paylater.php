@@ -57,6 +57,8 @@ class paylater extends billingcalculator {
         $opts->result->errorCode = 0;
 //        $opts->result = $object;
         $opts->result->payment_status = gt("complete");
+        $opts->result->transId = '';
+        $opts->result->message = "User will pay later";
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
 //        $method->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result, $opts->result->payment_status));
         $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
@@ -115,10 +117,10 @@ class paylater extends billingcalculator {
         return $this->opts;
     }
 
-    function getPaymentAuthorizationNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
-    }
+//    function getPaymentAuthorizationNumber($billingmethod) {
+//        $ret = expUnserialize($billingmethod->billing_options);
+//        return $ret->result->token;
+//    }
 
     function getPaymentReferenceNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);

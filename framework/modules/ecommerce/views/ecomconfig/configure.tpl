@@ -92,7 +92,9 @@
                     </div>
                     <div id="tab5">
                         <h2>{'Invoice Settings'|gettext}</h2>
-                        {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001'}
+                        {selectvalue table='orders_next_invoice_id' field='next_invoice_id' assign='inv_num'}
+                        {$inv = 'Next Invoice #'|gettext|cat:$inv_num}
+                        {control type="text" name="starting_invoice_number" label="Starting Invoice Number"|gettext size=50 value=$config.starting_invoice_number|default:'0001' description=$inv}
                         {control type="checkbox" name="enable_barcode" label="Enable Barcode?"|gettext value=1 checked=$config.enable_barcode}
                         {control type="checkbox" name="email_invoice_to_user" id="invoice_email" label="Email a copy of the invoice to the customer after purchase?"|gettext value=1 checked=$config.email_invoice_to_user}
                         <span id="email_settings">

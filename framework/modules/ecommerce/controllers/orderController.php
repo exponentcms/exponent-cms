@@ -1014,13 +1014,14 @@ exit();
     function edit_payment_info() {
         //$order = new order($this->params['id']);
         $billing = new billing($this->params['id']);
-        $opts    = expUnserialize($billing->billingmethod->billing_options);
+        $opts    = expUnserialize($billing->billingmethod->billing_options);  //FIXME already unserialized???
         //eDebug($billing);
 //        eDebug($opts);
         assign_to_template(array(
             'orderid'=> $this->params['id'],
             'opts'   => $opts,  //FIXME credit card doesn't have a result
-            //FIXME do we also need to pass $billing->billingmethod->billing_cost & $billing->billingmethod->transaction_state'???
+            'billing_cost' => $billing->billingmethod->billing_cost,
+            'transaction_state' => $billing->billingmethod->transaction_state
         ));
     }
 
@@ -1028,41 +1029,37 @@ exit();
         //need to save billing methods and billing options
         //$order = new order($this->params['id']);
         //eDebug($this->params, true);
-        $obj = new stdClass();
+        $res_obj = new stdClass();
         foreach ($this->params['result'] as $resultKey=> $resultItem) {
-            $obj->$resultKey = $resultItem;
+            $res_obj->$resultKey = $resultItem;
         }
-//        $res     = serialize($obj);
+//        $res     = serialize($res_obj);
         $billing = new billing($this->params['id']);
         // eDebug($billing);
-        //FIXME shouldn't we be ADDING a new billing transaction?
         $billingmethod      = $billing->billingmethod;
         $billingtransaction = $billingmethod->billingtransaction[0];
 
         // update billing method
+        $billingmethod->billing_cost           = $this->params['billing_cost'];
+        $billingmethod->transaction_state      = $this->params['transaction_state'];
         $bmopts                         = expUnserialize($billingmethod->billing_options);
-        $bmopts->billing_cost           = $this->params['billing_cost'];
-        $bmopts->transaction_state      = $this->params['transaction_state'];
-        $bmopts->result                 = $obj;
+        $bmopts->result                 = $res_obj;
         $billingmethod->billing_options = serialize($bmopts);
-        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
-        if (!empty($this->params['result']['payment_status']))
-            $billingmethod->transaction_state = $this->params['result']['payment_status'];  //FIXME should this be discrete??
-        //FIXME we need to set/update $billingmethod->billing_cost also??
+//        if (!empty($this->params['result']['payment_status']))
+//            $billingmethod->transaction_state = $this->params['result']['payment_status'];  //FIXME should this be discrete??
         $billingmethod->save();
 
         // add new billing transaction
+        $billingtransaction->billing_cost                = $this->params['billing_cost'];
+        $billingtransaction->transaction_state           = $this->params['transaction_state'];
         $btopts                              = expUnserialize($billingtransaction->billing_options);
-        $btopts->billing_cost                = $this->params['billing_cost'];
-        $btopts->transaction_state           = $this->params['transaction_state'];
-        $btopts->result                      = $obj;
+        $btopts->result                      = $res_obj;
         $billingtransaction->billing_options = serialize($btopts);
-        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
-        if (!empty($this->params['result']['payment_status']))
-            $billingtransaction->transaction_state = $this->params['result']['payment_status'];
-        $billingtransaction->id = null;
-        $order = new order($this->params['id']);
-        $billingtransaction->billing_cost = $order->grand_total;  //FIXME should it always be the grand total???
+//        if (!empty($this->params['result']['payment_status']))
+//            $billingtransaction->transaction_state = $this->params['result']['payment_status'];
+        $billingtransaction->id = null;  // force a new record by erasing the id, easy method to copy record
+//        $order = new order($this->params['id']);
+//        $billingtransaction->billing_cost = $order->grand_total;  //FIXME should it always be the grand total???
         $billingtransaction->save();
 
 //        flashAndFlow('message', gt('Payment info updated.'));
@@ -1146,6 +1143,7 @@ exit();
         $change->save();
 
         $tObj                             = new stdClass();
+        $tObj->result                     = new stdClass();
         $tObj->result->errorCode          = 0;
         $tObj->result->message            = "Reference Order Pending";
         $tObj->result->PNREF              = "Pending";
@@ -1159,9 +1157,9 @@ exit();
         $newBillingMethod                       = $order->billingmethod[0];
         $newBillingMethod->id                   = null;
         $newBillingMethod->orders_id            = $newOrder->id;
-        $newBillingMethod->billing_cost         = 0;
 //        $newBillingMethod->billingcalculator_id = 6;
         $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
+        $newBillingMethod->billing_cost         = 0;
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->save();
@@ -1291,9 +1289,9 @@ exit();
         $newBillingMethod                       = new billingmethod();
         $newBillingMethod->addresses_id         = $newAddy->id;
         $newBillingMethod->orders_id            = $newOrder->id;
-        $newBillingMethod->billing_cost         = 0;
 //        $newBillingMethod->billingcalculator_id = 6;
         $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
+        $newBillingMethod->billing_cost         = 0;
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->firstname            = $newAddy->firstname;
