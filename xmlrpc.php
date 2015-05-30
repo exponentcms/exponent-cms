@@ -313,16 +313,22 @@ function getPost($xmlrpcmsg)
                 $expcat = new expCat($pcat->id);
                 $cat[] = $expcat->title;
             }
-
+//            $selectedtags = '';
+//            foreach ($post->expTag as $tag) {
+//                $selectedtags .= $tag->title . ', ';
+//            }
             return new xmlrpcresp(
                 new xmlrpcval(
                     array(
                         'postid' => new xmlrpcval($post->id, 'string'),
                         'dateCreated' => new xmlrpcval(date('c',$post->publish), 'dateTime.iso8601'),
+//                        'link' => new xmlrpcval(makeLink(array('controller'=>'blog', 'action'=>'show', 'title'=>$post->sef_url)), 'string'),
                         'title' => new xmlrpcval($post->title, 'string'),
                         'description' => new xmlrpcval($post->body, 'string'),
                         'categories' => php_xmlrpc_encode($cat),
-                        'publish' => new xmlrpcval((($post->private) ? 0 : 1), 'boolean')
+//                        'author' => new xmlrpcval(user::getUserAttribution($post->poster), 'string'),
+//                        'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
+                        'publish' => new xmlrpcval((($post->private) ? 0 : 1), 'boolean'),
                     ), 'struct'
                 )
             );
@@ -427,13 +433,25 @@ function getRecentPosts($xmlrpcmsg)
                     if (NO_XMLRPC_DESC) {  // MS Word has an issue when content is over a certain length
                         $desc = substr(strip_tags($posts[$i]->body), 0, 12) . "...";  // attempt to reduce length of reply
                     }
+                    $cat = array();
+                    foreach ($posts[$i]->expCat as $pcat) {
+                        $expcat = new expCat($pcat->id);
+                        $cat[] = $expcat->title;
+                    }
+//                    $selectedtags = '';
+//                    foreach ($posts[$i]->expTag as $tag) {
+//                        $selectedtags .= $tag->title . ', ';
+//                    }
                     $structArray[] = new xmlrpcval(
                         array(
                             'postid' => new xmlrpcval($posts[$i]->id, 'string'),
                             'dateCreated' => new xmlrpcval(date('c',$posts[$i]->publish), 'dateTime.iso8601'),
+//                            'link' => new xmlrpcval(makeLink(array('controller'=>'blog', 'action'=>'show', 'title'=>$posts[$i]->sef_url)), 'string'),
                             'title' => new xmlrpcval($posts[$i]->title, 'string'),
                             'description' => new xmlrpcval($desc, 'string'),
-//  				          'categories'        => new xmlrpcval(array(new xmlrpcval($posts[$i]->selected_tags, 'string')), 'array'),
+//                            'author' => new xmlrpcval(user::getUserAttribution($posts[$i]->poster), 'string'),
+                            'categories' => php_xmlrpc_encode($cat),
+//                            'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
                             'publish' => new xmlrpcval((($posts[$i]->private) ? 0 : 1), 'boolean')
                         ), 'struct'
                     );
