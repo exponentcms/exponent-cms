@@ -168,12 +168,51 @@ function newPost($xmlrpcmsg)
             $content = $xmlrpcmsg->getParam(3);
             $title = $content->structMem('title')->scalarval();
             $description = $content->structMem('description')->scalarval();
-            $categories = array();
-            if (!empty($content->structMem('categories'))) {
-                for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
-                    $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
+            $config = new expConfig($loc);
+
+            //Get and add the categories selected by the user
+            if (!empty($config->config['usecategories'])) {
+                $categories = array();
+                if (!empty($content->structMem('categories'))) {
+                    for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
+                        $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
+                    }
+                }
+                $params['expCat'] = array();
+                foreach ($categories as $cat) {
+                    $ecat = new expCat($cat);
+                    if (empty($ecat->id)) {
+                        // cat doesn't exist so add it
+                        $ecat->title = $cat;
+                        $ecat->module = 'blog';
+                        $ecat->update();
+                    }
+                    $params['expCat'][] = $ecat->id;
                 }
             }
+
+            //Get and add the tags set by the user
+            if (empty($config->config['disabletags'])) {
+                $tags = $content->structMem('mt_keywords')->scalarval();
+                $tags_arr = explode(",", trim($tags));
+                if (!empty($tags_arr)) {
+                    foreach ($tags_arr as $tag) {
+                        $tagtitle = strtolower(trim($tag));
+                        $etag = new expTag($tagtitle);
+                        if (empty($etag->id)) {
+                            $etag->update(array('title' => $tagtitle));
+                        }
+                        $params['expTag'][] = $etag->id;
+                    }
+                }
+            }
+
+            $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
+            if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments']))
+                $params['disable_comments'] = true;
+            else
+                $params['disable_comments'] = false;
+
             $published = $xmlrpcmsg->getParam(4)->scalarval();
 
             $post = new blog();
@@ -183,20 +222,8 @@ function newPost($xmlrpcmsg)
             $post->private = (($published) ? 0 : 1);
             $post->location_data = serialize($loc);
 
-            //Get and add the categories selected by the user
-            $params['expCat'] = array();
-            foreach ($categories as $cat) {
-                $ecat = new expCat($cat);
-                if (empty($ecat->id)) {
-                    // cat doesn't exist so add it
-                    $ecat->title = $cat;
-                    $ecat->module = 'blog';
-                    $ecat->update();
-                }
-                $params['expCat'][] = $ecat->id;
-            }
+            $post->publish = 0;  // set creation date to now
 
-            $post->publish = 0;
             $post->update($params);
 
             return new xmlrpcresp(
@@ -226,8 +253,6 @@ $editPost_sig = array(
 $editPost_doc = 'Edit an item on the blog.';
 function editPost($xmlrpcmsg)
 {
-    global $db;
-
     $postid = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -243,12 +268,51 @@ function editPost($xmlrpcmsg)
             $content = $xmlrpcmsg->getParam(3);
             $title = $content->structMem('title')->scalarval();
             $description = $content->structMem('description')->scalarval();
-            $categories = array();
-            if (!empty($content->structMem('categories'))) {
-                for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
-                    $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
+            $config = new expConfig($loc);
+
+            //Get and add the categories selected by the user
+            if (!empty($config->config['usecategories'])) {
+                $categories = array();
+                if (!empty($content->structMem('categories'))) {
+                    for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
+                        $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
+                    }
+                }
+                $params['expCat'] = array();
+                foreach ($categories as $cat) {
+                    $ecat = new expCat($cat);
+                    if (empty($ecat->id)) {
+                        // cat doesn't exist so add it
+                        $ecat->title = $cat;
+                        $ecat->module = 'blog';
+                        $ecat->update();
+                    }
+                    $params['expCat'][] = $ecat->id;
                 }
             }
+
+            //Get and add the tags set by the user
+            if (empty($config->config['disabletags'])) {
+                $tags = $content->structMem('mt_keywords')->scalarval();
+                $tags_arr = explode(",", trim($tags));
+                if (!empty($tags_arr)) {
+                    foreach ($tags_arr as $tag) {
+                        $tagtitle = strtolower(trim($tag));
+                        $etag = new expTag($tagtitle);
+                        if (empty($etag->id)) {
+                            $etag->update(array('title' => $tagtitle));
+                        }
+                        $params['expTag'][] = $etag->id;
+                    }
+                }
+            }
+
+            $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
+            if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments']))
+                $params['disable_comments'] = true;
+            else
+                $params['disable_comments'] = false;
+
             $published = $xmlrpcmsg->getParam(4)->scalarval();
 
             $post->title = $title;
@@ -256,20 +320,6 @@ function editPost($xmlrpcmsg)
             $post->private = (($published) ? 0 : 1);
             $post->location_data = serialize($loc);
 
-            //Get and add the categories selected by the user
-            $params['expCat'] = array();
-            foreach ($categories as $cat) {
-                $ecat = new expCat($cat);
-                if (empty($ecat->id)) {
-                    // cat doesn't exist so add it
-                    $ecat->title = $cat;
-                    $ecat->module = 'blog';
-                    $ecat->update();
-                }
-                $params['expCat'][] = $ecat->id;
-            }
-
-            $db->updateObject($post, 'weblog_post');
             $post->update($params);
 
             return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
@@ -313,10 +363,10 @@ function getPost($xmlrpcmsg)
                 $expcat = new expCat($pcat->id);
                 $cat[] = $expcat->title;
             }
-//            $selectedtags = '';
-//            foreach ($post->expTag as $tag) {
-//                $selectedtags .= $tag->title . ', ';
-//            }
+            $selectedtags = '';
+            foreach ($post->expTag as $tag) {
+                $selectedtags .= $tag->title . ', ';
+            }
             return new xmlrpcresp(
                 new xmlrpcval(
                     array(
@@ -326,8 +376,8 @@ function getPost($xmlrpcmsg)
                         'title' => new xmlrpcval($post->title, 'string'),
                         'description' => new xmlrpcval($post->body, 'string'),
                         'categories' => php_xmlrpc_encode($cat),
-//                        'author' => new xmlrpcval(user::getUserAttribution($post->poster), 'string'),
-//                        'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
+                        'wp_author_id' => new xmlrpcval(user::getUserAttribution($post->poster), 'string'),
+                        'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
                         'publish' => new xmlrpcval((($post->private) ? 0 : 1), 'boolean'),
                     ), 'struct'
                 )
@@ -449,7 +499,7 @@ function getRecentPosts($xmlrpcmsg)
 //                            'link' => new xmlrpcval(makeLink(array('controller'=>'blog', 'action'=>'show', 'title'=>$posts[$i]->sef_url)), 'string'),
                             'title' => new xmlrpcval($posts[$i]->title, 'string'),
                             'description' => new xmlrpcval($desc, 'string'),
-//                            'author' => new xmlrpcval(user::getUserAttribution($posts[$i]->poster), 'string'),
+//                            'userid' => new xmlrpcval($post->poster, 'string'),
                             'categories' => php_xmlrpc_encode($cat),
 //                            'mt_keywords' => new xmlrpcval($selectedtags, 'string'),
                             'publish' => new xmlrpcval((($posts[$i]->private) ? 0 : 1), 'boolean')
@@ -528,6 +578,87 @@ function getCategories_mt($xmlrpcmsg)
                     ), 'struct'
                 );
             }
+        }
+        return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
+    } else {
+        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+    }
+}
+
+/**
+ * Get a List of Tags function
+ */
+$getTerms_sig = array(
+    array(
+        $xmlrpcArray,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString
+    )
+);
+$getTerms_doc = 'Get the Tags on the blog.';
+function getTerms($xmlrpcmsg)
+{
+    $src = $xmlrpcmsg->getParam(0)->scalarval();
+    $username = $xmlrpcmsg->getParam(1)->scalarval();
+    $password = $xmlrpcmsg->getParam(2)->scalarval();
+
+    if (userLogin($username, $password, $src, 'create') == true) {
+        $loc = expCore::makeLocation('blog', $src);
+        $config = new expConfig($loc);
+        $structArray = array();
+        if (empty($config->config['disabletags'])) {
+            $taglist = expTag::getAllTags();
+            $tags_arr = explode(",", trim($taglist));
+            if (!empty($tags_arr)) {
+                foreach ($tags_arr as $tag) {
+                    $tagtitle = substr(strtolower(trim($tag)),1,-1);
+                    $etag = new expTag($tagtitle);
+                    $structArray[] = new xmlrpcval(
+                        array(
+                            'tag_id' => new xmlrpcval($etag->id, 'int'),
+                            'name' => new xmlrpcval($etag->title, 'string'),
+                        ), 'struct'
+                    );
+                }
+            }
+        }
+        return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
+    } else {
+        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+    }
+}
+
+/**
+ * Get a List of Authors function
+ */
+$getAuthors_sig = array(
+    array(
+        $xmlrpcArray,
+        $xmlrpcString,
+        $xmlrpcString,
+        $xmlrpcString
+    )
+);
+$getAuthors_doc = 'Get the Authors on the blog.';
+function getAuthors($xmlrpcmsg)
+{
+    $src = $xmlrpcmsg->getParam(0)->scalarval();
+    $username = $xmlrpcmsg->getParam(1)->scalarval();
+    $password = $xmlrpcmsg->getParam(2)->scalarval();
+
+    if (userLogin($username, $password, $src, 'create') == true) {
+        $loc = expCore::makeLocation('blog', $src);
+        $structArray = array();
+        $userlist = user::getAllUsers();
+        foreach ($userlist as $usr) {
+            $structArray[] = new xmlrpcval(
+                array(
+                    'user_id' => new xmlrpcval($usr->id, 'string'),
+                    'user_login' => new xmlrpcval($usr->username, 'string'),
+                    'display_name' => new xmlrpcval(user::getUserAttribution($usr->id), 'string'),
+                ), 'struct'
+            );
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
@@ -646,6 +777,16 @@ $a = array(
         "function" => "getCategories_mt",
         "signature" => $getCategories_sig,
         "docstring" => $getCategories_doc
+    ),
+    "wp.getTags" => array(
+        "function" => "getTerms",
+        "signature" => $getTerms_sig,
+        "docstring" => $getTerms_doc
+    ),
+    "wp.getAuthors" => array(
+        "function" => "getAuthors",
+        "signature" => $getAuthors_sig,
+        "docstring" => $getAuthors_doc
     ),
 );
 

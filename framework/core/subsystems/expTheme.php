@@ -310,6 +310,12 @@ class expTheme
             $str .= "\t" . '<link rel="apple-touch-icon-precomposed" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png" ' . XHTML_CLOSING . '>' . "\n";
         }
 
+        // support for Windows Live Writer
+        if (USE_XMLRPC) {
+//            $str .= "\t" . '<link rel="EditURI" href="' . URL_FULL . 'rsd.xml" type="application/rsd+xml" ' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<link rel="wlwmanifest" href="' . URL_FULL . 'wlwmanifest.xml" type="application/wlwmanifest+xml" ' . XHTML_CLOSING . '>' . "\n";
+        }
+
         // when minification is used, the comment below gets replaced when the buffer is dumped
         $str .= '<!-- MINIFY REPLACE -->';
 
