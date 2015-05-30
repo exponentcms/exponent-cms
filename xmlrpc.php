@@ -192,7 +192,7 @@ function newPost($xmlrpcmsg)
             }
 
             //Get and add the tags set by the user
-            if (empty($config->config['disabletags'])) {
+            if (empty($config->config['disabletags']) && $content->structMemExists('mt_keywords')) {
                 $tags = $content->structMem('mt_keywords')->scalarval();
                 $tags_arr = explode(",", trim($tags));
                 if (!empty($tags_arr)) {
@@ -207,11 +207,13 @@ function newPost($xmlrpcmsg)
                 }
             }
 
-            $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
-            if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments']))
-                $params['disable_comments'] = true;
-            else
-                $params['disable_comments'] = false;
+            if ($content->structMemExists('mt_allow_comments')) {
+                $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
+                if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments'])) {
+                    $params['disable_comments'] = true;
+                }
+            }
+            $params['disable_comments'] = false;
 
             $published = $xmlrpcmsg->getParam(4)->scalarval();
 
@@ -292,7 +294,7 @@ function editPost($xmlrpcmsg)
             }
 
             //Get and add the tags set by the user
-            if (empty($config->config['disabletags'])) {
+            if (empty($config->config['disabletags']) && $content->structMemExists('mt_keywords')) {
                 $tags = $content->structMem('mt_keywords')->scalarval();
                 $tags_arr = explode(",", trim($tags));
                 if (!empty($tags_arr)) {
@@ -307,11 +309,13 @@ function editPost($xmlrpcmsg)
                 }
             }
 
-            $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
-            if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments']))
-                $params['disable_comments'] = true;
-            else
-                $params['disable_comments'] = false;
+            if ($content->structMemExists('mt_allow_comments')) {
+                $allow_comments = $content->structMem('mt_allow_comments')->scalarval();
+                if ($allow_comments == 2 && empty($config->config['usescomments']) && !empty($config->config['disable_item_comments'])) {
+                    $params['disable_comments'] = true;
+                }
+            }
+            $params['disable_comments'] = false;
 
             $published = $xmlrpcmsg->getParam(4)->scalarval();
 
@@ -360,8 +364,8 @@ function getPost($xmlrpcmsg)
         ) {
             $cat = array();
             foreach ($post->expCat as $pcat) {
-                $expcat = new expCat($pcat->id);
-                $cat[] = $expcat->title;
+//                $expcat = new expCat($pcat->id);
+                $cat[] = $pcat->title;
             }
             $selectedtags = '';
             foreach ($post->expTag as $tag) {
@@ -485,8 +489,8 @@ function getRecentPosts($xmlrpcmsg)
                     }
                     $cat = array();
                     foreach ($posts[$i]->expCat as $pcat) {
-                        $expcat = new expCat($pcat->id);
-                        $cat[] = $expcat->title;
+//                        $expcat = new expCat($pcat->id);
+                        $cat[] = $pcat->title;
                     }
 //                    $selectedtags = '';
 //                    foreach ($posts[$i]->expTag as $tag) {

@@ -7,6 +7,7 @@
         <supportsKeywords>Yes</supportsKeywords>
         <supportsGetTags>Yes</supportsGetTags>
 
+        <supportsPostAsDraft>Yes</supportsPostAsDraft>
         <!--<supportsCustomDate>Yes</supportsCustomDate>-->
         <supportsExcerpt>No</supportsExcerpt>
         <!--<supportsAuthor>Yes</supportsAuthor>-->
@@ -23,7 +24,7 @@
         <supportsNewCategoriesInline>Yes</supportsNewCategoriesInline>
 
         <supportsEmbeds>Yes</supportsEmbeds>
-        <supportsScripts>Yes</supportsScripts>
+        <!--<supportsScripts>Yes</supportsScripts>-->
 
         <characterSet>utf-8</characterSet>
         <requiresHtmlTitles>Yes</requiresHtmlTitles>
@@ -48,8 +49,8 @@
         <!--</adminUrl>-->
         <postEditingUrl>
             <![CDATA[
-			{blog-postapi-url}/../index.php?controller=blog&action=edit&id={post-id}
-		]]>
+			    {blog-postapi-url}/../index.php?controller=blog&action=edit&id={post-id}
+		    ]]>
         </postEditingUrl>
     </weblog>
 
@@ -60,8 +61,8 @@
             <imageUrl>{blog-postapi-url}/../framework/core/assets/images/comments.png</imageUrl>
             <clickUrl>
                 <![CDATA[
-				{blog-postapi-url}/../index.php?controller=expComment&action=manage
-			]]>
+                    {blog-postapi-url}/../index.php?controller=expComment&action=manage
+                ]]>
             </clickUrl>
         </button>
     </buttons>

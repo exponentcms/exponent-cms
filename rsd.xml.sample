@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rsd version="1.0" xmlns="http://archipelago.phrasewise.com/rsd">
+    <service>
+        <engineName>Exponent CMS</engineName>
+        <engineLink>http://www.exponentcms.org</engineLink>
+        <homePageLink>http://yoursite.url/</homePageLink>
+        <apis>
+            <api name="MetaWeblog" blogID="1" preferred="true" apiLink="http://yoursite.url/xmlrpc.php" />
+        </apis>
+    </service>
+</rsd>

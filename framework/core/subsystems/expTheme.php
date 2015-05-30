@@ -310,9 +310,11 @@ class expTheme
             $str .= "\t" . '<link rel="apple-touch-icon-precomposed" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png" ' . XHTML_CLOSING . '>' . "\n";
         }
 
-        // support for Windows Live Writer
+        // support for xmlrpc blog editors like Windows Live Writer, etc...
         if (USE_XMLRPC) {
-//            $str .= "\t" . '<link rel="EditURI" href="' . URL_FULL . 'rsd.xml" type="application/rsd+xml" ' . XHTML_CLOSING . '>' . "\n";
+            if (file_exists(BASE . 'rsd.xml')) {
+                $str .= "\t" . '<link rel="EditURI" href="' . URL_FULL . 'rsd.xml" type="application/rsd+xml" ' . XHTML_CLOSING . '>' . "\n";
+            }
             $str .= "\t" . '<link rel="wlwmanifest" href="' . URL_FULL . 'wlwmanifest.xml" type="application/wlwmanifest+xml" ' . XHTML_CLOSING . '>' . "\n";
         }
 
