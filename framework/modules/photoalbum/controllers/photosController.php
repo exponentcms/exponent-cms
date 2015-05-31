@@ -229,11 +229,13 @@ class photosController extends expController {
                 foreach ($tags as $tag) {
                     if (!empty($tag)) {
                         $tag = strtolower(trim($tag));
-                        $tag = str_replace('"', "", $tag); // strip double quotes
-                        $tag = str_replace("'", "", $tag); // strip single quotes
-                        $expTag = new expTag($tag);
-                        if (empty($expTag->id)) $expTag->update(array('title' => $tag));
-                        $params['expTag'][] = $expTag->id;
+                        $tag = str_replace(array('"', "'"), "", $tag); // strip double and single quotes
+                        if (!empty($tag)) {
+                            $expTag = new expTag($tag);
+                            if (empty($expTag->id))
+                                $expTag->update(array('title' => $tag));
+                            $params['expTag'][] = $expTag->id;
+                        }
                     }
                 }
             }

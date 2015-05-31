@@ -203,11 +203,13 @@ class expTagController extends expController {
    	        foreach($addtags as $key=>$tag) {
                if (!empty($tag)) {
                    $tag = strtolower(trim($tag));
-                   $tag = str_replace('"', "", $tag); // strip double quotes
-                   $tag = str_replace("'", "", $tag); // strip single quotes
-                   $addtags[$key] = $tag;
-                   $expTag = new expTag($tag);
-                   if (empty($expTag->id)) $expTag->update(array('title'=>$tag));  // create the new tag
+                   $tag = str_replace(array('"', "'"), "", $tag); // strip double and single quotes
+                   if (!empty($tag)) {
+                       $addtags[$key] = $tag;
+                       $expTag = new expTag($tag);
+                       if (empty($expTag->id))  // create the new tag
+                           $expTag->update(array('title' => $tag));
+                   }
                }
    	        }
             // build array of tags to remove
@@ -215,9 +217,9 @@ class expTagController extends expController {
    	        foreach($removetags as $key=>$tag) {
                if (!empty($tag)) {
                    $tag = strtolower(trim($tag));
-                   $tag = str_replace('"', "", $tag); // strip double quotes
-                   $tag = str_replace("'", "", $tag); // strip single quotes
-                   $removetags[$key] = $tag;
+                   $tag = str_replace(array('"', "'"), "", $tag); // strip double and single quotes
+                   if (!empty($tag))
+                       $removetags[$key] = $tag;
                }
    	        }
             foreach ($this->params['change_tag'] as $item) {
