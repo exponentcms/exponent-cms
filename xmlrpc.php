@@ -138,7 +138,7 @@ function getUsersBlogs($xmlrpcmsg)
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array'));
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -232,10 +232,10 @@ function newPost($xmlrpcmsg)
                 new xmlrpcval($post->id, 'string')
             ); // Return the id of the post just inserted into the DB. See mysql_insert_id() in the PHP manual.
         } else {
-            return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+            return new xmlrpcresp(0, 1, "Login Failed");
         }
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -328,10 +328,10 @@ function editPost($xmlrpcmsg)
 
             return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
         } else {
-            return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+            return new xmlrpcresp(0, 1, "Login Failed");
         }
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -388,10 +388,10 @@ function getPost($xmlrpcmsg)
             );
 
         } else {
-            return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+            return new xmlrpcresp(0, 1, "Login Failed");
         }
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -433,7 +433,7 @@ function deletePost($xmlrpcmsg)
 
         return new xmlrpcresp(new xmlrpcval(true, 'boolean'));
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -513,10 +513,10 @@ function getRecentPosts($xmlrpcmsg)
             }
             return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
         } else {
-            return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+            return new xmlrpcresp(0, 1, "Login Failed");
         }
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
@@ -557,7 +557,7 @@ function getCategories($xmlrpcmsg)
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+        return new xmlrpcresp(0, 1, 'Login Failed');
     }
 }
 
@@ -585,7 +585,7 @@ function getCategories_mt($xmlrpcmsg)
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+        return new xmlrpcresp(0, 1, 'Login Failed');
     }
 }
 
@@ -629,7 +629,7 @@ function getTerms($xmlrpcmsg)
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+        return new xmlrpcresp(0, 1, 'Login Failed');
     }
 }
 
@@ -666,7 +666,7 @@ function getAuthors($xmlrpcmsg)
         }
         return new xmlrpcresp(new xmlrpcval($structArray, 'array')); // Return type is struct[] (array of struct)
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, 'Login Failed');
+        return new xmlrpcresp(0, 1, 'Login Failed');
     }
 }
 
@@ -693,18 +693,19 @@ function newMediaObject($xmlrpcmsg)
         $file = $xmlrpcmsg->getParam(3);
         $filename = $file->structMem('name')->scalarval();
         $filename = substr($filename, (strrpos($filename, "/") + 1));
+        $filename = expFile::fixName($filename);
         $type = $file->structMem('type')->scalarval(); // The type of the file
         $bits = $file->structMem('bits')->serialize();
         $bits = str_replace("<value><base64>", "", $bits);
         $bits = str_replace("</base64></value>", "", $bits);
-        $dest = UPLOAD_DIRECTORY;
+        $dest = UPLOAD_DIRECTORY_RELATIVE;
         $uploaddir = BASE . $dest;
         //Check to see if the directory exists.  If not, create the directory structure.
         if (!file_exists(BASE . $dest)) {
             expFile::makeDirectory($dest);
         }
         if (fwrite(fopen($uploaddir . $filename, "wb"), base64_decode($bits)) == false) {
-            return new xmlrpcresp(0, $xmlrpcerruser + 1, "File Failed to Write");
+            return new xmlrpcresp(0, 1, "File Failed to Write");
         } else {
             return new xmlrpcresp(
                 new xmlrpcval(
@@ -713,7 +714,7 @@ function newMediaObject($xmlrpcmsg)
             );
         }
     } else {
-        return new xmlrpcresp(0, $xmlrpcerruser + 1, "Login Failed");
+        return new xmlrpcresp(0, 1, "Login Failed");
     }
 }
 
