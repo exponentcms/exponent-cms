@@ -124,7 +124,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.6'}
 {literal}
     $(document).ready(function () {
         "use strict";
