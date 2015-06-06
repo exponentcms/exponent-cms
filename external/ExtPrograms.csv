@@ -2,13 +2,13 @@ Program,Version,URL,Avail version,Exponent Customization Notes:
 Swift,5.4.0,swiftmailer.org,5.4.0,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.21,smarty.net,3.1.21,
+Smarty,3.1.21,smarty.net,3.1.24,
 phpthumb,1.7.14-201503301816,https://github.com/JamesHeinrich/phpThumb,1.7.14-201503301816,phpThumb.config.php - we set the cache folder and allow &amp in parsing
 minify,2.2.1,github.com/mrclay/minify,2.2.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
-recaptchalib,1.1.1,https://github.com/google/ReCAPTCHA,1.1.1,new 2.0 api
+recaptchalib,1.1.1,https://github.com/google/ReCAPTCHA,1.1.1,new api
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 xmlrpc.php,3.0.1,https://github.com/gggeek/phpxmlrpc,3.0.1,
@@ -29,7 +29,7 @@ Font-Awesome,4.3.0,fortawesome.github.com/Font-Awesome,4.3.0,
 Adminer,4.2.1,www.adminer.org,4.2.1,we add some system user checks in design.inc
 SimpleAjaxUploader,2.0.1,https://github.com/LPology/Simple-Ajax-Uploader,2.0.1,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
-MediaElement.js,2.16.4,mediaelementjs.com/,2.16.4,
+MediaElement.js,2.16.4,mediaelementjs.com/,2.17.0,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4.0.20,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
@@ -47,7 +47,7 @@ stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate op
 validate,1.13.1exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.13.1,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
-timepicker,1.5.4,http://trentrichardson.com/examples/timepicker/,1.5.4,used by adminer
+timepicker,1.5.4,http://trentrichardson.com/examples/timepicker/,1.5.5,used by adminer
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 DataTables,1.10.7,http://www.datatables.net,1.10.7,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,
@@ -60,14 +60,14 @@ excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.6.1,http://www.jacklmoore.com/colorbox,1.6.1,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.3exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.3,added additional 'update' method and click update if inline
-pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.5,
+pwstrength-bootstrap,1.2.5,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.6,
 Sortable,1.2.0,https://github.com/RubaXa/Sortable,1.2.0,
 jstree,3.0.11,https://github.com/vakata/jstree,3.0.11,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.4,https://github.com/nakupanda/bootstrap3-dialog,1.34.4,
 impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.1,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.5.0,https://github.com/timschlechter/bootstrap-tagsinput,0.5.0,
-Typeahead,0.10.5,http://twitter.github.io/typeahead.js/,0.10.5,needed by bootstrap-tagsinput
+Typeahead,0.10.5,http://twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.2,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.2,
 select2,3.5.2,https://github.com/ivaynberg/select2,4.0.0,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using fileinput at this time
