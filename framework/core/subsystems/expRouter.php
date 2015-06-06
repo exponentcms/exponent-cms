@@ -171,6 +171,16 @@ class expRouter {
         }
     }
 
+    /**
+     * Returns a cleaner canonical link sans 'src' param
+     *
+     * @return string
+     */
+    public function plainPath() {
+        unset($this->params['src']);
+        return $this->makeLink($this->params);
+    }
+
     public function routeRequest() {
         global $user;
 
@@ -407,8 +417,10 @@ class expRouter {
         return true;
     }
 
+    /**
+     * figure out if this action is mapped via the mapping file (router_maps.php)
+     */
     public function isMappedURL() {
-        // figure out if this action is mapped via the mapping file (router_maps.php)
         $part_count = count($this->url_parts);
         foreach ($this->maps as $map) {
             $matched = true;

@@ -600,7 +600,7 @@ class eventController extends expController {
                         $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                         $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
                         $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-                        $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
+                        $metainfo['canonical'] = empty($object->event->canonical) ? $router->plainPath() : $object->event->canonical;
                         $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
                         $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
                         return $metainfo;

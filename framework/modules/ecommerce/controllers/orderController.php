@@ -924,7 +924,7 @@ exit();
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
                 $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
-                $metainfo['canonical'] = empty($order->canonical) ? '' : $order->canonical;
+                $metainfo['canonical'] = empty($order->canonical) ? $router->plainPath() : $order->canonical;
                 $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
                 $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;

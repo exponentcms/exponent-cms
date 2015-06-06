@@ -72,7 +72,7 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-		            
+
 		assign_to_template(array(
             'page'=>$page,
             'params'=>$this->params,
@@ -95,12 +95,12 @@ class blogController extends expController {
                 $users[$blog->poster]->count = 1;
             }
         }
-        
+
 	    assign_to_template(array(
             'authors'=>$users
         ));
 	}
-	
+
 	public function dates() {
 	    global $db;
 
@@ -120,7 +120,7 @@ class blogController extends expController {
                 if ($count > $limit) break;
                 $blog_date[$year][$month] = new stdClass();
 	            $blog_date[$year][$month]->name = date('F',$date);
-	            $blog_date[$year][$month]->count = 1;    
+	            $blog_date[$year][$month]->count = 1;
 	        }
 	    }
         if (!empty($blog_date)) {
@@ -138,7 +138,7 @@ class blogController extends expController {
             'dates'=>$blog_date
         ));
 	}
-	
+
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
@@ -158,16 +158,16 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-		            
+
 		assign_to_template(array(
             'page'=>$page,
             'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date,"%B %Y").'"')
         );
 	}
-	
+
 	public function showall_by_author() {
 	    expHistory::set('viewable', $this->params);
-	    
+
         $user = user::getUserByName($this->params['author']);
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
@@ -182,20 +182,20 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-            	    
+
 		assign_to_template(array(
             'page'=>$page,
             'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'
         ));
 	}
-	
+
 	public function show() {
 //	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
-	    
+
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
@@ -374,7 +374,8 @@ class blogController extends expController {
 //                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;  //FIXME $object not set
                 $metainfo['description'] = SITE_DESCRIPTION;
 //                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;  //FIXME $object not set
-                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+                $metainfo['canonical'] = $router->plainPath();
 
                 return $metainfo;
             }

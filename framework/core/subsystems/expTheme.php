@@ -228,6 +228,9 @@ class expTheme
         if (!isset($config['meta']['rich'])) {
             $config['meta']['rich'] = true;
         }
+        if (!isset($config['meta']['fb'])) {
+            $config['meta']['fb'] = true;
+        }
         if (!isset($config['meta']['viewport'])) {
             $config['meta']['viewport'] = true;
         }
@@ -260,6 +263,13 @@ class expTheme
         if ($config['meta']['rich'] && !empty($metainfo['rich'])) {
             $str .= "\t" . $metainfo['rich'] . "\n";
         }
+        if ($config['meta']['fb'] && !empty($metainfo['fb'])) {
+            foreach ($metainfo['fb'] as $key=>$value) {
+                if (!empty($value))
+                    $str .= "\t" . '<meta property="og:' . $key . '" content="' . $value . '" ' . XHTML_CLOSING . '>' . "\n";
+            }
+        }
+
         if ($metainfo['noindex'] || $metainfo['nofollow']) {
             $str .= "\t" . '<meta name="robots" content="' . (!empty($metainfo['noindex']) ? 'noindex' : '') . ' ' . ($metainfo['nofollow'] ? 'nofollow' : '') . '" ' . XHTML_CLOSING . '>' . "\n";
         }

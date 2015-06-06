@@ -21,6 +21,8 @@
         <h2>{'Facebook Settings'|gettext}</h2>
 	</div>
 </div>
+{control type="checkbox" name="disable_facebook_meta" label="Disable Facebook Meta Tags"|gettext value=1 checked=$config.disable_facebook_meta description='Disables \'Facebook og:xxx\' meta tags on page'|gettext}
+{control type="files" name="fbimage" subtype=fbimage label="Default Meta Image"|gettext value=$config.fbimage folder=$config.upload_folder limit=1 description='Module Default Image for social media (1200px x 630px or 600px x 315px, but larger than 200px x 200px)'|gettext}
 {group label='Auto Facebook Status Posting'|gettext}
     {control type="checkbox" name="enable_auto_status" label="Enable Auto-Facebook Status"|gettext value=1 checked=$config.enable_auto_status description='Allows \'Facebook\'ing new items'|gettext}
     {group label='Facebook Account'|gettext}

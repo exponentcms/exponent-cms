@@ -1250,7 +1250,8 @@ class cartController extends expController {
                 $metainfo['title'] = gt("Shopping Cart") . " - " . $storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
-                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+                $metainfo['canonical'] = $router->plainPath();
         }
 
         return $metainfo;

@@ -78,6 +78,13 @@ class expString {
      * @return mixed|string
      */
 	static function parseAndTrim($str, $unescape=false) {
+        if (is_array($str)) {
+            $rst = array();
+            foreach ($str as $key=>$st) {
+                $rst[$key] = self::parseAndTrim($st, $unescape);
+            }
+            return $rst;
+        }
 
         $str = str_replace("<br>"," ",$str);
         $str = str_replace("</br>"," ",$str);

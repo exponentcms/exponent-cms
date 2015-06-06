@@ -75,6 +75,7 @@
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_status"}">{'Active'|gettext} &amp; {'Status Settings'|gettext}</a></li>
                 {if $record->parent_id == 0}
                     <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_meta"}">{'SEO'|gettext}</a></li>
+                    <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id view="edit_facebook"}">{'Facebook'|gettext}</a></li>
                 {/if}
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_notes"}">{'Notes'|gettext}</a></li>
                 <li><a href="{link action="edit" product_type="product" ajax_action=1 id=$record->id parent_id = $record->parent_id view="edit_extrafields"}">{'Extra Fields'|gettext}</a></li>
@@ -177,25 +178,3 @@
     });
 {/literal}
 {/script}
-
-{*{script unique="tabload" jquery=1 bootstrap="tab,transition"}*}
-{*{literal}*}
-    {*$('.loadingdiv').remove();*}
-
-    {*$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {*}
-        {*var target = $(e.target).attr("href") // activated tab*}
-        {*if ($(target).is(':empty')) {*}
-            {*$.ajax({*}
-                {*type: "GET",*}
-                {*url: target,*}
-                {*error: function(data){*}
-                    {*alert("There was a problem");*}
-                {*},*}
-                {*success: function(data){*}
-                    {*$(target).html(data);*}
-                {*}*}
-            {*})*}
-        {*}*}
-    {*})*}
-{*{/literal}*}
-{*{/script}*}

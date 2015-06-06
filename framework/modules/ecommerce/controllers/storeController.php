@@ -1540,7 +1540,7 @@ class storeController extends expController {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title . ' ' . gt('Products') . ' - ' . $storename : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
-                    $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
+                    $metainfo['canonical'] = empty($cat->canonical) ? $router->plainPath() : strip_tags($cat->canonical);
                     $metainfo['noindex'] = empty($cat->meta_noindex) ? false : $cat->meta_noindex;
                     $metainfo['nofollow'] = empty($cat->meta_nofollow) ? false : $cat->meta_nofollow;
                 }
@@ -1552,19 +1552,30 @@ class storeController extends expController {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
-                    $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
+                    $metainfo['canonical'] = empty($prod->canonical) ? $router->plainPath() : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? false : $prod->meta_noindex;
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? false : $prod->meta_nofollow;
                     if (!empty($prod->expFile['mainimage'][0]) && file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
                         $metainfo['rich'] = '<!--
         <PageMap>
             <DataObject type="thumbnail">
-                <Attribute name="src" value="'.URL_FULL.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename.'"/>
+                <Attribute name="src" value="'.$prod->expFile['mainimage'][0]->url.'"/>
                 <Attribute name="width" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
                 <Attribute name="height" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
             </DataObject>
         </PageMap>
     -->';
+                    }
+                    $metainfo['fb']['type'] = empty($prod->meta_fb['type']) ? 'article' : $prod->meta_fb['type'];
+                    $metainfo['fb']['title'] = empty($prod->meta_fb['title']) ? $prod->title : $prod->meta_fb['title'];
+                    $metainfo['fb']['description'] = empty($prod->meta_fb['description']) ? $desc : $prod->meta_fb['description'];
+                    $metainfo['fb']['url'] = empty($prod->meta_fb['url']) ? $metainfo['canonical'] : $prod->meta_fb['url'];
+                    $metainfo['fb']['image'] = empty($prod->meta_fb['fbimage'][0]) ? '' : $prod->meta_fb['fbimage'][0]->url;
+                    if (empty($metainfo['fb']['image'])) {
+                        if (!empty($prod->expFile['mainimage'][0]))
+                            $metainfo['fb']['image'] = $prod->expFile['mainimage'][0]->url;
+                        if (empty($metainfo['fb']['image']))
+                            $metainfo['fb']['image'] = URL_BASE . '/framework/modules/ecommerce/assets/images/no-image.jpg';
                     }
                     break;
                 }

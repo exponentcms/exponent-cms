@@ -29,6 +29,9 @@
                     <li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Files'|gettext}</em></a></li>
                 {/if}
                 <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{'SEO'|gettext}</em></a></li>
+                {if !$config.disable_facebook_meta}
+                    <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{'Facebook'|gettext}</em></a></li>
+                {/if}
             </ul>
             <div class="tab-content">
                 <div id="tab1" role="tabpanel" class="tab-pane fade in active">
@@ -75,6 +78,19 @@
                     {control type="checkbox" name="meta_noindex" label="Do Not Index"|gettext|cat:"?" checked=$section->meta_noindex value=1 description='Should this page be indexed by search engines?'|gettext}
                     {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
+                {if !$config.disable_facebook_meta}
+                    <div id="tab5" role="tabpanel" class="tab-pane fade">
+                        <h2>{'Facebook Meta'|gettext}</h2>
+                        <blockquote>
+                            {'Also used for Twitter, Pinterest, etc...'|gettext}
+                        </blockquote>
+                        {control type="hidden" name="fb[type]" value='blog'}
+                        {control type="text" name="fb[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the item title for social media'|gettext}
+                        {control type="textarea" name="fb[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_fb.description description='Override the item summary for social media'|gettext}
+                        {control type="text" name="fb[url]" label="Meta URL"|gettext value=$record->meta_fb.url description='Canonical URL for social media if different than Canonical URL'|gettext}
+                        {control type="files" name="fbimage" subtype=fbimage label="Meta Image"|gettext value=$record->meta_fb folder=$config.upload_folder limit=1 description='Image for social media (1200px x 630px or 600px x 315px, but larger than 200px x 200px)'|gettext}
+                    </div>
+                {/if}
             </div>
         </div>
 	    <div class="loadingdiv">{"Loading Blog Item"|gettext}</div>

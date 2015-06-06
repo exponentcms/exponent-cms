@@ -1317,10 +1317,25 @@ abstract class expController {
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
-                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+//                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['canonical'] = empty($object->canonical) ? $router->plainPath() : $object->canonical;
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                         $metainfo['rich'] = $this->meta_rich($router->params, $object);
+                        $metainfo['fb']['type'] = empty($object->meta_fb['type']) ? 'article' : $object->meta_fb['type'];
+                        $metainfo['fb']['title'] = empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'];
+                        $metainfo['fb']['description'] = empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'];
+                        $metainfo['fb']['url'] = empty($object->meta_fb['url']) ? $metainfo['canonical'] : $object->meta_fb['url'];
+                        $metainfo['fb']['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
+                        if (empty($metainfo['fb']['image'])) {
+                            $config = expConfig::getConfig($object->location_data);
+                            if (!empty($config['expFile']['fbimage'][0]))
+                                $file = new expFile($config['expFile']['fbimage'][0]);
+                            if (!empty($file->id))
+                                $metainfo['fb']['image'] = $file->url;
+                            if (empty($metainfo['fb']['image']))
+                                $metainfo['fb']['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+                        }
                     }
                     break;
                 }
@@ -1334,7 +1349,8 @@ abstract class expController {
                     $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
                     $metainfo['keywords'] = SITE_KEYWORDS;
                     $metainfo['description'] = SITE_DESCRIPTION;
-                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+                    $metainfo['canonical'] = $router->plainPath();
                 }
         }
 
@@ -1373,7 +1389,8 @@ abstract class expController {
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
             $metainfo['description'] = SITE_DESCRIPTION;
 //            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
-            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+//            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            $metainfo['canonical'] = $router->plainPath();
             return $metainfo;
         }
         return null;
@@ -1400,7 +1417,8 @@ abstract class expController {
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
             $metainfo['description'] = SITE_DESCRIPTION;
 //            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
-            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+//            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            $metainfo['canonical'] = $router->plainPath();
             return $metainfo;
         }
         return null;
