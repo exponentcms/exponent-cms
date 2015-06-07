@@ -1322,20 +1322,7 @@ abstract class expController {
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                         $metainfo['rich'] = $this->meta_rich($router->params, $object);
-                        $metainfo['fb']['type'] = empty($object->meta_fb['type']) ? 'article' : $object->meta_fb['type'];
-                        $metainfo['fb']['title'] = empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'];
-                        $metainfo['fb']['description'] = empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'];
-                        $metainfo['fb']['url'] = empty($object->meta_fb['url']) ? $metainfo['canonical'] : $object->meta_fb['url'];
-                        $metainfo['fb']['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
-                        if (empty($metainfo['fb']['image'])) {
-                            $config = expConfig::getConfig($object->location_data);
-                            if (!empty($config['expFile']['fbimage'][0]))
-                                $file = new expFile($config['expFile']['fbimage'][0]);
-                            if (!empty($file->id))
-                                $metainfo['fb']['image'] = $file->url;
-                            if (empty($metainfo['fb']['image']))
-                                $metainfo['fb']['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
-                        }
+                        $metainfo['fb'] = $this->meta_fb($router->params, $object, $metainfo['canonical']);
                     }
                     break;
                 }
@@ -1367,6 +1354,18 @@ abstract class expController {
      */
     public function meta_rich($request, $object) {
         return null;
+    }
+
+    /**
+     * Returns Facebook og: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return array
+     */
+    public function meta_fb($request, $object, $canonical) {
+        return array();
     }
 
     /**

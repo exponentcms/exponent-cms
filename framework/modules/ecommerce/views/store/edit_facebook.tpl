@@ -22,7 +22,7 @@
     <blockquote>
         {'Also used for Twitter, Pinterest, etc...'|gettext}
     </blockquote>
-    {control type="hidden" name="facebook[type]" value='product'}
+    {*{control type="hidden" name="facebook[type]" value='product'}*}
     {control type="text" name="facebook[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the product title for social media'|gettext}
     {control type="textarea" name="facebook[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_fb.description description='Override the product summary for social media'|gettext}
     {control type="text" name="facebook[url]" label="Meta URL"|gettext value=$record->meta_fb.url description='Canonical URL for social media if different than Canonical URL'|gettext}

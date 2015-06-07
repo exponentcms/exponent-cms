@@ -1566,9 +1566,9 @@ class storeController extends expController {
         </PageMap>
     -->';
                     }
-                    $metainfo['fb']['type'] = empty($prod->meta_fb['type']) ? 'article' : $prod->meta_fb['type'];
-                    $metainfo['fb']['title'] = empty($prod->meta_fb['title']) ? $prod->title : $prod->meta_fb['title'];
-                    $metainfo['fb']['description'] = empty($prod->meta_fb['description']) ? $desc : $prod->meta_fb['description'];
+                    $metainfo['fb']['type'] = 'product';
+                    $metainfo['fb']['title'] =  substr(empty($prod->meta_fb['title']) ? $prod->title : $prod->meta_fb['title'], 0, 87);
+                    $metainfo['fb']['description'] = substr(empty($prod->meta_fb['description']) ? $metainfo['description'] : $prod->meta_fb['description'], 0, 199);
                     $metainfo['fb']['url'] = empty($prod->meta_fb['url']) ? $metainfo['canonical'] : $prod->meta_fb['url'];
                     $metainfo['fb']['image'] = empty($prod->meta_fb['fbimage'][0]) ? '' : $prod->meta_fb['fbimage'][0]->url;
                     if (empty($metainfo['fb']['image'])) {
