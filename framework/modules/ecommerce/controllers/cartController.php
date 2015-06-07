@@ -1242,7 +1242,7 @@ class cartController extends expController {
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => true, 'nofollow' => true);
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
@@ -1251,7 +1251,7 @@ class cartController extends expController {
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
 //                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
-                $metainfo['canonical'] = $router->plainPath();
+//                $metainfo['canonical'] = $router->plainPath();
         }
 
         return $metainfo;

@@ -907,7 +907,7 @@ exit();
         // figure out what metadata to pass back based on the action 
         // we are in.
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => true, 'nofollow' => true);
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
@@ -924,9 +924,9 @@ exit();
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
                 $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
-                $metainfo['canonical'] = empty($order->canonical) ? $router->plainPath() : $order->canonical;
-                $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
-                $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
+//                $metainfo['canonical'] = empty($order->canonical) ? $router->plainPath() : $order->canonical;
+//                $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
+//                $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;
             case 'showall':
             case 'ordersbyuser':
