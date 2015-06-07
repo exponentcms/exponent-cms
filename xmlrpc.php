@@ -173,7 +173,8 @@ function newPost($xmlrpcmsg)
             //Get and add the categories selected by the user
             if (!empty($config->config['usecategories'])) {
                 $categories = array();
-                if (!empty($content->structMem('categories'))) {
+                $cats = $content->structMem('categories');
+                if (!empty($cats)) {
                     for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
                         $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
                     }
@@ -255,6 +256,8 @@ $editPost_sig = array(
 $editPost_doc = 'Edit an item on the blog.';
 function editPost($xmlrpcmsg)
 {
+    global $user;
+
     $postid = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -265,7 +268,7 @@ function editPost($xmlrpcmsg)
         if (expPermissions::check('edit', $loc) || (expPermissions::check(
                     'create',
                     $loc
-                ) && $posts[$i]->poster == $user->id)
+                ) && $post->poster == $user->id)
         ) {
             $content = $xmlrpcmsg->getParam(3);
             $title = $content->structMem('title')->scalarval();
@@ -275,7 +278,8 @@ function editPost($xmlrpcmsg)
             //Get and add the categories selected by the user
             if (!empty($config->config['usecategories'])) {
                 $categories = array();
-                if (!empty($content->structMem('categories'))) {
+                $cats = $content->structMem('categories');
+                if (!empty($cats)) {
                     for ($i = 0; $i < $content->structMem('categories')->arraySize(); $i++) {
                         $categories[$i] = $content->structMem('categories')->arrayMem($i)->scalarval();
                     }
@@ -349,6 +353,8 @@ $getPost_sig = array(
 $getPost_doc = 'Get an item on the blog.';
 function getPost($xmlrpcmsg)
 {
+    global $user;
+
     $postid = $xmlrpcmsg->getParam(0)->scalarval();
     $username = $xmlrpcmsg->getParam(1)->scalarval();
     $password = $xmlrpcmsg->getParam(2)->scalarval();
@@ -360,7 +366,7 @@ function getPost($xmlrpcmsg)
         if (expPermissions::check('edit', $loc) || (expPermissions::check(
                     'create',
                     $loc
-                ) && $posts[$i]->poster == $user->id)
+                ) && $post->poster == $user->id)
         ) {
             $cat = array();
             foreach ($post->expCat as $pcat) {
