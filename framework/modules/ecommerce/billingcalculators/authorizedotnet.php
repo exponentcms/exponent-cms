@@ -58,12 +58,12 @@ class authorizedotnet extends creditcard {
         return true;
     }
 
-    function process($method, $opts, $params, $order) {
+    function process($billingmethod, $opts, $params, $order) {
         global $db, $user;
 
         $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         // make sure we have some billing options saved.
-        if (empty($method) || empty($opts)) return false;
+        if (empty($billingmethod) || empty($opts)) return false;
 
         // get a shipping address to display in the invoice email.
         $shippingaddress = $order->getCurrentShippingMethod();
@@ -72,7 +72,7 @@ class authorizedotnet extends creditcard {
 
         $config = unserialize($this->config);
 
-        $state = new geoRegion($method->state);
+        $state = new geoRegion($billingmethod->state);
         $country = new geoCountry($state->country_id);
 
         $data = array(
@@ -83,14 +83,14 @@ class authorizedotnet extends creditcard {
             "x_delim_data"         => 'TRUE',
             "x_delim_char"         => '|',
             "x_relay_response"     => 'FALSE',
-            "x_first_name"         => $method->firstname,
-            "x_last_name"          => $method->lastname,
-            "x_address"            => $method->address1,
-            "x_city"               => $method->city,
+            "x_first_name"         => $billingmethod->firstname,
+            "x_last_name"          => $billingmethod->lastname,
+            "x_address"            => $billingmethod->address1,
+            "x_city"               => $billingmethod->city,
             "x_state"              => $state->code,
-            "x_zip"                => $method->zip,
+            "x_zip"                => $billingmethod->zip,
             "x_country"            => $country->iso_code_2letter,
-            //"x_phone"=>empty($method->phone) ? '' : $method->phone,  //FIXME
+            //"x_phone"=>empty($billingmethod->phone) ? '' : $billingmethod->phone,  //FIXME
             "x_phone"              => '309-680-5600',
             "x_email"              => $user->email,
             "x_invoice_num"        => $order->invoice_id,
@@ -183,16 +183,16 @@ class authorizedotnet extends creditcard {
 
 //        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($opts)));
-        $this->createBillingTransaction($method, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
+        $billingmethod->update(array('billing_options' => serialize($opts)));
+        $this->createBillingTransaction($billingmethod, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 
-    function credit_transaction($method, $amount, $order) {
+    function credit_transaction($billingmethod, $amount, $order) {
         global $user;
 
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -244,11 +244,11 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
         if ($response[2] == 1) { //if it is completed
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
-            $this->createBillingTransaction($method, urldecode($response[9]), $opts->result, 'voided');
+            $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+            $this->createBillingTransaction($billingmethod, urldecode($response[9]), $opts->result, 'voided');
 
             flash('message', gt('Void Completed Successfully.'));
-            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
         } else { // if it has error which like means it is already settled
 
             $data = array(
@@ -289,20 +289,20 @@ class authorizedotnet extends creditcard {
             $opts->result->payment_status = gt("refunded");
             $opts->result->transId = '';
             $opts->result->message = "Transaction Refunded";
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
-            $this->createBillingTransaction($method, -(number_format($amount, 2, '.', '')), $opts->result, 'refunded');
+            $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
+            $this->createBillingTransaction($billingmethod, -(number_format($amount, 2, '.', '')), $opts->result, 'refunded');
 
             flash('message', gt('Refund Completed Successfully.'));
-            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
         }
     }
 
-	 function delayed_capture($method, $amount, $order) {
+	 function delayed_capture($billingmethod, $amount, $order) {
 	
         global $user;
 
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -360,21 +360,21 @@ class authorizedotnet extends creditcard {
          $opts->result->payment_status = gt("complete");
          $opts->result->transId = '';
          $opts->result->message = "Transaction Captured";
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'complete');
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, 'complete');
 
         flash('message', gt('Captured Transaction Successfully.'));
-        redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+        redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
      
     }
 
-	function void_transaction($method, $order) {
+	function void_transaction($billingmethod, $order) {
 
         global $user;
 
         $amount = 0;  //FIXME initialize the amount??
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -426,15 +426,15 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize); //FIXME waht to do with this?
+        $response = explode("|", $authorize); //FIXME what to do with this?
 
         $opts->result->traction_type = 'Void';
         $opts->result->errorCode = 0;
         $opts->result->payment_status = gt("voided");
         $opts->result->transId = '';
         $opts->result->message = "Transaction Voided";
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'voided');
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, 'voided');
 
         return $opts->result;
 

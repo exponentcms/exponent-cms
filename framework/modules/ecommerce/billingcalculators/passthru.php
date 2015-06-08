@@ -132,21 +132,21 @@ class passthru extends billingcalculator {
         return $obj;
     }
 
-    function preprocess($method, $opts, $params, $order) {
-        $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
-        $method->update(array('billing_options' => serialize($opts)));
+    function preprocess($billingmethod, $opts, $params, $order) {
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME already unserialized?? == $opts???
+        $billingmethod->update(array('billing_options' => serialize($opts)));
         if (isset($params['sales_rep_1_id'])) $order->sales_rep_1_id = $params['sales_rep_1_id'];
         if (isset($params['sales_rep_2_id'])) $order->sales_rep_2_id = $params['sales_rep_2_id'];
         if (isset($params['sales_rep_3_id'])) $order->sales_rep_3_id = $params['sales_rep_3_id'];
         $order->save();
-        /* eDebug($method);
+        /* eDebug($billingmethod);
          eDebug($opts);
          eDebug($params,true); */
         return true;
     }
 
-//    function process($method, $opts, $params, $invoice_number) {
-    function process($method, $opts, $params, $order) {
+//    function process($billingmethod, $opts, $params, $invoice_number) {
+    function process($billingmethod, $opts, $params, $order) {
         $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $opts->result->errorCode = 0;
         $opts->result->message = 'Authorization pending.';
@@ -165,8 +165,8 @@ class passthru extends billingcalculator {
         //eDebug($opts,true);
         /*$opts->result = $object;        
         $opts->cc_number = 'xxxx-xxxx-xxxx-'.substr($opts->cc_number, -4);*/
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($method, number_format(0, 2, '.', ''), $opts->result, $trax_state);
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
+        $this->createBillingTransaction($billingmethod, number_format(0, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 

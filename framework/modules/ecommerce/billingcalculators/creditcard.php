@@ -209,18 +209,18 @@ class creditcard extends billingcalculator {
      * from the url such that if we already have it we'll ccall another PP api to get the
      * details and make it match up to the order.
      *
-     * @param mixed $method The billing method information for this user
+     * @param mixed $billingmethod The billing method information for this user
      * @param mixed $opts
      * @param array $params The url prameters, as if sef was off.
      * @param       $order
      *
      * @return mixed An object indicating pass of failure.
      */
-    function preprocess($method, $opts, $params, $order) {
-        $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
+    function preprocess($billingmethod, $opts, $params, $order) {
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME already unserialized?? == $opts???
         //just save the opts
-        $method->update(array('billing_options' => serialize($opts)));
-        //eDebug($method,true);
+        $billingmethod->update(array('billing_options' => serialize($opts)));
+        //eDebug($billingmethod,true);
     }
 
     function validate_card_expire($mmyy) {

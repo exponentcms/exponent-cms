@@ -90,10 +90,10 @@ class splitcreditcard extends creditcard {
         $opts->result->message = "User selected a credit card";
 //        $opts->result->token = '';
         $opts->result->transId = '';
-//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
-//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
+//        $billingmethod->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
+//        $billingmethod->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
-//        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+//        $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
         $this->createBillingTransaction($billingmethod, number_format(0, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts->result;
     }
