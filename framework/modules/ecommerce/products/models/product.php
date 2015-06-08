@@ -90,7 +90,8 @@ class product extends expRecord {
             //eDebug($this); 
         }
 
-        $this->meta_fb = expUnserialize($this->meta_fb);
+        if (!empty($this->meta_fb))
+            $this->meta_fb = expUnserialize($this->meta_fb);
         if (!empty($this->expFile['fbimage'][0])) {
             $this->meta_fb['fbimage'][0] = $this->expFile['fbimage'][0];
 //            unset($this->expFile['fbimage']);

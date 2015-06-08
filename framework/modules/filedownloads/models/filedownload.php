@@ -41,7 +41,8 @@ class filedownload extends expRecord {
     public function __construct($params=null, $get_assoc=true, $get_attached=true) {
         parent::__construct($params, $get_assoc, $get_attached);
 
-        $this->meta_fb = expUnserialize($this->meta_fb);
+        if (!empty($this->meta_fb))
+            $this->meta_fb = expUnserialize($this->meta_fb);
         if (!empty($this->meta_fb['fbimage'][0]))
             $this->meta_fb['fbimage'][0] = new expFile($this->meta_fb['fbimage'][0]);
 
