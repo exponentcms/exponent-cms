@@ -61,25 +61,25 @@
                     {*{ecomconfig var='policy' default=""}*}
                 {*</div>*}
             {*</div>*}
-            {*{script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}*}
-            {*{literal}*}
-                {*$(document).ready(function(){*}
-                    {*$('#review-policy').click(function() {*}
-                        {*BootstrapDialog.show({*}
-                            {*size: BootstrapDialog.SIZE_WIDE,*}
-                            {*title: '{/literal}{'Store Policies'|gettext}{literal}',*}
-                            {*message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},*}
-                            {*buttons: [{*}
-                                {*label: 'Close',*}
-                                {*action: function(dialogRef){*}
-                                    {*dialogRef.close();*}
-                                {*}*}
-                            {*}]*}
-                        {*});*}
-                    {*});*}
-                {*});*}
-            {*{/literal}*}
-            {*{/script}*}
+            {*script unique="policypop" jquery="bootstrap-dialog" bootstrap="modal,transition,tab"}
+            {literal}
+                $(document).ready(function(){
+                    $('#review-policy').click(function() {
+                        BootstrapDialog.show({
+                            size: BootstrapDialog.SIZE_WIDE,
+                            title: '{/literal}{'Store Policies'|gettext}{literal}',
+                            message: {/literal}{ecomconfig var='policy' default="" json=true}{literal},
+                            buttons: [{
+                                label: 'Close',
+                                action: function(dialogRef){
+                                    dialogRef.close();
+                                }
+                            }]
+                        });
+                    });
+                });
+            {/literal}
+            {/script*}
         </div>
     {/if}
 

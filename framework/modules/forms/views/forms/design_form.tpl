@@ -75,11 +75,11 @@
     {*<p><a class="{button_style}"*}
     {*href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>*}
 
-    {*{script unique="viewform"}*}
-    {*function pickSource() {ldelim}*}
-    {*window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');*}
-    {*{rdelim}*}
-    {*{/script}*}
+    {*script unique="viewform"}
+    function pickSource() {ldelim}
+    window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');
+    {rdelim}
+    {/script*}
     {*{if !empty($forms_list)}{control type="dropdown" name="forms_id" label="Append fields from an existing form"|gettext items=$forms_list}{/if}*}
         <blockquote>
             {'Use the drop down to add fields to this form.'|gettext}

@@ -123,24 +123,24 @@
                             {*{control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile description="Attach Product Brochures, Docs, Manuals, etc."|gettext}*}
                         {*</div>*}
 
-                        {*{script unique="mainimagefunctionality"}*}
-                        {*{literal}*}
-                        {*YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {*}
-                            {*var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');*}
-                            {*radioSwitchers.on('click',function(e){*}
-                                {*Y.all(".imngfuncbody").setStyle('display','none');*}
-                                {*var curdiv = Y.one("#" + e.target.get('value') + "-div");*}
-                                {*curdiv.setStyle('display','block');*}
-                            {*});*}
+                        {*script unique="mainimagefunctionality"}
+                        {literal}
+                        YUI(EXPONENT.YUI3_CONFIG).use('node','node-event-simulate', function(Y) {
+                            var radioSwitchers = Y.all('#main_image_functionalityControl input[name="main_image_functionality"]');
+                            radioSwitchers.on('click',function(e){
+                                Y.all(".imngfuncbody").setStyle('display','none');
+                                var curdiv = Y.one("#" + e.target.get('value') + "-div");
+                                curdiv.setStyle('display','block');
+                            });
 
-                            {*radioSwitchers.each(function(node,k){*}
-                                {*if(node.get('checked')==true){*}
-                                    {*node.simulate('click');*}
-                                {*}*}
-                            {*});*}
-                        {*});*}
-                        {*{/literal}*}
-                        {*{/script}*}
+                            radioSwitchers.each(function(node,k){
+                                if(node.get('checked')==true){
+                                    node.simulate('click');
+                                }
+                            });
+                        });
+                        {/literal}
+                        {/script*}
                     </div>
                     <div id="quantity" role="tabpanel" class="tab-pane fade">
                         {control type="hidden" name="tab_loaded[quantity]" value=1}

@@ -81,33 +81,33 @@
                             {/literal}
                             {/script}
 
-                            {*{script unique="pickerpopper" yui3mods=1}*}
-                            {*{literal}*}
-                            {*YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {*}
-                                {*var panel = new Y.Panel({*}
-                                    {*srcNode      : '#catpicker',*}
-                                    {*width        : 500,*}
-                                    {*visible      : false,*}
-                                    {*zIndex       : 10,*}
-                                    {*centered     : false,*}
-                                    {*render       : '#create-prod-report'*}
-                                {*}).plug(Y.Plugin.Drag);*}
+                            {*script unique="pickerpopper" yui3mods=1}
+                            {literal}
+                            YUI(EXPONENT.YUI3_CONFIG).use('node','panel','dd','dd-plugin', function(Y) {
+                                var panel = new Y.Panel({
+                                    srcNode      : '#catpicker',
+                                    width        : 500,
+                                    visible      : false,
+                                    zIndex       : 10,
+                                    centered     : false,
+                                    render       : '#create-prod-report'
+                                }).plug(Y.Plugin.Drag);
 
-                                {*panel.dd.addHandle('.yui3-widget-hd');*}
-                                {*var panelContainer = Y.one('#catpicker').get('parentNode');*}
-                                {*panelContainer.addClass('exp-panel-container');*}
-                                {*Y.one('#catpicker').removeClass('hide');*}
+                                panel.dd.addHandle('.yui3-widget-hd');
+                                var panelContainer = Y.one('#catpicker').get('parentNode');
+                                panelContainer.addClass('exp-panel-container');
+                                Y.one('#catpicker').removeClass('hide');
 
-                                {*Y.one('#showcats').on('click',function(e){*}
-                                    {*e.halt();*}
-                                    {*panel.show();*}
-                                    {*panel.set('centered',true);*}
-                                    {*panel.align('#showcats',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);*}
-                                {*});*}
+                                Y.one('#showcats').on('click',function(e){
+                                    e.halt();
+                                    panel.show();
+                                    panel.set('centered',true);
+                                    panel.align('#showcats',[Y.WidgetPositionAlign.TL, Y.WidgetPositionAlign.TL]);
+                                });
 
-                            {*});*}
-                            {*{/literal}*}
-                            {*{/script}*}
+                            });
+                            {/literal}
+                            {/script*}
                         </td>
                     </tr>
                     <tr class="odd">
