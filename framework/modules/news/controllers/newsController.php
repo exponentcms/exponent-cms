@@ -341,13 +341,17 @@ class newsController extends expController {
         $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
         $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
         if (empty($metainfo['image'])) {
-            $config = expConfig::getConfig($object->location_data);
-            if (!empty($config['expFile']['fbimage'][0]))
-                $file = new expFile($config['expFile']['fbimage'][0]);
-            if (!empty($file->id))
-                $metainfo['image'] = $file->url;
-            if (empty($metainfo['image']))
-                $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            if (!empty($object->expFile['images'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['images'][0]->url;
+            } else {
+                $config = expConfig::getConfig($object->location_data);
+                if (!empty($config['expFile']['fbimage'][0]))
+                    $file = new expFile($config['expFile']['fbimage'][0]);
+                if (!empty($file->id))
+                    $metainfo['image'] = $file->url;
+                if (empty($metainfo['image']))
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            }
         }
         return $metainfo;
     }
