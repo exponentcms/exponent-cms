@@ -329,6 +329,21 @@ class expCore
     }
 
     /**
+     * Return the amount properly formatted with the currency symbol
+     *
+     * @static
+     *
+     * @param $amount
+     * @param $currency_type
+     *
+     * @return string
+     */
+    public static function getCurrency($amount, $currency_type = ECOM_CURRENCY)
+    {
+        return self::getCurrencySymbol() . number_format($amount,2,".",",");
+    }
+
+    /**
      * Use cUrl to get data from url
      *
      * @static

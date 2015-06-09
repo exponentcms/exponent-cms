@@ -79,7 +79,7 @@ foreach ($recent_orders as $ord) {
     $items2[] = array(
         'text' => count($ord->orderitem) . ' ' . gt('item') . (count($ord->orderitem) > 1 ? 's' : '') . ' ' . gt('ordered on') . ' ' . expDateTime::format_date($ord->purchased) .
             ' <span class="badge ' . ((strtolower($ord->billingmethod[0]->transaction_state) == 'complete' ||
-            strtolower($ord->billingmethod[0]->transaction_state) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrencySymbol() . $ord->grand_total . '</span>',
+            strtolower($ord->billingmethod[0]->transaction_state) == 'paid') ? 'alert-success">' : '">') . expCore::getCurrency($ord->grand_total) . '</span>',
         'icon' => 'fa-file text-success',
         'classname' => 'search',
         'url' => makeLink(
