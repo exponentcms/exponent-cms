@@ -547,7 +547,7 @@ if (!defined('JQUERY_RELATIVE')) {
  */
 if (!defined('SMARTY_PATH')) {
     define('SMARTY_VERSION', '3.1.24');
-    define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
+    define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
 
