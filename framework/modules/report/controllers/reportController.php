@@ -436,7 +436,7 @@ class reportController extends expController {
         $os = new order_status();
         $oss = $os->find('all');
         $order_status = array();
-        $order_status[-1] = '';
+        $order_status[-1] = gt('--Any--');
         foreach ($oss as $status) {
             $order_status[$status->id] = $status->title;
         }
@@ -444,7 +444,7 @@ class reportController extends expController {
         $ot = new order_type();
         $ots = $ot->find('all');
         $order_type = array();
-        $order_type[-1] = '';
+        $order_type[-1] = gt('--Any--');
         foreach ($ots as $orderType) {
             $order_type[$orderType->id] = $orderType->title;
         }
@@ -452,7 +452,7 @@ class reportController extends expController {
         $dis = new discounts();
         $diss = $dis->find('all');
         $discounts = array();
-        $discounts[-1] = '';
+        $discounts[-1] = gt('--Any--');
         foreach ($diss as $discount) {
             $discounts[$discount->id] = $discount->coupon_code;
         }
@@ -460,14 +460,14 @@ class reportController extends expController {
         /*$geo = new geoRegion();
         $geos = $geo->find('all');        
         $states = array();
-        $states[-1] = '';
+        $states[-1] = gt('--Any--');
         foreach ($geos as $skey=>$state)
         {
             $states[$skey] = $state->name;
         } */
 
         $payment_methods = billingmethod::$payment_types;
-        $payment_methods[-1] = "";
+        $payment_methods[-1] = gt('--Any--');
         ksort($payment_methods);
         //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
 
@@ -618,7 +618,7 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['product_status'])) {
             foreach ($p['product_status'] as $pstat) {
-                if ($pstat == -1) continue;
+                if ($pstat == -1 || empty($pstat)) continue;
 
                 $product_status = new product_status($pstat);
                 if ($inc == 0) {

@@ -21,7 +21,7 @@
 	{control type="text" name="vendor[address1]" label="Address 1"|gettext value=$vendor->address1}
 	{control type="text" name="vendor[address2]" label="Address 2"|gettext value=$vendor->address2}
 	{control type=text name="vendor[city]" label="City"|gettext value=$vendor->city}
-	{control type=state name="vendor[state]" label="State"|gettext value=$vendor->state}
+	{control type=state name="vendor[state]" label="State"|gettext default=$vendor->state}
 	{control type=text name="vendor[zip]" label="Zip Code"|gettext value=$vendor->zip}
 	{control type=url name="vendor[website]" label="Website"|gettext value=$vendor->website}
     {control type=tel name="vendor[phone]" label="Phone Number"|gettext|cat:" (xxx-xxx-xxxx)" value=$vendor->phone}

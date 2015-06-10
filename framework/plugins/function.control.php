@@ -118,7 +118,7 @@ function smarty_function_control($params, &$smarty) {
             case "dropdown":
                 $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
-                if (!empty($params['default'])) $control->default = $params['default'];
+                if (isset($params['default'])) $control->default = $params['default'];
                 $control->type          = "select";
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
@@ -300,9 +300,13 @@ function smarty_function_control($params, &$smarty) {
                     }
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
-                    if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
-                        $params['value'] = $db->selectValue('geo_region', 'id', 'name="' . $params['value'] . '" OR code="' . $params['value'] . '"');
+                    if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
+                        $params['default'] = $db->selectValue('geo_region', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
+                    } elseif (is_numeric($params['default'])) {
+                        $params['default'];
                     }
+                    if (isset($params['default']))
+                        $control->default = $params['default'];
                 } else {
                     echo "NO TABLE";
                     exit();
@@ -331,9 +335,11 @@ function smarty_function_control($params, &$smarty) {
                     }
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
-                    if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
-                        $params['value'] = $db->selectValue('geo_country', 'id', 'name="' . $params['value'] . '" OR code="' . $params['value'] . '"');
+                    if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
+                        $params['default'] = $db->selectValue('geo_country', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
                     }
+                    if (isset($params['default']))
+                        $control->default = $params['default'];
                 } else {
                     echo "NO TABLE";
                     exit();
