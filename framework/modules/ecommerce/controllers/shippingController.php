@@ -30,7 +30,10 @@ class shippingController extends expController {
     static function description() { return ""; }
 	static function hasSources() { return false; }
     static function hasContent() { return false; }
-	
+
+    /**
+     * Ajax method to return a shipping calculator object within a shipping object
+     */
 	function selectShippingCalculator() {
 	    global $db;
 
@@ -49,6 +52,9 @@ class shippingController extends expController {
 		$ar->send();
 	}
 
+    /**
+     * Ajax method to select/update a shipping method
+     */
 	function selectShippingOption() {
 	    global $order; //FIXME we do NOT want the global $order
 
@@ -61,6 +67,9 @@ class shippingController extends expController {
 		$ar->send();
 	}
 
+    /**
+     * Ajax method to set a shipping address
+     */
 	function setAddress() {
 		$shipping = new shipping();
 		$shipping->shippingmethod->setAddress($this->params['shipping_address']);
@@ -69,7 +78,10 @@ class shippingController extends expController {
 		$ar->send();
 	}
 	
-	function leaveMessage() {		
+    /**
+     * Ajax method to set a shipping 'gift' message
+     */
+	function leaveMessage() {
 		if (!empty($this->params['shippingmessageid'])) {
 		    $sm = new shippingmethod($this->params['shippingmessageid']);
 		    
@@ -116,8 +128,11 @@ class shippingController extends expController {
         ));
 	}
 	
+    /**
+     * Ajax method to return a shipping calculator object within a shipping object
+     */
 	function listPrices() {
-	    $shipping = new shipping();
+	    $shipping = new shipping();  //FIXME this model has no listPrices() method???
 	    $ar = new expAjaxReply(200, 'ok', $shipping->listPrices(), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}

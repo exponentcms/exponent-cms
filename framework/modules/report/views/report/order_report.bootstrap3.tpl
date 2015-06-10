@@ -121,7 +121,7 @@
                     </tr>
                     <tr class="odd">
                          <td>
-                            {control type="dropdown" name="discounts" label="Using Discount Code(s)"|gettext size=4 multiple=true items=$discounts default="-1" include_blank="true"}
+                            {control type="dropdown" name="discounts" label="Using Discount Code(s)"|gettext size=4 multiple=true items=$discounts default="-1" includeblank="true"}
                         </td>
                     </tr>
                     <tr class="even">
@@ -145,7 +145,7 @@
                     <tr class="odd">
                         <td>
                             {control type=radiogroup label='By State:'|gettext columns=2 name="bl-sp-state" items="Billing,or Shipping:"|gettxtlist values="b,s" default=$record->bl-sp-zip|default:"s"}
-                            {*control type="dropdown" name="state" size=4 multiple=true items=$states class="collapse" include_blank=true*}
+                            {*control type="dropdown" name="state" size=4 multiple=true items=$states class="collapse" includeblank=true*}
                             {*{control type=state name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="collapse" includeblank=true}*}
                             {control type=state name="state" all_us_territories=true exclude="6,8,10,17,30,46,50" size=4 multiple=true class="" includeblank=true}
                         </td>

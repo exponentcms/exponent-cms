@@ -23,7 +23,7 @@
     </div>
 {/foreach}
 {icon controller="shipping" action="manage" text="Manage Shipping Options"|gettext}
-{control type="text" name="shipping[weight]" label="Item Weight"|gettext size=4 filter=decimal value=$record->weight}
+{control type="text" name="shipping[weight]" label="Item Weight (in pounds)"|gettext size=4 filter=decimal value=$record->weight}
 {control type="text" name="shipping[width]" label="Width (in inches)"|gettext size=4 filter=decimal value=$record->width}
 {control type="text" name="shipping[height]" label="Height (in inches)"|gettext size=4 filter=decimal value=$record->height}
 {control type="text" name="shipping[length]" label="Length (in inches)"|gettext size=4 filter=decimal value=$record->length}

@@ -19,6 +19,7 @@
 /**
  * @subpackage Definitions
  * @package Core
+ * @deprecated not used in 2.x
  */
 return array(
 	'id'=>array(

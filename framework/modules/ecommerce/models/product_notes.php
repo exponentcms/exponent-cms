@@ -19,6 +19,7 @@
 /**
  * @subpackage Models
  * @package Modules
+ * @deprecated in favor of simpleNotes
  */
 class product_notes extends expRecord
 {

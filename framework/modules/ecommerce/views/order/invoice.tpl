@@ -141,6 +141,12 @@
                         {br}
                         <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                             <tr style="border: 0px; padding: 0px; margin:0px;">
+                                <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
+                                    {if $shipping->shippingmethod->carrier != ''}
+                                    <strong>{"Carrier"|gettext}:</strong>{br}
+                                    {$shipping->shippingmethod->carrier}
+                                    {/if}
+                                </td>
                                 <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
                                     <strong>{"Shipping Method"|gettext}:</strong>{br}
                                     {$shipping->shippingmethod->option_title}
@@ -151,12 +157,6 @@
                                             {/if}
                                         </div>
                                     {/permissions}
-                                </td>
-                                <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
-                                    {if $shipping->shippingmethod->carrier != ''}
-                                    <strong>{"Carrier"|gettext}:</strong>{br}
-                                    {$shipping->shippingmethod->carrier}
-                                    {/if}
                                 </td>
                             </tr>
                         </table>

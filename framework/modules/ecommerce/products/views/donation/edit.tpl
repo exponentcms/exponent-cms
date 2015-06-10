@@ -65,7 +65,7 @@
 	            </div-->
 	            <!--div id="tab5">
 	                {control type="checkbox" name="no_shipping" label="This item doesn\'t require shipping"|gettext value=1 checked=$record->no_shipping}
-	                {control type="text" name="weight" label="Item Weight"|gettext value=$record->weight}
+	                {control type="text" name="weight" label="Item Weight (in pounds)"|gettext value=$record->weight}
 	            </div-->
                 {control type="hidden" name="no_shipping" value=1}
 	            <div id="tab6">
