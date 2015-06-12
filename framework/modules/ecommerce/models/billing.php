@@ -110,6 +110,11 @@ class billing extends expRecord {
 		// eDebug($this->form, true);	
     }
 
+    /**
+     * Returns a list of all enabled/active billing calculators
+     *
+     * @return array
+     */
     public static function listAvailableCalculators() {
         global $db,$user;
         
@@ -126,6 +131,11 @@ class billing extends expRecord {
         return $calcs;
     }
 
+    /**
+     * Returns an array of all enabled/active billing calculator objects
+     *
+     * @return array
+     */
     public static function selectableCalculators() {
         global $db,$user;
 

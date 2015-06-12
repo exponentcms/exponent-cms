@@ -38,7 +38,6 @@ class cash extends billingcalculator {
 
     //Called for billing method selection screen, return true if it's a valid billing method.
     function preprocess($billingmethod, $opts, $params, $order) {
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME already unserialized?? == $opts???
         if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
         $billingmethod->update(array('billing_options' => serialize($opts)));
@@ -46,7 +45,7 @@ class cash extends billingcalculator {
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $opts->result->errorCode = 0;
 //        $opts->result = $object;
 //        $opts->result->payment_status = "Pending";

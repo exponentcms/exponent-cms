@@ -25,6 +25,11 @@ define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
 
 class authorizedotnet extends creditcard {
 
+    const APPROVED = 1;
+    const DECLINED = 2;
+    const ERROR = 3;
+    const HELD = 4;
+
     function name() {
         return gt("Authorize.net Payment Gateway");
     }
@@ -61,7 +66,7 @@ class authorizedotnet extends creditcard {
     function process($billingmethod, $opts, $params, $order) {
         global $db, $user;
 
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         // make sure we have some billing options saved.
         if (empty($billingmethod) || empty($opts)) return false;
 
@@ -153,6 +158,7 @@ class authorizedotnet extends creditcard {
         curl_close($ch);
 
         $response = explode("|", $authorize);
+//        $response = $this->parseResponse($authorize, '|');
 
 //        $object = new stdClass();
         if ($response[0] == 1) { //Approved !!!
@@ -283,7 +289,7 @@ class authorizedotnet extends creditcard {
             $authorize = curl_exec($ch);
             curl_close($ch);
 
-            $response = explode("|", $authorize); //FIXME waht to do with this?
+            $response = explode("|", $authorize); //FIXME what to do with this?
 
             $opts->result->errorCode = 0;
             $opts->result->payment_status = gt("refunded");
@@ -354,7 +360,7 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize); //FIXME waht to do with this?
+        $response = explode("|", $authorize); //FIXME what to do with this?
 
          $opts->result->errorCode = 0;
          $opts->result->payment_status = gt("complete");
@@ -534,6 +540,102 @@ class authorizedotnet extends creditcard {
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->cc_type;
     }
+
+    /**
+     * Parses an AuthorizeNet AIM Response.
+     *
+     * @param string $response The response from the AuthNet server.
+     * @param string $delimiter The delimiter  (default is "|")
+     * @return stdClass
+     */
+    public function parseResponse($response, $delimiter)
+    {
+        $return = new stdClass();
+
+        if ($response) {
+
+            // Split Array
+            $response_array = explode($delimiter, $response);
+
+            /**
+             * If AuthorizeNet doesn't return a delimited response.
+             */
+            if (count($response_array) < 10) {
+                $return->approved = false;
+                $return->error = true;
+                $return->error_message = "Unrecognized response from AuthorizeNet: $response";
+                return $return;
+            }
+
+            // Set all fields
+            $return->response_code        = $response_array[0];
+            $return->response_subcode     = $response_array[1];
+            $return->response_reason_code = $response_array[2];
+            $return->response_reason_text = $response_array[3];
+            $return->authorization_code   = $response_array[4];
+            $return->avs_response         = $response_array[5];
+            $return->transaction_id       = $response_array[6];
+            $return->invoice_number       = $response_array[7];
+            $return->description          = $response_array[8];
+            $return->amount               = $response_array[9];
+            $return->method               = $response_array[10];
+            $return->transaction_type     = $response_array[11];
+            $return->customer_id          = $response_array[12];
+            $return->first_name           = $response_array[13];
+            $return->last_name            = $response_array[14];
+            $return->company              = $response_array[15];
+            $return->address              = $response_array[16];
+            $return->city                 = $response_array[17];
+            $return->state                = $response_array[18];
+            $return->zip_code             = $response_array[19];
+            $return->country              = $response_array[20];
+            $return->phone                = $response_array[21];
+            $return->fax                  = $response_array[22];
+            $return->email_address        = $response_array[23];
+            $return->ship_to_first_name   = $response_array[24];
+            $return->ship_to_last_name    = $response_array[25];
+            $return->ship_to_company      = $response_array[26];
+            $return->ship_to_address      = $response_array[27];
+            $return->ship_to_city         = $response_array[28];
+            $return->ship_to_state        = $response_array[29];
+            $return->ship_to_zip_code     = $response_array[30];
+            $return->ship_to_country      = $response_array[31];
+            $return->tax                  = $response_array[32];
+            $return->duty                 = $response_array[33];
+            $return->freight              = $response_array[34];
+            $return->tax_exempt           = $response_array[35];
+            $return->purchase_order_number= $response_array[36];
+            $return->md5_hash             = $response_array[37];
+            $return->card_code_response   = $response_array[38];
+            $return->cavv_response        = $response_array[39];
+            $return->account_number       = $response_array[50];
+            $return->card_type            = $response_array[51];
+            $return->split_tender_id      = $response_array[52];
+            $return->requested_amount     = $response_array[53];
+            $return->balance_on_card      = $response_array[54];
+
+            $return->approved = ($return->response_code == self::APPROVED);
+            $return->declined = ($return->response_code == self::DECLINED);
+            $return->error    = ($return->response_code == self::ERROR);
+            $return->held     = ($return->response_code == self::HELD);
+
+            if ($return->error) {
+                $return->error_message = "AuthorizeNet Error:
+                Response Code: ".$return->response_code."
+                Response Subcode: ".$return->response_subcode."
+                Response Reason Code: ".$return->response_reason_code."
+                Response Reason Text: ".$return->response_reason_text."
+                ";
+            }
+        } else {
+            $return->approved = false;
+            $return->error = true;
+            $return->error_message = "Error connecting to AuthorizeNet";
+        }
+
+        return $return;
+    }
+
 }
 
 ?>

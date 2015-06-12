@@ -159,7 +159,7 @@ class creditcard extends billingcalculator {
     }
 
     //process user input. This function should return an object of the user input.
-    //the returnd object will be saved in the session and passed to post_process.
+    //the returned object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userFormUpdate($params) {
         //eDebug($params);        
@@ -217,7 +217,6 @@ class creditcard extends billingcalculator {
      * @return mixed An object indicating pass of failure.
      */
     function preprocess($billingmethod, $opts, $params, $order) {
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME already unserialized?? == $opts???
         //just save the opts
         $billingmethod->update(array('billing_options' => serialize($opts)));
         //eDebug($billingmethod,true);

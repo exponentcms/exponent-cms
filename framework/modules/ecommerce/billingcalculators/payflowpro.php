@@ -67,7 +67,7 @@ class payflowpro extends creditcard {
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = unserialize($this->config);
         //eDebug($config,true);
         switch ($config['process_mode']) {
@@ -200,7 +200,7 @@ class payflowpro extends creditcard {
         $headers = curl_getinfo($ch);
         curl_close($ch);
 
-        $response = $this->parseResponse($result); //result arrray
+        $response = $this->parseResponse($result); //result array
 
         $trax_state = '';
 //        $object = new stdClass();
@@ -351,7 +351,7 @@ class payflowpro extends creditcard {
         //echo "Here";
         //eDebug($result);
 
-        $response = $this->parseResponse($result); //result arrray
+        $response = $this->parseResponse($result); //result array
 
         //eDebug($response,true);
         $trax_state = '';
@@ -480,7 +480,7 @@ class payflowpro extends creditcard {
         $headers = curl_getinfo($ch);
         curl_close($ch);
 
-        $response = $this->parseResponse($result); //result arrray
+        $response = $this->parseResponse($result); //result array
 
         // eDebug($response,true);
 //        $object = new stdClass();
@@ -713,7 +713,7 @@ class payflowpro extends creditcard {
         $headers = curl_getinfo($ch);
         curl_close($ch);
 
-        $response = $this->parseResponse($result); //result arrray
+        $response = $this->parseResponse($result); //result array
         //eDebug($response,true); 
 //        $object = new stdClass();
         $trax_amount = 0;

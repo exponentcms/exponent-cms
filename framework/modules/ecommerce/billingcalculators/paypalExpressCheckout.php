@@ -268,7 +268,7 @@ class paypalExpressCheckout extends billingcalculator {
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
