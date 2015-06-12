@@ -14,7 +14,6 @@
  *}
 
 <div class="module order edit">
-    {edebug var=$opts}
     <div id="editpayment">
         {form action=save_payment_info}
             {control type="hidden" name="id" value=$orderid}

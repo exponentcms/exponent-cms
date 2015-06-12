@@ -80,6 +80,10 @@ class shippingcalculator extends expRecord {
    	    return array();
    	}
 
+    function getPackages($carrier) {
+        return array();
+    }
+
     /**
      * Unused at this time
      *
@@ -120,6 +124,37 @@ class shippingcalculator extends expRecord {
         global $db;
 
         return $db->selectValue('shippingcalculator','title','id='.$calc_id);
+    }
+
+    // functions for handing order fulfillment via shipping labels and package pickup
+    //  primarily for easypost shipping calculator
+
+    function createLabel($shippingmethod) {
+        return false;
+    }
+
+    function buyLabel($shippingmethod) {
+
+    }
+
+    function getLabel($shippingmethod) {
+        return false;
+    }
+
+    function cancelLabel($shippingmethod) {
+
+    }
+
+    function createPickup($shippingmethod) {
+        return false;
+    }
+
+    function buyPickup($shippingmethod, $start, $end, $instructions) {
+
+    }
+
+    function cancelPickup($shippingmethod) {
+
     }
 
 }

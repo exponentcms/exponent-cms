@@ -554,7 +554,11 @@ class cartController extends expController {
 
         // get the billing options..this is usually the credit card info entered by the user
         if ($billing->calculator != null) {
-            $opts = $billing->calculator->userFormUpdate($this->params);  //FIXME seems to return empty
+            if (isset($this->params['cc_type_' . $billing->calculator->calculator_name])) {
+                $this->params['cc_type'] = $this->params['cc_type_' . $billing->calculator->calculator_name];
+                unset($this->params['cc_type_' . $billing->calculator->calculator_name]);
+            }
+            $opts = $billing->calculator->userFormUpdate($this->params);
             //$billing->calculator->preprocess($this->params);
             //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
             //eDebug(order::getDefaultOrderType(),true);

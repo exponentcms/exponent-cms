@@ -14,6 +14,7 @@
  *}
 
 <div class="module order edit">
+    <h1>{'Editing order shipping method'|gettext}</h1>
     <div id="edit_shipping_method">
         {form action=save_shipping_method}
             {control type="hidden" name="id" value=$orderid}

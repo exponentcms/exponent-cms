@@ -253,12 +253,19 @@
                         <div id="shipping" role="tabpanel" class="tab-pane fade in active">
                             {permissions}
                                 {if $permissions.manage && $order->shipping_required}
-                                    {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                                    {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
                                 {/if}
                             {/permissions}
                             <div class="table-responsive">
+                                {if $order->shipping_required}
                                 <table class="table" style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                                     <tr style="border: 0px; padding: 0px; margin:0px;vertical-align: top">
+                                        <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
+                                            {if $shipping->shippingmethod->carrier != ''}
+                                            <strong>{"Carrier"|gettext}:</strong>
+                                            {$shipping->shippingmethod->carrier}
+                                            {/if}
+                                        </td>
                                         <td style="border: 0px; text-align: left; padding: 0px; margin:0px;">
                                             <strong>{"Shipping Method"|gettext}</strong>
                                             {$shipping->shippingmethod->option_title}
@@ -270,14 +277,9 @@
                                                 </div>
                                             {/permissions}
                                         </td>
-                                        <td style="border: 0px; text-align: left; padding: 0px; padding-right: 5px; margin:0px;">
-                                            {if $shipping->shippingmethod->carrier != ''}
-                                            <strong>{"Carrier"|gettext}:</strong>
-                                            {$shipping->shippingmethod->carrier}
-                                            {/if}
-                                        </td>
                                     </tr>
                                 </table>
+                                {/if}
                                 {if $order->shipped}
                                     {if !$order->shipping_required}
                                         {'No Shipping Required'|gettext}
@@ -763,74 +765,74 @@
                                 {if $permissions.add_order_item && !$pf}
                                     <tr>
                                         <td colspan="8"><!--a href="{link action=add_order_item id=$order->id}">[+]</a-->
-                                            {*{capture assign="callbacks"}*}
-                                            {*{literal}*}
+                                            {*capture assign="callbacks"}
+                                            {literal}
 
-                                            {*// the text box for the title*}
-                                            {*var tagInput = Y.one('#add_new_item');*}
+                                            // the text box for the title
+                                            var tagInput = Y.one('#add_new_item');
 
-                                            {*// the UL to append to*}
-                                            {*var tagUL = Y.one('#new_items');*}
+                                            // the UL to append to
+                                            var tagUL = Y.one('#new_items');
 
-                                            {*// the Add Link*}
-                                            {*var tagAddToList = Y.one('#addToRelProdList');*}
+                                            // the Add Link
+                                            var tagAddToList = Y.one('#addToRelProdList');
 
-                                            {*var onRequestData = function( oSelf , sQuery , oRequest) {*}
-                                                {*tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});*}
-                                            {*}*}
+                                            var onRequestData = function( oSelf , sQuery , oRequest) {
+                                                tagInput.setStyles({'border':'1px solid green','background':'#fff url('+EXPONENT.PATH_RELATIVE+'framework/core/forms/controls/assets/autocomplete/loader.gif) no-repeat 100% 50%'});
+                                            }
 
-                                            {*var onRGetDataBack = function( oSelf , sQuery , oRequest) {*}
-                                                {*tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});*}
-                                            {*}*}
+                                            var onRGetDataBack = function( oSelf , sQuery , oRequest) {
+                                                tagInput.setStyles({'border':'1px solid #000','backgroundImage':'none'});
+                                            }
 
-                                            {*var appendToList = function(e,args) {*}
-                                                {*tagUL.appendChild(createHTML(args[2]));*}
-                                                {*return true;*}
-                                            {*}*}
+                                            var appendToList = function(e,args) {
+                                                tagUL.appendChild(createHTML(args[2]));
+                                                return true;
+                                            }
 
-                                            {*var removeLI = function(e) {*}
-                                                {*var t = e.target;*}
-                                                {*if (t.test('a')) tagUL.removeChild(t.get('parentNode'));*}
-                                            {*}*}
+                                            var removeLI = function(e) {
+                                                var t = e.target;
+                                                if (t.test('a')) tagUL.removeChild(t.get('parentNode'));
+                                            }
 
-                                            {*var createHTML = function(val) {*}
-                                                {*var f = '<form role="form" id=addItem method=post>';*}
-                                                    {*f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';*}
-                                                    {*f += '<input type=hidden name=module id=module value=order>';*}
-                                                    {*f += '<input type=hidden name=action id=action value=add_order_item>';*}
-                                                    {*f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';*}
-                                                    {*f += '<input type=submit class="add {/literal}{expTheme::buttonStyle()}{literal}" name=submit value="Add This Item">';*}
-                                                    {*f += '</form>';*}
-                                                {*var newLI = Y.Node.create(f);*}
-                                                {*return newLI;*}
-                                            {*}*}
+                                            var createHTML = function(val) {
+                                                var f = '<form role="form" id=addItem method=post>';
+                                                    f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
+                                                    f += '<input type=hidden name=module id=module value=order>';
+                                                    f += '<input type=hidden name=action id=action value=add_order_item>';
+                                                    f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
+                                                    f += '<input type=submit class="add {/literal}{expTheme::buttonStyle()}{literal}" name=submit value="Add This Item">';
+                                                    f += '</form>';
+                                                var newLI = Y.Node.create(f);
+                                                return newLI;
+                                            }
 
-                                            {*//tagAddToList.on('click',appendToList);*}
-                                            {*tagUL.on('click',removeLI);*}
+                                            //tagAddToList.on('click',appendToList);
+                                            tagUL.on('click',removeLI);
 
-                                            {*// makes formatResult work mo betta*}
-    {*//                                        oAC.resultTypeList = false;*}
+                                            // makes formatResult work mo betta
+    //                                        oAC.resultTypeList = false;
 
-                                            {*//AC.useShadow = true;*}
-                                            {*//oAC.autoHighlight  = true;*}
-                                            {*//oAC.typeAhead = true;*}
+                                            //AC.useShadow = true;
+                                            //oAC.autoHighlight  = true;
+                                            //oAC.typeAhead = true;
 
-    {*//                                        oAC.maxResultsDisplayed   = 30;*}
+    //                                        oAC.maxResultsDisplayed   = 30;
 
-                                            {*// when we start typing...?*}
-                                            {*oAC.dataRequestEvent.subscribe(onRequestData);*}
-                                            {*oAC.dataReturnEvent.subscribe(onRGetDataBack);*}
+                                            // when we start typing...?
+                                            oAC.dataRequestEvent.subscribe(onRequestData);
+                                            oAC.dataReturnEvent.subscribe(onRGetDataBack);
 
-                                            {*// format the results coming back in from the query*}
-                                            {*oAC.formatResult = function(oResultData, sQuery, sResultMatch) {*}
-                                                {*return '(' + oResultData.model + ') ' + oResultData.title;*}
-                                            {*}*}
+                                            // format the results coming back in from the query
+                                            oAC.formatResult = function(oResultData, sQuery, sResultMatch) {
+                                                return '(' + oResultData.model + ') ' + oResultData.title;
+                                            }
 
-                                            {*// what should happen when the user selects an item?*}
-                                            {*oAC.itemSelectEvent.subscribe(appendToList);*}
+                                            // what should happen when the user selects an item?
+                                            oAC.itemSelectEvent.subscribe(appendToList);
 
-                                            {*{/literal}*}
-                                            {*{/capture}*}
+                                            {/literal}
+                                            {/capture*}
 
                                             {capture assign="callbacks"}
                                             {literal}

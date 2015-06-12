@@ -183,11 +183,14 @@ class orderController extends expController {
             $order->billingmethod[0]->billingtransaction[0]->billingcalculator = new $calc_name();
         }
         //eDebug($order->billingmethod[0]->billingtransaction);
-        if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
-        else $pf = 0;
+        if (isset($this->params['printerfriendly']))
+            $pf = $this->params['printerfriendly'];
+        else
+            $pf = 0;
 
         $to_addresses[] = $order->billingmethod[0]->email;
-        $s              = array_pop($order->shippingmethods);
+//        $s              = array_pop($order->shippingmethods);  //FIXME we don't really want to 'pop' it off the object
+        $s              = reset($order->shippingmethods);
         if ($s->email != $order->billingmethod[0]->email) $to_addresses[] = $s->email;
 
         $from_addresses                                        = array();
@@ -1068,11 +1071,10 @@ exit();
     }
 
     function edit_shipping_method() {
-        //$order = new order($this->params['id']);
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $order = new order($this->params['id']);
-        $s     = array_pop($order->shippingmethods);
+        $s     = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
         $sm    = new shippingmethod($s->id);
         //eDebug($sm);
         assign_to_template(array(
@@ -1083,7 +1085,7 @@ exit();
 
     function save_shipping_method() {
         if (!isset($this->params['id']))
-            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         if (!isset($this->params['sid']))
             flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $sm               = new shippingmethod($this->params['sid']);
@@ -1091,6 +1093,118 @@ exit();
         $sm->carrier      = $this->params['shipping_method_carrier'];
         $sm->save();
         flashAndFlow('message', gt('Shipping method updated.'));
+    }
+
+    function edit_parcel() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();  // add calculator object
+        assign_to_template(array(
+            'shipping'=> $sm
+        ));
+    }
+
+    function save_parcel() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $sm_new = new shippingmethod();  // prepare for another 'package' if needed since we didn't place everything in this one
+        $order = new order();
+        $ois = $order->getOrderitemsByShippingmethod($this->params['id']);
+        foreach ($ois as $oi) {
+            if (!array_key_exists($oi->id, $this->params['in_box'])) {
+                // one of the items by type is not in this package and needs to be placed in another package
+                $tmp = 1;
+                //NOTE add order item to $sm_new - we'll need a new method for this action
+                //NOTE remove order item from $sm - we'll need a new method for this action
+                //NOTE update() $sm_new
+            } else {
+                if ($oi->quantity != $this->params['qty'][$oi->id]) {
+                    // one of the items by quantity is not in this package and needs to be placed in another package
+                    $tmp = 1;
+                    //NOTE add order item to $sm_new with $sm_new->quantity=$oi->quantity-$this->params['qty'][$oi->id]
+                    //NOTE adjust order item from $sm->quantity to $this->params['qty'][$oi->id]
+                    //NOTE update() $sm_new
+                }
+            }
+        }
+        //NOTE update $sm with the passed $this->params (package data)
+        $sm->update($this->params);
+        $sm->calculator->createLabel($sm);
+        flashAndFlow('message', gt('Shipping package updated.'));
+    }
+
+    function edit_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $method = explode(':', $sm->option);
+
+        assign_to_template(array(
+            'shipping'=> $sm,
+            'cost' => $sm->shipping_options['shipment_rates'][$method[0]][$method[1]]['cost']
+        ));
+    }
+
+    function save_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $sm->calculator->buyLabel($sm);
+        flashAndFlow('message', gt('Shipping label purchased.'));
+    }
+
+    function download_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $label = $sm->calculator->getLabel($sm);
+        expHistory::back();
+    }
+
+    function delete_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $sm->calculator->cancelLabel($sm);
+        flashAndFlow('message', gt('Shipping label cancelled and refunded.'));
+    }
+
+    function edit_pickup() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $pickup = $sm->calculator->createPickup($sm);
+        $sm->refresh();
+        assign_to_template(array(
+            'shipping'=> $sm,
+            'cost' => $sm->shipping_options['pickup_cost']
+        ));
+    }
+
+    function save_pickup() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $sm->calculator->buyPickup($sm, $this->params['pickupdate'], $this->params['pickupenddate'], $this->params['instructions']);
+        flashAndFlow('message', gt('Package pickup ordered.'));
+    }
+
+    function delete_pickup() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $sm->calculator->cancelPickup($sm);
+        flashAndFlow('message', gt('Package pickup cancelled.'));
     }
 
     function createReferenceOrder() {
@@ -1366,7 +1480,7 @@ exit();
         $order = new order($this->params['id']);
         $same  = false;
 
-        $sm = array_pop($order->shippingmethods);
+        $sm = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
         //$bm = array_pop($order->billingmethods);
 
         //eDebug($sm->addresses_id);
@@ -1405,7 +1519,7 @@ exit();
 
         $order          = new order($this->params['orderid']);
         $billing        = new billing($this->params['orderid']);
-        $s              = array_pop($order->shippingmethods);
+        $s              = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
         $shippingmethod = new shippingmethod($s->id);
 
         //eDebug($order);
@@ -1515,13 +1629,12 @@ exit();
         $oi = new orderitem($this->params['id']);
         $oi->delete();
 
-        $s  = array_pop($order->shippingmethods);
+        $s  = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
         $sm = new shippingmethod($s->id);
 
         $shippingCalc = new shippingcalculator($sm->shippingcalculator_id);
         $calcName     = $shippingCalc->calculator_name;
         $calculator   = new $calcName($shippingCalc->id);
-
         $pricelist = $calculator->getRates($order);
 
         foreach ($pricelist as $rate) {
@@ -1623,14 +1736,13 @@ exit();
         $order = new order($oi->orders_id);
         $order->calculateGrandTotal();
 
-        $s = array_pop($order->shippingmethods);
+        $s = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
         eDebug($s);
         $sm = new shippingmethod($s->id);
 
         $shippingCalc = new shippingcalculator($sm->shippingcalculator_id);
         $calcName     = $shippingCalc->calculator_name;
         $calculator   = new $calcName($shippingCalc->id);
-
         $pricelist = $calculator->getRates($order);
 
         foreach ($pricelist as $rate) {

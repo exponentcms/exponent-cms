@@ -25,10 +25,11 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
-    //FIXME needed for has_many assignment
+    //FIXME needed to activate the has_many assignment
 //    'orders_id'=>array(
 //        DB_FIELD_TYPE=>DB_DEF_ID,
 //        DB_INDEX=>10),
+
     // shipping address
 	'addresses_id'=>array(
         DB_FIELD_TYPE=>DB_DEF_ID),
@@ -71,43 +72,57 @@ return array(
 	'email'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150),
+
     // shipping details
 	'shippingcalculator_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
-	'option'=>array(
+	'option'=>array(  // method by id
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>50),
-	'option_title'=>array(
+	'option_title'=>array(  // method by title
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100),
-	'shipping_cost'=>array(
-		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'carrier'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
-    'delivery' => array(
+	'shipping_cost'=>array(  // estimated cost on order
+		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'delivery' => array(  // expected delivery date
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
     //FIXME we probably will need to add a package rate id, tracking number, etc...
-//    'shipping_options'=>array(
-//   		DB_FIELD_TYPE=>DB_DEF_STRING,
-//   		DB_FIELD_LEN=>10000),
-//or
-//    "shipment_id" => array(
-//        DB_FIELD_TYPE => DB_DEF_STRING,
-//        DB_FIELD_LEN => 100),
-//    "shipped" => array(
-//        DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
-//    "shipping_tracking_number" => array(
-//        DB_FIELD_TYPE => DB_DEF_STRING,
-//        DB_FIELD_LEN => 100),
-//    "weight"=>array(
-//        DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-//    "height"=>array(
-//     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-//    "width"=>array(
-//     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-//    "length"=>array(
-//   	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'shipping_options'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>10000),
+//NOTE for easypost this would include
+//from shipment create
+//  * shipment_id
+//  * shipment_rates (array???)
+//from shipment buy
+//  * shipment_cost  // actual cost
+//  * shipment_date
+//  * shipment_tracking_number
+//  * shipment_label
+//we set this
+//  * shipment_status (created, purchased, cancelled/refund)
+//from pickup create
+//  * pickup_id
+//from pickup buy
+//  * pickup_cost  // actual cost
+//  * pickup_date
+//we set this
+//  * pickup_status (created, purchased, cancelled)
+    'predefinedpackage' => array(
+        DB_FIELD_TYPE => DB_DEF_STRING,
+        DB_FIELD_LEN => 100),
+    'height'=>array(
+     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'width'=>array(
+     	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'length'=>array(
+   	  DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+    'weight'=>array(
+        DB_FIELD_TYPE=>DB_DEF_DECIMAL),
+
     // shipping gift message
     'to'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,

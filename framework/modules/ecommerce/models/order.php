@@ -62,7 +62,9 @@ class order extends expRecord {
             }
             //$this->shipping_total = 0;
             foreach ($this->getShippingMethods() as $smid) {
+                //FIXME we could auto-associate these with has_many
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
+                //FIXME we could auto-associate these with get_assoc_for
                 $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
 //                $requiresShipping = false;
@@ -375,6 +377,7 @@ class order extends expRecord {
             if (!empty($this->shippingmethod->id)) {
                 $ids = array($this->shippingmethod->id);
             } else {
+                //setup a default shipping method
                 $sm = new shippingmethod();
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
 //                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
