@@ -153,7 +153,8 @@
                 {$open_c_row=1}
             {/if}
         </div>
-    {else}
+    {/if}
+    {if !$categories|@count || $config.show_products}
         <{$config.item_level|default:'h2'}>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</{$config.item_level|default:'h2'}>
         <div class="row">
             <div class="col-sm-5 col-sm-push-5"><div class="row">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div>

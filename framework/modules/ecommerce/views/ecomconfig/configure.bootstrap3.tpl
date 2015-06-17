@@ -78,6 +78,7 @@
                         {group label="Pagination and Display"|gettext}
                             {control type="text" name="pagination_default" label="Default # of products to show per page"|gettext size=3 filter=integer value=$config.pagination_default}
                             {control type="checkbox" name="show_first_category" label="Show the first category in your store by default?"|gettext value=1 checked=$config.show_first_category description='Show first top-level category instead of all top level categories'|gettext}
+                            {control type="checkbox" name="show_products" label="Show all products with the category?"|gettext value=1 checked=$config.show_products description='Show all products under category when displaying categories'|gettext}
                         {/group}
                         {*
                         <h2>Sub Category Display</h2>
