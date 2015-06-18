@@ -106,8 +106,8 @@ var buildContextMenu = function(div, addable) {
         var navoptions = [
             {classname: "addsubpage" , text: "Add A Sub-Category" , onclick: {fn: addSubNode}} ,
             {classname: "editpage" , text: "Edit This Category" , onclick: {fn: editNode}} ,
+            {classname: "configurepage" , text: "Configure This Category" , onclick: {fn: configNode}},
             {classname: "deletepage" , text: "Delete This Category" , onclick: {fn: deleteNode}} ,
-            {classname: "configurepage" , text: "Configure This Category" , onclick: {fn: configNode}}
             // { classname:"userperms", text: "Manage User Permissions", onclick: { fn: editUserPerms } },
             // { classname:"groupperms", text: "Manage Group Permissions", onclick: { fn: editGroupPerms } }
         ];
@@ -343,7 +343,7 @@ YAHOO.widget.TaskNode = function(oData, oParent, expanded, checked, obj) {
     if (oData) { 
         this.init(oData, oParent, expanded);
         this.setUpLabel(oData);
-//        this.href = obj.href;
+        this.href = obj.href;
         //this.image = obj.expFiles_id;
         this.checked = checked;
         this.draggable = obj.draggable;
