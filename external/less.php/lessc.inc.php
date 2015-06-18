@@ -79,8 +79,8 @@ class lessc{
 	}
 
 	public function parse($buffer, $presets = array()){
-//		$options = array();
 		$this->setVariables($presets);
+
 		$parser = new Less_Parser($this->getOptions());
 		$parser->setImportDirs($this->getImportDirs());
 		if( count( $this->registeredVars ) ) $parser->ModifyVars( $this->registeredVars );
