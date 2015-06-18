@@ -114,6 +114,7 @@ class storeCategory extends expNestedNode {
 		$tree = parent::getFullTree();
 		$tree_copy = array();
 		foreach($tree as $key=>$node) {  // add link and image
+			$tree_copy[$key] = new stdClass();
 			$tree_copy[$key]->id = $node->id;
 			$tree_copy[$key]->depth = $node->depth;
 			$tree_copy[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
