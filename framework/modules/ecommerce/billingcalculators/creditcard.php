@@ -132,7 +132,7 @@ class creditcard extends billingcalculator {
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
         // click card image to select card type
         $src = "
-            $('." .$this->calculator_name  . " .credit-cards img').click(function() {
+            $('." .$this->calculator_name  . ".credit-cards img').click(function() {
                 $('#cc_type_" . $this->calculator_name ."').val($(this).attr('id'));
             });
         ";
