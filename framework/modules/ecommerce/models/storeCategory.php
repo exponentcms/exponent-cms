@@ -124,7 +124,7 @@ class storeCategory extends expNestedNode {
 			$tree_copy[$key]->lft = $node->lft;
 
 			if (!empty($node->expFile[0]->id)) {  // add thumbnail
-				$tree_copy[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1">&#160;' . $node->title;
+				$tree_copy[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1" height="18" width="18">&#160;' . $node->title;
 				$tree_copy[$key]->title = $tree_copy[$key]->text;
             } else {
 				$tree_copy[$key]->text = $node->title;

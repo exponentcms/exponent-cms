@@ -174,10 +174,11 @@
         {/script}
         {pagelinks paginate=$page top=1}
         <div id="products" class="products z-ipr{$config.images_per_row|default:3} listing-row row list-group">
+            <div class="col-sm-12">
             {counter assign="ipr" name="ipr" start=1}
             {foreach from=$page->records item=listing name=listings}
                 {if $smarty.foreach.listings.first || $open_row}
-                    <div class="z-product-row">
+                    <div class="z-product-row row">
                     {$open_row=0}
                 {/if}
                 {include file=$listing->getForm('storeListing')}
@@ -202,6 +203,7 @@
                 {counter name="ipr" start=$ipr+1}
                 {/if*}
             {/foreach}
+            </div>
         </div>
         {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
         {pagelinks paginate=$page bottom=1}
@@ -246,18 +248,27 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {/literal}
 {/script}
 
-{script unique="list-grid" jquery=1}
+{script unique="list-grid" jquery='jquery.cookie'}
 {literal}
     $(document).ready(function() {
         $('#list').click(function(event){
             event.preventDefault();
             $('#products .item').addClass('list-group-item');
+            $.cookie('ecommerce-list', 'list');
         });
         $('#grid').click(function(event){
             event.preventDefault();
             $('#products .item').removeClass('list-group-item');
             $('#products .item').addClass('grid-group-item');
+            $.cookie('ecommerce-list', 'grid');
         });
+        var view = $.cookie('ecommerce-list');
+        if (view == 'list') {
+            $('#products .item').addClass('list-group-item');
+        } else {
+            $('#products .item').removeClass('list-group-item');
+            $('#products .item').addClass('grid-group-item');
+        }
     });
 {/literal}
 {/script}
