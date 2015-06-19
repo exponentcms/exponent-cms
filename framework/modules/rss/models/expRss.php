@@ -47,7 +47,7 @@ class expRss extends expRecord {
         }
         if (!empty($this->module)) {
             $cont = expModules::getController($this->module);
-            $this->rss_is_podcast = $cont->rss_is_podcast;
+            $this->rss_is_podcast = !empty($cont->rss_is_podcast);
         }
     }
     
