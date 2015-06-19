@@ -53,7 +53,7 @@ elFinder.prototype.commands.info = function () {
         groupTitle : '<strong>{items}: {num}</strong>' ,
         row : '<tr><td>{label} : </td><td>{value}</td></tr>' ,
 		spinner    : '<span>{text}</span> <span class="'+spclass+' '+spclass+'-{name}"/>'
-    }
+    };
 
     this.alwaysEnabled = true;
     this.updateOnSelect = false;
@@ -67,11 +67,11 @@ elFinder.prototype.commands.info = function () {
         $.each(msg , function (k , v) {
             msg[k] = fm.i18n(v);
         });
-    }
+    };
 
     this.getstate = function () {
         return 0;
-    }
+    };
 
     this.exec = function (hashes) {
         var files = this.files(hashes);
@@ -133,7 +133,8 @@ elFinder.prototype.commands.info = function () {
             file.alias && content.push(row.replace(l , msg.aliasfor).replace(v , file.alias));
             content.push(row.replace(l , msg.path).replace(v , fm.escape(fm.path(file.hash , true))));
 			if (file.read) {
-				var href;
+				var href,
+				name_esc = fm.escape(file.name);
 				if (file.url == '1') {
 					content.push(row.replace(l, msg.link).replace(v, tpl.spinner.replace('{text}', msg.modify).replace('{name}', 'url')));
 					fm.request({
@@ -141,10 +142,10 @@ elFinder.prototype.commands.info = function () {
 						preventDefault : true
 					})
 					.fail(function() {
-						replSpinner(file.name, 'url');
+						replSpinner(name_esc, 'url');
 					})
 					.done(function(data) {
-						replSpinner('<a href="'+data.url+'" target="_blank">'+file.name+'</a>' || file.name, 'url');
+						replSpinner('<a href="'+data.url+'" target="_blank">'+name_esc+'</a>' || name_esc, 'url');
 						if (data.url) {
 							var rfile = fm.file(file.hash);
 							rfile.url = data.url;
@@ -157,7 +158,7 @@ elFinder.prototype.commands.info = function () {
                     } else {
                         href = fm.url(file.hash);
                     }
-                    content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+file.name+'</a>'));
+					content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+name_esc+'</a>'));
                 }
 			}
 
@@ -238,7 +239,7 @@ elFinder.prototype.commands.info = function () {
             } else {
                 content.push(row.replace(l , msg.kind).replace(v , dcnt == cnt ? msg.folders : msg.folders + ' ' + dcnt + ', ' + msg.files + ' ' + (cnt - dcnt)));
 				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'size')));
-				count = $.map(files, function(f) { return f.hash });
+				count = $.map(files, function(f) { return f.hash; });
 
             }
         }
@@ -246,7 +247,7 @@ elFinder.prototype.commands.info = function () {
         view = view.replace('{title}' , title).replace('{content}' , content.join(''));
 
         dialog = fm.dialog(view , opts);
-        dialog.attr('id' , id)
+        dialog.attr('id' , id);
 
         // Exponent specific commands
         if (editDesc) {
@@ -339,6 +340,6 @@ elFinder.prototype.commands.info = function () {
                 });
         }
 
-    }
+    };
 
-}
+};

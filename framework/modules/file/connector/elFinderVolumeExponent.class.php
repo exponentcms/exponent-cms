@@ -139,7 +139,11 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
         );
         if (empty($thefile->id)) {
             $thefile = new expFile(array('directory' => dirname($path) . '/', 'filename' => basename($path)));
-            $thefile->posted = $thefile->last_accessed = filemtime(BASE . $path);
+            if (file_exists(BASE . $path)) {
+                $thefile->posted = $thefile->last_accessed = filemtime(BASE . $path);
+            } else {
+                $thefile->posted = $thefile->last_accessed = 0;
+            }
             $thefile->save();
         }
         return $thefile;
