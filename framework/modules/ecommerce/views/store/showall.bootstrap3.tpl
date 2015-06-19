@@ -254,15 +254,15 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         $('#list').click(function(event){
             event.preventDefault();
             $('#products .item').addClass('list-group-item');
-            $.cookie('ecommerce-list', 'list');
+            $.cookie('ecommerce-view', 'list', { expires: 7, path: '/' });
         });
         $('#grid').click(function(event){
             event.preventDefault();
             $('#products .item').removeClass('list-group-item');
             $('#products .item').addClass('grid-group-item');
-            $.cookie('ecommerce-list', 'grid');
+            $.cookie('ecommerce-view', 'grid', { expires: 7, path: '/' });
         });
-        var view = $.cookie('ecommerce-list');
+        var view = $.cookie('ecommerce-view');
         if (view == 'list') {
             $('#products .item').addClass('list-group-item');
         } else {

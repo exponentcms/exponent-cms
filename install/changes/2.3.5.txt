@@ -3,8 +3,9 @@ Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues
   - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - adds Facebook og: meta tag support
   - adds remote blog post editing (xmlrpc); initially this feature is turned off
+  - adds new easypost ecommerce shipping calculator includes order fufillment functions
   - includes all fixes from v2.3.4 patches
 Known Issues
-  - eCommerce purchase order functionality has not been tested/may not be complete
+  - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
