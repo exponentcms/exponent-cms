@@ -353,7 +353,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			if (isset($names[$uid])) {
 				$stat['owner'] = $names[$uid];
 			} else if (is_callable('posix_getpwuid')) {
-				$stat['owner'] = $names[$uid] = posix_getpwuid($uid)['name'];
+				$pwuid = posix_getpwuid($uid);
+				$stat['owner'] = $names[$uid] = $pwuid['name'];
 			} else {
 				$stat['owner'] = $names[$uid] = $uid;
 			}
