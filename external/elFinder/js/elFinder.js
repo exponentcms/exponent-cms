@@ -198,7 +198,51 @@ window.elFinder = function(node, opts) {
 			
 		syncInterval,
 		
+		uiCmdMapPrev = null,
 		open = function(data) {
+			var repCmds = [], volumeid;
+			
+			// support volume driver option `uiCmdMap`
+			if (data && data.options && uiCmdMapPrev !== (data.options.uiCmdMap || {})) {
+				uiCmdMapPrev = (data.options.uiCmdMap || {});
+				if (Object.keys(uiCmdMapPrev).length) {
+					// for contextmenu
+					volumeid = data.cwd? data.cwd.volumeid : null;
+					if (volumeid && !self.options.contextmenu.cmdMaps[volumeid]) {
+						self.options.contextmenu.cmdMaps[volumeid] = uiCmdMapPrev;
+					}
+					// for toolbar
+					$.each(uiCmdMapPrev, function(from, to){
+						var cmd = self._commands[to],
+						button = cmd? 'elfinder'+cmd.options.ui : null;
+						if (button && $.fn[button]) {
+							repCmds.push(from);
+							var btn = $('div.elfinder-buttonset div.elfinder-button').has('span.elfinder-button-icon-'+from);
+							if (btn.length && !btn.next().has('span.elfinder-button-icon-'+to).length) {
+								btn.after($('<div/>')[button](self._commands[to]).data('origin', from));
+								btn.hide();
+							}
+						}
+					});
+				}
+				// reset toolbar
+				$.each($('div.elfinder-button'), function(){
+					var origin = $(this).data('origin');
+					if (origin && $.inArray(origin, repCmds) == -1) {
+						$('span.elfinder-button-icon-'+$(this).data('origin')).parent().show();
+						$(this).remove();
+					}
+				});
+			}
+			// non cwd volume's contextmenu
+			if (data.files) {
+				$.each(data.files, function(k, v){
+					if (v.volumeid && v.uiCmdMap && !self.options.contextmenu.cmdMaps[v.volumeid]) {
+						self.options.contextmenu.cmdMaps[v.volumeid] = v.uiCmdMap;
+					}
+				});
+			}
+			
 			if (data.init) {
 				// init - reset cache
 				files = {};
@@ -372,7 +416,6 @@ window.elFinder = function(node, opts) {
 	}
 
 	$.extend(this.options.contextmenu, opts.contextmenu);
-
 	
 	/**
 	 * Ajax request type
@@ -547,6 +590,13 @@ window.elFinder = function(node, opts) {
 	this.notifyDelay = this.options.notifyDelay > 0 ? parseInt(this.options.notifyDelay) : 500;
 	
 	/**
+	 * Dragging UI Helper object
+	 *
+	 * @type jQuery | null
+	 **/
+	this.draggingUiHelper = null,
+	
+	/**
 	 * Base draggable options
 	 *
 	 * @type Object
@@ -564,6 +614,7 @@ window.elFinder = function(node, opts) {
 			var targets = $.map(ui.helper.data('files')||[], function(h) { return h || null ;}),
 			locked = false,
 			cnt, h;
+			self.draggingUiHelper = ui.helper;
 			cnt = targets.length;
 			while (cnt--) {
 				h = targets[cnt];
@@ -577,6 +628,7 @@ window.elFinder = function(node, opts) {
 
 		},
 		stop       : function(e, ui) {
+			self.draggingUiHelper = null;
 			self.trigger('focus').trigger('dragstop');
 			if (! ui.helper.data('droped')) {
 				self.trigger('unlockfiles', {files : $.map(ui.helper.data('files')||[], function(h) { return h || null ;})});
@@ -594,6 +646,8 @@ window.elFinder = function(node, opts) {
 					return i;
 				},
 				hashes, l;
+			
+			self.draggingUiHelper && self.draggingUiHelper.stop(true, true);
 			
 			self.trigger('dragstart', {target : element[0], originalEvent : e});
 			
@@ -660,10 +714,10 @@ window.elFinder = function(node, opts) {
 				if (result.length) {
 					ui.helper.hide();
 					self.clipboard(result, !(e.ctrlKey||e.shiftKey||e.metaKey||ui.helper.data('locked')));
-					self.exec('paste', hash);
+					self.exec('paste', hash).always(function(){
+						self.trigger('unlockfiles', {files : targets});
+					});
 					self.trigger('drop', {files : targets});
-				} else {
-					self.trigger('unlockfiles', {files : targets});
 				}
 			}
 		};
@@ -1200,20 +1254,11 @@ window.elFinder = function(node, opts) {
 	 */
 	this.sync = function() {
 		var self  = this,
-			dfrd  = $.Deferred().done(function() { self.trigger('sync'); }),
-			opts1 = {
-				data           : {cmd : 'open', init : 1, target : cwd, tree : this.ui.tree ? 1 : 0},
-				preventDefault : true
-			},
-			opts2 = {
-				data           : {cmd : 'tree', target : (cwd == this.root())? cwd : this.file(cwd).phash},
-				preventDefault : true
-			};
-		
-		$.when(
-			this.request(opts1),
-			this.request(opts2)
-		)
+			dfrd  = $.Deferred().done(function() { self.trigger('sync'); });
+		this.request({
+			data           : {cmd : 'open', init : 1, target : cwd, tree : this.ui.tree ? 1 : 0},
+			preventDefault : true
+		})
 		.fail(function(error) {
 			dfrd.reject(error);
 			error && self.request({
@@ -2923,7 +2968,6 @@ elFinder.prototype = {
 				return file;
 			}
 			return null;
-			return file && file.hash && file.name && file.mime ? file : null; 
 		};
 		
 
@@ -3566,6 +3610,84 @@ elFinder.prototype = {
 		return (s > 0 ? n >= 1048576 ? s.toFixed(2) : Math.round(s) : 0) +' '+u;
 	},
 	
+	/**
+	 * Return formated file mode by options.fileModeStyle
+	 * 
+	 * @param  String  file mode
+	 * @return String
+	 */
+	formatFileMode : function(p) {
+		var ret, i, o, s, b, sticy, suid, sgid;
+		p = $.trim(p);
+		if (p.match(/[rwxs-]{9}$/i)) {
+			p = p.substr(-9);
+			if (this.options.fileModeStyle == 'string') {
+				return p;
+			}
+			ret = '';
+			s = 0;
+			for (i=0; i<7; i=i+3) {
+				o = p.substr(i, 3);
+				b = 0;
+				if (o.match(/[r]/i)) {
+					b += 4;
+				}
+				if (o.match(/[w]/i)) {
+					b += 2;
+				}
+				if (o.match(/[xs]/i)) {
+					if (o.match(/[xs]/)) {
+						b += 1;
+					}
+					if (o.match(/[s]/i)) {
+						if (i == 0) {
+							s += 4;
+						} else if (i == 3) {
+							s += 2;
+						}
+					}
+				}
+				ret += b.toString(8);
+			}
+			if (s) {
+				ret = s.toString(8) + ret;
+			}
+		} else {
+			p = parseInt(p, 8);
+			if (!p || this.options.fileModeStyle != 'string') {
+				return p? p.toString(8) : '';
+			}
+			o = p.toString(8);
+			s = 0;
+			if (o.length > 3) {
+				o = o.substr(-4);
+				s = parseInt(o.substr(0, 1), 8);
+				o = o.substr(1);
+			}
+			sticy = ((s & 1) == 1); // not support
+			sgid = ((s & 2) == 2);
+			suid = ((s & 4) == 4);
+			ret = '';
+			for(i=0; i<3; i++) {
+				if ((parseInt(o.substr(i, 1), 8) & 4) == 4) {
+					ret += 'r';
+				} else {
+					ret += '-';
+				}
+				if ((parseInt(o.substr(i, 1), 8) & 2) == 2) {
+					ret += 'w';
+				} else {
+					ret += '-';
+				}
+				if ((parseInt(o.substr(i, 1), 8) & 1) == 1) {
+					ret += ((i==0 && suid)||(i==1 && sgid))? 's' : 'x';
+				} else {
+					ret += '-';
+				}
+			}
+		}
+		return ret;
+	},
 	
 	navHash2Id : function(hash) {
 		return 'nav-'+hash;

@@ -126,6 +126,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdnetmount'  : 'ネットワークボリュームをマウント', // added 18.04.2012
 			'cmdnetunmount': 'アンマウント', // added 30.04.2012
 			'cmdplaces'    : 'お気に入りへ', // added 28.12.2014
+			'cmdchmod'     : '属性変更', // from v2.1 added 20.6.2015
 			
 			'cmdpixlr'     : 'Pixlr で編集',
 			
@@ -173,6 +174,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfdim'      : '画像サイズを取得しています', // added 20.05.2013
 			'ntfreaddir'  : 'ホルダ情報を読み取っています', // added 01.07.2013
 			'ntfurl'      : 'リンクURLを取得しています', // added 11.03.2014
+			'ntfchmod'    : 'ファイル属性を変更しています', // from v2.1 added 20.6.2015
 			
 			/************************************ dates **********************************/
 			'dateUnknown' : '不明',
@@ -309,6 +311,12 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'locale'          : 'ロケール',   // from v2.1 added 19.12.2014
 			'searchTarget'    : '検索範囲: $1',               // from v2.1 added 22.5.2015
 			'searchMime'      : '指定した MIME タイプで検索', // from v2.1 added 22.5.2015
+			'owner'           : 'オーナー', // from v2.1 added 20.6.2015
+			'group'           : 'グループ', // from v2.1 added 20.6.2015
+			'other'           : 'その他', // from v2.1 added 20.6.2015
+			'execute'         : '実行', // from v2.1 added 20.6.2015
+			'perm'            : 'パーミッション', // from v2.1 added 20.6.2015
+			'mode'            : '属性', // from v2.1 added 20.6.2015
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

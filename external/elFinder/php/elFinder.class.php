@@ -98,6 +98,7 @@ class elFinder {
 		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => true, 'pass' => true, 'alias' => false, 'options' => false),
 		'url'       => array('target' => true, 'options' => false),
 		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
+		'chmod'     => array('targets' => true, 'mode' => true),
 		'pixlr'     => array('target' => false, 'node' => false, 'image' => false, 'type' => false, 'title' => false)
 	);
 	
@@ -759,7 +760,7 @@ class elFinder {
 		$files = array();
 
 		// get folders trees
-		if ($args['tree']) {
+		if ($tree) {
 			foreach ($this->volumes as $id => $v) {
 				$files[] = $v->file($v->root());
 			}
@@ -1443,6 +1444,51 @@ class elFinder {
 			}
 		}
 		return $tempDir;
+	}
+	
+	/**
+	 * chmod
+	 *
+	 * @param array  command arguments
+	 * @return array
+	 * @author David Bartle
+	 **/
+	protected function chmod($args) {
+		$targets = $args['targets'];
+		$mode    = intval((string)$args['mode'], 8);
+
+		if (!is_array($targets)) {
+			$targets = array($targets);
+		}
+		
+		$result = array();
+		
+		if (($volume = $this->volume($targets[0])) == false) {
+			$result['error'] = $this->error(self::ERROR_CONF_NO_VOL);
+			return $result;
+		}
+
+		$files = array();
+		$errors = array();
+		foreach($targets as $target) {
+			$file = $volume->chmod($target, $mode);
+			if ($file) {
+				$files[] = $file;
+			} else {
+				$errors = array_merge($errors, $volume->error());
+			}
+		}
+		
+		if ($files) {
+			$result['changed'] = $files;
+			if ($errors) {
+				$result['warning'] = $this->error($errors);
+			}
+		} else {
+			$result['error'] = $this->error($errors);
+		}
+		
+		return $result;
 	}
 	
 	/**

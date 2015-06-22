@@ -305,11 +305,22 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _stat($path) {
-		static $names = array();
+		static $names = null;
 		static $statOwner = null;
+		static $phpuid = null;
 		
+		if (is_null($names)) {
+			$names = array('uid' => array(), 'gid' =>array());
+		}
 		if (is_null($statOwner)) {
 			$statOwner = (!empty($this->options['statOwner']));
+		}
+		if (is_null($phpuid)) {
+			if (is_callable('posix_getuid')) {
+				$phpuid = posix_getuid();
+			} else {
+				$phpuid = 0;
+			}
 		}
 		
 		$stat = array();
@@ -327,7 +338,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			return $stat;
 		}
 
-		$uid = 0;
+		$gid = $uid = 0;
+		$stat['isowner'] = false;
 		if ($path != $this->root && is_link($path)) {
 			if (($target = $this->readlink($path)) == false 
 			|| $target == $path) {
@@ -346,17 +358,32 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			if ($statOwner) {
 				$fstat = stat($path);
 				$uid = $fstat['uid'];
+				$gid = $fstat['gid'];
+				$stat['perm'] = substr((string)decoct($fstat['mode']), -4);
 			}
 			$size = sprintf('%u', @filesize($path));
 		}
-		if ($statOwner && $uid) {
-			if (isset($names[$uid])) {
-				$stat['owner'] = $names[$uid];
-			} else if (is_callable('posix_getpwuid')) {
-				$pwuid = posix_getpwuid($uid);
-				$stat['owner'] = $names[$uid] = $pwuid['name'];
-			} else {
-				$stat['owner'] = $names[$uid] = $uid;
+		if ($statOwner) {
+			if ($uid) {
+				$stat['isowner'] = ($phpuid == $uid);
+				if (isset($names['uid'][$uid])) {
+					$stat['owner'] = $names['uid'][$uid];
+				} else if (is_callable('posix_getpwuid')) {
+					$pwuid = posix_getpwuid($uid);
+					$stat['owner'] = $names['uid'][$uid] = $pwuid['name'];
+				} else {
+					$stat['owner'] = $names['uid'][$uid] = $uid;
+				}
+			}
+			if ($gid) {
+				if (isset($names['gid'][$gid])) {
+					$stat['group'] = $names['gid'][$gid];
+				} else if (is_callable('posix_getgrgid')) {
+					$grgid = posix_getgrgid($gid);
+					$stat['group'] = $names['gid'][$gid] = $grgid['name'];
+				} else {
+					$stat['group'] = $names['gid'][$gid] = $gid;
+				}
 			}
 		}
 		
@@ -488,6 +515,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 
 		if (@mkdir($path)) {
 			@chmod($path, $this->options['dirMode']);
+			clearstatcache();
 			return $path;
 		}
 
@@ -508,6 +536,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		if (($fp = @fopen($path, 'w'))) {
 			@fclose($fp);
 			@chmod($path, $this->options['fileMode']);
+			clearstatcache();
 			return $path;
 		}
 		return false;
@@ -536,7 +565,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _copy($source, $targetDir, $name) {
-		return copy($source, $this->_joinPath($targetDir, $name));
+		$ret = copy($source, $this->_joinPath($targetDir, $name));
+		$ret && clearstatcache();
+		return $ret;
 	}
 	
 	/**
@@ -551,7 +582,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function _move($source, $targetDir, $name) {
 		$target = $this->_joinPath($targetDir, $name);
-		return @rename($source, $target) ? $target : false;
+		$ret = @rename($source, $target) ? $target : false;
+		$ret && clearstatcache();
+		return $ret;
 	}
 		
 	/**
@@ -562,7 +595,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _unlink($path) {
-		return @unlink($path);
+		$ret = @unlink($path);
+		$ret && clearstatcache();
+		return $ret;
 	}
 
 	/**
@@ -573,7 +608,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _rmdir($path) {
-		return @rmdir($path);
+		$ret = @rmdir($path);
+		$ret && clearstatcache();
+		return $ret;
 	}
 	
 	/**
@@ -634,6 +671,18 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _checkArchivers() {
 		$this->archivers = $this->getArchivers();
 		return;
+	}
+
+	/**
+	 * chmod availability
+	 *
+	 * @return bool
+	 **/
+	protected function _chmod($path, $mode) {
+		$modeOct = is_string($mode) ? octdec($mode) : octdec(sprintf("%04o",$mode));
+		$ret = @chmod($path, $modeOct);
+		$ret && clearstatcache();
+		return  $ret;
 	}
 
 	/**
