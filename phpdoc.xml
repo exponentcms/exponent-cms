@@ -31,6 +31,10 @@
         <ignore>external/*</ignore>
         <ignore>files/*</ignore>
         <ignore>tmp/*</ignore>
+        <ignore>themes/*</ignore>
+        <directory>themes/bootstrap3theme/*</directory>
+        <directory>themes/bootstraptheme/*</directory>
+        <directory>themes/simpletheme/*</directory>
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>
