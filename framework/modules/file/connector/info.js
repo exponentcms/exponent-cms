@@ -42,6 +42,8 @@ elFinder.prototype.commands.info = function () {
             no : fm.i18n('no') ,
             link : fm.i18n('link') ,
             owner : fm.i18n('owner') ,
+            group    : fm.i18n('group'),
+            perm     : fm.i18n('perm'),
             shared : fm.i18n('shared') ,
             title : fm.i18n('title') ,
             alt : fm.i18n('alt')
@@ -192,6 +194,9 @@ elFinder.prototype.commands.info = function () {
             content.push(row.replace(l , msg.modify).replace(v , fm.formatDate(file)));
             content.push(row.replace(l , msg.perms).replace(v , fm.formatPermissions(file)));
             content.push(row.replace(l , msg.locked).replace(v , file.locked ? msg.yes : msg.no));
+            file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
+            file.group && content.push(row.replace(l, msg.group).replace(v, file.group));
+            file.perm && content.push(row.replace(l, msg.perm).replace(v, fm.formatFileMode(file.perm)));
 
             // Exponent specific attributes
             var editDesc = true;
