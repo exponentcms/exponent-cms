@@ -2,7 +2,7 @@ Program,Version,URL,Avail version,Exponent Customization Notes:
 Swift,5.4.1,swiftmailer.org,5.4.1,we add  eDebugLogger plugin
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.25,smarty.net,3.1.25,
+Smarty,3.1.27,smarty.net,3.1.27,
 phpthumb,1.7.14-201503301816,https://github.com/JamesHeinrich/phpThumb,1.7.14-201503301816,phpThumb.config.php - we set the cache folder and allow &amp in parsing
 minify,2.2.1,github.com/mrclay/minify,2.2.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
