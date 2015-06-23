@@ -138,8 +138,15 @@ class easypostcalculator extends shippingcalculator
         ),
     );
 
-    public function labelsEnabled() {return true; }
-    public function pickupEnabled() {return true; }
+    public function labelsEnabled()
+    {
+        return true;
+    }
+
+    public function pickupEnabled()
+    {
+        return true;
+    }
 
     public function __construct($params = null, $get_assoc = true, $get_attached = true)
     {
@@ -160,18 +167,21 @@ class easypostcalculator extends shippingcalculator
     public function getRates($order)
     {
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
         $from_address = self::ep_set_from_address();
-        if (is_string($from_address))
-            return $from_address;  // error
+        if (is_string($from_address)) {
+            return $from_address;
+        }  // error
 
         // get the current shippingmethod and format the address for easypost
         $currentmethod = $order->getCurrentShippingMethod();  // pulls in the 'to' address
         $to_address = self::ep_set_to_address($currentmethod);
-        if (is_string($to_address))
-            return $to_address;  // error
+        if (is_string($to_address)) {
+            return $to_address;
+        }  // error
 
         // set the standard box sizes.
         $box_width = empty($this->configdata['default_width']) ? 0 : $this->configdata['default_width'];
@@ -244,10 +254,10 @@ class easypostcalculator extends shippingcalculator
         $space_left = $box_volume;
         $total_weight = 0;
         $parcels = array();
-        while(!empty($package_items)) {
+        while (!empty($package_items)) {
             $no_more_room = true;
             $used = array();
-            foreach($package_items as $idx=>$pi) {
+            foreach ($package_items as $idx => $pi) {
                 if ($pi->volume > $box_volume) {
 #                    echo $pi->name."is too big for standard box <br>";
 #                    eDebug('created OVERSIZED package with weight of '.$pi->weight);
@@ -277,7 +287,7 @@ class easypostcalculator extends shippingcalculator
                     //FIXME we need to begin adding the rates per package here
                     $used[] = $idx;
                     $no_more_room = false;
-                } elseif($pi->volume <= $space_left) {
+                } elseif ($pi->volume <= $space_left) {
                     $space_left = $space_left - $pi->volume;
                     $total_weight += $pi->weight;
 #                    echo "Adding ".$pi->name."<br>";
@@ -334,7 +344,7 @@ class easypostcalculator extends shippingcalculator
 //            $shipment = \EasyPost\Shipment::create($shipment_params);  //FIXME single package
             $shipment = \EasyPost\Order::create($shipment_params);  // multiple packages
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (create order)<br>' . $msg);
             return $msg;
         }
@@ -344,7 +354,7 @@ class easypostcalculator extends shippingcalculator
         try {
             $messages = \EasyPost\Util::convertEasyPostObjectToArray($shipment->messages);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (convert messages)<br>' . $msg);
             return $msg;
         }
@@ -355,7 +365,7 @@ class easypostcalculator extends shippingcalculator
         try {
             $rates = \EasyPost\Util::convertEasyPostObjectToArray($shipment->rates);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (convert rates)<br>' . $msg);
             return $msg;
         }
@@ -421,7 +431,7 @@ class easypostcalculator extends shippingcalculator
         return $config;
     }
 
-    function availableMethods($multilevel=false)
+    function availableMethods($multilevel = false)
     {
         $available_methods = array();
         if ($multilevel == true) {
@@ -430,7 +440,7 @@ class easypostcalculator extends shippingcalculator
             }
         } else {
             foreach ($this->configdata['shipping_carriers'] as $carrier) {
-                foreach ($this->shippingmethods[$carrier] as $key=>$method) {
+                foreach ($this->shippingmethods[$carrier] as $key => $method) {
                     $available_methods[$carrier . ':' . $key] = $carrier . ' - ' . $method;
                 }
             }
@@ -456,22 +466,27 @@ class easypostcalculator extends shippingcalculator
 //        return $available_methods;
     }
 
-    function getPackages($carrier) {
+    function getPackages($carrier)
+    {
         return $this->predefinedpackages[$carrier];
     }
 
-    function createLabel($shippingmethod) {
+    function createLabel($shippingmethod)
+    {
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
         $from_address = self::ep_set_from_address();
-        if (is_string($from_address))
-            return $from_address;  // error
+        if (is_string($from_address)) {
+            return $from_address;
+        }  // error
 
         $to_address = self::ep_set_to_address($shippingmethod);
-        if (is_string($to_address))
-            return $to_address;  // error
+        if (is_string($to_address)) {
+            return $to_address;
+        }  // error
 
         if (!empty($shippingmethod->predefinedpackage)) {
             $package = array(
@@ -489,7 +504,7 @@ class easypostcalculator extends shippingcalculator
         try {
             $parcel = \EasyPost\Parcel::create($package);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: <br>' . $msg);
             return $msg;
         }
@@ -503,15 +518,15 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::create($shipment_params);  // single package
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (create order)<br>' . $msg);
             return $msg;
         }
         try {
             $rates = \EasyPost\Util::convertEasyPostObjectToArray($shipment->rates);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
-            flash('error', 'easypost: (convert rates)<br>' . $msg);
+            $msg = $e->prettyPrint(false);
+            flash('error', 'easypost: (convert shipping rates)<br>' . $msg);
             return $msg;
         }
         $eprates = array();
@@ -544,29 +559,33 @@ class easypostcalculator extends shippingcalculator
             'shipment_rates' => $eprates,  //FIXME not sure we need to get/save these???
             'shipment_status' => 'created'
         );
-        $shippingmethod->update(array('shipping_options'=>serialize($shipping_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($shipping_options)));
 
         return $shipment;
     }
 
-    function buyLabel($shippingmethod) {
+    function buyLabel($shippingmethod)
+    {
         // here's where we buy a 'shipment'
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
             return $msg;
         }
         $method = explode(':', $shippingmethod->option);
         try {
-            $shipment->buy($shipment->lowest_rate(array($method[0]), array($method[1])));//FIXME we need to select the correct carrier/method
+            $shipment->buy(
+                $shipment->lowest_rate(array($method[0]), array($method[1]))
+            );//FIXME we need to select the correct carrier/method
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (buy shipment)<br>' . $msg);
             return $msg;
         }
@@ -575,45 +594,50 @@ class easypostcalculator extends shippingcalculator
         $sm_options['shipment_tracking_number'] = $shipment->tracking_code;
         $sm_options['shipment_label'] = $shipment->postage_label->label_url;
         $sm_options['shipment_status'] = 'purchased';
-        $shippingmethod->update(array('shipping_options'=>serialize($sm_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
-    function getLabel($shippingmethod) {
+    function getLabel($shippingmethod)
+    {
         // here's where we output the label url
         header("Location: " . $shippingmethod->shipping_options['shipment_label']);
         exit('Redirecting...');
     }
 
-    function cancelLabel($shippingmethod) {
+    function cancelLabel($shippingmethod)
+    {
         // here's where we refund a 'shipment'
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
             return $msg;
         }
         try {
             $shipment->refund();
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (refund shipment)<br>' . $msg);
             return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['shipment_status'] = 'cancelled';
-        $shippingmethod->update(array('shipping_options'=>serialize($sm_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
-    function createPickup($shippingmethod) {
+    function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions = '')
+    {
         // here's where we create a 'pickup'
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
 //        $from_address = self::ep_set_from_address();
 //        if (is_string($from_address))
@@ -622,110 +646,154 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
             return $msg;
         }
 
         try {
-            $pickup = \EasyPost\Pickup::create( array(
+            $pickup = \EasyPost\Pickup::create(
+                array(
                     "address" => $shipment->from_address,
-                    "shipment"=> $shipment,
+                    "shipment" => $shipment,
                     "reference" => $shipment->id,
-                    "max_datetime" => date("Y-m-d H:i:s"),
-                    "min_datetime" => date("Y-m-d H:i:s", strtotime('+1 day')),
+                    "max_datetime" => date("Y-m-d H:i:s", $pickupdate),
+                    "min_datetime" => date("Y-m-d H:i:s", $pickupenddate),
                     "is_account_address" => false,
+                    "instructions" => $instructions
                 )
             );
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (create pickup)<br>' . $msg);
             return $msg;
         }
+
+        try {
+            $rates = \EasyPost\Util::convertEasyPostObjectToArray($pickup->pickup_rates);
+        } catch (Exception $e) {
+            $msg = $e->prettyPrint(false);
+            flash('error', 'easypost: (convert pickup rates)<br>' . $msg);
+            return $msg;
+        }
+        $eprates = array();
+        if (!empty($rates)) {
+            foreach ($rates as $rate) {
+                $eprates[$rate['service']] = array(
+                    'id' => $rate['service'],
+                    'cost' => $rate['rate'],
+                );
+            }
+        }
+        // sort by cost
+        uasort($eprates, 'self::sortByRate');
 
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['pickup_id'] = $pickup->id;
-        $sm_options['pickup_cost'] = $pickup->pickup_rates[0]->rate;
+        $sm_options['pickup_date'] = $pickupdate;
+        $sm_options['pickup_date_end'] = $pickupenddate;
+        $sm_options['pickup_instructions'] = $instructions;
+        $sm_options['pickup_rates'] =  $eprates;  //FIXME not sure we need to get/save these???
         $sm_options['pickup_status'] = 'created';
-        $shippingmethod->update(array('shipping_options'=>serialize($sm_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
-    function buyPickup($shippingmethod, $start, $end, $instructions = '') {
+    function buyPickup($shippingmethod, $type)
+    {
         // here's where we optionally buy a 'pickup'
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
 //        $from_address = self::ep_set_from_address();
 //        if (is_string($from_address))
 //            return $from_address;  // error
 
+//        try {
+//            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+//        } catch (Exception $e) {
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
+//            return $msg;
+//        }
+
+//        try {
+//            $pickup = \EasyPost\Pickup::create(
+//                array(
+//                    "address" => $shipment->from_address,
+//                    "shipment" => $shipment,
+//                    "reference" => $shipment->id,
+//                    "max_datetime" => date("Y-m-d H:i:s", $start),
+//                    "min_datetime" => date("Y-m-d H:i:s", $end),
+//                    "is_account_address" => false,
+//                    "instructions" => "Will be next to garage"
+//                )
+//            );
+//        } catch (Exception $e) {
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (create pickup)<br>' . $msg);
+//            return $msg;
+//        }
+
         try {
-            $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
+            $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
+            $msg = $e->prettyPrint(false);
+            flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
             return $msg;
         }
 
-        try {
-            $pickup = \EasyPost\Pickup::create( array(
-                    "address" => $shipment->from_address,
-                    "shipment"=> $shipment,
-                    "reference" => $shipment->id,
-                    "max_datetime" => date("Y-m-d H:i:s", $start),
-                    "min_datetime" => date("Y-m-d H:i:s", $end),
-                    "is_account_address" => false,
-                    "instructions" => "Will be next to garage"
-                )
-            );
-        } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
-            flash('error', 'easypost: (create pickup)<br>' . $msg);
-            return $msg;
-        }
         $method = explode(':', $shippingmethod->option);
         try {
-            $pickup->buy(array(array('carrier'=>$method[0], 'service' => 'Future-day Pickup')));  //FIXME we need to determine 'service' types
+            $pickup->buy(
+                array(array('carrier' => $method[0], 'service' => $type))
+            );
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (buy pickup)<br>' . $msg);
             return $msg;
         }
 
         $sm_options = $shippingmethod->shipping_options;
+        $sm_options['pickup_cost'] = $pickup->pickup_rates[0]->rate;
         $sm_options['pickup_status'] = 'purchased';
-        $shippingmethod->update(array('shipping_options'=>serialize($sm_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
-    function cancelPickup($shippingmethod) {
+    function cancelPickup($shippingmethod)
+    {
         // here's where we cancel a 'pickup'
         $init = self::ep_initialize();
-        if ($init !== true)
-            return $init;  // error
+        if ($init !== true) {
+            return $init;
+        }  // error
 
         try {
             $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
             return $msg;
         }
         try {
             $pickup->cancel();
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (cancel pickup)<br>' . $msg);
             return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['pickup_status'] = 'cancelled';
-        $shippingmethod->update(array('shipping_options'=>serialize($sm_options)));
+        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
     function formatAddress($params)
     {
         $addy['company'] = isset($params->companyName) ? $params->companyName : '';
+        if (empty($addy['company'])) {
+            $addy['company'] = $params->firstname . ' ' . $params->lastname;
+        }
         $addy['street1'] = isset($params->address1) ? $params->address1 : '';
         $addy['street2'] = isset($params->address2) ? $params->address2 : '';
         $addy['city'] = isset($params->city) ? $params->city : '';
@@ -746,7 +814,8 @@ class easypostcalculator extends shippingcalculator
         return ($a['cost'] < $b['cost'] ? -1 : 1);
     }
 
-    function ep_initialize() {
+    function ep_initialize()
+    {
         // Require the main class
         include_once(BASE . 'external/easypost-php-2.1.0/lib/easypost.php');
 
@@ -758,36 +827,40 @@ class easypostcalculator extends shippingcalculator
         try {
             \EasyPost\EasyPost::setApiKey($apikey);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (api key)<br>' . $msg);
             return $msg;
         }
         return true;
     }
 
-    function ep_set_from_address() {
+    function ep_set_from_address()
+    {
         // set the address we will be shipping from.  this should be in the config data
         if (is_numeric($this->configdata['shipfrom']['state'])) {
             $this->configdata['shipfrom']['state'] = geoRegion::getAbbrev($this->configdata['shipfrom']['state']);
         }
         if (is_numeric($this->configdata['shipfrom']['country'])) {
-            $this->configdata['shipfrom']['country'] = geoRegion::getCountryCode($this->configdata['shipfrom']['country']);
+            $this->configdata['shipfrom']['country'] = geoRegion::getCountryCode(
+                $this->configdata['shipfrom']['country']
+            );
         }
         try {
             $from_address = \EasyPost\Address::create($this->configdata['shipfrom']);
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (from address)<br>' . $msg);
             return $msg;
         }
         return $from_address;
     }
 
-    function ep_set_to_address($shippingmethod) {
+    function ep_set_to_address($shippingmethod)
+    {
         try {
             $to_address = \EasyPost\Address::create($this->formatAddress($shippingmethod));
         } catch (Exception $e) {
-            $msg =  $e->prettyPrint(false);
+            $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (to address)<br>' . $msg);
             return $msg;
         }

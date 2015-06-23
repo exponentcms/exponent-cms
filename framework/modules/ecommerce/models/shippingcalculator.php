@@ -145,11 +145,11 @@ class shippingcalculator extends expRecord {
 
     }
 
-    function createPickup($shippingmethod) {
+    function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions) {
         return false;
     }
 
-    function buyPickup($shippingmethod, $start, $end, $instructions) {
+    function buyPickup($shippingmethod, $type) {
 
     }
 

@@ -1132,8 +1132,12 @@ exit();
         }
         //NOTE update $sm with the passed $this->params (package data)
         $sm->update($this->params);
-        $sm->calculator->createLabel($sm);
-        flashAndFlow('message', gt('Shipping package updated.'));
+        $msg = $sm->calculator->createLabel($sm);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Shipping package updated.'));
+        } else {
+            expHistory::back();
+        }
     }
 
     function edit_label() {
@@ -1142,7 +1146,7 @@ exit();
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
         $method = explode(':', $sm->option);
-
+//FIXME check for existing rate, if not get next cheapest? (based on predefined package?)
         assign_to_template(array(
             'shipping'=> $sm,
             'cost' => $sm->shipping_options['shipment_rates'][$method[0]][$method[1]]['cost']
@@ -1154,8 +1158,12 @@ exit();
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
-        $sm->calculator->buyLabel($sm);
-        flashAndFlow('message', gt('Shipping label purchased.'));
+        $msg = $sm->calculator->buyLabel($sm);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Shipping label purchased.'));
+        } else {
+            expHistory::back();
+        }
     }
 
     function download_label() {
@@ -1172,20 +1180,48 @@ exit();
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
-        $sm->calculator->cancelLabel($sm);
-        flashAndFlow('message', gt('Shipping label cancelled and refunded.'));
+        $msg = $sm->calculator->cancelLabel($sm);
+        // also need to cancel the pickup if created/purchased
+        if (!is_string($msg) && ($sm->shipping_options['pickup_status'] == 'created' || $sm->shipping_options['pickup_status'] == 'purchased')) {
+            $msg = $sm->calculator->cancelPickup($sm);
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping label and pickup cancelled and refunded.'));
+            }
+        } else {
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping label cancelled and refunded.'));
+            }
+        }
+        expHistory::back();
     }
 
-    function edit_pickup() {
+    function edit_pickup()
+    {
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
-        $pickup = $sm->calculator->createPickup($sm);
-        $sm->refresh();
         assign_to_template(array(
             'shipping'=> $sm,
-            'cost' => $sm->shipping_options['pickup_cost']
+        ));
+    }
+
+    function edit_pickup2() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $this->params['pickupdate'] = strtotime($this->params['pickupdate']);
+        $this->params['pickupenddate'] = strtotime($this->params['pickupenddate']);
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $pickup = $sm->calculator->createPickup($sm, $this->params['pickupdate'], $this->params['pickupenddate'], $this->params['instructions']);
+        $sm->refresh();
+        $pickup_rates = array();
+        foreach ($sm->shipping_options['pickup_rates'] as $pu_rate) {
+            $pickup_rates[$pu_rate['id']] = $pu_rate['id'] . ' - ' . expCore::getCurrency($pu_rate['cost']);
+        }
+        assign_to_template(array(
+            'shipping'=> $sm,
+            'rates' => $pickup_rates
         ));
     }
 
@@ -1194,8 +1230,13 @@ exit();
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
-        $sm->calculator->buyPickup($sm, $this->params['pickupdate'], $this->params['pickupenddate'], $this->params['instructions']);
-        flashAndFlow('message', gt('Package pickup ordered.'));
+        //FIXME should we add the params to the $sm->shipping_options, or pass them??
+        $msg = $sm->calculator->buyPickup($sm, $this->params['pickuprate']);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Package pickup ordered.'));
+        } else {
+            expHistory::back();
+        }
     }
 
     function delete_pickup() {
@@ -1203,8 +1244,12 @@ exit();
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
-        $sm->calculator->cancelPickup($sm);
-        flashAndFlow('message', gt('Package pickup cancelled.'));
+        $msg = $sm->calculator->cancelPickup($sm);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Package pickup cancelled.'));
+        } else {
+            expHistory::back();
+        }
     }
 
     function createReferenceOrder() {

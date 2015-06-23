@@ -76,7 +76,7 @@ return array(
     // shipping details
 	'shippingcalculator_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
-	'option'=>array(  // method by id
+	'option'=>array(  // method by id, may include carrier if multi_carrier
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>50),
 	'option_title'=>array(  // method by title
@@ -87,7 +87,7 @@ return array(
         DB_FIELD_LEN=>100),
 	'shipping_cost'=>array(  // estimated cost on order
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-    'delivery' => array(  // expected delivery date
+    'delivery' => array(  // expected delivery date  //FIXME is this a 'shipping_options' item??
         DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
     //FIXME we probably will need to add a package rate id, tracking number, etc...
     'shipping_options'=>array(
@@ -101,11 +101,13 @@ return array(
 //  * shipment_cost  // actual cost
 //  * shipment_date
 //  * shipment_tracking_number
-//  * shipment_label
+//  * shipment_label (url)
 //we set this
 //  * shipment_status (created, purchased, cancelled/refund)
 //from pickup create
 //  * pickup_id
+//  * pickup_instructions
+//  * pickup_rates (array???)
 //from pickup buy
 //  * pickup_cost  // actual cost
 //  * pickup_date

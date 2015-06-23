@@ -18,8 +18,8 @@
 {/css}
 
 <div class="module order edit_parcel">
-    <h1>{'Order Package Pickup'|gettext}</h1>
-    {form action=edit_pickup2}
+    <h1>{'Purchase Package Pickup'|gettext}</h1>
+    {form action=save_pickup}
         {control type="hidden" name="id" value=$shipping->id}
         {if $shipping->predefinedpackage}
             {$shipping->predefinedpackage}
@@ -27,11 +27,10 @@
             {$shipping->width}in x {$shipping->height}in x {$shipping->length}in
         {/if}
         {br}{$shipping->weight} lbs
-        {$now = time()}
-        {$next = strtotime('+1 day')}
-        {control type="popupdatetime" name="pickupdate" label="Start Date of Pickup"|gettext value=$now}
-        {control type="popupdatetime" name="pickupenddate" label="End Date of Pickup"|gettext value=$next}
-        {control type="textarea" name="instructions" label='Delivery Instructions'|gettext}
-        {control type="buttongroup" submit="Order Package Pickup"|gettext cancel="Cancel"|gettext}
+        {control type=dropdown name=pickuprate items=$rates label="Pickup Cost"|gettext}
+        {"Start Date of Pickup"|gettext}: {$shipping->shipping_options.pickup_date|format_date:DISPLAY_DATETIME_FORMAT}
+        {br}{"End Date of Pickup"|gettext}: {$shipping->shipping_options.pickup_date_end|format_date:DISPLAY_DATETIME_FORMAT}
+        {br}{'Delivery Instructions'|gettext}: {$shipping->shipping_options.pickup_instructions}
+        {control type="buttongroup" submit="Purchase Package Pickup"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

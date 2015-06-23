@@ -21,6 +21,7 @@
     <h1>{'Purchase Shipping Label'|gettext}</h1>
     {form action=save_label}
         {control type="hidden" name="id" value=$shipping->id}
+        {* FIXME may have to note that rate was adjusted *}
         {if $shipping->predefinedpackage}
             {$shipping->predefinedpackage}
         {else}
