@@ -100,7 +100,7 @@ class popupdatetimecontrol extends formcontrol
         $img .= "\n";
 
         $html = "";
-        $html .= '<input type="hidden" name="' . $name . '" id="' . $idname . '" value="' . ($this->default) . '" />';
+        $html .= '<input type="hidden" name="' . $name . '" id="' . $idname . '" value="' . (date('n/j/Y H:i',$this->default)) . '" />';
         $html .= "\n";
         $html .= '<span class="';
         if ($this->disabled) {
