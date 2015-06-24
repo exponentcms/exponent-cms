@@ -217,7 +217,8 @@ class expPaginator {
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
 			    foreach($db->selectObjectsBySql($this->sql) as $record) {
-			        $classname = isset($params['model_field']) ? $record->$params['model_field'] : $this->model;
+                    $type = $params['model_field'];
+			        $classname = isset($params['model_field']) ? $record->$type : $this->model;
 			        //$this->records[] = new $classname($record->id, true, true); //From current trunk // added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 					$this->records[] = new $classname($record->id, false, true); //From Merge //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 			    }
