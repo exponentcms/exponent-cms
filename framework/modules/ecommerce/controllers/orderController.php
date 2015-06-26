@@ -1113,6 +1113,7 @@ exit();
         $sm_new = new shippingmethod();  // prepare for another 'package' if needed since we didn't place everything in this one
         $order = new order();
         $ois = $order->getOrderitemsByShippingmethod($this->params['id']);
+        //FIXME for now mulitple shipping methods will crash ecom with shipping->__construct()
         foreach ($ois as $oi) {
             if (!array_key_exists($oi->id, $this->params['in_box'])) {
                 // one of the items by type is not in this package and needs to be placed in another package
@@ -1130,7 +1131,7 @@ exit();
                 }
             }
         }
-        //NOTE update $sm with the passed $this->params (package data)
+        // update $sm with the passed $this->params (package data)
         $sm->update($this->params);
         $msg = $sm->calculator->createLabel($sm);
         if (!is_string($msg)) {

@@ -93,7 +93,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errExtractExec'       : 'Error while extracting files: "$1"',
 			'errNetUnMount'        : 'Unable to unmount', // added 30.04.2012
             'errConvUTF8'          : 'Not convertible to UTF-8', // added 08.04.2014
-            'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
+			'errFolderUpload'      : 'Try Google Chrome, If you\'d like to upload the folder.', // from v2.1 added 26.6.2015
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'Create archive',

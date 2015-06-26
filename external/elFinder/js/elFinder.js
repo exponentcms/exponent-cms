@@ -628,10 +628,13 @@ window.elFinder = function(node, opts) {
 
 		},
 		stop       : function(e, ui) {
+			var files;
 			self.draggingUiHelper = null;
 			self.trigger('focus').trigger('dragstop');
 			if (! ui.helper.data('droped')) {
-				self.trigger('unlockfiles', {files : $.map(ui.helper.data('files')||[], function(h) { return h || null ;})});
+				files = $.map(ui.helper.data('files')||[], function(h) { return h || null ;});
+				self.trigger('unlockfiles', {files : files});
+				self.trigger('selectfiles', {files : files});
 			}
 		},
 		helper     : function(e, ui) {
@@ -1254,11 +1257,19 @@ window.elFinder = function(node, opts) {
 	 */
 	this.sync = function() {
 		var self  = this,
-			dfrd  = $.Deferred().done(function() { self.trigger('sync'); });
-		this.request({
-			data           : {cmd : 'open', init : 1, target : cwd, tree : this.ui.tree ? 1 : 0},
-			preventDefault : true
-		})
+			dfrd  = $.Deferred().done(function() { self.trigger('sync'); }),
+			opts1 = {
+				data           : {cmd : 'open', reload : 1, target : cwd, tree : this.ui.tree ? 1 : 0},
+				preventDefault : true
+			},
+			opts2 = {
+				data           : {cmd : 'parents', target : cwd},
+				preventDefault : true
+			};
+		$.when(
+			this.request(opts1),
+			this.request(opts2)
+		)
 		.fail(function(error) {
 			dfrd.reject(error);
 			error && self.request({
@@ -1638,7 +1649,7 @@ window.elFinder = function(node, opts) {
 	}
 	
 	// create bind/trigger aliases for build-in events
-	$.each(['enable', 'disable', 'load', 'open', 'reload', 'select',  'add', 'remove', 'change', 'dblclick', 'getfile', 'lockfiles', 'unlockfiles', 'dragstart', 'dragstop', 'search', 'searchend', 'viewchange'], function(i, name) {
+	$.each(['enable', 'disable', 'load', 'open', 'reload', 'select',  'add', 'remove', 'change', 'dblclick', 'getfile', 'lockfiles', 'unlockfiles', 'selectfiles', 'unselectfiles', 'dragstart', 'dragstop', 'search', 'searchend', 'viewchange'], function(i, name) {
 		self[name] = function() {
 			var arg = arguments[0];
 			return arguments.length == 1 && typeof(arg) == 'function'
@@ -1917,6 +1928,26 @@ window.elFinder = function(node, opts) {
 
 	});
 
+	if (self.dragUpload) {
+		node[0].addEventListener('dragenter', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}, false);
+		node[0].addEventListener('dragleave', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}, false);
+		node[0].addEventListener('dragover', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+		}, false);
+		node[0].addEventListener('drop', function(e) {
+			e.preventDefault();
+			e.stopPropagation();
+			self.error(['errUploadFile', self.i18n('items'), 'errPerm']);
+		}, false);
+	}
+	
 	// self.timeEnd('load'); 
 
 }
@@ -2371,7 +2402,7 @@ elFinder.prototype = {
 				return dfrd.reject();
 			}
 			
-			form.append('<input type="hidden" name="'+(self.newAPI ? 'target' : 'current')+'" value="'+self.cwd().hash+'"/>')
+			form.append('<input type="hidden" name="'+(self.newAPI ? 'target' : 'current')+'" value="'+(data.target || self.cwd().hash)+'"/>')
 				.append('<input type="hidden" name="html" value="1"/>')
 				.append($(input).attr('name', 'upload[]'));
 			
@@ -2564,7 +2595,7 @@ elFinder.prototype = {
 			var send = function(files, paths){
 				var size = 0, fcnt = 1, sfiles = [], c = 0, total = cnt, maxFileSize, totalSize = 0, chunked = [];
 				var chunkID = +new Date();
-				var BYTES_PER_CHUNK = fm.uplMaxSize - 8190; // margin 8kb
+				var BYTES_PER_CHUNK = Math.min((fm.uplMaxSize || 2097152) - 8190, 5242880); // margin 8kb and Max 5MB
 				if (! dataChecked && (isDataType || data.type == 'files')) {
 					maxFileSize = fm.option('uploadMaxSize')? fm.option('uploadMaxSize') : 0;
 					for (var i=0; i < files.length; i++) {
@@ -2574,7 +2605,7 @@ elFinder.prototype = {
 							total--;
 							continue;
 						}
-						if (fm.uplMaxSize && files[i].size >= fm.uplMaxSize) {
+						if (files[i].size >= BYTES_PER_CHUNK) {
 							var SIZE = files[i].size;
 
 							var start = 0;
@@ -2784,7 +2815,7 @@ elFinder.prototype = {
 					if (xhr.readyState == 4 && xhr.status == 0) {
 						// ff bug while send zero sized file
 						// for safari - send directory
-						dfrd.reject(['errConnect', 'errAbort']);
+						dfrd.reject(['errAbort', 'errFolderUpload']);
 					}
 				};
 				
@@ -3614,17 +3645,22 @@ elFinder.prototype = {
 	 * Return formated file mode by options.fileModeStyle
 	 * 
 	 * @param  String  file mode
+	 * @param  String  format style
 	 * @return String
 	 */
-	formatFileMode : function(p) {
-		var ret, i, o, s, b, sticy, suid, sgid;
+	formatFileMode : function(p, style) {
+		var i, o, s, b, sticy, suid, sgid, str, oct;
+		
+		if (!style) {
+			style = this.options.fileModeStyle.toLowerCase();
+		}
 		p = $.trim(p);
 		if (p.match(/[rwxs-]{9}$/i)) {
-			p = p.substr(-9);
-			if (this.options.fileModeStyle == 'string') {
-				return p;
+			str = p = p.substr(-9);
+			if (style == 'string') {
+				return str;;
 			}
-			ret = '';
+			oct = '';
 			s = 0;
 			for (i=0; i<7; i=i+3) {
 				o = p.substr(i, 3);
@@ -3647,15 +3683,16 @@ elFinder.prototype = {
 						}
 					}
 				}
-				ret += b.toString(8);
+				oct += b.toString(8);
 			}
 			if (s) {
-				ret = s.toString(8) + ret;
+				oct = s.toString(8) + oct;
 			}
 		} else {
 			p = parseInt(p, 8);
-			if (!p || this.options.fileModeStyle != 'string') {
-				return p? p.toString(8) : '';
+			oct = p? p.toString(8) : '';
+			if (!p || style == 'octal') {
+				return oct;
 			}
 			o = p.toString(8);
 			s = 0;
@@ -3667,26 +3704,32 @@ elFinder.prototype = {
 			sticy = ((s & 1) == 1); // not support
 			sgid = ((s & 2) == 2);
 			suid = ((s & 4) == 4);
-			ret = '';
+			str = '';
 			for(i=0; i<3; i++) {
 				if ((parseInt(o.substr(i, 1), 8) & 4) == 4) {
-					ret += 'r';
+					str += 'r';
 				} else {
-					ret += '-';
+					str += '-';
 				}
 				if ((parseInt(o.substr(i, 1), 8) & 2) == 2) {
-					ret += 'w';
+					str += 'w';
 				} else {
-					ret += '-';
+					str += '-';
 				}
 				if ((parseInt(o.substr(i, 1), 8) & 1) == 1) {
-					ret += ((i==0 && suid)||(i==1 && sgid))? 's' : 'x';
+					str += ((i==0 && suid)||(i==1 && sgid))? 's' : 'x';
 				} else {
-					ret += '-';
+					str += '-';
 				}
 			}
 		}
-		return ret;
+		if (style == 'both') {
+			return str + ' (' + oct + ')';
+		} else if (style == 'string') {
+			return str;
+		} else {
+			return oct;
+		}
 	},
 	
 	navHash2Id : function(hash) {
@@ -3695,6 +3738,64 @@ elFinder.prototype = {
 	
 	navId2Hash : function(id) {
 		return typeof(id) == 'string' ? id.substr(4) : false;
+	},
+	
+	/**
+	 * Make event listener for direct upload to directory
+	 * 
+	 * @param  Object  DOM object
+	 * @param  String  Target dirctory hash
+	 * @return void
+	 */
+	makeDirectDropUpload : function(elm, hash) {
+		var self = this, ent,
+		c         = 'class',
+		$elm      = $(elm),
+		collapsed = self.res(c, 'navcollapse'),
+		expanded  = self.res(c, 'navexpand'),
+		dropover  = self.res(c, 'adroppable'),
+		arrow     = self.res(c, 'navarrow'),
+		clDropActive = self.res(c, 'adroppable');
+
+		if (self.dragUpload) {
+			elm.addEventListener('dragenter', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				ent = true;
+				$elm.addClass(clDropActive);
+				if ($elm.is('.'+collapsed+':not(.'+expanded+')')) {
+					setTimeout(function() {
+						$elm.is('.'+collapsed+'.'+dropover) && $elm.children('.'+arrow).click();
+					}, 500);
+				}
+			}, false);
+
+			elm.addEventListener('dragleave', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				if (ent) {
+					ent = false;
+				} else {
+					$elm.removeClass(clDropActive);
+				}
+			}, false);
+
+			elm.addEventListener('dragover', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				ent = false;
+			}, false);
+
+			elm.addEventListener('drop', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				$elm.removeClass(clDropActive);
+				e._target = hash;
+				self.directUploadTarget = hash;
+				self.exec('upload', {dropEvt: e});
+				self.directUploadTarget = null;
+			}, false);
+		}
 	},
 	
 	log : function(m) { window.console && window.console.log && window.console.log(m); return this; },
