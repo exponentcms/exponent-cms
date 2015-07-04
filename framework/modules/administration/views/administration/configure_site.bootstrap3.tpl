@@ -35,7 +35,7 @@
 	            <li role="presentation"><a href="#tab4" role="tab" data-toggle="tab"><em>{"Comment Policies"|gettext}</em></a></li>
 	            <li role="presentation"><a href="#tab5" role="tab" data-toggle="tab"><em>{"Display"|gettext}</em></a></li>
                 <li role="presentation"><a href="#tab6" role="tab" data-toggle="tab"><em>{"File Manager"|gettext}</em></a></li>
-	            {if $user->isAdmin()}
+	            {if $user->isSuperAdmin()}
 					<li role="presentation"><a href="#tab7" role="tab" data-toggle="tab"><em>{"Mail Server"|gettext}</em></a></li>
 		            <li role="presentation"><a href="#tab8" role="tab" data-toggle="tab"><em>{"Maintenance"|gettext}</em></a></li>
 		            <li role="presentation"><a href="#tab9" role="tab" data-toggle="tab"><em>{"Security"|gettext}</em></a></li>
@@ -191,7 +191,7 @@
                         {/if}
                     {/group}
                 </div>
-                {if $user->is_admin==1}
+                {if $user->isSuperAdmin()}
                 <div id="tab7" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">
                         <div class="related-actions">

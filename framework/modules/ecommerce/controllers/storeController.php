@@ -188,7 +188,7 @@ class storeController extends expController {
             $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM ' . DB_TABLE_PREFIX . '_product p ';
             $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
-            if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
             $sql .= 'sc.storecategories_id IN (';
             $sql .= 'SELECT id FROM ' . DB_TABLE_PREFIX . '_storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
 
@@ -856,10 +856,10 @@ class storeController extends expController {
         }
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
             flash("error", $product->title . " " . gt("is currently unavailable."));
             expHistory::back();
-        } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
 
@@ -909,10 +909,10 @@ class storeController extends expController {
         }
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
             flash("error", $product->title . " " . gt("is currently unavailable."));
             expHistory::back();
-        } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
@@ -1048,7 +1048,7 @@ class storeController extends expController {
         $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
 
@@ -1762,7 +1762,7 @@ class storeController extends expController {
         $sql .= "from " . $db->prefix . "product as p INNER JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
         $sql .= " HAVING relevance > 0 ";
         //$sql .= "GROUP BY p.id "; 

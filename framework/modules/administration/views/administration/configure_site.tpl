@@ -35,7 +35,7 @@
 	            <li><a href="#tab4"><em>{"Comment Policies"|gettext}</em></a></li>
 	            <li><a href="#tab5"><em>{"Display"|gettext}</em></a></li>
                 <li><a href="#tab6"><em>{"File Manager"|gettext}</em></a></li>
-	            {if $user->isAdmin()}
+	            {if $user->isSuperAdmin()}
 					<li><a href="#tab7"><em>{"Mail Server"|gettext}</em></a></li>
 		            <li><a href="#tab8"><em>{"Maintenance"|gettext}</em></a></li>
 		            <li><a href="#tab9"><em>{"Security"|gettext}</em></a></li>
@@ -191,7 +191,7 @@
                         {/if}
                     {/group}
                 </div>
-                {if $user->is_admin==1}
+                {if $user->isSuperAdmin()}
                 <div id="tab7">
 	                <div class="info-header">
                         <div class="related-actions">

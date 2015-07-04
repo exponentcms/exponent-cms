@@ -151,7 +151,7 @@ class bannerController extends expController {
         fclose($fh);        
 
         // push the file to the user
-        $export = new expFile(array('directory'=>$dir, 'filename'=>$filename));
+        $export = new expFile(array('directory'=>$dir, 'filename'=>$filename));  //FIXME we are using a full path BASE instead of relative to root
         expFile::download($export);
     }
 

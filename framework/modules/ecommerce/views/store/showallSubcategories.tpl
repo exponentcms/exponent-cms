@@ -52,7 +52,7 @@
                 </li>
             {/foreach}          
             {br}
-            {if $user->is_admin == 1 || $user->is_acting_admin}
+            {if $user->isAdmin()}
                 <li><a href="{link controller=store action=showallUncategorized}">{'Show uncategorized products'|gettext}</a></li>
             {/if}
         </ul>
