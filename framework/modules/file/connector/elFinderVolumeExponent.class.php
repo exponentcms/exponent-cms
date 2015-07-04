@@ -131,8 +131,8 @@ class elFinderVolumeExponent extends elFinderVolumeLocalFileSystem
     protected static function _get_expFile($path)
     {
         $efile = new expFile();
-        $path = str_replace(BASE, '', $path);
         $path = str_replace('\\', '/', $path);
+        $path = str_replace(BASE, '', $path);
         $thefile = $efile->find(
             'first',
             'directory="' . dirname($path) . '/' . '" AND filename="' . basename($path) . '"'

@@ -297,8 +297,8 @@ class elFinder {
 		}
 
 		// check for net volumes stored in session
-		foreach ($this->getNetVolumes() as $root) {
-			$opts['roots'][] = $root;
+		foreach ($this->getNetVolumes() as $key => $root) {
+			$opts['roots'][$key] = $root;
 		}
 
 		// "mount" volumes
@@ -318,9 +318,11 @@ class elFinder {
 							$this->default = $this->volumes[$id]; 
 						}
 					} else {
+						$this->removeNetVolume($i);
 						$this->mountErrors[] = 'Driver "'.$class.'" : '.implode(' ', $volume->error());
 					}
 				} catch (Exception $e) {
+					$this->removeNetVolume($i);
 					$this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
 				}
 			} else {
@@ -593,6 +595,19 @@ class elFinder {
 	}
 
 	/**
+	 * Remove netmount volume
+	 * 
+	 * @param string $key  netvolume key
+	 */
+	protected function removeNetVolume($key) {
+		$netVolumes = $this->getNetVolumes();
+		if (is_string($key) && isset($netVolumes[$key])) {
+			unset($netVolumes[$key]);
+			$this->saveNetVolumes($netVolumes);
+		}
+	}
+
+	/**
 	 * Get plugin instance & set to $this->plugins
 	 * 
 	 * @param  string $name   Plugin name (dirctory name)
@@ -709,13 +724,7 @@ class elFinder {
 			$rootstat['netkey'] = $key;
 			return array('added' => array($rootstat));
 		} else {
-			if (! $key = @ $volume->netMountKey) {
-				$key = md5($protocol . '-' . join('-', $options));
-			}
-			if (isset($netVolumes[$key])) {
-				unset($netVolumes[$key]);
-				$this->saveNetVolumes($netVolumes);
-			}
+			$this->removeNetVolume($volume);
 			return array('error' => $this->error(self::ERROR_NETMOUNT, $args['host'], implode(' ', $volume->error())));
 		}
 
@@ -771,9 +780,12 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_OPEN, $cwd['name'], $volume->error()));
 		}
 		
-		foreach ($ls as $file) {
-			if (!in_array($file, $files)) {
-				$files[] = $file;
+		if ($ls) {
+			if ($files) {
+				$files = array_merge($files, $ls);
+				$files = array_unique($files, SORT_REGULAR);
+			} else {
+				$files = $ls;
 			}
 		}
 		
@@ -1473,7 +1485,7 @@ class elFinder {
 		foreach($targets as $target) {
 			$file = $volume->chmod($target, $mode);
 			if ($file) {
-				$files[] = $file;
+				$files = (is_array($file))? $file : array($file);
 			} else {
 				$errors = array_merge($errors, $volume->error());
 			}
