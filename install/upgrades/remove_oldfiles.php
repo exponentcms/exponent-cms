@@ -439,6 +439,8 @@ class remove_oldfiles extends upgradescript {
             // other obsolete files
             'framework/modules/twitter/assets/images/rt.png',
             'framework/modules/twitter/assets/images/tweeted.png',
+            'framework/modules/file/connector/cwd.js',
+            'framework/modules/file/connector/elFinder.js'
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
