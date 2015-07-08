@@ -2022,11 +2022,12 @@
 						}
 						datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
 						break;
-                    case 'update':
-//                            this.value = this.defaultValue;
-//                            datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
-                        datetimepicker.trigger('afterOpen.xdsoft');
-						break;
+//                    case 'update':
+//						datetimepicker.data('changed', true);
+//						this.value = this.defaultValue;
+//						datetimepicker.data.setCurrentTime(this.value);
+//						datetimepicker.trigger('afterOpen.xdsoft');
+//						break;
 					case 'validate':
 						$input = datetimepicker.data('input');
 						$input.trigger('blur.xdsoft');

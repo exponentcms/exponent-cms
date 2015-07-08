@@ -123,11 +123,11 @@ class yuicalendarcontrol extends formcontrol
                     inline: true,
 //                    value: '".$default."'
                 });
-                $('#" . $idname . "').datetimepicker('update');
+                $('#" . $idname . "').datetimepicker('reset');
             });
             YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.Global.on('lazyload:cke', function() {
-                    $('#" . $idname . "').datetimepicker('update');
+                    $('#" . $idname . "').datetimepicker('reset');
                 });
                 if (!Y.one('#" . $idname . "').ancestor('.exp-skin-tabview')) {
                     Y.Global.fire('lazyload:cke');

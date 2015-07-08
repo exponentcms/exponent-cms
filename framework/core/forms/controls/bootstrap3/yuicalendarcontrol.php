@@ -123,7 +123,7 @@ class yuicalendarcontrol extends formcontrol
                     inline: true,
 //                    value: '".$default."'
                 });
-                $('#" . $idname . "').datetimepicker('update');
+                $('#" . $idname . "').datetimepicker('reset');
             });
         ";
         expJavascript::pushToFoot(
