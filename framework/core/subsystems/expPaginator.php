@@ -212,7 +212,8 @@ class expPaginator {
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
             if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
-//			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
+            if (!empty($this->count_sql)) $this->total_records = $db->countObjectsBySql($this->count_sql);
+			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
