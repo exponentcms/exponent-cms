@@ -260,7 +260,7 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();
         $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
 
-        $rerankSQL = "SELECT DISTINCT p.* FROM " . DB_TABLE_PREFIX . "_product p JOIN " . DB_TABLE_PREFIX . "_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
+        $rerankSQL = "SELECT DISTINCT p.* FROM " . DB_TABLE_PREFIX . "_product p JOIN " . DB_TABLE_PREFIX . "_product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
 
@@ -2533,7 +2533,7 @@ class storeController extends expController {
                 if (!empty($model_alias1) || !empty($model_alias2)) {
                     $error = "The {$res->field1} and {$res->field2} are already being used by another product.<br />";
                 } else {
-                    $error = "No product match found, please choose a product to be alias in the following models below:<br />";
+                    $error = gt("No product match found, please choose a product to be alias in the following models below") . ":<br />";
                     $error .= $res->field1 . "<br />";
                     $error .= $res->field2 . "<br />";
                     $autocomplete = 1;

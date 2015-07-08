@@ -38,7 +38,7 @@ return array(
 	"title"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,
-		DB_INDEX=>10,
+//		DB_INDEX=>10,
 		DB_FULLTEXT=>true),
     "feed_title"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
@@ -71,8 +71,9 @@ return array(
 	'sef_url'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>150,
-		DB_INDEX=>10,
-		DB_FULLTEXT=>true),
+//		DB_INDEX=>10,
+//		DB_FULLTEXT=>true
+	),
     'canonical'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>800),
@@ -94,7 +95,9 @@ return array(
    		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 	"body"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>10000),
+		DB_FIELD_LEN=>10000,
+//		DB_INDEX=>10,
+		DB_FULLTEXT=>true),
     "feed_body"=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>10000),
@@ -106,7 +109,9 @@ return array(
 		DB_FIELD_LEN=>1000),
 	"model"=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
-		DB_FIELD_LEN=>100),
+		DB_FIELD_LEN=>100,
+//		DB_INDEX=>10,
+		DB_FULLTEXT=>true),
     "product_status_id"=>array(
         DB_FIELD_TYPE=>DB_DEF_INTEGER),
     "active_type"=>array(

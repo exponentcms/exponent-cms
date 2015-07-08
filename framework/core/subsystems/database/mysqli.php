@@ -118,7 +118,8 @@ class mysqli_database extends database {
             $sql .= ", PRIMARY KEY ( `" . implode("` , `", $primary) . "`)";
         }
         if (count($fulltext)) {
-            $sql .= ", FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
+//            $sql .= ", FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
+            $sql .= ", FULLTEXT `" . $fulltext[0] . "`" . "( `" . implode("` , `", $fulltext) . "`)";
         }
         if (!empty($unique)) foreach ($unique as $key => $value) {
             $sql .= ", UNIQUE `" . $key . "` ( `" . implode("` , `", $value) . "`)";
@@ -179,7 +180,7 @@ class mysqli_database extends database {
                 if (!empty($def[DB_FULLTEXT])) $fulltext[] = $name;
                 if (isset($def[DB_INDEX]) && ($def[DB_INDEX] > 0)) {
                     if ($def[DB_FIELD_TYPE] == DB_DEF_STRING) {
-                        $index[$name] = $def[DB_INDEX];
+                          $index[$name] = $def[DB_INDEX];
                       } else {
                           $index[$name] = 0;
                       }
@@ -239,7 +240,11 @@ class mysqli_database extends database {
         }
         if (count($fulltext)) {
             if ($sep) $sql .= ' ,';
-            $sql .= " FULLTEXT ( `" . implode("` , `", $fulltext) . " `)";
+//            $sql .= " ADD FULLTEXT ( `" . implode("` , `", $fulltext) . "`)";
+            // drop the index first so we don't get dupes
+            $drop = "DROP INDEX " . $fulltext[0] . " ON " . $this->prefix . $tablename;
+            @mysqli_query($this->connection, $drop);
+            $sql .= " ADD FULLTEXT `" . $fulltext[0] . "`" . "( `" . implode("` , `", $fulltext) . "`)";
             $sep = true;
         }
         if (!empty($unique)) foreach ($unique as $key=>$value) {
@@ -255,7 +260,8 @@ class mysqli_database extends database {
 
             // re-add the index
             if ($sep) $sql .= ' ,';
-            $sql .= " ADD INDEX (`" . $key . "`)";
+//            $sql .= " ADD INDEX (`" . $key . "`)";  //FIXME we don't add column length??
+            $sql .= " ADD INDEX (`" . $key . "`" . (($value > 0) ? "(" . $value . ")" : "") . ")";
             $sep = true;
         }
         @mysqli_query($this->connection, $sql);
