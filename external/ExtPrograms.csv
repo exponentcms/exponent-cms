@@ -21,7 +21,7 @@ lessphp,0.4.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.4exp,lessphp.gpeasy.com/,1.7.0.4,tweaked wrapper to set/get options
 iLess,1.6.5,https://github.com/mishal/iless,1.6.5,"optional, not fully functional"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.5,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.3.5+1,twitter.github.com/bootstrap,3.3.5+1,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.3.5,bootswatch.com/,3.3.5,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
@@ -37,7 +37,7 @@ csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
-CKEditor,4.4.7,ckeditor.com,4.4.8/4.5.1,"Adds fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
+CKEditor,4.4.7,ckeditor.com,4.4.8/4.5.1,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.10,tinymce.com,4.2.1,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
