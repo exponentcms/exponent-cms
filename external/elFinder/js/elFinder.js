@@ -200,11 +200,12 @@ window.elFinder = function(node, opts) {
 		
 		uiCmdMapPrev = null,
 		open = function(data) {
-			var repCmds = [], volumeid;
+			var repCmds = [], volumeid,
+			dataCmdMap = (data.options.uiCmdMap && data.options.uiCmdMap.length)? data.options.uiCmdMap : {};
 			
 			// support volume driver option `uiCmdMap`
-			if (data && data.options && uiCmdMapPrev !== (data.options.uiCmdMap || {})) {
-				uiCmdMapPrev = (data.options.uiCmdMap || {});
+			if (data && data.options && uiCmdMapPrev !== dataCmdMap) {
+				uiCmdMapPrev = dataCmdMap;
 				if (Object.keys(uiCmdMapPrev).length) {
 					// for contextmenu
 					volumeid = data.cwd? data.cwd.volumeid : null;
@@ -231,14 +232,6 @@ window.elFinder = function(node, opts) {
 					if (origin && $.inArray(origin, repCmds) == -1) {
 						$('span.elfinder-button-icon-'+$(this).data('origin')).parent().show();
 						$(this).remove();
-					}
-				});
-			}
-			// non cwd volume's contextmenu
-			if (data.files) {
-				$.each(data.files, function(k, v){
-					if (v.volumeid && v.uiCmdMap && !self.options.contextmenu.cmdMaps[v.volumeid]) {
-						self.options.contextmenu.cmdMaps[v.volumeid] = v.uiCmdMap;
 					}
 				});
 			}
@@ -606,7 +599,7 @@ window.elFinder = function(node, opts) {
 		delay      : 30,
 		distance   : 8,
 		revert     : true,
-		refreshPositions : true,
+		refreshPositions : false,
 		cursor     : 'move',
 		cursorAt   : {left : 50, top : 47},
 		start      : function(e, ui) {
@@ -626,8 +619,20 @@ window.elFinder = function(node, opts) {
 			!locked && self.trigger('lockfiles', {files : targets});
 
 		},
+		drag       : function(e, ui) {
+			if (ui.helper.data('refreshPositions')) {
+				if (ui.helper.data('refreshPositions') > 0) {
+					$(this).draggable('option', { refreshPositions : true });
+					ui.helper.data('refreshPositions', -1);
+				} else {
+					$(this).draggable('option', { refreshPositions : false });
+					ui.helper.data('refreshPositions', null);
+				}
+			}
+		},
 		stop       : function(e, ui) {
 			var files;
+			$(this).draggable('option', { refreshPositions : false });
 			self.draggingUiHelper = null;
 			self.trigger('focus').trigger('dragstop');
 			if (! ui.helper.data('droped')) {
@@ -1344,23 +1349,24 @@ window.elFinder = function(node, opts) {
 	 */
 	this.trigger = function(event, data) {
 		var event    = event.toLowerCase(),
-			handlers = listeners[event] || [], i, l, frozen;
+			isopen   = (event === 'open'),
+			handlers = listeners[event] || [], i, l, jst;
 		
-		this.debug('event-'+event, data)
+		this.debug('event-'+event, data);
 		
+		if (isopen) {
+			// for performance tuning
+			jst = JSON.stringify(data);
+		}
 		if (handlers.length) {
 			event = $.Event(event);
 
-			// freeze `data` object for better performance, deep copy is too heavy
-			if (Object.freeze) {
-				frozen = $.extend(true, {}, data);
-				event.data = Object.freeze(frozen);
-			}
 			l = handlers.length;
 			for (i = 0; i < l; i++) {
-				if (!frozen) {
+				// only callback has argument
+				if (handlers[i].length) {
 					// to avoid data modifications. remember about "sharing" passing arguments in js :) 
-					event.data = $.extend(true, {}, data);
+					event.data = isopen? JSON.parse(jst) : $.extend(true, {}, data);
 				}
 
 				try {
