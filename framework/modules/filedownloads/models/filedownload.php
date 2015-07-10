@@ -54,10 +54,10 @@ class filedownload extends expRecord {
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $this->expFile['downloadable'][0]->duration = $id3['Length mm:ss'];
                 }
-                if (!empty($this->meta_fb['fbimage'][0]->id))
+                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
                     $this->meta_fb['type'] = 'audio';
             } elseif (!empty($this->expFile['downloadable'][0]) && (($this->expFile['downloadable'][0]->mimetype == "video/mp4") || ($this->expFile['downloadable'][0]->mimetype == "application/x-shockwave-flash")) && (file_exists(BASE.$this->expFile['downloadable'][0]->directory.$this->expFile['downloadable'][0]->filename))) {
-                if (!empty($this->meta_fb['fbimage'][0]->id))
+                if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]->id))
                     $this->meta_fb['type'] = 'video';
             }
         }
