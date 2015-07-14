@@ -51,12 +51,12 @@ function smarty_function_img($params,&$smarty) {
 	$dims = '';
 	 if (isset($params['w']) && isset($params['h']) && isset($params['zc'])) {
 		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
-	 } elseif (isset($params['w']) && isset($params['h'])) {
-		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
-	 } elseif (isset($params['w'])) {
-		 $dims = ' width="'.$params['w'].'"';
-	 } elseif (isset($params['h'])) {
-		 $dims = ' height="'.$params['h'].'"';
+//	 } elseif (isset($params['w']) && isset($params['h'])) {
+//		 $dims = ' height="'.$params['h'].'" width="'.$params['w'].'"';
+//	 } elseif (isset($params['w'])) {
+//		 $dims = ' width="'.$params['w'].'"';
+//	 } elseif (isset($params['h'])) {
+//		 $dims = ' height="'.$params['h'].'"';
 	 }
 
 	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
@@ -424,11 +424,11 @@ function smarty_function_img($params,&$smarty) {
 	//}
 	
 	//If we are in the production mode, display default image for the dead link images
-	if (!DEVELOPMENT) {
-		$src .= '&amp;err=' . PATH_RELATIVE. 'framework/core/assets/images/default_preview_notfound.gif';
+//	if (!DEVELOPMENT) {
+//		$src .= '&amp;err=' . PATH_RELATIVE. 'framework/core/assets/images/default_preview_notfound.gif';
 //	} else {
 //         $src .= '&amp;err=showerror';
-     }
+//     }
 	$source = ' src="'.$src.'"';
 
     $itemprop = '';
