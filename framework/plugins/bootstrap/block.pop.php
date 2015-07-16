@@ -50,7 +50,7 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        $content = json_encode(str_replace("\n", '', str_replace("\r\n", '', trim($content))));
         if (isset($params['icon'])) {
             $icon = $params['icon'];
         } else {

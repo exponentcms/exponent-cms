@@ -669,7 +669,7 @@ class expJavascript {
      * @deprecated yui2
      */
     public static function panel($params) {
-        $content = json_encode("<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>");
+        $content = json_encode("<div class=\"pnlmsg\">".str_replace("\n", '', str_replace("\r\n", '', trim($params['content'])))."</div>");
         $id = "exppanel".$params['id'];
         $width  = !empty($params['width']) ? $params['width'] : "800px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
