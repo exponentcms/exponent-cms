@@ -66,7 +66,8 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 
         $script = "
             $(document).ready(function(){
-                $('#".$params['id']."').click(function() {
+                $('#".$params['id']."').click(function(event) {
+                    event.preventDefault();
                     var message = ".$content.";
                     $.prompt(message, {
                         title: '".$params['title']."',

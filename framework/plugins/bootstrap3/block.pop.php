@@ -91,7 +91,8 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
         }
         $script = "
             $(document).ready(function(){
-                $('#".$params['id']."').click(function() {
+                $('#".$params['id']."').click(function(event) {
+                    event.preventDefault();
                     BootstrapDialog.show({
                         size: BootstrapDialog.SIZE_WIDE,
                         type: ".$type.",
