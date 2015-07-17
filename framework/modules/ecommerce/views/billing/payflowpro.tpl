@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="billing-method payflowpro creditcard-form">
+<div class="billing-method payflowpro creditcard-form form-horizontal">
     {form name="ccinfoform`$key`" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}
