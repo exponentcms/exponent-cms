@@ -50,7 +50,7 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        $content = json_encode(str_replace("\n", '', str_replace("\r\n", '', trim($content))));
         if (isset($params['icon'])) {
             $icon = $params['icon'];
         } else {
@@ -66,7 +66,8 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 
         $script = "
             $(document).ready(function(){
-                $('#".$params['id']."').click(function() {
+                $('#".$params['id']."').click(function(event) {
+                    event.preventDefault();
                     var message = ".$content.";
                     $.prompt(message, {
                         title: '".$params['title']."',

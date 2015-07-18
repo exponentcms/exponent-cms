@@ -49,9 +49,9 @@
                     {if $width < 4}{$width = 4}{/if}
                     {foreach $shipping->pricelist as $carrier=>$carriers}
                         <div class="col-sm-{$width}">
-                            <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
-                            <div class="">
-                                {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                            {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                                <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
+                                <div class="">
                                     {group label="Available Options"|gettext}
                                         <div class="bd">
                                             {foreach from=$carriers item=option}
@@ -61,8 +61,8 @@
                                             {/foreach}
                                         </div>
                                     {/group}
-                                {/if}
-                            </div>
+                                </div>
+                            {/if}
                         </div>
                     {/foreach}
                     <div>
