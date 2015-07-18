@@ -57,7 +57,7 @@ if ($error) { //NOTE Shouldn't get this because of check in install-6.php unless
     header('Location: index.php?page=install-6' . $errorflag);
     exit();
 } else {
-    $user->password = md5($_POST['password']);
+    $user->password = user::encryptPassword($_POST['password']);
     $user->firstname = expString::sanitize($_POST['firstname']);
     $user->lastname = expString::sanitize($_POST['lastname']);
     $user->is_admin = 1;

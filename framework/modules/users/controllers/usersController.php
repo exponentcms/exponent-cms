@@ -1457,7 +1457,7 @@ class usersController extends expController {
 //                            break;
 //                    }
 //
-//                    $userinfo['password'] = md5($userinfo['clearpassword']);
+//                    $userinfo['password'] = user::encryptPassword($userinfo['clearpassword']);
 
                     $suffix = "";
                     while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists

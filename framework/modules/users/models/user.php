@@ -222,6 +222,12 @@ class user extends expRecord {
         return true;
     }
 
+    /**
+     * Generate ppssword hash
+     *
+     * @param $password
+     * @return string
+     */
     public static function encryptPassword($password) {
         return md5($password);
     }
