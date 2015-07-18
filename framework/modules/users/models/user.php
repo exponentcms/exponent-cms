@@ -39,7 +39,7 @@ class user extends expRecord {
     );
 
     function __construct($params = null, $get_assoc = false, $get_attached = false) {
-        if (is_array($params) && isset($params['pass1'])) $params['password'] = $this->encryptPassword($params['pass1']);
+        if (is_array($params) && isset($params['pass1'])) $params['password'] =user::encryptPassword($params['pass1']);
         parent::__construct($params, $get_assoc, $get_attached);
         $this->getUserProfile();
         $this->groups = $this->getGroupMemberships();
@@ -118,7 +118,7 @@ class user extends expRecord {
         if (MAINTENANCE_MODE && !$this->isAdmin()) return false; // if MAINTENANCE_MODE only allow admins
         if (empty($this->id)) return false; // if the user object is null then fail the login
         // check password, if account is locked, or is admin(account locking doesn't to administrators)
-        return (($this->is_admin == 1 || $this->is_locked == 0) && $this->password == md5($password)) ? true : false;
+        return (($this->is_admin == 1 || $this->is_locked == 0) && $this->password == user::encryptPassword($password)) ? true : false;
     }
 
     public function updateLastLogin() {
@@ -218,11 +218,11 @@ class user extends expRecord {
         }
 
         // if we get here the password must be good
-        $this->password = $this->encryptPassword($pass1);
+        $this->password = user::encryptPassword($pass1);
         return true;
     }
 
-    public function encryptPassword($password) {
+    public static function encryptPassword($password) {
         return md5($password);
     }
 
