@@ -38,7 +38,7 @@ excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by Ti
 dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.4.8,ckeditor.com,4.4.8/4.5.1,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
-TinyMCE,4.1.10,tinymce.com,4.2.1,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
+TinyMCE,4.1.10,tinymce.com,4.2.2,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
 jQuery,2.1.4,jquery.com,2.1.4,
@@ -61,7 +61,7 @@ colorbox,1.6.2,http://www.jacklmoore.com/colorbox,1.6.2,using style #5 renamed t
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.5exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,added additional 'update' method and click update if inline
 pwstrength-bootstrap,1.2.7,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.7,
-Sortable,1.2.0,https://github.com/RubaXa/Sortable,1.2.0,
+Sortable,1.2.1,https://github.com/RubaXa/Sortable,1.2.1,
 jstree,3.0.11,https://github.com/vakata/jstree,3.0.11,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.5,https://github.com/nakupanda/bootstrap3-dialog,1.34.5,
 impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.1,
@@ -73,7 +73,7 @@ select2,3.5.2,https://github.com/ivaynberg/select2,4.0.0,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using fileinput at this time
 Jasny Bootstrap,3.1.3,http://jasny.github.io/bootstrap,3.1.3,only using fileinput at this time
 easypost sdk,2.1.0,https://github.com/EasyPost/easypost-php,2.1.1,
-PLUpload,2.1.7,https://github.com/moxiecode/plupload,2.1.7,needed for TinyMCE Quick Upload
+PLUpload,2.1.7,https://github.com/moxiecode/plupload,2.1.8,needed for TinyMCE Quick Upload
 ,,,,
 Not included yet,,,,
 Webshim,,https://github.com/aFarkas/webshim,1.15.8,

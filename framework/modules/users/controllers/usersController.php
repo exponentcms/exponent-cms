@@ -570,7 +570,7 @@ class usersController extends expController {
         ));
 
         // Save new password
-        $u->update(array('password' => md5($newpass)));
+        $u->update(array('password' => user::encryptPassword($newpass)));
 
         // cleanup the reset token
         $db->delete('passreset_token', 'uid=' . $tok->uid);
@@ -608,7 +608,7 @@ class usersController extends expController {
             expHistory::back();
         }
 
-        if (!$user->isAdmin() && (empty($this->params['password']) || $user->password != md5($this->params['password']))) {
+        if (!$user->isAdmin() && (empty($this->params['password']) || $user->password != user::encryptPassword($this->params['password']))) {
             flash('error', gt('The current password you entered is not correct.'));
             expHistory::returnTo('editable');
         }
@@ -1457,7 +1457,7 @@ class usersController extends expController {
 //                            break;
 //                    }
 //
-//                    $userinfo['password'] = md5($userinfo['clearpassword']);
+//                    $userinfo['password'] = user::encryptPassword($userinfo['clearpassword']);
 
                     $suffix = "";
                     while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
@@ -1587,7 +1587,7 @@ class usersController extends expController {
                             break;
                     }
 
-                    $userinfo['password'] = md5($userinfo['clearpassword']);
+                    $userinfo['password'] = user::encryptPassword($userinfo['clearpassword']);
 
                     $suffix = "";
                     while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
