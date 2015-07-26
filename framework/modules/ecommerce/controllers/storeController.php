@@ -1596,6 +1596,16 @@ class storeController extends expController {
         return $metainfo;
     }
 
+    /**
+     * Configure the module
+     */
+    public function configure() {
+        if (empty($this->config['enable_ratings_and_reviews'])) {
+            $this->remove_configs[] = 'comments';
+        }
+        parent::configure();
+    }
+
     public function deleteChildren() {
         //eDebug($data[0],true);
         //if($id!=null) $this->params['id'] = $id;
