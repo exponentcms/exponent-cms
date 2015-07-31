@@ -76,7 +76,6 @@
                     {permissions}
                         {if $permissions.create && $hidebox == 0}
                             <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
-                                {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
                                 <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                             </div>
                         {/if}
@@ -85,8 +84,7 @@
             {/section}
             {permissions}
                 {if $permissions.create && $hidebox == 0}
-                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade">
-                        {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
+                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first || $smarty.section.contain.total == 0} in active{/if}">
                         <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                     </div>
                 {/if}
