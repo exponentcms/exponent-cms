@@ -178,7 +178,7 @@ class passthru extends billingcalculator {
             $addy = new address($order->billingmethod[0]->addresses_id);
             $newUser = new user();
             $newUser->username = $addy->email . time(); //make a unique username
-            $password = user::encryptPassword(time() . rand(50, 000)); //generate random password
+            $password = md5(time() . rand(50, 000)); //generate random password
             $newUser->setPassword($password, $password);
             $newUser->email = $addy->email;
             $newUser->firstname = $addy->firstname;

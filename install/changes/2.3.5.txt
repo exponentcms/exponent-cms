@@ -4,6 +4,7 @@ Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues
   - adds Facebook og: meta tag support
   - adds remote blog post editing (xmlrpc); this feature is turned off by default
   - adds new easypost ecommerce shipping calculator includes order fufillment functions
+  - improves security by allowing admin controlled password strength settings and more secure password hashing
   - includes all fixes from v2.3.4 patches
 Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete

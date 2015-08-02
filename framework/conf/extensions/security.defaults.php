@@ -25,4 +25,11 @@ if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','1');
 if (!defined('USE_XMLRPC')) define('USE_XMLRPC','0');
 if (!defined('NO_XMLRPC_DESC')) define('NO_XMLRPC_DESC','0');
 
+if (!defined('NEW_PASSWORD')) define('NEW_PASSWORD','0');
+if (!defined('MIN_PWD_LEN')) define('MIN_PWD_LEN','8');
+//if (!defined('MIN_LOWER')) define('MIN_LOWER','0');
+if (!defined('MIN_UPPER')) define('MIN_UPPER','0');
+if (!defined('MIN_DIGITS')) define('MIN_DIGITS','0');
+if (!defined('MIN_SYMBOL')) define('MIN_SYMBOL','0');
+
 ?>

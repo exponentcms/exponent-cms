@@ -39,7 +39,8 @@ class user extends expRecord {
     );
 
     function __construct($params = null, $get_assoc = false, $get_attached = false) {
-        if (is_array($params) && isset($params['pass1'])) $params['password'] =user::encryptPassword($params['pass1']);
+        if (is_array($params) && isset($params['pass1']))
+            $params['password'] = user::encryptPassword($params['pass1']);
         parent::__construct($params, $get_assoc, $get_attached);
         $this->getUserProfile();
         $this->groups = $this->getGroupMemberships();
@@ -115,10 +116,27 @@ class user extends expRecord {
     }
 
     public function authenticate($password) {
-        if (MAINTENANCE_MODE && !$this->isAdmin()) return false; // if MAINTENANCE_MODE only allow admins
-        if (empty($this->id)) return false; // if the user object is null then fail the login
+        if (MAINTENANCE_MODE && !$this->isAdmin())
+            return false; // if MAINTENANCE_MODE only allow admins
+        if (empty($this->id))
+            return false; // if the user object is null then fail the login
         // check password, if account is locked, or is admin(account locking doesn't to administrators)
-        return (($this->is_admin == 1 || $this->is_locked == 0) && $this->password == user::encryptPassword($password)) ? true : false;
+//        return (($this->is_admin == 1 || $this->is_locked == 0) && $this->password == user::encryptPassword($password)) ? true : false;
+
+        // fallback if md5() correct but crypt() incorrect, then auto-update password once
+        if ($this->is_admin == 1 || $this->is_locked == 0) {
+            if ($this->password == user::encryptPassword($password, $this->password)) {
+                return true;
+            } elseif ($this->password == md5($password)) {
+                // convert old md5() password hash to more secure crypt() blowfish hash
+                $params['password'] = user::encryptPassword($password);
+                $params['is_admin'] = !empty($this->is_admin);
+                $params['is_acting_admin'] = !empty($this->is_acting_admin);
+                $this->update($params);
+                return true;
+            }
+        }
+        return false;
     }
 
     public function updateLastLogin() {
@@ -206,15 +224,19 @@ class user extends expRecord {
         if (empty($pass1) || empty($pass2)) {
             return gt('You must fill out both password fields.');
         } elseif ($pass1 != $pass2) {
-            return 'Your passwords do not match';
+            return 'The passwords do not match';
         }
 
         if (strcasecmp($this->username, $pass1) == 0) {
-            return gt('Your password cannot be the same as your username');
+            return gt('The password cannot be the same as the username');
         }
         # For example purposes, the next line forces passwords to be over 8 characters long.
-        if (strlen($pass1) < 8) {
-            return gt('Passwords must be at least 8 characters longs');
+//        if (strlen($pass1) < MIN_PWD_LEN) {
+//            return gt('Passwords must be at least') . ' ' . MIN_PWD_LEN . ' ' . gt('characters long');
+//        }
+        $pw_check = expValidator::checkPasswordStrength($pass1);
+        if (!empty($pw_check)) {
+            return $pw_check;
         }
 
         // if we get here the password must be good
@@ -223,13 +245,34 @@ class user extends expRecord {
     }
 
     /**
-     * Generate ppssword hash
+     * Generate password hash
      *
      * @param $password
      * @return string
      */
-    public static function encryptPassword($password) {
-        return md5($password);
+    public static function encryptPassword($password, $salt = null) {
+        if (!defined('NEW_PASSWORD') || !NEW_PASSWORD) {
+            return md5($password);
+        } else {
+            if (empty($salt)) {
+                if (is_integer(NEW_PASSWORD) && NEW_PASSWORD > 0) {
+                    $cost = NEW_PASSWORD;
+                } else {
+                    $cost = 10;
+                }
+                $salt = substr(base64_encode(openssl_random_pseudo_bytes(17)), 0, 22);
+                $salt = str_replace("+", ".", $salt);
+                $salt = '$' . implode(
+                        '$',
+                        array(
+                            "2y",
+                            str_pad($cost, 2, "0", STR_PAD_LEFT),
+                            $salt
+                        )
+                    );
+            }
+            return crypt($password, $salt);
+        }
     }
 
     public function getGroupMemberships() {
