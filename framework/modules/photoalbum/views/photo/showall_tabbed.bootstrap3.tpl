@@ -53,12 +53,12 @@
     <div id="photos-{$id}" class="">
         <ul class="nav nav-tabs" role="tablist">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$cat->name}</a></li>
+                <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}" role="tab" data-toggle="tab">{$cat->name}</a></li>
             {/foreach}
         </ul>
         <div class="tab-content">
             {foreach name=items from=$page->cats key=catid item=cat}
-                <div id="tab{$smarty.foreach.items.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                     <ul class="image-list">
                         {foreach from=$cat->records item=item}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
@@ -121,9 +121,6 @@
     }
 
 	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-//        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-//		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-//		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();
 	});
 {/literal}
