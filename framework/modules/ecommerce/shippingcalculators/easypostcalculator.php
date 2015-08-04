@@ -391,7 +391,11 @@ class easypostcalculator extends shippingcalculator
         }
         // sort each carrier by cost
         foreach ($eprates as $carrier => $crates) {
-            uasort($eprates[$carrier], 'self::sortByRate');
+            if (empty($eprates[$carrier])) {
+                unset ($eprates[$carrier]);
+            } else {
+                uasort($eprates[$carrier], 'self::sortByRate');
+            }
         }
         //NOTE if an error return a string message, else array of rates
         return $eprates;
@@ -817,7 +821,7 @@ class easypostcalculator extends shippingcalculator
     function ep_initialize()
     {
         // Require the main class
-        include_once(BASE . 'external/easypost-php-2.1.0/lib/easypost.php');
+        include_once(BASE . 'external/easypost-php-2.1.1/lib/easypost.php');
 
         if ($this->configdata['testmode']) {
             $apikey = $this->configdata['testkey'];
