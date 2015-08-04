@@ -80,7 +80,10 @@ class calendarcontrol extends formcontrol {
 //    }
 
     function controlToHTML($name, $label = null) {
-        if (empty($this->default_date) && !empty($this->default)) {
+        if (empty($this->default_date)) {
+            if (empty($this->default)) {
+                $this->default = time();
+            }
             // parse out date into calendarcontrol fields
             $this->default_date = date('m/d/Y', $this->default);
             $this->default_hour = date('h', $this->default);
