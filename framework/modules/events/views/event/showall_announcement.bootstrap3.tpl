@@ -28,14 +28,11 @@
         {/if}
         {permissions}
             {if $permissions.manage}
-                &#160;&#160;|&#160;&#160;
                 {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    &#160;&#160;|&#160;&#160;
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
             {/if}
