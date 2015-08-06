@@ -38,6 +38,7 @@
         inputSelector: "#portfoliosearchinput",
         toggle: function(item, containsText) {
             // use a typically jQuery effect instead of simply showing/hiding the item element
+            //FIXME we also need to take the prev <h2> with us
             if (containsText)
                 $(item).fadeIn();
             else
