@@ -20,7 +20,7 @@
 	</head>
 	<body>
         <?php expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_Flydown")); ?>
-        <div class="container <?php echo (MENU_LOCATION) ? 'fixedmenu' : '' ?>">
+        <div class="container <?php echo (MENU_LOCATION == 'fixed-top') ? 'fixedmenu' : '' ?>">
             <!-- optional flyout sidebar container -->
             <?php if (FLYOUT_SIDEBAR != 0) expTheme::module(array("controller"=>"navigation","action"=>"showall","view"=>"showall_flyout_sidebar","source"=>"navsidebar","chrome"=>true)); ?>
             <section id="main" class="row">

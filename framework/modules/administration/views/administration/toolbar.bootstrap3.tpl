@@ -236,12 +236,16 @@
     });
 
     $(document).ready(function(){
-        if ({/literal}{$top}{literal}) {  // fixed top menu
-            $(document.body).css('margin-top', $('#admin-toolbar').height() + $('#topnavbar').height());
+        if ({/literal}{$top}{literal}) {  // fixed top slingbar menu
+            if ({/literal}{($smarty.const.MENU_LOCATION == 'fixed-top') + 0}{literal}) {  // fixed top main menu
+                $(document.body).css('margin-top', $('#admin-toolbar').height() + $('#topnavbar').height() + 15);
+            } else if ({/literal}{($smarty.const.MENU_LOCATION == 'fixed-bottom') + 0}{literal}) {  // fixed bottom main menu
+                $(document.body).css('margin-top', 15);
+            }
             $(document.body).css('margin-bottom', 0);
-        } else {  // fixed bottom menu
+        } else {  // fixed bottom slingbar menu
             $(document.body).css('margin-top', $('#topnavbar').height());
-            $(document.body).css('margin-bottom', $('#admin-toolbar').height()+10);
+            $(document.body).css('margin-bottom', $('#admin-toolbar').height() + 10);
         }
     });
 {/literal}
