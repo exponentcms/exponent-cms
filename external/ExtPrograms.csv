@@ -37,7 +37,7 @@ csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
-CKEditor,4.4.8,ckeditor.com,4.4.8/4.5.1,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
+CKEditor,4.4.8,ckeditor.com,4.4.8/4.5.2,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 widget & kama skin"
 TinyMCE,4.1.10,tinymce.com,4.2.3,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
@@ -62,7 +62,7 @@ Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.5exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,added additional 'update' method and click update if inline
 pwstrength-bootstrap,1.2.7,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.7,
 Sortable,1.2.1,https://github.com/RubaXa/Sortable,1.2.1,
-jstree,3.0.11,https://github.com/vakata/jstree,3.0.11,added nav menu icons to stylesheet
+jstree,3.2.0,https://github.com/vakata/jstree,3.2.0,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.5,https://github.com/nakupanda/bootstrap3-dialog,1.34.5,
 impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.1,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
