@@ -38,11 +38,17 @@
         inputSelector: "#portfoliosearchinput",
         toggle: function(item, containsText) {
             // use a typically jQuery effect instead of simply showing/hiding the item element
-            //FIXME we also need to take the prev <h2> with us
-            if (containsText)
+            if (containsText) {
+                {/literal}{if $config.usecategories}
+                $(item).prev('h2.category').fadeIn();
+                {/if}{literal}
                 $(item).fadeIn();
-            else
+            } else {
+                {/literal}{if $config.usecategories}
+                $(item).prev('h2.category').fadeOut();
+                {/if}{literal}
                 $(item).fadeOut();
+            }
         }
     });
 {/literal}

@@ -69,8 +69,6 @@
             // use a typically jQuery effect instead of simply showing/hiding the item element
             if (containsText) {
                 {/literal}{if $config.usecategories}
-    var t2=$(item).prev('h2.category').text();
-    console.log(t2);
                 $(item).prev('h2.category').fadeIn();
                 {/if}{literal}
                 $(item).fadeIn();
