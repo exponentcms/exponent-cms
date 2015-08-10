@@ -28,6 +28,7 @@ class fix_sef_urls extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 //	protected $to_version = '2.2.1';
     public $optional = true;
+    public $priority = 51;
 
 	/**
 	 * name/title of upgrade script
@@ -39,7 +40,7 @@ class fix_sef_urls extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In some instances, the sef urls may be duplicated within a module.  This script searches for duplicate sef urls and renames them.
+	function description() { return "In some instances, the sef urls may be duplicated within a module or invalid.  This script searches for duplicate or invalid sef urls and renames them.
 	This script can take a long time for a site with many items (eCommerce)!"; }
 
 	/**
@@ -51,33 +52,72 @@ class fix_sef_urls extends upgradescript {
 	}
 
 	/**
-	 * Reranks pages/form controls with index start of 1
+	 * Searches for and corrects duplicate sef urls within a model
      *
 	 * @return bool
 	 */
 	function upgrade() {
-	    global $db;
+        global $router;
 
         // first get all the system models
         $models = expModules::initializeModels();
         $fixed = 0;
+        $fixed_i = 0;
 
         foreach ($models as $modelname=>$modelpath) {
             $model = new $modelname();
             if (property_exists($model, 'sef_url')) {
-               // adjust forms control ranks
-                $items = $model->find();
-                foreach ($items as $item) {
-                    if (!is_bool(expValidator::uniqueness_of('sef_url', $item, array()))) {
-                        $item->makeSefUrl();
-                        $item->update();
-                        $fixed++;
+                // we need to segregate groupings for help & expCat models
+                if ($model->classname == 'help' || $model->classname == 'expCat') {
+                    if ($model->classname == 'help') {
+                        $column = 'help_version_id';
+                    } elseif ($model->classname == 'expCat') {
+                        $column = 'module';
+                    }
+                    $groups = $model->findValue('all', $column, 1, null, true);
+                    foreach ($groups as $group) {
+                        $items = $model->find('all', $column . ' = ' . $group);
+                        foreach ($items as $item) {
+                            if ($model->classname == 'help') {
+                                $opts = array('grouping_sql' => " AND help_version_id='" . $item->help_version_id . "'");
+                            } elseif ($model->classname == 'expCat') {
+                                $opts = array('grouping_sql' => " AND module='" . $item->module . "'");
+                            }
+                            // check for duplicate sef url
+                            if (!is_bool(expValidator::uniqueness_of('sef_url', $item, $opts))) {
+                                $item->makeSefUrl();
+                                $item->update();
+                                $fixed++;
+                            }
+                            // also check for valid sef url
+                            if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, $opts))) {
+                                $item->sef_url = $router->encode($item->sef_url);
+                                $item->update();
+                                $fixed_i++;
+                            }
+                        }
+                    }
+                } else {
+                    $items = $model->find();
+                    foreach ($items as $item) {
+                        // check for duplicate sef url
+                        if (!is_bool(expValidator::uniqueness_of('sef_url', $item, array()))) {
+                            $item->makeSefUrl();
+                            $item->update();
+                            $fixed++;
+                        }
+                        // also check for valid sef url
+                        if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, array()))) {
+                            $item->sef_url = $router->encode($item->sef_url);
+                            $item->update();
+                            $fixed_i++;
+                        }
                     }
                 }
             }
         }
 
-        return ($fixed?$fixed:gt('No')).' '.gt('duplicate sef urls were found and corrected');
+        return ($fixed_i?$fixed_i:gt('No')).' '.gt('invalid sef urls and').' '.($fixed?$fixed:gt('No')).' '.gt('duplicate sef urls were found and corrected.');
 	}
 
 }
