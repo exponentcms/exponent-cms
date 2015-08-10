@@ -155,7 +155,7 @@ class helpController extends expController {
 
 	    // get the id of the current version and use it if we need to.
         if (expSession::is_set('help-version')) {
-            $version_id = expSession::get('help-version');  // version the site is currently using
+            $version_id = help_version::getHelpVersionId(expSession::get('help-version'));  // version the site is currently using
         } else {
             $version_id = help_version::getCurrentHelpVersionId();
         }
@@ -169,15 +169,22 @@ class helpController extends expController {
         }
 
 		$sectionlist = array();
-        $helpsections = $help->find('all',"help_version_id=".$help->help_version_id);
-		foreach ($helpsections as $helpsection) {
-			if (!empty($helpsection->location_data)) {
-				$helpsrc = expUnserialize($helpsection->location_data);
-				if (!array_key_exists($helpsrc->src, $sectionlist)) {
-                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src .'"').'"');
-				}
-			}
-		}
+//        $helpsections = $help->find('all',"help_version_id=".$help->help_version_id);
+//		foreach ($helpsections as $helpsection) {
+//			if (!empty($helpsection->location_data)) {
+//				$helpsrc = expUnserialize($helpsection->location_data);
+//				if (!array_key_exists($helpsrc->src, $sectionlist)) {
+//                    $sectionlist[$helpsrc->src] = $db->selectValue('section', 'name', 'id="' . $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src .'"').'"');
+//				}
+//			}
+//		}
+        $helplocs = $help->findValue('all', 'location_data', "help_version_id=" . $version_id, null, true);
+        foreach ($helplocs as $helploc) {
+            if (!empty($helploc)) {
+                $helpsrc = expUnserialize($helploc);
+                $sectionlist[$helpsrc->src] = $db->selectValue('sectionref', 'section', 'module = "help" AND source="' . $helpsrc->src . '"');
+            }
+        }
         $sectionlist[$this->loc->src] .= ' '.gt("(current section)");
 
 	    assign_to_template(array(
@@ -216,8 +223,8 @@ class helpController extends expController {
             'model'=>'help',
             'where'=>$where,
             'limit'=>30,
-            'order'=>'help_version_id',
-            'dir'=>'DESC',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'help_version_id'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
@@ -225,7 +232,8 @@ class helpController extends expController {
             'columns'=>array(
                 gt('Title')=>'title',
                 gt('Version')=>'help_version_id',
-                gt('Section')=>'section'
+                gt('Section')=>'section',
+//                gt('Location')=>'location_data'
             ),
         ));
 
@@ -273,7 +281,6 @@ class helpController extends expController {
 	            foreach($files as $file) {
 	                $doc->attachItem($file, $subtype);
 	            }
-	            
 	        }
 	    }
 
@@ -312,12 +319,12 @@ class helpController extends expController {
 	    
 	    $sql  = 'SELECT hv.*, COUNT(h.title) AS num_docs FROM '.DB_TABLE_PREFIX.'_help h ';
 	    $sql .= 'RIGHT JOIN '.DB_TABLE_PREFIX.'_help_version hv ON h.help_version_id=hv.id GROUP BY hv.version';
-	    
+
 	    $page = new expPaginator(array(
             'sql'=>$sql,
             'limit'=>30,
-            'order'=>'version',
-            'dir'=>'DESC',
+            'order'      => (isset($this->params['order']) ? $this->params['order'] : 'version'),
+            'dir'        => (isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],

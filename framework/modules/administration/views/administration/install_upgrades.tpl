@@ -13,13 +13,15 @@
  *
  *}
 
-{*{css unique="install-upgrades"}*}
-{*{literal}*}
-    {*.install-upgrades h3 {*}
-        {*display       : inline;*}
-    {*}*}
-{*{/literal}*}
-{*{/css}*}
+{*
+{css unique="install-upgrades"}
+{literal}
+    .install-upgrades h3 {
+        display       : inline;
+    }
+{/literal}
+{/css}
+*}
 
 <div class="module administration install-upgrades">
     <h1>{'Run Upgrade Scripts'|gettext}</h1>

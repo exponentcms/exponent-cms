@@ -353,7 +353,7 @@ class expValidator {
 		$match = array();
 		$pattern = "/([^0-9a-z-_\+\.])/i";
 		if (empty($object->$field) || preg_match($pattern, $object->$field, $match, PREG_OFFSET_CAPTURE)) {
-			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid sef url.";   
+			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field) . " '" . $object->$field . "' is not a valid sef url.";
 		} else {
 			return true;
 		}
