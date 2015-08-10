@@ -71,42 +71,42 @@
                 </{$config.item_level|default:'h2'}>
             </div>
             <div class="panel-body">
-            {if !empty($item->expFile[0]->url)}
-                <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
-                    {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
-                    {clear}
-                </div>
-            {/if}
-           <span class="hide">
-               {'Location'|gettext}:
-               <span class="location">
-                   {$smarty.const.ORGANIZATION_NAME}
-               </span>
-               {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
-           </span>
-            {permissions}
-                {if substr($item->location_data,0,3) == 'O:8'}
-                    <div class="item-actions">
-                        {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
-                            {if $myloc != $item->location_data}
-                                {if $permissions.manage}
-                                    {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
-                                {else}
-                                    {icon img='arrow_merge.png' title="Merged Content"|gettext}
-                                {/if}
-                            {/if}
-                            {icon action=edit record=$item}
-                        {/if}
-                        {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            {icon action=delete record=$item}
-                        {/if}
+                {if !empty($item->expFile[0]->url)}
+                    <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
+                        {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
+                        {clear}
                     </div>
                 {/if}
-            {/permissions}
-            <div class="bodycopy">
-                {$item->body}
-            </div>
-            {clear}
+                <span class="hide">
+                    {'Location'|gettext}:
+                    <span class="location">
+                        {$smarty.const.ORGANIZATION_NAME}
+                    </span>
+                    {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
+                </span>
+                {permissions}
+                    {if substr($item->location_data,0,3) == 'O:8'}
+                        <div class="item-actions">
+                            {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+                                {if $myloc != $item->location_data}
+                                    {if $permissions.manage}
+                                        {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
+                                    {else}
+                                        {icon img='arrow_merge.png' title="Merged Content"|gettext}
+                                    {/if}
+                                {/if}
+                                {icon action=edit record=$item}
+                            {/if}
+                            {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+                                {icon action=delete record=$item}
+                            {/if}
+                        </div>
+                    {/if}
+                {/permissions}
+                <div class="bodycopy">
+                    {$item->body}
+                </div>
+                {clear}
             </div>
         </div>
     {/foreach}

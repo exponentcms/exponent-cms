@@ -376,7 +376,7 @@ class eventController extends expController {
                 //                $moreevents = false;
                 switch ($viewrange) {
                     case "upcoming":
-                        if (!empty($this->config['rss_limit']) && $this->config['rss_limit'] > 0) {
+                        if (!empty($this->config['enable_ical']) && !empty($this->config['rss_limit']) && $this->config['rss_limit'] > 0) {
                             $eventlimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
                         } else {
                             $eventlimit = "";
@@ -673,7 +673,7 @@ class eventController extends expController {
                     $locsql = $this->aggregateWhereClause();
 
                     $day = expDateTime::startOfDayTimestamp(time());
-                    if (isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
+                    if (!empty($this->config['enable_ical']) && isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
                         $rsslimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
                     } else {
                         $rsslimit = "";

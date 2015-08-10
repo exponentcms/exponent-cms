@@ -76,13 +76,13 @@
                      {/if}
                 </a>
             </{$config.item_level|default:'h2'}>
-           <span class="hide">
-               {'Location'|gettext}:
-               <span class="location">
-                   {$smarty.const.ORGANIZATION_NAME}
-               </span>
-               {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
-           </span>
+            <span class="hide">
+                {'Location'|gettext}:
+                <span class="location">
+                    {$smarty.const.ORGANIZATION_NAME}
+                </span>
+                {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
+            </span>
             {permissions}
                 {if substr($item->location_data,0,3) == 'O:8'}
                     <div class="item-actions">
