@@ -740,13 +740,13 @@ class expTheme
 //            foreach ($_REQUEST as $key=>$param) {  //FIXME need array sanitizer
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
-            if (empty($_REQUEST['route_sanitized'])) {
+//            if (empty($_REQUEST['route_sanitized'])) {
                 if (!$user->isAdmin()) expString::sanitize($_REQUEST);
-            } elseif (empty($_REQUEST['array_sanitized'])) {
+//            } elseif (empty($_REQUEST['array_sanitized'])) {
                 $tmp =1;  //FIXME we've already sanitized at this point
 //            } else {
 //                $tmp =1;  //FIXME we've already sanitized at this point
-            }
+//            }
 
             //FIXME: module/controller glue code..remove ASAP
             $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
