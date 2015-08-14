@@ -29,10 +29,10 @@ Font-Awesome,4.4.0,fortawesome.github.com/Font-Awesome,4.4.0,
 Adminer,4.2.2,www.adminer.org,4.2.2,we add some system user checks in design.inc
 SimpleAjaxUploader,2.1.0,https://github.com/LPology/Simple-Ajax-Uploader,2.1.0,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
-MediaElement.js,2.17.0,mediaelementjs.com/,2.17.0,
+MediaElement.js,2.18.1,mediaelementjs.com/,2.18.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.0.0,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
-html5shiv,3.7.2,https://github.com/aFarkas/html5shiv,3.7.2,IE6-8 shim
+html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
@@ -68,11 +68,11 @@ impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.1,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.5.0,https://github.com/timschlechter/bootstrap-tagsinput,0.5.0,
 Typeahead,0.11.1,http://twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
-bootstrap-duallistbox,3.0.2,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.2,
+bootstrap-duallistbox,3.0.4,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.4,
 select2,3.5.2,https://github.com/ivaynberg/select2,4.0.0,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using fileinput at this time
 Jasny Bootstrap,3.1.3,http://jasny.github.io/bootstrap,3.1.3,only using fileinput at this time
-easypost sdk,2.1.0,https://github.com/EasyPost/easypost-php,2.1.1,
+easypost sdk,2.1.1,https://github.com/EasyPost/easypost-php,2.1.1,
 PLUpload,2.1.8,https://github.com/moxiecode/plupload,2.1.8,needed for TinyMCE Quick Upload
 ,,,,
 Not included yet,,,,
