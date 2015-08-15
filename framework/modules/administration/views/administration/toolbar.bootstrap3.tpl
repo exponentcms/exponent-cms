@@ -35,9 +35,9 @@
             #topnavbar.navbar-fixed-top {
                 margin-top: 50px;
             }
-            {*#topnavbar.navbar-spacer {*}
-                {*height: 74px;*}
-            {*}*}
+            {* #topnavbar.navbar-spacer {
+                height: 74px;
+            }*}
         }
         @media screen and (max-width: {$smarty.const.MENU_WIDTH}px) {
             body {
