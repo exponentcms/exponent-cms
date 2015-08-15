@@ -155,14 +155,15 @@
                     if (parmf > 0) return pathArray[parmf+1];
                 }
             }
-//            if (EXPONENT.SEF_URLS) {
-//                var parmf = pathArray.indexOf(paramName);
-//                if (parmf > 0) return pathArray[parmf+1];
-//            } else {
+        var tmp=pathArray.indexOf(paramName);
+            if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
+                var parmf = pathArray.indexOf(paramName);
+                if (parmf > 0) return pathArray[parmf+1];
+            } else {
                 var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
                 var match = window.location.search.match(reParam) ;
                 return (match && match.length > 1) ? match[1] : '' ;
-//            }
+            }
         }
 
         // Helper function to get parameters from the query string for TinyMCE
