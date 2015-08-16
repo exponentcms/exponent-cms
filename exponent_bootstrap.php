@@ -86,7 +86,11 @@ require_once(BASE . 'framework/core/subsystems/expSettings.php');  // we don't h
 // Process PHP-wrapper settings (ini_sets and settings, and autoloader)
 require_once(BASE . 'exponent_php_setup.php');
 
-$info = gd_info();
-define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
+if (function_exists('gd_info')) {
+	$info = gd_info();
+	define('EXPONENT_HAS_GD',($info['GD Version'] == 'Not Supported' ? 0 : 1));
+} else {
+	define('EXPONENT_HAS_GD', 0);
+}
 
 ?>

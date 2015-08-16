@@ -167,6 +167,9 @@ function _sanity_checkDB() {
 }
 
 function _sanity_checkGD() {
+	if (!EXPONENT_HAS_GD) {
+		return array(SANITY_WARNING,gt('No GD Support'));
+	}
 	$info = gd_info();
 	if ($info['GD Version'] == 'Not Supported') {
 		return array(SANITY_WARNING,gt('No GD Support'));
