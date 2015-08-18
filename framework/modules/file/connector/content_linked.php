@@ -37,6 +37,10 @@ global $router;
                 f_extern.checked = false;
                 var f_text = window.opener.document.getElementById("f_text");
                 f_text.innerHTML = "<?php echo $router->buildUrlByPageId(expSession::get("last_section")); ?>#mod_<?php echo intval($_GET['cid']); ?>";
+                var f_title = window.opener.document.getElementById("f_title");
+                f_title.value = "<?php $sec = $router->getSectionObj(expSession::get("last_section")); echo $sec->name; ?>";
+                var f_alt = window.opener.document.getElementById("f_alt");
+                f_alt.value = "<?php echo $sec->page_title; ?>";
                 window.close();
             };
   		</script>

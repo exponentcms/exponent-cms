@@ -98,6 +98,11 @@ class tinymcecontrol extends formcontrol
                                     console.log(err.status);
                                     console.log(err.message);
                                 },";
+//            $upload .= "
+//            images_upload_url: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',";
+//            $upload .= "
+//            paste_data_images: false,
+//            images_upload_base_path: '" . UPLOAD_DIRECTORY . "',";
         } else {
             $upload = '';
         }
@@ -256,18 +261,31 @@ class tinymcecontrol extends formcontrol
                     font_names :
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
-                    file_browser_callback: function expBrowser (field_name, url, type, win) {
+                    file_picker_callback: function expBrowser (callback, value, meta) {
                         tinymce.activeEditor.windowManager.open({
                             file: '" . makelink(
                                     array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")
-                                ) . "?filter='+type,
+                                ) . "?filter='+meta.filetype,
                             title: '".gt('File Manager')."',
                             width: " . FM_WIDTH . ",
                             height: " . FM_HEIGHT . ",
                             resizable: 'yes'
                         }, {
-                            setUrl: function (url) {
-                                win.document.getElementById(field_name).value = url;
+                            oninsert: function (url, alt, title) {
+                                // Provide file and text for the link dialog
+                                if (meta.filetype == 'file') {
+                                    callback(url, {text: alt, title: title});
+                                }
+
+                                // Provide image and alt text for the image dialog
+                                if (meta.filetype == 'image') {
+                                    callback(url, {alt: alt});
+                                }
+
+                                // Provide alternative source and posted for the media dialog
+                                if (meta.filetype == 'media') {
+                                    callback(url, {poster: alt});
+                                }
                             }
                         });
                         return false;

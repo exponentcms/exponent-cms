@@ -135,6 +135,7 @@ class ckeditorcontrol extends formcontrol {
         if (empty($paste_word)) $paste_word = 'forcePasteAsPlainText : true,';
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',";
+            $upload .= "uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',";
         } else {
             $upload = '';
         }
@@ -171,7 +172,7 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'stylesheetparser,tableresize,image2," . $plugins . "',
+                    extraPlugins : 'stylesheetparser,tableresize,image2,uploadimage," . $plugins . "',
                     removePlugins: 'image',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,

@@ -171,9 +171,9 @@
             init: function() {
                 // Here goes your code for setting your custom things onLoad.
             },
-            mySubmit: function (URL) {
-                // pass selected file path to TinyMCE
-                top.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
+            mySubmit: function (URL, alt, title) {
+                // pass selected file data to TinyMCE
+                top.tinymce.activeEditor.windowManager.getParams().oninsert(URL, alt, title);
                 // close popup window
                 top.tinymce.activeEditor.windowManager.close();
             }
@@ -299,7 +299,7 @@
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
                     {/literal}{if $update=='ck'}{literal}
-                    window.opener.CKEDITOR.tools.callFunction( funcNum, file.url, function() {
+                    window.opener.CKEDITOR.tools.callFunction( funcNum, EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, ''), function() {
                         var dialog = this.getDialog();
                         if ( dialog.getName() == 'image2' ) {
                             dialog.getContentElement( 'info', 'alt' ).setValue( file.alt );
@@ -311,7 +311,7 @@
                     });
                     window.close();
                     {/literal}{elseif $update=='tiny'}{literal}
-                    FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+                    FileBrowserDialogue.mySubmit(EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, '')+' ', file.alt, file.title); // pass selected file data to TinyMCE
                     {/literal}{else}{literal}
                     if ((file.length) == 1) {
                         myfile = file[0];
