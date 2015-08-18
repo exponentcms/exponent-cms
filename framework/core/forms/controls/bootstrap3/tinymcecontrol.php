@@ -206,11 +206,13 @@ class tinymcecontrol extends formcontrol
                     browser_spellcheck : " . $sc_brw_off . " ,
                     importcss_append: true,
                     style_formats: [
-                        {title: 'Image Left', selector: 'img', styles: {
+                        {title: 'Image Left',
+                            selector: 'img', styles: {
                             'float' : 'left',
                             'margin': '0 10px 0 10px'
                         }},
-                        {title: 'Image Right', selector: 'img', styles: {
+                        {title: 'Image Right',
+                            selector: 'img', styles: {
                             'float' : 'right',
                             'margin': '0 10px 0 10px'
                         }},
@@ -278,7 +280,7 @@ class tinymcecontrol extends formcontrol
 
                                 // Provide alternative source and posted for the media dialog
                                 if (meta.filetype == 'media') {
-                                    callback(url, {poster: alt});
+                                    callback(url);
                                 }
                             }
                         });

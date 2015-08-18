@@ -230,6 +230,8 @@
 //				  },
                 {/literal}{if $filter=='image'}{literal}
                 onlyMimes : ['image'],
+                {/literal}{elseif $filter=='media'}{literal}
+                onlyMimes : ['video'],
                 {/literal}{/if}{literal}
                 defaultView : '{/literal}{if $smarty.const.FM_THUMBNAILS}icons{else}list{/if}{literal}',
                 // dateFormat : '{/literal}{$smarty.const.DISPLAY_DATE_FORMAT}{literal}',
