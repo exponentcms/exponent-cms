@@ -188,6 +188,13 @@ abstract class elFinderVolumeDriver {
 		'mimeDetect'      => 'auto',
 		// mime.types file path (for mimeDetect==internal)
 		'mimefile'        => '',
+		// mime type normalize map : Array '[ext]:[detected mime type]' => '[normalized mime]'
+		'mimeMap'         => array(
+		                     'md:application/x-genesis-rom' => 'text/x-markdown',
+		                     'md:text/plain'                => 'text/x-markdown',
+		                     'markdown:text/plain'          => 'text/x-markdown',
+		                     'css:text/x-asm'               => 'text/css'
+		                    ),
 		// directory for thumbnails
 		'tmbPath'         => '.tmb',
 		// mode to create thumbnails dir
@@ -431,6 +438,8 @@ abstract class elFinderVolumeDriver {
 		'hh'    => 'text/x-c++hdr',
 		'log'   => 'text/plain',
 		'csv'   => 'text/x-comma-separated-values',
+		'md'    => 'text/x-markdown',
+		'markdown' => 'text/x-markdown',
 		// images
 		'bmp'   => 'image/x-ms-bmp',
 		'jpg'   => 'image/jpeg',
@@ -563,6 +572,11 @@ abstract class elFinderVolumeDriver {
 		// check 'statOwner' for command `chmod`
 		if (empty($this->options['statOwner'])) {
 			$this->disabled[] ='chmod';
+		}
+		
+		// check 'mimeMap'
+		if (!is_array($this->options['mimeMap'])) {
+			$this->options['mimeMap'] = array();
 		}
 	}
 	
@@ -996,7 +1010,7 @@ abstract class elFinderVolumeDriver {
 			'path'          => $this->path($this->decode($hash)),
 			'url'           => $this->URL,
 			'tmbUrl'        => $this->tmbURL,
-			'disabled'      => $this->disabled,
+			'disabled'      => array_merge(array_unique($this->disabled)), // `array_merge` for type array of JSON
 			'separator'     => $this->separator,
 			'copyOverwrite' => intval($this->options['copyOverwrite']),
 			'uploadMaxSize' => intval($this->uploadMaxSize),
@@ -1149,6 +1163,7 @@ abstract class elFinderVolumeDriver {
 		
 		if ($hash === $this->root()) {
 			$file['uiCmdMap'] = (isset($this->options['uiCmdMap']) && is_array($this->options['uiCmdMap']))? $this->options['uiCmdMap'] : array();
+			$file['disabled'] = array_merge(array_unique($this->disabled)); // `array_merge` for type array of JSON
 		}
 		
 		return ($file) ? $file : $this->setError(elFinder::ERROR_FILE_NOT_FOUND);
@@ -1529,7 +1544,9 @@ abstract class elFinderVolumeDriver {
 		$this->clearcache();
 		
 		if ($file) { // file exists
-			if ($this->options['uploadOverwrite']) {
+			// check POST data `overwrite` for 3rd party uploader
+			$overwrite = isset($_POST['overwrite'])? (bool)$_POST['overwrite'] : $this->options['uploadOverwrite'];
+			if ($overwrite) {
 				if (!$file['write']) {
 					return $this->setError(elFinder::ERROR_PERM_DENIED);
 				} elseif ($file['mime'] == 'directory') {
@@ -1860,9 +1877,6 @@ abstract class elFinderVolumeDriver {
 		}
 		
 		$path = $this->decode($hash);
-		if (!$this->canResize($path, $file)) {
-			return $this->setError(elFinder::ERROR_UNSUPPORT_TYPE);
-		}
 		
 		$work_path = $this->getWorkFile($this->encoding? $this->convEncIn($path, true) : $path);
 
@@ -1870,7 +1884,13 @@ abstract class elFinderVolumeDriver {
 			if ($work_path && $path !== $work_path && is_file($work_path)) {
 				@unlink($work_path);
 			}
-			return false;
+			return $this->setError(elFinder::ERROR_PERM_DENIED);
+		}
+
+		if ($this->imgLib != 'imagick') {
+			if (elFinder::isAnimationGif($work_path)) {
+				return $this->setError(elFinder::ERROR_UNSUPPORT_TYPE);
+			}
 		}
 
 		switch($mode) {
@@ -2846,14 +2866,16 @@ abstract class elFinderVolumeDriver {
 	protected function mimetype($path, $name = '') {
 		$type = '';
 		
+		if ($name === '') {
+			$name = $path;
+		}
+		$ext = (false === $pos = strrpos($name, '.')) ? '' : substr($name, $pos + 1);
 		if ($this->mimeDetect == 'finfo') {
 			if ($type = @finfo_file($this->finfo, $path)) {
-				if ($name === '') {
-					$name = $path;
-				}
-				$ext = (false === $pos = strrpos($name, '.')) ? '' : substr($name, $pos + 1);
 				if ($ext && preg_match('~^application/(?:octet-stream|(?:x-)?zip)~', $type)) {
 					if (isset(elFinderVolumeDriver::$mimetypes[$ext])) $type = elFinderVolumeDriver::$mimetypes[$ext];
+				} else if ($ext === 'js' && preg_match('~^text/~', $type)) {
+					$type = 'text/javascript';
 				}
 			} else {
 				$type = 'unknown';
@@ -2873,6 +2895,12 @@ abstract class elFinderVolumeDriver {
 		} elseif ($type == 'application/x-zip') {
 			// http://elrte.org/redmine/issues/163
 			$type = 'application/zip';
+		}
+		
+		// mime type normalization
+		$_checkKey = strtolower($ext.':'.$type);
+		if (isset($this->options['mimeMap'][$_checkKey])) {
+			$type = $this->options['mimeMap'][$_checkKey];
 		}
 		
 		return $type == 'unknown' && $this->mimeDetect != 'internal'
@@ -3374,40 +3402,45 @@ abstract class elFinderVolumeDriver {
 		
 		$tmbSize = $this->tmbSize;
 		
-  		if (($s = getimagesize($tmb)) == false) {
+		if (($s = getimagesize($tmb)) == false) {
 			return false;
 		}
-    
-    		/* If image smaller or equal thumbnail size - just fitting to thumbnail square */
-    		if ($s[0] <= $tmbSize && $s[1]  <= $tmbSize) {
-     	   		$result = $this->imgSquareFit($tmb, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png' );
-	    	} else {
 
-	    		if ($this->options['tmbCrop']) {
-        
-        			/* Resize and crop if image bigger than thumbnail */
-	        		if (!(($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize) ) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
-    					$result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
-	        		}
-
-				if (($s = getimagesize($tmb)) != false) {
+		/* If image smaller or equal thumbnail size - just fitting to thumbnail square */
+		if ($s[0] <= $tmbSize && $s[1]	<= $tmbSize) {
+			$result = $this->imgSquareFit($tmb, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png' );
+		} else {
+		
+			if ($this->options['tmbCrop']) {
+		
+				$result = $tmb;
+				/* Resize and crop if image bigger than thumbnail */
+				if (!(($s[0] > $tmbSize && $s[1] <= $tmbSize) || ($s[0] <= $tmbSize && $s[1] > $tmbSize) ) || ($s[0] > $tmbSize && $s[1] > $tmbSize)) {
+					$result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
+				}
+		
+				if ($result && ($s = getimagesize($tmb)) != false) {
 					$x = $s[0] > $tmbSize ? intval(($s[0] - $tmbSize)/2) : 0;
 					$y = $s[1] > $tmbSize ? intval(($s[1] - $tmbSize)/2) : 0;
-					$result = $this->imgCrop($tmb, $tmbSize, $tmbSize, $x, $y, 'png');
+					$result = $this->imgCrop($result, $tmbSize, $tmbSize, $x, $y, 'png');
+				} else {
+					$result = false;
 				}
-
-    			} else {
-        			$result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, true, 'png');
-      			}
-
-			$result = $this->imgSquareFit($tmb, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png' );
+		
+			} else {
+				$result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, true, 'png');
+			}
+		
+			if ($result) {
+				$result = $this->imgSquareFit($result, $tmbSize, $tmbSize, 'center', 'middle', $this->options['tmbBgColor'], 'png' );
+			}
 		}
-
+		
 		if (!$result) {
 			unlink($tmb);
 			return false;
 		}
-
+		
 		return $name;
 	}
 
@@ -3424,45 +3457,38 @@ abstract class elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 * @author Alexey Sukhotin
 	 **/
-  	protected function imgResize($path, $width, $height, $keepProportions = false, $resizeByBiggerSide = true, $destformat = null) {
+	protected function imgResize($path, $width, $height, $keepProportions = false, $resizeByBiggerSide = true, $destformat = null) {
 		if (($s = @getimagesize($path)) == false) {
 			return false;
 		}
 
-    	$result = false;
-    	
+		$result = false;
+		
 		list($size_w, $size_h) = array($width, $height);
-    
-    	if ($keepProportions == true) {
-           
-      		list($orig_w, $orig_h, $new_w, $new_h) = array($s[0], $s[1], $width, $height);
-        
-      		/* Calculating image scale width and height */
-      		$xscale = $orig_w / $new_w;
-      		$yscale = $orig_h / $new_h;
-
-      		/* Resizing by biggest side */
-
+	
+		if ($keepProportions == true) {
+		
+			list($orig_w, $orig_h) = array($s[0], $s[1]);
+		
+			/* Resizing by biggest side */
 			if ($resizeByBiggerSide) {
-
-		        if ($orig_w > $orig_h) {
-					$size_h = $orig_h * $width / $orig_w;
+				if ($orig_w > $orig_h) {
+					$size_h = round($orig_h * $width / $orig_w);
 					$size_w = $width;
-        		} else {
-          			$size_w = $orig_w * $height / $orig_h;
-          			$size_h = $height;
+				} else {
+					$size_w = round($orig_w * $height / $orig_h);
+					$size_h = $height;
 				}
-      
 			} else {
-        		if ($orig_w > $orig_h) {
-          			$size_w = $orig_w * $height / $orig_h;
-          			$size_h = $height;
-		        } else {
-					$size_h = $orig_h * $width / $orig_w;
+				if ($orig_w > $orig_h) {
+					$size_w = round($orig_w * $height / $orig_h);
+					$size_h = $height;
+				} else {
+					$size_h = round($orig_h * $width / $orig_w);
 					$size_w = $width;
 				}
 			}
-    	}
+		}
 
 		switch ($this->imgLib) {
 			case 'imagick':
@@ -3470,7 +3496,6 @@ abstract class elFinderVolumeDriver {
 				try {
 					$img = new imagick($path);
 				} catch (Exception $e) {
-
 					return false;
 				}
 
@@ -3478,9 +3503,23 @@ abstract class elFinderVolumeDriver {
 				// resize bench: http://app-mgng.rhcloud.com/9
 				// resize sample: http://www.dylanbeattie.net/magick/filters/result.html
 				$filter = ($destformat === 'png' /* createTmb */)? Imagick::FILTER_BOX : Imagick::FILTER_LANCZOS;
-				$img->resizeImage($size_w, $size_h, $filter, 1);
-					
-				$result = $img->writeImage($path);
+				
+				$ani = ($img->getNumberImages() > 1);
+				if ($ani && is_null($destformat)) {
+					$img = $img->coalesceImages();
+					do {
+						$img->resizeImage($size_w, $size_h, $filter, 1);
+					} while ($img->nextImage());
+					$img = $img->optimizeImageLayers();
+					$result = $img->writeImages($path, true);
+				} else {
+					if ($ani) {
+						$img->setFirstIterator();
+					}
+					$img->resizeImage($size_w, $size_h, $filter, 1);
+					$result = $img->writeImage($path);
+				}
+				
 				$img->destroy();
 
 				return $result ? $path : false;
@@ -3494,7 +3533,7 @@ abstract class elFinderVolumeDriver {
 				
 					self::gdImageBackground($tmp,$this->options['tmbBgColor']);
 					
-					if (!imagecopyresampled($tmp, $img, 0, 0, 0, 0, $size_w, $size_h, $s[0], $s[1])) {
+					if (!imagecopyresampled($tmp, $img, 0, 0, 0, 0, $size_w, $size_h, $orig_w, $orig_h)) {
 						return false;
 					}
 		
@@ -3538,13 +3577,28 @@ abstract class elFinderVolumeDriver {
 				try {
 					$img = new imagick($path);
 				} catch (Exception $e) {
-
 					return false;
 				}
-
-				$img->cropImage($width, $height, $x, $y);
-
-				$result = $img->writeImage($path);
+				
+				$ani = ($img->getNumberImages() > 1);
+				if ($ani && is_null($destformat)) {
+					$img = $img->coalesceImages();
+					do {
+						$img->setImagePage($s[0], $s[1], 0, 0);
+						$img->cropImage($width, $height, $x, $y);
+						$img->setImagePage($width, $height, 0, 0);
+					} while ($img->nextImage());
+					$img = $img->optimizeImageLayers();
+					$result = $img->writeImages($path, true);
+				} else {
+					if ($ani) {
+						$img->setFirstIterator();
+					}
+					$img->setImagePage($s[0], $s[1], 0, 0);
+					$img->cropImage($width, $height, $x, $y);
+					$img->setImagePage($width, $height, 0, 0);
+					$result = $img->writeImage($path);
+				}
 				
 				$img->destroy();
 
@@ -3609,7 +3663,7 @@ abstract class elFinderVolumeDriver {
 		/* Coordinates for image over square aligning */
 		$y = ceil(abs($height - $s[1]) / 2); 
 		$x = ceil(abs($width - $s[0]) / 2);
-    
+
 		switch ($this->imgLib) {
 			case 'imagick':
 				try {
@@ -3617,13 +3671,38 @@ abstract class elFinderVolumeDriver {
 				} catch (Exception $e) {
 					return false;
 				}
-
-				$img1 = new Imagick();
-				$img1->newImage($width, $height, new ImagickPixel($bgcolor));
-				$img1->setImageColorspace($img->getImageColorspace());
-				$img1->setImageFormat($destformat != null ? $destformat : $img->getFormat());
-				$img1->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
-				$result = $img1->writeImage($path);
+				
+				$ani = ($img->getNumberImages() > 1);
+				if ($ani && is_null($destformat)) {
+					$img1 = new Imagick();
+					$img1->setFormat('gif');
+					$img = $img->coalesceImages();
+					do {
+						$gif = new Imagick();
+						$gif->newImage($width, $height, new ImagickPixel($bgcolor));
+						$gif->setImageColorspace($img->getImageColorspace());
+						$gif->setImageFormat('gif');
+						$gif->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
+						$gif->setImageDelay($img->getImageDelay());
+						$gif->setImageIterations($img->getImageIterations());
+						$img1->addImage($gif);
+						$gif->destroy();
+					} while ($img->nextImage());
+					$img1 = $img1->optimizeImageLayers();
+					$result = $img1->writeImages($path, true);
+				} else {
+					if ($ani) {
+						$img->setFirstIterator();
+					}
+					$img1 = new Imagick();
+					$img1->newImage($width, $height, new ImagickPixel($bgcolor));
+					$img1->setImageColorspace($img->getImageColorspace());
+					$img1->setImageFormat($destformat != null ? $destformat : $img->getFormat());
+					$img1->compositeImage( $img, imagick::COMPOSITE_OVER, $x, $y );
+					$result = $img1->writeImage($path);
+				}
+				
+				$img1->destroy();
 				$img->destroy();
 				return $result ? $path : false;
 
@@ -3708,8 +3787,17 @@ abstract class elFinderVolumeDriver {
 					return false;
 				}
 
-				$img->rotateImage(new ImagickPixel($bgcolor), $degree);
-				$result = $img->writeImage($path);
+				if ($img->getNumberImages() > 1) {
+					$img = $img->coalesceImages();
+					do {
+						$img->rotateImage(new ImagickPixel($bgcolor), $degree);
+					} while ($img->nextImage());
+					$img = $img->optimizeImageLayers();
+					$result = $img->writeImages($path, true);
+				} else {
+					$img->rotateImage(new ImagickPixel($bgcolor), $degree);
+					$result = $img->writeImage($path);
+				}
 				$img->destroy();
 				return $result ? $path : false;
 

@@ -14,7 +14,7 @@ elFinder.prototype.commands.resize = function() {
 	
 	this.getstate = function() {
 		var sel = this.fm.selectedFiles();
-		return !this._disabled && sel.length == 1 && sel[0].read && sel[0].write && sel[0].mime.indexOf('image/') !== -1 && !sel[0].locked ? 0 : -1;
+		return !this._disabled && sel.length == 1 && sel[0].read && sel[0].write && sel[0].mime.indexOf('image/') !== -1 ? 0 : -1;
 	};
 	
 	this.exec = function(hashes) {
@@ -606,7 +606,7 @@ elFinder.prototype.commands.resize = function() {
 				buttons[fm.i18n('btnCancel')] = function() { dialog.elfinderdialog('close'); };
 				
 				fm.dialog(dialog, {
-					title          : file.name,
+					title          : fm.escape(file.name),
 					width          : 650,
 					resizable      : false,
 					destroyOnClose : true,

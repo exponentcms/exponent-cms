@@ -232,6 +232,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'confirmRm'       : 'Are you sure you want to remove files?<br/>This cannot be undone!',
 			'confirmRepl'     : 'Replace old file with new one?',
             'confirmConvUTF8' : 'Not in UTF-8<br/>Convert to UTF-8?<br/>Contents become UTF-8 by saving after conversion.', // added 08.04.2014
+			'confirmNotSave'  : 'It has been modified.<br/>Losing work if you do not save changes.', // from v2.1 added 15.7.2015
 			'apllyAll'        : 'Apply to all',
 			'name'            : 'Name',
 			'size'            : 'Size',
@@ -368,6 +369,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindAWK'         : 'AWK source',
 			'kindCSV'         : 'Comma separated values',
 			'kindDOCBOOK'     : 'Docbook XML document',
+			'kindMarkdown'    : 'Markdown text', // added 20.7.2015
 			// images
 			'kindImage'       : 'Image',
 			'kindBMP'         : 'BMP image',

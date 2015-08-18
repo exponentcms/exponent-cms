@@ -9,8 +9,9 @@ $.fn.elfindersearchbutton = function(cmd) {
 		var result = false,
 			fm     = cmd.fm,
 			id     = function(name){return fm.namespace + name},
-			timer  = null,
-			button = $(this).hide().addClass('ui-widget-content elfinder-button '+fm.res('class', 'searchbtn')+''),
+			toolbar= fm.getUI('toolbar'),
+			btnCls = fm.res('class', 'searchbtn'),
+			button = $(this).hide().addClass('ui-widget-content elfinder-button '+btnCls),
 			search = function() {
 				opts.slideUp();
 				var val = $.trim(input.val()),
@@ -83,6 +84,7 @@ $.fn.elfindersearchbutton = function(cmd) {
 				)
 				.hide()
 				.zIndex(12+button.zIndex())
+				.css('overflow', 'hidden')
 				.appendTo(button);
 		
 		$('<span class="ui-icon ui-icon-search" title="'+cmd.title+'"/>')
@@ -108,18 +110,23 @@ $.fn.elfindersearchbutton = function(cmd) {
 		});
 		
 		// wait when button will be added to DOM
-		setTimeout(function() {
-			button.parent().detach();
-			fm.getUI('toolbar').prepend(button.show());
-			// position icons for ie7
-			if (fm.UA.ltIE7) {
-				var icon = button.children(fm.direction == 'ltr' ? '.ui-icon-close' : '.ui-icon-search');
-				icon.css({
-					right : '',
-					left  : parseInt(button.width())-icon.outerWidth(true)
-				});
+		toolbar.on('load', function(){
+			var parent = button.parent();
+			if (parent.length) {
+				toolbar.children('.'+btnCls).remove();
+				toolbar.prepend(button.show());
+				parent.remove();
+				// position icons for ie7
+				if (fm.UA.ltIE7) {
+					var icon = button.children(fm.direction == 'ltr' ? '.ui-icon-close' : '.ui-icon-search');
+					icon.css({
+						right : '',
+						left  : parseInt(button.width())-icon.outerWidth(true)
+					});
+				}
+				fm.resize();
 			}
-		}, 200);
+		});
 		
 		fm
 			.select(function() {

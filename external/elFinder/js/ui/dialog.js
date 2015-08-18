@@ -61,12 +61,12 @@ $.fn.elfinderdialog = function(opts) {
 					
 					$(document).mousedown();
 
-					if (!dialog.is('.'+clactive)) {
+					if (!dialog.hasClass(clactive)) {
 						parent.find('.'+cldialog+':visible').removeClass(clactive);
 						dialog.addClass(clactive).zIndex(maxZIndex() + 1);
 					}
 				})
-				.bind('open', function() {
+				.on('open', function() {
 					var d = $(this),
 					maxWinWidth = (d.outerWidth() > parent.width()-10)? parent.width()-10 : null;
 					
@@ -76,7 +76,7 @@ $.fn.elfinderdialog = function(opts) {
 					
 					typeof(opts.open) == 'function' && $.proxy(opts.open, self[0])();
 
-					if (!dialog.is('.'+clnotify)) {
+					if (!dialog.hasClass(clnotify)) {
 						
 						parent.find('.'+cldialog+':visible').not('.'+clnotify).each(function() {
 							var d     = $(this),
@@ -95,7 +95,7 @@ $.fn.elfinderdialog = function(opts) {
 						});
 					} 
 				})
-				.bind('close', function() {
+				.on('close', function() {
 					var dialogs = parent.find('.elfinder-dialog:visible'),
 						z = maxZIndex();
 					
@@ -124,12 +124,12 @@ $.fn.elfinderdialog = function(opts) {
 						dialog.hide().remove();
 					}
 				})
-				.bind('totop', function() {
+				.on('totop', function() {
 					$(this).mousedown().find('.ui-button:'+(platformWin? 'first':'last')).focus().end().find(':text:first').focus();
 					$(this).data('modal') && overlay.is(':hidden') && overlay.elfinderoverlay('show');
 					overlay.zIndex($(this).zIndex());
 				})
-				.bind('posinit', function() {
+				.on('posinit', function() {
 					var css = opts.position;
 					if (!css) {
 						css = {
@@ -159,10 +159,10 @@ $.fn.elfinderdialog = function(opts) {
 		dialog.trigger('posinit');
 
 		if (opts.closeOnEscape) {
-			$(document).bind('keyup.'+id, function(e) {
-				if (e.keyCode == $.ui.keyCode.ESCAPE && dialog.is('.'+clactive)) {
+			$(document).on('keyup.'+id, function(e) {
+				if (e.keyCode == $.ui.keyCode.ESCAPE && dialog.hasClass(clactive)) {
 					self.elfinderdialog('close');
-					$(document).unbind('keyup.'+id);
+					$(document).off('keyup.'+id);
 				}
 			})
 		}
@@ -181,7 +181,13 @@ $.fn.elfinderdialog = function(opts) {
 		$.each(opts.buttons, function(name, cb) {
 			var button = $('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">'+name+'</span></button>')
 				.click($.proxy(cb, self[0]))
-				.hover(function(e) { $(this)[e.type == 'mouseenter' ? 'focus' : 'blur']() })
+				.hover(function(e) { 
+					if (opts.btnHoverFocus) {
+						$(this)[e.type == 'mouseenter' ? 'focus' : 'blur']();
+					} else {
+						$(this).toggleClass(clhover, e.type == 'mouseenter');
+					}
+				})
 				.focus(function() { $(this).addClass(clhover) })
 				.blur(function() { $(this).removeClass(clhover) })
 				.keydown(function(e) { 
@@ -233,6 +239,7 @@ $.fn.elfinderdialog.defaults = {
 	closeOnEscape : true,
 	destroyOnClose : false,
 	buttons   : {},
+	btnHoverFocus : true,
 	position  : null,
 	width     : 320,
 	height    : 'auto',

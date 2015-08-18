@@ -57,7 +57,7 @@ elFinder.prototype.commands.upload = function() {
 		
 		dropUpload = function(e) {
 			e.stopPropagation();
-		  	e.preventDefault();
+			e.preventDefault();
 			var file = false;
 			var type = '';
 			var data = null;
@@ -77,7 +77,7 @@ elFinder.prototype.commands.upload = function() {
 				file = [ data ];
 				type = 'text';
 			}
-			var target = e._target || null;
+			target = e._target || null;
 			return file? fm.upload({files : file, type : type, target : target}) : false;
 		};
 		
@@ -94,14 +94,19 @@ elFinder.prototype.commands.upload = function() {
 		
 		paste = function(e) {
 			var e = e.originalEvent || e;
-			var files = [];
+			var files = [], items = [];
 			var file;
-			if (e.clipboardData && e.clipboardData.items && e.clipboardData.items.length){
-				for (var i=0; i < e.clipboardData.items.length; i++) {
-					if (e.clipboardData.items[i].kind == 'file') {
-						file = e.clipboardData.items[i].getAsFile();
-						files.push(file);
+			if (e.clipboardData) {
+				if (e.clipboardData.items && e.clipboardData.items.length){
+					items = e.clipboardData.items;
+					for (var i=0; i < items.length; i++) {
+						if (e.clipboardData.items[i].kind == 'file') {
+							file = e.clipboardData.items[i].getAsFile();
+							files.push(file);
+						}
 					}
+				} else if (e.clipboardData.files && e.clipboardData.files.length) {
+					files = e.clipboardData.files;
 				}
 				if (files.length) {
 					upload({files : files, type : 'files'});
@@ -111,6 +116,14 @@ elFinder.prototype.commands.upload = function() {
 			var my = e.target || e.srcElement;
 			setTimeout(function () {
 				if (my.innerHTML) {
+					$(my).find('img').each(function(i, v){
+						if (v.src.match(/^webkit-fake-url:\/\//)) {
+							// For Safari's bug.
+							// ref. https://bugs.webkit.org/show_bug.cgi?id=49141
+							//      https://dev.ckeditor.com/ticket/13029
+							$(v).remove();
+						}
+					});
 					var src = my.innerHTML.replace(/<br[^>]*>/gi, ' ');
 					var type = src.match(/<[^>]+>/)? 'html' : 'text';
 					my.innerHTML = '';
@@ -121,7 +134,7 @@ elFinder.prototype.commands.upload = function() {
 		
 		input = $('<input type="file" multiple="true"/>')
 			.change(function() {
-				upload({input : input[0]});
+				upload({input : input[0], type : 'files'});
 			});
 
 		button = $('<div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">'+fm.i18n('selectForUpload')+'</span></div>')
@@ -140,13 +153,8 @@ elFinder.prototype.commands.upload = function() {
 			.on('mousedown click', function(){
 				$(this).focus();
 			})
-			.on('focus', function(e){
-				e = e.originalEvent || e;
-				(e.target || e.srcElement).innerHTML = '';
-			})
-			.on('blur', function(e){
-				e = e.originalEvent || e;
-				(e.target || e.srcElement).innerHTML = fm.i18n('dropFilesBrowser');
+			.on('focus', function(){
+				this.innerHTML = '';
 			})
 			.on('dragenter mouseover', function(){
 				pastebox.addClass(hover);
@@ -163,11 +171,8 @@ elFinder.prototype.commands.upload = function() {
 				.on('mousedown click', function(){
 					$(this).focus();
 				})
-				.on('focus', function(e){
-					(e.originalEvent || e).target.innerHTML = '';
-				})
-				.on('blur', function(e){
-					(e.originalEvent || e).target.innerHTML = fm.i18n('dropPasteFiles');
+				.on('focus', function(){
+					this.innerHTML = '';
 				})
 				.on('mouseover', function(){
 					$(this).addClass(hover);
@@ -210,7 +215,7 @@ elFinder.prototype.commands.upload = function() {
 		}
 		
 		fm.dialog(dialog, {
-			title          : this.title + (targets? ' - ' + fm.file(targets[0]).name : ''),
+			title          : this.title + (targets? ' - ' + fm.escape(fm.file(targets[0]).name) : ''),
 			modal          : true,
 			resizable      : false,
 			destroyOnClose : true

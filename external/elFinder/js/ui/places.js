@@ -116,7 +116,7 @@ $.fn.elfinderplaces = function(fm, opts) {
 			 * @return String  removed name
 			 **/
 			remove = function(hash) {
-				var ndx = $.inArray(hash, dirs), name, tgt;
+				var ndx = $.inArray(hash, dirs), name = null, tgt;
 
 				if (ndx !== -1) {
 					dirs.splice(ndx, 1);
@@ -158,10 +158,10 @@ $.fn.elfinderplaces = function(fm, opts) {
 			root = wrapper.children('.'+navdir)
 				.addClass(clroot)
 				.click(function() {
-					if (root.is('.'+collapsed)) {
+					if (root.hasClass(collapsed)) {
 						places.toggleClass(expanded);
 						subtree.slideToggle();
-						fm.storage('placesState', places.is('.'+expanded)? 1 : 0);
+						fm.storage('placesState', places.hasClass(expanded)? 1 : 0);
 					}
 				}),
 			/**
@@ -179,10 +179,10 @@ $.fn.elfinderplaces = function(fm, opts) {
 				.hide()
 				.append(wrapper)
 				.appendTo(fm.getUI('navbar'))
-				.delegate('.'+navdir, 'mouseenter mouseleave', function(e) {
+				.on('mouseenter mouseleave', '.'+navdir, function(e) {
 					$(this).toggleClass('ui-state-hover', (e.type == 'mouseenter'));
 				})
-				.delegate('.'+navdir, 'click', function(e) {
+				.on('click', '.'+navdir, function(e) {
 					var p = $(this);
 					if (p.data('longtap')) {
 						e.stopPropagation();
@@ -190,7 +190,7 @@ $.fn.elfinderplaces = function(fm, opts) {
 					}
 					fm.exec('open', p.attr('id').substr(6));
 				})
-				.delegate('.'+navdir+':not(.'+clroot+')', 'contextmenu', function(e) {
+				.on('contextmenu', '.'+navdir+':not(.'+clroot+')', function(e) {
 					var hash = $(this).attr('id').substr(6);
 					
 					e.preventDefault();
@@ -310,10 +310,11 @@ $.fn.elfinderplaces = function(fm, opts) {
 				var names = [];
 				if (e.data.removed) {
 					$.each(e.data.removed, function(i, hash) {
-						names.push(remove(hash));
+						var name = remove(hash);
+						name && names.push(name);
 					});
 				}
-				if (e.data.added) {
+				if (e.data.added && names.length) {
 					$.each(e.data.added, function(i, file) {
 						if ($.inArray(file.name, names) !== 1) {
 							file.mime == 'directory' && add(file);

@@ -28,7 +28,7 @@ elFinder.prototype.commands.rm = function() {
 			files  = this.files(hashes),
 			cnt    = files.length,
 			cwd    = fm.cwd().hash,
-			goroot = false;
+			goup   = false;
 
 		if (!cnt || this._disabled) {
 			return dfrd.reject();
@@ -41,8 +41,11 @@ elFinder.prototype.commands.rm = function() {
 			if (file.locked) {
 				return !dfrd.reject(['errLocked', file.name]);
 			}
-			if (file.hash == cwd) {
-				goroot = fm.root(file.hash);
+			if (file.mime === 'directory') {
+				var parents = fm.parents(cwd);
+				if (file.hash == cwd || $.inArray(file.hash, parents)) {
+					goup = (file.phash && fm.file(file.phash).read)? file.phash : fm.root(file.hash);
+				}
 			}
 		});
 
@@ -66,7 +69,7 @@ elFinder.prototype.commands.rm = function() {
 						})
 						.done(function(data) {
 							dfrd.done(data);
-							goroot && fm.exec('open', goroot)
+							goup && fm.exec('open', goup)
 						})
 						.always(function() {
 							fm.unlockfiles({files : files});
