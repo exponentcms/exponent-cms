@@ -197,14 +197,17 @@
                 filebrowserBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
                 filebrowserImageBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck" filter="image"}{literal}',
                 filebrowserFlashBrowseUrl : '{/literal}{link controller="file" action="picker" ajax_action=1 update="ck"}{literal}',
-                {/literal}{if (!$user->globalPerm('prevent_uploads'))}filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',{/if}{literal}
+                {/literal}{if (!$user->globalPerm('prevent_uploads'))}
+                filebrowserUploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader.php',
+                uploadUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/uploader_paste.php',
+                {/if}{literal}
                 filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},
                 filebrowserWindowHeight : {/literal}{$smarty.const.FM_HEIGHT}{literal},
                 filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
                 removePlugins: 'image',
                 {/literal}{$editor->additionalConfig}{literal}
                 height : 200,
@@ -235,16 +238,29 @@
                 skin : '{/literal}{$editor->skin}{literal}',
                 importcss_append: true,
                 end_container_on_empty_block: true,
-                file_browser_callback: function expBrowser (field_name, url, type, win) {
+                file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({
-                        file: EXPONENT.PATH_RELATIVE+'index.php?controller=file&action=picker&ajax_action=1&update=tiny&filter='+type,
+                        file: EXPONENT.PATH_RELATIVE+'index.php?controller=file&action=picker&ajax_action=1&update=tiny&filter='+meta.filetype,
                         title: 'File Manager',
                         width: {/literal}{$smarty.const.FM_WIDTH}{literal},
                         height: {/literal}{$smarty.const.FM_HEIGHT}{literal},
                         resizable: 'yes'
                     }, {
-                        setUrl: function (url) {
-                            win.document.getElementById(field_name).value = url;
+                        oninsert: function (url, alt, title) {
+                            // Provide file and text for the link dialog
+                            if (meta.filetype == 'file') {
+                                callback(url, {text: alt, title: title});
+                            }
+
+                            // Provide image and alt text for the image dialog
+                            if (meta.filetype == 'image') {
+                                callback(url, {alt: alt});
+                            }
+
+                            // Provide alternative source and posted for the media dialog
+                            if (meta.filetype == 'media') {
+                                callback(url, {poster: alt});
+                            }
                         }
                     });
                     return false;
