@@ -124,8 +124,8 @@
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
-        var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image quickupload | visualblocks | forecolor backcolor'{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
+            'link unlink image quickupload | visualblocks'{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo | searchreplace selectall';
         {/literal}{/if}{literal}
 
