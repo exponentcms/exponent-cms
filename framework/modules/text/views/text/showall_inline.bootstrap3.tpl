@@ -124,7 +124,8 @@
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
-        var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
+            'link unlink image quickupload | visualblocks | forecolor backcolor'{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo | searchreplace selectall';
         {/literal}{/if}{literal}
 
@@ -137,7 +138,7 @@
         };
 
         var saveEditor = function(item, data) {
-            if(parseInt({/literal}{!$config.fast_save}{literal}) && parseInt({/literal}{$smarty.const.SITE_WYSIWYG_EDITOR == 'ckeditor'}{literal})) {
+            if(parseInt({/literal}{!$config.fast_save}{literal})) {
                 BootstrapDialog.show({
                     title: '{/literal}{'Text Item Updated'|gettext}{literal}',
                     message: '{/literal}{'Save these changes?'|gettext}{literal}',
@@ -187,8 +188,10 @@
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
+                tinyplugins = ['searchreplace,contextmenu,paste,link'];
             } else {
                 mytoolbar = fullToolbar;
+                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -252,11 +255,11 @@
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
-                plugins : ['image,searchreplace,contextmenu,paste,link'],
+                plugins : tinyplugins,
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
-                menubar: false,
+//                menubar: false,
                 toolbar_items_size: 'small',
                 image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
