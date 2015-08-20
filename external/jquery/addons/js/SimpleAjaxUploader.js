@@ -1,6 +1,6 @@
 /**
  * Simple Ajax Uploader
- * Version 2.1
+ * Version 2.1.1
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2015 LPology, LLC
@@ -1315,7 +1315,7 @@ ss.XhrUpload = {
             ext = ss.getExt( filename );
             size = Math.round( files[i].size / 1024 );
 
-            if ( false === this._opts.onChange.call( this, filename, ext, size ) ) {
+            if ( false === this._opts.onChange.call( this, filename, ext, this._overBtn, size ) ) {
                 return false;
             }
 
