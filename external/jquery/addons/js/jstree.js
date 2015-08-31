@@ -13,7 +13,7 @@
 }(function ($, undefined) {
 	"use strict";
 /*!
- * jsTree 3.2.0
+ * jsTree 3.2.1
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
@@ -28,6 +28,7 @@
 
 	// prevent another load? maybe there is a better way?
 	if($.jstree) {
+		return;
 	}
 
 	/**
@@ -70,7 +71,7 @@
 		 * specifies the jstree version in use
 		 * @name $.jstree.version
 		 */
-		version : '3.2.0',
+		version : '3.2.1',
 		/**
 		 * holds all the default options used when creating new instances
 		 * @name $.jstree.defaults
@@ -672,7 +673,7 @@
 								e.preventDefault();
 								this.element.find('.jstree-anchor').filter(':visible').last().focus();
 								break;
-							/*
+							/*!
 							// delete
 							case 46:
 								e.preventDefault();
@@ -2581,6 +2582,7 @@
 					 */
 					this.trigger("after_open", { "node" : obj });
 				}
+				return true;
 			}
 		},
 		/**
@@ -2897,7 +2899,7 @@
 		 * @name hide_all()
 		 * @trigger hide_all.jstree
 		 */
-		hide_all : function (obj) {
+		hide_all : function (skip_redraw) {
 			var i, m = this._model.data, ids = [];
 			for(i in m) {
 				if(m.hasOwnProperty(i) && i !== $.jstree.root && !m[i].state.hidden) {
@@ -2906,7 +2908,9 @@
 				}
 			}
 			this._model.force_full_redraw = true;
-			this.redraw();
+			if(!skip_redraw) {
+				this.redraw();
+			}
 			/**
 			 * triggered when all nodes are hidden
 			 * @event
@@ -2921,7 +2925,7 @@
 		 * @name show_all()
 		 * @trigger show_all.jstree
 		 */
-		show_all : function (obj) {
+		show_all : function (skip_redraw) {
 			var i, m = this._model.data, ids = [];
 			for(i in m) {
 				if(m.hasOwnProperty(i) && i !== $.jstree.root && m[i].state.hidden) {
@@ -2930,7 +2934,9 @@
 				}
 			}
 			this._model.force_full_redraw = true;
-			this.redraw();
+			if(!skip_redraw) {
+				this.redraw();
+			}
 			/**
 			 * triggered when all nodes are shown
 			 * @event
@@ -4943,12 +4949,12 @@
 							var p = this.get_node(data.parent),
 								m = this._model.data,
 								i, j, c, tmp, t = this.settings.checkbox.tie_selection;
-							while(p && p.id !== $.jstree.root) {
+							while(p && p.id !== $.jstree.root && !p.state[ t ? 'selected' : 'checked' ]) {
 								c = 0;
 								for(i = 0, j = p.children.length; i < j; i++) {
 									c += m[p.children[i]].state[ t ? 'selected' : 'checked' ];
 								}
-								if(c === j) {
+								if(j > 0 && c === j) {
 									p.state[ t ? 'selected' : 'checked' ] = true;
 									this._data[ t ? 'core' : 'checkbox' ].selected.push(p.id);
 									tmp = this.get_node(p, true);
@@ -4971,12 +4977,12 @@
 								p, c, i, j, tmp, t = this.settings.checkbox.tie_selection;
 							if(!is_multi) {
 								p = this.get_node(old_par);
-								while(p && p.id !== $.jstree.root) {
+								while(p && p.id !== $.jstree.root && !p.state[ t ? 'selected' : 'checked' ]) {
 									c = 0;
 									for(i = 0, j = p.children.length; i < j; i++) {
 										c += m[p.children[i]].state[ t ? 'selected' : 'checked' ];
 									}
-									if(c === j) {
+									if(j > 0 && c === j) {
 										p.state[ t ? 'selected' : 'checked' ] = true;
 										this._data[ t ? 'core' : 'checkbox' ].selected.push(p.id);
 										tmp = this.get_node(p, true);
@@ -5581,7 +5587,7 @@
 					"separator_after"	: false,
 					"_disabled"			: false, //(this.check("rename_node", data.reference, this.get_parent(data.reference), "")),
 					"label"				: "Rename",
-					/*
+					/*!
 					"shortcut"			: 113,
 					"shortcut_label"	: 'F2',
 					"icon"				: "glyphicon glyphicon-leaf",
@@ -5713,7 +5719,7 @@
 						}
 					});
 
-			/*
+			/*!
 			if(!('oncontextmenu' in document.body) && ('ontouchstart' in document.body)) {
 				var el = null, tm = null;
 				this.element
@@ -6854,7 +6860,7 @@
 								}
 							}
 							p = $.vakata.array_remove_item($.vakata.array_unique(p), $.jstree.root);
-							this._data.search.hdn = this.hide_all();
+							this._data.search.hdn = this.hide_all(true);
 							this.show_node(p);
 						}
 					}, this))
@@ -6945,7 +6951,11 @@
 			});
 			if(r.length) {
 				p = $.vakata.array_unique(p);
-				this._search_open(p);
+				for(i = 0, j = p.length; i < j; i++) {
+					if(p[i] !== $.jstree.root && m[p[i]] && this.open_node(p[i], null, 0) === true) {
+						this._data.search.opn.push(p[i]);
+					}
+				}
 				if(!append) {
 					this._data.search.dom = $(this.element[0].querySelectorAll('#' + $.map(r, function (v) { return "0123456789".indexOf(v[0]) !== -1 ? '\\3' + v[0] + ' ' + v.substr(1).replace($.jstree.idregex,'\\$&') : v.replace($.jstree.idregex,'\\$&'); }).join(', #')));
 					this._data.search.res = r;
@@ -6997,26 +7007,6 @@
 			this._data.search.res = [];
 			this._data.search.opn = [];
 			this._data.search.dom = $();
-		};
-		/**
-		 * opens nodes that need to be opened to reveal the search results. Used only internally.
-		 * @private
-		 * @name _search_open(d)
-		 * @param {Array} d an array of node IDs
-		 * @plugin search
-		 */
-		this._search_open = function (d) {
-			var t = this;
-			$.each(d.concat([]), function (i, v) {
-				if(v === $.jstree.root) { return true; }
-				try { v = $('#' + v.replace($.jstree.idregex,'\\$&'), t.element); } catch(ignore) { }
-				if(v && v.length) {
-					if(t.is_closed(v)) {
-						t._data.search.opn.push(v[0].id);
-						t.open_node(v, function () { t._search_open(d); }, 0);
-					}
-				}
-			});
 		};
 
 		this.redraw_node = function(obj, deep, callback, force_render) {
@@ -7788,5 +7778,4 @@
 		} catch(ignore) { }
 	}
 
-	return $.fn.jstree;
 }));
