@@ -55,7 +55,7 @@
     {* current category image *}
     {if $current_category->expFile[0]->id}
         <div class="category-banner">
-            {img file_id=$current_category->expFile[0]->id w=522 h=100}
+            {img class="img-responsive" file_id=$current_category->expFile[0]->id w=522 h=100}
         </div>
     {/if}
     {* current category permissions *}
@@ -119,11 +119,11 @@
 
                         <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link" title="{$cat->body|summarize:"html":"para"}">
                             {if $cat->expFile[0]->id}
-                                {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                                {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image img-responsive"}
                             {elseif $page->records[0]->expFile.mainimage[0]->id}
-                                {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                                {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image img-responsive"}
                             {else}
-                                {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image" alt="'No Image Available'|gettext"}
+                                {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image img-responsive" alt="'No Image Available'|gettext"}
                             {/if}
                         {*</a>*}
 
