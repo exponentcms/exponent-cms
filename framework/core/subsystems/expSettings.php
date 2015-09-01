@@ -183,8 +183,9 @@ class expSettings
                 continue;
             }
             $str .= "define(\"$directive\",";
+            $value = stripslashes($value); // slashes added by POST
             if (substr($directive, -5, 5) == "_HTML") {
-                $value = htmlentities(stripslashes($value), ENT_QUOTES, LANG_CHARSET); // slashes added by POST
+                $value = htmlentities($value, ENT_QUOTES, LANG_CHARSET);
 //              $value = str_replace(array("\r\n","\r","\n"),"<br />",$value);
                 $value = str_replace(array("\r\n", "\r", "\n"), "", $value);
 //                $value = str_replace(array('\r\n', '\r', '\n'), "", $value);
@@ -193,7 +194,7 @@ class expSettings
                 $str .= "'" . $value . "'";
             } else {
                 if ($directive != 'SESSION_TIMEOUT') {
-                    $str .= "'" . str_replace("'", "\'", $value) . "'";
+                    $str .= "'" . str_replace("'", "\'", $value) . "'";  //FIXME is this still necessary since we stripslashes above???
                 } //                    $str .= "'".$value."'";
                 else {
                     $str .= "'" . str_replace("'", '', $value) . "'";
