@@ -70,7 +70,6 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
-//		require_once(BASE . 'external/Swift-4/lib/swift_required.php');
 		require_once(SWIFT_PATH . 'swift_required.php');
 
 		if (array_key_exists('method', $params)) {
@@ -78,7 +77,6 @@ class expMail {
 				case "multi":
 					break;
 				case "smtp":
-					//require_once(BASE.'external/Swift-4/Connection/SMTP.php');
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$this->transport = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
@@ -178,9 +176,9 @@ class expMail {
 	public function test() {
 		try {
 			$this->transport->start();
-			echo ("<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server");
+			echo "<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server - ", SMTP_SERVER;
 		} catch (Swift_TransportException $e) {
-			echo ("<h2>Mail Server Test Failed!</h2>");
+			echo "<h2>Mail Server Test Failed!</h2>", SMTP_SERVER;
 			eDebug($e->getMessage());
 		}
 	}
