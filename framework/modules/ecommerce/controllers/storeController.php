@@ -628,7 +628,7 @@ class storeController extends expController {
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","image1","image2","image3","image4","image5","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (product_type="product")';
@@ -647,7 +647,7 @@ class storeController extends expController {
         //$p = new product($pid['id'], false, false);
         foreach ($prods as $pid) {
             $except = array('company', 'crosssellItem', 'optiongroup');
-            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, false, $except, true);
+            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, true, $except, true);
 
             //eDebug($p,true);
             $out .= expString::outputField($p->id);
@@ -688,6 +688,15 @@ class storeController extends expController {
             $out .= expString::outputField($p->height);
             $out .= expString::outputField($p->width);
             $out .= expString::outputField($p->length);
+            //output images
+            if (isset($p->expFile['mainimage'][0])) {
+                $out .= expString::outputField($p->expFile['mainimage'][0]->id);
+            } else $out .= ',';
+            for ($x = 0; $x < 3; $x++) {
+                if (isset($p->expFile['images'][$x])) {
+                    $out .= expString::outputField($p->expFile['images'][$x]->id);
+                } else $out .= ',';
+            }
             $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
 
             foreach ($p->childProduct as $cp) {
@@ -720,6 +729,7 @@ class storeController extends expController {
                 $out .= expString::outputField($cp->height);
                 $out .= expString::outputField($cp->width);
                 $out .= expString::outputField($cp->length);
+                $out .= ',,,,,';  // for images
                 $out .= expString::outputField($cp->companies_id, chr(13) . chr(10));
 
                 //echo($out);
@@ -2835,29 +2845,35 @@ class storeController extends expController {
                     case 'image3':
                     case 'image4':
                     case 'image5':
-                        // import image from url
                         if (!empty($value)) {
                             $product->save(false);
-                            $_destFile = basename($value);  // get filename from end of url
-                            $_destDir = UPLOAD_DIRECTORY_RELATIVE;
-                            $_destFullPath = BASE . $_destDir . $_destFile;
-                            if (file_exists($_destFullPath)) {
-                                $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                            if (is_integer($value)) {
+                                $_objFile = new expFile ($value);
+                            } else {
+                                // import image from url
+                                $_destFile = basename($value);  // get filename from end of url
+                                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
                                 $_destFullPath = BASE . $_destDir . $_destFile;
+                                if (file_exists($_destFullPath)) {
+                                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                                    $_destFullPath = BASE . $_destDir . $_destFile;
+                                }
+
+                                expCore::saveData($value, $_destFullPath);  // download the image
+
+                                if (file_exists($_destFullPath)) {
+                                    $__oldumask = umask(0);
+                                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                                    umask($__oldumask);
+
+                                    // Create a new expFile Object
+                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                                    $_objFile = new expFile ($_fileParams);
+                                    $_objFile->save();
+                                }
                             }
-
-                            expCore::saveData($value, $_destFullPath);  // download the image
-
-                            if (file_exists($_destFullPath)) {
-                                $__oldumask = umask(0);
-                                chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
-                                umask($__oldumask);
-
-                                // Create a new expFile Object
-                                $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                $_objFile = new expFile ($_fileParams);
-                                $_objFile->save();
-                                // attach product additional images with new expFile object
+                            // attach product images expFile object
+                            if (!empty($_objFile->id)) {
                                 if ($key == 'image1') {
                                     $product->attachItem($_objFile, 'mainimage');
                                 } else {
