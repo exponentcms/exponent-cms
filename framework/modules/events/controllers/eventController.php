@@ -858,10 +858,10 @@ class eventController extends expController {
 
                 //	$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : "text/x-vCalendar";
                 //	$mime_type = "text/x-vCalendar";
-                $mime_type = "text/Calendar";
+                $mime_type = 'text/Calendar';
                 header('Content-Type: ' . $mime_type);
                 header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-                header("Content-length: " . strlen($msg));
+                header('Content-length: ' . strlen($msg));
                 header('Content-Transfer-Encoding: binary');
                 header('Content-Encoding:');
                 //	header("Content-Disposition: inline; filename=".$Filename.".ics");

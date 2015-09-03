@@ -1098,7 +1098,7 @@ class eventregistrationController extends expController {
             $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
             header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
             header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            header("Content-length: ".filesize($tmpfname));
+            header('Content-length: '.filesize($tmpfname));
             header('Content-Transfer-Encoding: binary');
             header('Content-Encoding:');
             header('Content-Disposition: attachment; filename="' . $fn . '";');

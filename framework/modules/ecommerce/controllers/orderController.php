@@ -612,18 +612,20 @@ exit();
         );
 
         if ($mime_type == '') {
-            $file_extension = strtolower(substr(strrchr($file, "."), 1));
-
-            if (array_key_exists($file_extension, $known_mime_types)) {
-                $mime_type = $known_mime_types[$file_extension];
-            } else {
-                $mime_type = "application/force-download";
-            }
+//            $file_extension = strtolower(substr(strrchr($file, "."), 1));
+//
+//            if (array_key_exists($file_extension, $known_mime_types)) {
+//                $mime_type = $known_mime_types[$file_extension];
+//            } else {
+//                $mime_type = "application/force-download";
+//            }
+            $mime_type = expFile::getMimeType($file);
         }
 
         //@ob_end_clean(); //turn off output buffering to decrease cpu usage
         // required for IE, otherwise Content-Disposition may be ignored
-        if (ini_get('zlib.output_compression')) ini_set('zlib.output_compression', 'Off');
+        if (ini_get('zlib.output_compression'))
+            ini_set('zlib.output_compression', 'Off');
 
         header('Content-Type: ' . $mime_type);
         header('Content-Disposition: attachment; filename="' . $name . '"');
@@ -633,7 +635,8 @@ exit();
         /* The three lines below basically make the download non-cacheable */
         header('Cache-control: private');
         header('Pragma: private');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+//        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 
         // multipart-download and download resuming support
         if (isset($_SERVER['HTTP_RANGE'])) {

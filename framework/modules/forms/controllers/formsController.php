@@ -1324,11 +1324,11 @@ class formsController extends expController {
                 header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET . "'");
                 header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                 $filesize = filesize($tmpfname);
-                header("Content-length: " . $filesize);
+                header('Content-length: ' . $filesize);
                 header('Content-Transfer-Encoding: binary');
 //                header('Content-Encoding:');
                 header('Content-Disposition: attachment; filename="report.csv"');
-                if ($filesize) header("Content-length: " . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
+                if ($filesize) header('Content-length: ' . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
                 // IE need specific headers
                 if (EXPONENT_USER_BROWSER == 'IE') {
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -1439,7 +1439,7 @@ class formsController extends expController {
             if (!empty($this->params['include_data'])) {
                 $tables[] = 'forms_'.$f->table_name;
             }
-            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //TODO we need to echo inside call
+            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //FIXME we need to echo inside call
             exit; // Exit, since we are exporting
         }
 //        expHistory::back();

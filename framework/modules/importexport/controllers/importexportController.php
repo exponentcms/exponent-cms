@@ -139,8 +139,7 @@ class importexportController extends expController {
                 exit("");
             } else {
                 $errors = array();
-                //TODO this will crash on large .eql files
-                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);
+                $data = expFile::parseDatabase(BASE . $directory . "/" . $file->filename, $errors, $type->model_table);  //FIXME this may crash on large .eql files
                 if (!empty($errors)) {
                     $message = gt('Importing encountered the following errors') . ':<br>';
                     foreach ($errors as $error) {
@@ -178,8 +177,7 @@ class importexportController extends expController {
             $tables[] = $attach->tablename;
         }
         array_unshift($tables, $type->model_table);
-        //TODO this will crash on large .eql files
-        $data = expFile::parseDatabase(BASE . $filename, $errors, $tables);
+        $data = expFile::parseDatabase(BASE . $filename, $errors, $tables);  //FIXME this may crash on large .eql files
 
         // parse out attachments data using the content_id for easier access
         $attachments = array();
@@ -328,7 +326,7 @@ class importexportController extends expController {
                 header('Content-Disposition: attachment; filename="' . $filename . '"');
                 header('Pragma: no-cache');
             }
-            echo expFile::dumpDatabase($tables, 'export', $awhere);  //TODO we need to echo inside call
+            echo expFile::dumpDatabase($tables, 'export', $awhere);  //FIXME we need to echo inside call
             exit; // Exit, since we are exporting
         }
         expHistory::back();
@@ -680,29 +678,35 @@ class importexportController extends expController {
                     case 'image3':
                     case 'image4':
                     case 'image5':
-                        // import image from url
                         if (!empty($value)) {
                             $product->save(false);
-                            $_destFile = basename($value);  // get filename from end of url
-                            $_destDir = UPLOAD_DIRECTORY_RELATIVE;
-                            $_destFullPath = BASE . $_destDir . $_destFile;
-                            if (file_exists($_destFullPath)) {
-                                $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                            if (is_integer($value)) {
+                                $_objFile = new expFile ($value);
+                            } else {
+                                // import image from url
+                                $_destFile = basename($value);  // get filename from end of url
+                                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
                                 $_destFullPath = BASE . $_destDir . $_destFile;
+                                if (file_exists($_destFullPath)) {
+                                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                                    $_destFullPath = BASE . $_destDir . $_destFile;
+                                }
+
+                                expCore::saveData($value, $_destFullPath);  // download the image
+
+                                if (file_exists($_destFullPath)) {
+                                    $__oldumask = umask(0);
+                                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                                    umask($__oldumask);
+
+                                    // Create a new expFile Object
+                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                                    $_objFile = new expFile ($_fileParams);
+                                    $_objFile->save();
+                                }
                             }
-
-                            expCore::saveData($value, $_destFullPath);  // download the image
-
-                            if (file_exists($_destFullPath)) {
-                                $__oldumask = umask(0);
-                                chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
-                                umask($__oldumask);
-
-                                // Create a new expFile Object
-                                $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                $_objFile = new expFile ($_fileParams);
-                                $_objFile->save();
-                                // attach product additional images with new expFile object
+                            // attach product images expFile object
+                            if (!empty($_objFile->id)) {
                                 if ($key == 'image1') {
                                     $product->attachItem($_objFile, 'mainimage');
                                 } else {
@@ -897,7 +901,7 @@ class importexportController extends expController {
         ini_set('auto_detect_line_endings',$line_end);
 
         // update search index
-        searchController::spider();
+        $this->addContentToSearch();
     }
 
 }
