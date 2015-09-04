@@ -23,7 +23,7 @@ iLess,1.6.5,https://github.com/mishal/iless,1.6.5,"optional, not fully functiona
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.5,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.5+2,bootswatch.com/,3.3.5+2,
+Bootswatch,3.3.5+3,bootswatch.com/,3.3.5+3,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.4.0,fortawesome.github.com/Font-Awesome,4.4.0,
 Adminer,4.2.2,www.adminer.org,4.2.2,we add some system user checks in design.inc
