@@ -1,5 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swift,5.4.1,swiftmailer.org,5.4.1,we add  eDebugLogger plugin
+Swift,5.4.1,swiftmailer.org,5.4.1,we add  eDebugLogger plugin & fix php 5.6 ssl issue
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27,smarty.net,3.1.27,
@@ -8,7 +8,7 @@ minify,2.2.1,github.com/mrclay/minify,2.2.1,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
-recaptchalib,1.1.1,https://github.com/google/ReCAPTCHA,1.1.1,new api
+recaptchalib,1.1.1,https://github.com/google/ReCAPTCHA,1.1.2,new api
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
 feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 xmlrpc.php,3.0.1,https://github.com/gggeek/phpxmlrpc,3.0.1,
@@ -50,8 +50,8 @@ Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.5.5,http://trentrichardson.com/examples/timepicker/,1.5.5,used by adminer
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.10.7,http://www.datatables.net,1.10.7,includes boostrap integration w/ renamed bootstrap3 versions
-DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,
+DataTables,1.10.7,http://www.datatables.net,1.10.9,includes boostrap integration w/ renamed bootstrap3 versions
+DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
 yadcf,0.8.8,https://github.com/vedmack/yadcf,0.8.8,
 spectrum,1.7.1,http://bgrins.github.io/spectrum/,1.7.1,
