@@ -40,10 +40,11 @@
             <tbody>
             {foreach $shipping->orderitem as $oi}
                 <tr>
-                    <td>{control type=checkbox name="in_box[`$oi->id`]" value=1 checked=1}</td>
+                    <td>{control type=checkbox name="in_box[`$oi->id`]" value=1 checked=1 disabled=1}</td> {* FIXME enable *}
                     <td>{$oi->products_model}</td>
                     <td>{$oi->products_name}</td>
-                    <td>{control type=number name="qty[`$oi->id`]" min=1 max=$oi->quantity value=$oi->quantity}</td>
+                    {*<td>{control type=number name="qty[`$oi->id`]" min=1 max=$oi->quantity value=$oi->quantity}</td>*} {* FIXME adjustable quantity *}
+                    <td>{$oi->quantity}</td>
                 </tr>
             {/foreach}
             </tbody>

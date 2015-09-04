@@ -159,33 +159,35 @@
                             {/if}
                             </td>
                             <td>
-                                <h4>{'Packages'|gettext}</h4>
-                                <ol>
-                                {foreach $order->shippingmethods as $sm}
-                                    {$sm->attachCalculator()}
-                                    <li>
-                                    <div>
-                                        {$sm->carrier} - {$sm->option_title}
-                                        {if empty($sm->shipping_options.shipment_status) || $sm->shipping_options.shipment_status == 'cancelled'}
-                                            {if $sm->shipping_options.shipment_status == 'cancelled'}{$text='Re-Create Package'|gettext}{else}{$text='Create Package'|gettext}{/if}
-                                            {icon class=add action=edit_parcel id=$sm->id text=$text title='Enter details about the items in the package'|gettext}
-                                        {elseif $sm->shipping_options.shipment_status == 'created' && $sm->calculator->labelsEnabled()}
-                                            {icon class=edit action=edit_label id=$sm->id text='Purchase Label'|gettext}
-                                        {elseif $sm->shipping_options.shipment_status == 'purchased' && $sm->calculator->labelsEnabled()}
-                                            {icon class=downloadfile action=download_label id=$sm->id text='Print Label'|gettext}
-                                            {icon class=delete action=delete_label id=$sm->id text='Cancel Label'|gettext}
-                                            {if $sm->calculator->pickupEnabled() && $sm->carrier != 'USPS'}
-                                                {if ($sm->shipping_options.pickup_status != 'purchased')} {* FIXME *}
-                                                    {icon class=add action=edit_pickup id=$sm->id text='Request Pickup'|gettext}
-                                                {elseif $sm->shipping_options.pickup_status == 'purchased'}
-                                                    {icon class=delete action=delete_pickup id=$sm->id text='Cancel Pickup'|gettext}
-                                                {/if}
-                                            {/if}
-                                        {/if}
-                                    </div>
-                                    </li>
-                                {/foreach}
-                                </ol>
+                                {if $order->shipping_required}
+                                    <h4>{'Packages'|gettext}</h4>
+                                    <ol>
+                                        {foreach $order->shippingmethods as $sm}
+                                            {$sm->attachCalculator()}
+                                            <li>
+                                                <div>
+                                                    {$sm->carrier} - {$sm->option_title}
+                                                    {if empty($sm->shipping_options.shipment_status) || $sm->shipping_options.shipment_status == 'cancelled'}
+                                                        {if $sm->shipping_options.shipment_status == 'cancelled'}{$text='Re-Create Package'|gettext}{else}{$text='Create Package'|gettext}{/if}
+                                                        {icon class=add action=edit_parcel id=$sm->id text=$text title='Enter details about the items in the package'|gettext}
+                                                    {elseif $sm->shipping_options.shipment_status == 'created' && $sm->calculator->labelsEnabled()}
+                                                        {icon class=edit action=edit_label id=$sm->id text='Purchase Label'|gettext}
+                                                    {elseif $sm->shipping_options.shipment_status == 'purchased' && $sm->calculator->labelsEnabled()}
+                                                        {icon class=downloadfile action=download_label id=$sm->id text='Print Label'|gettext}
+                                                        {icon class=delete action=delete_label id=$sm->id text='Cancel Label'|gettext}
+                                                        {if $sm->calculator->pickupEnabled() && $sm->carrier != 'USPS'}
+                                                            {if ($sm->shipping_options.pickup_status != 'purchased')} {* FIXME *}
+                                                                {icon class=add action=edit_pickup id=$sm->id text='Request Pickup'|gettext}
+                                                            {elseif $sm->shipping_options.pickup_status == 'purchased'}
+                                                                {icon class=delete action=delete_pickup id=$sm->id text='Cancel Pickup'|gettext}
+                                                            {/if}
+                                                        {/if}
+                                                    {/if}
+                                                </div>
+                                            </li>
+                                        {/foreach}
+                                    </ol>
+                                {/if}
                             </td>
                         </tr>
                     {else}
