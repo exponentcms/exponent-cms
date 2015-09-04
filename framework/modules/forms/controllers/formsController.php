@@ -513,10 +513,10 @@ class formsController extends expController {
                 if (!$ctl->is_hidden) {
                     $emailFields[$c->name] = call_user_func(array($control_type, 'templateFormat'), $value, $ctl);
                     $captions[$c->name] = $c->caption;
-                    if ($c->name == "email" && expValidator::isValidEmail($value)) {
+                    if (strtolower($c->name) == "email" && expValidator::isValidEmail($value)) {
                         $from = $value;
                     }
-                    if ($c->name == "name") {
+                    if (strtolower($c->name) == "name") {
                         $from_name = $value;
                     }
                     if (get_class($ctl) == 'uploadcontrol') {
