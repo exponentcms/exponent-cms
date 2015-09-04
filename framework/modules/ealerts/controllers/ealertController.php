@@ -156,7 +156,7 @@ class ealertController extends expController {
             $mail->quickSend(array(
                 'html_message'=>$message->body,
 		        'to'=>$subscriber->email,
-                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+                'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 		        'subject'=>$message->subject,
             ));
             
@@ -291,7 +291,7 @@ class ealertController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$body->render(),
 		        'to'=>$subscriber->email,
-                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+                'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 		        'subject'=>gt('Please confirm your E-Alert subscriptions'),
         ));
         

@@ -262,7 +262,7 @@ class usersController extends expController {
                 $mail->quickSend(array(
                     'text_message' => $msg,
                     'to'           => trim($u->email),
-                    'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+                    'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                     'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
                 ));
 
@@ -278,7 +278,7 @@ class usersController extends expController {
                 $mail->quickSend(array(
                     'text_message' => $msg,
                     'to'           => trim(USER_REGISTRATION_ADMIN_EMAIL),
-                    'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+                    'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                     'subject'      => USER_REGISTRATION_NOTIF_SUBJECT,
                 ));
             }
@@ -519,7 +519,7 @@ class usersController extends expController {
         $mail->quickSend(array(
             'html_message' => $msg,
             'to'           => trim($u->email),
-            'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+            'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('Password Reset Requested'),
         ));
 
@@ -563,7 +563,7 @@ class usersController extends expController {
         $mail->quickSend(array(
             'html_message' => $msg,
             'to'           => trim($u->email),
-            'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+            'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('The account password for') . ' ' . HOSTNAME . ' ' . gt('was reset'),
         ));
 
@@ -1617,7 +1617,7 @@ class usersController extends expController {
                         $mail->quickSend(array(
                             'text_message' => $msg,
                             'to'           => trim($newuser->email),
-                            'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
+                            'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                             'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
                         ));
                     }

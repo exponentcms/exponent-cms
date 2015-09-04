@@ -1178,12 +1178,14 @@ class eventregistrationController extends expController {
             if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
         }
 
+        $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
+        if (empty($from[0])) $from = SMTP_FROMADDRESS;
         $mail->quickBatchSend(array(
             	'headers'=>$headers,
                 'html_message'=> $this->params['email_message'],
                 'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
                 'to'          => $email_addy,
-                'from'        => ecomconfig::getConfig('from_address'),
+                'from'        => $from,
                 'subject'     => $this->params['email_subject']
         ));
         if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment

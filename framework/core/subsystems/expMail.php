@@ -228,23 +228,24 @@ class expMail {
     	// set up the to address(es)
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
-		} elseif (empty($params['to'])) {
-			$params['to'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['to']);
+			$params['to'] = array(trim($params['to']));
 		}
-//		$this->message->setTo((array)$params['to']);
-        $this->addTo((array)$params['to']);
+		if (empty($params['to'])) {
+			$params['to'] = array(trim(SMTP_FROMADDRESS));
+		}
+        $this->addTo($params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['from'])) {
-			$params['from'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['from']);
+			$params['from'] = trim($params['from']);
 		}
-//		$this->message->setFrom((array)$params['from']);  //FIXME we need to use this->addFrom() instead
+		if (empty($params['from'])) {
+			$params['from'] = trim(SMTP_FROMADDRESS);
+		}
+//		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
@@ -359,20 +360,22 @@ class expMail {
     	// set up the to address(es)
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
-		} elseif (empty($params['to'])) {
-			$params['to'] = array(SMTP_FROMADDRESS);
 		} else {
 			$params['to'] = array(trim($params['to']));
+		}
+		if (empty($params['to'])) {
+			$params['to'] = array(trim(SMTP_FROMADDRESS));
 		}
         $this->addTo($params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['from'])) {
-			$params['from'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['from']);
+			$params['from'] = trim($params['from']);
+		}
+		if (empty($params['from'])) {
+			$params['from'] = trim(SMTP_FROMADDRESS);
 		}
 //		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);

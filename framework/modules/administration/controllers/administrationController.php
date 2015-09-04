@@ -853,7 +853,7 @@ class administrationController extends expController {
                         'html_message'=>$emailHtml,
                         "text_message"=>$emailText,
                         'to'=>$emaillist,
-                        'from'=>array(trim($from)=>$from_name),
+                        'from'=>array(trim($from) => $from_name),
                         'subject'=>$subject,
                 ));
             } else {

@@ -67,15 +67,15 @@ class splitcreditcard extends creditcard {
 		$htmlmessage .= $this->htmlmessage($opts);
 
 		$addresses = explode(',', $config['notification_addy']);
+        $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
+        if (empty($from[0])) $from = SMTP_FROMADDRESS;
         foreach ($addresses as $address) {
 		    $mail = new expMail();
 		    $mail->quickSend(array(
                 'html_message'=>$htmlmessage,
                 'text_message'=>$txtmessage,
                 'to'=>trim($address),
-//				  'from'=>ecomconfig::getConfig('from_address'),
-//				  'from_name'=>ecomconfig::getConfig('from_name'),
-                'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
+                'from'=>$from,
                 'subject'=>gt('Billing Information for an order placed on') . ' '.ecomconfig::getConfig('storename'),
 		    ));
 		}

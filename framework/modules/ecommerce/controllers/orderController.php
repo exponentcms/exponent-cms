@@ -352,14 +352,12 @@ class orderController extends expController {
             $addresses = explode(',', ecomconfig::getConfig('email_invoice_addresses'));
             foreach ($addresses as $address) {
                 $mail = new expMail();
-                $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
                 if (empty($from[0])) $from = SMTP_FROMADDRESS;
                 $mail->quickSend(array(
                     'html_message'=> $html,
                     'text_message'=> $txt,
                     'to'          => trim($address),
-//					    'from'=>ecomconfig::getConfig('from_address'),
-//					    'from_name'=>ecomconfig::getConfig('from_name'),
                     'from'        => $from,
                     'subject'     => 'An order was placed on the ' . ecomconfig::getConfig('storename'),
                 ));
@@ -373,15 +371,13 @@ class orderController extends expController {
 //            $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
-            $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+            $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
             if (empty($from[0])) $from = SMTP_FROMADDRESS;
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
                 'text_message'=> $txt,
                 'to'          => $user->email,
                 //'to'=>$order->billingmethod[0]->email,
-//			        'from'=>ecomconfig::getConfig('from_address'),
-//			        'from_name'=>ecomconfig::getConfig('from_name'),
                 'from'        => $from,
                 'subject'     => ecomconfig::getConfig('invoice_subject'),
             ));
@@ -763,7 +759,7 @@ exit();
                     $html .= ecomconfig::getConfig('ecomfooter');
 
                     $mail = new expMail();
-                    $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                    $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
                     if (empty($from[0])) $from = SMTP_FROMADDRESS;
                     $mail->quickSend(array(
                         'html_message'=> $html,
@@ -1116,7 +1112,7 @@ exit();
         $sm_new = new shippingmethod();  // prepare for another 'package' if needed since we didn't place everything in this one
         $order = new order();
         $ois = $order->getOrderitemsByShippingmethod($this->params['id']);
-        //FIXME for now mulitple shipping methods will crash ecom with shipping->__construct()
+        //FIXME for now multiple shipping methods will crash ecom with shipping->__construct()
         foreach ($ois as $oi) {
             if (!array_key_exists($oi->id, $this->params['in_box'])) {
                 // one of the items by type is not in this package and needs to be placed in another package
