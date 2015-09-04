@@ -159,7 +159,7 @@ class faqController extends expController {
             $mail->quickSend(array(
                 'html_message'=>$msg,
                 'to'=>trim(empty($this->config['notification_email_address'])?SMTP_FROMADDRESS:$this->config['notification_email_address']),
-                'from'=>SMTP_FROMADDRESS,
+                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
                 'subject'=>$this->config['notification_email_subject'],
             ));
         }

@@ -376,9 +376,7 @@ class expSimpleNoteController extends expController {
         $mail->quickSend(array(
                 'html_message'=>$body,
                 'to'=>$tos,
-//                'from'=>trim(SMTP_FROMADDRESS),
-//                'from_name'=>trim(URL_BASE),
-                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(URL_BASE)),
+                'from'=>array(trim(SMTP_FROMADDRESS)=>trim(ORGANIZATION_NAME)),
                 'subject'=>$subject,
         ));
         
