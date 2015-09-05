@@ -22,12 +22,15 @@
     {form action=edit_pickup2}
         {control type="hidden" name="id" value=$shipping->id}
         <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
-        {if $shipping->predefinedpackage}
-            {$shipping->predefinedpackage}
-        {else}
-            {$shipping->width}in x {$shipping->height}in x {$shipping->length}in
-        {/if}
-        {br}{$shipping->weight} lbs
+        {'Package'|gettext}:
+        <ul>
+            {if $shipping->predefinedpackage}
+                <li>{$shipping->predefinedpackage}</li>
+            {else}
+                <li>{$shipping->width}in x {$shipping->height}in x {$shipping->length}in</li>
+            {/if}
+            <li>{$shipping->weight}lbs</li>
+        </ul>
         {$now = time()}
         {$next = strtotime('+1 day')}
         {control type="popupdatetime" name="pickupdate" label="Start Date of Pickup"|gettext value=$now}

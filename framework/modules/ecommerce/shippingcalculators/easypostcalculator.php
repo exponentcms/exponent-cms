@@ -698,7 +698,7 @@ class easypostcalculator extends shippingcalculator
         $sm_options['pickup_date'] = $pickupdate;
         $sm_options['pickup_date_end'] = $pickupenddate;
         $sm_options['pickup_instructions'] = $instructions;
-        $sm_options['pickup_rates'] =  $eprates;  //FIXME not sure we need to get/save these???
+        $sm_options['pickup_rates'] = $eprates;  //FIXME not sure we need to get/save these???
         $sm_options['pickup_status'] = 'created';
         $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
@@ -792,6 +792,41 @@ class easypostcalculator extends shippingcalculator
         $sm_options['pickup_cost'] = 0;
         $sm_options['pickup_status'] = 'cancelled';
         $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
+    }
+
+    function getPackageDetails($shippingmethod)
+    {
+        $msg = '';
+        if ($shippingmethod->shipping_options['shipment_status'] == 'created' || $shippingmethod->shipping_options['shipment_status'] == 'purchased') {
+            $msg .= '<h4>' . $shippingmethod->carrier . ' - ' . $shippingmethod->option_title . '</h4>';
+            $msg .= gt('Package').':<ul>';
+            if ($shippingmethod->predefinedpackage) {
+                $msg .= '<li>'.$shippingmethod->predefinedpackage.'</li>';
+            } else {
+                $msg .= '<li>'.$shippingmethod->width . 'in x ' . $shippingmethod->height . 'in x ' . $shippingmethod->length . 'in</li>';
+            }
+            $msg .= '<li>' . $shippingmethod->weight . 'lbs</li>';
+            $msg .= '</ul>'.gt('Items').':<ul>';
+            foreach ($shippingmethod->orderitem as $oi) {
+                $msg .= '<li>' . $oi->quantity . ' x ' . $oi->products_model . ' - ' . $oi->products_name . '</li>';
+            }
+            $msg .= '</ul>';
+            if ($shippingmethod->shipping_options['shipment_status'] == 'purchased') {
+                $msg .= gt('Shipping Cost').': ';
+                $sc = $shippingmethod->shipping_options['shipment_cost'];
+                $msg .= expCore::getCurrency($sc);
+            }
+            if ($shippingmethod->shipping_options['pickup_status'] == 'purchased') {
+                $msg .= '<br>'.gt('Pickup Cost').': ';
+                $pc = $shippingmethod->shipping_options['pickup_cost'];
+                $msg .= expCore::getCurrency($pc);
+                $msg .= '<br><strong>'.gt('Total Shipping Cost').': ';
+                $msg .= expCore::getCurrency($sc+$pc);
+                $msg .= '</strong>';
+            }
+        }
+
+        return $msg;
     }
 
     function formatAddress($params)

@@ -23,12 +23,15 @@
         {control type="hidden" name="id" value=$shipping->id}
         {* FIXME may have to note that rate was adjusted *}
         <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
-        {if $shipping->predefinedpackage}
-            {$shipping->predefinedpackage}
-        {else}
-            {$shipping->width}in x {$shipping->height}in x {$shipping->length}in
-        {/if}
-        {br}{$shipping->weight} lbs
+        {'Package'|gettext}:
+        <ul>
+            {if $shipping->predefinedpackage}
+                <li>{$shipping->predefinedpackage}</li>
+            {else}
+                <li>{$shipping->width}in x {$shipping->height}in x {$shipping->length}in</li>
+            {/if}
+            <li>{$shipping->weight}lbs</li>
+        </ul>
         {br}{'Cost'|gettext}: {$cost|currency}
         {control type="buttongroup" submit="Purchase Label"|gettext cancel="Cancel"|gettext}
     {/form}

@@ -22,12 +22,15 @@
     {form action=save_pickup}
         {control type="hidden" name="id" value=$shipping->id}
         <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
-        {if $shipping->predefinedpackage}
-            {$shipping->predefinedpackage}
-        {else}
-            {$shipping->width}in x {$shipping->height}in x {$shipping->length}in
-        {/if}
-        {br}{$shipping->weight} lbs
+        {'Package'|gettext}:
+        <ul>
+            {if $shipping->predefinedpackage}
+                <li>{$shipping->predefinedpackage}</li>
+            {else}
+                <li>{$shipping->width}in x {$shipping->height}in x {$shipping->length}in</li>
+            {/if}
+            <li>{$shipping->weight}lbs</li>
+        </ul>
         {control type=dropdown name=pickuprate items=$rates label="Pickup Cost"|gettext}
         {"Start Date of Pickup"|gettext}: {$shipping->shipping_options.pickup_date|format_date:DISPLAY_DATETIME_FORMAT}
         {br}{"End Date of Pickup"|gettext}: {$shipping->shipping_options.pickup_date_end|format_date:DISPLAY_DATETIME_FORMAT}

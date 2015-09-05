@@ -157,6 +157,10 @@ class shippingcalculator extends expRecord {
 
     }
 
+    function getPackageDetails($shippingmethod) {
+
+    }
+
 }
 
 ?>

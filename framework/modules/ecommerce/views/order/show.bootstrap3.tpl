@@ -357,6 +357,7 @@
                                                                     {elseif $sm->shipping_options.shipment_status == 'purchased' && $sm->calculator->labelsEnabled()}
                                                                         {icon class=downloadfile action=download_label id=$sm->id text='Print Label'|gettext}
                                                                         {icon class=delete action=delete_label id=$sm->id text='Cancel Label'|gettext}
+                                                                        {'Tracking'|gettext}: {$sm->shipping_options.shipment_tracking_number}
                                                                         {if $sm->calculator->pickupEnabled() && $sm->carrier != 'USPS'}
                                                                             {if ($sm->shipping_options.pickup_status != 'purchased')} {* FIXME *}
                                                                                 {icon class=add action=edit_pickup id=$sm->id text='Request Pickup'|gettext}
@@ -364,6 +365,12 @@
                                                                                 {icon class=delete action=delete_pickup id=$sm->id text='Cancel Pickup'|gettext}
                                                                             {/if}
                                                                         {/if}
+                                                                    {/if}
+                                                                    {$msg = $sm->calculator->getPackageDetails($sm)}
+                                                                    {if $msg}
+                                                                        {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
+                                                                            {$msg}
+                                                                        {/pop}
                                                                     {/if}
                                                                 </div>
                                                             </li>

@@ -1106,6 +1106,8 @@ exit();
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         if (!isset($this->params['in_box']) || !isset($this->params['qty'])) {
+            flashAndFlow('notice', gt('Nothing was included in the shipping package!'));
+        } else {
             $sm = new shippingmethod($this->params['id']);
             $sm->attachCalculator();
 //            $sm_new = clone($sm);  // prepare for another 'package' if needed since we didn't place everything in this one
@@ -1145,8 +1147,6 @@ exit();
             } else {
                 expHistory::back();
             }
-        } else {
-            flashAndFlow('notice', gt('Nothing was included in the shipping package!'));
         }
     }
 
