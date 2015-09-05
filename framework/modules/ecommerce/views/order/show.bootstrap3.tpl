@@ -341,7 +341,8 @@
                                             {/if}
                                             </td>
                                             <td>
-                                                {if $order->shipping_required}
+                                                {if !$order->shipping_required}
+                                                {else}
                                                     <h4>{'Packages'|gettext}</h4>
                                                     <ol>
                                                         {foreach $order->shippingmethods as $sm}

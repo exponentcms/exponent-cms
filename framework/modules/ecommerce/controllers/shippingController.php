@@ -182,6 +182,7 @@ class shippingController extends expController {
 	    global $db;
 
 	    if (isset($this->params['id'])) $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        //FIXME we need to ensure our default calculator is still active...not sure this does it
         if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
             $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
         }
@@ -263,7 +264,7 @@ class shippingController extends expController {
 		expHistory::back();
 	}
 
-    public static function tracker() {
+    public function tracker() {
         // we ALWAYS assume this is coming from easypost webhook
         $ep = new easypostcalculator();
         if ($ep->trackerEnabled()) {
