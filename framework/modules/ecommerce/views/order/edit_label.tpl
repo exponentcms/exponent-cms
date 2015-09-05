@@ -22,6 +22,7 @@
     {form action=save_label}
         {control type="hidden" name="id" value=$shipping->id}
         {* FIXME may have to note that rate was adjusted *}
+        <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
         {if $shipping->predefinedpackage}
             {$shipping->predefinedpackage}
         {else}

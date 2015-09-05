@@ -21,6 +21,7 @@
     <h1>{'Order Package Pickup'|gettext}</h1>
     {form action=edit_pickup2}
         {control type="hidden" name="id" value=$shipping->id}
+        <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
         {if $shipping->predefinedpackage}
             {$shipping->predefinedpackage}
         {else}

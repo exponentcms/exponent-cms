@@ -1073,7 +1073,7 @@ exit();
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $order = new order($this->params['id']);
-        $s     = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
+        $s     = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $sm    = new shippingmethod($s->id);
         //eDebug($sm);
         assign_to_template(array(
@@ -1083,10 +1083,8 @@ exit();
     }
 
     function save_shipping_method() {
-        if (!isset($this->params['id']))
+        if (!isset($this->params['id']) || !isset($this->params['sid']))
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
-        if (!isset($this->params['sid']))
-            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $sm               = new shippingmethod($this->params['sid']);
         $sm->option_title = $this->params['shipping_method_title'];
         $sm->carrier      = $this->params['shipping_method_carrier'];
@@ -1107,36 +1105,48 @@ exit();
     function save_parcel() {
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request. Order invalid.'));
-        $sm = new shippingmethod($this->params['id']);
-        $sm->attachCalculator();
-        $sm_new = new shippingmethod();  // prepare for another 'package' if needed since we didn't place everything in this one
-        $order = new order();
-        $ois = $order->getOrderitemsByShippingmethod($this->params['id']);
-        //FIXME for now multiple shipping methods will crash ecom with shipping->__construct()
-        foreach ($ois as $oi) {
-            if (!array_key_exists($oi->id, $this->params['in_box'])) {
-                // one of the items by type is not in this package and needs to be placed in another package
-                $tmp = 1;
-                //NOTE add order item to $sm_new - we'll need a new method for this action
-                //NOTE remove order item from $sm - we'll need a new method for this action
-                //NOTE update() $sm_new
-            } else {
-                if ($oi->quantity != $this->params['qty'][$oi->id]) {
-                    // one of the items by quantity is not in this package and needs to be placed in another package
-                    $tmp = 1;
-                    //NOTE add order item to $sm_new with $sm_new->quantity=$oi->quantity-$this->params['qty'][$oi->id]
-                    //NOTE adjust order item from $sm->quantity to $this->params['qty'][$oi->id]
-                    //NOTE update() $sm_new
+        if (!isset($this->params['in_box']) || !isset($this->params['qty'])) {
+            $sm = new shippingmethod($this->params['id']);
+            $sm->attachCalculator();
+//            $sm_new = clone($sm);  // prepare for another 'package' if needed since we didn't place everything in this one
+//            $sm_new->id = null;
+//            $sm_new->orderitem = array();
+            //FIXME for now multiple shipping methods will crash ecom with shipping->__construct()
+            foreach ($sm->orderitem as $key => $oi) {
+                if (!array_key_exists($oi->id, $this->params['in_box'])) {
+                    // one of the items by type is not in this package and needs to be moved to another package
+//                    $tmp = 1;
+//                    $sm_new->update();  // we don't need to actually create a new shippingmethod until needed
+//                    $sm->orderitem[$key]->shippingmethods_id = $sm_new->id;
+//                    $sm->orderitem[$key]->update();
+//                    unset($sm->orderitem[$key]);
+                    //NOTE $sm_new->update(); ???
+                } else {
+                    if ($oi->quantity != $this->params['qty'][$oi->id]) {
+                        // one of the items by quantity is not in this package and remaining items need to be moved another package
+//                        $tmp = 1;
+//                        $new_quantity = $oi->quantity - $this->params['qty'][$oi->id];
+//                        $sm->orderitem[$key]->quantity = $this->params['qty'][$oi->id];  // adjust to new quantity
+//                        $sm->orderitem[$key]->update();
+//                        $sm_new->update();  // we don't need to actually create a new shippingmethod until needed
+//                        $oi->id = null;  // create a new orderitem copy
+//                        $oi->shippingmethods_id = $sm_new->id;
+//                        $oi->quantity = $new_quantity;
+//                        $oi->update();
+                        //NOTE $sm_new->update(); ???
+                    }
                 }
             }
-        }
-        // update $sm with the passed $this->params (package data)
-        $sm->update($this->params);
-        $msg = $sm->calculator->createLabel($sm);
-        if (!is_string($msg)) {
-            flashAndFlow('message', gt('Shipping package updated.'));
+            // update $sm with the passed $this->params (package data)
+            $sm->update($this->params);  //NOTE will this update assoc orderitems???
+            $msg = $sm->calculator->createLabel($sm);
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping package updated.'));
+            } else {
+                expHistory::back();
+            }
         } else {
-            expHistory::back();
+            flashAndFlow('notice', gt('Nothing was included in the shipping package!'));
         }
     }
 
@@ -1159,6 +1169,8 @@ exit();
         $sm = new shippingmethod($this->params['id']);
         $sm->attachCalculator();
         $msg = $sm->calculator->buyLabel($sm);
+//        $sm->refresh();  //FIXME updated with new options we may need to take action on like tracking number?
+//        $order->shipping_tracking_number = $sm->shipping_options['shipment_tracking_number'];
         if (!is_string($msg)) {
             flashAndFlow('message', gt('Shipping label purchased.'));
         } else {
@@ -1525,7 +1537,7 @@ exit();
         $order = new order($this->params['id']);
         $same  = false;
 
-        $sm = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
+        $sm = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         //$bm = array_pop($order->billingmethods);
 
         //eDebug($sm->addresses_id);
@@ -1564,7 +1576,7 @@ exit();
 
         $order          = new order($this->params['orderid']);
         $billing        = new billing($this->params['orderid']);
-        $s              = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
+        $s              = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $shippingmethod = new shippingmethod($s->id);
 
         //eDebug($order);
@@ -1674,7 +1686,7 @@ exit();
         $oi = new orderitem($this->params['id']);
         $oi->delete();
 
-        $s  = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
+        $s  = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $sm = new shippingmethod($s->id);
 
         $shippingCalc = new shippingcalculator($sm->shippingcalculator_id);
@@ -1781,7 +1793,7 @@ exit();
         $order = new order($oi->orders_id);
         $order->calculateGrandTotal();
 
-        $s = array_pop($order->shippingmethods);  //FIXME only getting 1st one and removing it
+        $s = array_pop($order->shippingmethods);  //FIXME only getting 1st one and thenremoving it
         eDebug($s);
         $sm = new shippingmethod($s->id);
 
