@@ -587,14 +587,14 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment->buy(
                 $shipment->lowest_rate(array($method[0]), array($method[1]))
-            );//FIXME we need to select the correct carrier/method
+            );//FIXME we need to select the correct carrier/method based on package type/size
         } catch (Exception $e) {
             $msg = $e->prettyPrint(false);
             flash('error', 'easypost: (buy shipment)<br>' . $msg);
             return $msg;
         }
-        //NOTE $sm->update() with new billing_options
         $sm_options = $shippingmethod->shipping_options;
+        $sm_options['shipment_cost'] = $shipment->selected_rate->rate;
         $sm_options['shipment_tracking_number'] = $shipment->tracking_code;
         $sm_options['shipment_label'] = $shipment->postage_label->label_url;
         $sm_options['shipment_status'] = 'purchased';
@@ -631,6 +631,7 @@ class easypostcalculator extends shippingcalculator
             return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
+        $sm_options['shipment_cost'] = 0;
         $sm_options['shipment_status'] = 'cancelled';
         $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
@@ -788,6 +789,7 @@ class easypostcalculator extends shippingcalculator
             return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
+        $sm_options['pickup_cost'] = 0;
         $sm_options['pickup_status'] = 'cancelled';
         $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }

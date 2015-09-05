@@ -99,9 +99,9 @@ return array(
 //  * shipment_rates (array???)
 //from shipment buy
 //  * shipment_cost  // actual cost
-//  * shipment_date
 //  * shipment_tracking_number
 //  * shipment_label (url)
+//  * shipment_date or pickup_date ?? do we get this??
 //we set this
 //  * shipment_status (created, purchased, cancelled/refund)
 //from pickup create
@@ -110,7 +110,7 @@ return array(
 //  * pickup_rates (array???)
 //from pickup buy
 //  * pickup_cost  // actual cost
-//  * pickup_date
+//  * shipment_date or pickup_date ?? do we get this??
 //we set this
 //  * pickup_status (created, purchased, cancelled)
     'predefinedpackage' => array(
