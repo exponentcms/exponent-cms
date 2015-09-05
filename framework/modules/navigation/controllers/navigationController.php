@@ -767,7 +767,6 @@ class navigationController extends expController {
 //        echo expJavascript::ajaxReply(201, '', $nav);
         $ar = new expAjaxReply(201, '', $nav);
         $ar->send();
-        exit;
     }
 
     /**

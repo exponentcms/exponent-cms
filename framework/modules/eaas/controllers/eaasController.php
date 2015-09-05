@@ -105,12 +105,12 @@ class eaasController extends expController {
         if (!key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
-            return;
+            return;  //FIXME we exit before hitting this
         }
         if (empty($this->config[$this->params['get'].'_aggregate'])) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
-            return;
+            return;  //FIXME we exit before hitting this
         }
         switch ($this->params['get']) {
             case 'aboutus':
