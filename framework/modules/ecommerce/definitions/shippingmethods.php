@@ -85,11 +85,17 @@ return array(
     'carrier'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
+	'delivery' => array(  // expected delivery date  //FIXME is this a 'shipping_options' item??
+     	DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
 	'shipping_cost'=>array(  // estimated cost on order
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-    'delivery' => array(  // expected delivery date  //FIXME is this a 'shipping_options' item??
-        DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
-    //FIXME we probably will need to add a package rate id, tracking number, etc...
+	//FIXME moved from orders table
+	'shipping_tracking_number' => array(
+		 DB_FIELD_TYPE => DB_DEF_STRING,
+		 DB_FIELD_LEN => 100),
+	//FIXME moved from orders table
+	'shipped' => array(  // date package was shipped
+	     DB_FIELD_TYPE => DB_DEF_TIMESTAMP),
     'shipping_options'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>10000),
@@ -111,8 +117,10 @@ return array(
 //from pickup buy
 //  * pickup_cost  // actual cost
 //  * shipment_date or pickup_date ?? do we get this??
-//we set this
 //  * pickup_status (created, purchased, cancelled)
+//from tracking webhook
+//  * tracking  // tracking data
+//we set this
     'predefinedpackage' => array(
         DB_FIELD_TYPE => DB_DEF_STRING,
         DB_FIELD_LEN => 100),

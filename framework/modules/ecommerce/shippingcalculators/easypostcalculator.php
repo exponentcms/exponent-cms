@@ -148,6 +148,11 @@ class easypostcalculator extends shippingcalculator
         return true;
     }
 
+    public function trackerEnabled()
+    {
+        return true;
+    }
+
     public function __construct($params = null, $get_assoc = true, $get_attached = true)
     {
         parent::__construct($params, $get_assoc, $get_attached);
@@ -598,7 +603,7 @@ class easypostcalculator extends shippingcalculator
         $sm_options['shipment_tracking_number'] = $shipment->tracking_code;
         $sm_options['shipment_label'] = $shipment->postage_label->label_url;
         $sm_options['shipment_status'] = 'purchased';
-        $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
+        $shippingmethod->update(array('shipping_tracking_number' => $shipment->tracking_code, 'shipping_options' => serialize($sm_options)));
     }
 
     function getLabel($shippingmethod)
@@ -794,10 +799,28 @@ class easypostcalculator extends shippingcalculator
         $shippingmethod->update(array('shipping_options' => serialize($sm_options)));
     }
 
-    function getPackageDetails($shippingmethod)
+    function handleTracking() {
+        $inputJSON = file_get_contents('php://input');
+        $init = self::ep_initialize();
+        $event = \EasyPost\Event::receive($inputJSON);
+        if($event->description == 'tracker.updated'){
+            //process event here
+            $sm = new shippingmethod();
+            $my_sm = $sm->find('first', 'carrier="' . $event->result->carrier . '" AND shipping_tracking_number="' . $event->result->tracking_code . '"');
+            if (!empty($my_sm->id)) {
+                $my_sm->shipping_options['tracking'] = $event->result;
+                $my_sm->delivery = $event->result->est_delivery_date;
+                $my_sm->update();
+            }
+        }
+        $ar = new expAjaxReply(200, gt('Tracking message handled'));
+        $ar->send();
+    }
+
+    function getPackageDetails($shippingmethod, $tracking_only=false)
     {
         $msg = '';
-        if ($shippingmethod->shipping_options['shipment_status'] == 'created' || $shippingmethod->shipping_options['shipment_status'] == 'purchased') {
+        if (($shippingmethod->shipping_options['shipment_status'] == 'created' || $shippingmethod->shipping_options['shipment_status'] == 'purchased') && !$tracking_only) {
             $msg .= '<h4>' . $shippingmethod->carrier . ' - ' . $shippingmethod->option_title . '</h4>';
             $msg .= gt('Package').':<ul>';
             if ($shippingmethod->predefinedpackage) {
@@ -824,6 +847,22 @@ class easypostcalculator extends shippingcalculator
                 $msg .= expCore::getCurrency($sc+$pc);
                 $msg .= '</strong>';
             }
+        }
+        if (!empty($shippingmethod->shipping_options['tracking'])) {
+            $msg .= '<br>'.gt('Delivery Status').': ';
+            $msg .= ucwords($shippingmethod->shipping_options['tracking']->status);
+            $msg .= '<br>'.gt('Estimated Delivery Date').': ';
+            $msg .= $shippingmethod->delivery;
+            $msg .= '<br>'.gt('Package Tracking Details').':<ul>';
+            foreach ($shippingmethod->shipping_options['tracking']->tracking_details as $details) {
+                $msg .= '<li>';
+                $msg .= $details->datetime.' - '.ucwords($details->message);
+                if (!empty($details->tracking_location->city)) {
+                    $msg .= ' - '.ucwords($details->city).', '.ucwords($details->state).' '.$details->country;
+                }
+                $msg .= '</li>';
+            }
+            $msg .= '</ul>';
         }
 
         return $msg;

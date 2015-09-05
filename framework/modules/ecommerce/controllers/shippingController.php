@@ -263,6 +263,15 @@ class shippingController extends expController {
 		expHistory::back();
 	}
 
+    public static function tracker() {
+        // we ALWAYS assume this is coming from easypost webhook
+        $ep = new easypostcalculator();
+        if ($ep->trackerEnabled()) {
+            $ep->handleTracking();
+        }
+        exit();  // graceful exit
+    }
+
 }
 
 ?>

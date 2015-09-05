@@ -32,6 +32,7 @@ class shippingcalculator extends expRecord {
    	public function isSelectable() { return true; }
     public function labelsEnabled() {return false; }
     public function pickupEnabled() {return false; }
+    public function trackerEnabled() {return false; }
 
     public $shippingmethods = array();
 
@@ -157,7 +158,11 @@ class shippingcalculator extends expRecord {
 
     }
 
-    function getPackageDetails($shippingmethod) {
+    function handleTracking() {
+
+    }
+
+    function getPackageDetails($shippingmethod, $tracking_only) {
 
     }
 
