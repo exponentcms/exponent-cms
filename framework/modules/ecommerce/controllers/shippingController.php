@@ -265,10 +265,15 @@ class shippingController extends expController {
 	}
 
     public function tracker() {
+        global $db;
+
         // we ALWAYS assume this is coming from easypost webhook
-        $ep = new easypostcalculator();
-        if ($ep->trackerEnabled()) {
-            $ep->handleTracking();
+        $calc_id = $db->selectValue('shippingcalculator','id','calculator_name="easypostcalculator" AND enabled=1');
+        if ($calc_id) {
+            $ep = new easypostcalculator($calc_id);
+            if ($ep->trackerEnabled()) {
+                $ep->handleTracking();
+            }
         }
         exit();  // graceful exit
     }

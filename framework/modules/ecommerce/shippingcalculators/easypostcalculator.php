@@ -802,15 +802,17 @@ class easypostcalculator extends shippingcalculator
     function handleTracking() {
         $inputJSON = file_get_contents('php://input');
         $init = self::ep_initialize();
-        $event = \EasyPost\Event::receive($inputJSON);
-        if($event->description == 'tracker.updated'){
-            //process event here
-            $sm = new shippingmethod();
-            $my_sm = $sm->find('first', 'carrier="' . $event->result->carrier . '" AND shipping_tracking_number="' . $event->result->tracking_code . '"');
-            if (!empty($my_sm->id)) {
-                $my_sm->shipping_options['tracking'] = $event->result;
-                $my_sm->delivery = $event->result->est_delivery_date;
-                $my_sm->update();
+        if (!empty($inputJSON)) {
+            $event = \EasyPost\Event::receive($inputJSON);
+            if($event->description == 'tracker.updated') {
+                //process event here
+                $sm = new shippingmethod();
+                $my_sm = $sm->find('first', 'carrier="' . $event->result->carrier . '" AND shipping_tracking_number="' . $event->result->tracking_code . '"');
+                if (!empty($my_sm->id)) {
+                    $my_sm->shipping_options['tracking'] = $event->result;
+                    $my_sm->delivery = $event->result->est_delivery_date;
+                    $my_sm->update();
+                }
             }
         }
         $ar = new expAjaxReply(200, gt('Tracking message handled'));
