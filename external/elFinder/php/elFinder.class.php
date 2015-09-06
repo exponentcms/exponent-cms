@@ -134,6 +134,13 @@ class elFinder {
 	 * @var string
 	 **/
 	protected $debug = false;
+	
+	/**
+	 * Call `session_write_close()` before exec command?
+	 * 
+	 * @var bool
+	 */
+	protected $sessionCloseEarlier = true;
 
 	/**
 	 * session expires timeout
@@ -240,6 +247,7 @@ class elFinder {
 
 		$this->time  = $this->utime();
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
+		$this->sessionCloseEarlier = isset($opts['sessionCloseEarlier'])? (bool)$opts['sessionCloseEarlier'] : true;
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
@@ -493,12 +501,17 @@ class elFinder {
 		}
 		
 		// call pre handlers for this command
+		$args['sessionCloseEarlier'] = $this->sessionCloseEarlier;
 		if (!empty($this->listeners[$cmd.'.pre'])) {
 			$volume = isset($args['target'])? $this->volume($args['target']) : false;
 			foreach ($this->listeners[$cmd.'.pre'] as $handler) {
 				call_user_func_array($handler, array($cmd, &$args, $this, $volume));
 			}
 		}
+		
+		// unlock session data for multiple access
+		$this->sessionCloseEarlier && $args['sessionCloseEarlier'] && (session_status() === PHP_SESSION_ACTIVE) && session_write_close();
+		unset($this->sessionCloseEarlier);
 		
 		$result = $this->$cmd($args);
 		
@@ -914,7 +927,7 @@ class elFinder {
 
 		if ($download) {
 			$disp = 'attachment';
-			$mime = 'application/force-download';
+			$mime = $file['mime'];
 		} else {
 			$disp  = preg_match('/^(image|text)/i', $file['mime']) || $file['mime'] == 'application/x-shockwave-flash' 
 					? 'inline' 
@@ -926,10 +939,10 @@ class elFinder {
 		if (strpos($filenameEncoded, '%') === false) { // ASCII only
 			$filename = 'filename="'.$file['name'].'"';
 		} else {
-			$ua = $_SERVER["HTTP_USER_AGENT"];
+			$ua = $_SERVER['HTTP_USER_AGENT'];
 			if (preg_match('/MSIE [4-8]/', $ua)) { // IE < 9 do not support RFC 6266 (RFC 2231/RFC 5987)
 				$filename = 'filename="'.$filenameEncoded.'"';
-			} elseif (strpos($ua, 'Chrome') === false && strpos($ua, 'Safari') !== false) { // Safari
+			} elseif (strpos($ua, 'Chrome') === false && strpos($ua, 'Safari') !== false && preg_match('#Version/[3-5]#', $ua)) { // Safari < 6
 				$filename = 'filename="'.str_replace('"', '', $file['name']).'"';
 			} else { // RFC 6266 (RFC 2231/RFC 5987)
 				$filename = 'filename*=UTF-8\'\''.$filenameEncoded;
@@ -943,12 +956,14 @@ class elFinder {
 			'header'  => array(
 				'Content-Type: '.$mime, 
 				'Content-Disposition: '.$disp.'; '.$filename,
-				'Content-Location: '.$file['name'],
 				'Content-Transfer-Encoding: binary',
 				'Content-Length: '.$file['size'],
 				'Connection: close'
 			)
 		);
+		if (isset($file['url']) && $file['url'] && $file['url'] != 1) {
+			$result['header'][] = 'Content-Location: '.$file['url'];
+		}
 		return $result;
 	}
 	
@@ -2103,8 +2118,13 @@ class elFinder {
 	/*                           static  utils                                 */
 	/***************************************************************************/
 	
-	public static function isAnimationGif($path)
-	{
+	/**
+	 * Return Is Animation Gif
+	 * 
+	 * @param  string $path server local path of target image
+	 * @return bool
+	 */
+	public static function isAnimationGif($path) {
 		list($width, $height, $type, $attr) = getimagesize($path);
 		switch ($type) {
 			case IMAGETYPE_GIF:
@@ -2145,6 +2165,17 @@ class elFinder {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * Return Is seekable stream resource
+	 * 
+	 * @param resource $resource
+	 * @return bool
+	 */
+	public static function isSeekableStream($resource) {
+		$metadata = stream_get_meta_data($resource);
+		return $metadata['seekable'];
 	}
 
 } // END class
