@@ -27,7 +27,7 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
-        new AdminerTheme(),
+        new AdminerTheme('default-blue'),
 //        new AdminerSimpleMenu(),
         new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
