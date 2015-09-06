@@ -8,3 +8,7 @@ html/*\*/>/*/*/body #content a[href*="&edit="]:before {
 	line-height: 10pt;
 	vertical-align: -3px;
 }
+
+p.filter:before{
+	content:"Filter:";
+}
