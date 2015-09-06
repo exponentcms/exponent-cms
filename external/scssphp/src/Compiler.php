@@ -371,20 +371,25 @@ class Compiler
     /**
      * Match extends single
      *
-     * @param array $single
+     * @param array $rawSingle
      * @param array $outOrigin
      *
      * @return boolean
      */
-    protected function matchExtendsSingle($single, &$outOrigin)
+    protected function matchExtendsSingle($rawSingle, &$outOrigin)
     {
         $counts = array();
+        $single = array();
+
+        foreach ($rawSingle as $part) {
+            if (! preg_match('/^[\[.:#%]/', $part) && count($single)) {
+                $single[count($single) - 1] .= $part;
+            } else {
+                $single[] = $part;
+            }
+        }
 
         foreach ($single as $part) {
-            if (! is_string($part)) {
-                return false; // hmm
-            }
-
             if (isset($this->extendsMap[$part])) {
                 foreach ($this->extendsMap[$part] as $idx) {
                     $counts[$idx] = isset($counts[$idx]) ? $counts[$idx] + 1 : 1;
@@ -531,9 +536,11 @@ class Compiler
 
         $this->scope = $this->makeOutputBlock($block->type, $selectors);
         $this->scope->parent->children[] = $this->scope;
+
         $this->compileChildren($block->children, $this->scope);
 
         $this->scope = $this->scope->parent;
+
         $this->popEnv();
     }
 
@@ -1061,14 +1068,12 @@ class Compiler
 
                     if ($isGlobal) {
                         $this->set($name[1], $this->reduce($value), false, $this->rootEnv);
-
                         break;
                     }
 
-                    if ($isDefault) {
-                        $existingValue = $this->get($name[1], true);
-                        $shouldSet = $existingValue === true || $existingValue === self::$null;
-                    }
+                    $shouldSet = $isDefault &&
+                        (($result = $this->get($name[1], false)) === null
+                        || $result === self::$null);
 
                     if (! $isDefault || $shouldSet) {
                         $this->set($name[1], $this->reduce($value));
@@ -1161,26 +1166,29 @@ class Compiler
 
                 $list = $this->coerceList($this->reduce($each->list));
 
-                foreach ($list[2] as $item) {
-                    $this->pushEnv();
+                $this->pushEnv();
 
+                foreach ($list[2] as $item) {
                     if (count($each->vars) === 1) {
-                        $this->set($each->vars[0], $item);
+                        $this->set($each->vars[0], $item, true);
                     } else {
                         list(,, $values) = $this->coerceList($item);
 
                         foreach ($each->vars as $i => $var) {
-                            $this->set($var, isset($values[$i]) ? $values[$i] : self::$null);
+                            $this->set($var, isset($values[$i]) ? $values[$i] : self::$null, true);
                         }
                     }
 
                     $ret = $this->compileChildren($each->children, $out);
-                    $this->popEnv();
 
                     if ($ret) {
+                        $this->popEnv();
+
                         return $ret;
                     }
                 }
+
+                $this->popEnv();
                 break;
 
             case 'while':
@@ -1220,7 +1228,6 @@ class Compiler
                         return $ret;
                     }
                 }
-
                 break;
 
             case 'nestedprop':
@@ -1280,9 +1287,9 @@ class Compiler
                 break;
 
             case 'mixin_content':
-                $content = $this->get(self::$namespaces['special'] . 'content');
+                $content = $this->get(self::$namespaces['special'] . 'content', false);
 
-                if (! isset($content)) {
+                if (! $content) {
                     $this->throwError('Expected @content inside of mixin');
                 }
 
@@ -2424,11 +2431,22 @@ class Compiler
             $env = $this->getStoreEnv();
         }
 
-        if (! isset($env->store[$name]) && isset($env->parent) && $this->has($name, $env->parent)) {
-            $this->setExisting($name, $value, $env->parent);
-        } else {
-            $env->store[$name] = $value;
+        $storeEnv = $env;
+
+        for (;;) {
+            if (array_key_exists($name, $env->store)) {
+                break;
+            }
+
+            if (! isset($env->parent)) {
+                $env = $storeEnv;
+                break;
+            }
+
+            $env = $env->parent;
         }
+
+        $env->store[$name] = $value;
     }
 
     /**
@@ -2453,12 +2471,12 @@ class Compiler
      * @api
      *
      * @param string    $name
-     * @param mixed     $defaultValue
+     * @param boolean   $shouldThrow
      * @param \stdClass $env
      *
      * @return mixed
      */
-    public function get($name, $defaultValue = null, $env = null)
+    public function get($name, $shouldThrow = true, $env = null)
     {
         $name = $this->normalizeName($name);
 
@@ -2466,19 +2484,25 @@ class Compiler
             $env = $this->getStoreEnv();
         }
 
-        if (! isset($defaultValue)) {
-            $defaultValue = self::$defaultValue;
+        $hasNamespace = $name[0] === '^' || $name[0] === '@' || $name[0] === '%';
+
+        for (;;) {
+            if (array_key_exists($name, $env->store)) {
+                return $env->store[$name];
+            }
+
+            if (! isset($env->parent)) {
+                break;
+            }
+
+            $env = $env->parent;
         }
 
-        if (isset($env->store[$name])) {
-            return $env->store[$name];
+        if ($shouldThrow) {
+            $this->throwError('undefined variable $' . $name);
         }
 
-        if (isset($env->parent)) {
-            return $this->get($name, $defaultValue, $env->parent);
-        }
-
-        return $defaultValue; // found nothing
+        // found nothing
     }
 
     /**
@@ -2491,9 +2515,7 @@ class Compiler
      */
     protected function has($name, $env = null)
     {
-        $value = $this->get($name, false, $env);
-
-        return $value !== false;
+        return $this->get($name, false, $env) !== null;
     }
 
     /**
@@ -2664,9 +2686,8 @@ class Compiler
             $code = file_get_contents($path);
             $parser = new Parser($path, false);
             $tree = $parser->parse($code);
-//            $this->parsedFiles[] = $path;
-            $this->parsedFiles[realpath($path)] = filemtime($path);
 
+            $this->parsedFiles[$realPath] = filemtime($path);
             $this->importCache[$realPath] = $tree;
         }
 
