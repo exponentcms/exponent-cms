@@ -349,9 +349,10 @@ class easypostcalculator extends shippingcalculator
 //            $shipment = \EasyPost\Shipment::create($shipment_params);  //FIXME single package
             $shipment = \EasyPost\Order::create($shipment_params);  // multiple packages
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (create order)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create order'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (create order)<br>' . $msg);
+//            return $msg;
         }
 
         $handling = empty($this->configdata['handling']) ? 0 : $this->configdata['handling'];
@@ -359,9 +360,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $messages = \EasyPost\Util::convertEasyPostObjectToArray($shipment->messages);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (convert messages)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('convert messages'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (convert messages)<br>' . $msg);
+//            return $msg;
         }
         foreach ($messages as $message) {
             flash('error', 'easypost: ' . $message['carrier'] . ': ' . $message['message']);
@@ -370,9 +372,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $rates = \EasyPost\Util::convertEasyPostObjectToArray($shipment->rates);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (convert rates)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('convert rates'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (convert rates)<br>' . $msg);
+//            return $msg;
         }
         $eprates = array();
         if (!empty($rates)) {
@@ -513,9 +516,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $parcel = \EasyPost\Parcel::create($package);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: <br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create parcel'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: <br>' . $msg);
+//            return $msg;
         }
 
         // create shipment
@@ -527,16 +531,18 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::create($shipment_params);  // single package
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (create order)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (create order)<br>' . $msg);
+//            return $msg;
         }
         try {
             $rates = \EasyPost\Util::convertEasyPostObjectToArray($shipment->rates);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (convert shipping rates)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('convert shipping rates'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (convert shipping rates)<br>' . $msg);
+//            return $msg;
         }
         $eprates = array();
         if (!empty($rates)) {
@@ -584,9 +590,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('retrieve shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
+//            return $msg;
         }
         $method = explode(':', $shippingmethod->option);
         try {
@@ -594,9 +601,10 @@ class easypostcalculator extends shippingcalculator
                 $shipment->lowest_rate(array($method[0]), array($method[1]))
             );//FIXME we need to select the correct carrier/method based on package type/size
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (buy shipment)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('buy shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (buy shipment)<br>' . $msg);
+//            return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['shipment_cost'] = $shipment->selected_rate->rate;
@@ -624,16 +632,18 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('retrieve shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
+//            return $msg;
         }
         try {
             $shipment->refund();
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (refund shipment)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('refund shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (refund shipment)<br>' . $msg);
+//            return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['shipment_cost'] = 0;
@@ -656,9 +666,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $shipment = \EasyPost\Shipment::retrieve(array('id' => $shippingmethod->shipping_options['shipment_id']));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('retrieve shipment'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve shipment)<br>' . $msg);
+//            return $msg;
         }
 
         try {
@@ -674,17 +685,19 @@ class easypostcalculator extends shippingcalculator
                 )
             );
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (create pickup)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create pickup'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (create pickup)<br>' . $msg);
+//            return $msg;
         }
 
         try {
             $rates = \EasyPost\Util::convertEasyPostObjectToArray($pickup->pickup_rates);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (convert pickup rates)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('convert pickup rates'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (convert pickup rates)<br>' . $msg);
+//            return $msg;
         }
         $eprates = array();
         if (!empty($rates)) {
@@ -749,9 +762,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('retrieve pickup'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
+//            return $msg;
         }
 
         $method = explode(':', $shippingmethod->option);
@@ -760,9 +774,10 @@ class easypostcalculator extends shippingcalculator
                 array(array('carrier' => $method[0], 'service' => $type))
             );
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (buy pickup)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('buy pickup'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (buy pickup)<br>' . $msg);
+//            return $msg;
         }
 
         $sm_options = $shippingmethod->shipping_options;
@@ -782,16 +797,18 @@ class easypostcalculator extends shippingcalculator
         try {
             $pickup = \EasyPost\Pickup::retrieve(array('id' => $shippingmethod->shipping_options['pickup_id']));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('retrieve pickup'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (retrieve pickup)<br>' . $msg);
+//            return $msg;
         }
         try {
             $pickup->cancel();
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (cancel pickup)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('cancel pickup'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (cancel pickup)<br>' . $msg);
+//            return $msg;
         }
         $sm_options = $shippingmethod->shipping_options;
         $sm_options['pickup_cost'] = 0;
@@ -909,9 +926,10 @@ class easypostcalculator extends shippingcalculator
         try {
             \EasyPost\EasyPost::setApiKey($apikey);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (api key)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('api key'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (api key)<br>' . $msg);
+//            return $msg;
         }
         return true;
     }
@@ -930,9 +948,10 @@ class easypostcalculator extends shippingcalculator
         try {
             $from_address = \EasyPost\Address::create($this->configdata['shipfrom']);
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (from address)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create from address'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (from address)<br>' . $msg);
+//            return $msg;
         }
         return $from_address;
     }
@@ -942,11 +961,18 @@ class easypostcalculator extends shippingcalculator
         try {
             $to_address = \EasyPost\Address::create($this->formatAddress($shippingmethod));
         } catch (Exception $e) {
-            $msg = $e->prettyPrint(false);
-            flash('error', 'easypost: (to address)<br>' . $msg);
-            return $msg;
+            return $this->easypost_error($e, gt('create to address'));
+//            $msg = $e->prettyPrint(false);
+//            flash('error', 'easypost: (to address)<br>' . $msg);
+//            return $msg;
         }
         return $to_address;
+    }
+
+    function easypost_error($error, $function) {
+        $msg = $error->prettyPrint(false);
+        flash('error', "easypost: ($function)<br>" . $msg);
+        return $msg;
     }
 
 }
