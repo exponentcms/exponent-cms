@@ -20,7 +20,7 @@ iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
 scssphp,0.3.0,leafo.net/scssphp,0.3.0,added Server\cachedCompile(); will not compile bootstrap v3+
 lessphp,0.5.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.5exp,lessphp.gpeasy.com/,1.7.0.5,tweaked wrapper to set/get options
-iLess,1.6.5,https://github.com/mishal/iless,1.6.5,"optional, not fully functional"
+iLess,2.0.3,https://github.com/mishal/iless,2.0.3,"optional, not fully functional"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.5,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
