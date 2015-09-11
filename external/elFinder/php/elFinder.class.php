@@ -143,6 +143,13 @@ class elFinder {
 	protected $sessionCloseEarlier = true;
 
 	/**
+	 * SESSION use commands default is `netmount`, `netunmount` @see __construct()
+	 * 
+	 * @var array
+	 */
+	protected $sessionUseCmds = array();
+	
+	/**
 	 * session expires timeout
 	 *
 	 * @var int
@@ -244,10 +251,15 @@ class elFinder {
 		if (session_id() == '') {
 			session_start();
 		}
+		$sessionUseCmds = array('netmount', 'netunmount');
+		if (isset($opts['sessionUseCmds']) && is_array($opts['sessionUseCmds'])) {
+			$sessionUseCmds = array_merge($sessionUseCmds, $opts['sessionUseCmds']);
+		}
 
 		$this->time  = $this->utime();
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
 		$this->sessionCloseEarlier = isset($opts['sessionCloseEarlier'])? (bool)$opts['sessionCloseEarlier'] : true;
+		$this->sessionUseCmds = array_flip($sessionUseCmds);
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
@@ -499,9 +511,9 @@ class elFinder {
 				$this->volumes[$id]->setMimesFilter($args['mimes']);
 			}
 		}
-		
+
 		// call pre handlers for this command
-		$args['sessionCloseEarlier'] = $this->sessionCloseEarlier;
+		$args['sessionCloseEarlier'] = isset($this->sessionUseCmds[$cmd])? false : $this->sessionCloseEarlier;
 		if (!empty($this->listeners[$cmd.'.pre'])) {
 			$volume = isset($args['target'])? $this->volume($args['target']) : false;
 			foreach ($this->listeners[$cmd.'.pre'] as $handler) {
@@ -510,7 +522,7 @@ class elFinder {
 		}
 		
 		// unlock session data for multiple access
-		$this->sessionCloseEarlier && $args['sessionCloseEarlier'] && (session_status() === PHP_SESSION_ACTIVE) && session_write_close();
+		$this->sessionCloseEarlier && $args['sessionCloseEarlier'] && session_id() && session_write_close();
 		unset($this->sessionCloseEarlier);
 		
 		$result = $this->$cmd($args);
@@ -1388,11 +1400,12 @@ class elFinder {
 	 * @return array (string JoinedTemporaryFilePath, string FileName) or (empty, empty)
 	 * @author Naoki Sawada
 	 */
-	private function checkChunkedFile($tmpname, $chunk, $cid, $tempDir) {
+	private function checkChunkedFile($tmpname, $chunk, $cid, $tempDir, $volume = null) {
 		if (preg_match('/^(.+)(\.\d+_(\d+))\.part$/s', $chunk, $m)) {
 			$encname = md5($cid . '_' . $m[1]);
 			$base = $tempDir . '/ELF' . $encname;
-			$total = intval($m[3]);
+			$fname = $m[1];
+			$clast = intval($m[3]);
 			if (is_null($tmpname)) {
 				// chunked file upload fail
 				foreach(glob($base . '*') as $cf) {
@@ -1401,11 +1414,21 @@ class elFinder {
 				return;
 			}
 			
-			if (isset($_POST['range'])) {
-				list($start, $len, $size) = explode(',', $_POST['range']);
+			$range = isset($_POST['range'])? trim($_POST['range']) : '';
+			if ($range && preg_match('/^(\d+),(\d+),(\d+)$/', $range, $ranges)) {
+				$start = $ranges[1];
+				$len   = $ranges[2];
+				$size  = $ranges[3];
 				$tmp = $base . '.part';
+				$csize = filesize($tmpname);
 				
-				if (!is_file($tmp)) {
+				$tmpExists = is_file($tmp);
+				if (!$tmpExists) {
+					// check upload max size
+					$uploadMaxSize = $volume->getUploadMaxSize();
+					if ($uploadMaxSize > 0 && $size > $uploadMaxSize) {
+						return array(self::ERROR_UPLOAD_FILE_SIZE, false);
+					}
 					// make temp file
 					$fp = fopen($tmp, 'wb');
 					flock($fp, LOCK_EX);
@@ -1413,38 +1436,43 @@ class elFinder {
 					flock($fp, LOCK_UN);
 					fclose($fp);
 					touch($base);
+				} else {
+					// wait until makeing temp file (for anothor session)
+					while(!is_file($base)) {
+						usleep(100000); // wait 10ms
+					}
 				}
 				
-				// wait until makeing temp file (for anothor session)
-				while(!is_file($base)) {
-					usleep(100000); // wait 100ms
+				// check size info
+				if ($len != $csize || $start + $len > $size || ($tmpExists && $size != filesize($tmp))) {
+					return array(self::ERROR_UPLOAD_TRANSFER, false);
 				}
 				
 				// write chunk data
 				$src = fopen($tmpname, 'rb');
 				$fp = fopen($tmp, 'cb');
 				fseek($fp, $start);
-				stream_copy_to_stream($src, $fp);
+				stream_copy_to_stream($src, $fp, $len);
 				fclose($fp);
 				fclose($src);
 				
 				// write counts
-				file_put_contents($base, "\0", FILE_APPEND);
+				file_put_contents($base, "\0", FILE_APPEND) === false;
 				
-				if (filesize($base) === $total) {
+				if (filesize($base) >= $clast + 1) {
 					// Completion
 					unlink($base);
-					return array($tmp, $m[1]);
+					return array($tmp, $fname);
 				}
 			} else {
 				// old way
 				$part = $base . $m[2];
 				if (move_uploaded_file($tmpname, $part)) {
 					@chmod($part, 0600);
-					if ($total < count(glob($base . '*'))) {
+					if ($clast < count(glob($base . '*'))) {
 						$parts = array();
-						for ($i = 0; $i <= $total; $i++) {
-							$name = $base . '.' . $i . '_' . $total;
+						for ($i = 0; $i <= $clast; $i++) {
+							$name = $base . '.' . $i . '_' . $clast;
 							if (is_readable($name)) {
 								$parts[] = $name;
 							} else {
@@ -1467,7 +1495,7 @@ class elFinder {
 									}
 									fclose($target);
 									unlink($base);
-									return array($resfile, $m[1]);
+									return array($resfile, $fname);
 								}
 								unlink($base);
 							}
@@ -1684,13 +1712,17 @@ class elFinder {
 			if ($name === 'blob') {
 				if ($chunk) {
 					if ($tempDir = $this->getTempDir($volume->getTempPath())) {
-						list($tmpname, $name) = $this->checkChunkedFile($tmpname, $chunk, $cid, $tempDir);
-						if ($name) {
+						list($tmpname, $name) = $this->checkChunkedFile($tmpname, $chunk, $cid, $tempDir, $volume);
+						if ($tmpname && $name) {
 							$result['_chunkmerged'] = basename($tmpname);
 							$result['_name'] = $name;
 						}
+						if ($tmpname && $name === false) {
+							$result['error'] = $this->error(self::ERROR_UPLOAD_FILE, $chunk, $tmpname);
+							$this->uploadDebug = 'Upload error: ' . $tmpname;
+						}
 					} else {
-						$result['warning'] = $this->error(self::ERROR_UPLOAD_FILE, $chunk, self::ERROR_UPLOAD_TRANSFER);
+						$result['error'] = $this->error(self::ERROR_UPLOAD_FILE, $chunk, self::ERROR_UPLOAD_TRANSFER);
 						$this->uploadDebug = 'Upload error: unable open tmp file';
 					}
 					return $result;
