@@ -320,6 +320,9 @@ class expCSS {
         if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
             if (defined('LESS_COMPILER')) {
                 $less_compiler = strtolower(LESS_COMPILER);
+                if ($less_compiler == 'iless' && version_compare(phpversion(), '5.4.0', '<')) {
+                    $less_compiler = 'less.php';  //iLess requires PHP >= 5.4.0
+                }
             } else {
                 $less_compiler = 'less.php';
             }
