@@ -383,17 +383,9 @@ class expValidator {
                     self::failAndReturnToForm(gt('reCAPTCHA is not properly configured. Please contact an administrator.'), $params);
                 }
                 
-//                require_once(BASE.'external/recaptchalib.php');
-                require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
-                $reCaptcha = new ReCaptcha(RECAPTCHA_PRIVATE_KEY);
+                require_once(BASE . 'external/ReCaptcha/autoload.php');
+                $reCaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
-//                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$params["recaptcha_challenge_field"],$params["recaptcha_response_field"]);
-//                if ($params["g-recaptcha-response"]) {  //FIXME swap params for new v1.1.1 ->verify(resp,ip)
-//                    $resp = $reCaptcha->verifyResponse(
-//                        $_SERVER["REMOTE_ADDR"],
-//                        $params["g-recaptcha-response"]
-//                    );
-//                }
                 if ($params["g-recaptcha-response"]) {
                     $resp = $reCaptcha->verify(
                         $params["g-recaptcha-response"],
@@ -401,8 +393,7 @@ class expValidator {
                     );
                 }
 
-//                if ($resp->is_valid) {
-                if (!empty($resp->success)) {
+                if ($resp->isSuccess()) {
                     return true;
                 } else {
                     //Compatibility with old school form module - prb

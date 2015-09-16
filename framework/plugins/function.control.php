@@ -373,7 +373,7 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
 //                        require_once(BASE . 'external/recaptchalib.php');
-                        require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
+                        require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                         $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                         echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                         echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';

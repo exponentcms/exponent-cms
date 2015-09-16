@@ -72,17 +72,9 @@ class lessc{
 	public function setOption($name, $value){
 		$this->options[$name] = $value;
 	}
-
-    protected function getOptions(){
-   		switch($this->formatterName){
-   			case 'compressed':
-   				$this->options['compress'] = true;
-   				break;
-   		}
-   		return $this->options;
-   	}
-
+	
 	public function parse($buffer, $presets = array()){
+
 		$this->setVariables($presets);
 
 		$parser = new Less_Parser($this->getOptions());
@@ -95,6 +87,16 @@ class lessc{
 
 		return $parser->getCss();
 	}
+
+    protected function getOptions(){
+  		$this->options['relativeUrls'] = false;
+   		switch($this->formatterName){
+   			case 'compressed':
+   				$this->options['compress'] = true;
+   				break;
+   		}
+   		return $this->options;
+   	}
 
 	protected function getImportDirs(){
 		$dirs_ = (array)$this->importDir;
