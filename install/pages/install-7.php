@@ -40,7 +40,7 @@ if ($user->username == '') {
     $errorstr = gt('Your passwords do not match. Please check your entries.');
     $errorflag = '&errpassword=true';
     echo $errorstr;
-} elseif (strcasecmp($username, $password) == 0) {
+} elseif (strcasecmp($user->username, $password) == 0) {
     $error = true;
     $errorstr = gt('The password cannot be the same as the username.');
     $errorflag = '&errpwusername=true';
