@@ -527,8 +527,8 @@ class expCSS {
                 default :
                     if (is_file(BASE . $scss_pname) && substr($scss_pname, -5, 5) == ".scss") {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
-                        $scss = new scssc();
-                        $scss_server = new scss_server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
+                        $scss = new \Leafo\ScssPhp\Compiler();
+                        $scss_server = new \Leafo\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
 
                         // load the cache
                         $scss_cname = str_replace("/", "_", $scss_pname);
