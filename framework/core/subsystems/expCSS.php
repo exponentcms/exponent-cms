@@ -235,10 +235,10 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
-//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -329,16 +329,17 @@ class expCSS {
             switch ($less_compiler) {
                 case 'iless':
                     if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+//                        require_once(BASE.'external/iless1/lib/ILess/Autoloader.php');  //iless 1.7.0
                         require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
-                        ILess_Autoloader::register();  //iless1
-//                        ILess\Autoloader::register();  //iLess2
+//                        ILess_Autoloader::register();  //iless 1.7.0
+                        ILess\Autoloader::register();  //iLess2
 
-                        $less = new ILess_Parser(  //iless1
-//                        $less = new ILess\Parser(  //iLess2
+//                        $less = new ILess_Parser(  //iless 1.7.0
+                        $less = new ILess\Parser(  //iLess2
                             array(),  // option
                             // cache implementation
-                            new ILess_Cache_FileSystem(array(  //iless1
-//                            new ILess\Cache\FileSystemCache(array(  //iLess2
+//                            new ILess_Cache_FileSystem(array(  //iless 1.7.0
+                            new ILess\Cache\FileSystemCache(array(  //iLess2
                                 'cache_dir' => BASE . 'tmp/css/',
                             )
                         ));
