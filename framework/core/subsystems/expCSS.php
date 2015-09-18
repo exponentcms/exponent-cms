@@ -235,10 +235,11 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
-//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -526,6 +527,7 @@ class expCSS {
             switch ($scss_compiler) {
                 case 'scssphp':
                 default :
+                    //FIXME we need to account for leading _ with filename and missing filetype suffix
                     if (is_file(BASE . $scss_pname) && substr($scss_pname, -5, 5) == ".scss") {
                         include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
                         $scss = new \Leafo\ScssPhp\Compiler();
@@ -565,7 +567,7 @@ class expCSS {
                         }
 
                         $scss->setVariables($vars);
-                        $scss->setNumberPrecision(8);
+                        $scss->setNumberPrecision(8);  //FIXME docs recommends, but dist only has 6 digits of precision
 
                         try {
                             $file_updated = false;
