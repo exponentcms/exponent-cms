@@ -83,6 +83,9 @@ class fix_sef_urls extends upgradescript {
                             } elseif ($model->classname == 'expCat') {
                                 $opts = array('grouping_sql' => " AND module='" . $item->module . "'");
                             }
+                            if (empty($item->title)) {
+                                $item->title = 'Untitled';  // fix badly mangled database from long ago
+                            }
                             // check for duplicate sef url
                             if (!is_bool(expValidator::uniqueness_of('sef_url', $item, $opts))) {
                                 $item->makeSefUrl();  // make a new unique sef_url from scratch
@@ -106,6 +109,9 @@ class fix_sef_urls extends upgradescript {
                 } else {
                     $items = $model->find();
                     foreach ($items as $item) {
+                        if (empty($item->title)) {
+                            $item->title = 'Untitled';  // fix badly mangled database from long ago
+                        }
                         // check for duplicate sef url
                         if (!is_bool(expValidator::uniqueness_of('sef_url', $item, array()))) {
                             $item->makeSefUrl();  // make a new unique sef_url from scratch
