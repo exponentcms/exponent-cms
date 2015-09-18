@@ -88,15 +88,15 @@ class lessc{
 		return $parser->getCss();
 	}
 
-    protected function getOptions(){
+	protected function getOptions(){
   		$this->options['relativeUrls'] = false;
-   		switch($this->formatterName){
-   			case 'compressed':
+		switch($this->formatterName){
+			case 'compressed':
    				$this->options['compress'] = true;
-   				break;
-   		}
+				break;
+		}
    		return $this->options;
-   	}
+	}
 
 	protected function getImportDirs(){
 		$dirs_ = (array)$this->importDir;
