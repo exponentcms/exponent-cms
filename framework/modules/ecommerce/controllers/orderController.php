@@ -119,7 +119,7 @@ class orderController extends expController {
         if (ECOM_LARGE_DB) {
             $limit = empty($this->config['limit']) ? 50 : $this->config['limit'];
         } else {
-            $limit = 0;
+            $limit = 0;  // we'll paginate on the page
         }
         //eDebug($sql, true);
         $page = new expPaginator(array(
@@ -183,11 +183,14 @@ class orderController extends expController {
             $order->billingmethod[0]->billingtransaction[0]->billingcalculator = new $calc_name();
         }
         //eDebug($order->billingmethod[0]->billingtransaction);
-        if (isset($this->params['printerfriendly'])) $pf = $this->params['printerfriendly'];
-        else $pf = 0;
+        if (isset($this->params['printerfriendly']))
+            $pf = $this->params['printerfriendly'];
+        else
+            $pf = 0;
 
         $to_addresses[] = $order->billingmethod[0]->email;
-        $s              = array_pop($order->shippingmethods);
+//        $s              = array_pop($order->shippingmethods);  //FIXME we don't really want to 'pop' it off the object
+        $s              = reset($order->shippingmethods);
         if ($s->email != $order->billingmethod[0]->email) $to_addresses[] = $s->email;
 
         $from_addresses                                        = array();
@@ -349,14 +352,12 @@ class orderController extends expController {
             $addresses = explode(',', ecomconfig::getConfig('email_invoice_addresses'));
             foreach ($addresses as $address) {
                 $mail = new expMail();
-                $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
                 if (empty($from[0])) $from = SMTP_FROMADDRESS;
                 $mail->quickSend(array(
                     'html_message'=> $html,
                     'text_message'=> $txt,
                     'to'          => trim($address),
-//					    'from'=>ecomconfig::getConfig('from_address'),
-//					    'from_name'=>ecomconfig::getConfig('from_name'),
                     'from'        => $from,
                     'subject'     => 'An order was placed on the ' . ecomconfig::getConfig('storename'),
                 ));
@@ -370,15 +371,13 @@ class orderController extends expController {
 //            $usermsg .= ecomconfig::getConfig('ecomfooter');
 
             $mail = new expMail();
-            $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+            $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
             if (empty($from[0])) $from = SMTP_FROMADDRESS;
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
                 'text_message'=> $txt,
                 'to'          => $user->email,
                 //'to'=>$order->billingmethod[0]->email,
-//			        'from'=>ecomconfig::getConfig('from_address'),
-//			        'from_name'=>ecomconfig::getConfig('from_name'),
                 'from'        => $from,
                 'subject'     => ecomconfig::getConfig('invoice_subject'),
             ));
@@ -609,18 +608,20 @@ exit();
         );
 
         if ($mime_type == '') {
-            $file_extension = strtolower(substr(strrchr($file, "."), 1));
-
-            if (array_key_exists($file_extension, $known_mime_types)) {
-                $mime_type = $known_mime_types[$file_extension];
-            } else {
-                $mime_type = "application/force-download";
-            }
+//            $file_extension = strtolower(substr(strrchr($file, "."), 1));
+//
+//            if (array_key_exists($file_extension, $known_mime_types)) {
+//                $mime_type = $known_mime_types[$file_extension];
+//            } else {
+//                $mime_type = "application/force-download";
+//            }
+            $mime_type = expFile::getMimeType($file);
         }
 
         //@ob_end_clean(); //turn off output buffering to decrease cpu usage
         // required for IE, otherwise Content-Disposition may be ignored
-        if (ini_get('zlib.output_compression')) ini_set('zlib.output_compression', 'Off');
+        if (ini_get('zlib.output_compression'))
+            ini_set('zlib.output_compression', 'Off');
 
         header('Content-Type: ' . $mime_type);
         header('Content-Disposition: attachment; filename="' . $name . '"');
@@ -630,7 +631,8 @@ exit();
         /* The three lines below basically make the download non-cacheable */
         header('Cache-control: private');
         header('Pragma: private');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+//        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 
         // multipart-download and download resuming support
         if (isset($_SERVER['HTTP_RANGE'])) {
@@ -757,7 +759,7 @@ exit();
                     $html .= ecomconfig::getConfig('ecomfooter');
 
                     $mail = new expMail();
-                    $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                    $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
                     if (empty($from[0])) $from = SMTP_FROMADDRESS;
                     $mail->quickSend(array(
                         'html_message'=> $html,
@@ -907,7 +909,7 @@ exit();
         // figure out what metadata to pass back based on the action 
         // we are in.
         $action   = $router->params['action'];
-        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
+        $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => true, 'nofollow' => true);
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
@@ -924,9 +926,9 @@ exit();
                 $metainfo['title']       = gt('Viewing Order') . ' #' . $order->invoice_id . ' - ' . $storename;
                 $metainfo['keywords']    = empty($order->meta_keywords) ? SITE_KEYWORDS : $order->meta_keywords;
                 $metainfo['description'] = empty($order->meta_description) ? SITE_DESCRIPTION : $order->meta_description;
-                $metainfo['canonical'] = empty($order->canonical) ? '' : $order->canonical;
-                $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
-                $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
+//                $metainfo['canonical'] = empty($order->canonical) ? $router->plainPath() : $order->canonical;
+//                $metainfo['noindex'] = empty($order->meta_noindex) ? false : $order->meta_noindex;
+//                $metainfo['nofollow'] = empty($order->meta_nofollow) ? false : $order->meta_nofollow;
                 break;
             case 'showall':
             case 'ordersbyuser':
@@ -1014,14 +1016,14 @@ exit();
     function edit_payment_info() {
         //$order = new order($this->params['id']);
         $billing = new billing($this->params['id']);
-        $opts    = expUnserialize($billing->billingmethod->billing_options);
-        //FIXME what about the most recent transaction?  $billing->billingmethod is the most current transaction
+        $opts    = expUnserialize($billing->billingmethod->billing_options);  //FIXME already unserialized???
         //eDebug($billing);
 //        eDebug($opts);
         assign_to_template(array(
             'orderid'=> $this->params['id'],
-            'opts'   => $opts->result  //FIXME credit card doesn't have a result
-            //FIXME do we also need to pass $billing->billingmethod->billing_cost & $billing->billingmethod->transaction_state'???
+            'opts'   => $opts,  //FIXME credit card doesn't have a result
+            'billing_cost' => $billing->billingmethod->billing_cost,
+            'transaction_state' => $billing->billingmethod->transaction_state
         ));
     }
 
@@ -1029,37 +1031,37 @@ exit();
         //need to save billing methods and billing options
         //$order = new order($this->params['id']);
         //eDebug($this->params, true);
-        $obj = new stdClass();
+        $res_obj = new stdClass();
         foreach ($this->params['result'] as $resultKey=> $resultItem) {
-            $obj->$resultKey = $resultItem;
+            $res_obj->$resultKey = $resultItem;
         }
-//        $res     = serialize($obj);
+//        $res     = serialize($res_obj);
         $billing = new billing($this->params['id']);
         // eDebug($billing);
-        //FIXME shouldn't we be ADDING a new billing transaction?
         $billingmethod      = $billing->billingmethod;
         $billingtransaction = $billingmethod->billingtransaction[0];
 
         // update billing method
+        $billingmethod->billing_cost           = $this->params['billing_cost'];
+        $billingmethod->transaction_state      = $this->params['transaction_state'];
         $bmopts                         = expUnserialize($billingmethod->billing_options);
-        $bmopts->result                 = $obj;
+        $bmopts->result                 = $res_obj;
         $billingmethod->billing_options = serialize($bmopts);
-        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
-        if (!empty($this->params['result']['payment_status']))
-            $billingmethod->transaction_state = $this->params['result']['payment_status'];
-        //FIXME we need to set/update $billingmethod->billing_cost also??
+//        if (!empty($this->params['result']['payment_status']))
+//            $billingmethod->transaction_state = $this->params['result']['payment_status'];  //FIXME should this be discrete??
         $billingmethod->save();
 
         // add new billing transaction
+        $billingtransaction->billing_cost                = $this->params['billing_cost'];
+        $billingtransaction->transaction_state           = $this->params['transaction_state'];
         $btopts                              = expUnserialize($billingtransaction->billing_options);
-        $btopts->result                      = $obj;
+        $btopts->result                      = $res_obj;
         $billingtransaction->billing_options = serialize($btopts);
-        //FIXME we need a transaction_state of complete, authorized, authorization pending, error, void, or refunded; or paid or payment due
-        if (!empty($this->params['result']['payment_status']))
-            $billingtransaction->transaction_state = $this->params['result']['payment_status'];
-        $billingtransaction->id = null;
-        $order = new order($this->params['id']);
-        $billingtransaction->billing_cost = $order->grand_total;  //FIXME should it always be the grand total???
+//        if (!empty($this->params['result']['payment_status']))
+//            $billingtransaction->transaction_state = $this->params['result']['payment_status'];
+        $billingtransaction->id = null;  // force a new record by erasing the id, easy method to copy record
+//        $order = new order($this->params['id']);
+//        $billingtransaction->billing_cost = $order->grand_total;  //FIXME should it always be the grand total???
         $billingtransaction->save();
 
 //        flashAndFlow('message', gt('Payment info updated.'));
@@ -1068,11 +1070,10 @@ exit();
     }
 
     function edit_shipping_method() {
-        //$order = new order($this->params['id']);
         if (!isset($this->params['id']))
             flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
         $order = new order($this->params['id']);
-        $s     = array_pop($order->shippingmethods);
+        $s     = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $sm    = new shippingmethod($s->id);
         //eDebug($sm);
         assign_to_template(array(
@@ -1082,15 +1083,185 @@ exit();
     }
 
     function save_shipping_method() {
-        if (!isset($this->params['id']))
-            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
-        if (!isset($this->params['sid']))
-            flashAndFlow('error', gt('Unable to process request.  Order invalid.'));
+        if (!isset($this->params['id']) || !isset($this->params['sid']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
         $sm               = new shippingmethod($this->params['sid']);
         $sm->option_title = $this->params['shipping_method_title'];
         $sm->carrier      = $this->params['shipping_method_carrier'];
         $sm->save();
         flashAndFlow('message', gt('Shipping method updated.'));
+    }
+
+    function edit_parcel() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();  // add calculator object
+        assign_to_template(array(
+            'shipping'=> $sm
+        ));
+    }
+
+    function save_parcel() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        if (!isset($this->params['in_box']) || !isset($this->params['qty'])) {
+            flashAndFlow('notice', gt('Nothing was included in the shipping package!'));
+        } else {
+            $sm = new shippingmethod($this->params['id']);
+            $sm->attachCalculator();
+//            $sm_new = clone($sm);  // prepare for another 'package' if needed since we didn't place everything in this one
+//            $sm_new->id = null;
+//            $sm_new->orderitem = array();
+            //FIXME for now multiple shipping methods will crash ecom with shipping->__construct()
+            foreach ($sm->orderitem as $key => $oi) {
+                if (!array_key_exists($oi->id, $this->params['in_box'])) {
+                    // one of the items by type is not in this package and needs to be moved to another package
+//                    $tmp = 1;
+//                    $sm_new->update();  // we don't need to actually create a new shippingmethod until needed
+//                    $sm->orderitem[$key]->shippingmethods_id = $sm_new->id;
+//                    $sm->orderitem[$key]->update();
+//                    unset($sm->orderitem[$key]);
+                    //NOTE $sm_new->update(); ???
+                } else {
+                    if ($oi->quantity != $this->params['qty'][$oi->id]) {
+                        // one of the items by quantity is not in this package and remaining items need to be moved another package
+//                        $tmp = 1;
+//                        $new_quantity = $oi->quantity - $this->params['qty'][$oi->id];
+//                        $sm->orderitem[$key]->quantity = $this->params['qty'][$oi->id];  // adjust to new quantity
+//                        $sm->orderitem[$key]->update();
+//                        $sm_new->update();  // we don't need to actually create a new shippingmethod until needed
+//                        $oi->id = null;  // create a new orderitem copy
+//                        $oi->shippingmethods_id = $sm_new->id;
+//                        $oi->quantity = $new_quantity;
+//                        $oi->update();
+                        //NOTE $sm_new->update(); ???
+                    }
+                }
+            }
+            // update $sm with the passed $this->params (package data)
+            $sm->update($this->params);  //NOTE will this update assoc orderitems???
+            $msg = $sm->calculator->createLabel($sm);
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping package updated.'));
+            } else {
+                expHistory::back();
+            }
+        }
+    }
+
+    function edit_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $method = explode(':', $sm->option);
+//FIXME check for existing rate, if not get next cheapest? (based on predefined package?)
+        assign_to_template(array(
+            'shipping'=> $sm,
+            'cost' => $sm->shipping_options['shipment_rates'][$method[0]][$method[1]]['cost']
+        ));
+    }
+
+    function save_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $msg = $sm->calculator->buyLabel($sm);
+//        $sm->refresh();  //FIXME updated with new options we may need to take action on like tracking number?
+//        $order->shipping_tracking_number = $sm->shipping_options['shipment_tracking_number'];
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Shipping label purchased.'));
+        } else {
+            expHistory::back();
+        }
+    }
+
+    function download_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $label = $sm->calculator->getLabel($sm);
+        expHistory::back();
+    }
+
+    function delete_label() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $msg = $sm->calculator->cancelLabel($sm);
+        // also need to cancel the pickup if created/purchased
+        if (!is_string($msg) && ($sm->shipping_options['pickup_status'] == 'created' || $sm->shipping_options['pickup_status'] == 'purchased')) {
+            $msg = $sm->calculator->cancelPickup($sm);
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping label and pickup cancelled and refunded.'));
+            }
+        } else {
+            if (!is_string($msg)) {
+                flashAndFlow('message', gt('Shipping label cancelled and refunded.'));
+            }
+        }
+        expHistory::back();
+    }
+
+    function edit_pickup()
+    {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        assign_to_template(array(
+            'shipping'=> $sm,
+        ));
+    }
+
+    function edit_pickup2() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $this->params['pickupdate'] = strtotime($this->params['pickupdate']);
+        $this->params['pickupenddate'] = strtotime($this->params['pickupenddate']);
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $pickup = $sm->calculator->createPickup($sm, $this->params['pickupdate'], $this->params['pickupenddate'], $this->params['instructions']);
+        $sm->refresh();
+        $pickup_rates = array();
+        foreach ($sm->shipping_options['pickup_rates'] as $pu_rate) {
+            $pickup_rates[$pu_rate['id']] = $pu_rate['id'] . ' - ' . expCore::getCurrency($pu_rate['cost']);
+        }
+        assign_to_template(array(
+            'shipping'=> $sm,
+            'rates' => $pickup_rates
+        ));
+    }
+
+    function save_pickup() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        //FIXME should we add the params to the $sm->shipping_options, or pass them??
+        $msg = $sm->calculator->buyPickup($sm, $this->params['pickuprate']);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Package pickup ordered.'));
+        } else {
+            expHistory::back();
+        }
+    }
+
+    function delete_pickup() {
+        if (!isset($this->params['id']))
+            flashAndFlow('error', gt('Unable to process request. Order invalid.'));
+        $sm = new shippingmethod($this->params['id']);
+        $sm->attachCalculator();
+        $msg = $sm->calculator->cancelPickup($sm);
+        if (!is_string($msg)) {
+            flashAndFlow('message', gt('Package pickup cancelled.'));
+        } else {
+            expHistory::back();
+        }
     }
 
     function createReferenceOrder() {
@@ -1143,6 +1314,7 @@ exit();
         $change->save();
 
         $tObj                             = new stdClass();
+        $tObj->result                     = new stdClass();
         $tObj->result->errorCode          = 0;
         $tObj->result->message            = "Reference Order Pending";
         $tObj->result->PNREF              = "Pending";
@@ -1156,9 +1328,9 @@ exit();
         $newBillingMethod                       = $order->billingmethod[0];
         $newBillingMethod->id                   = null;
         $newBillingMethod->orders_id            = $newOrder->id;
-        $newBillingMethod->billing_cost         = 0;
 //        $newBillingMethod->billingcalculator_id = 6;
         $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
+        $newBillingMethod->billing_cost         = 0;
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->save();
@@ -1288,9 +1460,9 @@ exit();
         $newBillingMethod                       = new billingmethod();
         $newBillingMethod->addresses_id         = $newAddy->id;
         $newBillingMethod->orders_id            = $newOrder->id;
-        $newBillingMethod->billing_cost         = 0;
 //        $newBillingMethod->billingcalculator_id = 6;
         $newBillingMethod->billingcalculator_id = billingcalculator::getDefault();
+        $newBillingMethod->billing_cost         = 0;
         $newBillingMethod->transaction_state    = 'authorization pending';
         $newBillingMethod->billing_options      = serialize($tObj);
         $newBillingMethod->firstname            = $newAddy->firstname;
@@ -1365,7 +1537,7 @@ exit();
         $order = new order($this->params['id']);
         $same  = false;
 
-        $sm = array_pop($order->shippingmethods);
+        $sm = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         //$bm = array_pop($order->billingmethods);
 
         //eDebug($sm->addresses_id);
@@ -1404,7 +1576,7 @@ exit();
 
         $order          = new order($this->params['orderid']);
         $billing        = new billing($this->params['orderid']);
-        $s              = array_pop($order->shippingmethods);
+        $s              = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $shippingmethod = new shippingmethod($s->id);
 
         //eDebug($order);
@@ -1514,13 +1686,12 @@ exit();
         $oi = new orderitem($this->params['id']);
         $oi->delete();
 
-        $s  = array_pop($order->shippingmethods);
+        $s  = array_pop($order->shippingmethods);  //FIXME only getting 1st one and then removing it
         $sm = new shippingmethod($s->id);
 
         $shippingCalc = new shippingcalculator($sm->shippingcalculator_id);
         $calcName     = $shippingCalc->calculator_name;
         $calculator   = new $calcName($shippingCalc->id);
-
         $pricelist = $calculator->getRates($order);
 
         foreach ($pricelist as $rate) {
@@ -1622,14 +1793,13 @@ exit();
         $order = new order($oi->orders_id);
         $order->calculateGrandTotal();
 
-        $s = array_pop($order->shippingmethods);
+        $s = array_pop($order->shippingmethods);  //FIXME only getting 1st one and thenremoving it
         eDebug($s);
         $sm = new shippingmethod($s->id);
 
         $shippingCalc = new shippingcalculator($sm->shippingcalculator_id);
         $calcName     = $shippingCalc->calculator_name;
         $calculator   = new $calcName($shippingCalc->id);
-
         $pricelist = $calculator->getRates($order);
 
         foreach ($pricelist as $rate) {

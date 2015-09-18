@@ -100,7 +100,7 @@ class fakeform extends form {
         $delete_icon_class = '';
         if (bs2()) {
             if (BTN_SIZE == 'large') {
-                $btn_size = '';  // actually default size, NOT true boostrap large
+                $btn_size = '';  // actually default size, NOT true bootstrap large
                 $icon_size = 'icon-large';
             } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-mini';
@@ -115,13 +115,13 @@ class fakeform extends form {
             $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif (bs3()) {
             if (BTN_SIZE == 'large') {
-                $btn_size = '';
+                $btn_size = 'btn-sm';
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE == 'small') {
-                $btn_size = 'btn-xs';
+                $btn_size = 'btn-sm';
                 $icon_size = '';
             } else {
-                $btn_size = 'btn-sm';
+                $btn_size = '';
                 $icon_size = 'fa-lg';
             }
             $edit_class = ' class="btn btn-default '.$btn_size.'"';

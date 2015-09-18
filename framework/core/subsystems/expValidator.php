@@ -353,7 +353,7 @@ class expValidator {
 		$match = array();
 		$pattern = "/([^0-9a-z-_\+\.])/i";
 		if (empty($object->$field) || preg_match($pattern, $object->$field, $match, PREG_OFFSET_CAPTURE)) {
-			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field)." is not a valid sef url.";   
+			return array_key_exists('message', $opts) ? $opts['message'] : ucwords($field) . " '" . $object->$field . "' is not a valid sef url.";
 		} else {
 			return true;
 		}
@@ -383,17 +383,9 @@ class expValidator {
                     self::failAndReturnToForm(gt('reCAPTCHA is not properly configured. Please contact an administrator.'), $params);
                 }
                 
-//                require_once(BASE.'external/recaptchalib.php');
-                require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
-                $reCaptcha = new ReCaptcha(RECAPTCHA_PRIVATE_KEY);
+                require_once(BASE . 'external/ReCaptcha/autoload.php');
+                $reCaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
-//                $resp = recaptcha_check_answer (RECAPTCHA_PRIVATE_KEY,$_SERVER["REMOTE_ADDR"],$params["recaptcha_challenge_field"],$params["recaptcha_response_field"]);
-//                if ($params["g-recaptcha-response"]) {  //FIXME swap params for new v1.1.1 ->verify(resp,ip)
-//                    $resp = $reCaptcha->verifyResponse(
-//                        $_SERVER["REMOTE_ADDR"],
-//                        $params["g-recaptcha-response"]
-//                    );
-//                }
                 if ($params["g-recaptcha-response"]) {
                     $resp = $reCaptcha->verify(
                         $params["g-recaptcha-response"],
@@ -401,8 +393,7 @@ class expValidator {
                     );
                 }
 
-//                if ($resp->is_valid) {
-                if (!empty($resp->success)) {
+                if ($resp->isSuccess()) {
                     return true;
                 } else {
                     //Compatibility with old school form module - prb
@@ -561,28 +552,48 @@ class expValidator {
 
     /**
      * Method to determine password strength
-     *   e.g., does not match username and is greater than 8 characters
-     * @param $username
+     *   e.g., not correct type/number of characters
      * @param $password
      *
-     * @return string
+     * @return string   error if any
      */
-    public static function checkPasswordStrength($username,$password) {
+    public static function checkPasswordStrength($password) {
 		// Return blank string on success, error message on failure.
 		// The error message should let the user know why their password is wrong.
-		if (strcasecmp($username,$password) == 0) {
-			return gt('Password cannot be equal to the username.');
-		}
-		# For example purposes, the next line forces passwords to be over 8 characters long.
-		if (strlen($password) < 8) {
-			return gt('Passwords must be at least 8 characters long.');
-		}
+//		if (strcasecmp($username, $password) == 0) {
+//			return gt('Password cannot be equal to the username.');
+//		}
 
-		return ""; // by default, accept any passwords
+		# Check password minimum length
+        if (strlen($password) < MIN_PWD_LEN) {
+            return gt('Passwords must be at least') . ' ' . MIN_PWD_LEN . ' ' . gt('characters long');
+        }
+
+        # Check password for minimum number of lower case characters
+//        if (preg_match_all("#[a-z]#, $password, $matches) < MIN_LOWER) {
+//            return gt('Passwords must have at least') . ' ' . MIN_LOWER . ' ' . gt('lower case letter(s)');
+//        }
+
+        # Check password for minimum number of upper case characters
+        if (preg_match_all("#[A-Z]#", $password, $matches) < MIN_UPPER) {
+            return gt('Passwords must have at least') . ' ' . MIN_UPPER . ' ' . gt('upper case letter(s)');
+        }
+
+        # Check password for minimum number of numeric characters
+        if (preg_match_all('#[0-9]#', $password, $matches) < MIN_DIGITS) {
+            return gt('Passwords must have at least') . ' ' . MIN_DIGITS . ' ' . gt('digit(s)');
+        }
+
+        # Check password for minimum number of symbols
+        if (preg_match_all("#\W+#", $password, $matches) < MIN_SYMBOL) {
+            return gt('Passwords must have at least') . ' ' . MIN_SYMBOL . ' ' . gt('symbol(s)');
+        }
+
+		return ''; // otherwise, no errors
 	}
 
     /**
-     * Routine to check that username is longer than 3 characters
+     * Routine to check that username is valid (longer than 3 characters)
      *
      * @param $username
      *
@@ -602,7 +613,7 @@ class expValidator {
 		//if (!preg_match("/[a-zA-Z0-9]/",$username)){
 		//	return gt('Your username contains illegal characters.');
 		//}
-		return ""; // by default, accept any passwords
+		return ""; // otherwise, no errors
 	}
 }
 

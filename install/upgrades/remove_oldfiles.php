@@ -106,6 +106,7 @@ class remove_oldfiles extends upgradescript {
             'external/adminer/adminer-3.7.1-mysql.php',
             'external/adminer/adminer-4.1.0-mysql.php',
             'external/adminer/adminer-4.2.0-mysql.php',
+            'external/adminer/adminer-4.2.1-mysql.php',
             'external/editors/_header.tpl',
             'external/editors/Default.tpl',
             'external/editors/FCKeditor.tpl',
@@ -161,6 +162,8 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.1.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.2.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.3.js',
+            'external/jquery/addons/js/pwstrength-bootstrap-1.2.5.js',
+            'external/jquery/addons/js/pwstrength-bootstrap-1.2.6.js',
             'external/less.php/Cache.php',
             'external/less.php/Less.php',
             'external/less.php/Version.php',
@@ -437,6 +440,8 @@ class remove_oldfiles extends upgradescript {
             // other obsolete files
             'framework/modules/twitter/assets/images/rt.png',
             'framework/modules/twitter/assets/images/tweeted.png',
+            'framework/modules/file/connector/cwd.js',
+            'framework/modules/file/connector/elFinder.js'
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -485,6 +490,7 @@ class remove_oldfiles extends upgradescript {
             'tmp/pods/',
             'external/bootstrap/font/',
             'external/ckeditor/',
+            'external/easypost-php-2.1.0/',
             'external/editors/connector/',
             'external/editors/FCKeditor/',
             'external/editors/ckeditor/images',
@@ -522,6 +528,7 @@ class remove_oldfiles extends upgradescript {
             'external/Smarty-3.1.15/',
             'external/Smarty-3.1.18/',
             'external/Smarty-3.1.19/',
+            'external/Smarty-3.1.21/',
             'external/swfobject/',
             'external/Swift/',
             'external/Swift-4/',
@@ -543,6 +550,7 @@ class remove_oldfiles extends upgradescript {
             'external/Swift-5.2.0/',
             'external/swiftmailer-5.2.1/',
             'external/swiftmailer-5.3.1/',
+            'external/swiftmailer-5.4.0/',
             'external/yui3/',
             'external/lissa/',
             'external/yui/build/',

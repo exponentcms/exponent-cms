@@ -112,7 +112,7 @@
                 <div id="buttons">
                     {permissions}
                         {if $permissions.manage && $order->shipping_required}
-                            {printer_friendly_link class="{button_style}" text="Packing Slip"|gettext view="show_packing" show=1}
+                            {printer_friendly_link class="{button_style}" text="Print Packing Slip"|gettext view="show_packing" show=1}
                         {/if}
                     {/permissions}
                 </div>
@@ -125,18 +125,77 @@
                     </thead>
                     <tbody>                         
                     {if $permissions.manage}
-                        <tr><td colspan="2">
-                        {if !$order->shipping_required}
-                            {'No Shipping Required'|gettext}
-                        {else}
-                            {form action=update_shipping}
-                                {control type="hidden" name="id" value=$order->id}
-                                {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
-                                {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
-                                {control type="buttongroup" submit="Save Shipping Info"|gettext}
-                            {/form}
+                    {if $order->shipping_required}
+                        <tr>
+                            <td>
+                                {if $shipping->shippingmethod->carrier != ''}
+                                <strong>{"Carrier"|gettext}:</strong>{br}
+                                {$shipping->shippingmethod->carrier}
+                                {/if}
+                            </td>
+                            <td>
+                                <strong>{"Shipping Method"|gettext}:</strong>{br}
+                                {$shipping->shippingmethod->option_title}
+                                {permissions}
+                                    <div class="item-permissions">
+                                        {if $permissions.edit_shipping_method && !$pf}
+                                            {icon class="edit" action=edit_shipping_method id=$order->id title='Edit Shipping Method'|gettext}
+                                        {/if}
+                                    </div>
+                                {/permissions}
+                            </td>
+                        </tr>
                         {/if}
-                        </td>
+                        <tr><td>
+                            {if !$order->shipping_required}
+                                {'No Shipping Required'|gettext}
+                            {else}
+                                {form action=update_shipping}
+                                    {control type="hidden" name="id" value=$order->id}
+                                    {control type="text" name="shipping_tracking_number" label="Tracking #"|gettext value=$order->shipping_tracking_number}
+                                    {control type="datetimecontrol" name="shipped" showtime=false label="Date Shipped"|gettext value=$order->shipped}
+                                    {control type="buttongroup" submit="Update Shipping Info"|gettext}
+                                {/form}
+                            {/if}
+                            </td>
+                            <td>
+                                {if $order->shipping_required}
+                                    <h4>{'Packages'|gettext}</h4>
+                                    <ol>
+                                        {foreach $order->shippingmethods as $sm}
+                                            {$sm->attachCalculator()}
+                                            <li>
+                                                <div>
+                                                    {$sm->carrier} - {$sm->option_title}
+                                                    {if empty($sm->shipping_options.shipment_status) || $sm->shipping_options.shipment_status == 'cancelled'}
+                                                        {if $sm->shipping_options.shipment_status == 'cancelled'}{$text='Re-Create Package'|gettext}{else}{$text='Create Package'|gettext}{/if}
+                                                        {icon class=add action=edit_parcel id=$sm->id text=$text title='Enter details about the items in the package'|gettext}
+                                                    {elseif $sm->shipping_options.shipment_status == 'created' && $sm->calculator->labelsEnabled()}
+                                                        {icon class=edit action=edit_label id=$sm->id text='Purchase Label'|gettext}
+                                                    {elseif $sm->shipping_options.shipment_status == 'purchased' && $sm->calculator->labelsEnabled()}
+                                                        {icon class=downloadfile action=download_label id=$sm->id text='Print Label'|gettext}
+                                                        {icon class=delete action=delete_label id=$sm->id text='Cancel Label'|gettext}
+                                                        {'Tracking'|gettext}: {$sm->shipping_options.shipment_tracking_number}
+                                                        {if $sm->calculator->pickupEnabled() && $sm->carrier != 'USPS'}
+                                                            {if ($sm->shipping_options.pickup_status != 'purchased')} {* FIXME *}
+                                                                {icon class=add action=edit_pickup id=$sm->id text='Request Pickup'|gettext}
+                                                            {elseif $sm->shipping_options.pickup_status == 'purchased'}
+                                                                {icon class=delete action=delete_pickup id=$sm->id text='Cancel Pickup'|gettext}
+                                                            {/if}
+                                                        {/if}
+                                                    {/if}
+                                                    {$msg = $sm->calculator->getPackageDetails($sm)}
+                                                    {if $msg}
+                                                        {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
+                                                            {$msg}
+                                                        {/pop}
+                                                    {/if}
+                                                </div>
+                                            </li>
+                                        {/foreach}
+                                    </ol>
+                                {/if}
+                            </td>
                         </tr>
                     {else}
                         <tr><td> 

@@ -43,7 +43,7 @@
                 {ecomconfig var=store assign=store}
                 {ecomconfig var=storename assign=storename}
                 {control type="text" name="shipfrom[company]" label="Company Name"|gettext value=$calculator->configdata.shipfrom.company|default:$storename required=1}
-                {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone|default:$store.phone}
+                {control type=tel name="shipfrom[phone]" label="Phone Number"|gettext value=$calculator->configdata.shipfrom.phone|default:$store.phone required=1}
    	            {control type="text" name="shipfrom[street1]" label="Address"|gettext value=$calculator->configdata.shipfrom.street1|default:$store.address1 required=1}
    	            {control type="text" name="shipfrom[street2]" label=" " value=$calculator->configdata.shipfrom.street2|default:$store.address2}
    	            {control type="text" name="shipfrom[city]" label="City"|gettext value=$calculator->configdata.shipfrom.city|default:$store.city required=1}

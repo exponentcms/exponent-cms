@@ -85,12 +85,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         {control type=text name=address2 label="Apt/Suite #"|gettext value=$record->address2}
         {control type=text name=city label="City"|gettext required=true value=$record->city}
         {*{if ($user->is_admin || $user->is_acting_admin) && $admin_config == true}*}
-            {*{control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state add_other=true}*}
+            {*{control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext default=$record->state add_other=true}*}
             {*{control type=text name=non_us_state label="&#160;"|cat:"Non U.S. State/Province"|gettext value=$record->non_us_state}*}
-            {*{control type=country name=country label="Country"|gettext show_all=true value=$record->country|default:223}*}
+            {*{control type=country name=country label="Country"|gettext show_all=true default=$record->country|default:223}*}
         {*{else}*}
-            {*{control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext value=$record->state}*}
-            {*{control type=country name=country label="Country"|gettext value=$record->country}*}
+            {*{control type=state name=state label="State/Province"|gettext required=true includeblank="-- Choose a State --"|gettext default=$record->state}*}
+            {*{control type=country name=country label="Country"|gettext default=$record->country}*}
         {*{/if}*}
         {control type=countryregion name=address label="Country/State"|gettext country_default=$record->country|default:223 region_default=$record->state includeblank="-- Choose a State --"|gettext required=true}
         {control type=text name=zip label="Zip/Postal Code"|gettext required=true value=$record->zip}
@@ -124,11 +124,33 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.7'}
 {literal}
     $(document).ready(function () {
         "use strict";
         var options = {};
+        options.common = {
+            minChar: {/literal}{$smarty.const.MIN_PWD_LEN}{literal},
+        };
+//        options.rules = {
+//            activated: {
+//                wordNotEmail: true,
+//                wordLength: true,
+//                wordSimilarToUsername: true,
+//                wordSequences: true,
+//                wordTwoCharacterClasses: false,
+//                wordRepetitions: false,
+//                wordLowercase: true,
+//                wordUppercase: true,
+//                wordOneNumber: true,
+//                wordThreeNumbers: true,
+//                wordOneSpecialChar: true,
+//                wordTwoSpecialChar: true,
+//                wordUpperLowerCombo: true,
+//                wordLetterNumberCombo: true,
+//                wordLetterNumberCharCombo: true
+//            }
+//        };
         options.ui = {
             container: ".edit.address-form",
             showVerdictsInsideProgressBar: true,

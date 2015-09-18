@@ -546,8 +546,8 @@ if (!defined('JQUERY_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SMARTY_PATH')) {
-    define('SMARTY_VERSION', '3.1.21');
-    define('SMARTY_PATH', BASE . 'external/Smarty-' . SMARTY_VERSION . '/libs/');
+    define('SMARTY_VERSION', '3.1.27');
+    define('SMARTY_PATH', BASE . 'external/smarty-' . SMARTY_VERSION . '/libs/');
     define('SMARTY_DEVELOPMENT', false);
 }
 
@@ -556,7 +556,7 @@ if (!defined('SMARTY_PATH')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('SWIFT_PATH')) {
-    define('SWIFT_VERSION', '5.4.0');
+    define('SWIFT_VERSION', '5.4.1');
     define('SWIFT_PATH', BASE . 'external/swiftmailer-' . SWIFT_VERSION . '/lib/');
 }
 

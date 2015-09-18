@@ -40,17 +40,17 @@
     <div id="text-{$id}" class="">
         <ul class="nav nav-tabs" role="tablist">
             {foreach from=$items item=tab name=tabs}
-                <li role="presentation"{if $smarty.foreach.tabs.iteration == 0} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
+                <li role="presentation"{if $smarty.foreach.tabs.iteration == 1} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}" role="tab" data-toggle="tab">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
             {/foreach}
             {permissions}
                 {if ($permissions.create)}
-                    <li role="presentation"{if $smarty.foreach.tabs.iteration != 0} class="active">{/if}<a href="#tab{$smarty.foreach.tabs.iteration+1}" role="tab" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
+                    <li role="presentation"{if $smarty.foreach.tabs.iteration == 0} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration+1}-{$id}" role="tab" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
         <div class="tab-content">
             {foreach from=$items item=item name=items}
-                <div id="tab{$smarty.foreach.items.iteration}" role="tabpanel" class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if} tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}" role="tabpanel" class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if} tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                     {permissions}
 						<div class="item-actions">
 						    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -86,8 +86,8 @@
             {/foreach}
             {permissions}
                 {if $permissions.create}
-                    <div id="tab{$smarty.foreach.tabs.iteration+1}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.tabs.iteration != 0} in active{/if}">
-                        {icon class=add action=edit rank=$item->rank+1 text="Add more text here"|gettext}
+                    <div id="tab{$smarty.foreach.tabs.iteration+1}-{$id}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.tabs.iteration == 0} in active{/if}">
+                        {icon class=add action=edit rank=$item->rank+1 text="Add new text tab"|gettext}
                     </div>
                 {/if}
             {/permissions}

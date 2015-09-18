@@ -25,7 +25,10 @@ elFinder.prototype.commands.info = function() {
 			items    : fm.i18n('items'),
 			yes      : fm.i18n('yes'),
 			no       : fm.i18n('no'),
-			link     : fm.i18n('link')
+			link     : fm.i18n('link'),
+			owner    : fm.i18n('owner'),
+			group    : fm.i18n('group'),
+			perm     : fm.i18n('perm')
 		};
 		
 	this.tpl = {
@@ -75,7 +78,8 @@ elFinder.prototype.commands.info = function() {
 			count = [],
 			replSpinner = function(msg, name) { dialog.find('.'+spclass+'-'+name).parent().html(msg); },
 			id = fm.namespace+'-info-'+$.map(files, function(f) { return f.hash; }).join('-'),
-			dialog = fm.getUI().find('#'+id), 
+			dialog = fm.getUI().find('#'+id),
+			customActions = [],
 			size, tmb, file, title, dcnt;
 			
 		if (!cnt) {
@@ -111,7 +115,8 @@ elFinder.prototype.commands.info = function() {
 			file.alias && content.push(row.replace(l, msg.aliasfor).replace(v, file.alias));
 			content.push(row.replace(l, msg.path).replace(v, fm.escape(fm.path(file.hash, true))));
 			if (file.read) {
-				var href;
+				var href,
+				name_esc = fm.escape(file.name);
 				if (file.url == '1') {
 					content.push(row.replace(l, msg.link).replace(v, tpl.spinner.replace('{text}', msg.modify).replace('{name}', 'url')));
 					fm.request({
@@ -119,10 +124,10 @@ elFinder.prototype.commands.info = function() {
 						preventDefault : true
 					})
 					.fail(function() {
-						replSpinner(file.name, 'url');
+						replSpinner(name_esc, 'url');
 					})
 					.done(function(data) {
-						replSpinner('<a href="'+data.url+'" target="_blank">'+file.name+'</a>' || file.name, 'url');
+						replSpinner('<a href="'+data.url+'" target="_blank">'+name_esc+'</a>' || name_esc, 'url');
 						if (data.url) {
 							var rfile = fm.file(file.hash);
 							rfile.url = data.url;
@@ -135,7 +140,7 @@ elFinder.prototype.commands.info = function() {
 					} else {
 						href = fm.url(file.hash);
 					}
-					content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+file.name+'</a>'));
+					content.push(row.replace(l, msg.link).replace(v,  '<a href="'+href+'" target="_blank">'+name_esc+'</a>'));
 				}
 			}
 			
@@ -169,6 +174,27 @@ elFinder.prototype.commands.info = function() {
 			content.push(row.replace(l, msg.modify).replace(v, fm.formatDate(file)));
 			content.push(row.replace(l, msg.perms).replace(v, fm.formatPermissions(file)));
 			content.push(row.replace(l, msg.locked).replace(v, file.locked ? msg.yes : msg.no));
+			file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
+			file.group && content.push(row.replace(l, msg.group).replace(v, file.group));
+			file.perm && content.push(row.replace(l, msg.perm).replace(v, fm.formatFileMode(file.perm)));
+			
+			// Add custom info fields
+			if (o.custom) {
+				$.each(o.custom, function(name, details) {
+					if (
+					  (!details.mimes || $.map(details.mimes, function(m){return (file.mime === m || file.mime.indexOf(m+'/') === 0)? true : null;}).length)
+					    &&
+					  (!details.hashRegex || file.hash.match(details.hashRegex))
+					) {
+						// Add to the content
+						content.push(row.replace(l, fm.i18n(details.label)).replace(v , details.tpl.replace('{id}', id)));
+						// Register the action
+						if (details.action && (typeof details.action == 'function')) {
+							customActions.push(details.action);
+						}
+					}
+				});
+			}
 		} else {
 			view  = view.replace('{class}', 'elfinder-cwd-icon-group');
 			title = tpl.groupTitle.replace('{items}', msg.items).replace('{num}', cnt);
@@ -221,6 +247,17 @@ elFinder.prototype.commands.info = function() {
 				});
 		}
 		
+		// call custom actions
+		if (customActions.length) {
+			$.each(customActions, function(i, action) {
+				try {
+					action(file, fm, dialog);
+				} catch(e) {
+					fm.debug('error', e);
+				}
+			});
+		}
+
 	};
 	
 };

@@ -53,12 +53,12 @@
     <div id="photos-{$id}" class="yui-navset">
         <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}">{$cat->name}</a></li>
             {/foreach}
         </ul>
         <div class="yui-content">
             {foreach name=items from=$page->cats key=catid item=cat}
-                <div id="tab{$smarty.foreach.items.iteration}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}">
                     <ul class="image-list">
                         {foreach from=$cat->records item=item}
                             <li style="width:{$config.pa_showall_thumbbox|default:"150"}px;height:{$config.pa_showall_thumbbox|default:"150"}px;">
@@ -121,9 +121,6 @@
     }
 
 	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-//        Y.expTabs({srcNode: '#{/literal}{$id}{literal}'});
-//		Y.one('#{/literal}{$id}{literal}').removeClass('hide');
-//		Y.one('.loadingdiv').remove();
         Y.Lightbox.init();
 	});
 {/literal}

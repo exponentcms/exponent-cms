@@ -196,7 +196,7 @@
 .xdsoft_datetimepicker .xdsoft_label {
 	display: inline;
 	position: relative;
-	z-index: 9999;
+	/*z-index: 9999;*/
 	margin: 0;
 	padding: 5px 3px;
 	font-size: 14px;

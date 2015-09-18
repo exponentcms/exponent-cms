@@ -30,6 +30,9 @@ class shippingcalculator extends expRecord {
    	public function hasConfig() { return true; }
    	public function addressRequired() { return true; }
    	public function isSelectable() { return true; }
+    public function labelsEnabled() {return false; }
+    public function pickupEnabled() {return false; }
+    public function trackerEnabled() {return false; }
 
     public $shippingmethods = array();
 
@@ -78,6 +81,10 @@ class shippingcalculator extends expRecord {
    	    return array();
    	}
 
+    function getPackages($carrier) {
+        return array();
+    }
+
     /**
      * Unused at this time
      *
@@ -118,6 +125,45 @@ class shippingcalculator extends expRecord {
         global $db;
 
         return $db->selectValue('shippingcalculator','title','id='.$calc_id);
+    }
+
+    // functions for handing order fulfillment via shipping labels and package pickup
+    //  primarily for easypost shipping calculator
+
+    function createLabel($shippingmethod) {
+        return false;
+    }
+
+    function buyLabel($shippingmethod) {
+
+    }
+
+    function getLabel($shippingmethod) {
+        return false;
+    }
+
+    function cancelLabel($shippingmethod) {
+
+    }
+
+    function createPickup($shippingmethod, $pickupdate, $pickupenddate, $instructions) {
+        return false;
+    }
+
+    function buyPickup($shippingmethod, $type) {
+
+    }
+
+    function cancelPickup($shippingmethod) {
+
+    }
+
+    function handleTracking() {
+
+    }
+
+    function getPackageDetails($shippingmethod, $tracking_only) {
+
     }
 
 }

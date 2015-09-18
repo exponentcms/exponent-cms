@@ -45,13 +45,6 @@ function smarty_function_printer_friendly_link($params,&$smarty) {
     }
     if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
         // initialize a couple of variables
-//        if (BTN_SIZE == 'large') {
-//            $btn_size = 'btn-sm';
-//            $icon_size = 'fa-lg';
-//        } else {
-//            $btn_size = 'btn-xs';
-//            $icon_size = '';
-//        }
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
         $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle();

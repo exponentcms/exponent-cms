@@ -28,7 +28,7 @@ elFinder.prototype.commands.rm = function() {
 			files  = this.files(hashes),
 			cnt    = files.length,
 			cwd    = fm.cwd().hash,
-			goroot = false;
+			goup   = false;
 
 		if (!cnt || this._disabled) {
 			return dfrd.reject();
@@ -41,21 +41,24 @@ elFinder.prototype.commands.rm = function() {
 			if (file.locked) {
 				return !dfrd.reject(['errLocked', file.name]);
 			}
-			if (file.hash == cwd) {
-				goroot = fm.root(file.hash);
+			if (file.mime === 'directory') {
+				var parents = fm.parents(cwd);
+				if (file.hash == cwd || $.inArray(file.hash, parents)) {
+					goup = (file.phash && fm.file(file.phash).read)? file.phash : fm.root(file.hash);
+				}
 			}
 		});
 
 		if (dfrd.state() == 'pending') {
 			files = this.hashes(hashes);
 			
+			fm.lockfiles({files : files});
 			fm.confirm({
 				title  : self.title,
 				text   : 'confirmRm',
 				accept : {
 					label    : 'btnRm',
 					callback : function() {  
-						fm.lockfiles({files : files});
 						fm.request({
 							data   : {cmd  : 'rm', targets : files}, 
 							notify : {type : 'rm', cnt : cnt},
@@ -66,16 +69,20 @@ elFinder.prototype.commands.rm = function() {
 						})
 						.done(function(data) {
 							dfrd.done(data);
-							goroot && fm.exec('open', goroot)
-						}
-						).always(function() {
+							goup && fm.exec('open', goup)
+						})
+						.always(function() {
 							fm.unlockfiles({files : files});
 						});
 					}
 				},
 				cancel : {
 					label    : 'btnCancel',
-					callback : function() { dfrd.reject(); }
+					callback : function() {
+						fm.unlockfiles({files : files});
+						fm.selectfiles({files : files});
+						dfrd.reject();
+					}
 				}
 			});
 		}

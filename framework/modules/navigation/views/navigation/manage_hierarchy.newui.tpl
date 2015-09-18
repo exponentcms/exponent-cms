@@ -29,7 +29,7 @@
         <strong>{'Right click on a tree item'|gettext}</strong> {'for a context menu of options.'|gettext}
     </blockquote>
     {permissions}
-        {if $user->is_admin || $user->is_acting_admin}
+        {if $user->isAdmin()}
                <div class="module-actions">
                    {icon class="add" action=edit_section parent='0' text='Create a New Top Level Page'|gettext}
                </div>

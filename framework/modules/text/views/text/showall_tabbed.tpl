@@ -40,7 +40,7 @@
     <div id="text-{$id}" class="yui-navset">
         <ul class="yui-nav">
             {foreach from=$items item=tab name=tabs}
-                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}">{if $tab->title ==""}&#160;{else}{$tab->title}{/if}</a></li>
             {/foreach}
             {permissions}
                 {if ($permissions.create)}
@@ -49,13 +49,13 @@
                     {else}
                         <li class="selected">
                     {/if}
-                    <a href="#tab{$smarty.foreach.tabs.iteration+1}"><em>({'Add New'|gettext})</em></a></li>
+                    <a href="#tab{$smarty.foreach.tabs.iteration+1}-{$id}"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
         <div class="yui-content">
             {foreach from=$items item=item name=items}
-                <div id="tab{$smarty.foreach.items.iteration}" class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}" class="item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                     {permissions}
 						<div class="item-actions">
 						    {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -91,7 +91,7 @@
             {/foreach}
             {permissions}
                 {if $permissions.create}
-                    <div id="tab{$smarty.foreach.tabs.iteration+1}">
+                    <div id="tab{$smarty.foreach.tabs.iteration+1}-{$id}">
                         {icon class=add action=edit rank=$item->rank+1 text="Add more text here"|gettext}
                     </div>
                 {/if}

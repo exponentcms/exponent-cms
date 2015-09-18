@@ -25,6 +25,11 @@ define('ECOM_AUTHORIZENET_AUTH_ONLY', 1);
 
 class authorizedotnet extends creditcard {
 
+    const APPROVED = 1;
+    const DECLINED = 2;
+    const ERROR = 3;
+    const HELD = 4;
+
     function name() {
         return gt("Authorize.net Payment Gateway");
     }
@@ -58,13 +63,12 @@ class authorizedotnet extends creditcard {
         return true;
     }
 
-    function process($method, $opts, $params, $order) {
-
-//        global $order, $db, $user;
+    function process($billingmethod, $opts, $params, $order) {
         global $db, $user;
 
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         // make sure we have some billing options saved.
-        if (empty($method) || empty($opts)) return false;
+        if (empty($billingmethod) || empty($opts)) return false;
 
         // get a shipping address to display in the invoice email.
         $shippingaddress = $order->getCurrentShippingMethod();
@@ -73,7 +77,7 @@ class authorizedotnet extends creditcard {
 
         $config = unserialize($this->config);
 
-        $state = new geoRegion($method->state);
+        $state = new geoRegion($billingmethod->state);
         $country = new geoCountry($state->country_id);
 
         $data = array(
@@ -84,14 +88,14 @@ class authorizedotnet extends creditcard {
             "x_delim_data"         => 'TRUE',
             "x_delim_char"         => '|',
             "x_relay_response"     => 'FALSE',
-            "x_first_name"         => $method->firstname,
-            "x_last_name"          => $method->lastname,
-            "x_address"            => $method->address1,
-            "x_city"               => $method->city,
+            "x_first_name"         => $billingmethod->firstname,
+            "x_last_name"          => $billingmethod->lastname,
+            "x_address"            => $billingmethod->address1,
+            "x_city"               => $billingmethod->city,
             "x_state"              => $state->code,
-            "x_zip"                => $method->zip,
+            "x_zip"                => $billingmethod->zip,
             "x_country"            => $country->iso_code_2letter,
-            //"x_phone"=>empty($method->phone) ? '' : $method->phone,  //FIXME
+            //"x_phone"=>empty($billingmethod->phone) ? '' : $billingmethod->phone,  //FIXME
             "x_phone"              => '309-680-5600',
             "x_email"              => $user->email,
             "x_invoice_num"        => $order->invoice_id,
@@ -154,6 +158,7 @@ class authorizedotnet extends creditcard {
         curl_close($ch);
 
         $response = explode("|", $authorize);
+//        $response = $this->parseResponse($authorize, '|');
 
 //        $object = new stdClass();
         if ($response[0] == 1) { //Approved !!!
@@ -170,27 +175,30 @@ class authorizedotnet extends creditcard {
             $opts->result->correlationID = $response[7];
             if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_CAPTURE) {
                 $trax_state = "complete";
+                $billingcost = $order->grand_total;
             } else if ($config['process_mode'] == ECOM_AUTHORIZENET_AUTH_ONLY) {
                 $trax_state = "authorized";
+                $billingcost = 0;
             }
         } else {
             $opts->result->errorCode = $response[2]; //Response reason code
             $opts->result->message = $response[3];
             $trax_state = "error";
         }
+        $opts->result->payment_status = $trax_state;
 
 //        $opts->result = $object;
         $opts->cc_number = 'xxxx-xxxx-xxxx-' . substr($opts->cc_number, -4);
-        $method->update(array('billing_options' => serialize($opts)));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        $billingmethod->update(array('billing_options' => serialize($opts)));
+        $this->createBillingTransaction($billingmethod, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
     }
 
-    function credit_transaction($method, $amount, $order) {
+    function credit_transaction($billingmethod, $amount, $order) {
         global $user;
 
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -242,11 +250,11 @@ class authorizedotnet extends creditcard {
 
         $response = explode("|", $authorize);
         if ($response[2] == 1) { //if it is completed
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
-            $this->createBillingTransaction($method, urldecode($response[9]), $opts->result, 'voided');
+            $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+            $this->createBillingTransaction($billingmethod, urldecode($response[9]), $opts->result, 'voided');
 
             flash('message', gt('Void Completed Successfully.'));
-            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
         } else { // if it has error which like means it is already settled
 
             $data = array(
@@ -281,22 +289,26 @@ class authorizedotnet extends creditcard {
             $authorize = curl_exec($ch);
             curl_close($ch);
 
-            $response = explode("|", $authorize);
+            $response = explode("|", $authorize); //FIXME what to do with this?
 
-            $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
-            $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'refunded');
+            $opts->result->errorCode = 0;
+            $opts->result->payment_status = gt("refunded");
+            $opts->result->transId = '';
+            $opts->result->message = "Transaction Refunded";
+            $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'refunded'));
+            $this->createBillingTransaction($billingmethod, -(number_format($amount, 2, '.', '')), $opts->result, 'refunded');
 
             flash('message', gt('Refund Completed Successfully.'));
-            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+            redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
         }
     }
 
-	 function delayed_capture($method, $amount, $order) {
+	 function delayed_capture($billingmethod, $amount, $order) {
 	
         global $user;
 
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -348,22 +360,27 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize);
+        $response = explode("|", $authorize); //FIXME what to do with this?
 
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'complete');
+         $opts->result->errorCode = 0;
+         $opts->result->payment_status = gt("complete");
+         $opts->result->transId = '';
+         $opts->result->message = "Transaction Captured";
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'complete'));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, 'complete');
 
         flash('message', gt('Captured Transaction Successfully.'));
-        redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $method->orders_id));
+        redirect_to(array('controller' => 'order', 'action' => 'show', 'id' => $billingmethod->orders_id));
      
     }
 
-	function void_transaction($method, $order) {
+	function void_transaction($billingmethod, $order) {
 
         global $user;
 
+        $amount = 0;  //FIXME initialize the amount??
         $config = unserialize($this->config);
-        $opts = unserialize($method->billing_options);
+        $opts = unserialize($billingmethod->billing_options);
 
         $data = array(
             'x_login'          => $config['username'],
@@ -415,11 +432,15 @@ class authorizedotnet extends creditcard {
         $authorize = curl_exec($ch);
         curl_close($ch);
 
-        $response = explode("|", $authorize);
+        $response = explode("|", $authorize); //FIXME what to do with this?
 
         $opts->result->traction_type = 'Void';
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => 'void'));
-        $this->createBillingTransaction($method, number_format($amount, 2, '.', ''), $opts->result, 'void');
+        $opts->result->errorCode = 0;
+        $opts->result->payment_status = gt("voided");
+        $opts->result->transId = '';
+        $opts->result->message = "Transaction Voided";
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => 'voided'));
+        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, 'voided');
 
         return $opts->result;
 
@@ -519,6 +540,102 @@ class authorizedotnet extends creditcard {
         $ret = expUnserialize($billingmethod->billing_options);
         return $ret->cc_type;
     }
+
+    /**
+     * Parses an AuthorizeNet AIM Response.
+     *
+     * @param string $response The response from the AuthNet server.
+     * @param string $delimiter The delimiter  (default is "|")
+     * @return stdClass
+     */
+    public function parseResponse($response, $delimiter)
+    {
+        $return = new stdClass();
+
+        if ($response) {
+
+            // Split Array
+            $response_array = explode($delimiter, $response);
+
+            /**
+             * If AuthorizeNet doesn't return a delimited response.
+             */
+            if (count($response_array) < 10) {
+                $return->approved = false;
+                $return->error = true;
+                $return->error_message = "Unrecognized response from AuthorizeNet: $response";
+                return $return;
+            }
+
+            // Set all fields
+            $return->response_code        = $response_array[0];
+            $return->response_subcode     = $response_array[1];
+            $return->response_reason_code = $response_array[2];
+            $return->response_reason_text = $response_array[3];
+            $return->authorization_code   = $response_array[4];
+            $return->avs_response         = $response_array[5];
+            $return->transaction_id       = $response_array[6];
+            $return->invoice_number       = $response_array[7];
+            $return->description          = $response_array[8];
+            $return->amount               = $response_array[9];
+            $return->method               = $response_array[10];
+            $return->transaction_type     = $response_array[11];
+            $return->customer_id          = $response_array[12];
+            $return->first_name           = $response_array[13];
+            $return->last_name            = $response_array[14];
+            $return->company              = $response_array[15];
+            $return->address              = $response_array[16];
+            $return->city                 = $response_array[17];
+            $return->state                = $response_array[18];
+            $return->zip_code             = $response_array[19];
+            $return->country              = $response_array[20];
+            $return->phone                = $response_array[21];
+            $return->fax                  = $response_array[22];
+            $return->email_address        = $response_array[23];
+            $return->ship_to_first_name   = $response_array[24];
+            $return->ship_to_last_name    = $response_array[25];
+            $return->ship_to_company      = $response_array[26];
+            $return->ship_to_address      = $response_array[27];
+            $return->ship_to_city         = $response_array[28];
+            $return->ship_to_state        = $response_array[29];
+            $return->ship_to_zip_code     = $response_array[30];
+            $return->ship_to_country      = $response_array[31];
+            $return->tax                  = $response_array[32];
+            $return->duty                 = $response_array[33];
+            $return->freight              = $response_array[34];
+            $return->tax_exempt           = $response_array[35];
+            $return->purchase_order_number= $response_array[36];
+            $return->md5_hash             = $response_array[37];
+            $return->card_code_response   = $response_array[38];
+            $return->cavv_response        = $response_array[39];
+            $return->account_number       = $response_array[50];
+            $return->card_type            = $response_array[51];
+            $return->split_tender_id      = $response_array[52];
+            $return->requested_amount     = $response_array[53];
+            $return->balance_on_card      = $response_array[54];
+
+            $return->approved = ($return->response_code == self::APPROVED);
+            $return->declined = ($return->response_code == self::DECLINED);
+            $return->error    = ($return->response_code == self::ERROR);
+            $return->held     = ($return->response_code == self::HELD);
+
+            if ($return->error) {
+                $return->error_message = "AuthorizeNet Error:
+                Response Code: ".$return->response_code."
+                Response Subcode: ".$return->response_subcode."
+                Response Reason Code: ".$return->response_reason_code."
+                Response Reason Text: ".$return->response_reason_text."
+                ";
+            }
+        } else {
+            $return->approved = false;
+            $return->error = true;
+            $return->error_message = "Error connecting to AuthorizeNet";
+        }
+
+        return $return;
+    }
+
 }
 
 ?>

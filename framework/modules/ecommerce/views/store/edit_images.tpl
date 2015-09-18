@@ -47,6 +47,7 @@
             {control type=files name=images label="Additional Images"|gettext subtype="images" accept="image/*" value=$record->expFile folder=$config.upload_folder description="Additional images to show for your product"|gettext}
         </div>
         {control type=files name=brochures label="Additional File Attachments"|gettext subtype="brochures" value=$record->expFile folder=$config.upload_folder description="Attach Product Brochures, Docs, Manuals, etc."|gettext}
+        {control type=files name=fbimage label="Facebook Meta Image"|gettext subtype="fbimage" value=$record->meta_fb folder=$config.upload_folder limit=1 description='Image for social media (1200px x 630px or 600px x 315px, but larger than 200px x 200px)'|gettext}
     </div>
 {else}
 	<h4><em>({'Images'|gettext} {'are inherited from this product\'s parent.'|gettext})</em></h4>

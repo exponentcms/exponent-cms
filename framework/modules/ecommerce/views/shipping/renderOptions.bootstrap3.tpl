@@ -24,12 +24,12 @@
                         {group label="Available Options"|gettext}
                             <div class="bd">
                                 {form name="shpmthdopts" controller=shipping action=selectShippingOption}
-                                {foreach from=$shipping->pricelist item=option}
-                                    {if $option.id == $shipping->shippingmethod->option || $option.title == $shipping->shippingmethod->option_title}{$selected=true}{else}{$selected=false}{/if}
-                                    {$oc=$option.cost|number_format:2}
-                                    {control type=radio name="option" columns=1 value=$option.id label="`$oc|currency` - `$option.title`" checked=$selected}
-                                {/foreach}
-                                <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
+                                    {foreach from=$shipping->pricelist item=option}
+                                        {if $option.id == $shipping->shippingmethod->option || $option.title == $shipping->shippingmethod->option_title}{$selected=true}{else}{$selected=false}{/if}
+                                        {$oc=$option.cost|number_format:2}
+                                        {control type=radio name="option" columns=1 value=$option.id label="`$oc|currency` - `$option.title`" checked=$selected}
+                                    {/foreach}
+                                    <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                                 {/form}
                             </div>
                         {/group}
@@ -49,9 +49,9 @@
                     {if $width < 4}{$width = 4}{/if}
                     {foreach $shipping->pricelist as $carrier=>$carriers}
                         <div class="col-sm-{$width}">
-                            <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
-                            <div class="">
-                                {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                            {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                                <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
+                                <div class="">
                                     {group label="Available Options"|gettext}
                                         <div class="bd">
                                             {foreach from=$carriers item=option}
@@ -61,8 +61,8 @@
                                             {/foreach}
                                         </div>
                                     {/group}
-                                {/if}
-                            </div>
+                                </div>
+                            {/if}
                         </div>
                     {/foreach}
                     <div>

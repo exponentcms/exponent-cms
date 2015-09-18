@@ -7,7 +7,7 @@ One file. Any browser. Same UI.
 * License: [MIT](http://johndyer.mit-license.org/)
 * Meaning: Use everywhere, keep copyright, it'd be swell if you'd link back here.
 * Thanks: my employer, [Dallas Theological Seminary](http://www.dts.edu/)
-* Contributors: [mikesten](https://github.com/mikesten), [sylvinus](https://github.com/sylvinus), [mattfarina](https://github.com/mattfarina), [romaninsh](https://github.com/romaninsh), [fmalk](https://github.com/fmalk), [jeffrafter](https://github.com/jeffrafter), [sompylasar](https://github.com/sompylasar), [andyfowler](https://github.com/andyfowler), [RobRoy](https://github.com/RobRoy), [jakearchibald](https://github.com/jakearchibald), [seanhellwig](https://github.com/seanhellwig), [CJ-Jackson](https://github.com/CJ-Jackson), [kaichen](https://github.com/kaichen), [gselva](https://github.com/gselva), [erktime](https://github.com/erktime), [bradleyboy](https://github.com/bradleyboy), [kristerkari](https://github.com/kristerkari), [rmhall](https://github.com/rmhall), [tantalic](https://github.com/tantalic), [madesign](http://github.com/madesign), [aschempp](http://github.com/aschempp), [gavinlynch](https://github.com/gavinlynch), [Birol2010](http://github.com/Birol2010), tons of others (see [pulls](https://github.com/SuriyaaKudoIsc/MediaElement.js/pulls))
+* Contributors: [mikesten](https://github.com/mikesten), [sylvinus](https://github.com/sylvinus), [mattfarina](https://github.com/mattfarina), [romaninsh](https://github.com/romaninsh), [fmalk](https://github.com/fmalk), [jeffrafter](https://github.com/jeffrafter), [sompylasar](https://github.com/sompylasar), [andyfowler](https://github.com/andyfowler), [RobRoy](https://github.com/RobRoy), [jakearchibald](https://github.com/jakearchibald), [seanhellwig](https://github.com/seanhellwig), [CJ-Jackson](https://github.com/CJ-Jackson), [kaichen](https://github.com/kaichen), [gselva](https://github.com/gselva), [erktime](https://github.com/erktime), [bradleyboy](https://github.com/bradleyboy), [kristerkari](https://github.com/kristerkari), [rmhall](https://github.com/rmhall), [tantalic](https://github.com/tantalic), [madesign](http://github.com/madesign), [aschempp](http://github.com/aschempp), [gavinlynch](https://github.com/gavinlynch), [Birol2010](http://github.com/Birol2010), tons of others (see [pulls](https://github.com/johndyer/mediaelement/pulls))
 
 
 ## Installation and Usage
@@ -18,7 +18,7 @@ A complete HTML/CSS audio/video player built on top `MediaElement.js` and `jQuer
 
 ## Change Log
 
-Changes available at [changelog.md]
+Changes available at [Change Log](changelog.md)
 
 ### 1. Add Script and Stylesheet
 ```html
@@ -72,7 +72,7 @@ You can avoid running any startup scripts by added `class="mejs-player"` to the 
 		data-mejsoptions='{"alwaysShowControls": true}'></video>
 ```
 
-#### Normal JavaScirpt
+#### Normal JavaScript
 ```html
 <script>
 var player = new MediaElementPlayer('#player', {success: function(mediaElement, originalNode) {
@@ -108,3 +108,13 @@ new MediaElement(v, {success: function(media) {
 ```
 You can use this as a standalone library if you wish, or just stick with the full MediaElementPlayer.
 
+## Building MediaElement.js
+
+When developing MediaElement, make changes to the files in the `/src/` directory (not `/build/`) and test the changes with `/test/test.html`.
+
+To compile the changes
+
+1. Install `node.js` with `npm` https://nodejs.org/
+2. At the command prompt type `npm install` which will download all the necessary tools
+3. Type `grunt` to build MediaElement.js
+4. To compile the Flash swf, you'll need to install Flex 4.6. See instructions in grunt.js for details.

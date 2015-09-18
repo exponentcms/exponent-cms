@@ -88,6 +88,9 @@ class yuicalendarcontrol extends formcontrol
     function controlToHTML($name, $label = null)
     {
         $idname = createValidId($name);
+        if (empty($this->default)) {
+            $this->default = time();
+        }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
                 $default = date('n/j/Y', $this->default);
@@ -123,7 +126,7 @@ class yuicalendarcontrol extends formcontrol
                     inline: true,
 //                    value: '".$default."'
                 });
-                $('#" . $idname . "').datetimepicker('update');
+                $('#" . $idname . "').datetimepicker('reset');
             });
         ";
         expJavascript::pushToFoot(

@@ -49,13 +49,30 @@ class news extends expRecord {
 //	    }
 //
 //	}
-	
+
+    function __construct($params = null, $get_assoc = true, $get_attached = true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+        if (!empty($this->meta_fb))
+            $this->meta_fb = expUnserialize($this->meta_fb);
+        if (!empty($this->meta_fb['fbimage'][0]))
+            $this->meta_fb['fbimage'][0] = new expFile($this->meta_fb['fbimage'][0]);
+    }
+
 	public function beforeCreate() {
 	    if (empty($this->publish) || $this->publish == 'on') {
 	        $this->publish = time();
 	    }
 	}
-	
+
+    public function update($params = array()) {
+        if (is_numeric($params['expFile']['fbimage'][0]))
+            $params['fb']['fbimage'][0] = $params['expFile']['fbimage'][0];
+        unset ($params['expFile']['fbimage']);
+        $params['meta_fb'] = serialize($params['fb']);
+        unset ($params['fb']);
+        parent::update($params);
+    }
+
 	public function rerank($direction, $where='') {
         global $db;
         if (!empty($this->rank)) {
@@ -68,7 +85,7 @@ class news extends expRecord {
             $db->switchValues($this->table, 'rank', $this->rank, $switch_with, "location_data='".$this->location_data."'");
         }
     }
-    
+
 }
 
 ?>

@@ -16,9 +16,8 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) {
+if (!defined('EXPONENT'))
     exit('');
-}
 
 global $db, $user, $router;
 
@@ -46,14 +45,12 @@ if (!$user->isAdmin()) {
             }
         }
     }
-    if (!$viewregperms) {
+    if (!$viewregperms)
         return false;
-    }
 }
 
-if ($db->countObjects('product', 'product_type="eventregistration"') == 0) {
+if ($db->countObjects('product', 'product_type="eventregistration"') == 0)
     return false;
-}
 
 $items1 = array(
     array(

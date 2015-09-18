@@ -106,7 +106,7 @@ class expRouter {
                     for($i=0; $i < count($this->maps); $i++) {
                         $missing_params = array("dump");
 
-                        if (!empty($params) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
+                        if ((!empty($params) && !empty($params['controller']) && !empty($params['action']) && !empty($params['src'])) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
                             $missing_params = array_diff_key($this->maps[$i]['url_parts'], $params);
                         }
 
@@ -171,6 +171,16 @@ class expRouter {
         }
     }
 
+    /**
+     * Returns a cleaner canonical link sans 'src' param
+     *
+     * @return string
+     */
+    public function plainPath() {
+        unset($this->params['src']);
+        return $this->makeLink($this->params);
+    }
+
     public function routeRequest() {
         global $user;
 
@@ -189,7 +199,7 @@ class expRouter {
             $_REQUEST['id'] = intval($_REQUEST['id']);
         }
         if (empty($user->id) || (!empty($user->id) && !$user->isAdmin())) {  //FIXME why would $user be empty here unless $db is down?
-            $_REQUEST['route_sanitized'] = true;//FIXME debug test
+//            $_REQUEST['route_sanitized'] = true;//FIXME debug test
             expString::sanitize($_REQUEST);  // strip other exploits like sql injections
         }
 
@@ -407,8 +417,10 @@ class expRouter {
         return true;
     }
 
+    /**
+     * figure out if this action is mapped via the mapping file (router_maps.php)
+     */
     public function isMappedURL() {
-        // figure out if this action is mapped via the mapping file (router_maps.php)
         $part_count = count($this->url_parts);
         foreach ($this->maps as $map) {
             $matched = true;
@@ -649,7 +661,8 @@ class expRouter {
 ////                $params[$name] = $val;
 //                $params[$name] = expString::sanitize($val);  //FIXME need array sanitizer
 //            }
-            if (empty($_REQUEST['route_sanitized'])) $params = expString::sanitize($_REQUEST);
+//            if (empty($_REQUEST['route_sanitized']))
+                $params = expString::sanitize($_REQUEST);
 //            if (empty($data['route_sanitized'])) $_REQUEST['pre_sanitized'] = true;//FIXME debug test
         }
         //TODO: fully sanitize all params values here for ---We already do this!

@@ -30,5 +30,6 @@ if (!defined('SITE_WYSIWYG_EDITOR')) define('SITE_WYSIWYG_EDITOR','ckeditor');
 
 if (!defined('LESS_COMPILER')) define('LESS_COMPILER','less.php');
 if (!defined('LESS_COMPILER_MAP')) define('LESS_COMPILER_MAP','0');
+if (!defined('SCSS_COMPILER')) define('SCSS_COMPILER','scssphp');
 
 ?>

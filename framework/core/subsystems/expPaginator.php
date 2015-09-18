@@ -128,7 +128,8 @@ class expPaginator {
         $this->dontsort = !empty($params['dontsort']) ? $params['dontsort'] : null;
 
 		// if a view was passed we'll use it.
-		if (isset($params['view'])) $this->view = $params['view'];
+		if (isset($params['view']))
+            $this->view = $params['view'];
 
         // setup the model if one was passed.
         if (isset($params['model'])) {
@@ -144,8 +145,10 @@ class expPaginator {
 		    )
 		);
 		
-		if ($this->limit) $this->start = (($this->page * $this->limit) - $this->limit);
-        if ($this->start<0) $this->start = 0;
+		if ($this->limit)
+            $this->start = (($this->page * $this->limit) - $this->limit);
+        if ($this->start < 0)
+            $this->start = 0;
 
 		//setup the columns
         $this->columns = array();
@@ -176,26 +179,29 @@ class expPaginator {
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
-        if ($this->dontsort) {
+        if ($this->dontsort)
             $sort = null;
-        } else {
+        else
             $sort = $this->order.' '.$this->order_direction;
-        }
 
 		// figure out how many records we're dealing with & grab the records
 		//if (!empty($this->records)) { //from Merge <~~ this doesn't work. Could be empty, but still need to hit.
+        if (!empty($this->categorize))
+            $limit = null;
+        else
+            $limit = $this->limit;
+
 		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
 		    // sort the records that were passed in to us
-            if (!empty($sort)) {
+            if (!empty($sort))
                 usort($this->records,array('expPaginator', strtolower($this->order_direction)));
-            }
 //		    $this->total_records = count($this->records);
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
-//			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $sort);
+			$this->total_records = $class->find('count', $this->where);
+            $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
 		} elseif (!empty($this->where)) { //from Merge....where clause
-//			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $sort);
+			$this->total_records = $class->find('count', $this->where);
+            $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
@@ -206,12 +212,14 @@ class expPaginator {
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
             if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
-//			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
+            if (!empty($this->count_sql)) $this->total_records = $db->countObjectsBySql($this->count_sql);
+			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
 			
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
 			    foreach($db->selectObjectsBySql($this->sql) as $record) {
-			        $classname = isset($params['model_field']) ? $record->$params['model_field'] : $this->model;
+                    $type = $params['model_field'];
+			        $classname = isset($params['model_field']) ? $record->$type : $this->model;
 			        //$this->records[] = new $classname($record->id, true, true); //From current trunk // added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 					$this->records[] = new $classname($record->id, false, true); //From Merge //added false, true, as we shouldn't need associated items here, but do need attached. FJD.
 			    }
@@ -221,19 +229,19 @@ class expPaginator {
 		}	
 
         // next we'll sort them based on categories if needed
-        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort)) {
+        if (!empty($this->categorize) && $this->categorize && empty($this->dontsort))
             expCatController::addCats($this->records,$sort,$this->uncat,$this->groups,$this->dontsortwithincat);
-        }
 
         // let's see how many total records there are
-        $this->total_records = count($this->records);
-        if ($this->limit && $this->start >= $this->total_records) {
+        if (empty($this->total_records))
+            $this->total_records = count($this->records);
+        if ($this->limit && $this->start >= $this->total_records)
             $this->start = $this->total_records - $this->limit;
-        }
 
         // at this point we generally have all our records, now we'll trim the records to the number requested
         //FIXME we may want some more intelligent selection here based on cats/groups, e.g., don't break groups across pages, number of picture rows, etc...
-        if (empty($this->grouplimit)) if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+        if (empty($this->grouplimit) && ($this->limit) && count($this->records) > $this->limit)
+            $this->records = array_slice($this->records, $this->start, $this->limit);
         // finally, we'll create another multi-dimensional array of categories populated with assoc items
         if (empty($this->dontsort)) {
             if (!empty($this->categorize) && $this->categorize) {
@@ -282,13 +290,16 @@ class expPaginator {
                 }
             }
             if (!empty($this->grouplimit)) {
-                if ($this->limit) $this->records = array_slice($this->records, $this->start, $this->limit);
+                if ($this->limit)
+                    $this->records = array_slice($this->records, $this->start, $this->limit);
             } else {
-                if ($this->limit) $this->cats = array_slice($this->cats, $this->start, $this->limit);
+                if ($this->limit)
+                    $this->cats = array_slice($this->cats, $this->start, $this->limit);
             }
         }
 
-        if (!isset($params['records'])) $this->runCallback(); // isset($params['records']) added to correct search for products.
+        if (!isset($params['records']))
+            $this->runCallback(); // isset($params['records']) added to correct search for products.
 
         //eDebug($this->records);
 		// get the number of the last record we are showing...this is used in the page links.
@@ -296,7 +307,8 @@ class expPaginator {
 		if ($this->total_records > 0) {
 			$this->firstrecord = $this->start + 1;
 			$this->lastrecord = ($this->total_records < $this->limit) ? ($this->start + $this->total_records) : ($this->start + $this->limit);
-			if ($this->lastrecord > $this->total_records || $this->lastrecord == 0) $this->lastrecord = $this->total_records;
+			if ($this->lastrecord > $this->total_records || $this->lastrecord == 0)
+                $this->lastrecord = $this->total_records;
 		} else {
 			$this->firstrecord = 0;
 			$this->lastrecord = 0;
@@ -337,8 +349,10 @@ class expPaginator {
             $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
         }
 		
-		if (!empty($this->action)) $page_params['action'] =  $this->action;
-		if (!empty($this->src)) $page_params['src'] =  $this->src;
+		if (!empty($this->action))
+            $page_params['action'] =  $this->action;
+		if (!empty($this->src))
+            $page_params['src'] =  $this->src;
 		
 		if (isset($page_params['section']))
             unset($page_params['section']);
@@ -346,7 +360,8 @@ class expPaginator {
 		//build a 'more' link we can use in the headlines views.
 		$this->morelink = $router->makeLink($page_params, false, false, true);
 
-		if (!empty($this->view)) $page_params['view'] = $this->view;
+		if (!empty($this->view))
+            $page_params['view'] = $this->view;
 
 		//build a couple more links we can use in the views.
 		$this->pagelink = $router->makeLink($page_params, false, false, true);
@@ -420,8 +435,10 @@ class expPaginator {
         $sortparams = array_merge($page_params, $router->params);
 		
 		//From Merge ****
-        if (isset($router->params['page'])) $sortparams['page'] = $router->params['page'];
-        else unset($sortparams['page']);
+        if (isset($router->params['page']))
+            $sortparams['page'] = $router->params['page'];
+        else
+            unset($sortparams['page']);
         //End From Merge ****
 
 		$this->makeSortDropdown($sortparams);  // used on non-table views
@@ -455,6 +472,7 @@ class expPaginator {
     
     public function makeHeaderCols($params) {
         global $router;
+
         if (!empty($this->columns) && is_array($this->columns)) {
             $this->header_columns = '';
             
@@ -538,7 +556,6 @@ class expPaginator {
                 
                 $this->header_columns .= '</th>';
             }
-            
         }
     }
     
@@ -551,7 +568,6 @@ class expPaginator {
                 $classinfo = new ReflectionClass($type); 
                 if ($classinfo->hasMethod('paginationCallback')) {
                     $item = new $type($record->original_id);
-//                    $item->paginationCallback(&$record);
                     $item->paginationCallback($record);  // (deprecated) moved call by reference to function, not caller
                 }
             } 
@@ -560,6 +576,7 @@ class expPaginator {
     
 	public function makeSortDropdown($params) {
 		global $router;
+
 		if (!empty($this->columns) && is_array($this->columns)) {
 			$this->sort_dropdown = array();
 
@@ -582,8 +599,10 @@ class expPaginator {
            // eDebug($router);
             $defaultParams['controller'] = $params['controller'];
             $defaultParams['action'] = $params['action'];
-            if (isset($params['title'])) $defaultParams['title'] = $params['title'];
-            if (isset($params['page'])) $defaultParams['page'] = $params['page'];
+            if (isset($params['title']))
+                $defaultParams['title'] = $params['title'];
+            if (isset($params['page']))
+                $defaultParams['page'] = $params['page'];
             
             $this->sort_dropdown[$router->makeLink($defaultParams, false, false, true)] = "Default";
 			foreach ($this->columns as $colname=>$col) {
@@ -617,11 +636,10 @@ class expPaginator {
                     }	
 				}                  								
 			}
-			
 		}
 	}
 	
-    /* exdoc
+    /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator
      */
@@ -636,7 +654,7 @@ class expPaginator {
         }
     }
 
-    /* exdoc
+    /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in descending order.
      * @node Subsystems:expPaginator
      */

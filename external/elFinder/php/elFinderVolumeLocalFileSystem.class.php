@@ -52,6 +52,24 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	/*********************************************************************/
 	
 	/**
+	 * Prepare driver before mount volume.
+	 * Return true if volume is ready.
+	 *
+	 * @return bool
+	 **/
+	protected function init() {
+		// Normalize directory separator for windows
+		if (DIRECTORY_SEPARATOR !== '/') {
+			foreach(array('path', 'tmbPath', 'quarantine') as $key) {
+				if ($this->options[$key]) {
+					$this->options[$key] = str_replace('/', DIRECTORY_SEPARATOR, $this->options[$key]);
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
 	 * Configure after successfull mount.
 	 *
 	 * @return void
@@ -65,7 +83,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		if ($this->options['tmbPath']) {
 			$this->options['tmbPath'] = strpos($this->options['tmbPath'], DIRECTORY_SEPARATOR) === false
 				// tmb path set as dirname under root dir
-				? $this->root.DIRECTORY_SEPARATOR.$this->options['tmbPath']
+				? $this->_abspath($this->options['tmbPath'])
 				// tmb path as full path
 				: $this->_normpath($this->options['tmbPath']);
 		}
@@ -91,7 +109,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				}
 				$this->options['quarantine'] = '';
 			} else {
-				$this->quarantine = $this->root.DIRECTORY_SEPARATOR.$this->options['quarantine'];
+				$this->quarantine = $this->_abspath($this->options['quarantine']);
 				if ((!is_dir($this->quarantine) && !$this->_mkdir($this->root, $this->options['quarantine'])) || !is_writable($this->quarantine)) {
 					$this->options['quarantine'] = $this->quarantine = '';
 				}
@@ -151,7 +169,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _joinPath($dir, $name) {
-		return $dir.DIRECTORY_SEPARATOR.$name;
+		return rtrim($dir, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $name;
 	}
 	
 	/**
@@ -164,6 +182,11 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _normpath($path) {
 		if (empty($path)) {
 			return '.';
+		}
+		
+		$changeSep = (DIRECTORY_SEPARATOR !== '/');
+		if ($changeSep) {
+			$path = str_replace(DIRECTORY_SEPARATOR, '/', $path);
 		}
 
 		if (strpos($path, '/') === 0) {
@@ -201,6 +224,10 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			$path = str_repeat('/', $initial_slashes) . $path;
 		}
 		
+		if ($changeSep) {
+			$path = str_replace('/', DIRECTORY_SEPARATOR, $path);
+		}
+		
 		return $path ? $path : '.';
 	}
 	
@@ -212,7 +239,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _relpath($path) {
-		return $path == $this->root ? '' : substr($path, strlen($this->root)+1);
+		return $path == $this->root ? '' : substr($path, strlen(rtrim($this->root, DIRECTORY_SEPARATOR)) + 1);
 	}
 	
 	/**
@@ -223,7 +250,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _abspath($path) {
-		return $path == DIRECTORY_SEPARATOR ? $this->root : $this->root.DIRECTORY_SEPARATOR.$path;
+		return $path == DIRECTORY_SEPARATOR ? $this->root : $this->_joinPath($this->root, $path);
 	}
 	
 	/**
@@ -249,7 +276,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		$real_path = realpath($path);
 		$real_parent = realpath($parent);
 		if ($real_path && $real_parent) {
-			return $real_path === $real_parent || strpos($real_path, $real_parent.DIRECTORY_SEPARATOR) === 0;
+			return $real_path === $real_parent || strpos($real_path, rtrim($real_parent, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR) === 0;
 		}
 		return false;
 	}
@@ -278,6 +305,12 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _stat($path) {
+		
+		static $statOwner;
+		if (is_null($statOwner)) {
+			$statOwner = (!empty($this->options['statOwner']));
+		}
+		
 		$stat = array();
 
 		if (!file_exists($path)) {
@@ -293,28 +326,41 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			return $stat;
 		}
 
+		$gid = $uid = 0;
+		$stat['isowner'] = false;
 		if ($path != $this->root && is_link($path)) {
-			if (($target = $this->readlink($path)) == false 
+			if (!($target = $this->readlink($path))
 			|| $target == $path) {
-				$stat['mime']  = 'symlink-broken';
-				$stat['read']  = false;
-				$stat['write'] = false;
-				$stat['size']  = 0;
+				if (is_null($target)) {
+					$stat = array();
+				} else {
+					$stat['mime']  = 'symlink-broken';
+					$stat['read']  = false;
+					$stat['write'] = false;
+					$stat['size']  = 0;
+				}
 				return $stat;
 			}
-			$stat['alias']  = $this->_path($target);
-			$stat['target'] = $target;
-			$path  = $target;
 			$lstat = lstat($path);
+			$stat['alias'] = $this->_path($target);
+			$stat['target'] = $target;
 			$size  = sprintf('%u', $lstat['size']);
+			$stat['ts'] = $lstat['mtime'];
 		} else {
 			$size = sprintf('%u', @filesize($path));
+			$stat['ts'] = filemtime($path);
+		}
+		if ($statOwner) {
+			$fstat = stat($path);
+			$uid = $fstat['uid'];
+			$gid = $fstat['gid'];
+			$stat['perm'] = substr((string)decoct($fstat['mode']), -4);
+			$stat = array_merge($stat, $this->getOwnerStat($uid, $gid));
 		}
 		
 		$dir = is_dir($path);
-		
+
 		$stat['mime']  = $dir ? 'directory' : $this->mimetype($path);
-		$stat['ts']    = filemtime($path);
 		//logical rights first
 		$stat['read'] = is_readable($path)? null : false;
 		$stat['write'] = is_writable($path)? null : false;
@@ -326,6 +372,55 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		return $stat;
 	}
 	
+	/**
+	 * Get stat `owner`, `group` and `isowner` by `uid` and `gid`
+	 * Sub-fuction of _stat() and _scandir()
+	 * 
+	 * @param integer $uid
+	 * @param integer $gid
+	 * @return array  stat
+	 */
+	protected function getOwnerStat($uid, $gid) {
+		static $names = null;
+		static $phpuid = null;
+		
+		if (is_null($names)) {
+			$names = array('uid' => array(), 'gid' =>array());
+		}
+		if (is_null($phpuid)) {
+			if (is_callable('posix_getuid')) {
+				$phpuid = posix_getuid();
+			} else {
+				$phpuid = 0;
+			}
+		}
+		
+		$stat = array();
+		
+		if ($uid) {
+			$stat['isowner'] = ($phpuid == $uid);
+			if (isset($names['uid'][$uid])) {
+				$stat['owner'] = $names['uid'][$uid];
+			} else if (is_callable('posix_getpwuid')) {
+				$pwuid = posix_getpwuid($uid);
+				$stat['owner'] = $names['uid'][$uid] = $pwuid['name'];
+			} else {
+				$stat['owner'] = $names['uid'][$uid] = $uid;
+			}
+		}
+		if ($gid) {
+			if (isset($names['gid'][$gid])) {
+				$stat['group'] = $names['gid'][$gid];
+			} else if (is_callable('posix_getgrgid')) {
+				$grgid = posix_getgrgid($gid);
+				$stat['group'] = $names['gid'][$gid] = $grgid['name'];
+			} else {
+				$stat['group'] = $names['gid'][$gid] = $gid;
+			}
+		}
+		
+		return $stat;
+	}
 
 	/**
 	 * Return true if path is dir and has at least one childs directory
@@ -336,16 +431,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function _subdirs($path) {
 
-		if (($dir = dir($path))) {
-			$dir = dir($path);
-			while (($entry = $dir->read()) !== false) {
-				$p = $dir->path.DIRECTORY_SEPARATOR.$entry;
-				if ($entry != '.' && $entry != '..' && is_dir($p) && !$this->attr($p, 'hidden')) {
-					$dir->close();
-					return true;
-				}
-			}
-			$dir->close();
+		if (is_dir($path)) {
+			return (bool)glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
 		}
 		return false;
 	}
@@ -376,16 +463,19 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function readlink($path) {
 		if (!($target = @readlink($path))) {
-			return false;
+			return null;
 		}
 		
 		if (substr($target, 0, 1) != DIRECTORY_SEPARATOR) {
-			$target = dirname($path).DIRECTORY_SEPARATOR.$target;
+			$target = $this->_joinPath(dirname($path), $target);
+			if (!file_exists($target)) {
+				return null;
+			}
 		}
 		
-		if ($this->_inpath($target, $this->aroot)) {
+		if ($this->_inpath($target, $this->root)) {
 			$atarget = realpath($target);
-			return $this->_normpath($this->root.DIRECTORY_SEPARATOR.substr($atarget, strlen($this->aroot)+1));
+			return $this->_normpath($this->_joinPath($this->root, substr($atarget, strlen(rtrim($this->aroot, DIRECTORY_SEPARATOR)) + 1)));
 		}
 
 		return false;
@@ -400,12 +490,77 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function _scandir($path) {
 		$files = array();
+		$cache = array();
+		$statOwner = (!empty($this->options['statOwner']));
+		$dirItr = array();
+		try {
+			$dirItr = new DirectoryIterator($path);
+		} catch (UnexpectedValueException $e) {}
 		
-		foreach (scandir($path) as $name) {
-			if ($name != '.' && $name != '..') {
-				$files[] = $path.DIRECTORY_SEPARATOR.$name;
+		foreach ($dirItr as $file) {
+			if ($file->isDot()) { continue; }
+			
+			$files[] = $fpath = $this->_joinPath($path, $file->getFilename());
+			
+			$br = false;
+			$stat = array();
+			
+			$gid = $uid = 0;
+			$stat['isowner'] = false;
+			if ($file->isLink()) {
+				if (!($target = $this->readlink($fpath))
+				|| $target == $fpath) {
+					if (is_null($target)) {
+						$stat = array();
+					} else {
+						$stat['mime']  = 'symlink-broken';
+						$stat['read']  = false;
+						$stat['write'] = false;
+						$stat['size']  = 0;
+					}
+					$br = true;
+				} else {
+					$dir = is_dir($target);
+					$lstat = lstat($fpath);
+					$stat['alias'] = $this->_path($target);
+					$stat['target'] = $target;
+					$size = sprintf('%u', $lstat['size']);
+					$stat['ts'] = $lstat['mtime'];
+					$stat['mime'] = $dir ? 'directory' : $this->mimetype($stat['alias']);
+				}
+			} else {
+				$dir = $file->isDir();
+				$size = sprintf('%u', $file->getSize());
+				$stat['ts'] = $file->getMTime();
+				$stat['mime'] = $dir ? 'directory' : $this->mimetype($fpath);
+			}
+			if (!$br) {
+				if ($statOwner) {
+					$uid = $file->getOwner();
+					$gid = $file->getGroup();
+					$stat['perm'] = substr((string)decoct($file->getPerms()), -4);
+					$stat = array_merge($stat, $this->getOwnerStat($uid, $gid));
+				}
+				
+				//logical rights first
+				$stat['read'] = $file->isReadable()? null : false;
+				$stat['write'] = $file->isWritable()? null : false;
+				
+				if (is_null($stat['read'])) {
+					$stat['size'] = $dir ? 0 : $size;
+				}
+			}
+			
+			$cache[] = array($fpath, $stat);
+		}
+		
+		if ($cache) {
+			$cache = $this->convEncOut($cache, false);
+			foreach($cache as $d) {
+				$this->updateCache($d[0], $d[1]);
 			}
 		}
+		
 		return $files;
 	}
 		
@@ -443,10 +598,11 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _mkdir($path, $name) {
-		$path = $path.DIRECTORY_SEPARATOR.$name;
+		$path = $this->_joinPath($path, $name);
 
 		if (@mkdir($path)) {
 			@chmod($path, $this->options['dirMode']);
+			clearstatcache();
 			return $path;
 		}
 
@@ -462,11 +618,12 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _mkfile($path, $name) {
-		$path = $path.DIRECTORY_SEPARATOR.$name;
+		$path = $this->_joinPath($path, $name);
 		
 		if (($fp = @fopen($path, 'w'))) {
 			@fclose($fp);
 			@chmod($path, $this->options['fileMode']);
+			clearstatcache();
 			return $path;
 		}
 		return false;
@@ -482,7 +639,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _symlink($source, $targetDir, $name) {
-		return @symlink($source, $targetDir.DIRECTORY_SEPARATOR.$name);
+		return @symlink($source, $this->_joinPath($targetDir, $name));
 	}
 	
 	/**
@@ -495,7 +652,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _copy($source, $targetDir, $name) {
-		return copy($source, $targetDir.DIRECTORY_SEPARATOR.$name);
+		$ret = copy($source, $this->_joinPath($targetDir, $name));
+		$ret && clearstatcache();
+		return $ret;
 	}
 	
 	/**
@@ -509,8 +668,10 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _move($source, $targetDir, $name) {
-		$target = $targetDir.DIRECTORY_SEPARATOR.$name;
-		return @rename($source, $target) ? $target : false;
+		$target = $this->_joinPath($targetDir, $name);
+		$ret = @rename($source, $target) ? $target : false;
+		$ret && clearstatcache();
+		return $ret;
 	}
 		
 	/**
@@ -521,7 +682,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _unlink($path) {
-		return @unlink($path);
+		$ret = @unlink($path);
+		$ret && clearstatcache();
+		return $ret;
 	}
 
 	/**
@@ -532,7 +695,9 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _rmdir($path) {
-		return @rmdir($path);
+		$ret = @rmdir($path);
+		$ret && clearstatcache();
+		return $ret;
 	}
 	
 	/**
@@ -547,10 +712,19 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function _save($fp, $dir, $name, $stat) {
-		$path = $dir.DIRECTORY_SEPARATOR.$name;
+		$path = $this->_joinPath($dir, $name);
 
-		if (@file_put_contents($path, $fp, LOCK_EX) === false) {
-			return false;
+		$meta = stream_get_meta_data($fp);
+		$uri = isset($meta['uri'])? $meta['uri'] : '';
+		if ($uri && @is_file($uri)) {
+			fclose($fp);
+			if (!@rename($uri, $path) && !@copy($uri, $path)) {
+				return false;
+			}
+		} else {
+			if (@file_put_contents($path, $fp, LOCK_EX) === false) {
+				return false;
+			}
 		}
 
 		@chmod($path, $this->options['fileMode']);
@@ -593,6 +767,18 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _checkArchivers() {
 		$this->archivers = $this->getArchivers();
 		return;
+	}
+
+	/**
+	 * chmod availability
+	 *
+	 * @return bool
+	 **/
+	protected function _chmod($path, $mode) {
+		$modeOct = is_string($mode) ? octdec($mode) : octdec(sprintf("%04o",$mode));
+		$ret = @chmod($path, $modeOct);
+		$ret && clearstatcache();
+		return  $ret;
 	}
 
 	/**
@@ -711,11 +897,14 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				return $this->setError(elFinder::ERROR_ARC_MAXSIZE);
 			}
 			
+			$extractTo = $this->extractToNewdir; // 'auto', ture or false
+			
 			// archive contains one item - extract in archive dir
+			$name = '';
 			$src = $dir.DIRECTORY_SEPARATOR.$ls[0];
-			if (count($ls) === 1 && is_file($src)) {
+			if (($extractTo === 'auto' || !$extractTo) && count($ls) === 1 && is_file($src)) {
 				$name = $ls[0];
-			} else {
+			} else if ($extractTo === 'auto' || $extractTo) {
 				// for several files - create new directory
 				// create unique name for directory
 				$src = $dir;
@@ -729,16 +918,35 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				}
 			}
 			
-			$result  = dirname($path).DIRECTORY_SEPARATOR.$name;
+			if ($name !== '') {
+				$result  = dirname($path).DIRECTORY_SEPARATOR.$name;
 
-			if (! @rename($src, $result)) {
-				$this->delTree($dir);
-				return false;
+				if (! @rename($src, $result)) {
+					$this->delTree($dir);
+					return false;
+				}
+			} else {
+				$dstDir = dirname($path);
+				$res = false;
+				$result = array();
+				foreach($ls as $name) {
+					$target = $dstDir.DIRECTORY_SEPARATOR.$name;
+					if (is_dir($target)) {
+						$this->delTree($target);
+					}
+					if (@rename($dir.DIRECTORY_SEPARATOR.$name, $target)) {
+						$result[] = $target;
+					}
+				}
+				if (!$result) {
+					$this->delTree($dir);
+					return false;
+				}
 			}
 			
 			is_dir($dir) && $this->delTree($dir);
 			
-			return file_exists($result) ? $result : false;
+			return (is_array($result) || file_exists($result)) ? $result : false;
 		}
 	}
 	
@@ -791,4 +999,67 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		return $this->rmdirRecursive($localpath);
 	}
 
+	/******************** Over write (Optimized) functions *************************/
+	
+	/**
+	 * Recursive files search
+	 *
+	 * @param  string  $path   dir path
+	 * @param  string  $q      search string
+	 * @param  array   $mimes
+	 * @return array
+	 * @author Dmitry (dio) Levashov
+	 * @author Naoki Sawada
+	 **/
+	protected function doSearch($path, $q, $mimes) {
+		$result = array();
+	
+		$path = $this->convEncIn($path);
+		$dirs = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+		$match = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*'.$q.'*', GLOB_NOSORT);
+		if ($dirs) {
+			$dirs = $this->convEncOut($dirs, false);
+		} 
+		$match = $this->convEncOut($match);
+		if ($match) {
+			foreach($match as $p) {
+				$stat = $this->stat($p);
+		
+				if (!$stat) { // invalid links
+					continue;
+				}
+		
+				if (!empty($stat['hidden']) || !$this->mimeAccepted($stat['mime'], $mimes)) {
+					continue;
+				}
+					
+				$name = $stat['name'];
+		
+				if ((!$mimes || $stat['mime'] !== 'directory')) {
+					$stat['path'] = $this->path($p);
+					if ($this->URL && !isset($stat['url'])) {
+						$path = str_replace(DIRECTORY_SEPARATOR, '/', substr($p, strlen($this->root) + 1));
+						if ($this->encoding) {
+							$path = str_replace('%2F', '/', rawurlencode($this->convEncIn($path, true)));
+						}
+						$stat['url'] = $this->URL . $path;
+					}
+		
+					$result[] = $stat;
+				}
+			}
+		}
+		if ($dirs) {
+			foreach($dirs as $dir) {
+				$stat = $this->stat($dir);
+				if ($stat['read'] && !isset($stat['alias'])) {
+					@set_time_limit(30);
+					$result = array_merge($result, $this->doSearch($dir, $q, $mimes));
+				}
+			}
+		}
+	
+		return $result;
+	}
+	
 } // END class 

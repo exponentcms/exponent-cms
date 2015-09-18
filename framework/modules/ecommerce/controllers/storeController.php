@@ -188,7 +188,7 @@ class storeController extends expController {
             $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM ' . DB_TABLE_PREFIX . '_product p ';
             $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
-            if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+            if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
             $sql .= 'sc.storecategories_id IN (';
             $sql .= 'SELECT id FROM ' . DB_TABLE_PREFIX . '_storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
 
@@ -260,7 +260,7 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();
         $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
 
-        $rerankSQL = "SELECT DISTINCT p.* FROM " . DB_TABLE_PREFIX . "_product p JOIN " . DB_TABLE_PREFIX . "_product_storeCategories sc ON  p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
+        $rerankSQL = "SELECT DISTINCT p.* FROM " . DB_TABLE_PREFIX . "_product p JOIN " . DB_TABLE_PREFIX . "_product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
 
@@ -561,7 +561,7 @@ class storeController extends expController {
         if (ECOM_LARGE_DB) {
             $limit = !empty($this->config['pagination_default']) ? $this->config['pagination_default'] : 10;
         } else {
-            $limit = 0;
+            $limit = 0;  // we'll paginate on the page
         }
         $page = new expPaginator(array(
             'model'      => 'product',
@@ -628,7 +628,7 @@ class storeController extends expController {
         //eDebug($this->params);
         //$sql = "SELECT * INTO OUTFILE '" . BASE . "tmp/export.csv' FIELDS TERMINATED BY ','  FROM exponent_product WHERE 1 LIMIT 10";
 //        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","canonical","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body"' . chr(13) . chr(10);
-        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
+        $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","image1","image2","image3","image4","image5","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
             if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (product_type="product")';
@@ -647,7 +647,7 @@ class storeController extends expController {
         //$p = new product($pid['id'], false, false);
         foreach ($prods as $pid) {
             $except = array('company', 'crosssellItem', 'optiongroup');
-            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, false, $except, true);
+            $p = $baseProd->find('first', 'id=' . $pid['id'], null, null, 0, true, true, $except, true);
 
             //eDebug($p,true);
             $out .= expString::outputField($p->id);
@@ -688,6 +688,15 @@ class storeController extends expController {
             $out .= expString::outputField($p->height);
             $out .= expString::outputField($p->width);
             $out .= expString::outputField($p->length);
+            //output images
+            if (isset($p->expFile['mainimage'][0])) {
+                $out .= expString::outputField($p->expFile['mainimage'][0]->id);
+            } else $out .= ',';
+            for ($x = 0; $x < 3; $x++) {
+                if (isset($p->expFile['images'][$x])) {
+                    $out .= expString::outputField($p->expFile['images'][$x]->id);
+                } else $out .= ',';
+            }
             $out .= expString::outputField($p->companies_id, chr(13) . chr(10)); //Removed the extra "," in the last element
 
             foreach ($p->childProduct as $cp) {
@@ -720,6 +729,7 @@ class storeController extends expController {
                 $out .= expString::outputField($cp->height);
                 $out .= expString::outputField($cp->width);
                 $out .= expString::outputField($cp->length);
+                $out .= ',,,,,';  // for images
                 $out .= expString::outputField($cp->companies_id, chr(13) . chr(10));
 
                 //echo($out);
@@ -856,10 +866,10 @@ class storeController extends expController {
         }
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
             flash("error", $product->title . " " . gt("is currently unavailable."));
             expHistory::back();
-        } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
 
@@ -909,10 +919,10 @@ class storeController extends expController {
         }
         if ($product->active_type == 1) {
             $product_type->user_message = "This product is temporarily unavailable for purchase.";
-        } elseif ($product->active_type == 2 && !($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && !$user->isAdmin()) {
             flash("error", $product->title . " " . gt("is currently unavailable."));
             expHistory::back();
-        } elseif ($product->active_type == 2 && ($user->is_admin || $user->is_acting_admin)) {
+        } elseif ($product->active_type == 2 && $user->isAdmin()) {
             $product_type->user_message = $product->title . " is currently marked as unavailable for purchase or display.  Normal users will not see this product.";
         }
         if (!empty($product_type->crosssellItem)) foreach ($product_type->crosssellItem as &$csi) {
@@ -1048,7 +1058,7 @@ class storeController extends expController {
         $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
         $sql .= 'WHERE ';
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
         //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
 
@@ -1540,7 +1550,7 @@ class storeController extends expController {
                     $metainfo['title'] = empty($cat->meta_title) ? $cat->title . ' ' . gt('Products') . ' - ' . $storename : $cat->meta_title;
                     $metainfo['keywords'] = empty($cat->meta_keywords) ? $cat->title : strip_tags($cat->meta_keywords);
                     $metainfo['description'] = empty($cat->meta_description) ? strip_tags($cat->body) : strip_tags($cat->meta_description);
-                    $metainfo['canonical'] = empty($cat->canonical) ? '' : strip_tags($cat->canonical);
+                    $metainfo['canonical'] = empty($cat->canonical) ? $router->plainPath() : strip_tags($cat->canonical);
                     $metainfo['noindex'] = empty($cat->meta_noindex) ? false : $cat->meta_noindex;
                     $metainfo['nofollow'] = empty($cat->meta_nofollow) ? false : $cat->meta_nofollow;
                 }
@@ -1552,19 +1562,30 @@ class storeController extends expController {
                     $metainfo['title'] = empty($prod->meta_title) ? $prod->title . " - " . $storename : $prod->meta_title;
                     $metainfo['keywords'] = empty($prod->meta_keywords) ? $prod->title : strip_tags($prod->meta_keywords);
                     $metainfo['description'] = empty($prod->meta_description) ? strip_tags($prod->body) : strip_tags($prod->meta_description);
-                    $metainfo['canonical'] = empty($prod->canonical) ? '' : strip_tags($prod->canonical);
+                    $metainfo['canonical'] = empty($prod->canonical) ? $router->plainPath() : strip_tags($prod->canonical);
                     $metainfo['noindex'] = empty($prod->meta_noindex) ? false : $prod->meta_noindex;
                     $metainfo['nofollow'] = empty($prod->meta_nofollow) ? false : $prod->meta_nofollow;
                     if (!empty($prod->expFile['mainimage'][0]) && file_exists(BASE.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename)) {
                         $metainfo['rich'] = '<!--
         <PageMap>
             <DataObject type="thumbnail">
-                <Attribute name="src" value="'.URL_FULL.$prod->expFile['mainimage'][0]->directory.$prod->expFile['mainimage'][0]->filename.'"/>
+                <Attribute name="src" value="'.$prod->expFile['mainimage'][0]->url.'"/>
                 <Attribute name="width" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
                 <Attribute name="height" value="'.$prod->expFile['mainimage'][0]->image_width.'"/>
             </DataObject>
         </PageMap>
     -->';
+                    }
+                    $metainfo['fb']['type'] = 'product';
+                    $metainfo['fb']['title'] =  substr(empty($prod->meta_fb['title']) ? $prod->title : $prod->meta_fb['title'], 0, 87);
+                    $metainfo['fb']['description'] = substr(empty($prod->meta_fb['description']) ? $metainfo['description'] : $prod->meta_fb['description'], 0, 199);
+                    $metainfo['fb']['url'] = empty($prod->meta_fb['url']) ? $metainfo['canonical'] : $prod->meta_fb['url'];
+                    $metainfo['fb']['image'] = empty($prod->meta_fb['fbimage'][0]) ? '' : $prod->meta_fb['fbimage'][0]->url;
+                    if (empty($metainfo['fb']['image'])) {
+                        if (!empty($prod->expFile['mainimage'][0]))
+                            $metainfo['fb']['image'] = $prod->expFile['mainimage'][0]->url;
+                        if (empty($metainfo['fb']['image']))
+                            $metainfo['fb']['image'] = URL_BASE . '/framework/modules/ecommerce/assets/images/no-image.jpg';
                     }
                     break;
                 }
@@ -1583,6 +1604,16 @@ class storeController extends expController {
 //        $metainfo['nofollow'] = expString::parseAndTrim($metainfo['nofollow'], true);
 
         return $metainfo;
+    }
+
+    /**
+     * Configure the module
+     */
+    public function configure() {
+        if (empty($this->config['enable_ratings_and_reviews'])) {
+            $this->remove_configs[] = 'comments';
+        }
+        parent::configure();
     }
 
     public function deleteChildren() {
@@ -1751,7 +1782,7 @@ class storeController extends expController {
         $sql .= "from " . $db->prefix . "product as p INNER JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage'  INNER JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
-        if (!($user->is_admin || $user->is_acting_admin)) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
         $sql .= " HAVING relevance > 0 ";
         //$sql .= "GROUP BY p.id "; 
@@ -2035,7 +2066,7 @@ class storeController extends expController {
                         $html = $template->render();
                         $html .= ecomconfig::getConfig('ecomfooter');
 
-                        $from = array(ecomconfig::getConfig('from_address')=> ecomconfig::getConfig('from_name'));
+                        $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
                         if (empty($from[0])) $from = SMTP_FROMADDRESS;
                         try {
                             $mail = new expMail();
@@ -2522,7 +2553,7 @@ class storeController extends expController {
                 if (!empty($model_alias1) || !empty($model_alias2)) {
                     $error = "The {$res->field1} and {$res->field2} are already being used by another product.<br />";
                 } else {
-                    $error = "No product match found, please choose a product to be alias in the following models below:<br />";
+                    $error = gt("No product match found, please choose a product to be alias in the following models below") . ":<br />";
                     $error .= $res->field1 . "<br />";
                     $error .= $res->field2 . "<br />";
                     $autocomplete = 1;
@@ -2814,29 +2845,35 @@ class storeController extends expController {
                     case 'image3':
                     case 'image4':
                     case 'image5':
-                        // import image from url
                         if (!empty($value)) {
                             $product->save(false);
-                            $_destFile = basename($value);  // get filename from end of url
-                            $_destDir = UPLOAD_DIRECTORY_RELATIVE;
-                            $_destFullPath = BASE . $_destDir . $_destFile;
-                            if (file_exists($_destFullPath)) {
-                                $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                            if (is_integer($value)) {
+                                $_objFile = new expFile ($value);
+                            } else {
+                                // import image from url
+                                $_destFile = basename($value);  // get filename from end of url
+                                $_destDir = UPLOAD_DIRECTORY_RELATIVE;
                                 $_destFullPath = BASE . $_destDir . $_destFile;
+                                if (file_exists($_destFullPath)) {
+                                    $_destFile = expFile::resolveDuplicateFilename($_destFullPath);
+                                    $_destFullPath = BASE . $_destDir . $_destFile;
+                                }
+
+                                expCore::saveData($value, $_destFullPath);  // download the image
+
+                                if (file_exists($_destFullPath)) {
+                                    $__oldumask = umask(0);
+                                    chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
+                                    umask($__oldumask);
+
+                                    // Create a new expFile Object
+                                    $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
+                                    $_objFile = new expFile ($_fileParams);
+                                    $_objFile->save();
+                                }
                             }
-
-                            expCore::saveData($value, $_destFullPath);  // download the image
-
-                            if (file_exists($_destFullPath)) {
-                                $__oldumask = umask(0);
-                                chmod($_destFullPath, octdec(FILE_DEFAULT_MODE_STR + 0));
-                                umask($__oldumask);
-
-                                // Create a new expFile Object
-                                $_fileParams = array('filename' => $_destFile, 'directory' => $_destDir);
-                                $_objFile = new expFile ($_fileParams);
-                                $_objFile->save();
-                                // attach product additional images with new expFile object
+                            // attach product images expFile object
+                            if (!empty($_objFile->id)) {
                                 if ($key == 'image1') {
                                     $product->attachItem($_objFile, 'mainimage');
                                 } else {

@@ -19,6 +19,7 @@
 /**
  * @subpackage Definitions
  * @package Core
+ * @deprecated in favor of simpleNotes
  */
 return array(
     'id'=>array(

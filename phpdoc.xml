@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent v2.3.4</title>
+    <title>Exponent v2.3.5</title>
     <parser>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api/phpdoc</target>
@@ -31,6 +31,10 @@
         <ignore>external/*</ignore>
         <ignore>files/*</ignore>
         <ignore>tmp/*</ignore>
+        <ignore>themes/*</ignore>
+        <directory>themes/bootstrap3theme/*</directory>
+        <directory>themes/bootstraptheme/*</directory>
+        <directory>themes/simpletheme/*</directory>
         <ignore>framework/conf/data/extra_phrases.php</ignore>
         <ignore>framework/core/lang/*</ignore>
         <ignore>framework/modules/pixidou/*</ignore>

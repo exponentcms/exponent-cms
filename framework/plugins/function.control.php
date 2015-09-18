@@ -118,7 +118,7 @@ function smarty_function_control($params, &$smarty) {
             case "dropdown":
                 $control                = new dropdowncontrol(!empty($params['default'])?$params['default']:null);
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
-                if (!empty($params['default'])) $control->default = $params['default'];
+                if (isset($params['default'])) $control->default = $params['default'];
                 $control->type          = "select";
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
@@ -300,9 +300,13 @@ function smarty_function_control($params, &$smarty) {
                     }
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
-                    if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
-                        $params['value'] = $db->selectValue('geo_region', 'id', 'name="' . $params['value'] . '" OR code="' . $params['value'] . '"');
+                    if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
+                        $params['default'] = $db->selectValue('geo_region', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
+                    } elseif (is_numeric($params['default'])) {
+                        $params['default'];
                     }
+                    if (isset($params['default']))
+                        $control->default = $params['default'];
                 } else {
                     echo "NO TABLE";
                     exit();
@@ -331,9 +335,11 @@ function smarty_function_control($params, &$smarty) {
                     }
 
                     // sanitize the default value. can accept as id, code abbrv or full name,
-                    if (!empty($params['value']) && !is_numeric($params['value']) && !is_array($params['value'])) {
-                        $params['value'] = $db->selectValue('geo_country', 'id', 'name="' . $params['value'] . '" OR code="' . $params['value'] . '"');
+                    if (!empty($params['default']) && !is_numeric($params['default']) && !is_array($params['default'])) {
+                        $params['default'] = $db->selectValue('geo_country', 'id', 'name="' . $params['default'] . '" OR code="' . $params['default'] . '"');
                     }
+                    if (isset($params['default']))
+                        $control->default = $params['default'];
                 } else {
                     echo "NO TABLE";
                     exit();
@@ -367,7 +373,7 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
 //                        require_once(BASE . 'external/recaptchalib.php');
-                        require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
+                        require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                         $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                         echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                         echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
@@ -517,13 +523,13 @@ function smarty_function_control($params, &$smarty) {
         $control->name  = $params['name'];
 //        $badvals = array("[", "]", ",", " ", "'", "\"", "&", "#", "%", "@", "!", "$", "(", ")", "{", "}");
         //$newid = str_replace($badvals, "", $params['name']);
-        $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '');
+        $params['id'] = createValidId(!empty($params['id']) ? $params['id'] : '', $params['value']);
 //        $control->id  = createValidId(isset($params['id']) && $params['id'] != "" ? $params['id'] : "");
         $control->id  = $params['id'];
         //echo $control->id;
         if ($params['type'] != 'radio') {
             // auto-create an 'id' from the name param and 'name' from the id param if needed
-            if (empty($control->id)) $control->id = createValidId($params['name']);
+            if (empty($control->id)) $control->id = createValidId($params['name'], $params['value']);
             if (empty($control->name)) $control->name = $params['id'];
         }
 

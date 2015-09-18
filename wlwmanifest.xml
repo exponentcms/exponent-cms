@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<manifest xmlns="http://schemas.microsoft.com/wlw/manifest/weblog">
+
+    <options>
+        <clientType>Metaweblog</clientType>
+        <supportsKeywords>Yes</supportsKeywords>
+        <supportsGetTags>Yes</supportsGetTags>
+
+        <supportsPostAsDraft>Yes</supportsPostAsDraft>
+        <!--<supportsCustomDate>Yes</supportsCustomDate>-->
+        <supportsExcerpt>No</supportsExcerpt>
+        <!--<supportsAuthor>Yes</supportsAuthor>-->
+        <supportsFileUpload>Yes</supportsFileUpload>
+
+        <supportsEmptyTitles>No</supportsEmptyTitles>
+        <supportsCommentPolicy>Yes</supportsCommentPolicy>
+
+        <supportsCategories>Yes</supportsCategories>
+        <supportsCategoriesInline>Yes</supportsCategoriesInline>
+        <supportsMultipleCategories>No</supportsMultipleCategories>
+        <supportsHeirarchicalCategories>No</supportsHeirarchicalCategories>
+        <supportsNewCategories>Yes</supportsNewCategories>
+        <supportsNewCategoriesInline>Yes</supportsNewCategoriesInline>
+
+        <supportsEmbeds>Yes</supportsEmbeds>
+        <!--<supportsScripts>Yes</supportsScripts>-->
+
+        <characterSet>utf-8</characterSet>
+        <requiresHtmlTitles>Yes</requiresHtmlTitles>
+
+        <invalidPostIdFaultCodePattern>404</invalidPostIdFaultCodePattern>
+
+        <supportsPages>No</supportsPages>
+        <supportsPageParent>No</supportsPageParent>
+        <supportsPageOrder>No</supportsPageOrder>
+    </options>
+
+    <weblog>
+        <serviceName>Exponent CMS</serviceName>
+        <imageUrl>{blog-postapi-url}/../framework/core/assets/images/exp.png</imageUrl>
+        <!--<watermarkImageUrl>images/wlw/wp-watermark.png</watermarkImageUrl>-->
+        <homepageLinkText>View site</homepageLinkText>
+        <!--<adminLinkText>Dashboard</adminLinkText>-->
+        <!--<adminUrl>-->
+            <!--<![CDATA[-->
+			<!--{blog-postapi-url}/../wp-admin/-->
+		<!--]]>-->
+        <!--</adminUrl>-->
+        <postEditingUrl>
+            <![CDATA[
+			    {blog-postapi-url}/../index.php?controller=blog&action=edit&id={post-id}
+		    ]]>
+        </postEditingUrl>
+    </weblog>
+
+    <buttons>
+        <button>
+            <id>0</id>
+            <text>Manage Comments</text>
+            <imageUrl>{blog-postapi-url}/../framework/core/assets/images/comments.png</imageUrl>
+            <clickUrl>
+                <![CDATA[
+                    {blog-postapi-url}/../index.php?controller=expComment&action=manage
+                ]]>
+            </clickUrl>
+        </button>
+    </buttons>
+
+    <!--<views>-->
+        <!--<default>WebLayout</default>-->
+        <!--<view type="WebLayout" src="…/template.wlw1.html"/>-->
+        <!--<view type="WebPreview" src="…/template.wlw2.html"/>-->
+    <!--</views>-->
+</manifest>

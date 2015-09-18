@@ -55,12 +55,12 @@
     <div id="{$id}" class="yui-navset">
         <ul class="yui-nav">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li><a href="#tab{$smarty.foreach.tabs.iteration}">{$cat->name}</a></li>
+                <li><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}">{$cat->name}</a></li>
             {/foreach}
         </ul>
         <div class="yui-content">
             {foreach name=items from=$page->cats key=catid item=cat}
-                <div id="tab{$smarty.foreach.items.iteration}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}">
                     {foreach from=$cat->records item=item}
                         {exp_include file='filedownloaditem.tpl'}
                     {/foreach}

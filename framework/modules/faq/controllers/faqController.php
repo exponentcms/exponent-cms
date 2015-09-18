@@ -159,7 +159,7 @@ class faqController extends expController {
             $mail->quickSend(array(
                 'html_message'=>$msg,
                 'to'=>trim(empty($this->config['notification_email_address'])?SMTP_FROMADDRESS:$this->config['notification_email_address']),
-                'from'=>SMTP_FROMADDRESS,
+                'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                 'subject'=>$this->config['notification_email_subject'],
             ));
         }
@@ -181,11 +181,13 @@ class faqController extends expController {
 	        foreach($tags as $tag) {
                 if (!empty($tag)) {
                     $tag = strtolower(trim($tag));
-                    $tag = str_replace('"', "", $tag); // strip double quotes
-                    $tag = str_replace("'", "", $tag); // strip single quotes
-                    $expTag = new expTag($tag);
-                    if (empty($expTag->id)) $expTag->update(array('title'=>$tag));
-                    $this->params['expTag'][] = $expTag->id;
+                    $tag = str_replace(array('"', "'"), "", $tag); // strip double and single quotes
+                    if (!empty($tag)) {
+                        $expTag = new expTag($tag);
+                        if (empty($expTag->id))
+                            $expTag->update(array('title' => $tag));
+                        $this->params['expTag'][] = $expTag->id;
+                    }
                 }
 	        }
         }

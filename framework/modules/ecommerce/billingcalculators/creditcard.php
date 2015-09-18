@@ -132,7 +132,7 @@ class creditcard extends billingcalculator {
         //$form .= '<input id="cont-checkout" type="submit" value="Continue Checkout">';
         // click card image to select card type
         $src = "
-            $('." .$this->calculator_name  . " .credit-cards img').click(function() {
+            $('." .$this->calculator_name  . ".credit-cards img').click(function() {
                 $('#cc_type_" . $this->calculator_name ."').val($(this).attr('id'));
             });
         ";
@@ -159,7 +159,7 @@ class creditcard extends billingcalculator {
     }
 
     //process user input. This function should return an object of the user input.
-    //the returnd object will be saved in the session and passed to post_process.
+    //the returned object will be saved in the session and passed to post_process.
     //If need be this could use another method of data storage, as long post_process can get the data.
     function userFormUpdate($params) {
         //eDebug($params);        
@@ -209,17 +209,17 @@ class creditcard extends billingcalculator {
      * from the url such that if we already have it we'll ccall another PP api to get the
      * details and make it match up to the order.
      *
-     * @param mixed $method The billing method information for this user
+     * @param mixed $billingmethod The billing method information for this user
      * @param mixed $opts
      * @param array $params The url prameters, as if sef was off.
      * @param       $order
      *
      * @return mixed An object indicating pass of failure.
      */
-    function preprocess($method, $opts, $params, $order) {
+    function preprocess($billingmethod, $opts, $params, $order) {
         //just save the opts
-        $method->update(array('billing_options' => serialize($opts)));
-        //eDebug($method,true);
+        $billingmethod->update(array('billing_options' => serialize($opts)));
+        //eDebug($billingmethod,true);
     }
 
     function validate_card_expire($mmyy) {

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * @license Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
@@ -42,6 +42,24 @@ CKEDITOR.DIALOG_RESIZE_HEIGHT = 2;
  * @member CKEDITOR
  */
 CKEDITOR.DIALOG_RESIZE_BOTH = 3;
+
+/**
+ * Dialog state when idle.
+ *
+ * @readonly
+ * @property {Number} [=1]
+ * @member CKEDITOR
+ */
+CKEDITOR.DIALOG_STATE_IDLE = 1;
+
+/**
+ * Dialog state when busy.
+ *
+ * @readonly
+ * @property {Number} [=2]
+ * @member CKEDITOR
+ */
+CKEDITOR.DIALOG_STATE_BUSY = 2;
 
 ( function() {
 	var cssLength = CKEDITOR.tools.cssLength;
@@ -159,8 +177,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			title = body.getChild( 0 ),
 			close = body.getChild( 1 );
 
+		// Don't allow dragging on dialog (#13184).
+		editor.plugins.clipboard && CKEDITOR.plugins.clipboard.preventDefaultDropOnElement( body );
+
 		// IFrame shim for dialog that masks activeX in IE. (#7619)
-		if ( CKEDITOR.env.ie && !CKEDITOR.env.quirks ) {
+		if ( CKEDITOR.env.ie && !CKEDITOR.env.quirks && !CKEDITOR.env.edge ) {
 			var src = 'javascript:void(function(){' + encodeURIComponent( 'document.open();(' + CKEDITOR.tools.fixDomain + ')();document.close();' ) + '}())', // jshint ignore:line
 				iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
 					' frameBorder="0"' +
@@ -323,6 +344,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			} );
 		}
 
+		// Set default dialog state.
+		this.state = CKEDITOR.DIALOG_STATE_IDLE;
+
 		if ( definition.onCancel ) {
 			this.on( 'cancel', function( evt ) {
 				if ( definition.onCancel.call( this, evt ) === false )
@@ -398,6 +422,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				focusList[ i ].focusIndex = i;
 		}
 
+		// Expects 1 or -1 as an offset, meaning direction of the offset change.
 		function changeFocus( offset ) {
 			var focusList = me._.focusList;
 			offset = offset || 0;
@@ -405,21 +430,42 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			if ( focusList.length < 1 )
 				return;
 
-			var current = me._.currentFocusIndex;
+			var startIndex = me._.currentFocusIndex;
+
+			if ( me._.tabBarMode && offset < 0 ) {
+				// If we are in tab mode, we need to mimic that we started tabbing back from the first
+				// focusList (so it will go to the last one).
+				startIndex = 0;
+			}
 
 			// Trigger the 'blur' event of  any input element before anything,
 			// since certain UI updates may depend on it.
 			try {
-				focusList[ current ].getInputElement().$.blur();
+				focusList[ startIndex ].getInputElement().$.blur();
 			} catch ( e ) {}
 
-			var startIndex = ( current + offset + focusList.length ) % focusList.length,
-				currentIndex = startIndex;
-			while ( offset && !focusList[ currentIndex ].isFocusable() ) {
-				currentIndex = ( currentIndex + offset + focusList.length ) % focusList.length;
-				if ( currentIndex == startIndex )
+			var currentIndex = startIndex,
+				hasTabs = me._.pageCount > 1;
+
+			do {
+				currentIndex = currentIndex + offset;
+
+				if ( hasTabs && !me._.tabBarMode && ( currentIndex == focusList.length || currentIndex == -1 ) ) {
+					// If the dialog was not in tab mode, then focus the first tab (#13027).
+					me._.tabBarMode = true;
+					me._.tabs[ me._.currentTabId ][ 0 ].focus();
+					me._.currentFocusIndex = -1;
+
+					// Early return, in order to avoid accessing focusList[ -1 ].
+					return;
+				}
+
+				currentIndex = ( currentIndex + focusList.length ) % focusList.length;
+
+				if ( currentIndex == startIndex ) {
 					break;
-			}
+				}
+			} while ( offset && !focusList[ currentIndex ].isFocusable() );
 
 			focusList[ currentIndex ].focus();
 
@@ -438,33 +484,31 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			var keystroke = evt.data.getKeystroke(),
 				rtl = editor.lang.dir == 'rtl',
+				arrowKeys = [ 37, 38, 39, 40 ],
 				button;
 
 			processed = stopPropagation = 0;
 
 			if ( keystroke == 9 || keystroke == CKEDITOR.SHIFT + 9 ) {
 				var shiftPressed = ( keystroke == CKEDITOR.SHIFT + 9 );
-
-				// Handling Tab and Shift-Tab.
-				if ( me._.tabBarMode ) {
-					// Change tabs.
-					var nextId = shiftPressed ? getPreviousVisibleTab.call( me ) : getNextVisibleTab.call( me );
-					me.selectPage( nextId );
-					me._.tabs[ nextId ][ 0 ].focus();
-				} else {
-					// Change the focus of inputs.
-					changeFocus( shiftPressed ? -1 : 1 );
-				}
-
+				changeFocus( shiftPressed ? -1 : 1 );
 				processed = 1;
 			} else if ( keystroke == CKEDITOR.ALT + 121 && !me._.tabBarMode && me.getPageCount() > 1 ) {
 				// Alt-F10 puts focus into the current tab item in the tab bar.
 				me._.tabBarMode = true;
 				me._.tabs[ me._.currentTabId ][ 0 ].focus();
+				me._.currentFocusIndex = -1;
 				processed = 1;
-			} else if ( ( keystroke == 37 || keystroke == 39 ) && me._.tabBarMode ) {
-				// Arrow keys - used for changing tabs.
-				nextId = ( keystroke == ( rtl ? 39 : 37 ) ? getPreviousVisibleTab.call( me ) : getNextVisibleTab.call( me ) );
+			} else if ( CKEDITOR.tools.indexOf( arrowKeys, keystroke ) != -1 && me._.tabBarMode ) {
+				// Array with key codes that activate previous tab.
+				var prevKeyCodes = [
+						// Depending on the lang dir: right or left key
+						rtl ? 39 : 37,
+						// Top/bot arrow: actually for both cases it's the same.
+						38
+					],
+					nextId = CKEDITOR.tools.indexOf( prevKeyCodes, keystroke ) != -1 ? getPreviousVisibleTab.call( me ) : getNextVisibleTab.call( me );
+
 				me.selectPage( nextId );
 				me._.tabs[ nextId ][ 0 ].focus();
 				processed = 1;
@@ -545,11 +589,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			// to allow dynamic tab order happen in dialog definition.
 			setupFocus();
 
-			if ( editor.config.dialog_startupFocusTab && me._.pageCount > 1 ) {
+			var hasTabs = me._.pageCount > 1;
+
+			if ( editor.config.dialog_startupFocusTab && hasTabs ) {
 				me._.tabBarMode = true;
 				me._.tabs[ me._.currentTabId ][ 0 ].focus();
+				me._.currentFocusIndex = -1;
 			} else if ( !this._.hasFocus ) {
-				this._.currentFocusIndex = -1;
+				// http://dev.ckeditor.com/ticket/13114#comment:4.
+				this._.currentFocusIndex = hasTabs ? -1 : this._.focusList.length - 1;
 
 				// Decide where to put the initial focus.
 				if ( definition.onFocus ) {
@@ -616,6 +664,14 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		for ( i = 0; i < buttons.length; i++ )
 			this._.buttons[ buttons[ i ].id ] = buttons[ i ];
+
+		/**
+		 * Current state of the dialog. Use the {@link #setState} method to update it.
+		 * See the {@link #event-state} event to know more.
+		 *
+		 * @readonly
+		 * @property {Number} [state=CKEDITOR.DIALOG_STATE_IDLE]
+		 */
 	};
 
 	// Focusable interface. Use it via dialog.addFocusable.
@@ -1054,6 +1110,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			this.foreach( function( contentObj ) {
 				contentObj.resetInitValue && contentObj.resetInitValue();
 			} );
+
+			// Reset dialog state back to IDLE, if busy (#13213).
+			this.setState( CKEDITOR.DIALOG_STATE_IDLE );
 		},
 
 		/**
@@ -1377,6 +1436,56 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				for ( var i = index + 1; i < this._.focusList.length; i++ )
 					this._.focusList[ i ].focusIndex++;
 			}
+		},
+
+		/**
+		 * Sets the dialog {@link #property-state}.
+		 *
+		 * @since 4.5
+		 * @param {Number} state Either {@link CKEDITOR#DIALOG_STATE_IDLE} or {@link CKEDITOR#DIALOG_STATE_BUSY}.
+		 */
+		setState: function( state ) {
+			var oldState = this.state;
+
+			if ( oldState == state ) {
+				return;
+			}
+
+			this.state = state;
+
+			if ( state == CKEDITOR.DIALOG_STATE_BUSY ) {
+				// Insert the spinner on demand.
+				if ( !this.parts.spinner ) {
+					var dir = this.getParentEditor().lang.dir,
+						spinnerDef = {
+							attributes: {
+								'class': 'cke_dialog_spinner'
+							},
+							styles: {
+								'float': dir == 'rtl' ? 'right' : 'left'
+							}
+						};
+
+					spinnerDef.styles[ 'margin-' + ( dir == 'rtl' ? 'left' : 'right' ) ] = '8px';
+
+					this.parts.spinner = CKEDITOR.document.createElement( 'div', spinnerDef );
+
+					this.parts.spinner.setHtml( '&#8987;' );
+					this.parts.spinner.appendTo( this.parts.title, 1 );
+				}
+
+				// Finally, show the spinner.
+				this.parts.spinner.show();
+
+				this.getButton( 'ok' ).disable();
+			} else if ( state == CKEDITOR.DIALOG_STATE_IDLE ) {
+				// Hide the spinner. But don't do anything if there is no spinner yet.
+				this.parts.spinner && this.parts.spinner.hide();
+
+				this.getButton( 'ok' ).enable();
+			}
+
+			this.fire( 'state', state );
 		}
 	};
 
@@ -3174,7 +3283,7 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when a dialog definition is about to be used to create a dialog into
+ * Event fired when a dialog definition is about to be used to create a dialog into
  * an editor instance. This event makes it possible to customize the definition
  * before creating it.
  *
@@ -3190,7 +3299,7 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when a tab is going to be selected in a dialog.
+ * Event fired when a tab is going to be selected in a dialog.
  *
  * @event selectPage
  * @member CKEDITOR.dialog
@@ -3200,7 +3309,7 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when the user tries to dismiss a dialog.
+ * Event fired when the user tries to dismiss a dialog.
  *
  * @event cancel
  * @member CKEDITOR.dialog
@@ -3209,7 +3318,7 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when the user tries to confirm a dialog.
+ * Event fired when the user tries to confirm a dialog.
  *
  * @event ok
  * @member CKEDITOR.dialog
@@ -3218,14 +3327,14 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when a dialog is shown.
+ * Event fired when a dialog is shown.
  *
  * @event show
  * @member CKEDITOR.dialog
  */
 
 /**
- * Fired when a dialog is shown.
+ * Event fired when a dialog is shown.
  *
  * @event dialogShow
  * @member CKEDITOR.editor
@@ -3234,14 +3343,14 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when a dialog is hidden.
+ * Event fired when a dialog is hidden.
  *
  * @event hide
  * @member CKEDITOR.dialog
  */
 
 /**
- * Fired when a dialog is hidden.
+ * Event fired when a dialog is hidden.
  *
  * @event dialogHide
  * @member CKEDITOR.editor
@@ -3250,25 +3359,25 @@ CKEDITOR.plugins.add( 'dialog', {
  */
 
 /**
- * Fired when a dialog is being resized. The event is fired on
+ * Event fired when a dialog is being resized. The event is fired on
  * both the {@link CKEDITOR.dialog} object and the dialog instance
- * since 3.5.3, previously it's available only in the global object.
+ * since 3.5.3, previously it was only available in the global object.
  *
  * @static
  * @event resize
  * @member CKEDITOR.dialog
  * @param data
  * @param {CKEDITOR.dialog} data.dialog The dialog being resized (if
- * it's fired on the dialog itself, this parameter isn't sent).
+ * it is fired on the dialog itself, this parameter is not sent).
  * @param {String} data.skin The skin name.
  * @param {Number} data.width The new width.
  * @param {Number} data.height The new height.
  */
 
 /**
- * Fired when a dialog is being resized. The event is fired on
+ * Event fired when a dialog is being resized. The event is fired on
  * both the {@link CKEDITOR.dialog} object and the dialog instance
- * since 3.5.3, previously it's available only in the global object.
+ * since 3.5.3, previously it was only available in the global object.
  *
  * @since 3.5
  * @event resize
@@ -3276,4 +3385,14 @@ CKEDITOR.plugins.add( 'dialog', {
  * @param data
  * @param {Number} data.width The new width.
  * @param {Number} data.height The new height.
+ */
+
+/**
+ * Event fired when the dialog state changes, usually by {@link CKEDITOR.dialog#setState}.
+ *
+ * @since 4.5
+ * @event state
+ * @member CKEDITOR.dialog
+ * @param data
+ * @param {Number} data The new state. Either {@link CKEDITOR#DIALOG_STATE_IDLE} or {@link CKEDITOR#DIALOG_STATE_BUSY}.
  */

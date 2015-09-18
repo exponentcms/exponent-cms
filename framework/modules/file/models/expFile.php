@@ -1748,7 +1748,7 @@ class expFile extends expRecord {
         if (is_readable($file)) {
             $eql = @fopen($file, "r");
             if ($eql) {
-                //FIXME change to fgets($file)
+                //NOTE changed to fgets($file)
 //                $lines = @file($file);
                 $line0 = fgets($eql);
                 $line1 = fgets($eql);
@@ -2028,7 +2028,7 @@ class expFile extends expRecord {
         $data = array();
 
         if (is_readable($file)) {
-            $lines = @file($file);  //TODO we may have to change this for handling large files via fgets()
+            $lines = @file($file);  //FIXME we may have to change this for handling large files via fgets()...see dumpDatabase() above
 
             // Sanity check
             if (count($lines) < 2 || trim($lines[0]) != EQL_HEADER) {

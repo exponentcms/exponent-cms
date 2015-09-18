@@ -32,35 +32,35 @@
 </div>
 
 {*FIXME convert to yui3*}
-{*{script unique="a2cgc" yui3mods=1}*}
-{*{literal}*}
-{*YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {*}
-    {*var YAHOO=Y.YUI2;*}
-    {*YAHOO.util.Event.onDOMReady(function(){*}
-        {*var links = YAHOO.util.Dom.getElementsByClassName('rc-link', 'a');*}
+{*script unique="a2cgc" yui3mods=1}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+    var YAHOO=Y.YUI2;
+    YAHOO.util.Event.onDOMReady(function(){
+        var links = YAHOO.util.Dom.getElementsByClassName('rc-link', 'a');
 
-        {*YAHOO.util.Event.on(links, 'click', function (e) {*}
-            {*YAHOO.util.Event.stopEvent(e);*}
-            {*var targ = YAHOO.util.Event.getTarget(e);*}
-            {*if (targ.id === 'continue') {*}
-                {*YAHOO.util.Dom.get('quick').value = 0;*}
-            {*}*}
-            {*YAHOO.util.Dom.get('donationamt').submit(); *}
-        {*});*}
+        YAHOO.util.Event.on(links, 'click', function (e) {
+            YAHOO.util.Event.stopEvent(e);
+            var targ = YAHOO.util.Event.getTarget(e);
+            if (targ.id === 'continue') {
+                YAHOO.util.Dom.get('quick').value = 0;
+            }
+            YAHOO.util.Dom.get('donationamt').submit();
+        });
 
-        {*var bp = {/literal}{$product->base_price};{literal}*}
-        {*var da = YAHOO.util.Dom.get('dollar_amount');*}
-        {*YAHOO.util.Event.on(da, 'blur', function(e,o){*}
-            {*//Y.log(this.value);*}
-            {*var newint = parseInt(this.value.replace('$',"").replace(',',""));*}
-            {*if (newint < bp) {*}
-                {*this.value = '{/literal}{currency_symbol}{literal}'+bp+".00";*}
-            {*}*}
-        {*}, da, true);*}
-    {*});*}
-{*});*}
-{*{/literal}*}
-{*{/script}*}
+        var bp = {/literal}{$product->base_price};{literal}
+        var da = YAHOO.util.Dom.get('dollar_amount');
+        YAHOO.util.Event.on(da, 'blur', function(e,o){
+            //Y.log(this.value);
+            var newint = parseInt(this.value.replace('$',"").replace(',',""));
+            if (newint < bp) {
+                this.value = '{/literal}{currency_symbol}{literal}'+bp+".00";
+            }
+        }, da, true);
+    });
+});
+{/literal}
+{/script*}
 
 {script unique="a2cgc" yui3mods="node"}
 {literal}

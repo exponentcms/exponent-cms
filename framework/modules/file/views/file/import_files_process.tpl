@@ -46,9 +46,9 @@
 					{foreach from=$mod_data[1] item=file}
 						<tr class="{cycle values='even,odd'}">
 							<td class="header" width="16">
-                                <input type="checkbox" checked="checked" name="mods[{$file}]" />
+                                <input type="checkbox" checked="checked" id="mods_{$file}" name="mods[{$file}]" />
                             </td>
-							<td>{$file}</td>
+							<td><label for="mods_{$file}}">{$file}</label></td>
 						</tr>
 					{/foreach}
 				{/foreach}

@@ -228,6 +228,9 @@ class expTheme
         if (!isset($config['meta']['rich'])) {
             $config['meta']['rich'] = true;
         }
+        if (!isset($config['meta']['fb'])) {
+            $config['meta']['fb'] = true;
+        }
         if (!isset($config['meta']['viewport'])) {
             $config['meta']['viewport'] = true;
         }
@@ -260,6 +263,13 @@ class expTheme
         if ($config['meta']['rich'] && !empty($metainfo['rich'])) {
             $str .= "\t" . $metainfo['rich'] . "\n";
         }
+        if ($config['meta']['fb'] && !empty($metainfo['fb'])) {
+            foreach ($metainfo['fb'] as $key=>$value) {
+                if (!empty($value))
+                    $str .= "\t" . '<meta property="og:' . $key . '" content="' . $value . '" ' . XHTML_CLOSING . '>' . "\n";
+            }
+        }
+
         if ($metainfo['noindex'] || $metainfo['nofollow']) {
             $str .= "\t" . '<meta name="robots" content="' . (!empty($metainfo['noindex']) ? 'noindex' : '') . ' ' . ($metainfo['nofollow'] ? 'nofollow' : '') . '" ' . XHTML_CLOSING . '>' . "\n";
         }
@@ -308,6 +318,14 @@ class expTheme
         }
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png')) {
             $str .= "\t" . '<link rel="apple-touch-icon-precomposed" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/apple-touch-icon-precomposed.png" ' . XHTML_CLOSING . '>' . "\n";
+        }
+
+        // support for xmlrpc blog editors like Windows Live Writer, etc...
+        if (USE_XMLRPC) {
+            if (file_exists(BASE . 'rsd.xml')) {
+                $str .= "\t" . '<link rel="EditURI" href="' . URL_FULL . 'rsd.xml" type="application/rsd+xml" ' . XHTML_CLOSING . '>' . "\n";
+            }
+            $str .= "\t" . '<link rel="wlwmanifest" href="' . URL_FULL . 'wlwmanifest.xml" type="application/wlwmanifest+xml" ' . XHTML_CLOSING . '>' . "\n";
         }
 
         // when minification is used, the comment below gets replaced when the buffer is dumped
@@ -722,13 +740,13 @@ class expTheme
 //            foreach ($_REQUEST as $key=>$param) {  //FIXME need array sanitizer
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
-            if (empty($_REQUEST['route_sanitized'])) {
+//            if (empty($_REQUEST['route_sanitized'])) {
                 if (!$user->isAdmin()) expString::sanitize($_REQUEST);
-            } elseif (empty($_REQUEST['array_sanitized'])) {
+//            } elseif (empty($_REQUEST['array_sanitized'])) {
                 $tmp =1;  //FIXME we've already sanitized at this point
 //            } else {
 //                $tmp =1;  //FIXME we've already sanitized at this point
-            }
+//            }
 
             //FIXME: module/controller glue code..remove ASAP
             $module = empty($_REQUEST['controller']) ? $_REQUEST['module'] : $_REQUEST['controller'];
@@ -1459,7 +1477,7 @@ class expTheme
     {
         if (bs2()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
-                $btn_size = ''; // actually default size, NOT true boostrap large
+                $btn_size = ''; // actually default size, NOT true bootstrap large
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
                 $btn_size = 'btn-mini';
             } else { // medium
@@ -1468,11 +1486,11 @@ class expTheme
             return $btn_size;
         } elseif (bs3()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
-                $btn_size = ''; // actually default size, NOT true boostrap large
+                $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
-                $btn_size = 'btn-xs';
-            } else { // medium
                 $btn_size = 'btn-sm';
+            } else { // medium
+                $btn_size = '';
             }
             return $btn_size;
         } else {

@@ -29,10 +29,10 @@ expSettings::change('LANGUAGE', LANGUAGE);
 $user = $db->selectObject('user', 'is_system_user=1');
 
 $user->username = expString::sanitize($_POST['username']);
-$pwstrength = expValidator::checkPasswordStrength($_POST['username'], $_POST['password']);
+$pwstrength = expValidator::checkPasswordStrength($_POST['password']);
 if ($user->username == '') {
     $error = true;
-    $errorstr = gt('You must specify a valid username.');
+    $errorstr = gt('You must specify a valid username. Please check your entry.');
     $errorflag = '&errusername=true';
     echo $errorstr;
 } elseif ($_POST['password'] != $_POST['password2']) {
@@ -40,10 +40,15 @@ if ($user->username == '') {
     $errorstr = gt('Your passwords do not match. Please check your entries.');
     $errorflag = '&errpassword=true';
     echo $errorstr;
+} elseif (strcasecmp($user->username, $password) == 0) {
+    $error = true;
+    $errorstr = gt('The password cannot be the same as the username.');
+    $errorflag = '&errpwusername=true';
+    echo $errorstr;
 } elseif ($pwstrength != '') {
     $error = true;
-    $errorstr = $pwstrength;
-    $errorflag = '&errpwusername=true';
+    $errorstr = $pwstrength . ' ' . gt('Please check your entries.');
+    $errorflag = '&errpwstrength=true';
     echo $errorstr;
 } elseif (!expValidator::validate_email_address($_POST['email'])) {
     $error = true;
@@ -57,7 +62,7 @@ if ($error) { //NOTE Shouldn't get this because of check in install-6.php unless
     header('Location: index.php?page=install-6' . $errorflag);
     exit();
 } else {
-    $user->password = md5($_POST['password']);
+    $user->password = user::encryptPassword($_POST['password']);
     $user->firstname = expString::sanitize($_POST['firstname']);
     $user->lastname = expString::sanitize($_POST['lastname']);
     $user->is_admin = 1;

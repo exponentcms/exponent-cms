@@ -101,9 +101,10 @@ class tagtreecontrol extends formcontrol {
 
         $icon = array(
             'add' => '',
+            'view' => '',
             'edit' => '',
-            'delete' => '',
-            'configure' => ''
+            'configure' => '',
+            'delete' => ''
         );
         foreach ($icon as $key=>$icn) {
             $text = expTheme::buttonIcon($key, 'large');
@@ -172,6 +173,15 @@ class tagtreecontrol extends formcontrol {
                                                   window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=adsubnode&id='+obj.id;
                                               }
                     },
+                    'viewone' : {
+                        'icon'				: '" . $icon['view'] . "',
+                        'label'				: '" . gt('View this Category') . "',
+                        'action'			: function (data) {
+                                                  var inst = $.jstree.reference(data.reference),
+                                                  obj = inst.get_node(data.reference);
+                                                  window.location=obj.original.href;
+                                              }
+                    },
                     ":"") . "
                     'editone' : {
                         'icon'				: '" . $icon['edit'] . "',
@@ -180,6 +190,15 @@ class tagtreecontrol extends formcontrol {
                                                   var inst = $.jstree.reference(data.reference),
                                                   obj = inst.get_node(data.reference);
                                                   window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=edit&id='+obj.id;
+                                              }
+                    },
+                    'configureone' : {
+                        'icon'				: '" . $icon['configure'] . "',
+                        'label'				: '" . gt('Configure this Category') . "',
+                        'action'			: function (data) {
+                                                  var inst = $.jstree.reference(data.reference),
+                                                  obj = inst.get_node(data.reference);
+                                                  window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=configure&id='+obj.id;
                                               }
                     }," . ($this->addable?"
                     'deleteone' : {
@@ -192,15 +211,6 @@ class tagtreecontrol extends formcontrol {
                                               }
                     },
                     ":"") . "
-                    'configureone' : {
-                        'icon'				: '" . $icon['configure'] . "',
-                        'label'				: '" . gt('Configure this Category') . "',
-                        'action'			: function (data) {
-                                                  var inst = $.jstree.reference(data.reference),
-                                                  obj = inst.get_node(data.reference);
-                                                  window.location=eXp.PATH_RELATIVE+'index.php?module=" . $this->controller->baseclassname . "&action=configure&id='+obj.id;
-                                              }
-                    },
                 }
             },
             'checkbox' : {

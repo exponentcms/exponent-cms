@@ -80,14 +80,15 @@ class eaasController extends expController {
 
     public function api() {
         if (empty($this->params['apikey'])) {
+            $_REQUEST['apikey'] = true;  // set this to force an ajax reply
             $ar = new expAjaxReply(550, 'Permission Denied', 'You need an API key in order to access Exponent as a Service', null);
-            $ar->send();
+            $ar->send();  //FIXME this doesn't seem to work correctly in this scenario
         } else {
             $key = expUnserialize(base64_decode(urldecode($this->params['apikey'])));
             $cfg = new expConfig($key);
             $this->config = $cfg->config;
             if(empty($cfg->id)) {
-                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration missing.', null);
+                $ar = new expAjaxReply(550, 'Permission Denied', 'Incorrect API key or Exponent as a Service module configuration missing', null);
                 $ar->send();
             } else {
                 if (!empty($this->params['get'])) {
@@ -104,12 +105,12 @@ class eaasController extends expController {
         if (!key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
-            return;
+            return;  //FIXME we exit before hitting this
         }
         if (empty($this->config[$this->params['get'].'_aggregate'])) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
-            return;
+            return;  //FIXME we exit before hitting this
         }
         switch ($this->params['get']) {
             case 'aboutus':

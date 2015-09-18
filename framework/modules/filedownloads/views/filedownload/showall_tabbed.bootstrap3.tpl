@@ -55,12 +55,12 @@
     <div id="{$id}" class="">
         <ul class="nav nav-tabs" role="tablist">
             {foreach name=tabs from=$page->cats key=catid item=cat}
-                <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}" role="tab" data-toggle="tab">{$cat->name}</a></li>
+                <li role="presentation"{if $smarty.foreach.tabs.first} class="active"{/if}><a href="#tab{$smarty.foreach.tabs.iteration}-{$id}" role="tab" data-toggle="tab">{$cat->name}</a></li>
             {/foreach}
         </ul>
         <div class="tab-content">
             {foreach name=items from=$page->cats key=catid item=cat}
-                <div id="tab{$smarty.foreach.items.iteration}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
+                <div id="tab{$smarty.foreach.items.iteration}-{$id}" role="tabpanel" class="tab-pane fade{if $smarty.foreach.items.first} in active{/if}">
                     {foreach from=$cat->records item=item}
                         {exp_include file='filedownloaditem.tpl'}
                     {/foreach}

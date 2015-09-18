@@ -74,10 +74,10 @@ class worldpayCheckout extends billingcalculator {
         return true;
     }
 
-    function preprocess($method, $opts, $params, $order) {
+    function preprocess($billingmethod, $opts, $params, $order) {
         if (!isset($params['transStatus'])) {
             // make sure we have some billing options saved.
-            if (empty($method)) {
+            if (empty($billingmethod)) {
                 return false;
             }
 
@@ -118,15 +118,15 @@ class worldpayCheckout extends billingcalculator {
             header('location: ' . $url);
             exit();
         } else {
-//            $opts = expUnserialize($method->billing_options);  //FIXME already unserialized?? == $opts???
+            $opts = expUnserialize($billingmethod->billing_options);  //FIXME already unserialized?? == $opts???
             if ($params['transStatus'] == 'Y') {
                 $opts->result->errorCode = 0;
                 $opts->result->message = "User has approved the payment at Worldpay";
                 $opts->result->transId = $params['transId'];
                 $opts->result->payment_status = "Pending";
-//                $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "Pending"));
-                $method->update(array('billing_options' => serialize($opts), 'transaction_state' => "complete"));
-                $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, 'complete');  //FIXME 'complete' is proper?
+//                $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => "Pending"));
+                $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => "complete"));
+                $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, 'complete');  //FIXME is 'complete' and $grand_total proper?
                 redirect_to(array('controller' => 'cart', 'action' => 'process'));
             } else {
                 redirect_to(array('controller' => 'cart', 'action' => 'checkout'), true);
@@ -134,8 +134,8 @@ class worldpayCheckout extends billingcalculator {
         }
     }
 
-//    function process($method, $opts, $params, $invoice_number) {
-    function process($method, $opts, $params, $order) {
+//    function process($billingmethod, $opts, $params, $invoice_number) {
+    function process($billingmethod, $opts, $params, $order) {
 
     }
 
@@ -172,10 +172,10 @@ class worldpayCheckout extends billingcalculator {
         return;
     }
 
-    function getPaymentAuthorizationNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
-    }
+//    function getPaymentAuthorizationNumber($billingmethod) {
+//        $ret = expUnserialize($billingmethod->billing_options);
+//        return $ret->result->token;  //FIXME we don't store a 'token'
+//    }
 
     function getPaymentReferenceNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);

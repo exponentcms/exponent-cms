@@ -117,6 +117,7 @@
 .elfinder-button-icon-netmount  { background-position: 0 -688px; }
 .elfinder-button-icon-netunmount { background-position: 0 -96px; }
 .elfinder-button-icon-places    { background-position: 0 -704px; }
+.elfinder-button-icon-chmod     { background-position: 0  -48px; }
 
 .elfinder-button-icon-pixlr     { background-position: 0 -673px; }
 
@@ -181,6 +182,23 @@
 	min-height: 26px;
 	float:right;
 	width:202px;
+	overflow: visible;
+}
+
+.elfinder .elfinder-button-search .elfinder-button-menu {
+	font-size: 8pt;
+	text-align: center;
+	width: 100%;
+}
+
+.elfinder .elfinder-button-search .elfinder-button-menu div {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 5px;
+}
+
+.elfinder .elfinder-button-search .elfinder-button-menu div .ui-state-hover {
+	border: 1px solid;
 }
 
 /* ltr/rte enviroment */

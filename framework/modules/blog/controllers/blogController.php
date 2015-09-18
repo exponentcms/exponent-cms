@@ -72,7 +72,7 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-		            
+
 		assign_to_template(array(
             'page'=>$page,
             'params'=>$this->params,
@@ -95,12 +95,12 @@ class blogController extends expController {
                 $users[$blog->poster]->count = 1;
             }
         }
-        
+
 	    assign_to_template(array(
             'authors'=>$users
         ));
 	}
-	
+
 	public function dates() {
 	    global $db;
 
@@ -120,7 +120,7 @@ class blogController extends expController {
                 if ($count > $limit) break;
                 $blog_date[$year][$month] = new stdClass();
 	            $blog_date[$year][$month]->name = date('F',$date);
-	            $blog_date[$year][$month]->count = 1;    
+	            $blog_date[$year][$month]->count = 1;
 	        }
 	    }
         if (!empty($blog_date)) {
@@ -138,7 +138,7 @@ class blogController extends expController {
             'dates'=>$blog_date
         ));
 	}
-	
+
     public function showall_by_date() {
 	    expHistory::set('viewable', $this->params);
 	    $start_date = expDateTime::startOfMonthTimestamp(mktime(0, 0, 0, $this->params['month'], 1, $this->params['year']));
@@ -158,16 +158,16 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-		            
+
 		assign_to_template(array(
             'page'=>$page,
             'moduletitle'=>gt('Blogs by date').' "'.expDateTime::format_date($start_date,"%B %Y").'"')
         );
 	}
-	
+
 	public function showall_by_author() {
 	    expHistory::set('viewable', $this->params);
-	    
+
         $user = user::getUserByName($this->params['author']);
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
@@ -182,20 +182,20 @@ class blogController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-            	    
+
 		assign_to_template(array(
             'page'=>$page,
             'moduletitle'=>gt('Blogs by author').' "'.$this->params['author'].'"'
         ));
 	}
-	
+
 	public function show() {
 //	    global $db;
 
 	    expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
-	    
+
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
@@ -342,6 +342,42 @@ class blogController extends expController {
         parent::delete_instance(true);
     }
 
+    /**
+     * Returns Facebook og: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    public function meta_fb($request, $object, $canonical) {
+        $metainfo = array();
+        if (!empty($object->body)) {
+            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+        } else {
+            $desc = SITE_DESCRIPTION;
+        }
+        $metainfo['type'] = 'blog';
+        $metainfo['title'] = substr(empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'], 0, 87);
+        $metainfo['description'] = substr(empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'], 0, 199);
+        $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
+        $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
+        if (empty($metainfo['image'])) {
+            if (!empty($object->expFile['files'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['files'][0]->url;
+            } else {
+                $config = expConfig::getConfig($object->location_data);
+                if (!empty($config['expFile']['fbimage'][0]))
+                    $file = new expFile($config['expFile']['fbimage'][0]);
+                if (!empty($file->id))
+                    $metainfo['image'] = $file->url;
+                if (empty($metainfo['image']))
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            }
+        }
+        return $metainfo;
+    }
+
     function showall_by_author_meta($request) {
         global $router;
 
@@ -374,7 +410,8 @@ class blogController extends expController {
 //                $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description;  //FIXME $object not set
                 $metainfo['description'] = SITE_DESCRIPTION;
 //                $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;  //FIXME $object not set
-                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+                $metainfo['canonical'] = $router->plainPath();
 
                 return $metainfo;
             }

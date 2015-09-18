@@ -459,7 +459,8 @@ class eventregistrationController extends expController {
                         $metainfo['title'] = empty($object->meta_title) ? $object->title . " - " . $storename : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
-                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+//                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['canonical'] = empty($object->canonical) ? $router->plainPath() : $object->canonical;
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                     }
@@ -1097,7 +1098,7 @@ class eventregistrationController extends expController {
             $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : 'text/comma-separated-values;';
             header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET. "'");
             header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-            header("Content-length: ".filesize($tmpfname));
+            header('Content-length: '.filesize($tmpfname));
             header('Content-Transfer-Encoding: binary');
             header('Content-Encoding:');
             header('Content-Disposition: attachment; filename="' . $fn . '";');
@@ -1177,12 +1178,14 @@ class eventregistrationController extends expController {
             if (!empty($file)) $mail->attach_file_on_disk(BASE . $file, expFile::getMimeType(BASE . $file));
         }
 
+        $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
+        if (empty($from[0])) $from = SMTP_FROMADDRESS;
         $mail->quickBatchSend(array(
             	'headers'=>$headers,
                 'html_message'=> $this->params['email_message'],
                 'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
                 'to'          => $email_addy,
-                'from'        => ecomconfig::getConfig('from_address'),
+                'from'        => $from,
                 'subject'     => $this->params['email_subject']
         ));
         if (!empty($file)) unlink(BASE . $file);  // delete temp file attachment

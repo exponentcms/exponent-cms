@@ -489,7 +489,8 @@ class expWKPDF extends expHtmlToPDF
                     header('Content-Description: File Transfer');
                     header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
                     header('Pragma: public');
-                    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+//                    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                    header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                     // force download dialog
                     header('Content-Type: application/force-download');
@@ -516,7 +517,8 @@ class expWKPDF extends expHtmlToPDF
                     header('Content-Type: application/pdf');
                     header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
                     header('Pragma: public');
-                    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+//                    header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+                    header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                     header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                     header('Content-Length: ' . strlen($this->pdf));
                     header('Content-Disposition: inline; filename="' . basename($file) . '";');

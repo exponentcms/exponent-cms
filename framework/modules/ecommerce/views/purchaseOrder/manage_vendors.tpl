@@ -56,10 +56,10 @@
     </table>
 </div>
 
-{*{script unique="purchase-orders" yui3mods=1}*}
-{*{literal}*}
-    {*YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {*}
+{*script unique="purchase-orders" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
+    });
+{/literal}
+{/script*}

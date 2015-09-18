@@ -7,7 +7,8 @@
  **/
 elFinder.prototype.commands.sort = function() {
 	var self  = this,
-	fm    = self.fm;
+	fm    = self.fm,
+	timer;
 	
 	/**
 	 * Command options
@@ -28,8 +29,7 @@ elFinder.prototype.commands.sort = function() {
 		});
 	});
 	
-	fm.bind('open sortchange viewchange', function() {
-		var timer = null;
+	fm.bind('open sortchange viewchange search searchend', function() {
 		timer && clearTimeout(timer);
 		timer = setTimeout(function(){
 			var cols = $(fm.cwd).find('div.elfinder-cwd-wrapper-list table');
@@ -43,8 +43,9 @@ elFinder.prototype.commands.sort = function() {
 							order : current ? fm.sortOrder == 'asc' ? 'desc' : 'asc' : fm.sortOrder
 						},arr;
 						if (current) {
+							td.addClass('ui-state-active');
 							arr = fm.sortOrder == 'asc' ? 'n' : 's';
-							$('<span class="ui-icon ui-icon-triangle-1-'+arr+'"/>').css({left:'+center+'}).appendTo(td);
+							$('<span class="ui-icon ui-icon-triangle-1-'+arr+'"/>').appendTo(td);
 						}
 						$(td).on('click', function(e){
 							e.stopPropagation();

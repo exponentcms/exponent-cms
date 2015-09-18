@@ -235,6 +235,12 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
+//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
         $lessdirs[] = 'themes/'.DISPLAY_THEME.'/less/';
@@ -303,7 +309,7 @@ class expCSS {
     }
 
     /**
-     * Automatically compile .less files into a .css file in the /tmp/css folder
+     * Automatically compile .less files into a .css file cached in the /tmp/css folder
      *
      * @static
      *
@@ -324,13 +330,17 @@ class expCSS {
             switch ($less_compiler) {
                 case 'iless':
                     if (is_file(BASE.$less_pname) && substr($less_pname,-5,5) == ".less") {
+//                        require_once(BASE.'external/iless1/lib/ILess/Autoloader.php');  //iless 1.7.0
                         require_once(BASE.'external/iless/lib/ILess/Autoloader.php');
-                        ILess_Autoloader::register();
+//                        ILess_Autoloader::register();  //iless 1.7.0
+                        ILess\Autoloader::register();  //iLess2
 
-                        $less = new ILess_Parser(
+//                        $less = new ILess_Parser(  //iless 1.7.0
+                        $less = new ILess\Parser(  //iLess2
                             array(),  // option
                             // cache implementation
-                            new ILess_Cache_FileSystem(array(
+//                            new ILess_Cache_FileSystem(array(  //iless 1.7.0
+                            new ILess\Cache\FileSystemCache(array(  //iLess2
                                 'cache_dir' => BASE . 'tmp/css/',
                             )
                         ));
@@ -385,7 +395,7 @@ class expCSS {
                             if ($rebuild) {
                                 $less->parseFile(BASE . $less_pname);
                                 $css = $less->getCSS();
-                                // what have been imported?
+                                // what files have been imported?
                                 $importedFiles = array();
                                 foreach ($importer->getImportedFiles() as $importedFile) {
                                     $importedFiles[] = array(
@@ -487,6 +497,104 @@ class expCSS {
                         }
                     } else {
                         flash('notice', $less_pname . ' ' . gt('does not exist!'));
+                        return false;
+                    }
+            }
+        } else {
+            return true;  // the .css file already exists and we're not in develeopment
+        }
+    }
+
+    /**
+     * Automatically compile .scss files into a .css file cached in the /tmp/css folder
+     *
+     * @static
+     *
+     * @param string $scss_pname full pathname of the .scss file
+     * @param string $css_fname  filename of the output css file
+     * @param array  $vars       array of variables to pass to parse()
+     *
+     * @throws Exception
+     * @return bool
+     */
+    public static function auto_compile_scss($scss_pname, $css_fname, $vars=array()) {
+        if (DEVELOPMENT || !file_exists(BASE . $css_fname) || expSession::get('force_less_compile') == 1) {
+            if (defined('SCSS_COMPILER')) {
+                $scss_compiler = strtolower(SCSS_COMPILER);
+            } else {
+                $scss_compiler = 'scssphp';
+            }
+            switch ($scss_compiler) {
+                case 'scssphp':
+                default :
+                    //FIXME we need to account for leading _ with filename and missing filetype suffix
+                    if (is_file(BASE . $scss_pname) && substr($scss_pname, -5, 5) == ".scss") {
+                        include_once(BASE . 'external/' . $scss_compiler . '/scss.inc.php');
+                        $scss = new \Leafo\ScssPhp\Compiler();
+                        $scss_server = new \Leafo\ScssPhp\Server(BASE . 'tmp/css/', BASE . 'tmp/css/', $scss);
+
+                        // load the cache
+                        $scss_cname = str_replace("/", "_", $scss_pname);
+                        $cache_fname = BASE . 'tmp/css/' . $scss_cname . ".cache";
+                        $cache = BASE . $scss_pname;
+                        if (file_exists($cache_fname)) {
+                            $cache = unserialize(file_get_contents($cache_fname));
+                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                                $cache = BASE . $scss_pname;  // force a compile if the vars have changed
+                            }
+                        }
+
+//                        if (DEVELOPMENT && LESS_COMPILER_MAP && $scss_compiler == 'scssphp') {
+//                            $scss->setOptions(array(
+////                                'outputSourceFiles' => true,  // include css source in .map file?
+//                                'sourceMap'         => true,  // output .map file?
+//                                'sourceMapWriteTo'  => BASE . 'tmp/css/' . $scss_cname . ".map",
+//                                'sourceMapURL'      => PATH_RELATIVE . 'tmp/css/' . $scss_cname . ".map",
+////                                'sourceMapWriteTo'  => dirname(BASE . $scss_pname) . '/' . $scss_cname . ".map",  // file location of .map file
+////                                'sourceMapURL'      => dirname(PATH_RELATIVE . $scss_pname) . '/' . $scss_cname . ".map",  // url location of .map file
+//                                'sourceMapFilename' => PATH_RELATIVE . $css_fname,  // url location of .css file
+//                                'sourceMapBasepath' => rtrim(str_replace(PATH_RELATIVE, '', BASE), '/'),  // base (difference between) file & url locations, removed from ALL source files in .map
+////                                'sourceRoot'        => str_replace(PATH_RELATIVE, '', BASE),
+//                                'sourceRoot'        => '/',
+////                                'sourceMapRootpath' => PATH_RELATIVE . $scss_pname,  // tacked onto ALL source files in .map
+//                            ));
+//                        }
+
+                        if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler == 'scssphp') {
+                            $scss->setFormatter('scss_formatter_compressed');
+                        } else {
+                            $scss->setFormatter('scss_formatter');  // scss_formatter_nested is default
+                        }
+
+                        $scss->setVariables($vars);
+                        $scss->setNumberPrecision(8);  //FIXME docs recommends, but dist only has 6 digits of precision
+
+                        try {
+                            $file_updated = false;
+                            $new_cache = $scss_server->cachedCompile($cache, false);
+                            if (!is_array($cache) || $new_cache['updated'] > $cache['updated']) {
+                                if (!empty($new_cache['compiled']) && $new_cache['compiled'] != "\n") {
+                                    $file_updated = true;
+                                    // store compiler cache file
+                                    $new_cache['vars'] = !empty($vars) ? $vars : null;
+                                    file_put_contents($cache_fname, serialize($new_cache));
+                                }
+                            }
+                            if ($file_updated || !file_exists(BASE . $css_fname)) {
+                                // write compiled css file
+                                $css_loc = pathinfo(BASE . $css_fname);
+                                if (!is_dir($css_loc['dirname'])) mkdir(
+                                    $css_loc['dirname']
+                                ); // create /css output folder if it doesn't exist
+                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
+                            }
+                            return true;
+                        } catch(Exception $e) {
+                            flash('error', gt('SCSS compiler') . ': ' . $scss_pname . ': ' . $e->getMessage());
+                            return false;
+                        }
+                    } else {
+                        flash('notice', $scss_pname . ' ' . gt('does not exist!'));
                         return false;
                     }
             }

@@ -33,8 +33,8 @@
 
 /* container active on dropenter */
 .elfinder .elfinder-cwd-wrapper.elfinder-droppable-active {
-	padding:0;
-	border:2px solid #8cafed;
+	outline: 2px solid #8cafed;
+	outline-offset: -2px;
 }
 
 
@@ -70,7 +70,9 @@
 /* file name place */
 .elfinder-cwd-view-icons .elfinder-cwd-filename {
 	text-align:center;
-	white-space:pre;
+	max-height:30px;
+	white-space:pre-wrap;
+	word-break:normal;
 	overflow:hidden;
 	text-overflow:ellipsis;
     -o-text-overflow:ellipsis;
@@ -204,8 +206,24 @@
 	border: 0 solid;
 	margin: 0 0 10px 0;
 	border-spacing: 0;
+	box-sizing: padding-box;
+	padding: 2px;
 }
 .elfinder .elfinder-cwd table thead tr { border-left:0 solid; border-top:0 solid; border-right:0 solid; }
+
+.elfinder .elfinder-cwd table thead td {
+	padding: 4px 14px;
+}
+.elfinder .elfinder-cwd table thead td.ui-state-active {
+	background: #ebf1f6;
+	background: -moz-linear-gradient(top,  #ebf1f6 0%, #abd3ee 50%, #89c3eb 51%, #d5ebfb 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ebf1f6), color-stop(50%,#abd3ee), color-stop(51%,#89c3eb), color-stop(100%,#d5ebfb));
+	background: -webkit-linear-gradient(top,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	background: -o-linear-gradient(top,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	background: -ms-linear-gradient(top,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	background: linear-gradient(to bottom,  #ebf1f6 0%,#abd3ee 50%,#89c3eb 51%,#d5ebfb 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ebf1f6', endColorstr='#d5ebfb',GradientType=0 );
+}
 
 .elfinder .elfinder-cwd table td { 
 	padding:4px 12px;
@@ -216,6 +234,7 @@
 	border:0 solid;
 	
 }
+
 .elfinder .elfinder-cwd tr.elfinder-touch td {
 	padding: 10px 12px;
 }

@@ -853,7 +853,7 @@ class administrationController extends expController {
                         'html_message'=>$emailHtml,
                         "text_message"=>$emailText,
                         'to'=>$emaillist,
-                        'from'=>array(trim($from)=>$from_name),
+                        'from'=>array(trim($from) => $from_name),
                         'subject'=>$subject,
                 ));
             } else {
@@ -1350,9 +1350,10 @@ class administrationController extends expController {
 
     public function save_profile() {
         if (empty($this->params['profile'])) return;
-        expSettings::createProfile($this->params['profile']);
-        flash('message', gt("Configuration Profile Saved"));
-        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
+        $profile = expSettings::createProfile($this->params['profile']);
+        flash('message', gt("Configuration Profile Saved") . ' (' . $this->params['profile'] . ')');
+//        redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
+        redirect_to(array('controller'=>'administration', 'action'=>'change_profile', 'profile'=>$profile));
     }
 
     /**

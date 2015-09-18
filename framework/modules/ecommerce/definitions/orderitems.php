@@ -21,15 +21,19 @@
  * @package Core
  */
 return array(
-	"id"=>array(
+	'id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_PRIMARY=>true,
 		DB_INCREMENT=>true),
-	"orders_id"=>array(
+	'orders_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>10),
-	"user_id"=>array(
+    'shippingmethods_id'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_ID),
+	'user_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID),
+
+// specific details about the ordered item
 	'product_id'=>array(
 		DB_FIELD_TYPE=>DB_DEF_ID,
 		DB_INDEX=>10),
@@ -41,13 +45,13 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>255,
 		DB_INDEX=>20),
-    "products_model"=>array(
+    'products_model'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
-    "products_warehouse_location"=>array(
+    'products_warehouse_location'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100),
-    "products_status"=>array(
+    'products_status'=>array(
         DB_FIELD_TYPE=>DB_DEF_STRING,
         DB_FIELD_LEN=>100), 
 	'products_price'=>array(
@@ -56,8 +60,6 @@ return array(
         DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'products_tax'=>array(
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
-	"shippingmethods_id"=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID),
 	'quantity'=>array(
 		DB_FIELD_TYPE=>DB_DEF_DECIMAL),
     'extra_data'=>array(

@@ -131,7 +131,7 @@
                 <thead>
                     <tr>
                         <th>
-                            <strong>{$shipping->shippingmethod->option_title}</strong> to:
+                            <strong>{if !empty($shipping->shippingmethod->carrier)}{$shipping->shippingmethod->carrier} {/if}{$shipping->shippingmethod->option_title}</strong> to:
                         </th>
                     </tr>
                 </thead>

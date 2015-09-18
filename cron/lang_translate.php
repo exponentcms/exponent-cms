@@ -79,14 +79,11 @@ print $changes." New Phases were Added to the ".utf8_decode(LANG)." Translation\
 
 // Attempt a machine translation for un-translated phrases in current language
 $num_untrans = 0;
-foreach ($cur_lang as $key => $value) {
-    if ($key == $value) $num_untrans++;
-}
-print $num_untrans." Phrases appear Un-Translated in the ".utf8_decode(LANG)." Translation\n";
 $num_added = 0;
 if (defined('LOCALE')) {
     foreach ($cur_lang as $key => $value) {
         if ($key == $value) {
+            $num_untrans++;
             $translation = expLang::translate($value,'en',LOCALE);
             if ($translation) {
                 $translation = str_replace('"', "\'", $translation);  // remove the killer double-quotes
@@ -96,6 +93,7 @@ if (defined('LOCALE')) {
             }
         }
     }
+    print $num_untrans." Phrases appear Un-Translated in the ".utf8_decode(LANG)." Translation\n";
     print $num_added." New Phases were Translated in the ".utf8_decode(LANG)." Translation\n";
 } else {
     print "There is no Locale Assigned for the ".utf8_decode(LANG)." to attempt a Translation\n";

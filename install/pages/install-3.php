@@ -277,7 +277,7 @@ $warning = array();
         if (@$db->tableIsEmpty('user')) {
             $user = new stdClass();
             $user->username = 'admin';
-            $user->password = md5('admin');
+            $user->password = user::encryptPassword('admin');
             $user->is_admin = 1;
             $user->is_acting_admin = 1;
             $user->is_system_user = 1;

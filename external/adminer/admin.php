@@ -27,7 +27,7 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
-        new AdminerTheme(),
+        new AdminerTheme('default-blue'),
 //        new AdminerSimpleMenu(),
         new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
@@ -138,5 +138,5 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.2.1-mysql.php";
+include "./adminer-4.2.2-mysql.php";
 ?>

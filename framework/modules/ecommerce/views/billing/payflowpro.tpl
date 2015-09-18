@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="billing-method payflowpro creditcard-form">
+<div class="billing-method payflowpro creditcard-form form-horizontal">
     {form name="ccinfoform`$key`" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}
@@ -26,13 +26,13 @@
     {/form}
 </div>
 
-{*{script unique="continue-checkout" yui3mods="node"}*}
-{*{literal}*}
-{*YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {*}
-    {*Y.one('#continue-checkout{/literal}$key{literal}').on('click',function(e){*}
-        {*e.halt();*}
-        {*Y.one('#ccinfoform{/literal}$key{literal}').submit();*}
-    {*});*}
-{*});*}
-{*{/literal}*}
-{*{/script*}}
+{*script unique="continue-checkout" yui3mods="node"}
+{literal}
+YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) }
+    Y.one('#continue-checkout{/literal}$key{literal}').on('click',function(e)}
+        e.halt();
+        Y.one('#ccinfoform{/literal}$key{literal}').submit();
+    });
+});
+{/literal}
+{/script*}

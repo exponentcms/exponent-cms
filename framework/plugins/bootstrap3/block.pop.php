@@ -50,7 +50,7 @@
  */
 function smarty_block_pop($params,$content,&$smarty, &$repeat) {
 	if($content){
-        $content = json_encode(str_replace("\r\n", '', trim($content)));
+        $content = json_encode(str_replace("\n", '', str_replace("\r\n", '', trim($content))));
         if (isset($params['ajax'])) {
             $content = json_encode("function(dialogRef) {
                     var message = $('<div><i class=\"fa fa-spinner fa-spin\"></i> ".gt('Loading')."...</div>');
@@ -68,7 +68,7 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
                 }
             ");
             // clean up code for passing to javascript via json
-            $content = trim(str_replace('\r\n', '', $content) , '"');
+            $content = trim(str_replace('\n', '', str_replace('\r\n', '', $content)) , '"');
             $content = str_replace('%s', '/\r\n/g', $content);
             $content = str_replace('%t', '/[\r\n]/g', $content);
         }
@@ -91,7 +91,8 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
         }
         $script = "
             $(document).ready(function(){
-                $('#".$params['id']."').click(function() {
+                $('#".$params['id']."').click(function(event) {
+                    event.preventDefault();
                     BootstrapDialog.show({
                         size: BootstrapDialog.SIZE_WIDE,
                         type: ".$type.",
@@ -113,7 +114,6 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
             "jquery"=>"bootstrap-dialog",
             "content"=>$script,
          ));
-
 	}
 }
 

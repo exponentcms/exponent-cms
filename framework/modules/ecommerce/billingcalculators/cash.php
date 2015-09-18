@@ -37,22 +37,24 @@ class cash extends billingcalculator {
     function hasConfig() {return false;}
 
     //Called for billing method selection screen, return true if it's a valid billing method.
-    function preprocess($method, $opts, $params, $order) {
+    function preprocess($billingmethod, $opts, $params, $order) {
         if ($opts->cash_amount < $order->grand_total) $opts->payment_due = $order->grand_total - $opts->cash_amount;
         //just save the opts
-        $method->update(array('billing_options' => serialize($opts)));
+        $billingmethod->update(array('billing_options' => serialize($opts)));
     }
 
-//    function process($method, $opts, $params, $invoice_number) {
-    function process($method, $opts, $params, $order) {
-//        $object = new stdClass();
-        $opts->result->errorCode = $opts->result->errorCode = 0;
+//    function process($billingmethod, $opts, $params, $invoice_number) {
+    function process($billingmethod, $opts, $params, $order) {
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+        $opts->result->errorCode = 0;
 //        $opts->result = $object;
 //        $opts->result->payment_status = "Pending";
         $opts->result->payment_status = gt("complete");
+        $opts->result->message = "User paid with cash";
+        $opts->result->transId = '';
         if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
+        $this->createBillingTransaction($billingmethod, number_format($opts->cash_amount, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts->result;
     }
 
@@ -107,10 +109,10 @@ class cash extends billingcalculator {
         return $this->opts;
     }
 
-    function getPaymentAuthorizationNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
-    }
+//    function getPaymentAuthorizationNumber($billingmethod) {
+//        $ret = expUnserialize($billingmethod->billing_options);
+//        return $ret->result->token;
+//    }
 
     function getPaymentReferenceNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);

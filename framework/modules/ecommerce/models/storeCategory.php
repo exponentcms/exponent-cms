@@ -112,17 +112,26 @@ class storeCategory extends expNestedNode {
 
 	public function getFullTree() {
 		$tree = parent::getFullTree();
+		$tree_copy = array();
 		foreach($tree as $key=>$node) {  // add link and image
-			$tree[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
-            $tree[$key]->parent = $node->parent_id?$node->parent_id:'#';
+			$tree_copy[$key] = new stdClass();
+			$tree_copy[$key]->id = $node->id;
+			$tree_copy[$key]->depth = $node->depth;
+			$tree_copy[$key]->href = makeLink(array('controller'=>'store','action'=>'showall','title'=>$node->sef_url));
+			$tree_copy[$key]->parent = $node->parent_id ? $node->parent_id : '#';
+			$tree_copy[$key]->parent_id = $node->parent_id;
+			$tree_copy[$key]->rgt = $node->rgt;
+			$tree_copy[$key]->lft = $node->lft;
+
 			if (!empty($node->expFile[0]->id)) {  // add thumbnail
-                $tree[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1">&#160;' . $node->title;
-                $tree[$key]->title = $tree[$key]->text;
+				$tree_copy[$key]->text = '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $node->expFile[0]->id . '&amp;w=18&amp;h=18&amp;zc=1" height="18" width="18">&#160;' . $node->title;
+				$tree_copy[$key]->title = $tree_copy[$key]->text;
             } else {
-                $tree[$key]->text = $node->title;
+				$tree_copy[$key]->text = $node->title;
+				$tree_copy[$key]->title = $node->title;
             }
 		}
-		return $tree;
+		return $tree_copy;
 	}
 
 	/**

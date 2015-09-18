@@ -330,7 +330,7 @@ class containerController extends expController {
         unset($this->params['hidemoduletitle']);
 
         $controller = expModules::getControllerClassName($this->params['modcntrol']);
-        $needs_config = $controller::requiresConfiguration() && empty($this->params['id']);
+        $needs_config = $controller::requiresConfiguration() && empty($this->params['id']); //NOTE will crash php v5.2.x
 //        $modelname = $this->basemodel_name;
         $this->container->update($this->params);
 

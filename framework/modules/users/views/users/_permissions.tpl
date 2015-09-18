@@ -13,25 +13,10 @@
  *
  *}
  
-{*{css unique="permissions" corecss="tables"}*}
-{*{literal}*}
-{*.exp-skin-table thead th {*}
-    {*white-space:nowrap;*}
-    {*border-right:1px solid #D4CBBA;*}
-{*}*}
-{*{/literal}*}
-{*{/css}*}
 {css unique="manage-perms" corecss="datatables-tools"}
 
 {/css}
 
-//<form method="post">
-    {*<input type="hidden" name="module" value="{$page->controller}" />*}
-    {*<input type="hidden" name="action" value="{if $user_form == 1}userperms_save{else}groupperms_save{/if}" />*}
-    {*<input type="hidden" name="mod" value="{$loc->mod}" />*}
-    {*<input type="hidden" name="src" value="{$loc->src}" />*}
-    {*<input type="hidden" name="int" value="{$loc->int}" />*}
-    {*{$page->links}*}
 {if $user_form == 1}{$action = 'userperms_save'}{else}{$action = 'groupperms_save'}{/if}
 {form action=$action module=$page->controller}
     {control type="hidden" name="mod" value=$loc->mod}
@@ -49,11 +34,10 @@
             </thead>
             <tbody>
                 {foreach from=$page->records item=user key=ukey name=user}
-                    {*<input type="hidden" name="users[]" value="{$user->id}" />*}
-                    {control type="hidden" name="users[]" value=$user->id}
                     <tr>
                         {if !$is_group}
                             <td>
+                                {control type="hidden" name="users[]" value=$user->id}
                                 {$user->username}
                             </td>
                             <td>
@@ -64,6 +48,7 @@
                             </td>
                         {else}
                             <td>
+                                {control type="hidden" name="users[]" value=$user->id}
                                 {$user->name}
                             </td>
                         {/if}
@@ -79,7 +64,6 @@
     </div>
     {*{$page->links}*}
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
-//</form>
 {/form}
 
 {script unique="permission-checking" yui3mods="node"}

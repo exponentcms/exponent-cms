@@ -70,7 +70,6 @@ class expMail {
 	 * @todo add further documentation for using settings other than the system default
 	 */
 	function __construct($params = array()) {
-//		require_once(BASE . 'external/Swift-4/lib/swift_required.php');
 		require_once(SWIFT_PATH . 'swift_required.php');
 
 		if (array_key_exists('method', $params)) {
@@ -78,7 +77,6 @@ class expMail {
 				case "multi":
 					break;
 				case "smtp":
-					//require_once(BASE.'external/Swift-4/Connection/SMTP.php');
 					if (array_key_exists('connections', $params)) {
 						if (is_array($params['connections'])) {
 							//$this->transport = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
@@ -178,9 +176,9 @@ class expMail {
 	public function test() {
 		try {
 			$this->transport->start();
-			echo ("<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server");
+			echo "<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server - ", SMTP_SERVER;
 		} catch (Swift_TransportException $e) {
-			echo ("<h2>Mail Server Test Failed!</h2>");
+			echo "<h2>Mail Server Test Failed!</h2>", SMTP_SERVER;
 			eDebug($e->getMessage());
 		}
 	}
@@ -230,23 +228,24 @@ class expMail {
     	// set up the to address(es)
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
-		} elseif (empty($params['to'])) {
-			$params['to'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['to']);
+			$params['to'] = array(trim($params['to']));
 		}
-//		$this->message->setTo((array)$params['to']);
-        $this->addTo((array)$params['to']);
+		if (empty($params['to'])) {
+			$params['to'] = array(trim(SMTP_FROMADDRESS));
+		}
+        $this->addTo($params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['from'])) {
-			$params['from'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['from']);
+			$params['from'] = trim($params['from']);
 		}
-//		$this->message->setFrom((array)$params['from']);  //FIXME we need to use this->addFrom() instead
+		if (empty($params['from'])) {
+			$params['from'] = trim(SMTP_FROMADDRESS);
+		}
+//		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
@@ -361,20 +360,22 @@ class expMail {
     	// set up the to address(es)
 		if (is_array($params['to'])) {
 			$params['to'] = array_filter($params['to']);
-		} elseif (empty($params['to'])) {
-			$params['to'] = array(SMTP_FROMADDRESS);
 		} else {
 			$params['to'] = array(trim($params['to']));
+		}
+		if (empty($params['to'])) {
+			$params['to'] = array(trim(SMTP_FROMADDRESS));
 		}
         $this->addTo($params['to']);
 
     	// set up the from address(es)
 		if (is_array($params['from'])) {
 			$params['from'] = array_filter($params['from']);
-		} elseif (empty($params['from'])) {
-			$params['from'] = SMTP_FROMADDRESS;
 		} else {
-			trim($params['from']);
+			$params['from'] = trim($params['from']);
+		}
+		if (empty($params['from'])) {
+			$params['from'] = trim(SMTP_FROMADDRESS);
 		}
 //		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);

@@ -348,8 +348,7 @@ class formsController extends expController {
                             // skip it for logged on users based on config
                         } else {
                             // include the library and show the form control
-//                            require_once(BASE . 'external/recaptchalib.php');
-                            require_once(BASE . 'external/ReCaptcha/ReCaptcha.php');
+                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                             $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                             $antispam .= '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                             $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
@@ -513,10 +512,10 @@ class formsController extends expController {
                 if (!$ctl->is_hidden) {
                     $emailFields[$c->name] = call_user_func(array($control_type, 'templateFormat'), $value, $ctl);
                     $captions[$c->name] = $c->caption;
-                    if ($c->name == "email" && expValidator::isValidEmail($value)) {
+                    if (strtolower($c->name) == "email" && expValidator::isValidEmail($value)) {
                         $from = $value;
                     }
-                    if ($c->name == "name") {
+                    if (strtolower($c->name) == "name") {
                         $from_name = $value;
                     }
                     if (get_class($ctl) == 'uploadcontrol') {
@@ -1324,11 +1323,11 @@ class formsController extends expController {
                 header('Content-Type: ' . $mime_type . ' charset=' . LANG_CHARSET . "'");
                 header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
                 $filesize = filesize($tmpfname);
-                header("Content-length: " . $filesize);
+                header('Content-length: ' . $filesize);
                 header('Content-Transfer-Encoding: binary');
 //                header('Content-Encoding:');
                 header('Content-Disposition: attachment; filename="report.csv"');
-                if ($filesize) header("Content-length: " . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
+                if ($filesize) header('Content-length: ' . $filesize); // for some reason the webserver cant run stat on the files and this breaks.
                 // IE need specific headers
                 if (EXPONENT_USER_BROWSER == 'IE') {
                     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
@@ -1439,7 +1438,7 @@ class formsController extends expController {
             if (!empty($this->params['include_data'])) {
                 $tables[] = 'forms_'.$f->table_name;
             }
-            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //TODO we need to echo inside call
+            echo expFile::dumpDatabase($tables, 'Form', $this->params['id']);  //FIXME we need to echo inside call
             exit; // Exit, since we are exporting
         }
 //        expHistory::back();

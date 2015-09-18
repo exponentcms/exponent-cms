@@ -37,13 +37,13 @@
                     {$tabtitle=$container->title}
                 {/if}
                 {if $smarty.section.contain.first}
-                    <li class="selected"><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
+                    <li class="selected"><a href="#tab{$smarty.section.contain.index}-{$tabs}"><em>{$tabtitle}</em></a></li>
                 {elseif $container != null}
-                    <li><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
+                    <li><a href="#tab{$smarty.section.contain.index}-{$tabs}"><em>{$tabtitle}</em></a></li>
                 {else}
                     {permissions}
                         {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure)}
-                            <li><a href="#tab{$smarty.section.contain.index}"><em>{$tabtitle}</em></a></li>
+                            <li><a href="#tab{$smarty.section.contain.index}-{$tabs}"><em>{$tabtitle}</em></a></li>
                         {/if}
                     {/permissions}
                 {/if}
@@ -55,7 +55,7 @@
                     {else}
                         <li class="selected">
                     {/if}
-                    <a href="#tab{$smarty.section.contain.index}"><em>({'Add New'|gettext})</em></a></li>
+                    <a href="#tab{$smarty.section.contain.index}-{$tabs}"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
@@ -66,7 +66,7 @@
                 {$menurank=$rank+1}
                 {$index=$smarty.section.contain.index}
                 {if $container != null}
-                    <div id="tab{$smarty.section.contain.index}"{if !$smarty.section.contain.first}{/if}>
+                    <div id="tab{$smarty.section.contain.index}-{$tabs}"{if !$smarty.section.contain.first}{/if}>
                         {$container=$containers.$index}
                         {$i=$menurank}
                         {$rerank=0}
@@ -75,7 +75,7 @@
                 {else}
                     {permissions}
                         {if $permissions.create && $hidebox == 0}
-                            <div id="tab{$smarty.section.contain.index}">
+                            <div id="tab{$smarty.section.contain.index}-{$tabs}">
                                 <a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
                             </div>
                         {/if}
@@ -84,7 +84,7 @@
             {/section}
             {permissions}
                 {if $permissions.create && $hidebox == 0}
-                    <div id="tab{$smarty.section.contain.index}">
+                    <div id="tab{$smarty.section.contain.index}-{$tabs}">
                         <a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>
                     </div>
                 {/if}

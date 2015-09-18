@@ -436,7 +436,7 @@ class reportController extends expController {
         $os = new order_status();
         $oss = $os->find('all');
         $order_status = array();
-        $order_status[-1] = '';
+        $order_status[-1] = gt('--Any--');
         foreach ($oss as $status) {
             $order_status[$status->id] = $status->title;
         }
@@ -444,7 +444,7 @@ class reportController extends expController {
         $ot = new order_type();
         $ots = $ot->find('all');
         $order_type = array();
-        $order_type[-1] = '';
+        $order_type[-1] = gt('--Any--');
         foreach ($ots as $orderType) {
             $order_type[$orderType->id] = $orderType->title;
         }
@@ -452,7 +452,7 @@ class reportController extends expController {
         $dis = new discounts();
         $diss = $dis->find('all');
         $discounts = array();
-        $discounts[-1] = '';
+        $discounts[-1] = gt('--Any--');
         foreach ($diss as $discount) {
             $discounts[$discount->id] = $discount->coupon_code;
         }
@@ -460,14 +460,14 @@ class reportController extends expController {
         /*$geo = new geoRegion();
         $geos = $geo->find('all');        
         $states = array();
-        $states[-1] = '';
+        $states[-1] = gt('--Any--');
         foreach ($geos as $skey=>$state)
         {
             $states[$skey] = $state->name;
         } */
 
         $payment_methods = billingmethod::$payment_types;
-        $payment_methods[-1] = "";
+        $payment_methods[-1] = gt('--Any--');
         ksort($payment_methods);
         //array('-1'=>'', 'V'=>'Visa','MC'=>'Mastercard','D'=>'Discover','AMEX'=>'American Express','PP'=>'PayPal','GC'=>'Google Checkout','Other'=>'Other');
 
@@ -618,7 +618,7 @@ class reportController extends expController {
         $sqltmp = '';
         if (isset($p['product_status'])) {
             foreach ($p['product_status'] as $pstat) {
-                if ($pstat == -1) continue;
+                if ($pstat == -1 || empty($pstat)) continue;
 
                 $product_status = new product_status($pstat);
                 if ($inc == 0) {
@@ -850,7 +850,7 @@ class reportController extends expController {
                 $options = expUnserialize($item->billing_options);
                 if (!empty($item->billing_cost)) {
 //                    if ($item->user_title == 'Credit Card') {
-                    if ($item->title == 'Credit Card') {  //FIXME this is translated??
+                    if ($item->title == 'Credit Card') {  //FIXME there is no billingmethod->title ...this is translated??
                         if (!empty($options->cc_type)) {
                             //@$payment_summary[$payments[$options->cc_type]] += $item->billing_cost;
                             @$payment_summary[$payments[$options->cc_type]] += $options->result->amount_captured;
@@ -872,18 +872,35 @@ class reportController extends expController {
         $payment_values = implode(",", $payment_values_arr);
 
         //tax
-        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
-        $tax_res = $db->selectObjectBySql($tax_sql);
-
+//        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
+//        $tax_res = $db->selectObjectBySql($tax_sql);
         $tax_types = taxController::getTaxRates();
-        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
+//        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
+
+        $ord = new order();
+        $tax_res2 = $ord->find('all',"id IN (" . $orders_string . ")");
+
+        $taxes = array();
+        foreach ($tax_res2 as $tt) {
+            $key = key($tt->taxzones);
+            if (!empty($key)) {
+                $tname = $tt->taxzones[$key]->name;
+                if (!isset($taxes[$key]['format'])) {
+                    $taxes[$key] = array();
+                    $taxes[$key]['total'] =0;
+                }
+                $taxes[$key]['format'] = $tname . ' - ' . $tt->taxzones[$key]->rate . '%';
+                $taxes[$key]['total'] += $tt->tax;
+            }
+        }
 
         assign_to_template(array(
             'payment_summary' => $payment_summary,
             'payments_key'    => $payments_key,
             'payment_values'  => $payment_values,
-            'tax_total'       => !empty($tax_res->tax_total) ? $tax_res->tax_total : 0,
-            'tax_type'        => $tax_type_formatted
+//            'tax_total'       => !empty($tax_res->tax_total) ? $tax_res->tax_total : 0,
+//            'tax_type'        => $tax_type_formatted,
+            'taxes'           => $taxes
         ));
     }
 
@@ -1488,7 +1505,8 @@ class reportController extends expController {
             header('Content-Description: File Transfer');
             header('Cache-Control: public, must-revalidate, max-age=0'); // HTTP/1.1
             header('Pragma: public');
-            header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+//            header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
             // force download dialog
             header('Content-Type: application/force-download');
@@ -1504,7 +1522,7 @@ class reportController extends expController {
             echo $file;
             //echo readfile($this->tmp_rendered);
         } else {
-            echo "Opps, headers already sent.  Check DEVELOPMENT variable?";
+            echo "Oops, headers already sent.  Check DEVELOPMENT variable?";
         }
         die();
     }

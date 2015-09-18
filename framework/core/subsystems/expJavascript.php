@@ -669,7 +669,7 @@ class expJavascript {
      * @deprecated yui2
      */
     public static function panel($params) {
-        $content = json_encode("<div class=\"pnlmsg\">".str_replace("\r\n", '', trim($params['content']))."</div>");
+        $content = json_encode("<div class=\"pnlmsg\">".str_replace("\n", '', str_replace("\r\n", '', trim($params['content'])))."</div>");
         $id = "exppanel".$params['id'];
         $width  = !empty($params['width']) ? $params['width'] : "800px";
         $type  = !empty($params['type']) ? $params['type'] : "info";
@@ -695,21 +695,21 @@ class expJavascript {
         if (is_array($dialog)) {
             $script .= "
                 var handleYes = function(e,o) {
-                    this.hide();";
+                    this.hide();" . "\r\n";
                     if ($onyesgo!="") {
                         $script .= "document.location = '".trim($onyesgo)."'";
                     };
             $script .= "};
                 var handleNo = function(e,o) {
-                    this.hide();";
+                    this.hide();" . "\r\n";
                     if ($onyesgo!="") {
                         $script .= "var textlink = '".trim($onnogo)."';";
                         $script .= 'document.location = textlink.replace(/&amp;/g,"&");';
                     };
-            $script .= "};";
+            $script .= "};" . "\r\n";
 
-            $script .= "var ".$id." = new YAHOO.widget.SimpleDialog('".$id."', { ";
-            $script .= "buttons: [ { text:'".$dialog[0]."', handler:handleYes, isDefault:true }," . (!empty($dialog[1])?"{ text:'".$dialog[1]."',  handler:handleNo }":"") . " ],";
+            $script .= "var ".$id." = new YAHOO.widget.SimpleDialog('".$id."', {" . "\r\n";
+            $script .= "buttons: [ { text:'".$dialog[0]."', handler:handleYes, isDefault:true }," . (!empty($dialog[1])?"{ text:'".$dialog[1]."',  handler:handleNo }":"") . " ]," . "\r\n";
             //$script .= "text: 'Do you want to continue?',";
         } else {
             $script .= "var ".$id." = new YAHOO.widget.Panel('".$id."', { " . "\r\n";
@@ -731,7 +731,7 @@ class expJavascript {
 
             $script .= $id.".setBody('<span class=\"type-icon\"></span>'+pnlcontent);" . "\r\n";
 
-            $script .= $id.".setFooter('".$footer."</div>');";
+//            $script .= $id.".setFooter('".$footer."</div>');" . "\r\n";
             $script .= $id.".render(".$renderto.");" . "\r\n";
             $script .= "YAHOO.util.Dom.addClass('".$id."','exp-".$type."');" . "\r\n";
             if ($hide==false) {

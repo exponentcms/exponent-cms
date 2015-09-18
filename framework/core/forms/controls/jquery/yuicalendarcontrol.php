@@ -89,6 +89,9 @@ class yuicalendarcontrol extends formcontrol
     function controlToHTML($name, $label = null)
     {
         $idname = createValidId($name);
+        if (empty($this->default)) {
+            $this->default = time();
+        }
         if (is_numeric($this->default)) {
             if ($this->showdate && !$this->showtime) {
                 $default = date('n/j/Y', $this->default);
@@ -123,11 +126,11 @@ class yuicalendarcontrol extends formcontrol
                     inline: true,
 //                    value: '".$default."'
                 });
-                $('#" . $idname . "').datetimepicker('update');
+                $('#" . $idname . "').datetimepicker('reset');
             });
             YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.Global.on('lazyload:cke', function() {
-                    $('#" . $idname . "').datetimepicker('update');
+                    $('#" . $idname . "').datetimepicker('reset');
                 });
                 if (!Y.one('#" . $idname . "').ancestor('.exp-skin-tabview')) {
                     Y.Global.fire('lazyload:cke');

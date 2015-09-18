@@ -23,6 +23,15 @@
 class shippingmethod extends expRecord {
 	public $table = 'shippingmethods';
 
+    public $has_many = array('orderitem');  //FIXME does this fix the situation??
+
+    function __construct($params=null, $get_assoc=true, $get_attached=true) {
+        parent::__construct($params, $get_assoc, $get_attached);
+
+        // unpack the shipping_options data
+        $this->shipping_options = empty($this->shipping_options) ? array() : expUnserialize($this->shipping_options);
+    }
+
 //	public static function getCurrentShippingMethod() {
 //        global $order;
 //
@@ -64,6 +73,14 @@ class shippingmethod extends expRecord {
         }
         return false;
 	}
+
+    function attachCalculator() {
+        global $db;
+
+        $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->shippingcalculator_id);
+        $this->calculator = new $calcname($this->shippingcalculator_id);
+    }
+
 }
 
 ?>

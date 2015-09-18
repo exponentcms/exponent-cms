@@ -9,7 +9,7 @@
 $.fn.elfinderpath = function(fm) {
 	return this.each(function() {
 		var path = $(this).addClass('elfinder-path').html('&nbsp;')
-				.delegate('a', 'click', function(e) {
+				.on('click', 'a', function(e) {
 					var hash = $(this).attr('href').substr(1);
 
 					e.preventDefault();
@@ -17,7 +17,7 @@ $.fn.elfinderpath = function(fm) {
 				})
 				.prependTo(fm.getUI('statusbar').show())
 
-			fm.bind('open searchend', function() {
+			fm.bind('open searchend parents', function() {
 				var dirs = [];
 
 				$.each(fm.parents(fm.cwd().hash), function(i, hash) {

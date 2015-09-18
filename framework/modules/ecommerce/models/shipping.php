@@ -21,7 +21,7 @@
  * @package Modules
  */
 class shipping extends expRecord {
-	public $table = 'shipping';
+//	public $table = 'shipping';
 	public $available_calculators = array();
 	public $calculator = null;
 	public $shippingmethod = null;
@@ -87,7 +87,7 @@ class shipping extends expRecord {
         } else {
             eDebug($this);
             eDebug($order);
-            eDebug("Error in shipping constuctor.", true) ;
+            eDebug("Error in shipping constuctor-multiple shipments.", true) ;
             //NO split shipping for now
             /*$this->splitshipping = true;
             $this->splitmethods = array();
@@ -166,6 +166,11 @@ class shipping extends expRecord {
 //		return $calcs;
 //    }
 
+    /**
+     * Returns a list of all shipping calculators
+     *
+     * @return array
+     */
     public static function listCalculators() {
    	    global $db;
 
@@ -175,8 +180,13 @@ class shipping extends expRecord {
    	    }
 
    		return $calcs;
-       }
+    }
 
+    /**
+     * Returns a list of all enabled/active shipping calculators
+     *
+     * @return array
+     */
 	public static function listAvailableCalculators() {
 	    global $db;
 
@@ -187,7 +197,12 @@ class shipping extends expRecord {
 	    
 		return $calcs;
     }
-    
+
+    /**
+     * Returns an array of all enabled/active shipping calculator objects
+     *
+     * @return array
+     */
     public static function selectableCalculators() {
 	    global $db;
 
@@ -225,6 +240,7 @@ class shipping extends expRecord {
             return '-';
         }
     }
+
 }
 
 ?>

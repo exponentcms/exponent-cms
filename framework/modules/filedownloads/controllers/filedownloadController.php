@@ -33,6 +33,8 @@ class filedownloadController extends expController {
         'rss', // because we do this as a custom tab within the module
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
+    public $rss_is_podcast = true;
+
     static function displayname() { return gt("File Downloads"); }
     static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
@@ -125,6 +127,58 @@ class filedownloadController extends expController {
     -->';
             return $rich_meta;
         }
+    }
+
+    /**
+     * Returns Facebook og: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    public function meta_fb($request, $object, $canonical)
+    {
+        $metainfo = array();
+        if (!empty($object->body)) {
+            $desc = str_replace('"', "'", expString::summarize($object->body, 'html', 'para'));
+        } else {
+            $desc = SITE_DESCRIPTION;
+        }
+        $metainfo['type'] = empty($object->meta_fb['type']) ? 'article' : $object->meta_fb['type'];
+        $metainfo['title'] = substr(
+            empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'],
+            0,
+            87
+        );
+        $metainfo['description'] = substr(
+            empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'],
+            0,
+            199
+        );
+        $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
+        $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
+        if (empty($metainfo['image'])) {
+            if (!empty($object->expFile['downloadable'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['downloadable'][0]->url;
+            } else {
+                $config = expConfig::getConfig($object->location_data);
+                if (!empty($config['expFile']['fbimage'][0])) {
+                    $file = new expFile($config['expFile']['fbimage'][0]);
+                }
+                if (!empty($file->id)) {
+                    $metainfo['image'] = $file->url;
+                }
+                if (empty($metainfo['image'])) {
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+                }
+            }
+        }
+        if ($metainfo['type'] == "audio" || $metainfo['type'] == "video") {
+            $metainfo[$metainfo['type']] = $object->expFile['downloadable'][0]->url;
+        }
+
+        return $metainfo;
     }
 
     function getRSSContent() {

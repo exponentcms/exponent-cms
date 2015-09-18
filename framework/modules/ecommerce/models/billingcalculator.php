@@ -73,6 +73,27 @@ class billingcalculator extends expRecord {
          return true;
     }
 
+    /*
+     * Capture an authorized transaction
+     */
+    function delayed_capture($billingmethod, $amount , $order)
+    {
+    }
+
+    /*
+     * Void the remainder of an authorized transaction
+     */
+    function void_transaction($billingmethod, $order)
+    {
+    }
+
+    /*
+     * Refund an already captured transaction
+     */
+    function credit_transaction($method, $amount, $order)
+    {
+    }
+
     function userForm($config_object = null, $user_data = null) {
         return '';
     }
@@ -159,10 +180,6 @@ class billingcalculator extends expRecord {
 
     function showOptions() {
         return;
-    }
-
-    function credit_transaction($method, $amount, $order)
-    {
     }
 
     function createBillingTransaction($method, $amount, $result, $trax_state)

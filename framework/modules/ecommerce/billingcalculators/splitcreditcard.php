@@ -50,10 +50,8 @@ class splitcreditcard extends creditcard {
 //    }
 
     //called when the order is submitted. Should return an object...
-    function process($method, $opts, $params, $order) {
-//        global $order, $db, $user;
-
-//        $this->opts = $opts;
+    function process($billingmethod, $opts, $params, $order) {
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
 
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
@@ -69,15 +67,15 @@ class splitcreditcard extends creditcard {
 		$htmlmessage .= $this->htmlmessage($opts);
 
 		$addresses = explode(',', $config['notification_addy']);
+        $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
+        if (empty($from[0])) $from = SMTP_FROMADDRESS;
         foreach ($addresses as $address) {
 		    $mail = new expMail();
 		    $mail->quickSend(array(
                 'html_message'=>$htmlmessage,
                 'text_message'=>$txtmessage,
                 'to'=>trim($address),
-//				  'from'=>ecomconfig::getConfig('from_address'),
-//				  'from_name'=>ecomconfig::getConfig('from_name'),
-                'from'=>array(ecomconfig::getConfig('from_address')=>ecomconfig::getConfig('from_name')),
+                'from'=>$from,
                 'subject'=>gt('Billing Information for an order placed on') . ' '.ecomconfig::getConfig('storename'),
 		    ));
 		}
@@ -89,13 +87,14 @@ class splitcreditcard extends creditcard {
 //        $this->opts->result = $object;
         $opts->result->errorCode = 0;
         $opts->result->payment_status = gt("authorization pending");
+        $opts->result->message = "User selected a credit card";
 //        $opts->result->token = '';
         $opts->result->transId = '';
-//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
-//        $method->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
-        $method->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
-//        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
-        $this->createBillingTransaction($method, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
+//        $billingmethod->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "Pending"));
+//        $billingmethod->update(array('billing_options' => serialize($this->opts), 'transaction_state' => "complete"));
+        $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $opts->result->payment_status));
+//        $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $this->opts->result, "complete");
+        $this->createBillingTransaction($billingmethod, number_format(0, 2, '.', ''), $opts->result, $opts->result->payment_status);
         return $opts->result;
     }
 
@@ -208,10 +207,10 @@ class splitcreditcard extends creditcard {
         return $message;
     }
 
-    function getPaymentAuthorizationNumber($billingmethod) {
-        $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
-    }
+//    function getPaymentAuthorizationNumber($billingmethod) {
+//        $ret = expUnserialize($billingmethod->billing_options);
+//        return $ret->result->token;  //FIXME we don't store a 'token'
+//    }
 
     function getPaymentReferenceNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);

@@ -666,7 +666,7 @@ class fileController extends expController {
             $ar = new expAjaxReply(300, gt("You didn't create this file, so you can't edit it."));
         }
         $ar->send();
-        echo json_encode($file);
+        echo json_encode($file);  //FIXME we exit before hitting this
     } 
 
     public function editShare() {
@@ -683,7 +683,7 @@ class fileController extends expController {
             $ar = new expAjaxReply(300, gt("You didn't create this file, so it's not yours to share."));
         }
         $ar->send();
-        echo json_encode($file);
+        echo json_encode($file);  //FIXME we exit before hitting this
     }
 
     public function import_eql() {
@@ -829,7 +829,7 @@ class fileController extends expController {
         			header('Content-Disposition: attachment; filename="' . $filename . '"');
         			header('Pragma: no-cache');
         		}
-                echo expFile::dumpDatabase(array_keys($this->params['tables']));  //TODO we need to echo inside call
+                expFile::dumpDatabase(array_keys($this->params['tables']));  //FIXME we need to echo inside call
         		exit; // Exit, since we are exporting
         	}
 //        }

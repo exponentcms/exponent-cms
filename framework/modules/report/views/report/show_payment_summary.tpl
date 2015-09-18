@@ -110,12 +110,13 @@
                     </th>
                 </tr>
             </thead>
-            <tbody>                  
-                <tr>
-                    <th>{$tax_type}</th>
-                    <td>{$tax_total|currency}</td>
-                </tr>
-                
+            <tbody>
+                {foreach $taxes as $tax}
+                    <tr>
+                        <th>{$tax.format}</th>
+                        <td>{$tax.total|currency}</td>
+                    </tr>
+                {/foreach}
             </tbody>
         </table>                
     </div>

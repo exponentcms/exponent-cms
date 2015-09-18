@@ -155,7 +155,8 @@
                     if (parmf > 0) return pathArray[parmf+1];
                 }
             }
-            if (EXPONENT.SEF_URLS) {
+        var tmp=pathArray.indexOf(paramName);
+            if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
                 var parmf = pathArray.indexOf(paramName);
                 if (parmf > 0) return pathArray[parmf+1];
             } else {
@@ -170,9 +171,9 @@
             init: function() {
                 // Here goes your code for setting your custom things onLoad.
             },
-            mySubmit: function (URL) {
-                // pass selected file path to TinyMCE
-                top.tinymce.activeEditor.windowManager.getParams().setUrl(URL);
+            mySubmit: function (URL, alt, title) {
+                // pass selected file data to TinyMCE
+                top.tinymce.activeEditor.windowManager.getParams().oninsert(URL, alt, title);
                 // close popup window
                 top.tinymce.activeEditor.windowManager.close();
             }
@@ -229,6 +230,8 @@
 //				  },
                 {/literal}{if $filter=='image'}{literal}
                 onlyMimes : ['image'],
+                {/literal}{elseif $filter=='media'}{literal}
+                onlyMimes : ['video'],
                 {/literal}{/if}{literal}
                 defaultView : '{/literal}{if $smarty.const.FM_THUMBNAILS}icons{else}list{/if}{literal}',
                 // dateFormat : '{/literal}{$smarty.const.DISPLAY_DATE_FORMAT}{literal}',
@@ -243,7 +246,7 @@
                         ['home', 'up'],       // added
                         ['mkdir', 'mkfile', 'upload'],
                         ['open', 'download', 'getfile'],
-                        ['info'],
+                        ['info', 'chmod'],
                         ['quicklook'],
                         ['copy', 'cut', 'paste'],
                         ['rm'],
@@ -251,7 +254,7 @@
                         ['extract', 'archive'],
                         ['search'],
                         ['view', 'sort'],
-                        ['links', 'places'],
+                        ['links', 'places'],   // links added
                         ['help']
                     ],
                     // directories tree options
@@ -298,7 +301,7 @@
                 {/literal}{if $update!='noupdate'}{literal}
                 getFileCallback : function(file) {
                     {/literal}{if $update=='ck'}{literal}
-                    window.opener.CKEDITOR.tools.callFunction( funcNum, file.url, function() {
+                    window.opener.CKEDITOR.tools.callFunction( funcNum, EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, ''), function() {
                         var dialog = this.getDialog();
                         if ( dialog.getName() == 'image2' ) {
                             dialog.getContentElement( 'info', 'alt' ).setValue( file.alt );
@@ -310,7 +313,7 @@
                     });
                     window.close();
                     {/literal}{elseif $update=='tiny'}{literal}
-                    FileBrowserDialogue.mySubmit(file.url); // pass selected file path to TinyMCE
+                    FileBrowserDialogue.mySubmit(EXPONENT.PATH_RELATIVE+file.url.replace(EXPONENT.URL_FULL, '')+' ', file.alt, file.title); // pass selected file data to TinyMCE
                     {/literal}{else}{literal}
                     if ((file.length) == 1) {
                         myfile = file[0];

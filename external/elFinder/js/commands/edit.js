@@ -9,7 +9,10 @@ elFinder.prototype.commands.edit = function() {
 	var self  = this,
 		fm    = this.fm,
 		mimes = fm.res('mimes', 'text') || [],
-		
+		rtrim = function(str){
+			return str.replace(/\s+$/, '');
+		},
+	
 		/**
 		 * Return files acceptable to edit
 		 *
@@ -37,30 +40,114 @@ elFinder.prototype.commands.edit = function() {
 
 			var dfrd = $.Deferred(),
 				ta   = $('<textarea class="elfinder-file-edit" rows="20" id="'+id+'-ta">'+fm.escape(content)+'</textarea>'),
+				old  = ta.val(),
 				save = function() {
 					ta.editor && ta.editor.save(ta[0], ta.editor.instance);
-					dfrd.resolve(ta.getContent());
-					ta.elfinderdialog('close');
+					old = ta.val();
+					dfrd.notifyWith(ta);
 				},
 				cancel = function() {
-					dfrd.reject();
-					ta.elfinderdialog('close');
+					var close = function(){
+						dfrd.reject();
+						ta.elfinderdialog('close');
+					};
+					ta.editor && ta.editor.save(ta[0], ta.editor.instance);
+					if (rtrim(old) !== rtrim(ta.val())) {
+						old = ta.val();
+						fm.confirm({
+							title  : self.title,
+							text   : 'confirmNotSave',
+							accept : {
+								label    : 'btnSaveClose',
+								callback : function() {
+									save();
+									close();
+								}
+							},
+							cancel : {
+								label    : 'btnClose',
+								callback : close
+							}
+						});
+					} else {
+						close();
+					}
+				},
+				savecl = function() {
+					save();
+					cancel();
 				},
 				opts = {
-					title   : file.name,
+					title   : fm.escape(file.name),
 					width   : self.options.dialogWidth || 450,
 					buttons : {},
+					btnHoverFocus : false,
+					closeOnEscape : false,
 					close   : function() { 
-						ta.editor && ta.editor.close(ta[0], ta.editor.instance);
-						$(this).elfinderdialog('destroy'); 
+						var $this = $(this),
+						close = function(){
+							ta.editor && ta.editor.close(ta[0], ta.editor.instance);
+							$this.elfinderdialog('destroy');
+						};
+						ta.editor && ta.editor.save(ta[0], ta.editor.instance);
+						if (rtrim(old) !== rtrim(ta.val())) {
+							fm.confirm({
+								title  : self.title,
+								text   : 'confirmNotSave',
+								accept : {
+									label    : 'btnSaveClose',
+									callback : function() {
+										save();
+										close();
+									}
+								},
+								cancel : {
+									label    : 'btnClose',
+									callback : close
+								}
+							});
+						} else {
+							close();
+						}
 					},
 					open    : function() { 
 						fm.disable();
 						ta.focus(); 
 						ta[0].setSelectionRange && ta[0].setSelectionRange(0, 0);
-						ta.editor && ta.editor.load(ta[0]);
+						if (ta.editor) {
+							ta.editor.instance = ta.editor.load(ta[0]) || null;
+							ta.editor.focus(ta[0], ta.editor.instance);
+						}
 					}
 					
+				},
+				mimeMatch = function(fileMime, editorMimes){
+					editorMimes = editorMimes || mimes.concat('text/');
+					if ($.inArray(fileMime, editorMimes) !== -1 ) {
+						return true;
+					}
+					var i, l;
+					l = editorMimes.length;
+					for (i = 0; i < l; i++) {
+						if (fileMime.indexOf(editorMimes[i]) === 0) {
+							return true;
+						}
+					}
+					return false;
+				},
+				extMatch = function(fileName, editorExts){
+					if (!editorExts || !editorExts.length) {
+						return true;
+					}
+					var ext = fileName.replace(/^.+\.([^.]+)|(.+)$/, '$1$2').toLowerCase(),
+					i, l;
+					l = editorExts.length;
+					for (i = 0; i < l; i++) {
+						if (ext === editorExts[i].toLowerCase()) {
+							return true;
+						}
+					}
+					return false;
 				};
 				
 				ta.getContent = function() {
@@ -68,14 +155,20 @@ elFinder.prototype.commands.edit = function() {
 				};
 				
 				$.each(self.options.editors || [], function(i, editor) {
-					if ($.inArray(file.mime, editor.mimes || []) !== -1 
+					if (mimeMatch(file.mime, editor.mimes || null)
+					&& extMatch(file.name, editor.exts || null)
 					&& typeof editor.load == 'function'
 					&& typeof editor.save == 'function') {
 						ta.editor = {
 							load     : editor.load,
 							save     : editor.save,
 							close    : typeof editor.close == 'function' ? editor.close : function() {},
-							instance : null
+							focus    : typeof editor.focus == 'function' ? editor.focus : function() {},
+							instance : null,
+							doSave   : save,
+							doCancel : cancel,
+							doClose  : savecl,
+							file     : file
 						};
 						
 						return false;
@@ -112,11 +205,12 @@ elFinder.prototype.commands.edit = function() {
 							}
 						}
 						
-					});
+					}).on('mouseenter', function(){this.focus();});
 				}
 				
-				opts.buttons[fm.i18n('Save')]   = save;
-				opts.buttons[fm.i18n('Cancel')] = cancel;
+				opts.buttons[fm.i18n('btnSave')]      = save;
+				opts.buttons[fm.i18n('btnSaveClose')] = savecl;
+				opts.buttons[fm.i18n('btnCancel')]    = cancel;
 				
 				fm.dialog(ta, opts).attr('id', id);
 				return dfrd.promise();
@@ -153,7 +247,7 @@ elFinder.prototype.commands.edit = function() {
 			
 			fm.request({
 				data   : {cmd : 'get', target  : hash, conv : conv},
-				notify : {type : 'openfile', cnt : 1},
+				notify : {type : 'file', cnt : 1},
 				syncOnFail : true
 			})
 			.done(function(data) {
@@ -174,13 +268,14 @@ elFinder.prototype.commands.edit = function() {
 					});
 				} else {
 					dialog(id, file, data.content)
-						.done(function(content) {
+						.progress(function() {
+							var ta = this;
 							fm.request({
 								options : {type : 'post'},
 								data : {
 									cmd     : 'put',
 									target  : hash,
-									content : content
+									content : ta.getContent()
 								},
 								notify : {type : 'save', cnt : 1},
 								syncOnFail : true
@@ -191,6 +286,10 @@ elFinder.prototype.commands.edit = function() {
 							.done(function(data) {
 								data.changed && data.changed.length && fm.change(data);
 								dfrd.resolve(data);
+								setTimeout(function(){
+									ta.focus();
+									ta.editor && ta.editor.focus(ta[0], ta.editor.instance);
+								}, 50);
 							});
 						});
 				}

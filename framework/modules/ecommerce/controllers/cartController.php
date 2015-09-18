@@ -554,6 +554,10 @@ class cartController extends expController {
 
         // get the billing options..this is usually the credit card info entered by the user
         if ($billing->calculator != null) {
+            if (isset($this->params['cc_type_' . $billing->calculator->calculator_name])) {
+                $this->params['cc_type'] = $this->params['cc_type_' . $billing->calculator->calculator_name];
+                unset($this->params['cc_type_' . $billing->calculator->calculator_name]);
+            }
             $opts = $billing->calculator->userFormUpdate($this->params);
             //$billing->calculator->preprocess($this->params);
             //this should probably be generic-ized a bit more - currently assuming order_type parameter is present, or defaults
@@ -573,7 +577,7 @@ class cartController extends expController {
             $billing->billingmethod->update(array('billing_options' => serialize($opts)));
         }
         //eDebug($opts);
-        expSession::set('billing_options', $opts);
+        expSession::set('billing_options', $opts);  //FIXME $opts is usually empty
         //$o = expSession::get('billing_options');
         //eDebug($o,true);
         //eDebug($this->params,true);
@@ -680,6 +684,7 @@ class cartController extends expController {
             $opts->result->payment_status = gt("complete");
             if ($opts->cash_amount < $order->grand_total) $opts->result->payment_status = gt("payment due");
             $billing->billingmethod->update(array('billing_options' => serialize($opts),'transaction_state'=>$opts->result->payment_status));
+
 //            $this->createBillingTransaction($billing->billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $opts->result->payment_status);
             $amount = number_format($order->grand_total, 2, '.', '');
             $bt = new billingtransaction();
@@ -828,7 +833,7 @@ class cartController extends expController {
 
         $opts = $billing->calculator->userFormUpdate($this->params);
         $order->calculateGrandTotal();
-        expSession::set('billing_options', $opts);
+        expSession::set('billing_options', $opts);  //FIXME $opts is usually empty
         assign_to_template(array(
             'billing'    => $billing,
             'order'      => $order,
@@ -1241,7 +1246,7 @@ class cartController extends expController {
 
         // figure out what metadata to pass back based on the action we are in.
         $action = $router->params['action'];
-        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => false, 'nofollow' => false);
+        $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => true, 'nofollow' => true);
         $ecc = new ecomconfig();
         $storename = $ecc->getConfig('storename');
         switch ($action) {
@@ -1249,7 +1254,8 @@ class cartController extends expController {
                 $metainfo['title'] = gt("Shopping Cart") . " - " . $storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
-                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                $metainfo['canonical'] = $router->plainPath();
         }
 
         return $metainfo;

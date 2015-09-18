@@ -51,7 +51,7 @@
 				return (match && match.length > 1) ? match[1] : '' ;
 			}
 			
-			function onPageSelect(section) {
+			function onPageSelect(section, text, title) {
                 var update = getUrlParam('update');
                 if (update !== 'noupdate' && typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
                 var fileUrl = EXPONENT.PATH_RELATIVE+section;
@@ -62,7 +62,8 @@
                 } else if (update == 'tiny') {
        				// TinyMCE integration
                     // pass selected file path to TinyMCE
-                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+//                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+					top.tinymce.activeEditor.windowManager.getParams().oninsert(fileUrl, text, title);
                     // close popup window
                     top.tinymce.activeEditor.windowManager.close();
                 }
@@ -82,7 +83,8 @@
                 } else if (update == 'tiny') {
        				// TinyMCE integration
                     // pass selected file path to TinyMCE
-                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+//                    top.tinymce.activeEditor.windowManager.getParams().setUrl(fileUrl);
+					top.tinymce.activeEditor.windowManager.getParams().oninsert(fileUrl, document.getElementById("f_title").value, document.getElementById("f_alt").value);
                     // close popup window
                     top.tinymce.activeEditor.windowManager.close();
                 }
@@ -201,6 +203,7 @@
 						<input id="f_href" type="hidden"/>
 						<input id="f_extern" checked="checked" type="hidden"/>
 						<input id="f_title" type="hidden"/>
+						<input id="f_alt" type="hidden"/>
                         <div id="f_text" style="color:red"><?PHP echo gt('nothing selected'); ?></div>
 						<div id="buttons">
 							<button type="button" name="ok" onclick="return onOK();"><?PHP echo gt('OK'); ?></button>
@@ -230,7 +233,7 @@ if ($user) {
                <?PHP
                    if ($section->active) {
                ?>
-                       <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
+                       <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>,<?PHP echo "'".$section->name."'"; ?>,<?PHP echo "'".$section->page_title."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
                <?PHP
                    } else {
                        echo $section->name;
@@ -251,7 +254,7 @@ if ($user) {
            foreach ($standalones as $section) {
     ?>
                <tr><td style="padding-left: 20px">
-                   <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
+                   <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>,<?PHP echo "'".$section->name."'"; ?>,<?PHP echo "'".$section->page_title."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
                </td></tr>
     <?PHP
            }

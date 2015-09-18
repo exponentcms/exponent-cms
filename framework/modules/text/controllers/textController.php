@@ -79,8 +79,24 @@ class textController extends expController {
             } else {
                 $settings->paste_word = '';
             }
+            // clean up (custom) plugins list from missing plugins
+            if (!empty($settings->plugins)) {
+                $plugs = explode(',',trim($settings->plugins));
+                foreach ($plugs as $key=>$plug) {
+                    if (empty($plug) || !is_dir(BASE . 'external/editors/ckeditor/plugins/' . $plug)) unset($plugs[$key]);
+                }
+                $settings->plugins = implode(',',$plugs);
+            }
         } elseif (SITE_WYSIWYG_EDITOR == 'tinymce') {
             if (empty($settings->skin)) $settings->skin = 'lightgray';
+            // clean up (custom) plugins list from missing plugins  //FIXME we don't load any custom stuff in this view except skin
+            if (!empty($settings->plugins)) {
+                $plugs = explode(',',trim($settings->plugins));
+                foreach ($plugs as $key=>$plug) {
+                    if (empty($plug) || !is_dir(BASE . 'external/editors/tinymce/plugins/' . $plug)) unset($plugs[$key]);
+                }
+                $settings->plugins = implode(',',$plugs);
+            }
         }
 
 		assign_to_template(array(

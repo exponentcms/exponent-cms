@@ -32,6 +32,8 @@ class expRss extends expRecord {
 //        //'content_expSimpleNote'=>'expSimpleNote',
 //    );
 
+    public $rss_is_podcast = false;
+
     public function __construct($params=array()) {
         global $db;
         if (is_int($params) || is_string($params)) {
@@ -42,6 +44,10 @@ class expRss extends expRecord {
             parent::__construct($id, false, false);
         } else {
             parent::__construct($params, false, false);
+        }
+        if (!empty($this->module)) {
+            $cont = expModules::getController($this->module);
+            $this->rss_is_podcast = !empty($cont->rss_is_podcast);
         }
     }
     
@@ -69,9 +75,11 @@ class expRss extends expRecord {
 //            $controllername = expModules::getControllerClassname($feed->module);
 //            $controller = new $controllername($feed->src);
             $controller = expModules::getController($feed->module, $feed->src);
-            $controller->loc = expCore::makeLocation($feed->module, $feed->src);
-            $controller->params = $this->params;
-            $items = array_merge($items, $controller->getRSSContent());
+            if (!empty($controller)) {
+                $controller->loc = expCore::makeLocation($feed->module, $feed->src);
+                $controller->params = $this->params;
+                $items = array_merge($items, $controller->getRSSContent());
+            }
         }
         
         return $items;

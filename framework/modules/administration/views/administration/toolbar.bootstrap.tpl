@@ -20,35 +20,35 @@
             .navbar-fixed-top {
                 margin-top: 30px;
             }
-            {*.navbar-spacer {*}
-                {*height: 74px;*}
-            {*}*}
-        {*}*}
+            {*.navbar-spacer {
+                height: 74px;
+            }
+        }*}
         @media (max-width: {$smarty.const.MENU_WIDTH}px) {
             .navbar-fixed-top {
                 margin-bottom: 0;
             }
         }
     {elseif $smarty.const.MENU_LOCATION == 'static-top'}
-        {*.navbar-static-top {*}
-            {*margin-top: 30px;*}
-        {*}*}
-        {*.navbar-spacer {*}
-            {*height: 0;*}
+        {*.navbar-static-top {
+            margin-top: 30px;
         }
+        .navbar-spacer {
+            height: 0;
+        }*}
     {elseif $smarty.const.MENU_LOCATION == 'fixed-bottom'}
-        {*.navbar-spacer {*}
-            {*height: 30px;*}
-        {*}*}
+        {*.navbar-spacer {
+            height: 30px;
+        }*}
     {/if}
 {else}
     {if $smarty.const.MENU_LOCATION == 'fixed-bottom'}
         .navbar-fixed-bottom {
             bottom: 30px;
         }
-        {*.navbar-spacer {*}
-            {*height: 0;*}
-        {*}*}
+        {*.navbar-spacer {
+            height: 0;
+        }*}
         .navbar-spacer-bottom {
             height: 30px;
         }
@@ -232,21 +232,21 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {*<div id="yuilogger" class="yui3-skin-sam">*}
 
 {*</div>*}
-{*{script unique="ylogger99" yui3mods="yui"}*}
-{*{literal}*}
-    {*YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {*}
-        {*var yconsole = new Y.Console({*}
-            {*/* any other configuration */*}
-            {*logSource: Y.Global,*}
-            {*newestOnTop : false,*}
-            {*style: 'separate',*}
-            {*plugins: [*}
-                {*Y.Plugin.ConsoleFilters,*}
-                {*Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }*}
-            {*]*}
-        {*}).render("#yuilogger");*}
-        {*yconsole.collapse();*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
+{*script unique="ylogger99" yui3mods="yui"}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('console','console-filters','dd-plugin', function(Y) {
+        var yconsole = new Y.Console({
+            /* any other configuration */
+            logSource: Y.Global,
+            newestOnTop : false,
+            style: 'separate',
+            plugins: [
+                Y.Plugin.ConsoleFilters,
+                Y.Plugin.Drag, { handles: ['.yui3-console-hd'] }
+            ]
+        }).render("#yuilogger");
+        yconsole.collapse();
+    });
+{/literal}
+{/script*}
 {*{/if}*}

@@ -88,6 +88,11 @@ class elFinderPluginWatermark {
 			return false;
 		}
 		
+		// check Animation Gif
+		if (elFinder::isAnimationGif($src)) {
+			return false;
+		}
+		
 		// check water mark image
 		if (! file_exists($opts['source'])) {
 			$opts['source'] = dirname(__FILE__) . "/" . $opts['source'];

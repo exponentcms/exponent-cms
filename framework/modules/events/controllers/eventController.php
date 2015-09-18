@@ -376,7 +376,7 @@ class eventController extends expController {
                 //                $moreevents = false;
                 switch ($viewrange) {
                     case "upcoming":
-                        if (!empty($this->config['rss_limit']) && $this->config['rss_limit'] > 0) {
+                        if (!empty($this->config['enable_ical']) && !empty($this->config['rss_limit']) && $this->config['rss_limit'] > 0) {
                             $eventlimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
                         } else {
                             $eventlimit = "";
@@ -600,7 +600,7 @@ class eventController extends expController {
                         $metainfo['title'] = empty($object->event->meta_title) ? $object->event->title : $object->event->meta_title;
                         $metainfo['keywords'] = empty($object->event->meta_keywords) ? $keyw : $object->event->meta_keywords;
                         $metainfo['description'] = empty($object->event->meta_description) ? $desc : $object->event->meta_description;
-                        $metainfo['canonical'] = empty($object->event->canonical) ? '' : $object->event->canonical;
+                        $metainfo['canonical'] = empty($object->event->canonical) ? $router->plainPath() : $object->event->canonical;
                         $metainfo['noindex'] = empty($object->event->meta_noindex) ? false : $object->event->meta_noindex;
                         $metainfo['nofollow'] = empty($object->event->meta_nofollow) ? false : $object->event->meta_nofollow;
                         return $metainfo;
@@ -673,7 +673,7 @@ class eventController extends expController {
                     $locsql = $this->aggregateWhereClause();
 
                     $day = expDateTime::startOfDayTimestamp(time());
-                    if (isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
+                    if (!empty($this->config['enable_ical']) && isset($this->config['rss_limit']) && ($this->config['rss_limit'] > 0)) {
                         $rsslimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
                     } else {
                         $rsslimit = "";
@@ -858,10 +858,10 @@ class eventController extends expController {
 
                 //	$mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octet-stream;' : "text/x-vCalendar";
                 //	$mime_type = "text/x-vCalendar";
-                $mime_type = "text/Calendar";
+                $mime_type = 'text/Calendar';
                 header('Content-Type: ' . $mime_type);
                 header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
-                header("Content-length: " . strlen($msg));
+                header('Content-length: ' . strlen($msg));
                 header('Content-Transfer-Encoding: binary');
                 header('Content-Encoding:');
                 //	header("Content-Disposition: inline; filename=".$Filename.".ics");

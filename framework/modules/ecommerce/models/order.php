@@ -23,8 +23,8 @@
 class order extends expRecord {
     protected $table = 'orders';
 
-    public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');
-    public $has_one = array('order_status', 'order_type', 'shippingmethod');
+    public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');  // we also manually associate shippingmethods and their orderitems
+    public $has_one = array('order_status', 'order_type', 'shippingmethod');  //FIXME in reality we only have one billingmethod???
     public $get_assoc_for = array('orderitem', 'billingmethod', 'order_discounts');
 
     public $total = 0;
@@ -62,7 +62,9 @@ class order extends expRecord {
             }
             //$this->shipping_total = 0;
             foreach ($this->getShippingMethods() as $smid) {
+                //FIXME we could auto-associate these with has_many
                 $this->shippingmethods[$smid] = new shippingmethod($smid);
+                //FIXME we could auto-associate these with get_assoc_for
                 $this->shippingmethods[$smid]->orderitem = $this->getOrderitemsByShippingmethod($smid);
 
 //                $requiresShipping = false;
@@ -375,6 +377,7 @@ class order extends expRecord {
             if (!empty($this->shippingmethod->id)) {
                 $ids = array($this->shippingmethod->id);
             } else {
+                //setup a default shipping method
                 $sm = new shippingmethod();
                 //(eDebug($db->selectValue('shippingcalculator','id','is_default=1'),true));
 //                $sm->shippingcalculator_id = $db->selectValue('shippingcalculator', 'id', 'is_default=1');
@@ -757,23 +760,28 @@ class order extends expRecord {
         //should be just a few milliseconds.
         $db->lockTable("orders_next_invoice_id");
 
-        //get the next id record
+        //get the next invoice number
         $invoice_num = $db->max('orders_next_invoice_id', 'next_invoice_id');
 
-        //if it's not set or botched, then reset to the starting invoice number
+        $obj = new stdClass();
+        $obj->id = 1;
+        if (empty($invoice_num)) {
+            $invoice_num = $sin;
+            //no number so initialize the table with the starting number
+            $obj->next_invoice_id = $sin;
+            $db->insertObject($obj, 'orders_next_invoice_id');
+        }
+
         if ($increment) {
-            $obj = new stdClass();
             if (empty($invoice_num) || $invoice_num < $sin) {
                 $invoice_num = $sin;
-                //insert the table with the next available number
-                $obj->id = 1;
-                $obj->next_invoice_id = $invoice_num + 1;
-                $db->insertObject($obj, 'orders_next_invoice_id');
-            } else {
-                //update the table with the next available number
-                $obj->id = 1;
-                $obj->next_invoice_id = $invoice_num + 1;
-                $db->updateObject($obj, 'orders_next_invoice_id');
+            }
+            //update the table with the next available number
+            $obj->next_invoice_id = $invoice_num + 1;
+            $db->updateObject($obj, 'orders_next_invoice_id');
+        } else {
+            if (empty($invoice_num) || $invoice_num < $sin) {
+                $invoice_num = $sin;
             }
         }
 

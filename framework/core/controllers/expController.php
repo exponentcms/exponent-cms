@@ -58,6 +58,8 @@ abstract class expController {
 
     public $codequality = 'stable'; // code's level of stability
 
+    public $rss_is_podcast = false;
+
     /**
      * @param null  $src
      * @param array $params
@@ -622,11 +624,13 @@ abstract class expController {
             foreach ($tags as $tag) {
                 if (!empty($tag)) {
                     $tag = strtolower(trim($tag));
-                    $tag = str_replace('"', "", $tag); // strip double quotes
-                    $tag = str_replace("'", "", $tag); // strip single quotes
-                    $expTag = new expTag($tag);
-                    if (empty($expTag->id)) $expTag->update(array('title' => $tag));
-                    $this->params['expTag'][] = $expTag->id;
+                    $tag = str_replace(array('"', "'"), "", $tag); // strip double and single quotes
+                    if (!empty($tag)) {
+                        $expTag = new expTag($tag);
+                        if (empty($expTag->id))
+                            $expTag->update(array('title' => $tag));
+                        $this->params['expTag'][] = $expTag->id;
+                    }
                 }
             }
         }
@@ -1056,7 +1060,8 @@ abstract class expController {
             $rss->ttl = $site_rss->rss_cachetime;
             $rss->link = "http://" . HOSTNAME . PATH_RELATIVE;
             $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
-            if ($site_rss->module == "filedownload") {
+//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+            if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = ORGANIZATION_NAME;
                 $rss->itunes->image = URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
@@ -1086,13 +1091,15 @@ abstract class expController {
             $rss->pubDate = $pubDate;
 
 //        	header("Content-type: text/xml");
-            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
+            if ($site_rss->rss_is_podcast) {
                 echo $rss->createFeed("PODCAST");
             } else {
                 echo $rss->createFeed("RSS2.0");
             }
         } else {
-            echo gt("This RSS feed is not available.");
+            flash('notice', gt("This RSS feed is not available."));
+            expHistory::back();
         }
 
         //Read the file out directly
@@ -1310,10 +1317,12 @@ abstract class expController {
                         $metainfo['title'] = empty($object->meta_title) ? $object->title : $object->meta_title;
                         $metainfo['keywords'] = empty($object->meta_keywords) ? $keyw : $object->meta_keywords;
                         $metainfo['description'] = empty($object->meta_description) ? $desc : $object->meta_description;
-                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+//                        $metainfo['canonical'] = empty($object->canonical) ? URL_FULL.substr($router->sefPath, 1) : $object->canonical;
+                        $metainfo['canonical'] = empty($object->canonical) ? $router->plainPath() : $object->canonical;
                         $metainfo['noindex'] = empty($object->meta_noindex) ? false : $object->meta_noindex;
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                         $metainfo['rich'] = $this->meta_rich($router->params, $object);
+                        $metainfo['fb'] = $this->meta_fb($router->params, $object, $metainfo['canonical']);
                     }
                     break;
                 }
@@ -1327,7 +1336,8 @@ abstract class expController {
                     $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
                     $metainfo['keywords'] = SITE_KEYWORDS;
                     $metainfo['description'] = SITE_DESCRIPTION;
-                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+//                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
+                    $metainfo['canonical'] = $router->plainPath();
                 }
         }
 
@@ -1344,6 +1354,18 @@ abstract class expController {
      */
     public function meta_rich($request, $object) {
         return null;
+    }
+
+    /**
+     * Returns Facebook og: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return array
+     */
+    public function meta_fb($request, $object, $canonical) {
+        return array();
     }
 
     /**
@@ -1366,7 +1388,8 @@ abstract class expController {
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
             $metainfo['description'] = SITE_DESCRIPTION;
 //            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
-            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+//            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            $metainfo['canonical'] = $router->plainPath();
             return $metainfo;
         }
         return null;
@@ -1393,7 +1416,8 @@ abstract class expController {
 //            $metainfo['description'] = empty($object->meta_description) ? SITE_DESCRIPTION : $object->meta_description; //FIXME $object not set
             $metainfo['description'] = SITE_DESCRIPTION;
 //            $metainfo['canonical'] = empty($object->canonical) ? URL_FULL . substr($router->sefPath, 1) : $object->canonical; //FIXME $object not set
-            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+//            $metainfo['canonical'] = URL_FULL . substr($router->sefPath, 1);
+            $metainfo['canonical'] = $router->plainPath();
             return $metainfo;
         }
         return null;

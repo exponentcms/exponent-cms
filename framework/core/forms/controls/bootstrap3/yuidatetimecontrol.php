@@ -125,7 +125,7 @@ class yuidatetimecontrol extends formcontrol
                     } else {
                         $('#datetime-" . $idname . "').show('slow');
                     }
-                    $('#" . $idname . "date').datetimepicker('update');
+                    $('#" . $idname . "date').datetimepicker('reset');
                 });
             });
         ";

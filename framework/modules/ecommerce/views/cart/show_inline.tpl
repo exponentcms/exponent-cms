@@ -26,7 +26,7 @@
         {foreach from=$items item=item}
             <li class="{cycle values="odd,even"}">
                 <a class="image" href="{link controller=store action=show id=$item->product_id}">
-                    {if $item->product->expFile.mainimage[0]->id}{img file_id=$item->product->expFile.mainimage[0]->id  w=30 h=30 zc=1 class="border"}{/if}
+                    {if $item->product->expFile.mainimage[0]->id}{img file_id=$item->product->expFile.mainimage[0]->id w=30 h=30 zc=1 class="border"}{/if}
                 </a>
                 <div class="p-info">
                     <a class="title" href="{link controller=store action=show id=$item->product_id}" title="{'View'|gettext} {$item->products_name}">

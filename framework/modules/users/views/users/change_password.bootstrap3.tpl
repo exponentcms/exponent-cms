@@ -41,11 +41,33 @@
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.5'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.7'}
 {literal}
     $(document).ready(function () {
         "use strict";
         var options = {};
+        options.common = {
+            minChar: {/literal}{$smarty.const.MIN_PWD_LEN}{literal},
+        };
+//        options.rules = {
+//            activated: {
+//                wordNotEmail: true,
+//                wordLength: true,
+//                wordSimilarToUsername: true,
+//                wordSequences: true,
+//                wordTwoCharacterClasses: false,
+//                wordRepetitions: false,
+//                wordLowercase: true,
+//                wordUppercase: true,
+//                wordOneNumber: true,
+//                wordThreeNumbers: true,
+//                wordOneSpecialChar: true,
+//                wordTwoSpecialChar: true,
+//                wordUpperLowerCombo: true,
+//                wordLetterNumberCombo: true,
+//                wordLetterNumberCharCombo: true
+//            }
+//        };
         options.ui = {
             container: ".change-password",
             showVerdictsInsideProgressBar: true,

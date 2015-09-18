@@ -22,7 +22,9 @@
  */
 class orderitem extends expRecord {
     public $table = 'orderitems';
-    public $has_one = array('shippingmethod');
+
+    public $has_one = array('shippingmethod');  // we also manually associate a 'product'
+
     public $opts = array();
 
     function __construct($params = array(), $get_assoc = true, $get_attached = false) {

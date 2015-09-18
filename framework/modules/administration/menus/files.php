@@ -16,11 +16,13 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT'))
+    exit('');
 
 global $user;
 
-if ($user->globalPerm('hide_files_menu')) return array();
+if ($user->globalPerm('hide_files_menu'))
+    return false;
 
 /////////////////////////////////////////////////////////////////////////
 // BUILD THE MENU

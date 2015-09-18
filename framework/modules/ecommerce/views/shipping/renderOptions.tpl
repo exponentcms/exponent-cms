@@ -24,12 +24,12 @@
                         {group label="Available Options"|gettext}
                             <div class="bd">
                                 {form name="shpmthdopts" controller=shipping action=selectShippingOption}
-                                {foreach from=$shipping->pricelist item=option}
-                                    {if $option.id == $shipping->shippingmethod->option || $option.title == $shipping->shippingmethod->option_title}{$selected=true}{else}{$selected=false}{/if}
-                                    {$oc=$option.cost|number_format:2}
-                                    {control type=radio name="option" columns=1 value=$option.id label="`$oc|currency` - `$option.title`" checked=$selected}
-                                {/foreach}
-                                <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
+                                    {foreach from=$shipping->pricelist item=option}
+                                        {if $option.id == $shipping->shippingmethod->option || $option.title == $shipping->shippingmethod->option_title}{$selected=true}{else}{$selected=false}{/if}
+                                        {$oc=$option.cost|number_format:2}
+                                        {control type=radio name="option" columns=1 value=$option.id label="`$oc|currency` - `$option.title`" checked=$selected}
+                                    {/foreach}
+                                    <button type="submit" class="{button_style color=blue size=small}">{"Update Shipping Option"|gettext}</button>
                                 {/form}
                             </div>
                         {/group}
@@ -43,14 +43,14 @@
             <div class="sm-info">
                 <strong class="selected-info">{$car.0} {$shipping->shippingmethod->option_title}&#160;<em>{$shipping->shippingmethod->shipping_cost|currency}</em></strong>
             </div>
-            {pop id="change_shipping" type=form text="Change Shipping Option"|gettext title="Shipping Options"|gettext buttons="Close"|gettext}
+            {pop id="change_shipping" type=form text="Change Shipping Option"|gettext title="Shipping Options"|gettext width="1024px"}
                 {form name="shpmthdopts" controller=shipping action=selectShippingOption}
                     {$width = 100 / count($shipping->pricelist) - 1}
                     {foreach $shipping->pricelist as $carrier=>$carriers}
                         <span style="width: {$width}%;display: inline-block;vertical-align: top">
-                            <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
-                            <div class="">
-                                {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                            {if $carriers|@count >1 && (!$order->forced_shipping || empty($shipping->shippingmethod->option))}
+                                <img class="" src="{$shipping->calculator->icon.$carrier}">{br}
+                                <div class="">
                                     {group label="Available Options"|gettext}
                                         <div class="bd">
                                             {foreach from=$carriers item=option}
@@ -60,8 +60,8 @@
                                             {/foreach}
                                         </div>
                                     {/group}
-                                {/if}
-                            </div>
+                                </div>
+                            {/if}
                         </span>
                     {/foreach}
                     <div>

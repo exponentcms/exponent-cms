@@ -43,7 +43,7 @@ class billingmethod extends expRecord {
         parent::__construct($params, $get_assoc, $get_attached);
 //        $this->billingtransaction = array_reverse($this->billingtransaction);
 
-//         // unpack the billing_options data
+        // unpack the billing_options data
         $this->billing_options = empty($this->billing_options) ? array() : unserialize($this->billing_options);
     }
      

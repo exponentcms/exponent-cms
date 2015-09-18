@@ -37,30 +37,30 @@
 </div>
 
 {*FIXME convert to yui3*}
-{*{script unique="a2cgc" yui3mods=1}*}
-{*{literal}*}
-    {*YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {*}
-        {*var YAHOO=Y.YUI2;*}
-        {*YAHOO.util.Event.onDOMReady(function(){*}
-            {*var bp = {/literal}{$price}{literal};*}
-            {*var da = YAHOO.util.Dom.get('dollar_amount');*}
-            {*YAHOO.util.Event.on(da, 'blur', function(e,o){*}
-                {*var newint = parseInt(this.value.replace('$',""));*}
-                {*this.value = '{/literal}{currency_symbol}{literal}'+Math.ceil(newint/bp)*bp+".00";*}
-            {*}, da, true);*}
+{*script unique="a2cgc" yui3mods=1}
+{literal}
+    YUI(EXPONENT.YUI3_CONFIG).use('node','yui2-yahoo-dom-event', function(Y) {
+        var YAHOO=Y.YUI2;
+        YAHOO.util.Event.onDOMReady(function(){
+            var bp = {/literal}{$price}{literal};
+            var da = YAHOO.util.Dom.get('dollar_amount');
+            YAHOO.util.Event.on(da, 'blur', function(e,o){
+                var newint = parseInt(this.value.replace('$',""));
+                this.value = '{/literal}{currency_symbol}{literal}'+Math.ceil(newint/bp)*bp+".00";
+            }, da, true);
 
-            {*YAHOO.util.Event.on(['toname','fromname'], 'keyup', function(e){*}
-                {*var targ = YAHOO.util.Event.getTarget(e);*}
-                {*var junk = [':',')','-','!','@','#','$','%','^','&','*','(',')','_','+','=','-','`','~','{','}','|','[',']','\\',':','"',';','\'','<','>','?',',','.','/'];*}
-                {*for (var jk in junk ) {*}
-                    {*targ.value = targ.value.replace(junk[jk],"");*}
-                {*}*}
-                {*//Y.log(targ);*}
-            {*});*}
-        {*});*}
-    {*});*}
-{*{/literal}*}
-{*{/script}*}
+            YAHOO.util.Event.on(['toname','fromname'], 'keyup', function(e){
+                var targ = YAHOO.util.Event.getTarget(e);
+                var junk = [':',')','-','!','@','#','$','%','^','&','*','(',')','_','+','=','-','`','~','{','}','|','[',']','\\',':','"',';','\'','<','>','?',',','.','/'];
+                for (var jk in junk ) {
+                    targ.value = targ.value.replace(junk[jk],"");
+                }
+                //Y.log(targ);
+            });
+        });
+    });
+{/literal}
+{/script*}
 
 {script unique="a2cgc" yui3mods="node"}
 {literal}

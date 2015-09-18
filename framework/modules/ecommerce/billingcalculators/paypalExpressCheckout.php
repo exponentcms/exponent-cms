@@ -185,7 +185,8 @@ class paypalExpressCheckout extends billingcalculator {
 
             for ($n = 0; $n < count($order->orderitem); $n++) {
                 $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($order->orderitem[$n]->products_desc) > 127 ? substr($order->orderitem[$n]->products_desc, 0, 124) . "..." : $order->orderitem[$n]->products_desc;
+                $desc = strip_tags($order->orderitem[$n]->product->body);
+                $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
                 $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
                 $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
                 $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
@@ -244,7 +245,7 @@ class paypalExpressCheckout extends billingcalculator {
         } else {  // 2nd time through before displaying checkout confirm
             //eDebug($params);
             //eDebug($billingmethod);
-//            $object = expUnserialize($billingmethod->billing_options);
+            $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
             //eDebug($object,true);
             if ($opts->result->token == $params['token']) {
                 $opts->result->errorCode = 0;
@@ -267,7 +268,7 @@ class paypalExpressCheckout extends billingcalculator {
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-//        $opts = expUnserialize($billingmethod->billing_options);
+//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = expUnserialize($this->config);
 
         if ($config['testmode']) {
@@ -305,7 +306,8 @@ class paypalExpressCheckout extends billingcalculator {
         $tt = 0;
         for ($n = 0; $n < count($order->orderitem); $n++) {
             $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
-//            $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($order->orderitem[$n]->products_desc) > 127 ? substr($order->orderitem[$n]->products_desc, 0, 124) . "..." : $order->orderitem[$n]->products_desc;
+            $desc = strip_tags($order->orderitem[$n]->product->body);
+            $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
             $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
             $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
             $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
@@ -367,8 +369,10 @@ class paypalExpressCheckout extends billingcalculator {
             $trax_state = $opts->result->payment_status;
             if ($trax_state == 'Pending' && $opts->result->pending_reason == 'authorization') {
                 $trax_state = 'authorized';  // authorized awaiting capture
+                $billingcost = 0;
             } elseif ($trax_state == 'Completed') {
                 $trax_state = 'complete';  // captured
+                $billingcost = $order->grand_total;
             }
         } else {  // PayPal error response
             $opts->result->status = $nvpResArray['ACK'];
@@ -387,7 +391,7 @@ class paypalExpressCheckout extends billingcalculator {
         //eDebug($billing_options,true);                                                               
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($order->grand_total, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($billingmethod, number_format($billingcost, 2, '.', ''), $opts->result, $trax_state);
         return $opts->result;
 
     }
@@ -524,8 +528,8 @@ class paypalExpressCheckout extends billingcalculator {
             $opts->result->transId = $nvpResArray['AUTHORIZATIONID'];
 //            $billing_options->result->payment_status = $nvpResArray['PAYMENTSTATUS'];  //FIXME we probably need a payment_status
 //            $billing_options->result->pending_reason = $nvpResArray['PENDINGREASON'];
-            $transaction_state = "void";
-            $trax_state = "void";
+            $transaction_state = "voided";
+            $trax_state = "voided";
         } else {  // PayPal error response
             $opts->result->status = $nvpResArray['ACK'];
             $opts->result->errorCode = $nvpResArray[0]['ERRORCODE'];
@@ -632,7 +636,7 @@ class paypalExpressCheckout extends billingcalculator {
         //eDebug($billing_options,true);
 //        $billingmethod->update(array('billing_options' => serialize($billing_options), 'transaction_state' => $transaction_state));
         $billingmethod->update(array('billing_options' => serialize($opts), 'transaction_state' => $trax_state));
-        $this->createBillingTransaction($billingmethod, number_format($amount, 2, '.', ''), $opts->result, $trax_state);
+        $this->createBillingTransaction($billingmethod, -(number_format($amount, 2, '.', '')), $opts->result, $trax_state);
         return $opts->result;
 
 
@@ -887,7 +891,7 @@ class paypalExpressCheckout extends billingcalculator {
 
     function getPaymentAuthorizationNumber($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->token;
+        return isset($ret->result->token) ? $ret->result->token : '';
     }
 
     function getPaymentReferenceNumber($billingmethod) {
@@ -895,17 +899,17 @@ class paypalExpressCheckout extends billingcalculator {
         if (isset($ret->result)) {
 //            return $ret->result->correlationID;
 //            return $ret->result->transactionID;
-            return $ret->result->transId;
+            return isset($ret->result->transId) ? $ret->result->transId : '';
         } else {
 //            return $ret->correlationID;
 //            return $ret->transactionID;
-            return $ret->transId;
+            return isset($ret->transId) ? $ret->transId : '';
         }
     }
 
     function getPaymentStatus($billingmethod) {
         $ret = expUnserialize($billingmethod->billing_options);
-        return $ret->result->payment_status;
+        return isset($ret->result->payment_status) ? $ret->result->payment_status : '';
     }
 
     function getAVSAddressVerified($billingmethod) {

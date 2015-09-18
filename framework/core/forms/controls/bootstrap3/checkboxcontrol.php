@@ -77,8 +77,8 @@ class checkboxcontrol extends formcontrol {
                     $for   = $name;
                 }
             }
-            $divID = createValidId($divID);
-            $for = ' for="' . createValidId($for) . '"';
+            $divID = createValidId($divID, $this->value);
+            $for = ' for="' . createValidId($for, $this->value) . '"';
             if (empty($label)) {
                 $for = '';
             }
@@ -106,10 +106,10 @@ class checkboxcontrol extends formcontrol {
         $this->value = isset($this->value) ? $this->value : 1;
 
         $idname     = (!empty($this->id)) ? $this->id  : $name;
-        if (substr($this->name, -2) == '[]') {
-            $idname .= $this->value;
-        }
-        $idname = createValidId($idname);
+//        if (substr($this->name, -2) == '[]') {
+//            $idname .= $this->value;
+//        }
+        $idname = createValidId($idname, $this->value);
 
         $this->name = empty($this->name) ? $name : $this->name;
 

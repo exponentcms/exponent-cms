@@ -37,13 +37,13 @@
                     {$tabtitle=$container->title}
                 {/if}
                 {if $smarty.section.contain.first}
-                    <li role="presentation" class="active"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                    <li role="presentation" class="active"><a href="#tab{$smarty.section.contain.index}-{$tabs}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                 {elseif $container != null}
-                    <li role="presentation"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                    <li role="presentation"><a href="#tab{$smarty.section.contain.index}-{$tabs}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                 {else}
                     {permissions}
                         {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure)}
-                            <li role="presentation"><a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
+                            <li role="presentation"><a href="#tab{$smarty.section.contain.index}-{$tabs}" role="tab" data-toggle="tab"><em>{$tabtitle}</em></a></li>
                         {/if}
                     {/permissions}
                 {/if}
@@ -55,7 +55,7 @@
                     {else}
                         <li role="presentation" class="active">
                     {/if}
-                    <a href="#tab{$smarty.section.contain.index}" role="tab" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
+                    <a href="#tab{$smarty.section.contain.index}-{$tabs}" role="tab" data-toggle="tab"><em>({'Add New'|gettext})</em></a></li>
                 {/if}
             {/permissions}
         </ul>
@@ -66,7 +66,7 @@
                 {$menurank=$rank+1}
                 {$index=$smarty.section.contain.index}
                 {if $container != null}
-                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
+                    <div id="tab{$smarty.section.contain.index}-{$tabs}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
                         {$container=$containers.$index}
                         {$i=$menurank}
                         {$rerank=0}
@@ -75,8 +75,7 @@
                 {else}
                     {permissions}
                         {if $permissions.create && $hidebox == 0}
-                            <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
-                                {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
+                            <div id="tab{$smarty.section.contain.index}-{$tabs}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first} in active{/if}">
                                 <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                             </div>
                         {/if}
@@ -85,8 +84,7 @@
             {/section}
             {permissions}
                 {if $permissions.create && $hidebox == 0}
-                    <div id="tab{$smarty.section.contain.index}" role="tabpanel" class="tab-pane fade">
-                        {*<a class="addmodule" href="{link action=edit rerank=0 rank=$rank+1}"><span class="addtext">{'Add Module'|gettext}</span></a>*}
+                    <div id="tab{$smarty.section.contain.index}-{$tabs}" role="tabpanel" class="tab-pane fade{if $smarty.section.contain.first || $smarty.section.contain.total == 0} in active{/if}">
                         <a class="exp-addmodule-link" href="{link action=edit rerank=0 rank=$rank+1}"><i class="fa fa-plus"></i> {"Add Module"|gettext}</a>
                     </div>
                 {/if}

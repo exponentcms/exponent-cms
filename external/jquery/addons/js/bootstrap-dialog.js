@@ -17,11 +17,11 @@
 
     // CommonJS module is defined
     if (typeof module !== 'undefined' && module.exports) {
-        module.exports = factory(require('jquery')(root));
+        module.exports = factory(require('jquery'), require('bootstrap'));
     }
     // AMD module is defined
     else if (typeof define === "function" && define.amd) {
-        define("bootstrap-dialog", ["jquery"], function($) {
+        define("bootstrap-dialog", ["jquery", "bootstrap"], function($) {
             return factory($);
         });
     } else {
@@ -56,7 +56,7 @@
 
         return version;
     };
-    BootstrapDialogModal.ORIGINAL_BODY_PADDING = $('body').css('padding-right') || 0;
+    BootstrapDialogModal.ORIGINAL_BODY_PADDING = parseInt(($('body').css('padding-right') || 0), 10);
     BootstrapDialogModal.METHODS_TO_OVERRIDE = {};
     BootstrapDialogModal.METHODS_TO_OVERRIDE['v3.1'] = {};
     BootstrapDialogModal.METHODS_TO_OVERRIDE['v3.2'] = {
@@ -236,7 +236,8 @@
         autodestroy: true,
         draggable: false,
         animate: true,
-        description: ''
+        description: '',
+        tabindex: -1
     };
 
     /**
@@ -347,8 +348,9 @@
             return this;
         },
         createModal: function() {
-            var $modal = $('<div class="modal" tabindex="-1" role="dialog" aria-hidden="true"></div>');
-            $modal.prop('id', this.getId()).attr('aria-labelledby', this.getId() + '_title');
+            var $modal = $('<div class="modal" role="dialog" aria-hidden="true"></div>');
+            $modal.prop('id', this.getId());
+            $modal.attr('aria-labelledby', this.getId() + '_title');
 
             return $modal;
         },
@@ -684,6 +686,21 @@
         },
         setDescription: function(description) {
             this.options.description = description;
+
+            return this;
+        },
+        setTabindex: function(tabindex) {
+            this.options.tabindex = tabindex;
+
+            return this;
+        },
+        getTabindex: function() {
+            return this.options.tabindex;
+        },
+        updateTabindex: function() {
+            if (this.isRealized()) {
+                this.getModal().attr('tabindex', this.getTabindex());
+            }
 
             return this;
         },
@@ -1079,6 +1096,7 @@
             this.updateClosable();
             this.updateAnimate();
             this.updateSize();
+            this.updateTabindex();
 
             return this;
         },

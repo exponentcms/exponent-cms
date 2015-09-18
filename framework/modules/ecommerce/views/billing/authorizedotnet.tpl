@@ -17,7 +17,7 @@
 
 {/css}
 
-<div class="billing-method authorized creditcard-form">
+<div class="billing-method authorizedotnet creditcard-form form-horizontal">
     {form name="ccinfoform" id="ccinfoform" controller=cart action=preprocess}
         {control type="hidden" name="billingcalculator_id" value=$calcid}
         {$billing->form.$calcid}

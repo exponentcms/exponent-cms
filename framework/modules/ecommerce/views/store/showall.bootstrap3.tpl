@@ -55,7 +55,7 @@
     {* current category image *}
     {if $current_category->expFile[0]->id}
         <div class="category-banner">
-            {img file_id=$current_category->expFile[0]->id w=522 h=100}
+            {img class="img-responsive" file_id=$current_category->expFile[0]->id w=522 h=100}
         </div>
     {/if}
     {* current category permissions *}
@@ -119,11 +119,11 @@
 
                         <a href="{link controller=store action=showall title=$cat->sef_url}" class="cat-img-link" title="{$cat->body|summarize:"html":"para"}">
                             {if $cat->expFile[0]->id}
-                                {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                                {img file_id=$cat->expFile[0]->id w=$config.category_thumbnail|default:100 class="cat-image img-responsive"}
                             {elseif $page->records[0]->expFile.mainimage[0]->id}
-                                {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image"}
+                                {img file_id=$page->records[0]->expFile.mainimage[0]->id w=$config.category_thumbnail|default:100 class="cat-image img-responsive"}
                             {else}
-                                {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image" alt="'No Image Available'|gettext"}
+                                {img src="`$asset_path`images/no-image.jpg" w=$config.category_thumbnail|default:100 class="cat-image img-responsive" alt="'No Image Available'|gettext"}
                             {/if}
                         {*</a>*}
 
@@ -153,7 +153,8 @@
                 {$open_c_row=1}
             {/if}
         </div>
-    {else}
+    {/if}
+    {if !$categories|@count || $config.show_products}
         <{$config.item_level|default:'h2'}>{"All Products"|gettext} {if $current_category->id}{"Under"|gettext} {$current_category->title}{/if}</{$config.item_level|default:'h2'}>
         <div class="row">
             <div class="col-sm-5 col-sm-push-5"><div class="row">{control type="dropdown" name="sortme" label="Sort By"|gettext items=$page->sort_dropdown default=$defaultSort horizontal=1}</div></div>
@@ -173,10 +174,11 @@
         {/script}
         {pagelinks paginate=$page top=1}
         <div id="products" class="products z-ipr{$config.images_per_row|default:3} listing-row row list-group">
+            <div class="col-sm-12">
             {counter assign="ipr" name="ipr" start=1}
             {foreach from=$page->records item=listing name=listings}
                 {if $smarty.foreach.listings.first || $open_row}
-                    <div class="z-product-row">
+                    <div class="z-product-row row">
                     {$open_row=0}
                 {/if}
                 {include file=$listing->getForm('storeListing')}
@@ -201,6 +203,7 @@
                 {counter name="ipr" start=$ipr+1}
                 {/if*}
             {/foreach}
+            </div>
         </div>
         {*control type="dropdown" name="sortme" items=$page->sort_dropdown default=$defaultSort*}
         {pagelinks paginate=$page bottom=1}
@@ -245,18 +248,27 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {/literal}
 {/script}
 
-{script unique="list-grid" jquery=1}
+{script unique="list-grid" jquery='jquery.cookie'}
 {literal}
     $(document).ready(function() {
         $('#list').click(function(event){
             event.preventDefault();
             $('#products .item').addClass('list-group-item');
+            $.cookie('ecommerce-view', 'list', { expires: 7, path: '/' });
         });
         $('#grid').click(function(event){
             event.preventDefault();
             $('#products .item').removeClass('list-group-item');
             $('#products .item').addClass('grid-group-item');
+            $.cookie('ecommerce-view', 'grid', { expires: 7, path: '/' });
         });
+        var view = $.cookie('ecommerce-view');
+        if (view == 'list') {
+            $('#products .item').addClass('list-group-item');
+        } else {
+            $('#products .item').removeClass('list-group-item');
+            $('#products .item').addClass('grid-group-item');
+        }
     });
 {/literal}
 {/script}

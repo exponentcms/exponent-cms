@@ -68,9 +68,15 @@ class dropdowncontrol extends formcontrol {
         $html .= '>';
 
         if (is_bool($this->include_blank) && $this->include_blank == true) {
-            $html .= '<option value=""></option>';
+            $html .= '<option value=""';
+            if (empty($this->default))
+                $html .= ' selected';
+            $html .= '></option>';
         } elseif (is_string($this->include_blank) && !empty($this->include_blank)) {
-            $html .= '<option value="">'.$this->include_blank.'</option>';
+            $html .= '<option value=""';
+            if (empty($this->default))
+                $html .= ' selected';
+            $html .= '>'.$this->include_blank.'</option>';
         }
 
         if (!empty($this->items)) foreach ($this->items as $value=>$caption) {

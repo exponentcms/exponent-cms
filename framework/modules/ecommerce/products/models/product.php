@@ -90,6 +90,13 @@ class product extends expRecord {
             //eDebug($this); 
         }
 
+        if (!empty($this->meta_fb))
+            $this->meta_fb = expUnserialize($this->meta_fb);
+        if (!empty($this->expFile['fbimage'][0])) {
+            $this->meta_fb['fbimage'][0] = $this->expFile['fbimage'][0];
+//            unset($this->expFile['fbimage']);
+        }
+
         //sort the children by child_rank
         if ($this->hasChildren()) {
             if (isset($this->childProduct)) usort($this->childProduct, array("product", "sortChildren"));
@@ -807,7 +814,8 @@ class product extends expRecord {
             'userinput',
             'extrafields',
             'model',
-            'notes'
+            'notes',
+            'facebook'
         );
 
         foreach ($tab_loaded as $tab_key => $tab_item) {
@@ -849,6 +857,20 @@ class product extends expRecord {
                 $product->extra_fields = serialize($extra_fields);
             } else {
                 unset($product->extra_fields);
+            }
+        }
+
+        if (isset($tab_loaded['facebook'])) {
+            //Facebook Tab
+            foreach ($params['facebook'] as $fbkey => $fbfield) {
+                if (!empty($fbfield)) {
+                    $fb_meta[$fbkey] = $params['facebook'][$fbkey];
+                }
+            }
+            if (is_array($fb_meta)) {
+                $product->meta_fb = serialize($fb_meta);
+            } else {
+                unset($product->meta_fb);
             }
         }
 

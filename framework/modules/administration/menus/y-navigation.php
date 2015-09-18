@@ -16,12 +16,15 @@
 #
 ##################################################
 
-if (!defined('EXPONENT')) exit('');
+if (!defined('EXPONENT'))
+    exit('');
 
 global $user, $router, $db, $section;
 
 // determine if the Pages menu should NOT be displayed
-if ($user->globalPerm('hide_pages_menu')) return array();
+if ($user->globalPerm('hide_pages_menu'))
+    false;
+
 if (!$user->isAdmin()) {
     $pageperms = $db->selectValue('userpermission', 'uid', "uid='" . $user->id . "' AND source='' AND internal!=''");
     if (!$pageperms) {
@@ -34,7 +37,8 @@ if (!$user->isAdmin()) {
             }
         }
     }
-    if (!$pageperms) return false;
+    if (!$pageperms)
+        return false;
 }
 
 $type = "Page";

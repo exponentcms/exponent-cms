@@ -30,7 +30,10 @@ class shippingController extends expController {
     static function description() { return ""; }
 	static function hasSources() { return false; }
     static function hasContent() { return false; }
-	
+
+    /**
+     * Ajax method to return a shipping calculator object within a shipping object
+     */
 	function selectShippingCalculator() {
 	    global $db;
 
@@ -49,6 +52,9 @@ class shippingController extends expController {
 		$ar->send();
 	}
 
+    /**
+     * Ajax method to select/update a shipping method
+     */
 	function selectShippingOption() {
 	    global $order; //FIXME we do NOT want the global $order
 
@@ -61,6 +67,9 @@ class shippingController extends expController {
 		$ar->send();
 	}
 
+    /**
+     * Ajax method to set a shipping address
+     */
 	function setAddress() {
 		$shipping = new shipping();
 		$shipping->shippingmethod->setAddress($this->params['shipping_address']);
@@ -69,7 +78,10 @@ class shippingController extends expController {
 		$ar->send();
 	}
 	
-	function leaveMessage() {		
+    /**
+     * Ajax method to set a shipping 'gift' message
+     */
+	function leaveMessage() {
 		if (!empty($this->params['shippingmessageid'])) {
 		    $sm = new shippingmethod($this->params['shippingmessageid']);
 		    
@@ -116,8 +128,11 @@ class shippingController extends expController {
         ));
 	}
 	
+    /**
+     * Ajax method to return a shipping calculator object within a shipping object
+     */
 	function listPrices() {
-	    $shipping = new shipping();
+	    $shipping = new shipping();  //FIXME this model has no listPrices() method???
 	    $ar = new expAjaxReply(200, 'ok', $shipping->listPrices(), array('controller'=>'cart', 'action'=>'checkout'),true);
 		$ar->send();
 	}
@@ -167,6 +182,7 @@ class shippingController extends expController {
 	    global $db;
 
 	    if (isset($this->params['id'])) $db->toggle('shippingcalculator', 'enabled', 'id='.$this->params['id']);
+        //FIXME we need to ensure our default calculator is still active...not sure this does it
         if ($db->selectValue('shippingcalculator', 'is_default', 'id='.$this->params['id']) && !$db->selectValue('shippingcalculator', 'enabled', 'id='.$this->params['id'])) {
             $db->toggle('shippingcalculator', 'is_default', 'id='.$this->params['id']);
         }
@@ -247,6 +263,20 @@ class shippingController extends expController {
 		$db->delete('shippingspeeds',' id =' . $this->params['id']);
 		expHistory::back();
 	}
+
+    public function tracker() {
+        global $db;
+
+        // we ALWAYS assume this is coming from easypost webhook
+        $calc_id = $db->selectValue('shippingcalculator','id','calculator_name="easypostcalculator" AND enabled=1');
+        if ($calc_id) {
+            $ep = new easypostcalculator($calc_id);
+            if ($ep->trackerEnabled()) {
+                $ep->handleTracking();
+            }
+        }
+        exit();  // graceful exit
+    }
 
 }
 

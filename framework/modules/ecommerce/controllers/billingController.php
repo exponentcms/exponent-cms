@@ -89,6 +89,7 @@ class billingController extends expController {
 	    if (isset($this->params['id'])) {
 	        $calc = new billingcalculator($this->params['id']);
 	        $calc->update($this->params);
+            //FIXME we need to ensure our default calculator is still active
 	        if ($calc->calculator->hasConfig() && empty($calc->config)) {
 	            flash('message', $calc->calculator->name().' '.gt('requires configuration. Please do so now.'));
 	            redirect_to(array('controller'=>'billing', 'action'=>'configure', 'id'=>$calc->id));

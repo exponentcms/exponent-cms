@@ -121,13 +121,13 @@ if (!function_exists('smarty_function_icon')) {
         $linktext = $img . $text;
         
         if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
-            $btn_size = '';  // actually default size, NOT true boostrap large
+            $btn_size = 'btn-lg';
             $icon_size = 'fa-lg';
         } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
-            $btn_size = 'btn-xs';
+            $btn_size = 'btn-sm';
             $icon_size = '';
         } else { // medium
-            $btn_size = 'btn-sm';
+            $btn_size = '';
             $icon_size = 'fa-lg';
         }
 
