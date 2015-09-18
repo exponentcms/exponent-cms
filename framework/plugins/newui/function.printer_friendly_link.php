@@ -48,7 +48,7 @@ if (!function_exists('smarty_function_printer_friendly_link')) {
         if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
             // initialize a couple of variables
 //        if (BTN_SIZE == 'large') {
-//            $btn_size = '';  // actually default size, NOT true boostrap large
+//            $btn_size = '';  // actually default size, NOT true bootstrap large
 //            $icon_size = 'icon-2x';
 //        } elseif (BTN_SIZE == 'small') {
 //            $btn_size = 'btn-mini';

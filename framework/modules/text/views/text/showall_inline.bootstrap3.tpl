@@ -16,13 +16,13 @@
 {uniqueid prepend="text" assign="name"}
 {$inline = false}
 {if $smarty.const.BTN_SIZE == 'large'}
-    {$btn_size = ''}
+    {$btn_size = 'btn-lg'}
     {$icon_size = 'fa-lg'}
 {elseif $smarty.const.BTN_SIZE == 'small'}
-    {$btn_size = 'btn-xs'}
+    {$btn_size = 'btn-sm'}
     {$icon_size = ''}
 {else}
-    {$btn_size = 'btn-sm'}
+    {$btn_size = ''}
     {$icon_size = 'fa-lg'}
 {/if}
 

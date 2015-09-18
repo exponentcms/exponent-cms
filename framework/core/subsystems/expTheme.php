@@ -1477,7 +1477,7 @@ class expTheme
     {
         if (bs2()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
-                $btn_size = ''; // actually default size, NOT true boostrap large
+                $btn_size = ''; // actually default size, NOT true bootstrap large
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
                 $btn_size = 'btn-mini';
             } else { // medium
@@ -1486,11 +1486,11 @@ class expTheme
             return $btn_size;
         } elseif (bs3()) {
             if (BTN_SIZE == 'large' || (!empty($size) && $size == 'large')) {
-                $btn_size = ''; // actually default size, NOT true boostrap large
+                $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
-                $btn_size = 'btn-xs';
-            } else { // medium
                 $btn_size = 'btn-sm';
+            } else { // medium
+                $btn_size = '';
             }
             return $btn_size;
         } else {

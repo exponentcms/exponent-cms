@@ -25,15 +25,14 @@
     <h3>{"Add External Google Calendar Feeds"|gettext}</h3>
     {*{control type="text" id="googlefeedmaker" name="googlefeedmaker" label="Google Calendar XML Feed Link/URL"|gettext}*}
     {control type=url id="googlefeedmaker" name="googlefeedmaker" label="Google Calendar XML Feed Link/URL"|gettext}
-
-    {if (BTN_SIZE == 'large')}
-        {$btn_size = ''}
+    {if $smarty.const.BTN_SIZE == 'large'}
+        {$btn_size = 'btn-lg'}
         {$icon_size = 'fa-lg'}
-    {elseif (BTN_SIZE == 'small')}
-        {$btn_size = 'btn-xs'}
+    {elseif $smarty.const.BTN_SIZE == 'small'}
+        {$btn_size = 'btn-sm'}
         {$icon_size = ''}
     {else}
-        {$btn_size = 'btn-sm'}
+        {$btn_size = ''}
         {$icon_size = 'fa-lg'}
     {/if}
     <a id="addtogooglelist" class="btn btn-success {$btn_size}" href="#"><i class="fa fa-plus-circle {$icon_size}"></i> {'Add to list'|gettext}</a>{br}{br}

@@ -56,7 +56,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 ));
                 $btn_class = 'btn btn-default';
                 if (BTN_SIZE == 'large') {
-                    $btn_size = '';  // actually default size, NOT true boostrap large
+                    $btn_size = '';  // actually default size, NOT true bootstrap large
                 } elseif (BTN_SIZE == 'small') {
                     $btn_size = 'btn-mini';
                 } else { // medium
@@ -69,11 +69,11 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 ));
                 $btn_class = 'btn btn-default';
                 if (BTN_SIZE == 'large') {
-                    $btn_size = '';  // actually default size, NOT true boostrap large
+                    $btn_size = 'btn-lg';
                 } elseif (BTN_SIZE == 'small') {
-                    $btn_size = 'btn-xs';
-                } else { // medium
                     $btn_size = 'btn-sm';
+                } else { // medium
+                    $btn_size = '';
                 }
                 $btn_class .= ' ' . $btn_size;
             } else {

@@ -66,13 +66,6 @@ class buttongroupcontrol extends formcontrol {
 		if (empty($this->id)) $this->id = $name;
         $html = '';
 		if ($this->submit != "") {
-//            if (BTN_SIZE == 'large') {
-//                $btn_size = 'btn-sm';
-//                $icon_size = 'fa-large';
-//            } else {
-//                $btn_size = 'btn-xs';
-//                $icon_size = '';
-//            }
             $btn_size = expTheme::buttonSize($this->size);
             if ($this->wide) {
                 $btn_size .= ' btn-block';
