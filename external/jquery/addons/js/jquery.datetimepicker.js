@@ -862,8 +862,6 @@
 
 					$(this).parent().parent().hide();
 
-                    if (options.inline) input.val( _xdsoft_datetime.str() );  //TODO exp
-
 					datetimepicker.trigger('xchange.xdsoft');
 					if (options.onChangeMonth && $.isFunction(options.onChangeMonth)) {
 						options.onChangeMonth.call(datetimepicker, _xdsoft_datetime.currentTime, datetimepicker.data('input'));
@@ -992,7 +990,6 @@
 					triggerAfterOpen = true;
 					datetimepicker.addClass('xdsoft_inline');
 					input.after(datetimepicker).hide();
-//						datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 				}
 
 				if (options.inverseButton) {
@@ -1373,7 +1370,6 @@
 					datetimepicker.data('changed', true);
 					_xdsoft_datetime.setCurrentTime(0);
 					datetimepicker.trigger('afterOpen.xdsoft');
-                    if (options.inline) input.val( _xdsoft_datetime.str() );  //TODO exp
 				}).on('dblclick.xdsoft', function () {
 					var currentDate = _xdsoft_datetime.getCurrentTime(), minDate, maxDate;
 					currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate());
@@ -1415,7 +1411,6 @@
 						stop = true;
 						$([document.body, window]).off('mouseup.xdsoft', arguments_callee2);
 					});
-                    if (options.inline) input.val( _xdsoft_datetime.str() );  //TODO exp
 				});
 
 			timepicker
@@ -1862,7 +1857,6 @@
 					}
 					if (onShow !== false) {
 						datetimepicker.show();
-//							datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 						setPos();
 						$(window)
 							.off('resize.xdsoft', setPos)
@@ -1934,8 +1928,6 @@
 			}
 
 			_xdsoft_datetime.setCurrentTime(getCurrentValue());
-
-//				datetimepicker.trigger('afterOpen.xdsoft');  //FIXME is this still needed?
 
 			input
 				.data('xdsoft_datetimepicker', datetimepicker)
@@ -2022,12 +2014,6 @@
 						}
 						datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
 						break;
-//                    case 'update':
-//						datetimepicker.data('changed', true);
-//						this.value = this.defaultValue;
-//						datetimepicker.data.setCurrentTime(this.value);
-//						datetimepicker.trigger('afterOpen.xdsoft');
-//						break;
 					case 'validate':
 						$input = datetimepicker.data('input');
 						$input.trigger('blur.xdsoft');

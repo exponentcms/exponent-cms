@@ -121,6 +121,9 @@ class yuicalendarcontrol extends formcontrol
                     timepicker: " . ($this->showtime ? 'true' : 'false') .",
                     format: '" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."',
                     formatTime:'g:i a',
+                    onChangeMonth: function(currentTime, el) {
+                        el.val(currentTime.dateFormat('" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."'));
+                    },
                     step: 15,
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
                     inline: true,
