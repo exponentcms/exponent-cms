@@ -100,10 +100,10 @@ $db_version = expVersion::dbVersion();
                     }
                 } else {
                     if ($upgradescript->optional) {
-                        echo '<input type="checkbox" name="', $classname, '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                        echo '<input type="checkbox" name="', get_class($upgradescript), '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
                             ), '</h3></label>';
                     } else {
-                        echo '<input type="checkbox" name="', $classname, '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                        echo '<input type="checkbox" name="', get_class($upgradescript), '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
                             ), '</h3></label>';
                     }
                     echo '<p>', $upgradescript->description();
