@@ -792,10 +792,13 @@ class product extends expRecord {
 //            return;
 //        }
         //Get the product
-        $product = $db->selectObject('product', 'id =' . $params['id']);
+        if (isset($params['id']))
+            $product = $db->selectObject('product', 'id =' . $params['id']);
 
         //Get product files
-        if (empty($product)) $product = new stdClass();
+        if (empty($product))
+            $product = new stdClass();
+
         $product->expFile = $this->getProductFiles($params['id']);
         // eDebug($product, true);
 
@@ -992,7 +995,7 @@ class product extends expRecord {
 
         $files = array();
         foreach ($expFilesObj as $item) {
-            $files[$item->subtype][] = $item->expfiles_id;
+            $files[$item->subtype][] = $item->expfiles_id;  //FIXME not sure why we are creating 2 array entries??
             $files[$item->subtype][] = "expFile[{$item->subtype}][]";
         }
 
