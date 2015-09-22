@@ -1195,7 +1195,7 @@ class mysqli_database extends database {
             return array();
         $arrays = array();
         $numrows = mysqli_num_rows($res);
-        for ($i = 0; $i < $numrows; $i++) {
+        for ($i = 0; $i < $numrows; $i++) {  //FIXME this can run us out of memory with too many rows
             $assArr = mysqli_fetch_assoc($res);
             $assArr['except'] = $except;
             if($cascade_except) $assArr['cascade_except'] = $cascade_except;

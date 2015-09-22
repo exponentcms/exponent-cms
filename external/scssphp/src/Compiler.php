@@ -161,10 +161,7 @@ class Compiler
 
         $this->formatter = new $this->formatter();
 
-        if (!empty($name)) {
-            $realPath = realpath($name);
-            $this->parsedFiles[$realPath] = filemtime($realPath);
-        }
+        $this->addParsedFile($name);
 
         $this->rootEnv = $this->pushEnv($tree);
         $this->injectVariables($this->registeredVars);
@@ -1308,11 +1305,13 @@ class Compiler
                 }
 
                 $this->storeEnv = $content->scope;
+                //$this->pushEnv();
 
                 foreach ($content->children as $child) {
                     $this->compileChild($child, $out);
                 }
 
+                //$this->popEnv();
                 $this->storeEnv = null;
 
                 break;
@@ -2588,6 +2587,19 @@ class Compiler
     }
 
     /**
+     * Adds to list of parsed files
+     *
+     * @api
+     *
+     * @param string $file
+     */
+    public function addParsedFile($file) {
+        if (!empty($file)) {
+            $this->parsedFiles[realpath($file)] = filemtime($file);
+        }
+   	}
+
+    /**
      * Returns list of parsed files
      *
      * @api
@@ -2706,7 +2718,7 @@ class Compiler
             $parser = new Parser($path, false);
             $tree = $parser->parse($code);
 
-            $this->parsedFiles[$realPath] = filemtime($path);
+            $this->addParsedFile($path);
             $this->importCache[$realPath] = $tree;
         }
 
@@ -2739,9 +2751,9 @@ class Compiler
             if (is_string($dir)) {
                 // check urls for normal import paths
                 foreach ($urls as $full) {
-                    $full = $dir .
-                        (! empty($dir) && substr($dir, -1) !== '/' ? '/' : '') .
-                        $full;
+                    $full = $dir
+                        . (! empty($dir) && substr($dir, -1) !== '/' ? '/' : '')
+                        . $full;
 
                     if ($this->fileExists($file = $full . '.scss') ||
                         $this->fileExists($file = $full)
