@@ -95,7 +95,7 @@
             if (!$adminbar) {
                 $bump = 15;
             } else {
-                $bump = 0;
+                $bump = 15;
             }
             if ($(document.body).width() >= {/literal}{$smarty.const.MENU_WIDTH}{literal} - 15) {  // non-collapsed navbar
                 if ($('#topnavbar.navbar-fixed-top').length != 0) {  // fixed top menu
