@@ -177,8 +177,9 @@ class expRouter {
      * @return string
      */
     public function plainPath() {
-        unset($this->params['src']);
-        return $this->makeLink($this->params);
+        $params = $this->params;
+        unset($params['src']);
+        return $this->makeLink($params);
     }
 
     public function routeRequest() {
