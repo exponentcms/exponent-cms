@@ -65,6 +65,7 @@ class eventController extends expController {
     function showall() {
         global $user;
 
+        expHistory::set('viewable', $this->params);
         $locsql = $this->aggregateWhereClause();
         $time = (isset($this->params['time']) ? $this->params['time'] : time());
         assign_to_template(array(
