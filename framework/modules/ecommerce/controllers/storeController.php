@@ -820,7 +820,7 @@ class storeController extends expController {
     }
 
     function showGiftCards() {
-
+        expHistory::set('viewable', $this->params);
         //Get all giftcards
         $product_type = 'giftcard';
         $giftcard = new $product_type();
@@ -898,7 +898,6 @@ class storeController extends expController {
     }
 
     function showByTitle() {
-
         global $order, $template, $user;
         //need to add a check here for child product and redirect to parent if hit directly by ID
         expHistory::set('viewable', $this->params);
@@ -980,6 +979,7 @@ class storeController extends expController {
     }
 
     function showallFeaturedProducts() {
+        expHistory::set('viewable', $this->params);
         $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
         $dir = !empty($this->params['dir']) ? $this->params['dir'] : $this->config['orderby_dir'];
         if (empty($order)) $order = 'title';
@@ -1007,7 +1007,7 @@ class storeController extends expController {
     }
 
     function showallCategoryFeaturedProducts() {
-
+        expHistory::set('viewable', $this->params);
         $curcat = $this->category;
 
         $order = !empty($this->params['order']) ? $this->params['order'] : $this->config['orderby'];
@@ -1038,6 +1038,7 @@ class storeController extends expController {
     }
 
     function showTopLevel() {
+        expHistory::set('viewable', $this->params);
         $category = new storeCategory(null, false, false);
         //$categories = $category->getEcomSubcategories();
         $categories = $category->getTopLevel(null, false, true);
@@ -1054,6 +1055,7 @@ class storeController extends expController {
     function showTopLevel_images() {
         global $user;
 
+        expHistory::set('viewable', $this->params);
         $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql_start = 'SELECT DISTINCT p.* FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
@@ -1099,6 +1101,7 @@ class storeController extends expController {
     }
 
     function showFullTree() {  //FIXME we also need a showFullTree_images method like above
+        expHistory::set('viewable', $this->params);
         $category = new storeCategory(null, false, false);
         //$categories = $category->getEcomSubcategories();
         $categories = $category->getFullTree();
