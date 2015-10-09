@@ -226,6 +226,7 @@ class faqController extends expController {
     }
     
     public function edit_answer() {
+        expHistory::set('editable', $this->params);
         if (empty($this->params['id'])) {
             flash('error', gt('No ID was specified for the question to be answered'));
             expHistory::back();
