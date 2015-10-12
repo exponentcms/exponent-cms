@@ -829,7 +829,7 @@ class fileController extends expController {
         			header('Content-Disposition: attachment; filename="' . $filename . '"');
         			header('Pragma: no-cache');
         		}
-                expFile::dumpDatabase(array_keys($this->params['tables']));  //FIXME we need to echo inside call
+                echo expFile::dumpDatabase(array_keys($this->params['tables']));  //FIXME we need to echo inside call
         		exit; // Exit, since we are exporting
         	}
 //        }

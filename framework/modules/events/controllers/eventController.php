@@ -65,6 +65,7 @@ class eventController extends expController {
     function showall() {
         global $user;
 
+        expHistory::set('viewable', $this->params);
         $locsql = $this->aggregateWhereClause();
         $time = (isset($this->params['time']) ? $this->params['time'] : time());
         assign_to_template(array(
@@ -520,6 +521,7 @@ class eventController extends expController {
     function delete_recurring() {
         $item = $this->event->find('first', 'id=' . $this->params['id']);
         if ($item->is_recurring == 1) { // need to give user options
+            expHistory::set('editable', $this->params);
             assign_to_template(array(
                 'checked_date' => $this->params['date_id'],
                 'event'        => $item,

@@ -93,17 +93,17 @@ $db_version = expVersion::dbVersion();
                 echo '<li>';
                 if (isset($_REQUEST['run'])) {
                     echo '<h3>', $upgradescript->name(), '</h3>';
-                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[$classname]))) {
+                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[get_class($upgradescript)]))) {
                         echo '<p class="success">', $upgradescript->upgrade();
                     } else {
                         echo '<p class="failed"> ', gt('Not Selected to Run');
                     }
                 } else {
                     if ($upgradescript->optional) {
-                        echo '<input type="checkbox" name="', $classname, '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                        echo '<input type="checkbox" name="', get_class($upgradescript), '" value="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
                             ), '</h3></label>';
                     } else {
-                        echo '<input type="checkbox" name="', $classname, '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
+                        echo '<input type="checkbox" name="', get_class($upgradescript), '" value="1" checked="1" disabled="1" class="checkbox" style="margin-top: 7px;"><label class="label "><h3>', $upgradescript->name(
                             ), '</h3></label>';
                     }
                     echo '<p>', $upgradescript->description();

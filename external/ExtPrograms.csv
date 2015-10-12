@@ -10,25 +10,25 @@ YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,
 yui2in3,,github.com/yui/2in3,,
 recaptchalib,1.1.2,https://github.com/google/ReCAPTCHA,1.1.2,
 barcode,1 5/10/2005,www.sid6581.net/cs/php-scripts/barcode,1 5/10/2005,
-feedcreator.class.php,1.80-exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
+feedcreator.class.php,1.80exp,sourceforge.net/projects/feedcreator,1.80dev,"blog.pothoven.net/2006/01/changing-feedcreatorclassphp-for.html, also merged 1.7.3 from Drupal"
 xmlrpc.php,3.0.1,https://github.com/gggeek/phpxmlrpc,3.0.1,
 Twitter model,2.3.1,https://github.com/tijsverkoyen/TwitterOAuth,2.3.1,placed in Twitter module with _construct tweaked & namespace deleted
 SimplePie,1.3.1,simplepie.org,1.3.1,compiled version placed in News module
 pixidou,0.1exp,github.com/asvinb/pixidou,0.1,"placed in Pixidou module, heavily modified at this point"
 class.upload,0.32,https://github.com/verot/class.upload.php,0.33dev,placed in Pixidou module folder
 iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
-scssphp,0.3.1,leafo.net/scssphp,0.3.1,added Server\cachedCompile()
+scssphp,0.3.1exp,leafo.net/scssphp,0.3.1,added Server\cachedCompile()
 lessphp,0.5.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.7.0.7exp,lessphp.gpeasy.com/,1.7.0.7,tweaked wrapper to set/get options
+less.php,1.7.0.7exp,lessphp.gpeasy.com/,1.7.0.9,tweaked wrapper to set/get options
 iLess,2.0.7,https://github.com/mishal/iless,2.0.7,optional
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.5,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.5+3,bootswatch.com/,3.3.5+3,
+Bootswatch,3.3.5+4,bootswatch.com/,3.3.5+4,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.4.0,fortawesome.github.com/Font-Awesome,4.4.0,
 Adminer,4.2.2,www.adminer.org,4.2.2,we add some system user checks in design.inc
-SimpleAjaxUploader,2.1.1,https://github.com/LPology/Simple-Ajax-Uploader,2.1.1,also converted to yui module 1.1.0
+SimpleAjaxUploader,2.1.1,https://github.com/LPology/Simple-Ajax-Uploader,2.2.0,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
 MediaElement.js,2.18.1,mediaelementjs.com/,2.18.1,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.0.0,
@@ -36,10 +36,10 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-dompdf,0.6.1,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
+dompdf,0.6.1exp,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.5.3,ckeditor.com,4.5.3,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.2.5,tinymce.com,4.2.5,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
+TinyMCE,4.2.5,tinymce.com,4.2.6,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
 jQuery,2.1.4,jquery.com,2.1.4,
@@ -60,9 +60,9 @@ multiselect,2,http://mind2soft.com/labs/jquery/multiselect/,2,
 excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.6.3,http://www.jacklmoore.com/colorbox,1.6.3,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
-DateTimePicker,2.4.5exp,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,added additional 'update' method and click update if inline
-pwstrength-bootstrap,1.2.7,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.8,
-Sortable,1.2.1,https://github.com/RubaXa/Sortable,1.2.1,
+DateTimePicker,2.4.5,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,
+pwstrength-bootstrap,1.2.8,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.8,
+Sortable,1.2.1,https://github.com/RubaXa/Sortable,1.3.0,
 jstree,3.2.1,https://github.com/vakata/jstree,3.2.1,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.6,https://github.com/nakupanda/bootstrap3-dialog,1.34.6,
 impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.1,

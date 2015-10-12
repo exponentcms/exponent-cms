@@ -177,8 +177,9 @@ class expRouter {
      * @return string
      */
     public function plainPath() {
-        unset($this->params['src']);
-        return $this->makeLink($this->params);
+        $params = $this->params;
+        unset($params['src']);
+        return $this->makeLink($params);
     }
 
     public function routeRequest() {
@@ -325,6 +326,7 @@ class expRouter {
             // so we don't really need to worry about what the URL looks like.
             if ($_SERVER['REQUEST_URI'] == PATH_RELATIVE) {
                 $this->url_type = 'base';
+                $this->params = array();
             } else {
                 $sefPath = explode('%22%3E',$_SERVER['REQUEST_URI']);  // remove any attempts to close the command
                 $_SERVER['REQUEST_URI'] = $sefPath[0];
@@ -332,6 +334,7 @@ class expRouter {
             }
         } else {
             $this->url_type = 'base';
+            $this->params = array();
         }
                               
         // Check if this was a printer friendly link request

@@ -40,6 +40,7 @@ class filedownloadController extends expController {
     static function isSearchable() { return true; }
 	
     function showall() {
+        expHistory::set('viewable', $this->params);
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
         if (!empty($this->params['view']) && ($this->params['view'] == 'showall_accordion' || $this->params['view'] == 'showall_tabbed')) {
             $limit = '0';

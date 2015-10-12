@@ -109,7 +109,7 @@
                         {*<h2>{'New Order Notifications'|gettext}</h2>*}
                         {control type="checkbox" name="email_invoice" label="Send email notification of new orders?"|gettext value=1 checked=$config.email_invoice}
                         {*{control type="text" name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}*}
-                        {control type=email name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
+                        {control type=text name="email_invoice_addresses" label="Send email notifications to (separate email addresses with a comma)"|gettext size=60 value=$config.email_invoice_addresses}
                     </div>
                     <div id="tab7">
                         <h2>{'General Location Settings'|gettext}</h2>

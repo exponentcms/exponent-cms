@@ -13,13 +13,6 @@
  *
  *}
 
-{*{css unique="manage_users" corecss="tables,autocomplete"}*}
-{*#user_dt_input {*}
-    {*position:relative;*}
-    {*width:200px;*}
-    {*height:20px;*}
-{*}*}
-{*{/css}*}
 {css unique="manage-users" corecss="datatables-tools"}
 
 {/css}
@@ -39,12 +32,10 @@
 		{icon class=add module=users action=create text="Create a New User"|gettext}
 	</div>
     {br}
-    {*{pagelinks paginate=$page top=1}*}
     {$table_filled = true}
 	<table id="users-manage">
 	    <thead>
 			<tr>
-				{*{$page->header_columns}*}
                 <th data-class="expand">{'Username'|gettext}</th>
                 <th data-hide="phone" data-name="First">{'First Name'|gettext}</th>
                 <th data-hide="phone" data-name="Last">{'Last Name'|gettext}</th>
@@ -79,7 +70,6 @@
 			{/foreach}
 		</tbody>
 	</table>
-    {*{pagelinks paginate=$page bottom=1}*}
 </div>
 
 {if $table_filled}

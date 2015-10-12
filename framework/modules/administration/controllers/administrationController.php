@@ -509,14 +509,17 @@ class administrationController extends expController {
 	public static function clear_all_caches() {
 		expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();  // clear the session cache for true 'clear all'
+        expHistory::flush();  // clear the history
         expSession::un_set('framework');
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
 		expTheme::removeCss();
         expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
-		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
-		if (file_exists(BASE.'tmp/extensionuploads')) expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
+		if (file_exists(BASE.'tmp/img_cache'))
+            expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+		if (file_exists(BASE.'tmp/extensionuploads'))
+            expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
 		flash('message',gt("All the System Caches have been cleared"));
 		expHistory::back();

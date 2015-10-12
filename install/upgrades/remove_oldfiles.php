@@ -164,6 +164,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.3.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.5.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.6.js',
+            'external/jquery/addons/js/pwstrength-bootstrap-1.2.7.js',
             'external/less.php/Cache.php',
             'external/less.php/Less.php',
             'external/less.php/Version.php',

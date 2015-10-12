@@ -27,7 +27,6 @@ function adminer_object() {
     
     $plugins = array(
         // specify enabled plugins here
-        new AdminerTheme('default-blue'),
 //        new AdminerSimpleMenu(),
         new AdminerJsonPreview(),
 //        new AdminerDumpAlter,
@@ -61,6 +60,7 @@ function adminer_object() {
         );  // inserts wysiwyg editor for 'body' fields
     }
     $plugins[] = new AdminerEditTextarea;  // adjusts box size smaller, MUST be last in chain for textarea widgets
+    $plugins[] = new AdminerTheme('default-blue');  // sets responsive theme color and other details
 
     /* It is possible to combine customization and plugins: */
     class AdminerCustomization extends AdminerPlugin {
