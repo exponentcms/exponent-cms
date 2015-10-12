@@ -32,7 +32,7 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		/* exdoc
 		 * This is the revision version number of Exponent; the 2 in 1.96.2-beta3
 		 */
-		define('EXPONENT_VERSION_REVISION','');
+		define('EXPONENT_VERSION_REVISION','5');
 		/* exdoc
 		 * This specifies the type of release, either 'alpha','beta','release-candidate' or '' (for stable).
 		 */
