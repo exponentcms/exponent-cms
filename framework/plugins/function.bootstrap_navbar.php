@@ -85,18 +85,18 @@ function build_menu($page,$params) {
         }
         if ($sectionObj->id == $page->id) $menu .= ' active';
         $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text;
-        if (empty($page->depth)) $menu .= '<b class="caret"></b>';
+        if (empty($page->depth) && $params['length'] > 1) $menu .= '<b class="caret"></b>';
         $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;
             $topmenu->url = $page->url;
-            if (!isset($page->depth) || $page->depth + 1 < $params['length']) {
+            if ((!isset($page->depth) && $params['length'] > 1) || $page->depth + 1 < $params['length']) {
                 $menu .= build_menu($topmenu, $params);
             }
         }
-        if (!isset($page->depth) || $page->depth + 1 < $params['length']) {
+        if ((!isset($page->depth) && $params['length'] > 1) || $page->depth + 1 < $params['length']) {
             if (!empty($page->itemdata)) {
                 foreach ($page->itemdata as $subpage) {
                     $menu .= build_menu($subpage, $params);
