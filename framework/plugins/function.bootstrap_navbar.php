@@ -78,7 +78,7 @@ function build_menu($page,$params) {
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text.'</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
-        if (!empty($page->depth)) {
+        if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="dropdown-submenu';
         } else {
             $menu = '<li class="dropdown';
@@ -92,15 +92,19 @@ function build_menu($page,$params) {
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;
             $topmenu->url = $page->url;
-            $menu .= build_menu($topmenu,$params);
-        }
-        if (!empty($page->itemdata)) {
-            foreach ($page->itemdata as $subpage) {
-                $menu .= build_menu($subpage,$params);
+            if (!isset($page->depth) || $page->depth + 1 < $params['length']) {
+                $menu .= build_menu($topmenu, $params);
             }
-        } elseif (!empty($page->submenu->itemdata)) {
-            foreach ($page->submenu->itemdata as $subpage) {
-                $menu .= build_menu($subpage,$params);
+        }
+        if (!isset($page->depth) || $page->depth + 1 < $params['length']) {
+            if (!empty($page->itemdata)) {
+                foreach ($page->itemdata as $subpage) {
+                    $menu .= build_menu($subpage, $params);
+                }
+            } elseif (!empty($page->submenu->itemdata)) {
+                foreach ($page->submenu->itemdata as $subpage) {
+                    $menu .= build_menu($subpage, $params);
+                }
             }
         }
         $menu .= '</ul>'."\n".'</li>'."\n";
