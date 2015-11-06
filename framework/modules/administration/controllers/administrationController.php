@@ -1344,9 +1344,9 @@ class administrationController extends expController {
         expSession::un_set('theme_style');
 //        expSession::un_set('framework');
         expSession::set('force_less_compile', 1);
-        expSettings::activateProfile($this->params['profile']);
         expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
+        expSettings::activateProfile($this->params['profile']);
         flash('message', gt("New Configuration Profile Loaded") . ' (' . $this->params['profile'] . ')');
         redirect_to(array('controller'=>'administration', 'action'=>'configure_site'));
     }
