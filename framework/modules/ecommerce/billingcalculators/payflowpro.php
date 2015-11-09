@@ -67,7 +67,7 @@ class payflowpro extends creditcard {
 
 //    function process($billingmethod, $opts, $params, $invoice_number) {
     function process($billingmethod, $opts, $params, $order) {
-//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
         $config = unserialize($this->config);
         //eDebug($config,true);
         switch ($config['process_mode']) {

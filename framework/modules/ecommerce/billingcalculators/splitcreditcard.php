@@ -51,7 +51,7 @@ class splitcreditcard extends creditcard {
 
     //called when the order is submitted. Should return an object...
     function process($billingmethod, $opts, $params, $order) {
-//        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
+        $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
 
         // make sure we have some billing options saved.
         if (empty($opts)) return false;
