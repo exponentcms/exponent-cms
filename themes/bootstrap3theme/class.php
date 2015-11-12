@@ -62,6 +62,7 @@ class bootstrap3theme extends theme {
 		// Menu Alignments
         $menu_alignments = array(
             "left"=>'Left',
+            "center"=>'Center',
 			"right"=>'Right',
 		);
 

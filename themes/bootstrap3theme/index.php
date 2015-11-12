@@ -27,6 +27,7 @@
             "lessvars"=>array(
                 'menu_height'=>MENU_HEIGHT,
                 'menu_width'=>MENU_WIDTH,
+                'menu_align_center'=>MENU_ALIGN == 'center',
             ),
             "css_links"=>true,
             "css_theme"=>true
