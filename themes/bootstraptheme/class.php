@@ -28,7 +28,6 @@ class bootstraptheme extends theme {
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
-//        $swatches = array();
         $swatches[] = gt('Base');
        	if (is_readable(BASE.'external/bootstrap/less')) {
        		$dh = opendir(BASE.'external/bootstrap/less');

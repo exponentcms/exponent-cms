@@ -31,6 +31,9 @@
     {elseif $smarty.const.BTN_SIZE == 'small'}
         {$btn_size = 'btn-sm'}
         {$icon_size = ''}
+    {elseif $smarty.const.BTN_SIZE == 'extrasmall'}
+        {$btn_size = 'btn-xs'}
+        {$icon_size = ''}
     {else}
         {$btn_size = ''}
         {$icon_size = 'fa-lg'}

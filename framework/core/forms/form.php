@@ -243,6 +243,8 @@ class form extends baseform {
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-sm';
+			} elseif (BTN_SIZE == 'extrasmall') {
+		       $btn_size = 'btn-xs';
             } else { // medium
                 $btn_size = '';
             }

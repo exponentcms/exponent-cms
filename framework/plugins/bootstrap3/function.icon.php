@@ -129,6 +129,9 @@ if (!function_exists('smarty_function_icon')) {
         } elseif (BTN_SIZE == 'small' || (!empty($params['size']) && $params['size'] == 'small')) {
             $btn_size = 'btn-sm';
             $icon_size = '';
+        } elseif (BTN_SIZE == 'extrasmall' || (!empty($params['size']) && $params['size'] == 'extrasmall')) {
+            $btn_size = 'btn-xs';
+            $icon_size = '';
         } else { // medium
             $btn_size = '';
             $icon_size = 'fa-lg';

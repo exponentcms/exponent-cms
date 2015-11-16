@@ -28,7 +28,6 @@ class bootstrap3theme extends theme {
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
-//        $swatches = array();
         $swatches[] = gt('Base');
        	if (is_readable(BASE.'external/bootstrap3/less')) {
        		$dh = opendir(BASE.'external/bootstrap3/less');
@@ -48,6 +47,7 @@ class bootstrap3theme extends theme {
 
 		// Button Sizes
         $icon_sizes = array(
+            "extrasmall"=>'Extra Small',
             "small"=>'Small',
             "medium"=>'Medium',
 			"large"=>'Large',
