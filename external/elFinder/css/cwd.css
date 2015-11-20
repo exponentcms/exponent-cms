@@ -70,7 +70,7 @@
 /* file name place */
 .elfinder-cwd-view-icons .elfinder-cwd-filename {
 	text-align:center;
-	max-height:30px;
+	max-height:32px;
 	white-space:pre-wrap;
 	word-break:normal;
 	overflow:hidden;
@@ -192,6 +192,15 @@
 /* textfield inside icon */
 .elfinder-cwd input { width:100%; border:0px solid; margin:0; padding:0; }
 .elfinder-cwd-view-icons input {text-align:center; }
+.elfinder-cwd-view-icons textarea {
+	width: 100%;
+	border: 0px solid;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	overflow: hidden;
+	resize: none;
+}
 
 .elfinder-cwd-view-icons { text-align:center; }
 
@@ -232,7 +241,10 @@
 	text-align:right;
 	cursor:default;
 	border:0 solid;
-	
+}
+
+.elfinder .elfinder-cwd table td div { 
+	box-sizing: content-box;
 }
 
 .elfinder .elfinder-cwd tr.elfinder-touch td {

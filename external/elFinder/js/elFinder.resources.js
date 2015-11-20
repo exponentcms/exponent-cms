@@ -60,8 +60,19 @@ elFinder.prototype.resources = {
 			var fm   = this.fm,
 				cmd  = this.name,
 				cwd  = fm.getUI('cwd'),
+				tarea= (fm.storage('view') != 'list'),
+				rest = function(){
+					if (tarea) {
+						node.zIndex('').css('position', '');
+						nnode.css('max-height', '');
+					} else {
+						pnode.css('width', '');
+						pnode.parent('td').css('overflow', '');
+					}
+				}, colwidth,
 				dfrd = $.Deferred()
 					.fail(function(error) {
+						rest();
 						cwd.trigger('unselectall');
 						error && fm.error(error);
 					})
@@ -83,7 +94,19 @@ elFinder.prototype.resources = {
 				},
 				data = this.data || {},
 				node = cwd.trigger('create.'+fm.namespace, file).find('#'+id),
-				input = $('<input type="text"/>')
+				nnode, pnode,
+				input = $(tarea? '<textarea/>' : '<input type="text"/>')
+					.on('keyup text', function(){
+						if (tarea) {
+							this.style.height = '1px';
+							this.style.height = this.scrollHeight + 'px';
+						} else if (colwidth) {
+							this.style.width = colwidth + 'px';
+							if (this.scrollWidth > colwidth) {
+								this.style.width = this.scrollWidth + 10 + 'px';
+							}
+						}
+					})
 					.keydown(function(e) {
 						e.stopImmediatePropagation();
 
@@ -109,6 +132,7 @@ elFinder.prototype.resources = {
 								return dfrd.reject(['errExists', name]);
 							}
 
+							rest();
 							parent.html(fm.escape(name));
 
 							fm.lockfiles({files : [id]});
@@ -140,7 +164,18 @@ elFinder.prototype.resources = {
 			}
 
 			fm.disable();
-			node.find('.elfinder-cwd-filename').empty('').append(input.val(file.name));
+			nnode = node.find('.elfinder-cwd-filename');
+			pnode = nnode.parent();
+			if (tarea) {
+				node.zIndex((node.parent().zIndex()) + 1).css('position', 'relative');
+				nnode.css('max-height', 'none');
+			} else {
+				colwidth = pnode.width();
+				pnode.width(colwidth - 15);
+				pnode.parent('td').css('overflow', 'visible');
+			}
+			nnode.empty('').append(input.val(file.name));
+			input.trigger('keyup');
 			input.select().focus();
 			input[0].setSelectionRange && input[0].setSelectionRange(0, file.name.replace(/\..+$/, '').length);
 

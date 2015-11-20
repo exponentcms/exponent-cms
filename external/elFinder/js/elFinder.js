@@ -193,6 +193,13 @@ window.elFinder = function(node, opts) {
 		 * @default 400
 		 **/
 		height = 400,
+		
+		/**
+		 * elfinder path for sound played on remove
+		 * @type String
+		 * @default ./sounds/
+		 **/
+		soundPath = './sounds/',
 				
 		beeper = $(document.createElement('audio')).hide().appendTo('body')[0],
 			
@@ -1798,7 +1805,7 @@ window.elFinder = function(node, opts) {
 		.bind('rm', function(e) {
 			var play  = beeper.canPlayType && beeper.canPlayType('audio/wav; codecs="1"');
 		
-			play && play != '' && play != 'no' && $(beeper).html('<source src="./sounds/rm.wav" type="audio/wav">')[0].play()
+			play && play != '' && play != 'no' && $(beeper).html('<source src="' + soundPath + 'rm.wav" type="audio/wav">')[0].play()
 		})
 		
 		;
@@ -1945,6 +1952,10 @@ window.elFinder = function(node, opts) {
 		height = parseInt(this.options.height);
 	}
 	
+	if (this.options.soundPath) {
+		soundPath = this.options.soundPath.replace(/\/+$/, '') + '/';
+	}
+	
 	// update size	
 	self.resize(width, height);
 	
@@ -2014,6 +2025,34 @@ window.elFinder = function(node, opts) {
 			}
 		});
 	})();
+
+	// bind window onmessage for CORS
+	$(window).on('message', function(e){
+		var res = e.originalEvent || null,
+			obj, data;
+		if (res && self.uploadURL.indexOf(res.origin) === 0) {
+			try {
+				obj = JSON.parse(res.data);
+				data = obj.data || null;
+				if (data) {
+					if (data.error) {
+						self.error(data.error);
+					} else {
+						data.warning && self.error(data.warning);
+						data.removed && data.removed.length && self.remove(data);
+						data.added   && data.added.length   && self.add(data);
+						data.changed && data.changed.length && self.change(data);
+						if (obj.bind) {
+							self.trigger(obj.bind, data);
+						}
+						data.sync && self.sync();
+					}
+				}
+			} catch (e) {
+				self.sync();
+			}
+		}
+	});
 
 	if (self.dragUpload) {
 		node[0].addEventListener('dragenter', function(e) {
@@ -2099,8 +2138,8 @@ elFinder.prototype = {
 			'application/vnd.ms-word.document.macroEnabled.12'                        : 'MsWord',
 			'application/vnd.openxmlformats-officedocument.wordprocessingml.template' : 'MsWord',
 			'application/vnd.ms-word.template.macroEnabled.12'                        : 'MsWord',
-			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'       : 'MsWord',
 			'application/vnd.ms-excel'      : 'MsExcel',
+			'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'       : 'MsExcel',
 			'application/vnd.ms-excel.sheet.macroEnabled.12'                          : 'MsExcel',
 			'application/vnd.openxmlformats-officedocument.spreadsheetml.template'    : 'MsExcel',
 			'application/vnd.ms-excel.template.macroEnabled.12'                       : 'MsExcel',
@@ -2450,6 +2489,7 @@ elFinder.prototype = {
 							isDataType = false;
 							send(files);
 						}
+						files = null;
 						error && self.error(error);
 					})
 					.done(function(data) {
@@ -2586,7 +2626,24 @@ elFinder.prototype = {
 				}
 				
 				res._multiupload = data.multiupload? true : false;
-				res.error ? dfrd.reject(res.error) : dfrd.resolve(res);
+				if (res.error) {
+					if (res._chunkfailure) {
+						abort = true;
+						self.uploads.xhrUploading = false;
+						notifyto && clearTimeout(notifyto);
+						if (self.ui.notify.children('.elfinder-notify-upload').length) {
+							self.notify({type : 'upload', cnt : -cnt, progress : 0, size : 0});
+							dfrd.reject(res.error);
+						} else {
+							// for multi connection
+							dfrd.reject();
+						}
+					} else {
+						dfrd.reject(res.error);
+					}
+				} else {
+					dfrd.resolve(res);
+				}
 			}, false);
 			
 			xhr.upload.addEventListener('loadstart', function(e) {
@@ -2678,7 +2735,7 @@ elFinder.prototype = {
 								if (cid) {	
 									failChunk[cid] = true;
 								}
-								error && self.error(error);
+								//error && self.error(error);
 							})
 							.always(function(e) {
 								if (e && e.added) added = $.merge(added, e.added);
@@ -2739,7 +2796,7 @@ elFinder.prototype = {
 							continue;
 						}
 						
-						if (blobSlice && blobSize >= BYTES_PER_CHUNK) {
+						if (blobSlice && blobSize > BYTES_PER_CHUNK) {
 							start = 0;
 							end = BYTES_PER_CHUNK;
 							chunks = -1;
@@ -2747,7 +2804,7 @@ elFinder.prototype = {
 
 							totalSize += blobSize;
 							chunked[chunkID] = 0;
-							while(start < blobSize) {
+							while(start <= blobSize) {
 								chunk = blob[blobSlice](start, end);
 								chunk._chunk = blob.name + '.' + ++chunks + '_' + total + '.part';
 								chunk._cid   = chunkID;
@@ -2987,10 +3044,11 @@ elFinder.prototype = {
 					.on('load', function() {
 						iframe.off('load')
 							.on('load', function() {
-								var data = self.parseUploadData(iframe.contents().text());
+								//var data = self.parseUploadData(iframe.contents().text());
 								
 								onload();
-								data.error ? dfrd.reject(data.error) : dfrd.resolve(data);
+								dfrd.reject();
+								//data.error ? dfrd.reject(data.error) : dfrd.resolve(data);
 							});
 							
 							// notify dialog
@@ -3027,6 +3085,7 @@ elFinder.prototype = {
 			
 			form.append('<input type="hidden" name="'+(self.newAPI ? 'target' : 'current')+'" value="'+(data.target || self.cwd().hash)+'"/>')
 				.append('<input type="hidden" name="html" value="1"/>')
+				.append('<input type="hidden" name="node" value="'+self.id+'"/>')
 				.append($(input).attr('name', 'upload[]'));
 			
 			$.each(self.options.onlyMimes||[], function(i, mime) {
@@ -3694,7 +3753,7 @@ elFinder.prototype = {
 	mime2kind : function(f) {
 		var mime = typeof(f) == 'object' ? f.mime : f, kind;
 		
-		if (f.alias) {
+		if (f.alias && f.mime != 'symlink-broken') {
 			kind = 'Alias';
 		} else if (this.kinds[mime]) {
 			kind = this.kinds[mime];

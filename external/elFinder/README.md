@@ -20,6 +20,7 @@ Contents
 * [Requirements](#requirements)
 * [Installation](#installation)
 * [Downloads](#downloads)
+* [Demo Sites](#demo-sites)
 * [FAQs](#faqs)
 * [3rd Party Connectors](#3rd-party-connectors)
 * [3rd Party Volume Drivers](#3rd-party-volume-drivers)
@@ -29,7 +30,7 @@ Contents
 
 Features
 --------
-
+**2.0.x**
  * All operations with files and folders on a remote server (copy, move,
    upload, create folder/file, rename, etc.)
  * High performance server backend and light client UI
@@ -53,6 +54,22 @@ Features
  * Extensibility
  * Simple client-server API based on JSON
 
+**2.1.x**
+ * More High performance server backend and light client UI
+ * Connector plugin
+     * [AutoResize](https://github.com/Studio-42/elFinder/blob/2.1-src/php/plugins/AutoResize/plugin.php) : Auto resize on file upload.
+     * [Normalizer](https://github.com/Studio-42/elFinder/blob/2.1-src/php/plugins/Normalizer/plugin.php) : UTF-8 Normalizer of file-name and file-path etc.
+     * [Sanitizer](https://github.com/Studio-42/elFinder/blob/2.1-src/php/plugins/Sanitizer/plugin.php) : Sanitizer of file-name and file-path etc.
+     * [Watermark](https://github.com/Studio-42/elFinder/blob/2.1-src/php/plugins/Watermark/plugin.php) : Print watermark on file upload.
+ * Folder upload with Chrome
+ * Chunked file upload
+ * Upload directly to the folder
+ * Creating the archive by specifying the file name
+ * Direct extraction to the current working directory (you do not want to create a folder)
+ * Supports Dropbox.com&copy; (Configurable & As network volume)
+ * Supports custom information in info dialog
+ * Configuable columns of list view
+ * Supports custom CSS class function of tree view
 
 Requirements
 ------------
@@ -84,18 +101,30 @@ Installation
 
 Downloads
 ------------
- + [elFinder 2.0 (RC1)](https://github.com/downloads/Studio-42/elFinder/elfinder-2.0-rc1.tar.gz)
- + [elFinder 2.x (Nightly)](http://nao-pon.github.io/elFinder-nightly/latests/elfinder-2.x.zip)
- + [elFInder 2.1 (Nightly)](http://nao-pon.github.io/elFinder-nightly/latests/elfinder-2.1.zip)
+**Stable releases**
+ + [elFinder 2.0.3](https://github.com/Studio-42/elFinder/archive/2.0.3.zip)
+ + [elFinder 2.1.1](https://github.com/Studio-42/elFinder/archive/2.1.1.zip)
+
+**Nightly builds**
+ + [elFinder 2.0.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.0-src.zip)
+ + [elFinder 2.1.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.1-src.zip)
+
+Demo sites
+------------
+**2.0**
+ + http://elfinder.org/ (rc1)
+ + http://hypweb.net/elFinder-nightly/demo/2.0/ (2.0.x Nightly)
+
+**2.1.x Nightly**
+ + http://studio-42.github.io/elFinder/ (with CORS)
+ + http://hypweb.net/elFinder-nightly/demo/2.1/
 
 FAQs
 ------------
 ### Which version of elFinder should I use?
-* **2.0** if you want to use the last official release (2012).
+* **2.0.x** if you want to use 2.0 with legacy connectors.
 
-* **2.x** if you want to use 2.0 with some security and bug fixes (*recommended*).
-
-* **2.1** if you want to try the experimental features being introduced in the next major release (*bleeding edge, but potentially unstable*).
+* **2.1.x** if you want to try the experimental (*bleeding edge, but connector is PHP only*).
 
 ### Should I use elFinder builds (compressed) or source (uncompressed)?
 
@@ -103,6 +132,13 @@ For debugging and development, use the [source](#source-uncompressed). For produ
 
 ### How do I integrate elFinder with CKEditor/TinyMCE/elRTE/etc...?
 Check out the [wiki](https://github.com/studio-42/elFinder/wiki#howtos) for individual instructions.
+
+### The procedure of language files created or modified?
+
+You can create or modify the language file to use translation tool. Please refer to the pull request the results to the respective branch.
+ * [2.1 branch translation tool](http://studio-42.github.io/elFinder/tools/langman/#2.1)
+ * [2.0 branch translation tool](http://studio-42.github.io/elFinder/tools/langman/#2.0)
+
 
 3rd party connectors
 --------------------
