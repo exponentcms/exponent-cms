@@ -8,17 +8,6 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
-Version 2.3.6
--------------
-### Refine 'shipment' interface, plus address any issues in v2.3.5
-  - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
-  - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
-  - includes all fixes from v2.3.5 patches
-### Known Issues
-  - eCommerce purchase-order functionality has not been tested/may not be complete
-  - Item re-ranking (ddrerank) doesn't account for aggregation
-  - LDAP support may not work in all LDAP server scenarios due to limited testing
-
 Version 2.3.5
 -------------
 ### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
@@ -26,7 +15,7 @@ Version 2.3.5
   - enhances elFinder/TinyMCE/CKEditor integration; CKEditor now allows paste/drop images
   - adds Facebook og: meta tag support
   - adds remote blog post editing (xmlrpc); this feature is turned off by default
-  - adds new easypost ecommerce shipping calculator includes order fulfillment functions
+  - adds new easypost ecommerce shipping calculator includes order fufillment functions
   - improves security by allowing admin controlled password strength settings and more secure password hashing
   - includes all fixes from v2.3.4 patches
 ### Known Issues
@@ -39,7 +28,7 @@ Version 2.3.4
 ### Finish removing YUI2 code/widgets, plus address any issues in v2.3.3
   * !!! fixes an XSS vulnerability in source_selector.php/selector.php
   * regression fix for issues caused by previous security fix (json data could be corrupted) unable to delete files, etc..
-  - adds 'announcement' view to events module
+  - adds 'announcment' view to events module
   - adds alternate color to 'featured' items in announcement views
   - updates twitter view to more closely resemble twitter.com
   - updates optional ajax paging to be seo friendly; site-wide setting now on display tab of site configuration
