@@ -11,6 +11,8 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.3.6
 -------------
 ### Refine 'shipment' interface, plus address any issues in v2.3.5
+  - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
+  - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
   - includes all fixes from v2.3.5 patches
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete

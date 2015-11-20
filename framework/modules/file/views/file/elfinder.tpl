@@ -121,6 +121,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/pixlr.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/links.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/chmod.js"></script>
 
     <!-- elfinder languages -->
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}

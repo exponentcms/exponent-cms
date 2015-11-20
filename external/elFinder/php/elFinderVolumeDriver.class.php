@@ -182,6 +182,8 @@ abstract class elFinderVolumeDriver {
 		'locale'          => '',
 		// URL of volume icon (16x16 pixel image file)
 		'icon'            => '',
+		// CSS Class of volume root in tree
+		'rootCssClass'    => '',
 		// library to crypt/uncrypt files names (not implemented)
 		'cryptLib'        => '',
 		// how to detect files mimetypes. (auto/internal/finfo/mime_content_type)
@@ -484,6 +486,13 @@ abstract class elFinderVolumeDriver {
 	protected $separator = DIRECTORY_SEPARATOR;
 	
 	/**
+	 * System Root path (Unix like: '/', Windows: '\', 'C:\' or 'D:\'...)
+	 *
+	 * @var string
+	 **/
+	protected $systemRoot = DIRECTORY_SEPARATOR;
+	
+	/**
 	 * Mimetypes allowed to display
 	 *
 	 * @var array
@@ -510,6 +519,13 @@ abstract class elFinderVolumeDriver {
 	 * @var array
 	 **/
 	protected $dirsCache = array();
+	
+	/**
+	 * Cache for subdirsCE()
+	 * 
+	 * @var array
+	 */
+	protected $subdirsCache = array();
 	
 	/**
 	 * Reference of $_SESSION[elFinder::$sessionCacheKey][$this->id]
@@ -683,6 +699,7 @@ abstract class elFinderVolumeDriver {
 		$this->id = $this->driverId.(!empty($this->options['id']) ? $this->options['id'] : elFinder::$volumesCnt++).'_';
 		$this->root = $this->normpathCE($this->options['path']);
 		$this->separator = isset($this->options['separator']) ? $this->options['separator'] : DIRECTORY_SEPARATOR;
+		$this->systemRoot = isset($this->options['systemRoot']) ? $this->options['systemRoot'] : DIRECTORY_SEPARATOR;
 		
 		// set server encoding
 		if (!empty($this->options['encoding']) && strtoupper($this->options['encoding']) !== 'UTF-8') {
@@ -768,7 +785,14 @@ abstract class elFinderVolumeDriver {
 			}
 			$this->uploadMaxSize = intval($size)*$n;
 		}
-			
+		// Set maximum to PHP_INT_MAX
+		if (!defined('PHP_INT_MAX')) {
+			define('PHP_INT_MAX', 2147483647);
+		}
+		if ($this->uploadMaxSize < 1 || $this->uploadMaxSize > PHP_INT_MAX) {
+			$this->uploadMaxSize = PHP_INT_MAX;
+		}
+		
 		$this->disabled = isset($this->options['disabled']) && is_array($this->options['disabled'])
 			? $this->options['disabled']
 			: array();
@@ -1007,7 +1031,7 @@ abstract class elFinderVolumeDriver {
 			}
 		}
 		return array(
-			'path'          => $this->path($this->decode($hash)),
+			'path'          => $this->path($hash),
 			'url'           => $this->URL,
 			'tmbUrl'        => $this->tmbURL,
 			'disabled'      => array_merge(array_unique($this->disabled)), // `array_merge` for type array of JSON
@@ -1432,6 +1456,11 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_INVALID_NAME, $name);
 		}
 		
+		$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name);
+		if ($mimeByName && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName)) {
+			return $this->setError(elFinder::ERROR_INVALID_NAME, $name);
+		}
+		
 		if (!($file = $this->file($hash))) {
 			return $this->setError(elFinder::ERROR_FILE_NOT_FOUND);
 		}
@@ -1523,12 +1552,16 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_INVALID_NAME);
 		}
 		
-		$mime = $this->mimetype($this->mimeDetect == 'internal' ? $name : $tmpname, $name); 
-		if ($mime == 'unknown' && $this->mimeDetect != 'internal') {
-			$mime = elFinderVolumeDriver::mimetypeInternalDetect($name);
+		$mime = $this->mimetype($this->mimeDetect == 'internal' ? $name : $tmpname, $name);
+		$mimeByName = '';
+		if ($this->mimeDetect !== 'internal') {
+			$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name);
+			if ($mime == 'unknown') {
+				$mime = $mimeByName;
+			}
 		}
 
-		if (!$this->allowPutMime($mime)) {
+		if (!$this->allowPutMime($mime) || ($mimeByName && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName))) {
 			return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME);
 		}
 
@@ -1601,7 +1634,7 @@ abstract class elFinderVolumeDriver {
 		}
 
 		$name = $file['name'];
-		$errpath = $volume->path($src);
+		$errpath = $volume->path($file['hash']);
 		
 		if (($dir = $this->dir($dst)) == false) {
 			return $this->setError($err, $errpath, elFinder::ERROR_TRGDIR_NOT_FOUND, '#'.$dst);
@@ -1616,7 +1649,7 @@ abstract class elFinderVolumeDriver {
 		if (($test = $volume->closest($src, $rmSrc ? 'locked' : 'read', $rmSrc))) {
 			return $rmSrc
 				? $this->setError($err, $errpath, elFinder::ERROR_LOCKED, $volume->path($test))
-				: $this->setError($err, $errpath, elFinder::ERROR_PERM_DENIED);
+				: $this->setError($err, $errpath, !empty($file['thash'])? elFinder::ERROR_PERM_DENIED : elFinder::ERROR_MKOUTLINK);
 		}
 
 		$test = $this->joinPathCE($destination, $name);
@@ -1626,7 +1659,7 @@ abstract class elFinderVolumeDriver {
 			if ($this->options['copyOverwrite']) {
 				// do not replace file with dir or dir with file
 				if (!$this->isSameType($file['mime'], $stat['mime'])) {
-					return $this->setError(elFinder::ERROR_NOT_REPLACE, $this->path($test));
+					return $this->setError(elFinder::ERROR_NOT_REPLACE, $this->path($stat['hash']));
 				}
 				// existed file is not writable
 				if (!$stat['write']) {
@@ -1634,7 +1667,8 @@ abstract class elFinderVolumeDriver {
 				}
 				// existed file locked or has locked child
 				if (($locked = $this->closestByAttr($test, 'locked', true))) {
-					return $this->setError(elFinder::ERROR_LOCKED, $this->path($locked));
+					$stat = $this->stat($locked);
+					return $this->setError(elFinder::ERROR_LOCKED, $this->path($stat['hash']));
 				}
 				// target is entity file of alias
 				if ($volume == $this && ($test == @$file['target'] || $test == $this->decode($src))) {
@@ -1642,7 +1676,7 @@ abstract class elFinderVolumeDriver {
 				}
 				// remove existed file
 				if (!$this->remove($test)) {
-					return $this->setError(elFinder::ERROR_REPLACE, $this->path($test));
+					return $this->setError(elFinder::ERROR_REPLACE, $this->path($stat['hash']));
 				}
 			} else {
 				$name = $this->uniqueName($destination, $name, ' ', false);
@@ -1670,9 +1704,7 @@ abstract class elFinderVolumeDriver {
 		}
 		
 		if ($rmSrc) {
-			if ($volume->rm($src)) {
-				$this->removed[] = $file;
-			} else {
+			if (!$volume->rm($src)) {
 				return $this->setError(elFinder::ERROR_MOVE, $errpath, elFinder::ERROR_RM_SRC);
 			}
 		}
@@ -2055,8 +2087,8 @@ abstract class elFinderVolumeDriver {
 	public function getUploadTaget($baseTargetHash, $path, & $result) {
 		$base = $this->decode($baseTargetHash);
 		$targetHash = $baseTargetHash;
-		$path = ltrim($path, '/');
-		$dirs = explode('/', $path);
+		$path = ltrim($path, $this->separator);
+		$dirs = explode($this->separator, $path);
 		array_pop($dirs);
 		foreach($dirs as $dir) {
 			$targetPath = $this->joinPathCE($base, $dir);
@@ -2246,7 +2278,10 @@ abstract class elFinderVolumeDriver {
 	 * @author Naoki Sawada
 	 **/
 	protected function subdirsCE($path) {
-		return (!$this->encoding)? $this->_subdirs($path) : $this->convEncOut($this->_subdirs($this->convEncIn($path)));
+		if (!isset($this->subdirsCache[$path])) {
+			$this->subdirsCache[$path] = (!$this->encoding)? $this->_subdirs($path) : $this->convEncOut($this->_subdirs($this->convEncIn($path)));
+		}
+		return $this->subdirsCache[$path];
 	}
 	
 	/**
@@ -2687,15 +2722,22 @@ abstract class elFinderVolumeDriver {
 		}
 		$is_root = ($path === $this->root);
 		if ($is_root) {
-			if (isset($this->sessionCache['rootstat'])) {
-				return $this->cache[$path] = unserialize(base64_decode($this->sessionCache['rootstat']));
+			$rootKey = md5($path);
+			if (!isset($this->sessionCache['rootstat'])) {
+				$this->sessionCache['rootstat'] = array();
+			}
+			// need $path as key for netmount/netunmount
+			if (isset($this->sessionCache['rootstat'][$rootKey])) {
+				if ($ret = elFinder::sessionDataDecode($this->sessionCache['rootstat'][$rootKey], 'array')) {
+					return $ret;
+				}
 			}
 		}
 		$ret = isset($this->cache[$path])
 			? $this->cache[$path]
 			: $this->updateCache($path, $this->convEncOut($this->_stat($this->convEncIn($path))));
 		if ($is_root) {
-			$this->sessionCache['rootstat'] = base64_encode(serialize($ret));
+			$this->sessionCache['rootstat'][$rootKey] = elFinder::sessionDataEncode($ret);
 		}
 		return $ret;
 	}
@@ -2716,6 +2758,7 @@ abstract class elFinderVolumeDriver {
 		$stat['hash'] = $this->encode($path);
 
 		$root = $path == $this->root;
+		$parent = '';
 		
 		if ($root) {
 			if ($this->rootName) {
@@ -2724,12 +2767,16 @@ abstract class elFinderVolumeDriver {
 			if (! empty($this->options['icon'])) {
 				$stat['icon'] = $this->options['icon'];
 			}
+			if (! empty($this->options['rootCssClass'])) {
+				$stat['csscls'] = $this->options['rootCssClass'];
+			}
 		} else {
 			if (!isset($stat['name']) || $stat['name'] === '') {
 				$stat['name'] = $this->basenameCE($path);
 			}
 			if (empty($stat['phash'])) {
-				$stat['phash'] = $this->encode($this->dirnameCE($path));
+				$parent = $this->dirnameCE($path);
+				$stat['phash'] = $this->encode($parent);
 			}
 		}
 		
@@ -2788,8 +2835,11 @@ abstract class elFinderVolumeDriver {
 		if ($stat['read'] && empty($stat['hidden'])) {
 			
 			if ($isDir) {
+				// caching parent's subdirs
+				if ($parent) {
+					$this->subdirsCache[$parent] = true;
+				}
 				// for dir - check for subdirs
-
 				if ($this->options['checkSubfolders']) {
 					if (isset($stat['dirs'])) {
 						if ($stat['dirs']) {
@@ -2829,6 +2879,7 @@ abstract class elFinderVolumeDriver {
 		
 		if (!empty($stat['alias']) && !empty($stat['target'])) {
 			$stat['thash'] = $this->encode($stat['target']);
+			//$this->cache[$stat['target']] = $stat;
 			unset($stat['target']);
 		}
 		
@@ -2848,12 +2899,16 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function cacheDir($path) {
 		$this->dirsCache[$path] = array();
+		$this->subdirsCache[$path] = false;
 
 		foreach ($this->scandirCE($path) as $p) {
 			if (($stat = $this->stat($p)) && empty($stat['hidden'])) {
+				if ($stat['mime'] === 'directory') {
+					$this->subdirsCache[$path] = true;
+				}
 				$this->dirsCache[$path][] = $p;
 			}
-		}	
+		}
 	}
 	
 	/**
@@ -3103,7 +3158,7 @@ abstract class elFinderVolumeDriver {
 			$name = $stat['name'];
 
 			if ((!$mimes || $stat['mime'] !== 'directory') && $this->stripos($name, $q) !== false) {
-				$stat['path'] = $this->path($p);
+				$stat['path'] = $this->path($stat['hash']);
 				if ($this->URL && !isset($stat['url'])) {
 					$path = str_replace($this->separator, '/', substr($p, strlen($this->root) + 1));
 					if ($this->encoding) {
@@ -3140,18 +3195,21 @@ abstract class elFinderVolumeDriver {
 		
 		if (!empty($srcStat['thash'])) {
 			$target = $this->decode($srcStat['thash']);
+			if (!$this->inpathCE($target, $this->root)) {
+				return $this->setError(elFinder::ERROR_COPY, $this->path($srcStat['hash']), elFinder::ERROR_MKOUTLINK);
+			}
 			$stat   = $this->stat($target);
 			$this->clearcache();
 			return $stat && $this->symlinkCE($target, $dst, $name)
 				? $this->joinPathCE($dst, $name)
-				: $this->setError(elFinder::ERROR_COPY, $this->path($src));
+				: $this->setError(elFinder::ERROR_COPY, $this->path($srcStat['hash']));
 		} 
 		
 		if ($srcStat['mime'] == 'directory') {
 			$test = $this->stat($this->joinPathCE($dst, $name));
 			
 			if (($test && $test['mime'] != 'directory') || $this->convEncOut(!$this->_mkdir($this->convEncIn($dst), $this->convEncIn($name)))) {
-				return $this->setError(elFinder::ERROR_COPY, $this->path($src));
+				return $this->setError(elFinder::ERROR_COPY, $this->path($srcStat['hash']));
 			}
 			
 			$dst = $this->joinPathCE($dst, $name);
@@ -3171,7 +3229,7 @@ abstract class elFinderVolumeDriver {
 
 		return $this->convEncOut($this->_copy($this->convEncIn($src), $this->convEncIn($dst), $this->convEncIn($name)))
 			? $this->joinPathCE($dst, $name) 
-			: $this->setError(elFinder::ERROR_COPY, $this->path($src));
+			: $this->setError(elFinder::ERROR_COPY, $this->path($srcStat['hash']));
 	}
 
 	/**
@@ -3196,7 +3254,7 @@ abstract class elFinderVolumeDriver {
 			return $this->joinPathCE($dst, $name);
 		}
 
-		return $this->setError(elFinder::ERROR_MOVE, $this->path($src));
+		return $this->setError(elFinder::ERROR_MOVE, $this->path($stat['hash']));
 	}
 
 	/**
@@ -3216,7 +3274,7 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_COPY, '#'.$src, $volume->error());
 		}
 		
-		$errpath = $volume->path($src);
+		$errpath = $volume->path($source['hash']);
 		
 		if (!$this->nameAccepted($source['name'])) {
 			return $this->setError(elFinder::ERROR_COPY, $errpath, elFinder::ERROR_INVALID_NAME);
@@ -3281,7 +3339,7 @@ abstract class elFinderVolumeDriver {
 		$stat = $this->stat($path);
 		
 		if (empty($stat)) {
-			return $this->setError(elFinder::ERROR_RM, $this->path($path), elFinder::ERROR_FILE_NOT_FOUND);
+			return $this->setError(elFinder::ERROR_RM, $this->path($stat['hash']), elFinder::ERROR_FILE_NOT_FOUND);
 		}
 		
 		$stat['realpath'] = $path;
@@ -3289,18 +3347,18 @@ abstract class elFinderVolumeDriver {
 		$this->clearcache();
 		
 		if (!$force && !empty($stat['locked'])) {
-			return $this->setError(elFinder::ERROR_LOCKED, $this->path($path));
+			return $this->setError(elFinder::ERROR_LOCKED, $this->path($stat['hash']));
 		}
 		
-		if ($stat['mime'] == 'directory') {
+		if ($stat['mime'] == 'directory' && empty($stat['thash'])) {
 			$ret = $this->delTree($this->convEncIn($path));
 			$this->convEncOut();
 			if (!$ret) {
-				return $this->setError(elFinder::ERROR_RM, $this->path($path));
+				return $this->setError(elFinder::ERROR_RM, $this->path($stat['hash']));
 			}
 		} else {
 			if ($this->convEncOut(!$this->_unlink($this->convEncIn($path)))) {
-				return $this->setError(elFinder::ERROR_RM, $this->path($path));
+				return $this->setError(elFinder::ERROR_RM, $this->path($stat['hash']));
 			}
 		}
 
@@ -3543,7 +3601,7 @@ abstract class elFinderVolumeDriver {
 				
 					self::gdImageBackground($tmp,$this->options['tmbBgColor']);
 					
-					if (!imagecopyresampled($tmp, $img, 0, 0, 0, 0, $size_w, $size_h, $orig_w, $orig_h)) {
+					if (!imagecopyresampled($tmp, $img, 0, 0, 0, 0, $size_w, $size_h, $s[0], $s[1])) {
 						return false;
 					}
 		
@@ -4010,109 +4068,174 @@ abstract class elFinderVolumeDriver {
 	 */
 	protected function getArchivers($use_cache = true) {
 
+		$sessionKey = 'ARCHIVERS_CACHE';
+		if ($use_cache && isset($this->sessionCache[$sessionKey]) && is_array($this->sessionCache[$sessionKey])) {
+			return $this->sessionCache[$sessionKey];
+		}
+		
 		$arcs = array(
-				'create'  => array(),
-				'extract' => array()
+			'create'  => array(),
+			'extract' => array()
 		);
-
-		if (!function_exists('proc_open')) {
-			return $arcs;
-		}
 		
-		$sessionKey = elFinder::$sessionCacheKey . ':ARCHIVERS_CACHE';
-		if ($use_cache && isset($_SESSION[$sessionKey]) && is_array($_SESSION[$sessionKey])) {
-			return $_SESSION[$sessionKey];
-		}
+		if (function_exists('proc_open')) {
 		
-		$this->procExec('tar --version', $o, $ctar);
-		
-		if ($ctar == 0) {
-			$arcs['create']['application/x-tar']  = array('cmd' => 'tar', 'argc' => '-cf', 'ext' => 'tar');
-			$arcs['extract']['application/x-tar'] = array('cmd' => 'tar', 'argc' => '-xf', 'ext' => 'tar');
-			unset($o);
-			$test = $this->procExec('gzip --version', $o, $c);
-			if ($c == 0) {
-				$arcs['create']['application/x-gzip']  = array('cmd' => 'tar', 'argc' => '-czf', 'ext' => 'tgz');
-				$arcs['extract']['application/x-gzip'] = array('cmd' => 'tar', 'argc' => '-xzf', 'ext' => 'tgz');
-			}
-			unset($o);
-			$test = $this->procExec('bzip2 --version', $o, $c);
-			if ($c == 0) {
-				$arcs['create']['application/x-bzip2']  = array('cmd' => 'tar', 'argc' => '-cjf', 'ext' => 'tbz');
-				$arcs['extract']['application/x-bzip2'] = array('cmd' => 'tar', 'argc' => '-xjf', 'ext' => 'tbz');
-			}
-			unset($o);
-			$test = $this->procExec('xz --version', $o, $c);
-			if ($c == 0) {
-				$arcs['create']['application/x-xz']  = array('cmd' => 'tar', 'argc' => '-cJf', 'ext' => 'xz');
-				$arcs['extract']['application/x-xz'] = array('cmd' => 'tar', 'argc' => '-xJf', 'ext' => 'xz');
-			}
-		}
-		unset($o);
-		$this->procExec('zip -v', $o, $c);
-		if ($c == 0) {
-			$arcs['create']['application/zip']  = array('cmd' => 'zip', 'argc' => '-r9', 'ext' => 'zip');
-		}
-		unset($o);
-		$this->procExec('unzip --help', $o, $c);
-		if ($c == 0) {
-			$arcs['extract']['application/zip'] = array('cmd' => 'unzip', 'argc' => '',  'ext' => 'zip');
-		}
-		unset($o);
-		$this->procExec('rar --version', $o, $c);
-		if ($c == 0 || $c == 7) {
-			$arcs['create']['application/x-rar']  = array('cmd' => 'rar', 'argc' => 'a -inul', 'ext' => 'rar');
-			$arcs['extract']['application/x-rar'] = array('cmd' => 'rar', 'argc' => 'x -y',    'ext' => 'rar');
-		} else {
-			unset($o);
-			$test = $this->procExec('unrar', $o, $c);
-			if ($c==0 || $c == 7) {
-				$arcs['extract']['application/x-rar'] = array('cmd' => 'unrar', 'argc' => 'x -y', 'ext' => 'rar');
-			}
-		}
-		unset($o);
-		$this->procExec('7za --help', $o, $c);
-		if ($c == 0) {
-			$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7za', 'argc' => 'a', 'ext' => '7z');
-			$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7za', 'argc' => 'x -y', 'ext' => '7z');
+			$this->procExec('tar --version', $o, $ctar);
 			
-			if (empty($arcs['create']['application/zip'])) {
-				$arcs['create']['application/zip'] = array('cmd' => '7za', 'argc' => 'a -tzip', 'ext' => 'zip');
+			if ($ctar == 0) {
+				$arcs['create']['application/x-tar']  = array('cmd' => 'tar', 'argc' => '-cf', 'ext' => 'tar');
+				$arcs['extract']['application/x-tar'] = array('cmd' => 'tar', 'argc' => '-xf', 'ext' => 'tar');
+				unset($o);
+				$test = $this->procExec('gzip --version', $o, $c);
+				if ($c == 0) {
+					$arcs['create']['application/x-gzip']  = array('cmd' => 'tar', 'argc' => '-czf', 'ext' => 'tgz');
+					$arcs['extract']['application/x-gzip'] = array('cmd' => 'tar', 'argc' => '-xzf', 'ext' => 'tgz');
+				}
+				unset($o);
+				$test = $this->procExec('bzip2 --version', $o, $c);
+				if ($c == 0) {
+					$arcs['create']['application/x-bzip2']  = array('cmd' => 'tar', 'argc' => '-cjf', 'ext' => 'tbz');
+					$arcs['extract']['application/x-bzip2'] = array('cmd' => 'tar', 'argc' => '-xjf', 'ext' => 'tbz');
+				}
+				unset($o);
+				$test = $this->procExec('xz --version', $o, $c);
+				if ($c == 0) {
+					$arcs['create']['application/x-xz']  = array('cmd' => 'tar', 'argc' => '-cJf', 'ext' => 'xz');
+					$arcs['extract']['application/x-xz'] = array('cmd' => 'tar', 'argc' => '-xJf', 'ext' => 'xz');
+				}
 			}
-			if (empty($arcs['extract']['application/zip'])) {
-				$arcs['extract']['application/zip'] = array('cmd' => '7za', 'argc' => 'x -tzip -y', 'ext' => 'zip');
-			}
-			if (empty($arcs['create']['application/x-tar'])) {
-				$arcs['create']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'a -ttar', 'ext' => 'tar');
-			}
-			if (empty($arcs['extract']['application/x-tar'])) {
-				$arcs['extract']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'x -ttar -y', 'ext' => 'tar');
-			}
-		} else if (substr(PHP_OS,0,3) === 'WIN') {
-			// check `7z` for Windows server.
 			unset($o);
-			$this->procExec('7z', $o, $c);
+			$this->procExec('zip -v', $o, $c);
 			if ($c == 0) {
-				$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7z', 'argc' => 'a', 'ext' => '7z');
-				$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7z', 'argc' => 'x -y', 'ext' => '7z');
+				$arcs['create']['application/zip']  = array('cmd' => 'zip', 'argc' => '-r9', 'ext' => 'zip');
+			}
+			unset($o);
+			$this->procExec('unzip --help', $o, $c);
+			if ($c == 0) {
+				$arcs['extract']['application/zip'] = array('cmd' => 'unzip', 'argc' => '',  'ext' => 'zip');
+			}
+			unset($o);
+			$this->procExec('rar --version', $o, $c);
+			if ($c == 0 || $c == 7) {
+				$arcs['create']['application/x-rar']  = array('cmd' => 'rar', 'argc' => 'a -inul', 'ext' => 'rar');
+				$arcs['extract']['application/x-rar'] = array('cmd' => 'rar', 'argc' => 'x -y',    'ext' => 'rar');
+			} else {
+				unset($o);
+				$test = $this->procExec('unrar', $o, $c);
+				if ($c==0 || $c == 7) {
+					$arcs['extract']['application/x-rar'] = array('cmd' => 'unrar', 'argc' => 'x -y', 'ext' => 'rar');
+				}
+			}
+			unset($o);
+			$this->procExec('7za --help', $o, $c);
+			if ($c == 0) {
+				$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7za', 'argc' => 'a', 'ext' => '7z');
+				$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7za', 'argc' => 'x -y', 'ext' => '7z');
 				
 				if (empty($arcs['create']['application/zip'])) {
-					$arcs['create']['application/zip'] = array('cmd' => '7z', 'argc' => 'a -tzip', 'ext' => 'zip');
+					$arcs['create']['application/zip'] = array('cmd' => '7za', 'argc' => 'a -tzip', 'ext' => 'zip');
 				}
 				if (empty($arcs['extract']['application/zip'])) {
-					$arcs['extract']['application/zip'] = array('cmd' => '7z', 'argc' => 'x -tzip -y', 'ext' => 'zip');
+					$arcs['extract']['application/zip'] = array('cmd' => '7za', 'argc' => 'x -tzip -y', 'ext' => 'zip');
 				}
 				if (empty($arcs['create']['application/x-tar'])) {
-					$arcs['create']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'a -ttar', 'ext' => 'tar');
+					$arcs['create']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'a -ttar', 'ext' => 'tar');
 				}
 				if (empty($arcs['extract']['application/x-tar'])) {
-					$arcs['extract']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'x -ttar -y', 'ext' => 'tar');
+					$arcs['extract']['application/x-tar'] = array('cmd' => '7za', 'argc' => 'x -ttar -y', 'ext' => 'tar');
 				}
+			} else if (substr(PHP_OS,0,3) === 'WIN') {
+				// check `7z` for Windows server.
+				unset($o);
+				$this->procExec('7z', $o, $c);
+				if ($c == 0) {
+					$arcs['create']['application/x-7z-compressed']  = array('cmd' => '7z', 'argc' => 'a', 'ext' => '7z');
+					$arcs['extract']['application/x-7z-compressed'] = array('cmd' => '7z', 'argc' => 'x -y', 'ext' => '7z');
+					
+					if (empty($arcs['create']['application/zip'])) {
+						$arcs['create']['application/zip'] = array('cmd' => '7z', 'argc' => 'a -tzip', 'ext' => 'zip');
+					}
+					if (empty($arcs['extract']['application/zip'])) {
+						$arcs['extract']['application/zip'] = array('cmd' => '7z', 'argc' => 'x -tzip -y', 'ext' => 'zip');
+					}
+					if (empty($arcs['create']['application/x-tar'])) {
+						$arcs['create']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'a -ttar', 'ext' => 'tar');
+					}
+					if (empty($arcs['extract']['application/x-tar'])) {
+						$arcs['extract']['application/x-tar'] = array('cmd' => '7z', 'argc' => 'x -ttar -y', 'ext' => 'tar');
+					}
+				}
+			}
+		
+		}
+		
+		// Use PHP ZipArchive Class
+		if (class_exists('ZipArchive')) {
+			if (empty($arcs['create']['application/zip'])) {
+				$arcs['create']['application/zip']  = array('cmd' => 'phpfunction', 'argc' => 'self::zipArchiveZip', 'ext' => 'zip');
+			}
+			if (empty($arcs['extract']['application/zip'])) {
+				$arcs['extract']['application/zip'] = array('cmd' => 'phpfunction', 'argc' => 'self::zipArchiveUnzip', 'ext' => 'zip');
 			}
 		}
 		
-		$_SESSION[$sessionKey] = $arcs;
+		$this->sessionCache[$sessionKey] = $arcs;
 		return $arcs;
+	}
+
+	/**
+	 * Resolve relative / (Unix-like)absolute path
+	 * 
+	 * @param string $path  target path
+	 * @param string $base  base path
+	 * @return string
+	 */
+	protected function getFullPath($path, $base) {
+		$separator = $this->separator;
+		$systemroot = $this->systemRoot;
+
+		$sepquoted = preg_quote($separator, '#');
+
+		// normalize `/../`
+		$normreg = '#('.$sepquoted.')[^'.$sepquoted.']+'.$sepquoted.'\.\.'.$sepquoted.'#';
+		while(preg_match($normreg, $path)) {
+			$path = preg_replace($normreg, '$1', $path);
+		}
+		
+		// 'Here'
+		if ($path === '' || $path === '.' . $separator) return $base;
+		
+		// Absolute path
+		if ($path[0] === $separator || strpos($path, $systemroot) === 0) {
+			return $path;
+		}
+		
+		$preg_separator = '#' . $sepquoted . '#';
+		
+		// Relative path from 'Here'
+		if (substr($path, 0, 2) === '.' . $separator || $path[0] !== '.' || substr($path, 0, 3) !== '..' . $separator) {
+			$arrn = preg_split($preg_separator, $path, -1, PREG_SPLIT_NO_EMPTY);
+			if ($arrn[0] !== '.') {
+				array_unshift($arrn, '.');
+			}
+			$arrn[0] = $base;
+			return join($separator, $arrn);
+		}
+		
+		// Relative path from dirname()
+		if (substr($path, 0, 3) === '../') {
+			$arrn = preg_split($preg_separator, $path, -1, PREG_SPLIT_NO_EMPTY);
+			$arrp = preg_split($preg_separator, $base, -1, PREG_SPLIT_NO_EMPTY);
+		
+			while (! empty($arrn) && $arrn[0] === '..') {
+				array_shift($arrn);
+				array_pop($arrp);
+			}
+			$path = ! empty($arrp) ? $systemroot . join($separator, array_merge($arrp, $arrn)) :
+				(! empty($arrn) ? $systemroot . join($separator, $arrn) : $systemroot);
+		}
+		
+		return $path;
 	}
 
 	/**
@@ -4123,19 +4246,153 @@ abstract class elFinderVolumeDriver {
 	 * @author Naoki Sawada
 	 */
 	public function rmdirRecursive($dir) {
-		if (is_dir($dir)) {
+		if (!is_link($dir) && is_dir($dir)) {
+			@chmod($dir, 0777);
 			foreach (array_diff(scandir($dir), array('.', '..')) as $file) {
 				@set_time_limit(30);
-				$path = $dir . '/' . $file;
-				(is_dir($path)) ? $this->rmdirRecursive($path) : @unlink($path);
+				$path = $dir . DIRECTORY_SEPARATOR . $file;
+				if (!is_link($dir) && is_dir($path)) {
+					$this->rmdirRecursive($path);
+				} else {
+					@chmod($path, 0666);
+					@unlink($path);
+				}
 			}
 			return @rmdir($dir);
-		} else if (is_file($dir)) {
+		} else if (is_file($dir) || is_link($dir)) {
+			@chmod($dir, 0666);
 			return @unlink($dir);
 		}
 		return false;
 	}
 
+	/**
+	 * Create archive and return its path
+	 *
+	 * @param  string  $dir    target dir
+	 * @param  array   $files  files names list
+	 * @param  string  $name   archive name
+	 * @param  array   $arc    archiver options
+	 * @return string|bool
+	 * @author Dmitry (dio) Levashov, 
+	 * @author Alexey Sukhotin
+	 * @author Naoki Sawada
+	 **/
+	protected function makeArchive($dir, $files, $name, $arc) {
+		if ($arc['cmd'] === 'phpfunction') {
+			if (is_callable($arc['argc'])) {
+				call_user_func_array($arc['argc'], array($dir, $files, $name));
+			}
+		} else {
+			$cwd = getcwd();
+			chdir($dir);
+			
+			$files = array_map('escapeshellarg', $files);
+			
+			$cmd = $arc['cmd'].' '.$arc['argc'].' '.escapeshellarg($name).' '.implode(' ', $files);
+			$this->procExec($cmd, $o, $c);
+			chdir($cwd);
+		}
+		$path = $dir.DIRECTORY_SEPARATOR.$name;
+		return file_exists($path) ? $path : false;
+	}
+	
+	/**
+	 * Unpack archive
+	 *
+	 * @param  string  $path   archive path
+	 * @param  array   $arc    archiver command and arguments (same as in $this->archivers)
+	 * @param  bool    $remove remove archive ( unlink($path) )
+	 * @return void
+	 * @author Dmitry (dio) Levashov
+	 * @author Alexey Sukhotin
+	 * @author Naoki Sawada
+	 **/
+	protected function unpackArchive($path, $arc, $remove = true) {
+		$dir = dirname($path);
+		if ($arc['cmd'] === 'phpfunction') {
+			if (is_callable($arc['argc'])) {
+				call_user_func_array($arc['argc'], array($path, $dir));
+			}
+		} else {
+			$cwd = getcwd();
+			chdir($dir);
+			$cmd = $arc['cmd'].' '.$arc['argc'].' '.escapeshellarg(basename($path));
+			$this->procExec($cmd, $o, $c);
+			chdir($cwd);
+		}
+		$remove && unlink($path);
+	}
+	
+	/**
+	 * Create Zip archive using PHP class ZipArchive
+	 * 
+	 * @param  string        $dir      target dir
+	 * @param  array         $files    files names list
+	 * @param  string|object $zipPath  Zip archive name
+	 * @return void
+	 * @author Naoki Sawada
+	 */
+	protected static function zipArchiveZip($dir, $files, $zipPath) {
+		try {
+			if ($start = is_string($zipPath)) {
+				$zip = new ZipArchive();
+				if ($zip->open($dir . DIRECTORY_SEPARATOR . $zipPath, ZipArchive::CREATE) !== true) {
+					$zip = false;
+				}
+			} else {
+				$zip = $zipPath;
+			}
+			if ($zip) {
+				foreach($files as $file) {
+					$path = $dir . DIRECTORY_SEPARATOR . $file;
+					if (is_dir($path)) {
+						$zip->addEmptyDir($file);
+						$_files = array();
+						if ($handle = opendir($path)) {
+							while (false !== ($entry = readdir($handle))) {
+								if ($entry !== "." && $entry !== "..") {
+									$_files[] = $file . DIRECTORY_SEPARATOR . $entry;
+								}
+							}
+							closedir($handle);
+						}
+						if ($_files) {
+							self::zipArchiveZip($dir, $_files, $zip);
+						}
+					} else {
+						$zip->addFile($path, $file);
+					}
+				}
+				$start && $zip->close();
+			}
+		} catch (Exception $e) {
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Unpack Zip archive using PHP class ZipArchive
+	 * 
+	 * @param  string $zipPath  Zip archive name
+	 * @param  string $toDir    Extract to path
+	 * @return bool
+	 * @author Naoki Sawada
+	 */
+	protected static function zipArchiveUnzip($zipPath, $toDir) {
+		try {
+			$zip = new ZipArchive();
+			if ($zip->open($zipPath) === true) {
+				$zip->extractTo($toDir);
+				$zip->close();
+			}
+		} catch (Exception $e) {
+			return false;
+		}
+		return true;
+	}
+	
 	/**==================================* abstract methods *====================================**/
 	
 	/*********************** paths/urls *************************/

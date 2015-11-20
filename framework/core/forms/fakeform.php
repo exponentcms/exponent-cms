@@ -115,10 +115,13 @@ class fakeform extends form {
             $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif (bs3()) {
             if (BTN_SIZE == 'large') {
-                $btn_size = 'btn-sm';
+                $btn_size = 'btn-lg';
                 $icon_size = 'fa-lg';
             } elseif (BTN_SIZE == 'small') {
                 $btn_size = 'btn-sm';
+                $icon_size = '';
+            } elseif (BTN_SIZE == 'extrasmall') {
+                $btn_size = 'btn-xs';
                 $icon_size = '';
             } else {
                 $btn_size = '';

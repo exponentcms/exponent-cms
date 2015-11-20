@@ -1489,6 +1489,8 @@ class expTheme
                 $btn_size = 'btn-lg';
             } elseif (BTN_SIZE == 'small' || (!empty($size) && $size == 'small')) {
                 $btn_size = 'btn-sm';
+            } elseif (BTN_SIZE == 'extrasmall' || (!empty($size) && $size == 'extrasmall')) {
+                $btn_size = 'btn-xs';
             } else { // medium
                 $btn_size = '';
             }

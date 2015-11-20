@@ -102,7 +102,7 @@ class eaasController extends expController {
     }
 
     private function handleRequest() {
-        if (!key_exists($this->params['get'], $this->tabs)) {
+        if (!array_key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
             return;  //FIXME we exit before hitting this

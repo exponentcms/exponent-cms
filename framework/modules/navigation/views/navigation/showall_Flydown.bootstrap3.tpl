@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
             <ul class="nav navbar-nav{if $smarty.const.MENU_ALIGN == 'right'} navbar-right pull-right{/if}">
                 {getnav type='hierarchy' assign=hierarchy}
-                {bootstrap_navbar menu=$hierarchy}
+                {bootstrap_navbar menu=$hierarchy length=$smarty.const.MENU_LENGTH|default:2}
             </ul>
         </div>
     </div>

@@ -78,29 +78,33 @@ function build_menu($page,$params) {
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text.'</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
-        if (!empty($page->depth)) {
+        if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="dropdown-submenu';
         } else {
             $menu = '<li class="dropdown';
         }
         if ($sectionObj->id == $page->id) $menu .= ' active';
         $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text;
-        if (empty($page->depth)) $menu .= '<b class="caret"></b>';
+        if (empty($page->depth) && $params['length'] > 1) $menu .= '<b class="caret"></b>';
         $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
             $topmenu->text = $page->text;
             $topmenu->url = $page->url;
-            $menu .= build_menu($topmenu,$params);
-        }
-        if (!empty($page->itemdata)) {
-            foreach ($page->itemdata as $subpage) {
-                $menu .= build_menu($subpage,$params);
+            if ((!isset($page->depth) && $params['length'] > 1) || $page->depth + 1 < $params['length']) {
+                $menu .= build_menu($topmenu, $params);
             }
-        } elseif (!empty($page->submenu->itemdata)) {
-            foreach ($page->submenu->itemdata as $subpage) {
-                $menu .= build_menu($subpage,$params);
+        }
+        if ((!isset($page->depth) && $params['length'] > 1) || $page->depth + 1 < $params['length']) {
+            if (!empty($page->itemdata)) {
+                foreach ($page->itemdata as $subpage) {
+                    $menu .= build_menu($subpage, $params);
+                }
+            } elseif (!empty($page->submenu->itemdata)) {
+                foreach ($page->submenu->itemdata as $subpage) {
+                    $menu .= build_menu($subpage, $params);
+                }
             }
         }
         $menu .= '</ul>'."\n".'</li>'."\n";

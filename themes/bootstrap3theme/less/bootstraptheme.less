@@ -93,3 +93,16 @@ div.DTTT .btn {
 .manage-questions .row:before, .manage-questions .row:after {
 	content : normal;
 }
+
+& when (@menu_align_center = 1) {
+	@media (min-width: (@menu_width + 0px)) {
+		#topnavbar.navbar .navbar-nav {
+			display: inline-block;
+			float: none;
+		}
+
+		#topnavbar.navbar .navbar-collapse {
+			text-align: center;
+		}
+	}
+}

@@ -28,13 +28,13 @@ class bootstrap3theme extends theme {
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
-//        $swatches = array();
         $swatches[] = gt('Base');
        	if (is_readable(BASE.'external/bootstrap3/less')) {
        		$dh = opendir(BASE.'external/bootstrap3/less');
        		while (($file = readdir($dh)) !== false) {
        			if ($file != '.' && $file != '..' && is_dir(BASE."external/bootstrap3/less/$file")) {
-                    if ($file != 'mixins') $swatches[$file] = ucfirst($file);
+                    if ($file != 'mixins' && $file != 'fonts')
+                        $swatches[$file] = ucfirst($file);
        			}
        		}
        	}
@@ -47,6 +47,7 @@ class bootstrap3theme extends theme {
 
 		// Button Sizes
         $icon_sizes = array(
+            "extrasmall"=>'Extra Small',
             "small"=>'Small',
             "medium"=>'Medium',
 			"large"=>'Large',
@@ -62,6 +63,7 @@ class bootstrap3theme extends theme {
 		// Menu Alignments
         $menu_alignments = array(
             "left"=>'Left',
+            "center"=>'Center',
 			"right"=>'Right',
 		);
 
@@ -82,6 +84,8 @@ class bootstrap3theme extends theme {
         if (empty($settings['MENU_WIDTH'])) $settings['MENU_WIDTH'] = 979;
         $form->register('menu_width',gt('Mobile Menu Collapse Width').': ',new textcontrol($settings['MENU_WIDTH'],4,false,'integer'));
         $form->register('menu_align',gt('Menu Alignment').': ',new dropdowncontrol($settings['MENU_ALIGN'],$menu_alignments));
+        if (empty($settings['MENU_LENGTH'])) $settings['MENU_LENGTH'] = 2;
+        $form->register('menu_length',gt('Maximum Menu Levels').': ',new textcontrol($settings['MENU_LENGTH'],3,false,'integer'));
         $form->register('flyout_sidebar',gt('Enable Sidebar Flyout Container'),new checkboxcontrol((!empty($settings['FLYOUT_SIDEBAR'])?$settings['FLYOUT_SIDEBAR']:0)));
    		$form->register('submit','',new buttongroupcontrol(gt('Save'),'',gt('Cancel')));
    		assign_to_template(array(
@@ -96,6 +100,7 @@ class bootstrap3theme extends theme {
         if (empty($params['style_width'])) $params['style_width'] = "";
         if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
+        if (empty($params['menu_length'])) $params['menu_length'] = "2";
         if (empty($params['flyout_sidebar'])) $params['flyout_sidebar'] = '0';
         parent::saveThemeConfig($params);
    	}

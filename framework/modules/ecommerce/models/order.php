@@ -123,7 +123,7 @@ class order extends expRecord {
             setcookie("cid", $cart->id, time() + 3600 * 24 * 45, '/');
             $_COOKIE['cid'] = $cart->id;
         } else {
-            setcookie("cid", $cart->id, time() - 3600 * 24 * 45, '/');
+            setcookie("cid", "", time() - 3600 * 24 * 45, '/');  // delete the cookie here
             unset($_COOKIE['cid']);
         }
         return;

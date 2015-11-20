@@ -1,7 +1,7 @@
 <?php
 
 /** Dump to ZIP format
-* @link http://www.adminer.org/plugins/#use
+* @link https://www.adminer.org/plugins/#use
 * @uses ZipArchive, tempnam("")
 * @author Jakub Vrana, http://www.vrana.cz/
 * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
@@ -10,14 +10,14 @@
 class AdminerDumpZip {
 	/** @access protected */
 	var $filename, $data;
-	
+
 	function dumpOutput() {
 		if (!class_exists('ZipArchive')) {
 			return array();
 		}
 		return array('zip' => 'ZIP');
 	}
-	
+
 	function _zip($string, $state) {
 		// ZIP can be created without temporary file by gzcompress - see PEAR File_Archive
 		$this->data .= $string;
@@ -33,7 +33,7 @@ class AdminerDumpZip {
 		}
 		return "";
 	}
-	
+
 	function dumpHeaders($identifier, $multi_table = false) {
 		if ($_POST["output"] == "zip") {
 			$this->filename = "$identifier." . ($multi_table && preg_match("~[ct]sv~", $_POST["format"]) ? "tar" : $_POST["format"]);

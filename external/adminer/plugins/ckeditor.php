@@ -30,7 +30,7 @@ class AdminerCKeditor {
 	* @param array
 	* @param string in format "skin: 'custom', preInit: function () { }"
 	*/
-	function AdminerCKeditor($scripts = array(null), $options = "") {
+	function __construct($scripts = array(null), $options = "") {
 		$this->scripts = $scripts;
 		$this->options = $options;
 	}
