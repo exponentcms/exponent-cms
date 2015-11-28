@@ -30,7 +30,7 @@
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.9'}
 {literal}
     $(document).ready(function () {
         "use strict";
