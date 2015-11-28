@@ -916,7 +916,7 @@ class easypostcalculator extends shippingcalculator
     function ep_initialize()
     {
         // Require the main class
-        include_once(BASE . 'external/easypost-php-2.1.1/lib/easypost.php');
+        include_once(BASE . 'external/easypost-php-2.1.2/lib/easypost.php');
 
         if ($this->configdata['testmode']) {
             $apikey = $this->configdata['testkey'];
