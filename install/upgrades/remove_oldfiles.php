@@ -39,7 +39,7 @@ class remove_oldfiles extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "Several files have been moved or are no longer needed.  This Script removes those leftover files from previous versions."; }
+	function description() { return "Several system files have been moved or are no longer needed.  This Script removes those leftover files from previous versions."; }
 
     /**
    	 * This routine should perform additional test(s) to see if upgrade script should be run (files/tables exist, etc...)
@@ -166,6 +166,7 @@ class remove_oldfiles extends upgradescript {
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.5.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.6.js',
             'external/jquery/addons/js/pwstrength-bootstrap-1.2.7.js',
+			'external/jquery/addons/js/pwstrength.js',
             'external/less.php/Cache.php',
             'external/less.php/Less.php',
             'external/less.php/Version.php',
@@ -493,6 +494,7 @@ class remove_oldfiles extends upgradescript {
             'external/bootstrap/font/',
             'external/ckeditor/',
             'external/easypost-php-2.1.0/',
+			'external/easypost-php-2.1.1/',
             'external/editors/connector/',
             'external/editors/FCKeditor/',
             'external/editors/ckeditor/images',

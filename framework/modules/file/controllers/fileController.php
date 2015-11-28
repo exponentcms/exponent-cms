@@ -419,7 +419,7 @@ class fileController extends expController {
         $notafile = array();
 //        $files = $db->selectObjects('expFiles',1);
         foreach (expFile::selectAllFiles() as $file) {
-            if (!is_file($file->directory.$file->filename)) {
+            if (!is_file(BASE.$file->directory.$file->filename)) {
                 $notafile[$file->id] = $file;
             }
         }
@@ -496,13 +496,17 @@ class fileController extends expController {
         $allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
-                $found = false;
-//                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
-                $dbfile = $db->selectObject('expFiles',"filename='".$file."'");
+//                $found = false;
+                $npath = preg_replace('/'.$file.'/','',$path, 1);
+//                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."' AND directory='".$npath."'");
+                $dbfile = $db->selectObject('expFiles',"filename='".$file."' AND directory='".$npath."'");
 //                foreach ($dbfiles as $dbfile) {
-                    if (!empty($dbfile)) $found = ($dbfile->directory == str_replace($file,'',$path));
+//                    if (!empty($dbfile)) $found = ($dbfile->directory == str_replace($file,'',$path));
 //                }
-                if (!$found) {
+//                if (!$found) {
+//                    $notindb[$path] = $file;
+//                }
+                if (empty($dbfile)) {
                     $notindb[$path] = $file;
                 }
             }
@@ -515,7 +519,6 @@ class fileController extends expController {
     public function addit() {
         foreach ($this->params['addit'] as $file) {
             $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
-//            $newfile->posted = $newfile->last_accessed = time();
             $newfile->posted = $newfile->last_accessed = filemtime($file);
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));

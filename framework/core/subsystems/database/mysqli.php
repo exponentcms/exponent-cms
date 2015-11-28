@@ -442,6 +442,8 @@ class mysqli_database extends database {
     }
 
 	/**
+     * Select a single object by sql
+     *
 	 * @param  $sql
 	 * @return null|void
 	 */
@@ -457,6 +459,8 @@ class mysqli_database extends database {
     }
 
 	/**
+     * Select a series of objects by sql
+     *
 	 * @param  $sql
 	 * @return array
 	 */
@@ -1158,7 +1162,7 @@ class mysqli_database extends database {
     }
 
     /**
-     * Select records from the database
+     * Instantiate objects from selected records from the database
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.  If this
@@ -1205,6 +1209,8 @@ class mysqli_database extends database {
     }
 
     /**
+     * Instantiate objects from selected records from the database
+
      * @param string $sql The sql statement to run on the model/classname
      * @param string $classname Can be $this->baseclassname
      * Returns an array of fields
