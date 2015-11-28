@@ -19,27 +19,27 @@ class.upload,0.32,https://github.com/verot/class.upload.php,0.33dev,placed in Pi
 iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
 scssphp,0.3.1exp,leafo.net/scssphp,0.5.1,added Server\cachedCompile()
 lessphp,0.5.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.7.0.9exp,lessphp.gpeasy.com/,1.7.0.9,tweaked wrapper to set/get options
+less.php,1.7.0.7exp,lessphp.gpeasy.com/,1.7.0.9,tweaked wrapper to set/get options
 iLess,2.0.8,https://github.com/mishal/iless,2.1.0,optional
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.5,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.5+4,bootswatch.com/,3.3.5+4,
+Bootswatch,3.3.5+4,bootswatch.com/,3.3.6,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
-Font-Awesome,4.4.0,fortawesome.github.com/Font-Awesome,4.4.0,
+Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.3,www.adminer.org,4.2.3,
-SimpleAjaxUploader,2.1.1,https://github.com/LPology/Simple-Ajax-Uploader,2.2.4,also converted to yui module 1.1.0
+SimpleAjaxUploader,2.2.4,https://github.com/LPology/Simple-Ajax-Uploader,2.2.4,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
-MediaElement.js,2.18.1,mediaelementjs.com/,2.18.2,
-Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.0,
+MediaElement.js,2.18.2,mediaelementjs.com/,2.18.2,
+Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.1exp,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
-CKEditor,4.5.3,ckeditor.com,4.5.5,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.2.5,tinymce.com,4.2.8,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
+CKEditor,4.5.5,ckeditor.com,4.5.5,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
+TinyMCE,4.3.0,tinymce.com,4.3.0,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
 jQuery,2.1.4,jquery.com,2.1.4,
@@ -48,7 +48,7 @@ stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate op
 validate,1.14.0exp,bassistance.de/jquery-plugins/jquery-plugin-validation/,1.14.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
-timepicker,1.5.5,http://trentrichardson.com/examples/timepicker/,1.6.1,used by adminer
+timepicker,1.6.1,http://trentrichardson.com/examples/timepicker/,1.6.1,used by adminer
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
 DataTables,1.10.7,http://www.datatables.net,1.10.10,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
@@ -61,19 +61,19 @@ excoloSlider,1.1.0,http://excolo.github.io/Excolo-Slider/,1.1.0,
 colorbox,1.6.3,http://www.jacklmoore.com/colorbox,1.6.3,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.5,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,
-pwstrength-bootstrap,1.2.8,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.9,
-Sortable,1.2.1,https://github.com/RubaXa/Sortable,1.3.0,
+pwstrength-bootstrap,1.2.9,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.9,
+Sortable,1.3.0,https://github.com/RubaXa/Sortable,1.3.0,
 jstree,3.2.1,https://github.com/vakata/jstree,3.2.1,added nav menu icons to stylesheet
-bootstrap3-dialog,1.34.6,https://github.com/nakupanda/bootstrap3-dialog,1.34.7,
-impromptu,6.2.1,http://trentrichardson.com/Impromptu,6.2.2,
+bootstrap3-dialog,1.34.7,https://github.com/nakupanda/bootstrap3-dialog,1.34.7,
+impromptu,6.2.2,http://trentrichardson.com/Impromptu,6.2.2,
 bootstrap-touch-carousel,0.8.0,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
-bootstrap-tagsinput,0.5.0,https://github.com/timschlechter/bootstrap-tagsinput,0.6.1,
+bootstrap-tagsinput,0.7.1,https://github.com/timschlechter/bootstrap-tagsinput,0.7.1,
 Typeahead,0.11.1,http://twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
-bootstrap-duallistbox,3.0.4,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.5,
-select2,3.5.2,https://github.com/ivaynberg/select2,3.5.4/4.0.0,
+bootstrap-duallistbox,3.0.5,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.5,
+select2,3.5.2,https://github.com/ivaynberg/select2,3.5.4/4.0.1,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using fileinput at this time
 Jasny Bootstrap,3.1.3,http://jasny.github.io/bootstrap,3.1.3,only using fileinput at this time
-easypost sdk,2.1.1,https://github.com/EasyPost/easypost-php,2.1.2,
+easypost sdk,2.1.2,https://github.com/EasyPost/easypost-php,2.1.2,
 PLUpload,2.1.8,https://github.com/moxiecode/plupload,2.1.8,needed for TinyMCE Quick Upload
 ,,,,
 Not included yet,,,,
