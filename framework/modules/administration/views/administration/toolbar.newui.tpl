@@ -53,11 +53,11 @@
 {else}
     {if $data.info}
         <li role="presentation" class="dropdown-header">
-            a{$data.text}
+            {$data.text}
         </li>
     {else}
         <li>
-            a<a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
+            <a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
         </li>
     {/if}
     {if $data.divider}
