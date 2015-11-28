@@ -313,6 +313,9 @@ class expFile extends expRecord {
         }
     }
 
+    public function exists() {
+        return (!empty($this->id) && is_file(BASE . PATH_RELATIVE . $this->directory . $this->filename));
+    }
 // =========================================================================
 // Static Methods
 

@@ -14,6 +14,14 @@
 abstract class elFinderVolumeDriver {
 	
 	/**
+	 * Request args
+	 * $_POST or $_GET values
+	 * 
+	 * @var array
+	 */
+	protected $ARGS = array();
+	
+	/**
 	 * Driver id
 	 * Must be started from letter and contains [a-z0-9]
 	 * Used as part of volume id
@@ -557,6 +565,8 @@ abstract class elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function configure() {
+		// set ARGS
+		$this->ARGS = $_SERVER['REQUEST_METHOD'] === 'POST'? $_POST : $_GET;
 		// set thumbnails path
 		$path = $this->options['tmbPath'];
 		if ($path) {
@@ -708,7 +718,7 @@ abstract class elFinderVolumeDriver {
 			$this->encoding = null;
 		}
 		
-		$argInit = ($_SERVER['REQUEST_METHOD'] === 'POST')? !empty($_POST['init']) : !empty($_GET['init']);
+		$argInit = !empty($this->ARGS['init']);
 		
 		// session cache
 		if ($argInit || ! isset($_SESSION[elFinder::$sessionCacheKey][$this->id])) {
@@ -1762,7 +1772,8 @@ abstract class elFinderVolumeDriver {
 		// check MIME
 		$name = $this->basenameCE($path);
 		$mime = '';
-		if ($this->mimeDetect != 'internal') {
+		$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name);
+		if ($this->mimeDetect !== 'internal') {
 			if ($tp = tmpfile()) {
 				fwrite($tp, $content);
 				$info = stream_get_meta_data($tp);
@@ -1771,10 +1782,7 @@ abstract class elFinderVolumeDriver {
 				fclose($tp);
 			}
 		}
-		if (!$mime) {
-			$mime = $this->mimetype($name);
-		}
-		if (!$this->allowPutMime($mime)) {
+		if (!$this->allowPutMime($mimeByName) || ($mime && $mime !== 'unknown' && !$this->allowPutMime($mime))) {
 			return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME);
 		}
 		
@@ -3318,7 +3326,11 @@ abstract class elFinderVolumeDriver {
 			
 			// MIME check
 			$stat = $this->stat($path);
-			if (!$this->allowPutMime($stat['mime'])) {
+			$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($stat['name']);
+			if ($stat['mime'] === $mimeByName) {
+				$mimeByName = '';
+			}
+			if (!$this->allowPutMime($stat['mime']) || ($mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName))) {
 				$this->remove($path, true);
 				return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME, $errpath);
 			}

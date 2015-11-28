@@ -24,6 +24,7 @@ Contents
 * [FAQs](#faqs)
 * [3rd Party Connectors](#3rd-party-connectors)
 * [3rd Party Volume Drivers](#3rd-party-volume-drivers)
+* [3rd Party Themes](#3rd-party-themes)
 * [Support](#support)
 * [Authors](#authors)
 * [License](#license)
@@ -64,6 +65,7 @@ Features
  * Folder upload with Chrome
  * Chunked file upload
  * Upload directly to the folder
+ * Upload form URL (or list)
  * Creating the archive by specifying the file name
  * Direct extraction to the current working directory (you do not want to create a folder)
  * Supports Dropbox.com&copy; (Configurable & As network volume)
@@ -102,22 +104,22 @@ Installation
 Downloads
 ------------
 **Stable releases**
- + [elFinder 2.0.3](https://github.com/Studio-42/elFinder/archive/2.0.3.zip)
- + [elFinder 2.1.1](https://github.com/Studio-42/elFinder/archive/2.1.1.zip)
+ + [elFinder 2.1.2](https://github.com/Studio-42/elFinder/archive/2.1.2.zip)
+ + [elFinder 2.0.4](https://github.com/Studio-42/elFinder/archive/2.0.4.zip)
 
 **Nightly builds**
- + [elFinder 2.0.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.0-src.zip)
  + [elFinder 2.1.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.1-src.zip)
+ + [elFinder 2.0.x (Nightly)](https://github.com/Studio-42/elFinder/archive/2.0-src.zip)
 
 Demo sites
 ------------
-**2.0**
- + http://elfinder.org/ (rc1)
- + http://hypweb.net/elFinder-nightly/demo/2.0/ (2.0.x Nightly)
-
 **2.1.x Nightly**
  + http://studio-42.github.io/elFinder/ (with CORS)
  + http://hypweb.net/elFinder-nightly/demo/2.1/
+
+**2.0**
+ + http://elfinder.org/ (rc1)
+ + http://hypweb.net/elFinder-nightly/demo/2.0/ (2.0.x Nightly)
 
 FAQs
 ------------
@@ -151,6 +153,11 @@ You can create or modify the language file to use translation tool. Please refer
 3rd party Volume Drivers
 --------------------
  * [League\Flysystem (PHP)](https://github.com/barryvdh/elfinder-flysystem-driver) (for elFinder 2.1+)
+
+3rd party Themes
+--------------------
+ * [lokothodida/elfinder-theme-moono](https://github.com/lokothodida/elfinder-theme-moono)
+ * [lokothodida/elfinder-theme-windows-10](https://github.com/lokothodida/elfinder-theme-windows-10)
 
 Support
 -------

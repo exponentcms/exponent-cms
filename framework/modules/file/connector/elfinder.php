@@ -40,7 +40,6 @@ include BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
-//include BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
 include BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
@@ -53,7 +52,7 @@ define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
  *  * HTTP_OAUTH package require HTTP_Request2 and Net_URL2
  */
 // Required for Dropbox.com connector support
-// include_once dirname(__FILE__).DIRECTORY_SEPARATOR.'elFinderVolumeDropbox.class.php';
+//include BASE . 'external/elFinder/php/elFinderVolumeDropbox.class.php';
 
 // Dropbox driver need next two settings. You can get at https://www.dropbox.com/developers
 // define('ELFINDER_DROPBOX_CONSUMERKEY',    '');
@@ -281,7 +280,7 @@ class elFinderTestACL
     }
 
 } // END class 
-$acl = new elFinderTestACL();
+//$acl = new elFinderTestACL();
 
 /**
  * example acceptedName function
@@ -354,8 +353,8 @@ $opts = array(
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
-            'uploadAllow'     => array('all'),
             'uploadDeny'      => array('all'),
+            'uploadAllow'     => array('all'),
             'uploadOrder'     => 'deny,allow',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',
@@ -374,6 +373,7 @@ $opts = array(
             // 'acceptedName'    => '/^[\W]*$/',
             // 'acceptedName' => 'validName',
             'utf8fix'         => false,
+//            'statOwner'       => true,
             'attributes'      => array(
                 array(
                     'pattern' => '/^\/\./', // dot files are hidden

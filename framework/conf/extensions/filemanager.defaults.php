@@ -17,6 +17,7 @@
 ##################################################
 
 if (!defined('SITE_FILE_MANAGER')) define('SITE_FILE_MANAGER','elfinder');
+if (!defined('ELFINDER_THEME')) define('ELFINDER_THEME','');
 if (!defined('FM_WIDTH')) define('FM_WIDTH','1024');
 if (!defined('FM_HEIGHT')) define('FM_HEIGHT','600');
 if (!defined('FM_LIMIT')) define('FM_LIMIT','25');
