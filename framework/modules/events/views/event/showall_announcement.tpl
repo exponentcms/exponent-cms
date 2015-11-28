@@ -13,6 +13,8 @@
  *
  *}
 
+{uniqueid prepend="cal" assign="name"}
+
 {css unique="announcement" link="`$asset_path`css/announcement.css"}
 
 {/css}
@@ -105,6 +107,11 @@
             <div class="bodycopy">
                 {$item->body}
             </div>
+            {if !empty($feedback_form)}
+                {toggle unique=$name|cat:$item->id collapsed=1 title='Click to open'|gettext|cat:' '|cat:$feedback_form}
+                    {include file="email/$feedback_form.tpl"}
+                {/toggle}
+            {/if}
             {clear}
         </div>
     {/foreach}
