@@ -320,7 +320,7 @@ class paypalExpressCheckout extends billingcalculator {
             $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
             $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
             $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-            $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
+//            $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', ''); // note: will cause failure when using taxed shipping
             $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
             //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
             //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
