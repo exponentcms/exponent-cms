@@ -177,7 +177,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
-                // TODO: build data from order
+                'NOSHIPPING'                         => $order->shipping_required?'0':'1',
                 'PAYMENTREQUEST_0_PAYMENTACTION'     => $config['process_mode'],
                 'PAYMENTREQUEST_0_CURRENCYCODE'      => ECOM_CURRENCY, // currency code
                 'PAYMENTREQUEST_0_ITEMAMT'           => number_format($order->total, 2, '.', ''), // total item cost
