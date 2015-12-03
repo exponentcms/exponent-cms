@@ -19,12 +19,12 @@ class.upload,0.32,https://github.com/verot/class.upload.php,0.33dev,placed in Pi
 iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
 scssphp,0.3.1exp,leafo.net/scssphp,0.5.1,added Server\cachedCompile()
 lessphp,0.5.0,leafo.net/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.7.0.7exp,lessphp.gpeasy.com/,1.7.0.9,tweaked wrapper to set/get options
+less.php,1.7.0.9exp,lessphp.gpeasy.com/,1.7.0.9,tweaked wrapper to set/get options
 iLess,2.0.8,https://github.com/mishal/iless,2.1.0,optional
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
-Twitter-Bootstrap,3.3.5,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
+Twitter-Bootstrap,3.3.6,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.5+4,bootswatch.com/,3.3.6,
+Bootswatch,3.3.6,bootswatch.com/,3.3.6,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.3,www.adminer.org,4.2.3,
@@ -39,7 +39,7 @@ excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by Ti
 dompdf,0.6.1exp,https://github.com/dompdf/dompdf,0.6.1,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.5.5,ckeditor.com,4.5.5,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.3.0,tinymce.com,4.3.0,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
+TinyMCE,4.3.1,tinymce.com,4.3.1,"add xenmce skin, fieldinsert (exp) & quickupload plugins"
 elFinder,2.1xn,elfinder.org,2.1xn,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some customized files"
 jQuery1,1.11.3,jquery.com,1.11.3,
 jQuery,2.1.4,jquery.com,2.1.4,
