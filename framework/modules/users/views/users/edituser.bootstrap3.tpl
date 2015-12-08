@@ -135,7 +135,8 @@
 	            {/foreach}
 	        </div>
 	    </div>
-	    <div class="loadingdiv">{'Loading User Profile'|gettext}</div>
+	    {*<div class="loadingdiv">{'Loading User Profile'|gettext}</div>*}
+        {loading title='Loading User Profile'|gettext}
 	    {if $user->isAdmin() == 0}
 			{control type=antispam}
 		{/if}

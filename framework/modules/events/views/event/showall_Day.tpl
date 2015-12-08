@@ -112,7 +112,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
             {literal}
                 cfg.data = "time="+unixtime;
                 var request = Y.io(sUrl, cfg);
-                monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+//                monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+                monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Day"|gettext}{literal}'));
             {/literal}
         {else}
             {if ($smarty.const.SEF_URLS == 1)} {literal}
@@ -169,7 +170,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+//        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+        monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Day"|gettext}{literal}'));
     }, 'a.evnav');
 
     // Watches the browser history for changes
@@ -179,7 +181,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
             // moving to a new month
             cfg.data = "time="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+//            monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Day"|gettext}{literal}</div>'));
+            monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Day"|gettext}{literal}'));
         }
     });
     {/literal}

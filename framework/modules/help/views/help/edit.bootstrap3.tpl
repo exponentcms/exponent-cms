@@ -64,7 +64,8 @@
             </div>
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Help Item"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Help Item"|gettext}</div>*}
+        {loading title="Loading Help Item"|gettext}
         {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
     {/form}     
 </div>

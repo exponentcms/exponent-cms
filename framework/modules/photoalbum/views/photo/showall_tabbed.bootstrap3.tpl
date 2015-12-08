@@ -104,7 +104,8 @@
             {/foreach}
         </div>
     </div>
-    <div class="loadingdiv">{'Loading'|gettext}</div>
+    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+    {loading}
 </div>
 
 {script unique="`$id`" yui3mods="gallery-lightbox"}

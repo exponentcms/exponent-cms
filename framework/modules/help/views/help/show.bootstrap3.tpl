@@ -76,7 +76,8 @@
 			{/if}
 		</div>
 	</div>
-	<div class="loadingdiv">{"Loading Help"|gettext}</div>
+	{*<div class="loadingdiv">{"Loading Help"|gettext}</div>*}
+	{loading title="Loading Help"|gettext}
 </div>
 {if $children}
     {$params.parent = $doc->id}

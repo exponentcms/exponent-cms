@@ -63,7 +63,8 @@
         </div>
     </div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
+{*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+{loading}
 
 {script unique="editform" yui3mods="exptabs"}
 {literal}

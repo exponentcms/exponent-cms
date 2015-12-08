@@ -83,7 +83,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
+//        searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
+        searchlist.setContent(Y.Node.create('{/literal}{loading title="Searching"|gettext}{literal}'));
     }, 'a.pager');
 
     // Watches the browser history for changes
@@ -93,7 +94,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
+//            searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
+            searchlist.setContent(Y.Node.create('{/literal}{loading title="Searching"|gettext}{literal}'));
         }
     });
 });

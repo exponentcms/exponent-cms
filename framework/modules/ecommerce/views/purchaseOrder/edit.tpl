@@ -117,7 +117,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             },
             on: {
                 start: function(){
-                    vBody.setContent('<div class="loadingdiv">{/literal}{"Adding Vendor Information"|gettext}{literal}<div>');
+                    vBody.setContent('{/literal}{loading title="Adding Vendor Information"|gettext}{literal}');
                 },
                 complete: function(id, o, args){
                     var data = o.responseText; // Response data.
@@ -160,7 +160,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             },
             on: {
                 start: function(){
-                    ctrlRow.get('parentNode').insert('<tr class="load"><td colspan="9"><div class="loadingdiv">{/literal}{"Adding Purchase Order Item"|gettext}{literal}<div></td></tr>',ctrlRow)
+                    ctrlRow.get('parentNode').insert('<tr class="load"><td colspan="9">{/literal}{loading title="Adding Purchase Order Item"|gettext}{literal}</td></tr>',ctrlRow)
                 },
                 complete: rowIOComplete
                 //end: Dispatch.end

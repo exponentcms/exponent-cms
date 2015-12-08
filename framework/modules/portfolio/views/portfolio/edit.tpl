@@ -56,7 +56,8 @@
                 </div>
             </div>
         </div>
-	    <div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>
+	    {*<div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>*}
+        {loading title='Loading Portfolio Item'|gettext}
         {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

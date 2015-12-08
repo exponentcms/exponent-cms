@@ -86,7 +86,8 @@
                 {/if}
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Event"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Event"|gettext}</div>*}
+        {loading title="Loading Event"|gettex}
         {control type=buttongroup submit="Save Event"|gettext cancel="Cancel"|gettext}
      {/form}
 </div>

@@ -86,7 +86,8 @@
             </ul>
             <div id="loadcontent" class="exp-ajax-tabs-content yui-content yui3-skin-sam"></div>
         </div>
-        <div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>
+        {*<div id="loading" class="loadingdiv">{"Loading"|gettext} {"Product Edit Form"|gettext}</div>*}
+        {loading title="Loading Product Edit Form"|gettext}
         {control type="buttongroup" submit="Save Product"|gettext cancel="Cancel"|gettext}
         {if isset($record->original_id)}
             {control type="hidden" name="original_id" value=$record->original_id}

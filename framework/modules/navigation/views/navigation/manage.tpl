@@ -32,7 +32,8 @@
 	        {if $canManageStandalones}<div id="tab2">{exp_include file="manage_standalone.tpl"}</div>{/if}
 	    </div>
 	</div>
-	<div class="loadingdiv">{'Loading Pages'|gettext}</div>
+	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
+	{loading title='Loading Pages'|gettext}
 </div>
 
 {script unique="editform" yui3mods="exptabs"}

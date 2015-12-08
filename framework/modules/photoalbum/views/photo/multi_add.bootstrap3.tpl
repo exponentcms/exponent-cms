@@ -38,7 +38,8 @@
                 </div>
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Multi-Photo Uploader"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Multi-Photo Uploader"|gettext}</div>*}
+        {loading title="Loading Multi-Photo Uploader"|gettext}
         {control type=buttongroup submit="Add Photos to Album"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

@@ -95,7 +95,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         e.halt();
         cfg.data = "view="+e.target.get('value');
         var request = Y.io(sUrl, cfg);
-        Y.one('#fileViewConfig').setContent(Y.Node.create('<div class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+        Y.one('#fileViewConfig').setContent(Y.Node.create('<div style="width:40%">{/literal}{loading title="Loading Form"|gettext}{literal}</div>'));
         if (e.target.get('value')==""){
             Y.one('#ff-options').setStyle("display","none");
         }

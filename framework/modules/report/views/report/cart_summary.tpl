@@ -52,7 +52,8 @@
                 </div>
             </div>
 	    </div>
-	    <div class="loadingdiv">{'Loading Dashboard'|gettext}</div>
+	    {*<div class="loadingdiv">{'Loading Dashboard'|gettext}</div>*}
+        {loading title='Loading Dashboard'|gettext}
     </div>
     {clear}
 </div>

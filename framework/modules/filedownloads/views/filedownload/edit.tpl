@@ -93,7 +93,8 @@
                 {/if}
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading File Download Item"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading File Download Item"|gettext}</div>*}
+        {loading title="Loading File Download Item"|gettext}
         {control type=buttongroup submit="Save File"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

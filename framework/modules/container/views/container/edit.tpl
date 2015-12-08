@@ -79,9 +79,11 @@
         {/form}
     </div>
     {if $is_edit}
-        <div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>
+        {*<div class="loadingdiv">{'Loading Module Configuration Form'|gettext}</div>*}
+        {loading title='Loading Module Configuration Form'|gettext}
     {else}
-        <div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>
+        {*<div class="loadingdiv">{'Loading Module Creation Form'|gettext}</div>*}
+        {loading title='Loading Module Creation Form'|gettext}
     {/if}
     {* src="$smarty.const.PATH_RELATIVE|cat:'js/ContainerSourceControl.js'" *}
 

@@ -390,7 +390,8 @@
                         {/foreach}
                     </div>
                 {/if}
-                <div class="loadingdiv">{'Loading'|gettext}</div>
+                {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+                {loading}
             {else}
                 <div class="billing-method">
                     {form name="free" controller=cart action=preprocess}

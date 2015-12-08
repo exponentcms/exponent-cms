@@ -373,7 +373,8 @@
     {/permissions}
         </div>
     </div>
-    <div class="loadingdiv">{'Loading Order'|gettext}</div>
+    {*<div class="loadingdiv">{'Loading Order'|gettext}</div>*}
+    {loading title='Loading Order'|gettext}
 </div>
 
 {script unique="msgbox" yui3mods="exptabs"}

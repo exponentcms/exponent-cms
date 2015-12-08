@@ -86,7 +86,8 @@
                 {/if}
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading News Item"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading News Item"|gettext}</div>*}
+        {loading title="Loading News Item"|gettext}
         {control type=buttongroup submit="Save News Post"|gettext cancel="Cancel"|gettext}
     {/form}
     {selectobjects table=$record->tablename where="id=`$record->id`" orderby='revision_id DESC' item=revisions}

@@ -42,7 +42,8 @@
                 {/foreach}
             </div>
         </div>
-        <div class="loadingdiv">{"Loading Settings"|gettext}</div>
+        {*<div class="loadingdiv">{"Loading Settings"|gettext}</div>*}
+        {loading title="Loading Settings"|gettext}
         {control type=buttongroup submit="Save Configuration"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

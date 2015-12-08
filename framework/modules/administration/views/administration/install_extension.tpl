@@ -124,7 +124,8 @@
 		</div>
 	</div>
 </div>
-<div class="loadingdiv">{'Loading'|gettext}</div>
+{*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+{loading}
 
 {script unique="uploadextension" yui3mods="exptabs"}
 {literal}

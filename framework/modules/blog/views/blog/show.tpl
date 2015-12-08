@@ -82,7 +82,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        blogitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Post"|gettext}{literal}</div>'));
+        blogitem.setContent(Y.Node.create('{/literal}{loading title="Loading Post"|gettext}{literal}'));
     }, 'a.blognav');
 
     // Watches the browser history for changes
@@ -92,7 +92,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new post
             cfg.data = "title="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            blogitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Post"|gettext}{literal}</div>'));
+            blogitem.setContent(Y.Node.create('{/literal}{loading title="Loading Post"|gettext}{literal}'));
         }
     });
 });

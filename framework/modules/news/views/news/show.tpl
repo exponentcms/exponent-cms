@@ -78,7 +78,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+//        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+        newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
     }, 'a.newsnav');
 
     // Watches the browser history for changes
@@ -88,7 +89,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new item
             cfg.data = "title="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+//            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+            newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
         }
     });
 });

@@ -130,7 +130,7 @@
                 }
             };
             var request = Y.io(sUrl, cfg);
-            Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+            Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="icon-spinner icon-spin icon-large"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
         }
 
         EXPONENT.writeViews = function () {
@@ -189,7 +189,7 @@
                     }
                 };
                 var request = Y.io(sUrl, cfg);
-                Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+                Y.one('#moduleViewConfig').setContent(Y.Node.create('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="icon-spinner icon-spin icon-large"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
 //            } else {
 //                Y.one('#moduleViewConfig').setContent(Y.Node.create('<div class="msg-queue error" style="text-align:center"><p>{/literal}{"You Must Select a View!"|gettext}{literal}</p></div>'));
             }

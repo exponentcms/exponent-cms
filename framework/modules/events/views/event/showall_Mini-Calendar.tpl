@@ -88,7 +88,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         e.halt();
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+//        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
+        minical.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
     }, 'a.evnav');
 });
 {/literal}

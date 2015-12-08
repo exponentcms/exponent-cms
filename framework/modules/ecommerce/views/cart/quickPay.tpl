@@ -61,7 +61,8 @@
                            {/foreach}
                        </div>
                    </div>
-                   <div class="loadingdiv">{'Loading'|gettext}</div>
+                   {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+                    {loading}
                </div>
             </div>
         {/if} {** END IF $product->requiredBilling **}
