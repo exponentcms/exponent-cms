@@ -40,7 +40,7 @@ function smarty_function_loading($params,&$smarty) {
    	}
 
     if (bs2()) {
-        $spinner ='<i class="icon-spinner icon-spin icon-large"></i> ';
+        $spinner = '<i class="icon icon-large icon-spinner icon-spin"></i> ';
     } elseif (bs3()) {
         $spinner = '<i class="fa fa-lg fa-spinner fa-pulse"></i> ';
     } else {
