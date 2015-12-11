@@ -73,9 +73,9 @@ class rangecontrol extends textcontrol {
 
     static function form($object) {
         $form = parent::form($object);
-        $form->registerBefore("required",'min',gt('Minimum'), new textcontrol((empty($object->min)?"":$object->min),4,false,5));
-        $form->registerBefore("required",'max',gt('Maximum'), new textcontrol((empty($object->max)?"":$object->max),4,false,5));
-        $form->registerBefore("required",'step',gt('Step'), new textcontrol((empty($object->step)?"1":$object->step),4,false,5));
+        $form->registerBefore("required",'min',gt('Minimum'), new textcontrol((empty($object->min)?"":$object->min)));
+        $form->registerBefore("required",'max',gt('Maximum'), new textcontrol((empty($object->max)?"":$object->max)));
+        $form->registerBefore("required",'step',gt('Step'), new textcontrol((empty($object->step)?"1":$object->step)));
         return $form;
     }
 

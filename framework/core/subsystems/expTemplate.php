@@ -77,7 +77,7 @@ class expTemplate {
 		if ($form_file == "") return $form;
 
 //		$form->register(null,"",new htmlcontrol("<hr size='1' /><b>".gt('Layout Configuration')."</b>"));
-        $form->register(null,"",new htmlcontrol("<h2>".gt('Layout Configuration')."</h2>"),true,ucwords($view).' '.gt('View Configuration'));
+        $form->register(null,"",new htmlcontrol("<h2>".gt('Layout Configuration')."</h2>"),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
@@ -89,12 +89,12 @@ class expTemplate {
 			}
 			if (!isset($values[$data[0]])) $values[$data[0]] = 0;
 			if ($data[2] == "checkbox") {
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]]),true,ucwords($view).' '.gt('View Configuration'));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new checkboxcontrol($values[$data[0]]),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
 			} else if ($data[2] == 'text') {
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]),true,ucwords($view).' '.gt('View Configuration'));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new textcontrol($values[$data[0]]),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
 			} else {
 				$options = array_slice($data,3);
-				$form->register("_viewconfig[".$data[0]."]",$data[1],new dropdowncontrol($values[$data[0]],$options),true,ucwords($view).' '.gt('View Configuration'));
+				$form->register("_viewconfig[".$data[0]."]",$data[1],new dropdowncontrol($values[$data[0]],$options),true,array('description'=>ucwords($view).' '.gt('View Configuration')));
 			}
 		}
         fclose($fh);
