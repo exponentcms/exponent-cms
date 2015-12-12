@@ -86,7 +86,7 @@ class clean_file_db extends upgradescript {
 				$dbfile = $db->selectObject('expFiles', "filename='" . $file . "' AND directory='" . $npath . "'");
 				if (empty($dbfile)) {
 					$newfile = new expFile(array('filename' => $file, 'directory' => $npath));
-					$newfile->posted = $newfile->last_accessed = filemtime($file);
+					$newfile->posted = $newfile->last_accessed = filemtime(BASE . $path);
 					$newfile->save();
 					$new_count++;
 				}
