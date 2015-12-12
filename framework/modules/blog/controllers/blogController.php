@@ -199,10 +199,13 @@ class blogController extends expController {
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
 	    // populate the location data in the template now.
-//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
         $config = expConfig::getConfig($record->location_data);
         if (empty($this->config))
             $this->config = $config;
+        if (empty($this->loc->src)) {
+            $r_loc = expUnserialize($record->location_data);
+            $this->loc->src = $r_loc->src;
+        }
 
         $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
         $record->next = $record->find('first',$nextwhere);
