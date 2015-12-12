@@ -201,7 +201,8 @@ class blogController extends expController {
 	    // populate the location data in the template now.
 //        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
         $config = expConfig::getConfig($record->location_data);
-//        $config = $this->config;//FIXME??
+        if (empty($this->config))
+            $this->config = $config;
 
         $nextwhere = $this->aggregateWhereClause().' AND publish > '.$record->publish.' ORDER BY publish';
         $record->next = $record->find('first',$nextwhere);

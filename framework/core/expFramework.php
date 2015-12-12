@@ -932,14 +932,6 @@ function ecom_active() {
 function framework() {
     global $framework;
 
-//    $framework = expSession::get('framework');
-//    if (empty($framework)) {
-//        if (NEWUI) {
-//            $framework = 'newui';
-//        } else {
-//            $framework = 'yui';  // yui is the 2.x default framework
-//        }
-//    }
     return $framework;
 }
 
@@ -951,7 +943,6 @@ function framework() {
 function bs2() {
     global $framework;
 
-//    $framework = framework();
     if ($framework == 'bootstrap') {
         return true;
     } else {
@@ -968,7 +959,6 @@ function bs2() {
 function bs3($strict = false) {
     global $framework;
 
-//    $framework = framework();
     if ($framework == 'bootstrap3') {
         return true;
     } elseif ($framework == 'newui' && !$strict) {

@@ -445,7 +445,8 @@ class expRouter {
               
             if ($matched) {
                 // safeguard against false matches when a real action was what the user really wanted.
-                if (method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1])) return false;
+                if (method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1]))
+                    return false;
 
                 $this->url_parts = array();
                 $this->url_parts[0] = $map['controller'];

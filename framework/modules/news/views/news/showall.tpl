@@ -65,7 +65,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 //    var newslisthistory = new Y.History();
 //    newslisthistory.addValue('newspage',{/literal}{$params.page}{literal});
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.page}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
     var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",

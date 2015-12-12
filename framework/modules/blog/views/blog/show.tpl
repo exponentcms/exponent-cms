@@ -37,7 +37,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         page_parm = '&title=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.title}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.title}{literal}'});
     var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",

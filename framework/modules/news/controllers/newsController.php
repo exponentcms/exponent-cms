@@ -143,7 +143,8 @@ class newsController extends expController {
         $record = new news($id);
 //        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
         $config = expConfig::getConfig($record->location_data);
-//        $config = $this->config;//FIXME??
+        if (empty($this->config))
+            $this->config = $config;
 
         $order = !empty($config['order']) ? $config['order'] : 'publish DESC';
         if (strstr($order," ")) {

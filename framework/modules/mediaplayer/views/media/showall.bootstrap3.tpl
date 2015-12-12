@@ -119,7 +119,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         page_parm = '&page=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.page}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
     var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     src = '{/literal}{$__loc->src}{literal}';
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=media&action=showall&view=medialist&ajax_action=1&src="+src;

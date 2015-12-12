@@ -86,6 +86,11 @@ class photosController extends expController {
             $id = $this->params['title'];
         }
         $record = new photo($id);
+//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
+        $config = expConfig::getConfig($record->location_data);
+        if (empty($this->config))
+            $this->config = $config;
+
         $where = $this->aggregateWhereClause();
 //        $maxrank = $db->max($this->model_table,'rank','',$where);
 //
@@ -102,9 +107,6 @@ class photosController extends expController {
 //            $record->prev = $db->selectValue($this->model_table,'sef_url',$where);
 //        }
         $record->addNextPrev($where);
-
-//        $config = expUnserialize($db->selectValue('expConfigs','config',"location_data='".$record->location_data."'"));
-        $config = expConfig::getConfig($record->location_data);
 
         assign_to_template(array(
             'record'=>$record,

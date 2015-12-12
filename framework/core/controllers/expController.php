@@ -460,6 +460,8 @@ abstract class expController {
         $record = new $modelname($id);
 //        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
         $config = expConfig::getConfig($record->location_data);
+        if (empty($this->config))
+            $this->config = $config;
 
         assign_to_template(array(
             'record' => $record,

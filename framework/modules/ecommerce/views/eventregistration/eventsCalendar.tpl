@@ -72,7 +72,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
         page_parm = '&time=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.time}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
     var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
                 method: "POST",
