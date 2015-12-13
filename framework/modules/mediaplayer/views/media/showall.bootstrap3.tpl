@@ -155,7 +155,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     medialist.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Media'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         var cfg = {
               method: "POST",
 		      headers: { 'X-Transaction': 'Load Mediaitems'},

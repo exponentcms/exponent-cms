@@ -108,7 +108,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     newslist.delegate('click', function(e){
         e.halt();
 //        newslisthistory.addValue('newspage',e.currentTarget.get('rel'), {title:'Title', url:orig_url+page_parm+e.currentTarget.get('rel')});
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'News Items'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
 //        newslist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));

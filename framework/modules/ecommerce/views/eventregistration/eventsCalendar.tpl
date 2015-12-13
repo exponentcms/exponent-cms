@@ -152,7 +152,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     {literal}
     monthcal.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('title').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
 //        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));

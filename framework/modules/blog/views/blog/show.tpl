@@ -79,7 +79,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     blogitem.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('text').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
         blogitem.setContent(Y.Node.create('{/literal}{loading title="Loading Post"|gettext}{literal}'));
