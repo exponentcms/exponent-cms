@@ -129,7 +129,7 @@ class Archive_Zip
     * @param    string  $p_zipname  The name of the zip archive to create
     * @access public
     */
-    function Archive_Zip($p_zipname)
+    function __construct($p_zipname)
     {
 
       // ----- Check the zlib

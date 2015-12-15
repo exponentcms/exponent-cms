@@ -13,7 +13,7 @@ class upsRate {
 	var $xmlSent;
 	var $rateResponse;
 	
-	function upsRate($upsObj) {
+	function __construct($upsObj) {
 		// Must pass the UPS object to this class for it to work
 		$this->ups = $upsObj;
 	}
