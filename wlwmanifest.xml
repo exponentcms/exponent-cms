@@ -61,7 +61,7 @@
             <imageUrl>{blog-postapi-url}/../framework/core/assets/images/comments.png</imageUrl>
             <clickUrl>
                 <![CDATA[
-                    {blog-postapi-url}/../index.php?controller=expComment&action=manage
+                    {blog-postapi-url}/../index.php?controller=expComment&action=manage&content_type=blog&content_id={blog-id}
                 ]]>
             </clickUrl>
         </button>
