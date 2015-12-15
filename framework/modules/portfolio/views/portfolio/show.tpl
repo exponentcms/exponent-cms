@@ -16,7 +16,9 @@
 <div class="module portfolio show">
     <div class="item">
         <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
-        {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
+        <div class="item-actions">
+            {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
+        </div>
         {$myloc=serialize($__loc)}
         {permissions}
             <div class="item-actions">

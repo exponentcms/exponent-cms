@@ -46,8 +46,10 @@
             </p>
         {/if}
         <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
-        {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
-        {subscribe_link prepend='<br />'}
+        <div class="item-actions">
+            {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
+            {subscribe_link prepend='<br />'}
+        </div>
         {$myloc=serialize($__loc)}
         {if empty($config.datetag)}
             <span class="date">{$record->publish_date|format_date:"%A, %B %e, %Y"}</span>

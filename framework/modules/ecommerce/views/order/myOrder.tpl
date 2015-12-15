@@ -40,7 +40,7 @@
     {/assocarray}
     {breadcrumb items=$breadcrumb active=4 style=flat}
 {/if}
-<div>
+<div class="item-actions">
     {br}
     {printer_friendly_link class="{button_style}" text="Print this invoice"|gettext view="show_printable" show=1}
     {permissions}

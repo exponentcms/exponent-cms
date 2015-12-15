@@ -43,24 +43,31 @@ function smarty_function_subscribe_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $sub = isset($params['show']) ? $params['show'] : null;
     }
-    if ($sub && !empty($user)) {
-        $cloc = $smarty->getTemplateVars('__loc');
-        $ealert = $db->selectObject('expeAlerts',"module='".$cloc->mod."' AND src='".$cloc->src."'");
-        if (!empty($ealert)) {
-            // initialize a couple of variables
-            $text = isset($params['text']) ? $params['text'] : gt('Subscribe to Content Updates');
-            $prepend = isset($params['prepend']) ? $params['prepend'] : '';
-            $class = isset($params['class']) ? $params['class'] : 'subscribe-link';
-            $action = 'subscribe';
-            $subscribed = $db->selectObject('user_subscriptions','user_id='.$user->id.' AND expeAlerts_id='.$ealert->id);
-            if (!empty($subscribed)) {
-                $text = gt('Un-').$text;
-                $class = 'un'.$class;
-                $action = 'un'.$action;
+    if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
+        if ($sub && !empty($user)) {
+            $cloc = $smarty->getTemplateVars('__loc');
+            $ealert = $db->selectObject('expeAlerts', "module='" . $cloc->mod . "' AND src='" . $cloc->src . "'");
+            if (!empty($ealert)) {
+                // initialize a couple of variables
+                $text = isset($params['text']) ? $params['text'] : gt('Subscribe to Content Updates');
+                $prepend = isset($params['prepend']) ? $params['prepend'] : '';
+                $class = isset($params['class']) ? $params['class'] : 'subscribe-link';
+                $action = 'subscribe';
+                $subscribed = $db->selectObject(
+                    'user_subscriptions',
+                    'user_id=' . $user->id . ' AND expeAlerts_id=' . $ealert->id
+                );
+                if (!empty($subscribed)) {
+                    $text = gt('Un-') . $text;
+                    $class = 'un' . $class;
+                    $action = 'un' . $action;
+                }
+                // spit out the link
+                $link = '<a class="' . $class . '" href="' . $router->makelink(
+                        array('controller' => 'ealert', 'action' => $action, 'id' => $ealert->id)
+                    ) . '">' . $text . '</a>';
+                echo $prepend, $link;
             }
-            // spit out the link
-            $link =  '<a class="'.$class.'" href="'.$router->makelink(array('controller'=>'ealert', 'action'=>$action, 'id'=>$ealert->id)).'">'.$text.'</a>';
-            echo $prepend,$link;
         }
     }
 }
