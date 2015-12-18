@@ -145,7 +145,7 @@ class expRecord {
     }
 
     /**
-     * find an item
+     * find an item or items
      *
      * @param string $range
      * @param null   $where

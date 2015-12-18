@@ -117,6 +117,7 @@
 
 //Register the post and pre filters as they are not auto-registered.
 $this->registerFilter('post', 'smarty_postfilter_switch');
+//$smarty->registerFilter('post', 'smarty_postfilter_switch');  //fixme for v3.1.28+
 
 class Smarty_Compiler_Switch extends Smarty_Internal_CompileBase {
     public $required_attributes = array('var');
