@@ -107,7 +107,7 @@ class filemanagercontrol extends formcontrol {
                 if (Y.one('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new Y.ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
-                    url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1, "folder"=> $this->folder)) . "',
+                    url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload")) . "',
                     data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
                     responseType: 'json',
                     name: 'uploadfile',
