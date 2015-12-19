@@ -43,7 +43,14 @@ elFinder.prototype.commands.upload = function() {
 						dfrd.reject(error);
 					})
 					.done(function(data) {
+						var cwd = fm.getUI('cwd');
 						dfrd.resolve(data);
+						if (data && data.added && data.added[0]) {
+							var newItem = cwd.find('#'+data.added[0].hash);
+							if (newItem.length) {
+								newItem.trigger('scrolltoview');
+							}
+						}
 					});
 			},
 			upload = function(data) {
@@ -153,6 +160,9 @@ elFinder.prototype.commands.upload = function() {
 		input = $('<input type="file" multiple="true"/>')
 			.change(function() {
 				upload({input : input[0], type : 'files'});
+			})
+			.on('dragover', function(e) {
+				e.originalEvent.dataTransfer.dropEffect = 'copy';
 			});
 
 		button = $('<div class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"><span class="ui-button-text">'+fm.i18n('selectForUpload')+'</span></div>')
@@ -216,6 +226,7 @@ elFinder.prototype.commands.upload = function() {
 			dropbox.addEventListener('dragover', function(e) {
 				e.stopPropagation();
 			  	e.preventDefault();
+				e.dataTransfer.dropEffect = 'copy';
 			  	$(dropbox).addClass(hover);
 			}, false);
 

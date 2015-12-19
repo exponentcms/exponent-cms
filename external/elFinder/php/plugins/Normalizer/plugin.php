@@ -12,7 +12,7 @@
  * ex. binding, configure on connector options
  *	$opts = array(
  *		'bind' => array(
- *			'mkdir.pre mkfile.pre rename.pre archive.pre' => array(
+ *			'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre' => array(
  *				'Plugin.Normalizer.cmdPreprocess'
  *			),
  *			'upload.presave' => array(
@@ -72,7 +72,13 @@ class elFinderPluginNormalizer
 		}
 		
 		if (isset($args['name'])) {
-			$args['name'] = $this->normalize($args['name'], $opts);
+			if (is_array($args['name'])) {
+				foreach($args['name'] as $i => $name) {
+					$args['name'][$i] = $this->normalize($name, $opts);
+				}
+			} else {
+				$args['name'] = $this->normalize($args['name'], $opts);
+			}
 		}
 		return true;
 	}
@@ -103,16 +109,16 @@ class elFinderPluginNormalizer
 	
 	private function normalize($str, $opts) {
 		if ($opts['nfc'] || $opts['nfkc']) {
-			if (class_exists('Normalizer')) {
+			if (class_exists('Normalizer', false)) {
 				if ($opts['nfc'] && ! Normalizer::isNormalized($str, Normalizer::FORM_C))
 					$str = Normalizer::normalize($str, Normalizer::FORM_C);
 				if ($opts['nfkc'] && ! Normalizer::isNormalized($str, Normalizer::FORM_KC))
 					$str = Normalizer::normalize($str, Normalizer::FORM_KC);
 			} else {
-				if (! class_exists('I18N_UnicodeNormalizer')) {
+				if (! class_exists('I18N_UnicodeNormalizer', false)) {
 					@ include_once 'I18N/UnicodeNormalizer.php';
 				}
-				if (class_exists('I18N_UnicodeNormalizer')) {
+				if (class_exists('I18N_UnicodeNormalizer', false)) {
 					$normalizer = new I18N_UnicodeNormalizer();
 					if ($opts['nfc'])
 						$str = $normalizer->normalize($str, 'NFC');
