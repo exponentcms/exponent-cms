@@ -12,4 +12,4 @@ For a complete list of the changes made from release to release, see the [CHANGE
 
 ----------
 
-### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.5
+### Refine 'shipment' interface, plus address any issues in v2.3.5
