@@ -2,7 +2,7 @@
 
 ----------
 
-Copyright (c) 2004-2015 OIC Group, Inc.
+Copyright (c) 2004-2016 OIC Group, Inc.
 
 For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms/commits/master](https://github.com/exponentcms/exponent-cms/commits/master)
 
