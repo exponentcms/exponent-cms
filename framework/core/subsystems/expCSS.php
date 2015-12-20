@@ -235,12 +235,12 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
-        self::auto_compile_scss('external/bootstrap3/scss/_test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
-        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
-        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
