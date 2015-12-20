@@ -84,9 +84,12 @@
         }
     });
 
+    /**
+    * Auto-adjust (dynamically) top margins based on navbar type and slingbar display
+    */
     $(document).ready(function(){
-        function setTopPadding() {
-            if ({/literal}{($user->getsToolbar == 1 && $smarty.const.SLINGBAR_TOP == 1)?1:0}{literal}) {
+    function setTopPadding() {
+    if ({/literal}{($user->getsToolbar == 1 && $smarty.const.SLINGBAR_TOP == 1)?1:0}{literal}) {
                 $adminbar = $('#admin-toolbar').height();
                 if ($adminbar == 0) $adminbar = 50;
             } else {
@@ -124,7 +127,6 @@
                 }
             }
         };
-
         setTopPadding();
         $(window).resize(function(){
             setTopPadding();

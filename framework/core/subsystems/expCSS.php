@@ -235,11 +235,12 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
-//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
+        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -561,9 +562,10 @@ class expCSS {
 //                        }
 
                         if (MINIFY==1 && MINIFY_LESS==1 && $scss_compiler == 'scssphp') {
-                            $scss->setFormatter('scss_formatter_compressed');
+                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Compressed');
                         } else {
-                            $scss->setFormatter('scss_formatter');  // scss_formatter_nested is default
+//                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Nested');  // scss_formatter_nested is default
+                            $scss->setFormatter('Leafo\ScssPhp\Formatter\Expanded');  // scss_formatter_nested is default
                         }
 
                         $scss->setVariables($vars);

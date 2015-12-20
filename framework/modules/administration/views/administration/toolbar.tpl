@@ -178,7 +178,6 @@
          });
 
          Y.fire('toolbar:loaded');
-
      });
 {/literal}
 {/script}

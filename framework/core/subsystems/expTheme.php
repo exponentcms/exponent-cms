@@ -335,6 +335,9 @@ class expTheme
             // some IE 6 support
             $str .= "\t" . '<!--[if IE 6]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/csshover.htc); }</style><![endif]-->' . "\n";
 
+            // css3 transform support for IE 6-8
+//            $str .= "\t" . '<!--[if lt IE 9]><style type="text/css">  body { behavior: url(' . PATH_RELATIVE . 'external/ms-transform.htc); }</style><![endif]-->' . "\n";
+
             // html5 support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/html5shiv/html5shiv-shiv.js"></script><![endif]-->' . "\n";
 
@@ -367,13 +370,12 @@ class expTheme
             self::module(array("controller" => "administration", "action" => "toolbar", "source" => "admin"));
         }
 
-//   		if ((self::is_mobile() || FORCE_MOBILE) && is_readable(BASE.'themes/'.DISPLAY_THEME.'/mobile/index.php')) {
         if (MOBILE && is_readable(BASE . 'themes/' . DISPLAY_THEME . '/mobile/index.php')) {
             echo '<div style="text-align:center"><a href="', makeLink(
                     array('module' => 'administration', 'action' => 'togglemobile')
                 ), '">', gt('View site in'), ' ', (MOBILE ? "Classic" : "Mobile"), ' ', gt('mode'), '</a></div>';
         }
-                // load primer, lessprimer, & normalize CSS files
+        // load primer, lessprimer, & normalize CSS files
 
         if (!empty($params['src']) || !empty($params['content']) || !empty($params['yui3mods']) || !empty($params['jquery']) || !empty($params['bootstrap'])) {
             expJavascript::pushToFoot($params);

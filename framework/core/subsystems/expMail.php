@@ -33,8 +33,9 @@ class expMail {
 	private $log = null;
 	private $errStack = null;
 	public $to = null;
-	//public $from = SMTP_FROMADDRESS;
 	public $from = NULL;
+	public $cc = NULL;
+	public $bcc = NULL;
 	private $message = null;
 
 	//this is the mail transporter like exim, SMTP, whatever, that is setup in the constructor
@@ -133,7 +134,7 @@ class expMail {
 					//$conn = new Swift_Connection_SMTP($params['connections']['host'], $params['connections']['port'], $params['connections']['option']);
 					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
 				} else {
-					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);
+					$this->transport = Swift_SmtpTransport::newInstance($params['connections']['host'], $params['connections']['port']);  //FIXME won't work since $params['connections'] is NOT array
 				}
 			} else {
 				$this->transport = Swift_SmtpTransport::newInstance(SMTP_SERVER, SMTP_PORT, SMTP_PROTOCOL)
@@ -176,9 +177,9 @@ class expMail {
 	public function test() {
 		try {
 			$this->transport->start();
-			echo "<h2>Mail Server Test Complete!</h2>We Connected to the Mail Server - ", SMTP_SERVER;
+			echo "<h2>".gt("Mail Server Test Complete!")."</h2>".gt("We Connected to the Mail Server")." - ", SMTP_SERVER;
 		} catch (Swift_TransportException $e) {
-			echo "<h2>Mail Server Test Failed!</h2>", SMTP_SERVER;
+			echo "<h2".gt("Mail Server Test Failed!")."</h2>", SMTP_SERVER;
 			eDebug($e->getMessage());
 		}
 	}
@@ -232,7 +233,7 @@ class expMail {
 			$params['to'] = array(trim($params['to']));
 		}
 		if (empty($params['to'])) {
-			$params['to'] = array(trim(SMTP_FROMADDRESS));
+			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
 		}
         $this->addTo($params['to']);
 
@@ -243,18 +244,20 @@ class expMail {
 			$params['from'] = trim($params['from']);
 		}
 		if (empty($params['from'])) {
-			$params['from'] = trim(SMTP_FROMADDRESS);
+			$params['from'] = trim(SMTP_FROMADDRESS); // default address is ours
 		}
 //		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);
 
 		$this->message->setSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
-		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+		if (!empty($params['headers']))
+			$this->addHeaders($params['headers']);
 
 		if (!empty($params['html_message'])) {
 			$this->setHTMLBody($params['html_message']);
-			if (!empty($params['text_message'])) $this->addText($params['text_message']);
+			if (!empty($params['text_message']))
+				$this->addText($params['text_message']);
 		} elseif (!empty($params['text_message'])) {
 			$this->setTextBody($params['text_message']);
 		}
@@ -265,9 +268,14 @@ class expMail {
 			$numsent = $this->mailer->send($this->message,$failed);
             if (!empty($failed)) {
                 flash('error',gt('Unable to Send Mail to').' - '.implode(', ',$failed));
-            }
+            } elseif (DEVELOPMENT && LOGGER) {
+				eLog(gt('E-Mail sent to').' - '.implode(', ', $params['to']));
+			}
 		} catch (Swift_TransportException $e) {
 			flash('error',gt('Sending Mail Failed!').' - '.$e->getMessage());
+			if (DEVELOPMENT && LOGGER) {
+				eLog('ERROR',gt('E-Mail NOT sent to').' - '.implode(', ', $params['to']));
+			}
 		}
 		return $numsent;
 	}
@@ -364,7 +372,7 @@ class expMail {
 			$params['to'] = array(trim($params['to']));
 		}
 		if (empty($params['to'])) {
-			$params['to'] = array(trim(SMTP_FROMADDRESS));
+			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
 		}
         $this->addTo($params['to']);
 
@@ -375,18 +383,20 @@ class expMail {
 			$params['from'] = trim($params['from']);
 		}
 		if (empty($params['from'])) {
-			$params['from'] = trim(SMTP_FROMADDRESS);
+			$params['from'] = trim(SMTP_FROMADDRESS); // default address is ours
 		}
 //		$this->message->setFrom($params['from']);  //FIXME we need to use this->addFrom() instead
         $this->addFrom($params['from']);
 
 		$this->addSubject($params['subject'] = !empty($params['subject']) ? $params['subject'] : 'Message from '.SITE_TITLE);
 
-		if (!empty($params['headers'])) $this->addHeaders($params['headers']);
+		if (!empty($params['headers']))
+			$this->addHeaders($params['headers']);
 
 		if (!empty($params['html_message'])) {
 			$this->setHTMLBody($params['html_message']);
-			if (!empty($params['text_message'])) $this->addText($params['text_message']);
+			if (!empty($params['text_message']))
+				$this->addText($params['text_message']);
 		} elseif (!empty($params['text_message'])) {
 			$this->setTextBody($params['text_message']);
 		}
@@ -396,8 +406,14 @@ class expMail {
 			try {
 				$this->message->setTo(array($address=>$name));
 				$numsent += $this->send($this->message);
+				if (DEVELOPMENT && LOGGER) {
+					eLog(gt('E-Mail sent to') . ' - ' . $address);
+				}
 			} catch (Swift_TransportException $e) {
 				flash('error',gt('Batch Send Mail Failed!').' - '.$address.' - '.$e->getMessage());
+				if (DEVELOPMENT && LOGGER) {
+					eLog('ERROR',gt('Batch E-Mail NOT sent to').' - '.implode(', ', $params['to']));
+				}
 			}
 		}
 		return $numsent;
@@ -665,6 +681,21 @@ class expMail {
 	 * @param string $name  This is the name associated with the above email address.
 	 */
 	public function addCc($email, $name = null) {
+        // attempt to fix a bad to address
+        if (is_array($email)) {
+            foreach ($email as $address=>$name) {
+                if (is_integer($address)) {
+                    if (strstr($name,'.') === false) {
+                        $email[$address] .= $name.'.net';
+                    }
+                }
+            }
+        } else {
+            if (strstr($email,'.') === false) {
+                $email .= '.net';
+            }
+        }
+        $this->cc = $email;
 		$this->message->addCc($email, $name);
 	}
 
@@ -698,6 +729,21 @@ class expMail {
 	 * @param string $name  This is the name associated with the above email address.
 	 */
 	public function addBcc($email, $name = null) {
+        // attempt to fix a bad to address
+        if (is_array($email)) {
+            foreach ($email as $address=>$name) {
+                if (is_integer($address)) {
+                    if (strstr($name,'.') === false) {
+                        $email[$address] .= $name.'.net';
+                    }
+                }
+            }
+        } else {
+            if (strstr($email,'.') === false) {
+                $email .= '.net';
+            }
+        }
+        $this->bcc = $email;
 		$this->message->addBcc($email, $name);
 	}
 

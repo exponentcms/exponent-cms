@@ -75,7 +75,7 @@ class bootstrap3theme extends theme {
    		$form->meta('theme',$this->params['theme']);
         $form->meta('BTN_COLOR','btn');
    		$form->register('swatch',gt('Theme Style').': ',new dropdowncontrol($settings['SWATCH'],$swatches));
-        $form->register('enhanced_style',gt('Bootstrap v2 Styles'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE'])?$settings['ENHANCED_STYLE']:0)));
+        $form->register('enhanced_style',gt('Add Bootstrap v2 Style Effects'),new checkboxcontrol((!empty($settings['ENHANCED_STYLE'])?$settings['ENHANCED_STYLE']:0)));
         $form->register('style_width',gt('Style Width Type').': ',new dropdowncontrol($settings['STYLE_WIDTH'],$style_widths));
         $form->register('btn_size',gt('Button Size').': ',new dropdowncontrol($settings['BTN_SIZE'],$icon_sizes));
         $form->register('menu_location',gt('Menu Location').': ',new dropdowncontrol($settings['MENU_LOCATION'],$menu_locations));

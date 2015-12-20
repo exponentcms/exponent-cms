@@ -60,6 +60,9 @@
         e.stopPropagation()
     })
 
+    /**
+    * Auto-adjust (dynamically) top margins based on navbar type and slingbar display
+    */
     $(document).ready(function(){
         function setTopPadding(admin) {
             if ({/literal}{($user->getsToolbar == 1 && $smarty.const.SLINGBAR_TOP == 1)?1:0}{literal}) {

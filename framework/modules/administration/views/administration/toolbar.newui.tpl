@@ -102,54 +102,52 @@
 
 {script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
 {literal}
-jQuery(document).ready(function($) {
-    //$('body').css('margin-top', $('#admin-toolbar').height()+10);
-
-    var adminerwindow = function (){
-        var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
-        if (!win) { err(); }
-    }
-
-    var docswindow = function (){
-        var win = window.open('http://docs.exponentcms.org');
-        if (!win) { err(); }
-    }
-
-    var forumswindow = function (){
-        var win = window.open('http://forums.exponentcms.org');
-        if (!win) { err(); }
-    }
-
-    var reportbugwindow = function (){
-        var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
-        if (!win) { err(); }
-    }
-
-    var filepickerwindow = function (){
-        var win = window.open('{/literal}{link controller=file action=picker ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
-        if (!win) { err(); }
-    }
-
-    var fileuploaderwindow = function (){
-        var win = window.open('{/literal}{link controller=file action=uploader ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
-        if (!win) { err(); }
-    }
-
-    var workflowtoggle = function (e){
-        if (!confirm('{/literal}{if $smarty.const.ENABLE_WORKFLOW}{'Turn Workflow off (you will lose all revisions)'|gettext}{else}{'Turn Workflow on'|gettext}{/if}{literal}?')) {
-            e.preventDefault();
-            return false;
+    jQuery(document).ready(function($) {
+        var adminerwindow = function (){
+            var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
+            if (!win) { err(); }
         }
-    }
 
-    $('#reportabug-toolbar').on('click', reportbugwindow);
-    $('#manage-db').on('click', adminerwindow);
-    $('#docs-toolbar').on('click',docswindow);
-    $('#forums-toolbar').on('click',forumswindow);
-    $('#filemanager-toolbar').on('click',filepickerwindow);
-    $('#fileuploader-toolbar').on('click',fileuploaderwindow);
-    $('#workflow-toggle').on('click',workflowtoggle);
-});
+        var docswindow = function (){
+            var win = window.open('http://docs.exponentcms.org');
+            if (!win) { err(); }
+        }
+
+        var forumswindow = function (){
+            var win = window.open('http://forums.exponentcms.org');
+            if (!win) { err(); }
+        }
+
+        var reportbugwindow = function (){
+            var win = window.open('http://exponentcms.lighthouseapp.com/projects/61783-exponent-cms/tickets/new');
+            if (!win) { err(); }
+        }
+
+        var filepickerwindow = function (){
+            var win = window.open('{/literal}{link controller=file action=picker ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
+            if (!win) { err(); }
+        }
+
+        var fileuploaderwindow = function (){
+            var win = window.open('{/literal}{link controller=file action=uploader ajax_action=1 update=noupdate}{literal}', 'IMAGE_BROWSER','left=0,top=0,scrollbars=yes,width={/literal}{$smarty.const.FM_WIDTH}{literal},height={/literal}{$smarty.const.FM_HEIGHT}{literal},toolbar=no,resizable=yes,status=0');
+            if (!win) { err(); }
+        }
+
+        var workflowtoggle = function (e){
+            if (!confirm('{/literal}{if $smarty.const.ENABLE_WORKFLOW}{'Turn Workflow off (you will lose all revisions)'|gettext}{else}{'Turn Workflow on'|gettext}{/if}{literal}?')) {
+                e.preventDefault();
+                return false;
+            }
+        }
+
+        $('#reportabug-toolbar').on('click', reportbugwindow);
+        $('#manage-db').on('click', adminerwindow);
+        $('#docs-toolbar').on('click',docswindow);
+        $('#forums-toolbar').on('click',forumswindow);
+        $('#filemanager-toolbar').on('click',filepickerwindow);
+        $('#fileuploader-toolbar').on('click',fileuploaderwindow);
+        $('#workflow-toggle').on('click',workflowtoggle);
+    });
 
     $('.exp-skin .dropdown-toggle').click(function(e) {
         e.preventDefault();
