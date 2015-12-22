@@ -32,7 +32,7 @@
                     {$group = 'Uncategorized'|gettext}
                 {/if}
                 {if $item->expFile[0]->image_width >= $item->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
-                <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
+                <a class="colorbox" rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
             {else}
                 <a href="{link action=show title=$item->sef_url}" title="{$item->alt|default:$item->title}">
             {/if}

@@ -169,7 +169,7 @@
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
-            maxWidth: 500
+            maxWidth: "100%"
         });
         e.preventDefault();
     });
@@ -177,7 +177,7 @@
         target = e.target;
         $.colorbox({
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
-            maxWidth: 500
+            maxWidth: "100%"
         });
         e.preventDefault();
     });
