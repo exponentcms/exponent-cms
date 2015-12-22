@@ -24,6 +24,7 @@
 /** @define "BASE" "../../../.." */
 class easypostcalculator extends shippingcalculator
 {
+    private static $version = '3.0.0';  // library version
     /*
      * Returns the name of the shipping calculator, for use in the Shipping Administration Module
      */
@@ -916,7 +917,7 @@ class easypostcalculator extends shippingcalculator
     function ep_initialize()
     {
         // Require the main class
-        include_once(BASE . 'external/easypost-php-2.1.2/lib/easypost.php');
+        include_once(BASE . 'external/easypost-php-' . $this::$version . '/lib/easypost.php');
 
         if ($this->configdata['testmode']) {
             $apikey = $this->configdata['testkey'];

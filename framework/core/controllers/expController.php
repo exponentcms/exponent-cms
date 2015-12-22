@@ -463,6 +463,7 @@ abstract class expController {
             $this->config = $config;
         if (empty($this->loc->src)) {
             $r_loc = expUnserialize($record->location_data);
+            $this->loc = new stdClass();
             $this->loc->src = $r_loc->src;
         }
 
