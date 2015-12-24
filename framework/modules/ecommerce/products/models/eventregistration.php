@@ -376,7 +376,7 @@ class eventregistration extends expRecord {
                     if ($def != null) {
                         if ($control_type == 'uploadcontrol') $registrant['registration'] = $key + 1;
                         $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $registrant, true));
-                        $value = stripslashes($db->escapeString($emailValue));
+                        $value = stripslashes(expString::escape($emailValue));
                         $varname = $c->name;
                         $db_data->$varname = $value;
                     }

@@ -820,7 +820,7 @@ class eventregistrationController extends expController {
                 $def = call_user_func(array($control_type, "getFieldDefinition"));
                 if ($def != null) {
                     $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params['registrant'], true));
-                    $value = stripslashes($db->escapeString($emailValue));
+                    $value = stripslashes(expString::escape($emailValue));
                     $varname = $c->name;
                     $registrant->$varname = $value;
                 }

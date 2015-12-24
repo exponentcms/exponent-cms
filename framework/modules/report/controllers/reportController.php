@@ -1255,7 +1255,7 @@ class reportController extends expController {
      */
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
-        global $db;
+//        global $db;
 
         $str = str_replace("�", "&rsquo;", $str);
         $str = str_replace("�", "&lsquo;", $str);
@@ -1283,7 +1283,7 @@ class reportController extends expController {
 //        } else {
 //	        $str = trim(str_replace("�", "&trade;", $str));
 //        }
-        $str = @$db->escapeString($db->connection, trim(str_replace("�", "&trade;", $str)));
+        $str = @expString::escape(trim(str_replace("�", "&trade;", $str)));
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }
@@ -1293,7 +1293,7 @@ class reportController extends expController {
      */
     public static function parseAndTrim($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
-        global $db;
+//        global $db;
 
         $str = str_replace("�", "&rsquo;", $str);
         $str = str_replace("�", "&lsquo;", $str);
@@ -1319,7 +1319,7 @@ class reportController extends expController {
 //        } else {
 //	        $str = trim(str_replace("�", "&trade;", $str));
 //        }
-        $str = @$db->escapeString($db->connection, trim(str_replace("�", "&trade;", $str)));
+        $str = @expString::escape(trim(str_replace("�", "&trade;", $str)));
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }

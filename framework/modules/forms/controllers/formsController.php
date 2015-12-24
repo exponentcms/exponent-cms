@@ -503,7 +503,7 @@ class formsController extends expController {
             $def = call_user_func(array($control_type, "getFieldDefinition"));
             if ($def != null) {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
-                $value = stripslashes($db->escapeString($emailValue));
+                $value = stripslashes(expString::escape($emailValue));
 
                 //eDebug($value);
                 $varname = $c->name;
