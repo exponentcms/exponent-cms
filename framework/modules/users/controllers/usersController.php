@@ -601,12 +601,14 @@ class usersController extends expController {
     public function save_change_password() {
         global $user;
 
-        if (!$user->isAdmin() && ($this->params['uid'] != $user->id)) {
+        $isuser = ($this->params['uid'] == $user->id) ? 1 : 0;
+
+        if (!$user->isAdmin() && !$isuser) {
             flash('error', gt('You do not have permissions to change this users password.'));
             expHistory::back();
         }
 
-        if (!$user->isAdmin() && (empty($this->params['password']) || $user->password != user::encryptPassword($this->params['password']))) {
+        if (($isuser && empty($this->params['password'])) || (!empty($this->params['password']) && $user->password != user::encryptPassword($this->params['password']))) {
             flash('error', gt('The current password you entered is not correct.'));
             expHistory::returnTo('editable');
         }
@@ -625,7 +627,7 @@ class usersController extends expController {
             $u->update($params);
         }
 
-        if ($this->params['uid'] != $user->id) {
+        if (!$isuser) {
             flash('message', gt('The password for') . ' ' . $u->username . ' ' . gt('has been changed.'));
         } else {
             $user->password = $u->password;
