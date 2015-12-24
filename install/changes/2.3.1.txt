@@ -1,5 +1,5 @@
 version 2.3.1
-Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address any issues in v2.3.0
+Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address issues in v2.3.0
   * !!!Fixes regression bug where non-admin user login with workflow turned on always broke page
   * !!!Fixes regression bug where all checkboxes were either checked or unchecked
   * !!!Fixes regression bug where adding/editing a module would display a blank page or disable the save button

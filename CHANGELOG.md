@@ -10,7 +10,7 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 Version 2.3.6
 -------------
-### Refine 'shipment' interface, plus address any issues in v2.3.5
+### Refine 'shipment' interface, plus address issues in v2.3.5
   - PHP v7 compatibility
   - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
   - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
@@ -24,7 +24,7 @@ Version 2.3.6
 
 Version 2.3.5
 -------------
-### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
+### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address issues in v2.3.4
   - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - enhances elFinder/TinyMCE/CKEditor integration; CKEditor now allows paste/drop images
   - adds Facebook og: meta tag support
@@ -39,7 +39,7 @@ Version 2.3.5
 
 Version 2.3.4
 -------------
-### Finish removing YUI2 code/widgets, plus address any issues in v2.3.3
+### Finish removing YUI2 code/widgets, plus address issues in v2.3.3
   * !!! fixes an XSS vulnerability in source_selector.php/selector.php
   * regression fix for issues caused by previous security fix (json data could be corrupted) unable to delete files, etc..
   - adds 'announcement' view to events module
@@ -68,7 +68,7 @@ Version 2.3.4
 
 Version 2.3.3
 -------------
-### Address any issues in v2.3.2
+### Address issues in v2.3.2
   * !!! Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
     - Compatible with PHP v5.3.x, 5.4.x, 5.5.x, and 5.6.x
   - adds feature to delete multiple photo album items at one time
@@ -99,7 +99,7 @@ Version 2.3.3
 
 Version 2.3.2
 -------------
-### Address any issues in v2.3.1
+### Address issues in v2.3.1
   * !!! Fixes possible cross-site security issue
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
@@ -129,7 +129,7 @@ Version 2.3.2
 
 Version 2.3.1
 -------------
-### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address any issues in v2.3.0
+### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address issues in v2.3.0
   * !!!Fixes regression bug where non-admin user login with workflow turned on always broke page
   * !!!Fixes regression bug where all checkboxes were either checked or unchecked
   * !!!Fixes regression bug where adding/editing a module would display a blank page or disable the save button
@@ -155,7 +155,7 @@ Version 2.3.1
 
   Version 2.3.0
 -------------
-### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
+### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
@@ -244,7 +244,7 @@ Version 2.2.2
 
 Version 2.2.1
 -------------
-### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+### Address issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - php v5.5 compatible
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
   - adds optional tweet button to blog articles & file downloads, and optional twitter follow button to twitter view

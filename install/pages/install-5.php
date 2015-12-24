@@ -67,7 +67,7 @@ if (is_readable(BASE . 'themes')) {
             echo '<div class="theme clearfix">';
             echo is_readable(
                 BASE . "themes/$file/preview.jpg"
-            ) ? "<img src=\"" . PATH_RELATIVE . "thumb.php?src=" . PATH_RELATIVE . "themes/$file/preview.jpg&amp;w=100&amp;q=75\" class=\"themepreview\">" : "<img src=\"" . PATH_RELATIVE . "thumb.php?src=" . YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png&amp;w=100&amp;q=75\" class=\"themepreview\">";
+            ) ? "<img class=\"themepreview\" src=\"" . PATH_RELATIVE . "thumb.php?&amp;src=" . PATH_RELATIVE . "themes/$file/preview.jpg&amp;w=100&amp;q=75\">" : "<img src=\"" . PATH_RELATIVE . "thumb.php?src=" . YUI2_RELATIVE . "yui2-skin-sam-editor/assets/skins/sam/blankimage.png&amp;w=100&amp;q=75\" class=\"themepreview\">";
             echo "<h2>" . $theme->name() . "</h2>";
             echo "<em>" . $theme->author() . "</em>";
             echo "<p>" . $theme->description() . '</p>

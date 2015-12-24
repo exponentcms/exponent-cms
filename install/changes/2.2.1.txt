@@ -1,5 +1,5 @@
 version 2.2.1
-Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+Address issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - php v5.5 compatible
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
   - adds optional tweet button to blog articles & file downloads, and optional twitter follow button to twitter view

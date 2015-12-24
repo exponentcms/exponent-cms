@@ -1,5 +1,5 @@
 version 2.3.0
-Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
+Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
