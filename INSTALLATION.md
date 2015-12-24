@@ -1,4 +1,4 @@
-#Exponent Content Management System
+# Exponent Content Management System
 
 ----------
 
@@ -10,7 +10,7 @@ Installation of Exponent CMS 2.0
 Requirements
 - Linux-based web host (recommended)
 - Apache 2.0 or greater
-- PHP 5.3.x or greater
+- PHP 5.3.x or greater (v5.5.x or greater recommended)
 - MySQL database
 
 ---------------------

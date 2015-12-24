@@ -1,4 +1,4 @@
-#Exponent Content Management System
+# Exponent Content Management System
 
 ----------
 
@@ -19,21 +19,21 @@ users.  For more information, see the [ABOUT.md](ABOUT.md) file.
 
 ------------
 
-##Getting Started
+## Getting Started
 
 First, you'll need to install and configure Exponent. See the [INSTALLATION.md](INSTALLATION.md)
 file for a detailed description of how to do this.
 
 ------------
 
-##Current Version and Changes
+## Current Version and Changes
 
 The current version is found in the [RELEASE.md](RELEASE.md) file.
 For more detailed changes see the [CHANGELOG.md](CHANGELOG.md) file.
 
 ------------
 
-##Contributing
+## Contributing
 
 Exponent is Open Source, licensed under the GPL.  To read about the
 specifics of the GPL, please see the [LICENSE](LICENSE) file.
@@ -57,7 +57,7 @@ The more bugs we find and fix, the better off the package is.
 
 -------------------
 
-##Support / Questions
+## Support / Questions
 For questions, support, or further information, please visit
 
 * [http://www.exponentcms.org/](http://www.exponentcms.org/)

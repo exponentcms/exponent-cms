@@ -1,4 +1,4 @@
-#Exponent Content Management System
+# Exponent Content Management System
 
 ----------
 
@@ -8,8 +8,8 @@ Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-##2.3.6 - December 2015
+## 2.3.6 - December 2015
 
 ----------
 
-### Refine 'shipment' interface, plus address any issues in v2.3.5
+### Refine 'shipment' interface, plus address issues in v2.3.5

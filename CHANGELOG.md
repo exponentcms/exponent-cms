@@ -1,4 +1,4 @@
-#Exponent Content Management System..
+# Exponent Content Management System..
 
 ----------
 
@@ -11,12 +11,21 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.3.6
 -------------
 ### Refine 'shipment' interface, plus address issues in v2.3.5
-  - PHP v7 compatibility
+  * !!! adds addditional security checking for XSS vulnerabilities
+  * !!! adds support for PHP v7.x
+    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
+  * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
+  - adds new 'loading' animation (font icon) for boostrap/bootstrap3
+  - cleans up some bootstrap3 views, returns option of displaying extra-small buttons in sample theme
   - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
   - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
   - adds new optional paypalExpress 'in-context' checkout experience
-  - adds two optional elFinder themes
-  - includes all fixes from v2.3.5 patches
+  - adds two optional elFinder themes, also cleans up default theme
+  - better EAAS error and event record support (events now sent by date instead of by entry sequence)
+  - much better (optional) ajax paging support
+  - much better job of returning to previous pages
+  - adds new optional upgrade script to quickly clean up files database (adds new files, removes missing files)
+  - includes all fixes from v2.3.5 patches (#1 & #2)
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -31,7 +40,7 @@ Version 2.3.5
   - adds remote blog post editing (xmlrpc); this feature is turned off by default
   - adds new easypost ecommerce shipping calculator includes order fulfillment functions
   - improves security by allowing admin controlled password strength settings and more secure password hashing
-  - includes all fixes from v2.3.4 patches
+  - includes all fixes from v2.3.4 patches (#1)
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -60,7 +69,7 @@ Version 2.3.4
   - adds optional 'time till site returns' countdown clock to maintenance view
     -- login removed from maintenance view unless attempting to logon or if db is down
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
-  - includes all fixes from v2.3.3 patches
+  - includes all fixes from v2.3.3 patches (#1)
 ### Known Issues
   - eCommerce purchase order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -91,7 +100,7 @@ Version 2.3.3
     - fixes several issues with simple notes for products & orders; adds simple wysiwyg formatting
     - adds new optional upgrade script to trim orphan ecommerce database records (tables can grow huge)
   - adds support for optional mPDF v6.0 pdf creation library
-  - includes all fixes from v2.3.2 patches
+  - includes all fixes from v2.3.2 patches (#1 & #2)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -100,7 +109,7 @@ Version 2.3.3
 Version 2.3.2
 -------------
 ### Address issues in v2.3.1
-  * !!! Fixes possible cross-site security issue
+  * !!! Fixes possible cross-site security (XSS) issue
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
   - adds lightbox option to mediaplayer showall view, allows grid of icons
@@ -121,7 +130,7 @@ Version 2.3.2
       - US states sales tax tables now installed with store sample database
   - adds optional 0.9x theme compatibility by setting OLD_THEME_COMPATIBLE constant
   - updates database manager display to be 'responsive' for smaller screens
-  - includes all fixes from v2.3.1 patches
+  - includes all fixes from v2.3.1 patches (#1, #2, #3, & #4)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -147,7 +156,7 @@ Version 2.3.1
   - adds .less file compilation minification setting, and better error trapping on compilation error
   - fixes loading of ckeditor & tinymce if linked js is minified
   - adds new Portuguese translation
-  - includes all fixes from v2.3.0 patches
+  - includes all fixes from v2.3.0 patches (#1, #2, #3, & #4)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -175,7 +184,7 @@ Version 2.3.1
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
   - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
   - adds new 'reset.php' file to allow easily clearing all caches if the site crashes when designing/changing themes
-  - includes all fixes from v2.2.3 patches
+  - includes all fixes from v2.2.3 patches (#1 to #10)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
