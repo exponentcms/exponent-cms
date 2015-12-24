@@ -375,8 +375,8 @@ class expValidator {
         $msg = empty($msg) ? gt('Anti-spam verification failed.  Please try again.') : $msg;
         switch (ANTI_SPAM_CONTROL) {
             case 'recaptcha':
-                if (empty($params["recaptcha_response_field"])) {
-                    self::failAndReturnToForm($msg, $params);
+                if (empty($params["g-recaptcha-response"])) {
+                    self::failAndReturnToForm($msg, $params);  // there was no response
                 } 
                 
                 if (!defined('RECAPTCHA_PRIVATE_KEY')) {
@@ -386,12 +386,10 @@ class expValidator {
                 require_once(BASE . 'external/ReCaptcha/autoload.php');
                 $reCaptcha = new \ReCaptcha\ReCaptcha(RECAPTCHA_PRIVATE_KEY);
 
-                if ($params["g-recaptcha-response"]) {
-                    $resp = $reCaptcha->verify(
-                        $params["g-recaptcha-response"],
-                        $_SERVER["REMOTE_ADDR"]
-                    );
-                }
+                $resp = $reCaptcha->verify(
+                    $params["g-recaptcha-response"],
+                    $_SERVER["REMOTE_ADDR"]
+                );
 
                 if ($resp->isSuccess()) {
                     return true;
