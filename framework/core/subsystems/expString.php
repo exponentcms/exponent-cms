@@ -500,6 +500,8 @@ class expString {
      * @return string
      */
     public static function sanitize(&$data) {
+//        return $data;
+
         if (is_array($data)) {
             $saved_params = array();
             if (!empty($data['controller']) && $data['controller'] == 'snippet') {
@@ -1165,12 +1167,13 @@ class expString {
    			'alert', 'prompt', 'confirm', 'applet', 'audio', 'basefont', 'base', 'behavior', 'bgsound',
    			'blink', 'body', 'embed', 'expression', 'form', 'frameset', 'frame', 'head', 'html', 'ilayer',
    			'input', 'button', 'select', 'isindex', 'layer', 'link', 'meta', 'keygen', 'object',
-   			'plaintext', 'style', 'script', 'textarea', 'title', 'math', 'video', 'svg', 'xml', 'xss'
-            //,'iframe'
+   			'plaintext', 'script', 'textarea', 'title', 'math', 'video', 'svg', 'xml', 'xss'
+            //,'style', 'iframe'
    		);
 
    		static $evil_attributes = array(
-   			'on\w+', 'style', 'xmlns', 'formaction', 'form', 'xlink:href', 'FSCommand', 'seekSegmentTime'
+   			'on\w+', 'xmlns', 'formaction', 'form', 'xlink:href', 'FSCommand', 'seekSegmentTime'
+            //, 'style'
    		);
 
    		// First, escape unclosed tags

@@ -92,7 +92,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/copy.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/cut.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/open.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
