@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,7 +25,7 @@
         <div class="related-actions">
 			{help text="Get Help with"|gettext|cat:" "|cat:("Managing Group Memberships"|gettext) module="manage-group-members"}
         </div>
-		<h2>{"Manage Group Memberships"|gettext}</h2>
+		<h2>{"Manage Group Memberships"|gettext} - {$group->name}</h2>
     </div>
 
     {form action="update_memberships"}

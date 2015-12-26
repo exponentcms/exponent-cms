@@ -95,8 +95,8 @@ class elFinder {
 		'rm'        => array('targets' => true),
 		'rename'    => array('target' => true, 'name' => true, 'mimes' => false),
 		'duplicate' => array('targets' => true, 'suffix' => false),
-		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false),
-		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false, 'chunk' => false, 'cid' => false, 'node' => false),
+		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false, 'renames' => false, 'suffix' => false),
+		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false, 'chunk' => false, 'cid' => false, 'node' => false, 'renames' => false, 'suffix' => false),
 		'get'       => array('target' => true, 'conv' => false),
 		'put'       => array('target' => true, 'content' => '', 'mimes' => false),
 		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false),
@@ -275,6 +275,11 @@ class elFinder {
 			$sessionUseCmds = array_merge($sessionUseCmds, $opts['sessionUseCmds']);
 		}
 
+		// set self::$volumesCnt by HTTP header "X-elFinder-VolumesCntStart"
+		if (isset($_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART']) && ($volumesCntStart = intval($_SERVER['HTTP_X_ELFINDER_VOLUMESCNTSTART']))) {
+			self::$volumesCnt = $volumesCntStart;
+		}
+		
 		$this->time  = $this->utime();
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
 		$this->sessionCloseEarlier = isset($opts['sessionCloseEarlier'])? (bool)$opts['sessionCloseEarlier'] : true;
@@ -972,10 +977,21 @@ class elFinder {
 			$disp = 'attachment';
 			$mime = $file['mime'];
 		} else {
-			$disp  = preg_match('/^(image|text)/i', $file['mime']) || $file['mime'] == 'application/x-shockwave-flash' 
-					? 'inline' 
-					: 'attachment';
+			$dispInlineRegex = $volume->getOption('dispInlineRegex');
+			$inlineRegex = false;
+			if ($dispInlineRegex) {
+				$inlineRegex = '#' . str_replace('#', '\\#', $dispInlineRegex) . '#';
+				try {
+					preg_match($inlineRegex, '');
+				} catch(Exception $e) {
+					$inlineRegex = false;
+				}
+			}
+			if (!$inlineRegex) {
+				$inlineRegex = '#^(?:(?:image|text)|application/x-shockwave-flash$)#';
+			}
 			$mime = $file['mime'];
+			$disp  = preg_match($inlineRegex, $mime)? 'inline' : 'attachment';
 		}
 		
 		$filenameEncoded = rawurlencode($file['name']);
@@ -1375,7 +1391,7 @@ class elFinder {
 			$volume = $this->volumes[$keys[0]];
 			$extTable = array_flip(array_unique($volume->getMimeTable()));
 			
-			if (class_exists('finfo')) {
+			if (class_exists('finfo', false)) {
 				$tmpFileInfo = @explode(';', @finfo_file(finfo_open(FILEINFO_MIME), __FILE__));
 			} else {
 				$tmpFileInfo = false;
@@ -1645,6 +1661,7 @@ class elFinder {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	protected function upload($args) {
+		$ngReg  = '/[\/\\?*:|"<>]/';
 		$target = $args['target'];
 		$volume = $this->volume($target);
 		$files  = isset($args['FILES']['upload']) && is_array($args['FILES']['upload']) ? $args['FILES']['upload'] : array();
@@ -1653,6 +1670,15 @@ class elFinder {
 		$paths  = $args['upload_path']? $args['upload_path'] : array();
 		$chunk  = $args['chunk']? $args['chunk'] : '';
 		$cid    = $args['cid']? (int)$args['cid'] : '';
+		
+		$renames= array();
+		$suffix = '~';
+		if ($args['renames'] && is_array($args['renames'])) {
+			$renames = array_flip($args['renames']);
+			if (is_string($args['suffix']) && ! preg_match($ngReg, $args['suffix'])) {
+				$suffix = $args['suffix'];
+			}
+		}
 		
 		if (!$volume) {
 			return array_merge(array('error' => $this->error(self::ERROR_UPLOAD, self::ERROR_TRGDIR_NOT_FOUND, '#'.$target)), $header);
@@ -1679,6 +1705,19 @@ class elFinder {
 		$extTable = array_flip(array_unique($volume->getMimeTable()));
 		
 		if (empty($files)) {
+			if (!$args['upload'] && $args['name'] && is_array($args['name'])) {
+				$result['name'] = array();
+				foreach($args['name'] as $_i => $_name) {
+					$result['name'][$_i] = preg_replace($ngReg, '_', $_name);
+				}
+				$result = array_merge_recursive($result, $this->ls($args));
+				if (empty($result['list'])) {
+					$result['name'] = array();
+				} else {
+					$result['name'] = array_merge(array_intersect($result['name'], $result['list']));
+				}
+				return $result;
+			}
 			if (isset($args['upload']) && is_array($args['upload']) && ($tempDir = $this->getTempDir($volume->getTempPath()))) {
 				$names = array();
 				foreach($args['upload'] as $i => $url) {
@@ -1709,6 +1748,7 @@ class elFinder {
 					} else {
 						$fp = fopen($tmpfname, 'wb');
 						$data = $this->get_remote_contents($url, 30, 5, 'Mozilla/5.0', $fp);
+						$_POST['overwrite'] = false;
 						$_name = preg_replace('~^.*?([^/#?]+)(?:\?.*)?(?:#.*)?$~', '$1', rawurldecode($url));
 						// Check `Content-Disposition` response header
 						if ($data && ($headers = get_headers($url, true)) && !empty($headers['Content-Disposition'])) {
@@ -1731,7 +1771,7 @@ class elFinder {
 							}
 							if ((is_resource($data) && fclose($data)) || file_put_contents($tmpfname, $data)) {
 								$GLOBALS['elFinderTempFiles'][$tmpfname] = true;
-								$_name = preg_replace('/[\/\\?*:|"<>]/', '_', $_name);
+								$_name = preg_replace($ngReg, '_', $_name);
 								list($_a, $_b) = array_pad(explode('.', $_name, 2), 2, '');
 								if ($_b === '') {
 									if ($_ext) {
@@ -1816,10 +1856,21 @@ class elFinder {
 				}
 				break;
 			}
+			$rnres = array();
 			if ($path) {
 				$_target = $volume->getUploadTaget($target, $path, $result);
 			} else {
 				$_target = $target;
+				// file rename for backup
+				if (isset($renames[$name])) {
+					$dir = $volume->realpath($_target);
+					$hash = $volume->getHash($dir, $name);
+					$rnres = $this->rename(array('target' => $hash, 'name' => $volume->uniqueName($dir, $name, $suffix, true, 0)));
+					if (!empty($rnres['error'])) {
+						$result['warning'] = $rnres['error'];
+						break;
+					}
+				}
 			}
 			if (! $_target || ($file = $volume->upload($fp, $_target, $name, $tmpname)) === false) {
 				$result['warning'] = $this->error(self::ERROR_UPLOAD_FILE, $name, $volume->error());
@@ -1839,6 +1890,9 @@ class elFinder {
 				}
 			}
 			$result['added'][] = $file;
+			if ($rnres) {
+				$result = array_merge_recursive($result, $rnres);
+			}
 		}
 		if ($GLOBALS['elFinderTempFiles']) {
 			foreach(array_keys($GLOBALS['elFinderTempFiles']) as $_temp) {
@@ -1874,10 +1928,33 @@ class elFinder {
 			return array('error' => $this->error($error, '#'.$targets[0], self::ERROR_TRGDIR_NOT_FOUND, '#'.$dst));
 		}
 		
+		$renames = array();
+		$suffix = '~';
+		if (!empty($args['renames'])) {
+			$renames = array_flip($args['renames']);
+			if (is_string($args['suffix']) && ! preg_match('/[\/\\?*:|"<>]/', $args['suffix'])) {
+				$suffix = $args['suffix'];
+			}
+		}
+		
 		foreach ($targets as $target) {
 			if (($srcVolume = $this->volume($target)) == false) {
 				$result['warning'] = $this->error($error, '#'.$target, self::ERROR_FILE_NOT_FOUND);
 				break;
+			}
+			
+			$rnres = array();
+			if ($renames) {
+				$file = $srcVolume->file($target);
+				if (isset($renames[$file['name']])) {
+					$dir = $dstVolume->realpath($dst);
+					$hash = $dstVolume->getHash($dir, $file['name']);
+					$rnres = $this->rename(array('target' => $hash, 'name' => $dstVolume->uniqueName($dir, $file['name'], $suffix, true, 0)));
+					if (!empty($rnres['error'])) {
+						$result['warning'] = $rnres['error'];
+						break;
+					}
+				}
 			}
 			
 			if (($file = $dstVolume->paste($srcVolume, $target, $dst, $cut)) == false) {
@@ -1886,6 +1963,9 @@ class elFinder {
 			}
 			
 			$result['added'][] = $file;
+			if ($rnres) {
+				$result = array_merge_recursive($result, $rnres);
+			}
 		}
 		return $result;
 	}

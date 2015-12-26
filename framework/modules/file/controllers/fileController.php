@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -419,7 +419,7 @@ class fileController extends expController {
         $notafile = array();
 //        $files = $db->selectObjects('expFiles',1);
         foreach (expFile::selectAllFiles() as $file) {
-            if (!is_file($file->directory.$file->filename)) {
+            if (!is_file(BASE.$file->directory.$file->filename)) {
                 $notafile[$file->id] = $file;
             }
         }
@@ -496,13 +496,17 @@ class fileController extends expController {
         $allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
         foreach ($allfiles as $path=>$file) {
             if ($file[0] != '.') {
-                $found = false;
-//                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."'");
-                $dbfile = $db->selectObject('expFiles',"filename='".$file."'");
+//                $found = false;
+                $npath = preg_replace('/'.$file.'/','',$path, 1);
+//                $dbfiles = $db->selectObjects('expFiles',"filename='".$file."' AND directory='".$npath."'");
+                $dbfile = $db->selectObject('expFiles',"filename='".$file."' AND directory='".$npath."'");
 //                foreach ($dbfiles as $dbfile) {
-                    if (!empty($dbfile)) $found = ($dbfile->directory == str_replace($file,'',$path));
+//                    if (!empty($dbfile)) $found = ($dbfile->directory == str_replace($file,'',$path));
 //                }
-                if (!$found) {
+//                if (!$found) {
+//                    $notindb[$path] = $file;
+//                }
+                if (empty($dbfile)) {
                     $notindb[$path] = $file;
                 }
             }
@@ -515,7 +519,6 @@ class fileController extends expController {
     public function addit() {
         foreach ($this->params['addit'] as $file) {
             $newfile = new expFile(array('directory'=>dirname($file).'/','filename'=>basename($file)));
-//            $newfile->posted = $newfile->last_accessed = time();
             $newfile->posted = $newfile->last_accessed = filemtime($file);
             $newfile->save();
             flash('message',$newfile->filename.' '.gt('was added to the File Manager.'));
@@ -692,52 +695,73 @@ class fileController extends expController {
     public  function import_eql_process() {
         global $db;
 
-        $errors = array();
-        expSession::clearAllUsersSessionCache();
+        if ($_FILES['file']['error'] != UPLOAD_ERR_OK) {
+        	switch($_FILES['file']['error']) {
+        		case UPLOAD_ERR_INI_SIZE:
+        		case UPLOAD_ERR_FORM_SIZE:
+        			echo gt('The file you uploaded exceeded the size limits for the server.').'<br />';
+        			break;
+        		case UPLOAD_ERR_PARTIAL:
+        			echo gt('The file you uploaded was only partially uploaded.').'<br />';
+        			break;
+        		case UPLOAD_ERR_NO_FILE:
+        			echo gt('No file was uploaded.').'<br />';
+        			break;
+        	}
+        } else {
+            $errors = array();
+            expSession::clearAllUsersSessionCache();
 
-        // copy in deprecated definitions files to aid in import
-        $src = BASE."install/old_definitions";
-        $dst = BASE."framework/core/definitions";
-        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
-            $dir = opendir($src);
-            while(false !== ( $file = readdir($dir)) ) {
-                if (($file != '.') && ($file != '..')) {
-                    if (!file_exists($dst . '/' . $file)) copy($src . '/' . $file,$dst . '/' . $file);
-                }
-            }
-            closedir($dir);
-        }
-
-        expFile::restoreDatabase($_FILES['file']['tmp_name'], $errors);
-
-        // now remove deprecated definitions files
-        $src = BASE."install/old_definitions";
-        $dst = BASE."framework/core/definitions";
-        if (is_dir($src) && expUtil::isReallyWritable($dst)) {
-            $dir = opendir($src);
-            while(false !== ( $file = readdir($dir)) ) {
-                if (($file != '.') && ($file != '..')) {
-                    if (file_exists($dst . '/' . $file)) unlink($dst . '/' . $file);
-                    // remove empty deprecated tables
-                    $table = substr($file,0,-4);
-                    if ($db->tableIsEmpty($table)) {
-                        $db->dropTable($table);
+            // copy in deprecated definitions files to aid in import
+            $src = BASE . "install/old_definitions";
+            $dst = BASE . "framework/core/definitions";
+            if (is_dir($src) && expUtil::isReallyWritable($dst)) {
+                $dir = opendir($src);
+                while (false !== ($file = readdir($dir))) {
+                    if (($file != '.') && ($file != '..')) {
+                        if (!file_exists($dst . '/' . $file)) {
+                            copy($src . '/' . $file, $dst . '/' . $file);
+                        }
                     }
                 }
+                closedir($dir);
             }
-            closedir($dir);
+
+            expFile::restoreDatabase($_FILES['file']['tmp_name'], $errors);
+
+            // now remove deprecated definitions files
+            $src = BASE . "install/old_definitions";
+            $dst = BASE . "framework/core/definitions";
+            if (is_dir($src) && expUtil::isReallyWritable($dst)) {
+                $dir = opendir($src);
+                while (false !== ($file = readdir($dir))) {
+                    if (($file != '.') && ($file != '..')) {
+                        if (file_exists($dst . '/' . $file)) {
+                            unlink($dst . '/' . $file);
+                        }
+                        // remove empty deprecated tables
+                        $table = substr($file, 0, -4);
+                        if ($db->tableIsEmpty($table)) {
+                            $db->dropTable($table);
+                        }
+                    }
+                }
+                closedir($dir);
+            }
+
+            // update search index
+            searchController::spider();
+
+            // check to see if we need to install or upgrade the restored database
+            expVersion::checkVersion();
+
+            assign_to_template(
+                array(
+                    'success' => !count($errors),
+                    'errors' => $errors,
+                )
+            );
         }
-
-        // update search index
-        searchController::spider();
-
-        // check to see if we need to install or upgrade the restored database
-        expVersion::checkVersion();
-
-        assign_to_template(array(
-            'success' => !count($errors),
-            'errors' => $errors,
-        ));
     }
 
     public static function getTables() {

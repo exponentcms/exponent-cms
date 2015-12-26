@@ -1,13 +1,26 @@
 /**
  * Simple Ajax Uploader
- * Version 2.1.1
+ * Version 2.2.4
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2015 LPology, LLC
  * Released under the MIT license
  */
 
-;(function( window, document, undefined ) {
+;(function( global, factory ) {
+    if ( typeof define === 'function' && define.amd ) {
+        define( function() {
+            return factory( global );
+        });
+
+    } else if ( typeof module === 'object' && module.exports ) {
+        module.exports = factory( global );
+
+    } else {
+        global.ss = factory( global );
+    }
+
+}( typeof window !== 'undefined' ? window : this, function( window ) {
 
     var ss = window.ss || {},
 
@@ -92,16 +105,21 @@ ss.addEvent = function( elem, type, fn ) {
     };
 };
 
-ss.removeEvent = function( elem, type, fn ) {
-    "use strict";
+ss.removeEvent = document.removeEventListener ?
+    function( elem, type, fn ) {
+        if ( elem.removeEventListener ) {
+            elem.removeEventListener( type, fn, false );
+        }
+    } :
+    function( elem, type, fn ) {
+        var name = 'on' + type;
 
-    if ( elem.removeEventListener ) {
-        elem.removeEventListener( type, fn, false );
+        if ( typeof elem[ name ] === 'undefined' ) {
+            elem[ name ] = null;
+        }
 
-    } else {
-        elem.detachEvent( 'on' + type, fn );
-    }
-};
+        elem.detachEvent( name, fn );
+    };
 
 ss.newXHR = function() {
     "use strict";
@@ -334,6 +352,11 @@ ss.getExt = function( file ) {
 */
 ss.hasClass = function( elem, name ) {
     "use strict";
+
+    if ( !elem || !name ) {
+        return false;
+    }
+
     return ( ' ' + elem.className + ' ' ).replace( rHasClass, ' ' ).indexOf( ' ' + name + ' ' ) >= 0;
 };
 
@@ -343,9 +366,10 @@ ss.hasClass = function( elem, name ) {
 ss.addClass = function( elem, name ) {
     "use strict";
 
-    if ( !name || name === '' ) {
+    if ( !elem || !name ) {
         return false;
     }
+
     if ( !ss.hasClass( elem, name ) ) {
         elem.className += ' ' + name;
     }
@@ -360,9 +384,14 @@ ss.removeClass = (function() {
     var c = {}; //cache regexps for performance
 
     return function( e, name ) {
+        if ( !e || !name ) {
+            return false;
+        }
+
         if ( !c[name] ) {
             c[name] = new RegExp('(?:^|\\s)' + name + '(?!\\S)');
         }
+
         e.className = e.className.replace( c[name], '' );
     };
 })();
@@ -498,15 +527,15 @@ ss.SimpleUpload = function( options ) {
         disabledClass: '',
         customHeaders: {},
         encodeCustomHeaders: false,
-        onAbort: function( filename, uploadBtn ) {},
+        onAbort: function( filename, uploadBtn, size ) {},
         onChange: function( filename, extension, uploadBtn, size ) {},
         onSubmit: function( filename, extension, uploadBtn, size ) {},
         onProgress: function( pct ) {},
         onUpdateFileSize: function( filesize ) {},
-        onComplete: function( filename, response, uploadBtn ) {},
+        onComplete: function( filename, response, uploadBtn, size ) {},
         onExtError: function( filename, extension ) {},
         onSizeError: function( filename, fileSize ) {},
-        onError: function( filename, type, status, statusText, response, uploadBtn ) {},
+        onError: function( filename, type, status, statusText, response, uploadBtn, size ) {},
         startXHR: function( filename, fileSize, uploadBtn ) {},
         endXHR: function( filename, fileSize, uploadBtn ) {},
         startNonXHR: function( filename, uploadBtn ) {},
@@ -548,6 +577,7 @@ ss.SimpleUpload = function( options ) {
     }
 
     delete this._opts.button;
+    this._opts.button = btn = null;
 
     // No valid elements were passed to button option
     if ( this._opts.dropzone === '' && ( this._btns.length < 1 || this._btns[0] === false ) ) {
@@ -590,6 +620,34 @@ ss.SimpleUpload = function( options ) {
 
 ss.SimpleUpload.prototype = {
 
+    _killInput: function() {
+        "use strict";
+
+        if ( !this._input ) {
+            return;
+        }
+
+        if ( this._input.turnOff ) {
+            this._input.turnOff();
+        }
+
+        if ( this._input.focusOff ) {
+            this._input.focusOff();
+        }
+
+        if ( this._input.blurOff ) {
+            this._input.blurOff();
+        }
+
+        if ( this._input.parentNode.mouseOverOff ) {
+            this._input.parentNode.mouseOverOff();
+        }
+
+        ss.remove( this._input.parentNode );
+        delete this._input;
+        this._input = null;
+    },
+
     destroy: function() {
         "use strict";
 
@@ -612,15 +670,10 @@ ss.SimpleUpload.prototype = {
             this._btns[i].disabled = false;
         }
 
-        // Remove div/file input combos from the DOM
-        ss.remove( this._input.parentNode );
+        this._killInput();
 
-        // Now burn it all down
-        for ( var prop in this ) {
-            if ( this.hasOwnProperty( prop ) ) {
-                delete this.prop;
-            }
-        }
+        // Set a flag to be checked in _last()
+        this._destroy = true;
     },
 
     /**
@@ -629,7 +682,7 @@ ss.SimpleUpload.prototype = {
     log: function( str ) {
         "use strict";
 
-        if ( this._opts.debug && window.console && window.console.log ) {
+        if ( this._opts && this._opts.debug && window.console && window.console.log ) {
             window.console.log( '[Uploader] ' + str );
         }
     },
@@ -1046,7 +1099,7 @@ ss.IframeUpload = {
                     }
 
                     self.log('Upload aborted');
-                    opts.onAbort.call( self, fileObj.name, fileObj.btn );
+                    opts.onAbort.call( self, fileObj.name, fileObj.btn, fileObj.size );
                     self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
                 };
 
@@ -1064,7 +1117,7 @@ ss.IframeUpload = {
                 window.setTimeout( function() {
                     self._getProg( key, progBar, sizeBox, pctBox, 1 );
                     progBar = sizeBox = pctBox = null;
-                }, opts.checkProgressInterval );
+                }, 600 );
             }
 
             // Remove this file from the queue and begin next upload
@@ -1382,7 +1435,7 @@ ss.XhrUpload = {
                             xhr.abort();
                         }
 
-                        opts.onAbort.call( self, fileObj.name, fileObj.btn );
+                        opts.onAbort.call( self, fileObj.name, fileObj.btn, fileObj.size );
                         self._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
                     } else {
@@ -1508,7 +1561,7 @@ ss.XhrUpload = {
         params[this._opts.name] = fileObj.name;
 
         headers['X-Requested-With'] = 'XMLHttpRequest';
-        headers['X-File-Name'] = fileObj.name;
+        headers['X-File-Name'] = !this._opts.encodeCustomHeaders ? fileObj.name : encodeURIComponent( fileObj.name );
 
         if ( this._opts.responseType.toLowerCase() == 'json' ) {
             headers['Accept'] = 'application/json, text/javascript, */*; q=0.01';
@@ -1575,14 +1628,15 @@ ss.XhrUpload = {
                 'padding' : 0,
                 'fontSize' : '480px',
                 'fontFamily' : 'sans-serif',
-                'cursor' : 'pointer'
+                'cursor' : 'pointer',
+                'height' : '100%'
             });
 
             if ( div.style.opacity !== '0' ) {
                 div.style.filter = 'alpha(opacity=0)';
             }
 
-            ss.addEvent( this._input, 'change', function() {
+            this._input.turnOff = ss.addEvent( this._input, 'change', function() {
                 if ( !self._input || self._input.value === '' ) {
                     return;
                 }
@@ -1594,9 +1648,7 @@ ss.XhrUpload = {
                 ss.removeClass( self._overBtn, self._opts.hoverClass );
                 ss.removeClass( self._overBtn, self._opts.focusClass );
 
-                // Now that file is in upload queue, remove the file input
-                ss.remove( self._input.parentNode );
-                delete self._input;
+                self._killInput();
 
                 // Then create a new file input
                 self._createInput();
@@ -1608,29 +1660,33 @@ ss.XhrUpload = {
             });
 
             if ( self._opts.hoverClass !== '' ) {
-                ss.addEvent( this._input, 'mouseover', function() {
+                div.mouseOverOff = ss.addEvent( div, 'mouseover', function() {
                     ss.addClass( self._overBtn, self._opts.hoverClass );
-                });
-
-                ss.addEvent( this._input, 'mouseout', function() {
-                    ss.removeClass( self._overBtn, self._opts.hoverClass );
-                    ss.removeClass( self._overBtn, self._opts.focusClass );
-                    self._input.parentNode.style.visibility = 'hidden';
                 });
             }
 
+            div.mouseOutOff = ss.addEvent( div, 'mouseout', function() {
+                self._input.parentNode.style.visibility = 'hidden';
+
+                if ( self._opts.hoverClass !== '' ) {
+                    ss.removeClass( self._overBtn, self._opts.hoverClass );
+                    ss.removeClass( self._overBtn, self._opts.focusClass );
+                }
+            });
+
             if ( self._opts.focusClass !== '' ) {
-                ss.addEvent( this._input, 'focus', function() {
+                this._input.focusOff = ss.addEvent( this._input, 'focus', function() {
                     ss.addClass( self._overBtn, self._opts.focusClass );
                 });
 
-                ss.addEvent( this._input, 'blur', function() {
+                this._input.blurOff = ss.addEvent( this._input, 'blur', function() {
                     ss.removeClass( self._overBtn, self._opts.focusClass );
                 });
             }
 
-            div.appendChild( this._input );
             document.body.appendChild( div );
+            div.appendChild( this._input );
+            div = null;
         },
 
         rerouteClicks: function( elem ) {
@@ -1688,7 +1744,22 @@ ss.XhrUpload = {
                 this.enable( true );
             }
 
-            this._cycleQueue();
+            // Burn it all down if destroy() was called
+            // We have to do it here after everything is finished to avoid any errors
+            if ( this._destroy &&
+                 this._queue.length === 0 &&
+                 this._active.length === 0 )
+            {
+                for ( var prop in this ) {
+                    if ( this.hasOwnProperty( prop ) ) {
+                        delete this[ prop ];
+                    }
+                }
+
+            // Otherwise just go to the next upload as usual
+            } else {
+                this._cycleQueue();
+            }
         },
 
         /**
@@ -1698,7 +1769,7 @@ ss.XhrUpload = {
             "use strict";
 
             this.log( 'Upload failed: ' + status + ' ' + statusText );
-            this._opts.onError.call( this, fileObj.name, errorType, status, statusText, response, fileObj.btn );
+            this._opts.onError.call( this, fileObj.name, errorType, status, statusText, response, fileObj.btn, fileObj.size );
             this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
             fileObj = status = statusText = response = errorType = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
@@ -1721,7 +1792,7 @@ ss.XhrUpload = {
                 }
             }
 
-            this._opts.onComplete.call( this, fileObj.name, response, fileObj.btn );
+            this._opts.onComplete.call( this, fileObj.name, response, fileObj.btn, fileObj.size );
             this._last( sizeBox, progBox, pctBox, abortBtn, removeAbort );
 
             fileObj = status = statusText = response = sizeBox = progBox = pctBox = abortBtn = removeAbort = null;
@@ -1873,7 +1944,6 @@ ss.extendObj(ss.SimpleUpload.prototype, {
     }
 });
 
-// Expose to the global window object
-window.ss = ss;
+return ss;
 
-})( window, document );
+}));

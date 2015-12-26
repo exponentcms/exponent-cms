@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -33,7 +33,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         page_parm = '&title=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.title}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.title}{literal}'});
     var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
@@ -75,10 +75,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     newsitem.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('text').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+//        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+        newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
     }, 'a.newsnav');
 
     // Watches the browser history for changes
@@ -88,7 +89,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new item
             cfg.data = "title="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+//            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
+            newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
         }
     });
 });

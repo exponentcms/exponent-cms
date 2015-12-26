@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -65,23 +65,30 @@ class form extends baseform {
      * @param string       $label
      * @param \formcontrol $control The Control object to register with the form.
      * @param bool         $replace boolean dictating what to do if a Control with the specified internal name already exists on the form.  If passed as true (default), the existing Control will be replaced.  Otherwise, the Control registration will fail and return false.
-     * @param string       $tab
-     * @param null         $desc
+     * @param array        $params
      *
      * @return boolean Returns true if the new Control was registered.
      */
-	function register($name, $label, $control, $replace=true, $tab=null, $desc=null) {
-		if ($name == null || $name == "") $name = uniqid("");
+	function register($name, $label, $control, $replace=true, $params=null) {
+		if ($name == null || $name == "")
+			$name = uniqid("");
 		if (isset($this->controls[$name])) {
 			if (!$replace) return false;
-		} else $this->controlIdx[] = $name;
+		} else {
+			$this->controlIdx[] = $name;
+		}
 
-        if ($this->horizontal) $control->horizontal = true;
+        if ($this->horizontal)
+			$control->horizontal = true;
+		if (!empty($params)) {
+			foreach ($params as $name => $value) {
+				$control->$name = $value;
+			}
+		}
 		$this->controls[$name] = $control;
-        if (!empty($desc)) $this->controls[$name]->description = $desc;
 		$this->controlLbl[$name] = $label;
-//        $this->tabs[$name] = $tab;
-        if (method_exists($control,'onRegister')) $control->onRegister($this);
+        if (method_exists($control,'onRegister'))
+			$control->onRegister($this);
 		return true;
 	}
 
@@ -99,7 +106,6 @@ class form extends baseform {
                 $this->controls[$name],
                 $this->controlLbl[$name]
             );
-//            unset($this->tabs[$name]);
 
 			$tmp = array_flip($this->controlIdx);
 			unset($tmp[$name]);
@@ -109,7 +115,8 @@ class form extends baseform {
 			foreach ($tmp as $name=>$rank) {
 				$this->controlIdx[] = $name;
 			}
-            if (method_exists($control,'onUnRegister')) $control->onUnregister($this);
+            if (method_exists($control,'onUnRegister'))
+				$control->onUnregister($this);
 		}
 		return true;
 	}
@@ -122,17 +129,24 @@ class form extends baseform {
      * @param string $label
      * @param object $control The Control object to register with the Form.
      *
-     * @param string $tab
+     * @param array  $params
      * @return boolean Returns true if the new Control was registered.
      */
-	function registerAfter($afterName, $name, $label, $control, $tab=null) {
-		if ($name == null || $name == "") $name = uniqid("");
-		if (in_array($name,$this->controlIdx)) return false;
+	function registerAfter($afterName, $name, $label, $control, $params=null) {
+		if ($name == null || $name == "")
+			$name = uniqid("");
+		if (in_array($name,$this->controlIdx))
+			return false;
 		
-        if ($this->horizontal) $control->horizontal = true;
+        if ($this->horizontal)
+			$control->horizontal = true;
+		if (!empty($params)) {
+			foreach ($params as $name => $value) {
+				$control->$name = $value;
+			}
+		}
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-//        $this->tabs[$name] = $tab;
 		if (!in_array($afterName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
 			$control->onRegister($this);
@@ -154,17 +168,24 @@ class form extends baseform {
      * @param string $label
      * @param object $control the Control object to register with the Form.
      *
-     * @param string $tab
+     * @param array  $params
      * @return boolean Returns true if the new Control was registered.
      */
-	function registerBefore($beforeName, $name, $label, $control, $tab=null) {
-		if ($name == null || $name == "") $name = uniqid("");
-		if (in_array($name,$this->controlIdx)) return false;
+	function registerBefore($beforeName, $name, $label, $control, $params=null) {
+		if ($name == null || $name == "")
+			$name = uniqid("");
+		if (in_array($name,$this->controlIdx))
+			return false;
 		
-        if ($this->horizontal) $control->horizontal = true;
+        if ($this->horizontal)
+			$control->horizontal = true;
+		if (!empty($params)) {
+			foreach ($params as $name => $value) {
+				$control->$name = $value;
+			}
+		}
 		$this->controls[$name] = $control;
 		$this->controlLbl[$name] = str_replace(" ","&#160;",$label);
-//        $this->tabs[$name] = $tab;
 
 		if (!in_array($beforeName,$this->controlIdx)) {
 			$this->controlIdx[] = $name;
@@ -210,14 +231,7 @@ class form extends baseform {
 			
 			//expSession::un_set("last_POST");
 		}
-//        $num_tabs = array();
-//		if ($this->is_tabbed) {
-//            foreach ($this->tabs as $tab) {
-//                if (!in_array($tab,$num_tabs) && $tab != 'base') {
-//                    $num_tabs[]=$tab;
-//                }
-//            }
-//        }
+
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 //		$html .= '<script type="text/javascript" src="'.PATH_RELATIVE.'framework/core/forms/js/required.js"></script>'."\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
@@ -295,42 +309,19 @@ class form extends baseform {
 		//$html .= "<form name=\"" . $this->name . "\" method=\"" . $this->method . "\" action=\"" . $this->action . "\" enctype=\"".$this->enctype."\">\r\n";
 		foreach ($this->meta as $name=>$value) $html .= "<input type=\"hidden\" name=\"$name\" id=\"$name\" value=\"$value\" />\r\n";
 //		$html .= "<div class=\"form_wrapper\">\r\n";
-//        if ($this->is_tabbed) {
-//            $html .= '<div id="configure-tabs" class="yui-navset exp-skin-tabview hide">'."\r\n";
-//            $html .= '<ul class="yui-nav">'."\r\n";
-//            foreach ($num_tabs as $key=>$tab_name) {
-//                if (!empty($tab_name)) $html .= '<li'.($key==0?' class="selected"':'').'><a href="#tab'.($key+1).'"><em>'.gt($tab_name).'</em></a></li>'."\r\n";
-//            }
-//            $html .= '</ul>'."\r\n";
-//            $html .= '<div class="yui-content">'."\r\n";
-//        }
 
 //        $oldname = 'oldname';
 //        $save = '';
         $rank = 0;
 		foreach ($this->controlIdx as $name) {
-//            if ($this->is_tabbed && !empty($this->tabs[$name]) && $this->tabs[$name] != $oldname && $this->tabs[$name] != 'base') {
-//                if ($oldname != 'oldname') {
-//                    $html .= '</div>'."\r\n";
-//                }
-//                $html .= '<div id="tab'.(array_search($this->tabs[$name],$num_tabs)+1).'">'."\r\n";
-//            }
             if ($rank && get_class($this->controls[$name]) == 'pagecontrol') {
                 $html .= '</fieldset>';
             }
-//            if ($this->tabs[$name] != 'base') {
             if ($rank == 0) $this->controls[$name]->focus = true;  // first control gets the focus
             $html .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-//                $oldname = $this->tabs[$name];
-//            } else {
-//                $save .= $this->controls[$name]->toHTML($this->controlLbl[$name],$name) . "\r\n";
-//            }
             $rank ++;
 		}
 
-//        if ($this->is_tabbed) {
-//            $html .= '</div></div></div>';
-//        }
         if ($this->is_paged) $html .= '</fieldset>';
 //		$html .= "</div>\r\n";
 //        $html .= $save;

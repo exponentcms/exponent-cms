@@ -453,6 +453,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _subdirs($path) {
 
 		if (is_dir($path)) {
+			$path = strtr($path, array('['  => '\\[', ']'  => '\\]', '*'  => '\\*', '?'  => '\\?'));
 			return (bool)glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
 		}
 		return false;
@@ -743,9 +744,13 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		$uri = isset($meta['uri'])? $meta['uri'] : '';
 		if ($uri && @is_file($uri)) {
 			fclose($fp);
-			if (!@rename($uri, $path) && !@copy($uri, $path)) {
+			$isCmdPaste = ($this->ARGS['cmd'] === 'paste');
+			$isCmdCopy = ($isCmdPaste && empty($this->ARGS['cut']));
+			if (($isCmdCopy || !@rename($uri, $path)) && !@copy($uri, $path)) {
 				return false;
 			}
+			// re-create the source file for remove processing of paste command
+			$isCmdPaste && !$isCmdCopy && touch($uri);
 		} else {
 			if (@file_put_contents($path, $fp, LOCK_EX) === false) {
 				return false;
@@ -1010,15 +1015,27 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Naoki Sawada
 	 **/
 	protected function doSearch($path, $q, $mimes) {
+		if ($this->encoding) {
+			// non UTF-8 has problem of glob() results
+			return parent::doSearch($path, $q, $mimes);
+		}
+		
+		static $escaper;
+		if (!$escaper) {
+			$escaper = array(
+				'['  => '\\[',
+				']'  => '\\]',
+				'*'  => '\\*',
+				'?'  => '\\?'
+			);
+		}
+		
 		$result = array();
-	
-		$path = $this->convEncIn($path);
+		
+		$path = strtr($path, $escaper);
+		$_q = strtr($q, $escaper);
 		$dirs = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
-		$match = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*'.$q.'*', GLOB_NOSORT);
-		if ($dirs) {
-			$dirs = $this->convEncOut($dirs, false);
-		} 
-		$match = $this->convEncOut($match);
+		$match = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*'.$_q.'*', GLOB_NOSORT);
 		if ($match) {
 			foreach($match as $p) {
 				$stat = $this->stat($p);
@@ -1037,9 +1054,6 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 					$stat['path'] = $this->path($stat['hash']);
 					if ($this->URL && !isset($stat['url'])) {
 						$path = str_replace(DIRECTORY_SEPARATOR, '/', substr($p, strlen($this->root) + 1));
-						if ($this->encoding) {
-							$path = str_replace('%2F', '/', rawurlencode($this->convEncIn($path, true)));
-						}
 						$stat['url'] = $this->URL . $path;
 					}
 		

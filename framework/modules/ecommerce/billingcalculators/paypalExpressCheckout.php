@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -22,6 +22,8 @@
 
 //TODO: make into php5 class with access modifiers proprities and all that jazz.
 class paypalExpressCheckout extends billingcalculator {
+
+    const PAYPAL_API_VERSION = '124.0';
 
     /**
      * The name that will be displayes in the payment methods selector admin screen.
@@ -113,14 +115,22 @@ class paypalExpressCheckout extends billingcalculator {
             //eDebug($config, true);  
             if ($config['testmode']) {
                 /**
-                 * This is the URL that the buyer is first sent to to authorize payment with their paypal account change the URL depending if you are testing on the sandbox or going to the live PayPal site For the sandbox, the URL is https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token= For the live site, the URL is https://www.paypal.com/webscr&cmd=_express-checkout&token=
+                 * This is the URL that the buyer is first sent to to authorize payment with their paypal account
+                 * change the URL depending if you are testing on the sandbox or going to the live PayPal site For the sandbox,
+                 * the URL is https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=
+                 * For the live site, the URL is https://www.paypal.com/webscr&cmd=_express-checkout&token=
                  *
                  * @var string
                  */
-                $paypal_url = 'https://www.sandbox.paypal.com/webscr&cmd=_express-checkout&token=';
-                //flash('message',gt('This Transaction is in TEST MODE'));
+                $paypal_url = 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=';
+                if (!empty($params['in_context'])) {
+                    $paypal_url = 'https://www.sandbox.paypal.com/checkoutnow?token=';
+                }
             } else {
-                $paypal_url = 'https://www.paypal.com/webscr&cmd=_express-checkout&token=';
+                $paypal_url = 'https://www.paypal.com/webscr?cmd=_express-checkout&token=';
+                if (!empty($params['in_context'])) {
+                    $paypal_url = 'https://www.paypal.com/checkoutnow?token=';
+                }
             }
 
             /**
@@ -135,7 +145,7 @@ class paypalExpressCheckout extends billingcalculator {
              *
              * @var string
              */
-            $cancelURL = makeLink(array('controller' => 'cart', 'action' => 'checkout'), true);;
+            $cancelURL = makeLink(array('controller' => 'cart', 'action' => 'checkout'), true);
 
             $shipname = $shippingaddress->firstname . ' ';
             $shipname .= empty($shippingaddress->middlename) ? $shippingaddress->lastname : $shippingaddress->middlename . ' ' . $shippingaddress->lastname;
@@ -163,11 +173,11 @@ class paypalExpressCheckout extends billingcalculator {
                 'USER'                               => $uname,
                 'PWD'                                => $pwd,
                 'SIGNATURE'                          => $sig,
-                'VERSION'                            => '122.0',  //NOTE 122.0 current
+                'VERSION'                            => paypalExpressCheckout::PAYPAL_API_VERSION,
                 'RETURNURL'                          => $returnURL,
                 'CANCELURL'                          => $cancelURL,
                 'ALLOWNOTE'                          => '1', // 0 or 1 to allow buyer to send note from paypal, we don't do anything with it so turn it off
-                // TODO: build data from order
+                'NOSHIPPING'                         => $order->shipping_required?'0':'1',
                 'PAYMENTREQUEST_0_PAYMENTACTION'     => $config['process_mode'],
                 'PAYMENTREQUEST_0_CURRENCYCODE'      => ECOM_CURRENCY, // currency code
                 'PAYMENTREQUEST_0_ITEMAMT'           => number_format($order->total, 2, '.', ''), // total item cost
@@ -189,7 +199,7 @@ class paypalExpressCheckout extends billingcalculator {
                 $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
                 $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
                 $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
+//                $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');  // note: will cause failure when using taxed shipping
                 $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
                 //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
                 //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
@@ -287,7 +297,7 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
-            'VERSION'                        => '122.0',  //NOTE 122.0 current
+            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
             'SOLUTIONTYPE'                   => 'Sole', //added per post
             'LANDINGPAGE'                    => 'Billing', //added per post
             'TOKEN'                          => $opts->result->token,
@@ -302,15 +312,15 @@ class paypalExpressCheckout extends billingcalculator {
             'PAYMENTREQUEST_0_AMT'           => number_format($order->grand_total, 2, '.', ''),
         );
 
-        $it = 0;
-        $tt = 0;
+//        $it = 0;
+//        $tt = 0;
         for ($n = 0; $n < count($order->orderitem); $n++) {
             $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
             $desc = strip_tags($order->orderitem[$n]->product->body);
             $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
             $data['L_PAYMENTREQUEST_0_NUMBER' . $n] = strlen($order->orderitem[$n]->product->model) > 127 ? substr($order->orderitem[$n]->product->model, 0, 124) . "..." : $order->orderitem[$n]->product->model;
             $data['L_PAYMENTREQUEST_0_QTY' . $n] = $order->orderitem[$n]->quantity;
-            $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', '');
+//            $data['L_PAYMENTREQUEST_0_TAXAMT' . $n] = number_format(($order->orderitem[$n]->products_tax), 2, '.', ''); // note: will cause failure when using taxed shipping
             $data['L_PAYMENTREQUEST_0_AMT' . $n] = number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '');
             //$it += number_format(($order->orderitem[$n]->products_tax), 2, '.', '') * $order->orderitem[$n]->quantity;
             //$tt += number_format(($order->orderitem[$n]->products_price_adjusted), 2, '.', '') * $order->orderitem[$n]->quantity;
@@ -364,7 +374,7 @@ class paypalExpressCheckout extends billingcalculator {
             $opts->result->pending_reason = $nvpResArray['PAYMENTINFO_0_PENDINGREASON'];
             $opts->result->reason_code = $nvpResArray['PAYMENTINFO_0_REASONCODE'];
 //            $billing_options->result->transactionID = $nvpResArray['PAYMENTINFO_0_TRANSACTIONID'];
-            $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
+//            $transaction_state = $nvpResArray['PAYMENTINFO_0_PAYMENTSTATUS'];
 //            $trax_state = "complete";//FIXME only true if mode is 'sale'
             $trax_state = $opts->result->payment_status;
             if ($trax_state == 'Pending' && $opts->result->pending_reason == 'authorization') {
@@ -416,13 +426,13 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
+            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
             'AUTHORIZATIONID'                => $opts->result->transId,
             'AMT'                            => number_format($amount, 2, '.', ''),
             'COMPLETETYPE'                   => 'Complete',  // or 'NotComplete'
             // optional parameters
             'CURRENCYCODE'                   => ECOM_CURRENCY,
             'INVNUM'                         => $order->invoice_id,
-            'VERSION'                        => '122.0',  //NOTE 122.0 current
             'NOTE'                           => '',
         );
 
@@ -502,9 +512,9 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
+            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
             'AUTHORIZATIONID'                => $opts->result->transId,
             // optional parameters
-            'VERSION'                        => '122.0',  //NOTE 122.0 current
             'NOTE'                           => '',
         );
 
@@ -582,12 +592,12 @@ class paypalExpressCheckout extends billingcalculator {
             'USER'                           => $uname,
             'PWD'                            => $pwd,
             'SIGNATURE'                      => $sig,
+            'VERSION'                        => paypalExpressCheckout::PAYPAL_API_VERSION,
             'TRANSACTIONID'                  => $opts->result->transId,
             'REFUNDTYPE'                     => $refundType,
             'AMT'                            => $amount,
             // optional parameters
             'CURRENCYCODE'                   => ECOM_CURRENCY,
-            'VERSION'                        => '122.0',  //NOTE 122.0 current
             'NOTE'                           => gt('Transaction Refunded'),
         );
 
@@ -735,6 +745,7 @@ class paypalExpressCheckout extends billingcalculator {
      */
     function parseConfig($values) {
         $config_vars = array(
+            'incontext',
             'username',
             'password',
             'signature',
@@ -945,7 +956,7 @@ class paypalExpressCheckout extends billingcalculator {
         if ("sandbox" === $environment || "beta-sandbox" === $environment) {
             $API_Endpoint = "https://api-3t.$environment.paypal.com/nvp";
         }
-        $version = urlencode('122.0');  //NOTE 122.0 current
+        $version = urlencode(paypalExpressCheckout::PAYPAL_API_VERSION);
 
         // Set the curl parameters.
         $ch = curl_init();

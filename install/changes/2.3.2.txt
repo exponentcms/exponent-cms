@@ -1,6 +1,6 @@
 version 2.3.2
 Address issues in v2.3.1
-  * !!! Fixes possible cross-site security issue
+  * !!! Fixes possible cross-site security (XSS) issue
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
   - adds lightbox option to mediaplayer showall view, allows grid of icons

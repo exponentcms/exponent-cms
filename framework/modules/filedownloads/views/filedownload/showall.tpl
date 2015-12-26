@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -86,7 +86,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         page_parm = '&page=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.page}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
     var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';    var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Fileitems'},
@@ -127,10 +127,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     filelist.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'File Downloads'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-        filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+//        filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+          filelist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
     }, 'a.pager');
 
     // Watches the browser history for changes
@@ -140,7 +141,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+//            filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
+              filelist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
         }
     });
 });

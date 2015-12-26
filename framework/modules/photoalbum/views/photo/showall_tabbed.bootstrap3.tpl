@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -71,7 +71,7 @@
                                         {$group = 'Uncategorized'|gettext}
                                     {/if}
                                     {if $item->expFile[0]->image_width >= $item->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
-                                    <a rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
+                                    <a class="colorbox" rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
                                 {else}
                                     <a href="{link action=show title=$item->sef_url}" title="{$item->alt|default:$item->title}">
                                 {/if}
@@ -104,25 +104,37 @@
             {/foreach}
         </div>
     </div>
-    <div class="loadingdiv">{'Loading'|gettext}</div>
+    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
+    {loading}
 </div>
 
-{script unique="`$id`" yui3mods="gallery-lightbox"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules = {
-       'gallery-lightbox' : {
-           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-           requires : ['base','node','anim','selector-css3','lightbox-css']
-       },
-       'lightbox-css': {
-           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
-           type: 'css'
-       }
-    }
+{*{script unique="`$id`" yui3mods="gallery-lightbox"}*}
+{*{literal}*}
+    {*EXPONENT.YUI3_CONFIG.modules = {*}
+       {*'gallery-lightbox' : {*}
+           {*fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',*}
+           {*requires : ['base','node','anim','selector-css3','lightbox-css']*}
+       {*},*}
+       {*'lightbox-css': {*}
+           {*fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',*}
+           {*type: 'css'*}
+       {*}*}
+    {*}*}
 
-	YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-        Y.Lightbox.init();
-	});
+	{*YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {*}
+        {*Y.Lightbox.init();*}
+	{*});*}
+{*{/literal}*}
+{*{/script}*}
+
+{script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
+{literal}
+    $('a.colorbox').colorbox({
+        href: $(this).href,
+        ref: $(this).rel,
+        photo: true,
+        maxWidth: "100%"
+    });
 {/literal}
 {/script}
 

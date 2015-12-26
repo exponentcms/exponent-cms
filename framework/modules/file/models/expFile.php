@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -313,6 +313,9 @@ class expFile extends expRecord {
         }
     }
 
+    public function exists() {
+        return (!empty($this->id) && is_file(BASE . PATH_RELATIVE . $this->directory . $this->filename));
+    }
 // =========================================================================
 // Static Methods
 

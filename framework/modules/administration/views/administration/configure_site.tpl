@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -175,6 +175,7 @@
 		                <h2>{"File Manager/Uploader Settings"|gettext}</h2>
                     </div>
                     {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
+                    {control type="dropdown" name="sc[ELFINDER_THEME]" label="elFinder Theme"|gettext items=$elf_themes default=$smarty.const.ELFINDER_THEME}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
                     {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
                     {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
@@ -515,7 +516,8 @@
                 {/if}
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Site Configuration"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Site Configuration"|gettext}</div>*}
+        {loading title="Loading Site Configuration"|gettext}
         {control type="buttongroup" submit="Save Website Configuration"|gettext cancel="Cancel"|gettext returntype="viewable"}
     {/form}
 </div>

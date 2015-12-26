@@ -11,16 +11,16 @@
 //
 // COPY & PASTE EXECUTION FLOWS:
 // -- CTRL+C
-// 		* if ( isCustomCopyCutSupported )
-// 			* dataTransfer.setData( 'text/html', getSelectedHtml )
+//		* if ( isCustomCopyCutSupported )
+//			* dataTransfer.setData( 'text/html', getSelectedHtml )
 //		* else
 //			* browser's default behavior
 // -- CTRL+X
 //		* listen onKey (onkeydown)
 //		* fire 'saveSnapshot' on editor
-// 		* if ( isCustomCopyCutSupported )
-// 			* dataTransfer.setData( 'text/html', getSelectedHtml )
-// 			* extractSelectedHtml // remove selected contents
+//		* if ( isCustomCopyCutSupported )
+//			* dataTransfer.setData( 'text/html', getSelectedHtml )
+//			* extractSelectedHtml // remove selected contents
 //		* else
 //			* browser's default behavior
 //		* deferred second 'saveSnapshot' event
@@ -46,7 +46,7 @@
 //		* !canceled && execCommand 'paste'
 //		* !success && fire 'pasteDialog' on editor
 // -- Paste from native context menu & menubar
-//		(Fx & Webkits are handled in 'paste' default listner.
+//		(Fx & Webkits are handled in 'paste' default listener.
 //		Opera cannot be handled at all because it doesn't fire any events
 //		Special treatment is needed for IE, for which is this part of doc)
 //		* listen 'onpaste'
@@ -62,7 +62,7 @@
 // -- Possible dataValue types: auto, text, html.
 // -- Possible dataValue contents:
 //		* text (possible \n\r)
-//		* htmlified text (text + br,div,p - no presentional markup & attrs - depends on browser)
+//		* htmlified text (text + br,div,p - no presentational markup & attrs - depends on browser)
 //		* html
 // -- Possible flags:
 //		* htmlified - if true then content is a HTML even if no markup inside. This flag is set
@@ -73,13 +73,13 @@
 //		* content: html ->				filter, set type: html
 // -- Type: text:
 //		* content: htmlified text ->	filter, unify text markup
-//		* content: html ->				filter, strip presentional markup, unify text markup
+//		* content: html ->				filter, strip presentational markup, unify text markup
 // -- Type: html:
 //		* content: htmlified text ->	filter, unify text markup
 //		* content: html ->				filter
 //
 // -- Phases:
-// 		* if dataValue is empty copy data from dataTransfer to dataValue (priority 1)
+//		* if dataValue is empty copy data from dataTransfer to dataValue (priority 1)
 //		* filtering (priorities 3-5) - e.g. pastefromword filters
 //		* content type sniffing (priority 6)
 //		* markup transformations for text (priority 6)
@@ -274,7 +274,7 @@
 					data = htmlifiedTextHtmlification( editor.config, data );
 				}
 
-				// Strip presentional markup & unify text markup.
+				// Strip presentational markup & unify text markup.
 				// Forced plain text (dialog or forcePAPT).
 				// Note: we do not check dontFilter option in this case, because forcePAPT was implemented
 				// before pasteFilter and pasteFilter is automatically used on Webkit&Blink since 4.5, so
@@ -461,7 +461,12 @@
 				// 'paste' evt by itself.
 				evt.cancel();
 				dialogCommited = true;
-				callback( { type: dataType, dataValue: evt.data, method: 'paste' } );
+				callback( {
+					type: dataType,
+					dataValue: evt.data.dataValue,
+					dataTransfer: evt.data.dataTransfer,
+					method: 'paste'
+				} );
 			}
 
 			function onDialogOpen() {
@@ -525,7 +530,10 @@
 
 			if ( CKEDITOR.plugins.clipboard.isCustomCopyCutSupported ) {
 				var initOnCopyCut = function( evt ) {
-					clipboard.initPasteDataTransfer( evt, editor );
+					// If user tries to cut in read-only editor, we must prevent default action. (#13872)
+					if ( !editor.readOnly || evt.name != 'cut' ) {
+						clipboard.initPasteDataTransfer( evt, editor );
+					}
 					evt.data.preventDefault();
 				};
 
@@ -534,7 +542,10 @@
 
 				// Delete content with the low priority so one can overwrite cut data.
 				editable.on( 'cut', function() {
-					editor.extractSelectedHtml();
+					// If user tries to cut in read-only editor, we must prevent default action. (#13872)
+					if ( !editor.readOnly ) {
+						editor.extractSelectedHtml();
+					}
 				}, null, null, 999 );
 			}
 
@@ -719,7 +730,7 @@
 			preventPasteEvent = 1;
 			// For safety reason we should wait longer than 0/1ms.
 			// We don't know how long execution of quite complex getClipboardData will take
-			// and in for example 'paste' listner execCommand() (which fires 'paste') is called
+			// and in for example 'paste' listener execCommand() (which fires 'paste') is called
 			// after getClipboardData finishes.
 			// Luckily, it's impossible to immediately fire another 'paste' event we want to handle,
 			// because we only handle there native context menu and menu bar.
@@ -1287,7 +1298,9 @@
 			// Create a dataTransfer object and save it globally.
 			editable.attachListener( editor, 'dragstart', function( evt ) {
 				clipboard.initDragDataTransfer( evt, editor );
+			}, null, null, 2 );
 
+			editable.attachListener( editor, 'dragstart', function() {
 				// Save drag range globally for cross editor D&D.
 				var dragRange = clipboard.dragRange = editor.getSelection().getRanges()[ 0 ];
 
@@ -1296,7 +1309,7 @@
 					clipboard.dragStartContainerChildCount = dragRange ? getContainerChildCount( dragRange.startContainer ) : null;
 					clipboard.dragEndContainerChildCount = dragRange ? getContainerChildCount( dragRange.endContainer ) : null;
 				}
-			}, null, null, 2 );
+			}, null, null, 100 );
 
 			// -------------- DRAGEND --------------
 			// Clean up on dragend.
@@ -1338,6 +1351,11 @@
 			// -------------- DROP --------------
 
 			editable.attachListener( dropTarget, 'drop', function( evt ) {
+				// Do nothing if event was already prevented. (#13879)
+				if ( evt.data.$.defaultPrevented ) {
+					return;
+				}
+
 				// Cancel native drop.
 				evt.data.preventDefault();
 
@@ -1362,7 +1380,7 @@
 
 				// Fire drop.
 				fireDragEvent( evt, dragRange, dropRange  );
-			} );
+			}, null, null, 9999 );
 
 			// Create dataTransfer or get it, if it was created before.
 			editable.attachListener( editor, 'drop', clipboard.initDragDataTransfer, clipboard, null, 1 );
@@ -1753,34 +1771,28 @@
 				dropInsideDragRange =
 					// Must check endNode because dragRange could be collapsed in some edge cases (simulated DnD).
 					endNode &&
-					startNode.getPosition( dropNode ) == CKEDITOR.POSITION_PRECEDING &&
-					endNode.getPosition( dropNode ) == CKEDITOR.POSITION_FOLLOWING;
+					( startNode.getPosition( dropNode ) & CKEDITOR.POSITION_PRECEDING ) &&
+					( endNode.getPosition( dropNode ) & CKEDITOR.POSITION_FOLLOWING );
 
+			// If the drop range happens to be inside drag range change it's position to the beginning of the drag range.
 			if ( dropInsideDragRange ) {
-				// When we normally drag and drop, the selection is changed to dropRange,
-				// so here we simulate the same behavior.
-				editor.getSelection().selectRanges( [ dropRange ] );
-
-				// Remove bookmark spans.
-				startNode.remove();
-				endNode.remove();
-				dropNode.remove();
+				// We only change position of bookmark span that is connected with dropBookmark.
+				// dropRange will be overwritten and set to the dropBookmark later.
+				dropNode.insertBefore( startNode );
 			}
-			else {
-				// Drop range is outside drag range.
-				// No we can safely delete content for the drag range...
-				dragRange = editor.createRange();
-				dragRange.moveToBookmark( dragBookmark );
-				editable.extractHtmlFromRange( dragRange, 1 );
 
-				// ...and paste content into the drop position.
-				dropRange = editor.createRange();
-				dropRange.moveToBookmark( dropBookmark );
+			// No we can safely delete content for the drag range...
+			dragRange = editor.createRange();
+			dragRange.moveToBookmark( dragBookmark );
+			editable.extractHtmlFromRange( dragRange, 1 );
 
-				// We do not select drop range, because of may be in the place we can not set the selection
-				// (e.g. between blocks, in case of block widget D&D). We put range to the paste event instead.
-				firePasteEvents( editor, { dataTransfer: dataTransfer, method: 'drop', range: dropRange }, 1 );
-			}
+			// ...and paste content into the drop position.
+			dropRange = editor.createRange();
+			dropRange.moveToBookmark( dropBookmark );
+
+			// We do not select drop range, because of may be in the place we can not set the selection
+			// (e.g. between blocks, in case of block widget D&D). We put range to the paste event instead.
+			firePasteEvents( editor, { dataTransfer: dataTransfer, method: 'drop', range: dropRange }, 1 );
 
 			editor.fire( 'unlockSnapshot' );
 		},
@@ -2085,8 +2097,8 @@
 		}
 
 		this._ = {
-			metaRegExp: /^<meta.*?>/,
-			bodyRegExp: /<body(?:[\s\S]*?)>([\s\S]*)<\/body>/,
+			metaRegExp: /^<meta.*?>/i,
+			bodyRegExp: /<body(?:[\s\S]*?)>([\s\S]*)<\/body>/i,
 			fragmentRegExp: /<!--(?:Start|End)Fragment-->/g,
 
 			data: {},

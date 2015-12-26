@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -458,8 +458,14 @@ abstract class expController {
         }
 
         $record = new $modelname($id);
-//        $config = expUnserialize($db->selectValue('expConfigs', 'config', "location_data='" . $record->location_data . "'"));
         $config = expConfig::getConfig($record->location_data);
+        if (empty($this->config))
+            $this->config = $config;
+        if (empty($this->loc->src)) {
+            $r_loc = expUnserialize($record->location_data);
+            $this->loc = new stdClass();
+            $this->loc->src = $r_loc->src;
+        }
 
         assign_to_template(array(
             'record' => $record,

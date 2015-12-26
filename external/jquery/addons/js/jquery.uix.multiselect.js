@@ -51,15 +51,18 @@
             moveEffectSpeed: null,         // string ('slow','fast') or number in millisecond (ignored if moveEffect is 'show') (default: null)
             optionRenderer: false,         // a function that will return the item element to be rendered in the list (default: false)
             optionGroupRenderer: false,    // a function that will return the group item element to be rendered (default: false)
+            searchDelay: 500,              // the search delay in ms (default: 500)
             searchField: 'toggle',         // false, true, 'toggle'; set the search field behaviour (default: 'toggle')
-            searchFilter: null,            // a search filter. Will receive the OPTION element and should return a boolean value.
+            searchPreFilter: null,         // prepare the search term before filtering.
+            searchFilter: null,            // a search filter. Will receive the term and OPTION element and should return a boolean value.
             searchHeader: 'available',     // 'available', 'selected'; set the list header that will host the search field (default: 'available')
             selectionMode: 'click,d&d',    // how options can be selected separated by commas: 'click', "dblclick" and 'd&d' (default: 'click,d&d')
             showDefaultGroupHeader: false, // show the default option group header (default: false)
             showEmptyGroups: false,        // always display option groups even if empty (default: false)
             splitRatio: 0.55,              // % of the left list's width of the widget total width (default 0.55)
             sortable: false,               // if the selected list should be user sortable or not
-            sortMethod: null               // null, 'standard', 'natural'; a sort function name (see ItemComparators), or a custom function (default: null)
+            sortMethod: null,              // null, 'standard', 'natural'; a sort function name (see ItemComparators), or a custom function (default: null)
+            selectAll: 'both'              // 'available', 'selected', 'both', 'none' - Whether or not to display a select or deselect all icon (default: 'both')
         },
 
         _create: function() {
@@ -74,8 +77,8 @@
             this.element.addClass('uix-multiselect-original');
             this._elementWrapper = $('<div></div>').addClass('uix-multiselect ui-widget')
                 .css({
-                    'width': this.element.outerWidth(),
-                    'height': this.element.outerHeight()
+                  width: this.element.css('width'),
+                  height: this.element.css('height')
                 })
                 .append(
                     $('<div></div>').addClass('multiselect-selected-list')
@@ -85,6 +88,7 @@
                                 .attr('title', this._t('deselectAll'))
                                 .button({icons:{primary:'ui-icon-arrowthickstop-1-e'}, text:false})
                                 .click(function(e) { e.preventDefault(); e.stopPropagation(); that.optionCache.setSelectedAll(false); return false; })
+                                ['both,selected'.indexOf(this.options.selectAll)>=0 ? 'show' : 'hide']()
                             )
                             .append( selListHeader = $('<div></div>').addClass('header-text') )
                         )
@@ -98,6 +102,7 @@
                                 .attr('title', this._t('selectAll'))
                                 .button({icons:{primary:'ui-icon-arrowthickstop-1-w'}, text:false})
                                 .click(function(e) { e.preventDefault(); e.stopPropagation(); that.optionCache.setSelectedAll(true); return false; })
+                                ['both,available'.indexOf(this.options.selectAll)>=0 ? 'show' : 'hide']()
                             )
                             .append( avListHeader = $('<div></div>').addClass('header-text') )
 
@@ -121,7 +126,7 @@
             };
 
             this.optionCache = new OptionCache(this);
-            this._searchDelayed = new SearchDelayed(this, {delay: 500});
+            this._searchDelayed = new SearchDelayed(this);
 
             this._initSearchable();
 
@@ -146,7 +151,7 @@
          */
         refresh: function(callback) {
             this._resize();  // just make sure we display the widget right without delay
-            AsyncFunction(function() {
+            asyncFunction(function() {
                 this.optionCache.cleanup();
 
                 var opt, options = this.element[0].childNodes;
@@ -467,9 +472,9 @@
                 // TODO
             }
             if (typeof(this._superApply) == 'function'){
-            	this._superApply(arguments);
+                this._superApply(arguments);
             }else{
-            	$.Widget.prototype._setOption.apply(this, arguments);
+                $.Widget.prototype._setOption.apply(this, arguments);
             }
         }
     });
@@ -535,16 +540,16 @@
     };
 
 
-    var transferDir = ['n','e','s','w'];                          // button icon direction
+    var transferDirection = ['n','e','s','w'];                          // button icon direction
     var transferOrientation = ['bottom','left','top','right'];    // list of matching directions with icons
     var transferIcon = function(pos, prefix, selected) {
-        return prefix + transferDir[($.inArray(pos.toLowerCase(), transferOrientation) + (selected ? 2 : 0)) % 4];
+        return prefix + transferDirection[($.inArray(pos.toLowerCase(), transferOrientation) + (selected ? 2 : 0)) % 4];
     };
 
     /**
      * setTimeout on steroids!
      */
-    var AsyncFunction = function(callback, timeout, self) {
+    var asyncFunction = function(callback, timeout, self) {
         var args = Array.prototype.slice.call(arguments, 3);
         return setTimeout(function() {
             callback.apply(self || window, args);
@@ -564,12 +569,12 @@
 
             this.cancelLastRequest();
 
-            this._timeout = AsyncFunction(function() {
+            this._timeout = asyncFunction(function() {
                 this._timeout = null;
                 this._lastSearchValue = this._widget._searchField.val();
 
                 this._widget._search();
-            }, this._options.delay, this);
+            }, this._widget.options.searchDelay, this);
         },
         cancelLastRequest: function() {
             if (this._timeout) {
@@ -809,7 +814,7 @@
                     },
                     stop: function(evt, ui) {
                         var e;
-                        if (_received_index) {
+                        if (_received_index != undefined) {
                             e = that._elements[_received_index];
                             _received_index = undefined;
                             ui.item.replaceWith(e.listElement.addClass('ui-state-highlight option-selected'));
@@ -1173,11 +1178,10 @@
 
             var filterSelected = this._widget.options.filterSelected;
             var filterFn = this._widget.options.searchFilter || function(term, opt) {
-                //return !(!text || (eData.optionElement.text().toLowerCase().indexOf(text) > -1));
-                return opt.innerHTML.toLowerCase().indexOf(term) > -1;
+                return opt.innerHTML.toLocaleLowerCase().indexOf(term) > -1;
             };
             term = (this._widget.options.searchPreFilter || function(term) {
-                return term ? (term+"").toLowerCase() : false;
+                return term ? (term+"").toLocaleLowerCase() : false;
             })(term);
 
             for (var i=0, eData, len=this._elements.length, filtered; i<len; i++) {
@@ -1188,13 +1192,12 @@
                     eData.listElement[filtered ? 'hide' : 'show']();
                     eData.filtered = filtered;
                 } else if (eData.selected) {
-                    eData.filtered = false;
+                    eData.filtered = filtered;
                 }
             }
 
             this._widget._updateHeaders();
             this._bufferedMode(false);
-
         },
 
         getSelectionInfo: function() {
@@ -1294,19 +1297,19 @@
      */
     $.uix.multiselect.i18n = {
         '': {
-            itemsSelected_nil: 'no selected option',           // 0
+            itemsSelected_nil: 'No options selected',          // 0
             itemsSelected: '{count} selected option',          // 0, 1
-            itemsSelected_plural: '{count} selected options',  // n
+            itemsSelected_plural: '{count} options selected',  // n
             //itemsSelected_plural_two: ...                    // 2
             //itemsSelected_plural_few: ...                    // 3, 4
-            itemsAvailable_nil: 'no item available',
-            itemsAvailable: '{count} available option',
-            itemsAvailable_plural: '{count} available options',
+            itemsAvailable_nil: 'No items available',
+            itemsAvailable: '{count} options available',
+            itemsAvailable_plural: '{count} options available',
             //itemsAvailable_plural_two: ...
             //itemsAvailable_plural_few: ...
-            itemsFiltered_nil: 'no option filtered',
-            itemsFiltered: '{count} option filtered',
-            itemsFiltered_plural: '{count} options filtered',
+            itemsFiltered_nil: 'No options found',
+            itemsFiltered: '{count} option found',
+            itemsFiltered_plural: '{count} options found',
             //itemsFiltered_plural_two: ...
             //itemsFiltered_plural_few: ...
             selectAll: 'Select All',

@@ -1,23 +1,46 @@
-#Exponent Content Management System..
+# Exponent Content Management System..
 
 ----------
 
-Copyright (c) 2004-2015 OIC Group, Inc.
+Copyright (c) 2004-2016 OIC Group, Inc.
 
 For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms/commits/master](https://github.com/exponentcms/exponent-cms/commits/master)
 
 ----------
 
+Version 2.3.6
+-------------
+### Refine 'shipment' interface, plus address issues in v2.3.5
+  * !!! adds addditional security checking for XSS vulnerabilities - CVE-2015-8667
+  * !!! adds support for PHP v7.x
+    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
+  * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
+  - adds new 'loading' animation (font icon) for boostrap/bootstrap3
+  - cleans up some bootstrap3 views, returns option of displaying extra-small buttons in sample theme
+  - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
+  - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
+  - adds new optional paypalExpress 'in-context' checkout experience
+  - adds two optional elFinder themes, also cleans up default theme
+  - better EAAS error and event record support (events now sent by date instead of by entry sequence)
+  - much better (optional) ajax paging support
+  - much better job of returning to previous pages
+  - adds new optional upgrade script to quickly clean up files database (adds new files, removes missing files)
+  - includes all fixes from v2.3.5 patches (#1 & #2)
+### Known Issues
+  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Version 2.3.5
 -------------
-### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
+### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address issues in v2.3.4
   - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - enhances elFinder/TinyMCE/CKEditor integration; CKEditor now allows paste/drop images
   - adds Facebook og: meta tag support
   - adds remote blog post editing (xmlrpc); this feature is turned off by default
-  - adds new easypost ecommerce shipping calculator includes order fufillment functions
+  - adds new easypost ecommerce shipping calculator includes order fulfillment functions
   - improves security by allowing admin controlled password strength settings and more secure password hashing
-  - includes all fixes from v2.3.4 patches
+  - includes all fixes from v2.3.4 patches (#1)
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -25,10 +48,10 @@ Version 2.3.5
 
 Version 2.3.4
 -------------
-### Finish removing YUI2 code/widgets, plus address any issues in v2.3.3
+### Finish removing YUI2 code/widgets, plus address issues in v2.3.3
   * !!! fixes an XSS vulnerability in source_selector.php/selector.php
   * regression fix for issues caused by previous security fix (json data could be corrupted) unable to delete files, etc..
-  - adds 'announcment' view to events module
+  - adds 'announcement' view to events module
   - adds alternate color to 'featured' items in announcement views
   - updates twitter view to more closely resemble twitter.com
   - updates optional ajax paging to be seo friendly; site-wide setting now on display tab of site configuration
@@ -46,7 +69,7 @@ Version 2.3.4
   - adds optional 'time till site returns' countdown clock to maintenance view
     -- login removed from maintenance view unless attempting to logon or if db is down
   - after adding a new module which requires configuration, the system now displays the module configuration settings page
-  - includes all fixes from v2.3.3 patches
+  - includes all fixes from v2.3.3 patches (#1)
 ### Known Issues
   - eCommerce purchase order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -54,7 +77,7 @@ Version 2.3.4
 
 Version 2.3.3
 -------------
-### Address any issues in v2.3.2
+### Address issues in v2.3.2
   * !!! Removes support for PHP v5.2.x (primarily due to included 3rd party libraries)
     - Compatible with PHP v5.3.x, 5.4.x, 5.5.x, and 5.6.x
   - adds feature to delete multiple photo album items at one time
@@ -77,7 +100,7 @@ Version 2.3.3
     - fixes several issues with simple notes for products & orders; adds simple wysiwyg formatting
     - adds new optional upgrade script to trim orphan ecommerce database records (tables can grow huge)
   - adds support for optional mPDF v6.0 pdf creation library
-  - includes all fixes from v2.3.2 patches
+  - includes all fixes from v2.3.2 patches (#1 & #2)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -85,8 +108,8 @@ Version 2.3.3
 
 Version 2.3.2
 -------------
-### Address any issues in v2.3.1
-  * !!! Fixes possible cross-site security issue
+### Address issues in v2.3.1
+  * !!! Fixes possible cross-site security (XSS) issue
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
   - adds lightbox option to mediaplayer showall view, allows grid of icons
@@ -107,7 +130,7 @@ Version 2.3.2
       - US states sales tax tables now installed with store sample database
   - adds optional 0.9x theme compatibility by setting OLD_THEME_COMPATIBLE constant
   - updates database manager display to be 'responsive' for smaller screens
-  - includes all fixes from v2.3.1 patches
+  - includes all fixes from v2.3.1 patches (#1, #2, #3, & #4)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -115,7 +138,7 @@ Version 2.3.2
 
 Version 2.3.1
 -------------
-### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address any issues in v2.3.0
+### Refine implementation of TinyMCE, elFinder, & NewUI/Bootstrap3, remove YUI2 code/widgets, provide jQuery/Bootstrap code/widgets, plus address issues in v2.3.0
   * !!!Fixes regression bug where non-admin user login with workflow turned on always broke page
   * !!!Fixes regression bug where all checkboxes were either checked or unchecked
   * !!!Fixes regression bug where adding/editing a module would display a blank page or disable the save button
@@ -133,7 +156,7 @@ Version 2.3.1
   - adds .less file compilation minification setting, and better error trapping on compilation error
   - fixes loading of ckeditor & tinymce if linked js is minified
   - adds new Portuguese translation
-  - includes all fixes from v2.3.0 patches
+  - includes all fixes from v2.3.0 patches (#1, #2, #3, & #4)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -141,7 +164,7 @@ Version 2.3.1
 
   Version 2.3.0
 -------------
-### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address any issues in v2.2.3
+### Implement revisions/workflow/approval, integrate TinyMCE WYSIWYG Editor, implement form data filtering both actively in the view, plus address issues in v2.2.3
   - updated default bootstrap theme (and the files to support it) to be more mobile friendly (responsive), esp. in tables
   - adds new touch enabled, responsive photo album slideshow view (default slideshow for bootstrap)
   - adds new optional search/filter to portfolio & faq showall views
@@ -161,7 +184,7 @@ Version 2.3.1
   - adds Google+ link to blog author signature option for linking to search hits on Google (profile/picture)
   - adds new search/filter & sorting to manage permissions, users, groups and forms showall views
   - adds new 'reset.php' file to allow easily clearing all caches if the site crashes when designing/changing themes
-  - includes all fixes from v2.2.3 patches
+  - includes all fixes from v2.2.3 patches (#1 to #10)
 ### Known Issues
   - eCommerce gift card & purchase order functionality have not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -230,7 +253,7 @@ Version 2.2.2
 
 Version 2.2.1
 -------------
-### Address any issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
+### Address issues in v2.2.0 and streamline integration of Twitter-Bootstrap/jQuery
   - php v5.5 compatible
   - new facebook module to display like buttons, like boxes, and optional like button to blog articles & file downloads
   - adds optional tweet button to blog articles & file downloads, and optional twitter follow button to twitter view

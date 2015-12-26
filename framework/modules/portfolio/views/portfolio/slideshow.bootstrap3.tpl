@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -112,9 +112,9 @@
                         </div>
                         <div class="{if (!empty($slide->expFile[0]->id))}col-sm-4 col-md-offset-1{else}hidden{/if}">
                             {if $config.quality==100}
-                                <img src="{$slide->expFile[0]->url}" class="slide-image" />
+                                <img src="{$slide->expFile[0]->url}" class="img-responsive slide-image" />
                             {else}
-                                {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:200 class="slide-image" zc=1 q=$config.quality|default:80}
+                                {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:200 class="img-responsive slide-image" zc=1 q=$config.quality|default:80}
                             {/if}
                         </div>
                     </div>
@@ -149,6 +149,12 @@
 
 {if $slides|@count > 1}
 {script unique="ssc-`$name`" bootstrap="carousel,transition" jquery="bootstrap-touch-carousel"}
-
+{if $config.speed}
+{literal}
+    $('#ss-{/literal}{$name}{literal}').carousel({
+        interval: {/literal}{$config.speed}{literal}000
+    })
+{/literal}
+{/if}
 {/script}
 {/if}

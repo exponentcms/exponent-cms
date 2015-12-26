@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -29,7 +29,7 @@
     <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/mediaelement/build/mediaelement-and-player.min.js"></script>
 </head>
-<body{if !bs3()} class="exp-skin"{/if}>
+<body class="exp-skin">
 <div id="filemanager">
 	<h1>{'File Manager'|gettext}</h1>
     {messagequeue}

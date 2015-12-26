@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -25,8 +25,8 @@
 		<a class="evnav module-actions" href="{link action=showall view='showall_Monthly List' time=$next_timestamp3}" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%B %Y"}">{$next_timestamp3|format_date:"%b"}</a>&#160;&#160;&raquo;
 	</p>
 	<dl class="viewweek">
+		{$none=1}
 		{foreach from=$days item=items key=ts}
-            {$none=1}
 			{if_elements array=$items}
 				<dt>
 					<div class="sectiontitle"><strong>
@@ -86,6 +86,6 @@
 			{/if_elements}
 		{/foreach}
         {if $none == 1}
-            <div class="paragraph"><dd><strong>{'No Events.'|gettext}</strong></dd></div>
+            <div class="paragraph"><dd><strong>{'No Events'|gettext}</strong></dd></div>
         {/if}
 	</dl>

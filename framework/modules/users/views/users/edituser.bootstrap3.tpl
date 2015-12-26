@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -135,7 +135,8 @@
 	            {/foreach}
 	        </div>
 	    </div>
-	    <div class="loadingdiv">{'Loading User Profile'|gettext}</div>
+	    {*<div class="loadingdiv">{'Loading User Profile'|gettext}</div>*}
+        {loading title='Loading User Profile'|gettext}
 	    {if $user->isAdmin() == 0}
 			{control type=antispam}
 		{/if}
@@ -149,7 +150,7 @@
 {/literal}
 {/script}
 
-{script unique="showlogin" jquery='pwstrength'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.9'}
 {literal}
     $(document).ready(function () {
         "use strict";

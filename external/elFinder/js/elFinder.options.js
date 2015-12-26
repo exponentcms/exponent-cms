@@ -146,6 +146,24 @@ elFinder.prototype._options = {
 	 * @type Object
 	 **/
 	commandsOptions : {
+		// // configure shortcuts of any command
+		// // add `shortcuts` property into each command
+		// any_command_name : {
+		// 	shortcuts : [] // for disable this command's shortcuts
+		// },
+		// any_command_name : {
+		// 	shortcuts : function(fm, shortcuts) {
+		// 		// for add `CTRL + E` for this command action
+		// 		shortcuts[0]['pattern'] += ' ctrl+e';
+		// 		return shortcuts;
+		// 	}
+		// },
+		// any_command_name : {
+		// 	shortcuts : function(fm, shortcuts) {
+		// 		// for full customize of this command's shortcuts
+		// 		return [ { pattern: 'ctrl+e ctrl+down numpad_enter' + (fm.OS != 'mac' && ' enter') } ];
+		// 	}
+		// },
 		// "getfile" command options.
 		getfile : {
 			onlyURL  : false,
@@ -624,14 +642,23 @@ elFinder.prototype._options = {
 	/**
 	 * Additional rule to valid new file name.
 	 * By default not allowed empty names or '..'
+	 * This setting does not have a sense of security.
 	 *
 	 * @type false|RegExp|function
 	 * @default  false
 	 * @example
 	 *  disable names with spaces:
-	 *  validName : /^[^\s]$/
+	 *  validName : /^[^\s]+$/,
 	 */
 	validName : false,
+	
+	/**
+	 * Backup name suffix.
+	 *
+	 * @type String
+	 * @default  "~"
+	 */
+	backupSuffix : '~',
 	
 	/**
 	 * Sync content interval

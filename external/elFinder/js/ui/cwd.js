@@ -118,7 +118,7 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @type String
 			 */
 			query = '',
-			
+
 			lastSearch = [],
 
 			customColsBuild = function() {
@@ -325,6 +325,7 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			unselectAll = function() {
+				selectLock = false;
 				selectedFiles = [];
 				cwd.find('[id].'+clSelected).trigger(evtUnselect); 
 				trigger();
@@ -397,7 +398,20 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @type String
 			 **/
 			scrollEvent = 'scroll.'+fm.namespace,
-
+			
+			/**
+			 * jQuery UI selectable option
+			 * 
+			 * @type Object
+			 */
+			selectableOption = {
+				filter     : fileSelector,
+				stop       : trigger,
+				delay      : 250,
+				selected   : function(e, ui) { $(ui.selected).trigger(evtSelect); },
+				unselected : function(e, ui) { $(ui.unselected).trigger(evtUnselect); }
+			},
+			
 			/**
 			 * Cwd scroll event handler.
 			 * Lazy load - append to cwd not shown files
@@ -495,23 +509,51 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @type Object
 			 */
 			droppable = $.extend({}, fm.droppable, {
-				over : function(e, ui) { 
-					var cwd   = fm.cwd(),
-						hash  = cwd.hash,
-						$this = $(this);
-					$.each(ui.helper.data('files'), function(i, h) {
-						if (h === hash || fm.file(h).phash === hash) {
-							if (h !== hash && cwd.write) {
-								$this.data('dropover', true);
+				over : function(e, ui) {
+					var dst    = $(this),
+						helper = ui.helper,
+						ctr    = (e.shiftKey || e.ctrlKey || e.metaKey),
+						hash, status, inParent;
+					e.stopPropagation();
+					helper.data('dropover', helper.data('dropover') + 1);
+					dst.data('dropover', true);
+					if (helper.data('namespace') !== fm.namespace) {
+						dst.removeClass(clDropActive);
+						return false;
+					}
+					if (dst.hasClass(fm.res(c, 'cwdfile'))) {
+						hash = dst.attr('id');
+						dst.data('dropover', hash);
+					} else {
+						hash = fm.cwd().hash;
+						fm.cwd().write && dst.data('dropover', hash);
+					}
+					inParent = (fm.file(helper.data('files')[0]).phash === hash);
+					if (dst.data('dropover') === hash) {
+						$.each(helper.data('files'), function(i, h) {
+							if (h === hash || (inParent && !ctr && !helper.hasClass('elfinder-drag-helper-plus'))) {
+								dst.removeClass(clDropActive);
+								return false; // break $.each
 							}
-							if (!$this.data('dropover') || !ui.helper.hasClass('elfinder-drag-helper-plus')) {
-								$this.removeClass(clDropActive);
-							}
-							return false;
+						});
+					} else {
+						dst.removeClass(clDropActive);
+					}
+					if (helper.data('locked') || inParent) {
+						status = 'elfinder-drag-helper-plus';
+					} else {
+						status = 'elfinder-drag-helper-move';
+						if (ctr) {
+							status += ' elfinder-drag-helper-plus';
 						}
-					});
+					}
+					dst.hasClass(clDropActive) && helper.addClass(status);
+					setTimeout(function(){ dst.hasClass(clDropActive) && helper.addClass(status); }, 20);
 				},
-				out : function() {
+				out : function(e, ui) {
+					var helper = ui.helper;
+					e.stopPropagation();
+					helper.removeClass('elfinder-drag-helper-move elfinder-drag-helper-plus').data('dropover', Math.max(helper.data('dropover') - 1, 0));
 					$(this).removeData('dropover')
 					       .removeClass(clDropActive);
 				},
@@ -527,12 +569,12 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			makeDroppable = function() {
+				var targets = cwd.find('.directory:not(.'+clDroppable+',.elfinder-na,.elfinder-ro)');
 				if (fm.isCommandEnabled('paste')) {
-					setTimeout(function() {
-						cwd.find('.directory:not(.'+clDroppable+',.elfinder-na,.elfinder-ro)').droppable(fm.droppable).each(function(){
-							fm.makeDirectDropUpload(this, this.id);
-						});
-					}, 20);
+					targets.droppable(droppable);
+				}
+				if (fm.isCommandEnabled('upload')) {
+					targets.addClass('native-droppable');
 				}
 			},
 			
@@ -791,6 +833,14 @@ $.fn.elfindercwd = function(fm, options) {
 					(list ? cwd.find('tbody') : cwd).prepend(parent);
 				}
 				
+				// set droppable
+				if (any || !fm.cwd().write) {
+					wrapper.removeClass('native-droppable')
+					       .droppable('disable');
+				} else {
+					wrapper[fm.isCommandEnabled('upload')? 'addClass' : 'removeClass']('native-droppable');
+					wrapper.droppable('enable');
+				}
 			},
 			
 			/**
@@ -885,11 +935,111 @@ $.fn.elfindercwd = function(fm, options) {
 				})
 				// attach draggable
 				.on('mouseenter.'+fm.namespace, fileSelector, function(e) {
-					var $this = $(this),
-						target = list ? $this : $this.children();
+					var $this = $(this), helper = null,
+						target = list ? $this : $this.children('div.elfinder-cwd-file-wrapper,div.elfinder-cwd-filename');
 
 					if (!mobile && !$this.hasClass(clTmp) && !target.hasClass(clDraggable+' '+clDisabled)) {
-						target.draggable(fm.draggable);
+						target.on('mousedown', function(e) {
+							// shiftKey + drag start for HTML5 native drag function
+							if (e.shiftKey && !fm.UA.IE && cwd.data('selectable')) {
+								// destroy jQuery-ui selectable while trigger native drag
+								cwd.selectable('destroy').data('selectable', false);
+								setTimeout(function(){
+									cwd.selectable(selectableOption).data('selectable', true);
+								}, 10);
+							}
+							target.draggable('option', 'disabled', e.shiftKey);
+							if (e.shiftKey) {
+								target.attr('draggable', 'true');
+							} else {
+								target.attr('draggable', 'false')
+								      .draggable('option', 'cursorAt', {left: 50 - parseInt($(e.currentTarget).css('margin-left')), top: 47});
+							}
+						})
+						.on('dragstart', function(e) {
+							var dt = e.dataTransfer || e.originalEvent.dataTransfer || null;
+							helper = null;
+							if (dt && !fm.UA.IE) {
+								var p = this.id ? $(this) : $(this).parents('[id]:first'),
+									elm   = $('<span>'),
+									url   = '',
+									durl  = null,
+									murl  = null,
+									files = [],
+									icon  = function(f) {
+										var mime = f.mime, i;
+										i = '<div class="elfinder-cwd-icon '+fm.mime2class(mime)+' ui-corner-all"/>';
+										if (f.tmb && f.tmb !== 1) {
+											i = $(i).css('background', "url('"+fm.option('tmbUrl')+f.tmb+"') center center no-repeat").get(0).outerHTML;
+										}
+										return i;
+									}, l, geturl = [];
+								p.trigger(evtSelect);
+								trigger();
+								$.each(selectedFiles, function(i, v){
+									var file = fm.file(v),
+										furl = file.url;
+									if (file && file.mime !== 'directory') {
+										if (!furl) {
+											furl = fm.url(file.hash);
+										} else if (furl == '1') {
+											geturl.push(v);
+											return true;
+										}
+										if (furl) {
+											furl = fm.convAbsUrl(furl);
+											files.push(v);
+											$('<a>').attr('href', furl).text(furl).appendTo(elm);
+											url += furl + "\n";
+											if (!durl) {
+												durl = file.mime + ':' + file.name + ':' + furl;
+											}
+											if (!murl) {
+												murl = furl + "\n" + file.name;
+											}
+										}
+									}
+								});
+								if (geturl.length) {
+									$.each(geturl, function(i, v){
+										var rfile = fm.file(v);
+										rfile.url = '';
+										fm.request({
+											data : {cmd : 'url', target : v},
+											notify : {type : 'url', cnt : 1},
+											preventDefault : true
+										})
+										.always(function(data) {
+											rfile.url = data.url? data.url : '1';
+										});
+									});
+									return false;
+								} else if (url) {
+									if (dt.setDragImage) {
+										helper = $('<div class="elfinder-drag-helper html5-native"></div>').append(icon(fm.file(files[0]))).appendTo($(document.body));
+										if ((l = files.length) > 1) {
+											helper.append(icon(fm.file(files[l-1])) + '<span class="elfinder-drag-num">'+l+'</span>');
+										}
+										dt.setDragImage(helper.get(0), 50, 47);
+									}
+									dt.effectAllowed = 'copyLink';
+									dt.setData('DownloadURL', durl);
+									dt.setData('text/x-moz-url', murl);
+									dt.setData('text/uri-list', url);
+									dt.setData('text/plain', url);
+									dt.setData('text/html', elm.html());
+									dt.setData('elfinderfrom', window.location.href + fm.cwd().hash);
+									dt.setData('elfinderfrom:' + dt.getData('elfinderfrom'), '');
+								} else {
+									return false;
+								}
+							}
+						})
+						.on('dragend', function(e){
+							unselectAll();
+							helper && helper.remove();
+						})
+						.draggable(fm.draggable);
 					}
 				})
 				// add hover class to selected file
@@ -982,13 +1132,8 @@ $.fn.elfindercwd = function(fm, options) {
 				})
 				
 				// make files selectable
-				.selectable({
-					filter     : fileSelector,
-					stop       : trigger,
-					delay      : 250,
-					selected   : function(e, ui) { $(ui.selected).trigger(evtSelect); },
-					unselected : function(e, ui) { $(ui.unselected).trigger(evtUnselect); }
-				})
+				.selectable(selectableOption)
+				.data('selectable', true)
 				// prepend fake file/dir
 				.on('create.'+fm.namespace, function(e, file) {
 					var parent = list ? cwd.find('tbody') : cwd,
@@ -1013,7 +1158,7 @@ $.fn.elfindercwd = function(fm, options) {
 				}),
 			wrapper = $('<div class="elfinder-cwd-wrapper"/>')
 				// make cwd itself droppable for folders from nav panel
-				.droppable(droppable)
+				.droppable($.extend({}, droppable, {autoDisable: false}))
 				.on('contextmenu', function(e) {
 					e.preventDefault();
 					fm.trigger('contextmenu', {
@@ -1087,40 +1232,6 @@ $.fn.elfindercwd = function(fm, options) {
 		// for iOS5 bug
 		$('body').on('touchstart touchmove touchend', function(e){});
 		
-		(function(){
-		var ent;
-		if (fm.dragUpload) {
-			wrapper[0].addEventListener('dragenter', function(e) {
-				var cwd = fm.cwd();
-				e.preventDefault();
-				e.stopPropagation();
-				ent = true;
-				cwd && cwd.write && wrapper.addClass(clDropActive);
-			}, false);
-
-			wrapper[0].addEventListener('dragleave', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				if (ent) {
-					ent = false;
-				} else {
-					wrapper.removeClass(clDropActive);
-				}
-			}, false);
-
-			wrapper[0].addEventListener('dragover', function(e) {
-				e.preventDefault();
-				e.stopPropagation();
-				ent = false;
-			}, false);
-
-			wrapper[0].addEventListener('drop', function(e) {
-				wrapper.removeClass(clDropActive);
-				fm.exec('upload', {dropEvt: e});
-			}, false);
-		};
-		})();
-
 		fm
 			.bind('open', function(e) {
 				content(e.data.files);
@@ -1215,7 +1326,6 @@ $.fn.elfindercwd = function(fm, options) {
 						target.trigger(evtSelect);
 						trigger();
 					}
-					wrapper.droppable('disable');
 				}
 				
 				cwd.selectable('disable').removeClass(clDisabled);
@@ -1224,7 +1334,6 @@ $.fn.elfindercwd = function(fm, options) {
 			// enable selectable
 			.dragstop(function() {
 				cwd.selectable('enable');
-				wrapper.droppable('enable');
 				selectLock = false;
 			})
 			.bind('lockfiles unlockfiles selectfiles unselectfiles', function(e) {
@@ -1235,13 +1344,24 @@ $.fn.elfindercwd = function(fm, options) {
 						unselectfiles : evtUnselect },
 					event  = events[e.type],
 					files  = e.data.files || [],
-					l      = files.length;
-				
-				while (l--) {
-					$('#'+files[l]).trigger(event);
+					l      = files.length,
+					helper = e.data.helper || $(),
+					parents, ctr;
+
+				if (l > 0) {
+					parents = fm.parents(files[0]);
 				}
-				trigger();
-				wrapper.data('dropover') && wrapper.toggleClass(clDropActive, e.type !== 'lockfiles');
+				if (!helper.data('locked')) {
+					while (l--) {
+						$('#'+files[l]).trigger(event);
+					}
+					trigger();
+				}
+				if (wrapper.data('dropover') && parents.indexOf(wrapper.data('dropover')) !== -1) {
+					ctr = e.type !== 'lockfiles';
+					helper.toggleClass('elfinder-drag-helper-plus', ctr);
+					wrapper.toggleClass(clDropActive, ctr);
+				}
 			})
 			// select new files after some actions
 			.bind('mkdir mkfile duplicate upload rename archive extract paste multiupload', function(e) {

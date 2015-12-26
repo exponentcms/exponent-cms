@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -78,7 +78,8 @@ class shippingmethod extends expRecord {
         global $db;
 
         $calcname = $db->selectValue('shippingcalculator', 'calculator_name', 'id='.$this->shippingcalculator_id);
-        $this->calculator = new $calcname($this->shippingcalculator_id);
+        if (!empty($calcname))
+            $this->calculator = new $calcname($this->shippingcalculator_id);
     }
 
 }

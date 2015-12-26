@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -105,12 +105,12 @@ class eaasController extends expController {
         if (!array_key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
-            return;  //FIXME we exit before hitting this
+//            return;  //FIXME we exit before hitting this
         }
         if (empty($this->config[$this->params['get'].'_aggregate'])) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
-            return;  //FIXME we exit before hitting this
+//            return;  //FIXME we exit before hitting this
         }
         switch ($this->params['get']) {
             case 'aboutus':
@@ -122,6 +122,7 @@ class eaasController extends expController {
                 $ar->send();
                 break;
             case 'photo':
+            case 'photos':
                 $ar = new expAjaxReply(200, 'ok', $this->photo(), null);
                 $ar->send();
                 break;
@@ -130,14 +131,17 @@ class eaasController extends expController {
                 $ar->send();
                 break;
             case 'filedownload':
+            case 'filedownloads':
                 $ar = new expAjaxReply(200, 'ok', $this->filedownload(), null);
                 $ar->send();
                 break;
             case 'blog':
+            case 'blogs':
                 $ar = new expAjaxReply(200, 'ok', $this->blog(), null);
                 $ar->send();
                 break;
             case 'event':
+            case 'events':
                 $ar = new expAjaxReply(200, 'ok', $this->event(), null);
                 $ar->send();
                 break;
@@ -162,7 +166,7 @@ class eaasController extends expController {
         } else {
             $news = new news();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
@@ -211,7 +215,7 @@ class eaasController extends expController {
         } else {
             $media = new media();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
@@ -236,7 +240,7 @@ class eaasController extends expController {
         } else {
             $filedownload = new filedownload();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
@@ -261,7 +265,7 @@ class eaasController extends expController {
         } else {
             $photo = new photo();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
@@ -285,7 +289,7 @@ class eaasController extends expController {
         } else {
             $blog = new blog();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
@@ -309,19 +313,20 @@ class eaasController extends expController {
         } else {
             $event = new event();
 
-            // figure out if should limit the results
+            // figure out if we should limit the results
             if (isset($this->params['limit'])) {
                 $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
             } else {
                 $limit = '';
             }       
             
-            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';
-            $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);
+//            $order = isset($this->params['order']) ? $this->params['order'] : 'created_at';  //FIXME we shoud be getting upcoming events
+//            $items = $event->find('all', $this->aggregateWhereClause('event'), $order, $limit);  //FIXME needs 'upcoming' type of find
+            $items = $event->find('upcoming', $this->aggregateWhereClause('event'), false, $limit);  //new 'upcoming' type of find
             $this->data['records'] = $items;
         }
 
-        if (!empty($this->params['groupbydate'])&&!empty($items)) {
+        if (!empty($this->params['groupbydate'])&&!empty($items)) {  // aggregate by day like with regular calendar
             $this->data['records'] = array();
             foreach ($items as $value) {
                 $this->data['records'][date('r',$value->eventdate[0]->date)][] = $value;
@@ -380,6 +385,11 @@ class eaasController extends expController {
     }
 
     private function getImageBody($tab) {
+        // create an empty 'abnner' object to prevent errors in caller
+        $this->data['banner']['obj'] = null;
+        $this->data['banner']['obj']->url = null;
+        $this->data['banner']['md5'] = null;
+
         if (count(@$this->config['expFile'][$tab.'_image'])>1) {
             $img = new expFile($this->config['expFile'][$tab.'_image'][0]);
             if ($img) {

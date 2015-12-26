@@ -1,7 +1,7 @@
-#Exponent Content Management System
+# Exponent Content Management System
 
 ----------
 
-Copyright (c) 2004-2015 OIC Group, Inc.
+Copyright (c) 2004-2016 OIC Group, Inc.
 
 Please see [http://exponentcms.lighthouseapp.com](http://exponentcms.lighthouseapp.com) for information about bugs and project to-dos.

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -106,7 +106,7 @@
                             url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + viewpicker.val(),
                             success: handleSuccessView
                         });
-                        $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+                        $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
                     }
                 });
             });
@@ -118,7 +118,7 @@
                         url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + e.target.value,
                         success: handleSuccessView
                     });
-                    $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%">{/literal}{"Loading Form"|gettext}{literal}</div>'));
+                    $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
                 }
             });
 

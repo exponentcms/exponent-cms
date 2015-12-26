@@ -3,7 +3,7 @@ class upsTrack {
 	var $xmlSent;
 	var $trackResponse;
 	
-	function upsTrack($upsObj){
+	function __construct($upsObj){
 		// Must pass the UPS object to this class for it to work
 		$this->ups = $upsObj;
 	}

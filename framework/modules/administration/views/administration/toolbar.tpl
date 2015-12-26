@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -178,7 +178,6 @@
          });
 
          Y.fire('toolbar:loaded');
-
      });
 {/literal}
 {/script}

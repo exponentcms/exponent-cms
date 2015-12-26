@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -327,7 +327,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         e.halt();
         cfg.data = "folder="+Y.one('#folder').get('value');
         var request = Y.io(sUrl, cfg);
-//        sermon.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Sermon"|gettext}{literal}</div>'));
+//        sermon.setContent(Y.Node.create('{/literal}{loading title="Loading Sermon"|gettext}{literal}'));
     });
 
     if(!FlashDetect.installed) {

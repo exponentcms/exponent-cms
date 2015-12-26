@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -124,7 +124,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     {/form}
 </div>
 
-{script unique="showlogin" jquery='pwstrength'}
+{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.9'}
 {literal}
     $(document).ready(function () {
         "use strict";

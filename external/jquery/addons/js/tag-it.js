@@ -1,29 +1,29 @@
 /*
- * jQuery UI Tag-it!
- *
- * @version v2.0 (06/2011)
- *
- * Copyright 2011, Levy Carneiro Jr.
- * Released under the MIT license.
- * http://aehlke.github.com/tag-it/LICENSE
- *
- * Homepage:
- *   http://aehlke.github.com/tag-it/
- *
- * Authors:
- *   Levy Carneiro Jr.
- *   Martin Rehfeld
- *   Tobias Schmidt
- *   Skylar Challand
- *   Alex Ehlke
- *
- * Maintainer:
- *   Alex Ehlke - Twitter: @aehlke
- *
- * Dependencies:
- *   jQuery v1.4+
- *   jQuery UI v1.8+
- */
+* jQuery UI Tag-it!
+*
+* @version v2.0 (06/2011)
+*
+* Copyright 2011, Levy Carneiro Jr.
+* Released under the MIT license.
+* http://aehlke.github.com/tag-it/LICENSE
+*
+* Homepage:
+*   http://aehlke.github.com/tag-it/
+*
+* Authors:
+*   Levy Carneiro Jr.
+*   Martin Rehfeld
+*   Tobias Schmidt
+*   Skylar Challand
+*   Alex Ehlke
+*
+* Maintainer:
+*   Alex Ehlke - Twitter: @aehlke
+*
+* Dependencies:
+*   jQuery v1.4+
+*   jQuery UI v1.8+
+*/
 (function($) {
 
     $.widget('ui.tagit', {
@@ -244,20 +244,20 @@
                         (event.which === $.ui.keyCode.COMMA && event.shiftKey === false) ||
                         event.which === $.ui.keyCode.ENTER ||
                         (
-                        event.which == $.ui.keyCode.TAB &&
-                        that.tagInput.val() !== ''
+                            event.which == $.ui.keyCode.TAB &&
+                            that.tagInput.val() !== ''
                         ) ||
                         (
-                        event.which == $.ui.keyCode.SPACE &&
-                        that.options.allowSpaces !== true &&
-                        (
-                        $.trim(that.tagInput.val()).replace( /^s*/, '' ).charAt(0) != '"' ||
-                        (
-                        $.trim(that.tagInput.val()).charAt(0) == '"' &&
-                        $.trim(that.tagInput.val()).charAt($.trim(that.tagInput.val()).length - 1) == '"' &&
-                        $.trim(that.tagInput.val()).length - 1 !== 0
-                        )
-                        )
+                            event.which == $.ui.keyCode.SPACE &&
+                            that.options.allowSpaces !== true &&
+                            (
+                                $.trim(that.tagInput.val()).replace( /^s*/, '' ).charAt(0) != '"' ||
+                                (
+                                    $.trim(that.tagInput.val()).charAt(0) == '"' &&
+                                    $.trim(that.tagInput.val()).charAt($.trim(that.tagInput.val()).length - 1) == '"' &&
+                                    $.trim(that.tagInput.val()).length - 1 !== 0
+                                )
+                            )
                         )
                     ) {
                         // Enter submits the form if there's no text in the input.
@@ -452,9 +452,9 @@
             if (!this.options.allowDuplicates && !this._isNew(value)) {
                 var existingTag = this._findTagByLabel(value);
                 if (this._trigger('onTagExists', null, {
-                        existingTag: existingTag,
-                        duringInitialization: duringInitialization
-                    }) !== false) {
+                    existingTag: existingTag,
+                    duringInitialization: duringInitialization
+                }) !== false) {
                     if (this._effectExists('highlight')) {
                         existingTag.effect('highlight');
                     }
@@ -499,10 +499,10 @@
             }
 
             if (this._trigger('beforeTagAdded', null, {
-                    tag: tag,
-                    tagLabel: this.tagLabel(tag),
-                    duringInitialization: duringInitialization
-                }) === false) {
+                tag: tag,
+                tagLabel: this.tagLabel(tag),
+                duringInitialization: duringInitialization
+            }) === false) {
                 return;
             }
 

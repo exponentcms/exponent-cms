@@ -140,6 +140,10 @@ class PEAR
 
     // {{{ constructor
 
+    function __construct($error_class=null) {
+        $this->PEAR($error_class);
+    }
+
     /**
      * Constructor.  Registers this object in
      * $_PEAR_destructor_object_list for destructor emulation if a
@@ -727,7 +731,7 @@ class PEAR_Error
      * @access public
      *
      */
-    function PEAR_Error($message = 'unknown error', $code = null,
+    function __construct($message = 'unknown error', $code = null,
                         $mode = null, $options = null, $userinfo = null)
     {
         if ($mode === null) {

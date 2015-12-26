@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -373,7 +373,8 @@
     {/permissions}
         </div>
     </div>
-    <div class="loadingdiv">{'Loading Order'|gettext}</div>
+    {*<div class="loadingdiv">{'Loading Order'|gettext}</div>*}
+    {loading title='Loading Order'|gettext}
 </div>
 
 {script unique="msgbox" yui3mods="exptabs"}

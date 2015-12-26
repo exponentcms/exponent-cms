@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -119,7 +119,7 @@ class eventController extends expController {
                 $view_params = explode('_',$view);
                 if (!empty($view_params[1])) $viewtype = $view_params[1];
                 if (!empty($view_params[2])) $viewrange = $view_params[2];
-        }
+        }  // end switch $view
 
         switch ($viewtype) {
             case "minical":
@@ -151,8 +151,8 @@ class eventController extends expController {
                     "thismonth"   => $timefirst,
                     "nextmonth"   => $nextmonth,
                 ));
-                break;
-            case "byday":
+                break;  // end switch $viewtype minicalendar
+            case "byday":  //note aggregates events by groups of days
                 // Remember this is the code for weekly view and monthly listview
                 // Test your fixes on both views
                 //   		$startperiod = 0;
@@ -222,7 +222,7 @@ class eventController extends expController {
                             'params'      => $this->params
                         ));
                         break;
-                }
+                }  // end switch $viewrange
 
                 //                $days = array();
                 // added per Ignacio
@@ -262,8 +262,9 @@ class eventController extends expController {
                     'days' => $days,
                     "now"  => $startperiod,
                 ));
-                break;
-            case "monthly":  // build a month array of weeks with an array of days
+                break;  // end switch $viewtype byday
+            case "monthly":  //note this is a simply array of events for the requested month
+                // build a month array of weeks with an array of days
                 //                $monthly = array();
                 //                $counts = array();
                 $info = getdate($time);
@@ -331,8 +332,8 @@ class eventController extends expController {
                     "today"       => expDateTime::startOfDayTimestamp(time()),
                     'params'      => $this->params
                 ));
-                break;
-            case "administration":
+                break;  // end switch $viewtype monthly
+            case "administration":  //note a simple list of all upcoming events, except no external nor registration events
                 // Check perms and return if cant view
                 if (!$user) return;
                 $continue = (expPermissions::check("manage", $this->loc) ||
@@ -367,8 +368,8 @@ class eventController extends expController {
                 assign_to_template(array(
                     'items' => $items,
                 ));
-                break;
-            case "default":
+                break;  // end switch $viewtype administration
+            case "default":  //note a simple list of events based on $viewrange
             default;
                 //                $items = null;
                 //                $dates = null;
@@ -376,7 +377,7 @@ class eventController extends expController {
                 $sort_asc = true; // For the getEventsForDates call
                 //                $moreevents = false;
                 switch ($viewrange) {
-                    case "upcoming":
+                    case "upcoming":  // events in the future
                         if (!empty($this->config['enable_ical']) && !empty($this->config['rss_limit']) && $this->config['rss_limit'] > 0) {
                             $eventlimit = " AND date <= " . ($day + ($this->config['rss_limit'] * 86400));
                         } else {
@@ -387,35 +388,35 @@ class eventController extends expController {
                         $end = null;
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date >= $day");
                         break;
-                    case "past":
+                    case "past":  // events in the past
                         $dates = $ed->find("all", $locsql . " AND date < $day ORDER BY date DESC ");
                         //					$moreevents = count($dates) < $db->countObjects("eventdate",$locsql." AND date < $day");
                         $sort_asc = false;
                         $begin = null;
                         $end = $day;
                         break;
-                    case "today":
+                    case "today":  // events occuring today
                         $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($day) . " AND date <= " . expDateTime::endOfDayTimestamp($day) . ")");
                         $begin = $day;
                         $end = expDateTime::endOfDayTimestamp($day);
                         break;
-                    case "day":
+                    case "day":  // events for a specific day (same as byday day?)
                         $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($time) . " AND date <= " . expDateTime::endOfDayTimestamp($time) . ")");
                         $begin = expDateTime::startOfDayTimestamp($time);
                         $end = expDateTime::endOfDayTimestamp($time);
                         break;
-                    case "next":
+                    case "next":  // future events
                         $dates = array($ed->find("all", $locsql . " AND date >= $time"));
                         $begin = expDateTime::startOfDayTimestamp($time);
                         $end = null;
                         break;
-                    case "month":
+                    case "month": // events for a specific month (same as monthly?)
 //                        $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp(time()) . " AND date <= " . expDateTime::endOfMonthTimestamp(time()) . ")");
                         $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
                         $begin = expDateTime::startOfMonthTimestamp($time);
                         $end = expDateTime::endOfMonthTimestamp($time);
                         break;
-                    case "all":
+                    case "all":  // all events
                     default;
                         $dates = $ed->find("all", $locsql);
                         $begin = null;

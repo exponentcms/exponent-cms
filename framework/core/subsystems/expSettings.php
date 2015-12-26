@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -448,7 +448,7 @@ class expSettings
                     }
                 }
             }
-//            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&#160;&#160;|&#160;&#160;',$sections)));
+//            $form->registerAfter('activate',null,'',new htmlcontrol('<hr size="1" />'.implode('&#160;&#160;|&#160;&#160;')));
             $form->register('submit', '', new buttongroupcontrol(gt('Save'), '', gt('Cancel')));
 
             return $form;

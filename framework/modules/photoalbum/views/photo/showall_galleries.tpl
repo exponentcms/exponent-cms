@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -88,24 +88,3 @@
         </ul>
     {/foreach}
 </div>
-
-{if $config.lightbox}
-{script unique="shadowbox" yui3mods="gallery-lightbox"}
-{literal}
-    EXPONENT.YUI3_CONFIG.modules = {
-       'gallery-lightbox' : {
-           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',
-           requires : ['base','node','anim','selector-css3','lightbox-css']
-       },
-       'lightbox-css': {
-           fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',
-           type: 'css'
-       }
-    }
-
-    YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-        Y.Lightbox.init();
-    });
-{/literal}
-{/script}
-{/if}

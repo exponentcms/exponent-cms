@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -41,8 +41,10 @@
             </p>
         {/if}
         {if $record->title}<{$config.item_level|default:'h2'}>{$record->title}</{$config.item_level|default:'h2'}>{/if}
-        {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
-        {subscribe_link}
+        <div class="item-actions">
+            {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
+            {subscribe_link}
+        </div>
         {$myloc=serialize($__loc)}
         {permissions}
 			<div class="item-actions">

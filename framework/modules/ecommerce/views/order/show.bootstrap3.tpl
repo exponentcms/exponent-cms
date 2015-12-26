@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -514,28 +514,30 @@
                                         {$bt->getPoster()}
                                     </td>
                                     <td>
-                                        {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
-                                            {if $bt->captureEnabled() == true}
-                                                {form action=captureAuthorization}
-                                                    {control type="hidden" name="id" value=$order->id}
-                                                    {control type="text" name="capture_amt" label="Amount to Capture"|gettext value=$order->grand_total}
-                                                    {control type="buttongroup" submit="Capture Transaction"|gettext}
-                                                {/form}
+                                        {if $permissions.manage && $smarty.foreach.foo.first}
+                                            {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
+                                                {if $bt->captureEnabled() == true}
+                                                    {form action=captureAuthorization}
+                                                        {control type="hidden" name="id" value=$order->id}
+                                                        {control type="text" name="capture_amt" label="Amount to Capture"|gettext value=$order->grand_total}
+                                                        {control type="buttongroup" submit="Capture Transaction"|gettext}
+                                                    {/form}
+                                                {/if}
+                                                {if $bt->voidEnabled() == true}
+                                                    {form action=voidAuthorization}
+                                                        {control type="hidden" name="id" value=$order->id}
+                                                        {control type="buttongroup" submit="Void Authorization"|gettext}
+                                                    {/form}
+                                                {/if}
                                             {/if}
-                                            {if $bt->voidEnabled() == true}
-                                                {form action=voidAuthorization}
-                                                    {control type="hidden" name="id" value=$order->id}
-                                                    {control type="buttongroup" submit="Void Authorization"|gettext}
-                                                {/form}
-                                            {/if}
-                                        {/if}
-                                        {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
-                                            {if $billing->calculator != null && $bt->creditEnabled() == true}
-                                                {form action=creditTransaction}
-                                                    {control type="hidden" name="id" value=$order->id}
-                                                    {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
-                                                    {control type="buttongroup" submit="Credit"|gettext}
-                                                {/form}
+                                            {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
+                                                {if $billing->calculator != null && $bt->creditEnabled() == true}
+                                                    {form action=creditTransaction}
+                                                        {control type="hidden" name="id" value=$order->id}
+                                                        {control type="text" name="capture_amt" label="Amount to Refund"|gettext value=$order->grand_total}
+                                                        {control type="buttongroup" submit="Credit"|gettext}
+                                                    {/form}
+                                                {/if}
                                             {/if}
                                         {/if}
                                     </td>

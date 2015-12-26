@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -223,7 +223,8 @@
         {/if}
     </div>
 </div>
-<div class="loadingdiv">{"Loading Cart"|gettext}</div>
+{*<div class="loadingdiv">{"Loading Cart"|gettext}</div>*}
+{loading title="Loading Cart"|gettext}
 
 {script unique="editform" yui3mods="node"}
 {literal}

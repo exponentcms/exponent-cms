@@ -45,25 +45,36 @@
 
 /* drag helper */
 .elfinder-drag-helper {
-	width:60px;
-	height:50px;
+	width:70px;
+	height:60px;
 	padding:0 0 0 25px;
 	z-index:100000;
 }
+.elfinder-drag-helper.html5-native {
+	position: absolute;
+	top: -1000px;
+	left: -1000px;
+}
 
-/* drag helper "plus" icon */
-.elfinder-drag-helper-icon-plus {
+/* drag helper status icon (default no-drop) */
+.elfinder-drag-helper-icon-status {
 	position:absolute;
 	width:16px;
 	height:16px;
-	left:43px;
-	top:55px;
-	background:url('../img/toolbar.png') 0 -544px no-repeat;
-	display:none;
+	left:42px;
+	top:60px;
+	background:url('../img/toolbar.png') 0 -96px no-repeat;
+	display: block;
 }
 
+/* show "up-arrow" icon for move item */
+.elfinder-drag-helper-move .elfinder-drag-helper-icon-status {
+	background-position:0 -720px;
+}
 /* show "plus" icon when ctrl/shift pressed */
-.elfinder-drag-helper-plus .elfinder-drag-helper-icon-plus { display:block; }
+.elfinder-drag-helper-plus .elfinder-drag-helper-icon-status {
+	background-position:0 -544px;
+}
 
 /* files num in drag helper */
 .elfinder-drag-num {
@@ -87,7 +98,8 @@
 .elfinder-drag-helper .elfinder-cwd-icon { margin:0 0 0 -24px; float:left; }
 
 /* transparent overlay >_< */
-.elfinder-overlay { opacity: 0; filter:Alpha(Opacity=0); }
+/*.elfinder-overlay { opacity: 0; filter:Alpha(Opacity=0); }*/
+.elfinder-overlay { position: absolute; }
 
 /* panels under/below cwd (for search field etc) */
 .elfinder .elfinder-panel {
@@ -96,7 +108,8 @@
 	padding:7px 12px;
 }
 
-
-
-
+/* for html5 drag and drop */
+[draggable=true] {
+	-khtml-user-drag: element;
+}
 

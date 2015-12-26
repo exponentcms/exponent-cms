@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -86,7 +86,8 @@
             </div>
 		</div>
 	</div>
-    <div class="loadingdiv">{"Loading"|gettext}</div>
+    {*<div class="loadingdiv">{"Loading"|gettext}</div>*}
+    {loading}
 </div>
 
 {script unique="searchQueryReport" yui3mods="exptabs"}

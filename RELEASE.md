@@ -1,15 +1,15 @@
-#Exponent Content Management System
+# Exponent Content Management System
 
 ----------
 
-Copyright (c) 2004-2015 OIC Group, Inc.
+Copyright (c) 2004-2016 OIC Group, Inc.
 
 Release Notes for Exponent Content Management System
 
 For a complete list of the changes made from release to release, see the [CHANGELOG.md](CHANGELOG.md)
 
-##2.3.5 - September 2015
+## 2.3.6 - December 2015
 
 ----------
 
-### Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
+### Refine 'shipment' interface, plus address issues in v2.3.5

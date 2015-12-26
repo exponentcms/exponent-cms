@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -24,7 +24,6 @@
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
 
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    {*<script src="{$smarty.const.JQUERY_SCRIPT}" type="text/javascript" charset="utf-8"></script>*}
     <!--[if lt IE 9]>
         <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
     <![endif]-->
@@ -33,8 +32,8 @@
     <!--<![endif]-->
     <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
-    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/jquery/css/smoothness/jquery-ui.css" type="text/css" media="screen" title="no title" charset="utf-8">*}
-    <link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">
+    {*<link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">*}
+    <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/dialog.css" type="text/css">
@@ -50,8 +49,8 @@
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">
 
-    {*<link rel="stylesheet" type="text/css" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/elfinder.min.css">*}
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">
+    {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">  *}{* default OSX theme *}
+    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder{$smarty.const.ELFINDER_THEME}/css/theme.css" type="text/css">
 
     <!-- elfinder core -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
@@ -127,12 +126,6 @@
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>
 
-    <!-- elfinder dialog -->
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.dialogelfinder.js"></script>*}
-
-    <!-- elfinder 1.x connector API support -->
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/proxy/elFinderSupportVer1.js"></script>*}
-
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
     <script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>
@@ -141,7 +134,7 @@
 
 <div id="elfinder"></div>
 
-{script unique="picker" jquery=jqueryui}
+{script unique="picker"}
     {literal}
         // Helper function to get parameters from the query string for CKEditor
         function getUrlParam(paramName) {

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -86,7 +86,8 @@
                 {/if}
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Event"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Event"|gettext}</div>*}
+        {loading title="Loading Event"|gettext}
         {control type=buttongroup submit="Save Event"|gettext cancel="Cancel"|gettext}
      {/form}
 </div>

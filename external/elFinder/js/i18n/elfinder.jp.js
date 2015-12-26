@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2015-11-10
+ * @version 2015-11-30
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.jp = {
@@ -151,6 +151,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnMime'   : 'MIMEタイプ', // from v2.1 added 22.5.2015
 			'btnFileName':'ファイル名',  // from v2.1 added 22.5.2015
 			'btnSaveClose': '保存して閉じる', // from v2.1 added 12.6.2015
+			'btnBackup' : 'バックアップ', // fromv2.1 added 28.11.2015
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'フォルダーを開いています',
@@ -178,6 +179,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfreaddir'  : 'ホルダ情報を読み取っています', // from v2.1 added 01.07.2013
 			'ntfurl'      : 'リンクURLを取得しています', // from v2.1 added 11.03.2014
 			'ntfchmod'    : 'ファイル属性を変更しています', // from v2.1 added 20.6.2015
+			'ntfpreupload': 'アップロードファイル名を検証しています', // from v2.1 added 31.11.2015
 
 			/************************************ dates **********************************/
 			'dateUnknown' : '不明',
@@ -315,7 +317,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'pass'                : 'パスワード', // added 18.04.2012
 			'confirmUnmount'      : '$1をアンマウントしますか?',  // from v2.1 added 30.04.2012
 			'dropFilesBrowser': 'ブラウザからファイルをドロップまたは貼り付け', // from v2.1 added 30.05.2012
-			'dropPasteFiles'  : 'ここにファイルをドロップまたは貼り付け', // from v2.1 added 07.04.2014
+			'dropPasteFiles'  : 'ファイル,URLリストをドロップまたは貼り付け', // from v2.1 added 07.04.2014
 			'encoding'        : '文字コード', // from v2.1 added 19.12.2014
 			'locale'          : 'ロケール',   // from v2.1 added 19.12.2014
 			'searchTarget'    : '検索範囲: $1',                // from v2.1 added 22.5.2015

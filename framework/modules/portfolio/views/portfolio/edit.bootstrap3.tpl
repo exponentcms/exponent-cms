@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -56,7 +56,8 @@
                 </div>
             </div>
         </div>
-	    <div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>
+	    {*<div class="loadingdiv">{'Loading Portfolio Item'|gettext}</div>*}
+        {loading title='Loading Portfolio Item'|gettext}
         {control type=buttongroup submit="Save Portfolio Piece"|gettext cancel="Cancel"|gettext}
     {/form}   
 </div>

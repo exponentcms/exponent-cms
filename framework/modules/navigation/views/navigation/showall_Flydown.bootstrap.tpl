@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -60,6 +60,9 @@
         e.stopPropagation()
     })
 
+    /**
+    * Auto-adjust (dynamically) top margins based on navbar type and slingbar display
+    */
     $(document).ready(function(){
         function setTopPadding(admin) {
             if ({/literal}{($user->getsToolbar == 1 && $smarty.const.SLINGBAR_TOP == 1)?1:0}{literal}) {

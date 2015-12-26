@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -48,7 +48,8 @@
                 </div>
             </div>
         </div>
-        <div class="loadingdiv">{'Loading Pages'|gettext}</div>
+        {*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}
+        {loading title='Loading Pages'|gettext}
         {control type=buttongroup submit="Save"|gettext cancel="Cancel"|gettext}
     {/form}
 {script unique="configure" yui3mods="exptabs"}

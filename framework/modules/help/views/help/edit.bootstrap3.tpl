@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -64,7 +64,8 @@
             </div>
             </div>
         </div>
-	    <div class="loadingdiv">{"Loading Help Item"|gettext}</div>
+	    {*<div class="loadingdiv">{"Loading Help Item"|gettext}</div>*}
+        {loading title="Loading Help Item"|gettext}
         {control type=buttongroup submit="Save Help Doc"|gettext cancel="Cancel"|gettext}
     {/form}     
 </div>

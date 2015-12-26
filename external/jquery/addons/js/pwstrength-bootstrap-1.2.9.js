@@ -633,7 +633,7 @@ var methods = {};
             $el.data("pwstrength-bootstrap", localOptions);
             $el.on("keyup", onKeyUp);
             $el.on("change", onKeyUp);
-            $el.on("onpaste", onKeyUp);
+            $el.on("paste", onKeyUp);
 
             ui.initUI(localOptions, $el);
             if ($.trim($el.val())) { // Not empty, calculate the strength

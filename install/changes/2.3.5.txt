@@ -1,5 +1,5 @@
 version 2.3.5
-Finish removing YUI3 code/widgets from Bootstrap3 views, plus address any issues in v2.3.4
+Finish removing YUI3 code/widgets from Bootstrap3 views, plus address issues in v2.3.4
   - adds bootstrap 3 variation to event & news announcement view using 'panels'
   - enhances elFinder/TinyMCE/CKEditor integration; CKEditor now allows paste/drop images
   - adds Facebook og: meta tag support

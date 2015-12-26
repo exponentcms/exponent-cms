@@ -1,5 +1,28 @@
 ### Version History
 
+
+*2.19.0 (2015/12/18)*
+
+* No longer clone media DOM element on iOS (https://github.com/johndyer/mediaelement/pull/1661)
+* Expose fragment playing event in HLSMediaElement (https://github.com/johndyer/mediaelement/pull/1655)
+* Flash: Only log to console if debug is true (https://github.com/johndyer/mediaelement/pull/1651/files)
+* Detect svgAsImg support to fix old FF (https://github.com/johndyer/mediaelement/pull/1649) @axnd
+* Correcting swf compilation instruction location (https://github.com/johndyer/mediaelement/pull/1618/files) @che-effe
+* Brazilian Portuguese translation (https://github.com/johndyer/mediaelement/pull/1648/files) @odnamrataizem
+* Hide controls only when available (https://github.com/johndyer/mediaelement/pull/1644/files) @nseibert  
+* removed duplicate calls to hide- and showControls() (https://github.com/johndyer/mediaelement/pull/1616/files) @schrolli  
+
+*2.18.2 (2015/10/09)*
+
+* event fix for players inside of iframes (https://github.com/johndyer/mediaelement/pull/1597) @meirish
+* Fixed blinking controls issue on Firefox (https://github.com/johndyer/mediaelement/pull/1570) @krrg
+* Better handling of default options (https://github.com/johndyer/mediaelement/pull/1553/files) @ManojKumarDhankhar 
+* Fixes a11y issue with keyboard only users (https://github.com/johndyer/mediaelement/pull/1572) @krrg @neilgupta
+* Flash code cleanup and bug fixes (https://github.com/johndyer/mediaelement/pull/1575) @sdiemer (also @pawelsamselarkena)
+* Keep track of playback speed when the source changes (https://github.com/johndyer/mediaelement/pull/1580) @neilgupta
+* Maintain backward compatibility in secondsToTime() code method signature. (https://github.com/johndyer/mediaelement/pull/1591/files) @bradyvercher
+* Add Danish locale (https://github.com/johndyer/mediaelement/pull/1607) @greew
+
 *2.18.1 (2015/08/11)*
 
 * More accurate progress bar (https://github.com/johndyer/mediaelement/pull/1557) @khalilravanna 

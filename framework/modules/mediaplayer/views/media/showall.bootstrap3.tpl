@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -119,7 +119,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         page_parm = '&page=';
     }
     var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:{/literal}{$params.page}{literal}});
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
     var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     src = '{/literal}{$__loc->src}{literal}';
 	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=media&action=showall&view=medialist&ajax_action=1&src="+src;
@@ -155,7 +155,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
     medialist.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, 'Title', orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Media'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         var cfg = {
               method: "POST",
 		      headers: { 'X-Transaction': 'Load Mediaitems'},
@@ -167,7 +167,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                   }
               }
         var request = Y.io(sUrl, cfg);
-        medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
+//        medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
+          medialist.setContent(Y.Node.create('{/literal}{loading title="Loading Media"|gettext}{literal}'));
     }, 'a.pager');
 
     // Watches the browser history for changes
@@ -177,7 +178,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-            medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
+//            medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
+              medialist.setContent(Y.Node.create('{/literal}{loading title="Loading Media"|gettext}{literal}'));
         }
     });
 });

@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -158,8 +158,6 @@
 {script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
 {literal}
     jQuery(document).ready(function($) {
-//        $('body').css('margin-top', $('#admin-toolbar').height()+10);
-
         var adminerwindow = function (){
             var win = window.open('{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/adminer/admin.php?server={/literal}{$smarty.const.DB_HOST}{literal}&username={/literal}{$smarty.const.DB_USER}{literal}&db={/literal}{$smarty.const.DB_NAME}{literal}');
             if (!win) { err(); }
@@ -235,6 +233,9 @@
         }
     });
 
+    /**
+    * Auto-adjust (dynamically) top margins based on navbar type and slingbar display
+    */
     $(document).ready(function(){
         if ({/literal}{$top}{literal}) {  // fixed top slingbar menu
             if ({/literal}{($smarty.const.MENU_LOCATION == 'fixed-top') + 0}{literal}) {  // fixed top main menu

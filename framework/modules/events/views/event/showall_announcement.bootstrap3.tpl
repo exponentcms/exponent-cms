@@ -1,5 +1,5 @@
 {*
- * Copyright (c) 2004-2015 OIC Group, Inc.
+ * Copyright (c) 2004-2016 OIC Group, Inc.
  *
  * This file is part of Exponent
  *
@@ -12,6 +12,8 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
+
+{uniqueid prepend="cal" assign="name"}
 
 {css unique="announcement" link="`$asset_path`css/announcement.css"}
 
@@ -106,6 +108,11 @@
                 <div class="bodycopy">
                     {$item->body}
                 </div>
+                {if !empty($feedback_form)}
+                    {toggle unique=$name|cat:$item->id collapsed=1 title='Click to open'|gettext|cat:' '|cat:$feedback_form}
+                        {include file="email/$feedback_form.tpl"}
+                    {/toggle}
+                {/if}
                 {clear}
             </div>
         </div>

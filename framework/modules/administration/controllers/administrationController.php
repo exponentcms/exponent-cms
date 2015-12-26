@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -1196,7 +1196,19 @@ class administrationController extends expController {
         	}
         }
         uasort($themes,'strnatcmp');
-        
+
+        // Available elFinder Themes
+        $elf_themes = array(''=>gt('Default/OSX'));
+        if (is_readable(BASE.'external/elFinder/themes')) {
+        	$theme_dh = opendir(BASE.'external/elFinder/themes');
+        	while (($theme_file = readdir($theme_dh)) !== false) {
+        		if ($theme_file != '..' && is_readable(BASE.'external/elFinder/themes/'.$theme_file.'/css/theme.css')) {
+                    $elf_themes['/themes/' . $theme_file] = ucwords($theme_file);
+        		}
+        	}
+        }
+        uasort($elf_themes,'strnatcmp');
+
         // Available Languages
 	    $langs = expLang::langList();
 //        ksort($langs);
@@ -1289,6 +1301,7 @@ class administrationController extends expController {
             'as_types'=>$as_types,
             'as_themes'=>$as_themes,
             'themes'=>$themes,
+            'elf_themes'=>$elf_themes,
             'langs'=>$langs,
             'protocol'=>$protocol,
             'currency'=>$currency,

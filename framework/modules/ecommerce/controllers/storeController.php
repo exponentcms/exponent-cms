@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -2579,7 +2579,7 @@ class storeController extends expController {
         global $db;
 
         $index = $this->params['index'];
-        $title = $db->escapeString($this->params['product_title']);
+        $title = expString::escape($this->params['product_title']);
         $product = $db->selectObject("product", "title='{$title}'");
 
         if (!empty($product->id)) {

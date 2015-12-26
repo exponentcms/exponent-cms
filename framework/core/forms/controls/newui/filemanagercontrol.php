@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -108,8 +108,8 @@ class filemanagercontrol extends formcontrol {
                 if ($('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
-                    url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload", "ajax_action"=> 1, "json"=> 1)) . "',
-                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1},
+                    url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload")) . "',
+                    data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',

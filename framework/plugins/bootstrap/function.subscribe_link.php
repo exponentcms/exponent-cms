@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -43,9 +43,10 @@ function smarty_function_subscribe_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $sub = isset($params['show']) ? $params['show'] : null;
     }
+if (!PRINTER_FRIENDLY && !EXPORT_AS_PDF) {
     if ($sub && !empty($user)) {
         $cloc = $smarty->getTemplateVars('__loc');
-        $ealert = $db->selectObject('expeAlerts',"module='".$cloc->mod."' AND src='".$cloc->src."'");
+        $ealert = $db->selectObject('expeAlerts', "module='" . $cloc->mod . "' AND src='" . $cloc->src . "'");
         if (!empty($ealert)) {
             // initialize a couple of variables
             $text = isset($params['text']) ? $params['text'] : gt('Subscribe to Content Updates');
@@ -53,18 +54,24 @@ function smarty_function_subscribe_link($params,&$smarty) {
             $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle('green');
             $iclass = 'check-sign';
             $action = 'subscribe';
-            $subscribed = $db->selectObject('user_subscriptions','user_id='.$user->id.' AND expeAlerts_id='.$ealert->id);
+            $subscribed = $db->selectObject(
+                'user_subscriptions',
+                'user_id=' . $user->id . ' AND expeAlerts_id=' . $ealert->id
+            );
             if (!empty($subscribed)) {
-                $text = gt('Un-').$text;
+                $text = gt('Un-') . $text;
                 $class = isset($params['class']) ? $params['class'] : expTheme::buttonStyle('orange');
                 $iclass = 'minus-sign-alt';
-                $action = 'un'.$action;
+                $action = 'un' . $action;
             }
             // spit out the link
-            $link = '<a class="'.$class.'" href="'.$router->makelink(array('controller'=>'ealert', 'action'=>$action, 'id'=>$ealert->id)).'"><i class="icon-'.$iclass.' '.expTheme::iconSize().'"></i> '.$text.'</a>';
-            echo $prepend,$link;
+            $link = '<a class="' . $class . '" href="' . $router->makelink(
+                    array('controller' => 'ealert', 'action' => $action, 'id' => $ealert->id)
+                ) . '"><i class="icon-' . $iclass . ' ' . expTheme::iconSize() . '"></i> ' . $text . '</a>';
+            echo $prepend, $link;
         }
     }
+}
 }
 
 ?>

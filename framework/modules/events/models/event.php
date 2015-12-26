@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -28,6 +28,108 @@ class event extends expRecord {
         'content_expFiles'=>'expFile',
         'content_expTags'=>'expTag'
     );
+
+    /**
+     * Events have special circumstances since they are based on dates
+     *   'upcoming', 'month', 'week', 'day', etc...
+     *
+     * @param string $range
+     * @param null $where
+     * @param null $order
+     * @param null $limit
+     * @param int $limitstart
+     * @param bool $get_assoc
+     * @param bool $get_attached
+     * @param array $except
+     * @param bool $cascade_except
+     * @return array
+     */
+    public function find($range = 'all', $where = null, $order = null, $limit = null, $limitstart = 0, $get_assoc = true, $get_attached = true, $except = array(), $cascade_except = false)
+    {
+        if (in_array($range, array('all', 'first', 'bytitle', 'count', 'in', 'bytag', 'bycat'))) {
+            return parent::find($range, $where, $order, $limit, $limitstart, $get_assoc, $get_attached, $except, $cascade_except);
+        } else {  // 'upcoming', 'month', 'week', 'day', etc...
+            //note $order is boolean for 'featured'
+            //note $limit is number of days, NOT number of records
+            //note $limitstart is a unixtimestamp in this instance
+            $ed = new eventdate();
+            $day = expDateTime::startOfDayTimestamp(time());
+            $sort_asc = true; // For the getEventsForDates call
+            if (strcasecmp($range, 'upcoming') == 0) {
+                if (!empty($limit)) {
+                    $eventlimit = " AND date <= " . ($day + ($limit * 86400));
+                } else {
+                    $eventlimit = "";
+                }
+                $dates = $ed->find("all", $where . " AND date >= " . $day . $eventlimit . " ORDER BY date ASC ");
+//                $begin = $day;
+//                $end = null;
+                $items = $this->getEventsForDates($dates, $sort_asc, $order ? true : false, true);
+//                $extitems = $this->getExternalEvents($this->loc, $begin, $end);
+                // we need to crunch these down
+//                $extitem = array();
+//                foreach ($extitems as $days) {
+//                    foreach ($days as $event) {
+//                        if (empty($event->eventdate->date) || ($viewrange == 'upcoming' && $event->eventdate->date < time())) break;
+//                        if (empty($event->eventstart)) $event->eventstart = $event->eventdate->date;
+//                        $extitem[] = $event;
+//                    }
+//                }
+//                $items = array_merge($items, $extitem);
+//                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
+                // we need to crunch these down
+//                $regitem = array();
+//                if (!empty($regitems)) foreach ($regitems as $days) {
+//                    foreach ($days as $value) {
+//                        $regitem[] = $value;
+//                    }
+//                }
+//                $items = array_merge($items, $regitem);
+                $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
+                return $items;
+            }
+        }
+    }
+
+    function getEventsForDates($edates, $sort_asc = true, $featuredonly = false, $condense = false) {
+        global $eventid;
+
+        $events = array();
+        $featuresql = "";
+        if ($featuredonly)
+            $featuresql = " AND is_featured=1";
+        foreach ($edates as $edate) {
+            $evs = $this->find('all', "id=" . $edate->event_id . $featuresql);
+            foreach ($evs as $key=>$event) {
+                if ($condense) {
+                    $eventid = $event->id;
+                    $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
+                    if (!empty($multiday_event)) {
+                        unset($evs[$key]);
+                        continue;
+                    }
+                }
+                $evs[$key]->eventstart += $edate->date;
+                $evs[$key]->eventend += $edate->date;
+                $evs[$key]->date_id = $edate->id;
+                if (!empty($event->expCat)) {
+                    $catcolor = empty($event->expCat[0]->color) ? null : trim($event->expCat[0]->color);
+//                    if (substr($catcolor,0,1)=='#') $catcolor = '" style="color:'.$catcolor.';';
+                    $evs[$key]->color = $catcolor;
+                }
+            }
+            if (count($events) < 500) {  // magic number to not crash loop?
+                $events = array_merge($events, $evs);
+            } else {
+//                $evs[$key]->title = gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!');
+//                $events = array_merge($events, $evs);
+                flash('notice',gt('Too many events to list').', '.(count($edates)-count($events)).' '.gt('not displayed!'));
+                break; // keep from breaking system by too much data
+            }
+        }
+        $events = expSorter::sort(array('array' => $events, 'sortby' => 'eventstart', 'order' => $sort_asc ? 'ASC' : 'DESC'));
+        return $events;
+    }
 
     public function update($params = array()) {
         $params['eventstart'] = datetimecontrol::parseData('eventstart',$params);

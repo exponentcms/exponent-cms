@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -145,7 +145,7 @@ class expRecord {
     }
 
     /**
-     * find an item
+     * find an item or items
      *
      * @param string $range
      * @param null   $where

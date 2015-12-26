@@ -1,6 +1,6 @@
 ExponentCMS xmlrpc Weblog access implementation
 
-As shipped this feature is turned OFF!  There are NO guarantees this may not open up security vulnerabilites on your site!  Please use with caution!
+As shipped this feature is turned OFF!  There are NO guarantees this may not open up security vulnerabilities on your site!  Please use with caution!
 To activate, go to the Site Configuration, Security tab and turn on 'Activate Remote Blog Editing'
 
 After activation, you should be able to edit your blog module using a desktop blog editor like MS Word, etc...be advised many are quite finicky.
@@ -17,3 +17,4 @@ If all goes well (and sometimes it doesn't), you'll be given a list of all the b
 Currently this action:
 - Allows you to create new and edit existing blog posts including those with graphics.  You can also set draft or publish status
 - Allows access to use or create categories if turned on within that blog module
+- Allows access to use or create tags within that blog module

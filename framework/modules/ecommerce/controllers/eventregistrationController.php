@@ -2,7 +2,7 @@
 
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -820,7 +820,7 @@ class eventregistrationController extends expController {
                 $def = call_user_func(array($control_type, "getFieldDefinition"));
                 if ($def != null) {
                     $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params['registrant'], true));
-                    $value = stripslashes($db->escapeString($emailValue));
+                    $value = stripslashes(expString::escape($emailValue));
                     $varname = $c->name;
                     $registrant->$varname = $value;
                 }

@@ -1,8 +1,20 @@
 version 2.3.6
-Refine 'shipment' interface, plus address any issues in v2.3.5
+Refine 'shipment' interface, plus address issues in v2.3.5
+  * !!! adds addditional security checking for XSS vulnerabilities - CVE-2015-8667
+  * !!! adds support for PHP v7.x
+    - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
+  * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
+  - adds new 'loading' animation (font icon) for boostrap/bootstrap3
+  - cleans up some bootstrap3 views, returns option of displaying extra-small buttons in sample theme
   - adds new setting to bootstrap/bootstrap3 themes to limit menu item depth in navbars
   - adds new setting to bootstrap3 theme to center main navbar (in addition to left & right alignment)
-  - includes all fixes from v2.3.5 patches
+  - adds new optional paypalExpress 'in-context' checkout experience
+  - adds two optional elFinder themes, also cleans up default theme
+  - better EAAS error and event record support (events now sent by date instead of by entry sequence)
+  - much better (optional) ajax paging support
+  - much better job of returning to previous pages
+  - adds new optional upgrade script to quickly clean up files database (adds new files, removes missing files)
+  - includes all fixes from v2.3.5 patches (#1 & #2)
 Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation

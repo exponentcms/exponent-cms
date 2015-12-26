@@ -1,7 +1,7 @@
 <?php
 ##################################################
 #
-# Copyright (c) 2004-2015 OIC Group, Inc.
+# Copyright (c) 2004-2016 OIC Group, Inc.
 #
 # This file is part of Exponent
 #
@@ -607,12 +607,16 @@ abstract class database {
 	}
 
 	/**
+	 * Select a single object by sql
+	 *
 	 * @param  $sql
 	 * @return null|void
 	 */
 	abstract function selectObjectBySql($sql);
 
 	/**
+	 * Select a series of objects by sql
+	 *
 	 * @param  $sql
 	 * @return array
 	 */
@@ -1105,7 +1109,7 @@ abstract class database {
 	abstract function selectArray($table, $where = null, $orderby = null, $is_revisioned=false, $needs_approval=false);
 
     /**
-     * Select a records from the database
+	 * Instantiate objects from selected records from the database
      *
      * @param string $table The name of the table/object to look at
      * @param string $where Criteria used to narrow the result set.  If this
@@ -1126,6 +1130,8 @@ abstract class database {
 	abstract function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false, $order=null, $limitsql=null, $is_revisioned=false, $needs_approval=false);
 
 	/**
+	 * Instantiate objects from selected records from the database
+	 *
 	* @param string $sql The sql statement to run on the model/classname
 	* @param string $classname Can be $this->baseclassname
 	* Returns an array of fields

@@ -41,8 +41,9 @@
 }
 
 .creditcard-form #continue-checkoutSubmit,
-.creditcard-form #continue-checkout {
-	margin: 10px 0 10px 140px;
+.creditcard-form #continue-checkout,
+.creditcard-form #paypalexpressinc {
+	margin: 10px 0 10px 40px;
 }
 
 
