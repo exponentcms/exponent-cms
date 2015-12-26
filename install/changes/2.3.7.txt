@@ -1,7 +1,0 @@
-version 2.3.7
-Refine 'shipment' interface, plus address issues in v2.3.6
-  - includes all fixes from v2.3.6 patches
-Known Issues
-  - eCommerce purchase-order functionality has not been tested/may not be complete
-  - Item re-ranking (ddrerank) doesn't account for aggregation
-  - LDAP support may not work in all LDAP server scenarios due to limited testing
