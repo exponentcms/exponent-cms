@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class texteditorcontrol extends formcontrol {
 
+	var $placeholder = "";
     var $rows = 5;
 	var $cols = 38;
     var $maxlength = "";
@@ -54,6 +55,7 @@ class texteditorcontrol extends formcontrol {
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
 		if ($this->accesskey != "") $html .= " accesskey=\"" . $this->accesskey . "\"";
+		$html .= $this->placeholder ? " placeholder=\"" . $this->placeholder . "\"" : "";
 		if (!empty($this->class)) $html .= " class=\"" . $this->class . "\"";
 		if ($this->tabindex >= 0) $html .= " tabindex=\"" . $this->tabindex . "\"";
 		if ($this->maxchars != 0) {
@@ -80,6 +82,7 @@ class texteditorcontrol extends formcontrol {
 			$object->caption = "";
             $object->description = "";
 			$object->default = "";
+			$object->placeholder = "";
 			$object->rows = 5;
 			$object->cols = 38;
 			$object->maxchars = 0;
@@ -91,6 +94,7 @@ class texteditorcontrol extends formcontrol {
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("description",gt('Control Description'), new textcontrol($object->description));
 		$form->register("default",gt('Default value'),  new texteditorcontrol($object->default));
+		$form->register("placeholder",gt('Placeholder'), new textcontrol($object->placeholder));
 		$form->register("rows",gt('Rows'), new textcontrol($object->rows,4,false,3,"integer"));
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
@@ -111,6 +115,7 @@ class texteditorcontrol extends formcontrol {
 		$object->caption = $values['caption'];
         $object->description = $values['description'];
         if (isset($values['default'])) $object->default = $values['default'];
+		if (isset($values['placeholder'])) $object->placeholder = $values['placeholder'];
         if (isset($values['rows'])) $object->rows = intval($values['rows']);
         if (isset($values['cols'])) $object->cols = intval($values['cols']);
         if (isset($values['maxchars'])) $object->maxchars = intval($values['maxchars']);
