@@ -228,6 +228,38 @@ class mysqli_database extends database {
                 $sql = substr($sql, 0, -1);
                 @mysqli_query($this->connection, $sql);
             }
+
+            // alter any existing columns here
+            $diff_c = @expCore::array_diff_assoc_recursive($newdatadef, $dd);
+            $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
+            $changed = false;
+            if (is_array($diff_c)) {
+                foreach ($diff_c as $name => $def) {
+                    if (!array_key_exists($name, $diff) && (isset($def[DB_FIELD_TYPE]) || isset($def[DB_FIELD_LEN]) || isset($def[DB_DEFAULT]) || isset($def[DB_INCREMENT]))) {  // wasn't a new column
+                        if ($dd[$name][DB_FIELD_TYPE] == DB_DEF_STRING) {
+                            //check for actual lengths vs. exp placeholder lengths
+                            $newlen = $newdatadef[$name][DB_FIELD_LEN];
+                            $len = $dd[$name][DB_FIELD_LEN];
+                            if ($len >= 16777216 && $newlen >= 16777216) {
+                                continue;
+                            }
+                            if ($len >= 65536 && $newlen >= 65536) {
+                                continue;
+                            }
+                            if ($len >= 256 && $newlen >= 256) {
+                                continue;
+                            }
+                        }
+                        $changed = true;
+                        $sql .= ' MODIFY ' . $this->fieldSQL($name,$newdatadef[$name]) . ",";
+                    }
+                }
+            }
+            if ($changed) {
+                $modified = true;
+                $sql = substr($sql, 0, -1);
+                @mysqli_query($this->connection, $sql);
+            }
         }
 
         //Add any new indexes & keys to the table
@@ -1025,6 +1057,14 @@ class mysqli_database extends database {
             if ($field[DB_FIELD_TYPE] == DB_DEF_STRING) {
                 $field[DB_FIELD_LEN] = $this->getDDStringLen($fieldObj);
             }
+            //additional field attributes
+            $default = $this->getDDDefault($fieldObj);
+            if ($default != null)
+                $field[DB_DEFAULT] = $default;
+            $field[DB_INCREMENT] = $this->getDDAutoIncrement($fieldObj);
+            $key = $this->getDDKey($fieldObj);
+            if ($key)
+                $field[$key] = true;
 
             $dd[$fieldObj->Field] = $field;
         }

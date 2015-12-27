@@ -1028,6 +1028,63 @@ abstract class database {
 	}
 
 	/**
+	* This is an internal function for use only within the database class
+	* @internal Internal
+	* @param  $fieldObj
+	* @return int|mixed
+	*/
+	function getDDKey($fieldObj) {
+	   $key = strtolower($fieldObj->Key);
+	   if ($key == "pri")
+	       return DB_PRIMARY;
+	   else if ($key == "uni") {
+	       return DB_UNIQUE;
+	   } else {
+           return false;
+       }
+	}
+
+	/**
+	* This is an internal function for use only within the database class
+	* @internal Internal
+	* @param  $fieldObj
+	* @return int|mixed
+	*/
+	function getDDAutoIncrement($fieldObj) {
+	   $auto = strtolower($fieldObj->Extra);
+	   if ($auto == "auto_increment") {
+	       return true;
+	   } else {
+           return false;
+       }
+	}
+
+	/**
+	* This is an internal function for use only within the database class
+	* @internal Internal
+	* @param  $fieldObj
+	* @return int|mixed
+	*/
+	function getDDIsNull($fieldObj) {
+	   $null = strtolower($fieldObj->Null);
+	   if ($null == "yes") {
+	       return true;
+	   } else {
+           return false;
+       }
+	}
+
+	/**
+	* This is an internal function for use only within the database class
+	* @internal Internal
+	* @param  $fieldObj
+	* @return int|mixed
+	*/
+	function getDDDefault($fieldObj) {
+		return strtolower($fieldObj->Default);
+	}
+
+	/**
 	* Returns an error message from the database server.  This is intended to be
 	* used by the implementers of the database wrapper, so that certain
 	* cryptic error messages can be reworded.
