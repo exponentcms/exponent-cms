@@ -8,6 +8,22 @@
 
 @import url('//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700');
 
+.text-warning        { color: @warningBackground; }
+a.text-warning:hover,
+a.text-warning:focus { color: darken(@warningBackground, 10%); }
+
+.text-error          { color: @errorBackground; }
+a.text-error:hover,
+a.text-error:focus   { color: darken(@errorBackground, 10%); }
+
+.text-info           { color: @infoBackground; }
+a.text-info:hover,
+a.text-info:focus    { color: darken(@infoBackground, 10%); }
+
+.text-success        { color: @successBackground; }
+a.text-success:hover,
+a.text-success:focus { color: darken(@successBackground, 10%); }
+
 // SCAFFOLDING
 // -----------------------------------------------------
 
@@ -195,6 +211,11 @@ div.subnav {
 // BUTTONS
 // -----------------------------------------------------
 
+[class^="icon-"],
+[class*=" icon-"] {
+	margin-top: 4px;
+}
+
 // TABLES
 // -----------------------------------------------------
 
@@ -241,6 +262,11 @@ div.subnav {
 		color: @white;
 		font-weight: bold;
 		text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	}
+
+	a {
+		color: @white;
+		text-decoration: underline;
 	}
 }
 
