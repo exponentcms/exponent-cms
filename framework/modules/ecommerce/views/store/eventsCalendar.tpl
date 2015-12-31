@@ -69,7 +69,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
-    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
+    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{$params.time = ''}{makeLink($params)}{literal}';
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Month'},
