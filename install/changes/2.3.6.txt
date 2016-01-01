@@ -1,6 +1,6 @@
 version 2.3.6
 Refine 'shipment' interface, plus address issues in v2.3.5
-  * !!! adds addditional security checking for XSS vulnerabilities - CVE-2015-8667
+  * !!! adds additional security checking for XSS vulnerabilities - CVE-2015-8667
   * !!! adds support for PHP v7.x
     - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
   * !!! regression fix ALL reCaptcha responses always fail since v2.3.3

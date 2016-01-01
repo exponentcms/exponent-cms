@@ -15,7 +15,7 @@ Version 2.3.7
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
   - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID #2015-8684
   - regression fix enhanced password hash strength would break all future logins due to stored hash field not being long enough (since v2.3.5)
-    -- only occured when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
+    -- only occurred when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
   - regression fix ajax paging would add 'time' parameter twice to calendar urls
   - regression fix ajax paging would add google analytics params to the urls
 ### Known Issues
@@ -26,7 +26,7 @@ Version 2.3.7
 Version 2.3.6
 -------------
 ### Refine 'shipment' interface, plus address issues in v2.3.5
-  * !!! adds addditional security checking for XSS vulnerabilities - CVE-2015-8667
+  * !!! adds additional security checking for XSS vulnerabilities - CVE-2015-8667
   * !!! adds support for PHP v7.x
     - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
   * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
