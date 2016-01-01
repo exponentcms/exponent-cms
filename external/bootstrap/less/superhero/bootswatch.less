@@ -547,25 +547,35 @@ label {
 // ALERTS, LABELS, BADGES
 // --------------------------------------------------
 
-.label {
+.label,
+.badge {
 	background-color: @blue;
   	color: @textColor;
 }
 
-.label-important {
+.label-important,
+.badge-important {
 	background-color: @errorText;
 }
 
-.label-warning {
+.label-warning,
+.badge-warning {
 	background-color: @orange;
 }
 
-.label-success {
+.label-success,
+.badge-success {
 	background-color: @successText;
 }
 
-.label-info {
+.label-info,
+.badge-info {
 	background-color: @infoText;
+}
+
+.label-inverse,
+.badge-inverse {
+	background-color: @gray;
 }
 
 .alert {
@@ -573,10 +583,6 @@ label {
   border: none;
   color: @textColor;
   text-shadow: none;
-
-  a {
-  	color: lighten(@orange, 12%);
-  }
 }
 
 .alert .alert-heading {
@@ -584,17 +590,18 @@ label {
 }
 
 .alert-success {
-  background-color: @successText;
+	background-color: @successText;
 }
 
 .alert-danger,
 .alert-error {
-  background-color: @errorText;
+	background-color: @errorText;
 }
 
 .alert-info {
-  background-color: @infoText;
+	background-color: @infoText;
 }
+
 
 // MISC
 // --------------------------------------------------

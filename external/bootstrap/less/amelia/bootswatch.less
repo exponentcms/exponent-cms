@@ -39,6 +39,22 @@ blockquote {
 	color: rgba(255, 255, 255, 0.6);
 }
 
+.text-warning {
+	color: lighten(@yellow, 30%);
+}
+
+.text-error {
+	color: lighten(@orange, 30%);
+}
+
+.text-success {
+	color: lighten(@green, 30%);
+}
+
+.text-info {
+	color: lighten(@blue, 30%);
+}
+
 // SCAFFOLDING
 // -----------------------------------------------------
 
@@ -516,13 +532,17 @@ legend {
 }
 
 legend, label, .help-block, .input-file {
-	border: 0px solid transparent;
+	border: none;
 	color: inherit;
 }
 
 input, textarea, .uneditable-input {
-	border: 0px solid transparent;
+	border: none;
 	padding: 10px;
+}
+
+.dropdown input {
+	border: 1px solid @dropdownBorder;
 }
 
 .uneditable-input {
@@ -530,7 +550,7 @@ input, textarea, .uneditable-input {
 }
 
 select {
-	border: 0px solid transparent;
+	border: none;
 }
 
 button {
@@ -704,7 +724,7 @@ input, textarea, .search-query, .uneditable-input,
 			background-color: @orange;
 		}
 
-		&-error,&-danger {
+		&-error {
 			background-color: @red;
 		}
 	}
@@ -743,33 +763,13 @@ input, textarea, .search-query, .uneditable-input,
 
 	&-header {
 		background-color: @navbarBackground;
+		border-bottom: none;
 		color: @white;
 	}
 
 	&-body {
 		
-		color: @grayDark;
-
-		h1, h2, h3, h4, h5, h6,
-		legend {
-			color: @red;
-		}
-
-		label,
-		.input-file {
-			color: @grayDark;
-		}
-
-		.help-block,
-		.help-inline {
-			color: @grayLight;
-		}
-
-		textarea,
-		input,
-		.uneditable-input {
-			border: 1px solid @grayLight;
-		}
+		background-color: @wellBackground;
 	}
 }
 

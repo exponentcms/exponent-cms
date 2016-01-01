@@ -51,10 +51,8 @@ blockquote {
 .text-warning        { color: @orange; }
 a.text-warning:hover { color: darken(@orange, 10%); }
 
-.text-error,
-.text-danger         { color: @red; }
-a.text-error:hover,
-a.text-danger:hover  { color: darken(@red, 10%); }
+.text-error          { color: @red; }
+a.text-error:hover   { color: darken(@red, 10%); }
 
 .text-info           { color: @purple; }
 a.text-info:hover    { color: darken(@purple, 10%); }
@@ -364,15 +362,10 @@ div.subnav {
 
 .table {
 
-	tbody tr.success td {
-		color: @white;
-	}
-
-	tbody tr.error td {
-		color: @white;
-	}
-
-	tbody tr.info td {
+	tbody tr.success td,
+	tbody tr.error td,
+	tbody tr.info td,
+	tbody tr.warning td {
 		color: @white;
 	}
 
@@ -432,6 +425,22 @@ input[type="search"], input[type="tel"], input[type="color"] {
 		select,
 		textarea {
 			border-color: @red;
+			color: @grayDarker;
+		}
+	}
+
+	&.info {
+
+		.control-label,
+		.help-block,
+		.help-inline {
+			color: @purple;
+		}
+
+		input,
+		select,
+		textarea {
+			border-color: @purple;
 			color: @grayDarker;
 		}
 	}

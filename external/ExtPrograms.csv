@@ -19,16 +19,16 @@ class.upload,0.32,https://github.com/verot/class.upload.php,0.33dev,placed in Pi
 iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
 scssphp,0.3.1exp,https://github.com/leafo/scssphp,0.6.2,added Server\cachedCompile()
 lessphp,0.5.0,https://github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
-less.php,1.7.0.9exp,https://github.com/oyejorge/less.php,1.7.0.9,tweaked wrapper to set/get options
+less.php,1.7.0.10,https://github.com/oyejorge/less.php,1.7.0.10,
 iLess,2.1.0,https://github.com/mishal/iless,2.1.0,optional
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.6,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.6,bootswatch.com/,3.3.6,
+Bootswatch,3.3.6+1,bootswatch.com/,3.3.6+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.3,www.adminer.org,4.2.3,
-SimpleAjaxUploader,2.2.4,https://github.com/LPology/Simple-Ajax-Uploader,2.2.4,also converted to yui module 1.1.0
+SimpleAjaxUploader,2.4.0,https://github.com/LPology/Simple-Ajax-Uploader,2.4.0,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
 MediaElement.js,2.19.0,mediaelementjs.com/,2.19.0,
 Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
@@ -36,7 +36,7 @@ Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-dompdf,0.6.1exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
+dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 CKEditor,4.5.6,ckeditor.com,4.5.6,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.3.2,tinymce.com,4.3.2,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"

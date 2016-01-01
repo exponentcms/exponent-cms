@@ -46,12 +46,23 @@ class expRouter {
         self::getRouterMaps();
     }
 
-	/**
+    /**
+     * remove trailing slash
+     *
+     * @param $fulllink
+     *
+     * @return string
+     */
+    public static function cleanLink($fulllink)
+    {           
+        if(substr($fulllink, -1) == '/') $fulllink = substr($fulllink, 0, -1);  
+        return $fulllink;                                   
+    }
+    
+    /**
 	 * Will build url to a module/page/etc (determined by what is passed to the $params array).
 	 *
-	 * @param $fulllink
-	 *
-	 * @internal param array $params The params that are passed will determine what link is make
+	 * @param array $params The params that are passed will determine what link is make
 	 *               section
 	 *               action
 	 *               sef_name
@@ -59,21 +70,14 @@ class expRouter {
 	 *               controller
 	 *               action
 	 *
-	 * @internal param bool $force_old_school Old School as in not SEF.
+	 * @param bool $force_old_school Old School as in not SEF.
 	 *
-	 * @internal param bool $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
+	 * @param bool $secure If you set $secure true but ENABLE_SSL is not turned on in the config this will be forced false
 	 *
-	 * @internal param bool $no_map Ignore router_maps
+	 * @param bool $no_map Ignore router_maps
+     *
 	 * @return string A url
 	 */
-    
-    //remove trailing links
-    public static function cleanLink($fulllink)
-    {           
-        if(substr($fulllink, -1) == '/') $fulllink = substr($fulllink, 0, -1);  
-        return $fulllink;                                   
-    }
-    
     public function makeLink($params, $force_old_school=false, $secure=false, $no_map=false) {
         $secure = ENABLE_SSL == 1 ? $secure : false;  // check if this site can use SSL if not then force the link to not be secure
         $linkbase =  $secure ? URL_BASE_SECURE : URL_BASE;
@@ -130,7 +134,7 @@ class expRouter {
                 if (!empty($params['controller'])) $link .= $params['controller'].'/';
                 if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
-                    if(!is_array($value)) {
+                    if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
                         $value = chop($value);
                         $key = chop($key);
                         if ($value != "") {
@@ -152,7 +156,7 @@ class expRouter {
             if (!empty($params['sef_name'])) unset($params['sef_name']);
             $link = $linkbase . SCRIPT_FILENAME . "?";
             foreach ($params as $key=>$value) {
-                if (!is_array($value)){
+                if (!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID'){
                     $value = chop($value);
                     $key = chop($key);
                     if ($value != "") {

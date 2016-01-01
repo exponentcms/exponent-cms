@@ -90,6 +90,10 @@ p {
 		.box-shadow(none);
 	}
 
+	.btn, .btn-group {
+		margin-top: 6px;
+	}
+
 	&-inverse {
 
 		.brand:hover {
@@ -223,7 +227,7 @@ div.subnav {
 // --------------------------------------------------
 
 .btn {
-	padding: 8px 20px;
+	padding: 9px 20px;
 	border: none;
 	background-image: none;
 	color: @white;
@@ -269,7 +273,14 @@ div.subnav {
 // TABLES
 // -----------------------------------------------------
 
-
+.table tbody tr {
+  &.success > td,
+  &.error > td,
+  &.warning > td,
+  &.info > td {
+    color: @white;
+  }
+}
 
 // FORMS
 // --------------------------------------------------
@@ -293,7 +304,7 @@ input[type="color"],
 	padding: 7px 6px;
 	border: 2px solid #dce4ec;
 	text-indent: 1px;
-	.border-radius(6px);
+	.border-radius(@inputBorderRadius);
 	.box-shadow(none);
 	.placeholder(#acb6c0);
 
@@ -302,7 +313,67 @@ input[type="color"],
 		.box-shadow(none);
 
 	}
+}
 
+.input-prepend {
+
+  .add-on:first-child,
+  .btn:first-child {
+    .border-radius(@inputBorderRadius 0 0 @inputBorderRadius);
+  }
+}
+
+.input-append {
+
+  input,
+  select,
+  .uneditable-input {
+
+    .border-radius(@inputBorderRadius 0 0 @inputBorderRadius);
+
+    + .btn-group .btn:last-child {
+      .border-radius(0 @inputBorderRadius @inputBorderRadius 0);
+    }
+  }
+
+  .add-on:last-child,
+  .btn:last-child,
+  .btn-group:last-child > .dropdown-toggle {
+    .border-radius(0 @inputBorderRadius @inputBorderRadius 0);
+  }
+}
+
+.input-prepend,
+.input-append {
+
+  input,
+  select,
+  .uneditable-input {
+    .border-radius(0);
+    + .btn-group .btn {
+      .border-radius(0 @inputBorderRadius @inputBorderRadius 0);
+    }
+  }
+
+  .add-on:first-child,
+  .btn:first-child {
+    .border-radius(@inputBorderRadius 0 0 @inputBorderRadius);
+  }
+
+  .add-on:last-child,
+  .btn:last-child {
+    .border-radius(0 @inputBorderRadius @inputBorderRadius 0);
+  }
+}
+
+.input-append,
+.input-prepend {
+
+	.add-on {
+		padding: 9px 5px;
+		text-shadow: none;
+		border: none;
+	}
 }
 
 .control-group.error,
@@ -347,12 +418,6 @@ input[type="file"]{
 	line-height: 16px;
 }
 
-.input-append .add-on,
-.input-prepend .add-on {
-	border: none;
-	background: none;
-}
-
 legend {
 	border-bottom: none;
 	color: @textColor;
@@ -380,7 +445,7 @@ legend {
 		color: @white;
 	}
 
-	&-error, &-danger {
+	&-error {
 		background-color: @red;
 	}
 
@@ -422,23 +487,40 @@ legend {
 	.box-shadow(none);
 
 	.bar {
-		background: @textColor;
+		background-color: @blueDark;
+		background-image: none;
 		.box-shadow(none);
 	}
 
-	&-success .bar, &-success.progress-striped .bar {
+	.bar + .bar {
+		.box-shadow(none);
+	}
+
+	&-striped .bar {
+		#gradient > .striped(@blueDark);
+	}
+
+	&-success .bar,
+	&-success.progress-striped .bar,
+	.bar-success {
 		background-color: @green;
 	}
 
-	&-warning .bar, &-warning.progress-striped .bar {
+	&-warning .bar,
+	&-warning.progress-striped .bar,
+	.bar-warning {
 		background-color: @yellow;
 	}
 
-	&-danger .bar, &-danger.progress-striped .bar {
+	&-danger .bar,
+	&-danger.progress-striped .bar,
+	.bar-danger {
 		background-color: @red;
 	}
 
-	&-info .bar, &-info.progress-striped .bar {
+	&-info .bar,
+	&-info.progress-striped .bar,
+	.bar-info {
 		background-color: @blue;
 	}
 }
@@ -468,7 +550,7 @@ legend {
 
 	&-footer {
 		background-color: @grayLighter;
-		border-top: 2px solid @dropdownDividerTop;
+		border-top: none;
 		.box-shadow(none);
 	}
 }
@@ -495,6 +577,14 @@ legend {
 		
 		.nav > li:last-child > a {
 			border-radius: 0 0 4px 4px;
+		}
+	}
+
+	.input-append,
+	.input-prepend {
+
+		.add-on,.btn {
+			padding: 5px;
 		}
 	}
 }

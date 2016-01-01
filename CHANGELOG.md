@@ -8,6 +8,21 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.3.7
+-------------
+### Address issues in v2.3.6
+  - !!! regression fix all styles were stripped from rich text upon save due to recent security fix
+  - !!! regression fix an admin was able to possibly edit a super-admin user profile
+  - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID #2015-8684
+  - regression fix enhanced password hash strength would break all future logins due to stored hash field not being long enough (since v2.3.5)
+    -- only occured when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
+  - regression fix ajax paging would add 'time' parameter twice to calendar urls
+  - regression fix ajax paging would add google analytics params to the urls
+### Known Issues
+  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Version 2.3.6
 -------------
 ### Refine 'shipment' interface, plus address issues in v2.3.5
