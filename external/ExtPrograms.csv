@@ -28,10 +28,11 @@ Bootswatch,3.3.6+1,bootswatch.com/,3.3.6+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.3,www.adminer.org,4.2.3,
-SimpleAjaxUploader,2.4.0,https://github.com/LPology/Simple-Ajax-Uploader,2.4.0,also converted to yui module 1.1.0
+SimpleAjaxUploader,2.3.0,https://github.com/LPology/Simple-Ajax-Uploader,2.4.0,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
 MediaElement.js,2.19.0,mediaelementjs.com/,2.19.0,
-Facebook PHP SDK,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
+Facebook PHP SDK3,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
+Facebook PHP SDK4,4.0.23,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
