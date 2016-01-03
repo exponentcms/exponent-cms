@@ -9,7 +9,7 @@
             'menu_width'=>MENU_WIDTH,
         ),
         "css_links"=>true,
-    	"css_theme"=>false,
+//    	"css_theme"=>false,
         "framework"=>'bootstrap3'
     ));
     ?>
