@@ -129,7 +129,7 @@
 
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
-    <script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>*}
 </head>
 <body{if !bs3()} class="exp-skin"{/if}>
 
@@ -182,11 +182,189 @@
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
                 commandsOptions : {
                     edit : {
+                    {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
+                        editors : [
+                            {
+                                // CKEditor for html file
+                                mimes : ['text/html'],
+                                exts  : ['htm', 'html', 'xhtml'],
+                                load : function(textarea) {
+                                    $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ckeditor/ckeditor.js'));
+                                    return CKEDITOR.replace( textarea.id, {
+                                        startupFocus : true,
+                                        fullPage: true,
+                                        allowedContent: true,
+                                        toolbarCanCollapse : true,
+                                    });
+                                },
+                                close : function(textarea, instance) {
+                                    instance.destroy();
+                                },
+                                save : function(textarea, instance) {
+                                    textarea.value = instance.getData();
+                                },
+                                focus : function(textarea, instance) {
+                                    instance && instance.focus();
+                                }
+                            } {/literal}{*,
+                            {
+                                // `mimes` is not set for support everything kind of text file
+                                load : function(textarea) {
+                                    if (typeof ace !== 'object') {
+                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ace.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-modelist.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-settings_menu.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-language_tools.js'));
+                                        $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/ace/src-noconflict/ext-searchbox.js'));
+                                    }
+                                    var self = this, editor, editorBase, mode,
+                                    ta = $(textarea),
+                                    taBase = ta.parent(),
+                                    dialog = taBase.parent(),
+                                    id = textarea.id + '_ace',
+                                    ext = this.file.name.replace(/^.+\.([^.]+)|(.+)$/, '$1$2').toLowerCase(),
+                                    mimeMode = {
+                                        'text/x-php'              : 'php',
+                                        'application/x-php'       : 'php',
+                                        'text/html'               : 'html',
+                                        'application/xhtml+xml'   : 'html',
+                                        'text/javascript'         : 'javascript',
+                                        'application/javascript'  : 'javascript',
+                                        'text/css'                : 'css',
+                                        'text/x-c'                : 'c_cpp',
+                                        'text/x-csrc'             : 'c_cpp',
+                                        'text/x-chdr'             : 'c_cpp',
+                                        'text/x-c++'              : 'c_cpp',
+                                        'text/x-c++src'           : 'c_cpp',
+                                        'text/x-c++hdr'           : 'c_cpp',
+                                        'text/x-shellscript'      : 'sh',
+                                        'application/x-csh'       : 'sh',
+                                        'text/x-python'           : 'python',
+                                        'text/x-java'             : 'java',
+                                        'text/x-java-source'      : 'java',
+                                        'text/x-ruby'             : 'ruby',
+                                        'text/x-perl'             : 'perl',
+                                        'application/x-perl'      : 'perl',
+                                        'text/x-sql'              : 'sql',
+                                        'text/xml'                : 'xml',
+                                        'application/docbook+xml' : 'xml',
+                                        'application/xml'         : 'xml'
+                                    },
+                                    resize = function(){
+                                        dialog.height($(window).height() * 0.9).trigger('posinit');
+                                        taBase.height(dialog.height() - taBase.prev().outerHeight(true) - taBase.next().outerHeight(true) - 8);
+                                    };
+
+                                    mode = ace.require('ace/ext/modelist').getModeForPath('/' + self.file.name).name;
+                                    if (mode === 'text') {
+                                        if (mimeMode[self.file.mime]) {
+                                            mode = mimeMode[self.file.mime];
+                                        }
+                                    }
+
+                                    taBase.prev().append(' (' + self.file.mime + ' : ' + mode.split(/[\/\\]/).pop() + ')');
+
+                                    $('<div class="ui-dialog-buttonset"/>').css('float', 'left')
+                                    .append(
+                                        $('<button>TextArea</button>')
+                                        .button()
+                                        .on('click', function(){
+                                            if (ta.data('ace')) {
+                                                ta.data('ace', false);
+                                                editorBase.hide();
+                                                ta.val(editor.session.getValue()).show().focus();
+                                                $(this).find('span').text('AceEditor');
+                                            } else {
+                                                ta.data('ace', true);
+                                                editor.setValue(ta.hide().val(), -1);
+                                                editorBase.show();
+                                                editor.focus();
+                                                $(this).find('span').text('TextArea');
+                                            }
+                                        })
+                                    )
+                                    .append(
+                                        $('<button>Ace editor setting</button>')
+                                        .button({
+                                            icons: {
+                                                primary: 'ui-icon-gear',
+                                                secondary: 'ui-icon-triangle-1-e'
+                                            },
+                                            text: false
+                                        })
+                                        .on('click', function(){
+                                            editor.showSettingsMenu();
+                                        })
+                                    )
+                                    .prependTo(taBase.next());
+
+                                    editorBase = $('<div id="'+id+'" style="width:100%; height:100%;"/>').text(ta.val()).insertBefore(ta.hide());
+
+                                    ta.data('ace', true);
+                                    editor = ace.edit(id);
+                                    ace.require('ace/ext/settings_menu').init(editor);
+                                    editor.$blockScrolling = Infinity;
+                                    editor.setOptions({
+                                        theme: 'ace/theme/monokai',
+                                        mode: 'ace/mode/' + mode,
+                                        wrap: true,
+                                        enableBasicAutocompletion: true,
+                                        enableSnippets: true,
+                                        enableLiveAutocompletion: false,
+                                    });
+                                    editor.commands.addCommand({
+                                        name : "saveFile",
+                                        bindKey: {
+                                            win : 'Ctrl-s',
+                                            mac : 'Command-s'
+                                        },
+                                        exec: function(editor) {
+                                            self.doSave();
+                                        }
+                                    });
+                                    editor.commands.addCommand({
+                                        name : "closeEditor",
+                                        bindKey: {
+                                            win : 'Ctrl-w|Ctrl-q',
+                                            mac : 'Command-w|Command-q'
+                                        },
+                                        exec: function(editor) {
+                                            self.doCancel();
+                                        }
+                                    });
+                                    dialog.on('resize', function(){ editor.resize(); });
+                                    $(window).on('resize', function(e){
+                                        if (e.target !== this) return;
+                                        dialog.data('resizeTimer') && clearTimeout(dialog.data('resizeTimer'));
+                                        dialog.data('resizeTimer', setTimeout(function(){ resize(); }, 300));
+                                    });
+                                    resize();
+                                    editor.resize();
+
+                                    return editor;
+                                },
+                                close : function(textarea, instance) {
+                                    instance.destroy();
+                                    $(textarea).show();
+                                },
+                                save : function(textarea, instance) {
+                                    if ($(textarea).data('ace')) {
+                                        $(textarea).val(instance.session.getValue());
+                                    }
+                                },
+                                focus : function(textarea, instance) {
+                                    instance.focus();
+                                }
+                            } *}{literal}
+                        ]
+                        {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR=="tinymce"}{literal}
                         mimes : ['text/plain', 'text/html', 'text/javascript', 'text/csv', 'text/x-comma-separated-values'],
                         editors : [
                             {
                                 mimes : ['text/html'],
+                                exts  : ['htm', 'html', 'xhtml'],
                                 load : function(textarea) {
+                                    $('head').append($('<script>').attr('src', '{/literal}{$smarty.const.PATH_RELATIVE}{literal}external/editors/tinymce/tinymce.min.js'));
                                     tinyMCE.execCommand('mceAddEditor', true, textarea.id);
                                 },
                                 close : function(textarea, instance) {
@@ -198,6 +376,7 @@
                                 }
                             }
                         ]
+                    {/literal}{/if}{literal}
                     },
                     getfile : {
                         // allow to return multiple files info
