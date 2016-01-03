@@ -568,7 +568,7 @@ class expFile extends expRecord {
                 }
             }
         } else {
-            file_put_contents($_destFullPath, file_get_contents('php://input'));
+            file_put_contents($_destFullPath, file_get_contents('php://input', 'r'));
         }
 
         if (file_exists($_destFullPath)) {
