@@ -275,14 +275,16 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {assocarray}
-                        paramc: [
-                            editor: "ckeditor"
-                        ]
-                        paramt: [
-                            editor: "tinymce"
-                        ]
-                    {/assocarray}
+                    {*{assocarray}*}
+                        {*paramc: [*}
+                            {*editor: "ckeditor"*}
+                        {*]*}
+                        {*paramt: [*}
+                            {*editor: "tinymce"*}
+                        {*]*}
+                    {*{/assocarray}*}
+                    {$paramc = ["editor" => "ckeditor"]}
+                    {$paramt = ["editor" => "tinymce"]}
                     <div id="alt-controlw" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
