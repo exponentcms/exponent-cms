@@ -18,7 +18,6 @@
 
 if (!defined('EXPONENT')) exit('');
 
-//FIXME this is NOT a bootstrap control, but jQuery
 /**
  * Tag Picker Control using jQuery tag-it
  *
