@@ -65,11 +65,13 @@ class news extends expRecord {
 	}
 
     public function update($params = array()) {
-        if (is_numeric($params['expFile']['fbimage'][0]))
+        if (isset($params['expFile']['fbimage'][0]) && is_numeric($params['expFile']['fbimage'][0]))
             $params['fb']['fbimage'][0] = $params['expFile']['fbimage'][0];
         unset ($params['expFile']['fbimage']);
-        $params['meta_fb'] = serialize($params['fb']);
-        unset ($params['fb']);
+        if (isset($params['fb'])) {
+            $params['meta_fb'] = serialize($params['fb']);
+            unset ($params['fb']);
+        }
         parent::update($params);
     }
 
