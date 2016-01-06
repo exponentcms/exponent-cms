@@ -489,8 +489,9 @@ function getRecentPosts($xmlrpcmsg)
                             $loc
                         ) && $posts[$i]->poster == $user->id)
                 ) {
-                    $desc = substr(strip_tags($posts[$i]->body), 0, 253) . "...";  // attempt to reduce length of reply
-                    if (NO_XMLRPC_DESC) {  // MS Word has an issue when content is over a certain length
+//                    $desc = substr(strip_tags($posts[$i]->body), 0, 253) . "...";  // attempt to reduce length of reply
+                    $desc = $posts[$i]->body;
+                    if (NO_XMLRPC_DESC) {  // MS Word had an issue when content is over a certain length
                         $desc = substr(strip_tags($posts[$i]->body), 0, 12) . "...";  // attempt to reduce length of reply
                     }
                     $cat = array();
