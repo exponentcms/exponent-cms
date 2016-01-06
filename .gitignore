@@ -7,7 +7,7 @@
 /conf/config.php
 
 # Excludes cache files
-/tmp/*
+# /tmp/*
 
 # Excludes Eclipse Project files
 .buildpath

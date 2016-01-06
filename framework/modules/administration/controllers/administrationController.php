@@ -495,14 +495,15 @@ class administrationController extends expController {
 
 	public function clear_image_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
-		if (file_exists(BASE.'tmp/img_cache')) expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+		if (file_exists(BASE.'tmp/img_cache'))
+            expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
 		flash('message',gt("Image/Pixidou Cache has been cleared"));
 		expHistory::back();
 	}
 
 	public function clear_rss_cache() {
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
-		flash('message',gt("RSS/Podcast Cache has been cleared"));
+		flash('message',gt("RSS/Podcast/Twitter Cache has been cleared"));
 		expHistory::back();
 	}
 
@@ -518,6 +519,8 @@ class administrationController extends expController {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache'))
             expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
+        if (file_exists(BASE.'tmp/img_cache'))
+              expFile::removeFilesInDirectory(BASE.'tmp/elfinder');
 		if (file_exists(BASE.'tmp/extensionuploads'))
             expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');
 		expFile::removeFilesInDirectory(BASE.'tmp/rsscache');
