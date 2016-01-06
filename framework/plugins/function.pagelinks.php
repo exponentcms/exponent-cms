@@ -36,12 +36,12 @@
 function smarty_function_pagelinks($params, &$smarty) {
     $config = $smarty->getTemplateVars('config');
     if (!empty($params['more']) && (!empty($config['pagelinks']) && $config['pagelinks'] != "Disable page links")) {
-        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
-        } else {
+//        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
+//        } else {
             $text  = !empty($params['text']) ? $params['text'] : 'More ...';
             $title = !empty($params['title']) ? $params['title'] : $text;
             echo '<a href="' . $params['paginate']->morelink . '" title="' . $title . '" class="showall">' . $text . '</a>';
-        }
+//        }
     } elseif (empty($config['pagelinks']) || (!empty($config['pagelinks']) && $config['pagelinks'] == "Top and Bottom")) {
         if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
         } else {
