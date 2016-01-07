@@ -38,7 +38,7 @@
                     {$prepend = ''}
                     {if !$config.displayauthor}
                         <span class="label posted">{'Posted by'|gettext}</span>
-                        <a href="{link action=showall_by_author author=$item->poster|username}" title='{"View all posts by"|gettext} {attribution user_id=$record->poster}'>{attribution user_id=$item->poster}</a>
+                        <a href="{link action=showall_by_author author=$item->poster|username}" title='{"View all posts by"|gettext} {attribution user_id=$item->poster}'>{attribution user_id=$item->poster}</a>
                         {$prepend = '&#160;&#160;|&#160;&#160;'}
                     {/if}
                     {if $config.usecategories}
@@ -89,7 +89,7 @@
     				{$item->body}
     			{/if}			
                 {if !$config.displayauthor}
-                    {$record->poster|signature}
+                    {$item->poster|signature}
                 {/if}
                 {if $config.ffloat == "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}

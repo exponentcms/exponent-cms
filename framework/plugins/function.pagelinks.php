@@ -40,7 +40,11 @@ function smarty_function_pagelinks($params, &$smarty) {
 //        } else {
             $text  = !empty($params['text']) ? $params['text'] : 'More ...';
             $title = !empty($params['title']) ? $params['title'] : $text;
+        if (bs()) {
+            echo '<a href="' . $params['paginate']->morelink . '" title="' . $title . '" class="showall '.expTheme::buttonStyle().'">' . $text . '</a>';
+        } else {
             echo '<a href="' . $params['paginate']->morelink . '" title="' . $title . '" class="showall">' . $text . '</a>';
+        }
 //        }
     } elseif (empty($config['pagelinks']) || (!empty($config['pagelinks']) && $config['pagelinks'] == "Top and Bottom")) {
         if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {

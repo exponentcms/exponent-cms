@@ -27,16 +27,17 @@
  * Smarty {assocarray} block plugin
  * Type:     block<br>
  * Name:     assocarray<br>
- * Purpose:  Set up a associatvie array
+ * Purpose:  Set up a associative array
  * Version:  1.1
  * Author:    boots
+ * @deprecated
  *
  * @param         $params
  * @param         $content
  * @param \Smarty $smarty
  * @param         $repeat
  *
- *           Purpose:  make assignnents from within a template with a simple syntax
+ *           Purpose:  make assignments from within a template with a simple syntax
  *           supporting multiple assignments and allowing for simple
  *           assignments as well as arrays and keyed arrays.
  *           See:      http://www.phpinsider.com/smarty-forum/viewtopic.php?t=64
@@ -135,7 +136,7 @@ function smarty_block_assocarray($params, $content, &$smarty, &$repeat)
                         if (strpos($token, '$smarty.const.') !== false) {
                             $msg .= substr($token, 14);
                         } else {
-                            $msg .= $smarty->getTemplateVars(substr($token, 1));
+                            $msg .= "'".$smarty->getTemplateVars(substr($token, 1))."'";
                         }
                     } else {
                         $msg .= $token;

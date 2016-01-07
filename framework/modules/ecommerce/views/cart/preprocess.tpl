@@ -24,30 +24,52 @@
 {/css}
 
 <div class="module cart confirm exp-ecom-table">
-    {assocarray}
-        breadcrumb: [
-            0: [
-                title: "{'Summary'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'show'))
-            ]
-            1: [
-                title:  "{'Sign In'|gettext}"
-                link: ""
-            ]
-            2: [
-                title:  "{'Shipping/Billing'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'checkout'))
-            ]
-            3: [
-                title:  "{'Confirmation'|gettext}"
-                link: ""
-            ]
-            4: [
-                title:  "{'Complete'|gettext}"
-                link: ""
-            ]
+    {*{assocarray}*}
+        {*breadcrumb: [*}
+            {*0: [*}
+                {*title: "{'Summary'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'show'))*}
+            {*]*}
+            {*1: [*}
+                {*title:  "{'Sign In'|gettext}"*}
+                {*link: ""*}
+            {*]*}
+            {*2: [*}
+                {*title:  "{'Shipping/Billing'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'checkout'))*}
+            {*]*}
+            {*3: [*}
+                {*title:  "{'Confirmation'|gettext}"*}
+                {*link: ""*}
+            {*]*}
+            {*4: [*}
+                {*title:  "{'Complete'|gettext}"*}
+                {*link: ""*}
+            {*]*}
+        {*]*}
+    {*{/assocarray}*}
+    {$breadcrumb = [
+        0 => [
+            "title" => "{'Summary'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'show'])
+        ],
+        1 => [
+            "title" => "{'Sign In'|gettext}",
+            "link"  => ""
+        ],
+        2 => [
+            "title" => "{'Shipping/Billing'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'checkout'])
+        ],
+        3 => [
+            "title" => "{'Confirmation'|gettext}",
+            "link"  => ""
+        ],
+        4 => [
+            "title" => "{'Complete'|gettext}",
+            "link"  => ""
         ]
-    {/assocarray}
+    ]}
     {breadcrumb items=$breadcrumb active=3 style=flat}
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>

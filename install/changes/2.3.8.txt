@@ -1,0 +1,7 @@
+version 2.3.7
+Address issues in v2.3.7
+  -
+Known Issues
+  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing

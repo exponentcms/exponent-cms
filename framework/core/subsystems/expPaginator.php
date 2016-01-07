@@ -344,7 +344,11 @@ class expPaginator {
                     $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
                 }
             } else {
-                $mod = $params->controller;
+                if (isset($params->controller)) {
+                    $mod = $params->controller;
+                } else {
+                    $mod = '';
+                }
             }
             $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
         }

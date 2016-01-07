@@ -70,18 +70,18 @@
                     {$prepend = ''}
                     {if !$config.displayauthor}
                         <span class="label posted">{'Posted by'|gettext}</span>
-                        <a href="{link action=showall_by_author author=$record->poster|username}">{attribution user_id=$record->poster}</a>
+                        <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
                         {$prepend = '&#160;&#160;|&#160;&#160;'}
                     {/if}
                     {if !$config.datetag}
-                        {'on'|gettext} <span class="date">{$record->publish_date|format_date}</span>
+                        {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
                     {/if}
-                    {if $record->publish_date > $smarty.now}
+                    {if $item->publish_date > $smarty.now}
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count record=$record show=1 prepend=$prepend}
-                {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
+                {comments_count record=$item show=1 prepend=$prepend}
+                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
             </div>
             {permissions}
                 <div class="item-actions">
@@ -119,7 +119,7 @@
                         {$item->body}
                     {/if}
                     {if !$config.displayauthor}
-                        {$record->poster|signature}
+                        {$item->poster|signature}
                     {/if}
                     {if $config.ffloat == "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}

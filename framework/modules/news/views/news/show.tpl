@@ -34,7 +34,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.title}{literal}'});
-    var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
+    {/literal}
+        {$orig_params = ['controller' => 'news', 'action' => 'show', 'title' => $params.title]}
+    {literal}
+    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
+//    var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitem'},
