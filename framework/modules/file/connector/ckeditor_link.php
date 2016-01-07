@@ -233,7 +233,7 @@ if ($user) {
                <?PHP
                    if ($section->active) {
                ?>
-                       <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>,<?PHP echo "'".$section->name."'"; ?>,<?PHP echo "'".$section->page_title."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
+                       <a href="javascript:onPageSelect(<?PHP echo "'".$section->sef_name."'"; ?>,<?PHP echo "'".addslashes($section->name)."'"; ?>,<?PHP echo "'".addslashes($section->page_title)."'"; ?>)" class="navlink"><?PHP echo htmlentities($section->name); ?></a>&#160;
                <?PHP
                    } else {
                        echo $section->name;
