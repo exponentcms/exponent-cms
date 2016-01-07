@@ -886,7 +886,7 @@ class expRecord {
      * @return array
      */
     function getAttachableItemTables() {
-        return $this->attachable_item_types;
+        return $this->attachable_item_types; //fixme this is the model name, NOT the table name
     }
 
     /**
