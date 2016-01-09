@@ -297,6 +297,7 @@
                             </div>
                         </div>
                     </div>
+                    {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                 </div>
                 <div id="tab12">
 	                <div class="info-header">

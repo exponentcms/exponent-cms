@@ -130,7 +130,7 @@
         };
 
         var saveEditor = function(item, data) {
-            if(parseInt({/literal}{!$config.fast_save}{literal})) {
+            if(parseInt({/literal}{!($config.fast_save || $smarty.const.EDITOR_FAST_SAVE)}{literal})) {
                 var dialog = $('<p>{/literal}{'Save these changes?'|gettext}{literal}</p>').dialog({
                     width: 375,
                     title: '{/literal}{'Text Item Updated'|gettext}{literal}',

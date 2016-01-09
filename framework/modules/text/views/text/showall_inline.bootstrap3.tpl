@@ -144,7 +144,7 @@
         };
 
         var saveEditor = function(item, data) {
-            if(parseInt({/literal}{!$config.fast_save}{literal})) {
+            if(parseInt({/literal}{!($config.fast_save || $smarty.const.EDITOR_FAST_SAVE)}{literal})) {
                 BootstrapDialog.show({
                     title: '{/literal}{'Text Item Updated'|gettext}{literal}',
                     message: '{/literal}{'Save these changes?'|gettext}{literal}',
