@@ -56,7 +56,9 @@
                 {permissions}
                     <div class="item-actions">
                         {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
-                            {if $item->revision_id > 1 && $smarty.const.ENABLE_WORKFLOW}<span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>{/if}
+                            {if $smarty.const.ENABLE_WORKFLOW}
+                                <span class="revisionnum approval" title="{'Viewing Revision #'|gettext}{$item->revision_id}">{$item->revision_id}</span>
+                            {/if}
                             {if $myloc != $item->location_data}
                                 {if $permissions.manage}
                                     {icon action=merge id=$item->id title="Merge Aggregated Content"|gettext}
@@ -118,6 +120,7 @@
     {literal}
     $(document).ready(function(){
         var src = '{/literal}{$__loc->src}{literal}';
+        var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW == 1}{literal};
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
         CKEDITOR.disableAutoInline = true;
@@ -148,6 +151,15 @@
                                 type: "POST",
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                                success:function(msg) {
+                                    if (workflow) {
+                                        data = $.parseJSON(msg.data);
+                                        $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                        if (!data.approved) {
+                                            $('#text-' + data.id).addClass('unapproved');
+                                        }
+                                    }
+                                }
                             });
                             $('input:hidden[name=\'rerank[]\'][value=\'' + item[1] + '\']').siblings('span').html(data);
                             dialog.dialog('close');
@@ -157,7 +169,6 @@
                                 type: "POST",
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type=revert",
-                    //            success:function(data) {
                                 success:function(msg) {
                     //                var msg = $.parseJSON(data);
                                     data = $.parseJSON(msg.data);
@@ -177,6 +188,15 @@
                     type: "POST",
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                    success:function(msg) {
+                        if (workflow) {
+                            data = $.parseJSON(msg.data);
+                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                            if (!data.approved) {
+                                $('#text-' + data.id).addClass('unapproved');
+                            }
+                        }
+                    }
                 });
                 $('input:hidden[name=\'rerank[]\'][value=\'' + item[1] + '\']').siblings('span').html(data);
             }
@@ -305,29 +325,38 @@
             startEditor(editableBlocks[i]);
         }
 
+        // Add a text item
         $('#textmodule-{/literal}{$name}{literal}').on('click', '.add-body', function(event) {
             event.preventDefault();
             $.ajax({
                 type: "POST",
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                 data: "id=0",
-    //            success:function(data) {
                 success:function(msg) {
-    //                var msg = $.parseJSON(data);
-                    newItem = '<div id="text-' + msg.data + '" class="item"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    newItem += '<div class="item-actions"><a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + msg.data + '/src/' + src + '"><i class="icon-edit {/literal}{$icon_size}{literal}"></i>  {/literal}{'Edit'|gettext}{literal}</a>';
-                    newItem += '<a class="delete-item btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + msg.data + '/src/' + src + '"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
-                    newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
-                    newItem += '<div class="bodycopy"><div id="body-' + msg.data + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
+                    data = $.parseJSON(msg.data);
+                    newItem =  '<div id="text-' + data.id + '" class="item';
+                    if (workflow && !data.approved) {
+                        newItem += ' unapproved';
+                    }
+                    newItem += '"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                    newItem += '<div class="item-actions">';
+                    if (workflow) {
+                        newItem += '<span class="revisionnum approval" title="Viewing Revision #' + data.revision_id + '">' + data.revision_id + '</span>';
+                    }
+                    newItem += '<a class="btn btn-default {/literal}{$btn_size}{literal}" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '"><i class="icon-edit {/literal}{$icon_size}{literal}"></i>  {/literal}{'Edit'|gettext}{literal}</a>';
+                    newItem += '<a class="delete-item btn btn-danger {/literal}{$btn_size}{literal}" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete'|gettext}{literal}</a>';
+                    newItem +='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a></div>';
+                    newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
                     $('#textcontent-{/literal}{$name}{literal}').append(newItem);
-                    startEditor($('#title-' + msg.data)[0]);
-                    startEditor($('#body-' + msg.data)[0]);
-                    newDDItem = '<li><input type="hidden" value="' + msg.data + '" name="rerank[]"><div class="fpdrag"></div><span class="label">title placeholder</span></li>';
+                    startEditor($('#title-' + data.id)[0]);
+                    startEditor($('#body-' + data.id)[0]);
+                    newDDItem = '<li><input type="hidden" value="' + data.id + '" name="rerank[]"><div class="fpdrag"></div><span class="label">title placeholder</span></li>';
                     $('#listToOrder' + src.slice(1)).append(newDDItem);
                 }
             });
         });
 
+        // Add a title
         $('#textmodule-{/literal}{$name}{literal}').on('click', '.add-title', function(event) {
             event.preventDefault();
             ctrl = $(event.target).parent().parent();
@@ -336,21 +365,27 @@
                 type: "POST",
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title&value=title+placeholder",
-    //            success: function(data) {
                 success: function(msg) {
-    //                msg = $.parseJSON(data);
-                    newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + msg.data + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    $('#text-' + msg.data).prepend(newItem);
-                    $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('title placeholder');
-                    startEditor($('#title-' + msg.data)[0]);
-                    chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + msg.data + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
-                    addparent = $('#addtitle-' + msg.data).parent();
-                    $('#addtitle-' + msg.data).remove();
+                    data = $.parseJSON(msg.data);
+                    if (workflow) {
+                        $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                        if (!data.approved) {
+                            $('#text-' + data.id).addClass('unapproved');
+                        }
+                    }
+                    newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                    $('#text-' + data.id).prepend(newItem);
+                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('title placeholder');
+                    startEditor($('#title-' + data.id)[0]);
+                    chgItem ='<a class="delete-title btn btn-danger {/literal}{$btn_size}{literal}" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}"><i class="icon-remove-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Delete Title'|gettext}{literal}</a>';
+                    addparent = $('#addtitle-' + data.id).parent();
+                    $('#addtitle-' + data.id).remove();
                     addparent.append(chgItem);
                 }
             });
         });
 
+        // Delete a text item
         $('#textmodule-{/literal}{$name}{literal}').on('click', '.delete-item', function(event) {
             event.preventDefault();
             if (confirm('{/literal}{'Are you sure you want to delete this text item?'|gettext}{literal}')) {
@@ -360,20 +395,17 @@
                     type: "POST",
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=deleteItem&ajax_action=1&json=1&src="+src,
                     data: "id=" + item[1],
-        //            success: function(data) {
                     success: function(msg) {
-        //                msg = $.parseJSON(data);
                         $('#text-' + msg.data).remove();
                         $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').parent().remove();
-    //                    CKEDITOR.instances['title-' + msg.data].destroy();
                         killEditor('title-' + msg.data);
-    //                    CKEDITOR.instances['body-' + msg.data].destroy();
                         killEditor('body-' + msg.data);
                     }
                 });
             }
         });
 
+        // Delete a title
         $('#textmodule-{/literal}{$name}{literal}').on('click', '.delete-title', function(event) {
             event.preventDefault();
             if (confirm('{/literal}{'Are you sure you want to delete this text item title?'|gettext}{literal}')) {
@@ -383,16 +415,20 @@
                     type: "POST",
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type=title",
-        //            success: function(data) {
                     success: function(msg) {
-        //                msg = $.parseJSON(data);
-                        $('#title-' + msg.data).parent().remove();
-                        $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
-                        chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + msg.data + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="icon-plus-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
-                        delparent = $('#deletetitle-' + msg.data).parent();
-    //                    CKEDITOR.instances['title-' + msg.data].destroy();
-                        killEditor('title-' + msg.data);
-                        $('#deletetitle-' + msg.data).remove();
+                        data = $.parseJSON(msg.data);
+                        if (workflow) {
+                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                            if (!data.approved) {
+                                $('#text-' + data.id).addClass('unapproved');
+                            }
+                        }
+                        $('#title-' + data.id).parent().remove();
+                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
+                        chgItem ='<a class="add-title btn btn-success {/literal}{$btn_size}{literal}" id="addtitle-' + data.id + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}"><i class="icon-plus-sign {/literal}{$icon_size}{literal}"></i> {/literal}{'Add Title'|gettext}{literal}</a>';
+                        delparent = $('#deletetitle-' + data.id).parent();
+                        killEditor('title-' + data.id);
+                        $('#deletetitle-' + data.id).remove();
                         delparent.append(chgItem);
                     }
                 });
