@@ -109,7 +109,7 @@
     {literal}
     $(document).ready(function(){
         var src = '{/literal}{$__loc->src}{literal}';
-        var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW == 1}{literal};
+        var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW}{literal};
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
         CKEDITOR.disableAutoInline = true;

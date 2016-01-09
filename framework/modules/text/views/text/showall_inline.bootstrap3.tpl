@@ -123,7 +123,7 @@
     {literal}
     $(document).ready(function(){
         var src = '{/literal}{$__loc->src}{literal}';
-        var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW == 1}{literal};
+        var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW}{literal};
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
         CKEDITOR.disableAutoInline = true;
@@ -255,7 +255,7 @@
                 filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},
                 filebrowserWindowHeight : {/literal}{$smarty.const.FM_HEIGHT}{literal},
                 filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
-                filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php'?update=ck,
+                filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
                 extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
