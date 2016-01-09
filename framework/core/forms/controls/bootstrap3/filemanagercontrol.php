@@ -116,6 +116,8 @@ class filemanagercontrol extends formcontrol {
                     hoverClass: 'active',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
+                    multipart: false,
+                    noParams: false,
                     maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",";
         if (!empty($this->accept)) {
             $js .= '

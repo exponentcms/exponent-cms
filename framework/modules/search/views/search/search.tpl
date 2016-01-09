@@ -39,7 +39,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
-    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
+    {/literal}
+        {$orig_params = ['controller' => 'search', 'action' => 'search', 'search_string' => $params.search_string]}
+    {literal}
+    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
+//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load searchitems'},

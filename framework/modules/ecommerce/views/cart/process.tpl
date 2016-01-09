@@ -14,30 +14,52 @@
  *}
 
 <div class="module order show">
-    {assocarray}
-        breadcrumb: [
-            0: [
-                title: "{'Summary'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'cart'))
-            ]
-            1: [
-                title:  "{'Sign In'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'cart'))
-            ]
-            2: [
-                title:  "{'Confirmation'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'cart'))
-            ]
-            3: [
-                title:  "{'Complete'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'cart'))
-            ]
-            4: [
-                title:  "{'Summary'|gettext}"
-                link: makeLink(array('controller'=>'cart','action'=>'cart'))
-            ]
+    {*{assocarray}*}
+        {*breadcrumb: [*}
+            {*0: [*}
+                {*title: "{'Summary'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
+            {*]*}
+            {*1: [*}
+                {*title:  "{'Sign In'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
+            {*]*}
+            {*2: [*}
+                {*title:  "{'Confirmation'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
+            {*]*}
+            {*3: [*}
+                {*title:  "{'Complete'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
+            {*]*}
+            {*4: [*}
+                {*title:  "{'Summary'|gettext}"*}
+                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
+            {*]*}
+        {*]*}
+    {*{/assocarray}*}
+    {$breadcrumb = [
+        0 => [
+            "title" => "{'Summary'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'cart'])
+        ],
+        1 => [
+            "title" => "{'Sign In'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'cart'])
+        ],
+        2 => [
+            "title" => "{'Shipping/Billing'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'cart'])
+        ],
+        3 => [
+            "title" => "{'Confirmation'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'cart'])
+        ],
+        4 => [
+            "title" => "{'Complete'|gettext}",
+            "link"  => makeLink(['controller'=>'cart','action'=>'cart'])
         ]
-    {/assocarray}
+    ]}
     {breadcrumb items=$breadcrumb active=4}
     <h2 class="message">{'Your order was was successful. Thank you for your business.'|gettext}</h2>
 	<table width=100% border="0" cellspacing="5" cellpadding="5">

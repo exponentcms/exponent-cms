@@ -86,7 +86,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
-    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{$params.time = ''}{makeLink($params)}{literal}';
+    {/literal}
+        {$orig_params = ['controller' => 'store', 'action' => 'eventsCalendar', 'view' => $params.view, 'src' => $params.src]}
+    {literal}
+    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
+//    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{$params.time = ''}{makeLink($params)}{literal}';
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Week'},

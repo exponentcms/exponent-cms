@@ -1696,7 +1696,7 @@ class expFile extends expRecord {
             }
             $tables = array_map('tmp_removePrefix', $tables);
         }
-        usort($tables, 'strnatcmp');
+        uasort($tables, 'strnatcmp');
         foreach ($tables as $key=>$table) {
             $where = '1';
             if ($type == 'Form') {

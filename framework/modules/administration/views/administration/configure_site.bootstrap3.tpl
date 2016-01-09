@@ -275,14 +275,16 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {assocarray}
-                        paramc: [
-                            editor: "ckeditor"
-                        ]
-                        paramt: [
-                            editor: "tinymce"
-                        ]
-                    {/assocarray}
+                    {*{assocarray}*}
+                        {*paramc: [*}
+                            {*editor: "ckeditor"*}
+                        {*]*}
+                        {*paramt: [*}
+                            {*editor: "tinymce"*}
+                        {*]*}
+                    {*{/assocarray}*}
+                    {$paramc = ["editor" => "ckeditor"]}
+                    {$paramt = ["editor" => "tinymce"]}
                     <div id="alt-controlw" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
@@ -295,6 +297,7 @@
                             </div>
                         </div>
                     </div>
+                    {control type="checkbox" postfalse=1 name="sc[EDITOR_FAST_SAVE]" label="Always Save Inline Editing Changes w/o Prompt?"|gettext checked=$smarty.const.EDITOR_FAST_SAVE value=1}
                 </div>
                 <div id="tab12" role="tabpanel" class="tab-pane fade">
 	                <div class="info-header">

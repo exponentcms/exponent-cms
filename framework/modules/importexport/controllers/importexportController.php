@@ -196,17 +196,17 @@ class importexportController extends expController {
 
         foreach ($selected as $select) {
             $current_id = $data[$type->model_table]->records[$select]['id'];
-            unset(
+            unset(  // clear out the stuff that gets auto-set when integrated into existing records
                 $data[$type->model_table]->records[$select]['id'],
                 $data[$type->model_table]->records[$select]['sef_url'],
                 $data[$type->model_table]->records[$select]['rank']
             );
             $data[$type->model_table]->records[$select]['location_data'] = serialize(expCore::makeLocation($type->baseclassname, $src));
-            $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);
+            $item = new $type->basemodel_name($data[$type->model_table]->records[$select]);  // create new populated record to auto-set things
             $item->update();
 
             if ($this->params['import_attached']) {
-                $params = null;;
+                $params = array();;
                 foreach ($attached as $link=>$model) {
                     foreach ($attachments[$link] as $aitem) {
                         if ($aitem['content_id'] == $current_id) {
@@ -214,28 +214,39 @@ class importexportController extends expController {
                             //$item['content'] is the attachment
                             switch ($model) {
                                 case 'expCat':
-                                    $cat = new expCat($aitem['content']['title']);
-                                    if (empty($cat->id)) {
-                                        $cat->title = $aitem['content']['title'];
-                                        $cat->module = $type->baseclassname;
-                                        $cat->save();
+                                    foreach ($data['expCats']->records as $key=>$ct) {
+                                        if ($ct['id'] == $aitem['expcats_id']) {
+                                            $cat = new expCat($ct['title']);
+                                            if (empty($cat->id)) {
+                                                $cat->title = $ct['title'];
+                                                $cat->module = $type->baseclassname;
+                                                $cat->save();
+                                            }
+                                            $params['expCat'][] = $cat->id;
+                                        }
                                     }
-                                    $params['expCat'][] = $cat->id;
                                     break;
                                 case 'expComment':
-                                    unset($aitem['content']['id']);
-                                    $comment = new expComment($aitem['content']);
-                                    $comment->update();  // create and attach the comment
-                                    $comment->attachComment($type->baseclassname, $item->id, $aitem['subtype']);
+                                    foreach ($data['expComments']->records as $key=>$cm) {
+                                        unset($cm['id']);
+                                        $cm['parent_id'] = 0; //fixme this flattens reply comments
+                                        $comment = new expComment($cm);
+                                        $comment->update();  // create and attach the comment
+                                        $comment->attachComment($type->baseclassname, $item->id, $aitem['subtype']);
+                                    }
                                     break;
                                 case 'expFile':
                                     //FIXME we can't handle file attachments since this is only a db import
                                     break;
                                 case 'expTag':
-                                    $tag = new expTag($aitem['content']['title']);
-                                    if (empty($tag->id))
-                                        $tag->update(array('title'=>$aitem['content']['title']));
-                                    $params['expTag'][] = $tag->id;
+                                    foreach ($data['expTags']->records as $key=>$tg) {
+                                        if ($tg['id'] == $aitem['exptags_id']) {
+                                            $tag = new expTag($tg['title']);
+                                            if (empty($tag->id))
+                                                $tag->update(array('title'=>$tg['title']));
+                                            $params['expTag'][] = $tag->id;
+                                        }
+                                    }
                                     break;
                             }
                         }

@@ -465,7 +465,8 @@ class expRecord {
         }
 
         if (ENABLE_WORKFLOW && $this->supports_revisions && !$this->approved && expPermissions::check('approve', expUnserialize($this->location_data))) {
-            $saveObj->approved = true;  // auto-approve item if use has approve perm
+            $this->approved = true;  // auto-approve item if use has approve perm
+            $saveObj->approved = true;  // also set property in database item
         }
         $identifier = $this->identifier;
         if (!empty($saveObj->$identifier)) {
@@ -886,7 +887,7 @@ class expRecord {
      * @return array
      */
     function getAttachableItemTables() {
-        return $this->attachable_item_types;
+        return $this->attachable_item_types; //fixme this is the model name, NOT the table name
     }
 
     /**

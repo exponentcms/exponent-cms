@@ -86,7 +86,7 @@ class expCatController extends expController {
         $cats = new expPaginator(array(
             'model'=>$this->basemodel_name,
             'where'=>empty($this->params['model']) ? null : "module='".$this->params['model']."'",
-            'limit'=>50,
+//            'limit'=>50,
             'order'=>'module,rank',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
