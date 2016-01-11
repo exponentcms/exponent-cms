@@ -19,13 +19,16 @@
 	Accessible only to Web Server 
  
 0777 
-	World Readable and Writable 
+	Group & World Readable and Writable
  
 0770 
 	Group Readable and Writable 
  
-0755 
-	World Read-only 
+0775
+	Group Readable and Writable, World Read-only
+
+0755
+	Group & World Read-only
  
 0750 
 	Group Read-only  

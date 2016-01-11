@@ -19,13 +19,16 @@
 	Accessible only to Web Server 
  
 0666 
-	World Readable and Writable 
+	Group & World Readable and Writable
  
 0660 
 	Group Readable and Writable 
  
-0644 
-	World Read-only 
+0664
+	Group Readable and Writable, World Read-only
+
+0644
+	Group & World Read-only
  
 0640 
 	Group Read-only
