@@ -30,7 +30,7 @@ expSession::clearAllSessionData();
 global $user;
 
 // let's update the search index, but only once first time through
-if (!isset($_POST['username'])) {
+if (!isset($_REQUEST['username'])) {
     searchController::spider();
 }
 
@@ -55,12 +55,12 @@ if (!isset($_POST['username'])) {
 <?php
 //
 //} else {
-    if (isset($_POST['username'])) {
-        user::login(expString::sanitize($_POST['username']),expString::sanitize($_POST['password']));
+    if (isset($_REQUEST['username'])) {
+        user::login($_REQUEST['username'],$_REQUEST['password']);
         $leaveinstaller = (unlink(BASE . 'install/not_configured') || !file_exists(BASE . 'install/not_configured'));
         if ($leaveinstaller) {
             if ($user->is_system_user) {
-                switch ($_POST['next']) {
+                switch ($_REQUEST['next']) {
                     case 'configsite':
                         header(
                             'Location: ' . expCore::makeLink(

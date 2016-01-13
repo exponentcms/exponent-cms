@@ -28,14 +28,14 @@ expSettings::change('LANGUAGE', LANGUAGE);
 
 $user = $db->selectObject('user', 'is_system_user=1');
 
-$user->username = expString::sanitize($_POST['username']);
-$pwstrength = expValidator::checkPasswordStrength($_POST['password']);
+$user->username = $_REQUEST['username'];
+$pwstrength = expValidator::checkPasswordStrength($_REQUEST['password']);
 if ($user->username == '') {
     $error = true;
     $errorstr = gt('You must specify a valid username. Please check your entry.');
     $errorflag = '&errusername=true';
     echo $errorstr;
-} elseif ($_POST['password'] != $_POST['password2']) {
+} elseif ($_REQUEST['password'] != $_REQUEST['password2']) {
     $error = true;
     $errorstr = gt('Your passwords do not match. Please check your entries.');
     $errorflag = '&errpassword=true';
@@ -50,7 +50,7 @@ if ($user->username == '') {
     $errorstr = $pwstrength . ' ' . gt('Please check your entries.');
     $errorflag = '&errpwstrength=true';
     echo $errorstr;
-} elseif (!expValidator::validate_email_address($_POST['email'])) {
+} elseif (!expValidator::validate_email_address($_REQUEST['email'])) {
     $error = true;
     $errorstr = gt('Your email address is invalid. Please check your entry.');
     $errorflag = '&erremail=true';
@@ -62,13 +62,13 @@ if ($error) { //NOTE Shouldn't get this because of check in install-6.php unless
     header('Location: index.php?page=install-6' . $errorflag);
     exit();
 } else {
-    $user->password = user::encryptPassword($_POST['password']);
-    $user->firstname = expString::sanitize($_POST['firstname']);
-    $user->lastname = expString::sanitize($_POST['lastname']);
+    $user->password = user::encryptPassword($_REQUEST['password']);
+    $user->firstname = $_REQUEST['firstname'];
+    $user->lastname = $_REQUEST['lastname'];
     $user->is_admin = 1;
     $user->is_acting_admin = 1;
     $user->is_system_user = 1;
-    $user->email = expString::sanitize($_POST['email']);
+    $user->email = $_REQUEST['email'];
     $user->created_on = time();
     if (isset($user->id)) {
         $db->updateObject($user, 'user');

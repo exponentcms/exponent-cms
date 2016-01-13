@@ -630,7 +630,11 @@ class expString {
    		{
    			while (list($key) = each($str))
    			{
-   				$str[$key] = self::xss_clean($str[$key]);
+                if (preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $key)) {  // check for valid array name
+                    $str[$key] = self::xss_clean($str[$key]);
+                } else {
+                    return null;
+                }
    			}
 
    			return $str;

@@ -29,21 +29,23 @@ if (version_compare(PHP_VERSION, '5.3.1', 'lt')) {
 
 ob_start();
 
+
 // Jumpstart to Initialize the installer language before it's set to default
 if (isset($_REQUEST['lang'])) {
-    $_POST['sc']['LANGUAGE'] = trim($_REQUEST['lang'], "'");
+    $_REQUEST['sc']['LANGUAGE'] = trim($_REQUEST['lang'], "'");
 }
-if (isset($_POST['sc']['LANGUAGE'])) {
+if (isset($_REQUEST['sc']['LANGUAGE'])) {
     if (!defined('LANGUAGE')) {
-        define('LANGUAGE', $_POST['sc']['LANGUAGE']);
+        define('LANGUAGE', $_REQUEST['sc']['LANGUAGE']);
     }
 }
 
 include_once('../exponent.php');
+expString::sanitize($_REQUEST);
 
 // Switch to a saved profile as requested
-if (isset($_GET['profile'])) {
-    expSettings::activateProfile(expString::sanitize($_GET['profile']));
+if (isset($_REQUEST['profile'])) {
+    expSettings::activateProfile($_REQUEST['profile']);
     expTheme::removeSmartyCache(); //FIXME is this still necessary?
     expSession::clearAllUsersSessionCache();
     flash('message', gt("New Configuration Profile Loaded"));
@@ -51,17 +53,18 @@ if (isset($_GET['profile'])) {
 }
 
 // Create or update the config settings
-if (isset($_POST['sc'])) {
+if (isset($_REQUEST['sc'])) {
     if (file_exists("../framework/conf/config.php")) {
         // Update the config
-        foreach ($_POST['sc'] as $key => $value) {
-            $value = expString::sanitize($value);
+        foreach ($_REQUEST['sc'] as $key => $value) {
+//            $value = expString::sanitize($value);
             expSettings::change($key, $value);
         }
     } else {
         // Initialize /framework/conf/config
         $values = array(
-            'c'          => expString::sanitize($_POST['sc']),
+//            'c'          => expString::sanitize($_REQUEST['sc']),
+            'c'          => $_REQUEST['sc'],
             'opts'       => array(),
             'configname' => 'Default',
             'activate'   => 1
@@ -71,17 +74,17 @@ if (isset($_POST['sc'])) {
 }
 
 // Install a sample database as requested
-if (isset($_POST['install_sample'])) {
-    $eql = BASE . "themes/" . DISPLAY_THEME_REAL . "/" . $_POST['install_sample'] . ".eql";
+if (isset($_REQUEST['install_sample'])) {
+    $eql = BASE . "themes/" . DISPLAY_THEME_REAL . "/" . $_REQUEST['install_sample'] . ".eql";
     if (!file_exists($eql)) {
-        $eql = BASE . "install/samples/" . $_POST['install_sample'] . ".eql";
+        $eql = BASE . "install/samples/" . $_REQUEST['install_sample'] . ".eql";
     }
     if (file_exists($eql)) {
         $errors = array();
         expFile::restoreDatabase($eql, $errors);
-        $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" . $_POST['install_sample'] . ".tar.gz";
+        $files = BASE . "themes/" . DISPLAY_THEME_REAL . "/" . $_REQUEST['install_sample'] . ".tar.gz";
         if (!file_exists($files)) {
-            $files = BASE . "install/samples/" . $_POST['install_sample'] . ".tar.gz";
+            $files = BASE . "install/samples/" . $_REQUEST['install_sample'] . ".tar.gz";
         }
         if (file_exists($files)) { // only install if there was an archive
             include_once(BASE . 'external/Tar.php');

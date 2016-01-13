@@ -32,6 +32,10 @@ class administrationController extends expController {
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
         'mass'=>'Mass Mailing',
+        'update'=>'Update Settings',
+        'change'=>'Change Settings',
+        'save'=>'Save Settings',
+        'mass'=>'Mailings',
     );
 
     static function displayname() { return gt("Administration Controls"); }

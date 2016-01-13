@@ -26,11 +26,11 @@ if (!defined('EXPONENT')) {
 </h1>
 
 <span style="color: red; font-weight: bold; padding-top: 8px;" id="errorMessage">
-    <?php echo isset($_GET['errusername']) == 'true' ? gt('You must supply a valid username.') : ''; ?>
-    <?php echo isset($_GET['errpassword']) == 'true' ? gt('Your passwords do not match.') : ''; ?>
-    <?php echo isset($_GET['errpwusername']) == 'true' ? gt('Your password cannot be equal to the username.') : ''; ?>
-    <?php echo isset($_GET['errpwstrength']) == 'true' ? gt('Your password is not strong enough.') : ''; ?>
-    <?php echo isset($_GET['erremail']) == 'true' ? gt('Your email address is invalid.') : ''; ?>
+    <?php echo isset($_REQUEST['errusername']) == 'true' ? gt('You must supply a valid username.') : ''; ?>
+    <?php echo isset($_REQUEST['errpassword']) == 'true' ? gt('Your passwords do not match.') : ''; ?>
+    <?php echo isset($_REQUEST['errpwusername']) == 'true' ? gt('Your password cannot be equal to the username.') : ''; ?>
+    <?php echo isset($_REQUEST['errpwstrength']) == 'true' ? gt('Your password is not strong enough.') : ''; ?>
+    <?php echo isset($_REQUEST['erremail']) == 'true' ? gt('Your email address is invalid.') : ''; ?>
 </span>
 <script>
     function strcasecmp(f_string1, f_string2) {

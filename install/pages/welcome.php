@@ -40,10 +40,10 @@ if (!defined('EXPONENT')) {
 
 <?php
 if (!defined('LANGUAGE')) {
-    if (empty($_POST['sc']['LANGUAGE'])) {
-        $_POST['sc']['LANGUAGE'] = 'English - US';
+    if (empty($_REQUEST['sc']['LANGUAGE'])) {
+        $_REQUEST['sc']['LANGUAGE'] = 'English - US';
     }
-    define('LANGUAGE', expString::sanitize($_POST['sc']['LANGUAGE']));
+    define('LANGUAGE', $_REQUEST['sc']['LANGUAGE']);
 }
 ?>
 
