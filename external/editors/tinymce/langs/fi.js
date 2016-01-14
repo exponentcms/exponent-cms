@@ -124,7 +124,7 @@ tinymce.addI18n('fi',{
 "The URL you entered seems to be an external link. Do you want to add the required http:\/\/ prefix?": "Antamasi osoite n\u00e4ytt\u00e4\u00e4 olevan ulkoinen linkki. Haluatko lis\u00e4t\u00e4 osoitteeseen vaaditun http:\/\/ -etuliitteen?",
 "Target": "Kohde",
 "The URL you entered seems to be an email address. Do you want to add the required mailto: prefix?": "Antamasi osoite n\u00e4ytt\u00e4\u00e4 olevan s\u00e4hk\u00f6postiosoite. Haluatko lis\u00e4t\u00e4 osoitteeseen vaaditun mailto: -etuliitteen?",
-"Insert\/edit link": "Lis\u00e4\u00e4 tai muokkaa linkki",
+"Insert\/edit link": "Lis\u00e4\u00e4\/muokkaa linkki",
 "Insert\/edit video": "Lis\u00e4\u00e4\/muokkaa video",
 "Poster": "L\u00e4hett\u00e4j\u00e4",
 "Alternative source": "Vaihtoehtoinen l\u00e4hde",
