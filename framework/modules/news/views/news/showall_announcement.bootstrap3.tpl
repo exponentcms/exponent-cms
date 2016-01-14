@@ -79,12 +79,13 @@
                 {if $config.ffloat != "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
+                {$link = '<a href="'|cat:makeLink([controller=>news, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
                 {if $config.usebody==1}
                     {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                 {elseif $config.usebody==3}
-                    {$item->body|summarize:"html":"parapaged"}
+                    {$item->body|summarize:"html":"parapaged":$link}
                 {elseif $config.usebody==2}
-                    <p>{$item->body|summarize:"html":"parahtml"}</p>
+                    <p>{$item->body|summarize:"html":"parahtml":$link}</p>
 				{else}
                     {$item->body}
                 {/if}

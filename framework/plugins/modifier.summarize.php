@@ -36,8 +36,8 @@
  *
  * @return array
  */
-function smarty_modifier_summarize($string, $strtype, $type) {
-    return expString::summarize($string, $strtype, $type);
+function smarty_modifier_summarize($string, $strtype, $type, $more='...') {
+    return expString::summarize($string, $strtype, $type, $more);
 
     //NOTE old routine below moved to expString subsystem
     $sep = ($strtype == "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
