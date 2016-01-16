@@ -883,7 +883,7 @@ class fileController extends expController {
         	$tar = new Archive_Tar($_FILES['file']['tmp_name'],'gz');
 
         	$dest_dir = BASE.'tmp/extensionuploads/'.uniqid('');
-        	@mkdir($dest_dir);
+        	@mkdir($dest_dir,DIR_DEFAULT_MODE_STR);
         	if (!file_exists($dest_dir)) {
         		echo gt('Unable to create temporary directory to extract files archive.');
         	} else {
@@ -949,7 +949,7 @@ class fileController extends expController {
         $dest_dir = expSession::get('dest_dir');
         $files = expSession::get('files_data');
         if (!file_exists(BASE.'files')) {
-        	mkdir(BASE.'files',0777);
+        	mkdir(BASE.'files',DIR_DEFAULT_MODE_STR);
         }
 
         $filecount = 0;

@@ -18,8 +18,8 @@
 
 if (!defined('SESSION_TIMEOUT_ENABLE')) define('SESSION_TIMEOUT_ENABLE','1');
 if (!defined('SESSION_TIMEOUT')) define('SESSION_TIMEOUT','7200');
-if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0666');
-if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0770');
+if (!defined('FILE_DEFAULT_MODE_STR')) define('FILE_DEFAULT_MODE_STR','0644');
+if (!defined('DIR_DEFAULT_MODE_STR')) define('DIR_DEFAULT_MODE_STR','0755');
 if (!defined('ENABLE_SSL')) define('ENABLE_SSL','0');
 if (!defined('DISABLE_PRIVACY')) define('DISABLE_PRIVACY','1');
 if (!defined('USE_XMLRPC')) define('USE_XMLRPC','0');
