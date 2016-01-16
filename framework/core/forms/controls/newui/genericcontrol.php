@@ -28,6 +28,8 @@ if (!defined('EXPONENT')) exit('');
 class genericcontrol extends formcontrol {
 
     var $placeholder = "";
+    var $prepend = "";
+    var $append = "";
 
     static function name() { return "generic"; }
 
@@ -98,6 +100,13 @@ class genericcontrol extends formcontrol {
                 $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
             }
         }
+        if (!empty($this->append) && bs()) {
+            if (bs2()) {
+                $html .= '<div class="input-append">';
+            } elseif (bs3()) {
+                $html .= '<div class="input-group">';
+            }
+        }
         $html .= '<input'.$idname.' type="'.$this->type.'" name="' . $this->name . '" value="'.$this->default.'"';
         if ($this->size) $html .= ' size="' . $this->size . '"';
         if ($this->checked) $html .= ' checked="checked"';
@@ -132,6 +141,14 @@ class genericcontrol extends formcontrol {
 
         $html .= ' />';
         if (!empty($this->prepend) && bs()) {
+            $html .= '</div>';
+        }
+        if (!empty($this->append) && bs()) {
+            if (bs2()) {
+                $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
+            } elseif (bs3()) {
+                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
+            }
             $html .= '</div>';
         }
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
