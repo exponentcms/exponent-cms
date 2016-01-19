@@ -139,7 +139,7 @@ class upgrade_calendar extends upgradescript {
                     $newconfig->config['disabletags'] = true;
                 }
                 if (!empty($oldconfig->enable_categories)) {
-                    $newconfig->config['enable_categories'] = $oldconfig->enable_categories;
+                    $newconfig->config['usecategories'] = $oldconfig->enable_categories;
                 }
 
                 // we have to pull in external addresses for reminders

@@ -102,7 +102,7 @@
                     </div>
                 </div>
             {foreachelse}
-                {if ($config->enable_categories == 1 && $catid != 0) || ($config->enable_categories==0)}
+                {if $catid != 0}
                     <div class="item">
                         <em>{'There are currently no FAQ\'s'|gettext}</em>
                     </div>
