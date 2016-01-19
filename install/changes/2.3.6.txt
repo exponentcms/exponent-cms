@@ -1,4 +1,4 @@
-version 2.3.6
+version 2.3.6 - was pulled
 Refine 'shipment' interface, plus address issues in v2.3.5
   * !!! adds additional security checking for XSS vulnerabilities - CVE-2015-8667
   * !!! adds support for PHP v7.x
