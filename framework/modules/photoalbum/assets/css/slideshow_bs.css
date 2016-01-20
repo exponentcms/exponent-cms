@@ -28,3 +28,33 @@ ul .slideshow-frame-ex li.slide {
 .slideshow-frame-ex .item-actions a {
     display:block;
 }
+
+.owl-carousel {
+    position: relative;
+}
+.owl-theme .owl-nav {
+     margin-top: 0!important;
+}
+.owl-prev,
+.owl-next {
+    position: absolute;
+    top: 50%;
+    /*margin-top: -10px;*/
+}
+.owl-prev i,
+.owl-next i {
+    margin-top: 4px;
+    font-size: 40px!important;
+}
+.owl-prev {
+    left: 0;
+}
+.owl-next {
+    right: 0;
+}
+.owl-carousel .owl-nav {
+    display: none;
+}
+.owl-carousel:hover .owl-nav {
+    display: block;
+}
