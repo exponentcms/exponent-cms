@@ -339,7 +339,17 @@ class mp3file
     //-----------------------------------------------------------------------------
     public static function seconds_to_mmss($duration)
     {
-        return sprintf("%d:%02d", ($duration /60), $duration %60 );
+        $trailSeconds = $duration % 60;
+       	$minutes = floor($duration / 60);
+       	if ($minutes >= 60) {
+       		$hour = floor($minutes / 60);
+       		$minutes = $minutes % 60;
+//       		return $hour . ':' . $minutes . ':' . $trailSeconds;
+            return sprintf("%02d:%02d:%02d", $hour, $minutes, $trailSeconds);
+       	} else {
+//            return $minutes . ':' . $trailSeconds;
+            return sprintf("%02d:%02d", $minutes, $trailSeconds);
+       	}
     }
 
     // Get ID3 meta tags
