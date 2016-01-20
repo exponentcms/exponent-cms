@@ -255,7 +255,7 @@
                 filebrowserWindowWidth : {/literal}{$smarty.const.FM_WIDTH}{literal},
                 filebrowserWindowHeight : {/literal}{$smarty.const.FM_HEIGHT}{literal},
                 filebrowserImageBrowseLinkUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
-                filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck
+                filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
                 extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
