@@ -149,7 +149,7 @@
                         "Yes": function() {
                             $.ajax({
                                 type: "POST",
-                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+data,
                                 success:function(msg) {
                                     if (workflow) {
@@ -167,7 +167,7 @@
                         "No, Undo All Changes":  function() {
                             $.ajax({
                                 type: "POST",
-                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type=revert",
                                 success:function(msg) {
                     //                var msg = $.parseJSON(data);
@@ -186,7 +186,7 @@
             } else {
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+data,
                     success:function(msg) {
                         if (workflow) {
@@ -330,7 +330,7 @@
             event.preventDefault();
             $.ajax({
                 type: "POST",
-                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id=0",
                 success:function(msg) {
                     data = $.parseJSON(msg.data);
@@ -363,7 +363,7 @@
             var item = ctrl.attr('id').split('-');
             $.ajax({
                 type: "POST",
-                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title&value=title+placeholder",
                 success: function(msg) {
                     data = $.parseJSON(msg.data);
@@ -393,7 +393,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=deleteItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=delete_item&ajax_action=1&json=1&src="+src,
                     data: "id=" + item[1],
                     success: function(msg) {
                         $('#text-' + msg.data).remove();
@@ -413,7 +413,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type=title",
                     success: function(msg) {
                         data = $.parseJSON(msg.data);
