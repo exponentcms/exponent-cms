@@ -134,7 +134,7 @@ elFinder.prototype._options = {
 	 */
 	commands : [
 		'pixlr',
-		'open', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
+		'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
 		'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy', 
 		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
 		'resize', 'sort', 'netmount', 'netunmount', 'places', 'chmod', 'links'
@@ -662,12 +662,20 @@ elFinder.prototype._options = {
 
 	/**
 	 * Sync content interval
-	 * @todo - fix in elFinder
+	 *
 	 * @type Number
 	 * @default  0 (do not sync)
 	 */
 	sync : 0,
 	
+	/**
+	 * Sync start on load if sync value >= 1000
+	 *
+	 * @type     Bool
+	 * @default  true
+	 */
+	syncStart : true,
+
 	/**
 	 * How many thumbnails create in one request
 	 *
@@ -697,9 +705,9 @@ elFinder.prototype._options = {
 		// navbarfolder menu
 		navbar : ['open', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
-		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'sort', '|', 'info' , 'chmod'],
+		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'sort', '|', 'info'],
 		// current directory file menu
-		files  : ['getfile', '|','open', 'quicklook', '|', 'download', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod']
+		files  : ['getfile', '|','open', 'opendir', 'quicklook', '|', 'download', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod']
 	},
 
 	/**

@@ -579,7 +579,7 @@ $.fn.elfindertree = function(fm, opts) {
 						return;
 					}
 					
-					fm.trigger('searchend');
+					fm.trigger('searchend', { noupdate: true });
 				
 					if (hash != fm.cwd().hash && !link.hasClass(disabled)) {
 						fm.exec('open', hash);
@@ -764,10 +764,6 @@ $.fn.elfindertree = function(fm, opts) {
 					}
 				}
 			}
-		})
-		// add/remove active class for current dir
-		.bind('search searchend', function(e) {
-			$('#'+fm.navHash2Id(fm.cwd().hash))[e.type == 'search' ? 'removeClass' : 'addClass'](active);
 		})
 		// lock/unlock dirs while moving
 		.bind('lockfiles unlockfiles', function(e) {

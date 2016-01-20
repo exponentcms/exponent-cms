@@ -1,5 +1,26 @@
 <?php
 
+// Implement similar functionality in PHP 5.2 or 5.3
+// http://php.net/manual/class.recursivecallbackfilteriterator.php#110974
+if (! class_exists('RecursiveCallbackFilterIterator', false)) {
+	class RecursiveCallbackFilterIterator extends RecursiveFilterIterator {
+	   
+	    public function __construct ( RecursiveIterator $iterator, $callback ) {
+	        $this->callback = $callback;
+	        parent::__construct($iterator);
+	    }
+	   
+	    public function accept () {
+	        $callback = $this->callback;
+	        return $callback(parent::current(), parent::key(), parent::getInnerIterator());
+	    }
+	   
+	    public function getChildren () {
+	        return new self($this->getInnerIterator()->getChildren(), $this->callback);
+	    }
+	}
+}
+
 /**
  * elFinder driver for local filesystem.
  *
@@ -23,6 +44,13 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @var int
 	 **/
 	protected $archiveSize = 0;
+	
+	/**
+	 * Current query word on doSearch
+	 *
+	 * @var string
+	 **/
+	private $doSearchCurrentQuery = '';
 	
 	/**
 	 * Constructor
@@ -53,8 +81,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function init() {
 		// Normalize directory separator for windows
 		if (DIRECTORY_SEPARATOR !== '/') {
-			foreach(array('path', 'tmpPath', 'quarantine') as $key) {
-				if ($this->options[$key]) {
+			foreach(array('path', 'tmbPath', 'tmpPath', 'quarantine') as $key) {
+				if (!empty($this->options[$key])) {
 					$this->options[$key] = str_replace('/', DIRECTORY_SEPARATOR, $this->options[$key]);
 				}
 			}
@@ -73,6 +101,17 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			}
 		}
 		$this->root = $this->getFullPath($this->root, $cwd);
+		if (!empty($this->options['startPath'])) {
+			$this->options['startPath'] = $this->getFullPath($this->options['startPath'], $cwd);
+		}
+		
+		if (is_null($this->options['syncChkAsTs'])) {
+			$this->options['syncChkAsTs'] = true;
+		}
+		if (is_null($this->options['syncCheckFunc'])) {
+			$this->options['syncCheckFunc'] = array($this, 'localFileSystemInotify');
+		}
+		
 		return true;
 	}
 	
@@ -95,6 +134,13 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		}
 
 		parent::configure();
+		
+		// set $this->tmp by options['tmpPath']
+		if (!empty($this->options['tmpPath'])) {
+			if ((is_dir($this->options['tmpPath']) || @mkdir($this->options['tmpPath'], 0755, true)) && is_writable($this->options['tmpPath'])) {
+				$this->tmp = $this->options['tmpPath'];
+			}
+		}
 		
 		// if no thumbnails url - try detect it
 		if ($root['read'] && !$this->tmbURL && $this->URL) {
@@ -136,6 +182,49 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 					'hidden'  => true
 			);
 		}
+	}
+	
+	/**
+	 * Long pooling sync checker
+	 * This function require server command `inotifywait`
+	 * If `inotifywait` need full path, Please add `define('ELFINER_INOTIFYWAIT_PATH', '/PATH_TO/inotifywait');` into connector.php
+	 * 
+	 * @param string     $path
+	 * @param int        $standby
+	 * @param number     $compare
+	 * @return number|bool
+	 */
+	public function localFileSystemInotify($path, $standby, $compare) {
+		if (isset($this->sessionCache['localFileSystemInotify_disable'])) {
+			return false;
+		}
+		$path = realpath($path);
+		$mtime = filemtime($path);
+		if ($mtime != $compare) {
+			return $mtime;
+		}
+		$inotifywait = defined('ELFINER_INOTIFYWAIT_PATH')? ELFINER_INOTIFYWAIT_PATH : 'inotifywait';
+		$path = escapeshellarg($path);
+		$standby = max(1, intval($standby));
+		$cmd = $inotifywait.' '.$path.' -t '.$standby.' -e moved_to,moved_from,move,create,delete,delete_self';
+		$this->procExec($cmd , $o, $r);
+		if ($r === 0) {
+			// changed
+			clearstatcache();
+			return filemtime($path);
+		} else if ($r === 2) {
+			// not changed (timeout)
+			return $compare;
+		}
+		// error
+		// cache to $_SESSION
+		$sessionStart = $this->sessionRestart();
+		if ($sessionStart) {
+			$this->sessionCache['localFileSystemInotify_disable'] = true;
+			session_write_close();
+		}
+		
+		return false;
 	}
 	
 	/*********************************************************************/
@@ -452,11 +541,32 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function _subdirs($path) {
 
+		$dirs = false;
 		if (is_dir($path)) {
-			$path = strtr($path, array('['  => '\\[', ']'  => '\\]', '*'  => '\\*', '?'  => '\\?'));
-			return (bool)glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
+			$dirItr = new ParentIterator(
+				new RecursiveDirectoryIterator($path,
+					FilesystemIterator::SKIP_DOTS |
+					(defined('RecursiveDirectoryIterator::FOLLOW_SYMLINKS')?
+						RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0)
+				)
+			);
+			$dirItr->rewind();
+			if ($dirItr->hasChildren()) {
+				$dirs = true;
+				$name = $dirItr->getSubPathName();
+				while($name) {
+					if (!$this->attr($path . DIRECTORY_SEPARATOR . $name, 'read', null, true)) {
+						$dirs = false;
+						$dirItr->next();
+						$name = $dirItr->getSubPathName();
+						continue;
+					}
+					$dirs = true;
+					break;
+				}
+			}
 		}
-		return false;
+		return $dirs;
 	}
 	
 	/**
@@ -1003,7 +1113,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	}
 
 	/******************** Over write (Optimized) functions *************************/
-	
+
 	/**
 	 * Recursive files search
 	 *
@@ -1016,26 +1126,39 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function doSearch($path, $q, $mimes) {
 		if ($this->encoding) {
-			// non UTF-8 has problem of glob() results
+			// non UTF-8 use elFinderVolumeDriver::doSearch()
 			return parent::doSearch($path, $q, $mimes);
 		}
-		
-		static $escaper;
-		if (!$escaper) {
-			$escaper = array(
-				'['  => '\\[',
-				']'  => '\\]',
-				'*'  => '\\*',
-				'?'  => '\\?'
+
+		$this->doSearchCurrentQuery = $q;
+		$match = array();
+		try {
+			$iterator = new RecursiveIteratorIterator(
+				new RecursiveCallbackFilterIterator(
+					new RecursiveDirectoryIterator($path,
+						FilesystemIterator::KEY_AS_PATHNAME |
+						FilesystemIterator::SKIP_DOTS |
+						(defined('RecursiveDirectoryIterator::FOLLOW_SYMLINKS')?
+							RecursiveDirectoryIterator::FOLLOW_SYMLINKS : 0)
+					),
+					array($this, 'localFileSystemSearchIteratorFilter')
+				),
+				RecursiveIteratorIterator::SELF_FIRST,
+				RecursiveIteratorIterator::CATCH_GET_CHILD
 			);
-		}
+			foreach ($iterator as $key => $node) {
+				if ($node->isDir()) {
+					if ($this->stripos($node->getFilename(), $q) !== false) {
+						$match[] = $key;
+					}
+				} else {
+					$match[] = $key;
+				}
+			}
+		} catch (Exception $e) {}
 		
 		$result = array();
 		
-		$path = strtr($path, $escaper);
-		$_q = strtr($q, $escaper);
-		$dirs = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*', GLOB_ONLYDIR);
-		$match = glob(rtrim($path, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . '*'.$_q.'*', GLOB_NOSORT);
 		if ($match) {
 			foreach($match as $p) {
 				$stat = $this->stat($p);
@@ -1061,17 +1184,18 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				}
 			}
 		}
-		if ($dirs) {
-			foreach($dirs as $dir) {
-				$stat = $this->stat($dir);
-				if ($stat['read'] && !isset($stat['alias'])) {
-					@set_time_limit(30);
-					$result = array_merge($result, $this->doSearch($dir, $q, $mimes));
-				}
-			}
-		}
-	
+		
 		return $result;
+	}
+
+	/******************** Original local functions *************************/
+
+	public function localFileSystemSearchIteratorFilter($file, $key, $iterator) {
+		if ($iterator->hasChildren()) {
+			return (bool)$this->attr($key, 'read', null, true);
+		}
+		return ($this->stripos($file->getFilename(), $this->doSearchCurrentQuery) === false)? false : true;
 	}
 	
 } // END class 
+

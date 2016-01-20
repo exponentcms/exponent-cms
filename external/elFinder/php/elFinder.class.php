@@ -83,7 +83,7 @@ class elFinder {
 	 * @var array
 	 **/
 	protected $commands = array(
-		'open'      => array('target' => false, 'tree' => false, 'init' => false, 'mimes' => false),
+		'open'      => array('target' => false, 'tree' => false, 'init' => false, 'mimes' => false, 'compare' => false),
 		'ls'        => array('target' => true, 'mimes' => false),
 		'tree'      => array('target' => true),
 		'parents'   => array('target' => true),
@@ -102,9 +102,9 @@ class elFinder {
 		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false),
 		'extract'   => array('target' => true, 'mimes' => false, 'makedir' => false),
 		'search'    => array('q' => true, 'mimes' => false, 'target' => false),
-		'info'      => array('targets' => true),
+		'info'      => array('targets' => true, 'compare' => false),
 		'dim'       => array('target' => true),
-		'resize'    => array('target' => true, 'width' => true, 'height' => true, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false),
+		'resize'    => array('target' => true, 'width' => true, 'height' => true, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false),
 		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => false, 'pass' => false, 'alias' => false, 'options' => false),
 		'url'       => array('target' => true, 'options' => false),
 		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
@@ -153,7 +153,7 @@ class elFinder {
 	protected $sessionCloseEarlier = true;
 
 	/**
-	 * SESSION use commands default is `netmount`, `netunmount` @see __construct()
+	 * SESSION use commands @see __construct()
 	 * 
 	 * @var array
 	 */
@@ -258,6 +258,7 @@ class elFinder {
 	const ERROR_FTP_MKDIR 		= 'errFtpMkdir';
 	const ERROR_ARCHIVE_EXEC 	= 'errArchiveExec';
 	const ERROR_EXTRACT_EXEC 	= 'errExtractExec';
+	const ERROR_SEARCH_TIMEOUT    = 'errSearchTimeout';    // 'Timed out while searching "$1". Search result is partial.'
 
 	/**
 	 * Constructor
@@ -267,12 +268,12 @@ class elFinder {
 	 * @author Dmitry (dio) Levashov
 	 **/
 	public function __construct($opts) {
-		if (session_id() == '') {
-			session_start();
-		}
-		$sessionUseCmds = array('netmount', 'netunmount');
+		// try session start | restart
+		@session_start();
+		
+		$sessionUseCmds = array();
 		if (isset($opts['sessionUseCmds']) && is_array($opts['sessionUseCmds'])) {
-			$sessionUseCmds = array_merge($sessionUseCmds, $opts['sessionUseCmds']);
+			$sessionUseCmds = $opts['sessionUseCmds'];
 		}
 
 		// set self::$volumesCnt by HTTP header "X-elFinder-VolumesCntStart"
@@ -360,7 +361,7 @@ class elFinder {
 						$id = $volume->id();
 						
 						$this->volumes[$id] = $volume;
-						if (!$this->default && $volume->isReadable()) {
+						if ((!$this->default || $volume->root() !== $volume->defaultPath()) && $volume->isReadable()) {
 							$this->default = $this->volumes[$id]; 
 						}
 					} else {
@@ -549,7 +550,13 @@ class elFinder {
 		
 		// unlock session data for multiple access
 		$this->sessionCloseEarlier && $args['sessionCloseEarlier'] && session_id() && session_write_close();
-		unset($this->sessionCloseEarlier);
+		
+		if (substr(PHP_OS,0,3) === 'WIN') {
+			// set time out
+			if (($_max_execution_time = ini_get('max_execution_time')) && $_max_execution_time < 300) {
+				@set_time_limit(300);
+			}
+		}
 		
 		$result = $this->$cmd($args);
 		
@@ -716,6 +723,9 @@ class elFinder {
 	}
 	
 	protected function netmount($args) {
+		// try session restart
+		@session_start();
+		
 		$options  = array();
 		$protocol = $args['protocol'];
 		
@@ -811,6 +821,8 @@ class elFinder {
 		$volume = $this->volume($target);
 		$cwd    = $volume ? $volume->dir($target) : false;
 		$hash   = $init ? 'default folder' : '#'.$target;
+		$sleep  = 0;
+		$compare = '';
 
 		// on init request we can get invalid dir hash -
 		// dir which can not be opened now, but remembered by client,
@@ -829,7 +841,7 @@ class elFinder {
 
 		$files = array();
 
-		// get folders trees
+		// get other volume root
 		if ($tree) {
 			foreach ($this->volumes as $id => $v) {
 				$files[] = $v->file($v->root());
@@ -839,6 +851,34 @@ class elFinder {
 		// get current working directory files list and add to $files if not exists in it
 		if (($ls = $volume->scandir($cwd['hash'])) === false) {
 			return array('error' => $this->error(self::ERROR_OPEN, $cwd['name'], $volume->error()));
+		}
+		// long polling mode
+		if ($args['compare']) {
+			$sleep = max(1, (int)$volume->getOption('lsPlSleep'));
+			$limit = max(1, (int)$volume->getOption('plStandby') / $sleep) + 1;
+			$timelimit = ini_get('max_execution_time');
+			$compare = $args['compare'];
+			do {
+				$timelimit && @ set_time_limit($timelimit + $sleep);
+				$_mtime = 0;
+				foreach($ls as $_f) {
+					$_mtime = max($_mtime, $_f['ts']);
+				}
+				$compare = strval(count($ls)).':'.strval($_mtime);
+				if ($compare !== $args['compare']) {
+					break;
+				}
+				if (--$limit) {
+					sleep($sleep);
+					$volume->clearstatcache();
+					if (($ls = $volume->scandir($cwd['hash'])) === false) {
+						break;
+					}
+				}
+			} while($limit);
+			if ($ls === false) {
+				return array('error' => $this->error(self::ERROR_OPEN, $cwd['name'], $volume->error()));
+			}
 		}
 		
 		if ($ls) {
@@ -855,7 +895,11 @@ class elFinder {
 			'options' => $volume->options($cwd['hash']),
 			'files'   => $files
 		);
-
+		
+		if ($compare) {
+			$result['cwd']['compare'] = $compare;
+		}
+		
 		if (!empty($args['init'])) {
 			$result['api'] = $this->version;
 			$result['uplMaxSize'] = ini_get('upload_max_filesize');
@@ -973,9 +1017,10 @@ class elFinder {
 			return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
 		}
 
+		// allow change MIME type by 'file.pre' callback functions
+		$mime = isset($args['mime'])? $args['mime'] : $file['mime'];
 		if ($download) {
 			$disp = 'attachment';
-			$mime = $file['mime'];
 		} else {
 			$dispInlineRegex = $volume->getOption('dispInlineRegex');
 			$inlineRegex = false;
@@ -990,7 +1035,6 @@ class elFinder {
 			if (!$inlineRegex) {
 				$inlineRegex = '#^(?:(?:image|text)|application/x-shockwave-flash$)#';
 			}
-			$mime = $file['mime'];
 			$disp  = preg_match($inlineRegex, $mime)? 'inline' : 'attachment';
 		}
 		
@@ -1438,139 +1482,6 @@ class elFinder {
 	}
 	
 	/**
-	 * Check chunked upload files
-	 * 
-	 * @param string $tmpname  uploaded temporary file path
-	 * @param string $chunk    uploaded chunk file name
-	 * @param string $cid      uploaded chunked file id
-	 * @param string $tempDir  temporary dirctroy path
-	 * @return array (string JoinedTemporaryFilePath, string FileName) or (empty, empty)
-	 * @author Naoki Sawada
-	 */
-	private function checkChunkedFile($tmpname, $chunk, $cid, $tempDir, $volume = null) {
-		if (preg_match('/^(.+)(\.\d+_(\d+))\.part$/s', $chunk, $m)) {
-			$fname = $m[1];
-			$encname = md5($cid . '_' . $fname);
-			$base = $tempDir . DIRECTORY_SEPARATOR . 'ELF' . $encname;
-			$clast = intval($m[3]);
-			if (is_null($tmpname)) {
-				ignore_user_abort(true);
-				sleep(10); // wait 10 sec
-				// chunked file upload fail
-				foreach(glob($base . '*') as $cf) {
-					@unlink($cf);
-				}
-				ignore_user_abort(false);
-				return;
-			}
-			
-			$range = isset($_POST['range'])? trim($_POST['range']) : '';
-			if ($range && preg_match('/^(\d+),(\d+),(\d+)$/', $range, $ranges)) {
-				$start = $ranges[1];
-				$len   = $ranges[2];
-				$size  = $ranges[3];
-				$tmp = $base . '.part';
-				$csize = filesize($tmpname);
-				
-				$tmpExists = is_file($tmp);
-				if (!$tmpExists) {
-					// check upload max size
-					$uploadMaxSize = $volume->getUploadMaxSize();
-					if ($uploadMaxSize > 0 && $size > $uploadMaxSize) {
-						return array(self::ERROR_UPLOAD_FILE_SIZE, false);
-					}
-					// make temp file
-					$ok = false;
-					if ($fp = fopen($tmp, 'wb')) {
-						flock($fp, LOCK_EX);
-						$ok = ftruncate($fp, $size);
-						flock($fp, LOCK_UN);
-						fclose($fp);
-						touch($base);
-					}
-					if (!$ok) {
-						return array(self::ERROR_UPLOAD_TEMP, false);
-					}
-				} else {
-					// wait until makeing temp file (for anothor session)
-					$cnt = 100; // Time limit 10 sec
-					while(!is_file($base) && --$cnt) {
-						usleep(100000); // wait 100ms
-					}
-					if (!$cnt) {
-						return array(self::ERROR_UPLOAD_TEMP, false);
-					}
-				}
-				
-				// check size info
-				if ($len != $csize || $start + $len > $size || ($tmpExists && $size != filesize($tmp))) {
-					return array(self::ERROR_UPLOAD_TEMP, false);
-				}
-				
-				// write chunk data
-				$writelen = 0;
-				$src = fopen($tmpname, 'rb');
-				$fp = fopen($tmp, 'cb');
-				fseek($fp, $start);
-				$writelen = stream_copy_to_stream($src, $fp, $len);
-				fclose($fp);
-				fclose($src);
-				if ($writelen != $len) {
-					return array(self::ERROR_UPLOAD_TEMP, false);
-				}
-				
-				// write counts
-				file_put_contents($base, "\0", FILE_APPEND);
-				
-				if (filesize($base) >= $clast + 1) {
-					// Completion
-					unlink($base);
-					return array($tmp, $fname);
-				}
-			} else {
-				// old way
-				$part = $base . $m[2];
-				if (move_uploaded_file($tmpname, $part)) {
-					@chmod($part, 0600);
-					if ($clast < count(glob($base . '*'))) {
-						$parts = array();
-						for ($i = 0; $i <= $clast; $i++) {
-							$name = $base . '.' . $i . '_' . $clast;
-							if (is_readable($name)) {
-								$parts[] = $name;
-							} else {
-								$parts = null;
-								break;
-							}
-						}
-						if ($parts) {
-							if (!is_file($base)) {
-								touch($base);
-								if ($resfile = tempnam($tempDir, 'ELF')) {
-									$target = fopen($resfile, 'wb');
-									foreach($parts as $f) {
-										$fp = fopen($f, 'rb');
-										while (!feof($fp)) {
-											fwrite($target, fread($fp, 8192));
-										}
-										fclose($fp);
-										unlink($f);
-									}
-									fclose($target);
-									unlink($base);
-									return array($resfile, $fname);
-								}
-								unlink($base);
-							}
-						}
-					}
-				}
-			}
-		}
-		return array('', '');
-	}
-	
-	/**
 	 * Get temporary dirctroy path
 	 * 
 	 * @param  string $volumeTempPath
@@ -1582,22 +1493,19 @@ class elFinder {
 		if ($this->uploadTempPath) {
 			$testDirs[] = rtrim(realpath($this->uploadTempPath), DIRECTORY_SEPARATOR);
 		}
-		if (function_exists('sys_get_temp_dir')) {
-			$testDirs[] = sys_get_temp_dir();
-		}
 		if ($volumeTempPath) {
 			$testDirs[] = rtrim(realpath($volumeTempPath), DIRECTORY_SEPARATOR);
 		}
+		if (function_exists('sys_get_temp_dir')) {
+			$testDirs[] = sys_get_temp_dir();
+		}
 		$tempDir = '';
-		$test = DIRECTORY_SEPARATOR . microtime(true);
 		foreach($testDirs as $testDir) {
 			if (!$testDir || !is_dir($testDir)) continue;
-			$testFile = $testDir.$test;
-			if (touch($testFile)) {
-				unlink($testFile);
+			if (is_writable($testDir)) {
 				$tempDir = $testDir;
 				$gc = time() - 3600;
-				foreach(glob($tempDir . '/ELF*') as $cf) {
+				foreach(glob($tempDir . DIRECTORY_SEPARATOR .'ELF*') as $cf) {
 					if (filemtime($cf) < $gc) {
 						@unlink($cf);
 					}
@@ -1654,6 +1562,140 @@ class elFinder {
 	}
 	
 	/**
+	 * Check chunked upload files
+	 * 
+	 * @param string $tmpname  uploaded temporary file path
+	 * @param string $chunk    uploaded chunk file name
+	 * @param string $cid      uploaded chunked file id
+	 * @param string $tempDir  temporary dirctroy path
+	 * @return array (string JoinedTemporaryFilePath, string FileName) or (empty, empty)
+	 * @author Naoki Sawada
+	 */
+	private function checkChunkedFile($tmpname, $chunk, $cid, $tempDir, $volume = null) {
+		if (preg_match('/^(.+)(\.\d+_(\d+))\.part$/s', $chunk, $m)) {
+			$fname = $m[1];
+			$encname = md5($cid . '_' . $fname);
+			$base = $tempDir . DIRECTORY_SEPARATOR . 'ELF' . $encname;
+			$clast = intval($m[3]);
+			if (is_null($tmpname)) {
+				ignore_user_abort(true);
+				sleep(10); // wait 10 sec
+				// chunked file upload fail
+				foreach(glob($base . '*') as $cf) {
+					@unlink($cf);
+				}
+				ignore_user_abort(false);
+				return;
+			}
+			
+			$range = isset($_POST['range'])? trim($_POST['range']) : '';
+			if ($range && preg_match('/^(\d+),(\d+),(\d+)$/', $range, $ranges)) {
+				$start = $ranges[1];
+				$len   = $ranges[2];
+				$size  = $ranges[3];
+				$tmp = $base . '.part';
+				$csize = filesize($tmpname);
+				
+				$tmpExists = is_file($tmp);
+				if (!$tmpExists) {
+					// check upload max size
+					$uploadMaxSize = $volume->getUploadMaxSize();
+					if ($uploadMaxSize > 0 && $size > $uploadMaxSize) {
+						return array(self::ERROR_UPLOAD_FILE_SIZE, false);
+					}
+					// make temp file
+					$ok = false;
+					if ($fp = fopen($tmp, 'wb')) {
+						flock($fp, LOCK_EX);
+						$ok = ftruncate($fp, $size);
+						flock($fp, LOCK_UN);
+						fclose($fp);
+						touch($base);
+					}
+					if (!$ok) {
+						unlink($tmp);
+						return array(self::ERROR_UPLOAD_TEMP, false);
+					}
+				} else {
+					// wait until makeing temp file (for anothor session)
+					$cnt = 1200; // Time limit 120 sec
+					while(!is_file($base) && --$cnt) {
+						usleep(100000); // wait 100ms
+					}
+					if (!$cnt) {
+						return array(self::ERROR_UPLOAD_TEMP, false);
+					}
+				}
+				
+				// check size info
+				if ($len != $csize || $start + $len > $size || ($tmpExists && $size != filesize($tmp))) {
+					return array(self::ERROR_UPLOAD_TEMP, false);
+				}
+				
+				// write chunk data
+				$writelen = 0;
+				$src = fopen($tmpname, 'rb');
+				$fp = fopen($tmp, 'cb');
+				fseek($fp, $start);
+				$writelen = stream_copy_to_stream($src, $fp, $len);
+				fclose($fp);
+				fclose($src);
+				if ($writelen != $len) {
+					return array(self::ERROR_UPLOAD_TEMP, false);
+				}
+				
+				// write counts
+				file_put_contents($base, "\0", FILE_APPEND | LOCK_EX);
+				
+				if (filesize($base) >= $clast + 1) {
+					// Completion
+					unlink($base);
+					return array($tmp, $fname);
+				}
+			} else {
+				// old way
+				$part = $base . $m[2];
+				if (move_uploaded_file($tmpname, $part)) {
+					@chmod($part, 0600);
+					if ($clast < count(glob($base . '*'))) {
+						$parts = array();
+						for ($i = 0; $i <= $clast; $i++) {
+							$name = $base . '.' . $i . '_' . $clast;
+							if (is_readable($name)) {
+								$parts[] = $name;
+							} else {
+								$parts = null;
+								break;
+							}
+						}
+						if ($parts) {
+							if (!is_file($base)) {
+								touch($base);
+								if ($resfile = tempnam($tempDir, 'ELF')) {
+									$target = fopen($resfile, 'wb');
+									foreach($parts as $f) {
+										$fp = fopen($f, 'rb');
+										while (!feof($fp)) {
+											fwrite($target, fread($fp, 8192));
+										}
+										fclose($fp);
+										unlink($f);
+									}
+									fclose($target);
+									unlink($base);
+									return array($resfile, $fname);
+								}
+								unlink($base);
+							}
+						}
+					}
+				}
+			}
+		}
+		return array('', '');
+	}
+	
+	/**
 	 * Save uploaded files
 	 *
 	 * @param  array
@@ -1706,9 +1748,18 @@ class elFinder {
 		
 		if (empty($files)) {
 			if (!$args['upload'] && $args['name'] && is_array($args['name'])) {
+				$error = '';
 				$result['name'] = array();
 				foreach($args['name'] as $_i => $_name) {
+					if (!$volume->isUploadableByName($_name)) {
+						$error = $this->error(self::ERROR_UPLOAD_FILE, $_name, self::ERROR_UPLOAD_FILE_MIME);
+						break;
+					}
 					$result['name'][$_i] = preg_replace($ngReg, '_', $_name);
+				}
+				if ($error) {
+					$result['error'] = $error;
+					return $result;
 				}
 				$result = array_merge_recursive($result, $this->ls($args));
 				if (empty($result['list'])) {
@@ -2092,17 +2143,25 @@ class elFinder {
 		$mimes  = !empty($args['mimes']) && is_array($args['mimes']) ? $args['mimes'] : array();
 		$target = !empty($args['target'])? $args['target'] : null;
 		$result = array();
+		$errors = array();
 
-		if (!is_null($target)) {
-			$volume = $this->volume($target);
-			$result = $volume->search($q, $mimes, $target);
+		if ($target) {
+			if ($volume = $this->volume($target)) {
+				$result = $volume->search($q, $mimes, $target);
+				$errors = array_merge($errors, $volume->error());
+			}
 		} else {
 			foreach ($this->volumes as $volume) {
 				$result = array_merge($result, $volume->search($q, $mimes));
+				$errors = array_merge($errors, $volume->error());
 			}
 		}
 		
-		return array('files' => $result);
+		$result = array('files' => $result);
+		if ($errors) {
+			$result['warning'] = $errors;
+		}
+		return $result;
 	}
 	
 	/**
@@ -2114,15 +2173,56 @@ class elFinder {
 	 **/
 	protected function info($args) {
 		$files = array();
-		
-		foreach ($args['targets'] as $hash) {
-			if (($volume = $this->volume($hash)) != false
-			&& ($info = $volume->file($hash)) != false) {
-				$files[] = $info;
+		$sleep = 0;
+		$compare = null;
+		// long polling mode
+		if ($args['compare'] && count($args['targets']) === 1) {
+			$compare = intval($args['compare']);
+			$hash = $args['targets'][0];
+			if ($volume = $this->volume($hash)) {
+				$standby = (int)$volume->getOption('plStandby');
+				$_compare = false;
+				if (($syncCheckFunc = $volume->getOption('syncCheckFunc')) && is_callable($syncCheckFunc)) {
+					$_compare = call_user_func_array($syncCheckFunc, array($volume->realpath($hash), $standby, $compare, $volume, $this));
+				}
+				if ($_compare !== false) {
+					$compare = $_compare;
+				} else {
+					$sleep = max(1, (int)$volume->getOption('tsPlSleep'));
+					$limit = max(1, $standby / $sleep) + 1;
+					$timelimit = ini_get('max_execution_time');
+					do {
+						$timelimit && @ set_time_limit($timelimit + $sleep);
+						$volume->clearstatcache();
+						if (($info = $volume->file($hash)) != false) {
+							if ($info['ts'] != $compare) {
+								$compare = $info['ts'];
+								break;
+							}
+						} else {
+							$compare = 0;
+							break;
+						}
+						if (--$limit) {
+							sleep($sleep);
+						}
+					} while($limit);
+				}
+			}
+		} else {
+			foreach ($args['targets'] as $hash) {
+				if (($volume = $this->volume($hash)) != false
+				&& ($info = $volume->file($hash)) != false) {
+					$files[] = $info;
+				}
 			}
 		}
 		
-		return array('files' => $files);
+		$result = array('files' => $files);
+		if (!is_null($compare)) {
+			$result['compare'] = strval($compare);
+		}
+		return $result;
 	}
 	
 	/**
@@ -2159,13 +2259,14 @@ class elFinder {
 		$mode   = $args['mode'];
 		$bg     = null;
 		$degree = (int)$args['degree'];
+		$quality= (int)$args['quality'];
 		
 		if (($volume = $this->volume($target)) == false
 		|| ($file = $volume->file($target)) == false) {
 			return array('error' => $this->error(self::ERROR_RESIZE, '#'.$target, self::ERROR_FILE_NOT_FOUND));
 		}
 
-		return ($file = $volume->resize($target, $width, $height, $x, $y, $mode, $bg, $degree))
+		return ($file = $volume->resize($target, $width, $height, $x, $y, $mode, $bg, $degree, $quality))
 			? array('changed' => array($file))
 			: array('error' => $this->error(self::ERROR_RESIZE, $volume->path($target), $volume->error()));
 	}

@@ -30,8 +30,12 @@ elFinder.prototype.commands.search = function() {
 	this.exec = function(q, target, mime) {
 		var fm = this.fm;
 		
-		if (typeof(q) == 'string' && q) {
-			target = target? target : null;
+		if (typeof q == 'string' && q) {
+			if (typeof target == 'object') {
+				mime = target.mime || '';
+				target = target.target || '';
+			}
+			target = target? target : '';
 			mime = mime? $.trim(mime).replace(',', ' ').split(' ') : [];
 			$.each(mime, function(){ return $.trim(this); });
 			fm.trigger('searchstart', {query : q, target : target, mimes : mime});
