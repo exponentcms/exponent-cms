@@ -131,8 +131,8 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image quickupload | visualblocks'{else}[{stripSlashes($editor->data)}]{/if}{literal};
-        var titleToolbar = 'cut copy paste pastetext | undo redo | searchreplace selectall';
+            'link unlink image quickupload | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall';
         {/literal}{/if}{literal}
 
         var setContent = function(item, data) {
@@ -212,10 +212,10 @@
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
-                tinyplugins = ['searchreplace,contextmenu,paste,link'];
+                tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
-                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code'];
+                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code,localautosave'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -258,8 +258,10 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
                 removePlugins: 'image',
+                image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
+                image2_captionedClass: 'image-captioned',
                 {/literal}{$editor->additionalConfig}{literal}
                 height : 200,
                 autoGrow_minHeight : 200,
@@ -287,7 +289,7 @@
                 toolbar_items_size: 'small',
                 image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
-                importcss_append: true,
+//                importcss_append: true,
                 end_container_on_empty_block: true,
                 file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({
