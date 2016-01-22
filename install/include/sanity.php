@@ -129,6 +129,7 @@ function sanity_checkFiles() {
 		'tmp/'=>sanity_checkDirectory('tmp',SANITY_READWRITE),
 		'tmp/cache'=>sanity_checkDirectory('tmp/cache',SANITY_READWRITE),
         'tmp/css'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
+		'tmp/elfinder'=>sanity_checkDirectory('tmp/css',SANITY_READWRITE),
         'tmp/extensionuploads'=>sanity_checkFile(BASE.'tmp/extensionuploads',true,SANITY_READWRITE),
         'tmp/img_cache'=>sanity_checkDirectory('tmp/img_cache',SANITY_READWRITE),
 		'tmp/minify'=>sanity_checkDirectory('tmp/minify',SANITY_READWRITE),
@@ -152,9 +153,19 @@ function sanity_checkServer() {
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
 		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
-		gt('File Uploads Enabled')=>_sanity_checkTemp(ini_get('upload_tmp_dir')),
-		gt('Temporary File Creation')=>_sanity_checkTemp(BASE.'tmp'),
 	);
+	$fiup = _sanity_checkTemp(ini_get('upload_tmp_dir'));
+	$tmpf = _sanity_checkTemp(BASE.'tmp');
+	if ($fiup[0] === SANITY_ERROR) {  // upload_tmp_dir failed, let's try tmp
+		if ($tmpf[0] === SANITY_ERROR) {
+			$status = array_merge($status, array(gt('File Uploads Enabled')=>$fiup));
+		} else {
+			$status = array_merge($status, array(gt('File Uploads Enabled')=>array(SANITY_WARNING, gt('Failed'))));
+		}
+	} else {
+		$status = array_merge($status, array(gt('File Uploads Enabled')=>$fiup));
+	}
+	$status = array_merge($status, array(gt('Temporary File Creation')=>$tmpf));
 	return $status;
 }
 
