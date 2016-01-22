@@ -124,8 +124,10 @@ if (MAINTENANCE_MODE && !$user->isAdmin() && !expJavascript::inAjaxAction() && !
 	}
 }
 
+if (DEBUG_HISTORY)
+	eDebug(expHistory::print_history());
 //write page build/load time if in DEVELOPMENT mode with logging
-if(DEVELOPMENT && LOGGER)
+if (DEVELOPMENT && LOGGER)
 	eLog($timer->mark() . ' - ' . $section . '/' . $sectionObj->sef_name, gt('LOAD TIME'));
 
 if (EXPORT_AS_PDF == 1) {

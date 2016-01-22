@@ -292,6 +292,26 @@ class expHistory {
     	redirect_to(array('controller'=>'login', 'action'=>'loginredirect'));
 	}
 
+	public static function print_history() {
+		global $history;
+
+		$types = array('viewable', 'editable', 'manageable');
+		$ret = "<h2>Current expHistory</h2>";
+		foreach ($types as $type) {
+			$ret .= "<strong>" . $type . ":</strong><br>";
+			$hist_type = array_reverse($history->history[$type], true);
+			foreach ($hist_type as $index=>$hist) {
+				$ret .= "&#160;&#160;" . $index ." - " . $hist['url_type'] . ' : ';
+				foreach ($hist['params'] as $key=>$value) {
+					$ret .= $key . '=>' . $value .", ";
+				}
+				$ret .= "<br>";
+			}
+		}
+		$ret .= "<strong>expHistory Lasts:</strong> (not editable) " . $history->history['lasts']['not_editable'] . ' - (type) ' . $history->history['lasts']['type'];
+		return $ret;
+	}
+
 }
 
 ?>
