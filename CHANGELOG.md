@@ -22,6 +22,8 @@ Version 2.3.8
 !!! Regression fix manage categories would only work with 1st 50 system categories
 !!! Regression fix some blog views displayed default date/author/category instead of item's info
 !!! Regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
+  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
+  - now allows optional image and author selection per podcast/rss feed
   - better 'read more' implementation
   - elFinder cache now moved to its own /tmp folder
   - new global setting to Save Inline Editing Changes w/o Prompt
@@ -29,6 +31,8 @@ Version 2.3.8
     - removes display of urls when printing from Chrome browser with a bootstrap 3 theme
     - updates bootstrap 3 rss/ical link icons to be orange regardless of font color
     - updates form input placeholder styles to look less like an entry
+    - implements a twitter bootstrap 3 based date/time picker widget
+    - implements a new slideshow/carousel for bootstrap 3 photoalbum (Owl Carousel 2)
   - CKEditor now used as file editor within elFinder if set as system WYSIWYG editor
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete

@@ -148,11 +148,11 @@ function sanity_checkServer() {
 		'PHP 5.3.1+'=>_sanity_checkPHPVersion(),
 		gt('ZLib Support')=>_sanity_checkZlib(),
         gt('cURL Library Support')=>_sanity_checkcURL(),
-        gt('FileInfo Support')=>_sanity_checkFileinfo(),
-        gt('File Upload Support')=>_sanity_checkUploadSize(),
 		gt('XML (Expat) Library Support')=>_sanity_checkXML(),
 		gt('Safe Mode Not Enabled')=>_sanity_CheckSafeMode(),
 		gt('Open BaseDir Not Enabled')=>_sanity_checkOpenBaseDir(),
+		gt('FileInfo Support')=>_sanity_checkFileinfo(),
+		gt('File Upload Support')=>_sanity_checkUploadSize(),
 	);
 	$fiup = _sanity_checkTemp(ini_get('upload_tmp_dir'));
 	$tmpf = _sanity_checkTemp(BASE.'tmp');

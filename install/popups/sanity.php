@@ -91,12 +91,6 @@
     </td>
 </tr>
 <tr>
-    <td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('FileInfo Support'); ?></td>
-    <td class="bodytext" valign="top">
-        <?php echo gt('PHP FileInfo support is required for several features which need server file information.'); ?>
-    </td>
-</tr>
-<tr>
 	<td id="o_xml" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('XML (Expat) Library Support'); ?></td>
 	<td class="bodytext" valign="top">
 		<?php echo gt('The web services extensions for Exponent require the Expat Library.  If you are not using web services or module that are dependent on web services, this is a safe warning to ignore.'); ?>
@@ -118,6 +112,18 @@
 		<div class="sanity_req"><?php echo gt('Exponent works best when Open BaseDir is disabled'); ?></div>
 		<br />
 		<?php echo gt('The open_basedir restriction is a security measure present in some Shared Hosting Environments.  It limits PHP scripts from dealing with files outside of a given directory.  This may cause some problems with some of Exponent\'s file operations, including the Multi-Site manager.  Ignore this error at your own risk.'); ?>
+	</td>
+</tr>
+<tr>
+	<td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('FileInfo Support'); ?></td>
+	<td class="bodytext" valign="top">
+		<?php echo gt('PHP FileInfo support is required for several features which need server file information.'); ?>
+	</td>
+</tr>
+<tr>
+	<td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('File Upload Support'); ?></td>
+	<td class="bodytext" valign="top">
+		<?php echo gt('The php.ini \'"post_max_size\' and \'upload_max_filesize\ settings may cause file upload issues if not set to same value.'); ?>
 	</td>
 </tr>
 <tr>
