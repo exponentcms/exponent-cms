@@ -523,7 +523,7 @@ class administrationController extends expController {
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache'))
             expFile::removeFilesInDirectory(BASE.'tmp/img_cache');
-        if (file_exists(BASE.'tmp/img_cache'))
+        if (file_exists(BASE.'tmp/elfinder'))
               expFile::removeFilesInDirectory(BASE.'tmp/elfinder');
 		if (file_exists(BASE.'tmp/extensionuploads'))
             expFile::removeFilesInDirectory(BASE.'tmp/extensionuploads');

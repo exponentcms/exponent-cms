@@ -54,6 +54,7 @@ class clear_cache extends upgradescript {
 		$files = array(
             BASE.'tmp/cache',  // smarty rendering cache (not currently active)
 			BASE.'tmp/css',  // exponent minified css cache
+			BASE.'tmp/elfinder',  // elfinder thumbnail cache
             BASE.'tmp/extensionuploads', // extensions are uploaded here, includes subfolders
             BASE.'tmp/img_cache', // phpThumb cache includes subfolders
 			BASE.'tmp/minify', // minify cache

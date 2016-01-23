@@ -28,6 +28,7 @@ class change_permissions2 extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 //	protected $to_version = '2.2.1';
     public $optional = true;
+    public $priority = 82; // set this to a very low priority after change_permissions
 
 	/**
 	 * name/title of upgrade script
@@ -63,7 +64,7 @@ class change_permissions2 extends upgradescript {
                 $filepath = $start_dir . '/' . $file;
                 if ( is_dir($filepath) ) {
                     chmod($filepath, $dir_perms);
-                    chmod_recursive($filepath);
+                    self::chmod_recursive($filepath);
                 } else {
                     chmod($filepath, $file_perms);
                 }
@@ -78,7 +79,7 @@ class change_permissions2 extends upgradescript {
 	 * @return bool
 	 */
 	function upgrade() {
-        chmod_recursive(BASE, 0775, 0664);
+        self::chmod_recursive(BASE, 0775, 0664);
         return (gt('All Folder and File permissions were changed to world read-only.'));
 	}
 
