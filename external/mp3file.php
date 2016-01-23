@@ -453,6 +453,8 @@ class mp3file
                             $iSL = 7;
 //                        } elseif ($this->aTV23[$i] == 'TALB') {
 //                            $iSL = 5;
+                        } elseif ($this->aTV23[$i] == 'COMM') {
+                            $iSL = 7;
                         } elseif ($this->aTV23[$i] == 'TENC') {
                             $iSL = 6;
                         }
