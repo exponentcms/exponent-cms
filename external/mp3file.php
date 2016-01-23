@@ -428,7 +428,6 @@ class mp3file
         if (substr($sSrc,0,3) == 'ID3') {
 //            $aInfo['FileName'] = $sFilepath;
             $aInfo['ID3Version'] = hexdec(bin2hex(substr($sSrc,3,1))).'.'.hexdec(bin2hex(substr($sSrc,4,1)));
-            echo 'Success';
         } else {
             return $aInfo;
         }
