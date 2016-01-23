@@ -41,7 +41,7 @@
 .order-status .panel .panel-heading {
 	border-width: medium medium 1px;
 	border-style: none none solid;
-	border-color: -moz-use-text-color -moz-use-text-color #EEE;
+	border-color: currentColor;
 	-moz-border-top-colors: none;
 	-moz-border-right-colors: none;
 	-moz-border-bottom-colors: none;
