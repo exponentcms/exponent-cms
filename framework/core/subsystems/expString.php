@@ -272,7 +272,7 @@ class expString {
      *
      * @return string
      */
-    public static function summarize($string, $strtype='html', $type='para') {
+    public static function summarize($string, $strtype='html', $type='para', $more='...') {
         $sep = ($strtype == "html" ? array("</p>", "</div>") : array("\r\n", "\n", "\r"));
         $origstring = $string;
 
@@ -283,7 +283,7 @@ class expString {
                     $string = $para[0];
                 }
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " ...";
+                    $string .= " " . $more;
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes(strip_tags($string)),ENT_QUOTES));
                 return expString::convertSmartQuotes(strip_tags($string));
@@ -294,7 +294,7 @@ class expString {
                     $string = $para[0];
                 }
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " ...";
+                    $string .= " " . $more;
                 }
     //			return str_replace("&#160;"," ",htmlspecialchars_decode(htmlentities(expString::convertSmartQuotes(strip_tags($string,'<a>')),ENT_QUOTES)));
                 return expString::convertSmartQuotes(strip_tags($string, '<a>'));
@@ -312,7 +312,7 @@ class expString {
                     $string = $para[0];
                 }
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " ...";
+                    $string .= " " . $more;
                 }
                 if (!empty($string)) {
                     $isText = true;
@@ -408,7 +408,7 @@ class expString {
                 $words = explode(" ", strip_tags($string));
                 $string = implode(" ", array_slice($words, 0, $type + 0));
                 if (strlen($string) < strlen($origstring)) {
-                    $string .= " ...";
+                    $string .= " " . $more;
                 }
     //			return str_replace("&amp;#160;"," ",htmlentities(expString::convertSmartQuotes($string),ENT_QUOTES));
                 return expString::convertSmartQuotes($string);
@@ -630,7 +630,11 @@ class expString {
    		{
    			while (list($key) = each($str))
    			{
-   				$str[$key] = self::xss_clean($str[$key]);
+                if (preg_match('/^[a-zA-Z0-9_\x7f-\xff]*$/', $key)) {  // check for valid array name
+                    $str[$key] = self::xss_clean($str[$key]);
+                } else {
+                    return null;
+                }
    			}
 
    			return $str;

@@ -103,40 +103,35 @@ class yuicalendarcontrol extends formcontrol
             $default = $this->default;
         }
 
-        $date_input = new textcontrol($default);
+        $date_input = new hiddenfieldcontrol($default);
         if ($this->horizontal) $date_input->horizontal_top = true;
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
-        $html = $date_input->toHTML(null, $name);
+        $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
 
         $script = "
             $(document).ready(function() {
-                $('#" . $idname . "').datetimepicker({
-                    datepicker: " . ($this->showdate ? 'true' : 'false') .",
-                    timepicker: " . ($this->showtime ? 'true' : 'false') .",
-                    format: '" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."',
-                    formatTime:'g:i a',
-                    onChangeMonth: function(currentTime, el) {
-                        el.val(currentTime.dateFormat('" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."'));
-                    },
-                    step: 15,
-                    dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
+                $('#" . $idname . "dateRangePicker').datetimepicker({
+                    format: '" .($this->showdate ? 'L' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'LT' : '') ."',
+                    stepping: 15,
+                    locale: '" . LOCALE . "',
+                    showTodayButton: true,
                     inline: true,
-//                    value: '".$default."'
+                    sideBySide: true,
                 });
-                $('#" . $idname . "').datetimepicker('reset');
             });
         ";
         expJavascript::pushToFoot(
             array(
-                "unique"   => '00yuical-' . $idname,
-                "jquery"   => "jquery.datetimepicker",
-                "content"  => $script,
+                "unique"    => '00yuical-' . $idname,
+                "jquery"    => "moment,bootstrap-datetimepicker",
+                "bootstrap" => "collapse,transitions",
+                "content"   => $script,
             )
         );
         return $html;

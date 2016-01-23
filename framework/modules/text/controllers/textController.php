@@ -133,7 +133,7 @@ class textController extends expController {
      * function to update the text item object sent via ajax
      * we only have to deal with a title and body which can be edited by ckeditor4 inline
      */
-    public function saveItem() {
+    public function edit_item() {
         $text = new text($this->params['id']);
         if ($this->params['type'] != 'revert') {
             if ($this->params['id'] != 0) {
@@ -159,7 +159,7 @@ class textController extends expController {
     /**
      * function to delete the text item object sent via ajax
      */
-    public function deleteItem() {
+    public function delete_item() {
         if (!empty($this->params['id'])) {
             $text = new text($this->params['id']);
             $text->delete();

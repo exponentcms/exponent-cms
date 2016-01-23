@@ -13,19 +13,20 @@
 # a mode that isn't listed here, and you tell me, I
 # will put it in the standard distribution.
 
-# The group options were added by faz2, 2/9/05.  Thanks faz!
-
 0600 
 	Accessible only to Web Server 
+
+0640
+	Group Read-only, World none
+
+0660
+	Group Readable and Writable, World none
  
-0666 
-	World Readable and Writable 
- 
-0660 
-	Group Readable and Writable 
- 
-0644 
-	World Read-only 
- 
-0640 
-	Group Read-only
+0644
+	* Group & World Read-only
+
+0664
+	Group Readable and Writable, World Read-only
+
+0666
+	Group & World Readable and Writable (Creates Security Issue!)

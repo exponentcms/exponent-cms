@@ -162,6 +162,12 @@
 	margin-right:1em;
 }
 
+.elfinder-rtl .elfinder-info-title .elfinder-cwd-icon {
+	float: right;
+	margin-right: 0;
+	margin-left: 1em;
+}
+
 .elfinder-info-title strong { display:block; padding:.3em 0 .5em 0; }
 
 .elfinder-info-tb {
@@ -249,3 +255,33 @@
 .elfinder-rtl .dialogelfinder-drag-close { left:12px; }
 
 
+/*********************** RM CONFIRM **************************/
+.elfinder-rm-title {
+	margin-bottom: .5ex;
+}
+
+.elfinder-rm-title .elfinder-cwd-icon {
+	float:left;
+	width:48px;
+	height:48px;
+	margin-right:1em;
+}
+
+.elfinder-rtl .elfinder-rm-title .elfinder-cwd-icon {
+	float: right;
+	margin-right: 0;
+	margin-left: 1em;
+}
+
+.elfinder-rm-title strong {
+	display: block;
+	/*word-wrap: break-word;*/
+	white-space: pre-wrap;
+	word-break: normal;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.elfinder-rm-title+br {
+	display: none;
+}

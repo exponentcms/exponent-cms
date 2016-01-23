@@ -55,17 +55,15 @@ class tinymcecontrol extends formcontrol
         global $user;
 
         $contentCSS = '';
-        $cssabs = BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
-        $css = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
+        $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce.css';
         if (THEME_STYLE != "" && is_file(
                 BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css'
             )
         ) {
-            $cssabs = BASE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css';
-            $css = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css';
+            $css = 'themes/' . DISPLAY_THEME . '/editors/tinymce/tinymce_' . THEME_STYLE . '.css';
         }
-        if (is_file($cssabs)) {
-            $contentCSS = "content_css : '" . $css . "',
+        if (is_file(BASE . $css)) {
+            $contentCSS = "content_css : '" . PATH_RELATIVE . $css . "',
             ";
         }
         if ($this->toolbar === '') {
@@ -76,7 +74,7 @@ class tinymcecontrol extends formcontrol
         $plugins = "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" .
                 ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                 ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" .
-                ",emoticons,paste,textcolor,importcss,quickupload";
+                ",emoticons,paste,textcolor,importcss,quickupload,localautosave";
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "plupload_basepath	: './plugins/quickupload',
                                 upload_url			: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',
@@ -139,10 +137,10 @@ class tinymcecontrol extends formcontrol
         if (empty($tb)) {
             if ($this->toolbar === 'basic') {
                 $tb = "
-                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink',";
+                toolbar: 'bold italic underline removeformat | bullist numlist | link unlink localautosave',";
             } else {
                 $tb = "
-                toolbar1: 'undo redo | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+                toolbar1: 'undo redo localautosave | styleselect formatselect fontselect fontsizeselect | cut copy paste | bold italic underline removeformat | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
                 toolbar2: 'link unlink image quickupload | print preview visualblocks fullscreen code media | forecolor backcolor emoticons";
                 if (!empty($this->plugin)) {
                     $plugs = explode(',',trim($this->plugin));
@@ -210,7 +208,7 @@ class tinymcecontrol extends formcontrol
                     image_advtab: true,
                     " . $upload . "
                     browser_spellcheck : " . $sc_brw_off . " ,
-                    importcss_append: true,
+//                    importcss_append: true,
                     style_formats: [
                         {title: 'Image Left',
                             selector: 'img', styles: {

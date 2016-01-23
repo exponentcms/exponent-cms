@@ -31,6 +31,7 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Address',			element: 'address' },
 	*/
 
+	/*
 	{ name: 'Italic Title',		element: 'h2', styles: { 'font-style': 'italic' } },
 	{ name: 'Subtitle',			element: 'h3', styles: { 'color': '#aaa', 'font-style': 'italic' } },
 	{
@@ -42,6 +43,7 @@ CKEDITOR.stylesSet.add( 'default', [
 			border: '1px solid #ccc'
 		}
 	},
+	*/
 
 	/* Inline Styles */
 
@@ -57,7 +59,7 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Superscript',		element: 'sup' },
 	*/
 
-	{ name: 'Marker',			element: 'span', attributes: { 'class': 'marker' } },
+	{ name: 'Marker',			element: 'mark' },
 
 	{ name: 'Big',				element: 'big' },
 	{ name: 'Small',			element: 'small' },
@@ -74,8 +76,8 @@ CKEDITOR.stylesSet.add( 'default', [
 	{ name: 'Cited Work',		element: 'cite' },
 	{ name: 'Inline Quotation',	element: 'q' },
 
-	{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
-	{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
+	//{ name: 'Language: RTL',	element: 'span', attributes: { 'dir': 'rtl' } },
+	//{ name: 'Language: LTR',	element: 'span', attributes: { 'dir': 'ltr' } },
 
 	/* Object Styles */
 

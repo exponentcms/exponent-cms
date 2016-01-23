@@ -14,6 +14,7 @@ class mp3file
     protected $fd;
     protected $bitpos;
     protected $mp3data;
+
     public function __construct($filename)
     {
         $this->powarr  = array(0=>1,1=>2,2=>4,3=>8,4=>16,5=>32,6=>64,7=>128);
@@ -25,6 +26,7 @@ class mp3file
         $this->fd = fopen($filename,'rb');
         $this->prefetchblock();
         $this->readmp3frame();
+        $this->get_meta_tags();
     }
     public function __destruct()
     {
@@ -337,7 +339,160 @@ class mp3file
     //-----------------------------------------------------------------------------
     public static function seconds_to_mmss($duration)
     {
-        return sprintf("%d:%02d", ($duration /60), $duration %60 );
+        $trailSeconds = $duration % 60;
+       	$minutes = floor($duration / 60);
+       	if ($minutes >= 60) {
+       		$hour = floor($minutes / 60);
+       		$minutes = $minutes % 60;
+//       		return $hour . ':' . $minutes . ':' . $trailSeconds;
+            return sprintf("%02d:%02d:%02d", $hour, $minutes, $trailSeconds);
+       	} else {
+//            return $minutes . ':' . $trailSeconds;
+            return sprintf("%02d:%02d", $minutes, $trailSeconds);
+       	}
     }
+
+    // Get ID3 meta tags
+
+    protected function get_meta_tags() {
+        $this->mp3data = array_merge($this->mp3data, $this->getTagsInfo($this->getTagsInfo()));
+    }
+
+    // variables
+    var $aTV23 = array( // array of possible sys tags (for last version of ID3)
+        'TIT2',
+        'TALB',
+        'TPE1',
+        'TPE2',
+        'TRCK',
+        'TYER',
+        'TLEN',
+        'USLT',
+        'TPOS',
+        'TCON',
+        'TENC',
+        'TCOP',
+        'TPUB',
+        'TOPE',
+        'WXXX',
+        'COMM',
+        'TCOM'
+    );
+    var $aTV23t = array( // array of titles for sys tags
+        'Title',
+        'Album',
+        'Author',
+        'AlbumAuthor',
+        'Track',
+        'Year',
+        'Length',
+        'Lyric',
+        'Desc',
+        'Genre',
+        'Encoded',
+        'Copyright',
+        'Publisher',
+        'OriginalArtist',
+        'URL',
+        'Comments',
+        'Composer'
+    );
+    var $aTV22 = array( // array of possible sys tags (for old version of ID3)
+        'TT2',
+        'TAL',
+        'TP1',
+        'TRK',
+        'TYE',
+        'TLE',
+        'ULT'
+    );
+    var $aTV22t = array( // array of titles for sys tags
+        'Title',
+        'Album',
+        'Author',
+        'Track',
+        'Year',
+        'Lenght',
+        'Lyric'
+    );
+
+    // functions
+    function getTagsInfo() {
+        // read source file
+//        $iFSize = filesize($sFilepath);
+        $iFSize = $this->mp3data['Filesize'];
+//        $vFD = fopen($sFilepath,'r');
+//        $sSrc = fread($vFD,$iFSize);
+//        fclose($vFD);
+        fseek($this->fd,0);
+        $sSrc = fread($this->fd,$iFSize);
+
+
+        // obtain base info
+        if (substr($sSrc,0,3) == 'ID3') {
+//            $aInfo['FileName'] = $sFilepath;
+            $aInfo['ID3Version'] = hexdec(bin2hex(substr($sSrc,3,1))).'.'.hexdec(bin2hex(substr($sSrc,4,1)));
+        }
+
+        // passing through possible tags of idv2 (v3 and v4)
+        if ($aInfo['ID3Version'] == '4.0' || $aInfo['ID3Version'] == '3.0') {
+            for ($i = 0; $i < count($this->aTV23); $i++) {
+                if (strpos($sSrc, $this->aTV23[$i].chr(0)) != FALSE) {
+
+                    $s = '';
+                    $iPos = strpos($sSrc, $this->aTV23[$i].chr(0));
+                    $iLen = hexdec(bin2hex(substr($sSrc,($iPos + 5),3)));
+
+                    $data = substr($sSrc, $iPos, 9 + $iLen + 1);
+                    for ($a = 0; $a < strlen($data); $a++) {
+                        $char = substr($data, $a, 1);
+                        if ($char >= ' ' && $char <= '~')
+                            $s .= $char;
+                    }
+                    if (substr($s, 0, 4) == $this->aTV23[$i]) {
+                        $iSL = 4;
+                        if ($this->aTV23[$i] == 'USLT') {
+                            $iSL = 7;
+//                        } elseif ($this->aTV23[$i] == 'TALB') {
+//                            $iSL = 5;
+                        } elseif ($this->aTV23[$i] == 'TENC') {
+                            $iSL = 6;
+                        }
+                        $aInfo[$this->aTV23t[$i]] = substr($s, $iSL);
+                    }
+                }
+            }
+        }
+
+        // passing through possible tags of idv2 (v2)
+        if($aInfo['ID3Version'] == '2.0') {
+            for ($i = 0; $i < count($this->aTV22); $i++) {
+                if (strpos($sSrc, $this->aTV22[$i].chr(0)) != FALSE) {
+
+                    $s = '';
+                    $iPos = strpos($sSrc, $this->aTV22[$i].chr(0));
+                    $iLen = hexdec(bin2hex(substr($sSrc,($iPos + 3),3)));
+
+                    $data = substr($sSrc, $iPos, 6 + $iLen);
+                    for ($a = 0; $a < strlen($data); $a++) {
+                        $char = substr($data, $a, 1);
+                        if ($char >= ' ' && $char <= '~')
+                            $s .= $char;
+                    }
+
+                    if (substr($s, 0, 3) == $this->aTV22[$i]) {
+                        $iSL = 3;
+                        if ($this->aTV22[$i] == 'ULT') {
+                            $iSL = 6;
+                        }
+                        $aInfo[$this->aTV22t[$i]] = substr($s, $iSL);
+                    }
+                }
+            }
+        }
+        return $aInfo;
+    }
+
 }
+
 ?>

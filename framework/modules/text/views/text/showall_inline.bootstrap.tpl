@@ -128,8 +128,8 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image quickupload | visualblocks'{else}[{stripSlashes($editor->data)}]{/if}{literal};
-        var titleToolbar = 'cut copy paste pastetext | undo redo | searchreplace selectall';
+            'link unlink image quickupload | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
+        var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall';
         {/literal}{/if}{literal}
 
         var setContent = function(item, data) {
@@ -149,7 +149,7 @@
                         "Yes": function() {
                             $.ajax({
                                 type: "POST",
-                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+data,
                                 success:function(msg) {
                                     if (workflow) {
@@ -167,7 +167,7 @@
                         "No, Undo All Changes":  function() {
                             $.ajax({
                                 type: "POST",
-                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type=revert",
                                 success:function(msg) {
                     //                var msg = $.parseJSON(data);
@@ -186,7 +186,7 @@
             } else {
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+data,
                     success:function(msg) {
                         if (workflow) {
@@ -205,10 +205,10 @@
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
-                tinyplugins = ['searchreplace,contextmenu,paste,link'];
+                tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
-                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code'];
+                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code,localautosave'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -222,6 +222,16 @@
                         }
                     }
                 },
+//                instanceReady: function( event) {
+//                    // Autosave but no more frequent than 5 sec.
+//                    var buffer = CKEDITOR.tools.eventsBuffer( 5000, function() {
+//                        console.log( 'Autosave!' );
+//                        var data = event.editor.getData();
+//                        var item = event.editor.name.split('-');
+//                        saveEditor(item, data);
+//                    } );
+//                    this.on( 'change', buffer.input );
+//                }
 
                 skin : '{/literal}{$editor->skin}{literal}',
                 toolbar : mytoolbar,
@@ -241,8 +251,10 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'stylesheetparser,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
                 removePlugins: 'image',
+                image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
+                image2_captionedClass: 'image-captioned',
                 {/literal}{$editor->additionalConfig}{literal}
                 height : 200,
                 autoGrow_minHeight : 200,
@@ -270,7 +282,7 @@
                 toolbar_items_size: 'small',
                 image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
-                importcss_append: true,
+//                importcss_append: true,
                 end_container_on_empty_block: true,
                 file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({
@@ -330,7 +342,7 @@
             event.preventDefault();
             $.ajax({
                 type: "POST",
-                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id=0",
                 success:function(msg) {
                     data = $.parseJSON(msg.data);
@@ -363,7 +375,7 @@
             var item = ctrl.attr('id').split('-');
             $.ajax({
                 type: "POST",
-                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title&value=title+placeholder",
                 success: function(msg) {
                     data = $.parseJSON(msg.data);
@@ -393,7 +405,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=deleteItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=delete_item&ajax_action=1&json=1&src="+src,
                     data: "id=" + item[1],
                     success: function(msg) {
                         $('#text-' + msg.data).remove();
@@ -413,7 +425,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
-                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=saveItem&ajax_action=1&json=1&src="+src,
+                    url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type=title",
                     success: function(msg) {
                         data = $.parseJSON(msg.data);

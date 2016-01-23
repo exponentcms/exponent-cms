@@ -50,14 +50,12 @@ class ckeditorcontrol extends formcontrol {
         global $user;
 
         $contentCSS = '';
-        $cssabs     = BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';
-        $css        = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';
+        $css        = 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor.css';
         if (THEME_STYLE != "" && is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css')) {
-            $cssabs = BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css';
-            $css    = PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css';
+            $css    = 'themes/' . DISPLAY_THEME . '/editors/ckeditor/ckeditor_' . THEME_STYLE . '.css';
         }
-        if (is_file($cssabs)) {
-            $contentCSS = "contentsCss : '" . $css . "',";
+        if (is_file(BASE . $css)) {
+            $contentCSS = "contentsCss : '" . PATH_RELATIVE . $css . "',";
         }
         if ($this->toolbar === '') {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
@@ -171,8 +169,10 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'stylesheetparser,tableresize,image2,uploadimage," . $plugins . "',
+                    extraPlugins : 'autosave,tableresize,image2,uploadimage," . $plugins . "',
                     removePlugins: 'image',
+                    image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
+                    image2_captionedClass: 'image-captioned',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,

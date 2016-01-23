@@ -101,13 +101,13 @@
                     {/toggle}
                 </div>
             {foreachelse}
-                {if ($config->enable_categories == 1 && $catid != 0) || ($config->enable_categories==0)}
+                {if $catid != 0}
                     <div class="item">
                         <em>{'There are currently no FAQ\'s'|gettext}</em>
                     </div>
                 {/if}
             {/foreach}
-            <div class="back-to-top"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>
+            {*<div class="back-to-top"><a href="#top" title="{'Follow this link to go back to the top'|gettext}">{'Back to the top'|gettext}</a></div>*}
         {/foreach}
     {else}
         {foreach name=a from=$items item=question}

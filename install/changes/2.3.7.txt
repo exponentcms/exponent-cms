@@ -1,5 +1,5 @@
 version 2.3.7
-Address issues in v2.3.6
+Address issues in v2.3.6 esp. since it was pulled
   - !!! regression fix all styles were stripped from rich text upon save due to recent security fix
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
   - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID #2015-8684

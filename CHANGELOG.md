@@ -11,7 +11,29 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.3.8
 -------------
 ### Address issues in v2.3.7
-  -
+!!! Security fix for malformed associative array injection
+!!! Regression fix no workflow (revisions/approval) feedback in text module inline edit view
+	!!! THIS FIX BREAKS EXISTING CUSTOM TEXT SHOWALL INLINE (EDIT) VIEWS
+	- User now see immediate workflow feedback when editing inline
+!!! Regression fix workflow styling missing in bootstrap 3
+!!! Regression fix unable to edit/copy existing calendar events
+!!! Regression fix problem selecting insert links with ckeditor within inline edit text module views
+!!! Regression fix import items (blog?) with attachments didn't import attachments
+!!! Regression fix manage categories would only work with 1st 50 system categories
+!!! Regression fix some blog views displayed default date/author/category instead of item's info
+!!! Regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
+  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
+  - now allows optional image and author selection per podcast/rss feed
+  - better 'read more' implementation
+  - elFinder cache now moved to its own /tmp folder
+  - new global setting to Save Inline Editing Changes w/o Prompt
+  - styling tweaks to the sample bootstrap3theme
+    - removes display of urls when printing from Chrome browser with a bootstrap 3 theme
+    - updates bootstrap 3 rss/ical link icons to be orange regardless of font color
+    - updates form input placeholder styles to look less like an entry
+    - implements a twitter bootstrap 3 based date/time picker widget
+    - implements a new slideshow/carousel for bootstrap 3 photoalbum (Owl Carousel 2)
+  - CKEditor now used as file editor within elFinder if set as system WYSIWYG editor
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
@@ -19,7 +41,7 @@ Version 2.3.8
 
 Version 2.3.7
 -------------
-### Address issues in v2.3.6
+### Address issues in v2.3.6 esp. because it was pulled
   - !!! regression fix all styles were stripped from rich text upon save due to recent security fix
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
   - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID #2015-8684
@@ -32,7 +54,7 @@ Version 2.3.7
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
-Version 2.3.6
+Version 2.3.6 - release pulled
 -------------
 ### Refine 'shipment' interface, plus address issues in v2.3.5
   * !!! adds additional security checking for XSS vulnerabilities - CVE-2015-8667

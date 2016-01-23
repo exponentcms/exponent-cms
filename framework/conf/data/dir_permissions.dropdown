@@ -13,19 +13,20 @@
 # a mode that isn't listed here, and you tell me, I
 # will put it in the standard distribution.
 
-# The group options were added by faz2, 2/9/05.  Thanks faz!
-	
 0700 
 	Accessible only to Web Server 
  
-0777 
-	World Readable and Writable 
- 
-0770 
-	Group Readable and Writable 
- 
-0755 
-	World Read-only 
- 
-0750 
-	Group Read-only  
+0750
+	Group Read-only, World none
+
+0770
+	Group Readable and Writable, World none
+
+0755
+	* Group & World Read-only
+
+0775
+	Group Readable and Writable, World Read-only
+
+0777
+	Group & World Readable and Writable (Creates Security Issue!)

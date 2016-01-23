@@ -103,7 +103,7 @@ class yuidatetimecontrol extends formcontrol
         if (!$this->display_only) {
             $html .= '<div class="checkbox control form-group"';
             $html .= '<label for="pub-' . $idname . '" class="control-label"><input id="pub-' . $idname . '" type="checkbox" class="checkbox form-control" name="' . $name . '"';
-            $html .= ($this->checked ? ' checked> ' . $this->edit_text : '> ') . $this->edit_text . '</label></div>';
+            $html .= ($this->checked ? ' checked> ' : '> ') . $this->edit_text . '</label></div>';
 //            $html .= "<!-- cke lazy -->";
             $html .= '<div ';
             $html .= $this->checked ? 'style="display:none"' : 'style="display:block"';
@@ -125,15 +125,15 @@ class yuidatetimecontrol extends formcontrol
                     } else {
                         $('#datetime-" . $idname . "').show('slow');
                     }
-                    $('#" . $idname . "date').datetimepicker('reset');
                 });
             });
         ";
         expJavascript::pushToFoot(
             array(
-                "unique"   => "000-datetime-" . $idname,
-                "jquery"   => "jquery.datetimepicker",
-                "content"  => $script,
+                "unique"    => "000-datetime-" . $idname,
+                "jquery"    => "moment,bootstrap-datetimepicker",
+                "bootstrap" => "collapse,transitions",
+                "content"   => $script,
             )
         );
 

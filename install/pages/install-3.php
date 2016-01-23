@@ -76,9 +76,9 @@ $warning = array();
         return !preg_match("/[^A-Za-z0-9]/", $str);
     }
 
-    //expSession::set("installer_config",$_POST['sc']);
-    $config = expString::sanitize($_POST['sc']);
-    //$config['sef_urls'] = empty($_POST['c']['sef_urls']) ? 0 : 1;
+    //expSession::set("installer_config",$_REQUEST['sc']);
+    $config = $_REQUEST['sc'];
+    //$config['sef_urls'] = empty($_REQUEST['c']['sef_urls']) ? 0 : 1;
 
     if (preg_match('/[^A-Za-z0-9]/', $config['db_table_prefix'])) {
         echoFailure(gt('Invalid table prefix.  The table prefix can only contain alphanumeric characters.'));

@@ -412,7 +412,8 @@ class expCSS {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname']
+                                    $css_loc['dirname'],
+                                    DIR_DEFAULT_MODE_STR
                                 ); // create /css output folder if it doesn't exist
                                 file_put_contents(BASE . $css_fname, $css);
                             }
@@ -487,7 +488,8 @@ class expCSS {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname']
+                                    $css_loc['dirname'],
+                                    DIR_DEFAULT_MODE_STR
                                 ); // create /css output folder if it doesn't exist
                                 file_put_contents(BASE . $css_fname, $new_cache['compiled']);
                             }
@@ -586,7 +588,8 @@ class expCSS {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
                                 if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname']
+                                    $css_loc['dirname'],
+                                    DIR_DEFAULT_MODE_STR
                                 ); // create /css output folder if it doesn't exist
                                 file_put_contents(BASE . $css_fname, $new_cache['compiled']);
                             }

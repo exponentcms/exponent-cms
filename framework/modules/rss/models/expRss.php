@@ -25,17 +25,18 @@
 
 class expRss extends expRecord {
     public $table = 'expRss';
-//    protected $attachable_item_types = array(
-//        //'content_expFiles'=>'expFile',
+    protected $attachable_item_types = array(
+        'content_expFiles'=>'expFile',
 //        //'content_expTags'=>'expTag',
 //        //'content_expComments'=>'expComment',
 //        //'content_expSimpleNote'=>'expSimpleNote',
-//    );
+    );
 
     public $rss_is_podcast = false;
 
     public function __construct($params=array()) {
         global $db;
+
         if (is_int($params) || is_string($params)) {
             parent::__construct($params, false, false);
         } elseif ((isset($params['module']) || isset($params['controller'])) && isset($params['src'])) {
@@ -49,6 +50,7 @@ class expRss extends expRecord {
             $cont = expModules::getController($this->module);
             $this->rss_is_podcast = !empty($cont->rss_is_podcast);
         }
+        $this->getAttachableItems();
     }
     
     // we are going to override the build and beforeSave functions to

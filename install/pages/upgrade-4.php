@@ -93,7 +93,7 @@ $db_version = expVersion::dbVersion();
                 echo '<li>';
                 if (isset($_REQUEST['run'])) {
                     echo '<h3>', $upgradescript->name(), '</h3>';
-                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_POST[get_class($upgradescript)]))) {
+                    if (!$upgradescript->optional || ($upgradescript->optional && !empty($_REQUEST[get_class($upgradescript)]))) {
                         echo '<p class="success">', $upgradescript->upgrade();
                     } else {
                         echo '<p class="failed"> ', gt('Not Selected to Run');
