@@ -34,13 +34,13 @@ class change_permissions2 extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Update/secure all file and folder permissions (allow group write permissions)"; }
+	static function name() { return "(Alternate) Update/secure all file and folder permissions (allow group write permissions)"; }
 
 	/**
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In some instances the folder and file permissions are too permissive. This script changes all folder/file permissions to world read-only!"; }
+	function description() { return "In some instances the folder and file permissions are too permissive, yet world/group read=only is too restrictive. This alternate script changes all folder/file permissions to world read-only!"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run

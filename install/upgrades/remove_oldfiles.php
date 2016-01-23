@@ -449,7 +449,20 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/twitter/assets/images/rt.png',
             'framework/modules/twitter/assets/images/tweeted.png',
             'framework/modules/file/connector/cwd.js',
-            'framework/modules/file/connector/elFinder.js'
+            'framework/modules/file/connector/elFinder.js',
+			// other obsolete & mis-placed views
+			'framework/core/views/popup_general.tpl',
+			'framework/core/views/popup_printerfriendly.tpl',
+			'framework/modules/blog/views/blog/showall_test.tpl',
+			'framework/modules/news/views/news/show_Expired.tpl',
+			'framework/modules/news/views/news/showall_summary.tpl',
+			'framework/modules/text/views/showall_inline.tpl',
+			'framework/modules/text/views/showall_inline.bootstrap.tpl',
+			'framework/modules/text/views/showall_inline.bootstrap3.tpl',
+			'framework/modules/twitter/views/showall.tpl',
+			'framework/modules/users/views/users/import_users.tpl',
+			'framework/modules/users/views/users/confirm_password_email.tpl',
+			'framework/modules/users/views/users/password_reset_email.tpl',
         );
 		// check if the old file exists and remove it
         $files_removed = 0;
@@ -469,6 +482,7 @@ class remove_oldfiles extends upgradescript {
             'framework/core/js/',
             'framework/core/subsystems-1/',
             'framework/core/subsystems/forms/',
+			'framework/core/view/',
             'framework/datatypes/',
             'framework/views/',
             'framework/modules-1/',
