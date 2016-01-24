@@ -50,7 +50,7 @@ tinyMCE.init({
 	plugins: "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" +
              ",searchreplace wordcount visualblocks visualchars code fullscreen" +
              ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" +
-             ",emoticons,paste,textcolor,visualblocks,importcss",
+             ",emoticons,paste,textcolor,visualblocks",
 	entity_encoding: 'raw',
 	language: '<?php echo $lang; ?>'
 });

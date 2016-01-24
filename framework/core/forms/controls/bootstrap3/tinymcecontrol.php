@@ -74,7 +74,7 @@ class tinymcecontrol extends formcontrol
         $plugins = "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" .
                 ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" .
                 ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" .
-                ",emoticons,paste,textcolor,importcss,quickupload,localautosave";
+                ",emoticons,paste,textcolor,quickupload,localautosave";
         if (!$user->globalPerm('prevent_uploads')) {
             $upload = "plupload_basepath	: './plugins/quickupload',
                                 upload_url			: '" . URL_FULL . "framework/modules/file/connector/uploader_tinymce.php',

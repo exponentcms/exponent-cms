@@ -112,9 +112,25 @@
     {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
         {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
         {/script}
+        {$contentCSS = ""}
+        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor.css"}
+        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor_`$smarty.const.THEME_STYLE`.css"))}
+            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor_`$smarty.const.THEME_STYLE`.css"}
+        {/if}
+        {if is_file($smarty.const.BASE|cat:$css)}
+           {$contentCSS = "contentsCss : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+        {/if}
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
+        {$contentCSS = ""}
+        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce.css"}
+        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"))}
+            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"}
+        {/if}
+        {if is_file($smarty.const.BASE|cat:$css)}
+           {$contentCSS = "content_css : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+        {/if}
     {/if}
 
     {script unique=$name jquery="jqueryui"}
@@ -263,7 +279,7 @@
                 autoGrow_onStartup : false,
                 toolbarCanCollapse : true,
                 entities_additional : '',
-    //            " . $contentCSS . "
+                {/literal}{$contentCSS}{literal}
     //            stylesSet : " . $stylesset . ",
     //            format_tags : " . $formattags . ",
     //            font_names :
@@ -276,6 +292,7 @@
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
+                {/literal}{$contentCSS}{literal}
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
