@@ -33,10 +33,12 @@
             {$config.moduledescription}
         {/if}
         {$myloc=serialize($__loc)}
+        {if ($permissions.edit || ($permissions.create && $item->poster == $user->id)) && !$preview}
+            {$inline = true}
+        {/if}
         {foreach from=$items item=item name=items}
             {if ($permissions.edit || ($permissions.create && $item->poster == $user->id)) && !$preview}
                 {$make_edit = ' contenteditable="true" class="editable"'}
-                {$inline = true}
             {else}
                 {$make_edit = ''}
             {/if}
