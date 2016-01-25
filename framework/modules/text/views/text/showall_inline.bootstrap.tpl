@@ -167,7 +167,7 @@
                             $.ajax({
                                 type: "POST",
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
-                                data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                                data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                                 success:function(msg) {
                                     if (workflow) {
                                         data = $.parseJSON(msg.data);
@@ -204,7 +204,7 @@
                 $.ajax({
                     type: "POST",
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
-                    data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                    data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                     success:function(msg) {
                         if (workflow) {
                             data = $.parseJSON(msg.data);
