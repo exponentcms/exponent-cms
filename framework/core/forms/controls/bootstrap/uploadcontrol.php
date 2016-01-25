@@ -61,7 +61,10 @@ class uploadcontrol extends formcontrol {
         $html .= '  <div class="input-append">';
         $html .= '<div class="uneditable-input span3"><i class="icon-file fileupload-exists"></i> ';
         $html .= '<span class="fileupload-preview">' . $fi_file . '</span>';
-        $html .= '</div><span class="btn btn-file"><span class="fileupload-new">' . gt('Select file') . '</span><span class="fileupload-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '" /></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . gt('Remove') . '</a>';
+        $html .= '</div><span class="btn btn-file"><span class="fileupload-new">' . gt('Select file') . '</span><span class="fileupload-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        if (!empty($this->accept))
+            $html .= ' accept="'.$this->accept.'"';
+        $html .= '/></span><a href="#" class="btn fileupload-exists" data-dismiss="fileupload">' . gt('Remove') . '</a>';
         $html .= '  </div>';
         $html .= '</div>';
 
