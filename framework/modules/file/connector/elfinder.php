@@ -369,6 +369,7 @@ $opts = array(
             'tmbPathMode'     => 0755,
             'tmbBgColor'      => 'transparent',
             'tmbSize'         => FM_THUMB_SIZE,
+            'quarantine'      => '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder' . DIRECTORY_SEPARATOR . '.quarantine',
             'acceptedName'    => '/^[^\.].*$/',
             // 'acceptedName'    => '/^[\W]*$/',
             // 'acceptedName' => 'validName',

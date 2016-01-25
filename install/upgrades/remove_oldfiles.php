@@ -507,6 +507,8 @@ class remove_oldfiles extends upgradescript {
             'themes/common/',
             'themes/bootstraptheme/controls/',
             'themes/bootstraptheme/plugins/',
+			'files/.quarantine',
+			'files/.tmb',
 			'tmp/ai-cache/',
 			'tmp/graph-cache/',
             'tmp/js/',

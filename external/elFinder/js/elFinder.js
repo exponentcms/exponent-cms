@@ -301,7 +301,10 @@ window.elFinder = function(node, opts) {
 						// set disabledCmds, tmbUrls for each volume
 						if (f.volumeid) {
 							f.disabled && (self.disabledCmds[f.volumeid] = f.disabled);
-							self.tmbUrls[f.volumeid] = self.option('tmbUrl');
+							if (f.tmbUrl) {
+								self.tmbUrls[f.volumeid] = f.tmbUrl;
+							}
+							self.roots[f.volumeid] = f.hash;
 						}
 					}
 					files[f.hash] = f;
@@ -607,6 +610,18 @@ window.elFinder = function(node, opts) {
 	this.cssClass = 'ui-helper-reset ui-helper-clearfix ui-widget ui-widget-content ui-corner-all elfinder elfinder-'+(this.direction == 'rtl' ? 'rtl' : 'ltr')+' '+this.options.cssClass;
 
 	/**
+	 * Current search status
+	 * 
+	 * @type Object
+	 */
+	this.searchStatus = {
+		state  : 0, // 0: search ended, 1: search started, 2: in search result
+		query  : '',
+		target : '',
+		mime   : ''
+	};
+
+	/**
 	 * Method to store/fetch data
 	 *
 	 * @type Function
@@ -853,6 +868,16 @@ window.elFinder = function(node, opts) {
 			return dir.hash;
 		}
 		
+		$.each(self.roots, function(id, rhash) {
+			if (hash.indexOf(id) === 0) {
+				dir = rhash;
+				return false;
+			}
+		});
+		if (dir) {
+			return dir;
+		}
+		
 		while (i in files && files.hasOwnProperty(i)) {
 			dir = files[i]
 			if (!dir.phash && !dir.mime == 'directory' && dir.read) {
@@ -973,7 +998,7 @@ window.elFinder = function(node, opts) {
 			return file.url;
 		}
 		
-		if (cwdOptions.url) {
+		if (cwdOptions.url && file.hash.indexOf(self.cwd().volumeid) === 0) {
 			return cwdOptions.url + $.map(this.path2array(hash), function(n) { return encodeURIComponent(n); }).slice(1).join('/')
 		}
 
@@ -1028,8 +1053,14 @@ window.elFinder = function(node, opts) {
 			return '';
 		}
 		
-		if (!download && file.url && file.url != 1) {
-			return file.url;
+		if (!download) {
+			if (file.url) {
+				if (file.url != 1) {
+					return file.url;
+				}
+			} else if (cwdOptions.url && file.hash.indexOf(self.cwd().volumeid) === 0) {
+				return cwdOptions.url + $.map(this.path2array(hash), function(n) { return encodeURIComponent(n); }).slice(1).join('/');
+			}
 		}
 		
 		url = this.options.url;
@@ -1057,7 +1088,7 @@ window.elFinder = function(node, opts) {
 	this.tmb = function(hash) {
 		var file = files[hash],
 			geturl = function(hash){
-				var turl = cwdOptions['tmbUrl'];
+				var turl = '';
 				$.each(self.tmbUrls, function(i, u){
 					if (hash.indexOf(i) === 0) {
 						turl = self.tmbUrls[i];
@@ -1066,8 +1097,8 @@ window.elFinder = function(node, opts) {
 				});
 				return turl;
 			},
-			tmbUrl = (self.tmbUrls._search && hash.indexOf(self.cwd().volumeid) !== 0)? geturl(hash) : cwdOptions['tmbUrl'],
-			url = file && file.tmb && file.tmb != 1 ? tmbUrl + file.tmb : '';
+			tmbUrl = (self.searchStatus.state && hash.indexOf(self.cwd().volumeid) !== 0)? geturl(hash) : cwdOptions['tmbUrl'],
+			url = tmbUrl && file && file.tmb && file.tmb != 1 ? tmbUrl + file.tmb : '';
 		
 		return url;
 	}
@@ -1251,6 +1282,9 @@ window.elFinder = function(node, opts) {
 			 * @return void
 			 **/
 			success = function(response) {
+				// Set currrent request command name
+				self.currentReqCmd = cmd;
+				
 				if (raw) {
 					return dfrd.resolve(response);
 				}
@@ -1350,7 +1384,7 @@ window.elFinder = function(node, opts) {
 
 		delete options.preventFail
 
-		xhr = this.transport.send(options).fail(error).done(success);
+		dfrd.xhr = xhr = this.transport.send(options).fail(error).done(success);
 		
 		// add "open" xhr into queue
 		if (cmd == 'open' || (cmd == 'info' && data.compare)) {
@@ -1543,7 +1577,7 @@ window.elFinder = function(node, opts) {
 	 */
 	this.unbind = function(event, callback) {
 		var l = listeners[('' + event).toLowerCase()] || [],
-			i = l.indexOf(callback);
+			i = $.inArray(callback, l);
 
 		i > -1 && l.splice(i, 1);
 		//delete callback; // need this?
@@ -1708,14 +1742,14 @@ window.elFinder = function(node, opts) {
 	this.isCommandEnabled = function(name, dstHash) {
 		var disabled;
 		if (dstHash && self.root(dstHash) !== cwd) {
+			disabled = [];
 			$.each(self.disabledCmds, function(i, v){
 				if (dstHash.indexOf(i, 0) == 0) {
 					disabled = v;
 					return false;
 				}
 			});
-		}
-		if (!disabled) {
+		} else {
 			disabled = cwdOptions.disabled;
 		}
 		return this._commands[name] ? $.inArray(name, disabled) === -1 : false;
@@ -2049,12 +2083,16 @@ window.elFinder = function(node, opts) {
 			}
 			
 		})
+		.bind('searchstart', function(e) {
+			$.extend(self.searchStatus, e.data);
+			self.searchStatus.state = 1;
+		})
 		.bind('search', function(e) {
+			self.searchStatus.state = 2;
 			cache(e.data.files);
-			self.tmbUrls._search = true;
 		})
 		.bind('searchend', function() {
-			self.tmbUrls._search = false;
+			self.searchStatus.state = 0;
 		})
 		.bind('rm', function(e) {
 			var play  = beeper.canPlayType && beeper.canPlayType('audio/wav; codecs="1"');
@@ -2098,6 +2136,13 @@ window.elFinder = function(node, opts) {
 	} 
 
 	/**
+	 * Root hashed
+	 * 
+	 * @type Object
+	 */
+	this.roots = {},
+	
+	/**
 	 * Loaded commands
 	 *
 	 * @type Object
@@ -2119,6 +2164,17 @@ window.elFinder = function(node, opts) {
 			cmd.prototype = base;
 			self._commands[name] = new cmd();
 			self._commands[name].setup(name, self.options.commandsOptions[name]||{});
+			// setup linked commands
+			if (self._commands[name].linkedCmds.length) {
+				$.each(self._commands[name].linkedCmds, function(i, n) {
+					var lcmd = self.commands[n];
+					if ($.isFunction(lcmd) && !self._commands[n]) {
+						lcmd.prototype = base;
+						self._commands[n] = new lcmd();
+						self._commands[n].setup(n, self.options.commandsOptions[n]||{});
+					}
+				});
+			}
 		}
 	});
 	
@@ -2439,6 +2495,13 @@ elFinder.prototype = {
 	res : function(type, id) {
 		return this.resources[type] && this.resources[type][id];
 	}, 
+	
+	/**
+	 * Current request command
+	 * 
+	 * @type  String
+	 */
+	currentReqCmd : '',
 	
 	/**
 	 * Internationalization object
@@ -3706,12 +3769,20 @@ elFinder.prototype = {
 	 * @return String
 	 */
 	localStorage : function(key, val) {
-		var s = window.localStorage;
+		var s      = window.localStorage,
+			oldkey = 'elfinder-'+key+this.id, // old key of elFinder < 2.1.6
+			retval, oldval;
 
-		key = 'elfinder-'+key+this.id;
+		// new key of elFinder >= 2.1.6
+		key = window.location.pathname+'-elfinder-'+key+this.id;
 		
 		if (val === null) {
 			return s.removeItem(key);
+		}
+		
+		if (val === void(0) && !(retval = s.getItem(key)) && (oldval = s.getItem(oldkey))) {
+			val = oldval;
+			s.removeItem(oldkey);
 		}
 		
 		if (val !== void(0)) {
@@ -3721,9 +3792,10 @@ elFinder.prototype = {
 				s.clear();
 				s.setItem(key, val);
 			}
+			retval = s.getItem(key);
 		}
 
-		return s.getItem(key);
+		return retval;
 	},
 	
 	/**
@@ -4070,7 +4142,7 @@ elFinder.prototype = {
 			msg      = this.messages['ntf'+type] ? this.i18n('ntf'+type) : this.i18n('ntfsmth'),
 			ndialog  = this.ui.notify,
 			notify   = ndialog.children('.elfinder-notify-'+type),
-			ntpl     = '<div class="elfinder-notify elfinder-notify-{type}"><span class="elfinder-dialog-icon elfinder-dialog-icon-{type}"/><span class="elfinder-notify-msg">{msg}</span> <span class="elfinder-notify-cnt"/><div class="elfinder-notify-progressbar"><div class="elfinder-notify-progress"/></div><div class="elfinder-notify-cancel"/></div></div>',
+			ntpl     = '<div class="elfinder-notify elfinder-notify-{type}"><span class="elfinder-dialog-icon elfinder-dialog-icon-{type}"/><span class="elfinder-notify-msg">{msg}</span> <span class="elfinder-notify-cnt"/><div class="elfinder-notify-progressbar"><div class="elfinder-notify-progress"/></div><div class="elfinder-notify-cancel"/></div>',
 			delta    = opts.cnt,
 			size     = (typeof opts.size != 'undefined')? parseInt(opts.size) : null,
 			progress = (typeof opts.progress != 'undefined' && opts.progress >= 0) ? opts.progress : null,

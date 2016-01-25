@@ -133,7 +133,6 @@ elFinder.prototype._options = {
 	 * @type Array
 	 */
 	commands : [
-		'pixlr',
 		'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook', 
 		'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy', 
 		'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
@@ -177,6 +176,10 @@ elFinder.prototype._options = {
 		// "upload" command options.
 		upload : {
 			ui : 'uploadbutton'
+		},
+		// "download" command options.
+		download : {
+			maxRequests : 10
 		},
 		// "quicklook" command options.
 		quicklook : {
@@ -400,7 +403,7 @@ elFinder.prototype._options = {
 			['quicklook'],
 			['copy', 'cut', 'paste'],
 			['rm'],
-			['duplicate', 'rename', 'edit', 'resize', 'pixlr'],
+			['duplicate', 'rename', 'edit', 'resize'],
 			['extract', 'archive'],
 			['search'],
 			['view', 'sort'],
@@ -703,11 +706,11 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'places', 'info', 'chmod', 'netunmount'],
+		navbar : ['open', 'download', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
 		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'sort', '|', 'info'],
 		// current directory file menu
-		files  : ['getfile', '|' ,'open', 'opendir', 'quicklook', '|', 'download', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod']
+		files  : ['getfile', '|' ,'open', 'download', 'opendir', 'quicklook', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod']
 	},
 
 	/**

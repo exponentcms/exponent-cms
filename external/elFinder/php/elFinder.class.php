@@ -47,6 +47,13 @@ class elFinder {
 	public static $sessionCacheKey = '';
 	
 	/**
+	 * Is session closed
+	 * 
+	 * @var bool
+	 */
+	private static $sessionClosed = false;
+	
+	/**
 	 * elFinder base64encodeSessionData
 	 * elFinder save session data as `UTF-8`
 	 * If the session storage mechanism of the system does not allow `UTF-8`
@@ -55,6 +62,13 @@ class elFinder {
 	 * @var bool
 	 */
 	protected static $base64encodeSessionData = false;
+	
+	/**
+	 * elFinder common tempraly path
+	 *
+	 * @var string
+	 **/
+	protected static $commonTempPath = '';
 	
 	/**
 	 * Session key of net mount volumes
@@ -89,6 +103,7 @@ class elFinder {
 		'parents'   => array('target' => true),
 		'tmb'       => array('targets' => true),
 		'file'      => array('target' => true, 'download' => false),
+		'zipdl'     => array('targets' => true, 'download' => false),
 		'size'      => array('targets' => true),
 		'mkdir'     => array('target' => true, 'name' => true),
 		'mkfile'    => array('target' => true, 'name' => true, 'mimes' => false),
@@ -172,6 +187,13 @@ class elFinder {
 	 * @var string
 	 */
 	protected $uploadTempPath = '';
+	
+	/**
+	 * Max allowed archive files size (0 - no limit)
+	 * 
+	 * @var integer
+	 */
+	protected $maxArcFilesSize = 0;
 	
 	/**
 	 * undocumented class variable
@@ -290,6 +312,11 @@ class elFinder {
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
 		self::$sessionCacheKey = !empty($opts['sessionCacheKey']) ? $opts['sessionCacheKey'] : 'elFinderCaches';
+		elFinder::$commonTempPath = (isset($opts['commonTempPath']) ? $opts['commonTempPath'] : './.tmp');
+		if (!is_writable(elFinder::$commonTempPath)) {
+			elFinder::$commonTempPath = '';
+		}
+		$this->maxArcFilesSize = isset($opts['maxArcFilesSize'])? intval($opts['maxArcFilesSize']) : 0;
 		
 		// check session cache
 		$_optsMD5 = md5(json_encode($opts['roots']));
@@ -356,6 +383,9 @@ class elFinder {
 				$volume = new $class();
 
 				try {
+					if ($this->maxArcFilesSize && (empty($o['maxArcFilesSize']) || $this->maxArcFilesSize < $o['maxArcFilesSize'])) {
+						$o['maxArcFilesSize'] = $this->maxArcFilesSize;
+					}
 					if ($volume->mount($o)) {
 						// unique volume id (ends on "_") - used as prefix to files hash
 						$id = $volume->id();
@@ -549,7 +579,10 @@ class elFinder {
 		}
 		
 		// unlock session data for multiple access
-		$this->sessionCloseEarlier && $args['sessionCloseEarlier'] && session_id() && session_write_close();
+		if ($this->sessionCloseEarlier && $args['sessionCloseEarlier'] && session_id()) {
+			session_write_close();
+			elFinder::$sessionClosed = true;
+		}
 		
 		if (substr(PHP_OS,0,3) === 'WIN') {
 			// set time out
@@ -659,7 +692,10 @@ class elFinder {
 	 * @author Dmitry (dio) Levashov
 	 */
 	protected function saveNetVolumes($volumes) {
+		// try session restart
+		@session_start();
 		$_SESSION[$this->netVolumesSessionKey] = elFinder::sessionDataEncode($volumes);
+		elFinder::sessionWrite();
 	}
 
 	/**
@@ -798,7 +834,6 @@ class elFinder {
 			$this->removeNetVolume($volume);
 			return array('error' => $this->error(self::ERROR_NETMOUNT, $args['host'], implode(' ', $volume->error())));
 		}
-
 	}
 
 	/**
@@ -985,6 +1020,91 @@ class elFinder {
 			}
 		}
 		return $result;
+	}
+	
+	/**
+	 * Download files/folders as an archive file
+	 * 
+	 * 1st: Return srrsy contains download archive file info
+	 * 2nd: Return array contains opened file pointer, root itself and required headers
+	 *
+	 * @param  array  command arguments
+	 * @return array
+	 * @author Naoki Sawada
+	 **/
+	protected function zipdl($args) {
+		$targets = $args['targets'];
+		$download = !empty($args['download']);
+		$h404    = 'HTTP/1.x 404 Not Found';
+		
+		if (!$download) {
+			//1st: Return srrsy contains download archive file info
+			$error = array(self::ERROR_ARCHIVE);
+			if (($volume = $this->volume($targets[0])) !== false) {
+				if ($dlres = $volume->zipdl($targets)) {
+					$path = $dlres['path'];
+					register_shutdown_function(create_function('$f', 'connection_status() && is_file($f) && @unlink($f);'), $path);
+					if (count($targets) === 1) {
+						$name = basename($volume->path($targets[0]));
+					} else {
+						$name = $dlres['prefix'].'_Files';
+					}
+					$name .= '.'.$dlres['ext'];
+					$result = array(
+						'zipdl' => array(
+							'file' => basename($path),
+							'name' => $name,
+							'mime' => $dlres['mime']
+						)
+					);
+					return $result;
+				}
+				$error = array_merge($error, $volume->error());
+			}
+			return array('error' => $error);
+		} else {
+			// 2nd: Return array contains opened file pointer, root itself and required headers
+			if (count($targets) !== 4 || ($volume = $this->volume($targets[0])) == false) {
+				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
+			}
+			$file = $targets[1];
+			$path = $volume->getTempPath().DIRECTORY_SEPARATOR.$file;
+			register_shutdown_function(create_function('$f', 'is_file($f) && @unlink($f);'), $path);
+			if (!is_readable($path)) {
+				return array('error' => 'File not found', 'header' => $h404, 'raw' => true);
+			}
+			$name = $targets[2];
+			$mime = $targets[3];
+			
+			$filenameEncoded = rawurlencode($name);
+			if (strpos($filenameEncoded, '%') === false) { // ASCII only
+				$filename = 'filename="'.$name.'"';
+			} else {
+				$ua = $_SERVER['HTTP_USER_AGENT'];
+				if (preg_match('/MSIE [4-8]/', $ua)) { // IE < 9 do not support RFC 6266 (RFC 2231/RFC 5987)
+					$filename = 'filename="'.$filenameEncoded.'"';
+				} elseif (strpos($ua, 'Chrome') === false && strpos($ua, 'Safari') !== false && preg_match('#Version/[3-5]#', $ua)) { // Safari < 6
+					$filename = 'filename="'.str_replace('"', '', $name).'"';
+				} else { // RFC 6266 (RFC 2231/RFC 5987)
+					$filename = 'filename*=UTF-8\'\''.$filenameEncoded;
+				}
+			}
+			
+			$fp = fopen($path, 'rb');
+			$file = fstat($fp);
+			$result = array(
+				'pointer' => $fp,
+				'header'  => array(
+					'Content-Type: '.$mime, 
+					'Content-Disposition: attachment; '.$filename,
+					'Content-Transfer-Encoding: binary',
+					'Content-Length: '.$file['size'],
+					'Accept-Ranges: none',
+					'Connection: close'
+				)
+			);
+			return $result;
+		}
 	}
 	
 	/**
@@ -2213,6 +2333,7 @@ class elFinder {
 			foreach ($args['targets'] as $hash) {
 				if (($volume = $this->volume($hash)) != false
 				&& ($info = $volume->file($hash)) != false) {
+					$info['path'] = $volume->path($hash);
 					$files[] = $info;
 				}
 			}
@@ -2374,9 +2495,9 @@ class elFinder {
 		if (! empty($args['target'])) {
 			$args['upload'] = array( $args['image'] );
 			$args['name']   = array( preg_replace('/\.[a-z]{1,4}$/i', '', $args['title']).'.'.$args['type'] );
-				
+
 			$res = $this->upload($args);
-				
+
 			$res['callback'] = array(
 				'node' => $args['node'],
 				'bind' => 'upload'
@@ -2384,7 +2505,7 @@ class elFinder {
 		} else {
 			$res = array('error' => $this->error(self::ERROR_UPLOAD_NO_FILES));
 		}
-		
+
 		return $res;
 	}
 
@@ -2569,4 +2690,26 @@ class elFinder {
 		}
 		return $data;
 	}
+	
+	/**
+	 * Call session_write_close() if session is restarted
+	 * 
+	 * @return void
+	 */
+	public static function sessionWrite() {
+		if (elFinder::$sessionClosed) {
+			session_write_close();
+		}
+	}
+	
+	/**
+	 * Retuen elFinder static variable
+	 * 
+	 * @return void
+	 */
+	public static function getStaticVar($key) {
+		return isset(elFinder::$$key)? elFinder::$$key : null;
+	}
+	
+
 } // END class
