@@ -45,7 +45,7 @@
 <div class="navbar-spacer"></div>
 <div class="navbar-spacer-bottom"></div>
 
-{script unique="navbar-fix" jquery=1}
+{script unique="navbar-fix" bootstrap="dropdown,collapse,transition"}
 {literal}
     $('.dropdown-toggle').click(function(e) {
         e.preventDefault();

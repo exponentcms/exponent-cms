@@ -156,7 +156,7 @@
     </header>
 </div>
 
-{script unique="z-admin2" jquery=1 bootstrap="dropdown,collapse"}
+{script unique="z-admin2" bootstrap="dropdown,collapse,transition"}
 {literal}
     jQuery(document).ready(function($) {
         var adminerwindow = function (){

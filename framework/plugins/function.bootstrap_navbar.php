@@ -52,6 +52,10 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
             $menu .= build_menu($page,$params);
         }
         expJavascript::pushToFoot(array(
+            "unique"  => 'bootstrap-transition',
+            "bootstrap"=> 'transition',
+        ));
+        expJavascript::pushToFoot(array(
             "unique"  => 'bootstrap-dropdown',
             "bootstrap"=> 'dropdown',
         ));
