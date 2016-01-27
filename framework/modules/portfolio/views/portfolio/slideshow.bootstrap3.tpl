@@ -153,7 +153,8 @@
 {literal}
     $('#ss-{/literal}{$name}{literal}').carousel({
         interval: {/literal}{$config.speed}{literal}000
-    })
+    });
+    Hammer.defaults.behavior.touchAction = 'pan-y';
 {/literal}
 {/if}
 {/script}
