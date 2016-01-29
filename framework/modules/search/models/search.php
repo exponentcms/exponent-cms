@@ -89,9 +89,11 @@ class search extends expRecord {
                 }
             } else if ($records[$i]->ref_module == 'event') {  // add (closest) date to title/link
                 $event = $db->selectObject('eventdate', 'event_id=' . $records[$i]->original_id . ' ORDER BY ABS( DATEDIFF( date, NOW() ) )');
-                $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
-                $loc = expUnserialize($event->location_data);
-                $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id,'src' => $loc->src)));
+                if (!empty($event)) {
+                    $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
+                    $loc = expUnserialize($event->location_data);
+                    $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));
+                }
             } else {
                 $rloc = unserialize($records[$i]->location_data);
                 if (!empty($rloc)) {
