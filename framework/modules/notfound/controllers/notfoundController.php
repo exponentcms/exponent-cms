@@ -62,6 +62,8 @@ class notfoundController extends expController {
         }
         $terms = htmlspecialchars($terms);
 
+        //fixme we need to check for server requested error documents here
+
         $search = new search();
 		$page = new expPaginator(array(
 			'model'=>'search',
