@@ -48,6 +48,12 @@ class AdminerEditCalendar {
 		}
 	}
 
+	function selectVal(&$val, $link, $field) {
+		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
+			$val = '<div title="'.htmlentities(html_entity_decode(strftime('%m/%d/%y %I:%M%p',$val)),true).'">'.$val.'</div>';
+		}
+	}
+
 	function editInput($table, $field, $attrs, $value) {
 		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
 			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
