@@ -43,6 +43,7 @@ elFinder.prototype.commands.pixlr = function() {
 			
 			exit = uploadURL + (uploadURL.indexOf('?') === -1 ? '?' : '&')
 				+ 'cmd=pixlr'
+				+ '&node=' + encodeURIComponent(fm.id)
 				+ cdata;
 			
 			url = 'http://pixlr.com/'+mode+'/?image=' + encodeURIComponent(img)

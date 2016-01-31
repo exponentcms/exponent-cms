@@ -36,6 +36,9 @@ class expJavascript {
         if (!empty($_REQUEST['apikey'])||!empty($_REQUEST['jsonp'])) {
             return 'jsonp';
         }
+        if (!empty($_REQUEST['json']) && !empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'file' && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'picker') {
+            return false;  // elFinder coming back from Pixlr editor
+        }
 		return !empty($_REQUEST['json']) ? true : false;
 	}
 	

@@ -123,6 +123,8 @@
 .elfinder-button-icon-accept    { background-position: 0 -736px; }
 .elfinder-button-icon-opendir   { background-position: 0  -32px; }
 
+.elfinder-button-icon-pixlr     { background-position: 0 -673px; }
+
 /* button with dropdown menu*/
 .elfinder .elfinder-menubutton { overflow:visible; }
 

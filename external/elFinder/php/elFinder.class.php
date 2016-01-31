@@ -16,7 +16,7 @@ class elFinder {
 	 *
 	 * @var string
 	 **/
-	protected $version = '2.0';
+	protected $version = '2.1';
 	
 	/**
 	 * Storages (root dirs)
@@ -2495,17 +2495,20 @@ class elFinder {
 		if (! empty($args['target'])) {
 			$args['upload'] = array( $args['image'] );
 			$args['name']   = array( preg_replace('/\.[a-z]{1,4}$/i', '', $args['title']).'.'.$args['type'] );
-
+				
 			$res = $this->upload($args);
-
+				
 			$res['callback'] = array(
 				'node' => $args['node'],
 				'bind' => 'upload'
 			);
 		} else {
-			$res = array('error' => $this->error(self::ERROR_UPLOAD_NO_FILES));
+			$res = array(
+				'error'    => $this->error(self::ERROR_UPLOAD_NO_FILES),
+				'callback' => array('node' => $args['node'])
+			);
 		}
-
+		
 		return $res;
 	}
 

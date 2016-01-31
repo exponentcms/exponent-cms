@@ -132,6 +132,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdplaces'    : 'お気に入りへ', // added 28.12.2014
 			'cmdchmod'     : '属性変更', // from v2.1 added 20.6.2015
 			'cmdopendir'   : 'フォルダを開く', // from v2.1 added 13.1.2016
+			
+			'cmdpixlr'     : 'Pixlr で編集',
 
 			/*********************************** buttons ***********************************/
 			'btnClose'  : '閉じる',
