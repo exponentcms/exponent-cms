@@ -65,7 +65,12 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1024),
 	'internal_id'=>array(
-		DB_FIELD_TYPE=>DB_DEF_ID)
+		DB_FIELD_TYPE=>DB_DEF_ID),
+	'glyph'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>100),
+	'glyph_only'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>

@@ -31,6 +31,7 @@ class dropdowncontrol extends formcontrol {
     var $size = 1;
     var $include_blank = false;
     var $type = 'select';
+    var $style = '';
 
     static function name() { return "Drop Down List"; }
     static function isSimpleControl() { return true; }
@@ -68,6 +69,7 @@ class dropdowncontrol extends formcontrol {
         }
         if (!empty($this->multiple)) $html .= ' multiple';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
+        if (!empty($this->style)) $html .= ' style="' . $this->style . '"';
         $html .= '>';
 
         if (is_bool($this->include_blank) && $this->include_blank == true) {

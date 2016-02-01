@@ -51,7 +51,11 @@
                         {*TODO we don't secure individual pages at this time*}
                         {*{control type="checkbox" name="secured" label="Secured"|gettext|cat:"?" checked=$section->secured value=1}*}
                     {/if}
-                    {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use for this menu item'|gettext}
+                    {group label='Menu Item Icon'|gettext}
+                        {control type="files" name="files" label="Icon"|gettext accept="image/*" value=$section->expFile limit=1 description='Select an icon to use with this menu item'|gettext}
+                        {control type="dropdown" name="glyph" label="Font Icon"|gettext items=$glyphs includeblank='No Font Icon'|gettext style="font-family: 'FontAwesome', Helvetica;" value=$section->glyph description='or Select a font icon to use with this menu item'|gettext}
+                        {control type="checkbox" name="glyph_only" label="Display Icon Alone"|gettext checked=$section->glyph_only value=1 description='Should the menu only display the icon without the page name?'|gettext}
+                    {/group}
                 </div>
                 <div id="tab2" role="tabpanel" class="tab-pane fade">
                     <h2>{'SEO Information'|gettext}</h2>
