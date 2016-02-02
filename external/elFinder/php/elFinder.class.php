@@ -2495,9 +2495,9 @@ class elFinder {
 		if (! empty($args['target'])) {
 			$args['upload'] = array( $args['image'] );
 			$args['name']   = array( preg_replace('/\.[a-z]{1,4}$/i', '', $args['title']).'.'.$args['type'] );
-				
+
 			$res = $this->upload($args);
-				
+
 			$res['callback'] = array(
 				'node' => $args['node'],
 				'bind' => 'upload'
@@ -2508,7 +2508,7 @@ class elFinder {
 				'callback' => array('node' => $args['node'])
 			);
 		}
-		
+
 		return $res;
 	}
 
