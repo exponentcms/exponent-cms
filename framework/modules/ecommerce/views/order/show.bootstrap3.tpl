@@ -88,7 +88,6 @@
                     <!-- print buttons -->
                     <div class="well well-sm">
                         {printer_friendly_link class="{button_style}" text="Print invoice"|gettext view="show_printable" show=1}
-                        {export_pdf_link view='show_printable' show=1}
                         {if $smarty.const.HTMLTOPDF_ENGINE != 'none'}
                             <a class="{button_style}" href="{link controller='order' action='getPDF' id=$order->id inum=$order->invoice_number ajax_action=1}">{'Download PDF'|gettext}</a>
                         {/if}
