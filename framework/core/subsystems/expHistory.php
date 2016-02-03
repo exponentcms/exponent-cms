@@ -260,9 +260,12 @@ class expHistory {
     }
     
     public static function getLastNotEditable() {
-        global $history;
+        global $history, $router;
 
-        return $history->lastUrl($history->history['lasts']['not_editable']);
+		if (empty($history->history['lasts']['not_editable'])) {
+			return $router->makeLink(array('section'=>SITE_DEFAULT_SECTION));
+		} else
+	        return $history->lastUrl($history->history['lasts']['not_editable']);
     }
     
     public function lastUrl($url_type=null) {

@@ -43,7 +43,7 @@ function smarty_function_export_pdf_link($params,&$smarty) {
     } elseif (isset($params['show'])) {  // force display of link
         $print = isset($params['show']) ? $params['show'] : null;
     }
-    if ($print && !PRINTER_FRIENDLY && !EXPORT_AS_PDF && file_exists(BASE.'external/dompdf/dompdf.php')) {
+    if ($print && !PRINTER_FRIENDLY && expHtmlToPDF::installed()) {
         // initialize a couple of variables
         $view = isset($params['view']) ? $params['view'] : null;
         $prepend = isset($params['prepend']) ? $params['prepend'] : '';
