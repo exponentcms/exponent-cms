@@ -114,7 +114,12 @@ class expCSS {
         // css hard coded in a view
         if (!empty($params['css'])){
             $tcss = trim($params['css']);
-            if (!empty($tcss)) $css_inline[$params['unique']] = $params['css'];
+            if (!empty($tcss)) {
+                if (empty($params['unique'])) {
+                    $params['unique'] = "unique-" . microtime();  // must be unique for each call
+                }
+                $css_inline[$params['unique']] = $params['css'];
+            }
         }
 
         // if within an ajax call, immediately output the css

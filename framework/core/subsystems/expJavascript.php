@@ -399,18 +399,21 @@ class expJavascript {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
     	if (!empty($params['src'])) {
-    	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
-    	    $src = $params['src'];
-            //FIXME we need to allow for an array of scripts with unique+index as name
-    	    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
-                $expJS[$params['unique']] = array(
-					"name" => $params['unique'],
-					"type" => 'js',
-					"fullpath" => $src
+            $params['src'] = is_array($params['src']) ? $params['src'] : array($params['src']);
+            foreach ($params['src'] as $unique=>$url) {
+                //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
+                if (is_int($unique)) {
+                    $unique = "unique-" . microtime();  // must be unique for each call
+                }
+                $expJS[$unique] = array(
+                    "name" => $unique,
+                    "type" => 'js',
+                    "fullpath" => $url
                 );
-            // } else {
-            //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
-            // }
+                // } else {
+                //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
+                // }
+            }
     	}
 
         // insert the yui2mods wrapper if needed
