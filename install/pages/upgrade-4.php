@@ -120,6 +120,7 @@ $db_version = expVersion::dbVersion();
         }
         echo '</ol>';
         if (isset($_REQUEST['run']) || $i == 0) {
+            expSession::set('force_less_compile', 1);
             echo '<button class="awesome large green">';
             echo gt('Finish Upgrade');
             echo '</button>';
