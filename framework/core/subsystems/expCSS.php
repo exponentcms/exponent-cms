@@ -416,11 +416,19 @@ class expCSS {
                             if ($rebuild || !file_exists(BASE . $css_fname)) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
-                                if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname'],
-                                    DIR_DEFAULT_MODE_STR
-                                ); // create /css output folder if it doesn't exist
-                                file_put_contents(BASE . $css_fname, $css);
+                                if (!is_dir($css_loc['dirname'])) {
+                                    if (mkdir(
+                                        $css_loc['dirname'],
+                                        DIR_DEFAULT_MODE_STR
+                                    ) === false) {
+                                        flash('error', gt('Less compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
+                                        return false;
+                                    }
+                                } // create /css output folder if it doesn't exist
+                                if (file_put_contents(BASE . $css_fname, $css) === false) {
+                                    flash('error', gt('Less compiler') . ': ' . gt('unable to write') . ': ' . $css_fname );
+                                    return false;
+                                }
                             }
                             return true;
                         } catch(Exception $e) {
@@ -492,11 +500,19 @@ class expCSS {
                             if ($file_updated || !file_exists(BASE . $css_fname)) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
-                                if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname'],
-                                    DIR_DEFAULT_MODE_STR
-                                ); // create /css output folder if it doesn't exist
-                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
+                                if (!is_dir($css_loc['dirname'])) {
+                                    if (mkdir(
+                                        $css_loc['dirname'],
+                                        DIR_DEFAULT_MODE_STR
+                                    ) === false) {
+                                        flash('error', gt('Less compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
+                                        return false;
+                                    }
+                                } // create /css output folder if it doesn't exist
+                                if (file_put_contents(BASE . $css_fname, $new_cache['compiled']) === false) {
+                                    flash('error', gt('Less compiler') . ': ' . gt('unable to write') . ': ' . $css_fname);
+                                    return false;
+                                }
                             }
                             return true;
                         } catch(Exception $e) {
@@ -592,11 +608,19 @@ class expCSS {
                             if ($file_updated || !file_exists(BASE . $css_fname)) {
                                 // write compiled css file
                                 $css_loc = pathinfo(BASE . $css_fname);
-                                if (!is_dir($css_loc['dirname'])) mkdir(
-                                    $css_loc['dirname'],
-                                    DIR_DEFAULT_MODE_STR
-                                ); // create /css output folder if it doesn't exist
-                                file_put_contents(BASE . $css_fname, $new_cache['compiled']);
+                                if (!is_dir($css_loc['dirname'])) {
+                                    if (mkdir(
+                                        $css_loc['dirname'],
+                                        DIR_DEFAULT_MODE_STR
+                                    ) === false) {
+                                        flash('error', gt('SCSS compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
+                                        return false;
+                                    }
+                                } // create /css output folder if it doesn't exist
+                                if (file_put_contents(BASE . $css_fname, $new_cache['compiled']) === false) {
+                                    flash('error', gt('SCSS compiler') . ': ' . gt('unable to write') . ': ' . $css_fname);
+                                    return false;
+                                }
                             }
                             return true;
                         } catch(Exception $e) {
