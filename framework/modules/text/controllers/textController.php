@@ -89,7 +89,7 @@ class textController extends expController {
             }
         } elseif (SITE_WYSIWYG_EDITOR == 'tinymce') {
             if (empty($settings->skin)) $settings->skin = 'lightgray';
-            // clean up (custom) plugins list from missing plugins  //FIXME we don't load any custom stuff in this view except skin
+            // clean up (custom) plugins list from missing plugins  //FIXME we don't load any custom stuff in this view except skin & plugins
             if (!empty($settings->plugins)) {
                 $plugs = explode(',',trim($settings->plugins));
                 foreach ($plugs as $key=>$plug) {
