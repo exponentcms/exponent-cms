@@ -55,11 +55,13 @@
 		{control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
         {if $editor == 'ckeditor'}
             {control type=textarea cols=80 rows=2 name=stylesset label="Styles List"|gettext value=$record->stylesset}
+            {control type=textarea cols=80 rows=2 name=formattags label="Format List"|gettext value=$record->formattags}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font List"|gettext value=$record->fontnames}
         {elseif $editor == 'tinymce'}
             {control type=textarea cols=80 rows=2 name=stylesset label="Formats List"|gettext value=$record->stylesset}
+            {control type=textarea cols=80 rows=2 name=formattags label="Paragraph List"|gettext value=$record->formattags}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font Family List"|gettext value=$record->fontnames}
         {/if}
-        {control type=textarea cols=80 rows=2 name=formattags label="Formats List"|gettext value=$record->formattags}
-	    {control type=textarea cols=80 rows=2 name=fontnames label="Fonts List"|gettext value=$record->fontnames}
         {if $editor == 'ckeditor'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='Adding an uninstalled plugin to this list may crash the site!'|gettext}
             {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list may crash the site!'|gettext}
