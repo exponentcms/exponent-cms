@@ -445,7 +445,7 @@ class orderController extends expController {
         exit();
          */
         /**
-         * to do this same thing as below using expHtmlToPDF/2/3
+         * to do this same thing as below using expHtmlToPDF
          */
         $mypdf = new expHtmlToPDF('Letter','portrait',$invoice);
         $mypdf->createpdf('D',$org_name . "_Invoice" . ".pdf");

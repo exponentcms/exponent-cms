@@ -104,7 +104,9 @@ class billing extends expRecord {
 
 		foreach($this->available_calculators as $key => $item) {
 			$calc  = new $item($key);
-			$this->form[$key] = $calc->userForm();
+            if (!expJavascript::inAjaxAction()) {  //fixme kludge for now to get order pdf's to print out
+                $this->form[$key] = $calc->userForm();
+            }
 		}
         
 		// eDebug($this->form, true);	
