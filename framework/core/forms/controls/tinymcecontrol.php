@@ -120,6 +120,10 @@ class tinymcecontrol extends formcontrol
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
+        } elseif (!empty($settings->additionalconfig)) {
+            $additionalConfig = stripSlashes($settings->additionalconfig);
+        } else {
+            $additionalConfig = '';
         }
         if (!empty($this->plugin)) {
             $plugins .= ',' . $this->plugin;
@@ -164,10 +168,57 @@ class tinymcecontrol extends formcontrol
         }
         if (empty($sc_brw_off)) $sc_brw_off = 'true';
         if (empty($stylesset)) {
-            $stylesset = "'default'";
+            $stylesset = "{title: 'Image Left',
+                    selector: 'img', styles: {
+                    'float' : 'left',
+                    'margin': '0 10px 0 10px'
+                }},
+                {title: 'Image Right',
+                    selector: 'img', styles: {
+                    'float' : 'right',
+                    'margin': '0 10px 0 10px'
+                }},
+                {title: 'Headers', items: [
+                    {title: 'h1', block: 'h1'},
+                    {title: 'h2', block: 'h2'},
+                    {title: 'h3', block: 'h3'},
+                    {title: 'h4', block: 'h4'},
+                    {title: 'h5', block: 'h5'},
+                    {title: 'h6', block: 'h6'}
+                ]},
+                {title: 'Inline', items: [
+                    {title: 'Bold', inline: 'b', icon: 'bold'},
+                    {title: 'Italic', inline: 'i', icon: 'italic'},
+                    {title: 'Underline', inline: 'span', styles : {textDecoration : 'underline'}, icon: 'underline'},
+                    {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
+                    {title: 'Superscript', inline: 'sup', icon: 'superscript'},
+                    {title: 'Subscript', inline: 'sub', icon: 'subscript'},
+                    {title: 'Code', inline: 'code', icon: 'code'},
+                ]},
+                {title: 'Blocks', items: [
+                    {title: 'Paragraph', block: 'p'},
+                    {title: 'Blockquote', block: 'blockquote'},
+                    {title: 'Div', block: 'div'},
+                    {title: 'Pre', block: 'pre'}
+                ]},
+                {title: 'Alignment', items: [
+                    {title: 'Left', block: 'div', styles : {textAlign : 'left'}, icon: 'alignleft'},
+                    {title: 'Center', block: 'div', styles : {textAlign : 'center'}, icon: 'aligncenter'},
+                    {title: 'Right', block: 'div', styles : {textAlign : 'right'}, icon: 'alignright'},
+                    {title: 'Justify', block: 'div', styles : {textAlign : 'justify'}, icon: 'alignjustify'}
+                ]},
+                {title: 'Containers', items: [
+                    {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
+                    {title: 'article', block: 'article', wrapper: true, merge_siblings: false},
+                    {title: 'blockquote', block: 'blockquote', wrapper: true},
+                    {title: 'hgroup', block: 'hgroup', wrapper: true},
+                    {title: 'aside', block: 'aside', wrapper: true},
+                    {title: 'figure', block: 'figure', wrapper: true}
+                ]}
+            ";
         }
         if (empty($formattags)) {
-            $formattags = "'p;h1;h2;h3;h4;h5;h6;pre;address;div'";
+            $formattags = "'Paragraph=p;Heading 1=h1;Heading 2=h2;Heading 3=h3;Heading 4=h4;Heading 5=h5;Heading 6=h6;Preformatted=pre'";
         }
         if (empty($fontnames)) {
             $fontnames = "'Andale Mono=andale mono,times;'+
@@ -209,56 +260,9 @@ class tinymcecontrol extends formcontrol
                     " . $upload . "
                     browser_spellcheck : " . $sc_brw_off . " ,
 //                    importcss_append: true,
-                    style_formats: [
-                        {title: 'Image Left',
-                            selector: 'img', styles: {
-                            'float' : 'left',
-                            'margin': '0 10px 0 10px'
-                        }},
-                        {title: 'Image Right',
-                            selector: 'img', styles: {
-                            'float' : 'right',
-                            'margin': '0 10px 0 10px'
-                        }},
-                        {title: 'Headers', items: [
-                            {title: 'h1', block: 'h1'},
-                            {title: 'h2', block: 'h2'},
-                            {title: 'h3', block: 'h3'},
-                            {title: 'h4', block: 'h4'},
-                            {title: 'h5', block: 'h5'},
-                            {title: 'h6', block: 'h6'}
-                        ]},
-                        {title: 'Inline', items: [
-                            {title: 'Bold', inline: 'b', icon: 'bold'},
-                            {title: 'Italic', inline: 'i', icon: 'italic'},
-                            {title: 'Underline', inline: 'span', styles : {textDecoration : 'underline'}, icon: 'underline'},
-                            {title: 'Strikethrough', inline: 'span', styles : {textDecoration : 'line-through'}, icon: 'strikethrough'},
-                            {title: 'Superscript', inline: 'sup', icon: 'superscript'},
-                            {title: 'Subscript', inline: 'sub', icon: 'subscript'},
-                            {title: 'Code', inline: 'code', icon: 'code'},
-                        ]},
-                        {title: 'Blocks', items: [
-                            {title: 'Paragraph', block: 'p'},
-                            {title: 'Blockquote', block: 'blockquote'},
-                            {title: 'Div', block: 'div'},
-                            {title: 'Pre', block: 'pre'}
-                        ]},
-                        {title: 'Alignment', items: [
-                            {title: 'Left', block: 'div', styles : {textAlign : 'left'}, icon: 'alignleft'},
-                            {title: 'Center', block: 'div', styles : {textAlign : 'center'}, icon: 'aligncenter'},
-                            {title: 'Right', block: 'div', styles : {textAlign : 'right'}, icon: 'alignright'},
-                            {title: 'Justify', block: 'div', styles : {textAlign : 'justify'}, icon: 'alignjustify'}
-                        ]},
-                        {title: 'Containers', items: [
-                            {title: 'section', block: 'section', wrapper: true, merge_siblings: false},
-                            {title: 'article', block: 'article', wrapper: true, merge_siblings: false},
-                            {title: 'blockquote', block: 'blockquote', wrapper: true},
-                            {title: 'hgroup', block: 'hgroup', wrapper: true},
-                            {title: 'aside', block: 'aside', wrapper: true},
-                            {title: 'figure', block: 'figure', wrapper: true}
-                        ]}
-                    ],
-                    font_names :
+                    style_formats: [" . $stylesset . "],
+                    block_formats : " . $formattags . ",
+                    font_formats :
                         " . $fontnames . ",
                     end_container_on_empty_block: true,
                     file_picker_callback: function expBrowser (callback, value, meta) {

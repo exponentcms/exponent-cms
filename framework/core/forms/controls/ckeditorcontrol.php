@@ -77,6 +77,8 @@ class ckeditorcontrol extends formcontrol {
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
+        } elseif (!empty($settings->additionalconfig)) {
+            $additionalConfig = stripSlashes($settings->additionalconfig);
         } else {
             $additionalConfig = '';
         }

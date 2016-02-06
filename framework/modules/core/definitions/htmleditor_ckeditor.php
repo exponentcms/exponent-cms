@@ -52,6 +52,9 @@ return array(
     'fontnames'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
    		DB_FIELD_LEN=>255),
+	'additionalconfig'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>255),
 );
 
 ?>

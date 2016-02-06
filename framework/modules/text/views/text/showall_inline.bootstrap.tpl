@@ -301,6 +301,10 @@
                 image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
 //                importcss_append: true,
+    //            style_formats : " . $stylesset . ",
+    //            block_formats : " . $formattags . ",
+    //            font_formats :
+    //                " . $fontnames . ",
                 end_container_on_empty_block: true,
                 file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({

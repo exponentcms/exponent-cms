@@ -99,6 +99,7 @@ class textController extends expController {
             }
         }
 
+        //fixme we do NOT pass toolbars, fonts, styles, or blocks
 		assign_to_template(array(
             'items'=>$items,
             'preview'=>($level == UILEVEL_PREVIEW),  // needed for inline edit to work

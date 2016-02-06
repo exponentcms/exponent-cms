@@ -39,7 +39,7 @@ csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
-CKEditor,4.5.6,ckeditor.com,4.5.6,"add fieldinsert (exp), tableresize, stylesheetparser, sourcedialog, image2 & imageupload widgets & kama skin"
+CKEditor,4.5.7,ckeditor.com,4.5.7,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.3.3,tinymce.com,4.3.3,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.6n,elfinder.org,2.1.6n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
 jQuery1,1.12.0,jquery.com,1.12.0,
