@@ -64,10 +64,10 @@
         {/if}
         {if $editor == 'ckeditor'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='Adding an uninstalled plugin to this list may crash the site!'|gettext}
-            {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list may crash the site!'|gettext}
         {elseif $editor == 'tinymce'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='You must specifically include standard plugins here.'|gettext}
         {/if}
+        {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list may crash the site!'|gettext}
         {control type=buttongroup submit="Save Toolbar"|gettext cancel="Cancel"|gettext returntype="manageable"}
     {/form}   
 </div>
