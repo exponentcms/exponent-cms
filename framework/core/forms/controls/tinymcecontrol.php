@@ -187,7 +187,6 @@ class tinymcecontrol extends formcontrol
                     {title: 'Inserted Text',	inline: 'ins'},
                     {title: 'Cited Work',		inline: 'cite'},
                     {title: 'Inline Quotation', inline: 'q'},
-
                 ]},
                 {title: 'Containers', items: [
                     {title: 'section', block: 'section', wrapper: true, merge_siblings: false},

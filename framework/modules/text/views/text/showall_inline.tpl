@@ -135,7 +135,7 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image quickupload | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
+            'link unlink image | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall';
         {/literal}{/if}{literal}
 
@@ -215,7 +215,7 @@
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
-                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code,localautosave'];
+                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -258,7 +258,7 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
                 removePlugins: 'image',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',
@@ -270,10 +270,10 @@
                 toolbarCanCollapse : true,
                 entities_additional : '',
                 {/literal}{$contentCSS}{literal}
-        //            stylesSet : " . $stylesset . ",
-        //            format_tags : " . $formattags . ",
-        //            font_names :
-        //                " . $fontnames . ",
+                stylesSet : {/literal}{$editor->stylesset}{literal},
+                format_tags : {/literal}{$editor->formattags}{literal},
+                font_names :
+                    {/literal}{$editor->fontnames}{literal},
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
 
@@ -286,15 +286,20 @@
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
-//                menubar: false,
+                menubar: tinymenu,
                 toolbar_items_size: 'small',
-                image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
+                image_advtab: true,
+                image_title: true,
+                image_caption: true,
+                pagebreak_separator: '<div style=\"page-break-after: always;\"><span style=\"display: none;\">&nbsp;</span></div>',
+                {/literal}{$editor->upload}{literal}
+                browser_spellcheck : {/literal}{$editor->scayt_on}{literal},
 //                importcss_append: true,
-    //            style_formats : " . $stylesset . ",
-    //            block_formats : " . $formattags . ",
-    //            font_formats :
-    //                " . $fontnames . ",
+                style_formats: [{/literal}{$editor->stylesset}{literal}],
+                block_formats : {/literal}{$editor->formattags}{literal},
+                font_formats :
+                    {/literal}{$editor->fontnames}{literal},
                 end_container_on_empty_block: true,
                 file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({
