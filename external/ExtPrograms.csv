@@ -27,7 +27,7 @@ Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.3.6+1,bootswatch.com/,3.3.6+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
-Adminer,4.2.3,www.adminer.org,4.2.3,
+Adminer,4.2.3,www.adminer.org,4.2.4,
 SimpleAjaxUploader,2.5.0,https://github.com/LPology/Simple-Ajax-Uploader,2.5.0,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
 MediaElement.js,2.19.0,mediaelementjs.com/,2.19.0,
@@ -64,7 +64,8 @@ OwlCarousel2,2.0.0b3,https://github.com/smashingboxes/OwlCarousel2,2.0.0b3,
 colorbox,1.6.3,http://www.jacklmoore.com/colorbox,1.6.3,using style #5 renamed to jquery.colorbox.css
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.4.5,http://xdsoft.net/jqplugins/datetimepicker/,2.4.5,
-pwstrength-bootstrap,1.2.9,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.9,
+Bootstrap DateTimePicker,4.17.37,https://github.com/Eonasdan/bootstrap-datetimepicker,4.17.37,
+pwstrength-bootstrap,1.2.10,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.10,
 Sortable,1.4.2,https://github.com/RubaXa/Sortable,1.4.2,
 jstree,3.2.1,https://github.com/vakata/jstree,3.2.1,added nav menu icons to stylesheet
 bootstrap3-dialog,1.34.9,https://github.com/nakupanda/bootstrap3-dialog,1.34.9,
