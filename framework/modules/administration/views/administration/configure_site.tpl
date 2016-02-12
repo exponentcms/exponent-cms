@@ -379,7 +379,7 @@
                                     </div>
                                 {/if}
                                 <blockquote>
-                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
+                                    {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf.zip/download" target="_blank">dompdf061.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>
