@@ -333,11 +333,11 @@
                             <div id="expMPDF-div" class="alt-item" style="display:none;">
                                 {if !file_exists("`$smarty.const.BASE`external/MPDF57/mpdf.php")}
                                     <div style="color:#ff0000;font-weight:bold;">
-                                        {'mPDF is NOT installed!'|gettext}
+                                        {'mPDF 5 is NOT installed!'|gettext}
                                     </div>
                                 {else}
                                     <div>
-                                        {'mPDF is installed!'|gettext}
+                                        {'mPDF 5 is installed!'|gettext}
                                     </div>
                                 {/if}
                                 <blockquote>
@@ -380,6 +380,21 @@
                                 {/if}
                                 <blockquote>
                                     {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
+                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                                </blockquote>
+                            </div>
+                            <div id="expHTML2PDF-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/html2pdf-4.5.0/html2pdf.class.php") || !file_exists("`$smarty.const.BASE`external/TCPDF-6.2.12/tcpdf.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'HTML2PDF/TCPDF is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'HTML2PDF/TCPDF is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'HTML2PDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>

@@ -1129,7 +1129,7 @@ class expHTML2PDF extends expHtmlToPDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/mpdf60/mpdf.php');
+        return file_exists(BASE . 'external/html2pdf-4.5.0/html2pdf.class.php') && file_exists(BASE . 'external/TCPDF-6.2.12/tcpdf.php');
     }
 
     /**
@@ -1142,15 +1142,21 @@ class expHTML2PDF extends expHtmlToPDF
      */
     public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
-        if (file_exists(BASE . 'external/html2pdf-4.5.0/html2pdf.class.php') && file_exists(BASE . 'external/TCPDF-6.2.12/tcpdf.php')) {
-            if (!file_exists(BASE . 'tmp/ttfontdata')) expFile::makeDirectory('tmp/ttfontdata');
+        $html2pdf_loc = BASE . 'external/html2pdf-4.5.0/';
+        if (file_exists($html2pdf_loc . 'html2pdf.class.php') && file_exists(BASE . 'external/TCPDF-6.2.12/tcpdf.php')) {
+            if (!file_exists(BASE . 'tmp/ttfontdata'))
+                expFile::makeDirectory('tmp/ttfontdata');
+            require_once($html2pdf_loc . 'html2pdf.class.php');
+            require_once($html2pdf_loc . '_class/tcpdfConfig.php');
+            require_once(BASE . 'external/TCPDF-6.2.12/tcpdf.php');
+            require_once($html2pdf_loc . '_class/locale.class.php');
+            require_once($html2pdf_loc . '_class/myPdf.class.php');
+            require_once($html2pdf_loc . '_class/exception.class.php');
+            require_once($html2pdf_loc . '_class/parsingCss.class.php');
+            require_once($html2pdf_loc . '_class/parsingHtml.class.php');
             $this->size = $paper_size;
             $this->orient = strtoupper(substr($orientation, 0, 1));
             $this->pdf = new HTML2PDF($this->size, $this->orient, substr(LOCALE, 0, 2));
-            /**
-             * cache directory for temporary files (url path)
-             */
-            define('K_PATH_URL_CACHE', BASE . 'tmp/ttfontdata');
             if (HTMLTOPDF_DEBUG)
                 $this->pdf->setModeDebug();
             if (!empty($html)) {

@@ -39,6 +39,8 @@ csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
+HTML2PDF,4.5.0,https://github.com/spipu/html2pdf,4.5.0,optional
+TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
 CKEditor,4.5.7,ckeditor.com,4.5.7,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.3.4,tinymce.com,4.3.4,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.6n,elfinder.org,2.1.6n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
@@ -52,7 +54,7 @@ Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.6.1,http://trentrichardson.com/examples/timepicker/,1.6.1,used by adminer
 TimeCircles,1.5.3,https://github.com/wimbarelds/TimeCircles,1.5.3,
-DataTables,1.10.7,http://www.datatables.net,1.10.10,includes boostrap integration w/ renamed bootstrap3 versions
+DataTables,1.10.7,http://www.datatables.net,1.10.11,includes boostrap integration w/ renamed bootstrap3 versions
 DataTables Tabletools,2.2.4,http://www.datatables.net,2.2.4,replaced by 'Buttons' in 1.10.8
 Responsive DataTables,0.2.0,https://github.com/Comanche/datatables-responsive,0.2.0,
 yadcf,0.8.9,https://github.com/vedmack/yadcf,0.8.9,
