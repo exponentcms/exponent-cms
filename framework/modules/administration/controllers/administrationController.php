@@ -308,7 +308,7 @@ class administrationController extends expController {
 //    }
     
     public function update_SetSlingbarPosition() {
-        expSession::set("slingbar_top",$this->params['top']);
+        setcookie('slingbar-top', $this->params['top']);
         expHistory::back();
     }
 
@@ -1354,6 +1354,7 @@ class administrationController extends expController {
 
             flash('message', gt("Your Website Configuration has been updated"));
         }
+        setcookie('slingbar-top', $this->params['sc']['SLINGBAR_TOP']);
 //        expHistory::back();
 	    expHistory::returnTo('viewable');
     }
