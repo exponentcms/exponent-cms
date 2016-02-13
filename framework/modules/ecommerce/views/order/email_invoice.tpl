@@ -13,7 +13,7 @@
  *
  *}
 
-<style type="text/css" media="screen">
+<style type="text/css">
     {*{literal}*}
         {*.address.show span {*}
             {*display:block;*}

@@ -138,7 +138,7 @@ class expCSS {
                 }
             }
             if (!empty($params['css'])) {
-                echo '<style type="text/css" media="screen">';  //FIXME is ths only for the screen???
+                echo '<style type="text/css">';
                 echo trim($params['css']);
                 echo '</style>' . "\n";
             }
@@ -223,7 +223,7 @@ class expCSS {
             }
             trim($styles);
             if (!empty($styles)) {
-                $htmlcss .= "\t".'<style type="text/css" media="screen">'."\n";
+                $htmlcss .= "\t".'<style type="text/css">'."\n";
                 $htmlcss .= "\t".$styles."\n";
                 $htmlcss .= "\t".'</style>'."\n";
             }
@@ -240,9 +240,9 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
-//        self::auto_compile_scss('external/bootstrap3/scss/_test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
-//        self::auto_compile_scss('external/bootstrap3/scss/_newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test

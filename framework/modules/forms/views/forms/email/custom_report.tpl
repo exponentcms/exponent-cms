@@ -14,7 +14,7 @@
  *}
 
 {if $is_email == 1}
-    <style type="text/css" media="screen">
+    <style type="text/css">
         {$css}
     </style>
 {else}
