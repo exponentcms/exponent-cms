@@ -132,6 +132,7 @@ if (DEVELOPMENT && LOGGER)
 
 if (EXPORT_AS_PDF == 1) {
     $content = ob_get_clean();
+	$content = expProcessBuffer($content);  // we didn't actually process the output buffer by adding styles
 
     // convert to PDF
     $pdf = new expHtmlToPDF('Letter',EXPORT_AS_PDF_LANDSCAPE?'landscape':'portrait',$content);

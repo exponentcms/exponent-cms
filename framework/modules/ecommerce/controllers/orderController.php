@@ -395,8 +395,22 @@ class orderController extends expController {
     function getPDF($orders = null) {
         global $user, $timer;
 
-        //$invoice = '<HTML><HEAD><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.YUI2_RELATIVE.'yui2-reset-fonts-grids/yui2-reset-fonts-grids.css" ><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.THEME_RELATIVE.'css/base-styles.css"><link rel="stylesheet" type="text/css" href="'.NONSSL_URL.PATH_RELATIVE.'framework/modules/ecommerce/assets/css/print-invoice.css"><style>html{background:none;} #store-header{text-align:left;}</style></HEAD><BODY>';
-        $invoice = '<!DOCTYPE HTML><HTML><HEAD></HEAD><BODY>';
+        $invoice = '<!DOCTYPE HTML><HTML><HEAD>';
+        // the basic styles
+        if (!bs3())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
+        if (!bs())
+//            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/normalize/normalize.css" >';
+        if (bs2())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap/css/bootstrap.css" >';
+        if (bs3())
+            $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'external/bootstrap3/css/bootstrap.css" >';
+        $invoice .= '<link rel="stylesheet" type="text/css" href="'.URL_FULL.'framework/modules/ecommerce/assets/css/print-invoice.css">
+        <style>
+            html{background:none;}
+            #store-header{text-align:left;}
+        </style>';
+        $invoice .= '</HEAD><BODY>';
         if (is_array($orders)) {
             foreach ($orders as $order) {
                 if ($user->isAdmin()) {
