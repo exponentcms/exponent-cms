@@ -54,9 +54,9 @@ if (!defined('EXPONENT_VERSION_MAJOR')) {
 		define('EXPONENT_VERSION_TYPE','develop');
 		define('EXPONENT_VERSION_ITERATION','');
 		define('EXPONENT_VERSION_BUILDDATE',time());
-        // set DEVELOPMENT to 1 to debug the install process
-//        define('DEVELOPMENT','1');
 	}
+	// set DEVELOPMENT to 1 to debug the install process
+//        define('DEVELOPMENT','1');
 }
 
 ?>
