@@ -62,6 +62,22 @@ class textcontrol extends formcontrol {
             $extra_class = '';
         }
         $html = ($this->horizontal) ? '<div class="col-sm-10">' : '';
+        if (!empty($this->prepend)) {
+            if (bs2()) {
+                $html .= '<div class="input-prepend">';
+                $html .= '<span class="add-on"><i class="icon-'.$this->prepend.'"></i></span>';
+            } elseif (bs3()) {
+                $html .= '<div class="input-group">';
+                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->prepend.'"></i></span>';
+            }
+        }
+        if (!empty($this->append) && bs()) {
+            if (bs2()) {
+                $html .= '<div class="input-append">';
+            } elseif (bs3()) {
+                $html .= '<div class="input-group">';
+            }
+        }
         $html .= '<input id="' . $idname . '" class="text form-control' . $extra_class . '" type="' . $this->type . '" name="' . $name . '"';
         $html .= " value=\"" . str_replace('"', "&quot;", $this->default) . "\"";
         $html .= ($this->size ? " size=\"" . $this->size . "\"" : "");
@@ -82,6 +98,17 @@ class textcontrol extends formcontrol {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         if (!empty($this->required)) $html .= ' required="required" caption="'.$caption.'"';
         $html .= "/>";
+        if (!empty($this->prepend) && bs()) {
+            $html .= '</div>';
+        }
+        if (!empty($this->append) && bs()) {
+            if (bs2()) {
+                $html .= '<span class="add-on"><i class="icon-'.$this->append.'"></i></span>';
+            } elseif (bs3()) {
+                $html .= '<span class="input-group-addon"><i class="fa fa-'.$this->append.'"></i></span>';
+            }
+            $html .= '</div>';
+        }
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
         return $html;
