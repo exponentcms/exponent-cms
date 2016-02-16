@@ -46,11 +46,12 @@
             {$config.moduledescription}
         {/if}
         {$myloc=serialize($__loc)}
-
+        {if ($permissions.edit || ($permissions.create && $item->poster == $user->id)) && !$preview}
+            {$inline = true}
+        {/if}
         {foreach from=$items item=item name=items}
             {if ($permissions.edit || ($permissions.create && $item->poster == $user->id)) && !$preview}
                 {$make_edit = ' contenteditable="true" class="editable"'}
-                {$inline = true}
             {else}
                 {$make_edit = ''}
             {/if}
@@ -114,9 +115,25 @@
     {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
         {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
         {/script}
+        {$contentCSS = ""}
+        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor.css"}
+        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor_`$smarty.const.THEME_STYLE`.css"))}
+            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor_`$smarty.const.THEME_STYLE`.css"}
+        {/if}
+        {if is_file($smarty.const.BASE|cat:$css)}
+           {$contentCSS = "contentsCss : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+        {/if}
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
+        {$contentCSS = ""}
+        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce.css"}
+        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"))}
+            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"}
+        {/if}
+        {if is_file($smarty.const.BASE|cat:$css)}
+           {$contentCSS = "content_css : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+        {/if}
     {/if}
 
     {script unique=$name jquery="bootstrap-dialog" bootstrap="modal,transition"}
@@ -131,7 +148,7 @@
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
         var fullToolbar = {/literal}{if empty($editor->data)}'formatselect fontselect fontsizeselect forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent '+
-            'link unlink image quickupload | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
+            'link unlink image | visualblocks localautosave'{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = 'cut copy paste pastetext | undo redo localautosave | searchreplace selectall';
         {/literal}{/if}{literal}
 
@@ -154,7 +171,7 @@
                             $.ajax({
                                 type: "POST",
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
-                                data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                                data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                                 success:function(msg) {
                                     if (workflow) {
                                         data = $.parseJSON(msg.data);
@@ -194,7 +211,7 @@
                 $.ajax({
                     type: "POST",
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
-                    data: "id="+item[1] + "&type="+item[0] + "&value="+data,
+                    data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                     success:function(msg) {
                         if (workflow) {
                             data = $.parseJSON(msg.data);
@@ -212,10 +229,12 @@
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
+                tinymenu = false;
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
-                tinyplugins = ['image,searchreplace,contextmenu,paste,link,quickupload,textcolor,visualblocks,code,localautosave'];
+                tinymenu = true;
+                tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
@@ -258,7 +277,7 @@
                 filebrowserLinkBrowseUrl : EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/ckeditor_link.php?update=ck',
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
-                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,{/literal}{stripSlashes($editor->plugins)}{literal}',  //FIXME we don't check for missing plugins
+                extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
                 removePlugins: 'image',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',
@@ -269,11 +288,11 @@
                 autoGrow_onStartup : false,
                 toolbarCanCollapse : true,
                 entities_additional : '',
-    //            " . $contentCSS . "
-    //            stylesSet : " . $stylesset . ",
-    //            format_tags : " . $formattags . ",
-    //            font_names :
-    //                " . $fontnames . ",
+                {/literal}{$contentCSS}{literal}
+                stylesSet : {/literal}{$editor->stylesset}{literal},
+                format_tags : {/literal}{$editor->formattags}{literal},
+                font_names :
+                    {/literal}{$editor->fontnames}{literal},
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
 
@@ -282,14 +301,24 @@
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
+                {/literal}{$contentCSS}{literal}
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
-//                menubar: false,
+                menubar: tinymenu,
                 toolbar_items_size: 'small',
-                image_advtab: true,
                 skin : '{/literal}{$editor->skin}{literal}',
+                image_advtab: true,
+                image_title: true,
+                image_caption: true,
+                pagebreak_separator: '<div style=\"page-break-after: always;\"><span style=\"display: none;\">&nbsp;</span></div>',
+                {/literal}{$editor->upload}{literal}
+                browser_spellcheck : {/literal}{$editor->scayt_on}{literal},
 //                importcss_append: true,
+                style_formats: [{/literal}{$editor->stylesset}{literal}],
+                block_formats : {/literal}{$editor->formattags}{literal},
+                font_formats :
+                    {/literal}{$editor->fontnames}{literal},
                 end_container_on_empty_block: true,
                 file_picker_callback: function expBrowser (callback, value, meta) {
                     tinymce.activeEditor.windowManager.open({

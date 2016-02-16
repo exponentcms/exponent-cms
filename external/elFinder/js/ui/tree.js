@@ -480,10 +480,13 @@ $.fn.elfindertree = function(fm, opts) {
 							preventFail : true
 						})
 						.done(function(data) {
+							if (fm.api < 2.1) {
+								data.tree = data.tree.concat([cwd]);
+							}
 							dirs = $.merge(dirs, filter(data.tree));
 							updateTree(dirs);
 							updateArrows(dirs, loaded);
-							cwdhash == fm.cwd().hash && sync(noCwd);
+							cwdhash == cwd.hash && sync(noCwd);
 						})
 						.always(function(data) {
 							if (link) {
@@ -600,8 +603,8 @@ $.fn.elfindertree = function(fm, opts) {
 						fm.trigger('contextmenu', {
 							'type'    : 'navbar',
 							'targets' : [fm.navId2Hash(p.attr('id'))],
-							'x'       : evt.touches[0].clientX,
-							'y'       : evt.touches[0].clientY
+							'x'       : evt.touches[0].pageX,
+							'y'       : evt.touches[0].pageY
 						});
 					}, 500));
 				})
@@ -660,13 +663,24 @@ $.fn.elfindertree = function(fm, opts) {
 					}
 				})
 				.on('contextmenu', selNavdir, function(e) {
+					var self = $(this);
 					e.preventDefault();
 
 					fm.trigger('contextmenu', {
 						'type'    : 'navbar',
 						'targets' : [fm.navId2Hash($(this).attr('id'))],
-						'x'       : e.clientX,
-						'y'       : e.clientY
+						'x'       : e.pageX,
+						'y'       : e.pageY
+					});
+					
+					self.addClass('ui-state-hover');
+					
+					fm.getUI('contextmenu').children().on('mouseenter', function() {
+						self.addClass('ui-state-hover');
+					});
+					
+					fm.bind('closecontextmenu', function() {
+						self.removeClass('ui-state-hover');
 					});
 				}),
 			// move tree into navbar

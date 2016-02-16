@@ -119,7 +119,7 @@
 
         <table>
             <tr>
-                <td>
+                <td width="50%">
                     {form controller="report" action="dashboard" name="filter_dashboard" id="filter_dashboard"}
                         {"Quick Range Filter:"|gettext}
                         {control type="dropdown" name="quickrange" label="" items=$quickrange default=$quickrange_default onchange="this.form.submit();"}

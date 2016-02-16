@@ -163,7 +163,9 @@ class simplePollController extends expController {
 //                    $timeblock = $db->selectObject('simplepoll_timeblock',"ip_hash='".md5($_SERVER['REMOTE_ADDR'])."' AND simplepoll_question_id=".$answer->simplepoll_question_id);
                 }
 
-                if ($timeblock == null || $timeblock->lock_expires < time() && $timeblock->lock_expires != 0) {
+                if ($timeblock == null || ($timeblock->lock_expires < time() && $timeblock->lock_expires != 0)) {
+                    if ($timeblock == null)
+                        $timeblock = new simplepoll_timeblock();
                     $answer->vote_count++;
                     $answer->update();
 

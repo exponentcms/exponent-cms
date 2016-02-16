@@ -45,13 +45,16 @@ return array(
 		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
     'stylesset'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>255),
+   		DB_FIELD_LEN=>10000),
     'formattags'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>255),
+   		DB_FIELD_LEN=>10000),
     'fontnames'=>array(
    		DB_FIELD_TYPE=>DB_DEF_STRING,
-   		DB_FIELD_LEN=>255),
+   		DB_FIELD_LEN=>10000),
+	'additionalconfig'=>array(
+		DB_FIELD_TYPE=>DB_DEF_STRING,
+		DB_FIELD_LEN=>10000),
 );
 
 ?>

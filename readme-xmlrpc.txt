@@ -18,3 +18,6 @@ Currently this action:
 - Allows you to create new and edit existing blog posts including those with graphics.  You can also set draft or publish status
 - Allows access to use or create categories if turned on within that blog module
 - Allows access to use or create tags within that blog module
+
+If you edit the included '/rsd.xml.sample' file by entering your web site url in place of the 2 instances of 'yoursite.url',
+and then rename that file to '/rsd.xml', it may help guide your offline editor during account creation

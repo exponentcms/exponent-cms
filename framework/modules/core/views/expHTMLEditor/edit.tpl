@@ -48,17 +48,26 @@
         {elseif $editor == 'tinymce'}
             {control type="checkbox" postfalse=1 name=scayt_on label="Disable Browser Spell Check"|gettext checked=$record->scayt_on value=1}
         {/if}
-        <h4><em>({'Blank or empty entries in the following text boxes result in using the default setting'|gettext})</em></h4>
-        <blockquote><em>({'Please visit the help page for entry format requirements!'|gettext})</em></blockquote>
+        <blockquote>
+            <h4>{'Blank or empty entries in the following text boxes result in using the default setting'|gettext}</h4>
+            {'Please visit the help page for entry format requirements!'|gettext}
+        </blockquote>
 		{control type=textarea cols=80 rows=10 name=data label="Toolbar Button Configuration"|gettext value=$record->data}
-        {control type=textarea cols=80 rows=2 name=stylesset label="Styles List (plus style sheet styles)"|gettext value=$record->stylesset}
-        {control type=textarea cols=80 rows=2 name=formattags label="Formats List"|gettext value=$record->formattags}
-	    {control type=textarea cols=80 rows=2 name=fontnames label="Fonts List"|gettext value=$record->fontnames}
+        {if $editor == 'ckeditor'}
+            {control type=textarea cols=80 rows=2 name=stylesset label="Styles List"|gettext value=$record->stylesset}
+            {control type=textarea cols=80 rows=2 name=formattags label="Format List"|gettext value=$record->formattags}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font List"|gettext value=$record->fontnames}
+        {elseif $editor == 'tinymce'}
+            {control type=textarea cols=80 rows=2 name=stylesset label="Formats List"|gettext value=$record->stylesset}
+            {control type=textarea cols=80 rows=2 name=formattags label="Paragraph List"|gettext value=$record->formattags}
+            {control type=textarea cols=80 rows=2 name=fontnames label="Font Family List"|gettext value=$record->fontnames}
+        {/if}
         {if $editor == 'ckeditor'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Custom Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='Adding an uninstalled plugin to this list may crash the site!'|gettext}
         {elseif $editor == 'tinymce'}
             {control type=textarea cols=80 rows=2 name=plugins label="Load Plugins (comma separated) MUST be installed first!"|gettext value=$record->plugins description='You must specifically include standard plugins here.'|gettext}
         {/if}
+        {control type=textarea cols=80 rows=2 name=additionalconfig label="Additionial Configuration (comma separated javascript object)"|gettext value=$record->additionalconfig description='Adding an incorrectly formated configuration to this list may crash the site!'|gettext}
         {control type=buttongroup submit="Save Toolbar"|gettext cancel="Cancel"|gettext returntype="manageable"}
     {/form}   
 </div>

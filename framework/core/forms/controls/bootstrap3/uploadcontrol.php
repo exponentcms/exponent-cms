@@ -60,7 +60,10 @@ class uploadcontrol extends formcontrol {
         }
         $html .= '  <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> ';
         $html .= '<span class="fileinput-filename">' . $fi_file . '</span></div>';
-        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"></span>';
+        $html .= '  <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">' . gt('Select file') . '</span><span class="fileinput-exists">' . gt('Change') . '</span><input type="file" name="' . $fi_name . '"';
+        if (!empty($this->accept))
+            $html .= ' accept="'.$this->accept.'"';
+        $html .= '></span>';
         $html .= '  <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">' . gt('Remove') . '</a>';
         $html .= '</div>';
 

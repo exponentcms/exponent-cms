@@ -1,4 +1,4 @@
-# Don't show directory directory listings.
+# Don't show directory listings.
 Options -Indexes
 
 # Route requests to Exponent.
@@ -8,36 +8,36 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # you may have to edit/uncomment the next line if working from a subfolder
+    # you may have to edit/uncomment the next line if running eXp from a subfolder
 #    RewriteBase /subfolder-name
 
     # To redirect all users to access the site WITH the 'www.' prefix,
     # (http://example.com/... will be redirected to http://www.example.com/...)
-    # adapt and uncomment the following:
-    # RewriteCond %{HTTP_HOST} ^example\.com$ [NC]
-    # RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+    # uncomment and adapt the following:
+#     RewriteCond %{HTTP_HOST} ^example\.com$ [NC]
+#     RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
 
     # To redirect all users to access the site WITHOUT the 'www.' prefix,
     # (http://www.example.com/... will be redirected to http://example.com/...)
     # uncomment and adapt the following:
-    # RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
-    # RewriteRule ^(.*)$ http://example.com/$1 [L,R=301] 
+#     RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
+#     RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
   
     RewriteRule ^$ index.html [QSA]
     RewriteRule ^([^.]+)$ $1.html [QSA]
 
     # RewriteRule ^login.php$ login/showlogin
 
-# We really don't need these kludges now
     # Kludge out certain file types that we don't want to try to route thru the eXp router.
-#    RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc)$ [NC]
-#    RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
-#    RewriteCond %{REQUEST_URI} !^/favicon\.ico$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc)$ [NC]
     # Kludge out image files that we don't want to try to route thru the eXp router.
-#    RewriteCond %{REQUEST_URI} !\.(jp?g|gif|png|tiff)$ [NC]
+    RewriteCond %{REQUEST_URI} !\.(jp?g|gif|png|tiff)$ [NC]
     # Kludge out media files that we don't want to try to route thru the eXp router.
-#    RewriteCond %{REQUEST_URI} !\.(mp3|mp4|webm|ogv|flv|f4v)$ [NC]
-    
+    RewriteCond %{REQUEST_URI} !\.(mp3|mp4|webm|ogv|flv|f4v)$ [NC]
+    # Kludge out certain other misc files that we don't want to try to route thru the eXp router.
+    RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+    RewriteCond %{REQUEST_URI} !^/favicon\.ico$ [NC]
+
     # These rules basically state if it isn't an existing fild, directory or symlink, route it to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d

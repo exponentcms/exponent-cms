@@ -444,6 +444,15 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $regitem);
+                    if ($viewtype == 'default' && $viewrange == 'upcoming') {
+                        foreach ($items as $key=>$item) {
+                            if ($item->eventend < time()) {
+                                unset($items[$key]);
+                            } else {
+                                break;  // they are chronological
+                            }
+                        }
+                    }
                 }
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
                 // Upcoming events can be configured to show a specific number of events.

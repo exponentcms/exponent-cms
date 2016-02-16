@@ -17,7 +17,7 @@
 
 {/css}
 
-{css unique="ecom-dashboard2" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
+{css unique="general-ecom" link="`$smarty.const.PATH_RELATIVE`framework/modules/ecommerce/assets/css/ecom.css"}
 
 {/css}
     <div class="leftcol">

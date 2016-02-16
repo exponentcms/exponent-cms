@@ -416,7 +416,7 @@ function renderAction(array $parms=array()) {
             }
         }
     } elseif (array_key_exists($perm_action, $controller->requires_login)) {
-        // check if the action requires the user to be logged in
+        // check if the action requires the user to at least be logged in
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$perm_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$perm_action];
             flash('error', $msg);
@@ -424,7 +424,7 @@ function renderAction(array $parms=array()) {
             expHistory::redirecto_login();
         }
     } elseif (array_key_exists($common_action, $controller->requires_login)) {
-        // check if the action requires the user to be logged in
+        // check if the action requires the user to at least be logged in
         if (!$user->isLoggedIn()) {
             $msg = empty($controller->requires_login[$common_action]) ? gt("You must be logged in to perform this action") : $controller->requires_login[$common_action];
             flash('error', $msg);

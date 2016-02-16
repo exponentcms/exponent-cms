@@ -62,6 +62,15 @@ class notfoundController extends expController {
         }
         $terms = htmlspecialchars($terms);
 
+        // check for server requested error documents here instead of treating them as a search request
+        if ($terms == SITE_404_FILE) {
+            self::handle_not_found();
+        } elseif ($terms == SITE_403_FILE) {
+            self::handle_not_authorized();
+        } elseif ($terms == SITE_500_FILE) {
+            self::handle_internal_error();
+        }
+
         $search = new search();
 		$page = new expPaginator(array(
 			'model'=>'search',

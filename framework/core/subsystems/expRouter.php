@@ -191,7 +191,7 @@ class expRouter {
 
         // strip out possible xss exploits via url
         foreach ($_GET as $key=>$var) {
-            if (strpos($var,'">')) {
+            if (is_string($var) && strpos($var,'">')) {
                 unset(
                     $_GET[$key],
                     $_REQUEST[$key]

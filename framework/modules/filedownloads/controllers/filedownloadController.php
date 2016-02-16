@@ -235,12 +235,12 @@ class filedownloadController extends expController {
                 if (($id3['Encoding']=='VBR') || ($id3['Encoding']=='CBR')) {
                     $rss_item->itunes->duration = $id3['Length mm:ss'];
                 }
-                if (!empty($id3['Author'])) {
-                    $rss_item->author = $id3['Author'];
-                    $rss_item->itunes->author = $id3['Author'];
+                if (!empty($id3['artist'])) {
+                    $rss_item->author = $id3['artist'];
+                    $rss_item->itunes->author = $id3['artist'];
                 }
-                if (!empty($id3['Comments'])) {
-                    $rss_item->itunes->subtitle = $id3['Comments'];
+                if (!empty($id3['comment'])) {
+                    $rss_item->itunes->subtitle = $id3['comment'];
                 }
             } else {
                 $rss_item->itunes->duration = 'Unknown';

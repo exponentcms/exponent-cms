@@ -22,7 +22,7 @@
         {control type="dropdown" name="redirect" label="Login Landing Page"|gettext includeblank="None"|gettext items=section::levelDropdownControlArray(0,0,array(),false,'view',true) value=$record->redirect description='Redirect group members to a specific page when logging in'|gettext}
         {control type="checkbox" name="inclusive" label="Is this a Default Group?"|gettext value=1 checked=$record->inclusive description='Should new accounts be automatically assigned to this group?'|gettext}
         {group label='Group Global Permissions/Restrictions'|gettext}
-            {control type="checkbox" name="prevent_uploads" label="Prevent File Uploads?"|gettext value=1 checked=$record->prevent_uploads description='This group will not be allowed upload files'|gettext}
+            {control type="checkbox" name="prevent_uploads" label="Prevent File Uploads?"|gettext value=1 checked=$record->prevent_uploads description='This group will not be allowed to upload files'|gettext}
             {control type="checkbox" name="prevent_profile_change" label="Prevent User Profile Changes?"|gettext value=1 checked=$record->prevent_profile_change description='This group will not be allowed to change their user profiles'|gettext}
             {control type="checkbox" name="hide_exp_menu" label="Hide Exponent Menu?"|gettext value=1 checked=$record->hide_exp_menu description='This group will not be shown the Exponent menu'|gettext}
             {control type="checkbox" name="hide_files_menu" label="Hide Files Menu?"|gettext value=1 checked=$record->hide_files_menu description='This group will not be shown the Files menu'|gettext}

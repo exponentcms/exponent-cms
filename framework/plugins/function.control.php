@@ -120,6 +120,7 @@ function smarty_function_control($params, &$smarty) {
                 $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
                 if (isset($params['default'])) $control->default = $params['default'];
                 $control->type          = "select";
+                if (isset($params['style'])) $control->style = $params['style'];
                 $control->include_blank = isset($params['includeblank']) ? $params['includeblank'] : false;
                 $control->multiple      = isset($params['multiple']) ? true : false;
                 if (isset($params['from']) && isset($params['to'])) {

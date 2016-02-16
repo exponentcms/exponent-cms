@@ -36,6 +36,9 @@ class expJavascript {
         if (!empty($_REQUEST['apikey'])||!empty($_REQUEST['jsonp'])) {
             return 'jsonp';
         }
+        if (!empty($_REQUEST['json']) && !empty($_REQUEST['controller']) && $_REQUEST['controller'] == 'file' && !empty($_REQUEST['action']) && $_REQUEST['action'] == 'picker') {
+            return false;  // elFinder coming back from Pixlr editor
+        }
 		return !empty($_REQUEST['json']) ? true : false;
 	}
 	
@@ -396,18 +399,35 @@ class expJavascript {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 
     	if (!empty($params['src'])) {
-    	    //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
-    	    $src = $params['src'];
-            //FIXME we need to allow for an array of scripts with unique+index as name
-    	    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
-                $expJS[$params['unique']] = array(
-					"name" => $params['unique'],
-					"type" => 'js',
-					"fullpath" => $src
-                );
-            // } else {
-            //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
-            // }
+            if (is_array($params['src'])) {
+                foreach ($params['src'] as $unique => $url) {
+                    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
+                    if (is_int($unique)) {
+                        $unique = "unique-" . microtime();  // must be unique for each call
+                    }
+                    $expJS[$unique] = array(
+                        "name" => $unique,
+                        "type" => 'js',
+                        "fullpath" => $url
+                    );
+                    // } else {
+                    //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
+                    // }
+                }
+            } else {
+                //$src = str_replace(URL_FULL,PATH_RELATIVE,$params['src']);
+           	    $src = $params['src'];
+                   //FIXME we need to allow for an array of scripts with unique+index as name
+           	    //if (file_exists(str_replace(PATH_RELATIVE,"",$src))) {
+                       $expJS[$params['unique']] = array(
+       					"name" => $params['unique'],
+       					"type" => 'js',
+       					"fullpath" => $src
+                       );
+                   // } else {
+                   //     flash('error',"Exponent could not find ".$src.". Check to make sure the path is correct.");
+                   // }
+            }
     	}
 
         // insert the yui2mods wrapper if needed
@@ -473,7 +493,7 @@ class expJavascript {
         if (isset($params['content'])) $js2foot[$params['unique']] = $params['content'];
 
         // if within an ajax call, output the javascript
-    	if (self::inAjaxAction()) {
+    	if (self::inAjaxAction() && !EXPORT_AS_PDF) {
 		    echo "<div class=\"io-execute-response\">";
             if (!empty($params['bootstrap'])) {
                 // we assume jquery is already loaded
@@ -542,7 +562,13 @@ class expJavascript {
                 echo $scripts;
        	    }
     	    if (!empty($params['src'])) {
-                echo '<script type="text/javascript" src="',$params['src'],'"></script>';
+                if (is_array($params['src'])) {
+                    foreach ($params['src'] as$url) {
+                        echo '<script type="text/javascript" src="', $url, '"></script>';
+                    }
+                } else {
+                    echo '<script type="text/javascript" src="',$params['src'],'"></script>';
+                }
     	    }
             if (!empty($params['content'])) {
                 echo "

@@ -1,7 +1,7 @@
 /**
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
- * @version 2016-01-13
+ * @version 2016-01-23
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.en = {
@@ -181,6 +181,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfurl'      : 'Getting URL of link', // from v2.1 added 11.03.2014
 			'ntfchmod'    : 'Changing file mode', // from v2.1 added 20.6.2015
 			'ntfpreupload': 'Verifying upload file name', // from v2.1 added 31.11.2015
+			'ntfzipdl'    : 'Creating a file for download', // from v2.1.7 added 23.1.2016
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'unknown',
@@ -334,6 +335,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'emptyFolderLTap' : 'Folder is empty\\A Long tap to add items', // from v2.1.6 added 30.12.2015
 			'quality'         : 'Quality', // from v2.1.6 added 5.1.2016
 			'autoSync'        : 'Auto sync',  // from v2.1.6 added 10.1.2016
+			'moveUp'          : 'Move up',  // from v2.1.6 added 18.1.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',

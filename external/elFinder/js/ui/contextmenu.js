@@ -10,11 +10,15 @@ $.fn.elfindercontextmenu = function(fm) {
 		var self   = $(this),
 			cmItem = 'elfinder-contextmenu-item',
 			smItem = 'elfinder-contextsubmenu-item',
+			exIcon = 'elfinder-contextmenu-extra-icon',
 			menu = self.addClass('ui-helper-reset ui-widget ui-state-default ui-corner-all elfinder-contextmenu elfinder-contextmenu-'+fm.direction)
 				.hide()
 				.appendTo('body')
-				.on('mouseenter mouseleave', '.'+cmItem, function() {
-					$(this).toggleClass('ui-state-hover')
+				.on('mouseenter mouseleave', '.'+cmItem, function(e) {
+					$(this).toggleClass('ui-state-hover', e.type === 'mouseenter');
+				})
+				.on('mouseenter mouseleave', '.'+exIcon, function(e) {
+					$(this).parent().toggleClass('ui-state-hover', e.type === 'mouseleave');
 				})
 				.on('contextmenu', function(){return false;}),
 			subpos  = fm.direction == 'ltr' ? 'left' : 'right',
@@ -39,10 +43,9 @@ $.fn.elfindercontextmenu = function(fm) {
 					scrolltop  = win.scrollTop(),
 					scrollleft = win.scrollLeft(),
 					m          = fm.UA.Touch? 10 : 0,
-					zoom       = !window.innerWidth? 1 : document.body.clientWidth / window.innerWidth,
 					css        = {
-						top  : ((y + m + height < wheight ? y + m : y - m - height > 0 ? y - m - height : y + m) + scrolltop) / zoom,
-						left : ((x + m + width  < wwidth  ? x + m : x - m - width) / zoom + scrollleft) / zoom,
+						top  : y - scrolltop + m + height < wheight ? y + m : (y - m - height > 0 ? y - m - height : y + m),
+						left : x - scrollleft + m + width < wwidth  ? x + m :  x - m - width,
 						'z-index' : 100 + fm.getUI('workzone').zIndex()
 					};
 
@@ -56,6 +59,7 @@ $.fn.elfindercontextmenu = function(fm) {
 			
 			close = function() {
 				menu.hide().empty();
+				fm.trigger('closecontextmenu');
 			},
 			
 			create = function(type, targets) {
@@ -82,7 +86,7 @@ $.fn.elfindercontextmenu = function(fm) {
 				}
 				
 				$.each(types[type]||[], function(i, name) {
-					var cmd, node, submenu, hover, _disabled;
+					var cmd, node, submenu, hover;
 					
 					if (name == '|' && sep) {
 						menu.append('<div class="elfinder-contextmenu-separator"/>');
@@ -95,13 +99,20 @@ $.fn.elfindercontextmenu = function(fm) {
 					}
 					cmd = fm.command(name);
 
-					if (cmd && !isCwd) {
-						_disabled = cmd._disabled;
+					if (cmd && !isCwd && (!fm.searchStatus.state || !cmd.disableOnSearch)) {
+						cmd.__disabled = cmd._disabled;
 						cmd._disabled = !(cmd.alwaysEnabled || (fm._commands[name] ? $.inArray(name, disabled) === -1 : false));
+						$.each(cmd.linkedCmds, function(i, n) {
+							var c;
+							if (c = fm.command(n)) {
+								c.__disabled = c._disabled;
+								c._disabled = !(c.alwaysEnabled || (fm._commands[n] ? $.inArray(n, disabled) === -1 : false));
+							}
+						});
 					}
 
 					if (cmd && cmd.getstate(targets) != -1) {
-						targets._type = type;
+						//targets._type = type;
 						if (cmd.variants) {
 							if (!cmd.variants.length) {
 								return;
@@ -176,7 +187,17 @@ $.fn.elfindercontextmenu = function(fm) {
 						sep = true;
 					}
 					
-					cmd && !isCwd && (cmd._disabled = _disabled);
+					if (cmd && typeof cmd.__disabled !== 'undefined') {
+						cmd._disabled = cmd.__disabled;
+						delete cmd.__disabled;
+						$.each(cmd.linkedCmds, function(i, n) {
+							var c;
+							if (c = fm.command(n)) {
+								c._disabled = c.__disabled;
+								delete c.__disabled;
+							}
+						});
+					}
 				});
 			},
 			
@@ -184,14 +205,16 @@ $.fn.elfindercontextmenu = function(fm) {
 				$.each(raw, function(i, data) {
 					var node;
 					
-					if (data.label && typeof data.callback == 'function') {
+					if (data === '|') {
+						menu.append('<div class="elfinder-contextmenu-separator"/>');
+					} else if (data.label && typeof data.callback == 'function') {
 						node = item(data.label, data.icon, function() {
-							close();
+							!data.remain && close();
 							data.callback();
 						});
 						menu.append(node);
 					}
-				})
+				});
 			};
 		
 		fm.one('load', function() {

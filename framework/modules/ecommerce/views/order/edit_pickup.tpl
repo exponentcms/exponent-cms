@@ -19,7 +19,7 @@
 
 <div class="module order edit_parcel">
     <h1>{'Order Package Pickup'|gettext}</h1>
-    {form action=edit_pickup2}
+    {form action=edit_pickup2 horizontal=1}
         {control type="hidden" name="id" value=$shipping->id}
         <h4>{$shipping->carrier} - {$shipping->option_title}</h4>
         {'Package'|gettext}:

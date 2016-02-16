@@ -26,11 +26,17 @@
 		</tr>
 	</thead>
 	<tbody>
+		{$total = 0}
 		{foreach from=$before key=table item=info}
 			<tr class="{cycle values="even, odd"}">
 				<td>{$table}</td>
 				<td align="right">{$info->data_total|bytes}</td>
+				{$total = $total + $info->data_total}
 			</tr>
 		{/foreach}
+		<tr class="{cycle values="even, odd"}">
+			<td><strong>{'Total Data Reduction'|gettext}</strong></td>
+			<td align="right"><strong>{$total|bytes}</strong></td>
+		</tr>
 	</tbody>
 </table>

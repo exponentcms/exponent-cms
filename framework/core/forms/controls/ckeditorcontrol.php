@@ -77,6 +77,8 @@ class ckeditorcontrol extends formcontrol {
         }
         if (!empty($this->additionalConfig)) {
             $additionalConfig = $this->additionalConfig;
+        } elseif (!empty($settings->additionalconfig)) {
+            $additionalConfig = stripSlashes($settings->additionalconfig);
         } else {
             $additionalConfig = '';
         }
@@ -170,15 +172,15 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
-                    extraPlugins : 'autosave,tableresize,image2,uploadimage," . $plugins . "',
+                    extraPlugins : 'autosave,tableresize,image2,uploadimage,quicktable,showborders," . $plugins . "',
                     removePlugins: 'image',
+//                    removePlugins : 'resize',
                     image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                     image2_captionedClass: 'image-captioned',
                     " . $additionalConfig . "
                     autoGrow_minHeight : 200,
                     autoGrow_maxHeight : 400,
                     autoGrow_onStartup : false,
-//                    removePlugins : 'resize',
                     height : 200,
                     toolbarCanCollapse : true,
                     entities_additional : '',

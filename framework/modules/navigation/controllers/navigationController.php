@@ -140,6 +140,8 @@ class navigationController extends expController {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->glyph = $sections[$i]->glyph;
+                $obj->glyph_only = $sections[$i]->glyph_only;
                 $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
@@ -203,6 +205,8 @@ class navigationController extends expController {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->glyph = $sections[$i]->glyph;
+                $obj->glyph_only = $sections[$i]->glyph_only;
                 $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
@@ -1014,10 +1018,22 @@ class navigationController extends expController {
             }
             assign_to_template(array(
                 'section' => $section,
+                'glyphs' => self::get_glyphs(),
             ));
         } else {  // User does not have permission to manage sections.  Throw a 403
-//            echo SITE_403_HTML;
             notfoundController::handle_not_authorized();
+        }
+    }
+
+    private static function get_glyphs() {
+        if (bs3()) {
+            require_once(BASE . 'external/font-awesome.class.php');
+            $fa = new Smk_FontAwesome;
+            $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
+            $icons = $fa->sortByName($icons);
+            return $fa->nameGlyph($icons);
+        } else {
+            return array();
         }
     }
 
@@ -1042,6 +1058,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'section' => $section,
+            'glyphs' => self::get_glyphs(),
         ));
     }
 
@@ -1066,6 +1083,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'section' => $section,
+            'glyphs' => self::get_glyphs(),
         ));
     }
 
@@ -1090,6 +1108,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'section' => $section,
+            'glyphs' => self::get_glyphs(),
         ));
     }
 

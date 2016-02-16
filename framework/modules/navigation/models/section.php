@@ -393,6 +393,8 @@ class section extends expRecord {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->glyph = $sections[$i]->glyph;
+                $obj->glyph_only = $sections[$i]->glyph_only;
                 $obj->type = $sections[$i]->alias_type;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;
@@ -457,6 +459,8 @@ class section extends expRecord {
                 $obj->description = $sections[$i]->description;
                 $obj->new_window = $sections[$i]->new_window;
                 $obj->expFile = $sections[$i]->expFile;
+                $obj->glyph = $sections[$i]->glyph;
+                $obj->glyph_only = $sections[$i]->glyph_only;
                 $obj->depth = $sections[$i]->depth;
                 if ($sections[$i]->active == 1) {
                     $obj->url = $sections[$i]->link;

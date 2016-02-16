@@ -64,7 +64,7 @@ if (!function_exists('__realpath')) {
 }
 
 // Process user-defined constants first in overrides.php (if it exists)
-include_once('overrides.php');
+@include_once('overrides.php');
 
 // load constants for paths and other environment  not overridden in overrides.php
 require_once(dirname(__realpath(__FILE__)) . '/exponent_constants.php');

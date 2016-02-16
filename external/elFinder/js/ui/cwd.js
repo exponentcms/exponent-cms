@@ -121,6 +121,20 @@ $.fn.elfindercwd = function(fm, options) {
 
 			lastSearch = [],
 
+			/**
+			 * Currect clipboard(cut) hashes as object key
+			 * 
+			 * @type Object
+			 */
+			clipCuts = {},
+
+			/**
+			 * Parents hashes of cwd
+			 *
+			 * @type Array
+			 */
+			cwdParents = [],
+
 			customColsBuild = function() {
 				var customCols = '';
 				var columns = fm.options.uiOptions.cwd.listView.columns;
@@ -323,8 +337,12 @@ $.fn.elfindercwd = function(fm, options) {
 			selectAll = function() {
 				var phash = fm.cwd().hash;
 
-				cwd.find('[id]:not(.'+clSelected+'):not(.elfinder-cwd-parent)').trigger(evtSelect); 
-				selectedFiles = $.map(fm.files(), function(f) { return f.phash == phash ? f.hash : null ;});
+				cwd.find('[id]:not(.'+clSelected+'):not(.elfinder-cwd-parent)').trigger(evtSelect);
+				if (lastSearch.length) {
+					selectedFiles = $.map(lastSearch, function(f) { return f.hash; });
+				} else {
+					selectedFiles = $.map(fm.files(), function(f) { return f.phash == phash ? f.hash : null ;});
+				}
 				trigger();
 			},
 			
@@ -436,7 +454,7 @@ $.fn.elfindercwd = function(fm, options) {
 						last  = buffer._last || cwd.find('[id]:last'),
 						top   = !last.length,
 						place = buffer._place || (list ? cwd.children('table').children('tbody') : cwd),
-						chk, files;
+						chk, files, locks;
 
 					// check draging scroll bar
 					top && (wrapper._top = 0);
@@ -459,6 +477,7 @@ $.fn.elfindercwd = function(fm, options) {
 					while ((!last.length || (chk = last.position().top - (wrapper.height() + wrapper.scrollTop() + fm.options.showThreshold)) <= 0)
 						&& (files = buffer.splice(0, fm.options.showFiles - (chk || 0) / (buffer._hpi || 1))).length) {
 
+						locks = [];
 						html = $.map(files, function(f) {
 							if (f.hash && f.name) {
 								if (f.mime == 'directory') {
@@ -466,7 +485,8 @@ $.fn.elfindercwd = function(fm, options) {
 								}
 								if (f.tmb) {
 									f.tmb === 1 ? ltmb.push(f.hash) : (atmb[f.hash] = f.tmb);
-								} 
+								}
+								clipCuts[f.hash] && locks.push(f.hash);
 								return itemhtml(f);
 							}
 							return null;
@@ -474,6 +494,7 @@ $.fn.elfindercwd = function(fm, options) {
 
 						(top || !buffer.length) && bottomMarker.hide();
 						place.append(html.join(''));
+						locks.length && fm.trigger('lockfiles', {files: locks});
 						last = cwd.find('[id]:last');
 						// scroll top on dir load to avoid scroll after page reload
 						top && wrapper.scrollTop(0);
@@ -609,7 +630,7 @@ $.fn.elfindercwd = function(fm, options) {
 							$('<img/>')
 								.load(function() { node.find('.elfinder-cwd-icon').css('background', "url('"+tmb+"') center center no-repeat"); })
 								.attr('src', tmb);
-						})(node, fm.tmbUrls._search? fm.tmb(hash) : (url + tmb));
+						})(node, fm.searchStatus.state? fm.tmb(hash) : (url + tmb));
 					} else {
 						ret = false;
 						if ((ndx = index(hash)) != -1) {
@@ -732,6 +753,19 @@ $.fn.elfindercwd = function(fm, options) {
 			 */
 			remove = function(files) {
 				var l = files.length, hash, n, ndx;
+
+				// removed cwd
+				if (!fm.cwd().hash && fm.currentReqCmd !== 'open') {
+					$.each(cwdParents.reverse(), function(i, h) {
+						if (fm.files()[h]) {
+							fm.one(fm.currentReqCmd, function() {
+								fm.exec('open', h);
+							});
+							return false;
+						}
+					});
+					return;
+				}
 				
 				while (l--) {
 					hash = files[l];
@@ -801,7 +835,9 @@ $.fn.elfindercwd = function(fm, options) {
 			 */
 			content = function(files, any) {
 				var phash = fm.cwd().hash; 
-				
+
+				cwdParents = fm.parents(phash);
+
 				unselectAll();
 				
 				try {
@@ -926,8 +962,8 @@ $.fn.elfindercwd = function(fm, options) {
 								fm.trigger('contextmenu', {
 									'type'    : 'files',
 									'targets' : fm.selected(),
-									'x'       : e.originalEvent.touches[0].clientX,
-									'y'       : e.originalEvent.touches[0].clientY
+									'x'       : e.originalEvent.touches[0].pageX,
+									'y'       : e.originalEvent.touches[0].pageY
 								});
 							}
 						}
@@ -1122,8 +1158,8 @@ $.fn.elfindercwd = function(fm, options) {
 							fm.trigger('contextmenu', {
 								'type'    : 'files',
 								'targets' : fm.selected(),
-								'x'       : e.clientX,
-								'y'       : e.clientY
+								'x'       : e.pageX,
+								'y'       : e.pageY
 							});
 
 						}
@@ -1175,8 +1211,8 @@ $.fn.elfindercwd = function(fm, options) {
 					fm.trigger('contextmenu', {
 						'type'    : 'cwd',
 						'targets' : [fm.cwd().hash],
-						'x'       : e.clientX,
-						'y'       : e.clientY
+						'x'       : e.pageX,
+						'y'       : e.pageY
 					});
 					
 				})
@@ -1191,8 +1227,8 @@ $.fn.elfindercwd = function(fm, options) {
 						fm.trigger('contextmenu', {
 							'type'    : 'cwd',
 							'targets' : [fm.cwd().hash],
-							'x'       : e.originalEvent.touches[0].clientX,
-							'y'       : e.originalEvent.touches[0].clientY
+							'x'       : e.originalEvent.touches[0].pageX,
+							'y'       : e.originalEvent.touches[0].pageY
 						});
 					}, 500));
 				})
@@ -1304,6 +1340,16 @@ $.fn.elfindercwd = function(fm, options) {
 			})
 			.bind('add', function() {
 				resize();
+			})
+			.bind('changeclipboard', function(e) {
+				clipCuts = {};
+				if (e.data && e.data.clipboard && e.data.clipboard.length) {
+					$.each(e.data.clipboard, function(i, f) {
+						if (f.cut) {
+							clipCuts[f.hash] = true;
+						}
+					});
+				}
 			})
 			.add(function(e) {
 				var phash = fm.cwd().hash,

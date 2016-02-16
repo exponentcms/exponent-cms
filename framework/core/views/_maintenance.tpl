@@ -19,7 +19,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}"/>
         <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
         <title>{$smarty.const.SITE_TITLE} :: {'Down for Maintenance.'|gettext}</title>
-        <style media="screen" type="text/css">
+        <style type="text/css" media="screen">
             html {
                 background : #397993;
                 text-align : left;

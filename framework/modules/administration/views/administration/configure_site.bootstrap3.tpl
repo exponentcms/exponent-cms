@@ -308,7 +308,10 @@
                     </div>
                     {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
+                    {control type="text" name="sc[SITE_404_FILE]" label='Server Default Page For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_FILE description='If your server sends 404 errors to a default page, enter it here (missing.html, etc...)'|gettext}
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
+                    {control type="text" name="sc[SITE_403_FILE]" label='Server Default Page For \'Access Denied\' (403) Error'|gettext value=$smarty.const.SITE_403_FILE description='If your server sends 403 errors to a default page, enter it here (forbidden.html, etc...)'|gettext}
+                    {control type="text" name="sc[SITE_500_FILE]" label='Server Default Page For \'Server Internal Error\' (500) Error'|gettext value=$smarty.const.SITE_500_FILE description='If your server sends 500 errors to a default page, enter it here (internal_error.html, etc...)'|gettext}
                     {control type="html" name="sc[SESSION_TIMEOUT_HTML]" label='\'Session Expired\' Error  Message'|gettext value=$smarty.const.SESSION_TIMEOUT_HTML}
                 </div>
                 <div id="tab13" role="tabpanel" class="tab-pane fade">
@@ -321,7 +324,7 @@
                     <div id="alt-control" class="alt-control">
                         <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
                         <div class="alt-body">
-                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF 5,mPDF 6,dompdf,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expDOMPDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
+                            {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF 5,mPDF 6,dompdf,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expDOMPDF,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
                             <div id="none-div" class="alt-item" style="display:none;">
                                 <blockquote>
                                 {'Export as PDF will be unavailable since there is no PDF Generation Engine installed and configured.'|gettext}
@@ -330,11 +333,11 @@
                             <div id="expMPDF-div" class="alt-item" style="display:none;">
                                 {if !file_exists("`$smarty.const.BASE`external/MPDF57/mpdf.php")}
                                     <div style="color:#ff0000;font-weight:bold;">
-                                        {'mPDF is NOT installed!'|gettext}
+                                        {'mPDF 5 is NOT installed!'|gettext}
                                     </div>
                                 {else}
                                     <div>
-                                        {'mPDF is installed!'|gettext}
+                                        {'mPDF 5 is installed!'|gettext}
                                     </div>
                                 {/if}
                                 <blockquote>
@@ -377,6 +380,21 @@
                                 {/if}
                                 <blockquote>
                                     {'DOMPDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/dompdf061.zip/download" target="_blank">dompdf061.zip</a>.
+                                    {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
+                                </blockquote>
+                            </div>
+                            <div id="expHTML2PDF-div" class="alt-item" style="display:none;">
+                                {if !file_exists("`$smarty.const.BASE`external/html2pdf-4.5.0/html2pdf.class.php") || !file_exists("`$smarty.const.BASE`external/TCPDF-6.2.12/tcpdf.php")}
+                                    <div style="color:#ff0000;font-weight:bold;">
+                                        {'HTML2PDF/TCPDF is NOT installed!'|gettext}
+                                    </div>
+                                {else}
+                                    <div>
+                                        {'HTML2PDF/TCPDF is installed!'|gettext}
+                                    </div>
+                                {/if}
+                                <blockquote>
+                                    {'HTML2PDF is an optional package.  To obtain it, you must first download our customized version of the library'|gettext} <a href="https://sourceforge.net/projects/exponentcms/files/Add-ons/html2pdf.zip/download" target="_blank">dompdf061.zip</a>.
                                     {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}
                                 </blockquote>
                             </div>

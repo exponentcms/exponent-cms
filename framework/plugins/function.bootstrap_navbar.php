@@ -52,6 +52,10 @@ function smarty_function_bootstrap_navbar($params,&$smarty) {
             $menu .= build_menu($page,$params);
         }
         expJavascript::pushToFoot(array(
+            "unique"  => 'bootstrap-transition',
+            "bootstrap"=> 'transition',
+        ));
+        expJavascript::pushToFoot(array(
             "unique"  => 'bootstrap-dropdown',
             "bootstrap"=> 'dropdown',
         ));
@@ -69,14 +73,21 @@ function build_menu($page,$params) {
     if (!empty($page->expFile[0]->id)) {
         $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left');
         $img = smarty_function_img($img_parm,$smarty);
+    } elseif (bs3() && !empty($page->glyph)) {
+        $img = '<i class="fa fa-fw ' . $page->glyph . '"></i> ';
     } else {
         $img = '';
+    }
+    if (!empty($img) && !empty($page->glyph_only)) {
+        $menu_item = $img;
+    } else {
+        $menu_item = $img . $page->text;
     }
     if ((empty($page->itemdata) && empty($page->submenu) && (empty($page->type) || (!empty($page->type) && $page->type != 3))) || $page->depth + 1 == $params['length']) {  // this is a menu item
         $menu = '<li tabindex="-1"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
         if ($page->url == "#") $menu .= ' class="disabled"';
-        $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text.'</a></li>'."\n";
+        $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
     } elseif ((empty($page->type) || (!empty($page->type) && $page->type != 3))) {                                                // this is a submenu item
         if (isset($page->depth) && $page->depth + 1 < $params['length']) {
             $menu = '<li class="dropdown-submenu';
@@ -84,7 +95,7 @@ function build_menu($page,$params) {
             $menu = '<li class="dropdown';
         }
         if ($sectionObj->id == $page->id) $menu .= ' active';
-        $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>'.$img.$page->text;
+        $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
         if (empty($page->depth) && $params['length'] > 1) $menu .= '<b class="caret"></b>';
         $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
@@ -120,7 +131,7 @@ function build_menu($page,$params) {
         }
         $menu = '
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' pull-right ' : '') . '">';
-        $menu .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $img . $page->text . '<b class="caret"></b></a>';
+        $menu .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $menu_item . '<b class="caret"></b></a>';
         $menu .= '<ul class="dropdown-menu"><li><div class="yamm-content">';
         if (bs3())
             $menu .= '<div class="row"><div class="col-sm-12">';
