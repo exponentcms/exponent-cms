@@ -28,7 +28,7 @@ class change_permissions extends upgradescript {
 	protected $from_version = '0.0.0';  // version number lower than first released version, 2.0.0
 //	protected $to_version = '2.2.1';
     public $optional = true;
-    public $priority = 81; // set this to a very low priority
+    public $priority = 82; // set this to a very low priority
 
 	/**
 	 * name/title of upgrade script
@@ -40,7 +40,7 @@ class change_permissions extends upgradescript {
 	 * generic description of upgrade script
 	 * @return string
 	 */
-	function description() { return "In some instances the folder and file permissions are too permissive. This script changes all folder/file permissions to world/group read-only!"; }
+	function description() { return "In some instances the folder and file permissions are too permissive. This script changes all folder/file permissions to world/group read-only, and no execute (except /cgi-bin)!"; }
 
 	/**
 	 * additional test(s) to see if upgrade script should be run
@@ -63,6 +63,8 @@ class change_permissions extends upgradescript {
 
                 $filepath = $start_dir . '/' . $file;
                 if ( is_dir($filepath) ) {
+                    if ($filepath == 'cgi-bin')
+                        break;
                     chmod($filepath, $dir_perms);
                     self::chmod_recursive($filepath);
                 } else {
