@@ -86,7 +86,11 @@ function smarty_function_icon($params, &$smarty) {
         if ($params['text'] == "notext") {
             $params['text'] = '';
             if (empty($params['img']) && !empty($params['action'])) {
-                $params['img'] = $params['action'] . '.png';
+                if (!bs()) {
+                    $params['img'] = $params['action'] . '.png';
+                } else {
+                    $params['text'] = ' ';
+                }
             }
         } else $params['text'] = gt($params['text']);
     }
