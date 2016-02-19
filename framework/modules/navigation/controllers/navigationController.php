@@ -733,8 +733,34 @@ class navigationController extends expController {
             'canManageStandalones' => self::canManageStandalones(),
             'sasections'           => $db->selectObjects('section', 'parent=-1'),
             'user'                 => $user,
-            'canManagePagesets'    => $user->isAdmin(),
-            'templates'            => $db->selectObjects('section_template', 'parent=0'),
+//            'canManagePagesets'    => $user->isAdmin(),
+//            'templates'            => $db->selectObjects('section_template', 'parent=0'),
+        ));
+    }
+
+    public function manage_sitemap() {
+        global $db, $user, $sectionObj, $sections;
+
+        expHistory::set('viewable', $this->params);
+        $id      = $sectionObj->id;
+        $current = null;
+        // all we need to do is determine the current section
+        $navsections = $sections;
+        if ($sectionObj->parent == -1) {
+            $current = $sectionObj;
+        } else {
+            foreach ($navsections as $section) {
+                if ($section->id == $id) {
+                    $current = $section;
+                    break;
+                }
+            }
+        }
+        assign_to_template(array(
+            'sasections'   => $db->selectObjects('section', 'parent=-1'),
+            'sections'     => $navsections,
+            'current'      => $current,
+            'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
 

@@ -41,7 +41,7 @@
                         </td>
                     <td>
                         {if $section->active}
-                            <a href="{link section=$section->id}" class="navlink" title="{'View/Edit this Page'|gettext}">{$section->name}</a>&#160;
+                            <a href="{link section=$section->id}" class="navlink" title="{'View this Page'|gettext}">{$section->name}</a>&#160;
                         {else}
                             {$section->name}&#160;
                         {/if}
@@ -51,8 +51,8 @@
                     </td><td>
                         {*{icon int=$section->id action=userperms _common=1 img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}*}
                         {*{icon int=$section->id action=groupperms _common=1 img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}*}
-                            {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
-                            {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
+                        {icon controller=users action=userperms mod=navigation int=$section->id img='userperms.png' title='Assign user permissions for this Page'|gettext text="User"}
+                        {icon controller=users action=groupperms mod=navigation int=$section->id img='groupperms.png' title='Assign group permissions for this Page'|gettext text="Group"}
                     </td></tr>
                 {foreachelse}
                     <tr><td colspan=4><em>{'No standalone pages found'|gettext}</em></td></tr>
