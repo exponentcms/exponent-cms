@@ -574,17 +574,16 @@ var DateFormatter;
             return '';
         }
     };
-})();/* global DateFormatter */
-/**
- * @preserve jQuery DateTimePicker plugin v2.4.5
+})();/**
+ * @preserve jQuery DateTimePicker plugin v2.4.9
  * @homepage http://xdsoft.net/jqplugins/datetimepicker/
- * (c) 2014, Chupurnov Valeriy.
+ * @author Chupurnov Valeriy (<chupurnov@gmail.com>)
  */
-/*global document,window,jQuery,setTimeout,clearTimeout,HighlightedDate,getCurrentValue*/
+/*global DateFormatter, document,window,jQuery,setTimeout,clearTimeout,HighlightedDate,getCurrentValue*/
 ;(function (factory) {
 	if ( typeof define === 'function' && define.amd ) {
 		// AMD. Register as an anonymous module.
-		define(['jquery', 'jquery-mousewheel', 'date-functions'], factory);
+		define(['jquery', 'jquery-mousewheel'], factory);
 	} else if (typeof exports === 'object') {
 		// Node/CommonJS style for Browserify
 		module.exports = factory;
@@ -1132,6 +1131,7 @@ var DateFormatter;
 		onSelectDate: function () {},
 		onSelectTime: function () {},
 		onChangeMonth: function () {},
+		onGetWeekOfYear: function () {},
 		onChangeYear: function () {},
 		onChangeDateTime: function () {},
 		onShow: function () {},
@@ -1172,6 +1172,8 @@ var DateFormatter;
 		weekends: [],
 		highlightedDates: [],
 		highlightedPeriods: [],
+		allowDates : [],
+		allowDateRe : null,
 		disabledDates : [],
 		disabledWeekDays: [],
 		yearOffset: 0,
@@ -1415,8 +1417,9 @@ var DateFormatter;
 		});
 	};
 
-	$.fn.datetimepicker = function (opt) {
-		var KEY0 = 48,
+	$.fn.datetimepicker = function (opt, opt2) {
+		var result = this,
+            KEY0 = 48,
 			KEY9 = 57,
 			_KEY0 = 96,
 			_KEY9 = 105,
@@ -1475,13 +1478,12 @@ var DateFormatter;
 				timeboxparent = timepicker.find('.xdsoft_time_box').eq(0),
 				timebox = $('<div class="xdsoft_time_variant"></div>'),
                 applyButton = $('<button type="button" class="xdsoft_save_selected blue-gradient-button">Save Selected</button>'),
-				/*scrollbar = $('<div class="xdsoft_scrollbar"></div>'),
-				scroller = $('<div class="xdsoft_scroller"></div>'),*/
+
 				monthselect = $('<div class="xdsoft_select xdsoft_monthselect"><div></div></div>'),
 				yearselect = $('<div class="xdsoft_select xdsoft_yearselect"><div></div></div>'),
 				triggerAfterOpen = false,
 				XDSoft_datetime,
-				//scroll_element,
+	
 				xchangeTimer,
 				timerclick,
 				current_time_index,
@@ -1573,6 +1575,10 @@ var DateFormatter;
 					}
 				});
 
+			datetimepicker.getValue = function () {
+                return _xdsoft_datetime.getCurrentTime();
+            };
+
 			datetimepicker.setOptions = function (_options) {
 				var highlightedDates = {},
 					getCaretPos = function (input) {
@@ -1626,6 +1632,14 @@ var DateFormatter;
 					options.weekends = $.extend(true, [], _options.weekends);
 				}
 
+				if (_options.allowDates && $.isArray(_options.allowDates) && _options.allowDates.length) {
+					options.allowDates = $.extend(true, [], _options.allowDates);
+				}
+
+				if (_options.allowDateRe && Object.prototype.toString.call(_options.allowDateRe)==="[object String]") {
+					options.allowDateRe = new RegExp(_options.allowDateRe);
+				}
+				
 				if (_options.highlightedDates && $.isArray(_options.highlightedDates) && _options.highlightedDates.length) {
 					$.each(_options.highlightedDates, function (index, value) {
 						var splitData = $.map(value.split(','), $.trim),
@@ -2011,7 +2025,16 @@ var DateFormatter;
 				};
 
 				_this.getWeekOfYear = function (datetime) {
+					if (options.onGetWeekOfYear && $.isFunction(options.onGetWeekOfYear)) {
+						var week = options.onGetWeekOfYear.call(datetimepicker, datetime);
+						if (typeof week !== 'undefined') {
+							return week;
+						}
+					}
 					var onejan = new Date(datetime.getFullYear(), 0, 1);
+					//First week of the year is th one with the first Thursday according to ISO8601
+					if(onejan.getDay()!=4)
+						onejan.setMonth(0, 1 + ((4 - onejan.getDay()+ 7) % 7));
 					return Math.ceil((((datetime - onejan) / 86400000) + onejan.getDay() + 1) / 7);
 				};
 
@@ -2236,7 +2259,15 @@ var DateFormatter;
 								customDateSettings = null;
 							}
 
-							if ((maxDate !== false && start > maxDate) || (minDate !== false && start < minDate) || (customDateSettings && customDateSettings[0] === false)) {
+							if(options.allowDateRe && Object.prototype.toString.call(options.allowDateRe) === "[object RegExp]"){
+								if(!options.allowDateRe.test(start.dateFormat(options.formatDate))){
+									classes.push('xdsoft_disabled');
+								}
+							} else if(options.allowDates && options.allowDates.length>0){
+								if(options.allowDates.indexOf(start.dateFormat(options.formatDate)) === -1){
+									classes.push('xdsoft_disabled');
+								}
+							} else if ((maxDate !== false && start > maxDate) || (minDate !== false && start < minDate) || (customDateSettings && customDateSettings[0] === false)) {
 								classes.push('xdsoft_disabled');
 							} else if (options.disabledDates.indexOf(dateHelper.formatDate(start, options.formatDate)) !== -1) {
 								classes.push('xdsoft_disabled');
@@ -2541,7 +2572,26 @@ var DateFormatter;
 			current_time_index = 0;
 
 			setPos = function () {
-				var offset = datetimepicker.data('input').offset(), datetimepickerelement = datetimepicker.data('input')[0], top = offset.top + datetimepickerelement.offsetHeight - 1, left = offset.left, position = "absolute", node;
+				/**
+                 * 修复输入框在window最右边，且输入框的宽度小于日期控件宽度情况下，日期控件显示不全的bug。
+                 * Bug fixed - The datetimepicker will overflow-y when the width of the date input less than its, which
+                 * could causes part of the datetimepicker being hidden.
+                 * by Soon start
+                 */
+                var offset = datetimepicker.data('input').offset(),
+                    datetimepickerelement = datetimepicker.data('input')[0],
+                    top = offset.top + datetimepickerelement.offsetHeight - 1,
+                    left = offset.left,
+                    position = "absolute",
+                    node;
+
+                if ((document.documentElement.clientWidth - offset.left) < datepicker.parent().outerWidth(true)) {
+                    var diff = datepicker.parent().outerWidth(true) - datetimepickerelement.offsetWidth;
+                    left = left - diff;
+                }
+                /**
+                 * by Soon end
+                 */
 				if (datetimepicker.data('input').parent().css('direction') == 'rtl')
 					left -= (datetimepicker.outerWidth() - datetimepicker.data('input').outerWidth());
 				if (options.fixed) {
@@ -2714,7 +2764,8 @@ var DateFormatter;
 					ctrlDown = false;
 				}
 			});
-		return this.each(function () {
+		
+        this.each(function () {
 			var datetimepicker = $(this).data('xdsoft_datetimepicker'), $input;
 			if (datetimepicker) {
 				if ($.type(opt) === 'string') {
@@ -2743,6 +2794,10 @@ var DateFormatter;
 						$input = datetimepicker.data('input');
 						$input.trigger('blur.xdsoft');
 						break;
+                    default:
+                        if (datetimepicker[opt] && $.isFunction(datetimepicker[opt])) {
+                            result = datetimepicker[opt](opt2);
+                        }
 					}
 				} else {
 					datetimepicker
@@ -2758,6 +2813,8 @@ var DateFormatter;
 				}
 			}
 		});
+
+        return result;
 	};
 	$.fn.datetimepicker.defaults = default_options;
 
