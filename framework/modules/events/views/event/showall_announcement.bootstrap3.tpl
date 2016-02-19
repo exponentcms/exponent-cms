@@ -55,8 +55,8 @@
     {/permissions}
     {foreach from=$items item=item}
         {*<div class="item announcement{if $item->is_featured} featured{/if}">*}
-        <div class="item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
-            <div class="panel-heading">
+        <div class="vevent item panel panel-{if $item->is_featured}danger{else}{cycle values="info,success"}{/if}">
+            <div class="event-info event-date panel-heading">
                 <{$config.item_level|default:'h2'} class="panel-title">
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
                     <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"

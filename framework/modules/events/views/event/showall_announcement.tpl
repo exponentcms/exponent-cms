@@ -57,14 +57,14 @@
         </div>
     {/permissions}
     {foreach from=$items item=item}
-        <div class="item announcement{if $item->is_featured} featured{/if}">
+        <div class="vevent item announcement{if $item->is_featured} featured{/if}">
             {if !empty($item->expFile[0]->url)}
                 <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
                     {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
                     {clear}
                 </div>
             {/if}
-            <{$config.item_level|default:'h2'}>
+            <{$config.item_level|default:'h2'} class="event-info event-date">
                 {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
                 <a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
                     {if substr($item->location_data,1,8) != 'calevent'}
