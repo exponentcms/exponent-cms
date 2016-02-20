@@ -50,9 +50,9 @@ function smarty_function_tags_assigned($params,&$smarty) {
     $i = 1;
     foreach ($item->expTag as $tag) {
         $iloc = expUnserialize($item->location_data);
-        $link .= '<a href="'.expCore::makeLink(array('controller'=>$iloc->mod,'action'=>'showall_by_tags','tag'=>$tag->sef_url,'src'=>$iloc->src)).
+        $link .= '<span class="tag"><a href="'.expCore::makeLink(array('controller'=>$iloc->mod,'action'=>'showall_by_tags','tag'=>$tag->sef_url,'src'=>$iloc->src)).
             '" title="'. gt('View all items tagged with') . ' \'' . $tag->title . '\'' .
-            '">'.$tag->title.'</a>';
+            '">'.$tag->title.'</a></span>';
         if ($i != count($item->expTag)) $link .= ", ";
         $i++;
     }
