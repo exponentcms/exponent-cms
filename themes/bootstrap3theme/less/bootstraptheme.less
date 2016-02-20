@@ -1,3 +1,6 @@
+@import "../../../external/bootstrap3/less/variables.less";
+@import "../../../external/bootstrap3/less/@{swatch}/variables.less"; //exp swatch colors, font-sizes, etc
+@import "../../../external/bootstrap3/less/mixins.less";
 @import "variables.less";
 
 // Exponent theme template level styles which (must) override stock bootstrap3 styles
@@ -63,7 +66,8 @@ div.DTTT .btn {
 	display : inline;
 }
 
-.report.dashboard .hd h2, .panel .hd h2 {
+.report.dashboard .hd h2,
+.panel .hd h2 {
     padding: 0 0 0 33px;
 	line-height: 36px;
 }
@@ -91,8 +95,10 @@ div.DTTT .btn {
 }
 
 /* other */
-.eql-tablelist .row:before, .eql-tablelist .row:after,
-.manage-questions .row:before, .manage-questions .row:after {
+.eql-tablelist .row:before,
+.eql-tablelist .row:after,
+.manage-questions .row:before,
+.manage-questions .row:after {
 	content : normal;
 }
 
