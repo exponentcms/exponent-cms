@@ -9,9 +9,9 @@
  */
 
 // Core variables and mixins
-//@import "variables.less"; // Modify this for custom colors, font-sizes, etc
-@import "@{swatch}/variables.less"; // Modify this for custom colors, font-sizes, etc
-@import "@{themepath}/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "variables.less";  //exp Just in case swatches/themes aren't overriding all variables
+@import "@{swatch}/variables.less"; //exp Modify this for custom colors, font-sizes, etc
+@import "@{themepath}/variables.less"; //exp Modify this for theme colors, font-sizes, etc
 @import "mixins.less";
 
 // CSS Reset
@@ -30,7 +30,7 @@
 
 // Components: common
 //@import "sprites.less";
-@import "../../font-awesome/less/font-awesome.less"; // for font awesome
+@import "../../font-awesome/less/font-awesome.less"; //exp for font awesome 3
 @import "dropdowns.less";
 @import "wells.less";
 @import "component-animations.less";
@@ -62,7 +62,7 @@
 @import "carousel.less";
 @import "hero-unit.less";
 
-@import "@{swatch}/bootswatch.less";  // local patch for theme
+@import "@{swatch}/bootswatch.less";  //exp local patch for theme
 
 // Utility classes
 @import "utilities.less"; // Has to be last to override when necessary
