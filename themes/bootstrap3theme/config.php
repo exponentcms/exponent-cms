@@ -1,6 +1,6 @@
 <?php
 define("BTN_COLOR",'btn');
-define("SWATCH",'');
+define("SWATCH",'custom');
 define("ENHANCED_STYLE",'0');
 define("STYLE_WIDTH",'');
 define("BTN_SIZE",'small');
