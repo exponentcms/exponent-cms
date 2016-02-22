@@ -352,10 +352,12 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @return void
 			 */
 			unselectAll = function() {
-				selectLock = false;
-				selectedFiles = [];
-				cwd.find('[id].'+clSelected).trigger(evtUnselect); 
-				trigger();
+				if (selectedFiles.length) {
+					selectLock = false;
+					selectedFiles = [];
+					cwd.find('[id].'+clSelected).trigger(evtUnselect); 
+					trigger();
+				}
 			},
 			
 			/**
@@ -434,7 +436,6 @@ $.fn.elfindercwd = function(fm, options) {
 			selectableOption = {
 				filter     : fileSelector,
 				stop       : trigger,
-				delay      : 250,
 				selected   : function(e, ui) { $(ui.selected).trigger(evtSelect); },
 				unselected : function(e, ui) { $(ui.unselected).trigger(evtUnselect); }
 			},
@@ -758,8 +759,8 @@ $.fn.elfindercwd = function(fm, options) {
 				if (!fm.cwd().hash && fm.currentReqCmd !== 'open') {
 					$.each(cwdParents.reverse(), function(i, h) {
 						if (fm.files()[h]) {
-							fm.one(fm.currentReqCmd, function() {
-								fm.exec('open', h);
+							fm.one(fm.currentReqCmd, function(e, fm) {
+								!fm.cwd().hash && fm.exec('open', h);
 							});
 							return false;
 						}
@@ -852,8 +853,11 @@ $.fn.elfindercwd = function(fm, options) {
 				cwd.css('height', 'auto');
 				bottomMarker.hide();
 
-				wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list');
-				wrapper._padding = parseInt(wrapper.css('padding-top')) + parseInt(wrapper.css('padding-bottom'));
+				wrapper[list ? 'addClass' : 'removeClass']('elfinder-cwd-wrapper-list')
+					._padding = parseInt(wrapper.css('padding-top')) + parseInt(wrapper.css('padding-bottom'));
+				if (fm.UA.iOS) {
+					wrapper.removeClass('overflow-scrolling-touch').addClass('overflow-scrolling-touch');
+				}
 
 				list && cwd.html('<table><thead><tr class="ui-state-default'+(fm.UA.Touch? ' elfinder-touch' : '')+'"><td class="elfinder-cwd-view-th-name">'+msg.name+'</td>'+customColsNameBuild()+'</tr></thead><tbody/></table>');
 		
@@ -901,10 +905,10 @@ $.fn.elfindercwd = function(fm, options) {
 				// fix ui.selectable bugs and add shift+click support 
 				.on('click.'+fm.namespace, fileSelector, function(e) {
 					var p    = this.id ? $(this) : $(this).parents('[id]:first'), 
-						prev = p.prevAll('.'+clSelected+':first'),
-						next = p.nextAll('.'+clSelected+':first'),
-						pl   = prev.length,
-						nl   = next.length,
+						prev,
+						next,
+						pl,
+						nl,
 						sib;
 
 					if (cwd.data('longtap')) {
@@ -914,6 +918,12 @@ $.fn.elfindercwd = function(fm, options) {
 
 					e.stopImmediatePropagation();
 
+					if (e.shiftKey) {
+						prev = p.prevAll('.'+clSelected+':first');
+						next = p.nextAll('.'+clSelected+':first');
+						pl   = prev.length;
+						nl   = next.length;
+					}
 					if (e.shiftKey && (pl || nl)) {
 						sib = pl ? p.prevUntil('#'+prev.attr('id')) : p.nextUntil('#'+next.attr('id'));
 						sib.add(p).trigger(evtSelect);
@@ -923,7 +933,6 @@ $.fn.elfindercwd = function(fm, options) {
 						if (p.data('touching') && p.hasClass(clSelected)) {
 							p.data('touching', null);
 							fm.dblclick({file : fm.cwdId2Hash(this.id)});
-							unselectAll();
 							return;
 						} else {
 							unselectAll();
@@ -977,7 +986,12 @@ $.fn.elfindercwd = function(fm, options) {
 					var p = this.id ? $(this) : $(this).parents('[id]:first');
 					clearTimeout(p.data('tmlongtap'));
 					if (e.type == 'touchmove') {
+						p.data('touching', null);
 						p.removeClass(clHover);
+					} else if (p.data('touching') && !cwd.data('longtap') && p.hasClass(clSelected)) {
+						e.preventDefault();
+						p.data('touching', null);
+						fm.dblclick({file : fm.cwdId2Hash(this.id)});
 					}
 				})
 				// attach draggable
@@ -1150,7 +1164,6 @@ $.fn.elfindercwd = function(fm, options) {
 						e.preventDefault();
 						if (!file.hasClass(clDisabled) && !file.data('touching')) {
 							if (!file.hasClass(clSelected)) {
-								// cwd.trigger('unselectall');
 								unselectAll();
 								file.trigger(evtSelect);
 								trigger();
@@ -1165,9 +1178,6 @@ $.fn.elfindercwd = function(fm, options) {
 						}
 						
 					}
-					// e.preventDefault();
-					
-					
 				})
 				// unselect all on cwd click
 				.on('click.'+fm.namespace, function(e) {
@@ -1177,17 +1187,18 @@ $.fn.elfindercwd = function(fm, options) {
 					}
 					!e.shiftKey && !e.ctrlKey && !e.metaKey && unselectAll();
 				})
-				
-				// make files selectable
-				.selectable(selectableOption)
-				.data('selectable', true)
 				// prepend fake file/dir
 				.on('create.'+fm.namespace, function(e, file) {
 					var parent = list ? cwd.find('tbody') : cwd,
 						p = parent.find('.elfinder-cwd-parent'),
-						file = $(itemhtml(file)).addClass(clTmp);
+						file = $(itemhtml(file)).addClass(clTmp),
+						selected = fm.selected();
 						
-					unselectAll();
+					if (selected.length) {
+						fm.trigger('lockfiles', {files: selected});
+					} else {
+						unselectAll();
+					}
 
 					if (p.length) {
 						p.after(file);
@@ -1275,9 +1286,15 @@ $.fn.elfindercwd = function(fm, options) {
 			wz = parent.children('.elfinder-workzone').append(wrapper.append(this).append(bottomMarker))
 			;
 
-		
-		// for iOS5 bug
-		$('body').on('touchstart touchmove touchend', function(e){});
+		if (mobile) {
+			// for iOS5 bug
+			$('body').on('touchstart touchmove touchend', function(e){});
+		} else {
+			// make files selectable
+			cwd
+				.selectable(selectableOption)
+				.data('selectable', true);
+		}
 		
 		fm
 			.one('init', function(){

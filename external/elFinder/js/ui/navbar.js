@@ -24,14 +24,17 @@ $.fn.elfindernavbar = function(fm, opts) {
 					maxWidth : opts.maxWidth || 500
 				})
 				.on('resize scroll', function() {
-					var offset = (fm.UA.Opera && nav.scrollLeft())? 20 : 2;
-					handle.css({
-						top  : parseInt(nav.scrollTop())+'px',
-						left : ltr ? 'auto' : parseInt(nav.scrollLeft() + offset),
-						right: ltr ? parseInt(nav.scrollLeft() - offset) * -1 : 'auto'
-					});
+					clearTimeout($(this).data('posinit'));
+					$(this).data('posinit', setTimeout(function() {
+						var offset = (fm.UA.Opera && nav.scrollLeft())? 20 : 2;
+						handle.css({
+							top  : parseInt(nav.scrollTop())+'px',
+							left : ltr ? 'auto' : parseInt(nav.scrollLeft() + offset),
+							right: ltr ? parseInt(nav.scrollLeft() - offset) * -1 : 'auto'
+						});
+					}, 50));
 				})
-				.find('.ui-resizable-handle').zIndex(nav.zIndex() + 10);
+				.find('.ui-resizable-handle').addClass('ui-front');
 
 			if (fm.UA.Touch) {
 				var toggle = function(){

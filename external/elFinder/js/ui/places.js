@@ -344,6 +344,9 @@ $.fn.elfinderplaces = function(fm, opts) {
 					tolerance  : 'pointer',
 					accept     : '.elfinder-cwd-file-wrapper,.elfinder-tree-dir,.elfinder-cwd-file',
 					hoverClass : fm.res('class', 'adroppable'),
+					classes    : { // Deprecated hoverClass jQueryUI>=1.12.0
+						'ui-droppable-hover': fm.res('class', 'adroppable')
+					},
 					over       : function(e, ui) {
 						var helper = ui.helper,
 							dir    = $.map(helper.data('files'), function(h) { return (fm.file(h).mime === 'directory' && !dirs[h])? h : null});
@@ -436,8 +439,20 @@ $.fn.elfinderplaces = function(fm, opts) {
 			dat = $.map((fm.storage(key) || '').split(','), function(hash) { return hash || null;});
 			$.each(dat, function(i, d) {
 				var dir = d.split('#')
-				dirs[dir[0]] = dir[1]? dir[1] : { hash: dir[0], name: dir[0] };
+				dirs[dir[0]] = dir[1]? dir[1] : dir[0];
 			});
+			// allow modify `dirs`
+			/**
+			 * example for preset places
+			 * 
+			 * elfinderInstance.bind('placesload', function(e, fm) {
+			 * 	//if (fm.storage(e.data.storageKey) === null) { // for first time only
+			 * 	if (!fm.storage(e.data.storageKey)) {           // for empty places
+			 * 		e.data.dirs[targetHash] = fallbackName;     // preset folder
+			 * 	}
+			 * }
+			 **/
+			fm.trigger('placesload', {dirs: dirs, storageKey: key}, true);
 			
 			hashes = Object.keys(dirs);
 			if (hashes.length) {
@@ -549,6 +564,9 @@ $.fn.elfinderplaces = function(fm, opts) {
 										updated = true;
 									}
 								}
+							} else if (exists[h] && exists[h].phash != cwd) {
+								// update permission of except cwd
+								update(exists[h]);
 							}
 						});
 						updated && save();

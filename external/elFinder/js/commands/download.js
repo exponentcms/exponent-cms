@@ -126,7 +126,7 @@ elFinder.prototype.commands.download = function() {
 					self.extra = {
 						icon: 'link',
 						node: $('<a/>')
-							.attr({href: '#', title: fm.i18n('link'), draggable: 'false'})
+							.attr({href: '#', title: fm.i18n('getLink'), draggable: 'false'})
 							.text(file.name)
 							.on('click', function(e){
 								var parent = node.parent();
@@ -138,10 +138,10 @@ elFinder.prototype.commands.download = function() {
 									preventDefault : true
 								})
 								.always(function(data) {
+									parent.removeClass('elfinder-button-icon-spinner');
 									if (data.url) {
 										var rfile = fm.file(file.hash);
 										rfile.url = data.url;
-										parent.removeClass('elfinder-button-icon-spinner');
 										node.replaceWith(getExtra(file).node);
 									} else {
 										parent.addClass('ui-state-disabled');
@@ -153,7 +153,7 @@ elFinder.prototype.commands.download = function() {
 					node = self.extra.node;
 					node.ready(function(){
 						setTimeout(function(){
-							node.parent().addClass('ui-state-disabled');
+							node.parent().addClass('ui-state-disabled').css('pointer-events', 'auto');
 						}, 10);
 					});
 				}

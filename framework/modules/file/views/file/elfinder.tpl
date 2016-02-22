@@ -32,7 +32,6 @@
     <!--<![endif]-->
     <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
-    {*<link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">*}
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
@@ -54,7 +53,6 @@
 
     <!-- elfinder core -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
@@ -70,7 +68,6 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/button.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/uploadButton.js"></script>

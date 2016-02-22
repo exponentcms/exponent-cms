@@ -11,7 +11,7 @@ $.fn.elfindercontextmenu = function(fm) {
 			cmItem = 'elfinder-contextmenu-item',
 			smItem = 'elfinder-contextsubmenu-item',
 			exIcon = 'elfinder-contextmenu-extra-icon',
-			menu = self.addClass('ui-helper-reset ui-widget ui-state-default ui-corner-all elfinder-contextmenu elfinder-contextmenu-'+fm.direction)
+			menu = self.addClass('ui-helper-reset ui-front ui-widget ui-state-default ui-corner-all elfinder-contextmenu elfinder-contextmenu-'+fm.direction)
 				.hide()
 				.appendTo('body')
 				.on('mouseenter mouseleave', '.'+cmItem, function(e) {
@@ -42,29 +42,36 @@ $.fn.elfindercontextmenu = function(fm) {
 					wheight    = win.height(),
 					scrolltop  = win.scrollTop(),
 					scrollleft = win.scrollLeft(),
-					m          = fm.UA.Touch? 10 : 0,
+					mw         = fm.UA.Touch? 30 : 0,
+					mh         = fm.UA.Touch? 20 : 0,
 					css        = {
-						top  : y - scrolltop + m + height < wheight ? y + m : (y - m - height > 0 ? y - m - height : y + m),
-						left : x - scrollleft + m + width < wwidth  ? x + m :  x - m - width,
-						'z-index' : 100 + fm.getUI('workzone').zIndex()
+						top  : Math.max(0, y - scrolltop + mh + height < wheight ? y + mh : (y - mh - height > 0 ? y - mh - height : y + mh)),
+						left : Math.max(0, x - scrollleft + mw + width < wwidth  ? x + mw :  x - mw - width)
 					};
 
 				menu.css(css)
 					.show();
 				
-				css = {'z-index' : css['z-index']+10};
+				//alert(navigator.platform);
 				css[subpos] = parseInt(menu.width());
 				menu.find('.elfinder-contextmenu-sub').css(css);
+				if (fm.UA.iOS) {
+					$('div.elfinder div.overflow-scrolling-touch').css('-webkit-overflow-scrolling', 'auto');
+				}
 			},
 			
 			close = function() {
 				menu.hide().empty();
 				fm.trigger('closecontextmenu');
+				if (fm.UA.iOS) {
+					$('div.elfinder div.overflow-scrolling-touch').css('-webkit-overflow-scrolling', 'touch');
+				}
 			},
 			
 			create = function(type, targets) {
 				var sep = false,
-				cmdMap = {}, disabled = [], isCwd = (targets[0].indexOf(fm.cwd().volumeid, 0) === 0);
+				cmdMap = {}, disabled = [], isCwd = (targets[0].indexOf(fm.cwd().volumeid, 0) === 0),
+				selcnt = 0;
 
 				if (self.data('cmdMaps')) {
 					$.each(self.data('cmdMaps'), function(i, v){
@@ -84,7 +91,13 @@ $.fn.elfindercontextmenu = function(fm) {
 						});
 					}
 				}
-				
+
+				selcnt = fm.selected().length;
+				if (selcnt > 1) {
+					menu.append('<div class="ui-corner-top ui-widget-header elfinder-contextmenu-header"><span>'
+					 + fm.i18n('selectedItems', ''+selcnt)
+					 + '</span></div>');
+				}
 				$.each(types[type]||[], function(i, name) {
 					var cmd, node, submenu, hover;
 					
@@ -134,7 +147,7 @@ $.fn.elfindercontextmenu = function(fm) {
 								}
 							});
 							
-							submenu = $('<div class="ui-corner-all elfinder-contextmenu-sub"/>')
+							submenu = $('<div class="ui-front ui-corner-all elfinder-contextmenu-sub"/>')
 								.appendTo(node.append('<span class="elfinder-contextmenu-arrow"/>'));
 							
 							hover = function(){
@@ -218,9 +231,13 @@ $.fn.elfindercontextmenu = function(fm) {
 			};
 		
 		fm.one('load', function() {
+			var uiCwd = fm.getUI('cwd');
 			fm.bind('contextmenu', function(e) {
 				var data = e.data;
 
+				if (!data.type || data.type !== 'files') {
+					uiCwd.trigger('unselectall');
+				}
 				close();
 
 				if (data.type && data.targets) {

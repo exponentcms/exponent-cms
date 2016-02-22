@@ -415,7 +415,8 @@ window.elFinder = function(node, opts) {
 			Chrome:webkit && window.chrome,
 			Safari:webkit && !window.chrome,
 			Mobile:typeof window.orientation != "undefined",
-			Touch:typeof window.ontouchstart != "undefined"
+			Touch:typeof window.ontouchstart != "undefined",
+			iOS: navigator.platform.match(/^iP(?:[ao]d|hone)/)
 		};
 	})();
 	
@@ -652,7 +653,7 @@ window.elFinder = function(node, opts) {
 		this.sortStickFolders = !!this.sortStickFolders
 	}
 
-	this.sortRules = $.extend(true, {}, this._sortRules, this.options.sortsRules);
+	this.sortRules = $.extend(true, {}, this._sortRules, this.options.sortRules);
 	
 	$.each(this.sortRules, function(name, method) {
 		if (typeof method != 'function') {
@@ -685,8 +686,7 @@ window.elFinder = function(node, opts) {
 	this.draggable = {
 		appendTo   : 'body',
 		addClasses : true,
-		delay      : 30,
-		distance   : 8,
+		distance   : 4,
 		revert     : true,
 		refreshPositions : false,
 		cursor     : 'crosshair',
@@ -783,6 +783,9 @@ window.elFinder = function(node, opts) {
 			tolerance  : 'pointer',
 			accept     : '.elfinder-cwd-file-wrapper,.elfinder-navbar-dir,.elfinder-cwd-file,.elfinder-cwd-filename',
 			hoverClass : this.res('class', 'adroppable'),
+			classes    : { // Deprecated hoverClass jQueryUI>=1.12.0
+				'ui-droppable-hover': this.res('class', 'adroppable')
+			},
 			autoDisable: true, // elFinder original, see jquery.elfinder.js
 			drop : function(e, ui) {
 				var dst     = $(this),
@@ -1046,7 +1049,7 @@ window.elFinder = function(node, opts) {
 	 * Return file url for open in elFinder
 	 * 
 	 * @param  String  file hash
-	 * @param  Bool    for download link
+	 * @param  Boolean for download link
 	 * @return String
 	 */
 	this.openUrl = function(hash, download) {
@@ -1524,11 +1527,15 @@ window.elFinder = function(node, opts) {
 			onlydir? null : this.request(opts2)
 		)
 		.fail(function(error) {
-			dfrd.reject(error);
-			error && self.request({
-				data   : {cmd : 'open', target : (self.lastDir('') || self.root()), tree : 1, init : 1},
-				notify : {type : 'open', cnt : 1, hideCnt : true}
-			});
+			if (! polling) {
+				dfrd.reject(error);
+				error && self.request({
+					data   : {cmd : 'open', target : (self.lastDir('') || self.root()), tree : 1, init : 1},
+					notify : {type : 'open', cnt : 1, hideCnt : true}
+				});
+			} else {
+				dfrd.reject();
+			}
 		})
 		.done(function(odata, pdata) {
 			if (odata.cwd.compare) {
@@ -1586,17 +1593,23 @@ window.elFinder = function(node, opts) {
 	
 	/**
 	 * Remove event listener if exists
+	 * To un-bind to multiply events at once, separate events names by space
 	 *
-	 * @param  String    event name
+	 * @param  String    event(s) name(s)
 	 * @param  Function  callback
 	 * @return elFinder
 	 */
 	this.unbind = function(event, callback) {
-		var l = listeners[('' + event).toLowerCase()] || [],
-			i = $.inArray(callback, l);
-
-		i > -1 && l.splice(i, 1);
-		//delete callback; // need this?
+		var i, l, ci;
+		
+		event = ('' + event).toLowerCase().split(/\s+/);
+		
+		for (i = 0; i < event.length; i++) {
+			l = listeners[event[i]] || [];
+			ci = $.inArray(callback, l);
+			ci > -1 && l.splice(ci, 1);
+		}
+		
 		callback = null
 		return this;
 	};
@@ -1606,28 +1619,34 @@ window.elFinder = function(node, opts) {
 	 *
 	 * @param  String   event type
 	 * @param  Object   data to send across event
+	 * @param  Boolean  allow modify data (call by reference of data)
 	 * @return elFinder
 	 */
-	this.trigger = function(event, data) {
+	this.trigger = function(event, data, allowModify) {
 		var event    = event.toLowerCase(),
 			isopen   = (event === 'open'),
 			handlers = listeners[event] || [], i, l, jst;
 		
 		this.debug('event-'+event, data);
 		
-		if (isopen) {
+		if (isopen && !allowModify) {
 			// for performance tuning
 			jst = JSON.stringify(data);
 		}
 		if (handlers.length) {
 			event = $.Event(event);
+			if (allowModify) {
+				event.data = data;
+			}
 
 			l = handlers.length;
 			for (i = 0; i < l; i++) {
 				// only callback has argument
 				if (handlers[i].length) {
-					// to avoid data modifications. remember about "sharing" passing arguments in js :) 
-					event.data = isopen? JSON.parse(jst) : $.extend(true, {}, data);
+					if (!allowModify) {
+						// to avoid data modifications. remember about "sharing" passing arguments in js :) 
+						event.data = isopen? JSON.parse(jst) : $.extend(true, {}, data);
+					}
 				}
 
 				try {
@@ -1643,7 +1662,17 @@ window.elFinder = function(node, opts) {
 			}
 		}
 		return this;
-	}
+	};
+	
+	/**
+	 * Get event listeners
+	 *
+	 * @param  String   event type
+	 * @return Array    listed event functions
+	 */
+	this.getListeners = function(event) {
+		return event? listeners[event.toLowerCase()] : listeners;
+	};
 	
 	/**
 	 * Bind keybord shortcut to keydown event
@@ -2743,7 +2772,7 @@ elFinder.prototype = {
 					}
 				},
 				check = function() {
-					var renames = [], existed = [], exists = [], i, c;
+					var renames = [], hashes = {}, existed = [], exists = [], i, c;
 					
 					var confirm = function(ndx) {
 						var last = ndx == exists.length-1,
@@ -2756,7 +2785,7 @@ elFinder.prototype = {
 								callback : function(all) {
 									!last && !all
 										? confirm(++ndx)
-										: dfrd.resolve(renames);
+										: dfrd.resolve(renames, hashes);
 								}
 							},
 							reject : {
@@ -2775,14 +2804,14 @@ elFinder.prototype = {
 	
 									!last && !all
 										? confirm(++ndx)
-										: dfrd.resolve(renames);
+										: dfrd.resolve(renames, hashes);
 								}
 							},
 							cancel : {
 								label    : 'btnCancel',
 								callback : function() {
 									cancel();
-									dfrd.resolve(renames);
+									dfrd.resolve(renames, hashes);
 								}
 							},
 							buttons : [
@@ -2800,7 +2829,7 @@ elFinder.prototype = {
 										}
 										!last && !all
 											? confirm(++ndx)
-											: dfrd.resolve(renames);
+											: dfrd.resolve(renames, hashes);
 									}
 								}
 							]
@@ -2815,7 +2844,7 @@ elFinder.prototype = {
 					
 					name = $.map(names, function(item) { return item.name;});
 					fm.request({
-						data : {cmd : 'upload', target : target, name : name , FILES : ''},
+						data : {cmd : 'ls', target : target, intersect : name},
 						notify : {type : 'preupload', cnt : 1, hideCnt : true},
 						preventFail : true
 					})
@@ -2825,13 +2854,20 @@ elFinder.prototype = {
 								cancel();
 							} else {
 								if (fm.option('uploadOverwrite')) {
-									if (data.name) {
-										existed = data.name || [];
+									if (data.list) {
+										if ($.isArray(data.list)) {
+											existed = data.list || [];
+										} else {
+											existed = $.map(data.list, function(n) { return n; });
+											hashes = data.list;
+										}
 										exists = $.map(names, function(name){ return $.inArray(name.name, existed) !== -1 ? name : null ;});
-									}
-									if (data.list && target == fm.cwd().hash
-									&& data.list.length != $.map(fm.files(), function(file) { return file.phash == target ? file.name : null ;}).length) {
-										fm.sync();
+										if (target == fm.cwd().hash &&
+											$($.map(fm.files(), function(file) { return (file.phash == target) ? file.name : null; } ))
+												.filter(existed).length < 1
+										) {
+											fm.sync();
+										}
 									}
 								}
 							}
@@ -2946,7 +2982,7 @@ elFinder.prototype = {
 									processing--;
 								});
 							} else if (entry.isDirectory) {
-								if (self.api >= 2.1) {
+								if (fm.api >= 2.1) {
 									if (processing > 0) {
 										dirctorys.push(entry);
 									} else {
@@ -2965,20 +3001,28 @@ elFinder.prototype = {
 					return item.getAsEntry? item.getAsEntry() : item.webkitGetAsEntry();
 				});
 				if (items.length > 0) {
-					fm.uploads.checkExists(items, target, fm).done(function(renames){
+					fm.uploads.checkExists(items, target, fm).done(function(renames, hashes){
 						var notifyto, dfds = [];
 						if (fm.option('uploadOverwrite')) {
 							items = $.map(items, function(item){
-								var i, bak, file, dfd;
+								var i, bak, hash, dfd, hi;
 								if (item.isDirectory) {
 									i = $.inArray(item.name, renames);
 									if (i !== -1) {
 										renames.splice(i, 1);
 										bak = fm.uniqueName(item.name + fm.options.backupSuffix , null, '');
-										file = fm.fileByName(item.name, target);
-										fm.lockfiles({files : [file.hash]});
+										$.each(hashes, function(h, name) {
+											if (item.name == name) {
+												hash = h;
+												return false;
+											}
+										});
+										if (! hash) {
+											hash = fm.fileByName(item.name, target).hash;
+										}
+										fm.lockfiles({files : [hash]});
 										dfd = fm.request({
-											data   : {cmd : 'rename', target : file.hash, name : bak},
+											data   : {cmd : 'rename', target : hash, name : bak},
 											notify : {type : 'rename', cnt : 1}
 										})
 										.fail(function(error) {
@@ -2986,7 +3030,7 @@ elFinder.prototype = {
 											fm.sync();
 										})
 										.always(function() {
-											fm.unlockfiles({files : [file.hash]})
+											fm.unlockfiles({files : [hash]})
 										});
 										dfds.push(dfd);
 									}
@@ -3010,7 +3054,7 @@ elFinder.prototype = {
 										} else {
 											notifyto && clearTimeout(notifyto);
 											fm.notify({type : 'readdir', cnt : -1});
-											dfrd.resolve([files, paths, renames]);
+											dfrd.resolve([files, paths, renames, hashes]);
 										}
 									}
 								}, 10);
@@ -3153,6 +3197,7 @@ elFinder.prototype = {
 					}, self.options.notifyDelay);
 				},
 				renames = (data.renames || null),
+				hashes = (data.hashes || null),
 				chunkMerge = false;
 			
 			// regist fnAbort function
@@ -3329,6 +3374,7 @@ elFinder.prototype = {
 									checked: true,
 									target: target,
 									renames: renames,
+									hashes: hashes,
 									multiupload: true})
 								.fail(function(error) {
 									if (cid) {	
@@ -3525,11 +3571,16 @@ elFinder.prototype = {
 
 				formData.append('cmd', 'upload');
 				formData.append(self.newAPI ? 'target' : 'current', target);
-				if (renames) {
-					$.each(renames, function(i, v){
+				if (renames && renames.length) {
+					$.each(renames, function(i, v) {
 						formData.append('renames[]', v);
 					});
 					formData.append('suffix', fm.options.backupSuffix);
+				}
+				if (hashes) {
+					$.each(hashes, function(i, v) {
+						formData.append('hashes['+ i +']', v);
+					});
 				}
 				$.each(self.options.customData, function(key, val) {
 					formData.append(key, val);
@@ -3589,10 +3640,12 @@ elFinder.prototype = {
 				if (files.length > 0) {
 					if (renames == null) {
 						renames = [];
+						hashes = {};
 						self.uploads.checkExists(files, target, fm).done(
-							function(res){
+							function(res, res2){
 								if (fm.option('uploadOverwrite')) {
 									renames = res;
+									hashes = res2;
 									files = $.map(files, function(file){return !file._remove? file : null ;});
 								}
 								cnt = files.length;
@@ -3619,9 +3672,11 @@ elFinder.prototype = {
 				} else {
 					files.done(function(result){
 						renames = [];
+						hashes = {};
 						cnt = result[0].length;
 						if (cnt) {
 							renames = result[2];
+							hashes = result[3];
 							send(result[0], result[1]);
 						} else {
 							dfrd.reject(['errUploadNoFiles']);
@@ -3698,6 +3753,7 @@ elFinder.prototype = {
 				names   = [],
 				dfds    = [],
 				renames = [],
+				hashes  = {},
 				cnt, notify, notifyto, abortto;
 
 			if (files && files.length) {
@@ -3710,8 +3766,9 @@ elFinder.prototype = {
 					names = input.files? input.files : [{ name: $(input).val().replace(/^(?:.+[\\\/])?([^\\\/]+)$/, '$1') }];
 					//names = $.map(names, function(file){return file.name? { name: file.name } : null ;});
 					dfds.push(self.uploads.checkExists(names, target, self).done(
-						function(res){
+						function(res, res2){
 							renames = res;
+							hashes = res2;
 							cnt = $.map(names, function(file){return !file._remove? file : null ;}).length;
 							if (cnt != names.length) {
 								cnt = 0;
@@ -3736,17 +3793,22 @@ elFinder.prototype = {
 				
 				if (renames.length > 0) {
 					$.each(renames, function(i, rename) {
-						form.append('<input type="hidden" name="renames[]" value="'+rename+'"/>');
+						form.append('<input type="hidden" name="renames[]" value="'+self.escape(rename)+'"/>');
 					});
 					form.append('<input type="hidden" name="suffix" value="'+fm.options.backupSuffix+'"/>');
 				}
+				if (hashes) {
+					$.each(renames, function(i, v) {
+						form.append('<input type="hidden" name="['+i+']" value="'+self.escape(v)+'"/>');
+					});
+				}
 				
 				$.each(self.options.onlyMimes||[], function(i, mime) {
-					form.append('<input type="hidden" name="mimes[]" value="'+mime+'"/>');
+					form.append('<input type="hidden" name="mimes[]" value="'+self.escape(mime)+'"/>');
 				});
 				
 				$.each(self.options.customData, function(key, val) {
-					form.append('<input type="hidden" name="'+key+'" value="'+val+'"/>');
+					form.append('<input type="hidden" name="'+key+'" value="'+self.escape(val)+'"/>');
 				});
 				
 				form.appendTo('body');
@@ -3768,10 +3830,10 @@ elFinder.prototype = {
 	 */
 	one : function(event, callback) {
 		var self = this,
-			h    = $.proxy(callback, function(event) {
-				setTimeout(function() {self.unbind(event.type, h);}, 3);
-				return callback.apply(this, arguments);
-			});
+			h    = function(e, f) {
+				setTimeout(function() {self.unbind(event, h);}, 3);
+				return callback.apply(self.getListeners(e.type), arguments);
+			};
 		return this.bind(event, h);
 	},
 	
@@ -4329,21 +4391,11 @@ elFinder.prototype = {
 		};
 		
 		if (opts.all) {
-			if (opts.reject) {
-				options.width = 370;
-			}
 			options.create = function() {
+				var base = $('<div class="elfinder-dialog-confirm-applyall"/>');
 				checkbox = $('<input type="checkbox" />');
-				$(this).next().children().before($('<label>'+apply+'</label>').prepend(checkbox));
-			}
-			
-			options.open = function() {
-				var pane = $(this).next(),
-					width = parseInt(pane.children(':first').outerWidth() + pane.children(':last').outerWidth());
-
-				if (width > parseInt(pane.width())) {
-					$(this).closest('.elfinder-dialog').width(width+30);
-				}
+				$(this).next().find('.ui-dialog-buttonset')
+					.prepend(base.append($('<label>'+apply+'</label>').prepend(checkbox)));
 			}
 		}
 		
