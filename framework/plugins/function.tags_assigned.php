@@ -53,7 +53,7 @@ function smarty_function_tags_assigned($params,&$smarty) {
         $link .= '<span class="tag"><a href="'.expCore::makeLink(array('controller'=>$iloc->mod,'action'=>'showall_by_tags','tag'=>$tag->sef_url,'src'=>$iloc->src)).
             '" title="'. gt('View all items tagged with') . ' \'' . $tag->title . '\'' .
             '">'.$tag->title.'</a></span>';
-        if ($i != count($item->expTag)) $link .= ", ";
+        if ($i != count($item->expTag)) $link .= "<span class='spacer'>,</span> ";
         $i++;
     }
     $link .= '</span>';
