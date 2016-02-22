@@ -265,7 +265,7 @@ class usersController extends expController {
                 $mail = new expMail();
                 $mail->quickSend(array(
                     'text_message' => $msg,
-                    'to'           => trim($u->email),
+                    'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
                     'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                     'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
                 ));
@@ -522,7 +522,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
-            'to'           => trim($u->email),
+            'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('Password Reset Requested'),
         ));
@@ -566,7 +566,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
-            'to'           => trim($u->email),
+            'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('The account password for') . ' ' . HOSTNAME . ' ' . gt('was reset'),
         ));
@@ -1622,7 +1622,7 @@ class usersController extends expController {
                         $mail = new expMail();
                         $mail->quickSend(array(
                             'text_message' => $msg,
-                            'to'           => trim($newuser->email),
+                            'to'           => array(trim($newuser->email) => trim(user::getUserAttribution($newuser->id))),
                             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                             'subject'      => USER_REGISTRATION_WELCOME_SUBJECT,
                         ));

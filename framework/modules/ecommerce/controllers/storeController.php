@@ -2076,7 +2076,7 @@ class storeController extends expController {
                             $mail->quickSend(array(
                                 'html_message' => $html,
                                 'text_message' => str_replace("<br>", "\r\n", $template->render()),
-                                'to'           => $email_addy,
+                                'to'           => array($email_addy => $order->billingmethod[0]->firstname . ' ' . $order->billingmethod[0]->lastname),
                                 'from'         => $from,
                                 'subject'      => 'Your Order Has Been Shipped (#' . $order->invoice_id . ') - ' . ecomconfig::getConfig('storename')
                             ));

@@ -132,7 +132,8 @@
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="All Comments Must be Approved?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {group label="New Comment Notification Email"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify a site administrator of New Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
-                        {control type=text multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
+                        {*{control type=text multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}*}
+                    {control type=email multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                     {/group}
                 </div>
                 <div id="tab5">

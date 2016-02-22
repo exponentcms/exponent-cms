@@ -376,7 +376,7 @@ class orderController extends expController {
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
                 'text_message'=> $txt,
-                'to'          => $user->email,
+                'to'          => array(trim($user->email) => trim(user::getUserAttribution($user->id))),
                 //'to'=>$order->billingmethod[0]->email,
                 'from'        => $from,
                 'subject'     => ecomconfig::getConfig('invoice_subject'),
@@ -778,7 +778,7 @@ exit();
                     $mail->quickSend(array(
                         'html_message'=> $html,
                         'text_message'=> str_replace("<br>", "\r\n", $template->render()),
-                        'to'          => $email_addy,
+                        'to'          => array($email_addy => $order->billingmethod[0]->firstname . ' ' . $order->billingmethod[0]->lastname),
                         'from'        => $from,
                         'subject'     => 'The status of your order (#' . $order->invoice_id . ') has been updated on ' . ecomconfig::getConfig('storename') . '.'
                     ));

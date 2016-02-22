@@ -571,7 +571,7 @@ class formsController extends expController {
                 if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
                         foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
-                            if ($locUser->email != '') $emaillist[] = $locUser->email;
+                            if ($locUser->email != '') $emaillist[$locUser->email] = trim(user::getUserAttribution($locUser->id));
                         }
                     } else {
                         $emaillist[] = $this->params['email_dest'];
@@ -580,12 +580,12 @@ class formsController extends expController {
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
-                        $emaillist[] = $u->email;
+                        $emaillist[$u->email] = trim(user::getUserAttribution($u->id));
                     }
                     if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
                         $grpusers = group::getUsersInGroup($c);
                         foreach ($grpusers as $u) {
-                            $emaillist[] = $u->email;
+                            $emaillist[$u->email] = trim(user::getUserAttribution($u->id));
                         }
                     }
                     if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {

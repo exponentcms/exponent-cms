@@ -1005,12 +1005,12 @@ class eventController extends expController {
             $emails = array();
             if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                 $u = user::getUserById($c);
-                $emails[] = $u->email;
+                $emails[$u->email] = trim(user::getUserAttribution($u->id));
             }
             if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
                 $grpusers = group::getUsersInGroup($c);
                 foreach ($grpusers as $u) {
-                    $emails[] = $u->email;
+                    $emails[$u->email] = trim(user::getUserAttribution($u->id));
                 }
             }
             if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {

@@ -783,21 +783,21 @@ class administrationController extends expController {
         $emaillist = array();
         if (!empty($this->params['allusers'])) {
             foreach (user::getAllUsers() as $u) {
-                $emaillist[] = $u->email;
+                $emaillist[$u->email] = user::getUserAttribution($u->id);
             }
         } else {
             if(!empty($this->params['group_list'])) {
                 foreach (listbuildercontrol::parseData($this->params,'grouplist') as $group_id) {
                    $grpusers = group::getUsersInGroup($group_id);
                    foreach ($grpusers as $u) {
-                       $emaillist[] = $u->email;
+                       $emaillist[$u->email] = user::getUserAttribution($u->id);
                    }
                 }
             }
             if(!empty($this->params['user_list'])) {
                 foreach (listbuildercontrol::parseData($this->params,'user_list') as $user_id) {
                     $u = user::getUserById($user_id);
-                    $emaillist[] = $u->email;
+                    $emaillist[$u->email] = user::getUserAttribution($u->id);
                 }
             }
             if(!empty($this->params['address_list'])) {
