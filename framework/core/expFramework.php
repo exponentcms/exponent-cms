@@ -1031,7 +1031,7 @@ function glist($s){
  * @param $errline
  */
 function handleErrors($errno, $errstr, $errfile, $errline) {
-    if (DEVELOPMENT > 0) {
+    if (DEVELOPMENT > 0 && AJAX_ERROR_REPORTING == 1) {
         switch ($errno) {
             case E_ERROR:
             case E_USER_ERROR:
@@ -1054,7 +1054,7 @@ function handleErrors($errno, $errstr, $errfile, $errline) {
         $msg .= !empty($errfile) ? ' in file '.$errfile : "";
         $msg .= !empty($errline) ? ' on line '.$errline : "";
         // send to the debug output
-        if (AJAX_ERROR_REPORTING == 1) eDebug($msg);
+        eDebug($msg);
     }
 }
 
@@ -1077,9 +1077,14 @@ function eDebug($var, $halt=false, $disable_log=false){
 //            echo("<script>YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {Y.log('".json_encode($pvar)."','info','exp')});;</script>");
             eLog($var, gt('DEBUG'));
         } else {
-            echo "<pre>";
-  		    print_r($var);
-            echo "</pre>";
+            if (file_exists(BASE . 'external/kint/Kint.class.php')) {
+                require_once BASE . 'external/kint/Kint.class.php';
+                d($var);  // kint
+            } else {
+                echo "<pre>";
+                print_r($var);
+                echo "</pre>";
+            }
         }
 
 		if ($halt) die();
