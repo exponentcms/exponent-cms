@@ -13,7 +13,7 @@
  *
  *}
 
-<div class="module news showall-recent">
+<div class="module news showall showall-recent">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{/if}
     {rss_link}
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}{'Recent'|gettext} {$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
