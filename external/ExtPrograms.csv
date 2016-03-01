@@ -30,7 +30,7 @@ Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.4,www.adminer.org,4.2.4,
 SimpleAjaxUploader,2.5.1,https://github.com/LPology/Simple-Ajax-Uploader,2.5.1,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
-MediaElement.js,2.19.0,mediaelementjs.com/,2.19.0,
+MediaElement.js,2.20.1,mediaelementjs.com/,2.20.1,
 Facebook PHP SDK3,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
 Facebook PHP SDK4,4.0.23,https://github.com/facebook/facebook-php-sdk-v4,4-5.1.2,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
@@ -42,14 +42,14 @@ mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 HTML2PDF,4.5.0,https://github.com/spipu/html2pdf,4.5.0,optional
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
 CKEditor,4.5.7,ckeditor.com,4.5.7,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.3.4,tinymce.com,4.3.4,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+TinyMCE,4.3.6,tinymce.com,4.3.6,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.7n,elfinder.org,2.1.7n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
 jQuery1,1.12.1,jquery.com,1.12.1,
 jQuery,2.2.1,jquery.com,2.2.1,
 jQuery Migrate,1.4.0,jquery.com,1.4.0,
 jQueryUI,1.11.4,jqueryui.com,1.11.4,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
-validate,1.14.0exp,http://jqueryvalidation.org/,1.14.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
+validate,1.15.0exp,http://jqueryvalidation.org/,1.15.0,"used by stepy, edit for 'undefined' in 'min' & 'max'"
 Countdown,1,tutorialzine.com/2011/12/countdown-jquery/,1,
 placeholder,0.7.0,andrew-jones.com/jquery-placeholder-plugin,0.7.0,
 timepicker,1.6.1,http://trentrichardson.com/examples/timepicker/,1.6.1,used by adminer

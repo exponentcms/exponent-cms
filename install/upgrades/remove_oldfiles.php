@@ -180,6 +180,7 @@ class remove_oldfiles extends upgradescript {
             'external/less.php/Less.php',
             'external/less.php/Version.php',
             'external/lessphp/plessc',
+//			'external/excanvas.js',
             'external/png-opacity.htc',
             'external/recaptchalib.php',
             'external/SimpleAjaxUploader.js',

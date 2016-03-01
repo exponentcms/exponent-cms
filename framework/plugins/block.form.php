@@ -90,22 +90,28 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         } else {
             $newui_class = '';
         }
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-1mod',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-2eh',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-3wf',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-4fb',
+//            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+//        ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-1mod',
-            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-2eh',
-            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-3wf',
-            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-4fb',
-            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
-            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+            "unique"  => 'html5forms',
+            "jquery"  => 1,
+            "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
+            "content" => "webshim.setOptions('canvas', {type: 'excanvas'}); webshim.polyfill('canvas forms forms-ext');",
         ));
         if (!empty($params['paged'])) {
             if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>" . gt(
@@ -123,27 +129,40 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             if (bs3()) {
                 $content .= "
                     validateOptions: {
-                       highlight: function(element) {
-                           $(element).closest('.control').removeClass('has-success').addClass('has-error');
-   //                        var id_attr = '#' + $( element ).attr('id') + '1';
-   //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
-                       },
-                       unhighlight: function(element) {
-                           $(element).closest('.control').removeClass('has-error').addClass('has-success');
-   //                        var id_attr = '#' + $( element ).attr('id') + '1';
-   //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
-                       },
-                       errorElement: 'span',
-                       errorClass: 'help-block',
-                       errorPlacement: function(error, element) {
-                           if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
-                               error.appendTo(element.parent().parent());
-                           } else if(element.parent('.input-group').length) {
-                               error.insertAfter(element.parent());
-                           } else {
-                               error.insertAfter(element);
-                           }
-                       }
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                        highlight: function(element) {
+//                            $('.stepy-header .stepy-active').addClass('stepy-error');
+                            $(element).closest('.control').removeClass('has-success').addClass('has-error');
+   //                         var id_attr = '#' + $( element ).attr('id') + '1';
+   //                         $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');  // requires a feedback <span> and has-feedback class to control
+                        },
+                        unhighlight: function(element) {
+//                            $('.stepy-header .stepy-error').removeClass('stepy-error');
+                            $(element).closest('.control').removeClass('has-error').addClass('has-success');
+   //                         var id_attr = '#' + $( element ).attr('id') + '1';
+   //                         $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
+                        },
+                        errorElement: 'span',
+                        errorClass: '".(bs3()?"help-block":"control-desc")."',
+                        errorPlacement: function(error, element) {
+                            if (element.prop('type') === 'checkbox' || element.prop('type') === 'radio') {
+                                error.appendTo(element.parent().parent());
+                            } else if(element.parent('.input-group').length) {
+                                error.insertAfter(element.parent());
+                            } else {
+                                error.insertAfter(element);
+                            }
+                        }
                     }";
             }
             $content .= "
@@ -160,15 +179,26 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             if (bs3()) {
                 $content = "
                     $('#" . $id . "').validate({
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
                         highlight: function(element) {
                             $(element).closest('.control').removeClass('has-success').addClass('has-error');
     //                        var id_attr = '#' + $( element ).attr('id') + '1';
-    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');
+    //                        $(id_attr).removeClass('glyphicon-ok').addClass('glyphicon-remove');  // requires a feedback <span> and has-feedback class to control
                         },
                         unhighlight: function(element) {
                             $(element).closest('.control').removeClass('has-error').addClass('has-success');
     //                        var id_attr = '#' + $( element ).attr('id') + '1';
-    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');
+    //                        $(id_attr).removeClass('glyphicon-remove').addClass('glyphicon-ok');  // requires a feedback <span> and has-feedback class to control
                         },
                         errorElement: 'span',
                         errorClass: '".(bs3()?"help-block":"control-desc")."',
@@ -185,7 +215,20 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 ";
             } else {
                 $content = "
-                    $('#" . $id . "').validate();
+                    $('#" . $id . "').validate(
+                        ignore: '.ignore',
+						rules: {
+							'hiddenRecaptcha': {
+								required: function() {
+									if(grecaptcha.getResponse() == '') {
+										return true;
+									} else {
+										return false;
+									}
+								}
+							}
+						},
+                    );
                 ";
             }
             expJavascript::pushToFoot(

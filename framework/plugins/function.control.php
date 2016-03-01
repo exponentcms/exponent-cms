@@ -376,6 +376,7 @@ function smarty_function_control($params, &$smarty) {
 //                        require_once(BASE . 'external/recaptchalib.php');
                         require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                         $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                        echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                         echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                         echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';

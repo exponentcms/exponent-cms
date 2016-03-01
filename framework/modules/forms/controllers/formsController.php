@@ -350,6 +350,7 @@ class formsController extends expController {
                             // include the library and show the form control
                             require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                             $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                            $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             $antispam .= '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                             $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
