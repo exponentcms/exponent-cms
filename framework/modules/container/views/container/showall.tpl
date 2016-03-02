@@ -91,7 +91,9 @@
             {/if}
         {/permissions}
 
-                    {$container->output}
+        <div class="{module_style style=$container->config.style}"> {* module styling output *}
+        {$container->output}
+        </div>
 
         {permissions}
                 {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure

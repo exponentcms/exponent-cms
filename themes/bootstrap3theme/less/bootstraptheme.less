@@ -219,3 +219,28 @@ span.value span.tag a:hover::before {
 span.value span.spacer {
 	display: none;
 }
+
+/* module styles */
+.top-border {
+	border-top: 1px solid @gray;
+}
+.bottom-border {
+	border-bottom: 1px solid @gray;
+}
+.top-bottom-border {
+	border-top: 1px solid @gray;
+	border-bottom: 1px solid @gray;
+}
+.box-border {
+	border: 1px solid @gray;
+}
+
+.light-background {
+	background-color: darken(@body-bg, 5%);
+}
+.medium-background {
+	background-color: darken(@body-bg, 10%);
+}
+.dark-background {
+	background-color: darken(@body-bg, 15%);
+}
