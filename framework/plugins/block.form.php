@@ -215,8 +215,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
                 ";
             } else {
                 $content = "
-                    $('#" . $id . "').validate(
-                        ignore: '.ignore',
+                    $('#" . $id . "').validate({
 						rules: {
 							'hiddenRecaptcha': {
 								required: function() {
@@ -228,7 +227,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 								}
 							}
 						},
-                    );
+                    });
                 ";
             }
             expJavascript::pushToFoot(

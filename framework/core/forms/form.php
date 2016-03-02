@@ -345,7 +345,6 @@ class form extends baseform {
             if (bs3()) {
                 $content .= "
                     validateOptions: {
-						ignore: '.ignore',
 						rules: {
 							'hiddenRecaptcha': {
 								required: function() {
@@ -440,7 +439,7 @@ class form extends baseform {
                 ";
             } else {
                 $content = "
-                    $('#" . $this->id . "').validate(
+                    $('#" . $this->id . "').validate({
 						rules: {
 							'hiddenRecaptcha': {
 								required: function() {
@@ -452,7 +451,7 @@ class form extends baseform {
 								}
 							}
 						},
-                    );
+                    });
                 ";
             }
             expJavascript::pushToFoot(array(
