@@ -42,7 +42,7 @@ mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 HTML2PDF,4.5.0,https://github.com/spipu/html2pdf,4.5.0,optional
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
 CKEditor,4.5.7,ckeditor.com,4.5.7,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.3.6,tinymce.com,4.3.6,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+TinyMCE,4.3.7,tinymce.com,4.3.7,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.7n,elfinder.org,2.1.7n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
 jQuery1,1.12.1,jquery.com,1.12.1,
 jQuery,2.2.1,jquery.com,2.2.1,
