@@ -219,6 +219,8 @@
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
+            var editor = CKEDITOR.instances[node.id];
+            if (editor) { CKEDITOR.remove(editor); }
             CKEDITOR.inline(node, {
                 on: {
                     blur: function( event ) {
