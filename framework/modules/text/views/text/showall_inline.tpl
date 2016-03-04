@@ -101,6 +101,7 @@
 {if $inline && !$preview}
     {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
         {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+            CKEDITOR.disableAutoInline = true;
         {/script}
         {$contentCSS = ""}
         {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor.css"}
@@ -130,7 +131,7 @@
         var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW}{literal};
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-        CKEDITOR.disableAutoInline = true;
+//        CKEDITOR.disableAutoInline = true;
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
@@ -219,8 +220,8 @@
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-            var editor = CKEDITOR.instances[node.id];
-            if (editor) { CKEDITOR.remove(editor); }
+//            var editor = CKEDITOR.instances[node.id];
+//            if (editor) { CKEDITOR.remove(editor); }
             CKEDITOR.inline(node, {
                 on: {
                     blur: function( event ) {
