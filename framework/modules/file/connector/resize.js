@@ -538,7 +538,7 @@ elFinder.prototype.commands.resize = function() {
 					hline   = 'elfinder-resize-handle-hline',
 					vline   = 'elfinder-resize-handle-vline',
 					rpoint  = 'elfinder-resize-handle-point',
-					src     = fm.url(file.hash)
+					src     = fm.openUrl(file.hash)
 					;
 				
 				imgr.mousedown( rotate.start );
@@ -623,7 +623,6 @@ elFinder.prototype.commands.resize = function() {
 					open           : function() {
 						var dw = dialog.width() - 20;
 						(preview.width() > dw) && preview.width(dw);
-//						preview.zIndex(1+$(this).parent().zIndex());
 						pwidth  = preview.width()  - (rhandle.outerWidth()  - rhandle.width());
 						pheight = preview.height() - (rhandle.outerHeight() - rhandle.height());
 						img.attr('src', src + (src.indexOf('?') === -1 ? '?' : '&')+'_='+Math.random());
