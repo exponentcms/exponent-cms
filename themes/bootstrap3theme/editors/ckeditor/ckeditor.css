@@ -1,4 +1,5 @@
 @import url('/external/bootstrap3/css/bootstrap.css');
+@import url('/framework/core/assets/css/common.css');
 @import url('/themes/bootstrap3theme/css/bootstraptheme.css');
 
 .cke_panel_frame {background:white;}
