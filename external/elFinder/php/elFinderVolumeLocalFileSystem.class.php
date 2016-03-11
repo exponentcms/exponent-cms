@@ -866,8 +866,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 
 		$meta = stream_get_meta_data($fp);
 		$uri = isset($meta['uri'])? $meta['uri'] : '';
-		if ($uri && @is_file($uri)) {
-			fclose($fp);
+		if ($uri && ! preg_match('#^[a-zA-Z0-9]+://#', $uri)) {
+			@fclose($fp);
 			$isCmdPaste = ($this->ARGS['cmd'] === 'paste');
 			$isCmdCopy = ($isCmdPaste && empty($this->ARGS['cut']));
 			if (($isCmdCopy || !@rename($uri, $path)) && !@copy($uri, $path)) {
@@ -948,20 +948,18 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 		}
 		
 		if (is_dir($path)) {
-			foreach (scandir($path) as $name) {
-				if ($name != '.' && $name != '..') {
-					$p = $path.DIRECTORY_SEPARATOR.$name;
-					if (is_link($p) || !$this->nameAccepted($name)
-						||
-					(($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName))) {
-						$this->setError(elFinder::ERROR_SAVE, $name);
-						return true;
-					}
-					if (is_dir($p) && $this->_findSymlinks($p)) {
-						return true;
-					} elseif (is_file($p)) {
-						$this->archiveSize += sprintf('%u', filesize($p));
-					}
+			foreach (self::localScandir($path) as $name) {
+				$p = $path.DIRECTORY_SEPARATOR.$name;
+				if (is_link($p) || !$this->nameAccepted($name)
+					||
+				(($mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name)) && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName))) {
+					$this->setError(elFinder::ERROR_SAVE, $name);
+					return true;
+				}
+				if (is_dir($p) && $this->_findSymlinks($p)) {
+					return true;
+				} elseif (is_file($p)) {
+					$this->archiveSize += sprintf('%u', filesize($p));
 				}
 			}
 		} else {
@@ -1006,12 +1004,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			$this->unpackArchive($archive, $arc);
 			
 			// get files list
-			$ls = array();
-			foreach (scandir($dir) as $i => $name) {
-				if ($name != '.' && $name != '..') {
-					$ls[] = $name;
-				}
-			}
+			$ls = self::localScandir($dir);
 			
 			// no files - extract error ?
 			if (empty($ls)) {

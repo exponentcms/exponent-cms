@@ -205,7 +205,8 @@ abstract class elFinderVolumeDriver {
 		                     'md:application/x-genesis-rom' => 'text/x-markdown',
 		                     'md:text/plain'                => 'text/x-markdown',
 		                     'markdown:text/plain'          => 'text/x-markdown',
-		                     'css:text/x-asm'               => 'text/css'
+		                     'css:text/x-asm'               => 'text/css',
+		                     'ico:image/vnd.microsoft.icon' => 'image/x-icon'
 		                    ),
 		// MIME regex of send HTTP header "Content-Disposition: inline"
 		// '.' is allow inline of all of MIME types
@@ -1119,6 +1120,27 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
+	 * Return file extention detected by MIME type
+	 * 
+	 * @param  string  $mime    MIME type
+	 * @param  string  $suffix  Additional suffix
+	 * @return string
+	 * @author Naoki Sawada
+	 */
+	public function getExtentionByMime($mime, $suffix = '') {
+		static $extTable = null;
+		
+		if (is_null($extTable)) {
+			$extTable = array_flip(array_unique($this->getMimeTable()));
+		}
+		
+		if ($mime && isset($extTable[$mime])) {
+			return $suffix? ($extTable[$mime] . $suffix) : $extTable[$mime];
+		}
+		return '';
+	}
+	
+	/**
 	 * Set mimetypes allowed to display to client
 	 *
 	 * @param  array  $mimes
@@ -1949,7 +1971,7 @@ abstract class elFinderVolumeDriver {
 					@unlink($_file);
 				}
 			}
-			$files = array_diff(scandir($dir), array('.', '..'));
+			$files = self::localScandir($dir);
 			if ($files && ($arc = tempnam($dir, $tmppre))) {
 				unlink($arc);
 				$arc = $arc.'.'.$ext;
@@ -3350,10 +3372,8 @@ abstract class elFinderVolumeDriver {
 		// load default MIME table file "mime.types"
 		if (!elFinderVolumeDriver::$mimetypesLoaded) {
 			elFinderVolumeDriver::$mimetypesLoaded = true;
-			if (elFinder::$defaultMimefile) {
-				$file = elFinder::$defaultMimefile;
-			}
-			if (! is_readable($file)) {
+			$file = elFinder::$defaultMimefile;
+			if ($file === '' || ! is_readable($file)) {
 				$file = dirname(__FILE__).DIRECTORY_SEPARATOR.'mime.types';
 			}
 			if (is_readable($file)) {
@@ -3906,8 +3926,35 @@ abstract class elFinderVolumeDriver {
 		
 		$tmbSize = $this->tmbSize;
 		
-		if (($s = getimagesize($tmb)) == false) {
-			return false;
+		if ($this->imgLib === 'imagick') {
+			try {
+				$imagickTest = new imagick($tmb);
+				$imagickTest->clear();
+				$imagickTest = true;
+			} catch (Exception $e) {
+				$imagickTest = false;
+			}
+		}
+		
+		if (($this->imgLib === 'imagick' && ! $imagickTest) || ($s = @getimagesize($tmb)) === false) {
+			if ($this->imgLib === 'imagick') {
+				try {
+					$imagick = new imagick();
+					$imagick->setBackgroundColor(new ImagickPixel($this->options['tmbBgColor']));
+					$imagick->readImage($this->getExtentionByMime($stat['mime'], ':') . $tmb);
+					$imagick->setImageFormat('png');
+					$imagick->writeImage($tmb);
+					$imagick->clear();
+					if (($s = @getimagesize($tmb)) !== false) {
+						$result = true;
+					}
+				} catch (Exception $e) {}
+			}
+			if (! $result) {
+				unlink($tmb);
+				return false;
+			}
+			$result = false;
 		}
 
 		/* If image smaller or equal thumbnail size - just fitting to thumbnail square */
@@ -3923,7 +3970,7 @@ abstract class elFinderVolumeDriver {
 					$result = $this->imgResize($tmb, $tmbSize, $tmbSize, true, false, 'png');
 				}
 		
-				if ($result && ($s = getimagesize($tmb)) != false) {
+				if ($result && ($s = @getimagesize($tmb)) != false) {
 					$x = $s[0] > $tmbSize ? intval(($s[0] - $tmbSize)/2) : 0;
 					$y = $s[1] > $tmbSize ? intval(($s[1] - $tmbSize)/2) : 0;
 					$result = $this->imgCrop($result, $tmbSize, $tmbSize, $x, $y, 'png');
@@ -4029,7 +4076,7 @@ abstract class elFinderVolumeDriver {
 					$result = $this->imagickImage($img, $path, $destformat, $jpgQuality);
 				}
 				
-				$img->destroy();
+				$img->clear();
 
 				return $result ? $path : false;
 
@@ -4114,7 +4161,7 @@ abstract class elFinderVolumeDriver {
 					$result = $this->imagickImage($img, $path, $destformat, $jpgQuality);
 				}
 				
-				$img->destroy();
+				$img->clear();
 
 				return $result ? $path : false;
 
@@ -4205,7 +4252,7 @@ abstract class elFinderVolumeDriver {
 						$gif->setImageDelay($img->getImageDelay());
 						$gif->setImageIterations($img->getImageIterations());
 						$img1->addImage($gif);
-						$gif->destroy();
+						$gif->clear();
 					} while ($img->nextImage());
 					$img1 = $img1->optimizeImageLayers();
 					$result = $img1->writeImages($path, true);
@@ -4220,8 +4267,8 @@ abstract class elFinderVolumeDriver {
 					$result = $this->imagickImage($img, $path, $destformat, $jpgQuality);
 				}
 				
-				$img1->destroy();
-				$img->destroy();
+				$img1->clear();
+				$img->clear();
 				return $result ? $path : false;
 
 				break;
@@ -4321,7 +4368,7 @@ abstract class elFinderVolumeDriver {
 					$img->rotateImage(new ImagickPixel($bgcolor), $degree);
 					$result = $this->imagickImage($img, $path, $destformat, $jpgQuality);
 				}
-				$img->destroy();
+				$img->clear();
 				return $result ? $path : false;
 
 				break;
@@ -4359,6 +4406,11 @@ abstract class elFinderVolumeDriver {
 	 **/
 	protected function procExec($command , array &$output = null, &$return_var = -1, array &$error_output = null) {
 
+		if (! function_exists('proc_open')) {
+			$return_var = -1;
+			return $return_var;
+		}
+		
 		$descriptorspec = array(
 			0 => array("pipe", "r"),  // stdin
 			1 => array("pipe", "w"),  // stdout
@@ -4381,7 +4433,8 @@ abstract class elFinderVolumeDriver {
 			fclose($pipes[2]);
 			$return_var = proc_close($process);
 
-
+		} else {
+			$return_var = -1;
 		}
 		
 		return $return_var;
@@ -4774,18 +4827,24 @@ abstract class elFinderVolumeDriver {
 	public function rmdirRecursive($dir) {
 		if (!is_link($dir) && is_dir($dir)) {
 			@chmod($dir, 0777);
-			foreach (array_diff(scandir($dir), array('.', '..')) as $file) {
-				@set_time_limit(30);
-				$path = $dir . DIRECTORY_SEPARATOR . $file;
-				if (!is_link($dir) && is_dir($path)) {
-					$this->rmdirRecursive($path);
-				} else {
-					@chmod($path, 0666);
-					@unlink($path);
+			if ($handle = opendir($dir)) {
+				while (false !== ($file = readdir($handle))) {
+					if ($file === '.' || $file === '..') {
+						continue;
+					}
+					@set_time_limit(30);
+					$path = $dir . DIRECTORY_SEPARATOR . $file;
+					if (!is_link($dir) && is_dir($path)) {
+						$this->rmdirRecursive($path);
+					} else {
+						@chmod($path, 0666);
+						@unlink($path);
+					}
 				}
+				closedir($handle);
 			}
 			return @rmdir($dir);
-		} else if (is_file($dir) || is_link($dir)) {
+		} elseif (is_file($dir) || is_link($dir)) {
 			@chmod($dir, 0666);
 			return @unlink($dir);
 		}
@@ -4848,6 +4907,30 @@ abstract class elFinderVolumeDriver {
 			chdir($cwd);
 		}
 		$remove && unlink($path);
+	}
+	
+	/**
+	 * Return files of target directory that is dotfiles excludes.
+	 *
+	 * @param  string  $dir   target directory path
+	 * @return array
+	 * @author Naoki Sawada
+	 **/
+	protected static function localScandir($dir) {
+		// PHP function scandir() is not work well in specific environment. I dont know why.
+		// ref. https://github.com/Studio-42/elFinder/issues/1248
+		$files = array();
+		if ($dh = opendir($dir)) {
+			while (false !== ($file = readdir($dh))) {
+				if ($file !== '.' && $file !== '..') {
+					$files[] = $file;
+				}
+			}
+			closedir($dh);
+		} else {
+			$this->setError('Can not open local directory.');
+		}
+		return $files;
 	}
 	
 	/**
