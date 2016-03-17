@@ -36,7 +36,7 @@
                 {*</a>*}
                 <div class="module-actions" style="display: inline-flex">
                     {icon action=scriptaction class=recycle color=green onclick="window.opener.EXPONENT.useRecycled('{$item->source}');window.close();" text='Restore this content'|gettext}
-                    {icon action=delete id=$item->id mod=$module src=$item->source onclick="return confirm('Are you sure you want to delete this recyclebin item?');window.close();"}
+                    {icon class=delete action=remove mod=$item->module src=$item->source text='Remove this'|gettext|cat:' '|cat:$item->module|getcontrollername|capitalize|cat:' '|cat:'Module from Recycle Bin'|gettext onclick="return confirm('Are you sure you want to permanently delete this module and all it\'s items from the recyclebin?');window.close();"}
                 </div>
                 <div class="recycledcontent">
                     {$item->html}
