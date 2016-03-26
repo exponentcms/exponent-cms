@@ -1,6 +1,6 @@
 /**
  * Simple Ajax Uploader
- * Version 2.5.1
+ * Version 2.5.2
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2016 LPology, LLC
@@ -1757,13 +1757,21 @@ ss.XhrUpload = {
         if ( opts.multipart === true ) {
             var formData = new FormData();
 
+            var hasFile = false;
+
             for ( var prop in params ) {
                 if ( params.hasOwnProperty( prop ) ) {
+                    if ( prop === opts.name && opts.noParams === true && !self._form ) {
+                        hasFile = true;
+                    }
                     formData.append( prop, params[prop] );
                 }
             }
 
-            formData.append( opts.name, fileObj.file );
+            if ( !hasFile ) {
+                formData.append( opts.name, fileObj.file );
+            }
+
             this.log( 'Commencing upload using multipart form' );
             xhr.send( formData );
 
@@ -2029,7 +2037,7 @@ ss.extendObj( ss.SimpleUpload.prototype, {
         // We have to do it here after everything is finished to avoid any errors
         if ( this._destroy &&
              this._queue.length === 0 &&
-             this._active.length === 0 )
+             this._active === 0 )
         {
             for ( var prop in this ) {
                 if ( this.hasOwnProperty( prop ) ) {
