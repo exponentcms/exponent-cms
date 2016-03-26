@@ -28,7 +28,7 @@ Bootswatch,3.3.6+1,bootswatch.com/,3.3.6+1,
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.5.0,fortawesome.github.com/Font-Awesome,4.5.0,
 Adminer,4.2.4,www.adminer.org,4.2.4,
-SimpleAjaxUploader,2.5.1,https://github.com/LPology/Simple-Ajax-Uploader,2.5.1,also converted to yui module 1.1.0
+SimpleAjaxUploader,2.5.2,https://github.com/LPology/Simple-Ajax-Uploader,2.5.2,also converted to yui module 1.1.0
 normalize.css,3.0.3,necolas.github.com/normalize.css/,3.0.3,auto included w/ bootstrap 3
 MediaElement.js,2.20.1,mediaelementjs.com/,2.20.1,
 Facebook PHP SDK3,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
@@ -69,14 +69,14 @@ DateTimePicker,2.5.1exp,http://xdsoft.net/jqplugins/datetimepicker/,2.5.1,we add
 Bootstrap DateTimePicker,4.17.37,https://github.com/Eonasdan/bootstrap-datetimepicker,4.17.37,
 pwstrength-bootstrap,1.2.10,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.10,
 Sortable,1.4.2,https://github.com/RubaXa/Sortable,1.4.2,
-jstree,3.2.1,https://github.com/vakata/jstree,3.2.1,added nav menu icons to stylesheet
-bootstrap3-dialog,1.34.9,https://github.com/nakupanda/bootstrap3-dialog,1.34.9,
+jstree,3.3.0,https://github.com/vakata/jstree,3.3.0,added nav menu icons to stylesheet
+bootstrap3-dialog,1.35.1,https://github.com/nakupanda/bootstrap3-dialog,1.35.1,added our swatches to .less file
 impromptu,6.2.2,http://trentrichardson.com/Impromptu,6.2.2,
 bootstrap-touch-carousel,0.8.0exp,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.8.0,https://github.com/timschlechter/bootstrap-tagsinput,0.8.0,
 Typeahead,0.11.1,http://twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.5,https://github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.5,
-select2,3.5.4,https://github.com/ivaynberg/select2,3.5.4/4.0.1,
+select2,3.5.4,https://github.com/ivaynberg/select2,3.5.4/4.0.2,
 shuffle.js,v3.1.1,https://github.com/Vestride/Shuffle,v3.1.1,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0beta1,http://jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
