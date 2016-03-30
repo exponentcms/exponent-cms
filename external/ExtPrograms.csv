@@ -39,12 +39,12 @@ csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
-HTML2PDF,4.5.1,https://github.com/spipu/html2pdf,4.5.1,"optional, we tweak tcpdfConfig.php"
+HTML2PDF,4.6.0,https://github.com/spipu/html2pdf,4.6.0,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
 CKEditor,4.5.7,ckeditor.com,4.5.7,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.3.8,tinymce.com,4.3.8,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.9n,elfinder.org,2.1.9n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
-jQuery1,1.12.2,jquery.com,1.12.2,
+jQuery1,1.12.2,jquery.com,1.12.2,v1.11.3 still needed for old firefox
 jQuery,2.2.2,jquery.com,2.2.2,
 jQuery Migrate,1.4.0,jquery.com,1.4.0,
 jQueryUI,1.11.4,jqueryui.com,1.11.4,
