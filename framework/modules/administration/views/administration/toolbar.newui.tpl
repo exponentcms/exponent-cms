@@ -13,11 +13,6 @@
  *
  *}
 
-{*{assocarray}*}
-    {*lessvars: [*}
-        {*menu_width: "769"*}
-    {*]*}
-{*{/assocarray}*}
 {$lessvars = ["menu_width" => "769"]}
 
 {css unique="dropdown-toolbar" lesscss="`$smarty.const.PATH_RELATIVE`framework/modules/navigation/assets/less/dropdown-bootstrap.less" lessvars=$lessvars}

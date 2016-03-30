@@ -146,12 +146,6 @@
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
 	                {*<h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>*}
-                    {*{assocarray}*}
-                        {*manage_themes: [*}
-                            {*controller: "administration"*}
-                            {*action: "manage_themes"*}
-                        {*]*}
-                    {*{/assocarray}*}
                     {*{$link = makeLink($manage_themes)}*}
                     {*{icon button=true link=$link text='Display Theme Options'|gettext}*}
 	                {control type="checkbox" postfalse=1 name="sc[INVERT_HIDE_TITLE]" label="Reverse the Logic of Hide Module Title setting?"|gettext checked=$smarty.const.INVERT_HIDE_TITLE value=1 description='Changes default of always show title to always hide title, unless module setting is checked.'|gettext}
@@ -276,14 +270,6 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {*{assocarray}*}
-                        {*paramc: [*}
-                            {*editor: "ckeditor"*}
-                        {*]*}
-                        {*paramt: [*}
-                            {*editor: "tinymce"*}
-                        {*]*}
-                    {*{/assocarray}*}
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
                     <div id="alt-controlw" class="alt-control">

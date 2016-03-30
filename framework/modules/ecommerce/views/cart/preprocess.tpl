@@ -24,30 +24,6 @@
 {/css}
 
 <div class="module cart confirm exp-ecom-table">
-    {*{assocarray}*}
-        {*breadcrumb: [*}
-            {*0: [*}
-                {*title: "{'Summary'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'show'))*}
-            {*]*}
-            {*1: [*}
-                {*title:  "{'Sign In'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-            {*2: [*}
-                {*title:  "{'Shipping/Billing'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'checkout'))*}
-            {*]*}
-            {*3: [*}
-                {*title:  "{'Confirmation'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-            {*4: [*}
-                {*title:  "{'Complete'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-        {*]*}
-    {*{/assocarray}*}
     {$breadcrumb = [
         0 => [
             "title" => "{'Summary'|gettext}",

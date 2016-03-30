@@ -13,11 +13,6 @@
  *
  *}
 
-{*{assocarray}*}
-    {*lessvars: [*}
-        {*btn_size: "small"*}
-    {*]*}
-{*{/assocarray}*}
 {$lessvars = ["btn_size" => "small"]}
 
 {css unique="newui" lessprimer="`$smarty.const.PATH_RELATIVE`external/bootstrap3/less/newui.less" lessvars=$lessvars}

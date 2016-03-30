@@ -14,30 +14,6 @@
  *}
 
 <div class="module order show">
-    {*{assocarray}*}
-        {*breadcrumb: [*}
-            {*0: [*}
-                {*title: "{'Summary'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
-            {*]*}
-            {*1: [*}
-                {*title:  "{'Sign In'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
-            {*]*}
-            {*2: [*}
-                {*title:  "{'Confirmation'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
-            {*]*}
-            {*3: [*}
-                {*title:  "{'Complete'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
-            {*]*}
-            {*4: [*}
-                {*title:  "{'Summary'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'cart'))*}
-            {*]*}
-        {*]*}
-    {*{/assocarray}*}
     {$breadcrumb = [
         0 => [
             "title" => "{'Summary'|gettext}",
