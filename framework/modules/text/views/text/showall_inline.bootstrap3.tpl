@@ -298,7 +298,6 @@
                     {/literal}{$editor->fontnames}{literal},
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
-
             });
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({

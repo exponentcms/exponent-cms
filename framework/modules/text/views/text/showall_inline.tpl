@@ -213,9 +213,11 @@
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
+                tinymenu = false;
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
+                tinymenu = true;
                 tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
             }
 
@@ -279,7 +281,6 @@
                     {/literal}{$editor->fontnames}{literal},
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
-
             });
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({
