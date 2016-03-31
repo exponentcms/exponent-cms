@@ -1341,6 +1341,7 @@ class expHTML2PDF extends expHtmlToPDF
             $this->pdf = new HTML2PDF($this->size, $this->orient, substr(LOCALE, 0, 2));
             if (HTMLTOPDF_DEBUG)
                 $this->pdf->setModeDebug();
+            $this->pdf->setDefaultFont('FreeSans');  // keep from crashing when a requested font isn't available
             if (!empty($html)) {
                 if ($use_file) {
                     $this->pdf->WriteHTML(file_get_contents($html));
