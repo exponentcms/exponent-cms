@@ -719,7 +719,7 @@ class easypostcalculator extends shippingcalculator
 //                )
 //            );
 //        } catch (Exception $e) {
-//            return $this->easypost_error($e, gt('retricreateeve pickup'));
+//            return $this->easypost_error($e, gt('retrieve pickup'));
 //        }
 
         try {

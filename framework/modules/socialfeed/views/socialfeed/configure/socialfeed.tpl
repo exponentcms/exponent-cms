@@ -30,10 +30,10 @@
 {control type=checkbox name="socialfeed_time_stamp" value=1 label="Show Posted Date/Time"|gettext checked=$config.socialfeed_time_stamp|default:false}
 {control type=dropdown name="socialfeed_display_type" items="Collapsing Columns,Fluid"|gettxtlist values="columns,fluid" label="Bootstrap 3 display style"|gettext value=$config.socialfeed_display_type|default:'fluid'}
 {control type=checkbox name="socialfeed_facebook_use" value=1 label="Get Facebook Feed"|gettext checked=$config.socialfeed_facebook_use}
-{group id="facebook" label='Facebook settings'|gettext}
+{group id="facebook" label='Facebook Settings'|gettext}
   {control type=text name='socialfeed_facebook_page_name' label='Facebook Page Name'|gettext size=60 max=100 value=$config.socialfeed_facebook_page_name description='eg. If your Facebook page URL is this http://www.facebook.com/YOUR_PAGE_NAME, <br />then you just need to add this YOUR_PAGE_NAME above.'|gettext}
-  {control type=text name='socialfeed_facebook_app_id' label='Facebook App ID'|gettext size=60 max=100 value=$config.socialfeed_facebook_app_id}
-  {control type=text name='socialfeed_facebook_secret_key' label='Facebook Secret Key'|gettext size=60 max=100 value=$config.socialfeed_facebook_secret_key}
+  {control type=text name='socialfeed_facebook_app_id' label='App ID'|gettext size=60 max=100 value=$config.socialfeed_facebook_app_id}
+  {control type=text name='socialfeed_facebook_secret_key' label='Secret Key'|gettext size=60 max=100 value=$config.socialfeed_facebook_secret_key}
     {group label='Post Types to Display'|gettext}
       {*{control type=checkbox name="socialfeed_facebook_all_types" value=1 postfalse=1 label="Show all post types"|gettext checked=$config.socialfeed_facebook_all_types|default:true}*}
       {*{control type=dropdown name="socialfeed_facebook_post_type" items="Link,Status,Photo,Video"|gettxtlist values="link,status,photo,video" includeblank='- Select -'|gettext label="(or) Select your post type(s) to show"|gettext value=$config.socialfeed_facebook_post_type}*}
@@ -53,10 +53,10 @@
 {control type=checkbox name="socialfeed_twitter_use" value=1 label="Get Twitter Feed"|gettext checked=$config.socialfeed_twitter_use}
 {group id="twitter" label='Twitter settings'|gettext}
   {control type=text name='socialfeed_twitter_username' label='Twitter User Name'|gettext size=60 max=100 value=$config.socialfeed_twitter_username}
-  {control type=text name='socialfeed_twitter_access_token' label='Twitter Access Token'|gettext size=60 max=100 value=$config.socialfeed_twitter_access_token}
-  {control type=text name='socialfeed_twitter_access_token_secret' label='Twitter Access Token Secret'|gettext size=60 max=100 value=$config.socialfeed_twitter_access_token_secret}
-  {control type=text name='socialfeed_twitter_consumer_key' label='Twitter Consumer Key'|gettext size=60 max=100 value=$config.socialfeed_twitter_consumer_key}
-  {control type=text name='socialfeed_twitter_consumer_secret' label='Twitter Consumer Secret'|gettext size=60 max=100 value=$config.socialfeed_twitter_consumer_secret}
+  {control type=text name='socialfeed_twitter_access_token' label='Access token'|gettext size=60 max=100 value=$config.socialfeed_twitter_access_token}
+  {control type=text name='socialfeed_twitter_access_token_secret' label='Access token secret'|gettext size=60 max=100 value=$config.socialfeed_twitter_access_token_secret}
+  {control type=text name='socialfeed_twitter_consumer_key' label='Consumer Key'|gettext size=60 max=100 value=$config.socialfeed_twitter_consumer_key}
+  {control type=text name='socialfeed_twitter_consumer_secret' label='Consumer Secret'|gettext size=60 max=100 value=$config.socialfeed_twitter_consumer_secret}
   {control type=checkbox name="socialfeed_twitter_hashtag" value=1 label="Show Tweet Hashtag as Link"|gettext checked=$config.socialfeed_twitter_hashtag|default:false}
 {/group}
 {control type=checkbox name="socialfeed_instagram_use" value=1 label="Get Instagram Feed"|gettext checked=$config.socialfeed_instagram_use}
