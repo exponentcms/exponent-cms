@@ -6,7 +6,8 @@
 class TranslateMe
 {
     private $apiKey = '';
-    private $apiURL = 'https://api.datamarket.azure.com/Data.ashx/Bing/MicrosoftTranslator/v1/';
+//    private $apiURL = 'https://api.datamarket.azure.com/Data.ashx/Bing/MicrosoftTranslator/v1/';
+    private $apiURL = 'https://api.datamarket.azure.com/Bing/MicrosoftTranslator/v1/';
     public $treatedURL = '';
     public $response = '';
     public $status = '';

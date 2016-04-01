@@ -40,7 +40,8 @@ const LANG_CACHE_FILE = LANG_CACHE_FILE;
  *
  * @var unknown_type
  */
-private $serviceRootURL = 'https://api.datamarket.azure.com/Data.ashx/Bing/MicrosoftTranslator/v1/';
+//private $serviceRootURL = 'https://api.datamarket.azure.com/Data.ashx/Bing/MicrosoftTranslator/v1/';
+private $serviceRootURL = 'https://api.datamarket.azure.com/Bing/MicrosoftTranslator/v1/';
 /**
  * This is the unique key you have to obtain from Microsoft
  *
