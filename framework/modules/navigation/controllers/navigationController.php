@@ -1052,12 +1052,21 @@ class navigationController extends expController {
     }
 
     private static function get_glyphs() {
-        if (bs3()) {
+        if (bs()) {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
-            $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
-            $icons = $fa->sortByName($icons);
-            return $fa->nameGlyph($icons);
+            if (bs3()) {
+                $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
+                $icons = $fa->sortByName($icons);
+                return $fa->nameGlyph($icons);
+            } elseif (bs2()) {
+                expCSS::auto_compile_less(
+                    'external/font-awesome/less/font-awesome.less',
+                    'external/font-awesome/css/font-awesome.css'
+                );
+                $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome.css', 'icon-');
+                return $fa->nameGlyph($icons, 'icon-');
+            }
         } else {
             return array();
         }

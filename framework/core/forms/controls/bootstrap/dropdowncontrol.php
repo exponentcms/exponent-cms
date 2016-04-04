@@ -65,6 +65,7 @@ class dropdowncontrol extends formcontrol {
         }
         if (!empty($this->multiple)) $html .= ' multiple';
         if (!empty($this->onchange)) $html .= ' onchange="'.$this->onchange.'" ';
+        if (!empty($this->style)) $html .= ' style="' . $this->style . '"';
         $html .= '>';
 
         if (is_bool($this->include_blank) && $this->include_blank == true) {
