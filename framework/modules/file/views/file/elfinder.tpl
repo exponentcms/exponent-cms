@@ -66,6 +66,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/workzone.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/mkdirbutton.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
@@ -90,6 +91,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/cut.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/open.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
@@ -105,7 +107,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/download.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/edit.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/quicklook.plugins.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/extract.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/archive.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>

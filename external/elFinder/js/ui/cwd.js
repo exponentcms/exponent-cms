@@ -150,8 +150,8 @@ $.fn.elfindercwd = function(fm, options) {
 			 * @type Object
 			 **/
 			templates = {
-				icon : '<div id="{id}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass} ui-corner-all" title="{tooltip}"><div class="elfinder-cwd-file-wrapper ui-corner-all"><div class="elfinder-cwd-icon {mime} ui-corner-all" unselectable="on" {style}/>{marker}</div><div class="elfinder-cwd-filename" title="{nametitle}">{name}</div></div>',
-				row  : '<tr id="{id}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass}" title="{tooltip}"><td><div class="elfinder-cwd-file-wrapper"><span class="elfinder-cwd-icon {mime}"/>{marker}<span class="elfinder-cwd-filename">{name}</span></div></td>'+customColsBuild()+'</tr>',
+				icon : '<div id="{id}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass} ui-corner-all" title="{tooltip}"><div class="elfinder-cwd-file-wrapper ui-corner-all"><div class="elfinder-cwd-icon {mime} ui-corner-all" unselectable="on"{style}/>{marker}</div><div class="elfinder-cwd-filename" title="{nametitle}">{name}</div></div>',
+				row  : '<tr id="{id}" class="'+clFile+(fm.UA.Touch ? ' '+'elfinder-touch' : '')+' {permsclass} {dirclass}" title="{tooltip}"{css}><td><div class="elfinder-cwd-file-wrapper"><span class="elfinder-cwd-icon {mime}"{style}/>{marker}<span class="elfinder-cwd-filename">{name}</span></div></td>'+customColsBuild()+'</tr>',
 			},
 			
 			permsTpl = fm.res('tpl', 'perms'),
@@ -184,13 +184,18 @@ $.fn.elfindercwd = function(fm, options) {
 					return fm.formatPermissions(f);
 				},
 				dirclass : function(f) {
-					return f.mime == 'directory' ? 'directory' : '';
+					var cName = f.mime == 'directory' ? 'directory' : '';
+					options.getClass && (cName += ' ' + options.getClass(f));
+					return cName;
+				},
+				style : function(f) {
+					return f.icon? 'style="background:url(\''+fm.escape(f.icon)+'\') 0 0 no-repeat;background-size:contain;"' : '';
 				},
 				mime : function(f) {
 					return fm.mime2class(f.mime);
 				},
 				size : function(f) {
-					return fm.formatSize(f.size);
+					return (f.mime === 'directory' && !f.size)? '-' : fm.formatSize(f.size);
 				},
 				date : function(f) {
 					return fm.formatDate(f);
@@ -1461,7 +1466,7 @@ $.fn.elfindercwd = function(fm, options) {
 				
 				unselectAll();
 
-				$.each(e.data.added || [], function(i, file) { 
+				$.each((e.data.added || []).concat(e.data.changed || []), function(i, file) { 
 					file && file.phash == phash && selectFile(file.hash);
 				});
 				trigger();

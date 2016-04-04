@@ -21,6 +21,7 @@ elFinder.prototype.commands.resize = function() {
 		var fm    = this.fm,
 			files = this.files(hashes),
 			dfrd  = $.Deferred(),
+			api2  = (fm.api > 1),
 			
 			open = function(file, id) {
 				var isJpeg   = (file.mime === 'image/jpeg'),
@@ -53,8 +54,8 @@ elFinder.prototype.commands.resize = function() {
 					reset    = $('<div class="ui-state-default ui-corner-all elfinder-resize-reset"><span class="ui-icon ui-icon-arrowreturnthick-1-w"/></div>'),
 					uitype   = $('<div class="elfinder-resize-type"/>')
 						.append('<input class="" type="radio" name="type" id="'+id+'-resize" value="resize" checked="checked" /><label for="'+id+'-resize">'+fm.i18n('resize')+'</label>',
-						'<input type="radio" name="type" id="'+id+'-crop" value="crop" /><label for="'+id+'-crop">'+fm.i18n('crop')+'</label>',
-						'<input type="radio" name="type" id="'+id+'-rotate" value="rotate" /><label for="'+id+'-rotate">'+fm.i18n('rotate')+'</label>'),
+						'<input class="api2" type="radio" name="type" id="'+id+'-crop" value="crop" /><label class="api2" for="'+id+'-crop">'+fm.i18n('crop')+'</label>',
+						'<input class="api2" type="radio" name="type" id="'+id+'-rotate" value="rotate" /><label class="api2" for="'+id+'-rotate">'+fm.i18n('rotate')+'</label>'),
 					type     = $('input', uitype).attr('disabled', 'disabled')
 						.change(function() {
 							var val = $('input:checked', uitype).val();
@@ -113,7 +114,7 @@ elFinder.prototype.commands.resize = function() {
 					pointY  = $(input).change(function(){crop.updateView();}),
 					offsetX = $(input).change(function(){crop.updateView();}),
 					offsetY = $(input).change(function(){crop.updateView();}),
-					quality = isJpeg?
+					quality = isJpeg && api2?
 						$(input).val(fm.option('jpgQuality'))
 							.addClass('quality')
 							.on('blur', function(){
@@ -552,6 +553,7 @@ elFinder.prototype.commands.resize = function() {
 					$(row).append($(label).text(fm.i18n('scale')), uiprop)
 				);
 				
+				if (api2) {
 				uicrop.append(
 					$(row).append($(label).text('X'), pointX),
 					$(row).append($(label).text('Y')).append(pointY),
@@ -570,14 +572,18 @@ elFinder.prototype.commands.resize = function() {
 					$(row).css('height', '20px').append(uidegslider),
 					(quality? $(row).append($(label).text(fm.i18n('quality')), quality.clone(true), $('<span/>').text(' (1-100)')) : $())
 				);
-
+				}
 				
 				dialog.append(uitype).on('resize', function(e){
 					e.stopPropagation();
 				});
 
-				control.append($(row), uiresize, uicrop.hide(), uirotate.hide())
-					.find('input,select').attr('disabled', 'disabled');
+				if (api2) {
+					control.append($(row), uiresize, uicrop.hide(), uirotate.hide());
+				} else {
+					control.append($(row), uiresize);
+				}
+				control.find('input,select').attr('disabled', 'disabled');
 				
 				rhandle.append('<div class="'+hline+' '+hline+'-top"/>',
 					'<div class="'+hline+' '+hline+'-bottom"/>',
@@ -589,6 +595,7 @@ elFinder.prototype.commands.resize = function() {
 					
 				preview.append(spinner).append(rhandle.hide()).append(img.hide());
 
+				if (api2) {
 				rhandlec.css('position', 'absolute')
 					.append('<div class="'+hline+' '+hline+'-top"/>',
 					'<div class="'+hline+' '+hline+'-bottom"/>',
@@ -606,6 +613,7 @@ elFinder.prototype.commands.resize = function() {
 				preview.append(basec.css('position', 'absolute').hide().append(imgc, rhandlec.append(coverc)));
 				
 				preview.append(imgr.hide());
+				}
 				
 				preview.css('overflow', 'hidden');
 				
@@ -647,6 +655,10 @@ elFinder.prototype.commands.resize = function() {
 				});
 
 				imgr.css('cursor', 'pointer');
+				
+				if (! api2) {
+					uitype.find('.api2').remove();
+				}
 				
 				uitype.controlgroup? uitype.controlgroup() : uitype.buttonset();
 

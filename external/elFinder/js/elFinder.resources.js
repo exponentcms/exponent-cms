@@ -104,12 +104,21 @@ elFinder.prototype.resources = {
 					date  : 'Today '+date.getHours()+':'+date.getMinutes()
 				},
 				data = this.data || {},
-				node = cwd.trigger('create.'+fm.namespace, file).find('#'+fm.cwdHash2Id(id)),
+				node = cwd.trigger('create.'+fm.namespace, file).find('#'+fm.cwdHash2Id(id))
+					.on('unselect.'+fm.namespace, function() {
+						setTimeout(function() {
+							input && input.blur();
+						}, 50);
+					}),
 				nnode, pnode,
 				overlay = fm.getUI().children('.elfinder-overlay'),
 				cancel = function(e) { 
-					e.stopPropagation();
-					dfrd.reject();
+					if (! inError) {
+						input.remove();
+						node.remove();
+						e.stopPropagation();
+						dfrd.reject();
+					}
 				},
 				input = $(tarea? '<textarea/>' : '<input type="text"/>')
 					.on('keyup text', function(){
@@ -125,7 +134,6 @@ elFinder.prototype.resources = {
 					})
 					.keydown(function(e) {
 						e.stopImmediatePropagation();
-
 						if (e.keyCode == $.ui.keyCode.ESCAPE) {
 							dfrd.reject();
 						} else if (e.keyCode == $.ui.keyCode.ENTER) {
@@ -151,11 +159,13 @@ elFinder.prototype.resources = {
 								}
 							}
 							if (!name || name === '..' || !valid) {
-								fm.error('errInvName');
+								inError = true;
+								fm.error('errInvName', {modal: true, close: select});
 								return false;
 							}
 							if (fm.fileByName(name, phash)) {
-								fm.error(['errExists', name]);
+								inError = true;
+								fm.error(['errExists', name], {modal: true, close: select});
 								return false;
 							}
 
@@ -195,14 +205,23 @@ elFinder.prototype.resources = {
 								dfrd.reject();
 							});
 						}
-					});
-
+					}),
+				select = function() {
+					var name = input.val().replace(/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/ig, '');
+					inError = false;
+					if (fm.UA.Mobile) {
+						overlay.on('click', cancel)
+							.removeClass('ui-front').elfinderoverlay('show');
+					}
+					input.select().focus();
+					input[0].setSelectionRange && input[0].setSelectionRange(0, name.length);
+				},
+				inError = false;
 
 			if (this.disabled() || !node.length) {
 				return dfrd.reject();
 			}
 
-			fm.disable();
 			nnode = node.find('.elfinder-cwd-filename');
 			pnode = nnode.parent();
 			node.css('position', 'relative').addClass('ui-front');
@@ -215,21 +234,11 @@ elFinder.prototype.resources = {
 			}
 			nnode.empty('').append(input.val(file.name));
 			
-			if (fm.UA.Mobile) {
-				overlay.on('click', cancel)
-					.removeClass('ui-front').elfinderoverlay('show');
-			}
-			
 			input.trigger('keyup');
-			input.select().focus();
-			input[0].setSelectionRange && input[0].setSelectionRange(0, file.name.replace(/\..+$/, '').length);
+			select();
 
 			return dfrd;
 
-
-
 		}
-		
 	}
 }
-

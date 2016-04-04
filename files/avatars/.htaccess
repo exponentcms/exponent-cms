@@ -12,6 +12,6 @@ Options -ExecCGI
     allow from all
 </Files>
 
-<FilesMatch "\.(php|phps|pl|py|jsp|asp|htm|shtml|sh|cgi)$">
+<FilesMatch "\.(php|phps|pl|py|jsp|asp|htm|html|shtml|sh|cgi|txt)$">
     ForceType text/plain
 </FilesMatch>

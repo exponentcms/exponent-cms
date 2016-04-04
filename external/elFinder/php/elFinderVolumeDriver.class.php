@@ -194,6 +194,8 @@ abstract class elFinderVolumeDriver {
 		'rootCssClass'    => '',
 		// Search timeout (sec)
 		'searchTimeout'   => 30,
+		// Search exclusion directory regex pattern (require demiliter e.g. '#/path/to/exclude_directory#i')
+		'searchExDirReg'  => '',
 		// library to crypt/uncrypt files names (not implemented)
 		'cryptLib'        => '',
 		// how to detect files mimetypes. (auto/internal/finfo/mime_content_type)
@@ -588,6 +590,13 @@ abstract class elFinderVolumeDriver {
 	 * @var int
 	 */
 	protected $searchStart;
+	
+	/**
+	 * Current query word on doSearch
+	 *
+	 * @var string
+	 **/
+	protected $doSearchCurrentQuery = array();
 	
 	/*********************************************************************/
 	/*                            INITIALIZATION                         */
@@ -1803,9 +1812,13 @@ abstract class elFinderVolumeDriver {
 			return false;
 		}
 		
-		
+		$stat = $this->stat($path);
+		// Try get URL
+		if (empty($stat['url']) && ($url = $this->getContentUrl($stat['hash']))) {
+			$stat['url'] = $url;
+		}
 
-		return $this->stat($path);
+		return $stat;
 	}
 	
 	/**
@@ -1871,7 +1884,7 @@ abstract class elFinderVolumeDriver {
 					return $this->setError(elFinder::ERROR_LOCKED, $this->path($stat['hash']));
 				}
 				// target is entity file of alias
-				if ($volume == $this && ($test == @$file['target'] || $test == $this->decode($src))) {
+				if ($volume === $this && ((isset($file['target']) && $test == $file['target']) || $test == $this->decode($src))) {
 					return $this->setError(elFinder::ERROR_REPLACE, $errpath);
 				}
 				// remove existed file
@@ -1884,7 +1897,7 @@ abstract class elFinderVolumeDriver {
 		}
 		
 		// copy/move inside current volume
-		if ($volume == $this) {
+		if ($volume === $this) { //  changing == operand to === fixes issue #1285 - Paul Canning 24/03/2016
 			$source = $this->decode($src);
 			// do not copy into itself
 			if ($this->inpathCE($destination, $source)) {
@@ -2114,6 +2127,10 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_PERM_DENIED);
 		}
 
+		if ($name !== '' && !$this->nameAccepted($name)) {
+			return $this->setError(elFinder::ERROR_INVALID_NAME);
+		}
+
 		$archiver = isset($this->archivers['create'][$mime])
 			? $this->archivers['create'][$mime]
 			: false;
@@ -2297,6 +2314,38 @@ abstract class elFinderVolumeDriver {
 			}
 		}
 		$this->searchStart = time();
+		
+		$qs = preg_split('/"([^"]+)"| +/', $q, -1, PREG_SPLIT_NO_EMPTY|PREG_SPLIT_DELIM_CAPTURE);
+		$query = $excludes = array();
+		foreach($qs as $_q) {
+			$_q = trim($_q);
+			if ($_q !== '') {
+				if ($_q[0] === '-') {
+					if (isset($_q[1])) {
+						$excludes[] = substr($_q, 1);
+					}
+				} else {
+					$query[] = $_q;
+				}
+			}
+		}
+		if (! $query) {
+			$q = '';
+		} else {
+			$q = join(' ', $query);
+			$this->doSearchCurrentQuery = array(
+				'q' => $q,
+				'excludes' => $excludes
+			);
+		}
+		
+		// valided regex $this->options['searchExDirReg']
+		if ($this->options['searchExDirReg']) {
+			if (false === @preg_match($this->options['searchExDirReg'], '')) {
+				$this->options['searchExDirReg'] = '';
+			}
+		}
+		
 		return ($q === '' || $this->commandDisabled('search'))
 			? array()
 			: $this->doSearch(is_null($dir)? $this->root : $dir, $q, $mimes);
@@ -2327,10 +2376,21 @@ abstract class elFinderVolumeDriver {
 	 * @author Naoki Sawada
 	 */
 	public function getContentUrl($hash, $options = array()) {
-		if (($file = $this->file($hash)) == false || !$file['url'] || $file['url'] == 1) {
+		if (($file = $this->file($hash)) == false || (isset($file['url']) && $file['url'] == 1)) {
 			return false;
 		}
-		return $file['url'];
+		if (empty($file['url'])) {
+			if ($this->URL) {
+				$path = str_replace($this->separator, '/', substr($this->decode($hash), strlen($this->root) + 1));
+				if ($this->encoding) {
+					$path = str_replace('%2F', '/', rawurlencode($this->convEncIn($path, true)));
+				}
+				return $this->URL . $path;
+			}
+			return false;
+		} else {
+			return $file['url'];
+		}
 	}
 	
 	/**
@@ -2401,6 +2461,55 @@ abstract class elFinderVolumeDriver {
 	 */
 	public function getUploadMaxSize() {
 		return $this->uploadMaxSize;
+	}
+	
+	/**
+	 * Image file utility
+	 * 
+	 * @param string $mode     'resize', 'rotate', 'propresize', 'crop', 'fitsquare'
+	 * @param string $src      Image file local path
+	 * @param array  $options  excute options
+	 * @return bool
+	 * @author Naoki Sawada
+	 */
+	public function imageUtil($mode, $src, $options = array()) {
+		if (! isset($options['jpgQuality'])) {
+			$options['jpgQuality'] = intval($this->options['jpgQuality']);
+		}
+		if (! isset($options['bgcolor'])) {
+			$options['bgcolor'] = '#ffffff';
+		}
+		switch($mode) {
+			case 'rotate':
+				if (empty($options['degree'])) {
+					return true;
+				}
+				return (bool)$this->imgRotate($src, $options['degree'], $options['bgcolor'], null, $options['jpgQuality']);
+			
+			case 'resize':
+			case 'propresize':
+			case 'crop':
+			case 'fitsquare':
+				if (empty($options['width']) || empty($options['height'])) {
+					return false;
+				}
+			
+			case 'resize':
+				return (bool)$this->imgResize($src, $options['width'], $options['height'], false, true, null, $options['jpgQuality']);
+			
+			case 'propresize':
+				return (bool)$this->imgResize($src, $options['width'], $options['height'], true, true, null, $options['jpgQuality']);
+			
+			case 'crop':
+				if (isset($options['x']) && isset($options['y'])) {
+					return (bool)$this->imgCrop($src, $options['width'], $options['height'], $options['x'], $options['y'], null, $options['jpgQuality']);
+				}
+			
+			case 'fitsquare':
+				return (bool)$this->imgSquareFit($src, $options['width'], $options['height'], 'center', 'middle', $options['bgcolor'], null, $options['jpgQuality']);
+			
+		}
+		return false;
 	}
 	
 	/**
@@ -3080,7 +3189,7 @@ abstract class elFinderVolumeDriver {
 		}
 		$is_root = ($path == $this->root);
 		if ($is_root) {
-			$rootKey = md5($path);
+			$rootKey = md5($path.(isset($this->options['alias'])? $this->options['alias'] : ''));
 			if (!isset($this->sessionCache['rootstat'])) {
 				$this->sessionCache['rootstat'] = array();
 			}
@@ -3603,6 +3712,14 @@ abstract class elFinderVolumeDriver {
 			
 			$name = $stat['name'];
 
+			if ($this->doSearchCurrentQuery['excludes']) {
+				foreach($this->doSearchCurrentQuery['excludes'] as $exclude) {
+					if ($this->stripos($name, $exclude) !== false) {
+						continue 2;
+					}
+				}
+			}
+
 			if ((!$mimes || $stat['mime'] !== 'directory') && $this->stripos($name, $q) !== false) {
 				$stat['path'] = $this->path($stat['hash']);
 				if ($this->URL && !isset($stat['url'])) {
@@ -3616,7 +3733,9 @@ abstract class elFinderVolumeDriver {
 				$result[] = $stat;
 			}
 			if ($stat['mime'] == 'directory' && $stat['read'] && !isset($stat['alias'])) {
-				$result = array_merge($result, $this->doSearch($p, $q, $mimes));
+				if (! $this->options['searchExDirReg'] || ! preg_match($this->options['searchExDirReg'], $p)) {
+					$result = array_merge($result, $this->doSearch($p, $q, $mimes));
+				}
 			}
 		}
 		
@@ -4310,6 +4429,7 @@ abstract class elFinderVolumeDriver {
 	 * @author Troex Nevelin
 	 **/
 	protected function imgRotate($path, $degree, $bgcolor = '#ffffff', $destformat = null, $jpgQuality = null) {
+		debug($path, $degree);
 		if (($s = @getimagesize($path)) == false || $degree % 360 === 0) {
 			return false;
 		}

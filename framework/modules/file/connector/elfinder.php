@@ -305,6 +305,7 @@ $opts = array(
 //            'Plugin.Watermark.onUpLoadPreSave',
 //            'Plugin.Normalizer.onUpLoadPreSave',
 //            'Plugin.Sanitizer.onUpLoadPreSave'
+//            'Plugin.AutoRotate.onUpLoadPreSave'
         )
     ),
     // global plugin configure (optional)
@@ -335,6 +336,10 @@ $opts = array(
 //           'enable' => true,
 //           'targets'  => array('\\','/',':','*','?','"','<','>','|'), // target chars
 //           'replace'  => '_'    // replace to this
+//        ),
+//        'AutoRotate' => array(
+//            'enable'         => true,       // For control by volume driver
+//            'quality'        => 95          // JPEG image save quality
 //        )
     ),
     'debug'  => DEVELOPMENT,
@@ -347,6 +352,7 @@ $opts = array(
             'driver'          => 'Exponent',
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
+            // 'treeDeep'   => 3,
             'alias'           => 'files',
             'disabled'        => array('netmount'),
 //            'maxArcFilesSize' => 100,

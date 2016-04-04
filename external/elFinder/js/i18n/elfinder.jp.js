@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2016-02-19
+ * @version 2016-03-25
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.jp = {
@@ -98,6 +98,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errConvUTF8'          : 'UTF-8 に変換できませんでした', // from v2.1 added 08.04.2014
 			'errFolderUpload'      : 'フォルダをアップロードしたいのであれば、Google Chrome を使用してください', // from v2.1 added 26.6.2015
 			'errSearchTimeout'     : '"$1"を検索中にタイムアウトしました。検索結果は部分的です。', // from v2.1 added 12.1.2016
+			'errReauthRequire'     : '再認可が必要です', // from v2.1.10 added 3.24.2016
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'アーカイブ作成',
@@ -340,6 +341,9 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'moveUp'          : '上へ移動',  // from v2.1.6 added 18.1.2016
 			'getLink'         : 'リンクURLを取得', // from v2.1.7 added 9.2.2016
 			'selectedItems'   : '選択アイテム ($1)', // from v2.1.7 added 2.19.2016
+			'folderId'        : 'フォルダID', // from v2.1.10 added 3.25.2016
+			'offlineAccess'   : 'オフライン アクセスを可能にする', // from v2.1.10 added 3.25.2016
+			'reAuth'          : '再認証する', // from v2.1.10 added 3.25.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',
