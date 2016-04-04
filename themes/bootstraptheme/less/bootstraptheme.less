@@ -104,3 +104,65 @@ a.addmodule span.addtext {
 .dark-background {
 	background-color: darken(@bodyBackground, 15%);
 }
+
+/* tags */
+span.value span {
+	display: inline-block;
+	margin: 0 0 .3em 1em;
+	padding: 0;
+}
+span.value span.tag a {
+	position: relative;
+	display: inline-block;
+	height: 20px;
+	line-height: 20px;
+	padding: 0 1em 0 .75em;
+	background-color: @btnPrimaryBackground;
+	-webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+	border-radius: 0 3px 3px 0;
+	color: @bodyBackground;
+	font-size: 13px;
+	text-decoration: none;
+	.transition(2s);
+    z-index: 3;
+}
+span.value span.tag a::before {
+	position: absolute;
+	top: 0;
+	left: -10px;
+	z-index: -1;
+	content: '';
+	width: 20px;
+	height: 20px;
+	background-color: @btnPrimaryBackground;
+	-webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+	border-radius: 50%;
+	.transition(2s);
+}
+span.value span.tag a::after {
+	position: absolute;
+	top: 50%;
+	left: -6px;
+	z-index: 2;
+	display: block;
+	content: '';
+	width: 6px;
+	height: 6px;
+	margin-top: -3px;
+	background-color: @bodyBackground;
+	-webkit-border-radius: 100%;
+    -moz-border-radius: 100%;
+	border-radius: 100%;
+}
+span.value span.tag a:hover {
+	background-color: @gray;
+	color: @bodyBackground;
+}
+span.value span.tag a:hover::before {
+	background-color: @gray;
+}
+span.value span.spacer {
+	display: none;
+}
