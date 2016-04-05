@@ -1063,7 +1063,7 @@ class navigationController extends expController {
                 expCSS::auto_compile_less(
                     'external/font-awesome/less/font-awesome.less',
                     'external/font-awesome/css/font-awesome.css'
-                );
+                ); // font-awesome is included within bootstrap2, but not as a separate .css file
                 $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome.css', 'icon-');
                 return $fa->nameGlyph($icons, 'icon-');
             }

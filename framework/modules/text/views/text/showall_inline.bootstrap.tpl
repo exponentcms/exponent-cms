@@ -124,14 +124,6 @@
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
-        {$contentCSS = ""}
-        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce.css"}
-        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"))}
-            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"}
-        {/if}
-        {if is_file($smarty.const.BASE|cat:$css)}
-           {$contentCSS = "content_css : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
-        {/if}
     {/if}
 
     {script unique=$name jquery="jqueryui"}
@@ -296,7 +288,6 @@
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
-                {/literal}{$contentCSS}{literal}
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
