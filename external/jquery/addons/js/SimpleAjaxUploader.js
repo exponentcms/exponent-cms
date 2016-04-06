@@ -1,6 +1,6 @@
 /**
  * Simple Ajax Uploader
- * Version 2.5.2
+ * Version 2.5.3
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
  * Copyright 2012-2016 LPology, LLC
@@ -1848,7 +1848,8 @@ ss.DragAndDrop = {
     },
 
     addDropZone: function( elem ) {
-        var self = this;
+        var self = this,
+            depthCounter = 0;
 
         ss.addStyles( elem, {
             'zIndex': 16777271
@@ -1863,6 +1864,7 @@ ss.DragAndDrop = {
             }
 
             ss.addClass( this, self._opts.dragClass );
+            depthCounter++;
             return false;
         };
 
@@ -1878,7 +1880,10 @@ ss.DragAndDrop = {
         };
 
         elem.ondragleave = function() {
-            ss.removeClass( this, self._opts.dragClass );
+            depthCounter--;
+            if ( depthCounter === 0 ){
+              ss.removeClass( this, self._opts.dragClass );
+            }
             return false;
         };
 
@@ -1887,6 +1892,7 @@ ss.DragAndDrop = {
             e.preventDefault();
 
             ss.removeClass( this, self._opts.dragClass );
+            depthCounter = 0;
 
             if ( !self._dragFileCheck( e ) ) {
                 return;
