@@ -72,7 +72,7 @@
                     {control type="checkbox" name="meta_nofollow" label="Do Not Follow Links"|gettext|cat:"?" checked=$section->meta_nofollow value=1 description='Should links on this page be indexed and followed by search engines?'|gettext}
                 </div>
                 {if !$config.disable_facebook_meta}
-                    <div id="tab5" role="tabpanel" class="tab-pane fade">
+                    <div id="tab5">
                         <h2>{'Facebook Meta'|gettext}</h2>
                         <blockquote>
                             {'Also used for Twitter, Pinterest, etc...'|gettext}
