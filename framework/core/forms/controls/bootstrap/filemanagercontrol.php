@@ -118,12 +118,16 @@ class filemanagercontrol extends formcontrol {
                     button: '#quickaddfiles-".$name."',
                     url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload")) . "',
                     data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
+                    dropzone: 'filelist".$name."',
+                    dragClass: 'dragit',
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',
                     hoverClass: 'active',
                     multiple: (limit-filesAdded > 1),
                     maxUploads: limit,
+                    multipart: false,
+                    noParams: false,
                     maxSize: " . intval(ini_get('upload_max_filesize')*1024) . ",
 //                    debug: true,";
         if (!empty($this->accept)) {
@@ -213,7 +217,11 @@ class filemanagercontrol extends formcontrol {
                 var showFileAdder = function() {
                     listenForAdder();
                     filesAdded--;
-                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
+                    if (filesAdded < limit) {
+                        Y.one('#adders-".$name."').removeClass('hide');
+                        quickUpload.clearQueue();
+                        quickUpload.enable();
+                    }
                     if (filesAdded == 0) showEmptyLI();
                 };
 
@@ -350,7 +358,6 @@ class filemanagercontrol extends formcontrol {
                                 filetitle = obj.filename;
                             }
                             html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
-//                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                             html += '<\/li>';
                             
                             htmln = Y.Node.create(html);                        
@@ -378,9 +385,9 @@ class filemanagercontrol extends formcontrol {
 
                             filesAdded++;
 
-//                            if (limit>=filesAdded) {
                             if (filesAdded>=limit) {
                                 Y.one('#adders-".$name."').addClass('hide');
+                                quickUpload.disable();
                             }
 
                             j++;
@@ -453,9 +460,9 @@ class filemanagercontrol extends formcontrol {
 
                         filesAdded++;
 
-//                        if (limit>=filesAdded) {
                         if (filesAdded>=limit) {
                             Y.one('#adders-".$name."').addClass('hide');
+                            quickUpload.disable();
                         }
 
                         //initDragables();

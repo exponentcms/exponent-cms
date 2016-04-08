@@ -300,13 +300,22 @@ $opts = array(
 //            'Plugin.Normalizer.cmdPreprocess',
 //            'Plugin.Sanitizer.cmdPreprocess',
 //        ),
+//        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre' => array(
+//            'Plugin.Sanitizer.cmdPreprocess'
+//        ),
+//        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre ls.pre' => array(
+//            'Plugin.Normalizer.cmdPreprocess'
+//        ),
+//        'ls' => array(
+//            'Plugin.Normalizer.cmdPostprocess'
+//        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
 //            'Plugin.Watermark.onUpLoadPreSave',
 //            'Plugin.Normalizer.onUpLoadPreSave',
 //            'Plugin.Sanitizer.onUpLoadPreSave'
 //            'Plugin.AutoRotate.onUpLoadPreSave'
-        )
+        ),
     ),
     // global plugin configure (optional)
     'plugin' => array(
@@ -315,7 +324,8 @@ $opts = array(
             'maxWidth'   => UPLOAD_WIDTH,
             'maxHeight'  => UPLOAD_WIDTH,
             'quality'    => THUMB_QUALITY, // JPEG image save quality
-            'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP // Target image formats ( bit-field )
+            'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
+//            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
         ),
 //        'Watermark' => array(
 //            'enable'         => true,       // For control by volume driver
@@ -330,7 +340,9 @@ $opts = array(
 //        'Normalizer' => array(
 //            'enable' => true,
 //            'nfc'    => true,
-//            'nfkc'   => true
+//            'nfkc'   => true,
+//            'lowercase' => false,
+//            'convmap'   => array()
 //        ),
 //       'Sanitizer' => array(
 //           'enable' => true,

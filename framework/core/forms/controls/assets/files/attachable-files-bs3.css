@@ -1,0 +1,17 @@
+.filemanager.control .filelist li {
+	margin:2px 4px 2px 40px;
+}
+
+.filemanager.control ul.filelist a.btn-danger {
+	margin-left: -42px;
+}
+
+.filemanager.control .filelist li .filepic {
+	/*margin-left: 6px;*/
+	margin-top: 2px;
+}
+
+.filemanager.control .filelist li .filename {
+    margin-left:30px;
+	margin-top: 2px;
+}
