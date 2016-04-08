@@ -2911,6 +2911,7 @@ var DateFormatter;
 							datetimepicker.data('changed', false);
 						}
 						datetimepicker.data('xdsoft_datetime').setCurrentTime(this.value);
+                        datetimepicker.trigger('xchange.xdsoft').trigger('afterOpen.xdsoft');  //exp
 						break;
 					case 'validate':
 						$input = datetimepicker.data('input');

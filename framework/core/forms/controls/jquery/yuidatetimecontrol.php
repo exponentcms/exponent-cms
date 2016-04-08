@@ -130,12 +130,10 @@ class yuidatetimecontrol extends formcontrol
             Y.Global.on('lazyload:cke', function() {
                 Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
                 Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
-//                $('#" . $idname . "date').datetimepicker('reset');
             });
             if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
                 Y.Global.fire('lazyload:cke');
             }
-//            $('#" . $idname . "date').datetimepicker('reset');
         });
         ";
 
