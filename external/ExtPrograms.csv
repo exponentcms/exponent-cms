@@ -67,6 +67,7 @@ colorbox,1.6.3,http://www.jacklmoore.com/colorbox,1.6.3,using style #5 renamed t
 Searcher,0.2.0,https://github.com/lloiser/jquery-searcher/,0.2.0,
 DateTimePicker,2.5.3exp,http://xdsoft.net/jqplugins/datetimepicker/,2.5.3,we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.37,https://github.com/Eonasdan/bootstrap-datetimepicker,4.17.37,
+moment.js,2.12.0,https://github.com/moment/moment,2.12.0,needed for Bootstrap DateTimePicker
 pwstrength-bootstrap,1.2.10,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.10,
 Sortable,1.4.2,https://github.com/RubaXa/Sortable,1.4.2,
 jstree,3.3.0,https://github.com/vakata/jstree,3.3.0,added nav menu icons to stylesheet
@@ -82,8 +83,10 @@ Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using bootstr
 Jasny Bootstrap,3.2.0beta1,http://jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
 easypost sdk,3.0.3,https://github.com/EasyPost/easypost-php,3.0.3,
 PLUpload,2.1.8,https://github.com/moxiecode/plupload,2.1.8,needed for TinyMCE Quick Upload
+jquery.cookie.js,1.4.1,https://github.com/carhartl/jquery-cookie,1.4.1,
+jquery.history.js,1.8b2,https://github.com/browserstate/history.js/,1.8b2,
+Webshim,1.15.10,https://github.com/aFarkas/webshim,1.15.10,
 ,,,,
 Not included yet,,,,
-Webshim,,https://github.com/aFarkas/webshim,1.15.10,
 number-polyfill,,https://github.com/jonstipe/number-polyfill,,
 fd-slider,,https://github.com/freqdec/fd-slider,,

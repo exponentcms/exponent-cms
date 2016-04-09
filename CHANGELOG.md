@@ -22,18 +22,65 @@ Version 2.3.8
 !!! Regression fix manage categories would only work with 1st 50 system categories
 !!! Regression fix some blog views displayed default date/author/category instead of item's info
 !!! Regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
-  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
+!!! Regression fix unable to add new text item in text module inline edit view if no items already exist
+!!! Regression fix text item body in text module inline edit view passed as garbage on save
+!!! Regression fix file uploader control did not recognize 'accept' parameter in bootstrap2/3 themes
+!!! Regression fix getting mp3 file ID3 tag comments for more precise rss/podcast details
+!!! Regression fix bootstrap 2/3 navbar on small screens may not always drop down/appear
+!!! Regression fix upcoming events were displayed until end of day instead of until end of event
+!!! Regression fix page crash when returning to elFinder from Pixlr editor
+!!! Regression fix elFinder search broken under php v5.3
+!!! Regression fix database manager filtered table phrase not highlighted in table results
+!!! Regression fix possible errors with Simple Poll voting when time block in effect
+!!! Regression fix printer and pdf missing styling (invoice address lines run together, etc...)
+!!! Regression fix slingbar location not being set/recognized, esp. in NewUI/Bootstrap3
+!!! Regression fix unable to actually delete multiple photo album items
+!!! Regression fix event showall announcement view to properly advertise event rich data to search engines
+!!! Regression fix unable to edit blog/event (view broken) in non-bootstrap3 themes
+!!! Regression fix e-store quicklinks view module title display broken
+!!! Regression fix jquery broken in very old Firefox browsers
+!!! Regression fix bootstrap 3 carousel touch support wouldn't allow scrolling vertically
+!!! Regression fix remove recycle bin content from restore content popup (not view recycle bin view) used wrong 'action'
+!!! Regression fix text module inline edit view tinymce menu display on non-bs3
+!!! Regression fix Facebook Meta configuration tab content was invisible on bootstrap2 themes
+!!! Regression fix rearranging attached files could scroll the list out of site (bs3?)
+  - fix jquery datetimepicker didn't initially display/scroll to selected time
+  - adds new SocialFeed module to aggregate facebook, twitter, instagram and/or pinterest posts
+  - adds drag/drop support to attach files (file manager control)
+  - new 'manage by sitemap' feature to better analyze and manage entire existing page structure
+  - now allows for styling of 'tags', example in bootstrap3theme sample theme
+  - we now attempt to email to user name instead of only using email address (more professional)
+  - optional support for Kint debugging eDebug output (http://raveren.github.io/kint/)
+  - replaced old custom browser fallback/polyfill support with Webshims library
+  - adds module styling settings to help emphasize individual modules (borders, background & visibility)
+  - attempts to suppress easypost error messages from USPS if shipping package over 70lbs
+  - now forces a .less re-compile (if necessary) after an upgrade, required on sites with error-reporting off
+  - fix issue with attempting to swipe up/down past bootstrap 3 carousel  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
   - now allows optional image and author selection per podcast/rss feed
   - better 'read more' implementation
   - elFinder cache now moved to its own /tmp folder
   - new global setting to Save Inline Editing Changes w/o Prompt
+  - better implementation of setting (new) file/folder permissions (2 new optional upgrade scripts to assist)
   - styling tweaks to the sample bootstrap3theme
     - removes display of urls when printing from Chrome browser with a bootstrap 3 theme
     - updates bootstrap 3 rss/ical link icons to be orange regardless of font color
     - updates form input placeholder styles to look less like an entry
     - implements a twitter bootstrap 3 based date/time picker widget
     - implements a new slideshow/carousel for bootstrap 3 photoalbum (Owl Carousel 2)
-  - CKEditor now used as file editor within elFinder if set as system WYSIWYG editor
+  - CKEditor now used as WYSIWYG file editor within elFinder if set as system editor
+  - adds an autosave feature to wysiwyg editors to help recover from page crashes
+  - better implementation of theme styles within WYSIWYG editor format menus, esp in text module inline edit
+  - adds WYSIWYG editor 'additional configs' setting to help with some custom plugin requirements
+  - (finally) implements fonts, styles, & blocks toolbar configuration settings implementation for TinyMCE
+  - adds image tools, image caption, and drag/drop image support for TinyMCE
+  - adds quicktables and showborder (for tables) plugins to CKEditor
+  - adds optional font icon selection for menu items in bootstrap 2/3 based themes; also allows suppressing the menu item text
+  - adds optional server error document handling so we got to not-found instead of logging it as a search
+  - adds readable date/time tooltip in database manager table view (like we do for serialized data)
+  - adds a 'total bytes saved' to optimize database results view
+  - adds passing an array of scripts through expJavascript::pushToFoot
+  - adds warning messages is less compiler is unable to create output folder or file
+  - adds support for optional HTML2PDF pdf engine
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
