@@ -162,7 +162,7 @@ class shippingcalculator extends expRecord {
 
     }
 
-    function getPackageDetails($shippingmethod, $tracking_only) {
+    function getPackageDetails($shippingmethod, $tracking_only=false) {
 
     }
 

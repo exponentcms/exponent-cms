@@ -184,11 +184,13 @@
                                                             {/if}
                                                         {/if}
                                                     {/if}
-                                                    {$msg = $sm->calculator->getPackageDetails($sm)}
-                                                    {if $msg}
-                                                        {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
-                                                            {$msg}
-                                                        {/pop}
+                                                    {if $sm->calculator != null}
+                                                        {$msg = $sm->calculator->getPackageDetails($sm)}
+                                                        {if $msg}
+                                                            {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
+                                                                {$msg}
+                                                            {/pop}
+                                                        {/if}
                                                     {/if}
                                                 </div>
                                             </li>
@@ -241,6 +243,7 @@
                     {if $permissions.manage && $smarty.foreach.foo.first}
                         <tr>
                             <td>
+                            {* fixme this is where we'd do reAuthorize() or authorize() *}
                             {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
                                 {if $bt->captureEnabled() == true}
                                     {form action=captureAuthorization}

@@ -366,11 +366,13 @@
                                                                             {/if}
                                                                         {/if}
                                                                     {/if}
-                                                                    {$msg = $sm->calculator->getPackageDetails($sm)}
-                                                                    {if $msg}
-                                                                        {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
-                                                                            {$msg}
-                                                                        {/pop}
+                                                                    {if $sm->calculator != null}
+                                                                        {$msg = $sm->calculator->getPackageDetails($sm)}
+                                                                        {if $msg}
+                                                                            {pop id="pkg_details`$sm->id`" text="Package Details"|gettext title="Package Details"|gettext buttons="Close"|gettext}
+                                                                                {$msg}
+                                                                            {/pop}
+                                                                        {/if}
                                                                     {/if}
                                                                 </div>
                                                             </li>
@@ -515,7 +517,8 @@
                                     </td>
                                     <td>
                                         {if $permissions.manage && $smarty.foreach.foo.first}
-                                            {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error")}
+                                            {* fixme this is where we'd do reAuthorize() or authorize() *}
+                                            {if $bt->transaction_state == "authorized" || ($bt->billing_options->pending_reason == "authorization" && $bt->transaction_state == "error") || 1}
                                                 {if $bt->captureEnabled() == true}
                                                     {form action=captureAuthorization}
                                                         {control type="hidden" name="id" value=$order->id}
@@ -529,6 +532,13 @@
                                                         {control type="buttongroup" submit="Void Authorization"|gettext}
                                                     {/form}
                                                 {/if}
+                                                {*{if $bt->reAuthorizeEnabled() == true}*}
+                                                    {*{form action=reAuthorization}*}
+                                                        {*{control type="hidden" name="id" value=$order->id}*}
+                                                        {*{control type="text" name="capture_amt" label="Amount to Re-Authorize"|gettext value=$order->grand_total}*}
+                                                        {*{control type="buttongroup" submit="Re-Authorize"|gettext}*}
+                                                    {*{/form}*}
+                                                {*{/if}*}
                                             {/if}
                                             {if $bt->transaction_state == "complete" || $bt->transaction_state == "paid"}
                                                 {if $billing->calculator != null && $bt->creditEnabled() == true}
