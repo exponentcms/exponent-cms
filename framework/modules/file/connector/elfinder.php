@@ -296,25 +296,20 @@ $opts = array(
         // '*' => 'logger',
         'mkdir mkfile rename duplicate upload rm paste' => 'logger',
 //        'mkdir mkfile rename duplicate upload rm paste' => array($logger, 'log'),
-//        'mkdir.pre mkfile.pre rename.pre' => array(
+//        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre ls.pre' => array(
 //            'Plugin.Normalizer.cmdPreprocess',
 //            'Plugin.Sanitizer.cmdPreprocess',
 //        ),
-//        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre' => array(
-//            'Plugin.Sanitizer.cmdPreprocess'
-//        ),
-//        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre ls.pre' => array(
-//            'Plugin.Normalizer.cmdPreprocess'
-//        ),
 //        'ls' => array(
-//            'Plugin.Normalizer.cmdPostprocess'
+//            'Plugin.Normalizer.cmdPostprocess',
+//            'Plugin.Sanitizer.cmdPostprocess',
 //        ),
         'upload.presave'                                => array(
             'Plugin.AutoResize.onUpLoadPreSave',
 //            'Plugin.Watermark.onUpLoadPreSave',
 //            'Plugin.Normalizer.onUpLoadPreSave',
-//            'Plugin.Sanitizer.onUpLoadPreSave'
-//            'Plugin.AutoRotate.onUpLoadPreSave'
+//            'Plugin.Sanitizer.onUpLoadPreSave',
+//            'Plugin.AutoRotate.onUpLoadPreSave',
         ),
     ),
     // global plugin configure (optional)
