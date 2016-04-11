@@ -100,8 +100,9 @@ elFinder.prototype.commands.help = function() {
 	}];
 	
 	setTimeout(function() {
-		var parts = self.options.view || ['about', 'shortcuts', 'help'];
-		
+//		var parts = self.options.view || ['about', 'shortcuts', 'help'];
+		var parts = self.options.view || ['about', 'shortcuts']; //exp, doesn't seem to pick up options
+
 		$.each(parts, function(i, title) {
 			html.push(tab[r](/\{id\}/, title)[r](/\{title\}/, fm.i18n(title)));
 		});

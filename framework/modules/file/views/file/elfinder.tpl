@@ -56,8 +56,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.history.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.command.js"></script>
 
@@ -180,6 +180,13 @@
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
+                commands : [
+                    'pixlr',
+                    'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
+                    'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy',
+                    'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
+                    'resize', 'sort', 'netmount', 'netunmount', 'places', 'chmod', 'links'
+                ],
                 commandsOptions : {
                     edit : {
                     {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
@@ -385,6 +392,7 @@
                     // "quicklook" command options. For additional extensions
                     quicklook : {
                         autoplay : false,
+                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
                     },
                     // help dialog tabs
                     help : {
