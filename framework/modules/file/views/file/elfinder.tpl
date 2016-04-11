@@ -371,7 +371,7 @@
                                     tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
                                 },
                                 save : function(textarea, editor) {
-                                    textarea.value = tinyMCE.get(textarea.id).selection.getContent({format : 'html'});
+                                    textarea.value = tinyMCE.get(textarea.id).getContent({format : 'html'});
                                     tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
                                 }
                             }
