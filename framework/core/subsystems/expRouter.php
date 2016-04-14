@@ -110,7 +110,7 @@ class expRouter {
                     for($i=0; $i < count($this->maps); $i++) {
                         $missing_params = array("dump");
 
-                        if ((!empty($params) && !empty($params['controller']) && !empty($params['action']) && !empty($params['src'])) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
+                        if ((!empty($params) && !empty($params['controller']) && !empty($params['action'])) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
                             $missing_params = array_diff_key($this->maps[$i]['url_parts'], $params);
                         }
 
@@ -300,21 +300,21 @@ class expRouter {
             $this->url_style = 'sef';
             $this->url_parts = explode('/', $this->sefPath);     
 
+            // remove empty first and last url_parts if they exist
             //if (empty($this->url_parts[count($this->url_parts)-1])) array_pop($this->url_parts);
             if ($this->url_parts[count($this->url_parts)-1] == '') array_pop($this->url_parts);
             if (empty($this->url_parts[0])) array_shift($this->url_parts);
             
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
-                $this->url_type = 'base';
-            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
-                $this->url_type = 'page';
+                $this->url_type = 'base';  // no params
+            } elseif (count($this->url_parts) == 1 && $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
+                $this->url_type = 'page';  // single param is page name
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $this->url_type = 'post';
+                $this->url_type = 'post';  // params via form/post
             } else {
                 // take a peek and see if a page exists with the same name as the first value...if so we probably have a page with
-                // extra perms...like printerfriendly=1 or ajax=1;
-
-                if (($db->selectObject('section', "sef_name='" . $this->url_parts[0] . "'") != null) && ((in_array('printerfriendly', $this->url_parts)) || (in_array('exportaspdf', $this->url_parts)))) {
+                // extra perms...like printerfriendly=1 or ajax_action=1;
+                if (($db->selectObject('section', "sef_name='" . $this->url_parts[0] . "'") != null) && (in_array(array('printerfriendly','exportaspdf','ajax_action'), $this->url_parts))) {
                     $this->url_type = 'page';
                 } else {
                     $this->url_type = 'action';
@@ -449,7 +449,7 @@ class expRouter {
               
             if ($matched) {
                 // safeguard against false matches when a real action was what the user really wanted.
-                if (method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1]))
+                if (count($this->url_parts) >= 2 && method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1]))
                     return false;
 
                 $this->url_parts = array();
@@ -656,7 +656,7 @@ class expRouter {
             $params['section'] = empty($section->id) ? null : $section->id;
         } elseif ($this->url_type == 'action') {
             $params['controller'] = $this->url_parts[0];
-            $params['action'] = $this->url_parts[1];
+            $params['action'] = !empty($this->url_parts[1]) ? $this->url_parts[1] : null;
             for($i=2; $i < count($this->url_parts); $i++ ) {
                 if ($i % 2 == 0) {
                     $params[$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
