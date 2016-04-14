@@ -17,7 +17,7 @@
 	<span class="searched_for">
 	{'Your search for'|gettext} <span class="terms">"{$terms}"</span> {'returned'|gettext} <span class="result-count">{$page->total_records}</span> {'results'|gettext}<br />
 	</span>
-	{if $config->is_categorized == 0}
+	{if $config.is_categorized == 0}
 		{foreach from=$page->records item=result}
 			{*if $result->canview == 1*}
 				<div class="item {cycle values="odd,even"}">
@@ -29,12 +29,12 @@
 		{/foreach}
 	{else}{* categorized, list of crap is two levels deep *}
 		{foreach from=$results key=category item=subresults}
-			<h2 id="#{$category}">{$category} {'matching'|gettext} "{$query}":</h2>
+			<h2 id="#{$category}">{$category}</h2>
 			{foreach from=$subresults item=result}
 				<div class="item {cycle values="odd,even"}">
-					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title}</a> (<span class="attribution">({$result->category})</span>
-					{if $result->sum != ""}<br /><span class="summary">{$result->sum}</span>{/if}
-					{*<br /><span class="search_result_item_link">{$result->view_link}</span>*}
+					<a href="{$smarty.const.PATH_RELATIVE}{$result->view_link}">{$result->title|highlight:$terms}</a> <span class="attribution">({$result->category}{if $user->isAdmin()}, {'Score'|gettext}:{$result->score|number_format:"2"}{/if})</span>
+					{if $result->body != ""}{br}<span class="summary">{$result->body|strip_tags|truncate:240|highlight:$terms}</span>{/if}
+					{clear}
 				</div>
 			{/foreach}
 		{/foreach}
