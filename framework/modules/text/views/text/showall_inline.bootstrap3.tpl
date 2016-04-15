@@ -273,7 +273,7 @@
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
                 extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
-                removePlugins: 'image',
+                removePlugins: 'image,forms,flash',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',
                 {/literal}{$editor->additionalConfig}{literal}
