@@ -67,7 +67,7 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 {if !empty($item->color)}
-                                    {$style = " style=\"background:`$item->color`;color:`$item->color|contrast`;\""}
+                                    {$style = " style=\"background:`$item->color`;color:`$item->color|contrast`;"}
                                 {else}
                                     {$style = ''}
                                 {/if}
@@ -77,13 +77,11 @@
                                         {$alldaystyle = ' style="'}
                                     {else}
                                         {$alldaystyle = $style}
-                                        {$style = "`$style`\""}
                                     {/if}
                                     {$alldaystyle = "`$alldaystyle` border-color:`$item->color|brightness:+150`;border-style:solid;padding-left:2px;border-top:0;border-bottom:0;border-right:0;\""}
-                                {elseif empty($style)}
+                                {/if}
+                                {if !empty($style)}
                                     {$style = "`$style`\""}
-                                {else}
-                                    {$alldaystyle = $style}
                                 {/if}
                                 {if $item->is_allday}
                                     {$title = 'All Day'|gettext}
