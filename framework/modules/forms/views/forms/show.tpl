@@ -25,16 +25,38 @@
         {/css}
     {/if}
     <div class="module forms show">
+        <div class="item-actions">
+        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
+            {clear}
+            <span style="float:left">
+                {if $prev}
+                    {icon img='page_prev.png' action=show forms_id=$f->id id=$prev->id title='Previous Record'|gettext}
+                {else}
+                    {icon img='page_prev.png' title='Previous Record'|gettext}
+                {/if}
+            </span>
+        {/if}
         {permissions}
-            <div class="item-actions">
-                {if $permissions.edit}
-                    {icon class=edit action=enterdata forms_id=$f->id id=$record_id title='Edit this record'|gettext}
-                {/if}
-                {if $permissions.delete}
-                    {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
-                {/if}
-            </div>
+            {if $permissions.create}
+                {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
+            {/if}
+            {if $permissions.edit && $record_id}
+                {icon class=edit action=enterdata forms_id=$f->id id=$record_id title='Edit this record'|gettext}
+            {/if}
+            {if $permissions.delete && $record_id}
+                {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
+            {/if}
         {/permissions}
+        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
+            <span style="float:right">
+                {if $next}
+                    {icon img='page_next.png' action=show forms_id=$f->id id=$next->id title='Next Record'|gettext}
+                {else}
+                    {icon img='page_next.png' title='Next Record'|gettext}
+                {/if}
+            </span>
+            {clear}
+        {/if}
         {if empty($config.report_def)}
             <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                 <thead>
@@ -56,6 +78,8 @@
                                 {/if}
                             </td>
                         </tr>
+                    {foreachelse}
+                        <tr><td colspan="4"><p>{message text='You don\'t have any records yet'|gettext}</p></td></tr>
                     {/foreach}
                 </tbody>
             </table>
@@ -66,6 +90,26 @@
         {/if}
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>
+        {/if}
+        {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Bottom Only")}
+            <div class="module-actions">
+                {clear}
+                <span style="float:left">
+                    {if $prev}
+                        {icon img='page_prev.png' action=show forms_id=$f->id id=$prev->id title='Previous Record'|gettext}
+                    {else}
+                        {icon img='page_prev.png' title='Previous Record'|gettext}
+                    {/if}
+                </span>
+                <span style="float:right">
+                    {if $next}
+                        {icon img='page_next.png' action=show forms_id=$f->id id=$next->id title='Next Record'|gettext}
+                    {else}
+                        {icon img='page_next.png' title='Next Record'|gettext}
+                    {/if}
+                </span>
+                {clear}
+            </div>
         {/if}
         {if !$is_email}
             {*<a class="{button_style}" href="{$backlink}">{'Back'|gettext}</a>*}

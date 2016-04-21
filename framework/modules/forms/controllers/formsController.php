@@ -75,8 +75,6 @@ class formsController extends expController {
     }
 
     public function showall() {
-//        global $db;
-
         expHistory::set('viewable', $this->params);
         $f = null;
         if (!empty($this->config)) {
@@ -90,7 +88,6 @@ class formsController extends expController {
         }
         if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) && $f != null) {
 
-//            $items = $db->selectObjects('forms_' . $f->table_name, 1);
             if (empty($this->config['report_filter'])) {
                 $where = '1';
             } else {
@@ -106,7 +103,6 @@ class formsController extends expController {
             }
 
             // pre-process records
-//            $items = $db->selectArrays('forms_' . $f->table_name, $where);
             $items = $f->selectRecordsArray($where);
             $columns = array();
             foreach ($this->config['column_names_list'] as $column_name) {
@@ -118,14 +114,10 @@ class formsController extends expController {
                     $columns[gt('Entry Point')] = 'location_data';
                 } elseif ($column_name == "user_id") {
                     foreach ($items as $key => $item) {
-//                        if ($item->$column_name != 0) {
                         if ($item[$column_name] != 0) {
-//                            $locUser = user::getUserById($item->$column_name);
                             $locUser = user::getUserById($item[$column_name]);
-//                            $item->$column_name = $locUser->username;
                             $item[$column_name] = $locUser->username;
                         } else {
-//                            $item->$column_name = '';
                             $item[$column_name] = '';
                         }
                         $items[$key] = $item;
@@ -133,7 +125,6 @@ class formsController extends expController {
                     $columns[gt('Posted by')] = 'user_id';
                 } elseif ($column_name == "timestamp") {
                     foreach ($items as $key => $item) {
-//                        $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
                         $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
                         $items[$key] = $item;
                     }
@@ -145,7 +136,6 @@ class formsController extends expController {
                         $control_type = get_class($ctl);
                         foreach ($items as $key => $item) {
                             //We have to add special sorting for date time columns!!!
-//                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
                             $item[$column_name] = @call_user_func(array($control_type, 'templateFormat'), $item[$column_name], $ctl);
                             $items[$key] = $item;
                         }
@@ -185,10 +175,6 @@ class formsController extends expController {
 
     public function show() {
         if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
-            global $db;
-
-            //FIXME we need to add a browse other records (next/prev) feature here
-            //FIXME that would require a sort by which column and direction
             expHistory::set('viewable', $this->params);
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
@@ -201,14 +187,13 @@ class formsController extends expController {
 
             $fc = new forms_control();
             $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-//            $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
-            $data = $f->getRecord($this->params['id']);
+            $id = !empty($this->params['id']) ? $this->params['id'] : null;
+            $data = $f->getRecord($id);
 
             $fields = array();
             $captions = array();
             if ($controls && $data) {
                 foreach ($controls as $c) {
-//                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
                     $control_type = get_class($ctl);
                     $name = $c->name;
@@ -224,6 +209,23 @@ class formsController extends expController {
                 $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
                 $locUser = user::getUserById($data->user_id);
                 $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
+
+                // add a browse other records (next/prev) feature here
+                $field = !empty($this->config['order']) ? : 'id';
+                $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
+                if (!empty($data->next) && $data->next != $data->id) {
+                    assign_to_template(array(
+                        "next" => $data->next,
+                    ));
+                }
+                $data->prev = $f->getRecord($field . ' < ' . $data->$field . ' ORDER BY ' . $field . ' DESC');
+                if (!empty($data->prev) && $data->prev != $data->id) {
+                    assign_to_template(
+                        array(
+                            "prev" => $data->prev,
+                        )
+                    );
+                }
             }
 
             assign_to_template(array(
@@ -231,7 +233,8 @@ class formsController extends expController {
 //                'backlink'    => expHistory::getLast('editable'),
                 'backlink'    => makeLink(expHistory::getBack(1)),
                 "f"           => $f,
-                "record_id"   => $this->params['id'],
+//                "record_id"   => $this->params['id'],
+                "record_id"   => !empty($data->id) ? $data->id : null,
                 "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
                 "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                 'fields'      => $fields,
@@ -253,7 +256,7 @@ class formsController extends expController {
     public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
 
-            global $db, $user;
+            global $user;
 
             expHistory::set('viewable', $this->params);
 
@@ -316,7 +319,6 @@ class formsController extends expController {
                 }
 //                $paged = false;
                 foreach ($controls as $key=>$c) {
-//                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
                     $ctl->_id = $c->id;
                     $ctl->_readonly = $c->is_readonly;
@@ -390,7 +392,6 @@ class formsController extends expController {
                     $form->controls['submit']->disabled = true;
                     $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
                 }
-//                $count = $db->countObjects("forms_" . $f->table_name);
                 $count = $f->countRecords();
                 if ($formmsg) {
                     flash('notice', $formmsg);
@@ -418,7 +419,6 @@ class formsController extends expController {
         $responses = array();
 
         foreach ($cols as $col) {
-//            $coldef = unserialize($col->data);
             $coldef = expUnserialize($col->data);
             $coldata = new ReflectionClass($coldef);
             if (empty($coldef->is_hidden)) {
@@ -498,7 +498,6 @@ class formsController extends expController {
         $captions = array();
         $attachments = array();
         foreach ($controls as $c) {
-//            $ctl = unserialize($c->data);
             $ctl = expUnserialize($c->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, "getFieldDefinition"));
@@ -530,14 +529,12 @@ class formsController extends expController {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one.
-//                    $olddata = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
                     $olddata = $f->getRecord($this->params['data_id']);
                     $db_data->ip = $olddata->ip;
                     $db_data->user_id = $olddata->user_id;
                     $db_data->timestamp = $olddata->timestamp;
                     $db_data->referrer = $olddata->referrer;
                     $db_data->location_data = $olddata->location_data;
-//                    $db->delete('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
                     $f->deleteRecord($this->params['data_id']);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
@@ -558,7 +555,6 @@ class formsController extends expController {
                     }
                     $db_data->location_data = $location_data;
                 }
-//                $db->insertObject($db_data, 'forms_' . $f->table_name);
                 $f->insertRecord($db_data);
             } else {
                 $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
@@ -695,8 +691,6 @@ class formsController extends expController {
      *
      */
     function delete() {
-        global $db;
-
         if (empty($this->params['id']) || empty($this->params['forms_id'])) {
             flash('error', gt('Missing id for the') . ' ' . gt('item') . ' ' . gt('you would like to delete'));
             expHistory::back();
@@ -713,8 +707,6 @@ class formsController extends expController {
      *
      */
     function delete_records() {
-        global $db;
-
         if (empty($this->params['forms_id'])) {
             flash('error', gt('Missing id for the') . ' ' . gt('form records') . ' ' . gt('you would like to delete'));
             expHistory::back();
@@ -735,14 +727,10 @@ class formsController extends expController {
      *
      */
     public function manage() {
-        global $db;
-
         expHistory::set('manageable', $this->params);
         $forms = $this->forms->find('all', 1);
         foreach($forms as $key=>$f) {
-//            if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
             if (!empty($f->table_name) && $f->tableExists() ) {
-//                $forms[$key]->count = $db->countObjects("forms_" . $f->table_name);
                 $forms[$key]->count = $f->countRecords();
             }
             $forms[$key]->control_count = count($f->forms_control);
@@ -793,7 +781,6 @@ class formsController extends expController {
         }
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-//            $ctl = unserialize($control->data);
             $ctl = expUnserialize($control->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -823,7 +810,6 @@ class formsController extends expController {
         if (isset($f->id)) {
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-//                $ctl = unserialize($control->data);
                 $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -903,7 +889,6 @@ class formsController extends expController {
             $form = new fakeform();
             $form->horizontal = $this->config['style'];
             foreach ($controls as $c) {
-//                $ctl = unserialize($c->data);
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
                 $ctl->_readonly = $c->is_readonly;
@@ -977,7 +962,6 @@ class formsController extends expController {
                 if (isset($this->params['id'])) {
                     $control = new forms_control($this->params['id']);
                     if ($control) {
-//                        $ctl = unserialize($control->data);
                         $ctl = expUnserialize($control->data);
                         $ctl->identifier = $control->name;
                         $ctl->caption = $control->caption;
@@ -1015,8 +999,6 @@ class formsController extends expController {
     }
 
     public function save_control() {
-        global $db;
-
         $f = new forms($this->params['forms_id']);
         if ($f) {
             $ctl = null;
@@ -1025,7 +1007,6 @@ class formsController extends expController {
             if (isset($this->params['id'])) {
                 $control = new forms_control($this->params['id']);
                 if ($control) {
-//                    $ctl = unserialize($control->data);
                     $ctl = expUnserialize($control->data);
                     $ctl->identifier = $control->name;
                     $ctl->caption = $control->caption;
@@ -1051,7 +1032,6 @@ class formsController extends expController {
             //lets make sure the name submitted by the user is not a duplicate. if so we will fail back to the form
             if (!empty($control->id)) {
                 //FIXME change this to an expValidator call
-//                $check = $db->selectObject('forms_control', 'name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 $check = $control->getControl('name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 if (!empty($check) && empty($this->params['id'])) {
                     //expValidator::failAndReturnToForm(gt('A field with the same name already exists for this form'), $_$this->params
@@ -1062,12 +1042,10 @@ class formsController extends expController {
 
             if ($ctl1 != null) {
                 $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl1->identifier), 0, 20);
-//                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                 if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
-//                    $this->params = $this->params;
                     $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
@@ -1130,7 +1108,6 @@ class formsController extends expController {
         if (isset($this->config['forms_id'])) {
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
-//                $ctl = unserialize($control->data);
                 $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -1216,11 +1193,8 @@ class formsController extends expController {
     }
 
     public function export_csv() {
-//        global $db;
-
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
-//            $items = $db->selectObjects("forms_" . $f->table_name);
             $items = $f->getRecords();
 
             $fc = new forms_control();
@@ -1841,7 +1815,7 @@ class formsController extends expController {
     }
 
     public function import_csv_data_add() {
-        global $user, $db;
+        global $user;
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
@@ -1889,7 +1863,6 @@ class formsController extends expController {
                     }
                     $i++;
                 }
-//                $db->insertObject($db_data, 'forms_' . $f->table_name);
                 $f->insertRecord($db_data);
                 $recordsdone++;
             }
