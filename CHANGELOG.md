@@ -45,6 +45,8 @@ Version 2.3.8
 !!! Regression fix Facebook Meta configuration tab content was invisible on bootstrap2 themes
 !!! Regression fix rearranging attached files could scroll the list out of site (bs3?)
   - fix jquery datetimepicker didn't initially display/scroll to selected time
+  - fix display of events calendar 'all day' marker if event is categorized (colored)
+  - fix issue with form module show view if no records present
   - adds new SocialFeed module to aggregate facebook, twitter, instagram and/or pinterest posts
   - adds drag/drop support to attach files (file manager control)
   - new 'manage by sitemap' feature to better analyze and manage entire existing page structure
@@ -81,6 +83,9 @@ Version 2.3.8
   - adds passing an array of scripts through expJavascript::pushToFoot
   - adds warning messages is less compiler is unable to create output folder or file
   - adds support for optional HTML2PDF pdf engine
+  - adds url single parameter router mapping for one module, e.g., products, product categories, blog posts, etc...
+  - adds optional reduced and or grouped search results
+  - adds prev, next, and add record actions to form module show record view
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
