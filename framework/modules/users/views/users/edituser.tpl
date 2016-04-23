@@ -17,13 +17,6 @@
 
 {/css}
 
-{css unique="showlogin"}
-    .kv-scorebar-border {
-        margin: 0;
-        margin-top: 3px;
-    }
-{/css}
-
 <div id='edituser' class="module users edit">
     {form action=update}
 	    <div class="info-header">
@@ -56,7 +49,7 @@
                             {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}*}
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1 focus=1}
                         {/if}
-                        {control type=password name=pass1 label="Password"|gettext required=1}
+                        {control type=password name=pass1 meter=1 label="Password"|gettext required=1}
                         {control type=password name=pass2 label="Confirm Password"|gettext required=1}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}
@@ -158,17 +151,5 @@
 		Y.one('#edituser-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 	});
-{/literal}
-{/script}
-
-{script unique="showlogin" jquery='strength-meter'}
-{literal}
-    $("#pass1").strength({
-        toggleMask: false,
-        mainTemplate: '<div class="kv-strength-container">{input}<div class="kv-meter-container">{meter}</div></div>',
-    }).on('strength.change', function(event) {
-        if (event.target.value.length < {/literal}{$smarty.const.MIN_PWD_LEN}{literal})
-            $("#pass1").strength('paint', 0);
-    });
 {/literal}
 {/script}

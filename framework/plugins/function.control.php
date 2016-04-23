@@ -409,6 +409,16 @@ function smarty_function_control($params, &$smarty) {
 //                if (!empty($params['var'])) $control->type = 1;
 //                if (!empty($params['default'])) $control->default = $params['default'];
 //                break;
+            case "password":
+                $control       = new passwordcontrol();
+                $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
+                $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
+                $control->multiple      = isset($params['multiple']) ? true : false;
+                $control->meter      = isset($params['meter']) ? true : false;
+                break;
             case "quantity":
 //                $value   = isset($params['value']) ? $params['value'] : null;
 //                $min     = isset($params['min']) ? $params['min'] : 0;

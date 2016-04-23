@@ -27,13 +27,13 @@ if (!defined('EXPONENT')) exit('');
  */
 class passwordcontrol extends genericcontrol {
 
-	var $meter = false;
+    var $meter = false;
 
     static function name() { return "password"; }
 
     function __construct($type="password", $default = false, $class="", $filter="", $checked=false, $required = false, $validate="", $onclick="", $label="", $maxlength="", $placeholder="", $pattern="") {
-		parent::__construct('password', $default, $class, $filter, $checked, $required, $validate, $onclick, $label, $maxlength, $placeholder, $pattern);
-	}
+        parent::__construct('password', $default, $class, $filter, $checked, $required, $validate, $onclick, $label, $maxlength, $placeholder, $pattern);
+    }
 
     function toHTML($label,$name) {
         if (!empty($this->id)) {
@@ -46,9 +46,13 @@ class passwordcontrol extends genericcontrol {
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
+            $html = '';
+             if ($this->meter) {
+                 $html .= "<div class=\"row " . $this->id . "-meter\">";
+             }
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div'.$divID.' class="'.$this->type.'-control control'." ".$class." ".$disabled;
-            $html .= (!empty($this->required)) ? ' required">' : '">';
+            $html .= '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
                 $labeltag = '<span class="required" title="'.gt('This entry is required').'">*&#160;</span>' . $label;
@@ -56,37 +60,42 @@ class passwordcontrol extends genericcontrol {
                 $labeltag = $label;
             }
             if(empty($this->flip)){
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").(($this->horizontal)?"col-sm-2 control-label":"" ).">". $labeltag."</label>";
                     $html .= $this->controlToHTML($name, $label);
             } else {
                     $html .= $this->controlToHTML($name, $label);
-                    $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
+                    $html .= empty($label) ? "" : "<label".$for." ".(bs3()?"class=\"control-label\"":"").">". $labeltag."</label>";
             }
             $html .= "</div>";
-        } else {
-            $html = $this->controlToHTML($name, $label);
             if ($this->meter) {
-                expCSS::pushToHead(array(
-            	    "unique"=>"password-meter",
-            	    "css"=>".kv-scorebar-border {
-            	            margin: 0;
-            	            margin-top: 3px;
-            	        }"
-            	    )
-            	);
-
                 expJavascript::pushToFoot(array(
                     "unique"=>"password-meter".$name,
-                    "jquery"=>"strength-meter",
-                    "content"=>"$('#".$this->id."').strength({
-            toggleMask: false,
-            mainTemplate: '<div class=\"kv-strength-container\">{input}<div class=\"kv-meter-container\">{meter}</div></div>',
-        }).on('strength.change', function(event) {
-            if (event.target.value.length < " . MIN_PWD_LEN . ")
-                $('#".$this->id."').strength('paint', 0);
+                    "jquery"=>"pwstrength-bootstrap-1.2.10",
+                    "content"=>"$(document).ready(function () {
+            \"use strict\";
+            var options = {};
+            options.common = {
+                minChar: " . MIN_PWD_LEN . ",
+            };
+            options.ui = {
+                container: \"." . $this->id . "-meter\",
+                showVerdictsInsideProgressBar: true,
+                showErrors: true,
+                viewports: {
+                    progress: \".pwstrength_viewport_progress\",
+                    errors: \".pwstrength_viewport_progress\",
+                }
+            };
+            $('#" . $this->id . "').pwstrength(options);
         });",
                  ));
+                $html .= "<div class=\"" . $this->class . "\" style=\"padding-top: 8px;\">
+                    <div class=\"pwstrength_viewport_progress\"></div>
+                </div>
+            </div>";
             }
+        } else {
+            $html = $this->controlToHTML($name, $label);
         }
         return $html;
     }

@@ -69,6 +69,7 @@ DateTimePicker,2.5.3exp,http://xdsoft.net/jqplugins/datetimepicker/,2.5.3,we add
 Bootstrap DateTimePicker,4.17.37,https://github.com/Eonasdan/bootstrap-datetimepicker,4.17.37,
 moment.js,2.12.0,https://github.com/moment/moment,2.12.0,needed for Bootstrap DateTimePicker
 pwstrength-bootstrap,1.2.10,https://github.com/ablanco/jquery.pwstrength.bootstrap,1.2.10,
+strength-meter,1.1.3,https://github.com/kartik-v/strength-meter,1.1.3,
 Sortable,1.4.2,https://github.com/RubaXa/Sortable,1.4.2,
 jstree,3.3.0,https://github.com/vakata/jstree,3.3.0,added nav menu icons to stylesheet
 bootstrap3-dialog,1.35.1,https://github.com/nakupanda/bootstrap3-dialog,1.35.1,added our swatches to .less file
