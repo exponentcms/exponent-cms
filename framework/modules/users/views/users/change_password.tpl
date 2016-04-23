@@ -13,6 +13,13 @@
  *
  *}
 
+{css unique="showlogin"}
+    .kv-scorebar-border {
+        margin: 0;
+        margin-top: 3px;
+    }
+{/css}
+
 <div class="module users change-password">
     <div class="info-header">
         <div class="related-actions">
@@ -33,3 +40,15 @@
         {control type="buttongroup" submit="Change My Password"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
+
+{script unique="showlogin" jquery='strength-meter'}
+{literal}
+    $("#new_password1").strength({
+        toggleMask: false,
+        mainTemplate: '<div class="kv-strength-container">{input}<div class="kv-meter-container">{meter}</div></div>',
+    }).on('strength.change', function(event) {
+        if (event.target.value.length < {/literal}{$smarty.const.MIN_PWD_LEN}{literal})
+            $("#new_password1").strength('paint', 0);
+    });
+{/literal}
+{/script}

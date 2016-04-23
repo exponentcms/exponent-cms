@@ -17,6 +17,13 @@
 
 {/css}
 
+{css unique="showlogin"}
+    .kv-scorebar-border {
+        margin: 0;
+        margin-top: 3px;
+    }
+{/css}
+
 <div id='edituser' class="module users edit">
     {form action=update}
 	    <div class="info-header">
@@ -151,5 +158,17 @@
 		Y.one('#edituser-tabs').removeClass('hide');
 		Y.one('.loadingdiv').remove();
 	});
+{/literal}
+{/script}
+
+{script unique="showlogin" jquery='strength-meter'}
+{literal}
+    $("#pass1").strength({
+        toggleMask: false,
+        mainTemplate: '<div class="kv-strength-container">{input}<div class="kv-meter-container">{meter}</div></div>',
+    }).on('strength.change', function(event) {
+        if (event.target.value.length < {/literal}{$smarty.const.MIN_PWD_LEN}{literal})
+            $("#pass1").strength('paint', 0);
+    });
 {/literal}
 {/script}
