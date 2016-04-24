@@ -70,7 +70,7 @@ class passwordcontrol extends genericcontrol {
             if ($this->meter) {
                 expJavascript::pushToFoot(array(
                     "unique"=>"password-meter".$name,
-                    "jquery"=>"pwstrength-bootstrap-1.2.10",
+                    "jquery"=>"pwstrength-bootstrap",
                     "content"=>"$(document).ready(function () {
             \"use strict\";
             var options = {};
