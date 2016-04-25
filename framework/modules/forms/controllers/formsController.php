@@ -75,97 +75,107 @@ class formsController extends expController {
     }
 
     public function showall() {
-        expHistory::set('viewable', $this->params);
-        $f = null;
-        if (!empty($this->config)) {
-            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-        } elseif (!empty($this->params['title'])) {
-            $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
-            $this->get_defaults($f);
-        } elseif (!empty($this->params['id'])) {
-            $f = $this->forms->find('first', 'id=' . $this->params['id']);
-            $this->get_defaults($f);
-        }
-        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) && $f != null) {
-
-            if (empty($this->config['report_filter'])) {
-                $where = '1';
-            } else {
-                $where = $this->config['report_filter'];
+        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
+            expHistory::set('viewable', $this->params);
+            $f = null;
+            if (!empty($this->config)) {
+                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+            } elseif (!empty($this->params['title'])) {
+                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $this->get_defaults($f);
+            } elseif (!empty($this->params['id'])) {
+                $f = $this->forms->find('first', 'id=' . $this->params['id']);
+                $this->get_defaults($f);
             }
-            $fc = new forms_control();
-            if (empty($this->config['column_names_list'])) {
-                //define some default columns...
-                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-                foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
-                    $this->config['column_names_list'][] = $control->name;
-                }
-            }
-
-            // pre-process records
-            $items = $f->selectRecordsArray($where);
-            $columns = array();
-            foreach ($this->config['column_names_list'] as $column_name) {
-                if ($column_name == "ip") {
-                    $columns[gt('IP Address')] = 'ip';
-                } elseif ($column_name == "referrer") {
-                    $columns[gt('Referrer')] = 'referrer';
-                } elseif ($column_name == "location_data") {
-                    $columns[gt('Entry Point')] = 'location_data';
-                } elseif ($column_name == "user_id") {
-                    foreach ($items as $key => $item) {
-                        if ($item[$column_name] != 0) {
-                            $locUser = user::getUserById($item[$column_name]);
-                            $item[$column_name] = $locUser->username;
-                        } else {
-                            $item[$column_name] = '';
-                        }
-                        $items[$key] = $item;
-                    }
-                    $columns[gt('Posted by')] = 'user_id';
-                } elseif ($column_name == "timestamp") {
-                    foreach ($items as $key => $item) {
-                        $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
-                        $items[$key] = $item;
-                    }
-                    $columns[gt('Timestamp')] = 'timestamp';
+            
+            if (!empty($f)) {
+                if (empty($this->config['report_filter'])) {
+                    $where = '1';
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id,'rank');
-                    if ($control) {
-                        $ctl = expUnserialize($control->data);
-                        $control_type = get_class($ctl);
+                    $where = $this->config['report_filter'];
+                }
+                $fc = new forms_control();
+                if (empty($this->config['column_names_list'])) {
+                    //define some default columns...
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                    foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
+                        $this->config['column_names_list'][] = $control->name;
+                    }
+                }
+
+                // pre-process records
+                $items = $f->selectRecordsArray($where);
+                $columns = array();
+                foreach ($this->config['column_names_list'] as $column_name) {
+                    if ($column_name == "ip") {
+                        $columns[gt('IP Address')] = 'ip';
+                    } elseif ($column_name == "referrer") {
+                        $columns[gt('Referrer')] = 'referrer';
+                    } elseif ($column_name == "location_data") {
+                        $columns[gt('Entry Point')] = 'location_data';
+                    } elseif ($column_name == "user_id") {
                         foreach ($items as $key => $item) {
-                            //We have to add special sorting for date time columns!!!
-                            $item[$column_name] = @call_user_func(array($control_type, 'templateFormat'), $item[$column_name], $ctl);
+                            if ($item[$column_name] != 0) {
+                                $locUser = user::getUserById($item[$column_name]);
+                                $item[$column_name] = $locUser->username;
+                            } else {
+                                $item[$column_name] = '';
+                            }
                             $items[$key] = $item;
                         }
-                        $columns[$control->caption] = $column_name;
+                        $columns[gt('Posted by')] = 'user_id';
+                    } elseif ($column_name == "timestamp") {
+                        foreach ($items as $key => $item) {
+                            $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
+                            $items[$key] = $item;
+                        }
+                        $columns[gt('Timestamp')] = 'timestamp';
+                    } else {
+                        $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id, 'rank');
+                        if ($control) {
+                            $ctl = expUnserialize($control->data);
+                            $control_type = get_class($ctl);
+                            foreach ($items as $key => $item) {
+                                //We have to add special sorting for date time columns!!!
+                                $item[$column_name] = @call_user_func(
+                                    array($control_type, 'templateFormat'),
+                                    $item[$column_name],
+                                    $ctl
+                                );
+                                $items[$key] = $item;
+                            }
+                            $columns[$control->caption] = $column_name;
+                        }
                     }
                 }
-            }
 
-            $page = new expPaginator(array(
-                'records' => $items,
-                'where'   => 1,
+                $page = new expPaginator(
+                    array(
+                        'records' => $items,
+                        'where' => 1,
 //                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
-                'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order'])?$this->config['order']:'id'),
-                'dir'     => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
-                'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
-                'controller'=>$this->baseclassname,
-                'action'  => $this->params['action'],
-                'src'=>$this->loc->src,
-                'columns' => $columns
-            ));
+                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
+                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
+                        'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                        'controller' => $this->baseclassname,
+                        'action' => $this->params['action'],
+                        'src' => $this->loc->src,
+                        'columns' => $columns
+                    )
+                );
 
-            assign_to_template(array(
+                assign_to_template(
+                    array(
 //                "backlink"    => expHistory::getLastNotEditable(),
-                "backlink"    => expHistory::getLast('viewable'),
-                "f"           => $f,
-                "page"        => $page,
-                "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
-                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
-                "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
-            ));
+                        "backlink" => expHistory::getLast('viewable'),
+                        "f" => $f,
+                        "page" => $page,
+                        "title" => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
+                        "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
+                        "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
+                    )
+                );
+            }
         } else {
             assign_to_template(array(
                 "error" => 1,
@@ -176,6 +186,7 @@ class formsController extends expController {
     public function show() {
         if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
             expHistory::set('viewable', $this->params);
+            $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
@@ -185,63 +196,71 @@ class formsController extends expController {
                 redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
-            $fc = new forms_control();
-            $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-            $id = !empty($this->params['id']) ? $this->params['id'] : null;
-            $data = $f->getRecord($id);
+            if (!empty($f)) {
+                $fc = new forms_control();
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                $id = !empty($this->params['id']) ? $this->params['id'] : null;
+                $data = $f->getRecord($id);
 
-            $fields = array();
-            $captions = array();
-            if ($controls && $data) {
-                foreach ($controls as $c) {
-                    $ctl = expUnserialize($c->data);
-                    $control_type = get_class($ctl);
-                    $name = $c->name;
-                    $fields[$name] = call_user_func(array($control_type, 'templateFormat'), $data->$name, $ctl);
-                    $captions[$name] = $c->caption;
+                $fields = array();
+                $captions = array();
+                if ($controls && $data) {
+                    foreach ($controls as $c) {
+                        $ctl = expUnserialize($c->data);
+                        $control_type = get_class($ctl);
+                        $name = $c->name;
+                        $fields[$name] = call_user_func(array($control_type, 'templateFormat'), $data->$name, $ctl);
+                        $captions[$name] = $c->caption;
+                    }
+
+                    // system added fields
+                    $captions['ip'] = gt('IP Address');
+                    $captions['timestamp'] = gt('Timestamp');
+                    $captions['user_id'] = gt('Posted by');
+                    $fields['ip'] = $data->ip;
+                    $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
+                    $locUser = user::getUserById($data->user_id);
+                    $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
+
+                    // add a browse other records (next/prev) feature here
+                    $field = !empty($this->config['order']) ?: 'id';
+                    $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
+                    if (!empty($data->next) && $data->next != $data->id) {
+                        assign_to_template(
+                            array(
+                                "next" => $data->next,
+                            )
+                        );
+                    }
+                    $data->prev = $f->getRecord($field . ' < ' . $data->$field . ' ORDER BY ' . $field . ' DESC');
+                    if (!empty($data->prev) && $data->prev != $data->id) {
+                        assign_to_template(
+                            array(
+                                "prev" => $data->prev,
+                            )
+                        );
+                    }
                 }
 
-                // system added fields
-                $captions['ip'] = gt('IP Address');
-                $captions['timestamp'] = gt('Timestamp');
-                $captions['user_id'] = gt('Posted by');
-                $fields['ip'] = $data->ip;
-                $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
-                $locUser = user::getUserById($data->user_id);
-                $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
-
-                // add a browse other records (next/prev) feature here
-                $field = !empty($this->config['order']) ? : 'id';
-                $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
-                if (!empty($data->next) && $data->next != $data->id) {
-                    assign_to_template(array(
-                        "next" => $data->next,
-                    ));
-                }
-                $data->prev = $f->getRecord($field . ' < ' . $data->$field . ' ORDER BY ' . $field . ' DESC');
-                if (!empty($data->prev) && $data->prev != $data->id) {
-                    assign_to_template(
-                        array(
-                            "prev" => $data->prev,
-                        )
-                    );
-                }
+                assign_to_template(
+                    array(
+                        //            "backlink"=>expHistory::getLastNotEditable(),
+    //                'backlink'    => expHistory::getLast('editable'),
+                        'backlink' => makeLink(expHistory::getBack(1)),
+                        "f" => $f,
+    //                "record_id"   => $this->params['id'],
+                        "record_id" => !empty($data->id) ? $data->id : null,
+                        "title" => !empty($this->config['report_name']) ? $this->config['report_name'] : gt(
+                            'Viewing Record'
+                        ),
+                        "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
+                        'fields' => $fields,
+                        'captions' => $captions,
+                        'is_email' => 0,
+                        "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
+                    )
+                );
             }
-
-            assign_to_template(array(
-    //            "backlink"=>expHistory::getLastNotEditable(),
-//                'backlink'    => expHistory::getLast('editable'),
-                'backlink'    => makeLink(expHistory::getBack(1)),
-                "f"           => $f,
-//                "record_id"   => $this->params['id'],
-                "record_id"   => !empty($data->id) ? $data->id : null,
-                "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
-                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
-                'fields'      => $fields,
-                'captions'    => $captions,
-                'is_email'    => 0,
-                "css"         => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
-            ));
         } else {
             assign_to_template(array(
                 "error" => 1,
@@ -259,7 +278,7 @@ class formsController extends expController {
             global $user;
 
             expHistory::set('viewable', $this->params);
-
+            $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
