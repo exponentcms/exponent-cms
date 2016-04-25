@@ -20,7 +20,7 @@ iCalCreator,2.20.2,https://github.com/iCalcreator/iCalcreator,2.22.0,
 scssphp,0.3.1exp,https://github.com/leafo/scssphp,0.6.3,added Server\cachedCompile()
 lessphp,0.5.0,https://github.com/leafo/lessphp,0.5.0,will not compile bootstrap v3+
 less.php,1.7.0.10,https://github.com/oyejorge/less.php,1.7.0.10,
-iLess,2.1.1,https://github.com/mishal/iless,2.1.1,optional
+iLess,2.2.0,https://github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v2"
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.6,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
@@ -42,7 +42,7 @@ mPDF,6.0.0/5.7.4,mpdf1.com,6.0.0/5.7.4,optional
 HTML2PDF,4.6.1,https://github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
 CKEditor,4.5.8,ckeditor.com,4.5.8,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.3.10,tinymce.com,4.3.10,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+TinyMCE,4.3.11,tinymce.com,4.3.11,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.11n,elfinder.org,2.1.11n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
 jQuery1,1.12.3,jquery.com,1.12.3,v1.11.3 still needed for old firefox
 jQuery,2.2.3,jquery.com,2.2.3,
