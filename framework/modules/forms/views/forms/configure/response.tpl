@@ -26,4 +26,5 @@
     {control type="checkbox" name="is_auto_respond" label="Send an email to the user after form submission?"|gettext value=1 checked=$config.is_auto_respond}
     {control type="text" name="auto_respond_subject" label="Response Email Subject"|gettext value=$config.auto_respond_subject}
     {control type="html" name="auto_respond_body" label="Response Email Content"|gettext value=$config.auto_respond_body}
+    {control type="checkbox" name="auto_respond_form" label="Also Include Form Entries?"|gettext value=1 checked=$config.auto_respond_form}
 {/group}

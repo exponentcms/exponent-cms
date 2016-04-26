@@ -87,7 +87,7 @@ class formsController extends expController {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
                 $this->get_defaults($f);
             }
-            
+
             if (!empty($f)) {
                 if (empty($this->config['report_filter'])) {
                     $where = '1';
@@ -332,9 +332,13 @@ class formsController extends expController {
                     $emaillist = array_flip(array_flip($emaillist));
                     $emaillist = array_map('trim', $emaillist);
                     $emaillist = array_reverse($emaillist, true);
-                    $emaillist[0] = gt('All Addresses');
+                    if (empty($this->config['select_exclude_all']))
+                        $emaillist[0] = gt('All Addresses');
                     $emaillist = array_reverse($emaillist, true);
-                    $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
+                    if (!empty($this->config['select_dropdown']))
+                        $form->register('email_dest', gt('Send Response to'), new dropdowncontrol('', $emaillist));
+                    else
+                        $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
 //                $paged = false;
                 foreach ($controls as $key=>$c) {
@@ -625,7 +629,7 @@ class formsController extends expController {
                 $msgtemplate->assign("is_email", 1);
                 if (!empty($referrer)) $msgtemplate->assign("referrer", $referrer);
                 $emailText = $msgtemplate->render();
-                $emailText = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
+                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
                 $msgtemplate->assign("css", file_get_contents(BASE . "framework/core/assets/css/tables.css"));
                 $emailHtml = $msgtemplate->render();
 
@@ -672,15 +676,22 @@ class formsController extends expController {
                 if (empty($from_name)) {
                     $from_name = trim(ORGANIZATION_NAME);
                 }
-                $headers = array(
-                    "MIME-Version" => "1.0",
-                    "Content-type" => "text/html; charset=" . LANG_CHARSET
-                );
+//                $headers = array(
+//                    "MIME-Version" => "1.0",
+//                    "Content-type" => "text/html; charset=" . LANG_CHARSET
+//                );
 
+                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
+                if ($this->config['auto_respond_form']) 
+                    $tmsg .= "\n" . $emailText;
+                $hmsg = $this->config['auto_respond_body'];
+                if ($this->config['auto_respond_form']) 
+                    $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(
-                    'headers'      => $headers,
-                    'html_message' => $this->config['auto_respond_body'],
+//                    'headers'      => $headers,
+                    "text_message" => $tmsg,
+                    'html_message' => $hmsg,
                     'to'           => $db_data->email,
                     'from'         => array(trim($from) => $from_name),
                     'subject'      => $this->config['auto_respond_subject'],

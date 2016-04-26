@@ -23,8 +23,12 @@
 </div>
 {control type="checkbox" name="is_email" label="Email Form Submissions?"|gettext value=1 checked=$config.is_email description='Sends form responses to selected addresses based on Report single-record view configuration'|gettext focus=1}
 {control type=text name='subject' label='Email Subject'|gettext value=$config.subject}
-{group label='Email Recepients'|gettext}
+{group label='Email Recipients'|gettext}
     {control type="checkbox" name="select_email" label="User Selected Email Destination?"|gettext value=1 checked=$config.select_email description='Allows the user to choose from one or all of any recipients selected below'|gettext}
+    {group label='User Selected Email Recipients'|gettext}
+        {control type="checkbox" name="select_dropdown" label="Use dropdown instead of radio buttons?"|gettext value=1 checked=$config.select_dropdown description='Type of control used to display user selectible recipients'|gettext}
+        {control type="checkbox" name="select_exclude_all" label="Exclude the 'All Addresses' Choice?"|gettext value=1 checked=$config.select_exclude_all description='Restricts choice to a single recipient'|gettext}
+    {/group}
     {userlistcontrol name="user_list" label="Users" items=$config.user_list}
     {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
     {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}

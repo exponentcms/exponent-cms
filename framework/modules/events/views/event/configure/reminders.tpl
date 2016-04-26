@@ -27,7 +27,7 @@
 <code>curl -G -s {$smarty.const.URL_FUL}/event/send_reminders/title/THE_CALENDAR_SEF_URL/days/14/code/THE_CODE_FROM_BELOW</code>
 </blockquote>
 {control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
-{group label="Email Recepients"|gettext}
+{group label="Email Recipients"|gettext}
     {userlistcontrol name="user_list" label="Users" items=$config.user_list}
     {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
     {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
