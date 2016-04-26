@@ -98,8 +98,8 @@ class expCore
         }
 
         foreach ($params as $key => $value) {
-            $value = chop($value);
-            $key = chop($key);
+            $value = trim($value);
+            $key = trim($key);
             if ($value != "") {
                 $link .= urlencode($key) . "=" . urlencode($value) . "&";
             }
@@ -148,8 +148,8 @@ class expCore
             if (!ENABLE_SSL) return self::makeLink($params);
             $link = SSL_URL .  SCRIPT_RELATIVE . SCRIPT_FILENAME . "?";
             foreach ($params as $key=>$value) {
-                $value = chop($value);
-                $key = chop($key);
+                $value = trim($value);
+                $key = trim($key);
                 if ($value != "") $link .= urlencode($key)."=".urlencode($value)."&";
             }
             $link = substr($link,0,-1);

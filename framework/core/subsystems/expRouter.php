@@ -135,8 +135,8 @@ class expRouter {
                 if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
                     if(!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID') {
-                        $value = chop($value);
-                        $key = chop($key);
+                        $value = trim($value);
+                        $key = trim($key);
                         if ($value != "") {
                             if ($key != 'module' && $key != 'action' && $key != 'controller') {
                                 if ($key != 'src') {
@@ -157,8 +157,8 @@ class expRouter {
             $link = $linkbase . SCRIPT_FILENAME . "?";
             foreach ($params as $key=>$value) {
                 if (!is_array($value) && strpos($key,'__') !== 0 && $key !== 'PHPSESSID'){
-                    $value = chop($value);
-                    $key = chop($key);
+                    $value = trim($value);
+                    $key = trim($key);
                     if ($value != "") {
                         if ($key != 'src') {
                             $link .= urlencode($key)."=".urlencode($value)."&";
