@@ -249,7 +249,7 @@ class expTheme
         if ($config['meta']['generator']) {
             $str .= "\t" . '<meta name="Generator" content="Exponent Content Management System - v' . expVersion::getVersion(
                     true
-                ). self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
+                ) . self::getThemeDetails() . '" ' . XHTML_CLOSING . '>' . "\n";
         }
         if ($config['meta']['keywords']) {
             $str .= "\t" . '<meta name="Keywords" content="' . $metainfo['keywords'] . '" ' . XHTML_CLOSING . '>' . "\n";
@@ -264,9 +264,10 @@ class expTheme
             $str .= "\t" . $metainfo['rich'] . "\n";
         }
         if ($config['meta']['fb'] && !empty($metainfo['fb'])) {
-            foreach ($metainfo['fb'] as $key=>$value) {
-                if (!empty($value))
+            foreach ($metainfo['fb'] as $key => $value) {
+                if (!empty($value)) {
                     $str .= "\t" . '<meta property="og:' . $key . '" content="' . $value . '" ' . XHTML_CLOSING . '>' . "\n";
+                }
             }
         }
 
@@ -307,10 +308,10 @@ class expTheme
         }
 
         // favicon
-        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.ico')) {
-            $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.ico" type="image/x-icon" ' . XHTML_CLOSING . '>' . "\n";
-        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.png')) {
-            $str .= "\t" . '<link rel="shortcut icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.png" ' . XHTML_CLOSING . '>' . "\n";
+        if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.png')) {
+            $str .= "\t" . '<link rel="icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.png" type="image/png" ' . XHTML_CLOSING . '>' . "\n";
+        } elseif (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/favicon.ico')) {
+            $str .= "\t" . '<link rel="icon" href="' . URL_FULL . 'themes/' . DISPLAY_THEME . '/favicon.ico" type="image/x-icon" ' . XHTML_CLOSING . '>' . "\n";
         }
         // touch icons
         if (file_exists(BASE . 'themes/' . DISPLAY_THEME . '/apple-touch-icon.png')) {
