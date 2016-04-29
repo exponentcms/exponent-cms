@@ -163,7 +163,7 @@
 {if $config.lightbox}
 {script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
 {literal}
-    $('a.calpopevent').click(function(e) {
+    $('.events.default a.calpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
@@ -171,7 +171,7 @@
         });
         e.preventDefault();
     });
-    $('a.icalpopevent').click(function(e) {
+    $('.events.default a.icalpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',

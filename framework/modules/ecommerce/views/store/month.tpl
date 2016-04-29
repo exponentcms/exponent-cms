@@ -123,7 +123,7 @@
 {if $config.lightbox}
 {script unique="shadowbox" jquery='jquery.colorbox'}
 {literal}
-    $('a.calpopevent').click(function(e) {
+    $('.events_calendar.events a.calpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,
