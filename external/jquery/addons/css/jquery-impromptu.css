@@ -1,6 +1,6 @@
-/*! jQuery-Impromptu - v6.2.2 - 2015-11-14
+/*! jQuery-Impromptu - v6.2.3 - 2016-04-23
 * http://trentrichardson.com/Impromptu
-* Copyright (c) 2015 Trent Richardson; Licensed MIT */
+* Copyright (c) 2016 Trent Richardson; Licensed MIT */
 .jqifade{
 	position: absolute; 
 	background-color: #777777; 
@@ -133,6 +133,7 @@ div.jqi .jqisubstate .jqibuttons button{
 .jqi .jqiarrowrm{ right: -20px; top: 50%; border-left-color: #ffffff; margin-top: -10px; }
 .jqi .jqiarrowrb{ right: -20px; bottom: 10px; border-left-color: #ffffff; }
 
+/*exp styling*/
 div.jqi .jqititle {
 	background-color: lightblue;
 	-webkit-border-radius: 4px;
