@@ -270,7 +270,8 @@ class expFile extends expRecord {
         // This will be redefined if a FILE record is loaded
         // or a path is given to the Class
         //eDebug($params,true);
-        $this->directory = UPLOAD_DIRECTORY_RELATIVE;
+        if (empty($params['directory']))
+            $this->directory = UPLOAD_DIRECTORY_RELATIVE;
         // This will pull properties for class properties based upon
         // expRecord table definition
         parent::__construct($params, $get_assoc, $get_attached);

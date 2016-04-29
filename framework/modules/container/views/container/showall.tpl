@@ -91,7 +91,7 @@
             {/if}
         {/permissions}
 
-        <div class="{module_style style=$container->config.style}"> {* module styling output *}
+        <div class="{module_style style=$container->config.mstyle}"> {* module styling output *}
         {$container->output}
         </div>
 

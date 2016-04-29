@@ -68,6 +68,11 @@ class popupdatetimecontrol extends formcontrol
         }
     }
 
+//    function toHTML($label,$name)
+//    {
+//        return $this->controlToHTML($name, $label);
+//    }
+
     function controlToHTML($name, $label)
     {
         $idname = createValidId($name);
@@ -78,6 +83,8 @@ class popupdatetimecontrol extends formcontrol
         if ($this->default == null) {
             $myval = strftime(DISPLAY_DATE_FORMAT, time());
         } else {
+            if (is_string($this->default))
+                $this->default = strtotime($this->default);
             if ($this->showtime) {
                 $myval = strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
                         DISPLAY_TIME_FORMAT,
@@ -87,14 +94,27 @@ class popupdatetimecontrol extends formcontrol
                 $myval = strftime(DISPLAY_DATE_FORMAT, $this->default);
             }
         }
-        $html ="<div class='col-sm-10'>
-                    <div class='input-group' id='" . $idname . "'>
-                        <input type='text' class='text form-control' name='" . $name . "' value='".$myval."'/>
-                        <span class='input-group-addon'>
-                            <span class='glyphicon glyphicon-calendar'></span>
-                        </span>
-                    </div>
-                </div>";
+        $date_input = new textcontrol($myval);
+        $date_input->id = $idname;
+        $date_input->name = $idname;
+        $date_input->append = 'calendar';
+        if ($this->horizontal)
+            $date_input->horizontal_top = true;
+        $html = $date_input->toHTML(null, $name);
+        $html = str_replace('form-group', '', $html);  // we're a control within a control
+
+//        $html = '';
+//        if ($this->horizontal)
+//            $html .= "<div class='col-sm-10'>";
+//        $html .= "<div class='input-group' id='" . $idname . "'>
+//                        <input type='text' class='text form-control' name='" . $name . "' value='".$myval."'/>
+//                        <span class='input-group-addon'>
+//                            <span class='fa fa-calendar'></span>
+//                        </span>
+//                    </div>";
+//        if ($this->horizontal)
+//            $html .= "</div>";
+        
         $script = "
             $(document).ready(function() {
                 $('#" . $idname."').datetimepicker({

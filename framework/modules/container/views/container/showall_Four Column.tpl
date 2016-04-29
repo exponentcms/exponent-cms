@@ -22,25 +22,25 @@
     {$container=$containers.1}
    	{$i=0}
 	{$rerank=0}
-    <div class="col1 {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="col1 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>
     {$container=$containers.2}
    	{$i=1}
-    <div class="col2 {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="col2 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>
     {$container=$containers.3}
    	{$i=2}
-    <div class="col3 {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="col3 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>
     {$container=$containers.4}
     {$i=2}
-    <div class="col4 {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="col4 {module_style style=$container->config.mstyle}"> {* module styling output *}
         {include file=$viewfile}
         {clear}
     </div>

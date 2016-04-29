@@ -22,13 +22,13 @@
 	{$container=$containers.1}
 	{$i=0}
 	{$rerank=0}
-    <div class="twocolcontainerleft {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="twocolcontainerleft {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
 		{clear}
     </div>
 	{$container=$containers.2}
 	{$i=1}
-    <div class="twocolcontainerright {module_style style=$container->config.style}"> {* module styling output *}
+    <div class="twocolcontainerright {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
 		{clear}
     </div>

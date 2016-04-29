@@ -70,9 +70,27 @@ class uploadcontrol extends formcontrol {
         if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
         $html .= ($this->horizontal && bs3()) ? '</div>' : '';
 
+        expCSS::pushToHead(array(
+    	    "unique" => 'fileupload-' . $name,
+    	    "css"    => "
+                .fileinput-filename {
+                    display: inline-block;
+                    overflow: hidden;
+                    vertical-align: middle;
+                    /* new lines */
+                    width: 100%;
+                    position: absolute;
+                    left: 0;
+                    padding-left: 30px;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                }
+    	    "
+        ));
+
         expJavascript::pushToFoot(array(
-            "unique"  => 'fileupload-' . $name,
-            "jquery"=> 'fileinput',
+            "unique" => 'fileupload-' . $name,
+            "jquery" => 'fileinput',
         ));
 
 		return $html;

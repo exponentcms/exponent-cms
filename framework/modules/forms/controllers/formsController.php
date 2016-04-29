@@ -917,7 +917,7 @@ class formsController extends expController {
             $controls = $f->forms_control;
 
             $form = new fakeform();
-            $form->horizontal = $this->config['style'];
+            $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
             foreach ($controls as $c) {
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
