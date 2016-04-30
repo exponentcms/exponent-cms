@@ -89,8 +89,10 @@ class formsController extends expController {
             }
 
             if (!empty($f)) {
-                if (empty($this->config['report_filter'])) {
+                if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
                     $where = '1';
+                } elseif (!empty($this->params['filter'])) {
+                    $where = $this->params['filter'];
                 } else {
                     $where = $this->config['report_filter'];
                 }
