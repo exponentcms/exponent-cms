@@ -13,7 +13,7 @@
  *
  *}
  
-<div class="containermodule four-column row"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
+<div class="containermodule four-column row-fluid"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
     {$container=$containers.1}
    	{$i=0}
