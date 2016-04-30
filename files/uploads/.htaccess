@@ -7,10 +7,12 @@ Options -ExecCGI
     deny from all
 </Files>
 
-<Files ^(*.jpeg|*.jpg|*.JPEG|*.JPG|*.png|*.gif)$>
+#<Files ^(*.jpeg|*.jpg|*.JPEG|*.JPG|*.png|*.gif)$>
+<FilesMatch "\.(jpeg|jpg|JPEG|JPG|png|gif)$">
     order deny,allow
     allow from all
-</Files>
+</FilesMatch>
+#</Files>
 
 #<FilesMatch "\.(?i:pdf)$">
 #    order deny,allow
