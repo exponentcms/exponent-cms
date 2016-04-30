@@ -27,7 +27,7 @@
     {control type="checkbox" name="select_email" label="User Selected Email Destination?"|gettext value=1 checked=$config.select_email description='Allows the user to choose from one or all of any recipients selected below'|gettext}
     {group label='User Selected Email Recipients'|gettext}
         {control type="checkbox" name="select_dropdown" label="Use dropdown instead of radio buttons?"|gettext value=1 checked=$config.select_dropdown description='Type of control used to display user selectible recipients'|gettext}
-        {control type="checkbox" name="select_exclude_all" label="Exclude the 'All Addresses' Choice?"|gettext value=1 checked=$config.select_exclude_all description='Restricts choice to a single recipient'|gettext}
+        {control type="checkbox" name="select_exclude_all" label='Exclude the \'All Addresses\' Choice?'|gettext value=1 checked=$config.select_exclude_all description='Restricts choice to a single recipient'|gettext}
     {/group}
     {userlistcontrol name="user_list" label="Users" items=$config.user_list}
     {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
