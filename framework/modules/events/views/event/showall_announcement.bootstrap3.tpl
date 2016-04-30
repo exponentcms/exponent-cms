@@ -75,7 +75,7 @@
             <div class="panel-body">
                 {if !empty($item->expFile[0]->url)}
                     <div class="image photo" style="margin: 1em 0;padding:10px;float:left;overflow: hidden;">
-                        {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image"}
+                        {img file_id=$item->expFile[0]->id title="`$item->title`" class="large-img" id="enlarged-image" w=128}
                         {clear}
                     </div>
                 {/if}

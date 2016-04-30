@@ -127,7 +127,12 @@
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,
-            maxWidth: "100%"
+            maxWidth: "100%",
+            onComplete : function() {
+                $('img').on('load', function() {
+                    $(this).colorbox.resize();
+                });
+            }
         });
         e.preventDefault();
     });

@@ -198,7 +198,7 @@ class popupdatetimecontrol extends formcontrol
                         $('#" . $idname . "').val(input.val());
                         $('#" . $idname . "_span').html(input.val());
                     }
-                  });
+                });
             });
             $('#J_popup_closeable_" . $idname . "').click(function(){
                 $('#" . $idname . "_span').datetimepicker('show');
