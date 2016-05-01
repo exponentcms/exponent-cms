@@ -97,6 +97,7 @@ Version 2.3.8
   - adds optionally sending form entries back to user with response email
   - adds new 'filter' param for form module showall action
   - adds display of uploaded image in form module showall view (if upload control is named 'image')
+  - adds 'copy' item action to news module; comes in handy if module is used for announcements
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
