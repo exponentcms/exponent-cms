@@ -106,8 +106,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     Y.one('#permissions').delegate(function(n){
         toggleChecks(n,1);
     }, 'input.manage');
-
-    });
+});
 {/literal}
 {/script}
 

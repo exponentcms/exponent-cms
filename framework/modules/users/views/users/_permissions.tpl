@@ -97,13 +97,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             }
         }
     };
-    manage.on('click',function(e){
+    Y.one('#permissions').delegate('click',function(e){
         toggleChecks(e.target);
-    });
-    manage.each(function(n){
+    }, 'input.manage');
+    Y.one('#permissions').delegate(function(n){
         toggleChecks(n,1);
-    });
-
+    }, 'input.manage');
 });
 {/literal}
 {/script}
