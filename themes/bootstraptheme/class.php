@@ -28,7 +28,7 @@ class bootstraptheme extends theme {
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
-        $swatches[] = gt('Base');
+        $swatches = array();
        	if (is_readable(BASE.'external/bootstrap/less')) {
        		$dh = opendir(BASE.'external/bootstrap/less');
        		while (($file = readdir($dh)) !== false) {
@@ -58,7 +58,7 @@ class bootstraptheme extends theme {
 		);
 
    		$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
-        if (empty($settings['SWATCH'])) $settings['SWATCH'] = '';
+        if (empty($settings['SWATCH'])) $settings['SWATCH'] = 'default';
    		$form = new form();
    		$form->meta('controller','administration');
    		$form->meta('action','update_theme');
@@ -83,7 +83,7 @@ class bootstraptheme extends theme {
    	}
 
     function saveThemeConfig ($params) {
-   		if (empty($params['swatch'])) $params['swatch'] = "";
+   		if (empty($params['swatch'])) $params['swatch'] = "default";
         if (empty($params['btn_size'])) $params['btn_size'] = "";
         if (empty($params['menu_height'])) $params['menu_height'] = "1";
 		if (empty($params['menu_length'])) $params['menu_length'] = "2";

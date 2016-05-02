@@ -102,7 +102,7 @@ class yuidatetimecontrol extends formcontrol
         $html = '<span id="dtdisplay-' . $idname . '">' . $datetime . '</span>';
         if (!$this->display_only) {
             $html .= ' <input id="pub-' . $idname . '" type="checkbox" class="form-control" name="' . $name . '"';
-            $html .= $this->checked ? ' checked> ' : '> ' . $this->edit_text;
+            $html .= ($this->checked ? ' checked> ' : '> ') . $this->edit_text;
             $html .= "<!-- cke lazy -->";
             $html .= '<div ';
             $html .= $this->checked ? 'style="display:none"' : 'style="display:block"';
@@ -130,12 +130,10 @@ class yuidatetimecontrol extends formcontrol
             Y.Global.on('lazyload:cke', function() {
                 Y.one('#pub-" . $idname . "').detach('click', handleCheck" . $idname . ");
                 Y.one('#pub-" . $idname . "').on('click', handleCheck" . $idname . ");
-//                $('#" . $idname . "date').datetimepicker('reset');
             });
             if (!Y.one('#pub-" . $idname . "').ancestor('.exp-skin-tabview')) {
                 Y.Global.fire('lazyload:cke');
             }
-//            $('#" . $idname . "date').datetimepicker('reset');
         });
         ";
 

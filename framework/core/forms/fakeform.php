@@ -61,22 +61,28 @@ class fakeform extends form {
 		global $router;
 		$html = "<!-- Form Object '" . $this->name . "' -->\r\n";
 		$html .= "<script type=\"text/javascript\" src=\"" .PATH_RELATIVE."framework/core/forms/js/inputfilters.js.php\"></script>\r\n";
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-1mod',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-2eh',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-3wf',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
+//        ));
+//        expJavascript::pushToFoot(array(
+//            "unique"  => 'html5forms-4fb',
+//            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
+//            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+//        ));
         expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-1mod',
-            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-2eh',
-            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-3wf',
-            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
-        ));
-        expJavascript::pushToFoot(array(
-            "unique"  => 'html5forms-4fb',
-            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
-            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
+            "unique"  => 'html5forms',
+            "jquery"  => 1,
+            "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
+            "content" => "webshim.setOptions('canvas', {type: 'excanvas'}); webshim.polyfill('canvas forms forms-ext');",
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;

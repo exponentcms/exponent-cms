@@ -144,6 +144,8 @@ class containerController extends expController {
                 $containers[$i]->output = trim(ob_get_contents());
                 ob_end_clean();
 
+                $containers[$i]->config = expConfig::getConfig($location);
+
                 $containers[$i]->info = array(
                     'module'              => $mod->name(),
                     'source'              => $location->src,

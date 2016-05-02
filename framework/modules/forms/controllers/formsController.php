@@ -75,107 +75,109 @@ class formsController extends expController {
     }
 
     public function showall() {
-//        global $db;
-
-        expHistory::set('viewable', $this->params);
-        $f = null;
-        if (!empty($this->config)) {
-            $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
-        } elseif (!empty($this->params['title'])) {
-            $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
-            $this->get_defaults($f);
-        } elseif (!empty($this->params['id'])) {
-            $f = $this->forms->find('first', 'id=' . $this->params['id']);
-            $this->get_defaults($f);
-        }
-        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) && $f != null) {
-
-//            $items = $db->selectObjects('forms_' . $f->table_name, 1);
-            if (empty($this->config['report_filter'])) {
-                $where = '1';
-            } else {
-                $where = $this->config['report_filter'];
-            }
-            $fc = new forms_control();
-            if (empty($this->config['column_names_list'])) {
-                //define some default columns...
-                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-                foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
-                    $this->config['column_names_list'][] = $control->name;
-                }
+        if ((!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc))) {
+            expHistory::set('viewable', $this->params);
+            $f = null;
+            if (!empty($this->config)) {
+                $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
+            } elseif (!empty($this->params['title'])) {
+                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $this->get_defaults($f);
+            } elseif (!empty($this->params['id'])) {
+                $f = $this->forms->find('first', 'id=' . $this->params['id']);
+                $this->get_defaults($f);
             }
 
-            // pre-process records
-//            $items = $db->selectArrays('forms_' . $f->table_name, $where);
-            $items = $f->selectRecordsArray($where);
-            $columns = array();
-            foreach ($this->config['column_names_list'] as $column_name) {
-                if ($column_name == "ip") {
-                    $columns[gt('IP Address')] = 'ip';
-                } elseif ($column_name == "referrer") {
-                    $columns[gt('Referrer')] = 'referrer';
-                } elseif ($column_name == "location_data") {
-                    $columns[gt('Entry Point')] = 'location_data';
-                } elseif ($column_name == "user_id") {
-                    foreach ($items as $key => $item) {
-//                        if ($item->$column_name != 0) {
-                        if ($item[$column_name] != 0) {
-//                            $locUser = user::getUserById($item->$column_name);
-                            $locUser = user::getUserById($item[$column_name]);
-//                            $item->$column_name = $locUser->username;
-                            $item[$column_name] = $locUser->username;
-                        } else {
-//                            $item->$column_name = '';
-                            $item[$column_name] = '';
-                        }
-                        $items[$key] = $item;
-                    }
-                    $columns[gt('Posted by')] = 'user_id';
-                } elseif ($column_name == "timestamp") {
-                    foreach ($items as $key => $item) {
-//                        $item->$column_name = strftime(DISPLAY_DATETIME_FORMAT, $item->$column_name);
-                        $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
-                        $items[$key] = $item;
-                    }
-                    $columns[gt('Timestamp')] = 'timestamp';
+            if (!empty($f)) {
+                if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
+                    $where = '1';
+                } elseif (!empty($this->params['filter'])) {
+                    $where = $this->params['filter'];
                 } else {
-                    $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id,'rank');
-                    if ($control) {
-                        $ctl = expUnserialize($control->data);
-                        $control_type = get_class($ctl);
+                    $where = $this->config['report_filter'];
+                }
+                $fc = new forms_control();
+                if (empty($this->config['column_names_list'])) {
+                    //define some default columns...
+                    $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                    foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
+                        $this->config['column_names_list'][] = $control->name;
+                    }
+                }
+
+                // pre-process records
+                $items = $f->selectRecordsArray($where);
+                $columns = array();
+                foreach ($this->config['column_names_list'] as $column_name) {
+                    if ($column_name == "ip") {
+                        $columns[gt('IP Address')] = 'ip';
+                    } elseif ($column_name == "referrer") {
+                        $columns[gt('Referrer')] = 'referrer';
+                    } elseif ($column_name == "location_data") {
+                        $columns[gt('Entry Point')] = 'location_data';
+                    } elseif ($column_name == "user_id") {
                         foreach ($items as $key => $item) {
-                            //We have to add special sorting for date time columns!!!
-//                            $item->$column_name = @call_user_func(array($control_type, 'templateFormat'), $item->$column_name, $ctl);
-                            $item[$column_name] = @call_user_func(array($control_type, 'templateFormat'), $item[$column_name], $ctl);
+                            if ($item[$column_name] != 0) {
+                                $locUser = user::getUserById($item[$column_name]);
+                                $item[$column_name] = $locUser->username;
+                            } else {
+                                $item[$column_name] = '';
+                            }
                             $items[$key] = $item;
                         }
-                        $columns[$control->caption] = $column_name;
+                        $columns[gt('Posted by')] = 'user_id';
+                    } elseif ($column_name == "timestamp") {
+                        foreach ($items as $key => $item) {
+                            $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
+                            $items[$key] = $item;
+                        }
+                        $columns[gt('Timestamp')] = 'timestamp';
+                    } else {
+                        $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id, 'rank');
+                        if ($control) {
+                            $ctl = expUnserialize($control->data);
+                            $control_type = get_class($ctl);
+                            foreach ($items as $key => $item) {
+                                //We have to add special sorting for date time columns!!!
+                                $item[$column_name] = @call_user_func(
+                                    array($control_type, 'templateFormat'),
+                                    $item[$column_name],
+                                    $ctl
+                                );
+                                $items[$key] = $item;
+                            }
+                            $columns[$control->caption] = $column_name;
+                        }
                     }
                 }
-            }
 
-            $page = new expPaginator(array(
-                'records' => $items,
-                'where'   => 1,
+                $page = new expPaginator(
+                    array(
+                        'records' => $items,
+                        'where' => 1,
 //                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
-                'order'   => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order'])?$this->config['order']:'id'),
-                'dir'     => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
-                'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
-                'controller'=>$this->baseclassname,
-                'action'  => $this->params['action'],
-                'src'=>$this->loc->src,
-                'columns' => $columns
-            ));
+                        'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
+                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
+                        'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+                        'controller' => $this->baseclassname,
+                        'action' => $this->params['action'],
+                        'src' => $this->loc->src,
+                        'columns' => $columns
+                    )
+                );
 
-            assign_to_template(array(
+                assign_to_template(
+                    array(
 //                "backlink"    => expHistory::getLastNotEditable(),
-                "backlink"    => expHistory::getLast('viewable'),
-                "f"           => $f,
-                "page"        => $page,
-                "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
-                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
-                "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
-            ));
+                        "backlink" => expHistory::getLast('viewable'),
+                        "f" => $f,
+                        "page" => $page,
+                        "title" => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
+                        "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
+                        "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
+                    )
+                );
+            }
         } else {
             assign_to_template(array(
                 "error" => 1,
@@ -185,11 +187,8 @@ class formsController extends expController {
 
     public function show() {
         if (!empty($this->config['unrestrict_view']) || expPermissions::check('viewdata', $this->loc)) {
-            global $db;
-
-            //FIXME we need to add a browse other records (next/prev) feature here
-            //FIXME that would require a sort by which column and direction
             expHistory::set('viewable', $this->params);
+            $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
@@ -199,46 +198,71 @@ class formsController extends expController {
                 redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
-            $fc = new forms_control();
-            $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0','rank');
-//            $data = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['id']);
-            $data = $f->getRecord($this->params['id']);
+            if (!empty($f)) {
+                $fc = new forms_control();
+                $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
+                $id = !empty($this->params['id']) ? $this->params['id'] : null;
+                $data = $f->getRecord($id);
 
-            $fields = array();
-            $captions = array();
-            if ($controls && $data) {
-                foreach ($controls as $c) {
-//                    $ctl = unserialize($c->data);
-                    $ctl = expUnserialize($c->data);
-                    $control_type = get_class($ctl);
-                    $name = $c->name;
-                    $fields[$name] = call_user_func(array($control_type, 'templateFormat'), $data->$name, $ctl);
-                    $captions[$name] = $c->caption;
+                $fields = array();
+                $captions = array();
+                if ($controls && $data) {
+                    foreach ($controls as $c) {
+                        $ctl = expUnserialize($c->data);
+                        $control_type = get_class($ctl);
+                        $name = $c->name;
+                        $fields[$name] = call_user_func(array($control_type, 'templateFormat'), $data->$name, $ctl);
+                        $captions[$name] = $c->caption;
+                    }
+
+                    // system added fields
+                    $captions['ip'] = gt('IP Address');
+                    $captions['timestamp'] = gt('Timestamp');
+                    $captions['user_id'] = gt('Posted by');
+                    $fields['ip'] = $data->ip;
+                    $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
+                    $locUser = user::getUserById($data->user_id);
+                    $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
+
+                    // add a browse other records (next/prev) feature here
+                    $field = !empty($this->config['order']) ?: 'id';
+                    $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
+                    if (!empty($data->next) && $data->next != $data->id) {
+                        assign_to_template(
+                            array(
+                                "next" => $data->next,
+                            )
+                        );
+                    }
+                    $data->prev = $f->getRecord($field . ' < ' . $data->$field . ' ORDER BY ' . $field . ' DESC');
+                    if (!empty($data->prev) && $data->prev != $data->id) {
+                        assign_to_template(
+                            array(
+                                "prev" => $data->prev,
+                            )
+                        );
+                    }
                 }
 
-                // system added fields
-                $captions['ip'] = gt('IP Address');
-                $captions['timestamp'] = gt('Timestamp');
-                $captions['user_id'] = gt('Posted by');
-                $fields['ip'] = $data->ip;
-                $fields['timestamp'] = strftime(DISPLAY_DATETIME_FORMAT, $data->timestamp);
-                $locUser = user::getUserById($data->user_id);
-                $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
+                assign_to_template(
+                    array(
+                        //            "backlink"=>expHistory::getLastNotEditable(),
+    //                'backlink'    => expHistory::getLast('editable'),
+                        'backlink' => makeLink(expHistory::getBack(1)),
+                        "f" => $f,
+    //                "record_id"   => $this->params['id'],
+                        "record_id" => !empty($data->id) ? $data->id : null,
+                        "title" => !empty($this->config['report_name']) ? $this->config['report_name'] : gt(
+                            'Viewing Record'
+                        ),
+                        "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
+                        'fields' => $fields,
+                        'captions' => $captions,
+                        'is_email' => 0,
+                        "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
+                    )
+                );
             }
-
-            assign_to_template(array(
-    //            "backlink"=>expHistory::getLastNotEditable(),
-//                'backlink'    => expHistory::getLast('editable'),
-                'backlink'    => makeLink(expHistory::getBack(1)),
-                "f"           => $f,
-                "record_id"   => $this->params['id'],
-                "title"       => !empty($this->config['report_name']) ? $this->config['report_name'] : gt('Viewing Record'),
-                "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
-                'fields'      => $fields,
-                'captions'    => $captions,
-                'is_email'    => 0,
-                "css"         => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
-            ));
         } else {
             assign_to_template(array(
                 "error" => 1,
@@ -253,10 +277,10 @@ class formsController extends expController {
     public function enterdata() {
         if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
 
-            global $db, $user;
+            global $user;
 
             expHistory::set('viewable', $this->params);
-
+            $f = null;
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['forms_id'])) {
@@ -310,13 +334,16 @@ class formsController extends expController {
                     $emaillist = array_flip(array_flip($emaillist));
                     $emaillist = array_map('trim', $emaillist);
                     $emaillist = array_reverse($emaillist, true);
-                    $emaillist[0] = gt('All Addresses');
+                    if (empty($this->config['select_exclude_all']))
+                        $emaillist[0] = gt('All Addresses');
                     $emaillist = array_reverse($emaillist, true);
-                    $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
+                    if (!empty($this->config['select_dropdown']))
+                        $form->register('email_dest', gt('Send Response to'), new dropdowncontrol('', $emaillist));
+                    else
+                        $form->register('email_dest', gt('Send Response to'), new radiogroupcontrol('', $emaillist));
                 }
 //                $paged = false;
                 foreach ($controls as $key=>$c) {
-//                    $ctl = unserialize($c->data);
                     $ctl = expUnserialize($c->data);
                     $ctl->_id = $c->id;
                     $ctl->_readonly = $c->is_readonly;
@@ -350,6 +377,7 @@ class formsController extends expController {
                             // include the library and show the form control
                             require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                             $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                            $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             $antispam .= '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                             $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
@@ -389,7 +417,6 @@ class formsController extends expController {
                     $form->controls['submit']->disabled = true;
                     $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
                 }
-//                $count = $db->countObjects("forms_" . $f->table_name);
                 $count = $f->countRecords();
                 if ($formmsg) {
                     flash('notice', $formmsg);
@@ -417,7 +444,6 @@ class formsController extends expController {
         $responses = array();
 
         foreach ($cols as $col) {
-//            $coldef = unserialize($col->data);
             $coldef = expUnserialize($col->data);
             $coldata = new ReflectionClass($coldef);
             if (empty($coldef->is_hidden)) {
@@ -497,7 +523,6 @@ class formsController extends expController {
         $captions = array();
         $attachments = array();
         foreach ($controls as $c) {
-//            $ctl = unserialize($c->data);
             $ctl = expUnserialize($c->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, "getFieldDefinition"));
@@ -529,14 +554,12 @@ class formsController extends expController {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
                     //if this is an edit we remove the record and insert a new one.
-//                    $olddata = $db->selectObject('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
                     $olddata = $f->getRecord($this->params['data_id']);
                     $db_data->ip = $olddata->ip;
                     $db_data->user_id = $olddata->user_id;
                     $db_data->timestamp = $olddata->timestamp;
                     $db_data->referrer = $olddata->referrer;
                     $db_data->location_data = $olddata->location_data;
-//                    $db->delete('forms_' . $f->table_name, 'id=' . $this->params['data_id']);
                     $f->deleteRecord($this->params['data_id']);
                 } else {
                     $db_data->ip = $_SERVER['REMOTE_ADDR'];
@@ -557,7 +580,6 @@ class formsController extends expController {
                     }
                     $db_data->location_data = $location_data;
                 }
-//                $db->insertObject($db_data, 'forms_' . $f->table_name);
                 $f->insertRecord($db_data);
             } else {
                 $referrer = $db->selectValue("sessionticket", "referrer", "ticket = '" . expSession::getTicketString() . "'");
@@ -571,7 +593,7 @@ class formsController extends expController {
                 if (!empty($this->config['select_email']) && !empty($this->params['email_dest'])) {
                     if (strval(intval($this->params['email_dest'])) == strval($this->params['email_dest'])) {
                         foreach (group::getUsersInGroup($this->params['email_dest']) as $locUser) {
-                            if ($locUser->email != '') $emaillist[] = $locUser->email;
+                            if ($locUser->email != '') $emaillist[$locUser->email] = trim(user::getUserAttribution($locUser->id));
                         }
                     } else {
                         $emaillist[] = $this->params['email_dest'];
@@ -580,12 +602,12 @@ class formsController extends expController {
                     $emaillist = array();
                     if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                         $u = user::getUserById($c);
-                        $emaillist[] = $u->email;
+                        $emaillist[$u->email] = trim(user::getUserAttribution($u->id));
                     }
                     if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
                         $grpusers = group::getUsersInGroup($c);
                         foreach ($grpusers as $u) {
-                            $emaillist[] = $u->email;
+                            $emaillist[$u->email] = trim(user::getUserAttribution($u->id));
                         }
                     }
                     if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
@@ -609,7 +631,7 @@ class formsController extends expController {
                 $msgtemplate->assign("is_email", 1);
                 if (!empty($referrer)) $msgtemplate->assign("referrer", $referrer);
                 $emailText = $msgtemplate->render();
-                $emailText = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
+                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
                 $msgtemplate->assign("css", file_get_contents(BASE . "framework/core/assets/css/tables.css"));
                 $emailHtml = $msgtemplate->render();
 
@@ -656,15 +678,22 @@ class formsController extends expController {
                 if (empty($from_name)) {
                     $from_name = trim(ORGANIZATION_NAME);
                 }
-                $headers = array(
-                    "MIME-Version" => "1.0",
-                    "Content-type" => "text/html; charset=" . LANG_CHARSET
-                );
+//                $headers = array(
+//                    "MIME-Version" => "1.0",
+//                    "Content-type" => "text/html; charset=" . LANG_CHARSET
+//                );
 
+                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
+                if ($this->config['auto_respond_form']) 
+                    $tmsg .= "\n" . $emailText;
+                $hmsg = $this->config['auto_respond_body'];
+                if ($this->config['auto_respond_form']) 
+                    $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(
-                    'headers'      => $headers,
-                    'html_message' => $this->config['auto_respond_body'],
+//                    'headers'      => $headers,
+                    "text_message" => $tmsg,
+                    'html_message' => $hmsg,
                     'to'           => $db_data->email,
                     'from'         => array(trim($from) => $from_name),
                     'subject'      => $this->config['auto_respond_subject'],
@@ -694,8 +723,6 @@ class formsController extends expController {
      *
      */
     function delete() {
-        global $db;
-
         if (empty($this->params['id']) || empty($this->params['forms_id'])) {
             flash('error', gt('Missing id for the') . ' ' . gt('item') . ' ' . gt('you would like to delete'));
             expHistory::back();
@@ -712,8 +739,6 @@ class formsController extends expController {
      *
      */
     function delete_records() {
-        global $db;
-
         if (empty($this->params['forms_id'])) {
             flash('error', gt('Missing id for the') . ' ' . gt('form records') . ' ' . gt('you would like to delete'));
             expHistory::back();
@@ -734,14 +759,10 @@ class formsController extends expController {
      *
      */
     public function manage() {
-        global $db;
-
         expHistory::set('manageable', $this->params);
         $forms = $this->forms->find('all', 1);
         foreach($forms as $key=>$f) {
-//            if (!empty($f->table_name) && $db->tableExists("forms_" . $f->table_name) ) {
             if (!empty($f->table_name) && $f->tableExists() ) {
-//                $forms[$key]->count = $db->countObjects("forms_" . $f->table_name);
                 $forms[$key]->count = $f->countRecords();
             }
             $forms[$key]->control_count = count($f->forms_control);
@@ -792,7 +813,6 @@ class formsController extends expController {
         }
         $fc = new forms_control();
         foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-//            $ctl = unserialize($control->data);
             $ctl = expUnserialize($control->data);
             $control_type = get_class($ctl);
             $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -822,7 +842,6 @@ class formsController extends expController {
         if (isset($f->id)) {
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0','rank') as $control) {
-//                $ctl = unserialize($control->data);
                 $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -900,9 +919,8 @@ class formsController extends expController {
             $controls = $f->forms_control;
 
             $form = new fakeform();
-            $form->horizontal = $this->config['style'];
+            $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
             foreach ($controls as $c) {
-//                $ctl = unserialize($c->data);
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
                 $ctl->_readonly = $c->is_readonly;
@@ -976,7 +994,6 @@ class formsController extends expController {
                 if (isset($this->params['id'])) {
                     $control = new forms_control($this->params['id']);
                     if ($control) {
-//                        $ctl = unserialize($control->data);
                         $ctl = expUnserialize($control->data);
                         $ctl->identifier = $control->name;
                         $ctl->caption = $control->caption;
@@ -1014,8 +1031,6 @@ class formsController extends expController {
     }
 
     public function save_control() {
-        global $db;
-
         $f = new forms($this->params['forms_id']);
         if ($f) {
             $ctl = null;
@@ -1024,7 +1039,6 @@ class formsController extends expController {
             if (isset($this->params['id'])) {
                 $control = new forms_control($this->params['id']);
                 if ($control) {
-//                    $ctl = unserialize($control->data);
                     $ctl = expUnserialize($control->data);
                     $ctl->identifier = $control->name;
                     $ctl->caption = $control->caption;
@@ -1050,7 +1064,6 @@ class formsController extends expController {
             //lets make sure the name submitted by the user is not a duplicate. if so we will fail back to the form
             if (!empty($control->id)) {
                 //FIXME change this to an expValidator call
-//                $check = $db->selectObject('forms_control', 'name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 $check = $control->getControl('name="' . $ctl1->identifier . '" AND forms_id=' . $f->id . ' AND id != ' . $control->id);
                 if (!empty($check) && empty($this->params['id'])) {
                     //expValidator::failAndReturnToForm(gt('A field with the same name already exists for this form'), $_$this->params
@@ -1061,12 +1074,10 @@ class formsController extends expController {
 
             if ($ctl1 != null) {
                 $name = substr(preg_replace('/[^A-Za-z0-9]/', '_', $ctl1->identifier), 0, 20);
-//                if (!isset($this->params['id']) && $db->countObjects('forms_control', "name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                 if (!isset($this->params['id']) && $control->countControls("name='" . $name . "' AND forms_id=" . $this->params['forms_id']) > 0) {
                     $this->params['_formError'] = gt('Identifier must be unique.');
                     expSession::set('last_POST', $this->params);
                 } elseif ($name == 'id' || $name == 'ip' || $name == 'user_id' || $name == 'timestamp' || $name == 'location_data') {
-//                    $this->params = $this->params;
                     $this->params['_formError'] = sprintf(gt('Identifier cannot be "%s".'), $name);
                     expSession::set('last_POST', $this->params);
                 } else {
@@ -1129,7 +1140,6 @@ class formsController extends expController {
         if (isset($this->config['forms_id'])) {
             $fc = new forms_control();
             foreach ($fc->find('all', 'forms_id=' . $this->config['forms_id'] . ' AND is_readonly=0','rank') as $control) {
-//                $ctl = unserialize($control->data);
                 $ctl = expUnserialize($control->data);
                 $control_type = get_class($ctl);
                 $def = call_user_func(array($control_type, 'getFieldDefinition'));
@@ -1215,11 +1225,8 @@ class formsController extends expController {
     }
 
     public function export_csv() {
-//        global $db;
-
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
-//            $items = $db->selectObjects("forms_" . $f->table_name);
             $items = $f->getRecords();
 
             $fc = new forms_control();
@@ -1840,7 +1847,7 @@ class formsController extends expController {
     }
 
     public function import_csv_data_add() {
-        global $user, $db;
+        global $user;
 
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
@@ -1888,7 +1895,6 @@ class formsController extends expController {
                     }
                     $i++;
                 }
-//                $db->insertObject($db_data, 'forms_' . $f->table_name);
                 $f->insertRecord($db_data);
                 $recordsdone++;
             }

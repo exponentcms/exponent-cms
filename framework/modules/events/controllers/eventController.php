@@ -826,7 +826,7 @@ class eventController extends expController {
                         }
                     }
 
-                    $body = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
+                    $body = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>", "</p>"), "\n", $items[$i]->body)));
                     if ($items[$i]->is_cancelled) $body = gt('This Event Has Been Cancelled') . ' - ' . $body;
                     $body = str_replace(array("\r"), "", $body);
                     $body = str_replace(array("&#160;"), " ", $body);
@@ -999,18 +999,18 @@ class eventController extends expController {
             $htmlmsg = $template->render();
 
             // now the same thing for the text message
-            $msg = chop(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $htmlmsg)));
+            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $htmlmsg)));
 
             // Saved.  do notifs
             $emails = array();
             if (!empty($this->config['user_list'])) foreach ($this->config['user_list'] as $c) {
                 $u = user::getUserById($c);
-                $emails[] = $u->email;
+                $emails[$u->email] = trim(user::getUserAttribution($u->id));
             }
             if (!empty($this->config['group_list'])) foreach ($this->config['group_list'] as $c) {
                 $grpusers = group::getUsersInGroup($c);
                 foreach ($grpusers as $u) {
-                    $emails[] = $u->email;
+                    $emails[$u->email] = trim(user::getUserAttribution($u->id));
                 }
             }
             if (!empty($this->config['address_list'])) foreach ($this->config['address_list'] as $c) {
@@ -1024,13 +1024,13 @@ class eventController extends expController {
 
             $emails = array_flip(array_flip($emails));
             $emails = array_map('trim', $emails);
-            $headers = array(
-                "MIME-Version" => "1.0",
-                "Content-type" => "text/html; charset=" . LANG_CHARSET
-            );
+//            $headers = array(
+//                "MIME-Version" => "1.0",
+//                "Content-type" => "text/html; charset=" . LANG_CHARSET
+//            );
             $mail = new expMail();
             $mail->quickSend(array(
-                'headers'      => $headers,
+//                'headers'      => $headers,
                 'html_message' => $htmlmsg,
                 "text_message" => $msg,
                 'to'           => $emails,

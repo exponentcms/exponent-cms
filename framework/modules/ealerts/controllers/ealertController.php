@@ -148,14 +148,14 @@ class ealertController extends expController {
         $count = 1;
         $total = count($subscribers);
         foreach($subscribers as $subscriber) {
-            $link = $router->makelink(array('controller'=>'ealert', 'action'=>'subscriptions', 'id'=>$subscriber->id, 'key'=>$subscriber->hash));
-            $body  = $message->body;
-            $body .= '<br><a href="'.$link.'">'.gt('Click here to change your E-Alert subscription settings').'.</a>';
+//            $link = $router->makelink(array('controller'=>'ealert', 'action'=>'subscriptions', 'id'=>$subscriber->id, 'key'=>$subscriber->hash));
+//            $body  = $message->body;
+//            $body .= '<br><a href="'.$link.'">'.gt('Click here to change your E-Alert subscription settings').'.</a>';
             
             $mail = new expMail();
             $mail->quickSend(array(
                 'html_message'=>$message->body,
-		        'to'=>$subscriber->email,
+		        'to'=>array(trim($subscriber->email) => trim(user::getUserAttribution($subscriber->id))),
                 'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 		        'subject'=>$message->subject,
             ));
@@ -198,6 +198,9 @@ class ealertController extends expController {
         expHistory::back();
     }
 
+    /**
+     * @deprecated
+     */
     public function subscriptions() {
         global $db;
         
@@ -222,6 +225,9 @@ class ealertController extends expController {
         ));
     }
     
+    /**
+     * @deprecated
+     */
     public function subscription_update() {
         global $db;
         
@@ -254,6 +260,9 @@ class ealertController extends expController {
         expHistory::back();
     }
     
+    /**
+     * @deprecated
+     */
     public function signup() {
         global $db;
         // check the anti-spam control
@@ -298,6 +307,9 @@ class ealertController extends expController {
         redirect_to(array('controller'=>'ealert', 'action'=>'pending', 'id'=>$subscriber->id));
     }
     
+    /**
+     * @deprecated
+     */
     public function pending() {
 //        global $db;
         

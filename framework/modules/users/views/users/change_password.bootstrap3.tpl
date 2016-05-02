@@ -27,57 +27,11 @@
         {control type="hidden" name="uid" value=$u->id}
         {control type="hidden" name="username" value=$u->username}
         {if $isuser}
-            {control type="password" name="password" label="Current Password"|gettext}
+            {control type="password" name="password" label="Current Password"|gettext required=1}
         {/if}
-        <div class="row">
-            {control class="col-sm-4" type="password" name="new_password1" label="Enter your new password"|gettext}
-            <div class="col-sm-4" style="padding-top: 8px;">
-                <div class="pwstrength_viewport_progress"></div>
-            </div>
-        </div>
-        {control type="password" name="new_password2" label="Confirm your new password"|gettext}
+        {control class="col-sm-4" type="password" name="new_password1" meter=1 label="Enter your new password"|gettext required=1}
+        {control type="password" name="new_password2" label="Confirm your new password"|gettext required=1}
         {br}
         {control type="buttongroup" submit="Change My Password"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
-
-{script unique="showlogin" jquery='pwstrength-bootstrap-1.2.10'}
-{literal}
-    $(document).ready(function () {
-        "use strict";
-        var options = {};
-        options.common = {
-            minChar: {/literal}{$smarty.const.MIN_PWD_LEN}{literal},
-        };
-//        options.rules = {
-//            activated: {
-//                wordNotEmail: true,
-//                wordLength: true,
-//                wordSimilarToUsername: true,
-//                wordSequences: true,
-//                wordTwoCharacterClasses: false,
-//                wordRepetitions: false,
-//                wordLowercase: true,
-//                wordUppercase: true,
-//                wordOneNumber: true,
-//                wordThreeNumbers: true,
-//                wordOneSpecialChar: true,
-//                wordTwoSpecialChar: true,
-//                wordUpperLowerCombo: true,
-//                wordLetterNumberCombo: true,
-//                wordLetterNumberCharCombo: true
-//            }
-//        };
-        options.ui = {
-            container: ".change-password",
-            showVerdictsInsideProgressBar: true,
-            showErrors: true,
-            viewports: {
-                progress: ".pwstrength_viewport_progress",
-                errors: ".pwstrength_viewport_progress",
-            }
-        };
-        $('#new_password1').pwstrength(options);
-    });
-{/literal}
-{/script}

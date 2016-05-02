@@ -22,7 +22,8 @@ DirectoryIndex index.php
     # uncomment and adapt the following:
 #     RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
 #     RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
-  
+
+# the next two lines will dish out .html pages if they exist, which may not be a desired effect!
     RewriteRule ^$ index.html [QSA]
     RewriteRule ^([^.]+)$ $1.html [QSA]
 
@@ -38,7 +39,7 @@ DirectoryIndex index.php
     RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
     RewriteCond %{REQUEST_URI} !^/favicon\.ico$ [NC]
 
-    # These rules basically state if it isn't an existing fild, directory or symlink, route it to index.php
+    # These rules basically state if it isn't an existing file, directory or symlink, route it to index.php
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-l

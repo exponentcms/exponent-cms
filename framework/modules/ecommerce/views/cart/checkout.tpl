@@ -20,30 +20,6 @@
 {messagequeue}
 
 <div id="expresscheckout" class="cart checkout exp-skin yui3-skin-sam">
-    {*{assocarray}*}
-        {*breadcrumb: [*}
-            {*0: [*}
-                {*title: "{'Summary'|gettext}"*}
-                {*link: makeLink(array('controller'=>'cart','action'=>'show'))*}
-            {*]*}
-            {*1: [*}
-                {*title:  "{'Sign In'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-            {*2: [*}
-                {*title:  "{'Shipping/Billing'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-            {*3: [*}
-                {*title:  "{'Confirmation'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-            {*4: [*}
-                {*title:  "{'Complete'|gettext}"*}
-                {*link: ""*}
-            {*]*}
-        {*]*}
-    {*{/assocarray}*}
     {$breadcrumb = [
         0 => [
             "title" => "{'Summary'|gettext}",

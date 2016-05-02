@@ -54,7 +54,8 @@ class splitcreditcard extends creditcard {
         $opts = expUnserialize($billingmethod->billing_options);  //FIXME why aren't we passing $opts?
 
         // make sure we have some billing options saved.
-        if (empty($opts)) return false;
+        if (empty($opts))
+            return false;
 
         //FIXME this is where we lose the split credit card data
 		// get the configuration data
@@ -68,7 +69,8 @@ class splitcreditcard extends creditcard {
 
 		$addresses = explode(',', $config['notification_addy']);
         $from = array(ecomconfig::getConfig('from_address') => ecomconfig::getConfig('from_name'));
-        if (empty($from[0])) $from = SMTP_FROMADDRESS;
+        if (empty($from[0]))
+            $from = array(SMTP_FROMADDRESS => ecomconfig::getConfig('storename'));
         foreach ($addresses as $address) {
 		    $mail = new expMail();
 		    $mail->quickSend(array(

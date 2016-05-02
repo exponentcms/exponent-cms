@@ -123,7 +123,7 @@
 <tr>
 	<td id="o_curl" class="bodytext" style="font-weight: bold;" valign="top"><?php echo gt('File Upload Support'); ?></td>
 	<td class="bodytext" valign="top">
-		<?php echo gt('The php.ini \'"post_max_size\' and \'upload_max_filesize\ settings may cause file upload issues if not set to same value.'); ?>
+		<?php echo gt('The php.ini \'post_max_size\' and \'upload_max_filesize\' settings may cause file upload issues if not set to same value.'); ?>
 	</td>
 </tr>
 <tr>

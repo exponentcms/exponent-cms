@@ -256,7 +256,7 @@ class textController extends expController {
      * we only have to deal with a title and body which can be edited by ckeditor4 inline
      */
     public function edit_item() {
-        $text = new text($this->params['id']);
+        $text = new text($this->params['id']);  // get existing data
         if ($this->params['type'] != 'revert') {
             if ($this->params['id'] != 0) {
                 $prop = $this->params['type'];
@@ -264,17 +264,14 @@ class textController extends expController {
                 if ($prop == 'title') $data = trim(strip_tags($data));
                 $text->$prop = $data;
             } else {
-                $text->title = 'title placeholder';
-                $text->body = '<p>content placeholder</p>';
+                $text->title = gt('title placeholder');
+                $text->body = '<p>' . gt('content placeholder') . '</p>';
                 $text->location_data = serialize(expCore::makeLocation('text',$this->params['src'],''));
             }
             $text->update();
             $text->refresh();  // need to get updated database info
-//            $ar = new expAjaxReply(200, gt('The text item was saved'), $text->id);
-            $ar = new expAjaxReply(200, gt('The text item was saved'), json_encode($text));
-        } else {
-            $ar = new expAjaxReply(200, gt('The text item was saved'), json_encode($text));
         }
+        $ar = new expAjaxReply(200, gt('The text item was saved'), json_encode($text));
         $ar->send();
     }
 

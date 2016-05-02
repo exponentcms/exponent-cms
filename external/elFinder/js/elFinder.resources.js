@@ -62,22 +62,32 @@ elFinder.prototype.resources = {
 				cmd  = this.name,
 				cwd  = fm.getUI('cwd'),
 				tarea= (fm.storage('view') != 'list'),
+				sel = fm.selected(),
 				rest = function(){
+					if (!overlay.is(':hidden')) {
+						overlay.addClass('ui-front')
+							.elfinderoverlay('hide')
+							.off('click', cancel);
+					}
+					node.removeClass('ui-front').css('position', '');
 					if (tarea) {
-						node.zIndex('').css('position', '');
 						nnode.css('max-height', '');
 					} else {
-						pnode.css('width', '');
-						pnode.parent('td').css('overflow', '');
+						pnode.css('width', '')
+							.parent('td').css('overflow', '');
 					}
 				}, colwidth,
 				dfrd = $.Deferred()
 					.fail(function(error) {
-						rest();
+						if (sel) {
+							fm.trigger('unlockfiles', {files: sel});
+							fm.clipboard([]);
+						}
 						cwd.trigger('unselectall');
 						error && fm.error(error);
 					})
 					.always(function() {
+						rest();
 						input.remove();
 						node.remove();
 						fm.enable();
@@ -94,8 +104,22 @@ elFinder.prototype.resources = {
 					date  : 'Today '+date.getHours()+':'+date.getMinutes()
 				},
 				data = this.data || {},
-				node = cwd.trigger('create.'+fm.namespace, file).find('#'+fm.cwdHash2Id(id)),
+				node = cwd.trigger('create.'+fm.namespace, file).find('#'+fm.cwdHash2Id(id))
+					.on('unselect.'+fm.namespace, function() {
+						setTimeout(function() {
+							input && input.blur();
+						}, 50);
+					}),
 				nnode, pnode,
+				overlay = fm.getUI().children('.elfinder-overlay'),
+				cancel = function(e) { 
+					if (! inError) {
+						input.remove();
+						node.remove();
+						e.stopPropagation();
+						dfrd.reject();
+					}
+				},
 				input = $(tarea? '<textarea/>' : '<input type="text"/>')
 					.on('keyup text', function(){
 						if (tarea) {
@@ -110,7 +134,6 @@ elFinder.prototype.resources = {
 					})
 					.keydown(function(e) {
 						e.stopImmediatePropagation();
-
 						if (e.keyCode == $.ui.keyCode.ESCAPE) {
 							dfrd.reject();
 						} else if (e.keyCode == $.ui.keyCode.ENTER) {
@@ -123,9 +146,10 @@ elFinder.prototype.resources = {
 					.blur(function() {
 						var name   = $.trim(input.val()),
 							parent = input.parent(),
-							valid  = true;
+							valid  = true,
+							cut;
 
-						if (parent.length) {
+						if (!inError && parent.length) {
 
 							if (fm.options.validName && fm.options.validName.test) {
 								try {
@@ -135,67 +159,86 @@ elFinder.prototype.resources = {
 								}
 							}
 							if (!name || name === '..' || !valid) {
-								fm.error('errInvName');
+								inError = true;
+								fm.error('errInvName', {modal: true, close: select});
 								return false;
 							}
 							if (fm.fileByName(name, phash)) {
-								fm.error(['errExists', name]);
+								inError = true;
+								fm.error(['errExists', name], {modal: true, close: select});
 								return false;
 							}
 
-							rest();
-							parent.html(fm.escape(name));
+							cut = sel? fm.exec('cut', sel) : null;
 
-							fm.lockfiles({files : [id]});
+							$.when(cut)
+							.done(function() {
+								rest();
+								parent.html(fm.escape(name));
 
-							fm.request({
-									data        : $.extend({cmd : cmd, name : name, target : phash}, data || {}), 
-									notify      : {type : cmd, cnt : 1},
-									preventFail : true,
-									syncOnFail  : true
-								})
-								.fail(function(error) {
-									dfrd.reject(error);
-								})
-								.done(function(data) {
-									dfrd.resolve(data);
-									if (data.added && data.added[0]) {
-										var newItem = cwd.find('#'+fm.cwdHash2Id(data.added[0].hash));
-										if (newItem.length) {
-											newItem.trigger('scrolltoview');
+								fm.lockfiles({files : [id]});
+
+								fm.request({
+										data        : $.extend({cmd : cmd, name : name, target : phash}, data || {}), 
+										notify      : {type : cmd, cnt : 1},
+										preventFail : true,
+										syncOnFail  : true
+									})
+									.fail(function(error) {
+										dfrd.reject(error);
+									})
+									.done(function(data) {
+										dfrd.resolve(data);
+										if (data.added && data.added[0]) {
+											var dirhash = data.added[0].hash,
+												newItem = cwd.find('#'+fm.cwdHash2Id(dirhash));
+											if (sel) {
+												fm.exec('paste', dirhash);
+											}
+											if (newItem.length) {
+												newItem.trigger('scrolltoview');
+											}
 										}
-									}
-								});
+									});
+							})
+							.fail(function() {
+								dfrd.reject();
+							});
 						}
-					});
-
+					}),
+				select = function() {
+					var name = input.val().replace(/\.((tar\.(gz|bz|bz2|z|lzo))|cpio\.gz|ps\.gz|xcf\.(gz|bz2)|[a-z0-9]{1,4})$/ig, '');
+					inError = false;
+					if (fm.UA.Mobile) {
+						overlay.on('click', cancel)
+							.removeClass('ui-front').elfinderoverlay('show');
+					}
+					input.select().focus();
+					input[0].setSelectionRange && input[0].setSelectionRange(0, name.length);
+				},
+				inError = false;
 
 			if (this.disabled() || !node.length) {
 				return dfrd.reject();
 			}
 
-			fm.disable();
 			nnode = node.find('.elfinder-cwd-filename');
 			pnode = nnode.parent();
+			node.css('position', 'relative').addClass('ui-front');
 			if (tarea) {
-				node.zIndex((node.parent().zIndex()) + 1).css('position', 'relative');
 				nnode.css('max-height', 'none');
 			} else {
 				colwidth = pnode.width();
-				pnode.width(colwidth - 15);
-				pnode.parent('td').css('overflow', 'visible');
+				pnode.width(colwidth - 15)
+					.parent('td').css('overflow', 'visible');
 			}
 			nnode.empty('').append(input.val(file.name));
+			
 			input.trigger('keyup');
-			input.select().focus();
-			input[0].setSelectionRange && input[0].setSelectionRange(0, file.name.replace(/\..+$/, '').length);
+			select();
 
 			return dfrd;
 
-
-
 		}
-		
 	}
-}
-
+};

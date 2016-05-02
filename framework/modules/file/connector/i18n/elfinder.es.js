@@ -2,7 +2,8 @@
  * Español internacional translation
  * @author Julián Torres <julian.torres@pabernosmatao.com>
  * @author Luis Faura <luis@luisfaura.es>
- * @version 2015-11-27
+ * @author Adrià Vilanova <me@avm99963.tk>
+ * @version 2016-03-19
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.es = {
@@ -97,6 +98,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errNetUnMount'        : 'Imposible montar', // from v2.1 added 30.04.2012
 			'errConvUTF8'          : 'No es convertible a UTF-8', // from v2.1 added 08.04.2014
 			'errFolderUpload'      : 'Prueba con Google Chrome si quieres subir la carpeta entera.', // from v2.1 added 26.6.2015
+			'errSearchTimeout'     : 'Se agotó el tiempo de espera buscando "$1". Los resultados de búsqueda son parciales.', // from v2.1 added 12.1.2016
 			'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
@@ -114,6 +116,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdhome'      : 'Inicio',
 			'cmdinfo'      : 'Obtener información',
 			'cmdmkdir'     : 'Nueva carpeta',
+			'cmdmkdirin'   : 'En una nueva carpeta', // from v2.1.7 added 19.2.2016
 			'cmdmkfile'    : 'Nuevo archivo de texto',
 			'cmdopen'      : 'Abrir',
 			'cmdpaste'     : 'Pegar',
@@ -131,6 +134,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdnetunmount': 'Desmontar', // from v2.1 added 30.04.2012
 			'cmdplaces'    : 'A Lugares', // added 28.12.2014
 			'cmdchmod'     : 'Cambiar modo', // from v2.1 added 20.6.2015
+			'cmdopendir'   : 'Abrir una carpeta', // from v2.1 added 13.1.2016
 			'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
@@ -152,6 +156,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnMime'   : 'Tipo MIME', // from v2.1 added 22.5.2015
 			'btnFileName':'Nombre de archivo',  // from v2.1 added 22.5.2015
 			'btnSaveClose': 'Guardar y cerrar', // from v2.1 added 12.6.2015
+			'btnBackup' : 'Copia de seguridad', // fromv2.1 added 28.11.2015
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Abrir carpeta',
@@ -179,6 +184,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfreaddir'  : 'Leyendo información de la carpeta', // from v2.1 added 01.07.2013
 			'ntfurl'      : 'Obteniendo URL del enlace', // from v2.1 added 11.03.2014
 			'ntfchmod'    : 'Cambiando el modo de archivo', // from v2.1 added 20.6.2015
+			'ntfpreupload': 'Verificando nombre del archivo subido', // from v2.1 added 31.11.2015
+			'ntfzipdl'    : 'Creando un archivo para descargar', // from v2.1.7 added 23.1.2016
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'desconocida',
@@ -327,6 +334,14 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'execute'         : 'Ejecutar', // from v2.1 added 20.6.2015
 			'perm'            : 'Permiso', // from v2.1 added 20.6.2015
 			'mode'            : 'Modo', // from v2.1 added 20.6.2015
+			'emptyFolder'     : 'La carpeta está vacía', // from v2.1.6 added 30.12.2015
+			'emptyFolderDrop' : 'La carpeta está vacía\\A Arrastrar para añadir elementos', // from v2.1.6 added 30.12.2015
+			'emptyFolderLTap' : 'La carpeta está vacía\\A Presiona durante un rato para añadir elementos', // from v2.1.6 added 30.12.2015
+			'quality'         : 'Calidad', // from v2.1.6 added 5.1.2016
+			'autoSync'        : 'Sincronización automática',  // from v2.1.6 added 10.1.2016
+			'moveUp'          : 'Mover arriba',  // from v2.1.6 added 18.1.2016
+			'getLink'         : 'Obtener enlace', // from v2.1.7 added 9.2.2016
+			'selectedItems'   : 'Elementos seleccionados ($1)', // from v2.1.7 added 2.19.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Desconocido',

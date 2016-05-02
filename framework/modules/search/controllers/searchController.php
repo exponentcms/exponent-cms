@@ -47,23 +47,25 @@ class searchController extends expController {
     static function hasSources() { return false; }
     static function hasContent() { return false; }
 
-    public function search() {
-        // include CSS for results
-        // auto-include the CSS for pagination links
-	    expCSS::pushToHead(array(
-//		    "unique"=>"search-results",
-		    "link"=>$this->asset_path."css/results.css",
-		    )
-		);
-        
+    public function search()
+    {
+        global $router;
+
         $terms = $this->params['search_string'];
-        
+
         // If magic quotes is on and the user uses modifiers like " (quotes) they get escaped. We don't want that in this case.
         if (get_magic_quotes_gpc()) {
             $terms = stripslashes($terms);
         }
         $terms = htmlspecialchars($terms);
-        
+
+        if ($router->current_url == substr(URL_FULL, 0, -1)) {  // give us a user friendly url
+            unset($router->params['int']);
+//            unset($router->params['src']);
+//            $router->params['src'] = '1';
+            redirect_to($router->params);
+        }
+
         $search = new search();
 
         $page = new expPaginator(array(
@@ -73,11 +75,32 @@ class searchController extends expController {
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
-            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
-            'controller'=>$this->params['controller'],
-            'action'=>$this->params['action'],
-            'src'=>$this->loc->src,
+            'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller' => $this->params['controller'],
+            'action' => $this->params['action'],
+            'src' => $this->loc->src,
         ));
+
+        if ($this->config['is_categorized'] == 1) {
+            $results = array();
+            foreach ($page->records as $hit) {
+                if (!isset($results[$hit->category])) {
+                    $results[$hit->category] = array();
+                }
+                $results[$hit->category][] = $hit;
+            }
+            assign_to_template(array(
+                'results'=>$results,
+            ));
+        }
+
+        // include CSS for results
+        // auto-include the CSS for pagination links
+	    expCSS::pushToHead(array(
+//		    "unique"=>"search-results",
+		    "link"=>$this->asset_path."css/results.css",
+		    )
+		);
 
         assign_to_template(array(
             'page'=>$page,
@@ -333,6 +356,7 @@ class searchController extends expController {
         flash('message', gt("Search Queries successfully deleted."));
         expHistory::back();
     }
+
 }
 
 ?>

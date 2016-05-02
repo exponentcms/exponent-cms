@@ -558,6 +558,8 @@ class expTemplate {
             $common_views[$key]['name'] = gt($value['name']);
         }
         $moduleconfig = array();
+        if (!empty($common_views['module_style'])) $moduleconfig['module_style'] = $common_views['module_style'];
+        unset($common_views['module_style']);
         if (!empty($common_views['module'])) $moduleconfig['module'] = $common_views['module'];
         unset($common_views['module']);
 

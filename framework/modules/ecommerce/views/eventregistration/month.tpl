@@ -83,7 +83,7 @@
                                         title="{$title}">
                                         {if $item->expFile.mainimage[0]->url != ""}
                                             <div class="image">
-                                                {img file_id=$item->expFile.mainimage[0]->id alt=$item->image_alt_tag|default:"Image of `$item->title`" title=$title class="large-img" id="enlarged-image" w=92}
+                                                {img file_id=$item->expFile.mainimage[0]->id alt=$item->image_alt_tag|default:"Image of `$item->title`" title=$title w=92}
                                                 {clear}
                                             </div>
                                         {/if}
@@ -123,7 +123,7 @@
 {if $config.lightbox}
 {script unique="shadowbox" jquery='jquery.colorbox'}
 {literal}
-    $('a.calpopevent').click(function(e) {
+    $('.events_calendar.events a.calpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,

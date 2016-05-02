@@ -71,12 +71,28 @@
                         <tr>
                             {foreach from=$page->columns item=column key=field name=column}
                                 <td>
-                                    {if $smarty.foreach.column.iteration == 1}
-                                        <a href={link action=show forms_id=$f->id id=$fields.id}>{$fields.$column}</a>
-                                    {elseif $column == 'email'}
-                                        <a href="mailto:{$fields.$column}">{$fields.$column}</a>
+                                    {if $column == 'email'}
+                                        <a href="mailto:{$fields.$column}">
+                                    {elseif $smarty.foreach.column.iteration == 1}
+                                        <a href={link action=show forms_id=$f->id id=$fields.id}>
+                                    {/if}
+                                    {if $column == 'image'}
+                                        {$matches = array()}
+                                        {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$column, $matches)}
+                                        {$filename1 = $matches.2.0}
+                                        {$filename2 = str_replace(URL_BASE, '/', $filename1)}
+                                        {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                        {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
+                                        {if $fileinfo.is_image == 1}
+                                            {img src=$filename1 w=64}
+                                        {else}
+                                            {$fields.$column}
+                                        {/if}
                                     {else}
                                         {$fields.$column}
+                                    {/if}
+                                    {if $column == 'email' || $smarty.foreach.column.iteration == 1}
+                                        </a>
                                     {/if}
                                 </td>
                             {/foreach}

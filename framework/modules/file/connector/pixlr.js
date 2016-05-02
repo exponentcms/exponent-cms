@@ -1,5 +1,5 @@
 elFinder.prototype.commands.pixlr = function() {
-	this.updateOnSelect = false;
+	// this.updateOnSelect = false;
 
 	this.getstate = function(sel) {
 		var fm = this.fm;
@@ -42,7 +42,7 @@ elFinder.prototype.commands.pixlr = function() {
 				+ cdata;
 			
 			exit = uploadURL + (uploadURL.indexOf('?') === -1 ? '?' : '&')
-				+ 'cmd=pixlr'
+				+ 'cmd=pixlr'  //exp doesn't need &node=
 				+ cdata;
 			
 			url = 'http://pixlr.com/'+mode+'/?image=' + encodeURIComponent(img)

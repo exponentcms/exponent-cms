@@ -28,7 +28,7 @@ class bootstrap3theme extends theme {
 
     function configureTheme() {
    		//BOOTSTRAP SWATCHES
-        $swatches[] = gt('Base');
+        $swatches = array();
        	if (is_readable(BASE.'external/bootstrap3/less')) {
        		$dh = opendir(BASE.'external/bootstrap3/less');
        		while (($file = readdir($dh)) !== false) {
@@ -68,7 +68,7 @@ class bootstrap3theme extends theme {
 		);
 
    		$settings = expSettings::parseFile(BASE."themes/".$this->params['theme']."/config.php");
-        if (empty($settings['SWATCH'])) $settings['SWATCH'] = '';
+        if (empty($settings['SWATCH'])) $settings['SWATCH'] = 'custom';
    		$form = new form();
    		$form->meta('controller','administration');
    		$form->meta('action','update_theme');
@@ -95,7 +95,7 @@ class bootstrap3theme extends theme {
    	}
 
     function saveThemeConfig ($params) {
-        if (empty($params['swatch'])) $params['swatch'] = "";
+        if (empty($params['swatch'])) $params['swatch'] = "custom";
         if (empty($params['enhanced_style'])) $params['enhanced_style'] = '0';
         if (empty($params['style_width'])) $params['style_width'] = "";
         if (empty($params['btn_size'])) $params['btn_size'] = "";

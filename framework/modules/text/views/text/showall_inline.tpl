@@ -101,6 +101,7 @@
 {if $inline && !$preview}
     {if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}
         {script unique="ckeditor" src="`$smarty.const.PATH_RELATIVE`external/editors/ckeditor/ckeditor.js"}
+            CKEDITOR.disableAutoInline = true;
         {/script}
         {$contentCSS = ""}
         {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor.css"}
@@ -113,14 +114,6 @@
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
         {/script}
-        {$contentCSS = ""}
-        {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce.css"}
-        {if ($smarty.const.THEME_STYLE != "" && is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"))}
-            {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/tinymce/tinymce_`$smarty.const.THEME_STYLE`.css"}
-        {/if}
-        {if is_file($smarty.const.BASE|cat:$css)}
-           {$contentCSS = "content_css : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
-        {/if}
     {/if}
 
     {script unique=$name jquery="jqueryui"}
@@ -130,7 +123,7 @@
         var workflow = {/literal}{$smarty.const.ENABLE_WORKFLOW}{literal};
 
         {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
-        CKEDITOR.disableAutoInline = true;
+//        CKEDITOR.disableAutoInline = true;
         var fullToolbar = {/literal}{if empty($editor->data)}''{else}[{stripSlashes($editor->data)}]{/if}{literal};
         var titleToolbar = [['Cut','Copy','Paste',"PasteText","Undo","Redo"],["Find","Replace","SelectAll","Scayt"],['About']];
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
@@ -159,16 +152,20 @@
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                                 success:function(msg) {
+                                    data = $.parseJSON(msg.data);
                                     if (workflow) {
-                                        data = $.parseJSON(msg.data);
                                         $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
                                         if (!data.approved) {
                                             $('#text-' + data.id).addClass('unapproved');
                                         }
                                     }
+                                    var title = data.title;
+                                    if (title == '') {
+                                        title = '{/literal}{'Untitled'|gettext}{literal}';
+                                    }
+                                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
                                 }
                             });
-                            $('input:hidden[name=\'rerank[]\'][value=\'' + item[1] + '\']').siblings('span').html(data);
                             dialog.dialog('close');
                         },
                         "No, Undo All Changes":  function() {
@@ -196,29 +193,37 @@
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                     success:function(msg) {
+                        data = $.parseJSON(msg.data);
                         if (workflow) {
-                            data = $.parseJSON(msg.data);
                             $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
                             if (!data.approved) {
                                 $('#text-' + data.id).addClass('unapproved');
                             }
                         }
+                        var title = data.title;
+                        if (title == '') {
+                            title = '{/literal}{'Untitled'|gettext}{literal}';
+                        }
+                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
                     }
                 });
-                $('input:hidden[name=\'rerank[]\'][value=\'' + item[1] + '\']').siblings('span').html(data);
             }
         };
 
         var startEditor = function(node) {
             if ($(node).attr('id').substr(0,5) == 'title') {
                 mytoolbar = titleToolbar;
+                tinymenu = false;
                 tinyplugins = ['searchreplace,contextmenu,paste,link,localautosave'];
             } else {
                 mytoolbar = fullToolbar;
+                tinymenu = true;
                 tinyplugins = ['image,imagetools,searchreplace,contextmenu,paste,link,textcolor,visualblocks,code,localautosave'];
             }
 
             {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR == "ckeditor"}{literal}
+//            var editor = CKEDITOR.instances[node.id];
+//            if (editor) { CKEDITOR.remove(editor); }
             CKEDITOR.inline(node, {
                 on: {
                     blur: function( event ) {
@@ -259,7 +264,7 @@
                 filebrowserLinkWindowWidth : 320,
                 filebrowserLinkWindowHeight : 600,
                 extraPlugins : 'autosave,tableresize,sourcedialog,image2,uploadimage,quicktable,showborders,{/literal}{stripSlashes($editor->plugins)}{literal}',
-                removePlugins: 'image',
+                removePlugins: 'image,forms,flash',
                 image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                 image2_captionedClass: 'image-captioned',
                 {/literal}{$editor->additionalConfig}{literal}
@@ -276,13 +281,11 @@
                     {/literal}{$editor->fontnames}{literal},
                 uiColor : '#aaaaaa',
                 baseHref : EXPONENT.PATH_RELATIVE,
-
             });
         {/literal}{elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}{literal}
             tinymce.init({
                 selector : '#'+node.id,
                 plugins : tinyplugins,
-                {/literal}{$contentCSS}{literal}
                 inline: true,
                 document_base_url : EXPONENT.PATH_RELATIVE,
                 toolbar: mytoolbar,
@@ -367,7 +370,7 @@
                     if (workflow && !data.approved) {
                         newItem += ' unapproved';
                     }
-                    newItem += '"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                    newItem += '"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                     newItem += '<div class="item-actions">';
                     if (workflow) {
                         newItem += '<span class="revisionnum approval" title="Viewing Revision #' + data.revision_id + '">' + data.revision_id + '</span>';
@@ -375,11 +378,11 @@
                     newItem += '<a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
                     newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '">{/literal}{'Delete'|gettext}{literal}</a>';
                     newItem +='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a></div>';
-                    newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">content placeholder</div></div></div>';
+                    newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">{/literal}{'content placeholder'|gettext}{literal}</div></div></div>';
                     $('#textcontent-{/literal}{$name}{literal}').append(newItem);
                     startEditor($('#title-' + data.id)[0]);
                     startEditor($('#body-' + data.id)[0]);
-                    newDDItem = '<li><input type="hidden" value="' + data.id + '" name="rerank[]"><div class="fpdrag"></div><span class="label">title placeholder</span></li>';
+                    newDDItem = '<li><input type="hidden" value="' + data.id + '" name="rerank[]"><div class="fpdrag"></div><span class="label">{/literal}{'title placeholder'|gettext}{literal}</span></li>';
                     $('#listToOrder' + src.slice(1)).append(newDDItem);
                 }
             });
@@ -393,7 +396,7 @@
             $.ajax({
                 type: "POST",
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
-                data: "id="+item[1] + "&type=title&value=title+placeholder",
+                data: "id="+item[1] + "&type=title&value={/literal}{'title placeholder'|gettext|escape:'url'}{literal}",
                 success: function(msg) {
                     data = $.parseJSON(msg.data);
                     if (workflow) {
@@ -402,9 +405,9 @@
                             $('#text-' + data.id).addClass('unapproved');
                         }
                     }
-                    newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">title placeholder</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                    newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
                     $('#text-' + data.id).prepend(newItem);
-                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('title placeholder');
+                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'title placeholder'|gettext}{literal}');
                     startEditor($('#title-' + data.id)[0]);
                     chgItem ='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a>';
                     addparent = $('#addtitle-' + data.id).parent();

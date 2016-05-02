@@ -783,21 +783,21 @@ class administrationController extends expController {
         $emaillist = array();
         if (!empty($this->params['allusers'])) {
             foreach (user::getAllUsers() as $u) {
-                $emaillist[] = $u->email;
+                $emaillist[$u->email] = user::getUserAttribution($u->id);
             }
         } else {
             if(!empty($this->params['group_list'])) {
                 foreach (listbuildercontrol::parseData($this->params,'grouplist') as $group_id) {
                    $grpusers = group::getUsersInGroup($group_id);
                    foreach ($grpusers as $u) {
-                       $emaillist[] = $u->email;
+                       $emaillist[$u->email] = user::getUserAttribution($u->id);
                    }
                 }
             }
             if(!empty($this->params['user_list'])) {
                 foreach (listbuildercontrol::parseData($this->params,'user_list') as $user_id) {
                     $u = user::getUserById($user_id);
-                    $emaillist[] = $u->email;
+                    $emaillist[$u->email] = user::getUserAttribution($u->id);
                 }
             }
             if(!empty($this->params['address_list'])) {
@@ -821,7 +821,7 @@ class administrationController extends expController {
         }
 
         $emailText = $this->params['body'];
-		$emailText = chop(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
+		$emailText = trim(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
 		$emailHtml = $this->params['body'];
 
         $from = $user->email;
@@ -836,10 +836,10 @@ class administrationController extends expController {
 		if (empty($subject)) {
             $subject = gt('Email from') . ' ' . trim(ORGANIZATION_NAME);
 		}
-        $headers = array(
-            "MIME-Version" => "1.0",
-            "Content-type" => "text/html; charset=" . LANG_CHARSET
-        );
+//        $headers = array(
+//            "MIME-Version" => "1.0",
+//            "Content-type" => "text/html; charset=" . LANG_CHARSET
+//        );
 
         if (count($emaillist)) {
 			$mail = new expMail();
@@ -859,7 +859,7 @@ class administrationController extends expController {
             }
             if ($this->params['batchsend']) {
                 $mail->quickBatchSend(array(
-                    	'headers'=>$headers,
+//                    	'headers'=>$headers,
                         'html_message'=>$emailHtml,
                         "text_message"=>$emailText,
                         'to'=>$emaillist,
@@ -868,7 +868,7 @@ class administrationController extends expController {
                 ));
             } else {
                 $mail->quickSend(array(
-                    	'headers'=>$headers,
+//                    	'headers'=>$headers,
                         'html_message'=>$emailHtml,
                         "text_message"=>$emailText,
                         'to'=>$emaillist,

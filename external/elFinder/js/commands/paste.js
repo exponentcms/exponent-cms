@@ -61,6 +61,7 @@ elFinder.prototype.commands.paste = function() {
 			paste = function(files) {
 				var dfrd      = $.Deferred(),
 					existed   = [],
+					hashes  = {},
 					intersect = function(files, names) {
 						var ret = [], 
 							i   = files.length;
@@ -138,7 +139,43 @@ elFinder.prototype.commands.paste = function() {
 						})
 					},
 					valid     = function(names) {
-						existed = intersect(files, names);
+						var exists = {}, existedArr;
+						if (names) {
+							if ($.isArray(names)) {
+								if (names.length) {
+									if (typeof names[0] == 'string') {
+										// elFinder <= 2.1.6 command `is` results
+										existed = intersect(files, names);
+									} else {
+										$.each(names, function(i, v) {
+											exists[v.name] = v.hash;
+										});
+										existed = intersect(files, $.map(exists, function(h, n) { return n; }));
+										$.each(files, function(i, file) {
+											if (exists[file.name]) {
+												hashes[exists[file.name]] = file.name;
+											}
+										});
+									}
+								}
+							} else {
+								existedArr = [];
+								existed = $.map(names, function(n) {
+									if (typeof n === 'string') {
+										return n;
+									} else {
+										// support to >=2.1.11 plugin Normalizer, Sanitizer
+										existedArr = existedArr.concat(n);
+										return null;
+									}
+								});
+								if (existedArr.length) {
+									existed = existed.concat(existedArr);
+								}
+								existed = intersect(files, existed);
+								hashes = names;
+							}
+						}
 						existed.length ? confirm(0) : paste(files);
 					},
 					paste     = function(files) {
@@ -159,10 +196,10 @@ elFinder.prototype.commands.paste = function() {
 						}
 
 						src = files[0].phash;
-						files = $.map(files, function(f) { return f.hash});
+						files = $.map(files, function(f) { return f.hash; });
 						
 						fm.request({
-								data   : {cmd : 'paste', dst : dst.hash, targets : files, cut : cut ? 1 : 0, src : src, renames : renames, suffix : fm.options.backupSuffix},
+								data   : {cmd : 'paste', dst : dst.hash, targets : files, cut : cut ? 1 : 0, src : src, renames : renames, hashes : hashes, suffix : fm.options.backupSuffix},
 								notify : {type : cut ? 'move' : 'copy', cnt : cnt}
 							})
 							.done(function(data) {
@@ -177,8 +214,8 @@ elFinder.prototype.commands.paste = function() {
 							.always(function() {
 								fm.unlockfiles({files : files});
 							});
-					}
-					;
+					},
+					internames;
 
 				if (!fm.isCommandEnabled(self.name, dst.hash) || !files.length) {
 					return dfrd.resolve();
@@ -192,16 +229,16 @@ elFinder.prototype.commands.paste = function() {
 					if (!fm.option('copyOverwrite')) {
 						paste(files);
 					} else {
-
+						internames = $.map(files, function(f) { return f.name});
 						dst.hash == fm.cwd().hash
-							? valid($.map(fm.files(), function(file) { return file.phash == dst.hash ? file.name : null }))
+							? valid($.map(fm.files(), function(file) { return file.phash == dst.hash ? {hash: file.hash, name: file.name} : null }))
 							: fm.request({
-								data : {cmd : 'ls', target : dst.hash},
+								data : {cmd : 'ls', target : dst.hash, intersect : internames},
 								notify : {type : 'prepare', cnt : 1, hideCnt : true},
 								preventFail : true
 							})
 							.always(function(data) {
-								valid(data.list || [])
+								valid(data.list);
 							});
 					}
 				}
@@ -266,4 +303,4 @@ elFinder.prototype.commands.paste = function() {
 		});
 	}
 
-}
+};

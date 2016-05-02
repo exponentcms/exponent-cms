@@ -172,8 +172,7 @@ class ckeditorcontrol extends formcontrol {
                     filebrowserLinkWindowWidth : 320,
                     filebrowserLinkWindowHeight : 600,
                     extraPlugins : 'autosave,tableresize,image2,uploadimage,quicktable,showborders," . $plugins . "',
-                    removePlugins: 'image',
-//                    removePlugins : 'resize',
+                    removePlugins: 'image,forms,flash',
                     image2_alignClasses: [ 'image-left', 'image-center', 'image-right' ],
                     image2_captionedClass: 'image-captioned',
                     " . $additionalConfig . "

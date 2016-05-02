@@ -22,6 +22,13 @@
 			<h2>{'Manage Pages'|gettext}</h2>
 		</div>
 	</div>
+	{permissions}
+		{if $user->isAdmin()}
+			<div class="module-actions">
+				{icon class=manage action=manage_sitemap text='Manage by Sitemap'|gettext}
+			</div>
+		{/if}
+	{/permissions}
 	<div id="navmanager-tabs" class="">
 	    <ul class="nav nav-tabs" role="tablist">
         	<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Menu Hierarchy'|gettext}</em></a></li>

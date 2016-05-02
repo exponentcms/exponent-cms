@@ -89,16 +89,16 @@ class expJavascript {
 //                    $srt[$i] = JQUERY_SCRIPT.",";
 //                }
                 $browser = expUtil::browser_info();
-                if (isset($browser['firefox']) && $browser['firefox'] < 3.7) {
+                if (isset($browser['firefox']) && $browser['firefox'] < 5.0) {
                     $scripts .= '
-    <script src="'.JQUERY_SCRIPT.'"></script>' . "\r\n";
+    <script src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js'.'"></script>' . "\r\n";
                 } else {
                     $scripts .= "\r\n" . '
     <!--[if lt IE 9]>
-        <script src="'.JQUERY_SCRIPT.'"></script>
+        <script src="' . JQUERY_SCRIPT . '"></script>
     <![endif]-->
     <!--[if gte IE 9]><!-->
-        <script src="'.JQUERY2_SCRIPT.'"></script>
+        <script src="' . JQUERY2_SCRIPT . '"></script>
     <!--<![endif]-->';
                 }
                 if (bs()) {
@@ -238,9 +238,9 @@ class expJavascript {
                 $scripts .= "\t" . "<!-- jQuery -->";
 //                $scripts .= "\t".'<script type="text/javascript" src="'.JQUERY_SCRIPT.'"></script>'."\r\n";
                 $browser = expUtil::browser_info();
-                if (isset($browser['firefox']) && $browser['firefox'] < 3.7) {
+                if (isset($browser['firefox']) && $browser['firefox'] < 5.0) {
                     $scripts .= '
-    <script src="' . JQUERY_SCRIPT . '"></script>' . "\r\n";
+    <script src="' . JQUERY_RELATIVE . 'js/jquery-' . '1.11.3' . '.min.js' . '"></script>' . "\r\n";
                 } else {
                     $scripts .= '
     <!--[if lt IE 9]>

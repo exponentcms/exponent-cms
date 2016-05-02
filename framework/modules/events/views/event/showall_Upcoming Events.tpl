@@ -105,6 +105,11 @@
 			</strong>
 		</dd>
 		<dd>
+            {if !empty($item->expFile[0]->url)}
+                <div class="image photo" style="margin-right: 6px;margin-bottom: 6px;float:left;overflow: hidden;">
+                    {img file_id=$item->expFile[0]->id title="`$item->title`" h=48}
+                </div>
+            {/if}
             <span class="description">
             {if $config.usebody=='0'}
                 {$item->body}
@@ -123,6 +128,7 @@
                 </span>
                 {if !empty($item->event->expCat[0]->title)}<span class="category">{$item->event->expCat[0]->title}</span>{/if}
             </span>
+            {clear}
 		</dd>
         </div>
 	{foreachelse}

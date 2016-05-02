@@ -733,8 +733,34 @@ class navigationController extends expController {
             'canManageStandalones' => self::canManageStandalones(),
             'sasections'           => $db->selectObjects('section', 'parent=-1'),
             'user'                 => $user,
-            'canManagePagesets'    => $user->isAdmin(),
-            'templates'            => $db->selectObjects('section_template', 'parent=0'),
+//            'canManagePagesets'    => $user->isAdmin(),
+//            'templates'            => $db->selectObjects('section_template', 'parent=0'),
+        ));
+    }
+
+    public function manage_sitemap() {
+        global $db, $user, $sectionObj, $sections;
+
+        expHistory::set('viewable', $this->params);
+        $id      = $sectionObj->id;
+        $current = null;
+        // all we need to do is determine the current section
+        $navsections = $sections;
+        if ($sectionObj->parent == -1) {
+            $current = $sectionObj;
+        } else {
+            foreach ($navsections as $section) {
+                if ($section->id == $id) {
+                    $current = $section;
+                    break;
+                }
+            }
+        }
+        assign_to_template(array(
+            'sasections'   => $db->selectObjects('section', 'parent=-1'),
+            'sections'     => $navsections,
+            'current'      => $current,
+            'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
         ));
     }
 
@@ -1026,12 +1052,21 @@ class navigationController extends expController {
     }
 
     private static function get_glyphs() {
-        if (bs3()) {
+        if (bs()) {
             require_once(BASE . 'external/font-awesome.class.php');
             $fa = new Smk_FontAwesome;
-            $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
-            $icons = $fa->sortByName($icons);
-            return $fa->nameGlyph($icons);
+            if (bs3()) {
+                $icons = $fa->getArray(BASE . 'external/font-awesome4/css/font-awesome.css');
+                $icons = $fa->sortByName($icons);
+                return $fa->nameGlyph($icons);
+            } elseif (bs2()) {
+                expCSS::auto_compile_less(
+                    'external/font-awesome/less/font-awesome.less',
+                    'external/font-awesome/css/font-awesome.css'
+                ); // font-awesome is included within bootstrap2, but not as a separate .css file
+                $icons = $fa->getArray(BASE . 'external/font-awesome/css/font-awesome.css', 'icon-');
+                return $fa->nameGlyph($icons, 'icon-');
+            }
         } else {
             return array();
         }

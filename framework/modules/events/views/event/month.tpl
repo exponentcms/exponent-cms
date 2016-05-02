@@ -67,7 +67,7 @@
                             {/if}
                             {foreach name=e from=$items item=item}
                                 {if !empty($item->color)}
-                                    {$style = " style=\"background:`$item->color`;color:`$item->color|contrast`;\""}
+                                    {$style = " style=\"background:`$item->color`;color:`$item->color|contrast`;"}
                                 {else}
                                     {$style = ''}
                                 {/if}
@@ -77,13 +77,11 @@
                                         {$alldaystyle = ' style="'}
                                     {else}
                                         {$alldaystyle = $style}
-                                        {$style = "`$style`\""}
                                     {/if}
                                     {$alldaystyle = "`$alldaystyle` border-color:`$item->color|brightness:+150`;border-style:solid;padding-left:2px;border-top:0;border-bottom:0;border-right:0;\""}
-                                {elseif empty($style)}
+                                {/if}
+                                {if !empty($style)}
                                     {$style = "`$style`\""}
-                                {else}
-                                    {$alldaystyle = $style}
                                 {/if}
                                 {if $item->is_allday}
                                     {$title = 'All Day'|gettext}
@@ -109,9 +107,9 @@
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
                                                 {if $item->date_id}
-                                                    {img file_id=$item->expFile[0]->id title=$title class="large-img" id=$item->date_id w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title id=$item->date_id w=92}
                                                 {else}
-                                                    {img file_id=$item->expFile[0]->id title=$title class="large-img" w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title w=92}
                                                 {/if}
                                                 {clear}
                                             </div>
@@ -165,15 +163,20 @@
 {if $config.lightbox}
 {script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
 {literal}
-    $('a.calpopevent').click(function(e) {
+    $('.events.default a.calpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
-            maxWidth: "100%"
+            maxWidth: "100%",
+            onComplete : function() {
+                $('img').on('load', function() {
+                    $(this).colorbox.resize();
+                });
+            }
         });
         e.preventDefault();
     });
-    $('a.icalpopevent').click(function(e) {
+    $('.events.default a.icalpopevent').click(function(e) {
         target = e.target;
         $.colorbox({
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',

@@ -30,6 +30,7 @@ class filemanagercontrol extends formcontrol {
     var $html;
     var $span;
     var $description = "";
+    var $folder = "";
     var $accept = "";
 
     static function name() { return "Manage Files"; }
@@ -89,12 +90,10 @@ class filemanagercontrol extends formcontrol {
             $(document).ready(function(){
                 var limit = ".$this->limit.";
                 var filesAdded = ".$this->count.";
-//                var fl = Y.one('#filelist".$name."');
                 var fl = $('#filelist".$name."');
 
                 // file picker window opener
                 function openFilePickerWindow(e){
-//                    e.halt();
                     e.preventDefault();
                     win = window.open('".makeLink($params=array('controller'=>'file','action'=>'picker','ajax_action'=>"1",'update'=>$name, 'filter'=>$filter))."', 'IMAGE_BROWSER','left=20,top=20,scrollbars=yes,width=".FM_WIDTH.",height=".FM_HEIGHT.",toolbar=no,resizable=yes,status=0');
                     if (!win) {
@@ -104,12 +103,13 @@ class filemanagercontrol extends formcontrol {
                 };
 
                 // quick file upload
-//                if (Y.one('#quickaddfiles-".$name."') != null) {
                 if ($('#quickaddfiles-".$name."') != null) {
                 var quickUpload = new ss.SimpleUpload({
                     button: '#quickaddfiles-".$name."',
                     url: '" . makelink(array("controller"=> "file", "action"=> "quickUpload")) . "',
                     data: {controller: 'file', action: 'quickUpload', ajax_action: 1, json: 1, folder: '" . $this->folder . "'},
+                    dropzone: 'filelist".$name."',
+                    dragClass: 'dragit',
                     responseType: 'json',
                     name: 'uploadfile',
                     disabledClass: 'quick-upload-disabled ajax',
@@ -131,8 +131,6 @@ class filemanagercontrol extends formcontrol {
 //                            }
 //                            quickUpload.disable();
 //                        if (quickUpload._activeUploads) {
-//                           Y.one('#quickaddfiles-".$name."').addClass('ajax');
-//                           Y.one('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
                            $('#quickaddfiles-".$name."').addClass('ajax');
                            $('#quickaddfiles-".$name."').addClass('quick-upload-disabled');
 //                        }
@@ -168,8 +166,6 @@ class filemanagercontrol extends formcontrol {
                         }
 //                            quickUpload.enable();
                         if (!quickUpload._activeUploads) {
-//                            Y.one('#quickaddfiles-".$name."').removeClass('ajax');
-//                            Y.one('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
                             $('#quickaddfiles-".$name."').removeClass('ajax');
                             $('#quickaddfiles-".$name."').removeClass('quick-upload-disabled');
                         }
@@ -184,21 +180,16 @@ class filemanagercontrol extends formcontrol {
                 }
 
                 var listenForAdder = function(){
-//                    var af = Y.one('#addfiles-".$name."');
                     var af = $('#addfiles-".$name."');
-//                    af.on('click',openFilePickerWindow);
                     af.click(openFilePickerWindow);
 
-//                    var afq = Y.one('#quickaddfiles-".$name."');
                     var afq = $('#quickaddfiles-".$name."');
                     if (afq != null) {
-//                        afq.on('click',quickUpload);
                         afq.click(quickUpload);
                     }
                 };
                 
                 var showEmptyLI = function(){
-//                    var blank = Y.Node.create('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     var blank = $('<li class=\"blank\">".gt('You need to add some files')."</li>');
                     $('#filelist".$name."').append(blank);
                 };
@@ -208,19 +199,19 @@ class filemanagercontrol extends formcontrol {
                 }
                                 
                 // remove the file from the list
-//                fl.delegate('click',function(e){
                 $('#filelist".$name."').delegate('.btn-danger', 'click', function(e){
-//                    e.target.ancestor('li').remove();
                     $(e.target).closest('li').remove();
                     showFileAdder();
-//                },'.btn-danger');
                 });
 
                 var showFileAdder = function(){
                     listenForAdder();
                     filesAdded--;
-//                    if (filesAdded < limit) Y.one('#adders-".$name."').removeClass('hide');
-                    if (filesAdded < limit) $('#adders-".$name."').removeClass('hide');
+                    if (filesAdded < limit) {
+                        $('#adders-".$name."').removeClass('hide');
+                        quickUpload.clearQueue();
+                        quickUpload.enable();
+                    }
                     if (filesAdded == 0) showEmptyLI();
                 };
 
@@ -230,11 +221,9 @@ class filemanagercontrol extends formcontrol {
 
                 EXPONENT.batchAddFiles.".$name." = function(ids) {
                     var j=0;
-//                    Y.each(ids, function(obj,k){
                     $.each(ids, function(k,obj){
                         if (j<limit) {
 
-//                            var df = Y.one('#filelist".$name."');
                             var df = $('#filelist".$name."');
 
                             if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
@@ -251,7 +240,7 @@ class filemanagercontrol extends formcontrol {
                             html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';";
                             $icon = expTheme::buttonIcon('delete');
                             $js .= "
-                            html += '<a class=\" btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
+                            html += '<a class=\" btn-danger btn-sm\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
                             $js .= "
                             html += filepic;
                             if (obj.title) {
@@ -260,26 +249,22 @@ class filemanagercontrol extends formcontrol {
                                 filetitle = obj.filename;
                             }
                             html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
-//                            html += '<span class=\"filename\">'+obj.filename+'<\/span>';
                             html += '<\/li>';
                             
-//                            htmln = Y.Node.create(html);
                             htmln = $(html);
 
                             df.append(htmln);
 
                             if (filesAdded==0) {
-//                                Y.one('#filelist".$name."').one('.blank').remove();
                                 $('#filelist".$name." .blank').remove();
 
                             }
 
                             filesAdded++;
 
-//                            if (limit>=filesAdded) {
                             if (filesAdded>=limit) {
-//                                Y.one('#adders-".$name."').addClass('hide');
                                 $('#adders-".$name."').addClass('hide');
+                                quickUpload.disable();
                             }
 
                             j++;
@@ -288,7 +273,6 @@ class filemanagercontrol extends formcontrol {
                 };
 
                 EXPONENT.passBackBatch".$name." = function(ids) {
-//                    Y.each(ids, function(id,k){
                     $.each(ids, function(k,id){
                         EXPONENT.passBackFile".$name."(id);
                     });
@@ -296,7 +280,6 @@ class filemanagercontrol extends formcontrol {
 
                 // callback function from open window
                 EXPONENT.passBackFile".$name." = function(id) {
-//                    if (Y.Lang.isArray(id)) {
                     if ($.isArray(id)) {
                         EXPONENT.batchAddFiles.".$name."(id);
                         return;
@@ -304,11 +287,7 @@ class filemanagercontrol extends formcontrol {
 
                     var complete = function (o, ioId) {
                       if (filesAdded < limit) {
-//                        var df = Y.one('#filelist".$name."');
                         var df = $('#filelist".$name."');
-//                        var objson = Y.JSON.parse(o.responseText);
-//                        var objson = $.parseJSON(o.data);
-//                        var obj = objson.data;
                         var obj = o.data;
                         if (obj.mimetype=='image/png' || obj.mimetype=='image/gif' || obj.mimetype=='image/jpeg' || obj.mimetype=='image/pjpeg' || obj.mimetype=='image/x-png') {
                             var filepic = '<img class=\"filepic\" src=\"'+EXPONENT.PATH_RELATIVE+'thumb.php?id='+obj.id+'&amp;w=24&amp;h=24&amp;zc=1\">';
@@ -324,7 +303,7 @@ class filemanagercontrol extends formcontrol {
                         html += '<input type=\"hidden\" name=\"".$subTypeName."\" value=\"'+obj.id+'\">';";
                         $icon = expTheme::buttonIcon('delete');
                         $js .= "
-                        html += '<a class=\" btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
+                        html += '<a class=\" btn-danger btn-sm\" rel=\"imgdiv'+obj.id+'\" href=\"javascript:{}\" title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>';";
                         $js .= "
                         html += filepic;
                         if (obj.title) {
@@ -334,21 +313,18 @@ class filemanagercontrol extends formcontrol {
                         }
                         html += '<span class=\"filename\" title=\"'+obj.filename+'\">'+filetitle+'<\/span>';
                         html += '<\/li>';
-//                        htmln = Y.Node.create(html);
                         htmln = $(html);
 
                         df.append(htmln);
 
                         if (filesAdded==0) {
-//                            Y.one('#filelist".$name."').one('.blank').remove();
                             $('#filelist".$name." .blank').remove();
                         }
                         filesAdded++;
 
-//                        if (limit>=filesAdded) {
                         if (filesAdded>=limit) {
-//                            Y.one('#adders-".$name."').addClass('hide');
                             $('#adders-".$name."').addClass('hide');
+                            quickUpload.disable();
                         }
                       }
                     };
@@ -366,6 +342,10 @@ class filemanagercontrol extends formcontrol {
             expCSS::pushToHead(array(
         	    "unique"    => "attachable-files",
         	    "link"      => $assets_path."files/attachable-files.css"
+            ));
+            expCSS::pushToHead(array(
+                "unique"    => "attachable-files",
+                "link"      => $assets_path."files/attachable-files-bs3.css"
             ));
 
             expJavascript::pushToFoot(array(
@@ -413,7 +393,7 @@ class filemanagercontrol extends formcontrol {
             $html .= "<input type=\"hidden\" name=\"".$subTypeName."\" value=\"".$val->id."\">";
             //$html .= "<div class=\"fpdrag\"></div>";
             $icon = expTheme::buttonIcon('delete');
-            $html .= "<a class=\"btn btn-danger ".expTheme::buttonSize()."\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>";
+            $html .= "<a class=\"btn btn-danger btn-sm\" rel=\"imgdiv".$val->id."\" href='javascript:{}' title=\"".gt('Remove this file')."\"><i class=\"fa fa-" . $icon->class . " " . $icon->size . "\"></i> </a>";
             $html .= $filepic;
             $filetitle = !empty($val->title) ? $val->title : $val->filename;
             $html .= "<span class=\"filename\" title=\"".$val->filename."\">".$filetitle."</span>";

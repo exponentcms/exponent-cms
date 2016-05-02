@@ -376,6 +376,7 @@ function smarty_function_control($params, &$smarty) {
 //                        require_once(BASE . 'external/recaptchalib.php');
                         require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                         $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
+                        echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                         echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
                         echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
@@ -408,6 +409,16 @@ function smarty_function_control($params, &$smarty) {
 //                if (!empty($params['var'])) $control->type = 1;
 //                if (!empty($params['default'])) $control->default = $params['default'];
 //                break;
+            case "password":
+                $control       = new passwordcontrol();
+                $control->size = !empty($params['size']) ? $params['size'] : "40";
+                $control->placeholder = !empty($params['placeholder']) ? $params['placeholder'] : "";
+                $control->pattern = !empty($params['pattern']) ? $params['pattern'] : "";
+                $control->horizontal = (isset($params['horizontal'])) ? 1 : 0;
+                $control->prepend = !empty($params['prepend']) ? $params['prepend'] : "";
+                $control->multiple      = isset($params['multiple']) ? true : false;
+                $control->meter      = isset($params['meter']) ? true : false;
+                break;
             case "quantity":
 //                $value   = isset($params['value']) ? $params['value'] : null;
 //                $min     = isset($params['min']) ? $params['min'] : 0;

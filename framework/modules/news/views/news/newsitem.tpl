@@ -67,6 +67,7 @@
                         {/if}
                     {/if}
                     {icon action=edit record=$record}
+                    {icon action=copy record=$record}
                 {/if}
                 {if $permissions.delete || ($permissions.create && $record->poster == $user->id)}
                     {icon action=delete record=$record}

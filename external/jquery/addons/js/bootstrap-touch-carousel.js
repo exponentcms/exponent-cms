@@ -2379,7 +2379,8 @@ if(typeof define == 'function' && define.amd) {
       .add(this.$indicators) // fixes issue #9
       .hammer({
         dragLockToAxis: true,
-        dragBlockVertical: true
+//        dragBlockVertical: true,
+        dragBlockHorizontal: true
       })
       .on("release dragleft dragright swipeleft swiperight", $.proxy(this._handleGestures, this));
   }

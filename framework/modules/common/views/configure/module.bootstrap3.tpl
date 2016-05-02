@@ -134,9 +134,7 @@
                             eval(n.get('innerHTML'));
                         } else {
                             var url = n.get('src');
-//                            if (url.indexOf("ckeditor")) {
-                                $.getScript(url);
-//                            }
+                            $.getScript(url);
                         }
                     });
                     $('#moduleViewConfig link').each(function (n) {

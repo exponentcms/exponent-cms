@@ -22,6 +22,13 @@
 			<h2>{'Manage Pages'|gettext}</h2>
 		</div>
 	</div>
+	{permissions}
+		{if $user->isAdmin()}
+			<div class="module-actions">
+				{icon class=manage action=manage_sitemap text='Manage by Sitemap'|gettext}
+			</div>
+		{/if}
+	{/permissions}
 	<div id="navmanager-tabs" class="yui-navset exp-skin-tabview hide">
 	    <ul class="yui-nav">
         	<li class="selected"><a href="#tab1"><em>{'Menu Hierarchy'|gettext}</em></a></li>

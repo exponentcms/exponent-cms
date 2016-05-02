@@ -13,7 +13,8 @@ elFinder.prototype.commands.download = function() {
 		zipOn  = false,
 		filter = function(hashes) {
 			var mixed  = false,
-				croot  = '';
+				croot  = '',
+				api21  = (fm.api > 2);
 			
 			if (fm.searchStatus.state > 1 && fm.searchStatus.target === '') {
 				hashes = $.map(hashes, function(h) {
@@ -25,12 +26,12 @@ elFinder.prototype.commands.download = function() {
 						return false;
 					}
 				});
-				zipOn = (!mixed && fm.command('zipdl') && fm.isCommandEnabled('zipdl', croot));
+				zipOn = (api21 && !mixed && fm.command('zipdl') && fm.isCommandEnabled('zipdl', croot));
 			} else {
 				if (!fm.isCommandEnabled('download', hashes[0])) {
 					return [];
 				}
-				zipOn = (fm.command('zipdl') && fm.isCommandEnabled('zipdl', hashes[0]));
+				zipOn = (api21 && fm.command('zipdl') && fm.isCommandEnabled('zipdl', hashes[0]));
 			}
 			
 			return (!zipOn)?
@@ -48,7 +49,7 @@ elFinder.prototype.commands.download = function() {
 		var sel    = this.hashes(sel),
 			cnt    = sel.length,
 			maxReq = this.options.maxRequests || 10,
-			czipdl = fm.command('zipdl'),
+			czipdl = (fm.api > 2)? fm.command('zipdl') : null,
 			mixed  = false,
 			croot  = '';
 		
@@ -126,7 +127,7 @@ elFinder.prototype.commands.download = function() {
 					self.extra = {
 						icon: 'link',
 						node: $('<a/>')
-							.attr({href: '#', title: fm.i18n('link'), draggable: 'false'})
+							.attr({href: '#', title: fm.i18n('getLink'), draggable: 'false'})
 							.text(file.name)
 							.on('click', function(e){
 								var parent = node.parent();
@@ -138,10 +139,10 @@ elFinder.prototype.commands.download = function() {
 									preventDefault : true
 								})
 								.always(function(data) {
+									parent.removeClass('elfinder-button-icon-spinner');
 									if (data.url) {
 										var rfile = fm.file(file.hash);
 										rfile.url = data.url;
-										parent.removeClass('elfinder-button-icon-spinner');
 										node.replaceWith(getExtra(file).node);
 									} else {
 										parent.addClass('ui-state-disabled');
@@ -153,7 +154,7 @@ elFinder.prototype.commands.download = function() {
 					node = self.extra.node;
 					node.ready(function(){
 						setTimeout(function(){
-							node.parent().addClass('ui-state-disabled');
+							node.parent().addClass('ui-state-disabled').css('pointer-events', 'auto');
 						}, 10);
 					});
 				}

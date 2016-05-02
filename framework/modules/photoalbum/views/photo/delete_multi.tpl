@@ -34,7 +34,7 @@
                     <li style="width:64px;height:48px;">
                         {img class="img-small" alt=$item->alt|default:$item->expFile[0]->alt file_id=$item->expFile[0]->id w=48 h=48 far=TL f=jpeg q=$quality|default:75}
                         {$item->title}
-                        {control type="checkbox" class="selectbox" name="pic[`$item->expFile[0]->id`]" label="Delete"|gettext|cat:"?" value=1}
+                        {control type="checkbox" class="selectbox" name="pic[`$item->id`]" label="Delete"|gettext|cat:"?" value=1}
                     </li>
                     {$cat=$item->expCat[0]->id}
                 {/foreach}

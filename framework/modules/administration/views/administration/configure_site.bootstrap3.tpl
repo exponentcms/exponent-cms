@@ -132,7 +132,8 @@
                     {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_APPROVAL]" label="All Comments Must be Approved?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_APPROVAL value=1}
                     {group label="New Comment Notification Email"|gettext}
                         {control type="checkbox" postfalse=1 name="sc[COMMENTS_REQUIRE_NOTIFICATION]" label="Notify a site administrator of New Comments?"|gettext checked=$smarty.const.COMMENTS_REQUIRE_NOTIFICATION value=1}
-                        {control type=text multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
+                        {*{control type=text multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}*}
+                    {control type=email multiple="1" name="sc[COMMENTS_NOTIFICATION_EMAIL]" label="Email address(es) that should be notified of New Comments"|gettext description="Enter multiple addresses by using a comma to separate them"|gettext value=$smarty.const.COMMENTS_NOTIFICATION_EMAIL}
                     {/group}
                 </div>
                 <div id="tab5" role="tabpanel" class="tab-pane fade">
@@ -145,12 +146,6 @@
                     {control type="dropdown" name="sc[LANGUAGE]" label="Display Language"|gettext items=$langs default=$smarty.const.LANGUAGE}
                     {*{control type="dropdown" name="sc[DISPLAY_THEME_REAL]" label="Theme <a href=\"manage_themes\">(More Theme Options)</a>"|gettext items=$themes default=$smarty.const.DISPLAY_THEME_REAL}*}
 	                {*<h3><a href="manage_themes">{'Display Theme Options'|gettext}</a></h3>*}
-                    {*{assocarray}*}
-                        {*manage_themes: [*}
-                            {*controller: "administration"*}
-                            {*action: "manage_themes"*}
-                        {*]*}
-                    {*{/assocarray}*}
                     {*{$link = makeLink($manage_themes)}*}
                     {*{icon button=true link=$link text='Display Theme Options'|gettext}*}
 	                {control type="checkbox" postfalse=1 name="sc[INVERT_HIDE_TITLE]" label="Reverse the Logic of Hide Module Title setting?"|gettext checked=$smarty.const.INVERT_HIDE_TITLE value=1 description='Changes default of always show title to always hide title, unless module setting is checked.'|gettext}
@@ -275,14 +270,6 @@
                         </div>
 		                <h2>{"WYSIWYG Editor Settings"|gettext}</h2>
                     </div>
-                    {*{assocarray}*}
-                        {*paramc: [*}
-                            {*editor: "ckeditor"*}
-                        {*]*}
-                        {*paramt: [*}
-                            {*editor: "tinymce"*}
-                        {*]*}
-                    {*{/assocarray}*}
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
                     <div id="alt-controlw" class="alt-control">

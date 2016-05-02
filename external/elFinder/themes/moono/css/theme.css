@@ -5,7 +5,8 @@
  * @author lokothodida
  **/
 /* FontAwesome Icons */
-@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');
+/*@import url('//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css');*/
+@import url('../../../../font-awesome4/css/font-awesome.min.css');
 /* Main features of the whole UI */
 /* main */
 .elfinder {
@@ -52,7 +53,7 @@
 /* File Icons */
 /* default settings */
 .elfinder-cwd-icon {
-  background-image: none !important;
+//  background-image: none !important;
   overflow: hidden;
 }
 .elfinder-cwd-icon:before {
@@ -109,7 +110,7 @@
   content: '\f1c3';
 }
 /* images */
-.elfinder-cwd-icon-image:before,
+/*.elfinder-cwd-icon-image:before, */
 .elfinder-cwd-icon-vnd-adobe-photoshop:before,
 .elfinder-cwd-icon-postscript:before {
   content: '\f1c5';

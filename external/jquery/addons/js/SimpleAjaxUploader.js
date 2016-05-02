@@ -1,9 +1,9 @@
 /**
  * Simple Ajax Uploader
- * Version 2.5.0
+ * Version 2.5.5
  * https://github.com/LPology/Simple-Ajax-Uploader
  *
- * Copyright 2012-2015 LPology, LLC
+ * Copyright 2012-2016 LPology, LLC
  * Released under the MIT license
  */
 
@@ -365,6 +365,17 @@ ss.indexOf = arr.indexOf ?
     };
 
 /**
+* Removes an element from an array
+*/
+ss.arrayDelete = function( array, elem ) {
+    var index = ss.indexOf( array, elem );
+
+    if ( index > -1 ) {
+        array.splice( index, 1 );
+    }
+};
+
+/**
 * Extract file name from path
 */
 ss.getFilename = function( path ) {
@@ -386,14 +397,19 @@ ss.getExt = function( file ) {
 ss.isVisible = function( elem ) {
     "use strict";
 
+    if ( !elem ) {
+        return false;
+    }
+
     if ( elem.nodeType !== 1 || elem == document.body ) {
         elem = null;
         return true;
     }
 
-    if ( elem.offsetWidth > 0 ||
+    if ( elem.parentNode &&
+        ( elem.offsetWidth > 0 ||
          elem.offsetHeight > 0 ||
-         ss.getStyle( elem, 'display' ).toLowerCase() != 'none' )
+         ss.getStyle( elem, 'display' ).toLowerCase() != 'none' ) )
     {
         return ss.isVisible( elem.parentNode );
     }
@@ -1091,6 +1107,7 @@ ss.SimpleUpload.prototype = {
 
         // User returned false to cancel upload
         if ( false === this._opts.onSubmit.call( this, this._queue[0].name, this._queue[0].ext, this._queue[0].btn, this._queue[0].size ) ) {
+            this.removeCurrent( this._queue[0].id );
             return;
         }
 
@@ -1756,13 +1773,21 @@ ss.XhrUpload = {
         if ( opts.multipart === true ) {
             var formData = new FormData();
 
+            var hasFile = false;
+
             for ( var prop in params ) {
                 if ( params.hasOwnProperty( prop ) ) {
+                    if ( prop === opts.name && opts.noParams === true && !self._form ) {
+                        hasFile = true;
+                    }
                     formData.append( prop, params[prop] );
                 }
             }
 
-            formData.append( opts.name, fileObj.file );
+            if ( !hasFile ) {
+                formData.append( opts.name, fileObj.file );
+            }
+
             this.log( 'Commencing upload using multipart form' );
             xhr.send( formData );
 
@@ -1839,7 +1864,8 @@ ss.DragAndDrop = {
     },
 
     addDropZone: function( elem ) {
-        var self = this;
+        var self = this,
+            collection = [];
 
         ss.addStyles( elem, {
             'zIndex': 16777271
@@ -1853,13 +1879,25 @@ ss.DragAndDrop = {
                 return false;
             }
 
-            ss.addClass( this, self._opts.dragClass );
+            if ( collection.length === 0 ) {
+                ss.addClass( this, self._opts.dragClass );
+            }
+
+            if ( ss.indexOf( collection, e.target ) === -1 ) {
+                collection.push( e.target );
+            }
+
             return false;
         };
 
         elem.ondragover = function( e ) {
             e.stopPropagation();
             e.preventDefault();
+
+            if ( self._dragFileCheck( e ) ) {
+                e.dataTransfer.dropEffect = 'copy';
+            }
+
             return false;
         };
 
@@ -1868,8 +1906,13 @@ ss.DragAndDrop = {
             return false;
         };
 
-        elem.ondragleave = function() {
-            ss.removeClass( this, self._opts.dragClass );
+        elem.ondragleave = function( e ) {
+            ss.arrayDelete( collection, e.target );
+
+            if ( collection.length === 0 ) {
+                ss.removeClass( this, self._opts.dragClass );
+            }
+
             return false;
         };
 
@@ -1877,7 +1920,11 @@ ss.DragAndDrop = {
             e.stopPropagation();
             e.preventDefault();
 
-            ss.removeClass( this, self._opts.dragClass );
+            ss.arrayDelete( collection, e.target );
+
+            if ( collection.length === 0 ) {
+                ss.removeClass( this, self._opts.dragClass );
+            }
 
             if ( !self._dragFileCheck( e ) ) {
                 return;
@@ -2028,7 +2075,7 @@ ss.extendObj( ss.SimpleUpload.prototype, {
         // We have to do it here after everything is finished to avoid any errors
         if ( this._destroy &&
              this._queue.length === 0 &&
-             this._active.length === 0 )
+             this._active === 0 )
         {
             for ( var prop in this ) {
                 if ( this.hasOwnProperty( prop ) ) {

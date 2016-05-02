@@ -53,6 +53,7 @@
 .store.showall .item.list-group-item .list-group-item-heading,
 .store.showall .item.list-group-item .list-group-item-text {
 	text-align: left;
+	padding-right: 126px;
 }
 
 .store.showall .item.list-group-item .prod-price {

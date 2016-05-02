@@ -32,6 +32,48 @@ if (!defined('EXPONENT')) {
     <?php echo isset($_REQUEST['errpwstrength']) == 'true' ? gt('Your password is not strong enough.') : ''; ?>
     <?php echo isset($_REQUEST['erremail']) == 'true' ? gt('Your email address is invalid.') : ''; ?>
 </span>
+
+<form role="form" method="post" onsubmit="return validateForm(this);">
+    <input type="hidden" name="page" value="install-7"/>
+    <div class="form_section">
+        <div class="control">
+            <span class="label"><?php echo gt('Username'); ?>: </span>
+            <input class="text form-control" type="text" name="username" value="<?php echo gt('admin'); ?>" required=1/>
+            <div class="control_help">
+                <?php echo gt('The username of your administrator account.  You should change this to something other than the default of \'admin\'.'); ?>
+            </div>
+        </div>
+        <div class="control">
+            <span class="label"><?php echo gt('Password'); ?>: </span>
+            <input class="text form-control" type="password" name="password" id="password" value="" required=1/>
+            <div class="control_help">
+                <?php echo gt('The password of your administrator account.'); ?>
+            </div>
+        </div>
+        <div class="control">
+            <span class="label"><?php echo gt('Password Again'); ?>: </span>
+            <input class="text form-control" type="password" name="password2" value="" required=1/>
+            <div class="control_help">
+                <?php echo gt('Type your password again.'); ?>
+            </div>
+        </div>
+        <div class="control">
+            <span class="label"><?php echo gt('First Name'); ?>: </span>
+            <input class="text form-control" type="text" name="firstname" value="<?php echo gt('System'); ?>"/>
+        </div>
+        <div class="control">
+            <span class="label"><?php echo gt('Last Name'); ?>: </span>
+            <input class="text form-control" type="text" name="lastname" value="<?php echo gt('Administrator'); ?>"/>
+        </div>
+        <div class="control">
+            <span class="label"><?php echo gt('Email Address'); ?>: </span>
+            <input class="text form-control" type="text" name="email" value="" required=1/>
+        </div>
+    </div>
+    <button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>
+</form>
+<script src="<?php echo PATH_RELATIVE; ?>external/jquery/js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/strength-meter.js"></script>
 <script>
     function strcasecmp(f_string1, f_string2) {
         //  discuss at: http://phpjs.org/functions/strcasecmp/
@@ -86,43 +128,14 @@ if (!defined('EXPONENT')) {
             return true;
         }
     }
+
+    $("#password").strength({
+        toggleMask: false,
+        mainTemplate: '<div class="kv-strength-container">{input}<div class="kv-meter-container">{meter}</div></div>',
+    }).on('strength.change', function(event) {
+        if (event.target.value.length < <?php echo MIN_PWD_LEN; ?>)
+            $("#password").strength('paint', 0);
+    });
+    $("head").append("<link href=\"<?php echo PATH_RELATIVE; ?>external/jquery/addons/css/strength-meter.css\" rel=\"stylesheet\" type=\"text/css\" />");
+    $("head").append("<style type=\"text/css\"> .kv-scorebar-border { margin: 0; margin-top: 3px; } </style>");
 </script>
-<form role="form" method="post" onsubmit="return validateForm(this);">
-    <input type="hidden" name="page" value="install-7"/>
-    <div class="form_section">
-        <div class="control">
-            <span class="label"><?php echo gt('Username'); ?>: </span>
-            <input class="text form-control" type="text" name="username" value="<?php echo gt('admin'); ?>" required=1/>
-            <div class="control_help">
-                <?php echo gt('The username of your administrator account.  You should change this to something other than the default of \'admin\'.'); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Password'); ?>: </span>
-            <input class="text form-control" type="password" name="password" value="" required=1/>
-            <div class="control_help">
-                <?php echo gt('The password of your administrator account.'); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Password Again'); ?>: </span>
-            <input class="text form-control" type="password" name="password2" value="" required=1/>
-            <div class="control_help">
-                <?php echo gt('Type your password again.'); ?>
-            </div>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('First Name'); ?>: </span>
-            <input class="text form-control" type="text" name="firstname" value="<?php echo gt('System'); ?>"/>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Last Name'); ?>: </span>
-            <input class="text form-control" type="text" name="lastname" value="<?php echo gt('Administrator'); ?>"/>
-        </div>
-        <div class="control">
-            <span class="label"><?php echo gt('Email Address'); ?>: </span>
-            <input class="text form-control" type="text" name="email" value="" required=1/>
-        </div>
-    </div>
-    <button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>
-</form>

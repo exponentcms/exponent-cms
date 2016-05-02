@@ -48,6 +48,7 @@ elFinder.prototype.commands.help = function() {
 			html.push(atpl[r](author, 'Troex Nevelin &lt;troex@fury.scancode.ru&gt;')[r](work, fm.i18n('maintainer')));
 			html.push(atpl[r](author, 'Alexey Sukhotin &lt;strogg@yandex.ru&gt;')[r](work, fm.i18n('contributor')));
 			html.push(atpl[r](author, 'Naoki Sawada &lt;hypweb@gmail.com&gt;')[r](work, fm.i18n('contributor')));
+			html.push(atpl[r](author, 'Dave Leffler &lt;dleffler12@gmail.com&gt;')[r](work, fm.i18n('Exponent CMS integrator')));
 			
 			fm.i18[fm.lang].translator && html.push(atpl[r](author, fm.i18[fm.lang].translator)[r](work, fm.i18n('translator')+' ('+fm.i18[fm.lang].language+')'));
 			
@@ -83,7 +84,7 @@ elFinder.prototype.commands.help = function() {
 		help = function() {
 			// help tab
 			html.push('<div id="help" class="ui-tabs-panel ui-widget-content ui-corner-bottom">');
-			html.push('<a href="http://elfinder.org/forum/" target="_blank" class="elfinder-dont-panic"><span>DON\'T PANIC</span></a>');
+			html.push('<a href="https://github.com/Studio-42/elFinder/wiki" target="_blank" class="elfinder-dont-panic"><span>DON\'T PANIC</span></a>');
 			html.push('</div>');
 			// end help
 		},
@@ -99,8 +100,9 @@ elFinder.prototype.commands.help = function() {
 	}];
 	
 	setTimeout(function() {
-		var parts = self.options.view || ['about', 'shortcuts', 'help'];
-		
+//		var parts = self.options.view || ['about', 'shortcuts', 'help'];
+		var parts = self.options.view || ['about', 'shortcuts']; //exp, doesn't seem to pick up options
+
 		$.each(parts, function(i, title) {
 			html.push(tab[r](/\{id\}/, title)[r](/\{title\}/, fm.i18n(title)));
 		});

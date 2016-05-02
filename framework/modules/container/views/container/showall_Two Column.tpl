@@ -19,17 +19,16 @@
  
 <div class="containermodule two-column"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
-    <div class="twocolcontainerleft">
-    	{$container=$containers.1}
-    	{$i=0}
-		{$rerank=0}
+	{$container=$containers.1}
+	{$i=0}
+	{$rerank=0}
+    <div class="twocolcontainerleft {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
 		{clear}
     </div>
-    <div class="twocolcontainerright">
-    	{$container=$containers.2}
-    	{$i=1}
-		{$rerank=0}
+	{$container=$containers.2}
+	{$i=1}
+    <div class="twocolcontainerright {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
 		{clear}
     </div>

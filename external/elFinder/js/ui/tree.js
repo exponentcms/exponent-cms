@@ -251,7 +251,7 @@ $.fn.elfindertree = function(fm, opts) {
 				},
 				permissions : function(dir) { return !dir.read || !dir.write ? ptpl : ''; },
 				symlink     : function(dir) { return dir.alias ? stpl : ''; },
-				style       : function(dir) { return dir.icon ? 'style="background-image:url(\''+fm.escape(dir.icon)+'\')"' : ''; }
+				style       : function(dir) { return dir.icon ? 'style="background:url(\''+fm.escape(dir.icon)+'\') 0 0 no-repeat;background-size:contain;"' : ''; }
 			},
 			
 			/**
@@ -695,6 +695,10 @@ $.fn.elfindertree = function(fm, opts) {
 
 			data.init && tree.empty();
 
+			if (fm.UA.iOS) {
+				navbar.removeClass('overflow-scrolling-touch').addClass('overflow-scrolling-touch');
+			}
+
 			if (dirs.length) {
 				if (!contextmenu.data('cmdMaps')) {
 					contextmenu.data('cmdMaps', {});
@@ -803,4 +807,4 @@ $.fn.elfindertree = function(fm, opts) {
 	});
 	
 	return this;
-}
+};

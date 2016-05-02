@@ -95,6 +95,8 @@ class calendarcontrol extends formcontrol
             if (empty($this->default)) {
                 $this->default = time();
             }
+            if (is_string($this->default))
+                $this->default = strtotime($this->default);
             // parse out date into calendarcontrol fields
             $this->default_date = date('m/d/Y', $this->default);
             $this->default_hour = date('h', $this->default);
@@ -105,22 +107,26 @@ class calendarcontrol extends formcontrol
         $default = date('n/j/Y g:i a', $this->default);
 
         $idname = createValidId($name);
-        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
+//        $assets_path = SCRIPT_RELATIVE . 'framework/core/forms/controls/assets/';
 
-        $date_input = new textcontrol($default);
-        $date_input->id = $idname;
-        $date_input->name = $idname;
-        $date_input->append = 'calendar';
-        if ($this->horizontal) $date_input->horizontal_top = true;
-        $html = $date_input->toHTML(null, $name);
-        $html ="<div class='col-sm-10'>
-                    <div class='input-group' id='" . $idname . "'>
+//        $date_input = new textcontrol($default);
+//        $date_input->id = $idname;
+//        $date_input->name = $idname;
+//        $date_input->append = 'calendar';
+//        if ($this->horizontal)
+//            $date_input->horizontal_top = true;
+//        $html = $date_input->toHTML(null, $name);
+        $html = '';
+        if ($this->horizontal)
+            $html .= "<div class='col-sm-10'>";
+        $html .= "<div class='input-group' id='" . $idname . "'>
                         <input type='text' class='text form-control' name='" . $name . "' value='".$default."'/>
                         <span class='input-group-addon'>
-                            <span class='glyphicon glyphicon-calendar'></span>
+                            <span class='fa fa-calendar'></span>
                         </span>
-                    </div>
-                </div>";
+                    </div>";
+        if ($this->horizontal)
+            $html .= "</div>";
 
         $script = "
             $('#" . $idname . "').datetimepicker({

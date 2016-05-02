@@ -32,7 +32,6 @@
     <!--<![endif]-->
     <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
-    {*<link rel="stylesheet" href="{$smarty.const.JQUERYUI_CSS}" type="text/css" media="screen" title="no title" charset="utf-8">*}
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/common.css" type="text/css">
@@ -54,12 +53,11 @@
 
     <!-- elfinder core -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.version.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.history.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.command.js"></script>
 
@@ -68,9 +66,9 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/workzone.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/navbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/dialog.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/mkdirbutton.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/tree.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/cwd.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/cwd.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/toolbar.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/button.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/ui/uploadButton.js"></script>
@@ -93,6 +91,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/cut.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/open.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
@@ -108,7 +107,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/download.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/edit.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.js"></script>
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>
+    {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/quicklook.plugins.js"></script>*}
+    <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/quicklook.plugins.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/extract.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/archive.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/search.js"></script>
@@ -180,6 +180,13 @@
             var elf = $('#elfinder').elfinder({
                 url: EXPONENT.PATH_RELATIVE + 'framework/modules/file/connector/elfinder.php',  // connector URL
                 urlUpload: EXPONENT.URL_FULL + 'framework/modules/file/connector/elfinder.php',  // connector full URL
+                commands : [
+                    'pixlr',
+                    'open', 'opendir', 'reload', 'home', 'up', 'back', 'forward', 'getfile', 'quicklook',
+                    'download', 'rm', 'duplicate', 'rename', 'mkdir', 'mkfile', 'upload', 'copy',
+                    'cut', 'paste', 'edit', 'extract', 'archive', 'search', 'info', 'view', 'help',
+                    'resize', 'sort', 'netmount', 'netunmount', 'places', 'chmod', 'links'
+                ],
                 commandsOptions : {
                     edit : {
                     {/literal}{if $smarty.const.SITE_WYSIWYG_EDITOR=="ckeditor"}{literal}
@@ -371,7 +378,7 @@
                                     tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
                                 },
                                 save : function(textarea, editor) {
-                                    textarea.value = tinyMCE.get(textarea.id).selection.getContent({format : 'html'});
+                                    textarea.value = tinyMCE.get(textarea.id).getContent({format : 'html'});
                                     tinyMCE.execCommand('mceRemoveEditor', false, textarea.id);
                                 }
                             }
@@ -385,6 +392,7 @@
                     // "quicklook" command options. For additional extensions
                     quicklook : {
                         autoplay : false,
+                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
                     },
                     // help dialog tabs
                     help : {

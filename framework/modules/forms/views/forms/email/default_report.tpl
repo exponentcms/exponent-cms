@@ -36,8 +36,12 @@
         <tbody>
         {foreach from=$fields key=fieldname item=value}
             <tr class="{cycle values="even,odd"}">
-                <td>{$captions[$fieldname]}</td>
-                <td>{$value}</td>
+                <td>
+                    {$captions[$fieldname]}
+                </td>
+                <td> {* fixme add img display here? *}
+                    {$value}
+                </td>
             </tr>
         {/foreach}
         </tbody>

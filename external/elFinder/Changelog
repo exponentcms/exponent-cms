@@ -1,4 +1,63 @@
-2016-0x-xx  
+2016-04-11  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.11):
+		- Added Archive(zip|gzip|tar) quicklook preview plugin
+		- DnD upload supports Microsoft Edge
+		- Fixed problem which directory is not detected in the LocalFileSystem driver (Bug of 2.1.10)
+		- And some minor bug fixes
+
+
+2016-04-02  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.10):
+		- Fixed #1061, #1231 Supported controllable folder icons
+		- Fixed #1240 LocalFileSystem search files it was still follow symlinks
+		- Added new volume root option `searchExDirReg` for exclusion serach
+		- Return file.url in result on file upload for 3rd party uploader
+		- Supported elFinder API version 1
+		- Added a new volume driver FlysystemGoogleDriveNetmount that based on flysystem-google-drive
+		- Added a new connector plugin "AutoRotate"
+		- And some minor bug fixes
+
+
+2016-03-11  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.9):
+		- Fixed enbug of 2.1.6-2.1.7 PHP error undefind valiable/array to string conversion
+		- The function to make thumbnail supports more image types when Imagick enabled
+		- Correction of the problem that Archive / Extract function don't work well under some environment
+		- Added a quicklook plugin that is the Google docs online viewer
+			- Default is disabled. Set `commandsOptions.quicklook.googleDocsMimes` to enable this plugin.
+			```javascript
+			commandsOptions : {
+				// "quicklook" command options.
+				quicklook : {
+					autoplay : true,
+					jplayer  : 'extensions/jplayer',
+					// MIME types to use Google Docs online viewer
+					// Example array value
+					// ['application/pdf', 'image/tiff', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+					googleDocsMimes : []
+				}
+			}
+			```
+		- And some minor bug fixes
+
+
+2016-03-07  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.1.8):
+		- Added a new volume driver `MsSQL`
+		- Fixed #1226 problem of sort by clicking on cloumn headers
+		- Fixed #1229 bug of selection after sorting in list view
+		- Replaceable session handling wrapper (elFinderSessionInterface)
+		- Added Connector main config `defaultMimefile` ()
+		- update mime.types
+		- Added LocalFileSystem volume root config `followSymLinks` (defailt true)
+		- And some minor bug fixes
+
+
+2016-02-21  Naoki Sawada  <hypweb@gmail.com>
 
 	* elFinder (2.1.7):
 		- Added connector main options `commonTempPath` and `maxArcFilesSize`
@@ -6,7 +65,22 @@
 		- Fixed #1195 Supported BMP in GD image resize
 		- Became possible to cancellation while searching
 		- Supported API protocol version 2.0 for the legacy connector
+		- Fixed #1206 Configurable places(favorites) (https://github.com/Studio-42/elFinder/issues/1206)
+		- Fixed #1211 Remove deprecated method jQueryUI.zIndex()
+		- Supported jQueryUI 1.12.0
+		- Fixed #1213 infinite loop in PHP connector
+		- Cmd:mkdir to callable "New Folder with Selected items" as "Into New Folder"
+		- Supported nao-pon/flysystem-google-drive with barryvdh/elfinder-flysystem-driver
+			- barryvdh/elfinder-flysystem-driver (https://github.com/barryvdh/elfinder-flysystem-driver)
+			- nao-pon/flysystem-google-drive (https://github.com/nao-pon/flysystem-google-drive)
+		- UX improvement of in Touch devices
 		- And some minor bug fixes
+
+
+2015-02-21  Naoki Sawada  <hypweb@gmail.com>
+
+	* elFinder (2.0.6):
+		- Fixed #1213 infinite loop in PHP connector
 
 
 2016-01-19  Naoki Sawada  <hypweb@gmail.com>
@@ -38,6 +112,12 @@
 		- Fixed problem if filename included character that can't be json encode
 		- Added option `convmap` to Normalizer plugin
 		- And some minor bug fixes
+
+
+2015-12-26  Naoki Sawada  <hypweb@gmail.com>  
+
+	* elFinder (2.0.5):
+		- Fixed problem if filename included character that can't be json encode
 
 
 2015-12-16  Naoki Sawada  <hypweb@gmail.com>

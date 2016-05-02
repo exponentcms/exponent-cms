@@ -17,8 +17,8 @@
     <h1>{'Change Password for'|gettext} {$u->username}</h1>
     {form action=update_userpassword}
         {control type="hidden" name="id" value=$u->id}
-        {control type="password" name="new_password1" label="Type New Password"|gettext focus=1}
-        {control type="password" name="new_password2" label="Retype Password"|gettext}
+        {control type="password" name="new_password1" meter=1 label="Type New Password"|gettext required=1 focus=1}
+        {control type="password" name="new_password2" label="Retype Password"|gettext required=1}
         {control type="buttongroup" submit="Change Password"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>

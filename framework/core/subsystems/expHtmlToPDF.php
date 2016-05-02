@@ -1310,7 +1310,7 @@ class expHTML2PDF extends expHtmlToPDF
      * Return status of pdf engine being installed correctly
      */
     public static function installed() {
-        return file_exists(BASE . 'external/html2pdf-4.5.0/html2pdf.class.php') && file_exists(BASE . 'external/TCPDF-6.2.12/tcpdf.php');
+        return file_exists(BASE . 'external/html2pdf/html2pdf.class.php') && file_exists(BASE . 'external/TCPDF/tcpdf.php');
     }
 
     /**
@@ -1323,13 +1323,14 @@ class expHTML2PDF extends expHtmlToPDF
      */
     public function __construct($paper_size = "A4", $orientation = "portrait", $html = null, $use_file = false)
     {
-        $html2pdf_loc = BASE . 'external/html2pdf-4.5.0/';
-        if (file_exists($html2pdf_loc . 'html2pdf.class.php') && file_exists(BASE . 'external/TCPDF-6.2.12/tcpdf.php')) {
+        $html2pdf_loc = BASE . 'external/html2pdf/';
+        $tcpdf_loc = BASE . 'external/TCPDF/';
+        if (file_exists($html2pdf_loc . 'html2pdf.class.php') && file_exists($tcpdf_loc . 'tcpdf.php')) {
             if (!file_exists(BASE . 'tmp/ttfontdata'))
                 expFile::makeDirectory('tmp/ttfontdata');
             require_once($html2pdf_loc . 'html2pdf.class.php');
             require_once($html2pdf_loc . '_class/tcpdfConfig.php');
-            require_once(BASE . 'external/TCPDF-6.2.12/tcpdf.php');
+            require_once($tcpdf_loc . 'tcpdf.php');
             require_once($html2pdf_loc . '_class/locale.class.php');
             require_once($html2pdf_loc . '_class/myPdf.class.php');
             require_once($html2pdf_loc . '_class/exception.class.php');
@@ -1340,6 +1341,7 @@ class expHTML2PDF extends expHtmlToPDF
             $this->pdf = new HTML2PDF($this->size, $this->orient, substr(LOCALE, 0, 2));
             if (HTMLTOPDF_DEBUG)
                 $this->pdf->setModeDebug();
+            $this->pdf->setDefaultFont('FreeSans');  // keep from crashing when a requested font isn't available
             if (!empty($html)) {
                 if ($use_file) {
                     $this->pdf->WriteHTML(file_get_contents($html));

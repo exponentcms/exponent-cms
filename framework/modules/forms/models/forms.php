@@ -158,15 +158,21 @@ class forms extends expRecord {
     /**
      * Returns single forms record as object
      *
-     * @param null $id
+     * @param null $id record to retrieve or first record if null
      *
      * @return null|object|void
      */
-    public function getRecord( $id=null) {
+    public function getRecord($id=null) {
         global $db;
 
-        if ($id == null) return null;
-        return $db->selectObject('forms_' . $this->table_name, "id ='{$id}'");
+        if ($id == null) {
+            $record = $db->selectObject('forms_' . $this->table_name, "1 LIMIT 0,1");  // get first record
+        } elseif (is_numeric($id)) {
+            $record =  $db->selectObject('forms_' . $this->table_name, "id ='{$id}'");
+        } else {
+            $record =  $db->selectObject('forms_' . $this->table_name, $id);
+        }
+        return empty($record) ? null : $record;
     }
 
     /**

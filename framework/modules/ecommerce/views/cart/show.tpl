@@ -19,30 +19,6 @@
 
 <div id="myCart" class="module cart show hide">
     {if $items|@count gt 0}
-        {*{assocarray}*}
-            {*breadcrumb: [*}
-                {*0: [*}
-                    {*title: "{'Summary'|gettext}"*}
-                    {*link: ""*}
-                {*]*}
-                {*1: [*}
-                    {*title:  "{'Sign In'|gettext}"*}
-                    {*link: ""*}
-                {*]*}
-                {*2: [*}
-                    {*title:  "{'Shipping/Billing'|gettext}"*}
-                    {*link: ""*}
-                {*]*}
-                {*3: [*}
-                    {*title:  "{'Confirmation'|gettext}"*}
-                    {*link: ""*}
-                {*]*}
-                {*4: [*}
-                    {*title:  "{'Complete'|gettext}"*}
-                    {*link: ""*}
-                {*]*}
-            {*]*}
-        {*{/assocarray}*}
         {$breadcrumb = [
             0 => [
                 "title" => "{'Summary'|gettext}",

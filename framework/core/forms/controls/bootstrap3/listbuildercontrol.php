@@ -137,6 +137,7 @@ class listbuildercontrol extends formcontrol {
                     $('#$name').bootstrapDualListbox({
                         nonSelectedListLabel: 'Non-selected',
                         selectedListLabel: 'Selected',
+                        sortByInputOrder: true,
 //                        preserveSelectionOnMove: 'moved',
 //                        moveOnSelect: false,
                     });

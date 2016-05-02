@@ -3,7 +3,28 @@
 /*********************************************/
 
 /* common container */
-.elfinder { padding:0; position:relative; display:block; }
+.elfinder {
+	padding: 0;
+	position:relative;
+	display:block;
+	font-size: 18px;
+	font-family: Verdana,Arial,Helvetica,sans-serif;
+}
+
+/* for disable select of Touch devices */
+.elfinder *:not(input):not(textarea):not(select):not([contenteditable=true]),
+.elfinder-contextmenu *:not(input):not(textarea):not(select):not([contenteditable=true]) {
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	/*-webkit-touch-callout:none;*/
+	-webkit-user-select:  none;
+	-moz-user-select:     none;
+	-khtml-user-select:   none;
+	user-select:          none;
+}
+
+.elfinder .overflow-scrolling-touch {
+	-webkit-overflow-scrolling: touch;
+}
 
 /* right to left enviroment */
 .elfinder-rtl { text-align:right; direction:rtl; }
@@ -97,9 +118,12 @@
 /* icon in drag helper */
 .elfinder-drag-helper .elfinder-cwd-icon { margin:0 0 0 -24px; float:left; }
 
-/* transparent overlay >_< */
-/*.elfinder-overlay { opacity: 0; filter:Alpha(Opacity=0); }*/
-.elfinder-overlay { position: absolute; }
+/* transparent overlay */
+.elfinder-overlay {
+	position: absolute;
+	opacity: .2;
+	filter: Alpha(Opacity=20);
+}
 
 /* panels under/below cwd (for search field etc) */
 .elfinder .elfinder-panel {

@@ -49,7 +49,7 @@
                             {*{control type=text name=email label="Email Address"|gettext value=$edit_user->email required=1}*}
                             {control type=email name=email label="Email Address"|gettext value=$edit_user->email required=1 focus=1}
                         {/if}
-                        {control type=password name=pass1 label="Password"|gettext required=1}
+                        {control type=password name=pass1 meter=1 label="Password"|gettext required=1}
                         {control type=password name=pass2 label="Confirm Password"|gettext required=1}
                     {else}
                         {control type="hidden" name="id" value=$edit_user->id}

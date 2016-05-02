@@ -13,25 +13,24 @@
  *
  *}
  
-<div class="containermodule three-column row"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
+<div class="containermodule three-column row-fluid"{permissions}{if $hasParent != 0} style="border: 1px dashed darkgray;"{/if}{/permissions}>
     {viewfile module=$singlemodule view=$singleview var=viewfile}
-    <div class="span4">
-    	{$container=$containers.1}
-    	{$i=0}
-		{$rerank=0}
+    {$container=$containers.1}
+   	{$i=0}
+	{$rerank=0}
+    <div class="span4 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>
-    <div class="span4">
-    	{$container=$containers.2}
-    	{$i=1}
-		{$rerank=0}
+    {$container=$containers.2}
+   	{$i=1}
+    <div class="span4 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>
-    <div class="span4">
-    	{$container=$containers.3}
-    	{$i=2}
+    {$container=$containers.3}
+   	{$i=2}
+    <div class="span4 {module_style style=$container->config.mstyle}"> {* module styling output *}
     	{include file=$viewfile}
         {clear}
     </div>

@@ -129,7 +129,16 @@ class yuicalendarcontrol extends formcontrol
                     inline: true,
 //                    value: '".$default."'
                 });
-                $('#" . $idname . "').datetimepicker('reset');
+                function waitForElementToDisplay(selector, time) {
+                    if($(selector).is(':visible')) {
+                        $('#" . $idname . "').datetimepicker('reset');
+                    } else {
+                        setTimeout(function() {
+                            waitForElementToDisplay(selector, time);
+                        }, time);
+                    }
+                };
+                waitForElementToDisplay('#" . $idname . "Control .xdsoft_datetimepicker', 1000);
             });
             YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 Y.Global.on('lazyload:cke', function() {

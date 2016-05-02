@@ -26,10 +26,10 @@
     {form action=save_change_password}
         {control type="hidden" name="uid" value=$u->id}
         {if $isuser}
-            {control type="password" name="password" label="Current Password"|gettext focus=1}
+            {control type="password" name="password" label="Current Password"|gettext required=1 focus=1}
         {/if}
-        {control type="password" name="new_password1" label="Enter your new password"|gettext}
-        {control type="password" name="new_password2" label="Confirm your new password"|gettext}
+        {control type="password" name="new_password1" meter=1 label="Enter your new password"|gettext required=1}
+        {control type="password" name="new_password2" label="Confirm your new password"|gettext required=1}
         {control type="buttongroup" submit="Change My Password"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
