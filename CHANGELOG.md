@@ -49,6 +49,7 @@ Version 2.3.8
   - !!! regression fix text module inline edit views to correctly populate ddrerank/order dialog list
   - !!! regression fix unable to display images from avatars or uploads folders
   - !!! regression fix bootstrap2 container 'column' views
+  - !!! regression fix for non-bs2/bs3 theme user permissions 'manage' checkbox broken on user pages greater than page 1
   - !!! regression fix event display/popup doesn't display entire event (graphic)  - fix issue with form module show view if no records present
   - fix jquery datetimepicker didn't initially display/scroll to selected time
   - fix display of events calendar 'all day' marker if event is categorized (colored)
@@ -98,6 +99,7 @@ Version 2.3.8
   - adds new 'filter' param for form module showall action
   - adds display of uploaded image in form module showall view (if upload control is named 'image')
   - adds 'copy' item action to news module; comes in handy if module is used for announcements
+  - adds attached image display to events module Upcoming Events view
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/may not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
