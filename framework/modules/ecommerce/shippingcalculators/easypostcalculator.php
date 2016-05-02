@@ -441,6 +441,8 @@ class easypostcalculator extends shippingcalculator
     function availableMethods($multilevel = false)
     {
         $available_methods = array();
+        if (empty($this->configdata['shipping_methods']))
+            return array();
         if ($multilevel == true) {
             foreach ($this->configdata['shipping_carriers'] as $carrier) {
                 $available_methods[$carrier] = $this->shippingmethods[$carrier];
