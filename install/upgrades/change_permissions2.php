@@ -63,7 +63,7 @@ class change_permissions2 extends upgradescript {
 
                 $filepath = $start_dir . '/' . $file;
                 if ( is_dir($filepath) ) {
-                    if ($filepath == 'cgi-bin')
+                    if ($file == 'cgi-bin')
                         break;
                     chmod($filepath, $dir_perms);
                     self::chmod_recursive($filepath);
