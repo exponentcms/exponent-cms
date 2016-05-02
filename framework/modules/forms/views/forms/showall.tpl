@@ -71,12 +71,12 @@
                         <tr>
                             {foreach from=$page->columns item=column key=field name=column}
                                 <td>
-                                    {if $column == 'email'}
+                                    {if $column|lower == 'email'}
                                         <a href="mailto:{$fields.$column}">
                                     {elseif $smarty.foreach.column.iteration == 1}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
                                     {/if}
-                                    {if $column == 'image'}
+                                    {if $column|lower == 'image'}
                                         {$matches = array()}
                                         {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$column, $matches)}
                                         {$filename1 = $matches.2.0}
@@ -91,7 +91,7 @@
                                     {else}
                                         {$fields.$column}
                                     {/if}
-                                    {if $column == 'email' || $smarty.foreach.column.iteration == 1}
+                                    {if $column|lower == 'email' || $smarty.foreach.column.iteration == 1}
                                         </a>
                                     {/if}
                                 </td>

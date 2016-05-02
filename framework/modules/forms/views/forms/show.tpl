@@ -71,8 +71,20 @@
                         <tr class="{cycle values="even,odd"}">
                             <td>{$captions[$fieldname]}</td>
                             <td>
-                                {if $fieldname == 'email'}
+                                {if $fieldname|lower == 'email'}
                                     <a href="mailto:{$value}">{$value}</a>
+                                {elseif $fieldname|lower == 'image'}
+                                    {$matches = array()}
+                                    {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $value, $matches)}
+                                    {$filename1 = $matches.2.0}
+                                    {$filename2 = str_replace(URL_BASE, '/', $filename1)}
+                                    {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                                    {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
+                                    {if $fileinfo.is_image == 1}
+                                        {img src=$filename1 w=64}
+                                    {else}
+                                        {$value}
+                                    {/if}
                                 {else}
                                     {$value}
                                 {/if}
