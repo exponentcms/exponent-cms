@@ -225,7 +225,7 @@ class formsController extends expController {
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
 
                     // add a browse other records (next/prev) feature here
-                    $field = !empty($this->config['order']) ?: 'id';
+                    $field = !empty($this->config['order']) ? $this->config['order'] : 'id';
                     $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
                     if (!empty($data->next) && $data->next != $data->id) {
                         assign_to_template(
