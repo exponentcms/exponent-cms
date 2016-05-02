@@ -146,10 +146,12 @@ em.unavailable {
 
 .store.showall .category-row .cat-img-link {
 	margin-right : 10px;
+	width: 100%;
 }
 
 .store.showall .category-row a.cat-img-link h3 {
 	display: inline;
+	width: 100%;
 }
 
 #sortmeControl label {
