@@ -76,7 +76,7 @@ class change_permissions2 extends upgradescript {
     }
 
 	/**
-	 * Searches for and corrects duplicate sef urls within a model
+	 * Searches for and updates file/folder permissions globally
      *
 	 * @return bool
 	 */
