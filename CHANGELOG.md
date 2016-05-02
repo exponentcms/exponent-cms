@@ -8,6 +8,14 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.3.9
+-------------
+  -
+### Known Issues
+  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Version 2.3.8
 -------------
 ### Address issues in v2.3.7
@@ -21,7 +29,8 @@ Version 2.3.8
   - !!! regression fix import items (blog?) with attachments didn't import attachments
   - !!! regression fix manage categories would only work with 1st 50 system categories
   - !!! regression fix some blog views displayed default date/author/category instead of item's info
-  - !!! regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
+  - !!! regression fix re-order dialog in portfolio module odd styling
+  - !!! regression fix for broken quick file upload, uploaded files were truncated at zero bytes
   - !!! regression fix unable to add new text item in text module inline edit view if no items already exist
   - !!! regression fix text item body in text module inline edit view passed as garbage on save
   - !!! regression fix file uploader control did not recognize 'accept' parameter in bootstrap2/3 themes

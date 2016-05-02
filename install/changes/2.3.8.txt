@@ -1,4 +1,4 @@
-version 2.3.7
+version 2.3.8
 ### Address issues in v2.3.7
   - !!! Security fix for malformed associative array injection
   - !!! regression fix no workflow (revisions/approval) feedback in text module inline edit view
@@ -10,7 +10,8 @@ version 2.3.7
   - !!! regression fix import items (blog?) with attachments didn't import attachments
   - !!! regression fix manage categories would only work with 1st 50 system categories
   - !!! regression fix some blog views displayed default date/author/category instead of item's info
-  - !!! regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
+  - !!! regression fix re-order dialog in portfolio module odd styling
+  - !!! regression fix for broken quick file upload, uploaded files were truncated at zero bytes
   - !!! regression fix unable to add new text item in text module inline edit view if no items already exist
   - !!! regression fix text item body in text module inline edit view passed as garbage on save
   - !!! regression fix file uploader control did not recognize 'accept' parameter in bootstrap2/3 themes
