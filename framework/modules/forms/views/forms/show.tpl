@@ -46,6 +46,9 @@
             {if $permissions.delete && $record_id}
                 {icon class=delete action=delete forms_id=$f->id id=$record_id title='Delete this record'|gettext}
             {/if}
+            {if $permissions.viewdata}
+                {icon class="view" action=showall id=$form->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
+            {/if}
         {/permissions}
         {if !$is_email && ($prev || $next) && ($config.pagelinks == "Top and Bottom" || $config.pagelinks == "Top Only")}
             <span style="float:right">

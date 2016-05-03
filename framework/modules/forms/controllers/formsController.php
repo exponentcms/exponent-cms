@@ -250,6 +250,7 @@ class formsController extends expController {
                     }
                 }
 
+                $count = $f->countRecords();
                 assign_to_template(
                     array(
                         //            "backlink"=>expHistory::getLastNotEditable(),
@@ -264,6 +265,7 @@ class formsController extends expController {
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                         'fields' => $fields,
                         'captions' => $captions,
+                        "count"       => $count,
                         'is_email' => 0,
                         "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
                     )
