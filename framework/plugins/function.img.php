@@ -61,7 +61,11 @@ function smarty_function_img($params,&$smarty) {
 
 	if (!isset($params['q']) && defined('THUMB_QUALITY')) $params['q'] = THUMB_QUALITY;
 
-	$src = PATH_RELATIVE.'thumb.php?';
+	if (empty($params['fulllink'])) {
+		$src = PATH_RELATIVE.'thumb.php?';
+	} else {
+		$src = URL_FULL.'thumb.php?';
+	}
 	
 	// figure out which file we're showing
 	//if (isset($params['src'])) $src .= '?src='.$params['src'];
