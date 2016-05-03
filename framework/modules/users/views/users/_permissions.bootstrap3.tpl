@@ -18,7 +18,7 @@
 {/css}
 
 {if $user_form == 1}{$action = 'userperms_save'}{else}{$action = 'groupperms_save'}{/if}
-{form action=$action module=$page->controller}
+{form action=$action module=$page->controller id="manage-groups"}
     {control type="hidden" name="mod" value=$loc->mod}
     {control type="hidden" name="src" value=$loc->src}
     {control type="hidden" name="int" value=$loc->int}
@@ -71,41 +71,45 @@
 {literal}
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var checkSubs = function(row) {
-        row.each(function(n,k){
+        row.each(function(n, k){
             if (!n.hasClass('manage')) {
-                n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                n.setAttrs({'checked':1,'disabled':1});
+                n.insertBefore('<input type="hidden" name="' + n.get("name") + '" value="1">',n);
+                n.setAttrs({'checked':1, 'disabled':1});
             };
         });
     };
     var unCheckSubs = function(row) {
-        row.each(function(n,k){
+        row.each(function(n, k){
             if (!n.hasClass('manage')) {
                 n.get('previousSibling').remove();
-                n.setAttrs({'checked':0,'disabled':0});
+                n.setAttrs({'checked':0, 'disabled':0});
             };
         });
     };
-    var toggleChecks = function(target,start) {
+    var toggleChecks = function(target, start) {
         var row = target.ancestor('tr').all('input[type=checkbox]');
-        var row1 = target.ancestor('tr').next('tr.row-detail');
-        if (row1 != null) checks1 = row1.all('input[type=checkbox]');
-        if(target.get('checked')&&!target.get('disabled')){
+        var row1 = target.ancestor('tr').next('tr.row-detail');  // if responsive
+        var checks1 = null;
+        if (row1 != null)
+            checks1 = row1.all('input[type=checkbox]');
+        if(target.get('checked') && !target.get('disabled')){
             checkSubs(row);
-            if (checks1 != null) checkSubs(checks1);;
+            if (checks1 != null)
+                checkSubs(checks1);;
         } else {
             if (!start) {
                 unCheckSubs(row);
-                if (checks1 != null) unCheckSubs(checks1);;
+                if (checks1 != null)
+                    unCheckSubs(checks1);;
             }
         }
     };
     Y.one('#permissions').delegate('click',function(e){
-        toggleChecks(e.target);
+//        toggleChecks(e.target);
     }, 'input.manage');
-    Y.one('#permissions').delegate(function(n){
-        toggleChecks(n,1);
-    }, 'input.manage');
+    Y.all('#permissions input.manage').each(function(n){
+//        toggleChecks(n, 1);
+    });
 });
 {/literal}
 {/script}
@@ -113,6 +117,47 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
 {literal}
     $(document).ready(function() {
+        var checkSubs = function(row) {
+            row.each(function(k, n) {
+                if (!$(n).hasClass('manage')) {
+                    $('<input type="hidden" name="' + n.name + '" value="1">').insertBefore($(n));
+                    $(n).prop({'checked':true, 'disabled':true});
+                };
+            });
+        };
+        var unCheckSubs = function(row) {
+            row.each(function(k, n) {
+                if (!$(n).hasClass('manage')) {
+                    $(n).prev().remove();
+                    $(n).prop({'checked':false, 'disabled':false});
+                };
+            });
+        };
+        var toggleChecks = function(target, start) {
+            var row = $(target).closest('tr').find(':checkbox');
+            var row1 = $(target).closest('tr').next('tr.row-detail');  // if responsive
+            var checks1 = null;
+            if (row1.length)
+                checks1 = row1.find(':checkbox');
+            if(target.checked && !target.disabled) {
+                checkSubs(row);
+                if (checks1 != null && checks1.length)
+                    checkSubs(checks1);;
+            } else {
+                if (!start) {
+                    unCheckSubs(row);
+                    if (checks1 != null && checks1.length)
+                        unCheckSubs(checks1);;
+                }
+            }
+        };
+        $('#permissions').delegate('input.manage', 'click', function(e){
+            toggleChecks(e.target);
+        });
+        $('#permissions input.manage').each(function(k, e){
+            toggleChecks(e, 1);
+        });
+
         var responsiveHelper;
         var breakpointDefinition = {
             tablet: 1024,
@@ -146,6 +191,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         });
         var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-    } );
+
+        // restore all rows so we get all form input instead of only those displayed
+        $('#manage-groups').on('submit', function (e) {
+            // Force all the rows back onto the DOM for postback
+            table.rows().nodes().page.len(-1).draw(false);  // This is needed
+            if ($(this).valid()) {
+                return true;
+            }
+            e.preventDefault();
+        });
+    });
 {/literal}
 {/script}

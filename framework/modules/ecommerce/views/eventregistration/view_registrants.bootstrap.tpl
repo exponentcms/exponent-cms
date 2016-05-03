@@ -69,7 +69,7 @@
         </div>
     </div>
     {br}
-    {form action="emailRegistrants"}
+    {form action="emailRegistrants" id="email-registrants"}
         <div class="events">
             {permissions}
                 <div class="module-actions">
@@ -204,7 +204,17 @@
         });
         var tt = new $.fn.dataTable.TableTools( table, { sSwfPath: EXPONENT.JQUERY_RELATIVE+"addons/swf/copy_csv_xls_pdf.swf" } );
         $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');
-    } );
+
+        // restore all rows so we get all form input instead of only those displayed
+        $('#email-registrants').on('submit', function (e) {
+            // Force all the rows back onto the DOM for postback
+            table.rows().nodes().page.len(-1).draw(false);  // This is needed
+            if ($(this).valid()) {
+                return true;
+            }
+            e.preventDefault();
+        });
+    });
 {/literal}
 {/script}
 {/if}
