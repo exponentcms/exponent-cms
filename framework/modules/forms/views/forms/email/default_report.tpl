@@ -37,7 +37,7 @@
         {foreach from=$fields key=fieldname item=value}
             <tr class="{cycle values="even,odd"}">
                 <td>
-                    {$captions[$fieldname]}
+                    {$captions.$fieldname}
                 </td>
                 <td>
                     {if $fieldname|lower == 'email'}
@@ -50,7 +50,7 @@
                         {$base = str_replace(PATH_RELATIVE, '', BASE)}
                         {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
                         {if $fileinfo.is_image == 1}
-                            {img src=$filename1 w=64}
+                            {img src=$filename1 w=64 fulllink=1}
                         {else}
                             {$value}
                         {/if}

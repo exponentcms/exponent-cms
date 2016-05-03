@@ -64,7 +64,7 @@
                             {foreach from=$fields key=fieldname item=value}
                                 <tr class="{cycle values="even,odd"}">
                                     <td>
-                                        {$captions[$fieldname]}
+                                        {$captions.$fieldname}
                                     </td>
                                     <td>
                                         {if $fieldname|lower == 'email'}

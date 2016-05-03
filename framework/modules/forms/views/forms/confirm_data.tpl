@@ -27,16 +27,34 @@
             </tr>
         </thead>
         <tbody>
-        {foreach from=$responses item=response key=name}
+        {foreach $responses as $fieldname=>$response}
             <tr class="{cycle values="odd,even"}">
-                <td><strong>{$name}: </strong>
-                <td>{$response}</td>
+                <td>
+                    <strong>{$captions.$fieldname}: </strong>
+                </td>
+                <td>
+                    {if $fieldname|lower == 'image'} {* fixme do we get a complete pathname here??? *}
+                        {$matches = array()}
+                        {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $response, $matches)}
+                        {$filename1 = $matches.2.0}
+                        {$filename2 = str_replace(URL_BASE, '/', $filename1)}
+                        {$base = str_replace(PATH_RELATIVE, '', BASE)}
+                        {$fileinfo = expFile::getImageInfo($base|cat:$filename2)}
+                        {if $fileinfo.is_image == 1}
+                            {img src=$filename1 w=64}
+                        {else}
+                            {$response}
+                        {/if}
+                    {else}
+                        {$response}
+                    {/if}
+                </td>
             </tr>
         {/foreach}
         </tbody>
     </table>
     {form action=submit_data}
-        {foreach from=$postdata item=data key=name}
+        {foreach $postdata as $name=>$data}
             {control type=hidden name=$name value=$data}
         {/foreach}
         {control type=antispam}

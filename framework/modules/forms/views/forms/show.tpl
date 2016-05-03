@@ -67,9 +67,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$fields key=fieldname item=value}
+                    {foreach $fields as $fieldname=>$value}
                         <tr class="{cycle values="even,odd"}">
-                            <td>{$captions[$fieldname]}</td>
+                            <td>{$captions.$fieldname}</td>
                             <td>
                                 {if $fieldname|lower == 'email'}
                                     <a href="mailto:{$value}">{$value}</a>

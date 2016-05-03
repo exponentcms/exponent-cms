@@ -58,8 +58,8 @@
                 <thead>
                     <tr>
                         {*{$page->header_columns}*}
-                        {foreach  from=$page->columns item=column key=name name=column}
-                            <th{if $column@first} data-class="expand"{elseif $column@iteration < 4} data-hide="phone"{elseif $column@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>{$name}</th>
+                        {foreach  $page->columns as $name=>$caption}
+                            <th{if $caption@first} data-class="expand"{elseif $caption@iteration < 4} data-hide="phone"{elseif $caption@iteration > 7} data-hide="always"{else} data-hide="phone,tablet"{/if}>{$caption}</th>
                         {/foreach}
                         <div class="item-actions">
                             <th>{'Actions'|gettext}</th>
@@ -67,18 +67,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {foreach from=$page->records item=fields key=ukey name=fields}
+                {foreach $page->records as $ukey=>$fields}
                         <tr>
-                            {foreach from=$page->columns item=column key=field name=column}
+                            {foreach $page->columns as $field=>$caption}
                                 <td>
-                                    {if $column|lower == 'email'}
-                                        <a href="mailto:{$fields.$column}">
-                                    {elseif $smarty.foreach.column.iteration == 1}
+                                    {if $field|lower == 'email'}
+                                        <a href="mailto:{$fields.$field}">
+                                    {elseif $caption@iteration == 1}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
                                     {/if}
-                                    {if $column|lower == 'image'}
+                                    {if $field|lower == 'image'}
                                         {$matches = array()}
-                                        {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$column, $matches)}
+                                        {$tmp = preg_match_all('~<a(.*?)href="([^"]+)"(.*?)>~', $fields.$field, $matches)}
                                         {$filename1 = $matches.2.0}
                                         {$filename2 = str_replace(URL_BASE, '/', $filename1)}
                                         {$base = str_replace(PATH_RELATIVE, '', BASE)}
@@ -86,12 +86,12 @@
                                         {if $fileinfo.is_image == 1}
                                             {img src=$filename1 w=64}
                                         {else}
-                                            {$fields.$column}
+                                            {$fields.$field}
                                         {/if}
                                     {else}
-                                        {$fields.$column}
+                                        {$fields.$field}
                                     {/if}
-                                    {if $column|lower == 'email' || $smarty.foreach.column.iteration == 1}
+                                    {if $field|lower == 'email' || $caption@iteration == 1}
                                         </a>
                                     {/if}
                                 </td>
