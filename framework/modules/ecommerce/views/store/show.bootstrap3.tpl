@@ -62,7 +62,7 @@
                 {else}
                     {* Single Image *}
                     {if $config.enable_lightbox}
-                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
+                        <a class="colorbox" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$product->expFile.mainimage[0]->id}&w={$config.enlrg_w|default:500}" title="{$product->expFile.mainimage[0]->title|default:$product->title}" rel="lightbox[g{$product->id}]" id="enlarged-image-link">
                     {/if}
                     {if $product->expFile.mainimage[0]->id != ""}
                         {img file_id=$product->expFile.mainimage[0]->id w=250 alt=$product->image_alt_tag|default:"Image of `$product->title`" title="`$product->title`"  class="large-img" id="enlarged-image" itemprop=1}
@@ -92,7 +92,7 @@
                             {foreach from=$product->expFile.images item=thmb}
                                 <li>
                                     {if $config.enable_lightbox}
-                                        <a href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
+                                        <a class="colorbox" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$thmb->id}&w={$config.enlrg_w|default:500}" title="{$thmb->title|default:$product->title}" rel="lightbox[g{$product->id}]">
                                     {/if}
                                     {img file_id=$thmb->id w=50 h=50 zc=1 class="thumbnail" id="thumb-`$thmb->id`"}
                                     {if $config.enable_lightbox}
@@ -105,7 +105,18 @@
                 {/if}
 
                 {if $config.enable_lightbox}
-                    {script unique="thumbswap-shadowbox" yui3mods="node-event-simulate,gallery-lightbox"}
+                    {script unique="thumbswap-shadowbox" jquery='jquery.colorbox'}
+                    {literal}
+                        $('a.colorbox').colorbox({
+                            href: $(this).href,
+                            ref: $(this).rel,
+                            photo: true,
+                            maxWidth: "100%"
+                        });
+                    {/literal}
+                    {/script}
+
+                    {script unique="thumbswap-shadowbox-yui" yui3mods="node-event-simulate,gallery-lightbox"}
                     {literal}
                         EXPONENT.YUI3_CONFIG.modules = {
                             'gallery-lightbox' : {
@@ -119,14 +130,14 @@
                         }
 
                         YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-                            Y.Lightbox.init();
+//                            Y.Lightbox.init();
 
                             if (Y.one('#enlarged-image-link') != null) {
                                 Y.one('#enlarged-image-link').on('click',function(e){
                                    if(!Y.Lang.isNull(Y.one('.thumbnails'))) {
                                       e.halt();
                                       e.currentTarget.removeAttribute('rel');
-                                      Y.Lightbox.init();
+//                                      Y.Lightbox.init();
                                       Y.one('.thumbnails ul li a').simulate('click');
                                    }
                                 });
