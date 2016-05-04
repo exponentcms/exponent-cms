@@ -73,7 +73,7 @@
                                 <td>
                                     {if $field|lower == 'email'}
                                         <a href="mailto:{$fields.$field}">
-                                    {elseif $caption@iteration == 1}
+                                    {elseif $caption@iteration == 1 && !$config.hide_view}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
                                     {/if}
                                     {if $field|lower == 'image'}
@@ -91,14 +91,16 @@
                                     {else}
                                         {$fields.$field}
                                     {/if}
-                                    {if $field|lower == 'email' || $caption@iteration == 1}
+                                    {if $field|lower == 'email' || ($caption@iteration == 1 && ! $config.hide_view)}
                                         </a>
                                     {/if}
                                 </td>
                             {/foreach}
                             <div class="item-actions">
                                 <td>
-                                    {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
+                                    {if !$config.hide_view || !$permissions.manage}
+                                        {icon img="view.png" action=show forms_id=$f->id id=$fields.id title='View all data fields for this record'|gettext}
+                                    {/if}
                                     {if $permissions.edit}
                                         {icon img="edit.png" action=enterdata forms_id=$f->id id=$fields.id title='Edit this record'|gettext}
                                     {/if}
