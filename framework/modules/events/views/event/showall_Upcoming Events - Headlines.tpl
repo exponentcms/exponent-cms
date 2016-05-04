@@ -41,14 +41,16 @@
 		{foreach from=$items item=item}
 			{if (!$config.headcount || $item_number < $config.headcount) }
                 <div class="vevent">
-				<li>
+				<li>{edebug var=$item->location_data}
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
-                    <a class="url link{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}"
+                    <a class="url link{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} ucalpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} uicalpopevent{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
                             href="{if $item->location_data != 'event_registration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
+                            {if $item->date_id}id={$item->date_id}{/if}
                         {/if}
-                       title="{$item->body|summarize:"html":"para"}"
-                        ><span class="summary">{$item->title}</span>
+                        {if $config.lightbox && substr($item->location_data,1,8) == 'calevent'}rel="{$item->eventdate->date|format_date:'%A, %B %e, %Y'}"{/if}
+                        title="{$item->body|summarize:"html":"para"}"
+                        ><div class="summary">{$item->title}</div>
                     </a>
 					<em class="date">
 						{if $item->is_allday == 1}
@@ -105,3 +107,47 @@
 		{/if}
 	</p>
 </div>
+
+{if $config.lightbox}
+{script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
+{literal}
+    $('.upcoming-events-headlines a.ucalpopevent').click(function(e) {
+        target = e.target.parentNode;
+        $.colorbox({
+            href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
+            maxWidth: "100%",
+            onComplete : function() {
+                $('img').on('load', function() {
+                    $(this).colorbox.resize();
+                });
+            }
+        });
+        e.preventDefault();
+    });
+    $('.upcoming-events-headlines a.uicalpopevent').click(function(e) {
+        target = e.target.parentNode;
+        $.colorbox({
+            html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
+            maxWidth: "100%"
+        });
+        e.preventDefault();
+    });
+
+    function Linkify(inputText) {
+        //URLs starting with http://, https://, or ftp://
+        var replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+        var replacedText = inputText.replace(replacePattern1, '<a href="$1" target="_blank">$1</a>');
+
+        //URLs starting with www. (without // before it, or it'd re-link the ones done above)
+        var replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
+        var replacedText = replacedText.replace(replacePattern2, '$1<a href="http://$2" target="_blank">$2</a>');
+
+        //Change email addresses to mailto:: links
+        var replacePattern3 = /(\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})/gim;
+        var replacedText = replacedText.replace(replacePattern3, '<a href="mailto:$1">$1</a>');
+
+        return replacedText
+    }
+{/literal}
+{/script}
+{/if}
