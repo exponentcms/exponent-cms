@@ -41,7 +41,7 @@
 		{foreach from=$items item=item}
 			{if (!$config.headcount || $item_number < $config.headcount) }
                 <div class="vevent">
-				<li>{edebug var=$item->location_data}
+				<li>
                     {if $item->is_cancelled}<span class="cancelled-label">{'This Event Has Been Cancelled!'|gettext}</span>{br}{/if}
                     <a class="url link{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} ucalpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} uicalpopevent{/if}"
                         {if substr($item->location_data,1,8) != 'calevent'}
