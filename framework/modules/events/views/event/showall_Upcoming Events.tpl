@@ -106,7 +106,7 @@
 		</dd>
 		<dd>
             {if !empty($item->expFile[0]->url)}
-                <div class="image photo" style="margin-right: 6px;margin-bottom: 6px;float:left;overflow: hidden;">
+                <div class="image photo">
                     {img file_id=$item->expFile[0]->id title="`$item->title`" h=48}
                 </div>
             {/if}

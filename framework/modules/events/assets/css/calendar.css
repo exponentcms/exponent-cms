@@ -316,3 +316,14 @@ a.cats {
 .events .module-actions {
 	display: inline;
 }
+
+.events .image {
+    padding-top: 3px;
+}
+
+.events.upcoming .image.photo {
+    margin-right: 6px;
+    margin-bottom: 6px;
+    float:left;
+    overflow: hidden;
+}
