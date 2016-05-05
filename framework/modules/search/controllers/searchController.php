@@ -81,7 +81,7 @@ class searchController extends expController {
             'src' => $this->loc->src,
         ));
 
-        if ($this->config['is_categorized'] == 1) {
+        if (!empty($this->config['is_categorized'])) {
             $results = array();
             foreach ($page->records as $hit) {
                 if (!isset($results[$hit->category])) {
