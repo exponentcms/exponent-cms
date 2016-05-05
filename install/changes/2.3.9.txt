@@ -6,6 +6,7 @@ version 2.3.9
   - adds form module showall view setting to prevent individual record viewing
   - adds optional lightbox (jquery colorbox) for event on event module showall Upcoming Events Headlines view
   - updates bootstrap3 show product and photoalbum showall accordion views to use colorbox lightbox instead of yui3
+  - adds jquery based bootstrap3 view for attached files in Showcase & Slideshow views
   - !!! fix to actually skip over 'cgi-bin' for 'check permissions' upgrade scripts
   - !!! regression fix possible issue with extraneous directory separator in a phpThumb generated thumbnail
   - !!! regression fix ecommerce error when easypost shipping calculator isn't set up
