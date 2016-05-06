@@ -33,7 +33,7 @@
         {permissions}
             <div class="module-actions">
                 {if $permissions.viewdata && $form->is_saved}
-                    {icon class="view" action=showall id=$form->id text='View Data'|gettext|cat:" (`$count`)"}
+                    {icon class="view" action=showall id=$form->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
                     &#160;&#160;|&#160;&#160;
                     {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
                     {if $permissions.manage}

@@ -1,22 +1,22 @@
 version 2.3.8
 ### Address issues in v2.3.7
   - !!! Security fix for malformed associative array injection
-  - !!! regression fix no workflow (revisions/approval) feedback in text module inline edit view
+  - !!! no workflow (revisions/approval) feedback in text module inline edit view
 	- !!! THIS FIX BREAKS EXISTING CUSTOM TEXT SHOWALL INLINE (EDIT) VIEWS
 	- User now sees immediate workflow feedback when editing inline
-  - !!! regression fix workflow styling missing in bootstrap 3
+  - !!! workflow styling missing in bootstrap 3
   - !!! regression fix unable to edit/copy existing calendar events
   - !!! regression fix problem selecting insert links with ckeditor within inline edit text module views
-  - !!! regression fix import items (blog?) with attachments didn't import attachments
+  - !!! fix import items (blog?) with attachments didn't import attachments
   - !!! regression fix manage categories would only work with 1st 50 system categories
   - !!! regression fix some blog views displayed default date/author/category instead of item's info
-  - !!! regression fix re-order dialog in portfolio module odd styling!!! Regression fix for broken quick file upload, uploaded files were truncated at zero bytes
+  - !!! regression fix re-order dialog in portfolio module odd styling
   - !!! regression fix unable to add new text item in text module inline edit view if no items already exist
   - !!! regression fix text item body in text module inline edit view passed as garbage on save
-  - !!! regression fix file uploader control did not recognize 'accept' parameter in bootstrap2/3 themes
-  - !!! regression fix getting mp3 file ID3 tag comments for more precise rss/podcast details
+  - !!! fix file uploader control did not recognize 'accept' parameter in bootstrap2/3 themes
+  - !!! fix getting mp3 file ID3 tag comments for more precise rss/podcast details
   - !!! regression fix bootstrap 2/3 navbar on small screens may not always drop down/appear
-  - !!! regression fix upcoming events were displayed until end of day instead of until end of event
+  - !!! fix upcoming events were displayed until end of day instead of until end of event
   - !!! regression fix page crash when returning to elFinder from Pixlr editor
   - !!! regression fix elFinder search broken under php v5.3
   - !!! regression fix database manager filtered table phrase not highlighted in table results
@@ -24,22 +24,21 @@ version 2.3.8
   - !!! regression fix printer and pdf missing styling (invoice address lines run together, etc...)
   - !!! regression fix slingbar location not being set/recognized, esp. in NewUI/Bootstrap3
   - !!! regression fix unable to actually delete multiple photo album items
-  - !!! regression fix event showall announcement view to properly advertise event rich data to search engines
+  - !!! fix event showall announcement view to properly advertise event rich data to search engines
   - !!! regression fix unable to edit blog/event (view broken) in non-bootstrap3 themes
   - !!! regression fix e-store quicklinks view module title display broken
-  - !!! regression fix jquery broken in very old Firefox browsers
-  - !!! regression fix bootstrap 3 carousel touch support wouldn't allow scrolling vertically
+  - !!! fix jquery broken in very old Firefox browsers
+  - !!! fix bootstrap 3 carousel touch support wouldn't allow scrolling vertically
   - !!! regression fix remove recycle bin content from restore content popup (not view recycle bin view) used wrong 'action'
   - !!! regression fix text module inline edit view tinymce menu display on non-bs3
-  - !!! regression fix Facebook Meta configuration tab content was invisible on bootstrap2 themes
-  - !!! regression fix rearranging attached files could scroll the list out of site (bs3?)
-  - !!! regression fix adding new form module will crash page is 'show' action initially selected (before form is assigned)
-  - !!! regression fix remove CKEditor autosave message which tended to obscure editing
+  - !!! fix Facebook Meta configuration tab content was invisible on bootstrap2 themes
+  - !!! fix rearranging attached files could scroll the list out of site (bs3?)
+  - !!! fix adding new form module will crash page if 'show' action initially selected (before form is assigned)
   - !!! regression fix text module inline edit views to correctly populate ddrerank/order dialog list
   - !!! regression fix unable to display images from avatars or uploads folders
-  - !!! regression fix bootstrap2 container 'column' views
-  - !!! regression fix event display/popup doesn't display entire event (graphic)  - fix issue with form module show view if no records present
+  - !!! fix bootstrap2 container 'column' views
   - !!! regression fix for non-bs2/bs3 theme user permissions 'manage' checkbox broken on user pages greater than page 1
+  - !!! regression fix event display/popup doesn't display entire event (graphic)
   - fix issue with form module show view if no records present
   - fix jquery datetimepicker didn't initially display/scroll to selected time
   - fix display of events calendar 'all day' marker if event is categorized (colored)
@@ -55,7 +54,8 @@ version 2.3.8
   - adds module styling settings to help emphasize individual modules (borders, background & visibility)
   - attempts to suppress easypost error messages from USPS if shipping package over 70lbs
   - now forces a .less re-compile (if necessary) after an upgrade, required on sites with error-reporting off
-  - fix issue with attempting to swipe up/down past bootstrap 3 carousel  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
+  - fix issue with attempting to swipe up/down past bootstrap 3 carousel
+  - adds new wysiwyg autosave feature to help recover from page crashes, etc...
   - now allows optional image and author selection per podcast/rss feed
   - better 'read more' implementation
   - elFinder cache now moved to its own /tmp folder

@@ -135,6 +135,7 @@ if (!isset($_REQUEST['username'])) {
         <div class="control buttongroup">
             <button class="awesome large green"><?php echo gt("Log In"); ?></button>
         </div>
+        <blockquote><strong><?php echo gt('Please be patient as we initially create the stylesheets'); ?></strong></blockquote>
     </form>
 <?php
 //}

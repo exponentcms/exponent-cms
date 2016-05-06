@@ -89,9 +89,9 @@
             {/if}
         </div>
     {/permissions}
+    {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
     {if $config.usebody!=2}
         <div class="bodycopy">
-            {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
             {if $config.usebody==1}
                 {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                 <p>{$item->body|summarize:"html":"parahtml":$link}</p>
@@ -101,11 +101,13 @@
                 {$item->body}
             {/if}
         </div>
+    {elseif $config.quick_download}
+        {$link}&#160;&#160;
     {/if}
-    {if $config.usebody==1 || $config.usebody==2}
-        <a class="readmore" href="{link action=show title=$item->sef_url}">{'Read more'|gettext}</a>
-        &#160;&#160;
-    {/if}
+    {*{if $config.usebody==1 || $config.usebody==2}*}
+        {*<a class="readmore" href="{link action=show title=$item->sef_url}">{'Read more'|gettext}</a>*}
+        {*&#160;&#160;*}
+    {*{/if}*}
     {if !$config.quick_download}
         <div class="item-actions">
             {if $item->ext_file}

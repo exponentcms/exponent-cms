@@ -1,0 +1,23 @@
+version 2.3.9
+### Address issues in v2.3.8
+  - add (upload) image display in form module show, showall_portfolio (with no custom configuration), and email default_report views
+  - we now display the graphic for an 'image' field in the confirm_data view
+  - adds showall records button/link to form module (individual) show view
+  - adds form module showall view setting to prevent individual record viewing
+  - adds optional lightbox (jquery colorbox) for event on event module showall Upcoming Events Headlines view
+  - updates bootstrap3 show product and photoalbum showall accordion views to use colorbox lightbox instead of yui3
+  - adds jquery based bootstrap3 view for attached files in Showcase & Slideshow views
+  - !!! fix to actually skip over 'cgi-bin' for 'check permissions' upgrade scripts
+  - !!! regression fix possible issue with extraneous directory separator in a phpThumb generated thumbnail
+  - !!! regression fix ecommerce error when easypost shipping calculator isn't set up
+  - !!! fix form next/prev issue
+  - !!! regression fix remove redundant 'read more' link for news module showall views;
+  - !!! regression fix file download module views redundant 'read more' links; add 'read more' link if configured for quick download without item body
+  - !!! allow form control names 'email' & 'image' to be any case for processing in the views
+  - !!! form module did not properly process a 'reloaded' uploadcontrol
+  - !!! we now use field names in the form module showall and confirm_data views to properly process 'email' and 'image' fields
+  - !!! regression fix form submission/display within multi-page datatables (user/group permissions & view event registrants)
+Known Issues
+  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing

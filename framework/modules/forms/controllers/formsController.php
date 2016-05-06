@@ -110,11 +110,14 @@ class formsController extends expController {
                 $columns = array();
                 foreach ($this->config['column_names_list'] as $column_name) {
                     if ($column_name == "ip") {
-                        $columns[gt('IP Address')] = 'ip';
+//                        $columns[gt('IP Address')] = 'ip';
+                        $columns['ip'] = gt('IP Address');
                     } elseif ($column_name == "referrer") {
-                        $columns[gt('Referrer')] = 'referrer';
+//                        $columns[gt('Referrer')] = 'referrer';
+                        $columns['referrer'] = gt('Referrer');
                     } elseif ($column_name == "location_data") {
-                        $columns[gt('Entry Point')] = 'location_data';
+//                        $columns[gt('Entry Point')] = 'location_data';
+                        $columns['location_data'] = gt('Entry Point');
                     } elseif ($column_name == "user_id") {
                         foreach ($items as $key => $item) {
                             if ($item[$column_name] != 0) {
@@ -125,13 +128,15 @@ class formsController extends expController {
                             }
                             $items[$key] = $item;
                         }
-                        $columns[gt('Posted by')] = 'user_id';
+//                        $columns[gt('Posted by')] = 'user_id';
+                        $columns['user_id'] = gt('Posted by');
                     } elseif ($column_name == "timestamp") {
                         foreach ($items as $key => $item) {
                             $item[$column_name] = strftime(DISPLAY_DATETIME_FORMAT, $item[$column_name]);
                             $items[$key] = $item;
                         }
-                        $columns[gt('Timestamp')] = 'timestamp';
+//                        $columns[gt('Timestamp')] = 'timestamp';
+                        $columns['timestamp'] = gt('Timestamp');
                     } else {
                         $control = $fc->find('first', "name='" . $column_name . "' AND forms_id=" . $f->id, 'rank');
                         if ($control) {
@@ -146,7 +151,8 @@ class formsController extends expController {
                                 );
                                 $items[$key] = $item;
                             }
-                            $columns[$control->caption] = $column_name;
+//                            $columns[$control->caption] = $column_name;
+                            $columns[$column_name] = $control->caption;
                         }
                     }
                 }
@@ -225,7 +231,7 @@ class formsController extends expController {
                     $fields['user_id'] = !empty($locUser->username) ? $locUser->username : '';
 
                     // add a browse other records (next/prev) feature here
-                    $field = !empty($this->config['order']) ?: 'id';
+                    $field = !empty($this->config['order']) ? $this->config['order'] : 'id';
                     $data->next = $f->getRecord($field . ' > ' . $data->$field . ' ORDER BY ' . $field);
                     if (!empty($data->next) && $data->next != $data->id) {
                         assign_to_template(
@@ -244,6 +250,7 @@ class formsController extends expController {
                     }
                 }
 
+                $count = $f->countRecords();
                 assign_to_template(
                     array(
                         //            "backlink"=>expHistory::getLastNotEditable(),
@@ -258,6 +265,7 @@ class formsController extends expController {
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                         'fields' => $fields,
                         'captions' => $captions,
+                        "count"       => $count,
                         'is_email' => 0,
                         "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
                     )
@@ -442,45 +450,62 @@ class formsController extends expController {
         $cols = $f->forms_control;
         $counts = array();
         $responses = array();
+        $captions = array();
 
         foreach ($cols as $col) {
+            $newupload = false;
             $coldef = expUnserialize($col->data);
             $coldata = new ReflectionClass($coldef);
             if (empty($coldef->is_hidden)) {
                 $coltype = $coldata->getName();
-                if ($coltype == 'uploadcontrol') {
+                if ($coltype == 'uploadcontrol' && !empty($_FILES)) {
+                    $newupload = true;
                     $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);
                 } else {
                     $value = call_user_func(array($coltype, 'parseData'), $col->name, $this->params, true);
                 }
-                $value = call_user_func(array($coltype, 'templateFormat'), $value, $coldef);
+                $value = call_user_func(array($coltype, 'templateFormat'), $value, $coldef);  // convert parsed value to user readable
                 //eDebug($value);
-                $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;
-                $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
+//                $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;
+//                $num = $counts[$col->caption] > 1 ? $counts[$col->caption] : '';
 
                 if (!empty($this->params[$col->name])) {
 //                if ($coltype == 'checkboxcontrol') {
 //                    $responses[$col->caption . $num] = gt('Yes');
 //                } else {
-                    $responses[$col->caption . $num] = $value;
+//                    $responses[$col->caption . $num] = $value;
+                    $responses[$col->name] = $value;
+                    $captions[$col->name] = $col->caption;
 //                }
                 } else {
                     if ($coltype == 'checkboxcontrol') {
-                        $responses[$col->caption . $num] = gt('No');
+//                        $responses[$col->caption . $num] = gt('No');
+                        $responses[$col->name] = gt('No');
+                        $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
+//                        $responses[$col->name] = $value;
                         $responses[$col->name] = $value;
+                        $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'uploadcontrol') {
-                        $this->params[$col->name] = PATH_RELATIVE . call_user_func(
-                                array($coltype, 'moveFile'),
-                                $col->name,
-                                $_FILES,
-                                true
-                            );
+                        if ($newupload) {
+                            $this->params[$col->name] = PATH_RELATIVE . call_user_func(
+                                    array($coltype, 'moveFile'),
+                                    $col->name,
+                                    $_FILES,
+                                    true
+                                );
+                        }
                         //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
                         //eDebug($value);
-                        $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
+//                        $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
+//                        $responses[$col->name] = $_FILES[$col->name]['name'];
+//                        $responses[$col->name] = $this->params[$col->name];
+                        $responses[$col->name] = call_user_func(array($coltype, 'templateFormat'), $this->params[$col->name], null);  // convert parsed value to user readable
+                        $captions[$col->name] = $col->caption;
                     } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
-                        $responses[$col->caption . $num] = '';
+//                        $responses[$col->caption . $num] = '';
+                        $responses[$col->name] = '';
+                        $captions[$col->name] = $col->caption;
                     }
                 }
             }
@@ -500,6 +525,7 @@ class formsController extends expController {
 
         assign_to_template(array(
             'responses'       => $responses,
+            'captions'        => $captions,
             'postdata'        => $this->params,
         ));
     }

@@ -72,24 +72,24 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var manage = Y.all('input.manage');
 
     var checkSubs = function(row) {
-        row.each(function(n,k){
+        row.each(function(n, k){
             if (!n.hasClass('manage')) {
-                n.insertBefore('<input type="hidden" name="'+n.get("name")+'" value="1">',n);
-                n.setAttrs({'checked':1,'disabled':1});
+                n.insertBefore('<input type="hidden" name="' + n.get("name") + '" value="1">',n);
+                n.setAttrs({'checked':1, 'disabled':1});
             };
         });
     };
     var unCheckSubs = function(row) {
-        row.each(function(n,k){
+        row.each(function(n, k){
             if (!n.hasClass('manage')) {
                 n.get('previousSibling').remove();
-                n.setAttrs({'checked':0,'disabled':0});
+                n.setAttrs({'checked':0, 'disabled':0});
             };
         });
     };
-    var toggleChecks = function(target,start) {
+    var toggleChecks = function(target, start) {
         var row = target.ancestor('tr').all('input[type=checkbox]');
-        if(target.get('checked')&&!target.get('disabled')){
+        if(target.get('checked') && !target.get('disabled')){
             checkSubs(row);
         } else {
             if (!start) {
@@ -97,12 +97,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             }
         }
     };
-    Y.one('#permissions').delegate('click',function(e){
-        toggleChecks(e.target);
+    Y.one('#permissions').delegate('click', function(e){
+//        toggleChecks(e.target);
     }, 'input.manage');
-    Y.one('#permissions').delegate(function(n){
-        toggleChecks(n,1);
-    }, 'input.manage');
+    Y.all('#permissions input.manage').each(function(n){
+//        toggleChecks(n, 1);
+    });
 });
 {/literal}
 {/script}
@@ -110,6 +110,47 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 {script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools'}
 {literal}
     $(document).ready(function() {
+        var checkSubs = function(row) {
+            row.each(function(k, n) {
+                if (!$(n).hasClass('manage')) {
+                    $('<input type="hidden" name="' + n.name + '" value="1">').insertBefore($(n));
+                    $(n).prop({'checked':true, 'disabled':true});
+                };
+            });
+        };
+        var unCheckSubs = function(row) {
+            row.each(function(k, n) {
+                if (!$(n).hasClass('manage')) {
+                    $(n).prev().remove();
+                    $(n).prop({'checked':false, 'disabled':false});
+                };
+            });
+        };
+        var toggleChecks = function(target, start) {
+            var row = $(target).closest('tr').find(':checkbox');
+            var row1 = $(target).closest('tr').next('tr.row-detail');  // if responsive
+            var checks1 = null;
+            if (row1.length)
+                checks1 = row1.find(':checkbox');
+            if(target.checked && !target.disabled) {
+                checkSubs(row);
+                if (checks1 != null && checks1.length)
+                    checkSubs(checks1);;
+            } else {
+                if (!start) {
+                    unCheckSubs(row);
+                    if (checks1 != null && checks1.length)
+                        unCheckSubs(checks1);;
+                }
+            }
+        };
+        $('#permissions').delegate('input.manage', 'click', function(e){
+            toggleChecks(e.target);
+        });
+        $('#permissions input.manage').each(function(k, e){
+            toggleChecks(e, 1);
+        });
+
         $('#permissions').DataTable({
             pagingType: "full_numbers",
 //            dom: 'T<"top"lfip>rt<"bottom"ip<"clear">',  // pagination location
@@ -127,6 +168,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 {targets: [ 'nosort' ], orderable: false }
             ],
         });
-    } );
+
+        // restore all rows so we get all form input instead of only those displayed
+        $('#manage-groups').on('submit', function (e) {
+            // Force all the rows back onto the DOM for postback
+            table.rows().nodes().page.len(-1).draw(false);  // This is needed
+            if ($(this).valid()) {
+                return true;
+            }
+            e.preventDefault();
+        });
+    });
 {/literal}
 {/script}
