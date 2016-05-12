@@ -31,13 +31,13 @@ Adminer,4.2.4,www.adminer.org,4.2.4,
 SimpleAjaxUploader,2.5.5,https://github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,4.1.1,necolas.github.com/normalize.css/,4.1.1,auto included in bootstrap 3
 MediaElement.js,2.21.2,mediaelementjs.com/,2.21.2,
-Facebook PHP SDK3,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.2,
-Facebook PHP SDK4,4.0.23,https://github.com/facebook/facebook-php-sdk-v4,4-5.1.2,
+Facebook PHP SDK3,3.2.3,https://github.com/facebook/facebook-php-sdk,4-5.1.3,
+Facebook PHP SDK4,4.0.23,https://github.com/facebook/facebook-php-sdk-v4,4-5.1.3,
 Respond,1.4.2,https://github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,https://github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,http://peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,https://code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.6.2,"optional, patched to display our images and not break on bad tables"
+dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.7.0,"optional, patched to display our images and not break on bad tables"
 mPDF,6.0.0/5.7.4,mpdf1.com,6.1.1/5.7.4,optional
 HTML2PDF,4.6.1,https://github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
