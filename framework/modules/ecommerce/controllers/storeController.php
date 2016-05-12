@@ -1274,10 +1274,12 @@ class storeController extends expController {
 //        $shipping = new shipping();
 //        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
         foreach (shipping::listCalculators() as $calcid => $name) {
-            //FIXME must make sure (custom) calculator exists
-            $calc = new $name($calcid);
-            $shipping_services[$calcid] = $calc->title;
-            $shipping_methods[$calcid] = $calc->availableMethods();
+            // must make sure (custom) calculator exists
+            if (class_exists($name)) {
+                $calc = new $name($calcid);
+                $shipping_services[$calcid] = $calc->title;
+                $shipping_methods[$calcid] = $calc->availableMethods();
+            }
         }
 
 #        eDebug($shipping_services);
@@ -1397,9 +1399,11 @@ class storeController extends expController {
 //        $shipping = new shipping();
 //        foreach (shipping::listAvailableCalculators() as $calcid => $name) {
         foreach (shipping::listCalculators() as $calcid => $name) {
-            $calc = new $name($calcid);
-            $shipping_services[$calcid] = $calc->title;
-            $shipping_methods[$calcid] = $calc->availableMethods();
+            if (class_exists($name)) {
+                $calc = new $name($calcid);
+                $shipping_services[$calcid] = $calc->title;
+                $shipping_methods[$calcid] = $calc->availableMethods();
+            }
         }
 
         $record->original_id = $record->id;

@@ -944,9 +944,11 @@ class cartController extends expController {
                 unset($shipping_items[$id]);
             } else {
                 foreach ($shipping->available_calculators as $calcid=> $name) {
-                    $calc                                 = new $name($calcid);
-                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
-                    //eDebug($shipping_items[$id]->prices[$id]);
+                    if (class_exists($name)) {
+                        $calc = new $name($calcid);
+                        $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
+                        //eDebug($shipping_items[$id]->prices[$id]);
+                    }
                 }
             }
         }

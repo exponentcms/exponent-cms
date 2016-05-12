@@ -199,9 +199,11 @@ class ecomconfigController extends expController {
         $shipping_methods = array();
 //        $shipping = new shipping();
         foreach (shipping::listAvailableCalculators() as $calcid=>$name) {
-            $calc = new $name($calcid);
-            $shipping_services[$calcid] = $calc->title;
-            $shipping_methods[$calcid] = $calc->availableMethods();
+            if (class_exists($name)) {
+                $calc = new $name($calcid);
+                $shipping_services[$calcid] = $calc->title;
+                $shipping_methods[$calcid] = $calc->availableMethods();
+            }
         }
         
        assign_to_template(array(
