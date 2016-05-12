@@ -272,7 +272,7 @@
                     </div>
                     {$paramc = ["editor" => "ckeditor"]}
                     {$paramt = ["editor" => "tinymce"]}
-                    <div id="alt-controlw" class="alt-control">
+                    <div id="alt-control-wysiwyg" class="alt-control">
                         <div class="control"><label class="label">{'WYSIWYG Editor'|gettext}</label></div>
                         <div class="alt-body">
                             {control type=radiogroup columns=2 name="sc[SITE_WYSIWYG_EDITOR]" items="CKEditor,TinyMCE"|gettxtlist values="ckeditor,tinymce" default=$smarty.const.SITE_WYSIWYG_EDITOR|default:"ckeditor"}
@@ -308,7 +308,7 @@
                         </div>
 		                <h2>{"PDF Generation"|gettext}</h2>
                     </div>
-                    <div id="alt-control" class="alt-control">
+                    <div id="alt-control-pdf" class="alt-control">
                         <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
                         <div class="alt-body">
                             {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF 5,mPDF 6,dompdf,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expDOMPDF,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
@@ -585,38 +585,38 @@ if ($('#no_smtp').is(':checked') == true)
 {/literal}
 {/script}
 
-{script unique="wysiwyg-type" yui3mods="node,node-event-simulate"}
+{script unique="wysiwyg-type" jquery=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var radioSwitchersw = Y.all('#alt-controlw input[type="radio"]');
-    radioSwitchersw.on('click',function(e){
-        Y.all("#alt-controlw .alt-item").setStyle('display','none');
-        var curdiv = Y.one("#" + e.target.get('value') + "-div");
-        curdiv.setStyle('display','block');
+$(document).ready(function(){
+    var radioSwitcher_wysiwyg = $('#alt-control-wysiwyg input[type="radio"]');
+    radioSwitcher_wysiwyg.on('click', function(e){
+        $("#alt-control-wysiwyg .alt-item").css('display', 'none');
+        var curdiv = $("#" + e.target.value + "-div");
+        curdiv.css('display', 'block');
     });
 
-    radioSwitchersw.each(function(node,k){
-        if(node.get('checked')==true){
-            node.simulate('click');
+    radioSwitcher_wysiwyg.each(function(k, node){
+        if(node.checked == true){
+            $(node).trigger('click');
         }
     });
 });
 {/literal}
 {/script}
 
-{script unique="pdf-type" yui3mods="node,node-event-simulate"}
+{script unique="pdf-type" jquery=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var radioSwitchers = Y.all('#alt-control input[type="radio"]');
-    radioSwitchers.on('click',function(e){
-        Y.all("#alt-control .alt-item").setStyle('display','none');
-        var curdiv = Y.one("#" + e.target.get('value') + "-div");
-        curdiv.setStyle('display','block');
+$(document).ready(function(){
+    var radioSwitchers_pdf = $('#alt-control-pdf input[type="radio"]');
+    radioSwitchers_pdf.on('click', function(e){
+        $("#alt-control-pdf .alt-item").css('display', 'none');
+        var curdiv = $("#" + e.target.value + "-div");
+        curdiv.css('display', 'block');
     });
 
-    radioSwitchers.each(function(node,k){
-        if(node.get('checked')==true){
-            node.simulate('click');
+    radioSwitchers_pdf.each(function(k, node){
+        if(node.checked == true){
+            $(node).trigger('click');
         }
     });
 });

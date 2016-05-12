@@ -32,7 +32,7 @@
                     <h2>{'File Download'|gettext}</h2>
                     {control type=text name=title label="Title"|gettext value=$record->title focus=1}
 
-                    <div id="alt-control" class="alt-control">
+                    <div id="alt-control-file" class="alt-control">
                         <div class="control"><label class="label">{'Type of Media'|gettext}</label></div>
                         <div class="alt-body">
                             {control type=radiogroup columns=2 name="file_type" items="Uploaded File,External File"|gettxtlist values="file,ext_file" default=$record->file_type|default:"file"}
@@ -105,19 +105,19 @@
 {/literal}
 {/script}
 
-{script unique="file-type" yui3mods="node,node-event-simulate"}
+{script unique="file-type" jquery=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var radioSwitchers = Y.all('#alt-control input[type="radio"]');
-    radioSwitchers.on('click',function(e){
-        Y.all(".alt-item").setStyle('display','none');
-        var curdiv = Y.one("#" + e.target.get('value') + "-div");
-        curdiv.setStyle('display','block');
+$(document).ready(function(){
+    var radioSwitcher_file = $('#alt-control-file input[type="radio"]');
+    radioSwitcher_file.on('click', function(e){
+        $("#alt-control-file .alt-item").css('display', 'none');
+        var curdiv = $("#" + e.target.value + "-div");
+        curdiv.css('display', 'block');
     });
 
-    radioSwitchers.each(function(node,k){
-        if(node.get('checked')==true){
-            node.simulate('click');
+    radioSwitcher_file.each(function(k, node){
+        if(node.checked == true){
+            $(node).trigger('click');
         }
     });
 });
