@@ -251,6 +251,8 @@ class administrationController extends expController {
         if (file_exists($eql)) {
             $errors = array();
             expFile::restoreDatabase($eql,$errors);
+        } else {
+            $errors = array(gt('The file does not exist'));
         }
         if (DEVELOPMENT && count($errors)) {
             $msg = gt('Errors were encountered importing the e-Commerce data.').'<ul>';
@@ -1393,8 +1395,12 @@ class administrationController extends expController {
 //        if (@file_exists(BASE.'framework/conf/config.php')) {
 //            $page = "?page=upgrade-1";
 //        }
-   		header('Location: '.URL_FULL.'install/index.php');
-   		exit('Redirecting to the Exponent Install Wizard');
+        if (@file_exists(BASE.'install/index.php')) {
+            header('Location: ' . URL_FULL . 'install/index.php');
+            exit('Redirecting to the Exponent Install Wizard');
+        } else {
+            flash('error', gt("Installation files were not found"));
+        }
    	}
 
 }

@@ -37,6 +37,8 @@
                     <h3>{control type="checkbox" name=$upgradescript->classname label=$title value=1}</h3>
                     <p>{$upgradescript->description()}</p>
                 </li>
+            {foreachelse}
+                <h3>{'There are no upgrade scripts available to run'|gettext}</h3>
             {/foreach}
         </ol>
         {control type="buttongroup" submit="Run Selected Scripts"|gettext cancel="Cancel"|gettext}
