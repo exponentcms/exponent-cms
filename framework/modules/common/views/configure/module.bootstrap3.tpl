@@ -109,7 +109,7 @@
                             url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + viewpicker.val(),
                             success: handleSuccessView
                         });
-                        $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
+                        $('#moduleViewConfig').html($('{/literal}{loading title="Loading Form"|gettext}{literal}'));
                     }
                 });
             });
@@ -121,7 +121,7 @@
                         url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + e.target.value,
                         success: handleSuccessView
                     });
-                    $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
+                    $('#moduleViewConfig').html($('{/literal}{loading title="Loading Form"|gettext}{literal}'));
                 }
             });
 

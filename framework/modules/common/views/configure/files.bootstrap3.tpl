@@ -49,62 +49,49 @@
     {control type=dropdown name="upload_folder" label="Select the Quick Add Upload Folder"|gettext items=$folders value=$config.upload_folder}
 {/if}
 
-{script unique="fileviewconfig" yui3mods="node,io"}
+{script unique="fileviewconfig" jquery=1}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-	var sUrl = EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_view_config&ajax_action=1";
-
-	var handleSuccess = function(ioId, o){
-        if(o.responseText){
-            Y.one('#fileViewConfig').setContent(o.responseText);
-                Y.one('#fileViewConfig').all('script').each(function(n){
-                if(!n.get('src')){
-                    eval(n.get('innerHTML'));
-                } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
-                };
-            });
-            Y.one('#fileViewConfig').all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
-            });
+$(document).ready(function() {
+    $('#filedisplay').on('change',function(e){
+        e.preventDefault();
+        if (e.target.value == ""){
+            $('#ff-options').css("display", "none");
+            $('#fileViewConfig').css("display", "none");
         } else {
-            Y.one('#fileViewConfig .loadingdiv').remove();
-            Y.one('#ff-options').setStyle("display", "none");
-        }
-	};
-
-	//A function handler to use for failed requests:
-	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "example");
-	};
-
-    Y.one('#filedisplay').on('change',function(e){
-        e.halt();
-        if (e.target.get('value')==""){
-            Y.one('#ff-options').setStyle("display", "none");
-            Y.one('#fileViewConfig').setStyle("display", "none");
-        } else {
-            var cfg = {
-                method: "POST",
+            $('#ff-options').css("display", "block");
+            $('#fileViewConfig').css("display", "block");
+            $.ajax({
+                type: "POST",
                 headers: { 'X-Transaction': 'Load File Config'},
-                arguments : { 'X-Transaction': 'Load File Config'}
-                data : "view="+e.target.get('value'),
-                on: {
-                    success: handleSuccess,
-                    failure: handleFailure
+                url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_view_config&ajax_action=1",
+                data: "view="+e.target.value,
+                success: function(o, ioId){
+                    if(o){
+                        $('#fileViewConfig').html(o);
+                        $('#fileViewConfig script').each(function (n) {
+                            if (!n.get('src')) {
+                                eval(n.get('innerHTML'));
+                            } else {
+                                var url = n.get('src');
+                                $.getScript(url);
+                            }
+                        });
+                        $('#fileViewConfig link').each(function (n) {
+                            var url = n.get('href');
+                            $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                        });
+                    } else {
+                        $('#fileViewConfig .loadingdiv').remove();
+                        $('#ff-options').setStyle("display", "none");
+                    }
                 }
-            };
-            Y.one('#ff-options').setStyle("display", "block");
-            Y.one('#fileViewConfig').setStyle("display", "block");
-            var request = Y.io(sUrl, cfg);
-            Y.one('#fileViewConfig').setContent(Y.Node.create('{/literal}{loading}{literal}'));
+            });
+            $('#fileViewConfig').html($('{/literal}{loading}{literal}'));
         }
     });
     {/literal}
     {if $presaved}
-        Y.one('#ff-options').setStyle("display", "block");
+        $('#ff-options').css("display", "block");
     {/if}
     {literal}
 });
