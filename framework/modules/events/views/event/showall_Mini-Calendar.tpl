@@ -40,35 +40,20 @@
 {literal}
 
 YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var minical = Y.one('#mini-{/literal}{$name}{literal}');
-    var cfg = {
-    			method: "POST",
-    			headers: { 'X-Transaction': 'Load Minical'},
-    			arguments : { 'X-Transaction': 'Load Minical'}
-    		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=minical&ajax_action=1&src="+src;
+    var minical_{/literal}{$name}{literal} = Y.one('#mini-{/literal}{$name}{literal}');
 
 	var handleSuccess = function(ioId, o){
-//		Y.log(o.responseText);
-//		Y.log("The success handler was called.  Id: " + ioId + ".", "info", "minical nav");
-
         if(o.responseText){
-            minical.setContent(o.responseText);
-            minical.all('script').each(function(n){
+            minical_{/literal}{$name}{literal}.setContent(o.responseText);
+            minical_{/literal}{$name}{literal}.all('script').each(function(n){
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-//                    if (url.indexOf("ckeditor")) {
-                        Y.Get.script(url);
-//                    };
+                    Y.Get.script(n.get('src'));
                 };
             });
-            minical.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+            minical_{/literal}{$name}{literal}.all('link').each(function(n){
+                Y.Get.css(n.get('href'));
             });
         } else {
             Y.one('#mini-{/literal}{$name}{literal}.loadingdiv').remove();
@@ -84,12 +69,16 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 	Y.on('io:success', handleSuccess);
 	Y.on('io:failure', handleFailure);
 
-    minical.delegate('click', function(e){
+    minical_{/literal}{$name}{literal}.delegate('click', function(e){
         e.halt();
-        cfg.data = "time="+e.currentTarget.get('rel');
-        var request = Y.io(sUrl, cfg);
-//        minical.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-        minical.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+        var cfg = {
+            method: "POST",
+            headers: { 'X-Transaction': 'Load Minical'},
+            arguments : { 'X-Transaction': 'Load Minical'},
+            data : "time="+e.currentTarget.get('rel'),
+        };
+        var request = Y.io(EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=minical&ajax_action=1&src={/literal}{$__loc->src}{literal}", cfg);
+        minical_{/literal}{$name}{literal}.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
     }, 'a.evnav');
 });
 {/literal}

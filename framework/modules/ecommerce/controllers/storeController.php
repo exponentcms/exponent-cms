@@ -303,6 +303,10 @@ class storeController extends expController {
      * @deprecated 2.0.0 moved to eventregistration
      */
     function upcomingEvents() {
+        $this->params['controller'] = 'eventregistration';
+        redirect_to($this->params);
+
+        //fixme old code
         $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
         $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
         $sql .= 'WHERE 1 AND er.signup_cutoff > ' . time();
@@ -336,6 +340,10 @@ class storeController extends expController {
      * @deprecated 2.0.0 moved to eventregistration
      */
     function eventsCalendar() {
+        $this->params['controller'] = 'eventregistration';
+        redirect_to($this->params);
+
+        //fixme old code
         global $db, $user;
 
         expHistory::set('viewable', $this->params);
