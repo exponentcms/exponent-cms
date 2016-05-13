@@ -68,21 +68,21 @@ $(document).ready(function() {
                 success: function(o, ioId){
                     if(o){
                         $('#fileViewConfig').html(o);
-                        $('#fileViewConfig script').each(function (n) {
-                            if (!n.get('src')) {
-                                eval(n.get('innerHTML'));
+                        $('#fileViewConfig script').each(function (k, n) {
+                            if (!$(n).attr('src')) {
+                                eval($(n).html);
                             } else {
-                                var url = n.get('src');
+                                var url = $(n).attr('src');
                                 $.getScript(url);
                             }
                         });
-                        $('#fileViewConfig link').each(function (n) {
-                            var url = n.get('href');
+                        $('#fileViewConfig link').each(function (k, n) {
+                            var url = $(n).attr('href');
                             $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                         });
                     } else {
                         $('#fileViewConfig .loadingdiv').remove();
-                        $('#ff-options').setStyle("display", "none");
+                        $('#ff-options').css("display", "none");
                     }
                 }
             });

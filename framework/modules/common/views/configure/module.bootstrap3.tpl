@@ -129,16 +129,16 @@
             var handleSuccessView = function (o, ioId) {
                 if (o) {
                     $('#moduleViewConfig').html(o);
-                    $('#moduleViewConfig script').each(function (n) {
-                        if (!n.get('src')) {
-                            eval(n.get('innerHTML'));
+                    $('#moduleViewConfig script').each(function (k, n) {
+                        if (!$(n).attr('src')) {
+                            eval($(n).html);
                         } else {
-                            var url = n.get('src');
+                            var url = $(n).attr('src');
                             $.getScript(url);
                         }
                     });
-                    $('#moduleViewConfig link').each(function (n) {
-                        var url = n.get('href');
+                    $('#moduleViewConfig link').each(function (k, n) {
+                        var url = $(n).attr('href');
                         $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                     });
                 } else {
