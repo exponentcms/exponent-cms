@@ -53,7 +53,14 @@ function smarty_function_loading($params,&$smarty) {
         $spinner ='';
     }
 
-    echo '<div class="loadingdiv">', $spinner, $title, '</div>';
+    if (!empty($params['span'])) {
+        echo '<span class="loadingdiv">', $spinner, $title, '</span>';
+        expCSS::pushToHead(array(
+           "css"=>".loadingdiv {padding:0;padding-left:6px;}",
+        ));
+    } else {
+        echo '<div class="loadingdiv">', $spinner, $title, '</div>';
+    }
 }
 
 ?>

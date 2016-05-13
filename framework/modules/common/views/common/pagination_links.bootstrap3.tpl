@@ -39,5 +39,6 @@
             </ul>
         </div>
         <span class="pagetotals">{'Showing'|gettext} <span class="frecord">{$page->firstrecord}</span>-<span class="lrecord">{$page->lastrecord}</span> {'of'|gettext} <span class="total">{$page->total_records}</span></span>
+        <span class="loader"></span>
     </div>
 {/if}
