@@ -41,7 +41,7 @@ dompdf,0.6.2exp,https://github.com/dompdf/dompdf,0.7.0,"optional, patched to dis
 mPDF,6.0.0/5.7.4,mpdf1.com,6.1.1/5.7.4,optional
 HTML2PDF,4.6.1,https://github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
 TCPDF,6.2.12,https://sourceforge.net/projects/tcpdf,6.2.12,"optional, used by HTML2PDF"
-CKEditor,4.5.8,ckeditor.com,4.5.8,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
+CKEditor,4.5.9,ckeditor.com,4.5.9,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
 TinyMCE,4.3.12,tinymce.com,4.3.12,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 elFinder,2.1.11n,elfinder.org,2.1.11n,"use https://github.com/nao-pon/elFinder and added Exponent classes, plus some other customized files"
 jQuery1,1.12.3,jquery.com,1.12.3,v1.11.3 still needed for old firefox
