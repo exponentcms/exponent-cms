@@ -41,15 +41,17 @@ function smarty_function_loading($params,&$smarty) {
 
     if (bs2()) {
         $spinner = '<i class="icon icon-large icon-spinner icon-spin"></i> ';
+        expCSS::pushToHead(array(
+           "corecss"=>"loading",
+        ));
     } elseif (bs3()) {
         $spinner = '<i class="fa fa-lg fa-spinner fa-pulse"></i> ';
+        expCSS::pushToHead(array(
+           "corecss"=>"loading",
+        ));
     } else {
         $spinner ='';
     }
-
-    expCSS::pushToHead(array(
-        "corecss"=>"loading",
-    ));
 
     echo '<div class="loadingdiv">', $spinner, $title, '</div>';
 }
