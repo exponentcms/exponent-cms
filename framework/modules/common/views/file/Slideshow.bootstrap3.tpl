@@ -67,7 +67,7 @@
 //            autoWidth: true,
             nav : {/literal}{!$config.hidecontrols}{literal},
             navText : ['{/literal}{expTheme::iconStyle('chevron-left',' ')}{literal}','{/literal}{expTheme::iconStyle('chevron-right',' ')}{literal}'],
-            autoplay : true,
+            autoplay : {/literal}{if $config.autoplay==1}true{else}false{/if}{literal},
             autoplayTimeout : {/literal}{$config.speed|default:5}000{literal},
             autoplayHoverPause : true,
 //            captionAutoHide : true,
