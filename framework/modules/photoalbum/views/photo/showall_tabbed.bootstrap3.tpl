@@ -104,28 +104,8 @@
             {/foreach}
         </div>
     </div>
-    {*<div class="loadingdiv">{'Loading'|gettext}</div>*}
     {loading}
 </div>
-
-{*{script unique="`$id`" yui3mods="gallery-lightbox"}*}
-{*{literal}*}
-    {*EXPONENT.YUI3_CONFIG.modules = {*}
-       {*'gallery-lightbox' : {*}
-           {*fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/js/gallery-lightbox.js',*}
-           {*requires : ['base','node','anim','selector-css3','lightbox-css']*}
-       {*},*}
-       {*'lightbox-css': {*}
-           {*fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/common/assets/css/gallery-lightbox.css',*}
-           {*type: 'css'*}
-       {*}*}
-    {*}*}
-
-	{*YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {*}
-        {*Y.Lightbox.init();*}
-	{*});*}
-{*{/literal}*}
-{*{/script}*}
 
 {script unique="shadowbox-`$__loc->src`" jquery='jquery.colorbox'}
 {literal}
