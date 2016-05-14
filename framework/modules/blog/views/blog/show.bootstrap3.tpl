@@ -44,7 +44,7 @@
         var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
         var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=blog&action=show&view=blogitem&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
-        // ajax load new posts
+        // ajax load new post
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
             if(o){
                 blogitem_{/literal}{$name}{literal}.html(o);
@@ -67,33 +67,33 @@
 
             blogitem_{/literal}{$name}{literal}.delegate('a.blognav', 'click', function(e){
             e.preventDefault();
-            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, '{/literal}{'Blog Posts'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
-            // moving to a new posts
+            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, e.target.title.trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            // moving to a new post
             $.ajax({
                 type: "POST",
-                headers: { 'X-Transaction': 'Load Posts'},
+                headers: { 'X-Transaction': 'Load Post'},
                 url: sUrl_{/literal}{$name}{literal},
                 data: "title=" + e.target.rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
-            // blogitem_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Posts1"|gettext}{literal}'));
-            blogitem_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Posts"|gettext}{literal}'));
+            // blogitem_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Post"|gettext}{literal}'));
+            blogitem_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Post"|gettext}{literal}'));
         });
 
         // Watches the browser history for changes
         window.addEventListener('popstate', function(e) {
             state = History.getState();
             if (state.data.name == '{/literal}{$name}{literal}') {
-                // moving to a new posts
+                // moving to a new post
                 $.ajax({
                     type: "POST",
-                    headers: { 'X-Transaction': 'Load Posts'},
+                    headers: { 'X-Transaction': 'Load Post'},
                     url: sUrl_{/literal}{$name}{literal},
                     data: "title=" + state.data.rel,
                     success: handleSuccess_{/literal}{$name}{literal}
                 });
-                // blogitem_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Posts"|gettext}{literal}'));
-                blogitem_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Posts"|gettext}{literal}'));
+                // blogitem_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Post"|gettext}{literal}'));
+                blogitem_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Post"|gettext}{literal}'));
             }
         });
     });
