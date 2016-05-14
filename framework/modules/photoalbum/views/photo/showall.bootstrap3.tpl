@@ -69,82 +69,77 @@
 {if empty($params.page)}
     {$params.page = 1}
 {/if}
-{script unique="`$name`listajax" yui3mods="node,io,node-event-delegate" jquery="jquery.history"}
+{script unique="`$name`itemajax" jquery="jquery.history"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var photolist = Y.one('#{/literal}{$name}{literal}list');
-    var page_parm = '';
-    if (EXPONENT.SEF_URLS) {
-        page_parm = '/page/';
-    } else {
-        page_parm = '&page=';
-    }
-    var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
-        {/literal}
-        {$orig_params = ['controller' => 'photo', 'action' => 'showall', 'src' => $params.src]}
-    {literal}
-    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
-    var cfg = {
-    			method: "POST",
-    			headers: { 'X-Transaction': 'Load Photoitems'},
-    			arguments : { 'X-Transaction': 'Load Photoitems'}
-    		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=photo&action=showall&view=photolist&ajax_action=1&src="+src;
-
-	var handleSuccess = function(ioId, o){
-        if(o.responseText){
-                photolist.setContent(o.responseText);
-                photolist.all('script').each(function(n){
-                if(!n.get('src')){
-                    eval(n.get('innerHTML'));
-                } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
-                };
-            });
-            photolist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
-            });
+    $(document).ready(function() {
+        var photolist_{/literal}{$name}{literal} = $('#{/literal}{$name}{literal}list');
+        var page_parm_{/literal}{$name}{literal} = '';
+        if (EXPONENT.SEF_URLS) {
+            page_parm_{/literal}{$name}{literal} = '/page/';
         } else {
-            photolist.one('.loadingdiv').remove();
+            page_parm_{/literal}{$name}{literal} = '&page=';
         }
-	};
+        var History = window.History;
+        History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
+        {/literal}
+            {$orig_params = ['controller' => 'photo', 'action' => 'showall', 'src' => $params.src]}
+        {literal}
+        var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
+        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=photo&action=showall&view=photolist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
-	//A function handler to use for failed requests:
-	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "photoitems nav");
-	};
+        // ajax load new photos
+        var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
+            if(o){
+                photolist_{/literal}{$name}{literal}.html(o);
+                photolist_{/literal}{$name}{literal}.find('script').each(function(n){
+                    if(!$(n).attr('src')){
+                        eval($(n).html);
+                    } else {
+                        $.getScript($(n).attr('src'));
+                    };
+                });
+                photolist_{/literal}{$name}{literal}.find('link').each(function(n){
+                    $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                });
+            } else {
+                $('#{/literal}{$name}{literal}item.loadingdiv').remove();
+                photolist_{/literal}{$name}{literal}.html('Unable to load content');
+                photolist_{/literal}{$name}{literal}.css('opacity', 1);
+            }
+        };
 
-	//Subscribe our handlers to IO's global custom events:
-	Y.on('io:success', handleSuccess);
-	Y.on('io:failure', handleFailure);
+        photolist_{/literal}{$name}{literal}.delegate('a.pager', 'click', function(e){
+            e.preventDefault();
+            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, '{/literal}{'Photos'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            // moving to a new photos
+            $.ajax({
+                type: "POST",
+                headers: { 'X-Transaction': 'Load Photos'},
+                url: sUrl_{/literal}{$name}{literal},
+                data: "page=" + e.target.rel,
+                success: handleSuccess_{/literal}{$name}{literal}
+            });
+            // photolist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
+            photolist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Photos"|gettext}{literal}'));
+        });
 
-    photolist.delegate('click', function(e){
-        e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Photos'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
-        cfg.data = "page="+e.currentTarget.get('rel');
-        var request = Y.io(sUrl, cfg);
-//        photolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Photos"|gettext}{literal}</div>'));
-          photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
-    }, 'a.pager');
-
-    // Watches the browser history for changes
-    window.addEventListener('popstate', function(e) {
-        state = History.getState()
-        if (state.data.name == '{/literal}{$name}{literal}') {
-            // moving to a new page
-            cfg.data = "page="+state.data.rel;
-            var request = Y.io(sUrl, cfg);
-//            photolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Photos"|gettext}{literal}</div>'));
-              photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
-        }
+        // Watches the browser history for changes
+        window.addEventListener('popstate', function(e) {
+            state = History.getState();
+            if (state.data.name == '{/literal}{$name}{literal}') {
+                // moving to a new photos
+                $.ajax({
+                    type: "POST",
+                    headers: { 'X-Transaction': 'Load Photos'},
+                    url: sUrl_{/literal}{$name}{literal},
+                    data: "page=" + state.data.rel,
+                    success: handleSuccess_{/literal}{$name}{literal}
+                });
+                // photolist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
+                photolist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Photos"|gettext}{literal}'));
+            }
+        });
     });
-});
 {/literal}
 {/script}
 {/if}
