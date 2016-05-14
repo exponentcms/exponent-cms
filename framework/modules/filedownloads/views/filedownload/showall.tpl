@@ -91,15 +91,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         {$orig_params = ['controller' => 'filedownload', 'action' => 'showall', 'src' => $params.src]}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Fileitems'},
     			arguments : { 'X-Transaction': 'Load Fileitems'}
     		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=filedownload&action=showall&view=filelist&ajax_action=1&src="+src;
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=filedownload&action=showall&view=filelist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
@@ -135,7 +132,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'File Downloads'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
           filelist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
     }, 'a.pager');
 
@@ -146,7 +142,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            filelist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
               filelist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
         }
     });
