@@ -25,6 +25,7 @@
                     </a>
                 {/if}
             </span>
+            <span class="loader"></span>
             <span style="float:right">
                 {if $record->next}
                     <a class="newsnav" href="{link action=show title=$record->next->sef_url}" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
@@ -116,6 +117,7 @@
                     </a>
                 {/if}
             </span>
+            <span class="loader"></span>
             <span style="float:right">
                 {if $record->next}
                     <a class="newsnav" href="{link action=show title=$record->next->sef_url}" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">

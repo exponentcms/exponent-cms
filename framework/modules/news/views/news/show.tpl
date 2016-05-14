@@ -35,18 +35,15 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.title}{literal}'});
     {/literal}
-        {$orig_params = ['controller' => 'news', 'action' => 'show', 'title' => $params.title]}
+        {$orig_params = ['controller' => 'news', 'action' => 'show']}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.title = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Newsitem'},
     			arguments : { 'X-Transaction': 'Load Newsitem'}
     		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=news&action=show&view=newsitem&ajax_action=1&src="+src;
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=news&action=show&view=newsitem&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
@@ -55,13 +52,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
             newsitem.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+                Y.Get.css(n.get('href'));
             });
         } else {
             newsitem.one('.loadingdiv').remove();
@@ -82,7 +77,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('text').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "title="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
         newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
     }, 'a.newsnav');
 
@@ -93,7 +87,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new item
             cfg.data = "title="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            newsitem.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Item"|gettext}{literal}</div>'));
             newsitem.setContent(Y.Node.create('{/literal}{loading title="Loading Item"|gettext}{literal}'));
         }
     });
