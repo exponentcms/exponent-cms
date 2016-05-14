@@ -74,15 +74,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         {$orig_params = ['controller' => 'portfolio', 'action' => 'showall', 'src' => $params.src]}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Portfolioitems'},
     			arguments : { 'X-Transaction': 'Load Portfolioitems'}
     		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=portfolio&action=showall&view=portfoliolist&ajax_action=1&src="+src;
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=portfolio&action=showall&view=portfoliolist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
@@ -91,13 +88,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
             portfoliolist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+                Y.Get.css(n.get('href'));
             });
         } else {
             portfoliolist.one('.loadingdiv').remove();
@@ -118,8 +113,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Portfoio'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        portfoliolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
-          portfoliolist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
+        portfoliolist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
     }, 'a.pager');
 
     // Watches the browser history for changes
@@ -129,8 +123,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            portfoliolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Items"|gettext}{literal}</div>'));
-              portfoliolist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
+            portfoliolist.setContent(Y.Node.create('{/literal}{loading title="Loading Items"|gettext}{literal}'));
         }
     });
 });
