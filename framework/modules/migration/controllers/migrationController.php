@@ -2549,7 +2549,8 @@ class migrationController extends expController {
             $newrss->enable_rss = $newconfig->config['enable_rss'];
             $newrss->advertise = $newconfig->config['enable_rss'];
             $newrss->title = $newconfig->config['feed_title'];
-            $newrss->sef_url = expCore::makeSefUrl($newrss->title,'expRss');
+//            $newrss->sef_url = expCore::makeSefUrl($newrss->title,'expRss');
+			$newrss->sef_url = $this->makeSefUrl($newrss->title);
             $newrss->feed_desc = $newconfig->config['feed_desc'];
             $newrss->rss_limit = $newconfig->config['rss_limit'];
             $newrss->rss_cachetime = $newconfig->config['rss_cachetime'];

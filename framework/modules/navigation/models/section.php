@@ -41,10 +41,35 @@ class section extends expRecord {
 
     function update($params=array()) {
         $this->grouping_sql = " AND parent='".$this->parent."'";
-        if (empty($this->sef_name) && empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
+        if (empty($this->sef_name) && empty($params['sef_name']))
+            $params['sef_name'] = self::makeSefUrl();
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();
+    }
+
+    /**
+     * make an sef_name for section
+     *
+     * @param string $title
+     *
+     * @return mixed|string
+     */
+    public function makeSefUrl()
+    {
+        global $db, $router;
+
+        if (!empty($this->name)) {
+            $sef_name = $router->encode($this->name);
+        } else {
+            $sef_name = $router->encode('Untitled');
+        }
+        $dupe = $db->selectValue($this->tablename, 'sef_name', 'sef_name="' . $sef_name . '"');
+        if (!empty($dupe)) {
+            list($u, $s) = explode(' ', microtime());
+            $sef_name .= '-' . $s . '-' . $u;
+        }
+        return $sef_name;
     }
 
     public function beforeSave() {

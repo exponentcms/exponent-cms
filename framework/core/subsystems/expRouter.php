@@ -307,7 +307,7 @@ class expRouter {
             
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
                 $this->url_type = 'base';  // no params
-            } elseif (count($this->url_parts) == 1 && $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
+            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
                 $this->url_type = 'page';  // single param is page name
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $this->url_type = 'post';  // params via form/post
@@ -385,11 +385,11 @@ class expRouter {
                 $sef_name = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
-                $cat = $c->findBy('sef_name', $sef_name);
+                $cat = $c->findBy('sef_url', $sef_name);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
-                    $prod = $p->findBy('sef_name', $sef_name);
+                    $prod = $p->findBy('sef_url', $sef_name);
                     if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
