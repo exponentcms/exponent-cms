@@ -16,7 +16,6 @@
 {uniqueid prepend="search" assign="name"}
 
 <div class="module search search-results">
-	
 	<h1>{'Search Results'|gettext}</h1>
     <div id="{$name}list">
         {exp_include file='searchlist.tpl'}
@@ -48,7 +47,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     			headers: { 'X-Transaction': 'Load searchitems'},
     			arguments : { 'X-Transaction': 'Load searchitems'}
     		};
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=search&action=search&view=searchlist&ajax_action=1&src={/literal}{$__loc->src}{literal}&search_string={/literal}{$terms|urlencode}{literal}";
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=search&action=search&view=searchlist&ajax_action=1&search_string={/literal}{$terms|urlencode}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){

@@ -16,7 +16,6 @@
 {uniqueid prepend="search" assign="name"}
 
 <div class="module search search-results">
-	
 	<h1>{'Search Results'|gettext}</h1>
     <div id="{$name}list">
         {exp_include file='searchlist.tpl'}
@@ -43,7 +42,7 @@
             {$orig_params = ['controller' => 'search', 'action' => 'search', 'search_string' => $params.search_string]}
         {literal}
         var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
-        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=search&action=search&view=searchlist&ajax_action=1&src={/literal}{$__loc->src}{literal}&search_string={/literal}{$terms|urlencode}{literal}";
+        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=search&action=search&view=searchlist&ajax_action=1&search_string={/literal}{$terms|urlencode}{literal}";
 
         // ajax load new items
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
@@ -77,7 +76,6 @@
                 data: "page=" + e.target.rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
-            // searchlist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Searching"|gettext}{literal}'));
             searchlist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Searching"|gettext}{literal}'));
         });
 
@@ -93,7 +91,6 @@
                     data: "page=" + state.data.rel,
                     success: handleSuccess_{/literal}{$name}{literal}
                 });
-                // searchlist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Searching"|gettext}{literal}'));
                 searchlist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Searching"|gettext}{literal}'));
             }
         });
