@@ -106,7 +106,7 @@
                 data: "page=" + e.target.rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
-            // bloglist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Posts1"|gettext}{literal}'));
+            // bloglist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Posts"|gettext}{literal}'));
             bloglist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Posts"|gettext}{literal}'));
         });
 
