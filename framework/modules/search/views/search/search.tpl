@@ -43,15 +43,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         {$orig_params = ['controller' => 'search', 'action' => 'search', 'search_string' => $params.search_string]}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load searchitems'},
     			arguments : { 'X-Transaction': 'Load searchitems'}
     		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=search&action=search&view=searchlist&ajax_action=1&src="+src + "&search_string={/literal}{$terms|urlencode}{literal}";
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=search&action=search&view=searchlist&ajax_action=1&src={/literal}{$__loc->src}{literal}&search_string={/literal}{$terms|urlencode}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
@@ -60,13 +57,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
                 searchlist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+                Y.Get.css(n.get('href'));
             });
         } else {
             searchlist.one('.loadingdiv').remove();
@@ -87,7 +82,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Searching'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
         searchlist.setContent(Y.Node.create('{/literal}{loading title="Searching"|gettext}{literal}'));
     }, 'a.pager');
 
@@ -98,7 +92,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            searchlist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Searching"|gettext}{literal}</div>'));
             searchlist.setContent(Y.Node.create('{/literal}{loading title="Searching"|gettext}{literal}'));
         }
     });
