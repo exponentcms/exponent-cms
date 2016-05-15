@@ -1731,9 +1731,9 @@ class storeController extends expController {
         $firstObs = $db->selectObjectsBySql($sql);
         foreach ($firstObs as $set) {
             $set->weight = 1;
-
             unset($set->score);
-            $res[$set->model] = $set;
+            $index = !empty($set->model) ? $set->model : $set->sef_url;
+            $res[$index] = $set;
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
@@ -1747,7 +1747,8 @@ class storeController extends expController {
         $secondObs = $db->selectObjectsBySql($sql);
         foreach ($secondObs as $set) {
             $set->weight = 2;
-            $res[$set->model] = $set;
+            $index = !empty($set->model) ? $set->model : $set->sef_url;
+            $res[$index] = $set;
         }
 
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
@@ -1760,10 +1761,15 @@ class storeController extends expController {
 
         $thirdObs = $db->selectObjectsBySql($sql);
         foreach ($thirdObs as $set) {
-            if (strcmp(strtolower(trim($this->params['query'])), strtolower(trim($set->model))) == 0) $set->weight = 10;
-            else if (strcmp(strtolower(trim($this->params['query'])), strtolower(trim($set->title))) == 0) $set->weight = 9;
-            else $set->weight = 3;
-            $res[$set->model] = $set;
+            if (strcmp(strtolower(trim($this->params['query'])), strtolower(trim($set->model))) == 0)
+                $set->weight = 10;
+            else if (strcmp(strtolower(trim($this->params['query'])), strtolower(trim($set->title))) == 0)
+                $set->weight = 9;
+            else
+                $set->weight = 3;
+
+            $index = !empty($set->model) ? $set->model : $set->sef_url;
+            $res[$index] = $set;
         }
 
         function sortSearch($a, $b) {
@@ -1772,8 +1778,9 @@ class storeController extends expController {
 
         if (count($terms)) {
             foreach ($res as $r) {
+                $index = !empty($r->model) ? $r->model : $r->sef_url;
                 foreach ($terms as $term) {
-                    if (stristr($r->title, $term)) $res[$r->model]->weight = $res[$r->model]->weight + 1;
+                    if (stristr($r->title, $term)) $res[$index]->weight = $res[$index]->weight + 1;
                 }
             }
         }
