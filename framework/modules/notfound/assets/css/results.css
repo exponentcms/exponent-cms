@@ -16,3 +16,6 @@
 	border-bottom:1px dotted #333;
 }
 
+.search-results .item a {
+	font-weight: bold;
+}
