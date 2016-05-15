@@ -21,7 +21,6 @@
     {{control type=checkbox name="hidetext" label="Hide slide title"|gettext checked=$config.hidetext value=1}}
     {*{control type="checkbox" name="hidecontrols" label="Hide slide controls"|gettext checked=$config.hidecontrols|default:0 value=1}*}
     {*{control type="checkbox" name="dimcontrols" label="Dim controls"|gettext checked=$config.dimcontrols|default:0 value=1}*}
-
     {control type="checkbox" name="autoplay" label="Autoplay"|gettext checked=$config.autoplay|default:1 value=1}
 
     {group label='Transition Animation'|gettext}

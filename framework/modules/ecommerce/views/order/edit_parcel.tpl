@@ -33,7 +33,7 @@
         <table class="exp-skin-table">
             <thead>
                 <th>{'Included'|gettext}</th>
-                <th>{'SKU'|gettext}</th>
+                <th>SKU</th>
                 <th>{'Product'|gettext}</th>
                 <th>{'Quantity'|gettext}</th>
             </thead>

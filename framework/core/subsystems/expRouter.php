@@ -382,21 +382,21 @@ class expRouter {
             //then we'll return false as usual
             // since we only received a single param and it wasn't a page, try for store category, or a product
             if (empty($section)) {
-                $sef_name = $this->url_parts[0];
+                $sef_url = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
-                $cat = $c->findBy('sef_url', $sef_name);
+                $cat = $c->findBy('sef_url', $sef_url);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
-                    $prod = $p->findBy('sef_url', $sef_name);
+                    $prod = $p->findBy('sef_url', $sef_url);
                     if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'show'; //controller
                         $this->url_parts[2] = 'title'; //controller
-                        $this->url_parts[3] = $sef_name; //controller
+                        $this->url_parts[3] = $sef_url; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
@@ -408,7 +408,7 @@ class expRouter {
                     $this->url_parts[0] = 'store'; //controller
                     $this->url_parts[1] = 'showall'; //controller
                     $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_name; //controller
+                    $this->url_parts[3] = $sef_url; //controller
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();

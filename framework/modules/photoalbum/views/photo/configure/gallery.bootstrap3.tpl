@@ -63,7 +63,6 @@
                             values="bounce,bounceIn,bounceInDown,bounceInLeft,bounceInRight,bounceInUp,bounceOut,bounceOutDown,bounceOutLeft,bounceOutRight,bounceOutUp,fadeIn,fadeInDown,fadeInDownBig,fadeInLeft,fadeInLeftBig,fadeInRight,fadeInRightBig,fadeInUp,fadeInUpBig,fadeOut,fadeOutDown,fadeOutDownBig,fadeOutLeft,fadeOutLeftBig,fadeOutRight,fadeOutRightBig,fadeOutUp,fadeOutUpBig,flash,flip,flipInX,flipInY,flipOutX,flipOutY,hinge,lightSpeedIn,lightSpeedOut,pulse,rollIn,rollOut,rotateIn,rotateInDownLeft,rotateInDownRight,rotateInUpLeft,rotateInUpRight,rotateOut,rotateOutDownLeft,rotateOutDownRight,rotateOutUpLeft,rotateOutUpRight,shake,swing,tada,wobble"
                             label="Transition Out" value=$config.anim_out|default:'fadeOut'
                         }
-                        <quote class="error">{'Settings other than Fade In/Fade Out may not work correctly!'|gettext}</quote>
                         {*{control type=text name="duration" label="Animation Duration"|gettext value=$config.duration|default:5 size="5" description='in tenths of seconds'|gettext}*}
                     {/group}
                 {/group}

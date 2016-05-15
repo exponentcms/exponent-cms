@@ -1178,9 +1178,9 @@ class reportController extends expController {
             'action'     => $this->params['action'],
             'columns'    => array(
                 'actupon'     => true,
-                gt('ID')      => 'id',
+                'ID'      => 'id',
                 gt('Product') => 'title|controller=store,action=show,showby=id',
-                gt('SKU')     => 'model',
+                'SKU'     => 'model',
                 gt('Price')   => 'base_price',
                 gt('Status')   => 'status'
             ),
