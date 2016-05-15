@@ -568,13 +568,15 @@ class expPaginator {
         foreach ($this->records as &$record) {
             if (isset($record->ref_type)) {
                 $refType = $record->ref_type;
-                $type = new $refType();
-                $classinfo = new ReflectionClass($type); 
-                if ($classinfo->hasMethod('paginationCallback')) {
-                    $item = new $type($record->original_id);
-                    $item->paginationCallback($record);
+                if (class_exists($record->ref_type)) {
+                    $type = new $refType();
+                    $classinfo = new ReflectionClass($type);
+                    if ($classinfo->hasMethod('paginationCallback')) {
+                        $item = new $type($record->original_id);
+                        $item->paginationCallback($record);
+                    }
                 }
-            } 
+            }
         }    
     }
     
