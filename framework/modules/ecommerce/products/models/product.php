@@ -771,12 +771,11 @@ class product extends expRecord {
         //check if category is
     }
 
-//    public function paginationCallback($item)
-    public function paginationCallback(&$item) // (deprecated) moved call by reference to function, not caller
+    public function paginationCallback(&$item)
     {
-        $score = $item->score;
-        $item = $this;
-        $item->score = $score;
+        // add passed properties to the object and pass back an instantiated object
+        $item = (object) array_merge((array) $this, (array) $item);
+        $item = expCore::cast($item, 'product');
     }
 
     public function update($params = array()) {
