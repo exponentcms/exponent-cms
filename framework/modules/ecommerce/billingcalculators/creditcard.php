@@ -294,7 +294,7 @@ class creditcard extends billingcalculator {
         }
         $card_number = strrev($card_number);
         $total = 0;
-        for ($i = 0; $i < strlen($card_number); $i++) {
+        for ($i = 0, $iMax = strlen($card_number); $i < $iMax; $i++) {
             $current_number = substr($card_number, $i, 1);
             if ($i % 2 == 1) {
                 $current_number *= 2;

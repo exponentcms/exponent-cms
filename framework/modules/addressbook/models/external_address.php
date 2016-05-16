@@ -98,7 +98,7 @@ class external_address extends expRecord {
                  }
             } else {
                 $user->username = expString::sanitize($_POST['email']) . time();  //make a unique username
-                $password = md5(time().rand(50,000));  //generate random password
+                $password = md5(time().mt_rand(50, 1000));  //generate random password
                 $user->setPassword($password, $password);
             }
             

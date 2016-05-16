@@ -52,7 +52,7 @@ class storeCategory extends expNestedNode {
 			$children = $db->selectNestedNodeChildren($this->table, $this->id);
 		}
 		
-		for($i=0; $i<count($children); $i++) {
+		for ($i = 0, $iMax = count($children); $i < $iMax; $i++) {
 			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ';
           	$sql .= 'ON p.id = sc.product_id WHERE sc.storecategories_id IN (';
           	$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";

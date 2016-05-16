@@ -722,7 +722,7 @@ class eventController extends expController {
                         $addtl_chars = 0;
 
                         // iterate lines
-                        for ($j = 0; $j < count($lines); $j++) {
+                        for ($j = 0, $jMax = count($lines); $j < $jMax; $j++) {
                             $line = $lines[$j];
                             $linlen = strlen($line);
 
@@ -807,7 +807,7 @@ class eventController extends expController {
 
                 $items = $this->getEventsForDates($dates);
 
-                for ($i = 0; $i < count($items); $i++) {
+                for ($i = 0, $iMax = count($items); $i < $iMax; $i++) {
 
                     // Convert events stored in local time to GMT
                     $eventstart = new DateTime(date('r', $items[$i]->eventstart), new DateTimeZone($tz));
@@ -961,7 +961,7 @@ class eventController extends expController {
                 $edates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                 $days[$start] = array();
                 $days[$start] = self::getEventsForDates($edates);
-                for ($j = 0; $j < count($days[$start]); $j++) {
+                for ($j = 0, $jMax = count($days[$start]); $j < $jMax; $j++) {
                     $thisloc = expCore::makeLocation($loc->mod, $loc->src, $days[$start][$j]->id);
                     $days[$start][$j]->permissions = array(
                         "manage" => (expPermissions::check("manage", $thisloc) || expPermissions::check("manage", $loc)),

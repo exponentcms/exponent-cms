@@ -117,7 +117,7 @@ class expSession {
 		}
 		else if (!isset($_COOKIE[SYS_SESSION_COOKIE]))
 		{
-			$sessid = md5(uniqid(rand(), true));
+			$sessid = md5(uniqid(mt_rand(), true));
 		}
 		else
 		{

@@ -251,7 +251,7 @@ class Twitter
 
         // append default parameters
         $parameters['oauth_consumer_key'] = $this->getConsumerKey();
-        $parameters['oauth_nonce'] = md5(microtime() . rand());
+        $parameters['oauth_nonce'] = md5(microtime() . mt_rand());
         $parameters['oauth_timestamp'] = time();
         $parameters['oauth_signature_method'] = 'HMAC-SHA1';
         $parameters['oauth_version'] = '1.0';
@@ -354,7 +354,7 @@ class Twitter
 
         // append default parameters
         $oauth['oauth_consumer_key'] = $this->getConsumerKey();
-        $oauth['oauth_nonce'] = md5(microtime() . rand());
+        $oauth['oauth_nonce'] = md5(microtime() . mt_rand());
         $oauth['oauth_timestamp'] = time();
         $oauth['oauth_token'] = $this->getOAuthToken();
         $oauth['oauth_signature_method'] = 'HMAC-SHA1';

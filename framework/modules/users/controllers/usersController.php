@@ -354,7 +354,7 @@ class usersController extends expController {
         }
 
 //	    $sessions = $db->selectObjects('sessionticket');
-        for ($i = 0; $i < count($sessions); $i++) {
+        for ($i = 0, $iMax = count($sessions); $i < $iMax; $i++) {
             $sessions[$i]->user = new user($sessions[$i]->uid);
             if ($sessions[$i]->uid == 0) {
                 $sessions[$i]->user->id = 0;
@@ -547,8 +547,8 @@ class usersController extends expController {
 
         // create the password
         $newpass = '';
-        for ($i = 0; $i < rand(12, 20); $i++) {
-            $num = rand(48, 122);
+        for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
+            $num = mt_rand(48, 122);
             if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
             else $i--;
         }
@@ -718,7 +718,7 @@ class usersController extends expController {
             }
         }
 
-        for ($i = 0; $i < count($users); $i++) {
+        for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
             if (in_array($users[$i]->id, $members)) {
                 $users[$i]->is_member = 1;
             } else {
@@ -889,7 +889,7 @@ class usersController extends expController {
 
             $users = $this->$modelname->find('all', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')", $sort . ' ' . $dir, $results, $startIndex);
 
-            for ($i = 0; $i < count($users); $i++) {
+            for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
                 if (ECOM == 1) {
                     $users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
                 } else {
@@ -912,7 +912,7 @@ class usersController extends expController {
 
             $users = $this->$modelname->find('all', $filter, $sort . ' ' . $dir, $results, $startIndex);
 
-            for ($i = 0; $i < count($users); $i++) {
+            for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
                 if (ECOM == 1) {
                     $users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
                 } else {
@@ -1076,7 +1076,7 @@ class usersController extends expController {
         foreach ($this->params['permdata'] as $k => $user_str) {
             $perms = array_keys($user_str);
             $u = user::getUserById($k);
-            for ($i = 0; $i < count($perms); $i++) {
+            for ($i = 0, $iMax = count($perms); $i < $iMax; $i++) {
                 expPermissions::grant($u, $perms[$i], $loc);
             }
 
@@ -1171,7 +1171,7 @@ class usersController extends expController {
         foreach ($this->params['permdata'] as $k => $group_str) {
             $perms = array_keys($group_str);
             $g = group::getGroupById($k);
-            for ($i = 0; $i < count($perms); $i++) {
+            for ($i = 0, $iMax = count($perms); $i < $iMax; $i++) {
                 expPermissions::grantGroup($g, $perms[$i], $loc);
             }
         }
@@ -1294,7 +1294,7 @@ class usersController extends expController {
             $form->meta("use_header", $this->params["use_header"]);
             $form->meta("filename", $directory . "/" . $file->filename);
             $form->meta("delimiter", $this->params["delimiter"]);
-            for ($i = 0; $i < count($lineInfo); $i++) {
+            for ($i = 0, $iMax = count($lineInfo); $i < $iMax; $i++) {
                 if ($headerinfo != null) {
                     $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
                     if (array_key_exists($headerinfo[$i], $colNames)) {
@@ -1409,7 +1409,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
 //                            $userinfo['clearpassword'] = "";
@@ -1449,8 +1449,8 @@ class usersController extends expController {
 //                    switch ($this->params["pwordOptions"]) {
 //                        case "RAND":
 //                            $newpass = "";
-//                            for ($i = 0; $i < rand(12, 20); $i++) {
-//                                $num = rand(48, 122);
+//                            for ($i = 0; $i < mt_rand(12, 20); $i++) {
+//                                $num = mt_rand(48, 122);
 //                                if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
 //                                else $i--;
 //                            }
@@ -1467,7 +1467,7 @@ class usersController extends expController {
                     while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
                         if (!empty($this->params["update"])) {
                             if (in_array($userinfo['username'], $usersdone)) {
-                                $suffix = '-rand-' . rand(100, 999);
+                                $suffix = '-rand-' . mt_rand(100, 999);
                             } else {
                                 $tmp = user::getUserByName($userinfo['username'] . $suffix);
                                 $userinfo['id'] = $tmp->id;
@@ -1475,7 +1475,7 @@ class usersController extends expController {
                                 break;
                             }
                         } else {
-                            $suffix = '-rand-' . rand(100, 999);
+                            $suffix = '-rand-' . mt_rand(100, 999);
                         }
                     }
 
@@ -1539,7 +1539,7 @@ class usersController extends expController {
                         break;
                     case "FILNNUM":
                         if (($userinfo['firstname'] != "") && ($userinfo['lastname'] != "")) {
-                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . rand(100, 999)));
+                            $userinfo['username'] = str_replace(" ", "", strtolower($userinfo['firstname']{0} . $userinfo['lastname'] . mt_rand(100, 999)));
                         } else {
                             $userinfo['username'] = "";
                             $userinfo['clearpassword'] = "";
@@ -1579,8 +1579,8 @@ class usersController extends expController {
                     switch ($this->params["pwordOptions"]) {
                         case "RAND":
                             $newpass = "";
-                            for ($i = 0; $i < rand(12, 20); $i++) {
-                                $num = rand(48, 122);
+                            for ($i = 0, $iMax = mt_rand(12, 20); $i < $iMax; $i++) {
+                                $num = mt_rand(48, 122);
                                 if (($num > 97 && $num < 122) || ($num > 65 && $num < 90) || ($num > 48 && $num < 57)) $newpass .= chr($num);
                                 else $i--;
                             }
@@ -1597,7 +1597,7 @@ class usersController extends expController {
                     while (user::getUserByName($userinfo['username'] . $suffix) != null) { //username already exists
                         if (!empty($this->params["update"])) {
                             if (in_array($userinfo['username'], $usersdone)) {  // username exists because we already created it
-                                $suffix = rand(100, 999);
+                                $suffix = mt_rand(100, 999);
                             } else {
                                 $tmp = user::getUserByName($userinfo['username'] . $suffix);
                                 $userinfo['id'] = $tmp->id;
@@ -1605,7 +1605,7 @@ class usersController extends expController {
                                 break;
                             }
                         } else {
-                            $suffix = rand(100, 999);
+                            $suffix = mt_rand(100, 999);
                         }
                     }
 

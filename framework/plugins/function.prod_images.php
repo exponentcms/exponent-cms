@@ -105,7 +105,7 @@ function smarty_function_prod_images($params,&$smarty) {
             
             if (count($addImgs)>1) {
                 $adi = '<ul class="thumbnails">';
-                for ($i=0; $i<count($addImgs); $i++) {
+                for ($i = 0, $iMax = count($addImgs); $i < $iMax; $i++) {
                     $thumbparams = array("h"=>$config['addthmbw'],"w"=>$config['addthmbh'],"zc"=>1,"file_id"=>$addImgs[$i]->id,"return"=>1,"class"=>"thumnail");
                     $thmb = '<li>'.smarty_function_img($thumbparams,$smarty).'</li>';
                 }
@@ -124,7 +124,7 @@ function smarty_function_prod_images($params,&$smarty) {
             
             $html .= '<ul class="enlarged" style="height:'.$config['displayheight'].'px;width:'.$config['displaywidth'].'px;">';
 
-            for ($i=0; $i<count($mainImages); $i++) {
+            for ($i = 0, $iMax = count($mainImages); $i < $iMax; $i++) {
                 $imgparams = array("w"=>$config['displaywidth'],"file_id"=>$mainImages[$i]->id,"return"=>1,"class"=>"large-img");
                 $img = '<li>'.smarty_function_img($imgparams,$smarty).'</li>';
             }
@@ -204,7 +204,7 @@ function smarty_function_prod_images($params,&$smarty) {
         case 'swatches':
             $html = '<ul class="swatches">';
             $swatches = $rec->expFile['swatchimages'];
-            for ($i=0; $i<count($swatches); $i++) {
+            for ($i = 0, $iMax = count($swatches); $i < $iMax; $i++) {
                 $small = array("h"=>$config['swatchsmh'],"w"=>$config['swatchsmw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1,"class"=>'swatch');
                 $med = array("h"=>$config['swatchpoph'],"w"=>$config['swatchpopw'],"zc"=>1,"file_id"=>$swatches[$i]->id,"return"=>1);
                 $swtch = '<li>'.smarty_function_img($small,$smarty);

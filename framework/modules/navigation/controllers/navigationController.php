@@ -130,7 +130,7 @@ class navigationController extends expController {
         global $sections;
 
         $json_array = array();
-        for ($i = 0; $i < count($sections); $i++) {
+        for ($i = 0, $iMax = count($sections); $i < $iMax; $i++) {
             if ($sections[$i]->depth == 0) {
                 $obj = new stdClass();
 //   				$obj->id = $sections[$i]->name.$sections[$i]->id;
@@ -196,7 +196,7 @@ class navigationController extends expController {
             $ret_depth = $sections[$i]->depth;
             $i++;
             $ret_array = array();
-            for ($i; $i < count($sections); $i++) {
+            for ($iMax = count($sections); $i < $iMax; $i++) {
                 // start setting up the objects to return
                 $obj       = new stdClass();
                 $obj->id   = $sections[$i]->id;
@@ -306,7 +306,7 @@ class navigationController extends expController {
             $kids = $cache['kids'][$parent];
         }
         $kids = expSorter::sort(array('array' => $kids, 'sortby' => 'rank', 'order' => 'ASC'));
-        for ($i = 0; $i < count($kids); $i++) {
+        for ($i = 0, $iMax = count($kids); $i < $iMax; $i++) {
             $child = $kids[$i];
             //foreach ($kids as $child) {
             if ($child->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $child->id))) {
@@ -519,7 +519,7 @@ class navigationController extends expController {
         $arr  = array();
         $kids = $db->selectObjects('section_template', 'parent=' . $parent, 'rank');
 //		$kids = expSorter::sort(array('array'=>$kids,'sortby'=>'rank', 'order'=>'ASC'));
-        for ($i = 0; $i < count($kids); $i++) {
+        for ($i = 0, $iMax = count($kids); $i < $iMax; $i++) {
             $page        = $kids[$i];
             $page->depth = $depth;
             $page->first = ($i == 0 ? 1 : 0);
@@ -884,7 +884,7 @@ class navigationController extends expController {
             if ($oldParent != $moveSec->parent) {
                 //we need to re-rank the children of the parent that the miving section has just left
                 $childOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
-                for ($i = 0; $i < count($childOfLastMove); $i++) {
+                for ($i = 0, $iMax = count($childOfLastMove); $i < $iMax; $i++) {
                     $childOfLastMove[$i]->rank = $i;
                     $db->updateObject($childOfLastMove[$i], 'section');
                 }
@@ -956,7 +956,7 @@ class navigationController extends expController {
                 if ($oldParent != $moveSec->parent) {
                     //we need to re-rank the children of the parent that the moving section has just left
                     $childOfLastMove = $db->selectObjects("section", "parent=" . $oldParent . " ORDER BY rank");
-                    for ($i = 0; $i < count($childOfLastMove); $i++) {
+                    for ($i = 0, $iMax = count($childOfLastMove); $i < $iMax; $i++) {
                         $childOfLastMove[$i]->rank = $i;
                         $db->updateObject($childOfLastMove[$i], 'section');
                     }

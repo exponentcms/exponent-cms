@@ -303,7 +303,7 @@ class migrationController extends expController {
 
         $sql  = 'SELECT *, COUNT(module) as count FROM '.$this->config['prefix'].'_sectionref WHERE is_original=1 GROUP BY module';
         $modules = $old_db->selectObjectsBySql($sql);
-        for($i=0; $i<count($modules); $i++) {
+		for ($i = 0, $iMax = count($modules); $i < $iMax; $i++) {
             if (array_key_exists($modules[$i]->module, $this->new_modules)) {
                 $newmod = expModules::getController($this->new_modules[$modules[$i]->module]);
 //                $newmod = $this->new_modules[$modules[$i]->module];

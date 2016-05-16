@@ -282,7 +282,7 @@ class searchController extends expController {
 	
 		//Get all the search query records
 		$records = $db->selectObjects('search_queries', $where);
-		for($i = 0 ; $i < count($records); $i++) {
+        for ($i = 0, $iMax = count($records); $i < $iMax; $i++) {
 			if(!empty($records[$i]->user_id)) {
 				$u = user::getUserById($records[$i]->user_id);
 				$records[$i]->user = $u->firstname . ' ' . $u->lastname;

@@ -126,7 +126,7 @@ class section extends expRecord {
             $kids = $cache['kids'][$parent];
         }
         $kids = expSorter::sort(array('array' => $kids, 'sortby' => 'rank', 'order' => 'ASC'));
-        for ($i = 0; $i < count($kids); $i++) {
+        for ($i = 0, $iMax = count($kids); $i < $iMax; $i++) {
             $child = $kids[$i];
             //foreach ($kids as $child) {
             if ($child->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $child->id))) {
@@ -408,7 +408,7 @@ class section extends expRecord {
         global $sections;
 
         $json_array = array();
-        for ($i = 0; $i < count($sections); $i++) {
+        for ($i = 0, $iMax = count($sections); $i < $iMax; $i++) {
             $obj = new stdClass();
             if ($sections[$i]->depth == 0) {
 //   				$obj->id = $sections[$i]->name.$sections[$i]->id;
@@ -475,7 +475,7 @@ class section extends expRecord {
             $ret_depth = $sections[$i]->depth;
             $i++;
             $ret_array = array();
-            for ($i; $i < count($sections); $i++) {
+            for ($iMax = count($sections); $i < $iMax; $i++) {
                 // start setting up the objects to return
                 $obj       = new stdClass();
                 $obj->id   = $sections[$i]->id;

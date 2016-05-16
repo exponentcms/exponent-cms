@@ -1635,7 +1635,7 @@ class formsController extends expController {
                 $form->meta("filename", $directory . "/" . $file->filename);
                 $form->meta("use_header", $this->params["use_header"]);
                 $form->meta("rowstart", $this->params["rowstart"]);
-                for ($i = 0; $i < count($lineInfo); $i++) {
+                for ($i = 0, $iMax = count($lineInfo); $i < $iMax; $i++) {
                     if ($headerinfo != null) {
                         $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
     //                    $label = str_replace('&', 'and', $headerinfo[$i]);
@@ -1814,7 +1814,7 @@ class formsController extends expController {
             $form->meta("delimiter", $this->params["delimiter"]);
             $form->meta("forms_id", $this->params["forms_id"]);
 
-            for ($i = 0; $i < count($lineInfo); $i++) {
+            for ($i = 0, $iMax = count($lineInfo); $i < $iMax; $i++) {
                 if ($headerinfo != null) {
                     $title = $headerinfo[$i] . ' (' . $lineInfo[$i] .')';
                 } else {

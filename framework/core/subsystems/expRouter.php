@@ -107,7 +107,7 @@ class expRouter {
             
                 // check to see if we have a router mapping for this controller/action
                 if (empty($no_map)){
-                    for($i=0; $i < count($this->maps); $i++) {
+                    for ($i = 0, $iMax = count($this->maps); $i < $iMax; $i++) {
                         $missing_params = array("dump");
 
                         if ((!empty($params) && !empty($params['controller']) && !empty($params['action'])) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
@@ -505,7 +505,7 @@ class expRouter {
                 $return_params['url_parts']['id'] = $this->url_parts[2];
             }
         } else {
-            for($i=2; $i < count($this->url_parts); $i++ ) {
+            for ($i = 2, $iMax = count($this->url_parts); $i < $iMax; $i++) {
                 if ($i % 2 == 0) {
                     $return_params['url_parts'][$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
                 }
@@ -657,7 +657,7 @@ class expRouter {
         } elseif ($this->url_type == 'action') {
             $params['controller'] = $this->url_parts[0];
             $params['action'] = !empty($this->url_parts[1]) ? $this->url_parts[1] : null;
-            for($i=2; $i < count($this->url_parts); $i++ ) {
+            for ($i = 2, $iMax = count($this->url_parts); $i < $iMax; $i++) {
                 if ($i % 2 == 0) {
                     $params[$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
                 }
