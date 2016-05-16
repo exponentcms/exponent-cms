@@ -69,7 +69,7 @@ class searchController extends expController {
         $search = new search();
 
         $page = new expPaginator(array(
-            //'model'=>'search',
+//            'model'=>'search',
             'records'=>$search->getSearchResults($terms, !empty($this->config['only_best'])),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
@@ -299,7 +299,7 @@ class searchController extends expController {
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
             'columns'=>array(
-                gt('ID')=>'id',
+                'ID'=>'id',
                 gt('Query')=>'query',
                 gt('Timestamp')=>'timestamp',
                 gt('User')=>'user_id',

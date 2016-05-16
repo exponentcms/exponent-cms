@@ -14,6 +14,9 @@
  *}
 
 {uniqueid prepend="search" assign="name"}
+{css unique="searchform" link="`$asset_path`css/search.css"}
+
+{/css}
 
 <div class="module search search-results">
 	<h1>{'Search Results'|gettext}</h1>

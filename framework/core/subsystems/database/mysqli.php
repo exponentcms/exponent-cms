@@ -402,8 +402,8 @@ class mysqli_database extends database {
         if ($where == null)
             $where = "1";
 
-        $sql = "SELECT *, MATCH (title,body) AGAINST ('" . $terms . "') as score from " . $this->prefix . "search ";
-        $sql .= "WHERE MATCH(title,body) against ('" . $terms . "' IN BOOLEAN MODE) ORDER BY score DESC";
+        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $this->prefix . "search as s ";
+        $sql .= "WHERE MATCH (title, body) against ('" . $terms . "*' IN BOOLEAN MODE) ORDER BY score DESC";
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
             return array();

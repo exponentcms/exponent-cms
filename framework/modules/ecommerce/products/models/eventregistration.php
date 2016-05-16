@@ -888,6 +888,13 @@ class eventregistration extends expRecord {
         $db->delete('eventregistration_registrants', "id='{$id}'");
     }
 
+    public function paginationCallback(&$item)
+    {
+        // add passed properties to the object and pass back an instantiated object
+        $item = (object) array_merge((array) $this, (array) $item);
+        $item = expCore::cast($item, 'eventregistration');
+    }
+
 }
 
 ?>

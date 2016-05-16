@@ -1152,8 +1152,9 @@ class storeController extends expController {
                 $origid = $cnt['id'];
                 $prod = new product($cnt['id']);
                 unset($cnt['id']);
-                //$cnt['title'] = $cnt['title'].' - SKU# '.$cnt['model'];
-                $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
+                if (ecomconfig::getConfig('ecom_search_results') == '') {
+                    $cnt['title'] = (isset($prod->expFile['mainimage'][0]) ? '<img src="' . PATH_RELATIVE . 'thumb.php?id=' . $prod->expFile['mainimage'][0]->id . '&w=40&h=40&zc=1" style="float:left;margin-right:5px;" />' : '') . $cnt['title'] . (!empty($cnt['model']) ? ' - SKU#: ' . $cnt['model'] : '');
+                }
 
 //                $search_record = new search($cnt, false, false);
                //build the search record and save it.
@@ -1556,8 +1557,7 @@ class storeController extends expController {
         // figure out what metadata to pass back based on the action we are in.
         $action = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
-        $ecc = new ecomconfig();
-        $storename = $ecc->getConfig('storename');
+        $storename = ecomconfig::getConfig('storename');
         switch ($action) {
             case 'showall': //category page
                 $cat = $this->category;
@@ -1720,11 +1720,15 @@ class storeController extends expController {
         }
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
         $terms = explode(" ", $this->params['query']);
+        $search_type = ecomconfig::getConfig('ecom_search_results');
+
+        // look for term in full text search
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as score ";
         $sql .= "  from " . $db->prefix . "product as p LEFT JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " match (p.title,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0  GROUP BY p.id ";
         $sql .= "order by score desc LIMIT 10";
 
@@ -1736,10 +1740,12 @@ class storeController extends expController {
             $res[$index] = $set;
         }
 
+        // look for specific term in fields
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model like '%" . $this->params['query'] . "%' ";
         $sql .= " OR p.title like '%" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";
@@ -1751,10 +1757,12 @@ class storeController extends expController {
             $res[$index] = $set;
         }
 
+        // look for begins with term in fields
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid  from " . $db->prefix . "product as p LEFT JOIN " .
             $db->prefix . "content_expFiles as cef ON p.id=cef.content_id AND cef.content_type IN ('product','eventregistration','donation','giftcard') AND cef.subtype='mainimage' LEFT JOIN " . $db->prefix .
             "expFiles as f ON cef.expFiles_id = f.id WHERE ";
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
+        if ($search_type == 'products') $sql .= 'product_type = "product" AND ';
         $sql .= " (p.model like '" . $this->params['query'] . "%' ";
         $sql .= " OR p.title like '" . $this->params['query'] . "%') ";
         $sql .= " AND p.parent_id=0 GROUP BY p.id LIMIT 10";
