@@ -111,7 +111,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
             "unique"  => 'html5forms',
             "jquery"  => 1,
             "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
-            "content" => "webshim.setOptions('canvas', {type: 'excanvas'}); webshim.polyfill('canvas forms forms-ext');",
+            "content" => "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');",
         ));
         if (!empty($params['paged'])) {
             if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>" . gt(

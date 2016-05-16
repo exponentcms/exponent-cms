@@ -82,7 +82,7 @@ class fakeform extends form {
             "unique"  => 'html5forms',
             "jquery"  => 1,
             "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
-            "content" => "webshim.setOptions('canvas', {type: 'excanvas'}); webshim.polyfill('canvas forms forms-ext');",
+            "content" => "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');",
         ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"$script\"></script>\r\n";
 		$html .= $formError;
