@@ -72,7 +72,7 @@ pwstrength-bootstrap,2.0.0,https://github.com/ablanco/jquery.pwstrength.bootstra
 strength-meter,1.1.3,https://github.com/kartik-v/strength-meter,1.1.3,
 Sortable,1.4.2,https://github.com/RubaXa/Sortable,1.4.2,
 jstree,3.3.1,https://github.com/vakata/jstree,3.3.1,added nav menu icons to stylesheet
-bootstrap3-dialog,1.35.1,https://github.com/nakupanda/bootstrap3-dialog,1.35.1,added our swatches to .less file
+bootstrap3-dialog,1.35.1,https://github.com/nakupanda/bootstrap3-dialog,1.35.1,use /src .less file and add our .less variable imports
 impromptu,6.2.3,http://trentrichardson.com/Impromptu,6.2.3,add some colors to .css
 bootstrap-touch-carousel,0.8.0exp,https://github.com/ixisio/bootstrap-touch-carousel,0.8.0,
 bootstrap-tagsinput,0.8.0,https://github.com/timschlechter/bootstrap-tagsinput,0.8.0,
@@ -86,7 +86,7 @@ easypost sdk,3.0.3,https://github.com/EasyPost/easypost-php,3.0.3,
 PLUpload,2.1.8,https://github.com/moxiecode/plupload,2.1.8,needed for TinyMCE Quick Upload
 jquery.cookie.js,1.4.1,https://github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,https://github.com/browserstate/history.js/,1.8b2,
-Webshim,1.15.10,https://github.com/aFarkas/webshim,1.15.10,
+Webshim,1.15.10,https://github.com/aFarkas/webshim,1.15.10,copy shim.css & shim-ext.css into jquery/addons/js/shims/styles
 ,,,,
 Not included yet,,,,
 number-polyfill,,https://github.com/jonstipe/number-polyfill,,
