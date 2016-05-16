@@ -44,27 +44,10 @@ class autocompletecontrol extends formcontrol {
 	}
 
     function controlToHTML($name,$label) {
-//    	$assets_path = SCRIPT_RELATIVE.'framework/core/forms/controls/assets/';
-        $html = '<div class="text-control control exp-skin" id="search_stringControl">';
-        $html .= empty($this->label) ? '' : '<label for="'.$name.'"'.(bs3()?"class=\"control-label\"":"").'>'.$label.'</label>';
-        if (bs2()) {
-            $html .= '<div class="input-prepend">';
-            $html .= '<span class="add-on"><i class="icon-search"></i></span>';
-        } elseif (bs3()) {
-            $html .= '<div class="input-group">';
-            $html .= '<span class="input-group-addon"><i class="fa fa-search"></i></span>';
-        }
-        $html .= '<input type="search" class="text form-control" size="20" value="' . $this->value . '" name="' . $name . '" id="' . $name . ($this->focus?' autofocus':'') . '"/>';
-        if (bs()) {
-            $html .= '</div>';
-        }
-        $html .= '<div id="results'.$name.'"></div>
-            </div>
-        ';
-
         $html = '<div class="yui3-skin-sam" style="z-index: 999;">';
         $ac_input = new genericcontrol();
         $ac_input->type = 'search';
+        $ac_input->id = $name  . '_autoc';
         $ac_input->class = 'text';
         $ac_input->prepend = 'search';
         $ac_input->placeholder = $this->placeholder;
@@ -73,7 +56,7 @@ class autocompletecontrol extends formcontrol {
 
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function (Y) {
-            var autocomplete = Y.one('#".$name."');
+            var autocomplete = Y.one('#".$name."_autoc');
             autocomplete.plug(Y.Plugin.AutoComplete, {
                 width:'320px',
                 maxResults: ".$this->maxresults.",
@@ -85,12 +68,12 @@ class autocompletecontrol extends formcontrol {
 
             // display 'loading' icon
             autocomplete.ac.on('query', function (e) {
-                Y.one('#".$name."Control span i').removeClass('".expTheme::iconStyle('search')."').addClass('".expTheme::iconStyle('ajax')."');
+                Y.one('#".$name."_autocControl span i').removeClass('".expTheme::iconStyle('search')."').addClass('".expTheme::iconStyle('ajax')."');
             });
 
             // display regular icon
             autocomplete.ac.on('results', function (e) {
-                Y.one('#".$name."Control span i').removeClass('".expTheme::iconStyle('ajax')."').addClass('".expTheme::iconStyle('search')."');
+                Y.one('#".$name."_autocControl span i').removeClass('".expTheme::iconStyle('ajax')."').addClass('".expTheme::iconStyle('search')."');
             });
 
             ".$this->jsinject."
@@ -104,7 +87,7 @@ class autocompletecontrol extends formcontrol {
                     z-index: 99!important;
                     overflow-x: auto;
                 }
-                #".$name." {
+                #".$name."_autoc {
                     width: ".$this->width.";
                 }
     	    "
