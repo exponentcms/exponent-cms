@@ -125,14 +125,14 @@
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
             if(o){
                 monthcal_{/literal}{$name}{literal}.html(o);
-                monthcal_{/literal}{$name}{literal}.find('script').each(function(n){
+                monthcal_{/literal}{$name}{literal}.find('script').each(function(k, n){
                     if(!$(n).attr('src')){
                         eval($(n).html);
                     } else {
                         $.getScript($(n).attr('src'));
                     };
                 });
-                monthcal_{/literal}{$name}{literal}.find('link').each(function(n){
+                monthcal_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
@@ -145,13 +145,13 @@
 
         monthcal_{/literal}{$name}{literal}.delegate('a.evnav', 'click', function(e){
             e.preventDefault();
-            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, e.target.title.trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            History.pushState({name:'{/literal}{$name}{literal}', rel:$(this)[0].rel}, $(this)[0].title.trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + $(this)[0].rel);
             // moving to a new week
             $.ajax({
                 type: "POST",
                 headers: { 'X-Transaction': 'Load Week'},
                 url: sUrl_{/literal}{$name}{literal},
-                data: "time=" + e.target.rel,
+                data: "time=" + $(this)[0].rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
             // monthcal_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Week"|gettext}{literal}'));

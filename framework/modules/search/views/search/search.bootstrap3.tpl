@@ -51,14 +51,14 @@
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
             if(o){
                 searchlist_{/literal}{$name}{literal}.html(o);
-                searchlist_{/literal}{$name}{literal}.find('script').each(function(n){
+                searchlist_{/literal}{$name}{literal}.find('script').each(function(k, n){
                     if(!$(n).attr('src')){
                         eval($(n).html);
                     } else {
                         $.getScript($(n).attr('src'));
                     };
                 });
-                searchlist_{/literal}{$name}{literal}.find('link').each(function(n){
+                searchlist_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
@@ -70,13 +70,13 @@
 
         searchlist_{/literal}{$name}{literal}.delegate('a.pager', 'click', function(e){
             e.preventDefault();
-            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, '{/literal}{'Searching'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            History.pushState({name:'{/literal}{$name}{literal}', rel:$(this)[0].rel}, '{/literal}{'Searching'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + $(this)[0].rel);
             // moving to a new items
             $.ajax({
                 type: "POST",
                 headers: { 'X-Transaction': 'Load Items'},
                 url: sUrl_{/literal}{$name}{literal},
-                data: "page=" + e.target.rel,
+                data: "page=" + $(this)[0].rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
             searchlist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Searching"|gettext}{literal}'));

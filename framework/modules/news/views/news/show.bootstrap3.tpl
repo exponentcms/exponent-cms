@@ -44,14 +44,14 @@
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
             if(o){
                 newsitem_{/literal}{$name}{literal}.html(o);
-                newsitem_{/literal}{$name}{literal}.find('script').each(function(n){
+                newsitem_{/literal}{$name}{literal}.find('script').each(function(k, n){
                     if(!$(n).attr('src')){
                         eval($(n).html);
                     } else {
                         $.getScript($(n).attr('src'));
                     };
                 });
-                newsitem_{/literal}{$name}{literal}.find('link').each(function(n){
+                newsitem_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
@@ -63,13 +63,13 @@
 
         newsitem_{/literal}{$name}{literal}.delegate('a.newsnav', 'click', function(e){
             e.preventDefault();
-            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, e.target.title.trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            History.pushState({name:'{/literal}{$name}{literal}', rel:$(this)[0].rel}, $(this)[0].title.trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + $(this)[0].rel);
             // moving to a new item
             $.ajax({
                 type: "POST",
                 headers: { 'X-Transaction': 'Load Item'},
                 url: sUrl_{/literal}{$name}{literal},
-                data: "title=" + e.target.rel,
+                data: "title=" + $(this)[0].rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
             // newsitem_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Item"|gettext}{literal}'));

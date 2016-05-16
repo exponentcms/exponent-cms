@@ -117,14 +117,14 @@
         var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
             if(o){
                 medialist_{/literal}{$name}{literal}.html(o);
-                medialist_{/literal}{$name}{literal}.find('script').each(function(n){
+                medialist_{/literal}{$name}{literal}.find('script').each(function(k, n){
                     if(!$(n).attr('src')){
                         eval($(n).html);
                     } else {
                         $.getScript($(n).attr('src'));
                     };
                 });
-                medialist_{/literal}{$name}{literal}.find('link').each(function(n){
+                medialist_{/literal}{$name}{literal}.find('link').each(function(k, n){
                     $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
@@ -136,13 +136,13 @@
 
         medialist_{/literal}{$name}{literal}.delegate('a.pager', 'click', function(e){
             e.preventDefault();
-            History.pushState({name:'{/literal}{$name}{literal}', rel:e.target.rel}, '{/literal}{'Media'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.target.rel);
+            History.pushState({name:'{/literal}{$name}{literal}', rel:$(this)[0].rel}, '{/literal}{'Media'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + $(this)[0].rel);
             // moving to a new items
             $.ajax({
                 type: "POST",
                 headers: { 'X-Transaction': 'Load Media'},
                 url: sUrl_{/literal}{$name}{literal},
-                data: "page=" + e.target.rel,
+                data: "page=" + $(this)[0].rel,
                 success: handleSuccess_{/literal}{$name}{literal}
             });
             // medialist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Media"|gettext}{literal}'));

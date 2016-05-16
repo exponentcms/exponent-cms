@@ -20,7 +20,7 @@
             <span style="float:left">
                 {if $record->prev}
                     <a class="blognav" href="{link action=show title=$record->prev->sef_url}" rel="{$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
-                        {icon img='page_prev.png' title='Previous Item'|gettext}
+                        {icon img='page_prev.png' live=1 title='Previous Item'|gettext}
                         {$record->prev->title}
                     </a>
                 {/if}
@@ -30,7 +30,7 @@
                 {if $record->next}
                     <a class="blognav" href="{link action=show title=$record->next->sef_url}" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
                         {$record->next->title}
-                        {icon img='page_next.png' title='Next Item'|gettext}
+                        {icon img='page_next.png' live=1 title='Next Item'|gettext}
                     </a>
                 {/if}
             </span>
@@ -150,7 +150,7 @@
             <span style="float:left">
                 {if $record->prev}
                     <a class="blognav" href="{link action=show title=$record->prev->sef_url}" rel="{$record->prev->sef_url}" title="{$record->prev->body|summarize:"html":"para"}">
-                        {icon img='page_prev.png' title='Previous Item'|gettext}
+                        {icon img='page_prev.png' live=1 title='Previous Item'|gettext}
                         {$record->prev->title}
                     </a>
                 {/if}
@@ -160,7 +160,7 @@
                 {if $record->next}
                     <a class="blognav" href="{link action=show title=$record->next->sef_url}" rel="{$record->next->sef_url}" title="{$record->next->body|summarize:"html":"para"}">
                         {$record->next->title}
-                        {icon img='page_next.png' title='Next Item'|gettext}
+                        {icon img='page_next.png' live=1 title='Next Item'|gettext}
                     </a>
                 {/if}
             </span>

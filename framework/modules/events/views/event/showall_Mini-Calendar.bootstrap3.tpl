@@ -49,18 +49,18 @@
                 type: "POST",
                 headers: { 'X-Transaction': 'Load Month'},
                 url: EXPONENT.PATH_RELATIVE + "index.php?controller=event&action=showall&view=minical&ajax_action=1&src={/literal}{$__loc->src}{literal}",
-                data: "time=" + e.target.rel,
+                data: "time=" + $(this)[0].rel,
                 success: function(o, ioId){
                     if(o){
                         minical_{/literal}{$name}{literal}.html(o);
-                        minical_{/literal}{$name}{literal}.find('script').each(function(n){
+                        minical_{/literal}{$name}{literal}.find('script').each(function(k, n){
                             if(!$(n).attr('src')){
                                 eval($(n).html);
                             } else {
                                 $.getScript($(n).attr('src'));
                             };
                         });
-                        minical_{/literal}{$name}{literal}.find('link').each(function(n){
+                        minical_{/literal}{$name}{literal}.find('link').each(function(k, n){
                             $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                         });
                     } else {
