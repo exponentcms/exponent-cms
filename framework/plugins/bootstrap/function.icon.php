@@ -196,7 +196,7 @@ if (!function_exists('smarty_function_icon')) {
                 echo ' onclick="' . $onclick . '"';
             echo '><i class="icon-',$icon->class,' ',$icon_size,'"></i> ', $linktext, '</a>';
         } else {
-            echo '<div',$name,' class=" btn disabled ',$icon->type,' ',$btn_size,'"><i class="icon-',$icon->class,' ',$icon_size,'"></i> ',$linktext,'</div>';
+            echo '<div',$name,' class="btn',(empty($params['live'])?' disabled ':' '),$icon->type,' ',$btn_size,'"><i class="icon-',$icon->class,' ',$icon_size,'"></i> ',$linktext,'</div>';
         }
     }
 }
