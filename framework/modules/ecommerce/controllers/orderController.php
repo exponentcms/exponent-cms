@@ -924,8 +924,7 @@ exit();
         // we are in.
         $action   = $router->params['action'];
         $metainfo = array('title'=>'', 'keywords'=>'', 'description'=>'', 'canonical'=> '', 'noindex' => true, 'nofollow' => true);
-        $ecc = new ecomconfig();
-        $storename = $ecc->getConfig('storename');
+        $storename = ecomconfig::getConfig('storename');
         switch ($action) {
             case 'myOrder':
             case 'show':

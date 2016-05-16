@@ -425,8 +425,7 @@ class eventregistrationController extends expController {
         // figure out what metadata to pass back based on the action we are in.
         $action   = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
-        $ecc = new ecomconfig();
-        $storename = $ecc->getConfig('storename');
+        $storename = ecomconfig::getConfig('storename');
         switch ($action) {
             case 'showall':
             case 'eventsCalendar':
