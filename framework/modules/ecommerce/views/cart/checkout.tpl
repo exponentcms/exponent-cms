@@ -46,7 +46,7 @@
     <h1>{ecomconfig var='checkout_title_top' default="Confirm Your Secure Order"|gettext}</h1>
     <div id="cart-message">{ecomconfig var='checkout_message_top' default=""}</div>
     {if ecomconfig::getConfig('policy')!=""}
-        {pop id="review_policy" text="Review Store Policies"|gettext title="Store Policies"|gettext buttons="Close"|gettext width="400px"}
+        {pop id="review_policy" text="Review Store Policies"|gettext title="Store Policies"|gettext buttons="Close"|gettext width="800px"}
             {ecomconfig var='policy' default=""}
         {/pop}
         {*<div id="storepolicies" style="z-index:9999">*}
