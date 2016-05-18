@@ -1176,6 +1176,7 @@ class eventController extends expController {
         if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $key=>$exticalurl) {
             $url++;
             require_once BASE . 'external/iCalcreator.class.php';
+//            require_once BASE . 'external/iCalcreator-2.22/iCalcreator.php';
             $v = new vcalendar(); // initiate new CALENDAR
             $v->setConfig('url', $exticalurl);
             $v->parse();
@@ -1261,7 +1262,7 @@ class eventController extends expController {
                                                                 && intval($dtend['value']['hour']) == 0 && intval($dtend['value']['min']) == 0  && intval($dtend['value']['sec']) == 0
                                                                 && (((intval($dtstart['value']['day']) - intval($dtend['value']['day'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -1) || ((intval($dtstart['value']['month']) - intval($dtend['value']['month'])) == -11)))) {
                                 $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']) - $date_tzoffset);
-                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $date_tzoffset);
+//                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']) - $date_tzoffset);
                                 $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
@@ -1288,7 +1289,7 @@ class eventController extends expController {
                             } else {
                                 // this is an all day event
                                 $eventdate = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtstart['value']));
-                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']));
+//                                $eventend = expDateTime::startOfDayTimestamp(iCalUtilityFunctions::_date2timestamp($dtend['value']));
                                 $extevents[$eventdate][$dy] = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate = new stdClass();
                                 $extevents[$eventdate][$dy]->eventdate->date = $eventdate;
