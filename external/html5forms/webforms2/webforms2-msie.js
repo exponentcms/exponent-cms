@@ -1,1 +1,0 @@
-$wf2.onDOMContentLoaded();
