@@ -18,7 +18,7 @@
     {form action=update_userpassword}
         {control type="hidden" name="id" value=$u->id}
         {control type="hidden" name="username" value=$u->username}
-        {control class="col-sm-4" type="password" name="new_password1" meter=1 label="Type New Password"|gettext required=1}
+        {control type="password" name="new_password1" class="col-sm-4" meter=1 label="Type New Password"|gettext required=1}
         {control type="password" name="new_password2" label="Retype Password"|gettext required=1 focus=1}
         {br}
         {control type="buttongroup" submit="Change Password"|gettext cancel="Cancel"|gettext}

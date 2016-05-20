@@ -74,6 +74,7 @@ if (!defined('EXPONENT')) {
 </form>
 <script src="<?php echo PATH_RELATIVE; ?>external/jquery/js/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/strength-meter.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo PATH_RELATIVE; ?><!--external/jquery/addons/js/locales/strength-meter---><?php //echo LOCALE; ?><!--.js"></script>-->
 <script>
     function strcasecmp(f_string1, f_string2) {
         //  discuss at: http://phpjs.org/functions/strcasecmp/
@@ -132,9 +133,9 @@ if (!defined('EXPONENT')) {
     $("#password").strength({
         toggleMask: false,
         mainTemplate: '<div class="kv-strength-container">{input}<div class="kv-meter-container">{meter}</div></div>',
-    }).on('strength.change', function(event) {
-        if (event.target.value.length < <?php echo MIN_PWD_LEN; ?>)
-            $("#password").strength('paint', 0);
+        rules: {
+            minLength: <?php echo MIN_PWD_LEN; ?>,
+        },
     });
     $("head").append("<link href=\"<?php echo PATH_RELATIVE; ?>external/jquery/addons/css/strength-meter.css\" rel=\"stylesheet\" type=\"text/css\" />");
     $("head").append("<style type=\"text/css\"> .kv-scorebar-border { margin: 0; margin-top: 3px; } </style>");

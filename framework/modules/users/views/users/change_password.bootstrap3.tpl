@@ -29,7 +29,7 @@
         {if $isuser}
             {control type="password" name="password" label="Current Password"|gettext required=1}
         {/if}
-        {control class="col-sm-4" type="password" name="new_password1" meter=1 label="Enter your new password"|gettext required=1}
+        {control type="password" name="new_password1" class="col-sm-4" meter=1 label="Enter your new password"|gettext required=1}
         {control type="password" name="new_password2" label="Confirm your new password"|gettext required=1}
         {br}
         {control type="buttongroup" submit="Change My Password"|gettext cancel="Cancel"|gettext}

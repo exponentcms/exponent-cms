@@ -105,7 +105,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                         {"If you would like us to remember you, simply supply a password here and you may login to this site anytime to track your orders and view your order history."|gettext}&#160;&#160;
                         {'Otherwise uncheck \'Remember Me?\' and continue anonymously.'|gettext}
                     </blockquote>
-                    {control type="password" name="password" label="Password"|gettext required=true}
+                    {control type="password" name="password" meter=1 label="Password"|gettext required=true}
                     {control type="password" name="password2" label="Confirm Password"|gettext required=true}
                 </div>
             </div>
