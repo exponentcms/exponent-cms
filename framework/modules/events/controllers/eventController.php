@@ -1120,7 +1120,7 @@ class eventController extends expController {
             $cache_fname = BASE.'tmp/cache/'.$gcal_cname.".cache";
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
-                if ($startdate >= $cache['start_date']) {
+                if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
                     $events = $db->selectObjects('event_cache','feed="'.$extgcalurl.'" AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         if ($multiday) {
@@ -1171,7 +1171,7 @@ class eventController extends expController {
             $cache_fname = BASE.'tmp/cache/'.$ical_cname.".cache";
             if (file_exists($cache_fname)) {
                 $cache = unserialize(file_get_contents($cache_fname));
-                if ($startdate >= $cache['start_date']) {
+                if ($startdate >= $cache['start_date'] || $startdate >= $cache['first_date']) {
                     $events = $db->selectObjects('event_cache','feed="'.$exticalurl.'" AND ' . self::build_daterange_sql($startdate,$enddate,'eventdate',true));
                     foreach ($events as $event) {
                         $extevents[$event->eventdate][$dy] = $event;
@@ -1486,7 +1486,7 @@ class eventController extends expController {
     public function build_cache() {
         global $db;
 
-        // get our config
+        // get our requested config
         $cfg = new expConfig();
         $configs = $cfg->find('all', "location_data LIKE '%event%'"); // get all event module configs
         foreach ($configs as $config) {
@@ -1504,12 +1504,14 @@ class eventController extends expController {
             }
         }
 
-        // loop through config urls
-        $start = expDateTime::startOfMonthTimestamp(time());
+        // next loop through our config pull urls
+
+        // google xml pull
         if (!empty($this->config['pull_gcal'])) foreach ($this->config['pull_gcal'] as $key=>$extgcalurl) {
+            $start = expDateTime::startOfMonthTimestamp(time());
             $gcal_cname = str_replace(array("/",":","&","?"),"_",$extgcalurl);
             $cache_fname = BASE.'tmp/cache/'.$gcal_cname.".cache";
-            $db->delete('event_cache',"feed='".$extgcalurl."' AND eventdate > ".expDateTime::startOfMonthTimestamp(time()));  // replace future events
+            $db->delete('event_cache', "feed='" . $extgcalurl . "' AND eventdate > " . $start);  // replace future events
             // loop through 12 months, 1 month at a time
             for ($i=1; $i < 13; $i++) {
                 $end = expDateTime::endOfMonthTimestamp($start);
@@ -1523,14 +1525,17 @@ class eventController extends expController {
                         $event_cache->title = $extevent->title;
                         $event_cache->body = $extevent->body;
                         $event_cache->eventdate = $extevent->eventdate->date;
-                        if (isset($extevent->dateFinished) && $extevent->dateFinished != -68400) $event_cache->dateFinished = $extevent->dateFinished;
-                        if (isset($extevent->eventstart)) $event_cache->eventstart = $extevent->eventstart;
-                        if (isset($extevent->eventend)) $event_cache->eventend = $extevent->eventend;
-                        if (isset($extevent->is_allday)) $event_cache->is_allday = $extevent->is_allday;
+                        if (isset($extevent->dateFinished) && $extevent->dateFinished != -68400)
+                            $event_cache->dateFinished = $extevent->dateFinished;
+                        if (isset($extevent->eventstart))
+                            $event_cache->eventstart = $extevent->eventstart;
+                        if (isset($extevent->eventend))
+                            $event_cache->eventend = $extevent->eventend;
+                        if (isset($extevent->is_allday))
+                            $event_cache->is_allday = $extevent->is_allday;
                         $found = false;
-                        if ($extevent->eventdate->date < $start) {  // prevent duplicating events crossing month boundaries
+                        if ($extevent->eventdate->date < $start)   // prevent duplicating events crossing month boundaries
                             $found = $db->selectObject('event_cache','feed="'.$extgcalurl.'" AND event_id="'.$event_cache->event_id.'" AND eventdate='.$event_cache->eventdate);
-                        }
                         if (!$found)
                             $db->insertObject($event_cache,'event_cache');
                     }
@@ -1540,10 +1545,13 @@ class eventController extends expController {
             $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed="'.$extgcalurl.'" ORDER BY eventdate'),'refresh_date'=>time()));
             file_put_contents($cache_fname, $cache_contents);
         }
+
+        // ical pull
+        $start = expDateTime::startOfMonthTimestamp(time());
         if (!empty($this->config['pull_ical'])) foreach ($this->config['pull_ical'] as $key=>$exticalurl) {
             $ical_cname = str_replace(array("/",":","&","?"),"_",$exticalurl);
             $cache_fname = BASE.'tmp/cache/'.$ical_cname.".cache";
-            $db->delete('event_cache',"feed='".$exticalurl."' AND eventdate > ".expDateTime::startOfMonthTimestamp(time()));
+            $db->delete('event_cache', "feed='" . $exticalurl . "' AND eventdate > " . $start);
             // get 1 years worth of events
             $extevents = $this->get_ical_events($exticalurl, $start);
             foreach ($extevents as $day) {
@@ -1553,25 +1561,14 @@ class eventController extends expController {
                     $event_cache->title = $extevent->title;
                     $event_cache->body = $extevent->body;
                     $event_cache->eventdate = $extevent->eventdate->date;
-                    if (isset($extevent->dateFinished)) {
+                    if (isset($extevent->dateFinished))
                         $event_cache->dateFinished = $extevent->dateFinished;
-                    }
                     $event_cache->eventstart = $extevent->eventstart;
                     if (isset($extevent->eventend))
                         $event_cache->eventend = $extevent->eventend;
-                    if (isset($extevent->is_allday)) {
+                    if (isset($extevent->is_allday))
                         $event_cache->is_allday = $extevent->is_allday;
-                    }
-//                    $found = false;
-//                    if ($extevent->eventdate->date < $start) {  // prevent duplicating events crossing month boundaries
-//                        $found = $db->selectObject(
-//                            'event_cache',
-//                            'feed="' . $exticalurl . '" AND event_id="' . $event_cache->event_id . '" AND eventdate=' . $event_cache->eventdate
-//                        );
-//                    }
-//                    if (!$found) {
-                        $db->insertObject($event_cache, 'event_cache');
-//                    }
+                    $db->insertObject($event_cache, 'event_cache');
                 }
             }
             $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed="'.$exticalurl.'" ORDER BY eventdate'),'refresh_date'=>time()));
