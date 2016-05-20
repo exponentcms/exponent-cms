@@ -98,7 +98,7 @@
 //            allowInputToggle: true,
             calendarWeeks: true,
         }).on('dp.hide',function(e){
-            if (!moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'day') || !moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'month') || !moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'year')) {
+            if (!moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'day') || !moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'month') || !moment($('#week{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();
             {/literal} {if $smarty.const.AJAX_PAGING}
                 {literal}

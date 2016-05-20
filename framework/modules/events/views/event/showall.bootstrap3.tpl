@@ -101,7 +101,7 @@
             defaultDate: '{/literal}{$time|format_date:"%Y%m%d"}{literal}',
 //            allowInputToggle: true
         }).on('dp.hide',function(e){
-            if (!moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'month') || !moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'year')) {
+            if (!moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'month') || !moment($('#month{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value, "YYYYMMDD").isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();
             {/literal} {if $smarty.const.AJAX_PAGING}
                 {literal}
