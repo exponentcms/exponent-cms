@@ -79,7 +79,7 @@
             var list = Y.one('#googlepull-feeds');
             list.appendChild(newli);
 
-            $("input[type=color]").spectrum();
+//            $("input[type=color]").spectrum();
 
             feedtoadd = '';
         });

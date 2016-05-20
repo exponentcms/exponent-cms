@@ -90,14 +90,16 @@
 
         // Popup calendar
         $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').datetimepicker({
-            format: 'MM/dd/YYYY',
+            format: 'MM/DD/YYYY',
+            extraFormats: ['YYYYMMDD','MM/DD/YYYY'],
             locale: '{/literal}{$smarty.const.LOCALE}{literal}',
-//            showTodayButton: true,
+            showTodayButton: true,
 //            viewMode: 'months',
             showClose: true,
+            defaultDate: '{/literal}{$time|format_date:"%Y%m%d"}{literal}',
 //            allowInputToggle: true
         }).on('dp.hide',function(e){
-            if (!moment().isSame(e.date, 'day') || !moment().isSame(e.date, 'month') || !moment().isSame(e.date, 'year')) {
+            if (!moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'day') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'month') || !moment($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value).isSame(e.date, 'year')) {
                 var unixtime = e.date.unix();
             {/literal} {if $smarty.const.AJAX_PAGING}
                 {literal}
@@ -142,6 +144,7 @@
                 monthcal_{/literal}{$name}{literal}.css('opacity', 1);
             }
             monthcal_{/literal}{$name}{literal}.prev().find('.loader').html('');
+            $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').data("DateTimePicker").date($('#day{/literal}{$__loc->src|replace:'@':'_'}{literal}')[0].value);
         };
 
         monthcal_{/literal}{$name}{literal}.delegate('a.evnav', 'click', function(e){

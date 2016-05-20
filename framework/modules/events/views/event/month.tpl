@@ -21,6 +21,7 @@
             <a class="evnav module-actions" href="{link action=showall time=$prevmonth2}" rel="{$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
             <a class="evnav module-actions" href="{link action=showall time=$prevmonth}" rel="{$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
             <strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;{printer_friendly_link view='showall' text=''|gettext}{export_pdf_link view='showall' text=''|gettext}&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+            <input type='hidden' id='month{$__loc->src|replace:'@':'_'}' value="{$time|format_date:"%Y%m%d"}"/>
             <a class="evnav module-actions" href="{link action=showall time=$nextmonth}" rel="{$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="evnav module-actions" href="{link action=showall time=$nextmonth2}" rel="{$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
             <a class="evnav module-actions" href="{link action=showall time=$nextmonth3}" rel="{$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
@@ -96,14 +97,14 @@
                                 {/if}
                                 {$title = "`$title` - \n `$item->body|summarize:"html":"para"`"}
                                 {if $item->is_cancelled}{$title = 'Event Cancelled'|gettext|cat:"\n"|cat:$title}{/if}
-                                <div class="calevent{if $dayts == $today} today{/if}"{$style}>
-                                    <a class="{if $item->is_cancelled}cancelled{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} icalpopevent{/if}"
+                                {*<div class="calevent{if $dayts == $today} today{/if}"{$style}>*}
+                                    <a class="calevent{* if $dayts == $today} today{/if *}{if $item->is_cancelled} cancelled{/if}{if $config.lightbox && $item->location_data != 'eventregistration' && substr($item->location_data,1,8) != 'calevent'} calpopevent{elseif $config.lightbox && substr($item->location_data,1,8) == 'calevent'} icalpopevent{/if}"
                                         {$alldaystyle}
                                         {if substr($item->location_data,1,8) != 'calevent'}href="{if $item->location_data != 'eventregistration'}{link action=show date_id=$item->date_id}{else}{link controller=eventregistration action=show title=$item->title}{/if}"
                                             {if $item->date_id}id={$item->date_id}{/if}
                                         {/if}
                                         {if $config.lightbox && substr($item->location_data,1,8) == 'calevent'}rel="{$item->eventdate->date|format_date:'%A, %B %e, %Y'}"{/if}
-                                        title="{$title}">
+                                        title="{$title}"{$style}>
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
                                                 {if $item->date_id}
@@ -118,7 +119,7 @@
                                     </a>
                                     {permissions}
                                         {if substr($item->location_data,0,3) == 'O:8'}
-                                        <div class="item-actions">
+                                        <div class="calevent item-actions"{$style}>
                                                 {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
                                                     {if $myloc != $item->location_data}
                                                         {if $permissions.manage}
@@ -140,7 +141,7 @@
                                             </div>
                                         {/if}
                                     {/permissions}
-                                </div>
+                                {*</div>*}
                             {/foreach}
                             {if $number != -1}{$dayts=$dayts+86400}
                                 {if !$dst}
