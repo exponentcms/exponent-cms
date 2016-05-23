@@ -120,7 +120,10 @@ class datetimecontrol extends formcontrol {
 
     static function parseData($original_name, $formvalues, $for_db = false) {
         $time = 0;
-        if (isset($formvalues[$original_name . "_month"])) $time = mktime(8, 0, 0, $formvalues[$original_name . '_month'], $formvalues[$original_name . '_day'], $formvalues[$original_name . '_year']) - 8 * 3600;
+        if (isset($formvalues[$original_name]) && is_int($formvalues[$original_name])) 
+            $time = $formvalues[$original_name];
+        if (isset($formvalues[$original_name . "_month"])) 
+            $time = mktime(8, 0, 0, $formvalues[$original_name . '_month'], $formvalues[$original_name . '_day'], $formvalues[$original_name . '_year']) - 8 * 3600;
         if (isset($formvalues[$original_name . "_hour"])) {
             if ($formvalues[$original_name . '_hour'] == 12 && $formvalues[$original_name . '_ampm'] == 'am') {
                 // 12 am (right after midnight) is 0:xx
