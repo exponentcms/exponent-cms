@@ -19,6 +19,12 @@
     {css unique="show" corecss="admin-global" link="`$asset_path`css/recyclebin.css"}
 
     {/css}
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{$smarty.const.JQUERY2_SCRIPT}"></script>
+    <!--<![endif]-->
 </head>
 <body>
     <div class="recyclebin orphan-content">
