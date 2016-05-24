@@ -62,6 +62,15 @@ class eventController extends expController {
         return gt('Event');
     }
 
+    /**
+     * can this module import data?
+     *
+     * @return bool
+     */
+    public static function canImportData() {
+        return true;
+    }
+
     function showall() {
         global $user;
 
@@ -670,11 +679,10 @@ class eventController extends expController {
         }
 
         if ($success) {
-            flash('message', gt('Your feedback was successfully sent.'));
+            flashAndFlow('message', gt('Your feedback was successfully sent.'));
         } else {
-            flash('error', gt('We could not send your feedback.  Please contact your administrator.'));
+            flashAndFlow('error', gt('We could not send your feedback.  Please contact your administrator.'));
         }
-        expHistory::back();
     }
 
     function ical() {
@@ -1278,14 +1286,19 @@ class eventController extends expController {
         return $extevents;
     }
 
-    public function get_ical_events($exticalurl, $startdate, $enddate=null, &$dy=0, $key=0, $multiday=false) {
+    public function get_ical_events($exticalurl, $startdate=null, $enddate=null, &$dy=0, $key=0, $multiday=false) {
         $extevents = array();
 //            require_once BASE . 'external/iCalcreator.class.php';
         require_once BASE . 'external/iCalcreator-2.22/iCalcreator.php';
         $v = new vcalendar(); // initiate new CALENDAR
-        $v->setConfig('url', $exticalurl);
+        if (stripos($exticalurl, 'http') === 0) {
+            $v->setConfig('url', $exticalurl);
+        } else {
+            $v->setConfig('directory', dirname($exticalurl));
+            $v->setConfig('filename', basename($exticalurl));
+        }
         $v->parse();
-        if ($startdate == null) {
+        if ($startdate === null) {
             $startYear = false;
             $startMonth = false;
             $startDay = false;
@@ -1294,7 +1307,7 @@ class eventController extends expController {
             $startMonth = date('n', $startdate);
             $startDay = date('j', $startdate);
         }
-        if ($enddate == null) {
+        if ($enddate === null) {
             $endYear = $startYear+1;
             $endMonth = $startMonth;
             $endDay = $startDay;
@@ -1432,7 +1445,7 @@ class eventController extends expController {
                         // convert end of lines
                         $body = nl2br(str_replace("\\n"," <br>\n",$body));
                         $body = str_replace("\n"," <br>\n",$body);
-                        $body = str_replace(array('==0A','=0A')," <br>\n",$body);
+                        $body = str_replace(array('==0A','=0A','=C2=A0')," <br>\n",$body);
                         $extevents[$eventdate][$dy]->body = $body;
                         $extevents[$eventdate][$dy]->location_data = 'icalevent' . $key;
                         $extevents[$eventdate][$dy]->color = !empty($this->config['pull_ical_color'][$key]) ? $this->config['pull_ical_color'][$key] : null;
@@ -1515,7 +1528,8 @@ class eventController extends expController {
             // loop through 12 months, 1 month at a time
             for ($i=1; $i < 13; $i++) {
                 $end = expDateTime::endOfMonthTimestamp($start);
-                $extevents = $this->get_gcal_events($extgcalurl, $start, $end,0, 0, true);
+                $tmp = 0;
+                $extevents = $this->get_gcal_events($extgcalurl, $start, $end, $tmp, 0, true);
 //                $extevents = $this->get_gcal_events($extgcalurl, null, null, 0, 0, 0, true);
                 foreach ($extevents as $day) {
                     foreach ($day as $extevent) {
@@ -1576,6 +1590,123 @@ class eventController extends expController {
         }
         flash('message',gt('External Calendar Event cache updated'));
         echo show_msg_queue();
+    }
+
+    function import() {
+        $pullable_modules = expModules::listInstalledControllers($this->baseclassname);
+        $modules = new expPaginator(array(
+            'records' => $pullable_modules,
+            'controller' => $this->loc->mod,
+            'action' => $this->params['action'],
+            'order'   => isset($this->params['order']) ? $this->params['order'] : 'section',
+            'dir'     => isset($this->params['dir']) ? $this->params['dir'] : '',
+            'page'    => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'columns' => array(
+                gt('Title') => 'title',
+                gt('Page')  => 'section'
+            ),
+        ));
+
+        assign_to_template(array(
+            'modules' => $modules,
+        ));
+    }
+
+    function import_select()
+    {
+        if (empty($this->params['import_aggregate'])) {
+            expValidator::setErrorField('import_aggregate[]');
+            expValidator::failAndReturnToForm(gt('You must select a module.'), $this->params);
+        }
+        $extevents = array();
+        unset(
+            $this->params['begin'],
+            $this->params['end']
+        );  // always use date value
+        $begin = yuidatetimecontrol::parseData('begin', $this->params);
+        $end = yuidatetimecontrol::parseData('end', $this->params);
+        if ($this->params['file_type'] == 'file') {
+            //Get the temp directory to put the uploaded file
+            $directory = "tmp";
+
+            //Get the file save it to the temp directory
+            if (!empty($_FILES["import_file"]) && $_FILES["import_file"]["error"] == UPLOAD_ERR_OK) {
+                $file = expFile::fileUpload(
+                    "import_file",
+                    false,
+                    false,
+                    time() . "_" . $_FILES['import_file']['name'],
+                    $directory . '/'
+                );
+                if ($file === null) {
+                    switch ($_FILES["import_file"]["error"]) {
+                        case UPLOAD_ERR_INI_SIZE:
+                        case UPLOAD_ERR_FORM_SIZE:
+                            $this->params['_formError'] = gt(
+                                'The file you attempted to upload is too large.  Contact your system administrator if this is a problem.'
+                            );
+                            break;
+                        case UPLOAD_ERR_PARTIAL:
+                            $this->params['_formError'] = gt('The file was only partially uploaded.');
+                            break;
+                        case UPLOAD_ERR_NO_FILE:
+                            $this->params['_formError'] = gt('No file was uploaded.');
+                            break;
+                        default:
+                            $this->params['_formError'] = gt(
+                                'A strange internal error has occurred.  Please contact the Exponent Developers.'
+                            );
+                            break;
+                    }
+                    expSession::set("last_POST", $this->params);
+                    header("Location: " . $_SERVER['HTTP_REFERER']);
+                    exit("");
+                } else {
+                    $extevents = $this->get_ical_events($directory . "/" . $file->filename, $begin, $end);
+                }
+            } else {
+               expValidator::setErrorField('import_file');
+               expValidator::failAndReturnToForm(gt('File failed to upload.'), $this->params);  // file upload error
+            }
+        } else {
+            if (empty($this->params['ext_feed'])) {
+                expValidator::setErrorField('ext_feed');
+                expValidator::failAndReturnToForm(gt('You must enter a feed url.'), $this->params);
+            }
+            $extevents = $this->get_ical_events($this->params['ext_feed'], $begin, $end);
+        }
+
+        $src = $this->params['import_aggregate'][0];
+        $count = 0;
+        foreach ($extevents as $day) {
+            foreach ($day as $extevent) {
+                $event = array();
+                $event['title'] = $extevent->title;
+                $event['body'] = $extevent->body;
+                $event['eventdate'] = $extevent->eventdate->date;
+                $event['eventstart'] = $extevent->eventstart;
+                $event['eventstart'] -= $event['eventdate'];
+                if (isset($extevent->eventend))
+                    $event['eventend'] = $extevent->eventend;
+                else
+                    $event['eventend'] = $extevent->eventstart;
+                $event['eventend'] -= $event['eventdate'];
+                if (isset($extevent->is_allday))
+                    $event['is_allday'] = $extevent->is_allday;
+                $event['module'] = 'event';
+                $event['src'] = $src;
+                $item = new event();  // create new populated record to auto-set things
+                $item->update($event);
+                $count++;
+            }
+        }
+
+        unlink($directory . "/" . $file->filename);
+
+        // update search index
+        $this->addContentToSearch();
+
+        flashAndFlow('message', $count . ' ' . gt('events were imported.'));
     }
 
     /**
