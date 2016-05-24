@@ -53,7 +53,7 @@ class colorcontrol extends textcontrol {
 		$class = empty($this->class) ? '' : $this->class;
 
 //        $html = '';
-        $html = '<div'.$divID.' class="'.$this->type.'-control control form-group'." ".$class." ".$disabled;
+        $html = '<div'.$divID.' class="'.$this->type.'-control control form-group ' . $class . " " . $disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
         if($this->required) {

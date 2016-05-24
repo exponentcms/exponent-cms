@@ -477,7 +477,13 @@ function smarty_function_control($params, &$smarty) {
             $post_errors = expSession::get('last_post_errors');
             // flag this field as having errors if it failed validation
             if (is_array($post_errors) && in_array($params['name'], $post_errors)) {
-                $control->class .= ' field-error';
+                if (bs3()) {
+                    $control->class .= ' has-error';
+                } elseif (bs2()) {
+                    $control->class .= ' error';
+                } else {
+                    $control->class .= ' field-error';
+                }
             }
 
             if ($params['type'] == 'checkbox') {

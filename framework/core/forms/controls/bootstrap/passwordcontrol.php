@@ -52,7 +52,7 @@ class passwordcontrol extends genericcontrol {
                  $html .= "<div class=\"row " . $this->id . "-meter\">";
                  $class = "span4";
              }
-            $html .= '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html .= '<div' . $divID . ' class="' . $this->type . '-control control control-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {

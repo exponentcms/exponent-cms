@@ -101,7 +101,7 @@ class yuidatetimecontrol extends formcontrol
 
         $html = '<span id="dtdisplay-' . $idname . '"> ' . $datetime . '</span>';
         if (!$this->display_only) {
-            $html .= '<div class="checkbox control form-group"';
+            $html .= '<div class="checkbox control form-group">';
             $html .= '<label for="pub-' . $idname . '" class="control-label"><input id="pub-' . $idname . '" type="checkbox" class="checkbox form-control" name="' . $name . '"';
             $html .= ($this->checked ? ' checked> ' : '> ') . $this->edit_text . '</label></div>';
 //            $html .= "<!-- cke lazy -->";

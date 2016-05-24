@@ -64,7 +64,7 @@ class genericcontrol extends formcontrol {
         $disabled = $this->disabled == true ? "disabled" : "";
         if ($this->type != 'hidden') {
             $class = empty($this->class) ? '' : ' '.$this->class;
-            $html = '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html = '<div' . $divID . ' class="' . $this->type . '-control control form-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
