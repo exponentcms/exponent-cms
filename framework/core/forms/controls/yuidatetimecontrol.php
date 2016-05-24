@@ -131,9 +131,14 @@ class yuidatetimecontrol extends formcontrol {
     static function parseData($original_name, $formvalues) {
         if (!isset($formvalues[$original_name])) {
             $date = yuicalendarcontrol::parseData($original_name . 'date', $formvalues);
-            $time = datetimecontrol::parseData($original_name . 'time', $formvalues);
+            if (isset($formvalues[$original_name . 'time']))
+                $time = datetimecontrol::parseData($original_name . 'time', $formvalues);
+            else
+                $time = 0;
             return $date + $time;
-        } else return 0;
+        } else {
+            return 0;
+        }
         //return $time;
     }
 
