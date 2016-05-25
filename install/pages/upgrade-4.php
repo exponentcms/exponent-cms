@@ -124,7 +124,7 @@ $db_version = expVersion::dbVersion();
             echo '<button class="awesome large green">';
             echo gt('Finish Upgrade');
             echo '</button>';
-            echo '<blockquote><strong>' . gt('Please be patient as we initially create the stylesheets') . '</strong></blockquote>';
+            echo '<blockquote><strong>' . gt('Please be patient as we re-fresh the theme stylesheets') . '</strong></blockquote>';
         } else {
             echo '<button class="awesome large green">';
             echo gt('Run Upgrades');
