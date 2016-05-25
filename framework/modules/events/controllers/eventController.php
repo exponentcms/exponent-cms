@@ -578,7 +578,6 @@ class eventController extends expController {
             }
             expHistory::back();
         } else {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
         }
     }
@@ -919,11 +918,9 @@ class eventController extends expController {
                 echo $msg;
                 exit();
             } else {
-//                echo SITE_404_HTML;
                 notfoundController::handle_not_found();
             }
         } else {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
         }
     }
@@ -948,12 +945,10 @@ class eventController extends expController {
             }
 
             if (empty($this->config['reminder_active'])) {
-//                echo SITE_404_HTML;
                 notfoundController::handle_not_found();
                 return;
             }
             if (!empty($this->config['reminder_code']) && (empty($this->params['code']) || ($this->params['code'] != $this->config['reminder_code']))) {
-//                echo SITE_403_HTML;
                 notfoundController::handle_not_authorized();
                 return;
             }
@@ -966,7 +961,8 @@ class eventController extends expController {
                 $view = "send_reminders"; // default reminder view
             }
 
-            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
+//            $template = expTemplate::get_template_for_action($this, $view, $this->loc);
+            global $template;
 
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
@@ -1070,7 +1066,7 @@ class eventController extends expController {
 
             flash('message',gt('The following reminder was sent via email'));
             echo show_msg_queue();
-            echo($htmlmsg);
+//            echo($htmlmsg);
         } else {
             flash('error',gt('No Calendar Selected!'));
             echo show_msg_queue('error');
@@ -1588,7 +1584,7 @@ class eventController extends expController {
             $cache_contents = serialize(array('start_date'=>$start,'first_date'=>(int)$db->selectValue('event_cache','eventdate','feed="'.$exticalurl.'" ORDER BY eventdate'),'refresh_date'=>time()));
             file_put_contents($cache_fname, $cache_contents);
         }
-        flash('message',gt('External Calendar Event cache updated'));
+        flash('message', gt('External Calendar Event cache updated'));
         echo show_msg_queue();
     }
 
