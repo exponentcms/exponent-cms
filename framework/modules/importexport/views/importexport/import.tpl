@@ -65,7 +65,7 @@
 {script unique="file-type" jquery=1}
 {literal}
 $(document).ready(function(){
-    $('.importexport.import .aggregate input[type="checkbox"]').bind('click',function() {
+    $('.importexport.import .aggregate input[type="checkbox"]').on('click',function() {
         $('.importexport.import .aggregate input[type="checkbox"]').not(this).prop("checked", false);
     });
 });

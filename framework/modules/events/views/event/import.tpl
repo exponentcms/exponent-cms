@@ -83,7 +83,7 @@ $(document).ready(function(){
         }
     });
 
-    $('.event.import .aggregate input[type="checkbox"]').bind('click',function() {
+    $('.event.import .aggregate input[type="checkbox"]').on('click',function() {
         $('.event.import .aggregate input[type="checkbox"]').not(this).prop("checked", false);
     });
 });
