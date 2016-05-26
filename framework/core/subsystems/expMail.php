@@ -237,6 +237,7 @@ class expMail {
 		}
 		if (empty($params['to'])) {
 			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
+			eLog('ERROR',gt('We didn\'t get a \'to\' address, so we set default'));
 		}
         $this->addTo($params['to']);
 
@@ -388,6 +389,7 @@ class expMail {
 		}
 		if (empty($params['to'])) {
 			$params['to'] = array(trim(SMTP_FROMADDRESS)); // default address is ours
+			eLog('ERROR',gt('We didn\'t get a \'to\' address, so we set default'));
 		}
         $this->addTo($params['to']);  // we only do this to save addresses in our object
 
