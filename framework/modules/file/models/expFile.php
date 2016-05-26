@@ -1854,7 +1854,7 @@ class expFile extends expRecord {
                             }
                         } else {
                             if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
-                                $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                                $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
 //						$tabledef = expUnserialize($pair[1]);
                                 $tabledef = @unserialize($pair[1]);
                                 if (!$db->tableExists($table)) {
@@ -1872,7 +1872,7 @@ class expFile extends expRecord {
                                 if ($pair[0] == 'RECORD') {
                                     if ($db->tableExists($table)) {
                                         // Here we need to check the conversion scripts.
-                                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                                        $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
                                         //						$object = expUnserialize($pair[1]);
                                         $object = @unserialize($pair[1]);
                                         if ($type == 'Form') {
