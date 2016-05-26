@@ -105,6 +105,9 @@ class fakeform extends form {
         $delete_class = '';
         $delete_icon_class = '';
         if (bs2()) {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap"
+            ));
             if (BTN_SIZE == 'large') {
                 $btn_size = '';  // actually default size, NOT true bootstrap large
                 $icon_size = 'icon-large';
@@ -120,6 +123,9 @@ class fakeform extends form {
             $delete_class = ' class="btn btn-danger '.$btn_size.'"';
             $delete_icon_class = '<i class="icon-remove-sign '.$icon_size.'"></i>';
         } elseif (bs3()) {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms-bootstrap3"
+            ));
             if (BTN_SIZE == 'large') {
                 $btn_size = 'btn-lg';
                 $icon_size = 'fa-lg';
@@ -137,6 +143,10 @@ class fakeform extends form {
             $edit_icon_class = '<i class="fa fa-pencil-square-o '.$icon_size.'"></i>';
             $delete_class = ' class="btn btn-danger '.$btn_size.'"';
             $delete_icon_class = '<i class="fa fa-times-circle '.$icon_size.'"></i>';
+        } else {
+            expCSS::pushToHead(array(
+                "corecss"=>"forms"
+            ));
         }
 		foreach ($this->controlIdx as $name) {
 			$even = ($even=="odd") ? "even" : "odd";
