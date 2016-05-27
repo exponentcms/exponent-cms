@@ -101,7 +101,7 @@ class yuidatetimecontrol extends formcontrol
 
         $html = '<span id="dtdisplay-' . $idname . '"> ' . $datetime . '</span>';
         if (!$this->display_only) {
-            $html .= '<div class="checkbox control form-group"';
+            $html .= '<div class="checkbox control form-group">';
             $html .= '<label for="pub-' . $idname . '" class="control-label"><input id="pub-' . $idname . '" type="checkbox" class="checkbox form-control" name="' . $name . '"';
             $html .= ($this->checked ? ' checked> ' : '> ') . $this->edit_text . '</label></div>';
 //            $html .= "<!-- cke lazy -->";
@@ -149,7 +149,10 @@ class yuidatetimecontrol extends formcontrol
     {
         if (!isset($formvalues[$original_name])) {
             $date = yuicalendarcontrol::parseData($original_name . 'date', $formvalues);
-            $time = datetimecontrol::parseData($original_name . 'time', $formvalues);
+            if (isset($formvalues[$original_name . 'time']))
+                $time = datetimecontrol::parseData($original_name . 'time', $formvalues);
+            else
+                $time = 0;
             return $date + $time;
         } else {
             return 0;

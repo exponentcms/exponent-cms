@@ -58,7 +58,7 @@ class expString {
      * @return string
      */
 	static function onlyReadables($string) {
-		for ($i=0;$i<strlen($string);$i++) {
+        for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
 			$chr = $string{$i};
 			$ord = ord($chr);
 			if ($ord<32 or $ord>126) {
@@ -252,7 +252,7 @@ class expString {
         }
 
         $return = '';
-        for($i = 0; $i < strlen($value); ++$i) {
+        for ($i = 0, $iMax = strlen($value); $i < $iMax; $i++) {
             $char = $value[$i];
             $ord = ord($char);
             if($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
@@ -327,7 +327,7 @@ class expString {
     //                    $noTagLength = strlen(strip_tags($string));
 
                     // Parser loop
-                    for ($j = 0; $j < strlen($string); $j++) {
+                    for ($j = 0, $jMax = strlen($string); $j < $jMax; $j++) {
 
                         $currentChar = substr($string, $j, 1);
                         $ret .= $currentChar;

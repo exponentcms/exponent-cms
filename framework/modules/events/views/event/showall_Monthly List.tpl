@@ -67,24 +67,41 @@
     </div>
 </div>
 
-{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,node-event-delegate" jquery="jquery.history"}
+{script unique=$name|cat:'-popup' yui3mods="node,gallery-calendar,io,node-event-delegate" jquery="jquery.history"}
 {literal}
 EXPONENT.YUI3_CONFIG.modules = {
-	'gallery-calendar': {
-		fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
+    'gallery-calendar': {
+        fullpath: '{/literal}{$asset_path}js/calendar.js{literal}',
         requires: ['node','calendar-css']
     },
     'calendar-css': {
         fullpath: EXPONENT.PATH_RELATIVE+'framework/modules/events/assets/css/default.css',
         type: 'css'
-	}
+    }
 }
-
 YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
-    var monthcal = Y.one('#month-{/literal}{$name}{literal}');
+    var monthcal_{/literal}{$name}{literal} = Y.one('#month-{/literal}{$name}{literal}');
+    var page_parm_{/literal}{$name}{literal} = '';
+    if (EXPONENT.SEF_URLS) {
+        page_parm_{/literal}{$name}{literal} = '/time/';
+    } else {
+        page_parm_{/literal}{$name}{literal} = '&time=';
+    }
+    var History = window.History;
+    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
+    {/literal}
+        {$orig_params = ['controller' => 'event', 'action' => 'showall', 'view' => $params.view, 'src' => $params.src]}
+    {literal}
+    var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
+    var cfg = {
+                method: "POST",
+                headers: { 'X-Transaction': 'Load Month'},
+                arguments : { 'X-Transaction': 'Load Month'}
+            };
+    var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=monthlist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
-	// Popup
+	// Popup calendar
 	var cal = new Y.Calendar('J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}',{
 		popup:true,
 		closeable:true,
@@ -94,62 +111,46 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 //        useShim:true
 	}).on('select',function(d){
 		var unixtime = parseInt(d / 1000);
-        cfg.data = "time="+unixtime;
-        var request = Y.io(sUrl, cfg);
-//        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-        monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+        {/literal}
+        {if $smarty.const.AJAX_PAGING}
+            {literal}
+                cfg.data = "time="+unixtime;
+                var request = Y.io(sUrl_{/literal}{$name}{literal}, cfg);
+                monthcal_{/literal}{$name}{literal}.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+            {/literal}
+        {else}
+            {if ($smarty.const.SEF_URLS == 1)} {literal}
+                window.location=eXp.PATH_RELATIVE+'event/showall/view/showall_Monthly+List/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+            {/literal} {else} {literal}
+                window.location=eXp.PATH_RELATIVE+'index.php?controller=event&action=showall&view=showall_Monthly+List&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+            {/literal} {/if}
+        {/if}
+        {literal}
 	});
     Y.one('#J_popup_closeable{/literal}{$__loc->src|replace:'@':'_'}{literal}').on('click',function(d){
         cal.show();
     });
-});
-{/literal}
-{/script}
-
-{if $smarty.const.AJAX_PAGING}
-{script unique=$name|cat:'-ajax' yui3mods="node,io,node-event-delegate,history"}
-{literal}
-    YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
-    var monthcal = Y.one('#month-{/literal}{$name}{literal}');
-    var page_parm = '';
-    if (EXPONENT.SEF_URLS) {
-        page_parm = '/time/';
-    } else {
-        page_parm = '&time=';
-    }
-    var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
-    {/literal}
-        {$orig_params = ['controller' => 'store', 'action' => 'eventsCalendar', 'view' => $params.view, 'src' => $params.src]}
-    {literal}
-    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{$params.time = ''}{makeLink($params)}{literal}';
-    var cfg = {
-                method: "POST",
-                headers: { 'X-Transaction': 'Load Minical'},
-                arguments : { 'X-Transaction': 'Load Minical'}
-            };
-    src = '{/literal}{$__loc->src}{literal}';
-    var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=showall&view=monthlist&ajax_action=1&src="+src;
 
     // ajax load new month
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
-            monthcal.setContent(o.responseText);
-            monthcal.all('script').each(function(n){
+            monthcal_{/literal}{$name}{literal}.setContent(o.responseText);
+            monthcal_{/literal}{$name}{literal}.all('script').each(function(n){
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
-            monthcal.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+            monthcal_{/literal}{$name}{literal}.all('link').each(function(n){
+                Y.Get.css(n.get('href'));
             });
+            Y.one('#lb-bg').setStyle('display','none');
+//            monthcal_{/literal}{$name}{literal}.setStyle('opacity',1);
         } else {
             Y.one('#month-{/literal}{$name}{literal}.loadingdiv').remove();
+            monthcal_{/literal}{$name}{literal}.setContent('Unable to load content');
+            monthcal_{/literal}{$name}{literal}.setStyle('opacity',1);
         }
 	};
 
@@ -162,27 +163,33 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 	Y.on('io:success', handleSuccess);
 	Y.on('io:failure', handleFailure);
 
-    monthcal.delegate('click', function(e){
+{/literal}
+{if $smarty.const.AJAX_PAGING}
+    {literal}
+    monthcal_{/literal}{$name}{literal}.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('title').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('title').trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.currentTarget.get('rel'));
         cfg.data = "time="+e.currentTarget.get('rel');
-        var request = Y.io(sUrl, cfg);
-//        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-        monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+        var request = Y.io(sUrl_{/literal}{$name}{literal}, cfg);
+        monthcal_{/literal}{$name}{literal}.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+//        monthcal_{/literal}{$name}{literal}.setStyle('opacity',0.5);
+//        Y.one('#lb-bg').setStyle('display','block');
     }, 'a.evnav');
 
     // Watches the browser history for changes
     window.addEventListener('popstate', function(e) {
-        state = History.getState()
+        state = History.getState();
         if (state.data.name == '{/literal}{$name}{literal}') {
             // moving to a new month
             cfg.data = "time="+state.data.rel;
-            var request = Y.io(sUrl, cfg);
-//            monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
-            monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
+            var request = Y.io(sUrl_{/literal}{$name}{literal}, cfg);
+            monthcal_{/literal}{$name}{literal}.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
         }
     });
+    {/literal}
+{/if}
+{literal}
+
 });
 {/literal}
 {/script}
-{/if}

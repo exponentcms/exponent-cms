@@ -25,6 +25,12 @@
     {css unique="fontawesome" link="`$smarty.const.PATH_RELATIVE`external/font-awesome4/css/font-awesome.css"}
 
     {/css}
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{$smarty.const.JQUERY2_SCRIPT}"></script>
+    <!--<![endif]-->
 </head>
 <body>
     <div class="recyclebin orphan-content">

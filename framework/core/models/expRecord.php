@@ -137,10 +137,19 @@ class expRecord {
 
         // setup the exception array if it's not there.  This array tells the getAssociatedObjectsForThisModel() function which 
         // modules NOT to setup.  This stops us from getting infinite loops with many to many relationships.
-        $params['except']         = isset($params['except']) ? $params['except'] : array();
-        $params['cascade_except'] = isset($params['cascade_except']) ? $params['cascade_except'] : false;
+        if (is_array($params)){
+            $params['except']         = isset($params['except']) ? $params['except'] : array();
+            $params['cascade_except'] = isset($params['cascade_except']) ? $params['cascade_except'] : false;
 
-        if ($get_assoc) $this->getAssociatedObjectsForThisModel($params['except'], $params['cascade_except']);
+            if ($get_assoc)
+                $this->getAssociatedObjectsForThisModel($params['except'], $params['cascade_except']);
+        } elseif (is_object($params)) {
+            $params->except         = isset($params->except) ? $params->except : array();
+            $params->cascade_except = isset($params->cascade_except) ? $params->cascade_except : false;
+
+            if ($get_assoc)
+                $this->getAssociatedObjectsForThisModel($params->except, $params->cascade_except);
+        }
         if ($get_attached) $this->getAttachableItems();
     }
 

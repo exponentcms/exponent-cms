@@ -19,7 +19,17 @@
 {if !$config.sel_height}
     {$sel_height = round($config.height/($slides|count+1))}
 {/if}
-
+{if bs3()}
+    {$lpad = 0}
+    {$tpad = 0}
+{else}
+    {$lpad = 25}
+    {if bs2()}
+        {$tpad = 0}
+    {else}
+        {$tpad = 25}
+    {/if}
+{/if}
 {css unique="photoalbum`$name`"}
 {literal}
     .sliderlist {
@@ -37,7 +47,8 @@
     .sliderbox {
         width  : {/literal}{$config.width|default:600}{literal}px;
         height : {/literal}{$config.height|default:375}{literal}px;
-        margin-left: {/literal}{($config.sel_width|default:180)+15}{literal}px;
+        margin-left: {/literal}{($config.sel_width|default:180)+$lpad}{literal}px;
+        margin-top: {/literal}{($tpad+1)/2}{literal}px;
     }
     .sliderbox img {
         width  : {/literal}{$config.width|default:600}{literal}px;

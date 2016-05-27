@@ -388,7 +388,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $objects = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $objects[] = mysqli_fetch_object($res);
         return $objects;
     }
@@ -402,13 +402,13 @@ class mysqli_database extends database {
         if ($where == null)
             $where = "1";
 
-        $sql = "SELECT *, MATCH (title,body) AGAINST ('" . $terms . "') as score from " . $this->prefix . "search ";
-        $sql .= "WHERE MATCH(title,body) against ('" . $terms . "' IN BOOLEAN MODE) ORDER BY score DESC";
+        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $this->prefix . "search as s ";
+        $sql .= "WHERE MATCH (title, body) against ('" . $terms . "*' IN BOOLEAN MODE) ORDER BY score DESC";
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null)
             return array();
         $objects = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $objects[] = mysqli_fetch_object($res);
         return $objects;
     }
@@ -468,7 +468,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $objects = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $objects[] = mysqli_fetch_object($res);
         return $objects;
     }
@@ -501,7 +501,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $objects = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $objects[] = mysqli_fetch_object($res);
         return $objects;
     }
@@ -527,7 +527,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $resarray = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $row = mysqli_fetch_array($res, MYSQLI_NUM);
             $resarray[$i] = $row[0];
         }
@@ -548,7 +548,7 @@ class mysqli_database extends database {
         if ($res == null)
             return 0;
         $resarray = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $row = mysqli_fetch_array($res, MYSQLI_NUM);
             $resarray[$i] = $row[0];
         }
@@ -574,7 +574,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $resarray = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $row = mysqli_fetch_object($res);
             $resarray[$row->id] = $row->$col;
         }
@@ -647,7 +647,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $objects = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $o = mysqli_fetch_object($res);
             $objects[$o->id] = $o;
         }
@@ -1017,7 +1017,7 @@ class mysqli_database extends database {
             return array();
         $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
         $dd = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $fieldObj = mysqli_fetch_object($res);
 
             $fieldObj->ExpFieldType = $this->getDDFieldType($fieldObj);
@@ -1049,7 +1049,7 @@ class mysqli_database extends database {
 
         $res = @mysqli_query($this->connection, "DESCRIBE `" . $this->prefix . "$table`");
         $dd = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++) {
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++) {
             $fieldObj = mysqli_fetch_object($res);
 
             $field = array();
@@ -1139,7 +1139,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $arrays = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $arrays[] = mysqli_fetch_assoc($res);
         return $arrays;
     }
@@ -1160,7 +1160,7 @@ class mysqli_database extends database {
         if ($res == null)
             return array();
         $arrays = array();
-        for ($i = 0; $i < mysqli_num_rows($res); $i++)
+        for ($i = 0, $iMax = mysqli_num_rows($res); $i < $iMax; $i++)
             $arrays[] = mysqli_fetch_assoc($res);
         return $arrays;
     }

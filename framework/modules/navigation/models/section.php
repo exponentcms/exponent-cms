@@ -41,10 +41,35 @@ class section extends expRecord {
 
     function update($params=array()) {
         $this->grouping_sql = " AND parent='".$this->parent."'";
-        if (empty($this->sef_name) && empty($params['sef_name'])) $params['sef_name'] = expCore::makeSefUrl($params['name'],'section');
+        if (empty($this->sef_name) && empty($params['sef_name']))
+            $params['sef_name'] = self::makeSefUrl();
         parent::update($params);
         expSession::clearAllUsersSessionCache('navigation');
 //        expHistory::back();
+    }
+
+    /**
+     * make an sef_name for section
+     *
+     * @param string $title
+     *
+     * @return mixed|string
+     */
+    public function makeSefUrl()
+    {
+        global $db, $router;
+
+        if (!empty($this->name)) {
+            $sef_name = $router->encode($this->name);
+        } else {
+            $sef_name = $router->encode('Untitled');
+        }
+        $dupe = $db->selectValue($this->tablename, 'sef_name', 'sef_name="' . $sef_name . '"');
+        if (!empty($dupe)) {
+            list($u, $s) = explode(' ', microtime());
+            $sef_name .= '-' . $s . '-' . $u;
+        }
+        return $sef_name;
     }
 
     public function beforeSave() {
@@ -101,7 +126,7 @@ class section extends expRecord {
             $kids = $cache['kids'][$parent];
         }
         $kids = expSorter::sort(array('array' => $kids, 'sortby' => 'rank', 'order' => 'ASC'));
-        for ($i = 0; $i < count($kids); $i++) {
+        for ($i = 0, $iMax = count($kids); $i < $iMax; $i++) {
             $child = $kids[$i];
             //foreach ($kids as $child) {
             if ($child->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $child->id))) {
@@ -383,7 +408,7 @@ class section extends expRecord {
         global $sections;
 
         $json_array = array();
-        for ($i = 0; $i < count($sections); $i++) {
+        for ($i = 0, $iMax = count($sections); $i < $iMax; $i++) {
             $obj = new stdClass();
             if ($sections[$i]->depth == 0) {
 //   				$obj->id = $sections[$i]->name.$sections[$i]->id;
@@ -450,7 +475,7 @@ class section extends expRecord {
             $ret_depth = $sections[$i]->depth;
             $i++;
             $ret_array = array();
-            for ($i; $i < count($sections); $i++) {
+            for ($iMax = count($sections); $i < $iMax; $i++) {
                 // start setting up the objects to return
                 $obj       = new stdClass();
                 $obj->id   = $sections[$i]->id;

@@ -1,4 +1,9 @@
-/* 
+/**
+ * Owl Carousel v2.1.4
+ * Copyright 2013-2016 David Deutsch
+ * Licensed under MIT (https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE)
+ */
+/*
  * 	Green theme - Owl Carousel CSS File
  */
 .owl-theme .owl-nav {
@@ -23,8 +28,10 @@
   .owl-theme .owl-nav .disabled {
     opacity: 0.5;
     cursor: default; }
+
 .owl-theme .owl-nav.disabled + .owl-dots {
   margin-top: 10px; }
+
 .owl-theme .owl-dots {
   text-align: center;
   -webkit-tap-highlight-color: transparent; }

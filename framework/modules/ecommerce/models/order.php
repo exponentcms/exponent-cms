@@ -608,7 +608,7 @@ class order extends expRecord {
         //eDebug($this->surcharge_total);
         //hate doing double loops, but we need to have the subtotal figured out already for 
         //doing the straight dollar disoount calculations below
-        for ($i = 0; $i < count($this->orderitem); $i++) {
+        for ($i = 0, $iMax = count($this->orderitem); $i < $iMax; $i++) {
             // figure out the amount of the discount
             /*if (!empty($this->product_discounts)) {
                 $discount_amount = ($this->orderitem[$i]->products_price * ($this->product_discounts * .01));
@@ -628,7 +628,7 @@ class order extends expRecord {
 
         }
 
-        for ($i = 0; $i < count($this->orderitem); $i++) {
+        for ($i = 0, $iMax = count($this->orderitem); $i < $iMax; $i++) {
             //only allowing one discount for now, but in future we'll need to process
             //multiple and accomdate the "weight" and 'allow other discounts' type settings
             //this foreach will only fire once as of now, and will only hit on one or the other

@@ -291,3 +291,21 @@ ul .slideshow-frame,
 ul .slideshow-frame li.slide {
 	list-style-type: none;
 }
+
+/****************  visual indicator for (inline) editable content  ***********************/
+[contenteditable="true"]:hover {
+	border-color     : darkgrey;
+	border-width     : thin;
+	border-style     : solid;
+	.border-radius(2px);
+	margin: -1px;
+}
+
+h1 [contenteditable="true"]:hover > p,
+h2 [contenteditable="true"]:hover > p,
+h3 [contenteditable="true"]:hover > p,
+h4 [contenteditable="true"]:hover > p,
+h5 [contenteditable="true"]:hover > p,
+h6 [contenteditable="true"]:hover > p{
+	margin: 0;
+}

@@ -67,53 +67,6 @@
     {control type="buttongroup" submit="Save Permissions"|gettext cancel="Cancel"|gettext}
 {/form}
 
-{script unique="permission-checking" yui3mods="node,event,node-event-delegate"}
-{literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var checkSubs = function(row) {
-        row.each(function(n, k){
-            if (!n.hasClass('manage')) {
-                n.insertBefore('<input type="hidden" name="' + n.get("name") + '" value="1">',n);
-                n.setAttrs({'checked':1, 'disabled':1});
-            };
-        });
-    };
-    var unCheckSubs = function(row) {
-        row.each(function(n, k){
-            if (!n.hasClass('manage')) {
-                n.get('previousSibling').remove();
-                n.setAttrs({'checked':0, 'disabled':0});
-            };
-        });
-    };
-    var toggleChecks = function(target, start) {
-        var row = target.ancestor('tr').all('input[type=checkbox]');
-        var row1 = target.ancestor('tr').next('tr.row-detail');  // if responsive
-        var checks1 = null;
-        if (row1 != null)
-            checks1 = row1.all('input[type=checkbox]');
-        if(target.get('checked') && !target.get('disabled')){
-            checkSubs(row);
-            if (checks1 != null)
-                checkSubs(checks1);;
-        } else {
-            if (!start) {
-                unCheckSubs(row);
-                if (checks1 != null)
-                    unCheckSubs(checks1);;
-            }
-        }
-    };
-    Y.one('#permissions').delegate('click',function(e){
-//        toggleChecks(e.target);
-    }, 'input.manage');
-    Y.all('#permissions input.manage').each(function(n){
-//        toggleChecks(n, 1);
-    });
-});
-{/literal}
-{/script}
-
 {script unique="permissions" jquery='jquery.dataTables,dataTables.tableTools,dataTables.bootstrap3,datatables.responsive'}
 {literal}
     $(document).ready(function() {

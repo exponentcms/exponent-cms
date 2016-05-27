@@ -23,6 +23,10 @@
     	</div>
     </div>
     <h3>{"Add External iCal/ics Feeds"|gettext}</h3>
+    <blockquote>
+        {'External Event Cache requires setting up a server cron task such as:'|gettext}{br}
+        <code> curl -G -s {$smarty.const.URL_FULL}event/build_cache/title/CALENDAR_SEF_URL</code>
+    </blockquote>
     {*{control type="text" id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}*}
     {control type=url id="icalfeedmaker" name="icalfeedmaker" label="iCal Feed URL"|gettext}
     {if (BTN_SIZE == 'large')}
@@ -75,7 +79,7 @@
             var list = Y.one('#icalpull-feeds');
             list.appendChild(newli);
 
-            $("input[type=color]").spectrum();
+//            $("input[type=color]").spectrum();
 
             feedtoadd = '';
         });

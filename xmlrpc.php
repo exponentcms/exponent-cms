@@ -488,7 +488,7 @@ function getRecentPosts($xmlrpcmsg)
             $blog = new blog();
             $posts = $blog->find('all', $where, 'publish DESC', $numposts);
             $structArray = array();
-            for ($i = 0; $i < count($posts); $i++) {
+            for ($i = 0, $iMax = count($posts); $i < $iMax; $i++) {
                 if (expPermissions::check('edit', $loc) || (expPermissions::check(
                             'create',
                             $loc

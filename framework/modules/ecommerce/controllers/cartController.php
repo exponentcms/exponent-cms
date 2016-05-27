@@ -944,9 +944,11 @@ class cartController extends expController {
                 unset($shipping_items[$id]);
             } else {
                 foreach ($shipping->available_calculators as $calcid=> $name) {
-                    $calc                                 = new $name($calcid);
-                    $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
-                    //eDebug($shipping_items[$id]->prices[$id]);
+                    if (class_exists($name)) {
+                        $calc = new $name($calcid);
+                        $shipping_items[$id]->prices[$calcid] = $calc->getRates($shipping_items[$id]);
+                        //eDebug($shipping_items[$id]->prices[$id]);
+                    }
                 }
             }
         }
@@ -1248,8 +1250,7 @@ class cartController extends expController {
         // figure out what metadata to pass back based on the action we are in.
         $action = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical' => '', 'noindex' => true, 'nofollow' => true);
-        $ecc = new ecomconfig();
-        $storename = $ecc->getConfig('storename');
+        $storename = ecomconfig::getConfig('storename');
         switch ($action) {
             default:
                 $metainfo['title'] = gt("Shopping Cart") . " - " . $storename;

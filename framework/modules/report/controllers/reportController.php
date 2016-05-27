@@ -1028,7 +1028,7 @@ class reportController extends expController {
         // eDebug($this->params);
         $p = $this->params;
         $sqlids = "SELECT DISTINCT(p.id) from ";
-        $sqlcount = "SELECT COUNT(DISTINCT(p.id)) from ";
+        $count_sql = "SELECT COUNT(DISTINCT(p.id)) as c FROM ";
         $sqlstart = "SELECT DISTINCT(p.id), p.title, p.model, concat('".expCore::getCurrencySymbol()."',format(p.base_price,2)) as base_price";//, ps.title as status from ";
         $sql = $db->prefix . "product as p ";
         if (!isset($p['allproducts'])){
@@ -1154,7 +1154,7 @@ class reportController extends expController {
         $exportSQL = $sqlids . $sql . $sqlwhere; // . ")";     // " OR p.parent_id IN (".$sqlids . $sql . $sqlwhere . ")";
         //$sqlidswhere = " OR p.id IN (SELECT id FROM".$db->prefix."_product WHERE parent_id=)";
 //        eDebug($sqlstart . $sql . $sqlwhere);
-//        eDebug($sqlcount . $sql . $sqlwhere);
+//        eDebug($count_sql . $sql . $sqlwhere);
 //        eDebug("Stored:" . $exportSQL);
         expSession::set('product_export_query', $exportSQL);
         //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
@@ -1170,7 +1170,7 @@ class reportController extends expController {
             'sql'        => $sqlstart . $sql . $sqlwhere,
             //'sql'=>"SELECT  DISTINCT(p.id), p.title, p.model, p.base_price FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
             //'count_sql'=>"SELECT COUNT(DISTINCT(p.id)) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0",
-            'count_sql'  => $sqlcount . $sql . $sqlwhere,
+            'count_sql'  => $count_sql . $sql . $sqlwhere,
             'limit'      => empty($this->config['limit']) ? 350 : $this->config['limit'],
             'order'      => 'id',
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
@@ -1178,9 +1178,9 @@ class reportController extends expController {
             'action'     => $this->params['action'],
             'columns'    => array(
                 'actupon'     => true,
-                gt('ID')      => 'id',
+                'ID'      => 'id',
                 gt('Product') => 'title|controller=store,action=show,showby=id',
-                gt('SKU')     => 'model',
+                'SKU'     => 'model',
                 gt('Price')   => 'base_price',
                 gt('Status')   => 'status'
             ),

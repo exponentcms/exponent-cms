@@ -76,7 +76,7 @@ class tablebasedcalculator extends shippingcalculator {
         // $stateUpcharge = array('2','21','52');
         $rates = array();
 	    if(!empty($c)) {
-			for($i = 0; $i < count($c); $i++) {
+            for ($i = 0, $iMax = count($c); $i < $iMax; $i++) {
 				if (array_key_exists($currentMethod->state, $stateUpcharge)) {
 					$c[$i] += $stateUpcharge[$currentMethod->state]; // $c[$i] += $stateUpcharge[$currentMethod->state]; Commented this though i'm not sure if this is done intentionally 
 				}
@@ -146,7 +146,7 @@ class tablebasedcalculator extends shippingcalculator {
     
     function availableMethods() {
         $shippingmethods = array();
-		for($i = 0; $i < count($this->shippingspeeds); $i++) {
+        for ($i = 0, $iMax = count($this->shippingspeeds); $i < $iMax; $i++) {
             if($i > 9 ) $shippingmethods[($i+1)] = $this->shippingspeeds[$i]->speed;
 			else $shippingmethods[0 . ($i+1)] = $this->shippingspeeds[$i]->speed;
 		}

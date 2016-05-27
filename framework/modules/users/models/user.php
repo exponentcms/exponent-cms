@@ -505,6 +505,10 @@ class user extends expRecord {
                  $str = $u->username;
                  break;
             }
+            $str = trim($str);
+            if (empty($str)) {
+                $str = $u->username;
+            }
         } else {
             $str = gt('Anonymous User');
         }

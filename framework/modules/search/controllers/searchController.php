@@ -69,7 +69,7 @@ class searchController extends expController {
         $search = new search();
 
         $page = new expPaginator(array(
-            //'model'=>'search',
+//            'model'=>'search',
             'records'=>$search->getSearchResults($terms, !empty($this->config['only_best'])),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
@@ -282,7 +282,7 @@ class searchController extends expController {
 	
 		//Get all the search query records
 		$records = $db->selectObjects('search_queries', $where);
-		for($i = 0 ; $i < count($records); $i++) {
+        for ($i = 0, $iMax = count($records); $i < $iMax; $i++) {
 			if(!empty($records[$i]->user_id)) {
 				$u = user::getUserById($records[$i]->user_id);
 				$records[$i]->user = $u->firstname . ' ' . $u->lastname;
@@ -299,7 +299,7 @@ class searchController extends expController {
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
             'columns'=>array(
-                gt('ID')=>'id',
+                'ID'=>'id',
                 gt('Query')=>'query',
                 gt('Timestamp')=>'timestamp',
                 gt('User')=>'user_id',

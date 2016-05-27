@@ -107,7 +107,7 @@ class expRouter {
             
                 // check to see if we have a router mapping for this controller/action
                 if (empty($no_map)){
-                    for($i=0; $i < count($this->maps); $i++) {
+                    for ($i = 0, $iMax = count($this->maps); $i < $iMax; $i++) {
                         $missing_params = array("dump");
 
                         if ((!empty($params) && !empty($params['controller']) && !empty($params['action'])) && (in_array($params['controller'], $this->maps[$i]) && in_array($params['action'], $this->maps[$i]) && (!isset($this->maps[$i]['src']) || in_array($params['src'], $this->maps[$i])))) {
@@ -307,7 +307,7 @@ class expRouter {
             
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
                 $this->url_type = 'base';  // no params
-            } elseif (count($this->url_parts) == 1 && $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
+            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
                 $this->url_type = 'page';  // single param is page name
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $this->url_type = 'post';  // params via form/post
@@ -382,21 +382,21 @@ class expRouter {
             //then we'll return false as usual
             // since we only received a single param and it wasn't a page, try for store category, or a product
             if (empty($section)) {
-                $sef_name = $this->url_parts[0];
+                $sef_url = $this->url_parts[0];
                 //check for a category
                 $c = new storeCategory();                
-                $cat = $c->findBy('sef_name', $sef_name);
+                $cat = $c->findBy('sef_url', $sef_url);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
-                    $prod = $p->findBy('sef_name', $sef_name);
+                    $prod = $p->findBy('sef_url', $sef_url);
                     if(!empty($prod)) {
                         //fake parts and route to action  
                         $this->url_type = 'action';                   
                         $this->url_parts[0] = 'store'; //controller
                         $this->url_parts[1] = 'show'; //controller
                         $this->url_parts[2] = 'title'; //controller
-                        $this->url_parts[3] = $sef_name; //controller
+                        $this->url_parts[3] = $sef_url; //controller
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
@@ -408,7 +408,7 @@ class expRouter {
                     $this->url_parts[0] = 'store'; //controller
                     $this->url_parts[1] = 'showall'; //controller
                     $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_name; //controller
+                    $this->url_parts[3] = $sef_url; //controller
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
@@ -505,7 +505,7 @@ class expRouter {
                 $return_params['url_parts']['id'] = $this->url_parts[2];
             }
         } else {
-            for($i=2; $i < count($this->url_parts); $i++ ) {
+            for ($i = 2, $iMax = count($this->url_parts); $i < $iMax; $i++) {
                 if ($i % 2 == 0) {
                     $return_params['url_parts'][$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
                 }
@@ -657,7 +657,7 @@ class expRouter {
         } elseif ($this->url_type == 'action') {
             $params['controller'] = $this->url_parts[0];
             $params['action'] = !empty($this->url_parts[1]) ? $this->url_parts[1] : null;
-            for($i=2; $i < count($this->url_parts); $i++ ) {
+            for ($i = 2, $iMax = count($this->url_parts); $i < $iMax; $i++) {
                 if ($i % 2 == 0) {
                     $params[$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
                 }

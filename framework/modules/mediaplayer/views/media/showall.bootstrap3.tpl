@@ -87,19 +87,6 @@
                 }
             })
         });
-
-        //$("#openColorbox").colorbox({
-        //    inline:true,
-        //    width:"auto",
-        //    height:"auto",
-        //    href:$(this).next(),
-        //    onOpen: function() {
-        //        $.colorbox.element().next().show();
-        //    },
-        //    onClosed: function() {
-        //        $.colorbox.element().next().hide();
-        //    }
-        //});
     });
 {/literal}
 {/script}
@@ -108,85 +95,77 @@
 {if empty($params.page)}
     {$params.page = 1}
 {/if}
-{script unique="`$name`listajax" yui3mods="node,io,node-event-delegate" jquery="jquery.history"}
+{script unique="`$name`itemajax" jquery="jquery.history"}
 {literal}
-YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
-    var medialist = Y.one('#{/literal}{$name}{literal}list');
-    var page_parm = '';
-    if (EXPONENT.SEF_URLS) {
-        page_parm = '/page/';
-    } else {
-        page_parm = '&page=';
-    }
-    var History = window.History;
-    History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
-        {/literal}
-        {$orig_params = ['controller' => 'media', 'action' => 'showall', 'src' => $params.src]}
-    {literal}
-    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=media&action=showall&view=medialist&ajax_action=1&src="+src;
-
-	var handleSuccess = function(ioId, o){
-        if(o.responseText){
-                medialist.setContent(o.responseText);
-                medialist.all('script').each(function(n){
-                if(!n.get('src')){
-                    eval(n.get('innerHTML'));
-                } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
-                };
-            });
-            medialist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
-            });
+    $(document).ready(function() {
+        var medialist_{/literal}{$name}{literal} = $('#{/literal}{$name}{literal}list');
+        var page_parm_{/literal}{$name}{literal} = '';
+        if (EXPONENT.SEF_URLS) {
+            page_parm_{/literal}{$name}{literal} = '/page/';
         } else {
-            medialist.one('.loadingdiv').remove();
+            page_parm_{/literal}{$name}{literal} = '&page=';
         }
-	};
+        var History = window.History;
+        History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
+        {/literal}
+            {$orig_params = ['controller' => 'media', 'action' => 'showall', 'src' => $params.src]}
+        {literal}
+        var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
+        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=media&action=showall&view=medialist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
-	//A function handler to use for failed requests:
-	var handleFailure = function(ioId, o){
-		Y.log("The failure handler was called.  Id: " + ioId + ".", "info", "mediaitems nav");
-	};
+        // ajax load new items
+        var handleSuccess_{/literal}{$name}{literal} = function(o, ioId){
+            if(o){
+                medialist_{/literal}{$name}{literal}.html(o);
+                medialist_{/literal}{$name}{literal}.find('script').each(function(k, n){
+                    if(!$(n).attr('src')){
+                        eval($(n).html);
+                    } else {
+                        $.getScript($(n).attr('src'));
+                    };
+                });
+                medialist_{/literal}{$name}{literal}.find('link').each(function(k, n){
+                    $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                });
+            } else {
+                $('#{/literal}{$name}{literal}item.loadingdiv').remove();
+                medialist_{/literal}{$name}{literal}.html('Unable to load content');
+                medialist_{/literal}{$name}{literal}.css('opacity', 1);
+            }
+        };
 
-	//Subscribe our handlers to IO's global custom events:
-//	Y.on('io:success', handleSuccess);
-//	Y.on('io:failure', handleFailure);
+        medialist_{/literal}{$name}{literal}.delegate('a.pager', 'click', function(e){
+            e.preventDefault();
+            History.pushState({name:'{/literal}{$name}{literal}', rel:$(this)[0].rel}, '{/literal}{'Media'|gettext}{literal}', orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + $(this)[0].rel);
+            // moving to a new items
+            $.ajax({
+                type: "POST",
+                headers: { 'X-Transaction': 'Load Media'},
+                url: sUrl_{/literal}{$name}{literal},
+                data: "page=" + $(this)[0].rel,
+                success: handleSuccess_{/literal}{$name}{literal}
+            });
+            // medialist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Media"|gettext}{literal}'));
+            medialist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Media"|gettext}{literal}'));
+        });
 
-    medialist.delegate('click', function(e){
-        e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Media'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
-        var cfg = {
-              method: "POST",
-		      headers: { 'X-Transaction': 'Load Mediaitems'},
-	          arguments : { 'X-Transaction': 'Load Mediaitems'},
-              data : "page="+e.currentTarget.get('rel'),
-              on: {
-                      success:handleSuccess,
-                      failure:handleFailure
-                  }
-              }
-        var request = Y.io(sUrl, cfg);
-//        medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
-          medialist.setContent(Y.Node.create('{/literal}{loading title="Loading Media"|gettext}{literal}'));
-    }, 'a.pager');
-
-    // Watches the browser history for changes
-    window.addEventListener('popstate', function(e) {
-        state = History.getState()
-        if (state.data.name == '{/literal}{$name}{literal}') {
-            // moving to a new page
-            cfg.data = "page="+state.data.rel;
-            var request = Y.io(sUrl, cfg);
-//            medialist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Media"|gettext}{literal}</div>'));
-              medialist.setContent(Y.Node.create('{/literal}{loading title="Loading Media"|gettext}{literal}'));
-        }
+        // Watches the browser history for changes
+        window.addEventListener('popstate', function(e) {
+            state = History.getState();
+            if (state.data.name == '{/literal}{$name}{literal}') {
+                // moving to a new items
+                $.ajax({
+                    type: "POST",
+                    headers: { 'X-Transaction': 'Load Media'},
+                    url: sUrl_{/literal}{$name}{literal},
+                    data: "page=" + state.data.rel,
+                    success: handleSuccess_{/literal}{$name}{literal}
+                });
+                // medialist_{/literal}{$name}{literal}.html($('{/literal}{loading title="Loading Media"|gettext}{literal}'));
+                medialist_{/literal}{$name}{literal}.find('.loader').html($('{/literal}{loading span=1 title="Loading Media"|gettext}{literal}'));
+            }
+        });
     });
-});
 {/literal}
 {/script}
 {/if}

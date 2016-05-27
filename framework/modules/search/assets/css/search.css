@@ -1,0 +1,76 @@
+/* Search Results  */
+.search.search span.searched_for {
+    display:block;
+    padding:5px;
+    border:1px solid #999;
+    border-width:1px 0;
+    margin-bottom:10px;
+}
+
+.search.search span.searched_for .result-count {
+    font-size:110%;
+    font-weight:bold;
+}
+
+.search.search span.searched_for .terms {
+    font-size:110%;
+    font-weight:bold;
+    font-style:italic;
+}
+
+.search.search div.item {
+    border:1px dotted #999;
+    border-width:0 0 1px 0;
+}
+
+.search.search div.searchbody {
+    padding-bottom: 5px; 
+    width: 69%; 
+    float:left;
+    vertical-align: top;
+}
+
+.search.search div.searchwrapper {
+    margin-bottom: 10px; 
+}
+
+.search.search span.searchtitle a {
+    font-size:14px;
+    color:#395203;
+    font-weight: bold;
+}
+
+.search.search div.searchrightcol {
+    float: left; 
+    width:17%
+}
+
+.search.search div.searchprice {
+    text-align: right;
+    padding-bottom: 5px;
+    color:#395203;
+    font-size:16px;
+    font-weight:bold;
+}
+
+.search.search div.search-img {
+    margin:0 5px 5px 0; 
+    height:60px; 
+    /*width: 13%; */
+    min-width: 68px;
+    float:left;
+}
+/*default pagination styles*/
+
+/*.pagination-links {*/
+    /*position:relative;*/
+/*}*/
+/*.pagination-links span.currentpage {*/
+    /*padding:1px;*/
+    /*border:1px solid #dedede;*/
+/*}*/
+/*.pagination-links span.pagetotals {*/
+    /*position:absolute;*/
+    /*right:0;*/
+/*}*/
+

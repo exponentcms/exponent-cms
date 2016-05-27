@@ -209,8 +209,10 @@ class shipping extends expRecord {
 	    $calcs = array();
 	    foreach ($db->selectObjects('shippingcalculator', 'enabled=1') as $calcObj) {
             $calcNameReal = $calcObj->calculator_name;
-            $calc = new $calcNameReal($calcObj->id);
-	        $calcs[$calc->id] = $calc->title;
+            if (class_exists($calcNameReal)) {
+                $calc = new $calcNameReal($calcObj->id);
+                $calcs[$calc->id] = $calc->title;
+            }
 	    }
 	    
 		return $calcs;

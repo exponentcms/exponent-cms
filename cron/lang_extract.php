@@ -116,7 +116,7 @@ function do_extract($file, $regex, $isalist=false) {
    	);
     print "$file"." - ";
     $num_added = 0;
-   	for ($i=0; $i < count($matches[0]); $i++) {
+	for ($i = 0, $iMax = count($matches[0]); $i < $iMax; $i++) {
         str_replace('"', "\'", $matches[0][$i]);  // remove the killer double-quotes
         if ($isalist) {
             $phrases = explode(",",$matches[0][$i]);

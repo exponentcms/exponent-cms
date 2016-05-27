@@ -21,7 +21,6 @@
     {{control type=checkbox name="hidetext" label="Hide slide title"|gettext checked=$config.hidetext value=1}}
     {control type="checkbox" name="hidecontrols" label="Hide slide controls"|gettext checked=$config.hidecontrols|default:0 value=1}
     {control type="checkbox" name="dimcontrols" label="Dim controls"|gettext checked=$config.dimcontrols|default:0 value=1}
-
     {*{control type="checkbox" name="autoplay" label="Autoplay"|gettext checked=$config.autoplay|default:1 value=1}*}
 
     {group label='Transition Animation'|gettext}
@@ -35,6 +34,7 @@
             values="none,fadeIn,fadeOut,swipeInLTR,swipeOutLTR,swipeInRTL,swipeOutRTL,swipeInTTB,swipeOutTTB,swipeInBTT,swipeOutBTT"
             label="Transition Out" value=$config.anim_out|default:'fadeOut'
         }
+        <quote class="error">{'Settings other than Fade In/Fade Out may not work correctly!'|gettext}</quote>
         {control type=text name="duration" label="Animation Duration"|gettext value=$config.duration|default:0.5 size="5"}
     {/group}
 

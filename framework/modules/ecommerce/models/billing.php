@@ -103,9 +103,11 @@ class billing extends expRecord {
         $this->info = (empty($this->calculator->id) || empty($options)) ? '' : $this->calculator->userView($this->billingmethod);
 
 		foreach($this->available_calculators as $key => $item) {
-			$calc  = new $item($key);
-            if (!expJavascript::inAjaxAction()) {  //fixme kludge for now to get order pdf's to print out
-                $this->form[$key] = $calc->userForm();
+            if (class_exists($item)) {
+                $calc = new $item($key);
+                if (!expJavascript::inAjaxAction()) {  //fixme kludge for now to get order pdf's to print out
+                    $this->form[$key] = $calc->userForm();
+                }
             }
 		}
         
@@ -144,10 +146,11 @@ class billing extends expRecord {
         $calcs = array();
         foreach ($db->selectObjects('billingcalculator', 'enabled=1') as $calcObj) {
             $calcNameReal = $calcObj->calculator_name;
-            $calc = new $calcNameReal($calcObj->id);
-            if($user->isAdmin() || $calc->isRestricted() == false)
-            {
-                $calcs[$calc->id] = $calc->title;
+            if (class_exists($calcNameReal)) {
+                $calc = new $calcNameReal($calcObj->id);
+                if ($user->isAdmin() || $calc->isRestricted() == false) {
+                    $calcs[$calc->id] = $calc->title;
+                }
             }
         }
         
@@ -175,9 +178,11 @@ class billing extends expRecord {
     
     public function getCalcForms() {
         //eDebug($this);
-        foreach ($this->available_calculators as $calcid=>$calcname) {            
-            $calc = new $calcname($calcid);
-            $forms[$calcname] = $calc->userForm();
+        foreach ($this->available_calculators as $calcid=>$calcname) {
+            if (class_exists($calcname)) {
+                $calc = new $calcname($calcid);
+                $forms[$calcname] = $calc->userForm();
+            }
         }        
         return array_reverse($forms);
     }

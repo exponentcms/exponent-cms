@@ -110,7 +110,7 @@
 				<td colspan="2">&#160;</td>
 				<td colspan="3">
 					{*<input type="submit" class="downloadfile {button_style}" value="{'Export Data'|gettext}" onclick="return isOneSelected();" />*}
-                    {control type=buttongroup class="downloadfile" submit='Export Data'|gettext onclick="return isOneSelected();"}
+                    {control type=buttongroup class="downloadfile" submit='Export Data'|gettext}
 				</td>
 			</tr>
 		</table>

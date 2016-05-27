@@ -26,21 +26,17 @@
         {control type=hidden name=import_type value=$import_type}
         {control type=uploader name=import_file accept=".eql" label=gt('EQL File to Import')}
         <label>{'Module to import into'|gettext}</label>
-        <table class="exp-skin-table">
+        <table class="exp-skin-table aggregate">
             <thead>
                 <tr>
-                    <th></th>
                     {$modules->header_columns}
                 </tr>
             </thead>
             <tbody>
             {foreach from=$modules->records item=mod}
                 <tr class="{cycle values="even,odd"}">
-                    <td width="20">
-                        {control type="checkbox" name="import_aggregate[]" value=$mod->src}
-                    </td>
                     <td>
-                        {$mod->title}
+                        {control type="checkbox" name="import_aggregate[]" value=$mod->src label=$mod->title}
                     </td>
                     <td>
                         {$mod->section}
@@ -65,3 +61,13 @@
         {*{control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}*}
     {*{/form}*}
 {*</div>*}
+
+{script unique="file-type" jquery=1}
+{literal}
+$(document).ready(function(){
+    $('.importexport.import .aggregate input[type="checkbox"]').on('click',function() {
+        $('.importexport.import .aggregate input[type="checkbox"]').not(this).prop("checked", false);
+    });
+});
+{/literal}
+{/script}

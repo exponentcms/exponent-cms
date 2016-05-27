@@ -517,8 +517,9 @@ if (!defined('YUI2_RELATIVE')) {
  * Changing the version here lets Exponent adjust where to look
  */
 if (!defined('JQUERY_RELATIVE')) {
-    define('JQUERY_VERSION', '1.12.3');
-    define('JQUERY2_VERSION', '2.2.3');
+    define('JQUERY_VERSION', '1.12.4');
+    define('JQUERY2_VERSION', '2.2.4');
+//    define('JQUERY3_VERSION', '3.0.0-rc1');
     define('JQUERYUI_VERSION', '1.11.4');
     define('JQUERY_RELATIVE', PATH_RELATIVE . 'external/jquery/');
     define('JQUERY_PATH', BASE . 'external/jquery/');
@@ -529,6 +530,9 @@ if (!defined('JQUERY_RELATIVE')) {
     if (!defined('JQUERY2_SCRIPT')) {
         define('JQUERY2_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY2_VERSION . '.min.js');
     } // local jQuery v2.x script
+//    if (!defined('JQUERY3_SCRIPT')) {
+//        define('JQUERY3_SCRIPT', JQUERY_RELATIVE . 'js/jquery-' . JQUERY3_VERSION . '.min.js');
+//    } // local jQuery v3.x script
     if (!defined('JQUERYUI_SCRIPT')) {
 //        define('JQUERYUI_SCRIPT', JQUERY_RELATIVE.'js/jquery-ui-'.JQUERYUI_VERSION.'.custom.min.js');
         define('JQUERYUI_SCRIPT', JQUERY_RELATIVE . 'js/jquery-ui.min.js');

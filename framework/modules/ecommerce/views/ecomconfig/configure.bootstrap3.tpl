@@ -78,6 +78,7 @@
                             {control type="dropdown" name="orderby" label="Default sort order"|gettext items="Name, Price, Rank"|gettxtlist values="title,base_price,rank" value=$config.orderby}
                             {control type="dropdown" name="orderby_dir" label="Sort direction"|gettext items="Ascending, Descending"|gettxtlist values="ASC, DESC" value=$config.orderby_dir}
                         {/group}
+                        {control type="dropdown" name="ecom_search_results" label="Search Results"|gettext includeblank="All"|gettext items="Limit to eCommerce,Limit to Products"|gettxtlist values="ecom,products" value=$config.ecom_search_results description='Optionally Limit search results to eCommerce related items'|gettext}
                         {*
                         <h2>Sub Category Display</h2>
                         drop down coming soon...

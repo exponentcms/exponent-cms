@@ -456,21 +456,24 @@ class expValidator {
 	 * @param null $post
 	 */
 	public static function failAndReturnToForm($msg='', $post=null) {
-        if (!is_array($msg)) $msg = array($msg);
+        if (!is_array($msg)) 
+            $msg = array($msg);
         flash('error', $msg);
-        if (!empty($post)) expSession::set('last_POST',$post);
+        if (!empty($post)) 
+            expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     }
 
 	/**
-     * Routine to establish error fields
+     * Routine to mark which form field had the error
      *
 	 * @param $field
 	 */
 	public static function setErrorField($field) {
         $errors = expSession::get('last_post_errors');
-        if (!in_array($field, $errors)) $errors[] = $field;
+        if (!in_array($field, $errors)) 
+            $errors[] = $field;
         expSession::set('last_post_errors', $errors);
     }
 
@@ -482,9 +485,11 @@ class expValidator {
 	 * @param null $post
 	 */
 	public static function flashAndReturnToForm($queue='message', $msg, $post=null) {
-        if (!is_array($msg)) $msg = array($msg);
+        if (!is_array($msg)) 
+            $msg = array($msg);
         flash($queue, $msg);
-        if (!empty($post)) expSession::set('last_POST',$post);
+        if (!empty($post)) 
+            expSession::set('last_POST',$post);
         header('Location: ' . $_SERVER['HTTP_REFERER']);
         exit();
     }

@@ -156,6 +156,10 @@
 .elfinder-cwd-icon-xml:before {
   content: '\f1c9';
 }
+/* unknown file types */
+.elfinder-cwd-icon-unknown:before {
+  content: '\f016';
+}
 /* Toolbar  */
 /* toolbar */
 .elfinder .elfinder-toolbar {

@@ -179,7 +179,7 @@ function smarty_function_icon($params, &$smarty) {
             echo ' onclick="', $onclick, '"';
         echo '>', $linktext, '</a>';
     } else {
-        echo '<div',$name,' class="',$class,'"> ',$linktext,'</div>';
+        echo '<span',$name,' class="',$class,'"> ',$linktext,'</span>';
     }
 }
 

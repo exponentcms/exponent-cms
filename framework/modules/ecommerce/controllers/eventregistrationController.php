@@ -425,8 +425,7 @@ class eventregistrationController extends expController {
         // figure out what metadata to pass back based on the action we are in.
         $action   = $router->params['action'];
         $metainfo = array('title' => '', 'keywords' => '', 'description' => '', 'canonical'=> '', 'noindex' => false, 'nofollow' => false);
-        $ecc = new ecomconfig();
-        $storename = $ecc->getConfig('storename');
+        $storename = ecomconfig::getConfig('storename');
         switch ($action) {
             case 'showall':
             case 'eventsCalendar':
@@ -744,7 +743,7 @@ class eventregistrationController extends expController {
 //        $event_id     = $this->params['event_id'];
 //        $connector_id = @$this->params['connector_id'];
 //        if (empty($connector_id)) {
-//            $connector_id = "admin-created" . rand() . time(); //Meaning it is been added by admin
+//            $connector_id = "admin-created" . mt_rand() . time(); //Meaning it is been added by admin
 //        }
 //        $reg_data   = $db->selectObjects("eventregistration_registrants", "connector_id ='{$connector_id}'");
 

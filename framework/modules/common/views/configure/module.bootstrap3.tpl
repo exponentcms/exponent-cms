@@ -109,7 +109,7 @@
                             url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + viewpicker.val(),
                             success: handleSuccessView
                         });
-                        $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
+                        $('#moduleViewConfig').html($('{/literal}{loading title="Loading Form"|gettext}{literal}'));
                     }
                 });
             });
@@ -121,7 +121,7 @@
                         url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + e.target.value,
                         success: handleSuccessView
                     });
-                    $('#moduleViewConfig').html($('<div id="loadingview" class="loadingdiv" style="width:40%"><i class="fa fa-lg fa-spinner fa-pulse"></i> {/literal}{"Loading Form"|gettext}{literal}</div>'));
+                    $('#moduleViewConfig').html($('{/literal}{loading title="Loading Form"|gettext}{literal}'));
                 }
             });
 
@@ -129,16 +129,16 @@
             var handleSuccessView = function (o, ioId) {
                 if (o) {
                     $('#moduleViewConfig').html(o);
-                    $('#moduleViewConfig script').each(function (n) {
-                        if (!n.get('src')) {
-                            eval(n.get('innerHTML'));
+                    $('#moduleViewConfig script').each(function (k, n) {
+                        if (!$(n).attr('src')) {
+                            eval($(n).html);
                         } else {
-                            var url = n.get('src');
+                            var url = $(n).attr('src');
                             $.getScript(url);
                         }
                     });
-                    $('#moduleViewConfig link').each(function (n) {
-                        var url = n.get('href');
+                    $('#moduleViewConfig link').each(function (k, n) {
+                        var url = $(n).attr('href');
                         $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
                     });
                 } else {

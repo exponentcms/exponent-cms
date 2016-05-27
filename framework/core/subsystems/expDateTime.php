@@ -339,7 +339,7 @@ class expDateTime {
 		// So, if we start on a Tuesday, and want to recur weekly for a MWF rotation,
 		// This would check Monday, then Wednesday and stop, using wednesday for the
 		// recalculated start date ($curdate)
-		for ($counter = 0; $counter < count($days); $counter++) {
+		for ($counter = 0, $counterMax = count($days); $counter < $counterMax; $counter++) {
 			if ($days[$counter] >= $dateinfo['wday']) {
 				// exit loop, we found the weekday to use ($days[$counter])
 				break;
@@ -703,7 +703,7 @@ class expDateTime {
 
     		// Preserve the '%%'
     		$toks = explode('%%',$format);
-    		for ($i = 0; $i < count($toks); $i++) {
+			for ($i = 0, $iMax = count($toks); $i < $iMax; $i++) {
     			$toks[$i] = str_replace(
     				array('%D','%e','%g','%G','%h','%r','%R','%T','%l'),
     				array('%m/%d/%y','%#d','%y','%Y','%b','%I:%M:%S %p','%H:%M','%H:%M:%S','%#I'),

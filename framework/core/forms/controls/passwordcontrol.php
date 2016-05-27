@@ -63,8 +63,6 @@ class passwordcontrol extends genericcontrol {
                     $html .= empty($label) ? "" : "<label".$for." class=\"label\">". $labeltag."</label>";
             }
             $html .= "</div>";
-        } else {
-            $html = $this->controlToHTML($name, $label);
             if ($this->meter) {
                 expCSS::pushToHead(array(
             	    "unique"=>"password-meter",
@@ -74,19 +72,20 @@ class passwordcontrol extends genericcontrol {
             	        }"
             	    )
             	);
-
                 expJavascript::pushToFoot(array(
-                    "unique"=>"password-meter".$name,
+                    "unique"=>"password-meter" . $name,
                     "jquery"=>"strength-meter",
                     "content"=>"$('#".$this->id."').strength({
             toggleMask: false,
             mainTemplate: '<div class=\"kv-strength-container\">{input}<div class=\"kv-meter-container\">{meter}</div></div>',
-        }).on('strength.change', function(event) {
-            if (event.target.value.length < " . MIN_PWD_LEN . ")
-                $('#".$this->id."').strength('paint', 0);
+            rules: {
+                minLength: " . MIN_PWD_LEN . ",
+            },
         });",
                  ));
             }
+        } else {
+            $html = $this->controlToHTML($name, $label);
         }
         return $html;
     }

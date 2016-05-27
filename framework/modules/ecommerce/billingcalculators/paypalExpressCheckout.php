@@ -193,7 +193,7 @@ class paypalExpressCheckout extends billingcalculator {
                 'PAYMENTREQUEST_0_SHIPTOZIP'         => $shippingaddress->zip
             );
 
-            for ($n = 0; $n < count($order->orderitem); $n++) {
+            for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
                 $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
                 $desc = strip_tags($order->orderitem[$n]->product->body);
                 $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;
@@ -314,7 +314,7 @@ class paypalExpressCheckout extends billingcalculator {
 
 //        $it = 0;
 //        $tt = 0;
-        for ($n = 0; $n < count($order->orderitem); $n++) {
+        for ($n = 0, $nMax = count($order->orderitem); $n < $nMax; $n++) {
             $data['L_PAYMENTREQUEST_0_NAME' . $n] = strlen($order->orderitem[$n]->products_name) > 127 ? substr($order->orderitem[$n]->products_name, 0, 124) . "..." : $order->orderitem[$n]->products_name;
             $desc = strip_tags($order->orderitem[$n]->product->body);
             $data['L_PAYMENTREQUEST_0_DESC' . $n] = strlen($desc) > 127 ? substr($desc, 0, 124) . "..." : $desc;

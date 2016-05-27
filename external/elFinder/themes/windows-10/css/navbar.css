@@ -40,7 +40,7 @@
 /* All icons (directories) */
 .elfinder .elfinder-navbar .elfinder-navbar-icon {
   background-color: transparent;
-  background-image: url('../images/16px/directory.png') !important;
+  background-image: url('../images/16px/directory.png');
   background-position: center center;
   background-repeat: none;
   height: 16px;

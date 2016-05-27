@@ -359,6 +359,10 @@ $opts = array(
             'driver'          => 'Exponent',
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
+            'dirMode'        => DIR_DEFAULT_MODE_STR,    // new dirs mode (default 0755)
+            'fileMode'       => FILE_DEFAULT_MODE_STR,   // new files mode (default 0644)
+            'detectDirIcon'  => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
+            'keepTimestamp'  => array('copy', 'move'),   // Keep timestamp at inner filesystem (elFinder >= 2.1.12) It allowed 'copy', 'move' and 'upload'.
             // 'treeDeep'   => 3,
             'alias'           => 'files',
             'disabled'        => array('netmount'),

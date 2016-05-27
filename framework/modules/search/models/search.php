@@ -56,8 +56,17 @@ class search extends expRecord {
         SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s 
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
 
-        $sql = "SELECT *, MATCH (s.title,s.body) AGAINST ('" . $terms . "*') as score from " . DB_TABLE_PREFIX . "_search as s ";
-        $sql .= "WHERE MATCH(title,body) against ('" . $terms . "*' IN BOOLEAN MODE) ";
+        $sql = "SELECT *, MATCH (s.title, s.body) AGAINST ('" . $terms . "*') as score from " . $db->prefix . "search as s ";
+        $sql .= "WHERE ";
+        if (ECOM) {
+            $search_type = ecomconfig::getConfig('ecom_search_results');
+            if ($search_type == 'ecom') {
+                $sql .= "ref_module = 'store' AND ";
+            } elseif ($search_type == 'products') {
+                $sql .= "ref_type = 'product' AND ";
+            }
+        }
+        $sql .= "MATCH (title, body) against ('" . $terms . "*' IN BOOLEAN MODE) ";
 
         // look up the records.
         //eDebug($sql);
@@ -66,7 +75,7 @@ class search extends expRecord {
 
         // modify search results based on permissions
         $recs = $records;
-        for ($i = 0; $i < count($records); $i++) {
+        for ($i = 0, $iMax = count($records); $i < $iMax; $i++) {
             if ($only_best && $records[$i]->score == 0) {
                 unset($recs[$i]); // page is not available for viewing
 //            } elseif ($records[$i]->ref_type == 'product') {

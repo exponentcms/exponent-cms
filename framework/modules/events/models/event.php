@@ -65,7 +65,7 @@ class event extends expRecord {
 //                $begin = $day;
 //                $end = null;
                 $items = $this->getEventsForDates($dates, $sort_asc, $order ? true : false, true);
-//                $extitems = $this->getExternalEvents($this->loc, $begin, $end);
+//                $extitems = $this->getExternalEvents($begin, $end);
                 // we need to crunch these down
 //                $extitem = array();
 //                foreach ($extitems as $days) {

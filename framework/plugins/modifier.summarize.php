@@ -87,7 +87,7 @@ function smarty_modifier_summarize($string, $strtype, $type, $more='...') {
 //                    $noTagLength = strlen(strip_tags($string));
 
                 // Parser loop
-                for ($j = 0; $j < strlen($string); $j++) {
+                for ($j = 0, $jMax = strlen($string); $j < $jMax; $j++) {
 
                     $currentChar = substr($string, $j, 1);
                     $ret .= $currentChar;

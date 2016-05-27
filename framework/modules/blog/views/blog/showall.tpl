@@ -68,20 +68,17 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.page}{literal}'});
-        {/literal}
+    {/literal}
         {$orig_params = ['controller' => 'blog', 'action' => 'showall', 'src' => $params.src]}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Blogitems'},
     			arguments : { 'X-Transaction': 'Load Blogitems'}
     		};
 
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=blog&action=showall&view=bloglist&ajax_action=1&src="+src;
-
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=blog&action=showall&view=bloglist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
             bloglist.setContent(o.responseText);
@@ -89,13 +86,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
             bloglist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+                Y.Get.css(n.get('href'));
             });
         } else {
             bloglist.one('.loadingdiv').remove();

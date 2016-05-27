@@ -155,7 +155,7 @@
         $num_added = 0;
         $parsed = null;
 
-        for ($i = 0; $i < count($matches[0]); $i++) {
+        for ($i = 0, $iMax = count($matches[0]); $i < $iMax; $i++) {
     //        str_replace('"', "\'", $matches[0][$i]); // remove the killer double-quotes
 
             // segregate params

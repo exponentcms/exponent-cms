@@ -1332,17 +1332,17 @@ class expFile extends expRecord {
             #echo $bg;
             $colors = array();
             for ($i = 0; $i < strlen($string) && $i < 10; $i++) {
-                $colors[$i] = imagecolorallocate($img, rand(50, 150), rand(50, 150), rand(50, 150));
+                $colors[$i] = imagecolorallocate($img, mt_rand(50, 150), mt_rand(50, 150), mt_rand(50, 150));
             }
             $px_per_char = floor($w / (strlen($string) + 1));
-            for ($i = 0; $i < strlen($string); $i++) {
-                imagestring($img, rand(4, 6), $px_per_char * ($i + 1) + rand(-5, 5), rand(0, $h / 2), $string{$i}, $colors[($i % 10)]);
+            for ($i = 0, $iMax = strlen($string); $i < $iMax; $i++) {
+                imagestring($img, mt_rand(4, 6), $px_per_char * ($i + 1) + mt_rand(-5, 5), mt_rand(0, $h / 2), $string{$i}, $colors[($i % 10)]);
             }
 
             // Need this to be 'configurable'
             for ($i = 0; $i < strlen($string) / 2 && $i < 10; $i++) {
-                $c = imagecolorallocate($img, rand(150, 250), rand(150, 250), rand(150, 250));
-                imageline($img, rand(0, $w / 4), rand(5, $h - 5), rand(3 * $w / 4, $w), rand(0, $h), $c);
+                $c = imagecolorallocate($img, mt_rand(150, 250), mt_rand(150, 250), mt_rand(150, 250));
+                imageline($img, mt_rand(0, $w / 4), mt_rand(5, $h - 5), mt_rand(3 * $w / 4, $w), mt_rand(0, $h), $c);
             }
 
             //imagestring($img,6,0,0,$string,$color);
@@ -1584,7 +1584,7 @@ class expFile extends expRecord {
         if (substr($dest, 0, 1) == '/') $dest = str_replace(BASE, '', $dest);
         $parts = explode('/', $dest);
         $working = BASE;
-        for ($i = 0; $i < count($parts); $i++) {
+        for ($i = 0, $iMax = count($parts); $i < $iMax; $i++) {
             if ($parts[$i] != '') {
                 if (!file_exists($working . $parts[$i])) {
                     return (expUtil::isReallyWritable($working) ? SYS_FILES_SUCCESS : SYS_FILES_NOTWRITABLE);
@@ -1854,7 +1854,7 @@ class expFile extends expRecord {
                             }
                         } else {
                             if ($pair[0] == 'TABLEDEF') {  // new in v2.1.4, re-create a missing table
-                                $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                                $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
 //						$tabledef = expUnserialize($pair[1]);
                                 $tabledef = @unserialize($pair[1]);
                                 if (!$db->tableExists($table)) {
@@ -1872,7 +1872,7 @@ class expFile extends expRecord {
                                 if ($pair[0] == 'RECORD') {
                                     if ($db->tableExists($table)) {
                                         // Here we need to check the conversion scripts.
-                                        $pair[1] = str_replace('\r\n', "\r\n", $pair[1]);
+                                        $pair[1] = str_replace(array('\r', '\n'), array("\r", "\n"), $pair[1]);
                                         //						$object = expUnserialize($pair[1]);
                                         $object = @unserialize($pair[1]);
                                         if ($type == 'Form') {
@@ -2054,7 +2054,7 @@ class expFile extends expRecord {
             }
 
             $table = '';
-            for ($i = 2; $i < count($lines); $i++) {
+            for ($i = 2, $iMax = count($lines); $i < $iMax; $i++) {
                 $line_number = $i;
                 $line = trim($lines[$i]);
                 if ($line != '') {

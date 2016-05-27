@@ -112,13 +112,18 @@ class importexportController extends expController {
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_select'));
         }
 
+        if (empty($this->params['import_aggregate'])) {
+            expValidator::setErrorField('import_aggregate[]');
+            expValidator::failAndReturnToForm(gt('You must select a module.'), $this->params);
+        }
+
         //Get the temp directory to put the uploaded file
         $directory = "tmp";
 
         //Get the file save it to the temp directory
-        if ($_FILES["import_file"]["error"] == UPLOAD_ERR_OK) {
+        if (!empty($_FILES["import_file"]) && $_FILES["import_file"]["error"] == UPLOAD_ERR_OK) {
             $file = expFile::fileUpload("import_file", false, false, time() . "_" . $_FILES['import_file']['name'], $directory.'/');
-            if ($file == null) {
+            if ($file === null) {
                 switch ($_FILES["import_file"]["error"]) {
                     case UPLOAD_ERR_INI_SIZE:
                     case UPLOAD_ERR_FORM_SIZE:
@@ -155,6 +160,9 @@ class importexportController extends expController {
                     'source' => $this->params['import_aggregate'][0]
                ));
             }
+        } else {
+            expValidator::setErrorField('import_file');
+            expValidator::failAndReturnToForm(gt('File failed to upload.'), $this->params);  // file upload error
         }
     }
 
@@ -162,6 +170,11 @@ class importexportController extends expController {
         $type = expModules::getController($this->params['import_type']);
         if (method_exists($type, 'import_process')) {  // allow for controller specific method
             redirect_to(array('controller'=>$type->baseclassname, 'action'=>'import_process'));
+        }
+
+        if (!count($this->params['items'])) {
+            expValidator::setErrorField('items');
+            expValidator::failAndReturnToForm(gt('You must select at least one item.'), $this->params);
         }
 
         $filename = $this->params['filename'];
@@ -260,8 +273,7 @@ class importexportController extends expController {
         // update search index
         $type->addContentToSearch();
 
-        flash('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
-        expHistory::back();
+        flashAndFlow('message', count($selected) . ' ' . $type->baseclassname . ' ' . gt('items were imported.'));
     }
 
     function export() {

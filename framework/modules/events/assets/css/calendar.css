@@ -128,7 +128,13 @@
     border-radius         : 5px;
 }
 
-.events.default .calevent .icalpopevent {
+.events.default .calevent.item-actions {
+    margin-top: -4px;
+}
+
+.events.default .calevent a,
+.events.default a.calevent.calpopevent,
+.events.default a.calevent.icalpopevent {
     cursor: pointer;
 }
 

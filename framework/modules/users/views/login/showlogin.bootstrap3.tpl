@@ -58,7 +58,6 @@
             {form action=login}
                 {control type="text" name="username" label=$label size=25 required=1 prepend="user" focus=1}
                 {control type="password" name="password" label="Password"|gettext|cat:":" size=25 required=1 prepend="key"}
-                {*<a href="{link controller=users action=reset_password}">{'Forgot Your Password?'|gettext}</a>*}
                 {br}
                 {control type="buttongroup" wide=true size=large submit="Log In"|gettext}
                 {br}
@@ -73,17 +72,14 @@
                         {if $oicount>0}
                             {"If you are a new customer, select this option to continue with the checkout process."|gettext}{br}{br}
                             {"We will gather billing and shipping information, and you will have the option to create an account so can track your order status."|gettext}{br}{br}
-                            {*<a class="btn btn-default {$btn_size}" href="{link module=cart action=customerSignup}">{"Continue Checking Out"|gettext}</a>*}
                             {icon button=true wide=true size=large color=green class="shopping-cart" module=cart action=customerSignup text="Continue Checking Out"|gettext}
                         {else}
                             {"If you are a new customer, add an item to your cart to continue with the checkout process."|gettext}{br}{br}
-                            {*<a class="btn btn-default {$btn_size}" href="{backlink}">{"Keep Shopping"|gettext}</a>*}
                             {$backlink = makeLink(expHistory::getBack(1))}
                             {icon button=true wide=true size=large class=reply link=$backlink text="Keep Shopping"|gettext}
                         {/if}
                     {else}
                         {"Create a new account here."|gettext}{br}{br}
-                        {*<a class="btn btn-default {$btn_size}" href="{link controller=users action=create}">{"Create an Account"|gettext}</a>*}
                         {icon button=true wide=true size=large controller=users action=create text="Create an Account"|gettext}
                     {/if}
                 </p>
@@ -91,8 +87,7 @@
         {/if}
     {else}
         {if !$smarty.const.ECOM}
-            <div class="col-sm-6 logout">
-                {*<a class="btn btn-default {$btn_size}" href="{link action=logout}">{'Logout'|gettext}</a>*}
+            <div class="col-sm-12 logout">
                 {icon button=true wide=true size=large action=logout text='Logout'|gettext}
             </div>
         {/if}

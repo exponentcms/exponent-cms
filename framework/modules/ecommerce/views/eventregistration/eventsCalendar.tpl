@@ -65,19 +65,18 @@ EXPONENT.YUI3_CONFIG.modules = {
 YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
 	var today = new Date({/literal}{$time}{literal}*1000);
     var monthcal = Y.one('#month-cal-{/literal}{$name}{literal}');
-    var page_parm = '';
+    var page_parm_{/literal}{$name}{literal} = '';
     if (EXPONENT.SEF_URLS) {
-        page_parm = '/time/';
+        page_parm_{/literal}{$name}{literal} = '/time/';
     } else {
-        page_parm = '&time=';
+        page_parm_{/literal}{$name}{literal} = '&time=';
     }
     var History = window.History;
     History.pushState({name:'{/literal}{$name}{literal}',rel:'{/literal}{$params.time}{literal}'});
     {/literal}
         {$orig_params = ['controller' => 'eventregistration', 'action' => 'eventsCalendar', 'src' => $params.src]}
     {literal}
-    var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.moduletitle = ''}{$params.view = ''}{$params.time = ''}{makeLink($params)}{literal}';
+    var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
     var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load Month'},
@@ -101,7 +100,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
             {literal}
                 cfg.data = "time="+unixtime;
                 var request = Y.io(sUrl, cfg);
-//                monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
                 monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
             {/literal}
         {else}
@@ -136,7 +134,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
             Y.one('#lb-bg').setStyle('display','none');
 //            monthcal.setStyle('opacity',1);
         } else {
-            Y.one('#month-{/literal}{$name}{literal}.loadingdiv').remove();
+            Y.one('#month-cal-{/literal}{$name}{literal}.loadingdiv').remove();
             monthcal.setContent('Unable to load content');
             monthcal.setStyle('opacity',1);
         }
@@ -156,10 +154,9 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
     {literal}
     monthcal.delegate('click', function(e){
         e.halt();
-        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('title').trim(), orig_url+page_parm+e.currentTarget.get('rel'));
+        History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, e.currentTarget.get('title').trim(), orig_url_{/literal}{$name}{literal} + page_parm_{/literal}{$name}{literal} + e.currentTarget.get('rel'));
         cfg.data = "time="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
         monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
     }, 'a.evnav');
 
@@ -170,7 +167,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*',function(Y){
             // moving to a new month
             cfg.data = "time="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            monthcal.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Month"|gettext}{literal}</div>'));
             monthcal.setContent(Y.Node.create('{/literal}{loading title="Loading Month"|gettext}{literal}'));
         }
     });

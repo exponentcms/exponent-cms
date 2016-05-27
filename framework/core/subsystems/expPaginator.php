@@ -298,7 +298,7 @@ class expPaginator {
             }
         }
 
-        if (!isset($params['records']))
+        if (isset($params['records']))
             $this->runCallback(); // isset($params['records']) added to correct search for products.
 
         //eDebug($this->records);
@@ -563,18 +563,20 @@ class expPaginator {
         }
     }
     
-    //here if we want to modify the record for some reason. Using in search results w/ products
+    //here if we want to modify the record for some reason. e.g. Using in search results w/ products
     private function runCallback() {
         foreach ($this->records as &$record) {
             if (isset($record->ref_type)) {
                 $refType = $record->ref_type;
-                $type = new $refType();
-                $classinfo = new ReflectionClass($type); 
-                if ($classinfo->hasMethod('paginationCallback')) {
-                    $item = new $type($record->original_id);
-                    $item->paginationCallback($record);  // (deprecated) moved call by reference to function, not caller
+                if (class_exists($record->ref_type)) {
+                    $type = new $refType();
+                    $classinfo = new ReflectionClass($type);
+                    if ($classinfo->hasMethod('paginationCallback')) {
+                        $item = new $type($record->original_id);
+                        $item->paginationCallback($record);
+                    }
                 }
-            } 
+            }
         }    
     }
     

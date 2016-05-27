@@ -93,15 +93,12 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         {$orig_params = ['controller' => 'photo', 'action' => 'showall', 'src' => $params.src]}
     {literal}
     var orig_url = '{/literal}{makeLink($orig_params)}{literal}';
-//    var orig_url = '{/literal}{$params.page = ''}{$params.moduletitle = ''}{$params.view = ''}{makeLink($params)}{literal}';
     var cfg = {
     			method: "POST",
     			headers: { 'X-Transaction': 'Load Photoitems'},
     			arguments : { 'X-Transaction': 'Load Photoitems'}
     		};
-
-    src = '{/literal}{$__loc->src}{literal}';
-	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=photo&action=showall&view=photolist&ajax_action=1&src="+src;
+	var sUrl = EXPONENT.PATH_RELATIVE+"index.php?controller=photo&action=showall&view=photolist&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
 	var handleSuccess = function(ioId, o){
         if(o.responseText){
@@ -110,13 +107,11 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
                 if(!n.get('src')){
                     eval(n.get('innerHTML'));
                 } else {
-                    var url = n.get('src');
-                    Y.Get.script(url);
+                    Y.Get.script(n.get('src'));
                 };
             });
             photolist.all('link').each(function(n){
-                var url = n.get('href');
-                Y.Get.css(url);
+                Y.Get.css(n.get('href'));
             });
         } else {
             photolist.one('.loadingdiv').remove();
@@ -137,8 +132,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         History.pushState({name:'{/literal}{$name}{literal}',rel:e.currentTarget.get('rel')}, '{/literal}{'Photos'|gettext}{literal}', orig_url+page_parm+e.currentTarget.get('rel'));
         cfg.data = "page="+e.currentTarget.get('rel');
         var request = Y.io(sUrl, cfg);
-//        photolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Photos"|gettext}{literal}</div>'));
-          photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
+        photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
     }, 'a.pager');
 
     // Watches the browser history for changes
@@ -148,8 +142,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             // moving to a new page
             cfg.data = "page="+state.data.rel;
             var request = Y.io(sUrl, cfg);
-//            photolist.setContent(Y.Node.create('<div class="loadingdiv">{/literal}{"Loading Photos"|gettext}{literal}</div>'));
-              photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
+            photolist.setContent(Y.Node.create('{/literal}{loading title="Loading Photos"|gettext}{literal}'));
         }
     });
 });

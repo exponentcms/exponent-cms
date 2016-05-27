@@ -52,7 +52,7 @@ class passwordcontrol extends genericcontrol {
                  $html .= "<div class=\"row " . $this->id . "-meter\">";
                  $class = "span4";
              }
-            $html .= '<div'.$divID.' class="'.$this->type.'-control control form-group'.' '.$class.'" '.$disabled;
+            $html .= '<div' . $divID . ' class="' . $this->type . '-control control control-group ' . $class . '" ' . $disabled;
             $html .= (!empty($this->required)) ? ' required="required">' : '>';
       		//$html .= "<label>";
             if($this->required) {
@@ -69,32 +69,54 @@ class passwordcontrol extends genericcontrol {
             }
             $html .= "</div>";
             if ($this->meter) {
+                expCSS::pushToHead(array(
+            	    "unique"=>"password-meter",
+            	    "css"=>".kv-scorebar-border {
+            	            margin: 0;
+            	            margin-top: 3px;
+            	            margin-left: 15px;
+            	            margin-right: 15px;
+            	        }"
+            	    )
+            	);
                 expJavascript::pushToFoot(array(
-                    "unique"=>"password-meter".$name,
-                    "jquery"=>"pwstrength-bootstrap",
-                    "content"=>"$(document).ready(function () {
-            \"use strict\";
-            var options = {};
-            options.common = {
-                minChar: " . MIN_PWD_LEN . ",
-            };
-            options.ui = {
-                bootstrap2: true,
-                container: \"." . $this->id . "-meter\",
-                showVerdictsInsideProgressBar: true,
-                showErrors: true,
-                viewports: {
-                    progress: \".pwstrength_viewport_progress\",
-                    errors: \".pwstrength_viewport_progress\",
-                }
-            };
-            $('#" . $this->id . "').pwstrength(options);
+                    "unique"=>"password-meter" . $name,
+                    "jquery"=>"strength-meter",
+                    "content"=>"$('#".$this->id."').strength({
+            toggleMask: false,
+//            mainTemplate: '<div class=\"kv-strength-container\">{input}<div class=\"kv-meter-container\">{meter}</div></div>',
+            rules: {
+                minLength: " . MIN_PWD_LEN . ",
+            },
         });",
-                 ));
-                $html .= "<div class=\"" . $this->class . "\" style=\"padding-top: 8px;\">
-                    <div class=\"pwstrength_viewport_progress\"></div>
-                </div>
-            </div>";
+                ));
+                
+//                expJavascript::pushToFoot(array(
+//                    "unique"=>"password-meter".$name,
+//                    "jquery"=>"pwstrength-bootstrap",
+//                    "content"=>"$(document).ready(function () {
+//            \"use strict\";
+//            var options = {};
+//            options.common = {
+//                minChar: " . MIN_PWD_LEN . ",
+//            };
+//            options.ui = {
+//                bootstrap2: true,
+//                container: \"." . $this->id . "-meter\",
+//                showVerdictsInsideProgressBar: true,
+//                showErrors: true,
+//                viewports: {
+//                    progress: \".pwstrength_viewport_progress\",
+//                    errors: \".pwstrength_viewport_progress\",
+//                }
+//            };
+//            $('#" . $this->id . "').pwstrength(options);
+//        });",
+//                 ));
+//                $html .= "<div class=\"" . $this->class . "\" style=\"padding-top: 8px;\">
+//                    <div class=\"pwstrength_viewport_progress\"></div>
+//                </div>";
+                $html .= "</div>";
             }
         } else {
             $html = $this->controlToHTML($name, $label);

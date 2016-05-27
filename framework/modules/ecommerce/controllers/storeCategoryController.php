@@ -335,7 +335,7 @@ class storeCategoryController extends expNestedNodeController {
                     }
                 }
                 $depth++;
-                for ($x = 0; $x < count($Tree); $x++) {
+                for ($x = 0, $xMax = count($Tree); $x < $xMax; $x++) {
                     $Tree[$x]->depth = $depth;
                     $Tree[$x]->kids = BuildTree($TheNodes, $Tree[$x]->id, $depth);
                     //array_merge($test,$Tree[$x]["kids"]);

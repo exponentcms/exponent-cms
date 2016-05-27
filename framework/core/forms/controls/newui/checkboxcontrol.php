@@ -83,6 +83,7 @@ class checkboxcontrol extends formcontrol {
                 $for = '';
             }
             $html = '<div id="' . $divID . '" class="checkbox control form-group';
+            $html .= (!empty($this->class)) ? ' ' . $this->class : '';
             $html .= (!empty($this->required)) ? ' required">' : '">';
             $html .= ($this->horizontal) ? '<div class="col-sm-offset-2 col-sm-10">' : '';
 
