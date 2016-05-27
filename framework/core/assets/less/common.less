@@ -293,7 +293,7 @@ ul .slideshow-frame li.slide {
 }
 
 /****************  visual indicator for (inline) editable content  ***********************/
-[contenteditable="true"]:hover {
+.text.showall-inline [contenteditable="true"]:hover {
 	border-color     : darkgrey;
 	border-width     : thin;
 	border-style     : solid;
@@ -301,11 +301,11 @@ ul .slideshow-frame li.slide {
 	margin: -1px;
 }
 
-h1 [contenteditable="true"]:hover > p,
-h2 [contenteditable="true"]:hover > p,
-h3 [contenteditable="true"]:hover > p,
-h4 [contenteditable="true"]:hover > p,
-h5 [contenteditable="true"]:hover > p,
-h6 [contenteditable="true"]:hover > p{
+.text.showall-inline h1 [contenteditable="true"]:hover > p,
+.text.showall-inline h2 [contenteditable="true"]:hover > p,
+.text.showall-inline h3 [contenteditable="true"]:hover > p,
+.text.showall-inline h4 [contenteditable="true"]:hover > p,
+.text.showall-inline h5 [contenteditable="true"]:hover > p,
+.text.showall-inline h6 [contenteditable="true"]:hover > p {
 	margin: 0;
 }
