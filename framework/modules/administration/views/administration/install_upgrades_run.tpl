@@ -45,7 +45,7 @@
     <ol>
         {foreach from=$scripts item=upgradescript key=name}
             <li>
-                <label class="label "><h3>{$upgradescript->name()}</h3></label>
+                <label {if !bs3()}class="label"{/if}><h3>{$upgradescript->name()}</h3></label>
                 {if !empty($upgradescript->results)}
                     <p class="success">{$upgradescript->results}</p>
                 {else}
