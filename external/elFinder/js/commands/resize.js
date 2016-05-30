@@ -32,8 +32,8 @@ elFinder.prototype.commands.resize = function() {
 					control  = $('<div class="elfinder-resize-control"/>'),
 					preview  = $('<div class="ui-front elfinder-resize-preview"/>'),
 					spinner  = $('<div class="elfinder-resize-spinner">'+fm.i18n('ntfloadimg')+'</div>'),
-					rhandle  = $('<div class="elfinder-resize-handle"/>'),
-					rhandlec = $('<div class="elfinder-resize-handle"/>'),
+					rhandle  = $('<div class="elfinder-resize-handle touch-punch"/>'),
+					rhandlec = $('<div class="elfinder-resize-handle touch-punch"/>'),
 					uiresize = $('<div class="elfinder-resize-uiresize"/>'),
 					uicrop   = $('<div class="elfinder-resize-uicrop"/>'),
 					uibuttonset = '<div class="ui-widget-content ui-corner-all elfinder-buttonset"/>',
@@ -153,6 +153,19 @@ elFinder.prototype.commands.resize = function() {
 					rdegree = 0,
 					img     = $('<img/>')
 						.load(function() {
+							var r_scale, inputFirst,
+								imgRatio = img.height() / img.width();
+							
+							if (imgRatio < 1 && preview.height() > preview.width() * imgRatio) {
+								preview.height(preview.width() * imgRatio);
+							}
+							
+							if (preview.height() > img.height() + 20) {
+								preview.height(img.height() + 20);
+							}
+							
+							pheight = preview.height() - (rhandle.outerHeight() - rhandle.height());
+							
 							spinner.remove();
 							
 							owidth  = img.width();
@@ -164,12 +177,12 @@ elFinder.prototype.commands.resize = function() {
 							width.val(owidth);
 							height.val(oheight);
 							
-							var r_scale = Math.min(pwidth, pheight) / Math.sqrt(Math.pow(owidth, 2) + Math.pow(oheight, 2));
+							r_scale = Math.min(pwidth, pheight) / Math.sqrt(Math.pow(owidth, 2) + Math.pow(oheight, 2));
 							rwidth = owidth * r_scale;
 							rheight = oheight * r_scale;
 							
 							type.button('enable');
-							control.find('input,select').removeAttr('disabled')
+							inputFirst = control.find('input,select').removeAttr('disabled')
 								.filter(':text').keydown(function(e) {
 									var c = e.keyCode, i;
 
@@ -215,8 +228,9 @@ elFinder.prototype.commands.resize = function() {
 										e.preventDefault();
 									}
 								})
-								.filter(':first').focus();
+								.filter(':first');
 								
+							!fm.UA.Mobile && inputFirst.focus();
 							resizable();
 							
 							reset.hover(function() { reset.toggleClass('ui-state-hover'); }).click(resetView);
@@ -529,6 +543,28 @@ elFinder.prototype.commands.resize = function() {
 							dfrd.reject(error);
 						})
 						.done(function() {
+							var reload = function(url) {
+								var ifm;
+								try {
+									ifm = $('<iframe width="1" height="1" scrolling="no" frameborder="no" style="position:absolute; top:-1px; left:-1px">')
+										.attr('src', url)
+										.one('load', function() {
+											this.contentDocument.location.reload(true);
+											ifm.one('load', function() {
+												ifm.remove();
+											});
+										})
+										.appendTo('body');
+								} catch(e) {
+									ifm && ifm.remove();
+								}
+							},
+							url = fm.url(file.hash);
+							
+							reload(src);
+							if (url !== src) {
+								reload(url);
+							}
 							dfrd.resolve();
 						});
 						
@@ -627,8 +663,10 @@ elFinder.prototype.commands.resize = function() {
 					destroyOnClose : true,
 					buttons        : buttons,
 					open           : function() {
-						var dw = dialog.width() - 20;
+						var dw   = dialog.width() - 20,
+							winH = $(window).height() - 20;
 						(preview.width() > dw) && preview.width(dw);
+						(preview.height() > winH) && preview.height(winH);
 						pwidth  = preview.width()  - (rhandle.outerWidth()  - rhandle.width());
 						pheight = preview.height() - (rhandle.outerHeight() - rhandle.height());
 						img.attr('src', src + (src.indexOf('?') === -1 ? '?' : '&')+'_='+Math.random());

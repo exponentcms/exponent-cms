@@ -1,7 +1,7 @@
 /**
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
- * @version 2016-03-25
+ * @version 2016-05-16
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.en = {
@@ -136,7 +136,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdopendir'   : 'Open a folder', // from v2.1 added 13.1.2016
 
 			'cmdpixlr'     : 'Edit on Pixlr',
-            'cmdlinks'     : 'Switch to Page/Module Selector',
+          'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Close',
@@ -345,6 +345,10 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'folderId'        : 'Folder ID', // from v2.1.10 added 3.25.2016
 			'offlineAccess'   : 'Allow offline access', // from v2.1.10 added 3.25.2016
 			'reAuth'          : 'To re-authenticate', // from v2.1.10 added 3.25.2016
+			'nowLoading'      : 'Now loading...', // from v2.1.12 added 4.26.2016
+			'openMulti'       : 'Open multiple files', // from v2.1.12 added 5.14.2016
+			'openMultiConfirm': 'You are trying to open the $1 files. Are you sure you want to open in browser?', // from v2.1.12 added 5.14.2016
+			'emptySearch'     : 'Search results is empty', // from v2.1.12 added 5.16.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',

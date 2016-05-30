@@ -24,9 +24,18 @@ elFinder.prototype.commands.sort = function() {
 					type  : name,
 					order : name == fm.sortType ? fm.sortOrder == 'asc' ? 'desc' : 'asc' : fm.sortOrder
 				};
-			var arr = name == fm.sortType ? (sort.order == 'asc'? 'n' : 's') : '';
+			var arr = name == fm.sortType ? (sort.order == 'asc'? 's' : 'n') : '';
 			self.variants.push([sort, (arr? '<span class="ui-icon ui-icon-arrowthick-1-'+arr+'"></span>' : '') + '&nbsp;' + fm.i18n('sort'+name)]);
 		});
+		self.variants.push('|');
+		self.variants.push([
+			{
+				type  : fm.sortType,
+				order : fm.sortOrder,
+				stick : !fm.sortStickFolders
+			},
+			(fm.sortStickFolders? '<span class="ui-icon ui-icon-check"/>' : '') + '&nbsp;' + fm.i18n('sortFoldersFirst')
+		]);
 	});
 	
 	fm.bind('open sortchange viewchange search searchend', function() {
@@ -49,7 +58,9 @@ elFinder.prototype.commands.sort = function() {
 						}
 						$(td).on('click', function(e){
 							e.stopPropagation();
-							self.exec([], sort);
+							if (! fm.getUI('cwd').data('longtap')) {
+								self.exec([], sort);
+							}
 						})
 						.hover(function() {
 							$(this).addClass('ui-state-hover');

@@ -58,7 +58,7 @@ elFinder.prototype.commands.open = function() {
 			return dfrd.reject();
 		}
 		
-
+		var doOpen = function() {
 		try {
 			reg = new RegExp(fm.option('dispInlineRegex'));
 		} catch(e) {
@@ -75,7 +75,7 @@ elFinder.prototype.commands.open = function() {
 			if (!file.read) {
 				return dfrd.reject(['errOpen', file.name, 'errPerm']);
 			}
-			return false;  // do NOT allow files to be opened
+			return false;  //exp do NOT allow files to be opened
 
 			inline = (reg && file.mime.match(reg));
 			url = fm.openUrl(file.hash, !inline);
@@ -151,6 +151,37 @@ elFinder.prototype.commands.open = function() {
 		}
 		link.remove();
 		return dfrd.resolve(hashes);
+	}
+
+		if (cnt > 1) {
+			fm.confirm({
+				title: 'openMulti',
+				text : ['openMultiConfirm', cnt + ''],
+				accept : {
+					label : 'cmdopen',
+					callback : function() { doOpen(); }
+				},
+				cancel : {
+					label : 'btnCancel',
+					callback : function() { 
+						dfrd.reject();
+					}
+				},
+				buttons : (fm.command('zipdl') && fm.isCommandEnabled('zipdl', fm.cwd().hash))? [
+					{
+						label : 'cmddownload',
+						callback : function() {
+							fm.exec('download', hashes);
+							dfrd.reject();
+						}
+					}
+				] : []
+			});
+		} else {
+			doOpen();
+		}
+		
+		return dfrd;
 	}
 
 };

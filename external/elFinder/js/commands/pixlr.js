@@ -1,5 +1,4 @@
 elFinder.prototype.commands.pixlr = function() {
-	this.updateOnSelect = false;
 
 	this.getstate = function(sel) {
 		var fm = this.fm;

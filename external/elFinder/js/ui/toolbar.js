@@ -8,10 +8,23 @@ $.fn.elfindertoolbar = function(fm, opts) {
 	this.not('.elfinder-toolbar').each(function() {
 		var commands = fm._commands,
 			self     = $(this).addClass('ui-helper-clearfix ui-widget-header ui-corner-top elfinder-toolbar'),
-			panels   = opts || [],
+			options  = {
+				// default options
+				autoHideUA: ['Mobile']
+			},
+			filter   = function(opts) {
+				return $.map(opts, function(v) {
+					if ($.isPlainObject(v)) {
+						options = $.extend(options, v);
+						return null;
+					}
+					return [v];
+				});
+			},
+			panels   = filter(opts || []),
 			dispre   = null,
 			uiCmdMapPrev = '',
-			l, i, cmd, panel, button;
+			l, i, cmd, panel, button, swipeHandle;
 		
 		self.prev().length && self.parent().prepend(this);
 
@@ -37,7 +50,7 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				}
 			}
 			
-			self.children().length? self.show() : self.hide();
+			(! self.data('swipeClose') && self.children().length)? self.show() : self.hide();
 			self.trigger('load');
 		};
 		
@@ -77,9 +90,57 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					}
 				});
 			}
-
 		});
+		
+		if (fm.UA.Touch) {
+			fm.bind('load', function() {
+				swipeHandle = $('<div class="elfinder-toolbar-swipe-handle"/>').appendTo(fm.getUI());
+				if (swipeHandle.css('pointer-events') !== 'none') {
+					swipeHandle.remove();
+					swipeHandle = null;
+				}
+			})
+			.one('open', function() {
+				if (options.autoHideUA && options.autoHideUA.length > 0) {
+					if ($.map(options.autoHideUA, function(v){ return fm.UA[v]? true : null; }).length) {
+						setTimeout(function() {
+							self.stop(true, true).trigger('toggle', {duration: 500});
+						}, 500);
+					}
+				}
+			});
+			
+			self.on('toggle', function(e, data) {
+				var wz    = fm.getUI('workzone'),
+					toshow= self.is(':hidden'),
+					wzh   = wz.height(),
+					h     = self.height(),
+					tbh   = self.outerHeight(true),
+					delta = tbh - h,
+					opt   = $.extend({
+						step: function(now) {
+							wz.height(wzh + (toshow? (now + delta) * -1 : h - now));
+							fm.trigger('resize');
+						},
+						always: function() {
+							wz.height(wzh + (toshow? self.outerHeight(true) * -1 : tbh));
+							fm.trigger('resize');
+							if (swipeHandle) {
+								if (toshow) {
+									swipeHandle.stop(true, true).hide();
+								} else {
+									swipeHandle.height(data.handleH? data.handleH : '');
+									fm.resources.blink(swipeHandle, 'slowonce');
+								}
+							}
+						}
+					}, data);
+				self.data('swipeClose', ! toshow).animate({height : 'toggle'}, opt);
+			});
+		}
 	});
+	
+
 	
 	return this;
 };

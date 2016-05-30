@@ -910,6 +910,9 @@
   width: 24px;
   text-align: center;
 }
+.elfinder .elfinder-contextmenu-ltr .elfinder-contextmenu-icon {
+    left: 0;
+}
 /* separator */
 .elfinder-contextmenu .elfinder-contextmenu-separator {
   border: none;

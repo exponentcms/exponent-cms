@@ -1,10 +1,9 @@
 elFinder.prototype.commands.pixlr = function() {
-	// this.updateOnSelect = false;
 
 	this.getstate = function(sel) {
 		var fm = this.fm;
 		var sel = fm.selectedFiles();
-		return !this._disabled && sel.length == 1 && sel[0].read && sel[0].mime.indexOf('image/') !== -1 && fm.file(sel[0].phash) && fm.file(sel[0].phash).write && !sel[0].locked ? 0 : -1;
+		return !this._disabled && sel.length == 1 && sel[0].read && sel[0].mime.indexOf('image/') !== -1 && fm.file(sel[0].phash) && fm.file(sel[0].phash).write ? 0 : -1;
 	};
 
 	this.exec = function(hashes) {
@@ -43,6 +42,7 @@ elFinder.prototype.commands.pixlr = function() {
 			
 			exit = uploadURL + (uploadURL.indexOf('?') === -1 ? '?' : '&')
 				+ 'cmd=pixlr'  //exp doesn't need &node=
+				// + '&node=' + encodeURIComponent(fm.id)
 				+ cdata;
 			
 			url = 'http://pixlr.com/'+mode+'/?image=' + encodeURIComponent(img)
@@ -50,7 +50,7 @@ elFinder.prototype.commands.pixlr = function() {
 				+ '&title=' + encodeURIComponent('pixlr_'+file.name)
 				+ '&exit=' + encodeURIComponent(exit);
 			
-			if (!window.open(url,'_self',false)) {  // open in same window
+			if (!window.open(url,'_self',false)) {  //exp open in same window
 				return dfrd.reject('errPopup');
 			}
 		},

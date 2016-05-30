@@ -172,11 +172,14 @@ elFinder.prototype._options = {
 			// allow to return filers info
 			folders  : false,
 			// action after callback (""/"close"/"destroy")
-			oncomplete : ''
+			oncomplete : '',
+			// get image sizes before callback call
+			getImgSize : false
 		},
 		// "upload" command options.
 		upload : {
-			ui : 'uploadbutton'
+			// Open system OS upload dialog: 'button' OR Open elFinder upload dialog: 'uploadbutton'
+			ui : 'button'
 		},
 		// "download" command options.
 		download : {
@@ -187,7 +190,7 @@ elFinder.prototype._options = {
 			autoplay : true,
 			jplayer  : 'extensions/jplayer',
 			// MIME types to use Google Docs online viewer
-			// Example ['application/pdf', 'image/tiff', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+			// Example ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
 			googleDocsMimes : []
 		},
 		// "quicklook" command options.
@@ -302,7 +305,10 @@ elFinder.prototype._options = {
 				// }
 			}
 		},
-		
+		mkdir: {
+			// Enable automatic switching function ["New Folder" / "Into New Folder"] of toolbar buttton
+			intoNewFolderToolbtn: false,
+		},
 		netmount: {
 			ftp: {
 				name : 'FTP',
@@ -425,7 +431,7 @@ elFinder.prototype._options = {
 			}
 		},
 
-		help : {view : ['about', 'shortcuts', 'help']}
+		help : {view : ['about', 'shortcuts', 'help', 'debug']}
 	},
 	
 	/**
@@ -485,7 +491,12 @@ elFinder.prototype._options = {
 			['extract', 'archive'],
 			['search'],
 			['view', 'sort'],
-			['help']
+			['help'],
+			// extra options
+			{
+				// auto hide on initial open
+				autoHideUA: ['Mobile']
+			}
 		],
 		// directories tree options
 		tree : {
@@ -511,11 +522,16 @@ elFinder.prototype._options = {
 		// navbar options
 		navbar : {
 			minWidth : 150,
-			maxWidth : 500
+			maxWidth : 500,
+			// auto hide on initial open
+			autoHideUA: [] // e.g. ['Mobile']
 		},
 		cwd : {
 			// display parent folder with ".." name :)
 			oldSchool : false,
+			
+			// fm.UA types array to show item select checkboxes e.g. ['All'] or ['Mobile'] etc. default: ['Touch']
+			showSelectCheckboxUA : ['Touch'],
 			
 			// file info columns displayed
 			listView : {
@@ -530,8 +546,9 @@ elFinder.prototype._options = {
 				//		date : 'Last modification',
 				// 		kind : 'Mime type'
 				// }
-				columnsCustomName : {}
-									
+				columnsCustomName : {},
+				// fixed list header colmun
+				fixedHeader : true
 			}
 			// ,
 			// /**
@@ -797,12 +814,21 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', 'download', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'places', 'info', 'chmod', 'netunmount'],
+		navbar : ['open', 'download', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
 		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'sort', '|', 'info'],
 		// current directory file menu
 		files  : ['getfile', '|' ,'open', 'download', 'opendir', 'quicklook', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'edit', 'rename', 'resize', 'pixlr', '|', 'archive', 'extract', '|', 'places', 'info', 'chmod']
 	},
+
+	/**
+	 * elFinder node enable always
+	 * This value will set to `true` if <body> has elFinder node only
+	 * 
+	 * @type     Bool
+	 * @default  false
+	 */
+	enableAlways : false,
 
 	/**
 	 * Debug config
