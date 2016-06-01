@@ -291,7 +291,7 @@ class expString {
         }
         return $text;
     }
-
+    
     /**\
      * Replace any non-ascii character with its hex code with NO active db connection
      */
