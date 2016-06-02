@@ -260,7 +260,7 @@
 
                             {if $section->active == 1}
                                 {* active page *}
-                                <a href="{$section->link}" class="navlink"title="{$section->page_title}" {if $section->new_window} target="_blank"{/if}>
+                                <a href="{link section=$section->id}" class="navlink"title="{$section->page_title}" {if $section->new_window} target="_blank"{/if}>
                                     {$image = 0}
                                     {if (!empty($section->expFile[0]->id))}
                                         {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
