@@ -49,13 +49,13 @@ class AdminerEditCalendar {
 	}
 
 	function selectVal(&$val, $link, $field) {
-		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
+		if (preg_match("~date|time|_at|publish|_accessed|posted|created_on|last_|expires|shipped|purchased|updated|signup_cutoff|event~", $field["field"])) {
 			$val = '<div title="'.htmlentities(html_entity_decode(strftime('%m/%d/%y %I:%M%p',$val)),true).'">'.$val.'</div>';
 		}
 	}
 
 	function editInput($table, $field, $attrs, $value) {
-		if (preg_match("~date|_at|publish|_accessed|posted|timestamp|eventstart|eventend~", $field["field"])) {
+		if (preg_match("~date|time|_at|publish|_accessed|posted|created_on|last_|expires|shipped|purchased|updated|signup_cutoff|event~", $field["field"])) {
 			$dateFormat = "changeYear: true,changeMonth: true,defaultDate: null,dateFormat: '@',showOtherMonths: true,selectOtherMonths: true,showOn: 'both',buttonImage: '".PATH_RELATIVE."framework/core/forms/controls/assets/calendar/calbtn.gif',buttonImageOnly: true,
 			    beforeShow: function(input,inst){
 			        jQuery('#fields-" . js_escape($field['field']) . "c').val(parseInt(jQuery('#fields-" . js_escape($field['field']) . "').val()) * 1000);
@@ -87,10 +87,11 @@ class AdminerEditCalendar {
 			return "<input id='fields-" . h($field["field"]) . "' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<input type=hidden id='fields-" . h($field["field"]) . "c' value='" . h($value) . "'" . (+$field["length"] ? " maxlength='" . (+$field["length"]) . "'" : "") . $attrs. ">".
                 "<script type='text/javascript'>jQuery('#fields-" . js_escape($field["field"]) . "c')."
-                    . ((preg_match("~eventstart~", $field["field"]) || preg_match("~eventend~", $field["field"])) ? "timepicker({ $timeFormat })"
-                    : (preg_match("~_at|publish|_accessed|posted|timestamp~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
-				: "datepicker({ $dateFormat })"
-			)) . ";</script>";
+                    . ((preg_match("~eventstart|eventend~", $field["field"])) ? "timepicker({ $timeFormat })" : "datetimepicker({ $datetimeFormat })"
+//                    : (preg_match("~_at|publish|_accessed|posted|time~", $field["field"]) ? "datetimepicker({ $datetimeFormat })"
+//				: "datepicker({ $dateFormat })"
+//			)) . ";</script>";
+			) . ";</script>";
 		}
 	}
 
