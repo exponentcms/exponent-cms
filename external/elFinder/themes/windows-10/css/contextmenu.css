@@ -6,7 +6,7 @@
 .elfinder-button-menu {
   font-size: 16px;
   font-family: 'Open Sans', sans-serif;
-  background: #fff;
+  background: #fff!important;
   border: 1px solid #b5b5b5;
   box-shadow: 0 0 5px #cdcdcd;
   border-radius: 0;

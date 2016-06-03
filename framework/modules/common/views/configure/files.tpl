@@ -89,7 +89,7 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
             var cfg = {
                 method: "POST",
                 headers: { 'X-Transaction': 'Load File Config'},
-                arguments : { 'X-Transaction': 'Load File Config'}
+                arguments : { 'X-Transaction': 'Load File Config'},
                 data : "view="+e.target.get('value'),
                 on: {
                     success: handleSuccess,

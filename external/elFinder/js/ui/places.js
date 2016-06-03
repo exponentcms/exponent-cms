@@ -61,7 +61,7 @@ $.fn.elfinderplaces = function(fm, opts) {
 			create    = function(dir, hash) {
 				return $(tpl.replace(/\{id\}/, hash2id(dir? dir.hash : hash))
 						.replace(/\{name\}/, fm.escape(dir? dir.name : hash))
-						.replace(/\{cssclass\}/, dir? (fm.UA.Touch ? 'elfinder-touch ' : '')+fm.perms2class(dir) : '')
+						.replace(/\{cssclass\}/, dir? fm.perms2class(dir) : '')
 						.replace(/\{permissions\}/, (dir && (!dir.read || !dir.write))? ptpl : '')
 						.replace(/\{title\}/, (dir && dir.path)? fm.escape(dir.path) : '')
 						.replace(/\{symlink\}/, '')
@@ -352,20 +352,23 @@ $.fn.elfinderplaces = function(fm, opts) {
 							dir    = $.map(helper.data('files'), function(h) { return (fm.file(h).mime === 'directory' && !dirs[h])? h : null});
 						e.stopPropagation();
 						helper.data('dropover', helper.data('dropover') + 1);
-						if (dir.length > 0) {
-							helper.addClass('elfinder-drag-helper-plus');
-						} else {
-							$(this).removeClass(dropover);
+						if (fm.insideWorkzone(e.pageX, e.pageY)) {
+							if (dir.length > 0) {
+								helper.addClass('elfinder-drag-helper-plus');
+								fm.trigger('unlockfiles', {files : helper.data('files'), helper: helper});
+							} else {
+								$(this).removeClass(dropover);
+							}
 						}
-						fm.trigger('unlockfiles', {files : helper.data('files'), helper: helper});
 					},
 					out : function(e, ui) {
-						var helper = ui.helper;
+						var helper = ui.helper,
+							ctr    = (e.shiftKey||e.ctrlKey||e.metaKey);
 						e.stopPropagation();
-						helper.removeClass('elfinder-drag-helper-move elfinder-drag-helper-plus').data('dropover', Math.max(helper.data('dropover') - 1, 0));
+						helper.toggleClass('elfinder-drag-helper-move elfinder-drag-helper-plus', helper.data('locked')? true : ctr).data('dropover', Math.max(helper.data('dropover') - 1, 0));
 						$(this).removeData('dropover')
 						       .removeClass(dropover);
-						fm.trigger('unlockfiles', {files : helper.data('files'), helper: helper});
+						fm.trigger(ctr? 'unlockfiles' : 'lockfiles', {files : helper.data('files'), helper: helper});
 					},
 					drop       : function(e, ui) {
 						var helper  = ui.helper,
@@ -386,6 +389,9 @@ $.fn.elfinderplaces = function(fm, opts) {
 				})
 				// for touch device
 				.on('touchstart', '.'+navdir+':not(.'+clroot+')', function(e) {
+					if (e.originalEvent.touches.length > 1) {
+						return;
+					}
 					var hash = $(this).attr('id').substr(6),
 					p = $(this)
 					.addClass(hover)

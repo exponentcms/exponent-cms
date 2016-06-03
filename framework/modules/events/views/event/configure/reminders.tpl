@@ -25,6 +25,13 @@
 <blockquote>
     {'Reminders feature requires setting up a server cron task such as:'|gettext}{br}
     <code>curl -G -s {$smarty.const.URL_FULL}event/send_reminders/title/CALENDAR_SEF_URL/days/14/code/CODE_FROM_BELOW</code>
+    <ul>
+        <li><strong>title</strong>: {'calendar sef url'|gettext}</li>
+        <li><strong>code</strong>: {'security code, if set below'|gettext}</li>
+        <li>days: {'number of days forward to include'|gettext} (<em>{'optional, defaults to 7'|gettext}</em>)</li>
+        <li>time: {'date to begin from'|gettext} (<em>{'optional'|gettext}</em>)</li>
+        <li>view: {'view template'|gettext} (<em>{'optional, defaults to send_reminders'|gettext}</em>)</li>
+    </ul>
 </blockquote>
 {control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
 {group label="Email Recipients"|gettext}

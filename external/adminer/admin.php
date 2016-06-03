@@ -120,12 +120,19 @@ function adminer_object() {
          * @return null
          */
         function loginForm() {
-       		?>
-        <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
+            ?>
+           <h3><?php echo gt('You must already be logged into Exponent!'); ?></h3>
+            <?php
+            global $user;
+            if (!$user->isSuperAdmin()) {
+                return false;
+            }
+            ?>
        <table cellspacing="0">
        <tr><th><?php echo lang('Server'); ?><td><input type="hidden" name="auth[driver]" value="<?php echo "server"; ?>"><input type="hidden" name="auth[server]" value="<?php echo DB_HOST; ?>"><?php echo DB_HOST; ?>
-       <tr><th><?php echo lang('Username'); ?><td><input id="username" name="auth[username]" value="<?php echo DB_USER;  ?>">
-       <tr><th><?php echo lang('Password'); ?><td><input type="password" name="auth[password]" value="<?php echo DB_PASS;  ?>">
+       <tr><th><?php echo lang('Database'); ?><td><?php echo DB_NAME; ?>
+       <tr><th><?php echo lang('Username'); ?><td><input id="username" name="auth[username]">
+       <tr><th><?php echo lang('Password'); ?><td><input type="password" name="auth[password]">
        </table>
        <p><input type="submit" value="<?php echo lang('Login'); ?>">
        <?php

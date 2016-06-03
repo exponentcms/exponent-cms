@@ -140,6 +140,20 @@
             {/literal}{/if}{literal}
         };
 
+        var errorEditor = function() {
+            var dialog = $('<p>{/literal}{'You no longer have permission to Edit'|gettext}{literal}</p>').dialog({
+                width: 375,
+                dialogClass: "warning",
+                title: '{/literal}{'Inline Text Editor'|gettext}{literal}',
+                buttons: {
+                    "Ok":  function() {
+                        dialog.dialog('close');
+                        location.reload(true);
+                    }
+                }
+            });
+        };
+
         var saveEditor = function(item, data) {
             if(parseInt({/literal}{!($config.fast_save || $smarty.const.EDITOR_FAST_SAVE)}{literal})) {
                 var dialog = $('<p>{/literal}{'Save these changes?'|gettext}{literal}</p>').dialog({
@@ -152,18 +166,22 @@
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                                 success:function(msg) {
-                                    data = $.parseJSON(msg.data);
-                                    if (workflow) {
-                                        $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
-                                        if (!data.approved) {
-                                            $('#text-' + data.id).addClass('unapproved');
+                                    if (msg.replyCode == '200') {
+                                        data = $.parseJSON(msg.data);
+                                        if (workflow) {
+                                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                            if (!data.approved) {
+                                                $('#text-' + data.id).addClass('unapproved');
+                                            }
                                         }
+                                        var title = data.title;
+                                        if (title == '') {
+                                            title = '{/literal}{'Untitled'|gettext}{literal}';
+                                        }
+                                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
+                                    } else {
+                                        errorEditor();
                                     }
-                                    var title = data.title;
-                                    if (title == '') {
-                                        title = '{/literal}{'Untitled'|gettext}{literal}';
-                                    }
-                                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
                                 }
                             });
                             dialog.dialog('close');
@@ -174,10 +192,14 @@
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type=revert",
                                 success:function(msg) {
-                    //                var msg = $.parseJSON(data);
-                                    data = $.parseJSON(msg.data);
-                                    setContent('body-' + data.id, data.body);
-                                    setContent('title-' + data.id, data.title);
+                                    if (msg.replyCode == '200') {
+                        //                var msg = $.parseJSON(data);
+                                        data = $.parseJSON(msg.data);
+                                        setContent('body-' + data.id, data.body);
+                                        setContent('title-' + data.id, data.title);
+                                    } else {
+                                        errorEditor();
+                                    }
                                 }
                             });
                             dialog.dialog('close');
@@ -193,18 +215,22 @@
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                     success:function(msg) {
-                        data = $.parseJSON(msg.data);
-                        if (workflow) {
-                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
-                            if (!data.approved) {
-                                $('#text-' + data.id).addClass('unapproved');
+                        if (msg.replyCode == '200') {
+                            data = $.parseJSON(msg.data);
+                            if (workflow) {
+                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                if (!data.approved) {
+                                    $('#text-' + data.id).addClass('unapproved');
+                                }
                             }
+                            var title = data.title;
+                            if (title == '') {
+                                title = '{/literal}{'Untitled'|gettext}{literal}';
+                            }
+                            $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
+                        } else {
+                            errorEditor();
                         }
-                        var title = data.title;
-                        if (title == '') {
-                            title = '{/literal}{'Untitled'|gettext}{literal}';
-                        }
-                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html(title);
                     }
                 });
             }
@@ -365,25 +391,29 @@
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id=0",
                 success: function(msg) {
-                    data = $.parseJSON(msg.data);
-                    newItem =  '<div id="text-' + data.id + '" class="item';
-                    if (workflow && !data.approved) {
-                        newItem += ' unapproved';
+                    if (msg.replyCode == '200') {
+                        data = $.parseJSON(msg.data);
+                        newItem =  '<div id="text-' + data.id + '" class="item';
+                        if (workflow && !data.approved) {
+                            newItem += ' unapproved';
+                        }
+                        newItem += '"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                        newItem += '<div class="item-actions">';
+                        if (workflow) {
+                            newItem += '<span class="revisionnum approval" title="Viewing Revision #' + data.revision_id + '">' + data.revision_id + '</span>';
+                        }
+                        newItem += '<a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
+                        newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '">{/literal}{'Delete'|gettext}{literal}</a>';
+                        newItem +='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a></div>';
+                        newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">{/literal}{'content placeholder'|gettext}{literal}</div></div></div>';
+                        $('#textcontent-{/literal}{$name}{literal}').append(newItem);
+                        startEditor($('#title-' + data.id)[0]);
+                        startEditor($('#body-' + data.id)[0]);
+                        newDDItem = '<li><input type="hidden" value="' + data.id + '" name="rerank[]"><div class="fpdrag"></div><span class="label">{/literal}{'title placeholder'|gettext}{literal}</span></li>';
+                        $('#listToOrder' + src.slice(1)).append(newDDItem);
+                    } else {
+                        errorEditor();
                     }
-                    newItem += '"><{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    newItem += '<div class="item-actions">';
-                    if (workflow) {
-                        newItem += '<span class="revisionnum approval" title="Viewing Revision #' + data.revision_id + '">' + data.revision_id + '</span>';
-                    }
-                    newItem += '<a class="edit" title="{/literal}{'Edit this text item'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/edit/id/' + data.id + '/src/' + src + '">{/literal}{'Edit'|gettext}{literal}</a>';
-                    newItem += '<a class="delete" title="{/literal}{'Delete'|gettext}{literal}" href="' + EXPONENT.PATH_RELATIVE + 'text/delete/id/' + data.id + '/src/' + src + '">{/literal}{'Delete'|gettext}{literal}</a>';
-                    newItem +='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a></div>';
-                    newItem += '<div class="bodycopy"><div id="body-' + data.id + '" contenteditable="true" class="editable">{/literal}{'content placeholder'|gettext}{literal}</div></div></div>';
-                    $('#textcontent-{/literal}{$name}{literal}').append(newItem);
-                    startEditor($('#title-' + data.id)[0]);
-                    startEditor($('#body-' + data.id)[0]);
-                    newDDItem = '<li><input type="hidden" value="' + data.id + '" name="rerank[]"><div class="fpdrag"></div><span class="label">{/literal}{'title placeholder'|gettext}{literal}</span></li>';
-                    $('#listToOrder' + src.slice(1)).append(newDDItem);
                 }
             });
         });
@@ -398,21 +428,25 @@
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title&value={/literal}{'title placeholder'|gettext|escape:'url'}{literal}",
                 success: function(msg) {
-                    data = $.parseJSON(msg.data);
-                    if (workflow) {
-                        $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
-                        if (!data.approved) {
-                            $('#text-' + data.id).addClass('unapproved');
+                    if (msg.replyCode == '200') {
+                        data = $.parseJSON(msg.data);
+                        if (workflow) {
+                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                            if (!data.approved) {
+                                $('#text-' + data.id).addClass('unapproved');
+                            }
                         }
+                        newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
+                        $('#text-' + data.id).prepend(newItem);
+                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'title placeholder'|gettext}{literal}');
+                        startEditor($('#title-' + data.id)[0]);
+                        chgItem ='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a>';
+                        addparent = $('#addtitle-' + data.id).parent();
+                        $('#addtitle-' + data.id).remove();
+                        addparent.append(chgItem);
+                    } else {
+                        errorEditor();
                     }
-                    newItem = '<{/literal}{$config.item_level|default:'h2'}{literal}><div id="title-' + data.id + '" contenteditable="true" class="editable">{/literal}{'title placeholder'|gettext}{literal}</div></{/literal}{$config.item_level|default:'h2'}{literal}>';
-                    $('#text-' + data.id).prepend(newItem);
-                    $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'title placeholder'|gettext}{literal}');
-                    startEditor($('#title-' + data.id)[0]);
-                    chgItem ='<a class="deletetitle" id="deletetitle-' + data.id + '" href="#" title="{/literal}{'Delete Title'|gettext}{literal}">{/literal}{'Delete Title'|gettext}{literal}</a>';
-                    addparent = $('#addtitle-' + data.id).parent();
-                    $('#addtitle-' + data.id).remove();
-                    addparent.append(chgItem);
                 }
             });
         });
@@ -428,10 +462,14 @@
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=delete_item&ajax_action=1&json=1&src="+src,
                     data: "id=" + item[1],
                     success: function(msg) {
-                        $('#text-' + msg.data).remove();
-                        $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').parent().remove();
-                        killEditor('title-' + msg.data);
-                        killEditor('body-' + msg.data);
+                        if (msg.replyCode == '200') {
+                            $('#text-' + msg.data).remove();
+                            $('input:hidden[name=\'rerank[]\'][value=\'' + msg.data + '\']').parent().remove();
+                            killEditor('title-' + msg.data);
+                            killEditor('body-' + msg.data);
+                        } else {
+                            errorEditor();
+                        }
                     }
                 });
             }
@@ -448,19 +486,23 @@
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type=title",
                     success: function(msg) {
-                        if (workflow) {
-                            $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
-                            if (!data.approved) {
-                                $('#text-' + data.id).addClass('unapproved');
+                        if (msg.replyCode == '200') {
+                            if (workflow) {
+                                $('#text-' + data.id + ' span.revisionnum.approval').html(data.revision_id);
+                                if (!data.approved) {
+                                    $('#text-' + data.id).addClass('unapproved');
+                                }
                             }
+                            $('#title-' + data.id).parent().remove();
+                            $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
+                            chgItem ='<a class="addtitle" id="addtitle-' + data.id + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}">{/literal}{'Add Title'|gettext}{literal}</a>';
+                            delparent = $('#deletetitle-' + data.id).parent();
+                            killEditor('title-' + data.id);
+                            $('#deletetitle-' + data.id).remove();
+                            delparent.append(chgItem);
+                        } else {
+                            errorEditor();
                         }
-                        $('#title-' + data.id).parent().remove();
-                        $('input:hidden[name=\'rerank[]\'][value=\'' + data.id + '\']').siblings('span').html('{/literal}{'Untitled'|gettext}{literal}');
-                        chgItem ='<a class="addtitle" id="addtitle-' + data.id + '" href="#" title="{/literal}{'Add Title'|gettext}{literal}">{/literal}{'Add Title'|gettext}{literal}</a>';
-                        delparent = $('#deletetitle-' + data.id).parent();
-                        killEditor('title-' + data.id);
-                        $('#deletetitle-' + data.id).remove();
-                        delparent.append(chgItem);
                     }
                 });
             }

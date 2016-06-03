@@ -160,9 +160,10 @@ $.fn.elfindertree = function(fm, opts) {
 					e.stopPropagation();
 					helper.data('dropover', helper.data('dropover') + 1);
 					dst.data('dropover', true);
-					if (ui.helper.data('namespace') !== fm.namespace) {
+					if (ui.helper.data('namespace') !== fm.namespace || ! insideNavbar(e.clientX) || ! fm.insideWorkzone(e.pageX, e.pageY)) {
 						dst.removeClass(cl);
-						return false;
+						helper.removeClass('elfinder-drag-helper-move elfinder-drag-helper-plus');
+						return;
 					}
 					dst.addClass(hover)
 					if (dst.is('.'+collapsed+':not(.'+expanded+')')) {
@@ -202,7 +203,9 @@ $.fn.elfindertree = function(fm, opts) {
 					$(this).removeData('dropover')
 					       .removeClass(hover+' '+dropover);
 				},
-				drop : function(e, ui) { insideNavbar(e.clientX) && drop.call(this, e, ui); }
+				drop : function(e, ui) {
+					insideNavbar(e.clientX) && drop.call(this, e, ui);
+				}
 			}),
 			
 			spinner = $(fm.res('tpl', 'navspinner')),
@@ -243,7 +246,7 @@ $.fn.elfindertree = function(fm, opts) {
 			replace = {
 				id          : function(dir) { return fm.navHash2Id(dir.hash) },
 				cssclass    : function(dir) {
-					var cname = (fm.UA.Touch ? 'elfinder-touch ' : '')+(dir.phash ? '' : root)+' '+navdir+' '+fm.perms2class(dir);
+					var cname = (dir.phash ? '' : root)+' '+navdir+' '+fm.perms2class(dir);
 					dir.dirs && !dir.link && (cname += ' ' + collapsed);
 					opts.getClass && (cname += ' ' + opts.getClass(dir));
 					dir.csscls && (cname += ' ' + fm.escape(dir.csscls));
@@ -401,20 +404,24 @@ $.fn.elfindertree = function(fm, opts) {
 			 *
 			 * @return void
 			 */
-			autoScroll = function() {
-				var current = $('#'+fm.navHash2Id(fm.cwd().hash));
-				
-				if (current.length) {
-					var parent = tree.parent().stop(false, true),
-					top = parent.offset().top,
-					treeH = parent.height(),
-					bottom = top + treeH - current.outerHeight(),
-					tgtTop = current.offset().top;
+			autoScroll = function(target) {
+				var self = $(this);
+				self.data('autoScrTm') && clearTimeout(self.data('autoScrTm'));
+				self.data('autoScrTm', setTimeout(function() {
+					var current = $('#'+(target || fm.navHash2Id(fm.cwd().hash)));
 					
-					if (tgtTop < top || tgtTop > bottom) {
-						parent.animate({ scrollTop : parent.scrollTop() + tgtTop - top - treeH / 3 }, { duration : 'fast' });
+					if (current.length) {
+						var parent = tree.parent().stop(false, true),
+						top = parent.offset().top,
+						treeH = parent.height(),
+						bottom = top + treeH - current.outerHeight(),
+						tgtTop = current.offset().top;
+						
+						if (tgtTop < top || tgtTop > bottom) {
+							parent.animate({ scrollTop : parent.scrollTop() + tgtTop - top - treeH / 3 }, { duration : 'fast' });
+						}
 					}
-				}
+				}, 100));
 			},
 			
 			/**
@@ -486,7 +493,7 @@ $.fn.elfindertree = function(fm, opts) {
 							dirs = $.merge(dirs, filter(data.tree));
 							updateTree(dirs);
 							updateArrows(dirs, loaded);
-							cwdhash == cwd.hash && sync(noCwd);
+							cwdhash == cwd.hash && fm.visible() && sync(noCwd);
 						})
 						.always(function(data) {
 							if (link) {
@@ -582,17 +589,24 @@ $.fn.elfindertree = function(fm, opts) {
 						return;
 					}
 					
-					fm.trigger('searchend', { noupdate: true });
+					fm.searchStatus.state && fm.trigger('searchend', { noupdate: true });
 				
 					if (hash != fm.cwd().hash && !link.hasClass(disabled)) {
-						fm.exec('open', hash);
-					} else if (link.hasClass(collapsed)) {
-						link.children('.'+arrow).click();
+						fm.exec('open', hash).done(function() {
+							fm.select({selected: [hash]});
+						});
+					} else {
+						if (link.hasClass(collapsed)) {
+							link.children('.'+arrow).click();
+						}
+						fm.select({selected: [hash]});
 					}
 				})
 				// for touch device
 				.on('touchstart', selNavdir, function(e) {
-					e.stopPropagation();
+					if (e.originalEvent.touches.length > 1) {
+						return;
+					}
 					var evt = e.originalEvent,
 					p = $(this)
 					.addClass(hover)
@@ -609,7 +623,6 @@ $.fn.elfindertree = function(fm, opts) {
 					}, 500));
 				})
 				.on('touchmove touchend', selNavdir, function(e) {
-					e.stopPropagation();
 					clearTimeout($(this).data('tmlongtap'));
 					if (e.type == 'touchmove') {
 						$(this).removeClass(hover);
@@ -682,6 +695,9 @@ $.fn.elfindertree = function(fm, opts) {
 					fm.bind('closecontextmenu', function() {
 						self.removeClass('ui-state-hover');
 					});
+				})
+				.on('scrolltoview', selNavdir, function() {
+					autoScroll($(this).attr('id'));
 				}),
 			// move tree into navbar
 			navbar = fm.getUI('navbar').append(tree).show()

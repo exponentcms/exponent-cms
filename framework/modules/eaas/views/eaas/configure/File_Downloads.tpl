@@ -45,7 +45,7 @@
             </td>
         </tr>
 {foreachelse}
-        <tr><td colspan=3>{'There doesn\'t appear to be any other modules installed that you can aggregate data from'|gettext}</td></tr>
+        <tr><td colspan=3>{'There doesn\'t appear to be any modules installed that you can aggregate data from'|gettext}</td></tr>
 {/foreach}
     </tbody>
 </table>

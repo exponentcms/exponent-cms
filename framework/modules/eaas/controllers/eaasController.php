@@ -105,12 +105,10 @@ class eaasController extends expController {
         if (!array_key_exists($this->params['get'], $this->tabs)) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No service available for your request', null);
             $ar->send();
-//            return;  //FIXME we exit before hitting this
         }
-        if (empty($this->config[$this->params['get'].'_aggregate'])) {
+        if ($this->params['get'] != 'aboutus' && empty($this->config[$this->params['get'].'_aggregate'])) {
             $ar = new expAjaxReply(400, 'Bad Request', 'No modules assigned to requested service', null);
             $ar->send();
-//            return;  //FIXME we exit before hitting this
         }
         switch ($this->params['get']) {
             case 'aboutus':
@@ -152,8 +150,21 @@ class eaasController extends expController {
         }
     }
 
+    /**
+     * Return the About Us data along with a quick item count by module
+     * @return array
+     */
     private function aboutUs() {
+        $counts = array();
+        foreach ($this->tabs as $key=>$name) {
+            if ($key != 'aboutus') {
+                $data = $this->$key();
+                $counts[$key] = count($data['records']);
+            }
+        }
         $this->data = array();  // initialize
+        $this->data = $counts;
+        $this->data['records'] = array();
         $this->getImageBody($this->params['get']);
         return $this->data;
     }
@@ -385,7 +396,7 @@ class eaasController extends expController {
     }
 
     private function getImageBody($tab) {
-        // create an empty 'abnner' object to prevent errors in caller
+        // create an empty 'banner' object to prevent errors in caller
         $this->data['banner']['obj'] = null;
         $this->data['banner']['obj']->url = null;
         $this->data['banner']['md5'] = null;
@@ -400,28 +411,25 @@ class eaasController extends expController {
         $this->data['html'] = $this->config[$tab.'_body'];
     }
 
+    /**
+     * Only return selected modules
+     *
+     * @param string $type
+     * @return string
+     */
     function aggregateWhereClause($type='') {
-        global $user;
-
-        $sql = '';
-        $sql .= '(';
-        $sql .= "location_data ='".serialize($this->loc)."'";
-
+        $sql = '(0';  // simply to offset the 'OR' added in loop
         if (!empty($this->config[$type.'_aggregate'])) {
             foreach ($this->config[$type.'_aggregate'] as $src) {
                 $loc = expCore::makeLocation($type, $src);
                 $sql .= " OR location_data ='".serialize($loc)."'";
             }
             
-            $sql .= ')';
-        }       
+        }
+        $sql .= ')';
         $model = $this->basemodel_name;
         if ($this->$model->needs_approval && ENABLE_WORKFLOW) {
-            if ($user->id) {
-                $sql .= ' AND (approved=1 OR poster=' . $user->id . ' OR editor=' . $user->id . ')';
-            } else {
-                $sql .= ' AND approved=1';
-            }
+            $sql .= ' AND approved=1';
         }
 
         return $sql;

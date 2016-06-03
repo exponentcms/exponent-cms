@@ -730,10 +730,8 @@ class expTheme
         global $user;
 
         if (self::inAction()) {
-            if (!AUTHORIZED_SECTION) {
-//				echo SITE_403_HTML;
+            if (!AUTHORIZED_SECTION && !expJavascript::inAjaxAction())
                 notfoundController::handle_not_authorized();
-            }
 //			if (expSession::is_set("themeopt_override")) {
 //				$config = expSession::get("themeopt_override");
 //				echo "<a href='".$config['mainpage']."'>".$config['backlinktext']."</a><br /><br />";
@@ -744,7 +742,8 @@ class expTheme
 //                $_REQUEST[$key] = expString::sanitize($param);
 //            }
 //            if (empty($_REQUEST['route_sanitized'])) {
-                if (!$user->isAdmin()) expString::sanitize($_REQUEST);
+            if (!$user->isAdmin())
+                expString::sanitize($_REQUEST);
 //            } elseif (empty($_REQUEST['array_sanitized'])) {
                 $tmp =1;  //FIXME we've already sanitized at this point
 //            } else {
@@ -836,7 +835,6 @@ class expTheme
 //   		} elseif (is_readable(BASE.'framework/modules-1/'.$actfile)) {
 //   			include(BASE.'framework/modules-1/'.$actfile);
         } else {
-//   			echo SITE_404_HTML . '<br /><br /><hr size="1" />';
             notfoundController::handle_not_found();
             echo '<br /><hr size="1" />';
             echo sprintf(
@@ -867,7 +865,6 @@ class expTheme
                 header("Location: " . URL_FULL . "index.php?section=" . $section->id);
                 exit();
             } else {
-//   				echo SITE_404_HTML;
                 notfoundController::handle_not_found();
             }
         }
@@ -923,7 +920,6 @@ class expTheme
             // Set this so that a login on an Auth Denied page takes them back to the previously Auth-Denied page
             //			expHistory::flowSet(SYS_FLOW_PROTECTED,SYS_FLOW_SECTIONAL);
             expHistory::set('manageable', $router->params);
-//   			echo SITE_403_HTML;
             notfoundController::handle_not_authorized();
             return;
         }

@@ -204,6 +204,8 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/countdown/views/countdown/edit.tpl',
             'framework/modules/filedownloads/views/filedownload/showall_oneclickdownload.tpl',
             'framework/modules/navigation/views/navigation/add_section.tpl',
+			'framework/modules/pixidou/download.php',
+			'framework/modules/pixidou/upload.php',
             'framework/modules/text/views/text/showall_merge.tpl',
             'framework/modules/text/views/text/showall_tabview.tpl',
             'framework/plugins/function.get_distance.php',

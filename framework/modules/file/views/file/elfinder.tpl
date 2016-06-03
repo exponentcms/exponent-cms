@@ -21,6 +21,7 @@
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
 
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
@@ -215,6 +216,7 @@
                                 }
                             } {/literal}{*,
                             {
+                                // Ace editor for other text files
                                 // `mimes` is not set for support everything kind of text file
                                 load : function(textarea) {
                                     if (typeof ace !== 'object') {
@@ -392,11 +394,11 @@
                     // "quicklook" command options. For additional extensions
                     quicklook : {
                         autoplay : false,
-                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/msword', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+                        googleDocsMimes : ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
                     },
                     // help dialog tabs
                     help : {
-                        view : ['about', 'shortcuts'],
+                        view : ['about', 'shortcuts'{/literal}{if $smarty.const.DEVELOPMENT}, 'debug'{/if}{literal}],
                     }
                 },
 //                handlers : {
@@ -437,7 +439,12 @@
                         ['search'],
                         ['view', 'sort'],
                         ['links', 'places'],   // links added
-                        ['help']
+                        ['help'],
+                        // extra options
+                        {
+                            // auto hide on initial open
+                            autoHideUA: ['Mobile']
+                        }
                     ],
                     // directories tree options
                     tree : {
@@ -449,7 +456,8 @@
                     // navbar options
                     navbar : {
                         minWidth : 150,
-                        maxWidth : 500
+                        maxWidth : 500,
+                        autoHideUA: ['Mobile']
                     },
                     cwd : {
                         // display parent folder with ".." name :)

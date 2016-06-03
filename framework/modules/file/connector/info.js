@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2004-2016 OIC Group, Inc.
- *
- * This file is part of Exponent
- *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * GPL: http://www.gnu.org/licenses/gpl.txt
- *
- */
-
 "use strict";
 /**
  * @class elFinder command "info" updated for Exponent CMS
@@ -96,7 +81,7 @@ elFinder.prototype.commands.info = function () {
             opts = {
                 title : this.title ,
                 width : 'auto' ,
-                modal : true ,
+                modal : true ,  //exp
 				close : function() {
 					$(this).elfinderdialog('destroy');
 					$.each(reqs, function(i, req) {
@@ -131,9 +116,7 @@ elFinder.prototype.commands.info = function () {
             view = view.replace('{class}' , fm.mime2class(file.mime));
 			title = tpl.itemTitle.replace('{name}', fm.escape(file.i18 || file.name)).replace('{kind}', '<span title="'+fm.escape(file.mime)+'">'+fm.mime2kind(file)+'</span>');
 
-            if (file.tmb) {
-                tmb = fm.option('tmbUrl') + file.tmb;
-            }
+			tmb = fm.tmb(file);
 
             if (!file.read) {
                 size = msg.unknown;
@@ -363,10 +346,8 @@ elFinder.prototype.commands.info = function () {
         // load thumbnail
         if (tmb) {
             $('<img/>')
-                .load(function () {
-                    dialog.find('.elfinder-cwd-icon').css('background' , 'url("' + tmb + '") center center no-repeat');
-                })
-                .attr('src' , tmb);
+				.load(function() { dialog.find('.elfinder-cwd-icon').addClass(tmb.className).css('background-image', "url('"+tmb.url+"')"); })
+				.attr('src', tmb.url);
         }
 
         // send request to count total size
