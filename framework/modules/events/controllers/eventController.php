@@ -496,6 +496,9 @@ class eventController extends expController {
                     "now"   => $day,
                 ));
         }
+        assign_to_template(array(
+            'daynames' => self::dayNames(),
+        ));
     }
 
     /**
@@ -1736,6 +1739,15 @@ class eventController extends expController {
 //        $ar->send();
     }
 
+    public static function dayNames() {
+        $days = array();
+        for ($i=0; $i < 7; $i++) {
+            $days['short'][$i] = substr(strftime("%a", mktime(0, 0, 0, 6, $i+2, 2013)), 0, 1);
+            $days['med'][$i] = strftime("%a", mktime(0, 0, 0, 6, $i+2, 2013));
+            $days['long'][$i] = strftime('%A ', mktime(0, 0, 0, 6, $i+2, 2013));
+        }
+        return $days;
+    }
 }
 
 ?>
