@@ -24,7 +24,7 @@ iLess,2.2.0,https://github.com/mishal/iless,2.2.0,"optional, has issues with boo
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.6,twitter.github.com/bootstrap,3.3.6,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.6+1,bootswatch.com/,3.3.6+1,
+Bootswatch,3.3.6+2,bootswatch.com/,3.3.6+2,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.6.3,fortawesome.github.com/Font-Awesome,4.6.3,
 Adminer,4.2.4,www.adminer.org,4.2.5,
