@@ -230,7 +230,8 @@ class eventregistrationController extends expController {
             "nextmonth3"  => strtotime('+3 months', $timefirst),
             'now'         => $timefirst,
             "today"       => expDateTime::startOfDayTimestamp(time()),
-            'params'      => $this->params
+            'params'      => $this->params,
+            'daynames'    => event::dayNames(),
         ));
     }
 
