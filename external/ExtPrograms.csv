@@ -27,7 +27,7 @@ Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.3.6+2,bootswatch.com/,3.3.6+2,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.6.3,fortawesome.github.com/Font-Awesome,4.6.3,
-Adminer,4.2.4,www.adminer.org,4.2.5,
+Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea & edit-calendar"
 SimpleAjaxUploader,2.5.5,https://github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,4.1.1,necolas.github.com/normalize.css/,4.1.1,auto included in bootstrap 3
 MediaElement.js,2.21.2,mediaelementjs.com/,2.21.2,
