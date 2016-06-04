@@ -47,12 +47,41 @@ class AdminerTinymce {
 <script type="text/javascript">
 tinyMCE.init({
 	mode: 'none',
-	plugins: "advlist,autolink,lists,link,image,charmap,print,preview,hr,anchor,pagebreak" +
-             ",searchreplace wordcount visualblocks visualchars code fullscreen" +
-             ",insertdatetime,media,nonbreaking,save,table,contextmenu,directionality" +
-             ",emoticons,paste,textcolor,visualblocks",
+	plugins: "advlist,autolink,lists,link,charmap,print,preview,hr,anchor,pagebreak" +
+             ",searchreplace,wordcount,visualblocks,visualchars,code,fullscreen" +
+             ",nonbreaking,save,table,contextmenu,directionality" +
+             ",emoticons,paste,textcolor",  //image,imagetools.media not available at this time
+	browser_spellcheck: true,
 	entity_encoding: 'raw',
-	language: '<?php echo $lang; ?>'
+	relative_urls : false,
+	remove_script_host : true,
+	document_base_url : '<?php echo PATH_RELATIVE; ?>',
+//	image_advtab: true,
+//	image_title: true,
+// 	image_caption: true,
+	language: '<?php echo $lang; ?>',
+	end_container_on_empty_block: true,
+//	file_picker_callback: function expBrowser (callback, value, meta) {
+//		tinymce.activeEditor.windowManager.open({
+//			file: '<?php //echo makelink(array("controller" => "file", "action" => "picker", "ajax_action" => 1, "update" => "tiny")); ?>//?filter='+meta.filetype,
+//			title: '<?php //echo gt('File Manager'); ?>//',
+//			width: <?php //echo FM_WIDTH ?>//,
+//			height: <?php //echo FM_HEIGHT ?>//,
+//			resizable: 'yes'
+//		}, {oninsert: function (url, alt, title) {
+//				// Provide file and text for the link dialog
+//				if (meta.filetype == 'file')
+//					callback(url, {text: alt, title: title});
+//				// Provide image and alt text for the image dialog
+//				if (meta.filetype == 'image')
+//					callback(url, {alt: alt});
+//				// Provide alternative source and posted for the media dialog
+//				if (meta.filetype == 'media')
+//					callback(url);
+//			}
+//		});
+//		return false;
+//	},
 });
 </script>
 <?php
