@@ -69,6 +69,7 @@
 			{if $permissions.create}
 				{icon class=add action=edit title="Add a New Event"|gettext text="Add an Event"|gettext}
 			{/if}
+			{control type=text name="eventsearchinput" label='Limit items to those including:'|gettext}
 		</div>
 	{/permissions}
 	<table cellspacing="0" cellpadding="4" border="0" width="100%" class="exp-skin-table">
@@ -81,7 +82,7 @@
 		</thead>
 		<tbody>
 		{foreach from=$items item=item}
-			<tr class="{cycle values="odd,even"}">
+			<tr class="item {cycle values="odd,even"}">
 				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
 				<td>
 					{if $item->is_allday == 1}
@@ -125,3 +126,20 @@
 		</tbody>
 	</table>
 </div>
+
+{script unique="`$name`search" jquery='jquery.searcher'}
+{literal}
+    $(".events.cal-admin").searcher({
+        itemSelector: ".item",
+        textSelector: ".itemtitle",
+        inputSelector: "#eventsearchinput",
+		toggle: function(item, containsText) {
+			 // use a typically jQuery effect instead of simply showing/hiding the item element
+			 if (containsText)
+				 $(item).fadeIn();
+			 else
+				 $(item).fadeOut();
+		}
+    });
+{/literal}
+{/script}
