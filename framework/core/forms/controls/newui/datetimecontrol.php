@@ -83,7 +83,7 @@ class datetimecontrol extends formcontrol {
         $html .= "<input type='hidden' id='__" . $name . "' name='__" . $name . "' value='" . ($this->showdate ? "1" : "0") . ($this->showtime ? "1" : "0") . "' />";
         $html .= "<div class=\"row\">";
         if ($this->showdate) {
-            $html .= '<div class="datetime date" style="display:inline-block;">';
+            $html .= '<div class="datetime date" style="display:inline-block;margin-left: 15px;">';
             if ($this->showtime)
                $html .= '<label class="col-md-2 control-label">' . gt('Date') . ': </label>';
             $html .= expDateTime::monthsDropdown($name . "_month", $default_date['mon']);
@@ -100,7 +100,7 @@ class datetimecontrol extends formcontrol {
             if ($framework != 'bootstrap' && $framework != 'bootstrap3') {
                 $html .= '<br /><label class="control-label label spacer"> </label>';
             }
-            $html .= '<div class="datetime date time" style="display:inline-block;">';
+            $html .= '<div class="datetime date time" style="display:inline-block;margin-left: 15px;">';
             if ($this->showdate)
                 $html .= '<label class="col-md-2 control-label">' . gt('Time') . ': </label>';
             $html .= '<input class="text timebox form-control col-md-1" type="text" id="' . $name . '_hour" name="' . $name . '_hour" size="3" maxlength="2" value="' . $hour . '"';
