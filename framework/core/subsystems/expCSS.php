@@ -129,18 +129,18 @@ class expCSS {
 		    echo "<div class=\"io-execute-response\">";
             if (!empty($css_core)){
                 foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">';
+                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">' . "\r\n";
                 }
             }
             if (!empty($css_links)) {
                 foreach ($css_links as $link) {
-                    echo '<link rel="stylesheet" type="text/css" href="',$link,'">';
+                    echo '<link rel="stylesheet" type="text/css" href="',$link,'">' . "\r\n";
                 }
             }
             if (!empty($params['css'])) {
                 echo '<style type="text/css">';
                 echo trim($params['css']);
-                echo '</style>' . "\n";
+                echo '</style>' . "\r\n";
             }
 		    echo "</div>";
             return true;
