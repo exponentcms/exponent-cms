@@ -178,7 +178,6 @@
                                 buttons: btn,
                                 submit: function(e,v,m,f){
                                     // use e.preventDefault() to prevent closing when needed or return false.
-                                    //e.preventDefault();
                                     if (v) {
                                         if (obj.original.alias_type == 0)
                                             window.location=eXp.PATH_RELATIVE+"index.php?module=navigation&action=remove&id="+obj.id;
