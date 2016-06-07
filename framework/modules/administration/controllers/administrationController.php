@@ -1254,7 +1254,7 @@ class administrationController extends expController {
         
         // Start of Week
 //        $start_of_week = glist(expSettings::dropdownData('start_of_week'));
-        $daysofweek = eventController::dayNames();
+        $daysofweek = event::dayNames();
         $start_of_week = $daysofweek['long'];
 
         // File Permissions
