@@ -227,7 +227,7 @@
 					}
 				}
 				if(webCFG.loadStyles){
-					loader.loadCSS('styles/shim'+(needExtStyles ? '-ext' : '')+'.css');
+					loader.loadCSS(path+'styles/shim'+(needExtStyles ? '-ext' : '')+'.css');
 				}
 			}
 

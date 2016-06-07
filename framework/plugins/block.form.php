@@ -90,28 +90,16 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         } else {
             $newui_class = '';
         }
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'html5forms-1mod',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/modernizr-283.js',
-//        ));
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'html5forms-2eh',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/EventHelpers.js',
-//        ));
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'html5forms-3wf',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/webforms2/webforms2_src.js',
-//        ));
-//        expJavascript::pushToFoot(array(
-//            "unique"  => 'html5forms-4fb',
-//            "jquery"=> 'jqueryui,jquery.placeholder,spectrum',
-//            "src"=> PATH_RELATIVE . 'external/html5forms/html5forms.fallback.js',
-//        ));
+        if (expJavascript::inAjaxAction()) {
+            $ws_load = "webshim.setOptions({loadStyles:false,canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+        } else {
+            $ws_load = "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');";
+        }
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms',
             "jquery"  => 1,
             "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
-            "content" => "webshim.setOptions({canvas:{type:'excanvas'}});webshim.polyfill('canvas forms forms-ext');",
+            "content" => $ws_load,
         ));
         if (!empty($params['paged'])) {
             if (empty($params['name']) && empty($params['id'])) die("<strong style='color:red'>" . gt(
