@@ -66,7 +66,11 @@ if (!defined('HOSTNAME')) {
  * detection code can figure out if the server is running in SSL mode or not
  */
 if (!defined('URL_BASE')) {
-    define('URL_BASE', ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https://' : 'http://') . HOSTNAME);
+    if(!empty($_SERVER['HTTP_X_FORWARDED_PROTO']))
+        $base = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+    else
+        $base = !empty($_SERVER['HTTPS']) ? "https" : "http";
+    define('URL_BASE', $base . '://' . HOSTNAME);
 }
 
 /**
