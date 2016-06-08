@@ -764,7 +764,8 @@ abstract class expController {
             $rank++;
         }
 
-        redirect_to($this->params['lastpage']);
+        if (!expJavascript::inAjaxAction())
+            redirect_to($this->params['lastpage']);
     }
 
     /**

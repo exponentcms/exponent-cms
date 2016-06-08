@@ -113,7 +113,8 @@ class dropdowncontrol extends formcontrol {
         $form->register("default",gt('Default'), new textcontrol($object->default));
         $form->register("size",gt('Size'), new textcontrol($object->size,3,false,2,"integer"));
         $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,true));
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
     

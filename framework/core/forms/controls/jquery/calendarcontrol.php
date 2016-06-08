@@ -205,7 +205,8 @@ class calendarcontrol extends formcontrol
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
-        $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
 

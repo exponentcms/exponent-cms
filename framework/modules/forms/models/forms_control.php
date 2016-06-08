@@ -107,6 +107,12 @@ class forms_control extends expRecord {
         }
     }
 
+    public function rerank_control($newrank) {
+        global $db;
+
+        $db->switchValues($this->tablename, 'rank', $newrank, $this->rank, "forms_id='" . $this->forms_id . "'");
+    }
+    
 }
 
 ?>

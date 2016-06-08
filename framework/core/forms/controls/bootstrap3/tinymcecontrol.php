@@ -233,7 +233,8 @@ class tinymcecontrol extends formcontrol
         $content = "
             $(document).ready(function(){
                 if(typeof(EXPONENT.editor" . createValidId($name) . ") !== 'undefined'){
-                    return true;
+                    tinymce.remove('editor" . createValidId($name) . "');
+//                    return true;
                 };
                 EXPONENT.editor" . createValidId($name) . " = tinymce.init({
                     selector : '#" . createValidId($name) . "',

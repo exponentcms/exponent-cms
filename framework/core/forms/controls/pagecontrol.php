@@ -117,7 +117,8 @@ class pagecontrol extends formcontrol {
 //        $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
 //        $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
 //        $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
 

@@ -13,9 +13,17 @@
  *
  *}
 
-{css unique="design-form" corecss="button"}
+{css unique="design-form" lesscss="`$asset_path`less/designer.less" corecss="button"}
 
 {/css}
+
+{if !bs()}
+{css unique="design-form2"}
+    .formmoduleedit.item .item-actions a {
+        height: 16px;
+    }
+{/css}
+{/if}
 
 {if $config.style && !bs3()}
     {css unique="formmod2" corecss="forms2col"}
@@ -39,12 +47,13 @@
     <div class="form_title">
         {if $edit_mode != 1}
             <div class="module-actions">
+                {icon class=selectnone id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
                 {ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}
             </div>
         {/if}
     </div>
     {if $edit_mode != 1}
-    <div style="border: 2px dashed lightgrey; padding: 1em;">
+    <div class="form-wrapper">
     {/if}
         {$form_html}
     {if $edit_mode != 1}
@@ -91,3 +100,16 @@
         </p>
     {/if}
 </div>
+
+{script unique="design-form" jquery=1}
+{literal}
+    $(document).ready(function(){
+        // turn form grid on/off
+        $('#toggle_grid').on('click', function(evt) {
+            $('.forms.design-form .formmoduleedit.item').toggleClass('clean');
+            $('.forms.design-form .form-wrapper').toggleClass('clean');
+            $('#toggle_grid').toggleClass('active');
+        });
+    });
+{/literal}
+{/script}

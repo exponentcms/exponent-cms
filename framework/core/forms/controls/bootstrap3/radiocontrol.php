@@ -118,8 +118,8 @@ class radiocontrol extends formcontrol {
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
         $form->register("flip",gt('Caption on Right'), new checkboxcontrol($object->flip,false));
-        
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         
         return $form;
     }

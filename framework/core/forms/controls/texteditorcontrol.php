@@ -99,7 +99,8 @@ class texteditorcontrol extends formcontrol {
 		$form->register("cols",gt('Columns'), new textcontrol($object->cols,4, false,3,"integer"));
         $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
-		$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+		if (!expJavascript::inAjaxAction())
+			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
 	
