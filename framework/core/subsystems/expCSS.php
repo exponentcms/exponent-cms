@@ -455,7 +455,7 @@ class expCSS {
                         $cache = BASE . $less_pname;
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                            if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {
                                 $cache = BASE . $less_pname;  // force a compile if the vars have changed
                             }
                         }
@@ -563,7 +563,7 @@ class expCSS {
                         $cache = BASE . $scss_pname;
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                            if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {
                                 $cache = BASE . $scss_pname;  // force a compile if the vars have changed
                             }
                         }
