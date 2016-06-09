@@ -946,6 +946,8 @@ class formsController extends expController {
 
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
+            if (isset($this->params['style']))
+                $form->horizontal = $this->params['style'];
             foreach ($controls as $c) {
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
@@ -958,7 +960,8 @@ class formsController extends expController {
             $types[".break"] = gt('Static - Spacer');
             $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
-//            array_unshift($types, '[' . gt('Please Select' . ']'));
+            if (!bs3())
+                array_unshift($types, '[' . gt('Please Select' . ']'));
 
             $forms_list = array();
             $forms = $f->find('all', 1);
@@ -972,6 +975,7 @@ class formsController extends expController {
                 'form_html'  => $form->toHTML($f->id),
                 'backlink'   => expHistory::getLastNotEditable(),
                 'types'      => $types,
+                'style'      => $form->horizontal
             ));
         }
     }

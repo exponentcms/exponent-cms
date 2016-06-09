@@ -17,7 +17,7 @@
 
 {/css}
 
-{if $config.style && !bs3()}
+{if $style && !bs3()}
     {css unique="formmod2" corecss="forms2col"}
 
     {/css}
@@ -29,18 +29,19 @@
     {/css}
 {/if}
 
-<div class="info-header">
-    <div class="related-actions">
-        {help text="Get Help with"|gettext|cat:" "|cat:("Designing Forms"|gettext) module="design-forms"}
-    </div>
-    <h2>{"Forms Designer"|gettext}</h2>
-</div>
 <div class="module forms design-form">
+    <div class="info-header">
+        <div class="related-actions">
+            {help text="Get Help with"|gettext|cat:" "|cat:("Designing Forms"|gettext) module="design-forms"}
+        </div>
+        <h2>{"Forms Designer"|gettext}</h2>
+    </div>
     {*<div class="form_title">*}
         {*{if $edit_mode != 1}*}
             <div class="module-actions">
                 {*{ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}*}
                 {icon id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
+                {icon id='toggle_style' action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
                 {*{icon id='toggle_style' action=scriptaction text='Style'|gettext}*}
             </div>
         {*{/if}*}
@@ -92,19 +93,19 @@
             {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
         </p>
     {/if}
+    <div id="trash" class="trash">
+        <strong>{'Trash Can'|gettext}</strong><br><br>
+        {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
+    </div>
+    <ul id="controls" class="controls">
+        <strong>{'Available Form Controls'|gettext}</strong>
+        {foreach from=$types key=value item=caption}
+            <li class="item" type="{$value}">
+                {$caption}
+            </li>
+        {/foreach}
+    </ul>
 </div>
-<div id="trash" class="trash">
-    <strong>{'Trash Can'|gettext}</strong><br><br>
-    {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
-</div>
-<ul id="controls" class="controls">
-    <strong>{'Available Form Controls'|gettext}</strong>
-    {foreach from=$types key=value item=caption}
-        <li class="item" type="{$value}">
-            {$caption}
-        </li>
-    {/foreach}
-</ul>
 
 {script unique="design-form" jquery="Sortable,bootstrap-dialog" bootstrap="modal,transition"}
 {literal}
@@ -130,11 +131,18 @@
         });
 
         // toggle form style
-        // $('#toggle_style').on('click', function(evt) {
-        //     $('#abc123').toggleClass('form-horizontal');
-        //     $('#abc123 .control-label').toggleClass('col-sm-2');
-        //     $('#toggle_style').toggleClass('active');
-        // });
+        $('#toggle_style').on('click', function(evt) {
+            $.ajax({
+                type: "POST",
+                headers: { 'X-Transaction': 'Change Form Style'},
+                url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=design_form&ajax_action=1&id={/literal}{$form->id}{literal}',
+                data: 'style={/literal}{!$style}{literal}',
+                success:function(msg) {
+                    // get the (fake) control html and display it to the page
+                    $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
+                }
+            });
+        });
 
         // we need to catch 'edit' button clicks
         $('#abc123').on('click', '.edit', function(evt) {
