@@ -41,7 +41,7 @@
             <div class="module-actions">
                 {*{ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}*}
                 {icon id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
-                {icon id='toggle_style' action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
+                {icon id='toggle_style' class="h hidden-xs" action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
                 {*{icon id='toggle_style' action=scriptaction text='Style'|gettext}*}
             </div>
         {*{/if}*}
@@ -124,14 +124,18 @@
         }
 
         // turn form grid on/off
+        $('#toggle_grid').off();
         $('#toggle_grid').on('click', function(evt) {
+            evt.preventDefault();
             $('.forms.design-form .formmoduleedit.item').toggleClass('clean');
             $('.forms.design-form .form-wrapper').toggleClass('clean');
             $('#toggle_grid').toggleClass('active');
         });
 
         // toggle form style
+        $('#toggle_style').off();
         $('#toggle_style').on('click', function(evt) {
+            evt.preventDefault();
             $.ajax({
                 type: "POST",
                 headers: { 'X-Transaction': 'Change Form Style'},
