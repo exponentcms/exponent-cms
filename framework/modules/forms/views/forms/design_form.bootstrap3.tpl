@@ -177,7 +177,7 @@
                                 $.ajax({
                                     type: "POST",
                                     headers: { 'X-Transaction': 'Build Form Control'},
-                                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1',
+                                    url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
                                     data: 'id=' + msg,
                                     success:function(msg) {
                                         // get the (fake) control html and display it to the page
@@ -260,7 +260,7 @@
                             $.ajax({
                                 type: "POST",
                                 headers: { 'X-Transaction': 'Build Form Control'},
-                                url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1',
+                                url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
                                 data: 'id=' + msg,
                                 success:function(msg) {
                                     // get the (fake) control html and display it to the page
@@ -299,7 +299,7 @@
                                     $.ajax({
                                         type: "POST",
                                         headers: { 'X-Transaction': 'Build Form Control'},
-                                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1',
+                                        url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
                                         data: 'id=' + msg,
                                         success:function(msg) {
                                             // get the (fake) control html and display it to the page

@@ -150,6 +150,10 @@ class checkboxcontrol extends formcontrol {
         return $html;
     }
 
+    function controlToHTML_newschool($name, $label) {
+        return $this->controlToHTML($name, $label);
+    }
+    
     static function parseData($name, $values, $for_db = false) {
         return isset($values[$name]) ? 1 : 0;
     }

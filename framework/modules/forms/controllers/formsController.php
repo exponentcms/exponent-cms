@@ -1191,6 +1191,8 @@ class formsController extends expController {
             $ctl->_id = $control->id;
             $ctl->_readonly = $control->is_readonly;
             $ctl->_controltype = get_class($ctl);
+            if (isset($this->params['style']))
+                $form->horizontal = $this->params['style'];
             $form->register($control->name, $control->caption, $ctl);
             $form->style_form();
             echo $form->controlToHTML($control->name);
