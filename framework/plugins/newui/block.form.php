@@ -114,7 +114,7 @@ if (!function_exists('smarty_block_form')) {
             expJavascript::pushToFoot(array(
                 "unique"  => 'html5forms',
                 "jquery"  => 1,
-                "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/minified/polyfiller.js',
+                "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/dev/polyfiller.js',
                 "content" => $ws_load,
             ));
             if (!empty($params['paged'])) {
