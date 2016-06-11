@@ -37,62 +37,54 @@
         <h2>{"Forms Designer"|gettext}</h2>
     </div>
     {*<div class="form_title">*}
-        {*{if $edit_mode != 1}*}
-            <div class="module-actions">
-                {*{ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}*}
-                {icon id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
-                {icon id='toggle_style' class="h hidden-xs" action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
-                {*{icon id='toggle_style' action=scriptaction text='Style'|gettext}*}
-            </div>
-        {*{/if}*}
+        <div class="module-actions">
+            {*{ddrerank module="forms_control" model="forms_control" where="forms_id=`$form->id`" sortfield="caption" label="Form Controls"|gettext}*}
+            {icon id='toggle_grid' action=scriptaction text='Toggle Designer Grid'|gettext title='Provides more accurate form display'|gettext}
+            {icon id='toggle_style' class="h hidden-xs" action=scriptaction text='Toggle Form Style'|gettext title='Provides alternate form display'|gettext value=0}
+            {*{icon id='toggle_style' action=scriptaction text='Style'|gettext}*}
+        </div>
     {*</div>*}
-    {if $edit_mode != 1}
     <div class="form-wrapper">
-    {/if}
         {$form_html}
-    {if $edit_mode != 1}
     </div>
-    {/if}
-    {if $edit_mode != 1}
-        {*<table cellpadding="5" cellspacing="0" border="0">*}
-            {*<tr>*}
-                {*<td style="border:none;">*}
-                    {*<form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php"{if !bs3()} class="exp-skin"{/if}>*}
-                        {*<input type="hidden" name="controller" value="forms"/>*}
-                        {*<input type="hidden" name="action" value="edit_control"/>*}
-                        {*<input type="hidden" name="forms_id" value="{$form->id}"/>*}
-                        {*<div class="row">*}
-                            {*<div class="col-md-3">{'Add a'|gettext} </div>*}
-                            {*<div class="col-md-8">*}
-                                {*<select class="form-control" name="control_type" onchange="this.form.submit()">*}
-                                    {*{foreach from=$types key=value item=caption}*}
-                                        {*<option value="{$value}">{$caption}</option>*}
-                                    {*{/foreach}*}
-                                {*</select>*}
-                            {*</div>*}
+    {*<table cellpadding="5" cellspacing="0" border="0">*}
+        {*<tr>*}
+            {*<td style="border:none;">*}
+                {*<form role="form" method="post" action="{$smarty.const.PATH_RELATIVE}index.php"{if !bs3()} class="exp-skin"{/if}>*}
+                    {*<input type="hidden" name="controller" value="forms"/>*}
+                    {*<input type="hidden" name="action" value="edit_control"/>*}
+                    {*<input type="hidden" name="forms_id" value="{$form->id}"/>*}
+                    {*<div class="row">*}
+                        {*<div class="col-md-3">{'Add a'|gettext} </div>*}
+                        {*<div class="col-md-8">*}
+                            {*<select class="form-control" name="control_type" onchange="this.form.submit()">*}
+                                {*{foreach from=$types key=value item=caption}*}
+                                    {*<option value="{$value}">{$caption}</option>*}
+                                {*{/foreach}*}
+                            {*</select>*}
                         {*</div>*}
-                    {*</form>*}
-                {*</td>*}
-            {*</tr>*}
-        {*</table>*}
+                    {*</div>*}
+                {*</form>*}
+            {*</td>*}
+        {*</tr>*}
+    {*</table>*}
     {*<p><a class="{button_style}"*}
     {*href="JavaScript: pickSource();">{'Append fields from existing form'|gettext}</a></p>*}
 
     {*script unique="viewform"}
     function pickSource() {ldelim}
-    window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');
+        window.open('{$pickerurl}','sourcePicker','title=no,toolbar=no,width=800,height=600,scrollbars=yes');
     {rdelim}
     {/script*}
     {*{if !empty($forms_list)}{control type="dropdown" name="forms_id" label="Append fields from an existing form"|gettext items=$forms_list}{/if}*}
-        {*<blockquote>*}
-            {*{'Use the drop down to add fields to this form.'|gettext}*}
-            {*<em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>*}
-        {*</blockquote>*}
-        <p{if newui()} class="exp-skin"{/if}>
-            {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
-            {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
-        </p>
-    {/if}
+    {*<blockquote>*}
+        {*{'Use the drop down to add fields to this form.'|gettext}*}
+        {*<em>{'The first/top-most page break control will always be pushed to the top!'|gettext}</em>*}
+    {*</blockquote>*}
+    <p{if newui()} class="exp-skin"{/if}>
+        {*<a class="{button_style}" href="{$backlink}">{'Done'|gettext}</a>*}
+        {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
+    </p>
     <div id="trash" class="trash">
         <strong>{'Trash Can'|gettext}</strong><br><br>
         {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
