@@ -2,6 +2,7 @@
 	if (typeof WSDEBUG === 'undefined') {
 		window.WSDEBUG = true;
 	}
+	window.WSDEBUG = false; //exp using dev instead of minified at this point
 	var addAsync = function(){
 		if(!window.asyncWebshims){
 			window.asyncWebshims = {
@@ -129,7 +130,7 @@
 	}
 
 	path = ($.support.hrefNormalized === false) ? webshims._curScript.getAttribute("src", 4) : webshims._curScript.src;
-	if (path.indexOf('minify/min') > -1) {  // we were loaded by minify
+	if (path.indexOf('minify/min') > -1) {  //exp we were loaded by minify
 		var t1 = path.split(',');
 		var t2 = t1[0].split('?');
 		var t3 = t1.filter(function(t1){ // find array element of 'webshim'
@@ -238,7 +239,7 @@
 					}
 				}
 				if(webCFG.loadStyles){
-					loader.loadCSS(path+'styles/shim'+(needExtStyles ? '-ext' : '')+'.css');
+					loader.loadCSS(path+'styles/shim'+(needExtStyles ? '-ext' : '')+'.css');  //exp force full path
 				}
 			}
 
