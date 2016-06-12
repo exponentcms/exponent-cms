@@ -79,7 +79,7 @@ select2,3.5.4,https://github.com/ivaynberg/select2,3.5.4/4.0.3,
 shuffle.js,v3.1.1,https://github.com/Vestride/Shuffle,4.0.0,
 Jasny Bootstrap2,2.3.1,http://jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0beta1,http://jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
-easypost sdk,3.0.3,https://github.com/EasyPost/easypost-php,3.0.3,
+easypost sdk,3.1.0,https://github.com/EasyPost/easypost-php,3.1.0,
 PLUpload,2.1.9,https://github.com/moxiecode/plupload,2.1.9,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 jquery.cookie.js,1.4.1,https://github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,https://github.com/browserstate/history.js/,1.8b2,
