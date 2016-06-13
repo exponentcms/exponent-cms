@@ -33,22 +33,29 @@
 
 		<script type="text/javascript" src="<?PHP echo PATH_RELATIVE ?>exponent.js2.php"></script>
   		<script type="text/javascript">
-
+			// Helper function to get parameters from the url
 			function getUrlParam(paramName) {
+				var pathArray = window.location.pathname.split( '/' );
                 if (paramName == 'update' || paramName == 'filter') {
-                   // need to parse sef url also
-                    var pathArray = window.location.pathname.split( '/' );
                     if (paramName == 'update') {
                         var parmu = pathArray.indexOf('update');
-                        if (parmu > 0) return pathArray[parmu+1];
-                    } else if (paramName == 'filter') {
+                        if (parmu > 0) 
+							return pathArray[parmu+1];
+                    } else if (paramName == 'filter') {  //fixme we never get here?
                         var parmf = pathArray.indexOf('filter');
-                        if (parmf > 0) return pathArray[parmf+1];
+                        if (parmf > 0) 
+							return pathArray[parmf+1];
                     }
                 }
-				var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-				var match = window.location.search.match(reParam) ;
-				return (match && match.length > 1) ? match[1] : '' ;
+				if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
+					var parm = pathArray.indexOf(paramName);
+					if (parm > 0)
+						return pathArray[parm+1];
+				} else {
+					var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+					var match = window.location.search.match(reParam) ;
+					return (match && match.length > 1) ? match[1] : '' ;
+				}
 			}
 			
 			function onPageSelect(section, text, title) {
@@ -105,6 +112,7 @@
             function openFileManager() {
                 var update = getUrlParam('update');
                 if (typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
+				window.resizeTo(<?PHP echo FM_WIDTH ?>, <?PHP echo FM_HEIGHT ?>);
                 if (update == 'ck') {
                     var funcNum = getUrlParam('CKEditorFuncNum');
                     var partNum = getUrlParam('CKEditor');
