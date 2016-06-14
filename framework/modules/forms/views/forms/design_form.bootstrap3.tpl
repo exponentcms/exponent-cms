@@ -86,7 +86,7 @@
         {br}{icon button=true class=reply link=$backlink text='Exit Forms Designer'|gettext}
     </p>
     <div id="trash" class="trash">
-        <strong>{'Trash Can'|gettext}</strong><br><br>
+        <strong>{'Trash Can'|gettext}</strong>{br}
         {img class="img-center" src="`$smarty.const.PATH_RELATIVE`framework/modules/recyclebin/assets/images/trashcan_full_large.png"}
     </div>
     <ul id="controls" class="controls">
