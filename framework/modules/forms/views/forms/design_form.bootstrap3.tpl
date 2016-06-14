@@ -302,6 +302,7 @@
                                         url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=build_control&ajax_action=1&style={/literal}{$style==1}{literal}',
                                         data: 'id=' + msg,
                                         success:function(msg) {
+                                            //fixme auto-reload form if a page control was moved instead of below?
                                             // get the (fake) control html and display it to the page
                                             $(evt.item).replaceWith(msg);  //  add control to the displayed form
                                             $('#abc123 .delete').attr('onClick', '');
@@ -337,6 +338,9 @@
                 evt.preventDefault();
             },
             onEnd: function (evt) {  // control was moved to new rank
+                //fixme the first new 'page' control will always be given a rank of '1'
+                //fixme ...AND if there are any 'page' controls, there MUST be one ranked 1
+                //fixme ...this is handled in the model automatically, we just need to reflect it dynamically
                 if (evt.oldIndex != evt.newIndex && evt.newIndex != undefined) {
                     // we need to rerank the controls by calling formsController->rerank_control()
                     $.ajax({
@@ -344,6 +348,7 @@
                         headers: { 'X-Transaction': 'Rerank Form Control'},
                         url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=rerank_control&ajax_action=1',
                         data: 'id=' + evt.item.id + '&rank=' + (evt.newIndex + 1),
+                        //fixme auto-reload form if a page control was moved?
                     });
                 }
             },
