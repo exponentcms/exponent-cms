@@ -160,16 +160,16 @@ if (!function_exists('smarty_function_ddrerank')) {
             }
             echo $html;
 
-            $script = "
-                $(document).ready(function(){
-                  $('#listToOrder" . $uniqueid . "').sortable();
-            ";
-            if ($model == 'container') {  // must move modal off of menu to display
-                $script .= "$('#panel" . $uniqueid . "').appendTo('body');";
-            }
-            $script .="
-                });
-            ";
+//            $script = "
+//                $(document).ready(function(){
+//                  $('#listToOrder" . $uniqueid . "').sortable();
+//            ";
+//            if ($model == 'container') {  // must move modal off of menu to display
+//                $script .= "$('#panel" . $uniqueid . "').appendTo('body');";
+//            }
+//            $script .="
+//                });
+//            ";
             $script = "
                 $(document).ready(function(){
                   new Sortable(document.getElementById('listToOrder" . $uniqueid . "'));

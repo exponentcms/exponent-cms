@@ -27,6 +27,7 @@ class forms_control extends expRecord {
 //        'forms'
 //    );
     public $default_sort_field = 'rank';
+    public $rank_was_changed = false;
 
 
 //    protected $attachable_item_types = array(
@@ -86,27 +87,40 @@ class forms_control extends expRecord {
 
     public function beforeSave() {
         $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        // this is where item ranks are set/calculated/updated
         parent::beforeSave();
     }
 
-    public function afterSave() {
+    public function afterSave()
+    {
         global $db;
 
-        $this->grouping_sql = " AND forms_id='".$this->forms_id."'";
+        $this->grouping_sql = " AND forms_id='" . $this->forms_id . "'";
         parent::afterSave();
-        $pager = $this->find('first',"forms_id='".$this->forms_id."' AND data LIKE '%pagecontrol%'",'rank');
-        // if we have a pagecontrol and it's not rank=1, move it to the top
-        if (!empty($pager) && $pager->rank != 1) {
-            // increment everything below it.
-//            $obj = $db->selectObject($this->tablename, 'rank<' . $pager->rank . $this->grouping_sql);
-//            if (!empty($obj)) {
-            $db->increment($this->tablename, 'rank', 1, 'rank<' . $pager->rank . $this->grouping_sql);
-//            }
-            $pager->rank = 1;
-            $pager->save();
+        //first page control MUST be the first control (rank = 1)
+        $pager = $this->find('first', "forms_id='" . $this->forms_id . "' AND data LIKE '%pagecontrol%'", 'rank');
+        // if we have at least one pagecontrol and it's not rank=1, move it to the top
+        if (!empty($pager)) {
+             if ($pager->rank != 1) {
+                // increment all other controls below it
+                $db->increment($this->tablename, 'rank', 1, 'rank<' . $pager->rank . $this->grouping_sql);
+                 // change first pagecontrol rank to 1
+                $pager->rank = 1;
+                $pager->save();
+            } elseif ($this->find('count', "forms_id='" . $this->forms_id . "' AND rank = 1") > 1) {
+                 $db->increment($this->tablename, 'rank', 1, 'rank>=' . $pager->rank . $this->grouping_sql);
+                 $pager->rank = 1;
+                 $pager->save();
+            }
         }
     }
 
+    public function rerank_control($newrank) {
+        global $db;
+
+        $db->switchValues($this->tablename, 'rank', $newrank, $this->rank, "forms_id='" . $this->forms_id . "'");
+    }
+    
 }
 
 ?>

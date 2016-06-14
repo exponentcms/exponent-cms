@@ -1,0 +1,59 @@
+//form and control indicators (grid)
+.forms.design-form .form-wrapper {
+	border: 2px dashed lightgrey;
+	padding: 1em;
+}
+
+.forms.design-form .formmoduleedit.item {
+	border: 1px dashed lightgrey;
+	border-radius: 8px;
+	padding: 1em;
+}
+
+//form control initially hidden on input
+.forms.design-form .formmoduleedit.item.ishidden {
+	background-color: lightgray;
+}
+
+//form control wizard/page-break
+.forms.design-form .formmoduleedit.item.ispaged {
+	background-color: #99d2ea;
+}
+
+//form and control indicators (NO grid)
+.forms.design-form .form-wrapper.clean,
+.forms.design-form .formmoduleedit.item.clean {
+	border: none;
+	padding: inherit;
+}
+
+.forms.design-form .formmoduleedit.item.ishidden.clean {
+	opacity: 0.3;
+	padding-left: 4px;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean {
+	text-align: center;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean label {
+	padding-left: 6px;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean fieldset {
+	display: none;
+}
+
+//floating command buttons
+.formmoduleedit.item .item-actions {
+	position: absolute;
+	display: none;
+	margin-top: -8px;
+	//margin-left: 96px;
+	float: left;
+}
+
+.formmoduleedit.item:hover .item-actions,
+.formmoduleedit.item .item-actions a {
+	display: inline-block;
+}

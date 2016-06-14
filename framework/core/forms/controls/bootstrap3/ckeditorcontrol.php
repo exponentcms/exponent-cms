@@ -154,7 +154,8 @@ class ckeditorcontrol extends formcontrol {
         $content = "
             $(document).ready(function(){
                 if(typeof(EXPONENT.editor" . createValidId($name) . ") !== 'undefined'){
-                    return true;
+                    delete CKEDITOR.instances['editor" . createValidId($name) . "'];
+//                    return true;
                 };
                 EXPONENT.editor" . createValidId($name) . " = CKEDITOR.replace('" . createValidId($name) . "', {
                     skin : '" . $skin . "',

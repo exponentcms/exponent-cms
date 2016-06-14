@@ -946,6 +946,8 @@ class formsController extends expController {
 
             $form = new fakeform();
             $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
+            if (isset($this->params['style']))
+                $form->horizontal = $this->params['style'];
             foreach ($controls as $c) {
                 $ctl = expUnserialize($c->data);
                 $ctl->_id = $c->id;
@@ -958,7 +960,8 @@ class formsController extends expController {
             $types[".break"] = gt('Static - Spacer');
             $types[".line"] = gt('Static - Horizontal Line');
             uasort($types, "strnatcmp");
-            array_unshift($types, '[' . gt('Please Select' . ']'));
+            if (!bs3())
+                array_unshift($types, '[' . gt('Please Select' . ']'));
 
             $forms_list = array();
             $forms = $f->find('all', 1);
@@ -972,6 +975,7 @@ class formsController extends expController {
                 'form_html'  => $form->toHTML($f->id),
                 'backlink'   => expHistory::getLastNotEditable(),
                 'types'      => $types,
+                'style'      => $form->horizontal
             ));
         }
     }
@@ -998,6 +1002,8 @@ class formsController extends expController {
                 $htmlctl = new htmlcontrol();
                 $htmlctl->identifier = uniqid("");
                 $htmlctl->caption = "";
+                if (!empty($this->params['rank']))
+                    $htmlctl->rank = $this->params['rank'];
                 switch ($this->params['control_type']) {
                     case ".break":
                         $htmlctl->html = "<br />";
@@ -1012,8 +1018,17 @@ class formsController extends expController {
                 $ctl->data = serialize($htmlctl);
                 $ctl->forms_id = $f->id;
                 $ctl->is_readonly = 1;
+                if (!empty($this->params['rank']))
+                    $ctl->rank = $this->params['rank'];
                 $ctl->update();
-                expHistory::returnTo('editable');
+                if (!expJavascript::inAjaxAction())
+                    expHistory::returnTo('editable');
+                else { // we need a graceful exit for inAjaxAction
+                    assign_to_template(array(
+                        'form_html' => ucfirst(substr($this->params['control_type'],1)) . ' ' . gt('control was added to form') . '<input type="hidden" name="staticcontrol" id="'.$ctl->id.'" />',
+                        'type'      => 'static',
+                    ));
+                }
             } else {
                 $control_type = "";
                 $ctl = null;
@@ -1086,6 +1101,8 @@ class formsController extends expController {
             } else {
                 $ctl1 = call_user_func(array($this->params['control_type'], 'update'), $this->params, $ctl1);
             }
+            if (!empty($this->params['rank']))
+                $ctl1->rank = $this->params['rank'];
 
             //lets make sure the name submitted by the user is not a duplicate. if so we will fail back to the form
             if (!empty($control->id)) {
@@ -1116,6 +1133,8 @@ class formsController extends expController {
                     if (!empty($ctl1->pattern)) $ctl1->pattern = addslashes($ctl1->pattern);
                     $control->data = serialize($ctl1);
 
+                    if (!empty($this->params['rank']))
+                        $control->rank = $this->params['rank'];
                     if (!empty($control->id)) {
                         $control->update();
                     } else {
@@ -1131,7 +1150,11 @@ class formsController extends expController {
                 }
             }
         }
-        expHistory::returnTo('editable');
+        if (!expJavascript::inAjaxAction())
+            expHistory::returnTo('editable');
+        else {
+            echo $control->id;
+        }
     }
 
     public function delete_control() {
@@ -1144,7 +1167,37 @@ class formsController extends expController {
             $f = new forms($ctl->forms_id);
             $ctl->delete();
             $f->updateTable();
-            expHistory::returnTo('editable');
+            if (!expJavascript::inAjaxAction())
+                expHistory::returnTo('editable');
+        }
+    }
+
+    public function rerank_control() {
+        if (!empty($this->params['id'])) {
+            $fc = new forms_control($this->params['id']);
+            $fc->rerank_control($this->params['rank']);
+            // if we reranked a pagecontrol, we need to check/auto-correct the rank if needed
+            $fc->update(array('rank'=>$this->params['rank']));  // force auto-validation of ranks
+        }
+    }
+
+    /**
+     * Output a single control to an ajax request
+     */
+    public function build_control() {
+        if (!empty($this->params['id'])) {
+            $control = new forms_control($this->params['id']);
+            $form = new fakeform();
+            $form->horizontal = !empty($this->config['style']) ? $this->config['style'] : false;
+            $ctl = expUnserialize($control->data);
+            $ctl->_id = $control->id;
+            $ctl->_readonly = $control->is_readonly;
+            $ctl->_controltype = get_class($ctl);
+            if (isset($this->params['style']))
+                $form->horizontal = $this->params['style'];
+            $form->register($control->name, $control->caption, $ctl);
+            $form->style_form();
+            echo $form->controlToHTML($control->name);
         }
     }
 

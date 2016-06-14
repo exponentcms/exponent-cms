@@ -20,16 +20,16 @@
 
     <tr class="daysoftheweek">
         {if $smarty.const.DISPLAY_START_OF_WEEK == 0}
-        <th scope="col" abbr="{'Sun'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
+        <th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}">{$daynames.short.0}</th>
         {/if}
-        <th scope="col" abbr="{'Mon'|gettext}" title="{'Monday'|gettext}">{'M'|gettext}</th>
-        <th scope="col" abbr="{'Tue'|gettext}" title="{'Tuesday'|gettext}">{'T'|gettext}</th>
-        <th scope="col" abbr="{'Wed'|gettext}" title="'Wednesday'|gettext}">{'W'|gettext}</th>
-        <th scope="col" abbr="{'Thu'|gettext}" title="{'Thursday'|gettext}">{'T'|gettext}</th>
-        <th scope="col" abbr="{'Fri'|gettext}" title="{'Friday'|gettext}">{'F'|gettext}</th>
-        <th scope="col" abbr="{'Sat'|gettext}" title="{'Saturday'|gettext}">{'S'|gettext}</th>
+        <th scope="col" abbr="{$daynames.med.1}" title="{$daynames.long.1}">{$daynames.short.1}</th>
+        <th scope="col" abbr="{$daynames.med.2}" title="{$daynames.long.2}">{$daynames.short.2}</th>
+        <th scope="col" abbr="{$daynames.med.3}" title="{$daynames.long.3}">{$daynames.short.3}</th>
+        <th scope="col" abbr="{$daynames.med.4}" title="{$daynames.long.4}">{$daynames.short.4}</th>
+        <th scope="col" abbr="{$daynames.med.5}" title="{$daynames.long.5}">{$daynames.short.5}</th>
+        <th scope="col" abbr="{$daynames.med.6}" title="{$daynames.long.6}">{$daynames.short.6}</th>
         {if $smarty.const.DISPLAY_START_OF_WEEK != 0}
-        <th scope="col" abbr="{'Sun'|gettext}" title="{'Sunday'|gettext}">{'S'|gettext}</th>
+        <th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}">{$daynames.short.0}</th>
         {/if}
     </tr>
     {foreach from=$monthly item=week key=weekid}

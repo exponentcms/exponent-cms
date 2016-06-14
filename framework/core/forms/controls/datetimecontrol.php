@@ -192,8 +192,8 @@ class datetimecontrol extends formcontrol {
         $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showdate", gt('Show Date'), new checkboxcontrol($object->showdate, false));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
-
-        $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
 

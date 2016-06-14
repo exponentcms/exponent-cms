@@ -458,7 +458,7 @@
         $input.attr('size', Math.max(this.inputSize, $input.val().length));
       }, self));
 
-      self.$container.on('keypress', 'input', $.proxy(function(event) {
+      self.$container.on('keyup', 'input', $.proxy(function(event) {
          var $input = $(event.target);
 
          if (self.$element.attr('disabled')) {
@@ -468,6 +468,11 @@
 
          var text = $input.val(),
          maxLengthReached = self.options.maxChars && text.length >= self.options.maxChars;
+
+        var character = text.slice(-1);
+        var code = character.charCodeAt(0);
+        event.which = code;
+        
          if (self.options.freeInput && (keyCombinationInList(event, self.options.confirmKeys) || maxLengthReached)) {
             // Only attempt to add a tag if there is data in the field
             if (text.length !== 0) {
@@ -515,7 +520,7 @@
       var self = this;
 
       // Unbind events
-      self.$container.off('keypress', 'input');
+      self.$container.off('keyup', 'input');
       self.$container.off('click', '[role=remove]');
 
       self.$container.remove();

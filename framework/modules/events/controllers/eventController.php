@@ -79,6 +79,7 @@ class eventController extends expController {
         $time = (isset($this->params['time']) ? $this->params['time'] : time());
         assign_to_template(array(
             'time' => $time,
+            'daynames' => event::dayNames(),
         ));
 
         $regcolor = !empty($this->config['registrations_color']) ? $this->config['registrations_color'] : null;
@@ -237,7 +238,8 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($startperiod, $next);
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($startperiod, $next, $regcolor);
+                if (!empty($this->config['aggregate_registrations'])) 
+                    $regitems = eventregistrationController::getRegEventsForDates($startperiod, $next, $regcolor);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
                     //                    switch ($viewrange) {
@@ -253,7 +255,8 @@ class eventController extends expController {
                     //                    }
                     $start = expDateTime::startOfDayTimestamp($startperiod + ($i * 86400) - 86400);
                     $edates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start));
-                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
+//                    $days[$start] = $this->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
+                    $days[$start] = $this->event->getEventsForDates($edates, true, isset($this->config['only_featured']) ? true : false);
                     //                    for ($j = 0; $j < count($days[$start]); $j++) {
                     //                        $thisloc = expCore::makeLocation($this->loc->mod,$this->loc->src,$days[$start][$j]->id);
                     //                        $days[$start][$j]->permissions = array(
@@ -306,12 +309,14 @@ class eventController extends expController {
                 // Grab day counts
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
+                if (!empty($this->config['aggregate_registrations'])) 
+                    $regitems = eventregistrationController::getRegEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
                     if ($i == $nowinfo['mday']) $currentweek = $week;
                     $dates = $ed->find("all", $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
-                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
+//                    $monthly[$week][$i] = $this->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
+                    $monthly[$week][$i] = $this->event->getEventsForDates($dates, true, isset($this->config['only_featured']) ? true : false);
                     if (!empty($extitems[$start]))
                         $monthly[$week][$i] = array_merge($extitems[$start], $monthly[$week][$i]);
                     if (!empty($regitems[$start]))
@@ -355,7 +360,8 @@ class eventController extends expController {
                     expPermissions::check("delete", $this->loc)
                 ) ? 1 : 0;
                 $dates = $ed->find("all", $locsql . " AND date >= " . expDateTime::startOfDayTimestamp(time()));
-                $items = $this->getEventsForDates($dates);
+//                $items = $this->getEventsForDates($dates);
+                $items = $this->event->getEventsForDates($dates);
                 //                if (!$continue) {
                 //                    foreach ($items as $i) {
                 //                        $iloc = expCore::makeLocation($this->loc->mod,$this->loc->src,$i->id);
@@ -435,7 +441,8 @@ class eventController extends expController {
                         $begin = null;
                         $end = null;
                 }
-                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
+//                $items = $this->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
+                $items = $this->event->getEventsForDates($dates, $sort_asc, isset($this->config['only_featured']) ? true : false, true);
                 if ($viewrange != 'past') {
                     $extitems = $this->getExternalEvents($begin, $end);
                     // we need to flatten these down to simple array of events
@@ -450,6 +457,7 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $extitem);
+                    
                     if (!empty($this->config['aggregate_registrations']))
                         $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                     // we need to flatten these down to simple array of events
@@ -460,6 +468,7 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $regitem);
+                    
                     if ($viewtype == 'default' && $viewrange == 'upcoming') {
                         foreach ($items as $key=>$item) {
                             if ($item->eventend < time()) {
@@ -834,7 +843,8 @@ class eventController extends expController {
                 }
                 $msg .= "X-WR-CALNAME:$Filename\n";
 
-                $items = $this->getEventsForDates($dates);
+//                $items = $this->getEventsForDates($dates);
+                $items = $this->event->getEventsForDates($dates);
 
                 for ($i = 0, $iMax = count($items); $i < $iMax; $i++) {
 
@@ -986,7 +996,8 @@ class eventController extends expController {
                 $ed = new eventdate();
                 $edates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfDayTimestamp($start) . " AND date <= " . expDateTime::endOfDayTimestamp($start) . ")");
                 $days[$start] = array();
-                $days[$start] = self::getEventsForDates($edates);
+//                $days[$start] = $this->getEventsForDates($edates);
+                $days[$start] = $this->event->getEventsForDates($edates);
                 for ($j = 0, $jMax = count($days[$start]); $j < $jMax; $j++) {
                     $thisloc = expCore::makeLocation($loc->mod, $loc->src, $days[$start][$j]->id);
                     $days[$start][$j]->permissions = array(
@@ -1073,6 +1084,13 @@ class eventController extends expController {
         }
     }
 
+    /** @deprecated moved to event model
+     * @param $edates
+     * @param bool $sort_asc
+     * @param bool $featuredonly
+     * @param bool $condense
+     * @return array
+     */
     function getEventsForDates($edates, $sort_asc = true, $featuredonly = false, $condense = false) {
         global $eventid;
 
@@ -1705,7 +1723,7 @@ class eventController extends expController {
         flashAndFlow('message', $count . ' ' . gt('events were imported.'));
     }
 
-    /**
+    /** @deprecated
      * function to build a control requested via ajax
      * we the html just like the control smarty function
      * @deprecated

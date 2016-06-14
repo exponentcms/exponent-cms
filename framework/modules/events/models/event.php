@@ -65,6 +65,8 @@ class event extends expRecord {
 //                $begin = $day;
 //                $end = null;
                 $items = $this->getEventsForDates($dates, $sort_asc, $order ? true : false, true);
+                
+                // external events
 //                $extitems = $this->getExternalEvents($begin, $end);
                 // we need to crunch these down
 //                $extitem = array();
@@ -76,6 +78,8 @@ class event extends expRecord {
 //                    }
 //                }
 //                $items = array_merge($items, $extitem);
+                
+                // event registration events
 //                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                 // we need to crunch these down
 //                $regitem = array();
@@ -85,6 +89,7 @@ class event extends expRecord {
 //                    }
 //                }
 //                $items = array_merge($items, $regitem);
+                
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
                 return $items;
             }
@@ -231,6 +236,16 @@ class event extends expRecord {
         }
     }
 
+    public static function dayNames() {
+        $days = array();
+        for ($i=0; $i < 7; $i++) {
+            $days['short'][$i] = substr(strftime("%a", mktime(0, 0, 0, 6, $i+2, 2013)), 0, 1);
+            $days['med'][$i] = strftime("%a", mktime(0, 0, 0, 6, $i+2, 2013));
+            $days['long'][$i] = strftime('%A ', mktime(0, 0, 0, 6, $i+2, 2013));
+        }
+        return $days;
+    }
+    
 }
 
 ?>

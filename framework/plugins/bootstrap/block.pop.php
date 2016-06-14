@@ -80,7 +80,6 @@ function smarty_block_pop($params,$content,&$smarty, &$repeat) {
                         buttons: {'".$params['buttons']."': true},
                         submit: function(e,v,m,f){
                             // use e.preventDefault() to prevent closing when needed or return false.
-                            //e.preventDefault();
                         }
                     });
                 });

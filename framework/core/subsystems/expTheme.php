@@ -347,6 +347,9 @@ class expTheme
 
             // canvas support for IE 6-8
 //            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
+
+            // turn off ie compatibility mode which will break the display
+//            $str .= "\t" . '<meta http-equiv="X-UA-Compatible" content="IE=edge"' . XHTML_CLOSING . '>' . "\n";
         }
 
         return $str;

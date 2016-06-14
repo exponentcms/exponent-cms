@@ -91,6 +91,7 @@
             actionpicker.on('change', function() {
                 viewpicker.removeAttr('disabled');
                 $.ajax({
+                    headers: { 'X-Transaction': 'Getting Action Views'},
                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=container&action=getactionviews&ajax_action=1&mod={/literal}{$container->internal->mod}{literal}' + '&act=' + actionpicker.val() + '&actname=' + actionpicker.val(),
                     success: function(o){
                         var opts = $.parseJSON(o);
@@ -106,6 +107,7 @@
                         viewpicker.val(0);
 
                         $.ajax({
+                            headers: { 'X-Transaction': 'Getting View Configs'},
                             url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + viewpicker.val(),
                             success: handleSuccessView
                         });
@@ -118,6 +120,7 @@
             viewpicker.on('change', function (e) {
                 if (e.target.value != 0) {
                     $.ajax({
+                        headers: { 'X-Transaction': 'Getting View Configs'},
                         url: EXPONENT.PATH_RELATIVE + "index.php?controller=file&action=get_module_view_config&ajax_action=1&mod={/literal}{$controller}{literal}&view=" + e.target.value,
                         success: handleSuccessView
                     });

@@ -419,7 +419,7 @@ class storeController extends expController {
                 // eDebug($event->signup_cutoff, true);
             }
 
-            $monthly[$week][$i] = self::getEventsForDates($dates);
+            $monthly[$week][$i] = $this->getEventsForDates($dates);
             $counts[$week][$i] = count($monthly[$week][$i]);
             if ($weekday >= (6 + DISPLAY_START_OF_WEEK)) {
                 $week++;
@@ -447,7 +447,8 @@ class storeController extends expController {
             "nextmonth3"  => strtotime('+3 months', $timefirst),
             'now'         => $timefirst,
             "today"       => expDateTime::startOfDayTimestamp(time()),
-            'params'      => $this->params
+            'params'      => $this->params,
+            'daynames'    => event::dayNames(),
         ));
     }
 

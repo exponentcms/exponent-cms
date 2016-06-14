@@ -2,6 +2,7 @@
 	if (typeof WSDEBUG === 'undefined') {
 		window.WSDEBUG = true;
 	}
+	window.WSDEBUG = false; //exp using dev instead of minified at this point
 	var addAsync = function(){
 		if(!window.asyncWebshims){
 			window.asyncWebshims = {
@@ -128,9 +129,20 @@
 		support.ES5 = false;
 	}
 
-
 	path = ($.support.hrefNormalized === false) ? webshims._curScript.getAttribute("src", 4) : webshims._curScript.src;
-	path = path.split('?')[0].slice(0, path.lastIndexOf("/") + 1) + 'shims/';
+	if (path.indexOf('minify/min') > -1) {  //exp we were loaded by minify
+		var t1 = path.split(',');
+		var t2 = t1[0].split('?');
+		var t3 = t1.filter(function(t1){ // find array element of 'webshim'
+		  if(t1) {
+		      return t1.indexOf("webshim") >= 0;
+		  }
+		});
+		var t4 = t3[0].slice(0, t3[0].lastIndexOf("/") + 1);
+		path = t2[0] + '?f=' + t4 + 'shims/';
+	} else {
+		path = path.split('?')[0].slice(0, path.lastIndexOf("/") + 1) + 'shims/';
+	}
 
 	function create(name){
 		return document.createElement(name);
@@ -227,7 +239,7 @@
 					}
 				}
 				if(webCFG.loadStyles){
-					loader.loadCSS('styles/shim'+(needExtStyles ? '-ext' : '')+'.css');
+					loader.loadCSS(path+'styles/shim'+(needExtStyles ? '-ext' : '')+'.css');  //exp force full path
 				}
 			}
 

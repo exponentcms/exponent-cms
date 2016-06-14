@@ -92,22 +92,13 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
 
         var batchIDs = {};
 
+        // Helper function to get parameters from the url
         function getUrlParam(paramName) {
-            // need to parse sef url also
             var pathArray = window.location.pathname.split( '/' );
-            if (paramName == 'update' || paramName == 'filter') {
-                if (paramName == 'update') {
-                    var parmu = pathArray.indexOf('update');
-                    if (parmu > 0) return pathArray[parmu+1];
-                } else if (paramName == 'filter') {
-                    var parmf = pathArray.indexOf('filter');
-                    if (parmf > 0) return pathArray[parmf+1];
-                }
-            }
-        var tmp=pathArray.indexOf(paramName);
             if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
-                var parmf = pathArray.indexOf(paramName);
-                if (parmf > 0) return pathArray[parmf+1];
+                var parm = pathArray.indexOf(paramName);
+                if (parm > 0)
+                    return pathArray[parm+1];
             } else {
                 var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
                 var match = window.location.search.match(reParam) ;

@@ -145,5 +145,13 @@ function adminer_object() {
 }
 
 // include original Adminer or Adminer Editor
-include "./adminer-4.2.4-mysql.php";
+include "./adminer-4.2.5-mysql.php";
+
+if (SITE_WYSIWYG_EDITOR != 'tinymce') {
+?>
+    <script type='text/javascript'>
+        CKEDITOR.disableAutoInline = true;
+    </script>
+<?php
+}
 ?>

@@ -52,6 +52,8 @@ EXPONENT.YUI3_CONFIG = {
         'searchExp': "&([2-3])",
         'replaceStr': ",$1"
     },
+    comboSep: ',',
+    root: EXPONENT.YUI3_VERSION + '/build/',
     modules: {},
     groups: {
         yui2: {

@@ -62,13 +62,13 @@ class pagecontrol extends formcontrol {
     function toHTML($label,$name) {
         $caption = !empty($this->caption) ? $this->caption : str_replace(array(":","*"), "", ucwords($label));
         $description = !empty($this->description) ? $this->description : $caption;
-        $html  = '<fieldset '.($this->horizontal&&bs3()&&$this->design_time?'class="col-sm-offset-2 col-sm-10" ':'').'title="'.$caption.'">
+        $html  = '<fieldset '.($this->horizontal&&bs3()&&$this->design_time?'class="col-sm-10" ':'').'title="'.$caption.'">
                   <legend>'.$description.'</legend>';
         return $html;
 	}
 
     function controlToHTML($name, $label) {
-        $html = "<label class=\"".(bs3()?"control-label":"label").($this->horizontal&&bs3()&&$this->design_time?' col-sm-2':'')."\">".gt('Page Break').' - '.$label."</label>";
+        $html = "<label class=\"".(bs3()?"control-label":"label").($this->horizontal&&bs3()&&$this->design_time?' col-sm-2':'')."\">".$label."</label>";
         $html .= $this->toHTML($name, $label);
         return $html . '</fieldset>';
     }
@@ -117,7 +117,8 @@ class pagecontrol extends formcontrol {
 //        $form->register("size",gt('Size'), new textcontrol((($object->size==0)?"":$object->size),4,false,3,"integer"));
 //        $form->register("maxlength",gt('Maximum Length'), new textcontrol((($object->maxlength==0)?"":$object->maxlength),4,false,3,"integer"));
 //        $form->register("required", gt('Make this a required field.'), new checkboxcontrol($object->required,false));
-        $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
 

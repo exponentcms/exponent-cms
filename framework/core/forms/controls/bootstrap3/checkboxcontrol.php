@@ -150,6 +150,10 @@ class checkboxcontrol extends formcontrol {
         return $html;
     }
 
+    function controlToHTML_newschool($name, $label) {
+        return $this->controlToHTML($name, $label);
+    }
+    
     static function parseData($name, $values, $for_db = false) {
         return isset($values[$name]) ? 1 : 0;
     }
@@ -186,7 +190,8 @@ class checkboxcontrol extends formcontrol {
         $form->register("flip", "Caption on Left", new checkboxcontrol($object->flip, false));
         $form->register("required", gt('Make this a required field'), new checkboxcontrol($object->required, false));
         $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
-        $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), '', gt('Cancel'), "", 'editable'));
 
         return $form;
     }

@@ -1,0 +1,140 @@
+//form and control indicators (grid)
+.forms.design-form .form-wrapper {
+	border: 2px dashed lightgrey;
+	padding: 1em;
+}
+
+.forms.design-form .formmoduleedit.item {
+	border: 1px dashed lightgrey;
+	border-radius: 8px;
+	padding: 1em;
+}
+
+//form control initially hidden on input
+.forms.design-form .formmoduleedit.item.ishidden {
+	background-color: lightgray;
+}
+
+//form control wizard/page-break
+.forms.design-form .formmoduleedit.item.ispaged {
+	background-color: #99d2ea;
+}
+
+//form and control indicators (NO grid)
+.forms.design-form .form-wrapper.clean,
+.forms.design-form .formmoduleedit.item.clean {
+	border: none;
+	padding: inherit;
+}
+
+.forms.design-form .formmoduleedit.item.ishidden.clean {
+	opacity: 0.3;
+	padding-left: 4px;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean {
+	text-align: center;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean label {
+	padding-left: 6px;
+}
+
+.forms.design-form .formmoduleedit.item.ispaged.clean fieldset {
+	display: none;
+}
+
+//floating command buttons
+.formmoduleedit.item .item-actions {
+	position: absolute;
+	display: none;
+	margin-top: -8px;
+	//margin-left: 96px;
+	float: left;
+	z-index: 999;
+}
+
+.formmoduleedit.item:hover .item-actions,
+.formmoduleedit.item .item-actions a {
+	display: inline-block;
+}
+
+//this is for dragging controls already on the form
+#abc123 .formmoduleedit.control {
+	cursor: move;
+	cursor: -webkit-grabbing;
+	margin-bottom: 5px;
+}
+
+//this is for new controls dropped in the form
+#abc123 li {
+	list-style: none;
+	text-align: center;
+	font-weight: bold;
+	padding: 20px;
+}
+
+//this is this the holder for the list of controls
+ul#controls.controls {
+	border: 1px solid black;
+	max-height: 85%;
+	max-width: 40%;
+	top: 118px;
+	right: 20px;
+	position: fixed;
+	border-radius: 4px;
+	z-index: 1030;
+	background-color: #484848;
+	color: white;
+	list-style: none;
+	padding: 0;
+	overflow-y: auto;
+	text-align: center;
+}
+
+//this is this the list of controls
+ul#controls.controls li {
+	border: 1px solid black;
+	border-radius: 4px;
+	background: #b66e19;
+	margin: 1px;
+	padding: 4px;
+	cursor: move;
+	cursor: -webkit-grabbing;
+}
+
+ul#controls.controls li:hover {
+	background: #804619;
+}
+
+//this is the trash bin
+div#trash.trash {
+	height: 64px;
+	max-width: 50%;
+	padding: 4px;
+	border: 1px solid black;
+	top: 52px;
+	right: 20px;
+	position: fixed;
+	border-radius: 4px;
+	z-index: 1030;
+	background-color: #d9534f;
+	text-align: center;
+}
+
+//attempt to make usable on small devices
+@media screen and (max-width: 500px) {
+	div#trash.trash {
+		right: 30px;
+	}
+
+	ul#controls.controls {
+		max-height: 70%;
+		right: 2px;
+		-webkit-overflow-scrolling:touch; /* So iOS Safari gets the inertia & rubber-band effect */
+	}
+
+	ul#controls.controls li {
+		margin-right: 25px;
+	}
+}

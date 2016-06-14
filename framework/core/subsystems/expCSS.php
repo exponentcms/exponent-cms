@@ -129,18 +129,18 @@ class expCSS {
 		    echo "<div class=\"io-execute-response\">";
             if (!empty($css_core)){
                 foreach ($css_core as $path) {
-                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">';
+                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">' . "\r\n";
                 }
             }
             if (!empty($css_links)) {
                 foreach ($css_links as $link) {
-                    echo '<link rel="stylesheet" type="text/css" href="',$link,'">';
+                    echo '<link rel="stylesheet" type="text/css" href="',$link,'">' . "\r\n";
                 }
             }
             if (!empty($params['css'])) {
                 echo '<style type="text/css">';
                 echo trim($params['css']);
-                echo '</style>' . "\n";
+                echo '</style>' . "\r\n";
             }
 		    echo "</div>";
             return true;
@@ -455,7 +455,7 @@ class expCSS {
                         $cache = BASE . $less_pname;
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                            if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {
                                 $cache = BASE . $less_pname;  // force a compile if the vars have changed
                             }
                         }
@@ -563,7 +563,7 @@ class expCSS {
                         $cache = BASE . $scss_pname;
                         if (file_exists($cache_fname)) {
                             $cache = unserialize(file_get_contents($cache_fname));
-                            if (!empty($cache['vars']) && $vars != $cache['vars']) {
+                            if (!empty($cache['vars']) && $vars != $cache['vars'] && !expJavascript::inAjaxAction()) {
                                 $cache = BASE . $scss_pname;  // force a compile if the vars have changed
                             }
                         }

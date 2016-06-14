@@ -9,22 +9,29 @@ elFinder.prototype.commands.links = function() {
 	this.updateOnSelect = false;
 
 	this.getstate = function() {
+        // Helper function to get parameters from the url
         var getUrlParam = function(paramName) {
+            var pathArray = window.location.pathname.split( '/' );
             if (paramName == 'update' || paramName == 'filter') {
-               // need to parse sef url
-                var pathArray = window.location.pathname.split( '/' );
                 if (paramName == 'update') {
                     var parmu = pathArray.indexOf('update');
-                    if (parmu > 0) return pathArray[parmu+1];
+                    if (parmu > 0)
+                        return pathArray[parmu+1];
                 } else if (paramName == 'filter') {
                     var parmf = pathArray.indexOf('filter');
-                    if (parmf > 0) return pathArray[parmf+1];
+                    if (parmf > 0)
+                        return pathArray[parmf+1];
                 }
             }
-            // parse non - sef url
-            var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-            var match = window.location.search.match(reParam) ;
-            return (match && match.length > 1) ? match[1] : '' ;
+            if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
+                var parm = pathArray.indexOf(paramName);
+                if (parm > 0)
+                    return pathArray[parm+1];
+            } else {
+                var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+                var match = window.location.search.match(reParam) ;
+                return (match && match.length > 1) ? match[1] : '' ;
+            }
         };
         var update = getUrlParam('update');
         var filter = getUrlParam('filter');
@@ -34,32 +41,41 @@ elFinder.prototype.commands.links = function() {
         } else {
             return -1;  // icon disabled
         }
-	}
+	};
 	
 	this.exec = function() {
         var fm    = this.fm,
       		dfrd  = $.Deferred().fail(function(error) { error && fm.error(error); }),
 
+            // Helper function to get parameters from the url
             getUrlParam = function(paramName) {
+                var pathArray = window.location.pathname.split( '/' );
                 if (paramName == 'update' || paramName == 'filter') {
-                   // need to parse sef url also
-                    var pathArray = window.location.pathname.split( '/' );
                     if (paramName == 'update') {
                         var parmu = pathArray.indexOf('update');
-                        if (parmu > 0) return pathArray[parmu+1];
-                    } else if (paramName == 'filter') {
+                        if (parmu > 0)
+                            return pathArray[parmu+1];
+                    } else if (paramName == 'filter') {  //fixme we never get here?
                         var parmf = pathArray.indexOf('filter');
-                        if (parmf > 0) return pathArray[parmf+1];
+                        if (parmf > 0)
+                            return pathArray[parmf+1];
                     }
                 }
-                var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
-                var match = window.location.search.match(reParam) ;
-                return (match && match.length > 1) ? match[1] : '' ;
+                if (EXPONENT.SEF_URLS && pathArray.indexOf(paramName) != -1) {
+                    var parm = pathArray.indexOf(paramName);
+                    if (parm > 0)
+                        return pathArray[parm+1];
+                } else {
+                    var reParam = new RegExp('(?:[\?&]|&amp;)' + paramName + '=([^&]+)', 'i') ;
+                    var match = window.location.search.match(reParam) ;
+                    return (match && match.length > 1) ? match[1] : '' ;
+                }
             },
 
             openPageSelector = function() {
                 var update = getUrlParam('update');
                 if (typeof top.tinymce !== 'undefined' && top.tinymce !== null) update = 'tiny';
+                window.resizeTo(320, 600);
                 if (update == 'ck') {
                     var funcNum = getUrlParam('CKEditorFuncNum');
                     var partNum = getUrlParam('CKEditor');
@@ -69,11 +85,11 @@ elFinder.prototype.commands.links = function() {
                 } else {
                     return dfrd.reject('errLinks');
                 }
-            }
+            };
 
         openPageSelector();
 
         return dfrd.resolve();
 	}
 
-}
+};

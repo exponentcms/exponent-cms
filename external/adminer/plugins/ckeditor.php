@@ -78,6 +78,19 @@ CKEDITOR.replace('fields-" . js_escape($field["field"]) . "',{
         scayt_autoStartup : true,
         removePlugins : 'elementspath',
         resize_enabled : false,
+		filebrowserBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
+		filebrowserImageBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck", "filter"=> 'image')) . "',
+		filebrowserFlashBrowseUrl : '" . makelink(array("controller"=> "file", "action"=> "picker", "ajax_action"=> 1, "update"=> "ck")) . "',
+        filebrowserUploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader.php',
+        uploadUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/uploader_paste.php',
+		filebrowserWindowWidth : " . FM_WIDTH . ",
+		filebrowserWindowHeight : " . FM_HEIGHT . ",
+		filebrowserImageBrowseLinkUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
+		filebrowserLinkBrowseUrl : '" . PATH_RELATIVE . "framework/modules/file/connector/ckeditor_link.php?update=ck',
+		filebrowserLinkWindowWidth : 320,
+		filebrowserLinkWindowHeight : 600,
+		extraPlugins : 'autosave,tableresize,image2,uploadimage,quicktable,showborders',
+		removePlugins: 'image,forms,flash',
     });
 </script>";
 		}

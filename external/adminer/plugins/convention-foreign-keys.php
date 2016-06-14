@@ -17,6 +17,8 @@
                    } else {
                        $ret[] = array("table" => DB_TABLE_PREFIX . '_' . $args[1], "source" => array($field), "target" => array("id"));
                    }
+               } elseif(preg_match("~poster|editor~", $field, $args)) {
+                   $ret[] = array("table" => DB_TABLE_PREFIX . '_' . 'user', "source" => array($field), "target" => array("id"));
                }
            }
            return $ret;

@@ -173,6 +173,7 @@
                         "Yes": function() {
                             $.ajax({
                                 type: "POST",
+                                headers: { 'X-Transaction': 'Saving Text Item'},
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                                 success:function(msg) {
@@ -199,6 +200,7 @@
                         "No, Undo All Changes":  function() {
                             $.ajax({
                                 type: "POST",
+                                headers: { 'X-Transaction': 'Undoing Text Item'},
                                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                                 data: "id="+item[1] + "&type=revert",
                                 success:function(msg) {
@@ -222,6 +224,7 @@
             } else {
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Saving Text Item'},
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type="+item[0] + "&value="+encodeURIComponent(data),
                     success:function(msg) {
@@ -398,6 +401,7 @@
             event.preventDefault();
             $.ajax({
                 type: "POST",
+                headers: { 'X-Transaction': 'Adding Text Item'},
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id=0",
                 success:function(msg) {
@@ -435,6 +439,7 @@
             var item = ctrl.attr('id').split('-');
             $.ajax({
                 type: "POST",
+                headers: { 'X-Transaction': 'Adding Text Title'},
                 url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                 data: "id="+item[1] + "&type=title&value={/literal}{'title placeholder'|gettext|escape:'url'}{literal}",
                 success: function(msg) {
@@ -469,6 +474,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Deleting Text Item'},
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=delete_item&ajax_action=1&json=1&src="+src,
                     data: "id=" + item[1],
                     success: function(msg) {
@@ -493,6 +499,7 @@
                 var item = ctrl.attr('id').split('-');
                 $.ajax({
                     type: "POST",
+                    headers: { 'X-Transaction': 'Deleting Text Title'},
                     url: EXPONENT.PATH_RELATIVE+"index.php?controller=text&action=edit_item&ajax_action=1&json=1&src="+src,
                     data: "id="+item[1] + "&type=title",
                     success: function(msg) {

@@ -209,7 +209,8 @@ class yuicalendarcontrol extends formcontrol
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
-        $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
+        if (!expJavascript::inAjaxAction())
+            $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
         return $form;
     }
 
