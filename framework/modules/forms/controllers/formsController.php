@@ -1175,14 +1175,9 @@ class formsController extends expController {
     public function rerank_control() {
         if (!empty($this->params['id'])) {
             $fc = new forms_control($this->params['id']);
-            $old_rank = $fc->rank;
-            $new_rank = $this->params['rank'];
             $fc->rerank_control($this->params['rank']);
             // if we reranked a pagecontrol, we need to check/auto-correct the rank if needed
-//            $ctl = expUnserialize($fc->data);
-//            if (get_class($ctl) == 'pagecontrol') {
-                $fc->save();  // force auto-validation of ranks
-//            }
+            $fc->update(array('rank'=>$this->params['rank']));  // force auto-validation of ranks
         }
     }
 
