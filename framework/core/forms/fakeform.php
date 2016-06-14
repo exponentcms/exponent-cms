@@ -109,7 +109,7 @@ class fakeform extends form {
         global $router;
 
         $this->even = ($this->even=="odd") ? "even" : "odd";
-        $html = "<div id='".$this->controls[$name]->_id."' class=\"formmoduleedit item ".$this->even." control" . (!empty($this->controls[$name]->is_hidden)?' ishidden':'') . "\" >";
+        $html = "<div id='".$this->controls[$name]->_id."' class=\"formmoduleedit item ".$this->even." control" . (!empty($this->controls[$name]->is_hidden)?' ishidden':'') . ($this->controls[$name]->_controltype == 'pagecontrol'?' ispaged':'') . "\" >";
         if ($this->controls[$name]->horizontal&&bs3())
             $html .= '<div class="row">';
 
