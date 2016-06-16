@@ -109,7 +109,12 @@
             {$css = "themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/ckeditor_`$smarty.const.THEME_STYLE`.css"}
         {/if}
         {if is_file($smarty.const.BASE|cat:$css)}
-           {$contentCSS = "contentsCss : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+            {$contentCSS = "contentsCss : '`$smarty.const.PATH_RELATIVE|cat:$css`',"}
+        {/if}
+        {if is_file("`$smarty.const.BASE`themes/`$smarty.const.DISPLAY_THEME`/editors/ckeditor/config.js'")}
+            {$configjs = "customConfig : '`$smarty.const.PATH_RELATIVE`themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js',"}
+        {else}
+            {$configjs = ''}
         {/if}
     {elseif $smarty.const.SITE_WYSIWYG_EDITOR == "tinymce"}
         {script unique="tinymce" src="`$smarty.const.PATH_RELATIVE`external/editors/tinymce/tinymce.min.js"}
@@ -304,6 +309,7 @@
                 toolbarCanCollapse : true,
                 entities_additional : '',
                 {/literal}{$contentCSS}{literal}
+                {/literal}{$configjs}{literal}
                 stylesSet : {/literal}{$editor->stylesset}{literal},
                 format_tags : {/literal}{$editor->formattags}{literal},
                 font_names :
