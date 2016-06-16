@@ -966,7 +966,8 @@ class formsController extends expController {
             $forms_list = array();
             $forms = $f->find('all', 1);
             if (!empty($forms)) foreach ($forms as $frm) {
-                if ($frm->id != $f->id) $forms_list[$frm->id] = $frm->title;
+                if ($frm->id != $f->id)
+                    $forms_list[$frm->id] = $frm->title;
             }
 
             assign_to_template(array(

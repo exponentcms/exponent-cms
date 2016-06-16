@@ -221,6 +221,10 @@
                             data: 'id=' + id,
                             success:function(msg) {
                                 $(ctl).closest('.item').remove();  //  remove control from the displayed form
+                                // we need to check if there are any controls left on the abc123 form and if not add an empty item
+                                if ($('#abc123 .item').length == 0) {
+                                    $('<div class="item empty">&#160;</div>').appendTo('#abc123');
+                                }
                             }
                         });
                         dialog.close();
@@ -267,6 +271,8 @@
                                     // we then need to remove it from the display
                                     $(evt.item).replaceWith(msg);  //  add control to the displayed form
                                     $('#abc123 .delete').attr('onClick', '');
+                                    // we need to check if there is an empty item on the abc123 form and if so delete it
+                                    $('#abc123 .item.empty').remove();
                                 }
                             });
                             dialog.close();
@@ -318,6 +324,8 @@
                                             // get the (fake) control html and display it to the page
                                             $(evt.item).replaceWith(msg);  //  add control to the displayed form
                                             $('#abc123 .delete').attr('onClick', '');
+                                            // we need to check if there is an empty item on the abc123 form and if so delete it
+                                            $('#abc123 .item.empty').remove();
                                         }
                                     });
                                 }
@@ -406,6 +414,10 @@
                     success: function(o){
                         itemEl.remove();  //  we don't won't to show removed controls sitting in the trash can
                         //  control has already been removed from the displayed form
+                        // we need to check if there are any controls left on the abc123 form and if not add an empty item
+                        if ($('#abc123 .item').length == 0) {
+                            $('<div class="item empty">&#160;</div>').appendTo('#abc123');
+                        }
                     }
                 });
             },
