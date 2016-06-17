@@ -359,11 +359,11 @@ $opts = array(
             'driver'          => 'Exponent',
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
-            'dirMode'        => DIR_DEFAULT_MODE_STR,    // new dirs mode (default 0755)
-            'fileMode'       => FILE_DEFAULT_MODE_STR,   // new files mode (default 0644)
-            'detectDirIcon'  => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
-            'keepTimestamp'  => array('copy', 'move'),   // Keep timestamp at inner filesystem (elFinder >= 2.1.12) It allowed 'copy', 'move' and 'upload'.
-            // 'treeDeep'   => 3,
+//            'dirMode'         => (int)DIR_DEFAULT_MODE_STR,    // new dirs mode (default 0755)
+//            'fileMode'        => (int)FILE_DEFAULT_MODE_STR,   // new files mode (default 0644)
+            'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
+            'keepTimestamp'   => array('copy', 'move'),   // Keep timestamp at inner filesystem (elFinder >= 2.1.12) It allowed 'copy', 'move' and 'upload'.
+            // 'treeDeep'        => 3,
             'alias'           => 'files',
             'disabled'        => array('netmount'),
 //            'maxArcFilesSize' => 100,
@@ -377,10 +377,10 @@ $opts = array(
 //            'uploadMaxSize'   => '128m',
             // 'copyOverwrite' => false,
             'copyJoin'        => true,
-//            'mimeDetect' => 'internal',
+//            'mimeDetect'      => 'internal',
 //            'tmpPath'         => BASE . 'tmp',
             'tmbCrop'         => false,
-//            'imgLib' => 'gd',  // 'auto' doesn't seem to work on some servers
+//            'imgLib'          => 'gd',  // 'auto' doesn't seem to work on some servers
             'tmbPath'         => BASE . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder',
             'tmbURL'          => URL_FULL . 'tmp/elfinder/',
             'tmbPathMode'     => 0755,
@@ -389,7 +389,7 @@ $opts = array(
             'quarantine'      => '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder' . DIRECTORY_SEPARATOR . '.quarantine',
             'acceptedName'    => '/^[^\.].*$/',
             // 'acceptedName'    => '/^[\W]*$/',
-            // 'acceptedName' => 'validName',
+            // 'acceptedName'    => 'validName',
             'utf8fix'         => false,
 //            'statOwner'       => true,
             'attributes'      => array(
