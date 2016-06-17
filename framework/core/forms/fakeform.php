@@ -101,6 +101,9 @@ class fakeform extends form {
             $html .= $this->controlToHTML($name);
             $this->rank++;
 		}
+        if (empty($this->controlIdx)) {
+            $html .= '<div class="item empty">&#160;</div>';
+        }
 		$html .= "</form>\r\n";
 		return $html;
 	}

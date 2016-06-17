@@ -57,6 +57,13 @@ class ckeditorcontrol extends formcontrol {
         if (is_file(BASE . $css)) {
             $contentCSS = "contentsCss : '" . PATH_RELATIVE . $css . "',";
         }
+
+        if (is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js')) {
+            $configjs = "customConfig : '" . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js' . "',";
+        } else {
+            $configjs = "";
+        }
+
         if ($this->toolbar === '') {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
             $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
@@ -184,6 +191,7 @@ class ckeditorcontrol extends formcontrol {
                     toolbarCanCollapse : true,
                     entities_additional : '',
                     " . $contentCSS . "
+                    " . $configjs . "
                     stylesSet : " . $stylesset . ",
                     format_tags : " . $formattags . ",
                     font_names :
