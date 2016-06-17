@@ -359,8 +359,8 @@ $opts = array(
             'driver'          => 'Exponent',
             'path'            => BASE . 'files/',
             'URL'             => URL_FULL . 'files/',
-//            'dirMode'         => (int)DIR_DEFAULT_MODE_STR,    // new dirs mode (default 0755)
-//            'fileMode'        => (int)FILE_DEFAULT_MODE_STR,   // new files mode (default 0644)
+            'dirMode'         => octdec(DIR_DEFAULT_MODE_STR + 0),    // new dirs mode (default 0755)
+            'fileMode'        => octdec(FILE_DEFAULT_MODE_STR + 0),   // new files mode (default 0644)
             'detectDirIcon'   => '.foldericon.png',       // File to be detected as a folder icon image (elFinder >= 2.1.10) e.g. '.favicon.png'
             'keepTimestamp'   => array('copy', 'move'),   // Keep timestamp at inner filesystem (elFinder >= 2.1.12) It allowed 'copy', 'move' and 'upload'.
             // 'treeDeep'        => 3,
@@ -383,7 +383,7 @@ $opts = array(
 //            'imgLib'          => 'gd',  // 'auto' doesn't seem to work on some servers
             'tmbPath'         => BASE . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder',
             'tmbURL'          => URL_FULL . 'tmp/elfinder/',
-            'tmbPathMode'     => 0755,
+            'tmbPathMode'     => octdec(DIR_DEFAULT_MODE_STR + 0),
             'tmbBgColor'      => 'transparent',
             'tmbSize'         => FM_THUMB_SIZE,
             'quarantine'      => '..' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . 'elfinder' . DIRECTORY_SEPARATOR . '.quarantine',
