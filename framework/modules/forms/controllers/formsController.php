@@ -1268,7 +1268,7 @@ class formsController extends expController {
             $this->config = array();
             $config = get_object_vars($form);
             if (!empty($config['column_names_list'])) {
-                $config['column_names_list'] = explode('|!|', $config['column_names_list']);
+                $config['column_names_list'] = explode('|!|', $config['column_names_list']);  //fixme $form->column_names_list is a serialized array?
             }
             unset ($config['forms_control']);
             $this->config = $config;
@@ -1307,21 +1307,30 @@ class formsController extends expController {
     public function export_csv() {
         if (!empty($this->params['id'])) {
             $f = new forms($this->params['id']);
+            $this->get_defaults($f);  // fills $this->config with form defaults if needed
             $items = $f->getRecords();
 
             $fc = new forms_control();
-            //FIXME should we defaul to only 5 columns or all columns?
-            if ($f->column_names_list == '') {
+            //FIXME should we default to only 5 columns or all columns? and should we pick up modules columns ($this->config) or just form defaults ($f->)
+            //$f->column_names_list is a serialized array
+            //$this->config['column_names_list'] is an array
+            if ($this->config['column_names_list'] == '') {
                 //define some default columns...
                 $controls = $fc->find('all', "forms_id=" . $f->id . " AND is_readonly = 0 AND is_static = 0", "rank");
-                foreach (array_slice($controls, 0, 5) as $control) {
-                    if ($f->column_names_list != '') $f->column_names_list .= '|!|';
-                    $f->column_names_list .= $control->name;
+//                foreach (array_slice($controls, 0, 5) as $control) {
+                foreach ($controls as $control) {
+//                    if ($this->config['column_names_list'] != '')
+//                        $this->config['column_names_list'] .= '|!|';
+//                    $this->config['column_names_list'] .= $control->name;
+                    $this->config['column_names_list'][$control->name] = $control->name;
                 }
             }
 
-            $rpt_columns2 = explode("|!|", $f->column_names_list);
-            foreach ($rpt_columns2 as $column) {
+//            $rpt_columns2 = explode("|!|", $this->config['column_names_list']);
+
+            $rpt_columns = array();
+            // popuplate field captions/labels
+            foreach ($this->config['column_names_list'] as $column) {
                 $control = $fc->find('first', "forms_id=" . $f->id . " AND name = '" . $column . "' AND is_readonly = 0 AND is_static = 0", "rank");
                 if (!empty($control)) {
                     $rpt_columns[$control->name] = $control->caption;
@@ -1343,6 +1352,7 @@ class formsController extends expController {
                 }
             }
 
+            // populate field data
             foreach ($rpt_columns as $column_name=>$column_caption) {
                 if ($column_name == "ip" || $column_name == "referrer" || $column_name == "location_data") {
                 } elseif ($column_name == "user_id") {
