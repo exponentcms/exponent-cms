@@ -23,9 +23,8 @@
     {/css}
     <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
     <script type="text/javascript" src="{$smarty.const.YUI3_RELATIVE}yui/yui-min.js"></script>
-    {script unique="picker" src="`$smarty.const.JS_RELATIVE`exp-flashdetector.js"}
-
-    {/script}
+    <script type="text/javascript" src="{$smarty.const.JS_RELATIVE}exp-flashdetector.js"></script>
+    <script src="{$smarty.const.JQUERY_SCRIPT}"></script>
 </head>
 <body{if !bs3()} class="exp-skin"{/if}>
     <div id="exp-uploader">
@@ -327,7 +326,6 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
         e.halt();
         cfg.data = "folder="+Y.one('#folder').get('value');
         var request = Y.io(sUrl, cfg);
-//        sermon.setContent(Y.Node.create('{/literal}{loading title="Loading Sermon"|gettext}{literal}'));
     });
 
     if(!FlashDetect.installed) {
