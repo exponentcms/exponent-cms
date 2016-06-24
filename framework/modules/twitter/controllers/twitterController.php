@@ -76,48 +76,60 @@ class twitterController extends expController {
 
             $tweets = $this->getTweets($this->config['typestatus']);
 
-            if ($this->config['twlimit']) $tweets = array_slice($tweets, 0, $this->config['twlimit'], true); // not sure this is necessary??
+            if (count($tweets)) {
+                if ($this->config['twlimit']) {
+                    $tweets = array_slice($tweets, 0, $this->config['twlimit'], true);
+                } // not sure this is necessary??
 //		    $retweets = $this->twitter->statusesRetweetedByMe(null,null,$this->config['twlimit']);
 
-            foreach ($tweets as $key => $value) {
-                $tweets[$key]['retweetedbyme'] = false;
+                foreach ($tweets as $key => $value) {
+                    $tweets[$key]['retweetedbyme'] = false;
 //                $tweets[$key]['retweetedbyme'] = $value['retweeted'];
-                if (strpos($value['text'], 'RT ') === false) {
-                    $tweets[$key]['text'] = $this->twitterify($value['text']);
-                    $tweets[$key]['screen_name'] = $value['user']['screen_name'];
-                    $tweets[$key]['image'] = $value['user']['profile_image_url'];
-                    $tweets[$key]['via'] = $value['source'];
-                    if (!empty($this->mytwitteracct['id'])) $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
-                    if (!empty($value['retweeted']))
-                        $tweets[$key]['retweetedbyme'] = true;
-                } else {
-                    // we're a retweet
-                    $tweets[$key]['text'] = $this->twitterify(substr($value['text'], strpos($value['text'], ':') + 2)); // strip out RT text
-                    $tweets[$key]['screen_name'] = isset($value['retweeted_status']['user']['screen_name']) ? $value['retweeted_status']['user']['screen_name'] : 'Unknown';
-                    $tweets[$key]['image'] = isset($value['retweeted_status']['user']['profile_image_url']) ? $value['retweeted_status']['user']['profile_image_url'] : '';
-                    if (!empty($this->mytwitteracct['id']) && $value['user']['id'] == $this->mytwitteracct['id']) {
+                    if (strpos($value['text'], 'RT ') === false) {
+                        $tweets[$key]['text'] = $this->twitterify($value['text']);
+                        $tweets[$key]['screen_name'] = $value['user']['screen_name'];
+                        $tweets[$key]['image'] = $value['user']['profile_image_url'];
                         $tweets[$key]['via'] = $value['source'];
-                        $tweets[$key]['retweetedbyme'] = true;
+                        if (!empty($this->mytwitteracct['id'])) {
+                            $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
+                        }
+                        if (!empty($value['retweeted'])) {
+                            $tweets[$key]['retweetedbyme'] = true;
+                        }
                     } else {
+                        // we're a retweet
+                        $tweets[$key]['text'] = $this->twitterify(
+                            substr($value['text'], strpos($value['text'], ':') + 2)
+                        ); // strip out RT text
+                        $tweets[$key]['screen_name'] = isset($value['retweeted_status']['user']['screen_name']) ? $value['retweeted_status']['user']['screen_name'] : 'Unknown';
+                        $tweets[$key]['image'] = isset($value['retweeted_status']['user']['profile_image_url']) ? $value['retweeted_status']['user']['profile_image_url'] : '';
+                        if (!empty($this->mytwitteracct['id']) && $value['user']['id'] == $this->mytwitteracct['id']) {
+                            $tweets[$key]['via'] = $value['source'];
+                            $tweets[$key]['retweetedbyme'] = true;
+                        } else {
 //                        $tweets[$key]['via'] = $value['source'] . ' (<img src="'.PATH_RELATIVE.'/framework/modules/twitter/assets/images/rt.png" title="retweet by" alt="RT by"/> ' . $value['user']['screen_name'] . ')';
-                        $tweets[$key]['retweet'] = true;
+                            $tweets[$key]['retweet'] = true;
+                        }
+                        if (!empty($this->mytwitteracct['id'])) {
+                            $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
+                        }
+                        if (!empty($value['retweeted'])) {
+                            $tweets[$key]['retweetedbyme'] = true;
+                        }
                     }
-                    if (!empty($this->mytwitteracct['id'])) $tweets[$key]['ours'] = ($value['user']['id'] == $this->mytwitteracct['id']) ? true : false;
-                    if (!empty($value['retweeted']))
-                        $tweets[$key]['retweetedbyme'] = true;
-                }
-                $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
-                if (!isset($value['retweeted_status'])) {
-                    $tweets[$key]['retweeted_status'] = false;
-                }
+                    $tweets[$key]['created_at'] = strtotime($value['created_at']); // convert to unix time
+                    if (!isset($value['retweeted_status'])) {
+                        $tweets[$key]['retweeted_status'] = false;
+                    }
 //		        foreach ($retweets as $rekey => $revalue) {
 //			        if ($tweets[$key]['id'] == $retweets[$rekey]['retweeted_status']['id']) {
 //				        $tweets[$key]['retweetedbyme'] = true;
 //			            break;
 //			        }
 //		        }
+                }
             }
-
+            
             assign_to_template(array('items' => $tweets));
             restore_exception_handler();
         }
