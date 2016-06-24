@@ -69,6 +69,7 @@ class fix_help_sefurls extends upgradescript
         $bad = '';
         $fixed = 0;
         $bad = 0;
+        $bad_help = array();
         $hv = new help_version();
         $help = new help();
         foreach ($hv->findValue('all', 'id') as $version_id) {
@@ -77,6 +78,7 @@ class fix_help_sefurls extends upgradescript
                 $matches = array();
                 $found = preg_match('/(\S+)-\d{10}-0\.\d{8}/', $helpdoc->sef_url, $matches);
                 if ($found && !empty($matches[1])) {
+                    $bad_help[$bad+1]['sef_url'] = $helpdoc->sef_url;
                     $opts = array('grouping_sql' => " AND help_version_id='" . $helpdoc->help_version_id . "'");
                     $helpdoc->sef_url = $matches[1];  // new stripped sef url
                     if (is_bool(expValidator::uniqueness_of('sef_url', $helpdoc, $opts))) {
@@ -84,11 +86,14 @@ class fix_help_sefurls extends upgradescript
                         $fixed++;
                     } else {
                         $bad++;  // leave help doc sef_url as is because it's root was a duplicate
+                        $bad_help[$bad]['id'] = $helpdoc->id;
+                        $bad_help[$bad]['help_verstion'] = $helpdoc->help_version->version;
                     }
                 }
             }
         }
 
+        eLog($bad_help);
         return ($fixed ? $fixed : gt('No')) . ' ' . gt('unnecessarily long help doc sef url\'s were found and corrected.') . ' ' . ($bad ? $bad . ' ' . gt('long help doc sef url\'s still required.') : '');
     }
 

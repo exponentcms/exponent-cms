@@ -191,7 +191,7 @@
                                     return CKEDITOR.replace( textarea.id, {
                                         startupFocus : true,
                                         fullPage: true,
-                                        allowedContent: true,
+//                                        allowedContent: true,
                                         toolbarCanCollapse : true,
                                     });
                                 },

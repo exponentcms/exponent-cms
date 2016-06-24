@@ -17,13 +17,7 @@
 
     // CommonJS module is defined
     if (typeof module !== 'undefined' && module.exports) {
-        var isNode = (typeof process !== "undefined");
-        var isElectron = isNode && ('electron' in process.versions);
-        if (isElectron) {
-            root.BootstrapDialog = factory(root.jQuery);
-        } else {
-            module.exports = factory(require('jquery'), require('bootstrap'));
-        }
+        module.exports = factory(require('jquery'), require('bootstrap'));
     }
     // AMD module is defined
     else if (typeof define === "function" && define.amd) {
@@ -238,6 +232,7 @@
         closable: true,
         closeByBackdrop: true,
         closeByKeyboard: true,
+        closeIcon: '&#215;',
         spinicon: BootstrapDialog.ICON_SPINNER,
         autodestroy: true,
         draggable: false,
@@ -778,7 +773,8 @@
         createCloseButton: function () {
             var $container = $('<div></div>');
             $container.addClass(this.getNamespace('close-button'));
-            var $icon = $('<button class="close">&times;</button>');
+            var $icon = $('<button class="close"></button>');
+            $icon.append(this.options.closeIcon);
             $container.append($icon);
             $container.on('click', {dialog: this}, function (event) {
                 event.data.dialog.close();

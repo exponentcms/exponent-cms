@@ -73,7 +73,6 @@ class expHTMLEditorController extends expController
         }
 
         // otherwise, on to the show
-//        $configs = $db->selectObjects('htmleditor_ckeditor',1);
         $configs = $db->selectObjects('htmleditor_' . $this->params['editor'], 1);
 
         assign_to_template(
@@ -88,7 +87,6 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
-//        $obj = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
         $obj = self::getEditorSettings($this->params['id'], $this->params['editor']);
         $obj->name = $this->params['name'];
         $obj->data = stripSlashes($this->params['data']);
@@ -100,10 +98,8 @@ class expHTMLEditorController extends expController
         $obj->formattags = stripSlashes($this->params['formattags']);
         $obj->fontnames = stripSlashes($this->params['fontnames']);
         if (empty($this->params['id'])) {
-//            $this->params['id'] = $db->insertObject($obj,'htmleditor_ckeditor');
             $this->params['id'] = $db->insertObject($obj, 'htmleditor_' . $this->params['editor']);
         } else {
-//            $db->updateObject($obj,'htmleditor_ckeditor',null,'id');
             $db->updateObject($obj, 'htmleditor_' . $this->params['editor'], null, 'id');
         }
         if ($this->params['active']) {
@@ -143,7 +139,6 @@ class expHTMLEditorController extends expController
         global $db;
 
         expHistory::set('editable', $this->params);
-//	    @$db->delete('htmleditor_ckeditor',"id=".$this->params['id']);
         @$db->delete('htmleditor_' . $this->params['editor'], "id=" . $this->params['id']);
         expHistory::returnTo('manageable');
     }
@@ -152,13 +147,10 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
-//        $db->toggle('htmleditor_ckeditor',"active",'active=1');
         $db->toggle('htmleditor_' . $this->params['editor'], "active", 'active=1');
         if ($this->params['id'] != "default") {
-//            $active = $db->selectObject('htmleditor_ckeditor',"id=".$this->params['id']);
             $active = self::getEditorSettings($this->params['id'], $this->params['editor']);
             $active->active = 1;
-//            $db->updateObject($active,'htmleditor_ckeditor',null,'id');
             $db->updateObject($active, 'htmleditor_' . $this->params['editor'], null, 'id');
         }
         expHistory::returnTo('manageable');
@@ -190,7 +182,6 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
-//        return @$db->selectObject('htmleditor_ckeditor',"id=".$settings_id);
         return @$db->selectObject('htmleditor_' . $editor, "id=" . $settings_id);
     }
 
@@ -198,7 +189,6 @@ class expHTMLEditorController extends expController
     {
         global $db;
 
-//        return $db->selectObject('htmleditor_ckeditor', 'active=1');
         return $db->selectObject('htmleditor_' . $editor, 'active=1');
     }
 

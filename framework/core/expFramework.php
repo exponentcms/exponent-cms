@@ -1109,7 +1109,8 @@ function eLog($var, $type='', $path='', $minlevel='0') {
 				eDebug(gt("Error opening log file for writing."), false, true);
 			} else {
                 if(is_array($var) || is_object($var)) {
-                    $pvar = print_r($var, true);
+//                    $pvar = print_r($var, true);
+                    $pvar = json_encode($var, true);  // json is easier to deal with as data
                 } else {
                     $pvar = $var;
                 }

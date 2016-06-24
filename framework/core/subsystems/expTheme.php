@@ -345,11 +345,15 @@ class expTheme
             // media css support for IE 6-8
             $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/Respond-1.4.2/dest/respond.min.js"></script><![endif]-->' . "\n";
 
-            // canvas support for IE 6-8
+            // canvas support for IE 6-8 - now done by webshims
 //            $str .= "\t" . '<!--[if lt IE 9]><script src="' . PATH_RELATIVE . 'external/excanvas.js"></script><![endif]-->' . "\n";
 
+            //Win 8/IE 10 work around
+            $str .= "\t" . '<!--[if IE 10]><link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '><![endif]-->' . "\n";
+            $str .= "\t" . '<!--[if IE 10]><script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script><![endif]-->' . "\n";
+
             // turn off ie compatibility mode which will break the display
-//            $str .= "\t" . '<meta http-equiv="X-UA-Compatible" content="IE=edge"' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<meta http-equiv="X-UA-Compatible" content="IE=edge"' . XHTML_CLOSING . '>' . "\n";
         }
 
         return $str;
