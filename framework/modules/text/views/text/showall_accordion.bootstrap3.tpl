@@ -41,7 +41,7 @@
                 <div class="panel-heading">
                     <div class="panel-title"><a data-toggle="collapse" data-parent="#text-{$id}" href="#collapse-{$textid}" title="{'Collapse/Expand'|gettext}"><{$config.item_level|default:'h2'}>{if $item->title ==""}&#160;{else}{$item->title}{/if}</{$config.item_level|default:'h2'}></a></div>
                 </div>
-                <div id="collapse-{$textid}" class="panel-collapse collapse{if $smarty.foreach.items.iteration==1 && $config.initial_view == '3'} in{/if}">
+                <div id="collapse-{$textid}" class="panel-collapse collapse{if ($smarty.foreach.items.iteration==1 && $config.initial_view == '3') || $config.initial_view == '2'} in{/if}">
                     <div class="piece panel-body">
                         <ul>
                             <li>
