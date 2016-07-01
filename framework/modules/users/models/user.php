@@ -523,7 +523,7 @@ class user extends expRecord {
      * @return bool
      */
     public function globalPerm($perm) {
-        if ($this->isAdmin()) return false;
+        if ($this->isAdmin()) return false;  //fixme might cause issues, admin users never tax exempt?
 //        $groups = $this->getGroupMemberships();
         foreach ($this->groups as $group) {
             if (!empty($group->$perm)) {

@@ -50,6 +50,8 @@ return array(
    		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 //    'display_recyclebin'=>array(
 //   		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
+	'tax_exempt'=>array(
+		DB_FIELD_TYPE=>DB_DEF_BOOLEAN),
 );
 
 ?>
