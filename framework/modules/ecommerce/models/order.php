@@ -722,13 +722,11 @@ class order extends expRecord {
         $this->shipping_total_before_discounts = $this->shipping_total;
 
         $this->shipping_taxed = false;
-        if (!$this->user->globalPerm('tax_exempt')) {
-            foreach ($this->taxzones as $tz) {  //FIXME not written for multiple shipments/destinations
-                if (!empty($tz->shipping_taxed)) {
-                    $this->tax += round(($tz->rate * .01) * $this->shipping_total, 2);
-                    $this->shipping_taxed = true;
-                    break;
-                }
+        foreach ($this->taxzones as $tz) {  //FIXME not written for multiple shipments/destinations
+            if (!$this->user->globalPerm('tax_exempt') && !empty($tz->shipping_taxed)) {
+                $this->tax += round(($tz->rate * .01) * $this->shipping_total, 2);
+                $this->shipping_taxed = true;
+                break;
             }
         }
 
