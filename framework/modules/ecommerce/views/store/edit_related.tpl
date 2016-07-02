@@ -22,7 +22,7 @@
     {capture assign="callbacks"}
     {literal}
     // the text box for the title
-    var tagInput = Y.one('#related_items');
+    var tagInput = Y.one('#related_items_autoc');
 
     // the UL to append to
     var tagUL = Y.one('#relatedItemsList');

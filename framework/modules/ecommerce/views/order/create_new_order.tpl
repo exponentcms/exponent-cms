@@ -33,7 +33,7 @@
             {capture assign="callbacks"}
             {literal}
             // the text box for the title
-            var tagInput = Y.one('#search_internal');
+            var tagInput = Y.one('#search_internal_autoc');
             var theAddressesId = Y.one('#addresses_id');
 
             // format the results coming back in from the query
@@ -55,7 +55,7 @@
             {capture assign="callbacks2"}
             {literal}
             // the text box for the title
-            var tagInput = Y.one('#search_external');
+            var tagInput = Y.one('#search_external_autoc');
             var theAddressesId = Y.one('#addresses_id');
 
             // format the results coming back in from the query
@@ -92,8 +92,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#customer_type input[type="radio"]');
     radioSwitchers.on('click',function(e){
         var curval = e.target.get('value');
-        var intcust = Y.one("#search_internal").get('parentNode').get('parentNode');
-        var extcust = Y.one("#search_external").get('parentNode').get('parentNode');
+        var intcust = Y.one("#search_internal_autoc").get('parentNode').get('parentNode');
+        var extcust = Y.one("#search_external_autoc").get('parentNode').get('parentNode');
         if (curval ==  1) {
             intcust.setStyle('display','none');
             extcust.setStyle('display','none');
