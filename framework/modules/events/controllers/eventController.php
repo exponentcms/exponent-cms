@@ -471,7 +471,7 @@ class eventController extends expController {
                     
                     if ($viewtype == 'default' && $viewrange == 'upcoming') {
                         foreach ($items as $key=>$item) {
-                            if ($item->eventend < time()) {
+                            if (!$item->is_allday && $item->eventend < time()) {
                                 unset($items[$key]);
                             } else {
                                 break;  // they are chronological
