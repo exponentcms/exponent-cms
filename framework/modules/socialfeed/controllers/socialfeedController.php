@@ -299,10 +299,11 @@ class socialfeedController extends expController
      * Render posts from the Facebook feed
      */
     private function parse_facebook_data($facebook_entry) {
-    $ids = explode('_',$facebook_entry->id);
+        $ids = explode('_',$facebook_entry->id);
         if ($facebook_entry->type == 'photo') {
             if ($this->display_pic == 1) {
-                $message_feed['picture'] = $facebook_entry->picture;
+//                $message_feed['picture'] = $facebook_entry->picture;
+                $message_feed['picture'] = 'https://graph.facebook.com/'.$facebook_entry->object_id.'/picture?type=normal';
             }
         }
         if ($facebook_entry->type == 'video') {
