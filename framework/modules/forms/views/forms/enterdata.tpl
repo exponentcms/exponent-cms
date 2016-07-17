@@ -75,4 +75,5 @@
             {/if}
         </div>
     </div>
+    {clear}
 {/if}
