@@ -230,18 +230,22 @@ elFinder.prototype.commands.quicklook = function() {
 				}
 				$(this).toggleClass(navicon+'-fullscreen-off');
 				var collection = win;
-				if(parent.is('.ui-resizable')) {
+				if (parent.is('.ui-resizable')) {
 					collection = collection.add(parent);
 				};
-				$.fn.resizable && !fm.UA.Touch && collection.resizable(full ? 'enable' : 'disable').removeClass('ui-state-disabled');
+				$.fn.resizable && collection.resizable(full ? 'enable' : 'disable').removeClass('ui-state-disabled');
 
 				win.trigger('viewchange');
 			}),
 		
 		navShow = function() {
-			navtm && clearTimeout(navtm);
-			navbar.stop(true, true).show();
-			coverHide();
+			if (self.window.hasClass(fullscreen)) {
+				navtm && clearTimeout(navtm);
+				// if use `show()` it make infinite loop with old jQuery (jQuery/jQuery UI: 1.8.0/1.9.0)
+				// see #1478 https://github.com/Studio-42/elFinder/issues/1478
+				navbar.stop(true, true).css('display', 'block');
+				coverHide();
+			}
 		},
 		
 		coverHide = function() {
@@ -249,10 +253,12 @@ elFinder.prototype.commands.quicklook = function() {
 			cover.hide();
 		},
 			
+		prev = $('<div class="'+navicon+' '+navicon+'-prev"/>').on('click touchstart', function(e) { ! navmove && navtrigger(37); return false; }),
+		next = $('<div class="'+navicon+' '+navicon+'-next"/>').on('click touchstart', function(e) { ! navmove && navtrigger(39); return false; }),
 		navbar  = $('<div class="elfinder-quicklook-navbar"/>')
-			.append($('<div class="'+navicon+' '+navicon+'-prev"/>').on('click touchstart', function(e) { ! navmove && navtrigger(37); return false; }))
+			.append(prev)
 			.append(fsicon)
-			.append($('<div class="'+navicon+' '+navicon+'-next"/>').on('click touchstart', function(e) { ! navmove && navtrigger(39); return false; }))
+			.append(next)
 			.append('<div class="elfinder-quicklook-navbar-separator"/>')
 			.append($('<div class="'+navicon+' '+navicon+'-close"/>').on('click touchstart', function(e) { ! navmove && self.window.trigger('close'); return false; }))
 		,
@@ -282,11 +288,20 @@ elFinder.prototype.commands.quicklook = function() {
 				tpl     = '<div class="elfinder-quicklook-info-data">{value}</div>',
 				tmb;
 
-			if (file) {
+			if (file && self.window.data('hash') !== file.hash) {
 				!file.read && e.stopImmediatePropagation();
 				self.window.data('hash', file.hash);
 				self.preview.off('changesize').trigger('change').children().remove();
 				title.html(fm.escape(file.name));
+				
+				prev.css('visibility', '');
+				next.css('visibility', '');
+				if (file.hash === fm.cwdId2Hash(cwd.find('[id]:first').attr('id'))) {
+					prev.css('visibility', 'hidden');
+				}
+				if (file.hash === fm.cwdId2Hash(cwd.find('[id]:last').attr('id'))) {
+					next.css('visibility', 'hidden');
+				}
 				
 				info.html(
 						tpl.replace(/\{value\}/, fm.escape(file.name))
@@ -300,7 +315,7 @@ elFinder.prototype.commands.quicklook = function() {
 					$('<img/>')
 						.hide()
 						.appendTo(self.preview)
-						.load(function() {
+						.on('load', function() {
 							icon.addClass(tmb.className).css('background-image', "url('"+tmb.url+"')");
 							$(this).remove();
 						})
@@ -318,7 +333,7 @@ elFinder.prototype.commands.quicklook = function() {
 
 	
 
-	this.window = $('<div class="ui-front ui-helper-reset ui-widget elfinder-quicklook" style="position:absolute"/>')
+	this.window = $('<div class="ui-front ui-helper-reset ui-widget elfinder-quicklook touch-punch" style="position:absolute"/>')
 		.addClass(fm.UA.Touch? 'elfinder-touch' : '')
 		.click(function(e) { e.stopPropagation();  })
 		.append(
@@ -368,6 +383,7 @@ elFinder.prototype.commands.quicklook = function() {
 					
 				};
 				
+			win.data('hash', '');
 			if (self.opened()) {
 				state = animated;
 				win.hasClass(fullscreen) && fsicon.click();
@@ -464,7 +480,7 @@ elFinder.prototype.commands.quicklook = function() {
 				e.keyCode == 27 && self.opened() && win.trigger('close')
 			})
 			
-			if ($.fn.resizable && !fm.UA.Touch) {
+			if ($.fn.resizable) {
 				win.resizable({ 
 					handles   : 'se', 
 					minWidth  : 350, 

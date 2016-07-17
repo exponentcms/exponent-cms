@@ -21,38 +21,42 @@ $.fn.elfindertoolbar = function(fm, opts) {
 					return [v];
 				});
 			},
+			render = function(disabled){
+				var name;
+				$.each(buttons, function(i, b) { b.detach(); });
+				self.empty();
+				l = panels.length;
+				while (l--) {
+					if (panels[l]) {
+						panel = $('<div class="ui-widget-content ui-corner-all elfinder-buttonset"/>');
+						i = panels[l].length;
+						while (i--) {
+							name = panels[l][i];
+							if ((!disabled || $.inArray(name, disabled) === -1) && (cmd = commands[name])) {
+								button = 'elfinder'+cmd.options.ui;
+								if (! buttons[name] && $.fn[button]) {
+									buttons[name] = $('<div/>')[button](cmd);
+								}
+								buttons[name] && panel.prepend(buttons[name]);
+							}
+						}
+						
+						panel.children().length && self.prepend(panel);
+						panel.children(':gt(0)').before('<span class="ui-widget-content elfinder-toolbar-button-separator"/>');
+
+					}
+				}
+				
+				(! self.data('swipeClose') && self.children().length)? self.show() : self.hide();
+				self.trigger('load');
+			},
+			buttons = {},
 			panels   = filter(opts || []),
 			dispre   = null,
 			uiCmdMapPrev = '',
-			l, i, cmd, panel, button, swipeHandle;
+			l, i, cmd, panel, button, swipeHandle, autoHide;
 		
 		self.prev().length && self.parent().prepend(this);
-
-		var render = function(disabled){
-			var name;
-			self.empty();
-			l = panels.length;
-			while (l--) {
-				if (panels[l]) {
-					panel = $('<div class="ui-widget-content ui-corner-all elfinder-buttonset"/>');
-					i = panels[l].length;
-					while (i--) {
-						name = panels[l][i];
-						if ((!disabled || $.inArray(name, disabled) === -1) && (cmd = commands[name])) {
-							button = 'elfinder'+cmd.options.ui;
-							$.fn[button] && panel.prepend($('<div/>')[button](cmd));
-						}
-					}
-					
-					panel.children().length && self.prepend(panel);
-					panel.children(':gt(0)').before('<span class="ui-widget-content elfinder-toolbar-button-separator"/>');
-
-				}
-			}
-			
-			(! self.data('swipeClose') && self.children().length)? self.show() : self.hide();
-			self.trigger('load');
-		};
 		
 		render();
 		
@@ -75,8 +79,13 @@ $.fn.elfindertoolbar = function(fm, opts) {
 							repCmds.push(from);
 							var btn = $('div.elfinder-buttonset div.elfinder-button').has('span.elfinder-button-icon-'+from);
 							if (btn.length && !btn.next().has('span.elfinder-button-icon-'+to).length) {
-								btn.after($('<div/>')[button](fm._commands[to]).data('origin', from));
-								btn.hide();
+								if (! buttons[to] && $.fn[button]) {
+									buttons[to] = $('<div/>')[button](fm._commands[to]);
+								}
+								if (buttons[to]) {
+									btn.after(buttons[to].data('origin', from));
+									btn.hide();
+								}
 							}
 						}
 					});
@@ -85,28 +94,31 @@ $.fn.elfindertoolbar = function(fm, opts) {
 				$.each($('div.elfinder-button'), function(){
 					var origin = $(this).data('origin');
 					if (origin && $.inArray(origin, repCmds) == -1) {
-						$('span.elfinder-button-icon-'+$(this).data('origin')).parent().show();
-						$(this).remove();
+						$('span.elfinder-button-icon-' + origin).parent().show();
+						$(this).detach();
 					}
 				});
 			}
 		});
 		
 		if (fm.UA.Touch) {
+			autoHide = fm.storage('autoHide') || {};
+			if (typeof autoHide.toolbar === 'undefined') {
+				autoHide.toolbar = (options.autoHideUA && options.autoHideUA.length > 0 && $.map(options.autoHideUA, function(v){ return fm.UA[v]? true : null; }).length);
+				fm.storage('autoHide', autoHide);
+			}
+			
+			if (autoHide.toolbar) {
+				fm.one('init', function() {
+					fm.uiAutoHide.push(function(){ self.stop(true, true).trigger('toggle', { duration: 500, init: true }); });
+				});
+			}
+			
 			fm.bind('load', function() {
 				swipeHandle = $('<div class="elfinder-toolbar-swipe-handle"/>').appendTo(fm.getUI());
 				if (swipeHandle.css('pointer-events') !== 'none') {
 					swipeHandle.remove();
 					swipeHandle = null;
-				}
-			})
-			.one('open', function() {
-				if (options.autoHideUA && options.autoHideUA.length > 0) {
-					if ($.map(options.autoHideUA, function(v){ return fm.UA[v]? true : null; }).length) {
-						setTimeout(function() {
-							self.stop(true, true).trigger('toggle', {duration: 500});
-						}, 500);
-					}
 				}
 			});
 			
@@ -133,9 +145,12 @@ $.fn.elfindertoolbar = function(fm, opts) {
 									fm.resources.blink(swipeHandle, 'slowonce');
 								}
 							}
+							data.init && fm.trigger('uiautohide');
 						}
 					}, data);
 				self.data('swipeClose', ! toshow).animate({height : 'toggle'}, opt);
+				autoHide.toolbar = !toshow;
+				fm.storage('autoHide', $.extend(fm.storage('autoHide'), {toolbar: autoHide.toolbar}));
 			});
 		}
 	});
