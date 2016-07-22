@@ -468,13 +468,23 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $regitem);
-                    
+
+                    // remove today's events that have already ended
                     if ($viewtype == 'default' && $viewrange == 'upcoming') {
                         foreach ($items as $key=>$item) {
                             if (!$item->is_allday && $item->eventend < time()) {
+                                //fixme we've left events ending earlier in the day, but already cancelled out tomorrow's event
+                                if (count($item->eventdate)) {
+                                    foreach ($item->eventdate as $evdt) {
+                                        if ($evdt->date > $item->eventend) {
+                                            $start = 1;
+//                                            $items[$key]->
+                                        }
+                                    }
+                                }
                                 unset($items[$key]);
                             } else {
-                                break;  // they are chronological
+                                break;  // they are chronological so we can end
                             }
                         }
                     }

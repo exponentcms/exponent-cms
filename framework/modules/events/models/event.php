@@ -107,6 +107,7 @@ class event extends expRecord {
             $evs = $this->find('all', "id=" . $edate->event_id . $featuresql);
             foreach ($evs as $key=>$event) {
                 if ($condense) {
+                    //fixme we're leaving events which ended earlier in the day which won't be displayed, which therefore cancels out tomorrow's event
                     $eventid = $event->id;
                     $multiday_event = array_filter($events, create_function('$event', 'global $eventid; return $event->id === $eventid;'));
                     if (!empty($multiday_event)) {

@@ -103,6 +103,13 @@
                     <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 				{/if}
 			</strong>
+            {$endd = end($item->eventdate)}
+            {$end = $endd->date}
+            {if $end > $item->eventend && ($end <= $item->eventend + 31*24*60*60+1)}
+                <span style="font-style: italic;color: grey;">
+                    ({'thru'|gettext} {$end|format_date:"%b"} {$end|format_date:"%e"}{date("S",mktime(0,0,0,0,$end|format_date:"%e",0))})
+                </span>
+            {/if}
 		</dd>
 		<dd>
             {if !empty($item->expFile[0]->url)}

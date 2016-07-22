@@ -67,6 +67,7 @@ div.DTTT .btn {
 	display : inline;
 }
 
+/* panel styles */
 .report.dashboard .hd h2,
 .panel .hd h2 {
     padding: 0 0 0 33px;
@@ -81,6 +82,11 @@ div.DTTT .btn {
 	height: 30px;
 }
 
+.panel-title h2 {
+	margin: 0;
+}
+
+/* other */
 .show .add-to-cart-btn input[type="text"] {
 	margin-left: 13px;
 //	height: 25px;
@@ -95,7 +101,6 @@ div.DTTT .btn {
 	margin-top: 3px;
 }
 
-/* other */
 .eql-tablelist .row:before,
 .eql-tablelist .row:after,
 .manage-questions .row:before,
@@ -103,6 +108,7 @@ div.DTTT .btn {
 	content : normal;
 }
 
+/* centered navbar support */
 & when (@menu_align_center = 1) {
 	@media (min-width: (@menu_width + 0px)) {
 		#topnavbar.navbar .navbar-nav {
@@ -116,20 +122,24 @@ div.DTTT .btn {
 	}
 }
 
+/* remove page url on printout in browser */
 @media print {
   a[href]:after {
     content: none !important;
   }
 }
 
+/* set rss icon color to orange */
 i.fa-rss {
 	color: orange;
 }
 
-.panel-title h2 {
-	margin: 0;
+/* set size on all font-awesome icons used in main menu/navbar */
+#topnavbar .nav.navbar-nav i.fa {
+	font-size: 18px;
 }
 
+// text input placeholder style
 .form-control::-webkit-input-placeholder { /* Safari, Chrome and Opera */
 	font-style: italic;
 }
@@ -154,11 +164,7 @@ i.fa-rss {
 	font-style: italic;
 }
 
-#topnavbar .nav.navbar-nav i.fa {
-	font-size: 18px;
-}
-
-/* tags */
+/* fancy tags */
 span.value span {
 	display: inline-block;
 	margin: 0 0 .3em 1em;
@@ -245,13 +251,15 @@ span.value span.spacer {
 	background-color: darken(@body-bg, 15%);
 }
 
-//form designer - uncomment if using left sidebar instead of right sidebar
+/* form designer */
+// - uncomment if using left sidebar instead of right sidebar
 div#trash.trash,
 ul#controls.controls {
     left: 20px!important;
 	right: inherit!important;
 }
 
+/* correct exp style conflict with form labels */
 label.label {
 	color: @text-color;
 }

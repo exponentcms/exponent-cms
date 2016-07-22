@@ -84,19 +84,22 @@ CKEDITOR.stylesSet.add( 'default', [
 
 	{
 		name: 'Styled image (left)',
-		element: 'img',
+		type: 'widget',
+		widget: 'image',
 		attributes: { 'class': 'image-left' }
 	},
 
 	{
 		name: 'Styled image (right)',
-		element: 'img',
+		type: 'widget',
+		widget: 'image',
 		attributes: { 'class': 'image-right' }
 	},
 
 	{
 		name: 'Styled image (center)',
-		element: 'img',
+		type: 'widget',
+		widget: 'image',
 		attributes: { 'class': 'image-center' }
 	},
 
@@ -114,7 +117,16 @@ CKEDITOR.stylesSet.add( 'default', [
 		}
 	},
 
-	{ name: 'Borderless Table',		element: 'table',	styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' } },
-	{ name: 'Square Bulleted List',	element: 'ul',		styles: { 'list-style-type': 'square' } }
+	{
+		name: 'Borderless Table',
+		element: 'table',
+		styles: { 'border-style': 'hidden', 'background-color': '#E6E6FA' }
+	},
+
+	{
+		name: 'Square Bulleted List',
+		element: 'ul',
+		styles: { 'list-style-type': 'square' }
+	}
 ] );
 
