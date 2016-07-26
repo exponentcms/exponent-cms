@@ -108,9 +108,9 @@
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
                                                 {if $item->date_id}
-                                                    {img file_id=$item->expFile[0]->id title=$title id=$item->date_id w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title id=$item->date_id w=92 class="img-responsive"}
                                                 {else}
-                                                    {img file_id=$item->expFile[0]->id title=$title w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title w=92 class="img-responsive"}
                                                 {/if}
                                                 {clear}
                                             </div>
