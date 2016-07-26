@@ -458,6 +458,9 @@ abstract class expController {
         }
 
         $record = new $modelname($id);
+        if (empty($record->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+
         $config = expConfig::getConfig($record->location_data);
         if (empty($this->config))
             $this->config = $config;

@@ -521,6 +521,9 @@ class eventController extends expController {
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
         }
+        if (empty($eventdate->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>'event'));
+
         if (!empty($eventdate->event->feedback_form) && $eventdate->event->feedback_form != 'Disallow Feedback') {
             assign_to_template(array(
                 'feedback_form' => $eventdate->event->feedback_form,
