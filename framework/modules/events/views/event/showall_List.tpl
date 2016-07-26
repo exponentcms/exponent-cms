@@ -21,7 +21,9 @@
     {$myloc=serialize($__loc)}
     {if !$config.disable_links}
         {icon class="monthviewlink" action=showall time=$time text='Month View'|gettext}
-        &#160;&#160;|&#160;&#160;
+		{if !bs()}
+			{nbsp count=2}|{nbsp count=2}
+	    {/if}
     {/if}
     <span class="listviewlink">{'List View'|gettext}</span><br />
 	<a href="#" onclick="window.open('popup.php?controller=event&src={$__loc->src}&action=showall&view=showall_Monthly+List&template=printerfriendly&time={$time}','printer','title=no,scrollbars=no,width=800,height=600'); return false">{'Printer-friendly'|gettext}</a>

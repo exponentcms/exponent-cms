@@ -39,8 +39,8 @@
                 {/if}
             {/if}
         {/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
     </div>
     {if $config.moduledescription != ""}
    		{$config.moduledescription}

@@ -26,18 +26,26 @@
             <div class="module-actions">
                 {if $permissions.create}
                     {icon class=add action=enterdata forms_id=$f->id text='Add record'|gettext}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        &#160;&#160;|&#160;&#160;
+                    {/if}
                 {/if}
                 {icon class="downloadfile" action=export_csv id=$f->id text="Export as CSV"|gettext}
-                {export_pdf_link landscapepdf=1 limit=999 prepend='&#160;&#160;|&#160;&#160;'}
+                {export_pdf_link landscapepdf=1 limit=999 prepend='&#160;&#160;|&#160;&#160;'|not_bs}
                 {if $permissions.manage}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        &#160;&#160;|&#160;&#160;
+                    {/if}
                     {icon class=configure action=design_form id=$f->id text="Design Form"|gettext}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        &#160;&#160;|&#160;&#160;
+                    {/if}
                     {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
                 {if $permissions.delete}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        &#160;&#160;|&#160;&#160;
+                    {/if}
                     {icon class=delete action=delete_records forms_id=$f->id text='Purge records'|gettext onclick="return confirm('"|cat:("Are you sure you want to delete all form records?"|gettext)|cat:"');"}
                 {/if}
                 {if $permissions.manage}

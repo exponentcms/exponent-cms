@@ -48,7 +48,7 @@
         {/if}
         <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
         <div class="item-actions">
-            {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
+            {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'|not_bs}
             {subscribe_link prepend='<br/>'}
         </div>
         {$myloc=serialize($__loc)}
@@ -62,7 +62,7 @@
                 {if !$config.displayauthor}
                     <span class="label posted">{'Posted by'|gettext}</span>
                     <a href="{link action=showall_by_author author=$record->poster|username}" title='{"View all posts by"|gettext} {attribution user_id=$record->poster}'>{attribution user_id=$record->poster}</a>
-                    {$prepend = '&#160;&#160;|&#160;&#160;'}
+                    {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
                 {/if}
                 {if !empty($config.usecategories)}
                     {'in'|gettext} <a href="{link action=showall src=$record->src cat=$record->expCat[0]->id}" title='{"View all posts filed under"|gettext} {$record->expCat[0]->title}'>{if $record->expCat[0]->title!= ""}{$record->expCat[0]->title}{elseif $config.uncat!=''}{$config.uncat}{else}{'Uncategorized'|gettext}{/if}</a>
@@ -75,7 +75,7 @@
                 {/if}
             </span>
             {comments_count record=$record show=1 prepend=$prepend}
-            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
+            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         </div>
         {permissions}
             <div class="item-actions">

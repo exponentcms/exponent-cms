@@ -48,7 +48,7 @@
         {/if}
         <{$config.heading_level|default:'h1'}>{$record->title}</{$config.heading_level|default:'h1'}>
         <div class="item-actions">
-            {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'}
+            {printer_friendly_link view='show'}{export_pdf_link view='show' prepend='&#160;&#160;|&#160;&#160;'|not_bs}
             {subscribe_link prepend='<br />'}
         </div>
         {$myloc=serialize($__loc)}

@@ -21,27 +21,37 @@
 	<div class="module-actions">
         {if !$config.disable_links}
             {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
-            &#160;&#160;|&#160;&#160;
+			{if !bs()}
+				{nbsp count=2}|{nbsp count=2}
+		    {/if}
             {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
         {/if}
         {permissions}
             <div class="module-actions">
-                &#160;&#160;|&#160;&#160;
+				{if !bs()}
+					{nbsp count=2}|{nbsp count=2}
+			    {/if}
                 {*<span class="adminviewlink">{'Administration View'|gettext}</span>*}
                 {icon class="adminviewlink" text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    &#160;&#160;|&#160;&#160;
+					{if !bs()}
+						{nbsp count=2}|{nbsp count=2}
+				    {/if}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
+					{if !bs()}
+						{nbsp count=2}|{nbsp count=2}
+				    {/if}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
             </div>
         {/permissions}
-		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
-        &#160;&#160;|&#160;&#160;
+		{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+		{if !bs()}
+			{nbsp count=2}|{nbsp count=2}
+	    {/if}
 		{icon class="listviewlink" action=showall view='showall_Past Events' time=$time text='Past Events View'|gettext}{br}
 	</div>
 	<{$config.heading_level|default:'h1'}>

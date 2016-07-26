@@ -60,7 +60,7 @@
             </{$config.item_level|default:'h2'}>
             {if !$config.datetag}
                 <span class="date">{$item->publish_date|format_date}</span>
-                {$pp = '&#160;&#160;|&#160;&#160;'}
+                {$pp = '&#160;&#160;|&#160;&#160;'|not_bs}
             {/if}
             {tags_assigned record=$item prepend=$pp}
             {if $item->isRss != true}

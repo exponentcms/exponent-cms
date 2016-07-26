@@ -42,7 +42,7 @@
         {/if}
         {if $record->title}<{$config.item_level|default:'h2'}>{$record->title}</{$config.item_level|default:'h2'}>{/if}
         <div class="item-actions">
-            {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}{br}
+            {printer_friendly_link}{export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}{br}
             {subscribe_link}
         </div>
         {$myloc=serialize($__loc)}
@@ -71,8 +71,8 @@
             {/if}
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
-            {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'}
-            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         </div>
         <div class="bodycopy">
             {$record->body}

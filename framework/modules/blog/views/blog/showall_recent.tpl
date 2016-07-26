@@ -71,7 +71,7 @@
                     {if !$config.displayauthor}
                         <span class="label posted">{'Posted by'|gettext}</span>
                         <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
-                        {$prepend = '&#160;&#160;|&#160;&#160;'}
+                        {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
                     {/if}
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
@@ -80,8 +80,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count record=$item show=1 prepend=$prepend}
-                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
+                {comments_count record=$item prepend=$prepend}
+                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
             </div>
             {permissions}
                 <div class="item-actions">

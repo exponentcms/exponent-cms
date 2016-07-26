@@ -23,21 +23,29 @@
 	<div class="module-actions">
         {if !$config.disable_links}
             {icon class="weekviewlink" action=showall view=showall_Week time=$time title='View Entire Week'|gettext text='View Week'|gettext}
-            {nbsp count=2}|{nbsp count=2}
+            {if !bs()}
+                {nbsp count=2}|{nbsp count=2}
+            {/if}
             {icon class="monthviewlink" action=showall time=$time title='View Entire Month'|gettext text='View Month'|gettext}
         {/if}
         {permissions}
             {if $permissions.manage}
-                {nbsp count=2}|{nbsp count=2}
-                  {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
-                  {if !$config.disabletags}
-                      {nbsp count=2}|{nbsp count=2}
-                      {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
-                  {/if}
-                  {if $config.usecategories}
-                      {nbsp count=2}|{nbsp count=2}
-                      {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
-                  {/if}
+                {if !bs()}
+                    {nbsp count=2}|{nbsp count=2}
+                {/if}
+                {icon class="adminviewlink" action=showall view='showall_Administration' time=$time text='Administration View'|gettext}
+                {if !$config.disabletags}
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
+                    {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
+                {/if}
+                {if $config.usecategories}
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
+                    {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
+                {/if}
             {/if}
         {/permissions}
 		{*{printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}*}
