@@ -476,7 +476,7 @@ class elFinder {
 					$this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
 				}
 			} else {
-				$this->mountErrors[] = 'Driver "'.$class.'" does not exists';
+				$this->mountErrors[] = 'Driver "'.$class.'" does not exist';
 			}
 		}
 
@@ -936,16 +936,13 @@ class elFinder {
 			$options = array_merge($options, $this->optionsNetVolumes[$protocol]);
 		}
 		
+		if (! $key =  $volume->netMountKey) {
+			$key = md5($protocol . '-' . join('-', $options));
+		}
+		$options['netkey'] = $key;
+		
 		if ($volume->mount($options)) {
-			if (! $key =  $volume->netMountKey) {
-				$key = md5($protocol . '-' . join('-', $options));
-			}
-			if (isset($netVolumes[$key])) {
-				$volume->umount();
-				return array('error' => $this->error(self::ERROR_EXISTS, isset($options['alias'])? $options['alias'] : $options['path']));
-			}
 			$options['driver'] = $driver;
-			$options['netkey'] = $key;
 			$netVolumes[$key]  = $options;
 			$this->saveNetVolumes($netVolumes);
 			$rootstat = $volume->file($volume->root());

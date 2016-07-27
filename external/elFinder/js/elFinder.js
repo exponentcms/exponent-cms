@@ -123,15 +123,6 @@ window.elFinder = function(node, opts) {
 		},
 		
 		/**
-		 * cwd options of each volume
-		 * key: volumeid
-		 * val: options object
-		 * 
-		 * @type Object
-		 */
-		volOptions = {},
-		
-		/**
 		 * Files/dirs cache
 		 *
 		 * @type Object
@@ -314,35 +305,6 @@ window.elFinder = function(node, opts) {
 			for (i = 0; i < l; i++) {
 				f = data[i];
 				if (f.name && f.hash && f.mime) {
-					if (!f.phash) {
-						var name = 'volume_'+f.name,
-							i18 = self.i18n(name);
-
-						if (name != i18) {
-							f.i18 = i18;
-						}
-						
-						// set options, disabledCmds, tmbUrls for each volume
-						if (f.volumeid) {
-							// from v2.1.14
-							if (f.options) {
-								// set volOptions
-								volOptions[f.volumeid] = f.options;
-								
-								// set disabledCmds
-								if (f.options.disabled) {
-									self.disabledCmds[f.volumeid] = f.options.disabled;
-								}
-							}
-							// for compat <= v2.1.13
-							f.disabled && (self.disabledCmds[f.volumeid] = f.disabled);
-							
-							if (f.tmbUrl) {
-								self.tmbUrls[f.volumeid] = f.tmbUrl;
-							}
-							self.roots[f.volumeid] = f.hash;
-						}
-					}
 					if (sorterChk && f.phash === cwd) {
 						$.each(self.sortRules, function(key) {
 							if (defsorter[key] || typeof f[key] !== 'undefined' || (key === 'mode' && typeof f.perm !== 'undefined')) {
@@ -960,6 +922,7 @@ window.elFinder = function(node, opts) {
 				ui.helper.hide();
 				self.clipboard(result, !isCopy);
 				self.exec('paste', hash, void 0, hash).always(function(){
+					self.clipboard([]);
 					self.trigger('unlockfiles', {files : targets});
 				});
 				self.trigger('drop', {files : targets});
@@ -973,7 +936,7 @@ window.elFinder = function(node, opts) {
 	 * @return Boolean
 	 **/
 	this.enabled = function() {
-		return node.is(':visible') && enabled;
+		return enabled && this.visible();
 	};
 	
 	/**
@@ -982,7 +945,7 @@ window.elFinder = function(node, opts) {
 	 * @return Boolean
 	 **/
 	this.visible = function() {
-		return node.is(':visible');
+		return node[0].elfinder && node.is(':visible');
 	};
 	
 	/**
@@ -1040,7 +1003,7 @@ window.elFinder = function(node, opts) {
 	this.option = function(name, target) {
 		if (target && cwd !== target) {
 			var res = '';
-			$.each(volOptions, function(id, opt) {
+			$.each(self.volOptions, function(id, opt) {
 				if (target.indexOf(id) === 0) {
 					res = opt[name] || '';
 					return false;
@@ -1231,17 +1194,7 @@ window.elFinder = function(node, opts) {
 	 * @return String
 	 */
 	this.tmb = function(file) {
-		var geturl = function(hash){
-				var turl = '';
-				$.each(self.tmbUrls, function(i, u){
-					if (hash.indexOf(i) === 0) {
-						turl = self.tmbUrls[i];
-						return false;
-					}
-				});
-				return turl;
-			},
-			tmbUrl = (self.searchStatus.state && file.hash.indexOf(self.cwd().volumeid) !== 0)? geturl(file.hash) : cwdOptions['tmbUrl'],
+		var tmbUrl = (self.searchStatus.state && file.hash.indexOf(self.cwd().volumeid) !== 0)? self.option('tmbUrl', file.hash) : cwdOptions['tmbUrl'],
 			cls    = 'elfinder-cwd-bgurl',
 			url    = '';
 
@@ -1439,7 +1392,7 @@ window.elFinder = function(node, opts) {
 								dfrd.xhr = xhr = self.transport.send(options).fail(error).done(success);
 								return;
 							}
-							error = ['errConnect', 'HTTP error ' + xhr.status];
+							error = xhr.quiet ? '' : ['errConnect', 'HTTP error ' + xhr.status];
 						} 
 				}
 				
@@ -1484,9 +1437,6 @@ window.elFinder = function(node, opts) {
 					
 					if (response.options) {
 						cwdOptions = $.extend({}, cwdOptions, response.options);
-						if (response.cwd && response.cwd.volumeid) {
-							volOptions[response.cwd.volumeid] = cwdOptions;
-						}
 					}
 
 					if (response.netDrivers) {
@@ -1614,10 +1564,12 @@ window.elFinder = function(node, opts) {
 	/**
 	 * Compare current files cache with new files and return diff
 	 * 
-	 * @param  Array  new files
+	 * @param  Array   new files
+	 * @param  String  target folder hash
+	 * @param  Array   exclude properties to compare
 	 * @return Object
 	 */
-	this.diff = function(incoming, onlydir) {
+	this.diff = function(incoming, onlydir, excludeProps) {
 		var raw       = {},
 			added     = [],
 			removed   = [],
@@ -1651,9 +1603,11 @@ window.elFinder = function(node, opts) {
 				added.push(file);
 			} else {
 				$.each(file, function(prop) {
-					if (file[prop] != origin[prop]) {
-						changed.push(file)
-						return false;
+					if (! excludeProps || $.inArray(prop, excludeProps) === -1) {
+						if (file[prop] != origin[prop]) {
+							changed.push(file)
+							return false;
+						}
 					}
 				});
 			}
@@ -1984,13 +1938,10 @@ window.elFinder = function(node, opts) {
 		var disabled,
 			cvid = self.cwd().volumeid || '';
 		if (cvid && dstHash && dstHash.indexOf(cvid) !== 0) {
-			disabled = [];
-			$.each(self.disabledCmds, function(i, v){
-				if (dstHash.indexOf(i) === 0) {
-					disabled = v;
-					return false;
-				}
-			});
+			disabled = self.option('disabled', dstHash);
+			if (! disabled) {
+				disabled = [];
+			}
 		} else {
 			disabled = cwdOptions.disabled;
 		}
@@ -2525,18 +2476,13 @@ window.elFinder = function(node, opts) {
 	this.commandMap = {};
 	
 	/**
-	 * Disabled commands Array of each volume
+	 * cwd options of each volume
+	 * key: volumeid
+	 * val: options object
 	 * 
 	 * @type Object
 	 */
-	this.disabledCmds = {};
-	
-	/**
-	 * tmbUrls Array of each volume
-	 * 
-	 * @type Object
-	 */
-	this.tmbUrls = {};
+	this.volOptions = {};
 	
 	// prepare node
 	node.addClass(this.cssClass)
@@ -3846,44 +3792,6 @@ elFinder.prototype = {
 					} else {
 						setTimeout(function(){ check(); }, 100);
 					}
-				},
-				mimeCheck = function(mime) {
-					var res   = true, // default is allow
-						mimeChecker = fm.option('uploadMime', target),
-						allow,
-						deny,
-						check = function(checker) {
-							var ret = false;
-							if (typeof checker === 'string' && checker.toLowerCase() === 'all') {
-								ret = true;
-							} else if ($.isArray(checker) && checker.length) {
-								$.each(checker, function(i, v) {
-									v = v.toLowerCase();
-									if (v === 'all' || mime.indexOf(v) === 0) {
-										ret = true;
-										return false;
-									}
-								});
-							}
-							return ret;
-						};
-					if (mime && $.isPlainObject(mimeChecker)) {
-						mime = mime.toLowerCase();
-						allow = check(mimeChecker.allow);
-						deny = check(mimeChecker.deny);
-						if (mimeChecker.firstOrder === 'allow') {
-							res = false; // default is deny
-							if (! deny && allow === true) { // match only allow
-								res = true;
-							}
-						} else {
-							res = true; // default is allow
-							if (deny === true && ! allow) { // match only deny
-								res = false;
-							}
-						}
-					}
-					return res;
 				};
 
 				if (! dataChecked && (isDataType || data.type == 'files')) {
@@ -3915,7 +3823,7 @@ elFinder.prototype = {
 						}
 						
 						// file mime check
-						if (blob.type && ! mimeCheck(blob.type)) {
+						if (blob.type && ! self.uploadMimeCheck(blob.type, target)) {
 							self.error(self.i18n('errUploadFile', blob.name) + ' ' + self.i18n('errUploadMime') + ' (' + self.escape(blob.type) + ')');
 							cnt--;
 							total--;
@@ -4108,7 +4016,7 @@ elFinder.prototype = {
 							var errors = ['errAbort'];
 							// ff bug while send zero sized file
 							// for safari - send directory
-							if (!isDataType && data.files && $.map(data.files, function(f){return f.size === 0? f : null;}).length) {
+							if (!isDataType && data.files && $.map(data.files, function(f){return f.size === (self.UA.Safari? 1802 : 0)? f : null;}).length) {
 								errors.push('errFolderUpload');
 							}
 							dfrd.reject(errors);
@@ -4511,22 +4419,70 @@ elFinder.prototype = {
 		var self   = this,
 			filter = function(file) { 
 		
-			if (file && file.hash && file.name && file.mime) {
-				if (file.mime == 'application/x-empty') {
-					file.mime = 'text/plain';
-				}
-				if (file.volumeid && file.options) {
-					// set immediate properties
-					$.each(self.optionProperties, function(i, k) {
-						if (file.options[k]) {
-							file[k] = file.options[k];
+				if (file && file.hash && file.name && file.mime) {
+					if (file.mime == 'application/x-empty') {
+						file.mime = 'text/plain';
+					}
+					
+					if (! file.phash || file.mime === 'directory') {
+						// set options, tmbUrls for each volume
+						if (file.volumeid) {
+							// from v2.1.14
+							if (file.options) {
+								// set volOptions
+								self.volOptions[file.volumeid] = file.options;
+								
+								// set immediate properties
+								$.each(self.optionProperties, function(i, k) {
+									if (file.options[k]) {
+										file[k] = file.options[k];
+									}
+								});
+							} else {
+								// for compat <= v2.1.13
+								if (file.disabled) {
+									self.volOptions[file.volumeid].disabled = file.disabled;
+								}
+								if (file.tmbUrl) {
+									self.volOptions[file.volumeid].tmbUrl = file.tmbUrl;
+								}
+							}
+							if (! file.phash) {
+								self.roots[file.volumeid] = file.hash;
+							}
+							
+							if (prevId !== file.volumeid) {
+								prevId = file.volumeid;
+								i18nFolderName = self.option('i18nFolderName', file.volumeid);
+							}
 						}
-					});
+						
+						// volume root i18n name
+						if (! file.i18 && ! file.phash) {
+							name = 'volume_' + file.name,
+							i18 = self.i18n(false, name);
+	
+							if (name !== i18) {
+								file.i18 = i18;
+							}
+						}
+						
+						// i18nFolderName
+						if (i18nFolderName && ! file.i18) {
+							name = 'folder_' + file.name,
+							i18 = self.i18n(false, name);
+	
+							if (name !== i18) {
+								file.i18 = i18;
+							}
+						}
+					}
+					
+					return file;
 				}
-				return file;
-			}
-			return null;
-		};
+				return null;
+			},
+			name, i18, i18nFolderName, prevId;
 		
 
 		if (data.files) {
@@ -5019,9 +4975,13 @@ elFinder.prototype = {
 				}
 				return m;
 			},
-			i, j, m;
-			
-		for (i = 0; i< arguments.length; i++) {
+			i, j, m, escFunc, start = 0;
+		
+		if (arguments.length && arguments[0] === false) {
+			escFunc = function(m){ return m; };
+			start = 1;
+		}
+		for (i = start; i< arguments.length; i++) {
 			m = arguments[i];
 			
 			if (typeof m == 'string') {
@@ -5049,14 +5009,14 @@ elFinder.prototype = {
 			m = input[i];
 			if (typeof m == 'string') {
 				// translate message
-				m = messages[m] || self.escape(m);
+				m = messages[m] || (escFunc? escFunc(m) : self.escape(m));
 				// replace placeholders in message
 				m = m.replace(/\$(\d+)/g, function(match, placeholder) {
 					placeholder = i + parseInt(placeholder);
 					if (placeholder > 0 && input[placeholder]) {
 						ignore.push(placeholder)
 					}
-					return self.escape(input[placeholder]) || '';
+					return escFunc? escFunc(input[placeholder]) : self.escape(input[placeholder]);
 				});
 			} else {
 				// get HTML from jQuery object
@@ -5328,6 +5288,53 @@ elFinder.prototype = {
 		} else {
 			return oct;
 		}
+	},
+	
+	/**
+	 * Return boolean that uploadable MIME type into target folder
+	 * 
+	 * @param  String  mime    MIME type
+	 * @param  String  target  target folder hash
+	 * @return Bool
+	 */
+	uploadMimeCheck : function(mime, target) {
+		target = target || this.cwd().hash;
+		var res   = true, // default is allow
+			mimeChecker = this.option('uploadMime', target),
+			allow,
+			deny,
+			check = function(checker) {
+				var ret = false;
+				if (typeof checker === 'string' && checker.toLowerCase() === 'all') {
+					ret = true;
+				} else if ($.isArray(checker) && checker.length) {
+					$.each(checker, function(i, v) {
+						v = v.toLowerCase();
+						if (v === 'all' || mime.indexOf(v) === 0) {
+							ret = true;
+							return false;
+						}
+					});
+				}
+				return ret;
+			};
+		if (mime && $.isPlainObject(mimeChecker)) {
+			mime = mime.toLowerCase();
+			allow = check(mimeChecker.allow);
+			deny = check(mimeChecker.deny);
+			if (mimeChecker.firstOrder === 'allow') {
+				res = false; // default is deny
+				if (! deny && allow === true) { // match only allow
+					res = true;
+				}
+			} else {
+				res = true; // default is allow
+				if (deny === true && ! allow) { // match only deny
+					res = false;
+				}
+			}
+		}
+		return res;
 	},
 	
 	navHash2Id : function(hash) {

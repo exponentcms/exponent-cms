@@ -46,7 +46,6 @@
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/cwd.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/quicklook.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/commands.css" type="text/css">
-    <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/toolbar.css" type="text/css">
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/fonts.css" type="text/css">
 
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">  *}{* default OSX theme *}
@@ -58,7 +57,6 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/jquery.elfinder.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.resources.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.options.js"></script>
-    {*<script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/elFinder.options.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.history.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.command.js"></script>
 
@@ -92,8 +90,8 @@
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/cut.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/paste.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/open.js"></script>*}
-    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/open.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/opendir.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/rm.js"></script>
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/info.js"></script>*}
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/info.js"></script>
@@ -123,6 +121,7 @@
     <script src="{$smarty.const.PATH_RELATIVE}framework/modules/file/connector/links.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/places.js"></script>
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/chmod.js"></script>
+    <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/commands/colwidth.js"></script>
 
     <!-- elfinder languages -->
     {*<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/i18n/elfinder.{substr($smarty.const.LOCALE,0,2)}.js"></script>*}

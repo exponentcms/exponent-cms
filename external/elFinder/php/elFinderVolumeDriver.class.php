@@ -201,6 +201,8 @@ abstract class elFinderVolumeDriver {
 		'icon'            => '',
 		// CSS Class of volume root in tree
 		'rootCssClass'    => '',
+		// enable i18n folder name that convert name to elFinderInstance.messages['folder_'+name]
+		'i18nFolderName'  => false,
 		// Search timeout (sec)
 		'searchTimeout'   => 30,
 		// Search exclusion directory regex pattern (require demiliter e.g. '#/path/to/exclude_directory#i')
@@ -969,7 +971,7 @@ abstract class elFinderVolumeDriver {
 			$parts = explode(',', isset($this->options['uploadOrder']) ? $this->options['uploadOrder'] : 'deny,allow');
 			$this->uploadOrder = array(trim($parts[0]), trim($parts[1]));
 		} else { // telephat_mode off
-			$this->uploadOrder = $this->options['uploadOrder'];
+			$this->uploadOrder = ! empty($this->options['uploadOrder'])? $this->options['uploadOrder'] : array('deny', 'allow');
 		}
 			
 		if (!empty($this->options['uploadMaxSize'])) {
@@ -1069,7 +1071,7 @@ abstract class elFinderVolumeDriver {
 		$root = $this->stat($this->root);
 		
 		if (!$root) {
-			return $this->setError('Root folder does not exists.');
+			return $this->setError('Root folder does not exist.');
 		}
 		if (!$root['read'] && !$root['write']) {
 			return $this->setError('Root folder has not read and write permissions.');
@@ -1330,7 +1332,7 @@ abstract class elFinderVolumeDriver {
 			'uploadMaxSize'   => intval($this->uploadMaxSize),
 			'uploadMaxConn'   => intval($this->options['uploadMaxConn']),
 			'uploadMime'      => array(
-				'firstOrder' => $this->uploadOrder[0],
+				'firstOrder' => isset($this->uploadOrder[0])? $this->uploadOrder[0] : 'deny',
 				'allow'      => $this->uploadAllow,
 				'deny'       => $this->uploadDeny
 			),
@@ -1341,9 +1343,10 @@ abstract class elFinderVolumeDriver {
 				'extract'   => isset($this->archivers['extract']) && is_array($this->archivers['extract']) ? array_keys($this->archivers['extract']) : array(),
 				'createext' => $createext
 			),
-			'uiCmdMap'        => $this->options['uiCmdMap'],
+			'uiCmdMap'        => (isset($this->options['uiCmdMap']) && is_array($this->options['uiCmdMap']))? $this->options['uiCmdMap'] : array(),
 			'syncChkAsTs'     => intval($this->options['syncChkAsTs']),
-			'syncMinMs'       => intval($this->options['syncMinMs'])
+			'syncMinMs'       => intval($this->options['syncMinMs']),
+			'i18nFolderName'  => intval($this->options['i18nFolderName'])
 		);
 		if ($hash === null) {
 			// call from getRootStatExtra()
@@ -1784,6 +1787,11 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_INVALID_NAME);
 		}
 		
+		$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name);
+		if ($mimeByName && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName)) {
+			return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME, $name);
+		}
+		
 		if (($dir = $this->dir($dst)) == false) {
 			return $this->setError(elFinder::ERROR_TRGDIR_NOT_FOUND, '#'.$dst);
 		}
@@ -1821,7 +1829,7 @@ abstract class elFinderVolumeDriver {
 		
 		$mimeByName = elFinderVolumeDriver::mimetypeInternalDetect($name);
 		if ($mimeByName && $mimeByName !== 'unknown' && !$this->allowPutMime($mimeByName)) {
-			return $this->setError(elFinder::ERROR_INVALID_NAME, $name);
+			return $this->setError(elFinder::ERROR_UPLOAD_FILE_MIME, $name);
 		}
 		
 		if (!($file = $this->file($hash))) {
@@ -3597,10 +3605,6 @@ abstract class elFinderVolumeDriver {
 			$stat['thash'] = $this->encode($stat['target']);
 			//$this->cache[$stat['target']] = $stat;
 			unset($stat['target']);
-		}
-		
-		if (isset($this->options['netkey']) && $path === $this->root) {
-			$stat['netkey'] = $this->options['netkey'];
 		}
 		
 		return $this->cache[$path] = $stat;
