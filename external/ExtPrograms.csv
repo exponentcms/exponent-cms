@@ -37,16 +37,13 @@ Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-dompdf,0.6.2exp,github.com/dompdf/dompdf,0.7.0,"optional, patched to display our images and not break on bad tables"
-mPDF,6.0.0/5.7.4,github.com/mpdf/mpdf,6.1.2/5.7.4,optional
-HTML2PDF,4.6.1,github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.2.12,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
 CKEditor,4.5.10,ckeditor.com,4.5.10,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.3.13,tinymce.com,4.4.0,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
-elFinder,2.1.13n,elfinder.org,2.1.13n,"use https://github.com/nao-pon/elFinder and added Exponent php classes, plus some other customized files"
+TinyMCE,4.4.1,tinymce.com,4.4.1,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+PLUpload,2.1.9,github.com/moxiecode/plupload,2.1.9,"needed for TinyMCE Quick Upload, placed in that plugin folder"
+elFinder,2.1.14n,elfinder.org,2.1.14n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
-jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading
+jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
 jQueryUI,1.12.0,jqueryui.com,1.12.0,
 stepy,1.1.0exp,wbotelhos.com/stepy,1.1.0,"added button class, jquery.validate option passing"
 validate,1.15.0exp,jqueryvalidation.org/,1.15.0,edit for 'undefined' in 'min' & 'max'
@@ -80,10 +77,16 @@ shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.0.0,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0beta1,jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
 easypost sdk,3.1.0,github.com/EasyPost/easypost-php,3.1.0,
-PLUpload,2.1.9,github.com/moxiecode/plupload,2.1.9,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8b2,
-Webshim,1.15.10,github.com/aFarkas/webshim,1.15.10,copy shim.css & shim-ext.css into jquery/addons/js/shims/styles
+Webshim,1.15.10,github.com/aFarkas/webshim,1.15.10,
+,,,,
+"Optional, not included",,,,
+dompdf,0.6.2exp,github.com/dompdf/dompdf,0.7.0,"optional, patched to display our images and not break on bad tables"
+mPDF,6.0.0/5.7.4,github.com/mpdf/mpdf,6.1.2/5.7.4,optional
+HTML2PDF,4.6.1,github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
+TCPDF,6.2.12,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
+Kint,1.0.10,github.com/raveren/kint,1.0.10,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,
 jQuery3,,jquery.com,3.1.0,
