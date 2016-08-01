@@ -24,7 +24,7 @@ iLess,2.2.0,github.com/mishal/iless,2.2.0,"optional, has issues with bootstrap v
 Twitter-Bootstrap2,2.3.2,twitter.github.com/bootstrap,2.3.2,"patched bootstrap.less includes swatches, fontawesome & exp variables"
 Twitter-Bootstrap,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.less includes swatches & exp variables
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
-Bootswatch,3.3.6+2,bootswatch.com/,3.3.6+2,change 1st line variables.less comment to output to .css file
+Bootswatch,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
 Font-Awesome,4.6.3,fortawesome.github.com/Font-Awesome,4.6.3,
 Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea & edit-calendar"
@@ -73,10 +73,10 @@ bootstrap-tagsinput,0.8.0exp,github.com/timschlechter/bootstrap-tagsinput,0.8.0,
 Typeahead,0.11.1,twitter.github.io/typeahead.js/,0.11.1,needed by bootstrap-tagsinput
 bootstrap-duallistbox,3.0.5,github.com/istvan-ujjmeszaros/bootstrap-duallistbox,3.0.5,
 select2,3.5.4,github.com/ivaynberg/select2,3.5.4/4.0.3,
-shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.0.0,
+shuffle.js,v3.1.1,github.com/Vestride/Shuffle,4.0.1,
 Jasny Bootstrap2,2.3.1,jasny.github.io/bootstrap,2.3.1,only using bootstrap-fileupload at this time
 Jasny Bootstrap,3.2.0beta1,jasny.github.io/bootstrap,3.2.0beta1,only using fileinput at this time
-easypost sdk,3.1.0,github.com/EasyPost/easypost-php,3.1.0,
+easypost sdk,3.1.1,github.com/EasyPost/easypost-php,3.1.1,
 jquery.cookie.js,1.4.1,github.com/carhartl/jquery-cookie,1.4.1,
 jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8b2,
 Webshim,1.15.10,github.com/aFarkas/webshim,1.15.10,
