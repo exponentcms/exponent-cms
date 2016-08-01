@@ -2586,7 +2586,14 @@ class migrationController extends expController {
             $this->params['int'],
             $this->params['id'],
             $this->params['action'],
-            $this->params['PHPSESSID']
+            $this->params['PHPSESSID'],
+            $this->params['__utma'],
+            $this->params['__utmb'],
+            $this->params['__utmc'],
+            $this->params['__utmz'],
+            $this->params['__utmt'],
+            $this->params['__utmli'],
+            $this->params['__cfduid']
         );
         
         // setup and save the config

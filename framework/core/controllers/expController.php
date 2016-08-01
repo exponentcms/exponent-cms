@@ -912,8 +912,8 @@ abstract class expController {
         }
 
         // create a new RSS object if enable is checked.
+        $params = $this->params;
         if (!empty($this->params['enable_rss'])) {
-            $params = $this->params;
             $params['title'] = $params['feed_title'];
             unset($params['feed_title']);
             $params['sef_url'] = $params['feed_sef_url'];
@@ -923,9 +923,9 @@ abstract class expController {
             $this->params['feed_sef_url'] = $rssfeed->sef_url;
         } else {
             $rssfeed = new expRss($this->params);
-            $params = $this->params;
             $params['enable_rss'] = false;
-            if (empty($params['advertise'])) $params['advertise'] = false;
+            if (empty($params['advertise']))
+                $params['advertise'] = false;
             $params['title'] = $params['feed_title'];
             unset($params['feed_title']);
             $params['sef_url'] = $params['feed_sef_url'];
@@ -951,7 +951,14 @@ abstract class expController {
             $this->params['id'],
             $this->params['cid'],
             $this->params['action'],
-            $this->params['PHPSESSID']
+            $this->params['PHPSESSID'],
+            $this->params['__utma'],
+            $this->params['__utmb'],
+            $this->params['__utmc'],
+            $this->params['__utmz'],
+            $this->params['__utmt'],
+            $this->params['__utmli'],
+            $this->params['__cfduid']
         );
 
         // setup and save the config
