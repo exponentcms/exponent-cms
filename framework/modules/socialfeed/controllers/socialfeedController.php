@@ -21,7 +21,7 @@
  * @package    Modules
  */
 
-// needed for Facebook SDK
+// needed for Facebook SDK v4
 use Facebook\Facebook;
 use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
@@ -138,7 +138,7 @@ class socialfeedController extends expController
             return array();
         }
         require_once(BASE . "external/facebook-php-sdk-4.0.23/autoload.php"); //v4
-//        require_once(BASE . "external/facebook-php-sdk-5.1.2/src/Facebook/autoload.php");
+//        require_once(BASE . "external/facebook-php-sdk-v4-5.2.0/src/Facebook/autoload.php");
         FacebookSession::setDefaultApplication($config['app_id'], $config['secret']); //v4
 //        $fb = new Facebook\Facebook(array(
 //            'app_id'     => $config['app_id'],
@@ -194,9 +194,15 @@ class socialfeedController extends expController
 //            	}//end v5
 
                 $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
-                $response = $request->execute(); //v4
-                $graph_object = $response->getGraphObject(); //v4
-                $facebook_values = $graph_object->asArray(); //v4
+                try {  //v4
+                    $response = $request->execute(); //v4
+                    $graph_object = $response->getGraphObject(); //v4
+                    $facebook_values = $graph_object->asArray(); //v4
+                } catch (FacebookRequestException $e) {  //v4
+                    return array();  //v4
+                } catch (FacebookSDKException $e) {  //v4
+                    return array();  //v4
+                }  //v4
 
 //                // validating the access token begin v5
 //               	try {
@@ -322,18 +328,25 @@ class socialfeedController extends expController
             );
         }
         if ($facebook_entry->type == 'event') {
-            $request = new FacebookRequest($this->session, 'GET', $ids[1]); //v4
-            $response = $request->execute(); //v4
-            $event_object = $response->getGraphObject(); //v4
-            $event_value = $event_object->asArray(); //v4
-            $formatted_start = new DateTime($event_value['start_time']);
-            $event_timestamp = $formatted_start->format(  // note needs to be created date
+            try {
+                $request = new FacebookRequest($this->session, 'GET', $ids[1]); //v4
+                $response = $request->execute(); //v4
+                $event_object = $response->getGraphObject(); //v4
+                $event_value = $event_object->asArray(); //v4
+                $formatted_start = new DateTime($event_value['start_time']);
+                $event_timestamp = $formatted_start->format(  // note needs to be created date
 //                    $this->config['socialfeed_facebook_time_format']
-                'U'
-            );
-            // we don't display past events
-            if ($event_timestamp < time())
+                    'U'
+                );
+                // we don't display past events
+                if ($event_timestamp < time()) {
+                    return null;
+                }
+            } catch (FacebookRequestException $e) {
                 return null;
+            } catch (FacebookSDKException $e) {
+                return null;
+            }
 
             $message_feed['message'] = '<strong>'.$event_value['name'] . '</strong><br>' . substr(
                     $event_value['description'],
