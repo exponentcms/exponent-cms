@@ -82,7 +82,7 @@
                     {*{if $config.quality==100}*}
                         {*<img src="{$slide->expFile[0]->url}" class="slide-image" />*}
                     {*{else}*}
-                        {img file_id=$slide->expFile[0]->id w=1000 aoe=1 class="slide-image" far=TL f=jpeg q=$quality|default:75}
+                        {img file_id=$slide->expFile[0]->id w=1000 aoe=1 class="slide-image" far=TL f=jpeg q=$quality|default:75 alt=$slide->alt}
                     {*{/if}*}
                     {if $slide->link}
                         </a>

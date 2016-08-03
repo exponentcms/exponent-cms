@@ -53,7 +53,7 @@
                         {if (isset($message['post_url']) && !empty($message['post_url']))}
                             <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}"></a>
                         {else}
-                            <img class="img-responsive" src="{$message['image_url']}">
+                            <img class="img-responsive" src="{$message['image_url']}" alt="{'Instagram photo'|gettext}" >
                         {/if}
                             {if (isset($message['message']) && !empty($message['message']))} {* photo & status *}
                                 <div class="fb-message post-content">
@@ -108,7 +108,7 @@
                         {if (isset($message['picture']) && !empty($message['picture']))}
                             <div class="fb-pic">
                                 <a href="{$message['photo_link']}" target="_blank" title="{'View Photos'|gettext}">
-                                    <img class="img-responsive" src="{$message['picture']}">
+                                    <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook photo'|gettext}" >
                                 </a>
                             </div>
                         {/if}
@@ -156,7 +156,7 @@
                         {if (isset($message['post_url']) && !empty($message['post_url']))}
                             <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}"></a>
                         {else}
-                            <img class="img-responsive" src="{$message['image_url']}">
+                            <img class="img-responsive" src="{$message['image_url']}" alt="{'pinterest photo'|gettext}" >
                         {/if}
                         {if (isset($message['description']) && !empty($message['description']))} {* pin *}
                             <div class="fb-message post-content">
