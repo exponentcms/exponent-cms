@@ -36,6 +36,10 @@ return array(
 //    'store'=>array(                     // the 'store' module
 //        'manage'=>'Full Size'           // 'manage' action will use the 'Full Size' subtheme
 //    ),
+//    'blog'=>array(                      // the 'blog' module
+//        'show'=>'Blog Sidebar',         // 'show' action will use the 'Blog Sidebar' subtheme
+//        'showall'=>'Blog Sidebar',      // 'showall' action will use the 'Blog Sidebar' subtheme
+//    ),
 //    '*'=>array(                         // ANY module
 //        'showall_by_tags'=>'Tags View'  // showall_by_tags action will use the 'Tags View' subtheme
 //    ),
