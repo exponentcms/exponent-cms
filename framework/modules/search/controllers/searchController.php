@@ -76,6 +76,7 @@ class searchController extends expController {
             'order'=>'score',
             'dir'=>'DESC',
             'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'dontsortwithincat'=>true,
             'controller' => $this->params['controller'],
             'action' => $this->params['action'],
             'src' => $this->loc->src,
@@ -157,29 +158,41 @@ class searchController extends expController {
      */
     function cloud() {
         global $db;
+
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'expTag',
             'where'=>null,
 //          'limit'=>999,
             'order'=>"title",
+            'dontsortwithincat'=>true,
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
             'src'=>$this->hasSources() == true ? $this->loc->src : null,
             'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
 
-        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
-            foreach ($page->records as $key => $value) {
-                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
-                if (!empty($attatchedat)) {
-                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
-                    $page->records[$key]->attached[$contenttype] = $attatchedat;
-                }
-            }
-        }
+//        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+//            foreach ($page->records as $key => $value) {
+//                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+//                if (!empty($attatchedat)) {
+//                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+//                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+//                }
+//            }
+//        }
+        $tags_list = array();
         foreach ($page->records as $key=>$record) {
-            if (empty($record->attachedcount)) unset($page->records[$key]);
+            $count = $db->countObjects('content_expTags','exptags_id=' . $record->id);
+            if ($count) {
+                $page->records[$key]->attachedcount = $count;
+                $tags_list[$record->title] = new stdClass();
+                $tags_list[$record->title]->count = $count;
+                $tags_list[$record->title]->sef_url = $record->sef_url;
+                $tags_list[$record->title]->title = $record->title;
+            } else {
+                unset($page->records[$key]);
+            }
         }
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
@@ -188,7 +201,8 @@ class searchController extends expController {
             $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
         }
         assign_to_template(array(
-            'page'=>$page
+            'page'=>$page,
+            'tags_list'=>$tags_list
         ));
     }
 
