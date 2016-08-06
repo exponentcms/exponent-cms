@@ -13,7 +13,15 @@
  *
  *}
 
-<div class="module search list">
+{css unique="cloud-tags"}
+.module.cloud a.ctag,
+.module.cloud span.ctag {
+	margin-left: 5px;
+    margin-right: 5px;
+}
+{/css}
+
+<div class="module search cloud list">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h2'}>{$moduletitle}</{$config.heading_level|default:'h2'}>{/if}
     {permissions}
         <div class="module-actions">
@@ -39,11 +47,9 @@
         {foreach $taglist as $tag}
             {$tagt = str_replace(' ', "&#160;", $tag)}
             {if isset($tags_list[strtolower($tag)]) && $tags_list[strtolower($tag)]->count}
-                <a href="{link controller=expTag action=show title=$tags_list[strtolower($tag)]->sef_url}" title="{'View items tagged with'|gettext} '{$tag}'">{$tagt}</a>
-                {nbsp count=5}
+                <a href="{link controller=expTag action=show title=$tags_list[strtolower($tag)]->sef_url}" class="ctag" title="{'View items tagged with'|gettext} '{$tag}'">{$tagt}</a>
             {elseif !$config.only_used}
-                {$tagt}
-                {nbsp count=5}
+                <span class="ctag">{$tagt}</span>
             {/if}
         {/foreach}
     </div>
