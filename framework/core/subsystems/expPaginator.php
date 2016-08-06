@@ -246,7 +246,7 @@ class expPaginator {
         if (empty($this->dontsort)) {
             if (!empty($this->categorize) && $this->categorize) {
                 expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-            } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
+            } elseif (empty($this->dontsortwithincat)) {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
                 $order = $this->order;
                 if (in_array($order,array('created_at','edited_at','publish'))) {
                     if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
