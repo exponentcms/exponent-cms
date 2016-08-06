@@ -38,6 +38,9 @@ function tablesFilter(){
 	for (var i = 0; i < tables.length; i++) {
 		var a = tables[i].getElementsByTagName('a')[1];
 		var text = tables[i].getAttribute('data-table-name');
+		// remove DB_TABLE_PREFIX_ and underscores from table name
+		text = text.replace('<?php echo DB_TABLE_PREFIX . '_'; ?>','');
+		text = text.replace('_', ' ');
 		if (value == '') {
 			tables[i].className = '';
 			a.innerHTML = text;
