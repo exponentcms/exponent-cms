@@ -4,6 +4,7 @@
     top                               : 30px;
     right                             : 0;
     min-width                         : 160px;
+    max-width: 90%;
     /*display: none;*/
     background                        : #000000;
     color                             : #cccccc;

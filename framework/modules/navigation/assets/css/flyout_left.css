@@ -5,6 +5,7 @@
 	/*top                               : 30px;*/
 	left                               : 0;
 	min-width                          : 160px;
+	max-width: 90%;
 	width                              : auto !important;
 	/*display: none;*/
 	background                         : #000000;
