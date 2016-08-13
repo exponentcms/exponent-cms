@@ -337,6 +337,7 @@ class ecomconfigController extends expController {
     }   
 
     function saveconfig() {
+        $this->params['min_order'] = substr($this->params['min_order'], 1) ;
    		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
    		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
         if (isset($this->params['store']['address_country_id'])) {
