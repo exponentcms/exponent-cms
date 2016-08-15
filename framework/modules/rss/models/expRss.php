@@ -65,7 +65,7 @@ class expRss extends expRecord {
         parent::beforeSave();
     }
     
-    public function getFeedItems() {
+    public function getFeedItems($limit = 0) {
         require_once(BASE.'external/feedcreator.class.php');
 
         // get all the feeds available to this expRss object
@@ -80,7 +80,7 @@ class expRss extends expRecord {
             if (!empty($controller)) {
                 $controller->loc = expCore::makeLocation($feed->module, $feed->src);
                 $controller->params = $this->params;
-                $items = array_merge($items, $controller->getRSSContent());
+                $items = array_merge($items, $controller->getRSSContent($limit));
             }
         }
         

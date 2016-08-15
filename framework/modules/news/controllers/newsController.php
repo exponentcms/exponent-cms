@@ -222,23 +222,25 @@ class newsController extends expController {
         parent::saveConfig();
     }
     
-    public function getRSSContent() {
+    public function getRSSContent($limit = 0) {
         // pull the news posts from the database
-        $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
-        $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
+        $items = $this->news->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC', $limit);
 
         //Convert the newsitems to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->link = $rss_item->guid = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
-            $rss_item->description = $item->body;
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = date(DATE_RSS,$item->publish_date);
             $rss_item->date = $item->publish_date;
             $rssitems[$key] = $rss_item;
+
+            if ($limit && count($rssitems) >= $limit)
+                break;
         }
         return $rssitems;
     }

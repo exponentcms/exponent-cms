@@ -976,15 +976,9 @@ abstract class expController {
      *
      * @return array
      */
-    public function getRSSContent() {
-        // setup the where clause for looking up records.
-        $where = $this->aggregateWhereClause();
-//        $where = empty($where) ? '1' : $where;
-
-        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
-
+    public function getRSSContent($limit = 0) {
         $class = new $this->basemodel_name;
-        $items = $class->find('all', $where, $order);
+        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'created_at DESC', $limit);
 
         //Convert the items to rss items
         $rssitems = array();
@@ -1005,6 +999,9 @@ abstract class expController {
                 $rss_item->commentsCount = $comment_count;
             }
             $rssitems[$key] = $rss_item;
+
+            if ($limit && count($rssitems) >= $limit)
+                break;
         }
         return $rssitems;
     }
@@ -1095,7 +1092,7 @@ abstract class expController {
 
             $pubDate = '';
             $site_rss->params = $this->params;
-            foreach ($site_rss->getFeedItems() as $item) {
+            foreach ($site_rss->getFeedItems($site_rss->rss_limit) as $item) {
                 if ($item->date > $pubDate) {
                     $pubDate = $item->date;
                 }

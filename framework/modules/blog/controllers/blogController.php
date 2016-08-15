@@ -274,35 +274,33 @@ class blogController extends expController {
      *
      * @return array
      */
-    function getRSSContent() {
-//        global $db;
-
-        $class = new blog();
-        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
-
-        //Convert the items to rss items
-        $rssitems = array();
-        foreach ($items as $key => $item) {
-            $rss_item = new FeedItem();
-            $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = $rss_item->guid = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
-            $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
-            $rss_item->authorEmail = user::getEmailById($item->poster);
-//            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
-            $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
-//            $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
-            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
-            if ($comment_count) {
-                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-                $rss_item->commentsCount = $comment_count;
-            }
-            $rssitems[$key] = $rss_item;
-        }
-        return $rssitems;
-    }
+//    function getRSSContent() {
+//        $class = new blog();
+//        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
+//
+//        //Convert the items to rss items
+//        $rssitems = array();
+//        foreach ($items as $key => $item) {
+//            $rss_item = new FeedItem();
+//            $rss_item->title = expString::convertSmartQuotes($item->title);
+//            $rss_item->link = $rss_item->guid = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
+//            $rss_item->description = expString::convertSmartQuotes($item->body);
+//            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+//            $rss_item->authorEmail = user::getEmailById($item->poster);
+////            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
+//            $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
+////            $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
+//            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+//            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+//            if ($comment_count) {
+//                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+////                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsCount = $comment_count;
+//            }
+//            $rssitems[$key] = $rss_item;
+//        }
+//        return $rssitems;
+//    }
 
     /**
      * additional check for display of search hit, only display non-draft

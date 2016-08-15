@@ -182,18 +182,11 @@ class filedownloadController extends expController {
         return $metainfo;
     }
 
-    function getRSSContent() {
+    function getRSSContent($limit = 0) {
         include_once(BASE.'external/mp3file.php');
 
-//        global $db;
-    
-        // setup the where clause for looking up records.
-        $where = $this->aggregateWhereClause();
-
-        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
-
         $fd = new filedownload();
-        $items = $fd->find('all',$where, $order);
+        $items = $fd->find('all',$this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'created_at DESC', $limit);
         
         //Convert the items to rss items
         $rssitems = array();
@@ -208,14 +201,16 @@ class filedownloadController extends expController {
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
             $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
-            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+            if (!empty($item->expCat[0]->title))
+                $rss_item->category = array($item->expCat[0]->title);
 
             // Add the attachment/enclosure info
             $rss_item->enclosure = new Enclosure();
             $rss_item->enclosure->url = !empty($item->expFile['downloadable'][0]->url) ? $item->expFile['downloadable'][0]->url : '';
             $rss_item->enclosure->length = !empty($item->expFile['downloadable'][0]->filesize) ? $item->expFile['downloadable'][0]->filesize : '';
             $rss_item->enclosure->type = !empty($item->expFile['downloadable'][0]->mimetype) ? $item->expFile['downloadable'][0]->mimetype : '';
-            if ($rss_item->enclosure->type == 'audio/mpeg') $rss_item->enclosure->type = 'audio/mpg';
+            if ($rss_item->enclosure->type == 'audio/mpeg')
+                $rss_item->enclosure->type = 'audio/mpg';
 
             // Add iTunes info
             $rss_item->itunes = new iTunes();
@@ -249,6 +244,8 @@ class filedownloadController extends expController {
             // Add the item to the array.
             $rssitems[$key] = $rss_item;
 
+            if ($limit && count($rssitems) >= $limit)
+                break;
         }
         return $rssitems;
     }
