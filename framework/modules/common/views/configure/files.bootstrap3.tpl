@@ -77,8 +77,7 @@ $(document).ready(function() {
                             }
                         });
                         $('#fileViewConfig link').each(function (k, n) {
-                            var url = $(n).attr('href');
-                            $("head").append("  <link href=\"&quot;" + url + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                            $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                         });
                     } else {
                         $('#fileViewConfig .loadingdiv').remove();

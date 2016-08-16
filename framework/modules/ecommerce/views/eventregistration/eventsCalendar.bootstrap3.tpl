@@ -119,7 +119,7 @@
                     };
                 });
                 monthcal_{/literal}{$name}{literal}.find('link').each(function(k, n){
-                    $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                    $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
                 $('#month-cal-{/literal}{$name}{literal}.loadingdiv').remove();
