@@ -25,6 +25,9 @@
 use Facebook\Facebook;
 use Facebook\FacebookRequest;
 use Facebook\FacebookSession;
+use Facebook\GraphObject;
+use Facebook\FacebookRequestException;
+
 
 class socialfeedController extends expController
 {
@@ -193,14 +196,12 @@ class socialfeedController extends expController
 //                    eLog('b3a: '.$_SESSION['facebook_access_token']);
 //            	}//end v5
 
-                $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
                 try {  //v4
+                    $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
                     $response = $request->execute(); //v4
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4
-                } catch (FacebookRequestException $e) {  //v4
-                    return array();  //v4
-                } catch (FacebookSDKException $e) {  //v4
+                } catch (Exception $e) {  //v4
                     return array();  //v4
                 }  //v4
 
@@ -342,9 +343,7 @@ class socialfeedController extends expController
                 if ($event_timestamp < time()) {
                     return null;
                 }
-            } catch (FacebookRequestException $e) {
-                return null;
-            } catch (FacebookSDKException $e) {
+            } catch (Exception $e) {
                 return null;
             }
 
