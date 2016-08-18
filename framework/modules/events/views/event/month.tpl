@@ -168,6 +168,7 @@
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
+            title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%",
             onComplete : function() {
                 $('img').on('load', function() {
@@ -181,6 +182,7 @@
         target = e.target;
         $.colorbox({
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
+            title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%"
         });
         e.preventDefault();

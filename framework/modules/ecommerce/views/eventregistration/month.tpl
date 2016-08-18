@@ -128,6 +128,7 @@
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=eventregistration&action=show&ajax_action=1&title="+target.id,
+            title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%"
         });
         e.preventDefault();
