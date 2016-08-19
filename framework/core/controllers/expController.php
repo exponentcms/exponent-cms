@@ -1078,8 +1078,8 @@ abstract class expController {
             //    $rss->image->width = 64;
             //    $rss->image->height = 64;
             $rss->ttl = $site_rss->rss_cachetime;
-            $rss->link = "http://" . HOSTNAME . PATH_RELATIVE;
-            $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
+            $rss->link = URL_FULL;
+            $rss->syndicationURL = makeLink(array('module'=>$site_rss->module, 'src'=>$site_rss->src));
             if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = !empty($site_rss->feed_artist) ? $site_rss->feed_artist : ORGANIZATION_NAME;
@@ -1109,7 +1109,6 @@ abstract class expController {
             }
             $rss->pubDate = $pubDate;
 
-//        	  header("Content-type: text/xml");
 //            echo $rss->createFeed($feed_type);
             echo $rss->saveFeed($feed_type, $feed_cache, $site_rss->rss_cachetime);
         } else {
