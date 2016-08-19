@@ -1058,10 +1058,16 @@ abstract class expController {
                 header('Pragma: no-cache');
             }
 
+            if ($site_rss->rss_is_podcast) {
+                $feed_type = "PODCAST";
+            } else {
+                $feed_type = "RSS2.0";
+            }
+            $feed_cache = BASE . 'tmp/rsscache/' . $site_rss->sef_url . '.xml';
+
             $rss = new UniversalFeedCreator();
             $rss->cssStyleSheet = "";
-            //	$rss->useCached("PODCAST");
-            $rss->useCached();
+            $rss->useCached($feed_type, $feed_cache, $site_rss->rss_cachetime);
             $rss->title = $site_rss->title;
             if (!empty($this->params['type'])) $rss->title .= ' ' . ucfirst($this->params['type']);
             $rss->description = $site_rss->feed_desc;
@@ -1103,13 +1109,9 @@ abstract class expController {
             }
             $rss->pubDate = $pubDate;
 
-//        	header("Content-type: text/xml");
-//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
-            if ($site_rss->rss_is_podcast) {
-                echo $rss->createFeed("PODCAST");
-            } else {
-                echo $rss->createFeed("RSS2.0");
-            }
+//        	  header("Content-type: text/xml");
+//            echo $rss->createFeed($feed_type);
+            echo $rss->saveFeed($feed_type, $feed_cache, $site_rss->rss_cachetime);
         } else {
             flash('notice', gt("This RSS feed is not available."));
             expHistory::back();
