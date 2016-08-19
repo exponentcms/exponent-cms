@@ -32,7 +32,7 @@
 	            {control type="text" name="apikey" label="Live API Key"|gettext value=$calculator->configdata.apikey required=1}
                 {control type="text" name="testkey" label="Test API Key"|gettext value=$calculator->configdata.testkey|default:'eFCh4a4TS3YoTivTVE0avQ' required=1}
 	            {control type="checkbox" name="testmode" label="Enable Test Mode"|gettext value=1 checked=$calculator->configdata.testmode}
-                {control type="text" name="handling" label="Shipping & Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling|default:'0.05' description='This is added to the cost of the shipping per package'|gettext}
+                {control type="text" name="handling" label="Shipping & Handling Charge"|gettext size=5 filter=money value=$calculator->configdata.handling|default:'0.03' description='This is added to the cost of the shipping per package'|gettext}
 	        </div>
 	        <div id="tab2" role="tabpanel" class="tab-pane fade">
 	            {control type="checkbox" name="shipping_carriers[]" label="USPS"|gettext value="USPS" checked=$calculator->configdata.shipping_carriers|default:1}
