@@ -228,5 +228,7 @@
     gt("Group Readable and Writable, World Read-only");
     gt("Group Readable and Writable, World none");
     gt("Thumbnail JPEG Quality (0 - 95)");
+    gt("Do Not Follow Links?");
+    gt("Do Not Index?");
 
 ?>
