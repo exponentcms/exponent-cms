@@ -30,7 +30,7 @@
             {control type="checkbox" name="hide_slingbar" label="Hide Entire Exponent Menu Bar?"|gettext value=1 checked=$record->hide_slingbar description='This group will not be shown the Exponent menu bar'|gettext}
             {*{control type="checkbox" name="display_recyclebin" label="Allow restoring modules from recycle bin?"|gettext value=1 checked=$record->display_recyclebin description='This group will be allowed to access the recycle bin when creating new modules'|gettext}*}
             {if $smarty.const.ECOM}
-                {control type="checkbox" name="tax_exempt" label="Exempt from Sales Tax ?"|gettext value=1 checked=$record->tax_exempt description='This group will not be changed a sales tax'|gettext}
+                {control type="checkbox" name="tax_exempt" label="Exempt from Sales Tax?"|gettext value=1 checked=$record->tax_exempt description='This group will not be changed a sales tax'|gettext}
             {/if}
         {/group}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
