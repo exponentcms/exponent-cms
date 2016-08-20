@@ -26,7 +26,7 @@
 class expLang {
 
     public static function initialize() {
-        global $cur_lang, $default_lang, $default_lang_file, $target_lang_file;
+        global $cur_lang, $default_lang, $default_lang_file, $target_lang_file, $custom_lang;
 
 	    if (!defined('LANGUAGE'))
 	        define('LANGUAGE', 'English - US');
@@ -68,8 +68,8 @@ class expLang {
             while (($f = readdir($dh)) !== false) {
                 if (is_dir($dir . '/' . $f)) {
                     if ((is_readable($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php'))) {
-                        $custom_lang = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
-                        $cur_lang = array_merge($cur_lang, $custom_lang);
+                        $custom_lang_m = include($dir . '/' . $f . '/lang/' . utf8_decode(LANGUAGE) . '.php');
+                        $cur_lang = array_merge($cur_lang, $custom_lang_m);
                     }
                 }
             }
@@ -79,37 +79,43 @@ class expLang {
             $custom_lang = include(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
             $cur_lang = array_merge($cur_lang, $custom_lang);
         }
-
     }
-    
+
+    /**
+     * Get phrase from current language library
+     *
+     * @param $str
+     * @return string
+     */
 	public static function gettext($str) {
         global $cur_lang;
 
 	    if (!defined('LANG'))
 	        return $str;
 //        str_replace('"', "\'", $str);  // remove the killer double-quotes
-	    $strt = array_key_exists(addslashes($str),$cur_lang) ? stripslashes($cur_lang[addslashes($str)]) : $str;
-        if (DEVELOPMENT) { // if we're in development mode auto-add new phrases
-            if (LANG === 'English - US' && strcmp($strt, $str) !== 0 ) {
-                self::writeTemplate($str);
-                eLog($str, 'New phrase found');
-            }
+	    $strt = array_key_exists(trim(addslashes($str)), $cur_lang) ? stripslashes($cur_lang[trim(addslashes($str))]) : $str;
+        if (DEVELOPMENT && !empty($str) && !isset($cur_lang[trim(addslashes($str))])) { // if we're in development mode auto-add new phrases
+            if (defined('THEME_CUSTOM_LANGUAGE') && THEME_CUSTOM_LANGUAGE)
+                self::writeTemplate_custom($str);
+            elseif (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && LANG === 'English - US')
+                self::writeTemplate($str);  // write to the system default language file
+            eLog('gt("' .trim($str) . '");', 'New phrase found');
         }
 		return $strt;
 	}
 
     /**
-     * Add a new phrase to the default language file
+     * Add a new phrase to the default language file if WRITE_LANG_TEMPLATE turned on
      *
      * @param $str
      */
 	public static function writeTemplate($str) {
 	    global $default_lang, $default_lang_file;
 
-        if (defined('WRITE_LANG_TEMPLATE') && WRITE_LANG_TEMPLATE && !array_key_exists(addslashes(strip_tags($str)),$default_lang)) {
+        if (!array_key_exists(trim(addslashes(strip_tags($str))),$default_lang)) {
             $str = stripslashes(strip_tags($str));
             $fp = fopen($default_lang_file, 'w+') or die("I could not open $default_lang_file.");
-            $default_lang[addslashes($str)] = addslashes($str);
+            $default_lang[trim(addslashes($str))] = trim(addslashes($str));
             ksort($default_lang);
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
@@ -120,6 +126,29 @@ class expLang {
             fwrite($fp,"?>\n");
             fclose($fp);
         }
+	}
+
+    /**
+     * Add a new phrase to the custom theme language file
+     *
+     * @param $str
+     */
+	public static function writeTemplate_custom($str) {
+	    global $custom_lang;
+
+        $str = stripslashes(strip_tags($str));
+        expFile::makeDirectory('/themes/' . DISPLAY_THEME . '//lang/');
+        $fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+') or die("I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
+        $custom_lang[trim(addslashes($str))] = trim(addslashes($str));
+        ksort($custom_lang);
+        fwrite($fp,"<?php\n");
+        fwrite($fp,"return array(\n");
+        foreach($custom_lang as $key => $value){
+            fwrite($fp,"\t\"".$key."\"=>\"".$value."\",\n");
+        }
+        fwrite($fp,");\n");
+        fwrite($fp,"?>\n");
+        fclose($fp);
 	}
 
     /**

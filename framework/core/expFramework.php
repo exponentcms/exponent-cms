@@ -59,6 +59,12 @@ $cur_lang = array();
  */
 $default_lang = array();
 /**
+ * Stores the list of language specific strings specific to the theme
+ * @var array $custom_lang
+ * @name $custom_lang
+ */
+$custom_lang = array();
+/**
  * Stores the name of the default language file
  * @var array $default_lang_file
  * @name $default_lang_file

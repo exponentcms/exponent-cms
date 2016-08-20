@@ -162,6 +162,22 @@
     gt("Authors");
     gt("Dates");
     gt('Display Banner(s)');
+    gt("show");
+    gt("showall");
+    gt("Upcoming Events - Headlines");
+    gt("ShowUnpublished");
+    gt("Manage_module");
+    gt("(read more)");
+    gt("summary");
+    gt("recent");
+    gt("Design_form");
+    gt("announcement");
+    gt("slideshow");
+    gt("Two Column");
+    gt("enterdata");
+    gt("Activities");
+    gt("tabbed");
+
 //    gt('Show my addressbook');
     gt('All Products and Categories');
     gt('Products - Only show Featured');
@@ -188,5 +204,16 @@
     gt('World Read-only');
     gt('Group Read-only');
     gt("Showcase");
+    gt("Add Bootstrap v2 Style Effects");
+    gt("Button Color");
+    gt("Enable Sidebar Flyout Container");
+    gt("Fixed Menu Height Adjustment");
+    gt("Maximum Menu Levels");
+    gt("Menu Alignment");
+    gt("Menu Location");
+    gt("Mobile Menu Collapse Width");
+    gt("Style Color");
+    gt("Style Width Type");
+    gt("Turn Maintenance Mode on");
 
 ?>
