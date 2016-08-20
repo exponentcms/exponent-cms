@@ -90,7 +90,7 @@
             {/if}
         </div>
     {/permissions}
-    {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
+    {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:'(read more)'|gettext|cat:'</em></a>'}
     {if $config.usebody!=2}
         <div class="bodycopy">
             {if $config.usebody==1}

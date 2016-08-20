@@ -28,7 +28,7 @@
             <div class="alt-body">
                 {control type=radiogroup columns=2 name="file_type" items="Uploaded File,External Feed"|gettxtlist values="file,ext_feed" default=$record->file_type|default:"file"}
                 <div id="file-div" class="alt-item" style="display:none;">
-                    {control type=uploader name=import_file accept=".ics" label=gt('.ics File to Import')}
+                    {control type=uploader name=import_file accept=".ics" label='.ics File to Import'|gettext}
                 </div>
                 <div id="ext_feed-div" class="alt-item" style="display:none;">
                     {control type=url name=ext_feed label="External .ics Feed URL"|gettext value=$record->ext_file size=100}

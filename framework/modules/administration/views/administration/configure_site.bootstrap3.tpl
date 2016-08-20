@@ -110,13 +110,13 @@
                     {/group}
                     {if function_exists('ldap_connect')}
                     {group label="LDAP Authentication"|gettext}
-                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" id=use_ldap label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description=gt('Checking this option will cause Exponent to try to authenticate to the ldap server listed below.')}
+                        {control type="checkbox" postfalse=1 name="sc[USE_LDAP]" id=use_ldap label="Turn on LDAP Authentication?"|gettext checked=$smarty.const.USE_LDAP value=1 description='Checking this option will cause Exponent to try to authenticate to the ldap server listed below.'|gettext}
                         <span id="ldap">
-                        {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description=gt('Enter the hostname or IP of the LDAP server.')}
-                        {control type="text" name="sc[LDAP_BASE_CONTEXT]" label="Base Context"|gettext value=$smarty.const.LDAP_BASE_CONTEXT description=gt('Enter the Base Context for this LDAP connection. (e.g., ou=users, dc=mycompanysite, dc=local)')}
-                        {control type="text" name="sc[LDAP_BASE_DN]" label="Base Domain"|gettext value=$smarty.const.LDAP_BASE_DN description=gt('Enter the Base Domain for this LDAP connection. (e.g., mycompanysite.local)')}
-                        {control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description=gt('The username or context for the binding to the LDAP Server to perform administration tasks.')}
-                        {control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description=gt('Enter the password for the username/context listed above.')}
+                        {control type="text" name="sc[LDAP_SERVER]" label="LDAP Server"|gettext value=$smarty.const.LDAP_SERVER description='Enter the hostname or IP of the LDAP server.'|gettext}
+                        {control type="text" name="sc[LDAP_BASE_CONTEXT]" label="Base Context"|gettext value=$smarty.const.LDAP_BASE_CONTEXT description='Enter the Base Context for this LDAP connection. (e.g., ou=users, dc=mycompanysite, dc=local)'|gettext}
+                        {control type="text" name="sc[LDAP_BASE_DN]" label="Base Domain"|gettext value=$smarty.const.LDAP_BASE_DN description='Enter the Base Domain for this LDAP connection. (e.g., mycompanysite.local)'|gettext}
+                        {control type="text" name="sc[LDAP_BIND_USER]" label="LDAP Bind User"|gettext value=$smarty.const.LDAP_BIND_USER description='The username or context for the binding to the LDAP Server to perform administration tasks.'|gettext}
+                        {control type="password" name="sc[LDAP_BIND_PASS]" label="LDAP Bind Password"|gettext value=$smarty.const.LDAP_BIND_PASS description='Enter the password for the username/context listed above.'|gettext}
                         </span>
                     {/group}
                     {/if}
@@ -172,9 +172,9 @@
                     {control type="dropdown" name="sc[SITE_FILE_MANAGER]" label="File Manager"|gettext items="Traditional,elFinder"|gettxtlist values="picker,elfinder" default=$smarty.const.SITE_FILE_MANAGER}
                     {control type="dropdown" name="sc[ELFINDER_THEME]" label="elFinder Theme"|gettext items=$elf_themes default=$smarty.const.ELFINDER_THEME}
                     {control type="text" name="sc[FM_WIDTH]" label="Popup Window Width"|gettext value=$smarty.const.FM_WIDTH|default:1024 size="4"}
-                    {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height" value=$smarty.const.FM_HEIGHT|default:600 size="4"}
-                    {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page" value=$smarty.const.FM_LIMIT|default:25 size="4"}
-                    {control type="text" name="sc[FM_SIMLIMIT]" label="Number of Simultaneous Uploads" value=$smarty.const.FM_SIMLIMIT|default:3 size="2"}
+                    {control type="text" name="sc[FM_HEIGHT]" label="Popup Window Height"|gettext value=$smarty.const.FM_HEIGHT|default:600 size="4"}
+                    {control type="text" name="sc[FM_LIMIT]" label="Number of Files per Page"|gettext value=$smarty.const.FM_LIMIT|default:25 size="4"}
+                    {control type="text" name="sc[FM_SIMLIMIT]" label="Number of Simultaneous Uploads"|gettext value=$smarty.const.FM_SIMLIMIT|default:3 size="2"}
                     {control type="checkbox" postfalse=1 name="sc[FM_THUMBNAILS]" label="Show Image Thumbnails?"|gettext checked=$smarty.const.FM_THUMBNAILS value=1}
                     {control type="text" name="sc[FM_THUMB_SIZE]" label="Thumbnail Size"|gettext value=$smarty.const.FM_THUMB_SIZE|default:48 size="4"}
                     {control type="text" name="sc[UPLOAD_WIDTH]" label="Uploader Default Max Width/Height to Downsize Graphics"|gettext value=$smarty.const.UPLOAD_WIDTH|default:400 size="4"}
