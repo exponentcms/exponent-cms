@@ -41,7 +41,8 @@ if (!defined('THEME_ABSOLUTE')) {
 // Initialize the language subsystem
 expLang::initialize();
 global $default_lang, $cur_lang;
-if (empty($default_lang)) $default_lang = include(BASE."framework/core/lang/English - US.php");
+if (empty($default_lang))
+    $default_lang = include(BASE."framework/core/lang/English - US.php");
 
 if (LANGUAGE=="English - US") {
     print "You can't update the current language 'English - US' which is also the default translation!\n";
@@ -59,7 +60,8 @@ print count($cur_lang)." Phrases in the ".utf8_decode(LANG)." Translation\n";
 // Add new/missing phrases in current language
 $num_missing = 0;
 foreach ($default_lang as $key => $value) {
-    if (!array_key_exists($key,$cur_lang)) $num_missing++;
+    if (!array_key_exists($key,$cur_lang))
+        $num_missing++;
 }
 $changes = expLang::updateCurrLangFile();
 $changes = $changes?$changes:'No';

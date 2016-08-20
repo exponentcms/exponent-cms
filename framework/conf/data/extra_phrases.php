@@ -26,17 +26,22 @@
     gt('Create');
     gt('Edit');
     gt('Delete');
+    gt('Approval');
+    gt('View Page');
 
 // module configuration titles
     gt('Aggregation');
     gt('Categories');
     gt('Comments');
     gt('Ealerts');
+    gt('Facebook');
     gt('Files');
     gt('Module');
+    gt('Module Style');
     gt('Pagination');
     gt('Rss');
     gt('Tags');
+    gt('Twitter');
 
 // action names
     gt('Activate Extensions');
@@ -71,6 +76,7 @@
     gt('Toggle Settings');
     gt("Activate");
     gt("Preview CKEditor Toolbars");
+    gt("Preview TinyMCE Toolbars");
     gt('Manages Zones');
     gt('Add/Edit Zone');
     gt('Update Zone');
