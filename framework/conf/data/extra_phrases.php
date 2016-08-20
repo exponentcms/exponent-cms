@@ -177,6 +177,8 @@
     gt("enterdata");
     gt("Activities");
     gt("tabbed");
+    gt("accordion");
+    gt("toggle");
 
 //    gt('Show my addressbook');
     gt('All Products and Categories');
@@ -215,5 +217,16 @@
     gt("Style Color");
     gt("Style Width Type");
     gt("Turn Maintenance Mode on");
+    gt("Australian Dollars");
+    gt("Canadian Dollars");
+    gt("Euro");
+    gt("Great Britain Pounds");
+    gt("Japanese Yen");
+    gt("US Dollars");
+    gt("Group & World Readable and Writable (Creates Security Issue!)");
+    gt("Group Read-only, World none");
+    gt("Group Readable and Writable, World Read-only");
+    gt("Group Readable and Writable, World none");
+    gt("Thumbnail JPEG Quality (0 - 95)");
 
 ?>
