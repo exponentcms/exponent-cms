@@ -97,8 +97,7 @@ if (!function_exists('smarty_function_icon')) {
         }
         if (empty($params['title'])) {
             $params['title'] = (empty($text) ? gt(ucfirst($params['action'])) . ' ' . gt('this') . ' ' . $smarty->getTemplateVars('model_name') . ' ' . gt('item') : $text);
-        }
-        if (!empty($params['title'])) {
+        } else {
             $params['title'] = gt($params['title']);
         }
 

@@ -11,6 +11,11 @@ DirectoryIndex index.php
     # you may have to edit/uncomment the next line if running eXp from a subfolder
 #    RewriteBase /subfolder-name
 
+    # if moving eXp from a subfolder to root, edit/uncomment ONLY one of the next 3 lines
+#    Redirect 301 /testfolder http://yourdomain.org/
+#    RedirectMatch 301 ^/testfolder/$ http://yourdomain.org/
+#    RewriteRule ^testfolder/(.*)$ /$1 [R=301,NC,L]
+
     # To redirect all users to access the site WITH the 'www.' prefix,
     # (http://example.com/... will be redirected to http://www.example.com/...)
     # uncomment and adapt the following:

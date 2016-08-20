@@ -39,7 +39,8 @@
             {if $item->ext_file}
                 <a class=downloadfile href="{$item->ext_file}" title="{'Download'|gettext}" target="_blank">{$item->title}</a>
             {else}
-                {icon action=downloadfile fileid=$item->id filenum=0 text=$item->title title="{'Download'|gettext}"}
+                {*{icon action=downloadfile fileid=$item->id filenum=0 text=$item->title title="{'Download'|gettext}"}*}
+                <a class="downloadfile {button_style}" href="{link action=downloadfile fileid=$item->id filenum=0}" title="{'Download'|gettext}">{$item->title}</a>
             {/if}
         </h3>
     {else}
@@ -175,7 +176,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
+                {icon class=add action=edit title="Add a File Here"|gettext text="Add a File"|gettext}
             {/if}
         </div>
     {/permissions}
