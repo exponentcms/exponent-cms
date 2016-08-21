@@ -35,9 +35,9 @@
 </blockquote>
 {control type="text" name="reminder_code" label="Code to restrict sending Email Reminders"|gettext description="Enter an optional alphanumeric code to better secure sending reminder emails"|gettext value=$config.reminder_code}
 {group label="Email Recipients"|gettext}
-    {userlistcontrol name="user_list" label="Users" items=$config.user_list}
-    {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-    {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
+    {userlistcontrol name="user_list" label="Users"|gettext items=$config.user_list}
+    {grouplistcontrol name="group_list" label="Groups"|gettext items=$config.group_list}
+    {control type="listbuilder" name="address_list" label="Other Addresses"|gettext values=$config.address_list size=5}
 {/group}
 {group label="Email Details"|gettext}
     {control type="text" name="email_title_reminder" label="Message Subject Prefix"|gettext value=$config.email_title_reminder}

@@ -29,7 +29,7 @@
         {control type="checkbox" name="select_dropdown" label="Use dropdown instead of radio buttons?"|gettext value=1 checked=$config.select_dropdown description='Type of control used to display user selectible recipients'|gettext}
         {control type="checkbox" name="select_exclude_all" label='Exclude the \'All Addresses\' Choice?'|gettext value=1 checked=$config.select_exclude_all description='Restricts choice to a single recipient'|gettext}
     {/group}
-    {userlistcontrol name="user_list" label="Users" items=$config.user_list}
-    {grouplistcontrol name="group_list" label="Groups" items=$config.group_list}
-    {control type="listbuilder" name="address_list" label="Other Addresses" values=$config.address_list size=5}
+    {userlistcontrol name="user_list" label="Users"|gettext items=$config.user_list}
+    {grouplistcontrol name="group_list" label="Groups"|gettext items=$config.group_list}
+    {control type="listbuilder" name="address_list" label="Other Addresses"|gettext values=$config.address_list size=5}
 {/group}
