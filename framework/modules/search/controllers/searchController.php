@@ -70,7 +70,7 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
 //            'model'=>'search',
-            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best'])),
+            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best']), 0, !empty($this->params['eventlimit']) ? $this->params['eventlimit'] : null),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
@@ -168,7 +168,7 @@ class searchController extends expController {
             'dontsortwithincat'=>true,
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>static::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
 

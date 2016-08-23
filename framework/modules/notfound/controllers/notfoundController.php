@@ -76,7 +76,7 @@ class notfoundController extends expController {
 			'model'=>'search',
 			'controller'=>$this->params['controller'],
 			'action'=>$this->params['action'],
-			'records'=>$search->getSearchResults($terms),
+			'records'=>$search->getSearchResults($terms, false, 0, 30),
 			//'sql'=>$sql,
             'limit'=>10,
 			'order'=>'score',

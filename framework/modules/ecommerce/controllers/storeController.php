@@ -1712,11 +1712,17 @@ class storeController extends expController {
     public function search() {
         global $db, $user;
 
-        if (INCLUDE_AJAX_SEARCH == 1) {
+        if (SAVE_SEARCH_QUERIES && INCLUDE_AJAX_SEARCH == 1) {  // only to add search query record
             $qry = trim($this->params['query']);
             if (!empty($qry)) {
-                $search = new search();
-                $r = $search->getSearchResults($this->params['query']);
+                if (INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
+                    $queryObj = new stdClass();
+                    $queryObj->user_id = $user->id;
+                    $queryObj->query = $qry;
+                    $queryObj->timestamp = time();
+
+                    $db->insertObject($queryObj, 'search_queries');
+                }
             }
         }
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
