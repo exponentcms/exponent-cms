@@ -139,7 +139,7 @@ abstract class expController {
      * @return string
      */
     public function name() {
-        return $this->displayname();
+        return static::displayname();
     }
 
     /**
@@ -263,13 +263,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => $this->hasSources() == true ? $this->loc->src : null,
+            'src'        => static::hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -501,7 +501,7 @@ abstract class expController {
      */
     public function showRandom() {
         expHistory::set('viewable', $this->params);
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $where = static::hasSources() ? $this->aggregateWhereClause() : null;
         $limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
         $order = 'RAND()';
         assign_to_template(array(
@@ -734,13 +734,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => isset($this->params['limit']) ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => $this->hasSources() == true ? $this->loc->src : null,
+            'src'        => static::hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -873,7 +873,7 @@ abstract class expController {
 //            'config'            => $this->config,  //FIXME already assigned in controllertemplate?
             'page'              => $page, // needed for aggregation list
             'views'             => $views,
-            'title'             => $this->displayname(),
+            'title'             =>static::displayname(),
             'current_section'   => expSession::get('last_section'),
 //            'classname'         => $this->classname,  //FIXME $controller already assigned baseclassname (short vs long) in controllertemplate?
             'viewpath'          => $this->viewpath,
@@ -1170,7 +1170,7 @@ abstract class expController {
      * @return string
      */
     public function searchName() {
-        return $this->displayname();
+        return static::displayname();
     }
 
     /**
@@ -1275,7 +1275,7 @@ abstract class expController {
     public function delete_instance($loc = false) {
         $model = new $this->basemodel_name();
         $where = 1;
-        if ($loc || $this->hasSources())
+        if ($loc || static::hasSources())
             $where = "location_data='" . serialize($this->loc) . "'";
         $items = $model->find('all',$where);
         foreach ($items as $item) {
@@ -1302,7 +1302,7 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing") . " " . $this->displayname() . ' - ' . SITE_TITLE;
+                $metainfo['title'] = gt("Showing") . " " . static::displayname() . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
@@ -1347,7 +1347,7 @@ abstract class expController {
                 if (method_exists($mod, $functionName)) {
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                    $metainfo['title'] = static::displayname() . " - " . SITE_TITLE;
                     $metainfo['keywords'] = SITE_KEYWORDS;
                     $metainfo['description'] = SITE_DESCRIPTION;
 //                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
@@ -1461,7 +1461,7 @@ abstract class expController {
 
         $sql = '';
 
-        if (empty($this->config['add_source']) && !$this->hasSources()) {
+        if (empty($this->config['add_source']) && !static::hasSources()) {
             return $sql;
         }
 

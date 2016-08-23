@@ -332,7 +332,7 @@ class ecomconfigController extends expController {
             'views'=>$views,
             'countries'=>$countries,
             'regions'=>$regions,
-            'title'=>$this->displayname()
+            'title'=>static::displayname()
         ));
     }   
 

@@ -1134,7 +1134,7 @@ class cartController extends expController {
 //        $this->config   = $config->config;
 //        assign_to_template(array(
 //            'config'=> $this->config,
-//            'title' => $this->displayname()
+//            'title' => static::displayname()
 //        ));
 //    }
 

@@ -92,13 +92,13 @@ class expTagController extends expController {
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>$this->basemodel_name,
-            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'=>static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'=>10,
             'order'=>"title",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>static::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
@@ -147,7 +147,7 @@ class expTagController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['model'],
 //            'action'=>$this->params['action'],
-//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'src'=>static::hasSources() == true ? $this->loc->src : null,
 //            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
         if ($this->params['model'] == 'faq') {
@@ -158,13 +158,13 @@ class expTagController extends expController {
 
 //        $page = new expPaginator(array(
 //            'model'=>$this->basemodel_name,
-//            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+//            'where'=>static::hasSources() ? $this->aggregateWhereClause() : null,
 //            'limit'=>50,
 //            'order'=>"title",
 //            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //            'controller'=>$this->baseclassname,
 //            'action'=>$this->params['action'],
-//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'src'=>static::hasSources() == true ? $this->loc->src : null,
 //            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
 //        ));
 //

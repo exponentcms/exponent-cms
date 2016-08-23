@@ -138,7 +138,7 @@ class storeCategoryController extends expNestedNodeController {
             'config'           => $this->config,
 //            'pullable_modules' => $pullable_modules,
             'views'            => $views,
-//            'title'=>$this->displayname()
+//            'title'=>static::displayname()
             'title'            => gt('Store Category named') . ' ' . $cat->title
         ));
     }

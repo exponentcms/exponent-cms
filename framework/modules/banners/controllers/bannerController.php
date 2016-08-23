@@ -124,7 +124,7 @@ class bannerController extends expController {
 	    $banners = $this->banner->find('all', null, 'companies_id');
 	    assign_to_template(array(
             'banners'=>$banners,
-            'title'=>$this->displayname()
+            'title'=>static::displayname()
         ));
 	}
 	

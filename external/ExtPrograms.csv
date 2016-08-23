@@ -31,8 +31,8 @@ Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea
 SimpleAjaxUploader,2.5.5,github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,4.2.0,necolas.github.com/normalize.css/,4.2.0,auto included in bootstrap 3
 MediaElement.js,2.22.0,mediaelementjs.com/,2.22.0,
-Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,4-5.2.0,
-Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,4-5.2.0,
+Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,4-5.3.1,
+Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,4-5.3.1,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim

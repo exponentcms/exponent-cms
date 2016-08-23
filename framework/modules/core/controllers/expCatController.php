@@ -70,7 +70,7 @@ class expCatController extends expController {
                 'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
                 'controller'=>$this->params['model'],
 //                        'action'=>$this->params['action'],
-//                        'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//                        'src'=>static::hasSources() == true ? $this->loc->src : null,
 //                        'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
             ));
             if ($this->params['model'] == 'faq') {
@@ -91,7 +91,7 @@ class expCatController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>static::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
