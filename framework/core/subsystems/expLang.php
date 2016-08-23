@@ -45,14 +45,14 @@ class expLang {
             // For anything related to character sets:
             define('LANG_CHARSET', $info['charset']);
 			//DEPRECATED: we no longer use views for i18n
-//			define('DEFAULT_VIEW', $info['default_view']);
+			define('DEFAULT_VIEW', $info['default_view']);
 	    } else {
             define('LOCALE', 'en_US');
 			setlocale(LC_ALL, 'en_US');
             // For anything related to character sets:
             define('LANG_CHARSET', 'UTF-8');
 		    //DEPRECATED: we no longer use views for i18n
-//		    define('DEFAULT_VIEW', 'Default');
+		    define('DEFAULT_VIEW', 'Default');
 	    }
 
         $default_lang_file = BASE . "framework/core/lang/English - US.php";
@@ -115,7 +115,7 @@ class expLang {
         if (!array_key_exists(trim(addslashes(strip_tags($str))),$default_lang)) {
             $str = stripslashes(strip_tags($str));
             $fp = fopen($default_lang_file, 'w+') or die("I could not open $default_lang_file.");
-            $default_lang[trim(addslashes($str))] = trim(addslashes($str));
+            $default_lang[trim(addslashes($str))] = trim(addslashes($str));  // add to default language array
             ksort($default_lang);
             fwrite($fp,"<?php\n");
             fwrite($fp,"return array(\n");
@@ -134,12 +134,12 @@ class expLang {
      * @param $str
      */
 	public static function writeTemplate_custom($str) {
-	    global $custom_lang;
+	    global $custom_lang, $default_lang;
 
         $str = stripslashes(strip_tags($str));
         expFile::makeDirectory('/themes/' . DISPLAY_THEME . '//lang/');
         $fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+') or die("I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
-        $custom_lang[trim(addslashes($str))] = trim(addslashes($str));
+        $custom_lang[trim(addslashes($str))] = trim(addslashes($str));  // add to custom language array
         ksort($custom_lang);
         fwrite($fp,"<?php\n");
         fwrite($fp,"return array(\n");
