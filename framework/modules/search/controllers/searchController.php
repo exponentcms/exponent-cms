@@ -70,7 +70,7 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
 //            'model'=>'search',
-            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best']), 0, !empty($this->params['eventlimit']) ? $this->params['eventlimit'] : null),
+            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best']), 0, !empty($this->config['eventlimit']) ? $this->config['eventlimit'] : null),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
