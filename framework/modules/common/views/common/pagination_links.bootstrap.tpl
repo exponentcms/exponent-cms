@@ -38,6 +38,7 @@
             {if $page->next_page != ''} <li><a class="pager next" href="{$page->next_page}" rel="{$page->next_pagenum}">&raquo;</a></li>{/if}
             </ul>
         </div>
+        {clear}
         <span class="pagetotals">{'Showing'|gettext} <span class="frecord">{$page->firstrecord}</span>-<span class="lrecord">{$page->lastrecord}</span> {'of'|gettext} <span class="total">{$page->total_records}</span></span>
         <span class="loader"></span>
     </div>
