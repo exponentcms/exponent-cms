@@ -159,9 +159,9 @@ class bannerController extends expController {
 //        global $db;
 
         // reset the counters
-//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET impressions=0 WHERE 1');
+//        $db->sql ('UPDATE '.$db->prefix.'banner SET impressions=0 WHERE 1');
         banner::resetImpressions();
-//        $db->sql ('UPDATE '.DB_TABLE_PREFIX.'_banner SET clicks=0 WHERE 1');
+//        $db->sql ('UPDATE '.$db->prefix.'banner SET clicks=0 WHERE 1');
         banner::resetClicks();
         
         // let the user know we did stuff.      

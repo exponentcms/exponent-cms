@@ -632,7 +632,7 @@ class product extends expRecord {
             if (!empty($this->childProduct) && count($this->childProduct) == 0) return false;
             else return true;
         } else {
-            //$sql = "SELECT id from " . DB_TABLE_PREFIX . "_product WHERE parent_id=" . $this->id;           
+            //$sql = "SELECT id from " . $db->prefix . "product WHERE parent_id=" . $this->id;
             $count = $db->countObjects("product", "parent_id=" . $this->id);
             //eDebug($count);
             //$count = $db->queryRows($sql);

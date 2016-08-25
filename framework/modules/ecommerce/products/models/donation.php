@@ -84,8 +84,8 @@ class donation extends product {
             foreach ($where as $id) $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {
-            $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $this->table . ' m ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_content_expTags ct ';
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->table . ' m ';
+            $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . $where . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
             $records = array();

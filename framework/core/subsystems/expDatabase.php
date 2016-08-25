@@ -120,7 +120,7 @@ class expDatabase {
         $renamed = array();
         foreach ($tablenames as $oldtablename=>$newtablename) {
             if (!$db->tableExists($newtablename)) {
-                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_'.$oldtablename.' TO '.DB_TABLE_PREFIX.'_'.$newtablename);
+                $db->sql('RENAME TABLE '.$db->prefix.$oldtablename.' TO '.$db->prefix.$newtablename);
                 $renamed[] = $newtablename;
             }
         }
@@ -558,8 +558,8 @@ abstract class database {
 	 */
 	function setUniqueFlag($object, $table, $col, $where=1) {
 	   if (isset($object->id)) {
-	       $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=0 WHERE " . $where);
-	       $this->sql("UPDATE " . DB_TABLE_PREFIX . "_" . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
+	       $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=0 WHERE " . $where);
+	       $this->sql("UPDATE " . $this->prefix . $table . " SET " . $col . "=1 WHERE id=" . $object->id);
 	       return true;
 	   }
 	   return false;

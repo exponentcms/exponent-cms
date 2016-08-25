@@ -525,8 +525,8 @@ abstract class expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $model->tablename . ' m ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_' . $tagobj->attachable_table . ' ct ';
+        $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $model->tablename . ' m ';
+        $sql .= 'JOIN ' . $db->prefix . $tagobj->attachable_table . ' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
 

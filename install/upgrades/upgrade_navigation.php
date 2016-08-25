@@ -85,7 +85,7 @@ class upgrade_navigation extends upgradescript {
 //                $db->updateObject($sect,'section');
 //            }
 //        }
-//        $db->sql('ALTER TABLE '.DB_TABLE_PREFIX.'_section DROP sef_name');
+//        $db->sql('ALTER TABLE '.$db->prefix.'section DROP sef_name');
 
 		// convert each navigationmodule to a navigation Controller
 	    $modules_converted = 0;

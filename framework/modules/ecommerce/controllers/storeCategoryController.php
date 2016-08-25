@@ -101,7 +101,7 @@ class storeCategoryController extends expNestedNodeController {
                 }
             }
 
-            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . DB_TABLE_PREFIX . "_{$value}s_storeCategories, " . DB_TABLE_PREFIX . "_{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $id);
+            $recorded_product_type = $db->selectObjectsBySql("SELECT {$product_type_id}, title FROM " . $db->prefix . "{$value}s_storeCategories, " . $db->prefix . "{$product_type} WHERE {$product_type_id} = id and storecategories_id = " . $id);
 
             foreach ($db->selectFormattedNestedTree("{$product_type}") as $item) {
                 $f_types[$item->id] = $item->title;
@@ -176,7 +176,7 @@ class storeCategoryController extends expNestedNodeController {
         $rank = 1;
         $category = new storeCategory($this->params['id']);
         foreach ($this->params['rerank'] as $id) {
-            $sql = "SELECT DISTINCT sc.* FROM " . DB_TABLE_PREFIX . "_product_storeCategories sc JOIN " . DB_TABLE_PREFIX . "_product p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . DB_TABLE_PREFIX . "_storeCategories WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
+            $sql = "SELECT DISTINCT sc.* FROM " . $db->prefix . "product_storeCategories sc JOIN " . $db->prefix . "product p ON p.id = sc.product_id WHERE p.id=" . $id . " AND sc.storecategories_id IN (SELECT id FROM " . $db->prefix . "storeCategories WHERE rgt BETWEEN " . $category->lft . " AND " . $category->rgt . ") ORDER BY rank ASC";
             $prod = $db->selectObjectBySQL($sql);
             $prod->rank = $rank;
             $db->updateObject($prod, "product_storeCategories", "storecategories_id=" . $prod->storecategories_id . " AND product_id=" . $id);

@@ -336,9 +336,9 @@ class user extends expRecord {
 
         // build out a SQL query that gets all the data we need and is sortable.
         $sql = 'SELECT o.*, b.firstname as firstname, b.billing_cost as total, b.middlename as middlename, b.lastname as lastname, os.title as status, ot.title as order_type ';
-        $sql .= 'FROM ' . DB_TABLE_PREFIX . '_orders o, ' . DB_TABLE_PREFIX . '_billingmethods b, ';
-        $sql .= DB_TABLE_PREFIX . '_order_status os, ';
-        $sql .= DB_TABLE_PREFIX . '_order_type ot ';
+        $sql .= 'FROM ' . $db->prefix . 'orders o, ' . $db->prefix . 'billingmethods b, ';
+        $sql .= $db->prefix . 'order_status os, ';
+        $sql .= $db->prefix . 'order_type ot ';
         $sql .= 'WHERE o.id = b.orders_id AND o.order_status_id = os.id AND o.order_type_id = ot.id AND o.purchased > 0 AND user_id =' . $this->id;
         $customer = new stdClass();
         $customer->records = $db->selectObjectsBySql($sql);

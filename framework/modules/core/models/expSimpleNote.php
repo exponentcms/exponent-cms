@@ -58,8 +58,8 @@ class expSimpleNote extends expRecord {
     public static function noteCount($content_id, $content_type, $unapproved = false) {
         global $db;
 
-        $sql  = 'SELECT count(com.id) as c FROM '.DB_TABLE_PREFIX.'_expSimpleNote com ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expSimpleNote cnt ON com.id=cnt.expsimplenote_id ';
+        $sql  = 'SELECT count(com.id) as c FROM '.$db->prefix.'expSimpleNote com ';
+        $sql .= 'JOIN '.$db->prefix.'content_expSimpleNote cnt ON com.id=cnt.expsimplenote_id ';
         $sql .= 'WHERE cnt.content_id='.$content_id." AND cnt.content_type='".$content_type."' ";
         if (!$unapproved) {
             $sql .= 'AND com.approved=1';

@@ -62,7 +62,7 @@ class update_ealerts extends upgradescript {
                 $db->dropTable('user_subscriptions');
             }
             if (!$db->tableExists('user_subscriptions')) {
-                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_expeAlerts_subscribers TO '.DB_TABLE_PREFIX.'_user_subscriptions');
+                $db->sql('RENAME TABLE '.$db->prefix.'expeAlerts_subscribers TO '.$db->prefix.'user_subscriptions');
             }
             if ($db->tableExists('expeAlerts_subscribers') && !$db->countObjects('expeAlerts_subscribers')) {
                 $db->dropTable('expeAlerts_subscribers');

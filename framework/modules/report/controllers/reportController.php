@@ -161,7 +161,7 @@ class reportController extends expController {
             $oar[$order->order_type->title][$order->order_status->title]['num_items'] += count($order->orderitem);
         }
 
-        $sql = "SELECT COUNT(*) as c FROM " . DB_TABLE_PREFIX . "_orders, " . DB_TABLE_PREFIX . "_sessionticket WHERE ticket = sessionticket_ticket";
+        $sql = "SELECT COUNT(*) as c FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket";
         $allCarts = $db->countObjectsBySql($sql);
 
         assign_to_template(array(
@@ -842,8 +842,8 @@ class reportController extends expController {
 
         $payment_summary = array();
         // $Credit Cards
-//        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . DB_TABLE_PREFIX . "_billingmethods, " . DB_TABLE_PREFIX . "_billingcalculator WHERE " . DB_TABLE_PREFIX . "_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
-        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title FROM " . DB_TABLE_PREFIX . "_billingmethods, " . DB_TABLE_PREFIX . "_billingcalculator WHERE " . DB_TABLE_PREFIX . "_billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+//        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, user_title FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
+        $sql = "SELECT orders_id, billing_cost, billing_options, calculator_name, title FROM " . $db->prefix . "billingmethods, " . $db->prefix . "billingcalculator WHERE " . $db->prefix . "billingcalculator.id = billingcalculator_id and orders_id IN (" . $orders_string . ")";
         $res = $db->selectObjectsBySql($sql);
         if (!empty($res)) {
             foreach ($res as $item) {
@@ -872,7 +872,7 @@ class reportController extends expController {
         $payment_values = implode(",", $payment_values_arr);
 
         //tax
-//        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . DB_TABLE_PREFIX . "_orders WHERE id IN (" . $orders_string . ")";
+//        $tax_sql = "SELECT SUM(tax) as tax_total FROM " . $db->prefix . "orders WHERE id IN (" . $orders_string . ")";
 //        $tax_res = $db->selectObjectBySql($tax_sql);
         $tax_types = taxController::getTaxRates();
 //        $tax_type_formatted = $tax_types[0]->zonename . ' - ' . $tax_types[0]->classname . ' - ' . $tax_types[0]->rate . '%';
@@ -1573,13 +1573,13 @@ class reportController extends expController {
         }
 
         // purchased == 0 or invoice_id == 0 on unsubmitted orders
-        $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
-        $sql .= "(SELECT ticket FROM " . DB_TABLE_PREFIX . "_sessionticket) ORDER BY edited_at DESC";
+        $sql = "SELECT * FROM " . $db->prefix . "orders WHERE purchased = 0 AND edited_at >= " . $this->tstart . " AND edited_at <= " . $this->tend . " AND sessionticket_ticket NOT IN ";
+        $sql .= "(SELECT ticket FROM " . $db->prefix . "sessionticket) ORDER BY edited_at DESC";
         // echo $sql;
         $allCarts = $db->selectObjectsBySql($sql);
         foreach ($allCarts as $item) {
 
-            $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orderitems WHERE orders_id =" . $item->id;
+            $sql = "SELECT * FROM " . $db->prefix . "orderitems WHERE orders_id =" . $item->id;
 
             $carts = $db->selectObjectsBySql($sql);
             foreach ($carts as $item2) {
@@ -1641,9 +1641,9 @@ class reportController extends expController {
     {
         global $db;
 
-        $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".DB_TABLE_PREFIX."_sessionticket`)");
-        $db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".DB_TABLE_PREFIX."_orders`)");
-        $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".DB_TABLE_PREFIX."_orders`)");
+        $db->delete("orders","`invoice_id` = '0' AND `edited_at` < UNIX_TIMESTAMP(now())-5184000 AND `sessionticket_ticket` NOT IN (SELECT `ticket` FROM `".$db->prefix."sessionticket`)");
+        $db->delete("orderitems","`orders_id` NOT IN (SELECT `id` FROM `".$db->prefix."orders`)");
+        $db->delete("shippingmethods","`id` NOT IN (SELECT `shippingmethods_id` FROM `".$db->prefix."orders`)");
     }
 
     function current_carts() {
@@ -1656,16 +1656,16 @@ class reportController extends expController {
         $cartsWithItemsAndInfo = array();
         $summary = array();
         $valueproducts = '';
-        // $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders WHERE DATEDIFF(FROM_UNIXTIME(edited_at, '%Y-%m-%d'), '" . date('Y-m-d') . "') = 0";
+        // $sql = "SELECT * FROM " . $db->prefix . "orders WHERE DATEDIFF(FROM_UNIXTIME(edited_at, '%Y-%m-%d'), '" . date('Y-m-d') . "') = 0";
 
-        $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orders, " . DB_TABLE_PREFIX . "_sessionticket WHERE ticket = sessionticket_ticket";
+        $sql = "SELECT * FROM " . $db->prefix . "orders, " . $db->prefix . "sessionticket WHERE ticket = sessionticket_ticket";
 
         $allCarts = $db->selectObjectsBySql($sql);
 
         // eDebug($allCarts, true);
         foreach ($allCarts as $item) {
 
-            $sql = "SELECT * FROM " . DB_TABLE_PREFIX . "_orderitems WHERE orders_id =" . $item->id;
+            $sql = "SELECT * FROM " . $db->prefix . "orderitems WHERE orders_id =" . $item->id;
 
             $carts = $db->selectObjectsBySql($sql);
 
@@ -1731,16 +1731,16 @@ class reportController extends expController {
         // eDebug($this->tend);
         eDebug(date('Y-m-d, g:i:s A', $this->tend));
         $allOrderCount = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend,null,null,null,true,false,$except,true);            
-        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . DB_TABLE_PREFIX . "_orderitems oi ";
-        $sql .= "JOIN " . DB_TABLE_PREFIX . "_orders o ON  oi.orders_id = o.id ";
+        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
+        $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         //$sql .= " AND o.user_id != 0 AND o.order_type_id = 1";
         
         eDebug($sql);
         $allCartsWithItems = $db->countObjectsBySql($sql);
         
-        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . DB_TABLE_PREFIX . "_orderitems oi ";
-        $sql .= "JOIN " . DB_TABLE_PREFIX . "_orders o ON  oi.orders_id = o.id ";
+        $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
+        $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         eDebug($sql);
         $realUserCartsWithItems = $db->countObjectsBySql($sql);
@@ -1780,7 +1780,7 @@ class reportController extends expController {
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (1=1 )';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -1933,7 +1933,7 @@ class reportController extends expController {
         $out = '"id","parent_id","model","warehouse_location","title","vendor","product_status","notes"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (1=1 )';
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (1=1 )';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);

@@ -141,8 +141,8 @@ class ealertController extends expController {
         $message = $db->selectObject('expeAlerts_temp', 'id='.$this->params['id']);
         
         // look up the subscribers
-        $sql  = 'SELECT s.* FROM '.DB_TABLE_PREFIX.'_user_subscriptions es ';
-        $sql .= 'LEFT JOIN '.DB_TABLE_PREFIX.'_user s ON s.id=es.user_id WHERE es.expeAlerts_id='.$this->params['ealert_id'];
+        $sql  = 'SELECT s.* FROM '.$db->prefix.'user_subscriptions es ';
+        $sql .= 'LEFT JOIN '.$db->prefix.'user s ON s.id=es.user_id WHERE es.expeAlerts_id='.$this->params['ealert_id'];
         $subscribers = $db->selectObjectsBySql($sql);
         
         $count = 1;

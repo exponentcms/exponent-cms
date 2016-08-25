@@ -108,7 +108,7 @@ class administrationController extends expController {
         }
 
         foreach($tables as $table) {
-            $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
+            $basename = strtolower(str_replace($db->prefix, '', $table));
             if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
@@ -126,7 +126,7 @@ class administrationController extends expController {
 
         $count = 0;
         foreach($this->params['tables'] as $del=>$table) {
-            $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
+            $basename = str_replace($db->prefix, '', $table);
             $count += $db->dropTable($basename);
         }
         
@@ -151,8 +151,8 @@ class administrationController extends expController {
 	public function fixsessions() {
 	    global $db;
 
-//		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
-		$fix = $db->sql('REPAIR TABLE '.DB_TABLE_PREFIX.'sessionticket');
+//		$test = $db->sql('CHECK TABLE '.$db->prefix.'sessionticket');
+		$fix = $db->sql('REPAIR TABLE '.$db->prefix.'sessionticket');
 		flash('message', gt('Sessions Table was Repaired'));
 		expHistory::back();
 	}
