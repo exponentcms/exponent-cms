@@ -1,5 +1,7 @@
 version 2.2.0
 The first version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and Twitter-Bootstrap/jQuery
+  * Fixes CVE-2013-3294 SQL Injection vulnerabilities
+  * Fixes CVE-2013-3295 Directory traversal vulnerability
   * requires update of hard-coded modules in themes to conform to 2.0 controller calls
   * requires updating YUI3 CSS Reset links to use new name (e.g., grids-min.css became cssgrids-min.css)
   * Flowplayer & YouTube modules are deprecated but still present in this distribution, they will be removed in the future

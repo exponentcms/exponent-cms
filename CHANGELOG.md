@@ -247,7 +247,7 @@ Version 2.3.3
 Version 2.3.2
 -------------
 ### Address issues in v2.3.1
-  * !!! Fixes possible cross-site security (XSS) issue
+  * !!! Fixes possible cross-site security (XSS) issue, CVE-2014-6635 &CVE-2014-8690
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
   - adds lightbox option to mediaplayer showall view, allows grid of icons
@@ -420,6 +420,8 @@ Version 2.2.1
 Version 2.2.0
 -------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
+  - Fixes CVE-2013-3294 SQL Injection vulnerabilities
+  - Fixes CVE-2013-3295 Directory traversal vulnerability
   - Removes all the 'old school' 1.x files
     -- removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
     -- forces deprecation/removal of formmodule/formbuilder
