@@ -54,6 +54,7 @@ class eventregistrationController extends expController {
 
     protected $add_permissions = array(
         'view_registrants'=> 'View Registrants',
+        'emailRegistrants'=> 'Email Registrants',
     );
 
     static function displayname() {

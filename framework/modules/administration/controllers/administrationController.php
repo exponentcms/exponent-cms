@@ -35,7 +35,6 @@ class administrationController extends expController {
         'update'=>'Update Settings',
         'change'=>'Change Settings',
         'save'=>'Save Settings',
-        'mass'=>'Mailings',
     );
 
     static function displayname() { return gt("Administration Controls"); }
