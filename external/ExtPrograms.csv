@@ -3,7 +3,7 @@ Swiftmailer,5.4.3,swiftmailer.org,5.4.3,we add  eDebugLogger plugin & fix php 5.
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27,smarty.net,3.1.29,
-phpthumb,1.7.14-201503301816,https://github.com/JamesHeinrich/phpThumb,1.7.14-201503301816,phpThumb.config.php - we set the cache folder and allow &amp in parsing
+phpthumb,1.7.14-201608101311,https://github.com/JamesHeinrich/phpThumb,1.7.14-201608101311,phpThumb.config.php - we also allow &amp in parsing and err command
 minify,2.3.0,github.com/mrclay/minify,2.3.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
 YUI3,3.18.1,https://github.com/yui/yui3/releases,3.18.1,
@@ -30,7 +30,7 @@ Font-Awesome,4.6.3,fortawesome.github.com/Font-Awesome,4.6.3,
 Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea & edit-calendar"
 SimpleAjaxUploader,2.5.5,github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,4.2.0,necolas.github.com/normalize.css/,4.2.0,auto included in bootstrap 3
-MediaElement.js,2.22.0,mediaelementjs.com/,2.22.0,
+MediaElement.js,2.22.1,mediaelementjs.com/,2.22.1,
 Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,4-5.3.1,
 Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,4-5.3.1,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
