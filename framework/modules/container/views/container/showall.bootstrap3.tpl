@@ -14,7 +14,7 @@
  *}
 
 {permissions}
-    {if $top->external == 'N;'}
+    {if $top->external == 'N;' && strpos($top->internal,'menuitem-') === false}
         {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
           || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
             {$mainNeedsClosing=1}
