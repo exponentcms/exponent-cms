@@ -96,7 +96,7 @@
 		{foreach from=$items item=item}
 			<tr class="item {cycle values="odd,even"}">
 				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
-				<td>
+				<td class="itemdate">
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}
 					{else}
@@ -143,7 +143,7 @@
 {literal}
     $(".events.cal-admin").searcher({
         itemSelector: ".item",
-        textSelector: ".itemtitle",
+        textSelector: ".itemtitle, td.itemdate",
         inputSelector: "#eventsearchinput",
 		toggle: function(item, containsText) {
 			 // use a typically jQuery effect instead of simply showing/hiding the item element
