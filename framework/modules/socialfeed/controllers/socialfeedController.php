@@ -142,6 +142,7 @@ class socialfeedController extends expController
         }
         require_once(BASE . "external/facebook-php-sdk-4.0.23/autoload.php"); //v4
 //        require_once(BASE . "external/facebook-php-sdk-v4-5.2.0/src/Facebook/autoload.php");
+//        require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
         FacebookSession::setDefaultApplication($config['app_id'], $config['secret']); //v4
 //        $fb = new Facebook\Facebook(array(
 //            'app_id'     => $config['app_id'],
@@ -198,6 +199,7 @@ class socialfeedController extends expController
 
                 try {  //v4
                     $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
+//                    $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions'); //v4 new api v2.4+
                     $response = $request->execute(); //v4
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4
