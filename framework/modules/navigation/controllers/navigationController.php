@@ -1019,7 +1019,6 @@ class navigationController extends expController {
             // ALWAYS be invoked with a parent or id value.
             $section  = new section($this->params);
         } else {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
             exit;
         }
@@ -1036,7 +1035,6 @@ class navigationController extends expController {
                     // This is another precaution.  The parent attribute
                     // should ALWAYS be set by the caller.
                     //FJD - if that's the case, then we should die.
-//                    die(SITE_403_HTML);
                     notfoundController::handle_not_authorized();
                     exit;
                     //$section->parent = 0;
@@ -1075,7 +1073,6 @@ class navigationController extends expController {
     function edit_internalalias() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
@@ -1085,7 +1082,6 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-//                die(SITE_403_HTML);
                 notfoundController::handle_not_authorized();
                 exit;
                 //$section->parent = 0;
@@ -1100,7 +1096,6 @@ class navigationController extends expController {
     function edit_freeform() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
@@ -1110,7 +1105,6 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-//                die(SITE_403_HTML);
                 notfoundController::handle_not_authorized();
                 exit;
                 //$section->parent = 0;
@@ -1125,7 +1119,6 @@ class navigationController extends expController {
     function edit_externalalias() {
         $section = isset($this->params['id']) ? $this->section->find($this->params['id']) : new section($this->params);
         if ($section->parent == -1) {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
             exit;
         } // doesn't work for standalone pages
@@ -1135,7 +1128,6 @@ class navigationController extends expController {
                 // This is another precaution.  The parent attribute
                 // should ALWAYS be set by the caller.
                 //FJD - if that's the case, then we should die.
-//                die(SITE_403_HTML);
                 notfoundController::handle_not_authorized();
                 exit;
                 //$section->parent = 0;
@@ -1171,7 +1163,6 @@ class navigationController extends expController {
             expSession::clearAllUsersSessionCache('navigation');
             expHistory::back();
         } else {
-//            echo SITE_404_HTML;
             notfoundController::handle_not_found();
         }
     }
@@ -1192,7 +1183,6 @@ class navigationController extends expController {
             expSession::clearAllUsersSessionCache('navigation');
             expHistory::back();
         } else {
-//            echo SITE_403_HTML;
             notfoundController::handle_not_authorized();
         }
     }

@@ -114,7 +114,11 @@ class expLang {
 
         if (!array_key_exists(trim(addslashes(strip_tags($str))),$default_lang)) {
             $str = stripslashes(strip_tags($str));
-            $fp = fopen($default_lang_file, 'w+') or die("I could not open $default_lang_file.");
+            @$fp = fopen($default_lang_file, 'w+');
+            if($fp === false && DEVELOPMENT) {
+               flash('error',"I could not open $default_lang_file.");
+               return;
+            }
             $default_lang[trim(addslashes($str))] = trim(addslashes($str));  // add to default language array
             ksort($default_lang);
             fwrite($fp,"<?php\n");
@@ -138,7 +142,11 @@ class expLang {
 
         $str = stripslashes(strip_tags($str));
         expFile::makeDirectory('/themes/' . DISPLAY_THEME . '//lang/');
-        $fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+') or die("I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
+        @$fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+');
+        if($fp === false && DEVELOPMENT) {
+            flash('error',"I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');
+            return;
+        }
         $custom_lang[trim(addslashes($str))] = trim(addslashes($str));  // add to custom language array
         ksort($custom_lang);
         fwrite($fp,"<?php\n");
