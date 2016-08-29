@@ -45,6 +45,10 @@ class filedownload extends expRecord {
             $this->meta_fb = expUnserialize($this->meta_fb);
         if (!empty($this->meta_fb['fbimage']) && !empty($this->meta_fb['fbimage'][0]))
             $this->meta_fb['fbimage'][0] = new expFile($this->meta_fb['fbimage'][0]);
+        if (!empty($this->meta_tw))
+            $this->meta_tw = expUnserialize($this->meta_tw);
+        if (!empty($this->meta_tw['twimage']) && !empty($this->meta_tw['twimage'][0]))
+            $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
 
         if (!empty($this->id)) {
             include_once(BASE.'external/mp3file.php');
@@ -76,6 +80,13 @@ class filedownload extends expRecord {
         if (isset($params['fb'])) {
             $params['meta_fb'] = serialize($params['fb']);
             unset ($params['fb']);
+        }
+        if (isset($params['expFile']['twimage'][0]) && is_numeric($params['expFile']['twimage'][0]))
+            $params['tw']['twimage'][0] = $params['expFile']['twimage'][0];
+        unset ($params['expFile']['twimage']);
+        if (isset($params['tw'])) {
+            $params['meta_tw'] = serialize($params['tw']);
+            unset ($params['tw']);
         }
         parent::update($params);
     }

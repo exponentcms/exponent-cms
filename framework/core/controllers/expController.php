@@ -1337,6 +1337,7 @@ abstract class expController {
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                         $metainfo['rich'] = $this->meta_rich($router->params, $object);
                         $metainfo['fb'] = $this->meta_fb($router->params, $object, $metainfo['canonical']);
+                        $metainfo['tw'] = $this->meta_tw($router->params, $object, $metainfo['canonical']);
                     }
                     break;
                 }
@@ -1379,6 +1380,18 @@ abstract class expController {
      * @return array
      */
     public function meta_fb($request, $object, $canonical) {
+        return array();
+    }
+
+    /**
+     * Returns Twitter twitter: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return array
+     */
+    public function meta_tw($request, $object, $canonical) {
         return array();
     }
 

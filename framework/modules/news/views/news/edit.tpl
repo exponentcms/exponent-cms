@@ -32,6 +32,9 @@
                 {if !$config.disable_facebook_meta}
                     <li><a href="#tab5"><em>{'Facebook'|gettext}</em></a></li>
                 {/if}
+                {if !$config.disable_twitter_meta}
+                    <li><a href="#tab6"><em>{'Twitter'|gettext}</em></a></li>
+                {/if}
             </ul>
             <div class="yui-content yui3-skin-sam">
                 <div id="tab1">
@@ -85,6 +88,16 @@
                     </div>
                 {/if}
             </div>
+            {if !$config.disable_twitter_meta}
+                <div id="tab6">
+                    <h2>{'Twitter Meta'|gettext}</h2>
+                    {*{control type="hidden" name="tw[type]" value='article'}*}
+                    {control type="text" name="tw[title]" label="Meta Title"|gettext value=$record->meta_tw.title size=88 description='Override the item title for social media'|gettext}
+                    {control type="textarea" name="tw[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_tw.description description='Override the item summary for social media'|gettext}
+                    {control type="text" name="tw[site]" label="Twitter account"|gettext value=$record->meta_tw.twsite description='Must include @'|gettext}
+                    {control type="files" name="twimage" subtype=twimage label="Meta Image"|gettext value=$record->meta_tw folder=$config.upload_folder limit=1 description='Image for social media (120px x 120px minimum)'|gettext}
+                </div>
+            {/if}
         </div>
 	    {*<div class="loadingdiv">{"Loading News Item"|gettext}</div>*}
         {loading title="Loading News Item"|gettext}
