@@ -67,14 +67,14 @@ $PHPTHUMB_CONFIG['cache_directory_depth'] = 2; // If this larger than zero, cach
 // * Cache culling: phpThumb can automatically limit the contents of the cache directory
 //   based on last-access date and/or number of files and/or total filesize.
 
-//$PHPTHUMB_CONFIG['cache_maxage'] = null;            // never delete cached thumbnails based on last-access time
-$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 30;        // delete cached thumbnails that haven't been accessed in more than [30 days] (value is maximum time since last access in seconds to avoid deletion)
+$PHPTHUMB_CONFIG['cache_maxage'] = null;            // never delete cached thumbnails based on last-access time
+//$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 30;        // delete cached thumbnails that haven't been accessed in more than [30 days] (value is maximum time since last access in seconds to avoid deletion)
 
-//$PHPTHUMB_CONFIG['cache_maxsize'] = null;           // never delete cached thumbnails based on byte size of cache directory
-$PHPTHUMB_CONFIG['cache_maxsize'] = 10 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [10MB] of cached files are present (value is maximum bytesize of all cached files). Note: this only counts file size, does not count space "wasted" by directory entries in the cache structure -- see notes under $PHPTHUMB_CONFIG['cache_directory_depth']
+$PHPTHUMB_CONFIG['cache_maxsize'] = null;           // never delete cached thumbnails based on byte size of cache directory
+//$PHPTHUMB_CONFIG['cache_maxsize'] = 10 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [10MB] of cached files are present (value is maximum bytesize of all cached files). Note: this only counts file size, does not count space "wasted" by directory entries in the cache structure -- see notes under $PHPTHUMB_CONFIG['cache_directory_depth']
 
-//$PHPTHUMB_CONFIG['cache_maxfiles'] = null;          // never delete cached thumbnails based on number of cached files
-$PHPTHUMB_CONFIG['cache_maxfiles'] = 200;             // delete least-recently-accessed cached thumbnails when more than [200] cached files are present (value is maximum number of cached files to keep)
+$PHPTHUMB_CONFIG['cache_maxfiles'] = null;          // never delete cached thumbnails based on number of cached files
+//$PHPTHUMB_CONFIG['cache_maxfiles'] = 200;             // delete least-recently-accessed cached thumbnails when more than [200] cached files are present (value is maximum number of cached files to keep)
 
 
 // * Source image cache configuration
@@ -214,7 +214,7 @@ $PHPTHUMB_CONFIG['http_user_agent'] = @$_SERVER['HTTP_USER_AGENT'];             
 $PHPTHUMB_CONFIG['disable_pathinfo_parsing']        = true;   // if true, $_SERVER[PATH_INFO] is not parsed. May be needed on some server configurations to allow normal behavior.
 $PHPTHUMB_CONFIG['disable_imagecopyresampled']      = false;  // if true, imagecopyresampled is replaced with ImageCopyResampleBicubic. May be needed for buggy versions of PHP-GD.
 $PHPTHUMB_CONFIG['disable_onlycreateable_passthru'] = true;   // if true, any image that can be parsed by getimagesize() can be passed through; if false, only images that can be converted to GD by ImageCreateFrom(JPEG|GIF|PNG) functions are allowed
-$PHPTHUMB_CONFIG['disable_realpath']                = false;  // PHP realpath() function requires that "the running script must have executable permissions on all directories in the hierarchy, otherwise realpath() will return FALSE". Set config_disable_realpath=false to enable alternate filename-parsing that does not use realpath() function (but also does not resolve symbolic links)
+$PHPTHUMB_CONFIG['disable_realpath']                = true;  // PHP realpath() function requires that "the running script must have executable permissions on all directories in the hierarchy, otherwise realpath() will return FALSE". Set config_disable_realpath=false to enable alternate filename-parsing that does not use realpath() function (but also does not resolve symbolic links)
 
 
 // * HTTP remote file opening settings
