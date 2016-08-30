@@ -141,7 +141,7 @@ class expLang {
 	    global $custom_lang, $default_lang;
 
         $str = stripslashes(strip_tags($str));
-        expFile::makeDirectory('/themes/' . DISPLAY_THEME . '//lang/');
+        expFile::makeDirectory('themes/' . DISPLAY_THEME . '/lang/');
         @$fp = fopen(THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php', 'w+');
         if($fp === false && DEVELOPMENT) {
             flash('error',"I could not open " . THEME_ABSOLUTE . 'lang/' . utf8_decode(LANGUAGE) . '.php');

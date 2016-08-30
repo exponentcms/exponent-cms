@@ -21,9 +21,11 @@
         <h2>{'Twitter Settings'|gettext}</h2>
 	</div>
 </div>
-{control type="checkbox" name="disable_twitter_meta" label="Disable Twitter Meta Tags"|gettext value=1 checked=$config.disable_twitter_meta description='Disables \'Twitter twitter:xxx\' meta tags on page'|gettext}
-{control type="text" name="twsite" label="Twitter account"|gettext value=$config.twsite description='Must include @'|gettext}
-{control type="files" name="twimage" subtype=fbimage label="Default Meta Image"|gettext value=$config.twimage folder=$config.upload_folder limit=1 description='Module Default Image for social media (120px x 120px minimum)'|gettext}
+{group label='Twitter Meta Tags'|gettext}
+    {control type="checkbox" name="disable_twitter_meta" label="Disable Twitter Meta Tags"|gettext value=1 checked=$config.disable_twitter_meta description='Disables \'Twitter twitter:xxx\' meta tags on page'|gettext}
+    {control type="text" name="twsite" label="Twitter account"|gettext value=$config.twsite description='Must include @'|gettext}
+    {control type="files" name="twimage" subtype=fbimage label="Default Meta Image"|gettext value=$config.twimage folder=$config.upload_folder limit=1 description='Module Default Image for social media (120px x 120px minimum)'|gettext}
+{/group}
 {group label='Auto Tweeting'|gettext}
     {control type="checkbox" name="enable_auto_tweet" label="Enable Auto-Tweet"|gettext value=1 checked=$config.enable_auto_tweet description='Allows \'Tweet\'ing new items'|gettext}
     {control type="text" name="tweet_prefix" label="Tweet prefix text"|gettext value=$config.tweet_prefix class=title description='Begin Tweet with this text'|gettext}
