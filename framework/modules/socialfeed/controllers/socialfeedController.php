@@ -198,8 +198,10 @@ class socialfeedController extends expController
 //            	}//end v5
 
                 try {  //v4
-                    $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
-//                    $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions'); //v4 new api v2.4+
+                    if (empty($this->config['socialfeed_facebook_apiv24']))
+                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts'); //v4
+                    else // facebook api v2.4+ requires specific request for fields
+                        $request = new FacebookRequest($this->session, 'GET', '/' . $page_name . '/posts?fields=type,message,likes,link,created_time,source,object_id,actions'); //v4 new api v2.4+
                     $response = $request->execute(); //v4
                     $graph_object = $response->getGraphObject(); //v4
                     $facebook_values = $graph_object->asArray(); //v4

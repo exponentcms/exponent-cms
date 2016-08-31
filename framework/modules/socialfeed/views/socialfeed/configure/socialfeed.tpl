@@ -33,6 +33,7 @@
 {control type=checkbox name="socialfeed_facebook_use" value=1 label="Get Facebook Feed"|gettext checked=$config.socialfeed_facebook_use}
 {group id="facebook" label='Facebook Settings'|gettext}
   {control type=text name='socialfeed_facebook_page_name' label='Facebook Page Name'|gettext size=60 max=100 value=$config.socialfeed_facebook_page_name description='eg. If your Facebook page URL is this http://www.facebook.com/YOUR_PAGE_NAME, <br />then you just need to add this YOUR_PAGE_NAME above.'|gettext}
+  {control type=checkbox name="socialfeed_facebook_apiv24" value=1 postfalse=1 label="Is Facebook App API version 2.4 or newer?"|gettext checked=$config.socialfeed_facebook_apiv24}
   {control type=text name='socialfeed_facebook_app_id' label='App ID'|gettext size=60 max=100 value=$config.socialfeed_facebook_app_id}
   {control type=text name='socialfeed_facebook_secret_key' label='Secret Key'|gettext size=60 max=100 value=$config.socialfeed_facebook_secret_key}
     {group label='Post Types to Display'|gettext}
