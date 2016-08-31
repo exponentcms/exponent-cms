@@ -11,6 +11,13 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.3.9
 -------------
 ### Address issues in v2.3.8
+  - adds dynamic drag/drop form designer for bootstrap 3 based themes
+  - adds much better small device support in elFinder and Bootstrap 3 based themes
+  - adds new 'tax exempt' user group setting for ecommerce
+  - adds import/export tags
+  - speeds up many operations within Exponent
+  - adds filter/search to event calendar administration and past views
+  - adds support for Twitter twitter:xxx meta data
   - add (upload) image display in form module show, showall_portfolio (with no custom configuration), and email default_report views
   - we now display the graphic for an 'image' field in the confirm_data view
   - adds showall records button/link to form module (individual) show view
@@ -18,6 +25,14 @@ Version 2.3.9
   - adds optional lightbox (jquery colorbox) for event on event module showall Upcoming Events Headlines view
   - updates bootstrap3 show product and photoalbum showall accordion views to use colorbox lightbox instead of yui3
   - adds jquery based bootstrap3 view for attached files in Showcase & Slideshow views
+  - adds new ecommerce search setting to only return ecommerce items or products in searches if desired
+  - adds external calendar event caching and/or importing
+  - now returns a 403 error if attempting to 'show' a missing item
+  - now allows a CKEditor custom config.js file within theme /editors/ckeditor/config.js
+  - !!! update/include .htaccess file in ALL /tmp folders to prevent security issues, CVE-2016-7095 reported by Balison
+  - !!! fix security issue with database managerand pixidou editor: Security Advisory XS3C-2016-05-20 & XS3C-2016-05-19 reported by Julian Held
+  - !!! regression fix several minify issues
+  - !!! regression fix support for single param in url to search for product
   - !!! fix to actually skip over 'cgi-bin' for 'check permissions' upgrade scripts
   - !!! regression fix possible issue with extraneous directory separator in a phpThumb generated thumbnail
   - !!! regression fix ecommerce error when easypost shipping calculator isn't set up
@@ -28,8 +43,9 @@ Version 2.3.9
   - !!! form module did not properly process a 'reloaded' uploadcontrol
   - !!! we now use field names in the form module showall and confirm_data views to properly process 'email' and 'image' fields
   - !!! regression fix form submission/display within multi-page datatables (user/group permissions & view event registrants)
+  - plus many, many more minor tweaks and fixes
 ### Known Issues
-  - eCommerce purchase-order functionality has not been tested/may not be complete
+  - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
   - LDAP support may not work in all LDAP server scenarios due to limited testing
 
