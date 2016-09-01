@@ -1077,7 +1077,7 @@ abstract class expController {
                 $rss->title .= ' ' . ucfirst($this->params['type']);
             $rss->description = $site_rss->feed_desc;
             $rss->image = new FeedImage();
-            $rss->image->url = !empty($site_rss->expFile[0]) ? $site_rss->expFile[0]->url : URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
+            $rss->image->url = !empty($site_rss->expFile['album'][0]) ? $site_rss->expFile['album'][0]->url : URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
             $rss->image->title = $site_rss->title;
             $rss->image->link = URL_FULL;
             //    $rss->image->width = 64;
@@ -1088,7 +1088,7 @@ abstract class expController {
             if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = !empty($site_rss->feed_artist) ? $site_rss->feed_artist : ORGANIZATION_NAME;
-                $rss->itunes->image = !empty($site_rss->expFile[0]) ? $site_rss->expFile[0]->url :URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
+                $rss->itunes->image = !empty($site_rss->expFile['album'][0]) ? $site_rss->expFile['album'][0]->url :URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
                 $rss->itunes->summary = $site_rss->feed_desc;
                 if (!empty($itunes_cats)) {
                     $rss->itunes->category = $itunes_cats[0]->category;
