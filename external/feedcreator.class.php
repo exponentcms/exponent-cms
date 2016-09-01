@@ -1348,7 +1348,10 @@ class PodcastCreator extends RSSCreator20 {
 	function __construct() {
 	    parent::_setRSSVersion("2.0");
         $this->encoding = "utf-8";
-	    parent::_setXMLNS("itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\"");
+	    parent::_setXMLNS('itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"');
+//        parent::_setXMLNS('rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"');
+//        parent::_setXMLNS('googleplay="http://www.google.com/schemas/play-podcasts/1.0"');
+//        parent::_setXMLNS('media="http://search.yahoo.com/mrss/"');
 	}
 }
 

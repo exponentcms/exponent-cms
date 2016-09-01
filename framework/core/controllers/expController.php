@@ -1066,10 +1066,15 @@ abstract class expController {
             $feed_cache = BASE . 'tmp/rsscache/' . $site_rss->sef_url . '.xml';
 
             $rss = new UniversalFeedCreator();
-            $rss->cssStyleSheet = "";
-            $rss->useCached($feed_type, $feed_cache, $site_rss->rss_cachetime);
+//            if (file_exists(THEME_ABSOLUTE . "rss/feed.css"))  // custom css style
+//                $rss->cssStyleSheet = THEME_RELATIVE . "rss/feed.css";
+            if (file_exists(THEME_ABSOLUTE . "rss/feed.xsl"))  // custom xml style
+                $rss->xslStyleSheet = THEME_RELATIVE . "rss/feed.xsl";
+            $rss->useCached($feed_type, $feed_cache, $site_rss->rss_cachetime);  // if cache exists output then redirect
+
             $rss->title = $site_rss->title;
-            if (!empty($this->params['type'])) $rss->title .= ' ' . ucfirst($this->params['type']);
+            if (!empty($this->params['type']))
+                $rss->title .= ' ' . ucfirst($this->params['type']);
             $rss->description = $site_rss->feed_desc;
             $rss->image = new FeedImage();
             $rss->image->url = !empty($site_rss->expFile[0]) ? $site_rss->expFile[0]->url : URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
@@ -1090,7 +1095,8 @@ abstract class expController {
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
                 //		$rss->itunes->explicit = 0;
-                $rss->itunes->subtitle = $site_rss->title;
+//                $rss->itunes->subtitle = $site_rss->title;
+                $rss->itunes->subtitle = $site_rss->feed_desc;
                 //		$rss->itunes->keywords = 0;
                 $rss->itunes->owner_email = SMTP_FROMADDRESS;
                 $rss->itunes->owner_name = ORGANIZATION_NAME;
@@ -1110,7 +1116,7 @@ abstract class expController {
             $rss->pubDate = $pubDate;
 
 //            echo $rss->createFeed($feed_type);
-            echo $rss->saveFeed($feed_type, $feed_cache, $site_rss->rss_cachetime);
+            echo $rss->saveFeed($feed_type, $feed_cache, $site_rss->rss_cachetime);  // does redirect after updating cache
         } else {
             flash('notice', gt("This RSS feed is not available."));
             expHistory::back();
