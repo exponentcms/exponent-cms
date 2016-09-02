@@ -93,7 +93,7 @@
                         {*{control type="hidden" name="tw[type]" value='article'}*}
                         {control type="text" name="tw[title]" label="Meta Title"|gettext value=$record->meta_tw.title size=88 description='Override the item title for social media'|gettext}
                         {control type="textarea" name="tw[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_tw.description description='Override the item summary for social media'|gettext}
-                        {control type="text" name="tw[site]" label="Twitter account"|gettext value=$record->meta_tw.twsite description='Must include @'|gettext}
+                        {control type="text" name="tw[site]" label="Twitter Account"|gettext value=$record->meta_tw.twsite description='Must include @'|gettext}
                         {control type="files" name="twimage" subtype=twimage label="Meta Image"|gettext value=$record->meta_tw folder=$config.upload_folder limit=1 description='Image for social media (120px x 120px minimum)'|gettext}
                     </div>
                 {/if}

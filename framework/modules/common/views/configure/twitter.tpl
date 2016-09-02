@@ -23,7 +23,7 @@
 </div>
 {group label='Twitter Meta Tags'|gettext}
     {control type="checkbox" name="disable_twitter_meta" label="Disable Twitter Meta Tags"|gettext value=1 checked=$config.disable_twitter_meta description='Disables \'Twitter twitter:xxx\' meta tags on page'|gettext}
-    {control type="text" name="twsite" label="Twitter account"|gettext value=$config.twsite description='Must include @'|gettext}
+    {control type="text" name="twsite" label="Twitter Account"|gettext value=$config.twsite description='Must include @'|gettext}
     {control type="files" name="twimage" subtype=twimage label="Default Meta Image"|gettext value=$config.expFile folder=$config.upload_folder limit=1 description='Module Default Image for social media (120px x 120px minimum)'|gettext}
 {/group}
 {group label='Auto Tweeting'|gettext}
