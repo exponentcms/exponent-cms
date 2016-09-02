@@ -170,3 +170,7 @@ show view
 .more-text {
     overflow : hidden;
 }
+
+.tickets .label {
+    color: black;
+}

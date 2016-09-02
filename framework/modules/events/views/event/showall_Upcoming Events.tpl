@@ -24,20 +24,26 @@
         {/if}
 		{permissions}
 			{if $permissions.manage}
-				&#160;&#160;|&#160;&#160;
+                {if !bs()}
+                    {nbsp count=2}|{nbsp count=2}
+                {/if}
                 {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
 			{/if}
 		{/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
 	</div>
 	<{$config.heading_level|default:'h1'}>
         {ical_link}
@@ -103,6 +109,13 @@
                     <span class="dtstart">{$item->eventstart|format_date} @ {$item->eventstart|format_date:$smarty.const.DISPLAY_TIME_FORMAT}<span class="value-title" title="{date('c',$item->eventstart)}"></span></span>
 				{/if}
 			</strong>
+            {$endd = end($item->eventdate)}
+            {$end = $endd->date}
+            {if $end > $item->eventend && ($end <= $item->eventend + 31*24*60*60+1)}
+                <span style="font-style: italic;color: grey;">
+                    ({'thru'|gettext} {$end|format_date:"%b"} {$end|format_date:"%e"}{date("S",mktime(0,0,0,0,$end|format_date:"%e",0))})
+                </span>
+            {/if}
 		</dd>
 		<dd>
             {if !empty($item->expFile[0]->url)}

@@ -15,8 +15,8 @@
 
 /* blog tag cloud */
 
-.blog.cloud ul,
-.blog.cloud ul li {
+.blog.cloud ul.item,
+.blog.cloud ul.item li {
     display:inline-block;
     *display:inline;
     zoom:1;
@@ -26,6 +26,10 @@
 	padding-left: 0;
 }
 
-.blog.cloud ul li {
+.blog.cloud ul.item li {
     margin:0 3px;
+}
+
+.container-chrome.module-chrome ul {
+    padding: 6px 0;
 }

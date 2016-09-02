@@ -56,7 +56,7 @@
                     };
                 });
                 blogitem_{/literal}{$name}{literal}.find('link').each(function(k, n){
-                    $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                    $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
                 $('#{/literal}{$name}{literal}item.loadingdiv').remove();

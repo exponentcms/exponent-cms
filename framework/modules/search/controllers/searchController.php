@@ -70,12 +70,13 @@ class searchController extends expController {
 
         $page = new expPaginator(array(
 //            'model'=>'search',
-            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best'])),
+            'records'=>$search->getSearchResults($terms, !empty($this->config['only_best']), 0, !empty($this->config['eventlimit']) ? $this->config['eventlimit'] : null),
             //'sql'=>$sql,
             'limit'=>(isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10,
             'order'=>'score',
             'dir'=>'DESC',
             'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
+            'dontsortwithincat'=>true,
             'controller' => $this->params['controller'],
             'action' => $this->params['action'],
             'src' => $this->loc->src,
@@ -157,29 +158,41 @@ class searchController extends expController {
      */
     function cloud() {
         global $db;
+
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>'expTag',
             'where'=>null,
 //          'limit'=>999,
             'order'=>"title",
+            'dontsortwithincat'=>true,
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>static::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
 
-        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
-            foreach ($page->records as $key => $value) {
-                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
-                if (!empty($attatchedat)) {
-                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
-                    $page->records[$key]->attached[$contenttype] = $attatchedat;
-                }
-            }
-        }
+//        foreach ($db->selectColumn('content_expTags','content_type',null,null,true) as $contenttype) {
+//            foreach ($page->records as $key => $value) {
+//                $attatchedat = $page->records[$key]->findWhereAttachedTo($contenttype);
+//                if (!empty($attatchedat)) {
+//                    $page->records[$key]->attachedcount = @$page->records[$key]->attachedcount + count($attatchedat);
+//                    $page->records[$key]->attached[$contenttype] = $attatchedat;
+//                }
+//            }
+//        }
+        $tags_list = array();
         foreach ($page->records as $key=>$record) {
-            if (empty($record->attachedcount)) unset($page->records[$key]);
+            $count = $db->countObjects('content_expTags','exptags_id=' . $record->id);
+            if ($count) {
+                $page->records[$key]->attachedcount = $count;
+                $tags_list[$record->title] = new stdClass();
+                $tags_list[$record->title]->count = $count;
+                $tags_list[$record->title]->sef_url = $record->sef_url;
+                $tags_list[$record->title]->title = $record->title;
+            } else {
+                unset($page->records[$key]);
+            }
         }
         // trim the tag cloud to our limit.
         $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'attachedcount DESC', 'type'=>'a'));
@@ -188,7 +201,8 @@ class searchController extends expController {
             $page->records = expSorter::sort(array('array'=>$page->records, 'order'=>'title ASC', 'ignore_case'=>true, 'sort_type'=>'a'));
         }
         assign_to_template(array(
-            'page'=>$page
+            'page'=>$page,
+            'tags_list'=>$tags_list
         ));
     }
 
@@ -208,7 +222,7 @@ class searchController extends expController {
         //eDebug($sql);
         
         //$res = $mod->find('all',$sql,'id',25);
-        $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".DB_TABLE_PREFIX."_product as p INNER JOIN ".DB_TABLE_PREFIX."_content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".DB_TABLE_PREFIX."_expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
+        $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".$db->prefix."product as p INNER JOIN ".$db->prefix."content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".$db->prefix."expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `exponent_product`');
         
@@ -327,7 +341,7 @@ class searchController extends expController {
 
 		$count   = $db->countObjects('search_queries');
 	
-		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .DB_TABLE_PREFIX . "_search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
+		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .$db->prefix . "search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
 
         $records_key_arr = array();
         $records_values_arr = array();

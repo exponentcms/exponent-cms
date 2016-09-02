@@ -72,7 +72,7 @@ if (!defined('EXPONENT')) {
     </div>
     <button class="awesome large green"><?php echo gt('Create Administrator'); ?></button>
 </form>
-<script src="<?php echo PATH_RELATIVE; ?>external/jquery/js/jquery-1.12.3.min.js"></script>
+<script type="text/javascript" src="<?php echo JQUERY2_SCRIPT; ?>"></script>
 <script type="text/javascript" src="<?php echo PATH_RELATIVE; ?>external/jquery/addons/js/strength-meter.js"></script>
 <!--<script type="text/javascript" src="--><?php //echo PATH_RELATIVE; ?><!--external/jquery/addons/js/locales/strength-meter---><?php //echo LOCALE; ?><!--.js"></script>-->
 <script>

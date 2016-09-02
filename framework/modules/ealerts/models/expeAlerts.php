@@ -56,8 +56,8 @@ class expeAlerts extends expRecord {
         $enabled = empty($pending) ? 1 : 0;
         
         // find pending subscriptions  //FIXME, not pulling any items?
-        $sql  = 'SELECT e.* FROM '.DB_TABLE_PREFIX.'_expeAlerts e ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_expeAlerts_subscribers es ON e.id=es.subscribers_id ';
+        $sql  = 'SELECT e.* FROM '.$db->prefix.'expeAlerts e ';
+        $sql .= 'JOIN '.$db->prefix.'expeAlerts_subscribers es ON e.id=es.subscribers_id ';
         $sql .= 'WHERE es.enabled='.$enabled.' && es.subscribers_id='.$id;
 
         return $db->selectObjectsBySql($sql);

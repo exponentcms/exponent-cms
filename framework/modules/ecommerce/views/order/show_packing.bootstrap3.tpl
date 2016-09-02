@@ -291,7 +291,7 @@
                                     {capture assign="callbacks"}
                                     {literal}
                                     // the text box for the title
-                                    var tagInput = Y.one('#add_new_item');
+                                    var tagInput = Y.one('#add_new_item_autoc');
 
                                     // the UL to append to
                                     var tagUL = Y.one('#new_items');
@@ -310,10 +310,10 @@
                                     var createHTML = function(val) {
                                         var f = '<form role="form" id=addItem method=post>';
                                             f += '<input type=hidden name=orderid id=orderid value={/literal}{$order->id}{literal}>';
-                                            f += '<input type=hidden name=module id=module value=order>';
+                                            f += '<input type=hidden name=controller id=controller value=order>';
                                             f += '<input type=hidden name=action id=action value=add_order_item>';
-                                            f += '<input type=hidden name=product_id id=product_id value=' + val.id + '>';
-                                            f += '<input type=submit class="add {/literal}{expTheme::buttonStyle('green')}{literal}" name=submit value="Add This Item">';
+                                            f += '<input type=hidden name=product_id id=product_id value=' + val + '>';
+                                            f += '<input type=submit class="add {/literal}{expTheme::buttonStyle('green')}{literal}" name=submit value="{/literal}{'Add This Item'|gettext}{literal}">';
                                             f += '</form>';
                                         var newLI = Y.Node.create(f);
                                         return newLI;

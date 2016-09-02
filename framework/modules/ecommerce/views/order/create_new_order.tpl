@@ -25,15 +25,14 @@
             {control type="dropdown" name="order_type_id" label="Order Type:"|gettext frommodel='order_type' focus=1}
             {control type="dropdown" name="order_status_id" label="Order Status:"|gettext frommodel='order_status' orderby='rank'}
             {control type="hidden" id="addresses_id" name="addresses_id"}
-            {br}
             <div id="customer_type">
-                <input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> {'New Customer'|gettext}{br}
-                <input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}{br}
-                <input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}{br}
+                <label for="customer_type1" class="radio control-label"><input type="radio" id="customer_type1" name="customer_type" value="1" checked=""> {'New Customer'|gettext}</label>
+                <label for="customer_type2" class="radio control-label"><input type="radio" id="customer_type2" name="customer_type"  value="2"> {'Existing Customer - Internal'|gettext}</label>
+                <label for="customer_type3" class="radio control-label"><input type="radio" id="customer_type3" name="customer_type"  value="3"> {'Existing Customer - External'|gettext}</label>
             {capture assign="callbacks"}
             {literal}
             // the text box for the title
-            var tagInput = Y.one('#search_internal');
+            var tagInput = Y.one('#search_internal_autoc');
             var theAddressesId = Y.one('#addresses_id');
 
             // format the results coming back in from the query
@@ -55,7 +54,7 @@
             {capture assign="callbacks2"}
             {literal}
             // the text box for the title
-            var tagInput = Y.one('#search_external');
+            var tagInput = Y.one('#search_external_autoc');
             var theAddressesId = Y.one('#addresses_id');
 
             // format the results coming back in from the query
@@ -92,8 +91,8 @@ YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
     var radioSwitchers = Y.all('#customer_type input[type="radio"]');
     radioSwitchers.on('click',function(e){
         var curval = e.target.get('value');
-        var intcust = Y.one("#search_internal").get('parentNode').get('parentNode');
-        var extcust = Y.one("#search_external").get('parentNode').get('parentNode');
+        var intcust = Y.one("#search_internal_autoc").get('parentNode').get('parentNode');
+        var extcust = Y.one("#search_external_autoc").get('parentNode').get('parentNode');
         if (curval ==  1) {
             intcust.setStyle('display','none');
             extcust.setStyle('display','none');

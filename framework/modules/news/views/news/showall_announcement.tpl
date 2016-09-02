@@ -76,7 +76,7 @@
                 {if $config.ffloat != "Below"}
                     {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                 {/if}
-                {$link = '<a href="'|cat:makeLink([controller=>news, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
+                {$link = '<a href="'|cat:makeLink([controller=>news, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:'(read more)'|gettext|cat:'</em></a>'}
                 {if $config.usebody==1}
                     {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                 {elseif $config.usebody==3}

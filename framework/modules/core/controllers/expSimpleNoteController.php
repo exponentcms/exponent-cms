@@ -134,8 +134,8 @@ class expSimpleNoteController extends expController {
         $notification_email = empty($this->params['notification_email']) ? SIMPLENOTE_NOTIFICATION_EMAIL : $this->params['notification_email'];
         
         
-        $sql  = 'SELECT n.* FROM '.DB_TABLE_PREFIX.'_expSimpleNote n ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
+        $sql  = 'SELECT n.* FROM '.$db->prefix.'expSimpleNote n ';
+        $sql .= 'JOIN '.$db->prefix.'content_expSimpleNote cnt ON n.id=cnt.expsimplenote_id ';
         $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
         $sql .= 'AND n.approved=1';
         
@@ -155,8 +155,8 @@ class expSimpleNoteController extends expController {
         
         // count the unapproved comments
         if ($require_approval == 1 && $user->isAdmin()) {
-            $sql  = 'SELECT count(com.id) as c FROM '.DB_TABLE_PREFIX.'_expSimpleNote com ';
-            $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expSimpleNote cnt ON com.id=cnt.expsimplenote_id ';
+            $sql  = 'SELECT count(com.id) as c FROM '.$db->prefix.'expSimpleNote com ';
+            $sql .= 'JOIN '.$db->prefix.'content_expSimpleNote cnt ON com.id=cnt.expsimplenote_id ';
             $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
             $sql .= 'AND com.approved=0';
             $unapproved = $db->countObjectsBySql($sql);

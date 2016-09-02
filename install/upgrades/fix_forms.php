@@ -80,7 +80,7 @@ class fix_forms extends upgradescript {
                 // rename an existing table
 //                if ($db->tableExists('forms_' . $form->table_name)) {
                 if ($form->tableExists()) {
-                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_forms_'.$form->table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$$table_name);
+                    $db->sql('RENAME TABLE '.$db->prefix.'forms_'.$form->table_name.' TO '.$db->prefix.'forms_'.$table_name);
                 }
                 $form->table_name = $table_name;
             }

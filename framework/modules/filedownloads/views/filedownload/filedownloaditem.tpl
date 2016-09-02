@@ -39,7 +39,8 @@
             {if $item->ext_file}
                 <a class=downloadfile href="{$item->ext_file}" title="{'Download'|gettext}" target="_blank">{$item->title}</a>
             {else}
-                {icon action=downloadfile fileid=$item->id filenum=0 text=$item->title title="{'Download'|gettext}"}
+                {*{icon action=downloadfile fileid=$item->id filenum=0 text=$item->title title="{'Download'|gettext}"}*}
+                <a class="downloadfile {button_style}" href="{link action=downloadfile fileid=$item->id filenum=0}" title="{'Download'|gettext}">{$item->title}</a>
             {/if}
         </h3>
     {else}
@@ -68,8 +69,8 @@
             &#160;|&#160;
             <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$item->downloads}</span>
-            {comments_count record=$item prepend='&#160;&#160;|&#160;&#160;'}
-            {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
+            {comments_count record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+            {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         {/if}
     </div>
     {permissions}
@@ -89,7 +90,7 @@
             {/if}
         </div>
     {/permissions}
-    {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
+    {$link = '<a href="'|cat:makeLink([controller=>filedownload, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:'(read more)'|gettext|cat:'</em></a>'}
     {if $config.usebody!=2}
         <div class="bodycopy">
             {if $config.usebody==1}
@@ -175,7 +176,7 @@
     {permissions}
         <div class="module-actions">
             {if $permissions.create}
-                {icon class=add action=edit title="Add a File Here" text="Add a File"|gettext}
+                {icon class=add action=edit title="Add a File Here"|gettext text="Add a File"|gettext}
             {/if}
         </div>
     {/permissions}

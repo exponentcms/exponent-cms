@@ -147,11 +147,11 @@ class expLabels
                     break;
                 }
                 default: {
-                    die(gt("Invalid format provided. Must be word, pdf or html"));
+                    flash('notice',gt("Invalid format provided. Must be word, pdf or html"));
                 }
             }
         } else {
-            die(gt("No addresses provided"));
+            flash('notice',gt("No addresses provided"));
         }
     }
 

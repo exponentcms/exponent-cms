@@ -99,7 +99,7 @@ class upgrade_forms extends upgradescript {
                     }
                     $oldform_table_name = $oldform->table_name;
                     $oldform->table_name = $oldform_table_name . $i;
-                    $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_formbuilder_'.$oldform_table_name.' TO '.DB_TABLE_PREFIX.'_forms_'.$oldform->table_name);
+                    $db->sql('RENAME TABLE '.$db->prefix.'formbuilder_'.$oldform_table_name.' TO '.$db->prefix.'forms_'.$oldform->table_name);
                     //FIXME do we want to add a forms_id field?
                 }
 

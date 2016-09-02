@@ -34,16 +34,20 @@
             <div class="module-actions">
                 {if $permissions.viewdata && $form->is_saved}
                     {icon class="view" action=showall id=$form->id text='View Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        &#160;&#160;|&#160;&#160;
+                    {/if}
                     {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
-                    {if $permissions.manage}
+                    {if $permissions.manage && !bs()}
                         &#160;&#160;|&#160;&#160;
                     {/if}
                 {/if}
                 {if $permissions.manage}
                     {if !empty($form->id)}
                         {icon class=configure action=design_form id=$form->id text="Design Form"|gettext}
-                        &#160;&#160;|&#160;&#160;
+                        {if !bs()}
+                            &#160;&#160;|&#160;&#160;
+                        {/if}
                     {/if}
                     {icon action=manage select=true text="Manage Forms"|gettext}
                 {/if}
@@ -75,4 +79,5 @@
             {/if}
         </div>
     </div>
+    {clear}
 {/if}

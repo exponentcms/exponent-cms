@@ -468,13 +468,15 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $regitem);
-                    
+
+                    // remove today's events that have already ended
                     if ($viewtype == 'default' && $viewrange == 'upcoming') {
                         foreach ($items as $key=>$item) {
-                            if ($item->eventend < time()) {
+                            if (!$item->is_allday && $item->eventend < time()) {
+                                //fixme we've left events ending earlier in the day, but already cancelled out tomorrow's event
                                 unset($items[$key]);
                             } else {
-                                break;  // they are chronological
+                                break;  // they are chronological so we can end
                             }
                         }
                     }
@@ -519,6 +521,9 @@ class eventController extends expController {
             $event = new event($this->params['id']);
             $eventdate = new eventdate($event->eventdate[0]->id);
         }
+        if (empty($eventdate->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>'event'));
+
         if (!empty($eventdate->event->feedback_form) && $eventdate->event->feedback_form != 'Disallow Feedback') {
             assign_to_template(array(
                 'feedback_form' => $eventdate->event->feedback_form,
@@ -884,7 +889,7 @@ class eventController extends expController {
 
                     $msg .= "BEGIN:VEVENT\n";
                     $msg .= $dtstart . $dtend;
-                    $msg .= "UID:" . $items[$i]->id . "\n";
+                    $msg .= "UID:" . $items[$i]->date_id . "\n";
                     $msg .= "DTSTAMP:" . date("Ymd\THis", time()) . "Z\n";
                     if ($title) {
                         $msg .= "SUMMARY:$title\n";

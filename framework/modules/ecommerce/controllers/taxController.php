@@ -62,21 +62,21 @@ class taxController extends expController {
 
         $sql = "
             SELECT
-                " . DB_TABLE_PREFIX . "_tax_rate.id,
-                " . DB_TABLE_PREFIX . "_tax_zone.`name` AS zonename,
-                " . DB_TABLE_PREFIX . "_tax_rate.rate as rate,
-                " . DB_TABLE_PREFIX . "_tax_rate.shipping_taxed as shipping_taxed,
-                " . DB_TABLE_PREFIX . "_tax_rate.origin_tax as origin_tax,
-                " . DB_TABLE_PREFIX . "_tax_rate.inactive as inactive,
-                " . DB_TABLE_PREFIX . "_tax_class.`name` AS classname,
-                " . DB_TABLE_PREFIX . "_geo_country.`name` as country,
-                " . DB_TABLE_PREFIX . "_geo_region.`name` as state
-            FROM " . DB_TABLE_PREFIX . "_tax_class
-                INNER JOIN " . DB_TABLE_PREFIX . "_tax_rate ON " . DB_TABLE_PREFIX . "_tax_class.id = " . DB_TABLE_PREFIX . "_tax_rate.class_id
-                INNER JOIN " . DB_TABLE_PREFIX . "_tax_zone ON " . DB_TABLE_PREFIX . "_tax_rate.zone_id = " . DB_TABLE_PREFIX . "_tax_zone.id
-                INNER JOIN " . DB_TABLE_PREFIX . "_tax_geo ON " . DB_TABLE_PREFIX . "_tax_geo.zone_id = " . DB_TABLE_PREFIX . "_tax_zone.id
-                LEFT JOIN " . DB_TABLE_PREFIX . "_geo_country ON " . DB_TABLE_PREFIX . "_tax_geo.country_id = " . DB_TABLE_PREFIX . "_geo_country.id
-                LEFT JOIN " . DB_TABLE_PREFIX . "_geo_region ON " . DB_TABLE_PREFIX . "_tax_geo.region_id = " . DB_TABLE_PREFIX . "_geo_region.id
+                " . $db->prefix . "tax_rate.id,
+                " . $db->prefix . "tax_zone.`name` AS zonename,
+                " . $db->prefix . "tax_rate.rate as rate,
+                " . $db->prefix . "tax_rate.shipping_taxed as shipping_taxed,
+                " . $db->prefix . "tax_rate.origin_tax as origin_tax,
+                " . $db->prefix . "tax_rate.inactive as inactive,
+                " . $db->prefix . "tax_class.`name` AS classname,
+                " . $db->prefix . "geo_country.`name` as country,
+                " . $db->prefix . "geo_region.`name` as state
+            FROM " . $db->prefix . "tax_class
+                INNER JOIN " . $db->prefix . "tax_rate ON " . $db->prefix . "tax_class.id = " . $db->prefix . "tax_rate.class_id
+                INNER JOIN " . $db->prefix . "tax_zone ON " . $db->prefix . "tax_rate.zone_id = " . $db->prefix . "tax_zone.id
+                INNER JOIN " . $db->prefix . "tax_geo ON " . $db->prefix . "tax_geo.zone_id = " . $db->prefix . "tax_zone.id
+                LEFT JOIN " . $db->prefix . "geo_country ON " . $db->prefix . "tax_geo.country_id = " . $db->prefix . "geo_country.id
+                LEFT JOIN " . $db->prefix . "geo_region ON " . $db->prefix . "tax_geo.region_id = " . $db->prefix . "geo_region.id
             ";
 
         return $db->selectObjectsBySql($sql);
@@ -296,14 +296,14 @@ class taxController extends expController {
 
         $sql = "
             SELECT
-                " . DB_TABLE_PREFIX . "_tax_zone.id,
-                " . DB_TABLE_PREFIX . "_tax_zone.`name` AS name,
-                " . DB_TABLE_PREFIX . "_geo_country.`name` as country,
-                " . DB_TABLE_PREFIX . "_geo_region.`name` as state
-            FROM " . DB_TABLE_PREFIX . "_tax_zone
-                INNER JOIN " . DB_TABLE_PREFIX . "_tax_geo ON " . DB_TABLE_PREFIX . "_tax_geo.zone_id = " . DB_TABLE_PREFIX . "_tax_zone.id
-                LEFT JOIN " . DB_TABLE_PREFIX . "_geo_country ON " . DB_TABLE_PREFIX . "_tax_geo.country_id = " . DB_TABLE_PREFIX . "_geo_country.id
-                LEFT JOIN " . DB_TABLE_PREFIX . "_geo_region ON " . DB_TABLE_PREFIX . "_tax_geo.region_id = " . DB_TABLE_PREFIX . "_geo_region.id
+                " . $db->prefix . "tax_zone.id,
+                " . $db->prefix . "tax_zone.`name` AS name,
+                " . $db->prefix . "geo_country.`name` as country,
+                " . $db->prefix . "geo_region.`name` as state
+            FROM " . $db->prefix . "tax_zone
+                INNER JOIN " . $db->prefix . "tax_geo ON " . $db->prefix . "tax_geo.zone_id = " . $db->prefix . "tax_zone.id
+                LEFT JOIN " . $db->prefix . "geo_country ON " . $db->prefix . "tax_geo.country_id = " . $db->prefix . "geo_country.id
+                LEFT JOIN " . $db->prefix . "geo_region ON " . $db->prefix . "tax_geo.region_id = " . $db->prefix . "geo_region.id
             ";
 
         return $db->selectObjectsBySql($sql);

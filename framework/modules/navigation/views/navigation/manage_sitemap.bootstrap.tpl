@@ -21,7 +21,6 @@
 {/css}
 
 <div class="module navigation manager-hierarchy expanding manage-site-map">
-    {$titlepresent=1}
     <div class="form_header">
    		<div class="info-header">
    			<div class="related-actions">
@@ -101,7 +100,7 @@
                                 {$class="inactive"}
                             {/if}
 
-                            {$headerlevel=$section->depth+1+$titlepresent}
+                            {$headerlevel=$section->depth}
 
                             {if $section->active == 1}
                                 {* active page *}

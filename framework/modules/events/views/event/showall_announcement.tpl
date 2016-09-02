@@ -30,20 +30,26 @@
         {/if}
         {permissions}
             {if $permissions.manage}
-                &#160;&#160;|&#160;&#160;
+                {if !bs()}
+                    {nbsp count=2}|{nbsp count=2}
+                {/if}
                 {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    &#160;&#160;|&#160;&#160;
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
             {/if}
         {/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
     </div>
     {if $config.moduledescription != ""}
    		{$config.moduledescription}

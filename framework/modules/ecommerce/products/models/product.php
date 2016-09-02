@@ -96,6 +96,10 @@ class product extends expRecord {
             $this->meta_fb['fbimage'][0] = $this->expFile['fbimage'][0];
 //            unset($this->expFile['fbimage']);
         }
+        if (!empty($this->meta_tw))
+            $this->meta_tw = expUnserialize($this->meta_tw);
+        if (!empty($this->meta_tw['twimage']) && !empty($this->meta_tw['twimage'][0]))
+            $this->meta_tw['twimage'][0] = new expFile($this->meta_tw['twimage'][0]);
 
         //sort the children by child_rank
         if ($this->hasChildren()) {
@@ -632,7 +636,7 @@ class product extends expRecord {
             if (!empty($this->childProduct) && count($this->childProduct) == 0) return false;
             else return true;
         } else {
-            //$sql = "SELECT id from " . DB_TABLE_PREFIX . "_product WHERE parent_id=" . $this->id;           
+            //$sql = "SELECT id from " . $db->prefix . "product WHERE parent_id=" . $this->id;
             $count = $db->countObjects("product", "parent_id=" . $this->id);
             //eDebug($count);
             //$count = $db->queryRows($sql);

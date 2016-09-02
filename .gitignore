@@ -23,3 +23,6 @@
 .mailmap
 
 phpdoc-*
+
+# Always include .htaccess files
+!.htaccess

@@ -24,7 +24,7 @@ class order extends expRecord {
     protected $table = 'orders';
 
     public $has_many = array('orderitem', 'order_discounts', 'billingmethod', 'order_status_changes');  // we also manually associate shippingmethods and their orderitems
-    public $has_one = array('order_status', 'order_type', 'shippingmethod');  //FIXME in reality we only have one billingmethod???
+    public $has_one = array('order_status', 'order_type', 'shippingmethod', 'user');  //FIXME in reality we only have one billingmethod???
     public $get_assoc_for = array('orderitem', 'billingmethod', 'order_discounts');
 
     public $total = 0;
@@ -587,7 +587,8 @@ class order extends expRecord {
         else return null;
     }
 
-    public function calculateGrandTotal() {
+    public function calculateGrandTotal()
+    {
         // calculate promo codes and group discounts
         //we need to tally up the cart, apply discounts, TAX that TOTAL somehow (different tax clases come into play), then add shipping
 
@@ -642,7 +643,10 @@ class order extends expRecord {
 
                 //percentage discount             
                 if ($discount->action_type == 3) {
-                    $discount_amount = round($this->orderitem[$i]->products_price * ($discount->discount_percent / 100), 2);
+                    $discount_amount = round(
+                        $this->orderitem[$i]->products_price * ($discount->discount_percent / 100),
+                        2
+                    );
                     // change the price of the orderitem..this is needed for when we calculate tax below.
                     $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price - $discount_amount;
                     // keep a tally  of the total amount being subtracted by this discount.
@@ -655,7 +659,10 @@ class order extends expRecord {
                     //what % of the order is this product with all it's quantity                    
                     $percentOfTotalOrder = ($this->orderitem[$i]->products_price * $this->orderitem[$i]->quantity) / $this->subtotal;
                     //figoure out how much that'll be and what each quanityt piece will bare
-                    $discountAmountPerItem = round(($percentOfTotalOrder * $discount->discount_amount) / $this->orderitem[$i]->quantity, 2);
+                    $discountAmountPerItem = round(
+                        ($percentOfTotalOrder * $discount->discount_amount) / $this->orderitem[$i]->quantity,
+                        2
+                    );
                     //$discount_amount = $this->orderitem[$i]->products_price * ($discount->discount_percent / 100);
                     // change the price of the orderitem..this is needed for when we calculate tax below.
                     $this->orderitem[$i]->products_price_adjusted = $this->orderitem[$i]->products_price - $discountAmountPerItem;
@@ -667,7 +674,8 @@ class order extends expRecord {
             // calculate the tax for this product
 //            $taxclass = new taxclass($this->orderitem[$i]->product->tax_class_id);
             $this->orderitem[$i]->products_tax = taxclass::getProductTax($this->orderitem[$i]);
-            $this->tax += $this->orderitem[$i]->products_tax * $this->orderitem[$i]->quantity;
+            if (!$this->user->globalPerm('tax_exempt'))
+                $this->tax += $this->orderitem[$i]->products_tax * $this->orderitem[$i]->quantity;
 
             //save out the order item
             $this->orderitem[$i]->save();
@@ -715,8 +723,8 @@ class order extends expRecord {
 
         $this->shipping_taxed = false;
         foreach ($this->taxzones as $tz) {  //FIXME not written for multiple shipments/destinations
-            if (!empty($tz->shipping_taxed)) {
-                $this->tax += round(($tz->rate * .01) * $this->shipping_total,2);
+            if (!$this->user->globalPerm('tax_exempt') && !empty($tz->shipping_taxed)) {
+                $this->tax += round(($tz->rate * .01) * $this->shipping_total, 2);
                 $this->shipping_taxed = true;
                 break;
             }

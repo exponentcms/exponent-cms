@@ -137,6 +137,7 @@
 .elfinder-button-icon-accept    { background-position: 0 -736px; }
 .elfinder-button-icon-opendir   { background-position: 0  -32px; }
 .elfinder-button-icon-menu      { background-position: 0 -752px; }
+.elfinder-button-icon-colwidth  { background-position: 0 -768px; }
 
 .elfinder-button-icon-pixlr     { background-position: 0 -673px; }
 
@@ -257,7 +258,7 @@
 	position:absolute;
 	height:18px;
 	top: 50%;
-	margin:-9px 4px 0 4px;
+	margin:-8px 4px 0 4px;
 	opacity: .6; 
 	filter:Alpha(Opacity=60);
 }

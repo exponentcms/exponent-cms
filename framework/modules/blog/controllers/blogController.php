@@ -190,11 +190,11 @@ class blogController extends expController {
 	}
 
 	public function show() {
-//	    global $db;
-
-	    expHistory::set('viewable', $this->params);
+        expHistory::set('viewable', $this->params);
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
+        if (empty($record->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
 
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
@@ -235,8 +235,8 @@ class blogController extends expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql  = 'SELECT DISTINCT m.id FROM '.DB_TABLE_PREFIX.'_'.$model->tablename.' m ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_'.$tagobj->attachable_table.' ct ';
+        $sql  = 'SELECT DISTINCT m.id FROM '.$db->prefix.$model->tablename.' m ';
+        $sql .= 'JOIN '.$db->prefix.$tagobj->attachable_table.' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
 
@@ -274,35 +274,33 @@ class blogController extends expController {
      *
      * @return array
      */
-    function getRSSContent() {
-//        global $db;
-
-        $class = new blog();
-        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
-
-        //Convert the items to rss items
-        $rssitems = array();
-        foreach ($items as $key => $item) {
-            $rss_item = new FeedItem();
-            $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
-            $rss_item->description = expString::convertSmartQuotes($item->body);
-            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
-            $rss_item->authorEmail = user::getEmailById($item->poster);
-//            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
-            $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
-            $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
-            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
-            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
-            if ($comment_count) {
-                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-//                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
-                $rss_item->commentsCount = $comment_count;
-            }
-            $rssitems[$key] = $rss_item;
-        }
-        return $rssitems;
-    }
+//    function getRSSContent() {
+//        $class = new blog();
+//        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC');
+//
+//        //Convert the items to rss items
+//        $rssitems = array();
+//        foreach ($items as $key => $item) {
+//            $rss_item = new FeedItem();
+//            $rss_item->title = expString::convertSmartQuotes($item->title);
+//            $rss_item->link = $rss_item->guid = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url));
+//            $rss_item->description = expString::convertSmartQuotes($item->body);
+//            $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
+//            $rss_item->authorEmail = user::getEmailById($item->poster);
+////            $rss_item->date = isset($item->publish_date) ? date(DATE_RSS,$item->publish_date) : date(DATE_RSS, $item->created_at);
+//            $rss_item->date = isset($item->publish_date) ? $item->publish_date : $item->created_at;
+////            $rss_item->guid = expUnserialize($item->location_data)->src.'-id#'.$item->id;
+//            if (!empty($item->expCat[0]->title)) $rss_item->category = array($item->expCat[0]->title);
+//            $comment_count = expCommentController::countComments(array('content_id'=>$item->id,'content_type'=>$this->basemodel_name));
+//            if ($comment_count) {
+//                $rss_item->comments = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+////                $rss_item->commentsRSS = makeLink(array('controller'=>$this->baseclassname, 'action'=>'show', 'title'=>$item->sef_url)).'#exp-comments';
+//                $rss_item->commentsCount = $comment_count;
+//            }
+//            $rssitems[$key] = $rss_item;
+//        }
+//        return $rssitems;
+//    }
 
     /**
      * additional check for display of search hit, only display non-draft
@@ -373,6 +371,46 @@ class blogController extends expController {
                 $config = expConfig::getConfig($object->location_data);
                 if (!empty($config['expFile']['fbimage'][0]))
                     $file = new expFile($config['expFile']['fbimage'][0]);
+                if (!empty($file->id))
+                    $metainfo['image'] = $file->url;
+                if (empty($metainfo['image']))
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            }
+        }
+        return $metainfo;
+    }
+
+    /**
+     * Returns Twitter twitter: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    public function meta_tw($request, $object, $canonical) {
+        $metainfo = array();
+        $metainfo['card'] = 'summary';
+        if (!empty($object->body)) {
+            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+        } else {
+            $desc = SITE_DESCRIPTION;
+        }
+        $config = expConfig::getConfig($object->location_data);
+        if (!empty($object->meta_tw['twsite'])) {
+            $metainfo['site'] = $object->meta_tw['twsite'];
+        } elseif (!empty($config['twsite'])) {
+            $metainfo['site'] = $config['twsite'];
+        }
+        $metainfo['title'] = substr(empty($object->meta_tw['title']) ? $object->title : $object->meta_tw['title'], 0, 87);
+        $metainfo['description'] = substr(empty($object->meta_tw['description']) ? $desc : $object->meta_tw['description'], 0, 199);
+        $metainfo['image'] = empty($object->meta_tw['twimage'][0]) ? '' : $object->meta_tw['twimage'][0]->url;
+        if (empty($metainfo['image'])) {
+            if (!empty($object->expFile['images'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['images'][0]->url;
+            } else {
+                if (!empty($config['expFile']['twimage'][0]))
+                    $file = new expFile($config['expFile']['twimage'][0]);
                 if (!empty($file->id))
                     $metainfo['image'] = $file->url;
                 if (empty($metainfo['image']))

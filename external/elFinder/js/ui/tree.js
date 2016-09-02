@@ -308,7 +308,7 @@ $.fn.elfindertree = function(fm, opts) {
 					info = fm.file(fm.navId2Hash(node.children('[id]').attr('id')));
 					
 					if ((info = fm.file(fm.navId2Hash(node.children('[id]').attr('id')))) 
-					&& compare(dir.name, info.name) < 0) {
+					&& compare(dir.i18 || dir.name, info.i18 || info.name) < 0) {
 						return node;
 					}
 					node = node.next();
@@ -382,7 +382,8 @@ $.fn.elfindertree = function(fm, opts) {
 				}
 				
 				if (orphans.length && orphans.length < length) {
-					return updateTree(orphans);
+					updateTree(orphans);
+					return;
 				} 
 				
 				if (length && !mobile) {
@@ -396,7 +397,7 @@ $.fn.elfindertree = function(fm, opts) {
 			 * 
 			 */
 			compare = function(dir1, dir2) {
-				return fm.naturalCompare(dir1.name, dir2.name);
+				return fm.naturalCompare(dir1.i18 || dir1.name, dir2.i18 || dir2.name);
 			},
 
 			/**
@@ -472,8 +473,10 @@ $.fn.elfindertree = function(fm, opts) {
 						if (dir && dir.phash) {
 							link = $('#'+fm.navHash2Id(dir.phash));
 							if (link.length && link.hasClass(loaded)) {
-								updateTree([dir]);
-								sync(noCwd);
+								fm.lazy(function() {
+									updateTree([dir]);
+									sync(noCwd);
+								});
 								return;
 							}
 						}
@@ -589,8 +592,6 @@ $.fn.elfindertree = function(fm, opts) {
 						return;
 					}
 					
-					fm.searchStatus.state && fm.trigger('searchend', { noupdate: true });
-				
 					if (hash != fm.cwd().hash && !link.hasClass(disabled)) {
 						fm.exec('open', hash).done(function() {
 							fm.select({selected: [hash]});
@@ -639,15 +640,17 @@ $.fn.elfindertree = function(fm, opts) {
 
 					if (link.hasClass(loaded)) {
 						link.toggleClass(expanded);
-						cnt = link.hasClass(expanded)? stree.children().length + stree.find('div.elfinder-navbar-subtree[style*=block]').children().length : stree.find('div:visible').length;
-						if (cnt > slideTH) {
-							stree.toggle();
-							fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
-						} else {
-							stree.stop(true, true).slideToggle('normal', function(){
+						fm.lazy(function() {
+							cnt = link.hasClass(expanded)? stree.children().length + stree.find('div.elfinder-navbar-subtree[style*=block]').children().length : stree.find('div:visible').length;
+							if (cnt > slideTH) {
+								stree.toggle();
 								fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
-							});
-						}
+							} else {
+								stree.stop(true, true).slideToggle('normal', function(){
+									fm.draggingUiHelper && fm.draggingUiHelper.data('refreshPositions', 1);
+								});
+							}
+						});
 					} else {
 						spinner.insertBefore(arrow);
 						link.removeClass(collapsed);
@@ -716,21 +719,25 @@ $.fn.elfindertree = function(fm, opts) {
 			}
 
 			if (dirs.length) {
-				if (!contextmenu.data('cmdMaps')) {
-					contextmenu.data('cmdMaps', {});
-				}
-				updateTree(dirs);
-				updateArrows(dirs, loaded);
-				// support volume driver option `uiCmdMap`
-				$.each(dirs, function(k, v){
-					if (v.volumeid) {
-						if (v.uiCmdMap && Object.keys(v.uiCmdMap).length && !contextmenu.data('cmdMaps')[v.volumeid]) {
-							contextmenu.data('cmdMaps')[v.volumeid] = v.uiCmdMap;
-						}
+				fm.lazy(function() {
+					if (!contextmenu.data('cmdMaps')) {
+						contextmenu.data('cmdMaps', {});
 					}
+					updateTree(dirs);
+					updateArrows(dirs, loaded);
+					// support volume driver option `uiCmdMap`
+					$.each(dirs, function(k, v){
+						if (v.volumeid) {
+							if (v.uiCmdMap && Object.keys(v.uiCmdMap).length && !contextmenu.data('cmdMaps')[v.volumeid]) {
+								contextmenu.data('cmdMaps')[v.volumeid] = v.uiCmdMap;
+							}
+						}
+					});
+					sync(false, dirs);
 				});
-			} 
-			sync(false, dirs);
+			} else {
+				sync(false, dirs);
+			}
 		})
 		// add new dirs
 		.add(function(e) {

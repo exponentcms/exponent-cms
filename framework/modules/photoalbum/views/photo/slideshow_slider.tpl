@@ -110,7 +110,7 @@
                         </div>
                     {/permissions}
                     <a title="{$slide->title}" href="{link action=show title=$slide->sef_url}">
-                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$slide->title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" far=TL f=jpeg q=$quality|default:75}
+                        {img file_id=$slide->expFile[0]->id  title="View"|gettext|cat:" `$slide->title`" w=$config.th_width|default:64 h=$config.th_height|default:40 class="slide-image" far=TL f=jpeg q=$quality|default:75 alt=$slide->alt}
                     </a>
                     <div class="thumb-text">
                         {if !$config.hidetext}<strong>{$slide->title}</strong>{/if}
@@ -130,7 +130,7 @@
             {foreach key=key from=$slides item=slide name=slides}
                 <div class="tab-pannel">
                     {if $slide->link}<a href="{$slide->link}">{/if}
-                        <img src="{$slide->expFile[0]->url}" class="slide-image" width="{$config.width|default:600}px" height="{$config.height|default:375}px" />
+                        <img src="{$slide->expFile[0]->url}" class="slide-image" width="{$config.width|default:600}px" height="{$config.height|default:375}px"  alt="{$slide->alt}" />
                     {if $slide->link}</a>{/if}
                 </div>
             {foreachelse}

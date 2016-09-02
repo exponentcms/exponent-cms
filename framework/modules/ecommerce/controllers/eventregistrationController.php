@@ -54,6 +54,7 @@ class eventregistrationController extends expController {
 
     protected $add_permissions = array(
         'view_registrants'=> 'View Registrants',
+        'emailRegistrants'=> 'Email Registrants',
     );
 
     static function displayname() {
@@ -896,7 +897,7 @@ class eventregistrationController extends expController {
 //            }
 //        }
 
-//        $sql                = "SELECT connector_id FROM " . DB_TABLE_PREFIX . "_eventregistration_registrants GROUP BY connector_id";
+//        $sql                = "SELECT connector_id FROM " . $db->prefix . "eventregistration_registrants GROUP BY connector_id";
 //        $order_ids_complete = $db->selectColumn("eventregistration_registrants", "connector_id", "connector_id <> '0' AND event_id = {$event->id}", "registered_date", true);
 //
 //        $orders = new order();
@@ -1248,9 +1249,9 @@ class eventregistrationController extends expController {
 //
 //            $category = new storeCategory($parent);
 
-            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-//            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+//            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
 //            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {

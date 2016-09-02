@@ -46,6 +46,18 @@ class expConfig extends expRecord {
             // parent::__construct($db->selectValue($this->table, 'id'));
             //}
 		$this->config = expUnserialize($this->config);
+        // now to artificially attach any file objects to the config
+        if (!empty($this->config['expFile'])) {
+            foreach ($this->config['expFile'] as $type=>$file) {
+                if (is_array($file)) foreach ($file as $key=>$filenum) {
+                    if (is_numeric($filenum)) {
+                        $this->config['expFile'][$type][$key] = new expFile($filenum);
+                    } else {
+                        unset($this->config['expFile'][$type][$key]);
+                    }
+                }
+            }
+        }
 	}
 
     /**

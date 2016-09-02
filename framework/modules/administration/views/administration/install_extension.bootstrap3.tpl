@@ -115,7 +115,7 @@
                 <div>
                     {expCore::maxUploadSizeMessage()}
                     {form action=install_extension_confirm}
-                        {control type=uploader name=mod_archive label=gt('Extension Archive')}
+                        {control type=uploader name=mod_archive label='Extension Archive'|gettext}
                         {control type="checkbox" name="patch" label='Patch Exponent CMS or Install Theme?' value=1 description='All extensions are normally placed within the CURRENT theme (folder)'|gettext}
                         {control class=uploadfile type=buttongroup submit="Upload Extension"|gettext}
                     {/form}

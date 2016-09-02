@@ -23,20 +23,28 @@
 	<div class="module-actions">
         {if !$config.disable_links}
     		{icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
-            {nbsp count=2}|{nbsp count=2}
+            {if !bs()}
+                {nbsp count=2}|{nbsp count=2}
+            {/if}
             {*<span class="listviewlink"></span>{'List View'|gettext}*}
             {icon class="listviewlink" text='List View'|gettext}
         {/if}
 		{permissions}
 			{if $permissions.manage}
-                {nbsp count=2}|{nbsp count=2}
+                {if !bs()}
+                    {nbsp count=2}|{nbsp count=2}
+                {/if}
                 {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                 {if !$config.disabletags}
-                    {nbsp count=2}|{nbsp count=2}
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                 {/if}
                 {if $config.usecategories}
-                    {nbsp count=2}|{nbsp count=2}
+                    {if !bs()}
+                        {nbsp count=2}|{nbsp count=2}
+                    {/if}
                     {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                 {/if}
 			{/if}
@@ -138,7 +146,7 @@
                     };
                 });
                 monthcal_{/literal}{$name}{literal}.find('link').each(function(k, n){
-                    $("head").append("  <link href=\"&quot;" + $(n).attr('href') + "&quot;\" rel=\"stylesheet\" type=\"text/css\" />");
+                    $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
                 });
             } else {
                 $('#month-{/literal}{$name}{literal}.loadingdiv').remove();

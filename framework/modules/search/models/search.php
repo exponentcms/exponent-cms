@@ -32,7 +32,7 @@ class search extends expRecord {
         return strip_tags(str_replace(array("<br/>", "<br>", "<br />", "</div>"), "\n", $str));
     }
 
-    public function getSearchResults($terms, $only_best = false, $readonly = 0) {
+    public function getSearchResults($terms, $only_best = false, $readonly = 0, $eventlimit = null) {
         global $db, $user;
 
         // get the search terms
@@ -50,8 +50,8 @@ class search extends expRecord {
         }
 
         //setup the sql query
-        /*$sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."') as score from ".DB_TABLE_PREFIX."_search as s ";
-		$sql .= "LEFT OUTER JOIN ".DB_TABLE_PREFIX."_product p ON s.original_id = p.id WHERE MATCH(title,body) against ('".$terms."' IN BOOLEAN MODE)";
+        /*$sql  = "SELECT *, MATCH (s.title,s.body) AGAINST ('".$terms."') as score from ".$db->prefix."search as s ";
+		$sql .= "LEFT OUTER JOIN ".$db->prefix."product p ON s.original_id = p.id WHERE MATCH(title,body) against ('".$terms."' IN BOOLEAN MODE)";
 		
         SELECT *, MATCH (s.title,s.body) AGAINST ('army combat uniform') as score from exponent_search as s 
         LEFT OUTER JOIN exponent_product p ON s.original_id = p.id WHERE MATCH(s.title,s.body) against ('army combat uniform' IN BOOLEAN MODE)*/
@@ -99,6 +99,8 @@ class search extends expRecord {
             } else if ($records[$i]->ref_module == 'event') {  // add (closest) date to title/link
                 $event = $db->selectObject('eventdate', 'event_id=' . $records[$i]->original_id . ' ORDER BY ABS( DATEDIFF( date, NOW() ) )');
                 if (!empty($event)) {
+                    if (!empty($eventlimit) && $event->date < time()-($eventlimit*24*60*60))
+                        unset($recs[$i]);
                     $records[$i]->title .= ' - ' . expDateTime::format_date($event->date);
                     $loc = expUnserialize($event->location_data);
                     $records[$i]->view_link = str_replace(URL_FULL, '', makeLink(array('controller' => 'event', 'action' => 'show', 'id' => $records[$i]->original_id, 'event_id' => $event->id, 'src' => $loc->src)));

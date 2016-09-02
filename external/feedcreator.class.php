@@ -1137,7 +1137,7 @@ class RSSCreator091 extends FeedCreator {
 		$feed.= ">\n";
 		$feed.= "    <channel>\n";
 		$feed.= "        <title>".FeedCreator::iTrunc(htmlspecialchars($this->title),100)."</title>\n";
-//        $feed.= '        <atom:link href="'.$this->syndicationURL.'" rel="self" type="application/rss+xml" />'."\n";
+        $feed.= '        <atom:link href="'.$this->syndicationURL.'" rel="self" type="application/rss+xml" />'."\n";
 		$this->descriptionTruncSize = 500;
 		$feed.= "        <description>".$this->getDescription()."</description>\n";
 		$feed.= "        <link>".$this->link."</link>\n";
@@ -1348,7 +1348,10 @@ class PodcastCreator extends RSSCreator20 {
 	function __construct() {
 	    parent::_setRSSVersion("2.0");
         $this->encoding = "utf-8";
-	    parent::_setXMLNS("itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\"");
+	    parent::_setXMLNS('itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"');
+//        parent::_setXMLNS('rawvoice="http://www.rawvoice.com/rawvoiceRssModule/"');
+//        parent::_setXMLNS('googleplay="http://www.google.com/schemas/play-podcasts/1.0"');
+//        parent::_setXMLNS('media="http://search.yahoo.com/mrss/"');
 	}
 }
 

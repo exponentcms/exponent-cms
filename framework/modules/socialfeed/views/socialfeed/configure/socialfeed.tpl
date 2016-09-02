@@ -26,12 +26,14 @@
 </div>
 
 {control type=text name='socialfeed_feeds_count' label='Number of Feed Items'|gettext size=60 max=100 filter=integer value=$config.socialfeed_feeds_count|default:3}
+{control type=text name='socialfeed_cache_refresh' label='Feed cache refresh time limit'|gettext size=60 max=60 filter=integer value=$config.socialfeed_cache_refresh|default:120 description='How often to update social feed cache in minutes'|gettext}
 {control type=text name='socialfeed_trim_length' label='Trim Description Length'|gettext size=60 max=60 filter=integer value=$config.socialfeed_trim_length|default:120 description='Maximum length of descriptions'|gettext}
 {control type=checkbox name="socialfeed_time_stamp" value=1 label="Show Posted Date/Time"|gettext checked=$config.socialfeed_time_stamp|default:false}
 {control type=dropdown name="socialfeed_display_type" items="Collapsing Columns,Fluid"|gettxtlist values="columns,fluid" label="Bootstrap 3 display style"|gettext value=$config.socialfeed_display_type|default:'fluid'}
 {control type=checkbox name="socialfeed_facebook_use" value=1 label="Get Facebook Feed"|gettext checked=$config.socialfeed_facebook_use}
 {group id="facebook" label='Facebook Settings'|gettext}
   {control type=text name='socialfeed_facebook_page_name' label='Facebook Page Name'|gettext size=60 max=100 value=$config.socialfeed_facebook_page_name description='eg. If your Facebook page URL is this http://www.facebook.com/YOUR_PAGE_NAME, <br />then you just need to add this YOUR_PAGE_NAME above.'|gettext}
+  {control type=checkbox name="socialfeed_facebook_apiv24" value=1 postfalse=1 label="Is Facebook App API version 2.4 or newer?"|gettext checked=$config.socialfeed_facebook_apiv24}
   {control type=text name='socialfeed_facebook_app_id' label='App ID'|gettext size=60 max=100 value=$config.socialfeed_facebook_app_id}
   {control type=text name='socialfeed_facebook_secret_key' label='Secret Key'|gettext size=60 max=100 value=$config.socialfeed_facebook_secret_key}
     {group label='Post Types to Display'|gettext}

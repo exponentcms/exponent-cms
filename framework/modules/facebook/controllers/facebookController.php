@@ -71,6 +71,7 @@ class facebookController extends expController {
         if (!empty($params)) {
             // Include facebook class
             require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
+//            require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';
@@ -104,16 +105,16 @@ class facebookController extends expController {
                     if (!empty($status)) $status = gt('New Facebook Status posted');
                     flash('message', $status);
                 } catch (FacebookApiException $e) {
-//                    header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages'))}");
-                    $dialog_url = "http://www.facebook.com/dialog/oauth?client_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event". "&state=" . $_SESSION['fb_state'];
+//                    header("Location:{$facebook->getLoginUrl(array('scope' => 'user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages'))}");
+                    $dialog_url = "http://www.facebook.com/dialog/oauth?app_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages". "&state=" . $_SESSION['fb_state'];
                     echo("<script> window.location.href='" . $dialog_url . "'</script>");
                     error_log($e);
                     flash('error', $e->getMessage());
                 }
             } else {
                 // you're not logged in, the application will try to log in to get a access token
-//                header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages'))}");
-                $dialog_url = "http://www.facebook.com/dialog/oauth?client_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event". "&state=" . $_SESSION['fb_state'];
+//                header("Location:{$facebook->getLoginUrl(array('scope' => 'user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages'))}");
+                $dialog_url = "http://www.facebook.com/dialog/oauth?app_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages". "&state=" . $_SESSION['fb_state'];
                 echo("<script> window.location.href='" . $dialog_url . "'</script>");
                 $status = gt('Permissions were not yet set on your Facebook page, please try again');
                 flash('error', $status);
@@ -125,6 +126,7 @@ class facebookController extends expController {
         if (!empty($params)) {
             // Include facebook class
             require_once(BASE . "external/facebook-php-sdk-3.2.3/src/facebook.php");
+//            require_once(BASE . "external/php-graph-sdk-5.3.1/src/Facebook/autoload.php");
 
             // configuration
 //            $desc = 'Facebook constantly changes their SDK and methods for communicating with Facebook. The script in this post supports the latest Facebook authentication changes that will be implemented i October 2012.';
@@ -162,16 +164,16 @@ class facebookController extends expController {
                     $status = gt('New Facebook Event posted') . ' - ' . $facebookEventId;
                     flash('message', $status);
                 } catch (FacebookApiException $e) {
-//                    header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages,create_event'))}");
-                    $dialog_url = "http://www.facebook.com/dialog/oauth?client_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event". "&state=" . $_SESSION['fb_state'];
+//                    header("Location:{$facebook->getLoginUrl(array('scope' => 'user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages'))}");
+                    $dialog_url = "http://www.facebook.com/dialog/oauth?app_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages". "&state=" . $_SESSION['fb_state'];
                     echo("<script> window.location.href='" . $dialog_url . "'</script>");
                     error_log($e);
                     flash('error', $e->getMessage());
                 }
             } else {
                 // you're not logged in, the application will try to log in to get a access token
-//                header("Location:{$facebook->getLoginUrl(array('scope' => 'photo_upload,user_status,publish_stream,user_photos,manage_pages,create_event'))}");
-                $dialog_url = "http://www.facebook.com/dialog/oauth?client_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event". "&state=" . $_SESSION['fb_state'];
+//                header("Location:{$facebook->getLoginUrl(array('scope' => 'user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages'))}");
+                $dialog_url = "http://www.facebook.com/dialog/oauth?app_id=". $params['config']['app_id'] . "&redirect_uri=" . urlencode(URL_FULL) . "&scope=user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages". "&state=" . $_SESSION['fb_state'];
                 echo("<script> window.location.href='" . $dialog_url . "'</script>");
                 $status = gt('Permissions were not yet set on your Facebook page, please try again');
                 flash('error', $status);

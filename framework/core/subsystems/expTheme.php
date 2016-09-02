@@ -231,6 +231,9 @@ class expTheme
         if (!isset($config['meta']['fb'])) {
             $config['meta']['fb'] = true;
         }
+        if (!isset($config['meta']['tw'])) {
+            $config['meta']['tw'] = true;
+        }
         if (!isset($config['meta']['viewport'])) {
             $config['meta']['viewport'] = true;
         }
@@ -267,6 +270,13 @@ class expTheme
             foreach ($metainfo['fb'] as $key => $value) {
                 if (!empty($value)) {
                     $str .= "\t" . '<meta property="og:' . $key . '" content="' . $value . '" ' . XHTML_CLOSING . '>' . "\n";
+                }
+            }
+        }
+        if ($config['meta']['tw'] && !empty($metainfo['tw'])) {
+            foreach ($metainfo['tw'] as $key => $value) {
+                if (!empty($value)) {
+                    $str .= "\t" . '<meta name="twitter:' . $key . '" content="' . $value . '" ' . XHTML_CLOSING . '>' . "\n";
                 }
             }
         }

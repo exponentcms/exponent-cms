@@ -26,17 +26,22 @@
     gt('Create');
     gt('Edit');
     gt('Delete');
+    gt('Approval');
+    gt('View Page');
 
 // module configuration titles
     gt('Aggregation');
     gt('Categories');
     gt('Comments');
     gt('Ealerts');
+    gt('Facebook');
     gt('Files');
     gt('Module');
+    gt('Module Style');
     gt('Pagination');
     gt('Rss');
     gt('Tags');
+    gt('Twitter');
 
 // action names
     gt('Activate Extensions');
@@ -71,6 +76,7 @@
     gt('Toggle Settings');
     gt("Activate");
     gt("Preview CKEditor Toolbars");
+    gt("Preview TinyMCE Toolbars");
     gt('Manages Zones');
     gt('Add/Edit Zone');
     gt('Update Zone');
@@ -156,6 +162,31 @@
     gt("Authors");
     gt("Dates");
     gt('Display Banner(s)');
+    gt("show");
+    gt("showall");
+    gt("Upcoming Events - Headlines");
+    gt("ShowUnpublished");
+    gt("Manage_module");
+    gt("(read more)");
+    gt("summary");
+    gt("recent");
+    gt("Design_form");
+    gt("announcement");
+    gt("slideshow");
+    gt("Two Column");
+    gt("enterdata");
+    gt("Activities");
+    gt("tabbed");
+    gt("accordion");
+    gt("toggle");
+    gt("Your Comments");
+    gt("Show All Posts");
+    gt("Show Post Tags");
+    gt("Show Post Authors");
+    gt("Show Post Categories");
+    gt("Show Post Dates");
+    gt("Show Recent Post Comments");
+
 //    gt('Show my addressbook');
     gt('All Products and Categories');
     gt('Products - Only show Featured');
@@ -182,5 +213,29 @@
     gt('World Read-only');
     gt('Group Read-only');
     gt("Showcase");
+    gt("Add Bootstrap v2 Style Effects");
+    gt("Button Color");
+    gt("Enable Sidebar Flyout Container");
+    gt("Fixed Menu Height Adjustment");
+    gt("Maximum Menu Levels");
+    gt("Menu Alignment");
+    gt("Menu Location");
+    gt("Mobile Menu Collapse Width");
+    gt("Style Color");
+    gt("Style Width Type");
+    gt("Turn Maintenance Mode on");
+    gt("Australian Dollars");
+    gt("Canadian Dollars");
+    gt("Euro");
+    gt("Great Britain Pounds");
+    gt("Japanese Yen");
+    gt("US Dollars");
+    gt("Group & World Readable and Writable (Creates Security Issue!)");
+    gt("Group Read-only, World none");
+    gt("Group Readable and Writable, World Read-only");
+    gt("Group Readable and Writable, World none");
+    gt("Thumbnail JPEG Quality (0 - 95)");
+    gt("Do Not Follow Links?");
+    gt("Do Not Index?");
 
 ?>

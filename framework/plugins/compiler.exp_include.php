@@ -186,11 +186,13 @@ function smarty_compiler_exp_include($_params, &$compiler)
 
     if ($include_file_else) {
         $output .= "echo \$_smarty_tpl->getSubTemplate(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+//        $output .= "echo \$_smarty_tpl->_subTemplateRender(\$_include_file, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
                 ',',
                 (array)$arg_list
             ) . "), 0);\n";
     } else {
         $output .= "echo \$_smarty_tpl->getSubTemplate({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode(
+//        $output .= "echo \$_smarty_tpl->_subTemplateRender({$include_file}, \$_smarty_tpl->cache_id, \$_smarty_tpl->compile_id, 0, null, array(" . implode( //fixme for v3.1.28+
                 ',',
                 (array)$arg_list
             ) . "), 0);\n";

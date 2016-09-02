@@ -29,9 +29,9 @@
         {group label="Send this Message To"|gettext}
             {control type="checkbox" class="emailall" postfalse=1 name="allusers" label="All Site Users?"|gettext value=1 description='Uncheck to allow user/group/freeform selection'|gettext focus=1}
             {control type="checkbox" postfalse=1 name="batchsend" label="Batch Send?"|gettext value=1 checked=1 description='Hide email addresses from other users'|gettext}
-            {userlistcontrol class="email" name="user_list" label="Users"}
-            {grouplistcontrol class="email" name="group_list" label="Groups"}
-            {control type="listbuilder" class="email" name="address_list" label="Other Addresses" size=5}
+            {userlistcontrol class="email" name="user_list" label="Users"|gettext}
+            {grouplistcontrol class="email" name="group_list" label="Groups"|gettext}
+            {control type="listbuilder" class="email" name="address_list" label="Other Addresses"|gettext size=5}
         {/group}
         {group label="Message"|gettext}
             {control type="text" name="subject" label="Subject"|gettext}

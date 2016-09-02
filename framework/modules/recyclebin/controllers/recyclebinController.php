@@ -24,7 +24,8 @@ class recyclebinController extends expController
 {
     protected $add_permissions = array(
         'showall' => 'View Recycle Bin',
-        'show' => 'View Recycle Bin'
+        'show' => 'View Recycle Bin',
+        'remove' => 'Remove Recycle Bin Item'
     );
 
     //protected $remove_permissions = array('edit');

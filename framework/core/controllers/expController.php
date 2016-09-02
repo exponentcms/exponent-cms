@@ -139,7 +139,7 @@ abstract class expController {
      * @return string
      */
     public function name() {
-        return $this->displayname();
+        return static::displayname();
     }
 
     /**
@@ -263,13 +263,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => $this->hasSources() == true ? $this->loc->src : null,
+            'src'        => static::hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -458,6 +458,9 @@ abstract class expController {
         }
 
         $record = new $modelname($id);
+        if (empty($record->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+
         $config = expConfig::getConfig($record->location_data);
         if (empty($this->config))
             $this->config = $config;
@@ -498,7 +501,7 @@ abstract class expController {
      */
     public function showRandom() {
         expHistory::set('viewable', $this->params);
-        $where = $this->hasSources() ? $this->aggregateWhereClause() : null;
+        $where = static::hasSources() ? $this->aggregateWhereClause() : null;
         $limit = isset($this->params['limit']) ? $this->params['limit'] : 1;
         $order = 'RAND()';
         assign_to_template(array(
@@ -522,8 +525,8 @@ abstract class expController {
         $model = new $modelname();
 
         // start building the sql query
-        $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $model->tablename . ' m ';
-        $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_' . $tagobj->attachable_table . ' ct ';
+        $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $model->tablename . ' m ';
+        $sql .= 'JOIN ' . $db->prefix . $tagobj->attachable_table . ' ct ';
         $sql .= 'ON m.id = ct.content_id WHERE (';
         $first = true;
 
@@ -731,13 +734,13 @@ abstract class expController {
 
         $page = new expPaginator(array(
             'model'      => $this->basemodel_name,
-            'where'      => $this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'      => static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'      => isset($this->params['limit']) ? $this->params['limit'] : 10,
             'order'      => isset($this->params['order']) ? $this->params['order'] : null,
             'page'       => (isset($this->params['page']) ? $this->params['page'] : 1),
             'controller' => $this->baseclassname,
             'action'     => $this->params['action'],
-            'src'        => $this->hasSources() == true ? $this->loc->src : null,
+            'src'        => static::hasSources() == true ? $this->loc->src : null,
             'columns'    => array(
                 gt('ID#')   => 'id',
                 gt('Title') => 'title',
@@ -870,7 +873,7 @@ abstract class expController {
 //            'config'            => $this->config,  //FIXME already assigned in controllertemplate?
             'page'              => $page, // needed for aggregation list
             'views'             => $views,
-            'title'             => $this->displayname(),
+            'title'             =>static::displayname(),
             'current_section'   => expSession::get('last_section'),
 //            'classname'         => $this->classname,  //FIXME $controller already assigned baseclassname (short vs long) in controllertemplate?
             'viewpath'          => $this->viewpath,
@@ -909,8 +912,8 @@ abstract class expController {
         }
 
         // create a new RSS object if enable is checked.
+        $params = $this->params;
         if (!empty($this->params['enable_rss'])) {
-            $params = $this->params;
             $params['title'] = $params['feed_title'];
             unset($params['feed_title']);
             $params['sef_url'] = $params['feed_sef_url'];
@@ -920,9 +923,9 @@ abstract class expController {
             $this->params['feed_sef_url'] = $rssfeed->sef_url;
         } else {
             $rssfeed = new expRss($this->params);
-            $params = $this->params;
             $params['enable_rss'] = false;
-            if (empty($params['advertise'])) $params['advertise'] = false;
+            if (empty($params['advertise']))
+                $params['advertise'] = false;
             $params['title'] = $params['feed_title'];
             unset($params['feed_title']);
             $params['sef_url'] = $params['feed_sef_url'];
@@ -948,7 +951,14 @@ abstract class expController {
             $this->params['id'],
             $this->params['cid'],
             $this->params['action'],
-            $this->params['PHPSESSID']
+            $this->params['PHPSESSID'],
+            $this->params['__utma'],
+            $this->params['__utmb'],
+            $this->params['__utmc'],
+            $this->params['__utmz'],
+            $this->params['__utmt'],
+            $this->params['__utmli'],
+            $this->params['__cfduid']
         );
 
         // setup and save the config
@@ -966,22 +976,16 @@ abstract class expController {
      *
      * @return array
      */
-    public function getRSSContent() {
-        // setup the where clause for looking up records.
-        $where = $this->aggregateWhereClause();
-//        $where = empty($where) ? '1' : $where;
-
-        $order = isset($this->config['order']) ? $this->config['order'] : 'created_at DESC';
-
+    public function getRSSContent($limit = 0) {
         $class = new $this->basemodel_name;
-        $items = $class->find('all', $where, $order);
+        $items = $class->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'created_at DESC', $limit);
 
         //Convert the items to rss items
         $rssitems = array();
         foreach ($items as $key => $item) {
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
-            $rss_item->link = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url));
+            $rss_item->link = $rss_item->guid = makeLink(array('controller' => $this->baseclassname, 'action' => 'show', 'title' => $item->sef_url));
             $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname . ' ' . user::getUserById($item->poster)->lastname;
             $rss_item->authorEmail = user::getEmailById($item->poster);
@@ -995,6 +999,9 @@ abstract class expController {
                 $rss_item->commentsCount = $comment_count;
             }
             $rssitems[$key] = $rss_item;
+
+            if ($limit && count($rssitems) >= $limit)
+                break;
         }
         return $rssitems;
     }
@@ -1051,33 +1058,45 @@ abstract class expController {
                 header('Pragma: no-cache');
             }
 
+            if ($site_rss->rss_is_podcast) {
+                $feed_type = "PODCAST";
+            } else {
+                $feed_type = "RSS2.0";
+            }
+            $feed_cache = BASE . 'tmp/rsscache/' . $site_rss->sef_url . '.xml';
+
             $rss = new UniversalFeedCreator();
-            $rss->cssStyleSheet = "";
-            //	$rss->useCached("PODCAST");
-            $rss->useCached();
+//            if (file_exists(THEME_ABSOLUTE . "rss/feed.css"))  // custom css style
+//                $rss->cssStyleSheet = THEME_RELATIVE . "rss/feed.css";
+            if (file_exists(THEME_ABSOLUTE . "rss/feed.xsl"))  // custom xml style
+                $rss->xslStyleSheet = THEME_RELATIVE . "rss/feed.xsl";
+            $rss->useCached($feed_type, $feed_cache, $site_rss->rss_cachetime);  // if cache exists output then redirect
+
             $rss->title = $site_rss->title;
-            if (!empty($this->params['type'])) $rss->title .= ' ' . ucfirst($this->params['type']);
+            if (!empty($this->params['type']))
+                $rss->title .= ' ' . ucfirst($this->params['type']);
             $rss->description = $site_rss->feed_desc;
             $rss->image = new FeedImage();
-            $rss->image->url = !empty($site_rss->expFile[0]) ? $site_rss->expFile[0]->url : URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
+            $rss->image->url = !empty($site_rss->expFile['album'][0]) ? $site_rss->expFile['album'][0]->url : URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
             $rss->image->title = $site_rss->title;
             $rss->image->link = URL_FULL;
             //    $rss->image->width = 64;
             //    $rss->image->height = 64;
             $rss->ttl = $site_rss->rss_cachetime;
-            $rss->link = "http://" . HOSTNAME . PATH_RELATIVE;
-            $rss->syndicationURL = "http://" . HOSTNAME . $_SERVER['PHP_SELF'] . '?module=' . $site_rss->module . '&src=' . $site_rss->src;
+            $rss->link = URL_FULL;
+            $rss->syndicationURL = makeLink(array('module'=>$site_rss->module, 'src'=>$site_rss->src));
             if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();
                 $rss->itunes->author = !empty($site_rss->feed_artist) ? $site_rss->feed_artist : ORGANIZATION_NAME;
-                $rss->itunes->image = !empty($site_rss->expFile[0]) ? $site_rss->expFile[0]->url :URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
+                $rss->itunes->image = !empty($site_rss->expFile['album'][0]) ? $site_rss->expFile['album'][0]->url :URL_FULL . 'themes/' . DISPLAY_THEME . '/images/logo.png';
                 $rss->itunes->summary = $site_rss->feed_desc;
                 if (!empty($itunes_cats)) {
                     $rss->itunes->category = $itunes_cats[0]->category;
                     $rss->itunes->subcategory = $itunes_cats[0]->subcategory;
                 }
                 //		$rss->itunes->explicit = 0;
-                $rss->itunes->subtitle = $site_rss->title;
+//                $rss->itunes->subtitle = $site_rss->title;
+                $rss->itunes->subtitle = $site_rss->feed_desc;
                 //		$rss->itunes->keywords = 0;
                 $rss->itunes->owner_email = SMTP_FROMADDRESS;
                 $rss->itunes->owner_name = ORGANIZATION_NAME;
@@ -1085,7 +1104,7 @@ abstract class expController {
 
             $pubDate = '';
             $site_rss->params = $this->params;
-            foreach ($site_rss->getFeedItems() as $item) {
+            foreach ($site_rss->getFeedItems($site_rss->rss_limit) as $item) {
                 if ($item->date > $pubDate) {
                     $pubDate = $item->date;
                 }
@@ -1096,13 +1115,8 @@ abstract class expController {
             }
             $rss->pubDate = $pubDate;
 
-//        	header("Content-type: text/xml");
-//            if ($site_rss->module == "filedownload" || $site_rss->module == "sermonseries") {
-            if ($site_rss->rss_is_podcast) {
-                echo $rss->createFeed("PODCAST");
-            } else {
-                echo $rss->createFeed("RSS2.0");
-            }
+//            echo $rss->createFeed($feed_type);
+            echo $rss->saveFeed($feed_type, $feed_cache, $site_rss->rss_cachetime);  // does redirect after updating cache
         } else {
             flash('notice', gt("This RSS feed is not available."));
             expHistory::back();
@@ -1162,7 +1176,7 @@ abstract class expController {
      * @return string
      */
     public function searchName() {
-        return $this->displayname();
+        return static::displayname();
     }
 
     /**
@@ -1267,7 +1281,7 @@ abstract class expController {
     public function delete_instance($loc = false) {
         $model = new $this->basemodel_name();
         $where = 1;
-        if ($loc || $this->hasSources())
+        if ($loc || static::hasSources())
             $where = "location_data='" . serialize($this->loc) . "'";
         $items = $model->find('all',$where);
         foreach ($items as $item) {
@@ -1294,7 +1308,7 @@ abstract class expController {
 
         switch ($action) {
             case 'showall':
-                $metainfo['title'] = gt("Showing") . " " . $this->displayname() . ' - ' . SITE_TITLE;
+                $metainfo['title'] = gt("Showing") . " " . static::displayname() . ' - ' . SITE_TITLE;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
                 break;
@@ -1329,6 +1343,7 @@ abstract class expController {
                         $metainfo['nofollow'] = empty($object->meta_nofollow) ? false : $object->meta_nofollow;
                         $metainfo['rich'] = $this->meta_rich($router->params, $object);
                         $metainfo['fb'] = $this->meta_fb($router->params, $object, $metainfo['canonical']);
+                        $metainfo['tw'] = $this->meta_tw($router->params, $object, $metainfo['canonical']);
                     }
                     break;
                 }
@@ -1339,7 +1354,7 @@ abstract class expController {
                 if (method_exists($mod, $functionName)) {
                     $metainfo = $mod->$functionName($router->params);
                 } else {
-                    $metainfo['title'] = $this->displayname() . " - " . SITE_TITLE;
+                    $metainfo['title'] = static::displayname() . " - " . SITE_TITLE;
                     $metainfo['keywords'] = SITE_KEYWORDS;
                     $metainfo['description'] = SITE_DESCRIPTION;
 //                    $metainfo['canonical'] = URL_FULL.substr($router->sefPath, 1);
@@ -1371,6 +1386,18 @@ abstract class expController {
      * @return array
      */
     public function meta_fb($request, $object, $canonical) {
+        return array();
+    }
+
+    /**
+     * Returns Twitter twitter: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return array
+     */
+    public function meta_tw($request, $object, $canonical) {
         return array();
     }
 
@@ -1453,7 +1480,7 @@ abstract class expController {
 
         $sql = '';
 
-        if (empty($this->config['add_source']) && !$this->hasSources()) {
+        if (empty($this->config['add_source']) && !static::hasSources()) {
             return $sql;
         }
 

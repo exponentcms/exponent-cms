@@ -87,6 +87,13 @@ class elFinder {
 	protected static $commonTempPath = '';
 	
 	/**
+	 * Additional volume root options for network mounting volume
+	 * 
+	 * @var array
+	 */
+	protected $optionsNetVolumes = array();
+	
+	/**
 	 * Session key of net mount volumes
 	 *
 	 * @deprecated
@@ -308,12 +315,12 @@ class elFinder {
 	const ERROR_SEARCH_TIMEOUT    = 'errSearchTimeout';    // 'Timed out while searching "$1". Search result is partial.'
 	const ERROR_REAUTH_REQUIRE  = 'errReauthRequire';  // 'Re-authorization is required.'
 
-    /**
-     * Constructor
-     *
-     * @param  array  elFinder and roots configurations
-     * @author Dmitry (dio) Levashov
-     */
+	/**
+	 * Constructor
+	 *
+	 * @param  array  elFinder and roots configurations
+	 * @author Dmitry (dio) Levashov
+	 */
 	public function __construct($opts) {
 		// set error handler of WARNING, NOTICE
 		set_error_handler('elFinder::phpErrorHandler', E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE);
@@ -363,6 +370,7 @@ class elFinder {
 			elFinder::$commonTempPath = '';
 		}
 		$this->maxArcFilesSize = isset($opts['maxArcFilesSize'])? intval($opts['maxArcFilesSize']) : 0;
+		$this->optionsNetVolumes = (isset($opts['optionsNetVolumes']) && is_array($opts['optionsNetVolumes']))? $opts['optionsNetVolumes'] : array();
 		
 		// deprecated settings
 		$this->netVolumesSessionKey = !empty($opts['netVolumesSessionKey'])? $opts['netVolumesSessionKey'] : 'elFinderNetVolumes';
@@ -468,7 +476,7 @@ class elFinder {
 					$this->mountErrors[] = 'Driver "'.$class.'" : '.$e->getMessage();
 				}
 			} else {
-				$this->mountErrors[] = 'Driver "'.$class.'" does not exists';
+				$this->mountErrors[] = 'Driver "'.$class.'" does not exist';
 			}
 		}
 
@@ -666,9 +674,7 @@ class elFinder {
 		
 		if (substr(PHP_OS,0,3) === 'WIN') {
 			// set time out
-			if (($_max_execution_time = ini_get('max_execution_time')) && $_max_execution_time < 300) {
-				set_time_limit(300);
-			}
+			elFinder::extendTimeLimit(300);
 		}
 		
 		try {
@@ -746,7 +752,7 @@ class elFinder {
 		} else {
 			return $result;
 		}
-        //TODO: Add return statement here
+	    //TODO: Add return statement here
 	}
 	
 	/**
@@ -787,13 +793,13 @@ class elFinder {
 		$this->session->set('netvolume', $volumes);
 	}
 
-    /**
-     * Remove netmount volume
-     *
-     * @param string $key netvolume key
-     * @param object $volume volume driver instance
-     * @return bool
-     */
+	/**
+	 * Remove netmount volume
+	 *
+	 * @param string $key netvolume key
+	 * @param object $volume volume driver instance
+	 * @return bool
+	 */
 	protected function removeNetVolume($key, $volume) {
 		$netVolumes = $this->getNetVolumes();
 		$res = true;
@@ -922,20 +928,24 @@ class elFinder {
 			}
 		}
 		
+		// load additional volume root options
+		if (! empty($this->optionsNetVolumes['*'])) {
+			$options = array_merge($options, $this->optionsNetVolumes['*']);
+		}
+		if (! empty($this->optionsNetVolumes[$protocol])) {
+			$options = array_merge($options, $this->optionsNetVolumes[$protocol]);
+		}
+		
+		if (! $key =  $volume->netMountKey) {
+			$key = md5($protocol . '-' . join('-', $options));
+		}
+		$options['netkey'] = $key;
+		
 		if ($volume->mount($options)) {
-			if (! $key =  $volume->netMountKey) {
-				$key = md5($protocol . '-' . join('-', $options));
-			}
-			if (isset($netVolumes[$key])) {
-				$volume->umount();
-				return array('error' => $this->error(self::ERROR_EXISTS, isset($options['alias'])? $options['alias'] : $options['path']));
-			}
 			$options['driver'] = $driver;
-			$options['netkey'] = $key;
 			$netVolumes[$key]  = $options;
 			$this->saveNetVolumes($netVolumes);
 			$rootstat = $volume->file($volume->root());
-			$rootstat['netkey'] = $key;
 			return array('added' => array($rootstat));
 		} else {
 			$this->removeNetVolume(null, $volume);
@@ -1002,9 +1012,8 @@ class elFinder {
 				$standby = $sleep;
 			}
 			$limit = max(0, floor($standby / $sleep)) + 1;
-			$timelimit = ini_get('max_execution_time');
 			do {
-				$timelimit && set_time_limit($timelimit + $sleep);
+				elFinder::extendTimeLimit(30 + $sleep);
 				$_mtime = 0;
 				foreach($ls as $_f) {
 					$_mtime = max($_mtime, $_f['ts']);
@@ -1831,17 +1840,17 @@ class elFinder {
 		return $result;
 	}
 
-    /**
-     * Check chunked upload files
-     *
-     * @param string $tmpname uploaded temporary file path
-     * @param string $chunk uploaded chunk file name
-     * @param string $cid uploaded chunked file id
-     * @param string $tempDir temporary dirctroy path
-     * @param null $volume
-     * @return array or (empty, empty)
-     * @author Naoki Sawada
-     */
+	/**
+	 * Check chunked upload files
+	 *
+	 * @param string $tmpname uploaded temporary file path
+	 * @param string $chunk uploaded chunk file name
+	 * @param string $cid uploaded chunked file id
+	 * @param string $tempDir temporary dirctroy path
+	 * @param null $volume
+	 * @return array or (empty, empty)
+	 * @author Naoki Sawada
+	 */
 	private function checkChunkedFile($tmpname, $chunk, $cid, $tempDir, $volume = null) {
 		if (preg_match('/^(.+)(\.\d+_(\d+))\.part$/s', $chunk, $m)) {
 			$fname = $m[1];
@@ -2378,13 +2387,13 @@ class elFinder {
 		return array('content' => $content);
 	}
 
-    /**
-     * Save content into text file
-     *
-     * @param $args
-     * @return array
-     * @author Dmitry (dio) Levashov
-     */
+	/**
+	 * Save content into text file
+	 *
+	 * @param $args
+	 * @return array
+	 * @author Dmitry (dio) Levashov
+	 */
 	protected function put($args) {
 		$target = $args['target'];
 		
@@ -2505,9 +2514,8 @@ class elFinder {
 				} else {
 					$sleep = max(1, (int)$volume->getOption('tsPlSleep'));
 					$limit = max(1, $standby / $sleep) + 1;
-					$timelimit = ini_get('max_execution_time');
 					do {
-						$timelimit && set_time_limit($timelimit + $sleep);
+						elFinder::extendTimeLimit(30 + $sleep);
 						$volume->clearstatcache();
 						if (($info = $volume->file($hash)) != false) {
 							if ($info['ts'] != $compare) {
@@ -2808,7 +2816,7 @@ class elFinder {
 			}
 			$exists[$file['hash']] = true;
 		}
-		return array_merge($files, array());
+		return array_values($files);
 	}
 	
 	protected function utime() {
@@ -2953,14 +2961,14 @@ class elFinder {
 		self::isSeekableStream($resource) && rewind($resource);
 	}
 
-    /**
-     * serialize and base64_encode of session data (If needed)
-     *
-     * @deprecated
-     * @param  mixed $var target variable
-     * @author Naoki Sawada
-     * @return mixed|string
-     */
+	/**
+	 * serialize and base64_encode of session data (If needed)
+	 *
+	 * @deprecated
+	 * @param  mixed $var target variable
+	 * @author Naoki Sawada
+	 * @return mixed|string
+	 */
 	public static function sessionDataEncode($var) {
 		if (self::$base64encodeSessionData) {
 			$var = base64_encode(serialize($var));
@@ -2968,15 +2976,15 @@ class elFinder {
 		return $var;
 	}
 
-    /**
-     * base64_decode and unserialize of session data  (If needed)
-     *
-     * @deprecated
-     * @param  mixed $var target variable
-     * @param  bool $checkIs data type for check (array|string|object|int)
-     * @author Naoki Sawada
-     * @return bool|mixed
-     */
+	/**
+	 * base64_decode and unserialize of session data  (If needed)
+	 *
+	 * @deprecated
+	 * @param  mixed $var target variable
+	 * @param  bool $checkIs data type for check (array|string|object|int)
+	 * @author Naoki Sawada
+	 * @return bool|mixed
+	 */
 	public static function sessionDataDecode(&$var, $checkIs = null) {
 		if (self::$base64encodeSessionData) {
 			$data = unserialize(base64_decode($var));
@@ -3019,15 +3027,31 @@ class elFinder {
 		}
 	}
 
-    /**
-     * Return elFinder static variable
-     *
-     * @param $key
-     * @return mixed|null
-     */
+	/**
+	 * Return elFinder static variable
+	 *
+	 * @param $key
+	 * @return mixed|null
+	 */
 	public static function getStaticVar($key) {
 		return isset(elFinder::$$key)? elFinder::$$key : null;
 	}
 	
+	/**
+	 * Extend PHP execution time limit
+	 * 
+	 * @param Int $time
+	 * @return void
+	 */
+	public static function extendTimeLimit($time = null) {
+		static $defLimit = null;
+		if (is_null($defLimit)) {
+			$defLimit = ini_get('max_execution_time');
+		}
+		if ($defLimit != 0) {
+			$time = is_null($time)? $defLimit : max($defLimit, $time);
+			set_time_limit($time);
+		}
+	}
 
 } // END class

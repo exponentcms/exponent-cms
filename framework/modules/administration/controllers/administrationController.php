@@ -35,7 +35,6 @@ class administrationController extends expController {
         'update'=>'Update Settings',
         'change'=>'Change Settings',
         'save'=>'Save Settings',
-        'mass'=>'Mailings',
     );
 
     static function displayname() { return gt("Administration Controls"); }
@@ -108,7 +107,7 @@ class administrationController extends expController {
         }
 
         foreach($tables as $table) {
-            $basename = strtolower(str_replace(DB_TABLE_PREFIX.'_', '', $table));
+            $basename = strtolower(str_replace($db->prefix, '', $table));
             if (!in_array($basename, $used_tables) && !stristr($basename, 'forms')) {
                 $unused_tables[$basename] = new stdClass();
                 $unused_tables[$basename]->name = $table;
@@ -126,7 +125,7 @@ class administrationController extends expController {
 
         $count = 0;
         foreach($this->params['tables'] as $del=>$table) {
-            $basename = str_replace(DB_TABLE_PREFIX.'_', '', $table);
+            $basename = str_replace($db->prefix, '', $table);
             $count += $db->dropTable($basename);
         }
         
@@ -151,8 +150,8 @@ class administrationController extends expController {
 	public function fixsessions() {
 	    global $db;
 
-//		$test = $db->sql('CHECK TABLE '.DB_TABLE_PREFIX.'sessionticket');
-		$fix = $db->sql('REPAIR TABLE '.DB_TABLE_PREFIX.'sessionticket');
+//		$test = $db->sql('CHECK TABLE '.$db->prefix.'sessionticket');
+		$fix = $db->sql('REPAIR TABLE '.$db->prefix.'sessionticket');
 		flash('message', gt('Sessions Table was Repaired'));
 		expHistory::back();
 	}
@@ -494,6 +493,7 @@ class administrationController extends expController {
 
 	public function clear_css_cache() {
 		expTheme::removeCss();
+        expSession::set('force_less_compile', 1);
         expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		flash('message',gt("CSS/Minify Cache has been cleared"));
 		expHistory::back();
@@ -521,6 +521,7 @@ class administrationController extends expController {
         expSession::un_set('display_theme');
         expSession::un_set('theme_style');
 		expTheme::removeCss();
+        expSession::set('force_less_compile', 1);
         expCSS::updateCoreCss();  // go ahead and rebuild the core .css files
 		expFile::removeFilesInDirectory(BASE.'tmp/pixidou');
 		if (file_exists(BASE.'tmp/img_cache'))

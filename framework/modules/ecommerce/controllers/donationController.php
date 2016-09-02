@@ -70,7 +70,7 @@ class donationController extends expController {
                 $metainfo['description'] = gt("Make a donation");
             break;
             default:
-                $metainfo['title'] = $this->displayname()." - ".$storename;
+                $metainfo['title'] = static::displayname()." - ".$storename;
                 $metainfo['keywords'] = SITE_KEYWORDS;
                 $metainfo['description'] = SITE_DESCRIPTION;
         }

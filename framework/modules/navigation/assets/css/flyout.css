@@ -4,6 +4,7 @@
 	/*top                               : 30px;*/
 	right: 0;
 	min-width: 160px;
+	max-width: 90%;
 	width: auto !important;
 	/*display: none;*/
 	background: #000000;
@@ -25,6 +26,9 @@
 	-ms-moz-opacity: .85;
 	-o-moz-opacity: .85;
 	moz-opacity: .85;
+	height: 90%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .flyout p {

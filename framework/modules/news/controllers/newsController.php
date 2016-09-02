@@ -128,10 +128,7 @@ class newsController extends expController {
 	}
 
     public function show() {
-//        global $db;
-
         expHistory::set('viewable', $this->params);
-
         // figure out if we're looking this up by id or title
         $id = null;
         if (isset($this->params['id'])) {
@@ -141,6 +138,9 @@ class newsController extends expController {
         }
 
         $record = new news($id);
+        if (empty($record->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+
         $config = expConfig::getConfig($record->location_data);
         if (empty($this->config))
             $this->config = $config;
@@ -222,23 +222,25 @@ class newsController extends expController {
         parent::saveConfig();
     }
     
-    public function getRSSContent() {
+    public function getRSSContent($limit = 0) {
         // pull the news posts from the database
-        $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
-        $items = $this->news->find('all', $this->aggregateWhereClause(), $order);
+        $items = $this->news->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC', $limit);
 
         //Convert the newsitems to rss items
         $rssitems = array();
         foreach ($items as $key => $item) { 
             $rss_item = new FeedItem();
-            $rss_item->title = $item->title;
-            $rss_item->link = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
-            $rss_item->description = $item->body;
+            $rss_item->title = expString::convertSmartQuotes($item->title);
+            $rss_item->link = $rss_item->guid = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
+            $rss_item->description = expString::convertSmartQuotes($item->body);
             $rss_item->author = user::getUserById($item->poster)->firstname.' '.user::getUserById($item->poster)->lastname;
             $rss_item->authorEmail = user::getEmailById($item->poster);
 //            $rss_item->date = date(DATE_RSS,$item->publish_date);
             $rss_item->date = $item->publish_date;
             $rssitems[$key] = $rss_item;
+
+            if ($limit && count($rssitems) >= $limit)
+                break;
         }
         return $rssitems;
     }
@@ -359,6 +361,46 @@ class newsController extends expController {
                 $config = expConfig::getConfig($object->location_data);
                 if (!empty($config['expFile']['fbimage'][0]))
                     $file = new expFile($config['expFile']['fbimage'][0]);
+                if (!empty($file->id))
+                    $metainfo['image'] = $file->url;
+                if (empty($metainfo['image']))
+                    $metainfo['image'] = URL_BASE . MIMEICON_RELATIVE . 'generic_22x22.png';
+            }
+        }
+        return $metainfo;
+    }
+
+    /**
+     * Returns Twitter twitter: meta data
+     *
+     * @param $request
+     * @param $object
+     *
+     * @return null
+     */
+    public function meta_tw($request, $object, $canonical) {
+        $metainfo = array();
+        $metainfo['card'] = 'summary';
+        if (!empty($object->body)) {
+            $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
+        } else {
+            $desc = SITE_DESCRIPTION;
+        }
+        $config = expConfig::getConfig($object->location_data);
+        if (!empty($object->meta_tw['twsite'])) {
+            $metainfo['site'] = $object->meta_tw['twsite'];
+        } elseif (!empty($config['twsite'])) {
+            $metainfo['site'] = $config['twsite'];
+        }
+        $metainfo['title'] = substr(empty($object->meta_tw['title']) ? $object->title : $object->meta_tw['title'], 0, 87);
+        $metainfo['description'] = substr(empty($object->meta_tw['description']) ? $desc : $object->meta_tw['description'], 0, 199);
+        $metainfo['image'] = empty($object->meta_tw['twimage'][0]) ? '' : $object->meta_tw['twimage'][0]->url;
+        if (empty($metainfo['image'])) {
+            if (!empty($object->expFile['images'][0]->is_image)) {
+                $metainfo['image'] = $object->expFile['images'][0]->url;
+            } else {
+                if (!empty($config['expFile']['twimage'][0]))
+                    $file = new expFile($config['expFile']['twimage'][0]);
                 if (!empty($file->id))
                     $metainfo['image'] = $file->url;
                 if (empty($metainfo['image']))

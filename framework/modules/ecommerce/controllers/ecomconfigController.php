@@ -58,7 +58,7 @@ class ecomconfigController extends expController {
         
         // if the title of the master changed we should update the option groups that are already using it.
         if ($oldtitle != $og->title) {
-            $db->sql('UPDATE '.DB_TABLE_PREFIX.'_optiongroup SET title="'.$og->title.'" WHERE title="'.$oldtitle.'"');
+            $db->sql('UPDATE '.$db->prefix.'optiongroup SET title="'.$og->title.'" WHERE title="'.$oldtitle.'"');
         }
         
         expHistory::back();
@@ -116,7 +116,7 @@ class ecomconfigController extends expController {
         // if the title of the master changed we should update the option groups that are already using it.
         if ($oldtitle != $opt->title) {
             
-        }$db->sql('UPDATE '.DB_TABLE_PREFIX.'_option SET title="'.$opt->title.'" WHERE option_master_id='.$opt->id);
+        }$db->sql('UPDATE '.$db->prefix.'option SET title="'.$opt->title.'" WHERE option_master_id='.$opt->id);
         
         expHistory::back();
     }
@@ -332,11 +332,12 @@ class ecomconfigController extends expController {
             'views'=>$views,
             'countries'=>$countries,
             'regions'=>$regions,
-            'title'=>$this->displayname()
+            'title'=>static::displayname()
         ));
     }   
 
     function saveconfig() {
+        $this->params['min_order'] = substr($this->params['min_order'], 1) ;
    		$this->params['minimum_gift_card_purchase'] = substr($this->params['minimum_gift_card_purchase'], 1) ;
    		$this->params['custom_message_product']     = substr($this->params['custom_message_product'], 1) ;
         if (isset($this->params['store']['address_country_id'])) {

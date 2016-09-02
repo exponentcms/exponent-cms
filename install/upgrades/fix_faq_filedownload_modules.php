@@ -62,7 +62,7 @@ class fix_faq_filedownload_modules extends upgradescript {
                 $db->dropTable('faq');
             }
             if (!$db->tableExists('faq')) {
-                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_faqs TO '.DB_TABLE_PREFIX.'_faq');
+                $db->sql('RENAME TABLE '.$db->prefix.'faqs TO '.$db->prefix.'faq');
             }
             if ($db->tableExists('faqs') && !$db->countObjects('faqs')) {
                 $db->dropTable('faqs');
@@ -77,7 +77,7 @@ class fix_faq_filedownload_modules extends upgradescript {
                 $db->dropTable('filedownload');
             }
             if (!$db->tableExists('filedownload')) {
-                $db->sql('RENAME TABLE '.DB_TABLE_PREFIX.'_filedownloads TO '.DB_TABLE_PREFIX.'_filedownload');
+                $db->sql('RENAME TABLE '.$db->prefix.'filedownloads TO '.$db->prefix.'filedownload');
             }
             if ($db->tableExists('filedownloads') && !$db->countObjects('filedownloads')) {
                 $db->dropTable('filedownloads');

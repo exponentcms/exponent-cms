@@ -333,3 +333,16 @@ a.cats {
     float:left;
     overflow: hidden;
 }
+
+/* some bootstrap 3 responsiveness */
+@media (max-width: 767px) {
+    .hidden-xs {
+        display: none !important;
+    }
+}
+
+@media (min-width: 767px) {
+    .visible-xs-inline {
+        display: none !important;
+    }
+}

@@ -16,29 +16,29 @@
     {$myloc=serialize($__loc)}
 	<table id="calendar" summary="{$moduletitle|default:'Calendar'|gettext}">
         <div class="caption">
-            &laquo;&#160;
-            <a class="evnav module-actions" href="{link action=showall time=$prevmonth3}" rel="{$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-            <a class="evnav module-actions" href="{link action=showall time=$prevmonth2}" rel="{$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;
-            <a class="evnav module-actions" href="{link action=showall time=$prevmonth}" rel="{$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-            <strong>{$time|format_date:"%B %Y"}</strong>&#160;&#160;{printer_friendly_link view='showall' text=''|gettext}{export_pdf_link view='showall' text=''|gettext}&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+            <span class="hidden-xs">&laquo;</span>&#160;
+            <a class="evnav module-actions" href="{link action=showall time=$prevmonth3}" rel="{$prevmonth3}" title="{$prevmonth3|format_date:"%B %Y"}">{$prevmonth3|format_date:"%b"}</a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;
+            <a class="evnav module-actions" href="{link action=showall time=$prevmonth2}" rel="{$prevmonth2}" title="{$prevmonth2|format_date:"%B %Y"}">{$prevmonth2|format_date:"%b"}</a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;
+            <a class="evnav module-actions" href="{link action=showall time=$prevmonth}" rel="{$prevmonth}" title="{$prevmonth|format_date:"%B %Y"}">{$prevmonth|format_date:"%b"}</a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;<span class="hidden-xs">&#160;&#160;&#160;&#160;</span>
+            <strong><span class="hidden-xs">{$time|format_date:"%B %Y"}</span><span class="visible-xs-inline">{$time|format_date:"%b %Y"}</span></strong><span class="hidden-xs">&#160;</span>&#160;{printer_friendly_link view='showall' text=''}{export_pdf_link view='showall' text=''}<span class="hidden-xs">&#160;&#160;&#160;</span>&#160;&raquo;<span class="hidden-xs">&#160;&#160;</span>
             <input type='hidden' id='month{$__loc->src|replace:'@':'_'}' value="{$time|format_date:"%Y%m%d"}"/>
-            <a class="evnav module-actions" href="{link action=showall time=$nextmonth}" rel="{$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-            <a class="evnav module-actions" href="{link action=showall time=$nextmonth2}" rel="{$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a>&#160;&#160;&raquo;&#160;
-            <a class="evnav module-actions" href="{link action=showall time=$nextmonth3}" rel="{$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;&#160;&raquo;
+            <a class="evnav module-actions" href="{link action=showall time=$nextmonth}" rel="{$nextmonth}" title="{$nextmonth|format_date:"%B %Y"}">{$nextmonth|format_date:"%b"}</a><span class="hidden-xs">&#160;</span>&#160;&raquo;&#160;
+            <a class="evnav module-actions" href="{link action=showall time=$nextmonth2}" rel="{$nextmonth2}" title="{$nextmonth2|format_date:"%B %Y"}">{$nextmonth2|format_date:"%b"}</a><span class="hidden-xs">&#160;</span>&#160;&raquo;&#160;
+            <a class="evnav module-actions" href="{link action=showall time=$nextmonth3}" rel="{$nextmonth3}" title="{$nextmonth3|format_date:"%B %Y"}">{$nextmonth3|format_date:"%b"}</a>&#160;<span class="hidden-xs">&#160;&raquo;</span>
         </div>
 		<tr class="daysoftheweek">
             {if $config.show_weeks}<th></th>{/if}
 			{if $smarty.const.DISPLAY_START_OF_WEEK == 0}
-			<th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}">{$daynames.long.0}</th>
+			<th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}"><span class="hidden-xs">{$daynames.long.0}</span><span class="visible-xs-inline">{$daynames.med.0}</span></th>
 			{/if}
-			<th scope="col" abbr="{$daynames.med.1}" title="{$daynames.long.1}">{$daynames.long.1}</th>
-            <th scope="col" abbr="{$daynames.med.2}" title="{$daynames.long.2}">{$daynames.long.2}</th>
-            <th scope="col" abbr="{$daynames.med.3}" title="{$daynames.long.3}">{$daynames.long.3}</th>
-            <th scope="col" abbr="{$daynames.med.4}" title="{$daynames.long.4}">{$daynames.long.4}</th>
-            <th scope="col" abbr="{$daynames.med.5}" title="{$daynames.long.5}">{$daynames.long.5}</th>
-            <th scope="col" abbr="{$daynames.med.6}" title="{$daynames.long.6}">{$daynames.long.6}</th>
+			<th scope="col" abbr="{$daynames.med.1}" title="{$daynames.long.1}"><span class="hidden-xs">{$daynames.long.1}</span><span class="visible-xs-inline">{$daynames.med.1}</span></th>
+            <th scope="col" abbr="{$daynames.med.2}" title="{$daynames.long.2}"><span class="hidden-xs">{$daynames.long.2}</span><span class="visible-xs-inline">{$daynames.med.2}</span></th>
+            <th scope="col" abbr="{$daynames.med.3}" title="{$daynames.long.3}"><span class="hidden-xs">{$daynames.long.3}</span><span class="visible-xs-inline">{$daynames.med.3}</span></th>
+            <th scope="col" abbr="{$daynames.med.4}" title="{$daynames.long.4}"><span class="hidden-xs">{$daynames.long.4}</span><span class="visible-xs-inline">{$daynames.med.4}</span></th>
+            <th scope="col" abbr="{$daynames.med.5}" title="{$daynames.long.5}"><span class="hidden-xs">{$daynames.long.5}</span><span class="visible-xs-inline">{$daynames.med.5}</span></th>
+            <th scope="col" abbr="{$daynames.med.6}" title="{$daynames.long.6}"><span class="hidden-xs">{$daynames.long.6}</span><span class="visible-xs-inline">{$daynames.med.6}</span></th>
 			{if $smarty.const.DISPLAY_START_OF_WEEK != 0}
-            <th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}">{$daynames.long.0}</th>
+            <th scope="col" abbr="{$daynames.med.0}" title="{$daynames.long.0}"><span class="hidden-xs">{$daynames.long.0}</span><span class="visible-xs-inline">{$daynames.med.0}</span></th>
 			{/if}
 		</tr>
         {$dayts=$now}
@@ -108,9 +108,9 @@
                                         {if $item->expFile[0]->url != ""}
                                             <div class="image">
                                                 {if $item->date_id}
-                                                    {img file_id=$item->expFile[0]->id title=$title id=$item->date_id w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title id=$item->date_id w=92 class="img-responsive"}
                                                 {else}
-                                                    {img file_id=$item->expFile[0]->id title=$title w=92}
+                                                    {img file_id=$item->expFile[0]->id title=$title w=92 class="img-responsive"}
                                                 {/if}
                                                 {clear}
                                             </div>
@@ -168,6 +168,7 @@
         target = e.target;
         $.colorbox({
             href: EXPONENT.PATH_RELATIVE+"index.php?controller=event&action=show&view=show&ajax_action=1&date_id="+target.id+"&src={/literal}{$__loc->src}{literal}",
+            title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%",
             onComplete : function() {
                 $('img').on('load', function() {
@@ -181,6 +182,7 @@
         target = e.target;
         $.colorbox({
             html: '<h2>' + target.text + '</h2><p>' + target.rel +  '</p><p>'  + Linkify(target.title.replace(/\n/g,'<br />')) + '</p>',
+            title: target.text + ' - ' + '{/literal}{'Event'|gettext}{literal}',
             maxWidth: "100%"
         });
         e.preventDefault();

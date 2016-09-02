@@ -25,7 +25,7 @@
     <div>
         {form action=import_users_mapper}
             {control type="dropdown" name="delimiter" label="Delimiter Character"|gettext items=$delimiters}
-            {control type=uploader name=upload label=gt('CSV File to Upload')}
+            {control type=uploader name=upload label='CSV File to Upload'|gettext}
             {control type="checkbox" name="use_header" label='First Row is a Header?' value=1}
             {control type="text" name="rowstart" label="User Data begins in Row"|gettext value='1' size=6}
             {control type=buttongroup submit="Next"|gettext cancel="Cancel"|gettext}

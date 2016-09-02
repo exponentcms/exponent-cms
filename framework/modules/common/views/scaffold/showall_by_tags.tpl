@@ -27,24 +27,27 @@
 		</div>
     {/permissions}
 	<ul>
-        {foreach from=$items item=listing}
+        {*{foreach from=$items item=listing}*}
+		{pagelinks paginate=$page top=1}
+	    {foreach from=$page->records item=item}
 		<li class="item listing">
-			<h3><a href="{link controller=$controller action=show id=$listing->id}">{$listing->title}</a></h3>
+			<h3><a href="{link controller=$controller action=show id=$item->id}">{$item->title}</a></h3>
             <div class="bodycopy">
-                <p>{$listing->body}</p>
+                <p>{$item->body}</p>
             </div>
 			{permissions}
 				<div class="item-actions">
-					{if $permissions.edit || ($permissions.create && $listing->poster == $user->id)}
-						{icon controller=$controller action=edit record=$listing}
+					{if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
+						{icon controller=$controller action=edit record=$item}
 					{/if}
-					{if $permissions.delete || ($permissions.create && $listing->poster == $user->id)}
-						{icon controller=$controller action=delete record=$listing}
+					{if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
+						{icon controller=$controller action=delete record=$item}
 					{/if}
 				</div>
 			{/permissions}
 			{clear}
 		</li>
         {/foreach}
+		{pagelinks paginate=$page bottom=1}
 	</ul>
 </div>

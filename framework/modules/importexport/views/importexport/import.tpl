@@ -24,7 +24,7 @@
     </blockquote>
     {form action="import_select"}
         {control type=hidden name=import_type value=$import_type}
-        {control type=uploader name=import_file accept=".eql" label=gt('EQL File to Import')}
+        {control type=uploader name=import_file accept=".eql" label='EQL File to Import'|gettext}
         <label>{'Module to import into'|gettext}</label>
         <table class="exp-skin-table aggregate">
             <thead>
@@ -57,7 +57,7 @@
     {*<h1>{"Upload Your"|gettext} {$type->basemodel_name|capitalize} {"File to Import"|gettext}</h1>*}
     {*{form action=validate}*}
         {*{control type="hidden" name="import_type" value=$type->baseclassname}*}
-        {*{control type=uploader name=import_file label=gt('File to Import')}*}
+        {*{control type=uploader name=import_file label='File to Import'|gettext}*}
         {*{control type="buttongroup" submit="Import"|gettext|cat:"!" cancel="Cancel"|gettext}*}
     {*{/form}*}
 {*</div>*}

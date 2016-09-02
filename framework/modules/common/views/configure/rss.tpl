@@ -31,6 +31,6 @@
 {control type="text" name="feed_sef_url" label="Feed SEF URL"|gettext description="Auto-generated from title if left blank"|gettext value=$config.feed_sef_url}
 {control type="textarea" name="feed_desc" label="Feed Description"|gettext value=$config.feed_desc}
 {control type="text" name="feed_artist" label="Feed Author"|gettext value=$config.feed_artist}
-{control type="files" name="album" id="album" label="Feed Image"|gettext value=$record->expFile limit="1" folder=$config.upload_folder}
+{control type="files" name="album" subtype=album label="Feed Image"|gettext value=$config->expFile limit="1" folder=$config.upload_folder}
 {control type="text" name="rss_limit" label="Maximum number of RSS items to publish (0 = all)"|gettext value=$config.rss_limit|default:24 size=5}
 {control type="text" name="rss_cachetime" label="Recommended RSS feed update interval in minutes (1440 = 1 day)"|gettext value=$config.rss_cachetime|default:1440 size=5}

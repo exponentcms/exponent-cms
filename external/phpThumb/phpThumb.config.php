@@ -36,10 +36,11 @@ $PHPTHUMB_CONFIG['document_root'] = realpath((getenv('DOCUMENT_ROOT') && preg_ma
 
 
 // * Security configuration
-$PHPTHUMB_CONFIG['high_security_enabled']       = false;    // DO NOT DISABLE THIS ON ANY PUBLIC-ACCESSIBLE SERVER. If disabled, your server is vulnerable to hacking attempts, both on your server and via your server to other servers. When enabled, requires 'high_security_password' set to be set and requires the use of phpThumbURL() function (at the bottom of phpThumb.config.php) to generate hashed URLs
-$PHPTHUMB_CONFIG['high_security_password']      = '';      // required if 'high_security_enabled' is true, and must be at complex (uppercase, lowercase, numbers, punctuation, etc -- punctuation is strongest, lowercase is weakest; see PasswordStrength() in phpThumb.php). You can use a password generator like http://silisoftware.com/tools/password-random.php to generate a strong password
+$PHPTHUMB_CONFIG['disable_debug']               = true;    // DO NOT DISABLE THIS ON ANY PUBLIC-ACCESSIBLE SERVER. Prevents phpThumb from displaying any information about your system. If true, phpThumbDebug and error messages will be disabled. If set to false (debug messages enabled) then debug mode will be FORCED -- ONLY debug output will be presented, no actual thumbnail (to avoid accidentally leaving debug mode enabled on a production server)
+$PHPTHUMB_CONFIG['high_security_enabled']       = false;    // DO NOT DISABLE THIS ON ANY PUBLIC-ACCESSIBLE SERVER. If disabled, your server is more vulnerable to hacking attempts, both on your server and via your server to other servers. When enabled, requires 'high_security_password' set to be set and requires the use of phpThumbURL() function (at the bottom of phpThumb.config.php) to generate hashed URLs
+$PHPTHUMB_CONFIG['high_security_password']      = '';      // required if 'high_security_enabled' is true, and must be at complex (uppercase, lowercase, numbers, punctuation, etc -- punctuation is strongest, lowercase is weakest; see PasswordStrength() in phpthumb.functions.php). You can use a password generator like http://silisoftware.com/tools/password-random.php to generate a strong password
+
 $PHPTHUMB_CONFIG['high_security_url_separator'] = '&';     // should almost always be left as '&'. Must be a single character. Do not change to '&amp;' -- htmlspecialchars wrapped around phpThumbURL() takes care of this without breaking the hash
-$PHPTHUMB_CONFIG['disable_debug']               = true;    // DO NOT ENABLE THIS ON ANY PUBLIC-ACCESSIBLE SERVER. Prevent phpThumb from displaying any information about your system. If true, phpThumbDebug and error messages will be disabled. If set to false (debug messages enabled) then debug mode will be FORCED -- ONLY debug output will be presented, no actual thumbnail (to avoid accidentally leaving debug mode enabled on a production server)
 $PHPTHUMB_CONFIG['allow_src_above_docroot']     = false;   // if false (default) only allow src within document_root; if true, allow src to be anywhere in filesystem
 $PHPTHUMB_CONFIG['allow_src_above_phpthumb']    = true;    // if true (default), allow src to be anywhere in filesystem; if false only allow src within sub-directory of phpThumb installation
 $PHPTHUMB_CONFIG['auto_allow_symlinks']         = true;    // if true (default), allow symlink target directories without explicitly whitelisting them
@@ -66,14 +67,14 @@ $PHPTHUMB_CONFIG['cache_directory_depth'] = 2; // If this larger than zero, cach
 // * Cache culling: phpThumb can automatically limit the contents of the cache directory
 //   based on last-access date and/or number of files and/or total filesize.
 
-//$PHPTHUMB_CONFIG['cache_maxage'] = null;            // never delete cached thumbnails based on last-access time
-$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 30;        // delete cached thumbnails that haven't been accessed in more than [30 days] (value is maximum time since last access in seconds to avoid deletion)
+$PHPTHUMB_CONFIG['cache_maxage'] = null;            // never delete cached thumbnails based on last-access time
+//$PHPTHUMB_CONFIG['cache_maxage'] = 86400 * 30;        // delete cached thumbnails that haven't been accessed in more than [30 days] (value is maximum time since last access in seconds to avoid deletion)
 
-//$PHPTHUMB_CONFIG['cache_maxsize'] = null;           // never delete cached thumbnails based on byte size of cache directory
-$PHPTHUMB_CONFIG['cache_maxsize'] = 10 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [10MB] of cached files are present (value is maximum bytesize of all cached files). Note: this only counts file size, does not count space "wasted" by directory entries in the cache structure -- see notes under $PHPTHUMB_CONFIG['cache_directory_depth']
+$PHPTHUMB_CONFIG['cache_maxsize'] = null;           // never delete cached thumbnails based on byte size of cache directory
+//$PHPTHUMB_CONFIG['cache_maxsize'] = 10 * 1024 * 1024; // delete least-recently-accessed cached thumbnails when more than [10MB] of cached files are present (value is maximum bytesize of all cached files). Note: this only counts file size, does not count space "wasted" by directory entries in the cache structure -- see notes under $PHPTHUMB_CONFIG['cache_directory_depth']
 
-//$PHPTHUMB_CONFIG['cache_maxfiles'] = null;          // never delete cached thumbnails based on number of cached files
-$PHPTHUMB_CONFIG['cache_maxfiles'] = 200;             // delete least-recently-accessed cached thumbnails when more than [200] cached files are present (value is maximum number of cached files to keep)
+$PHPTHUMB_CONFIG['cache_maxfiles'] = null;          // never delete cached thumbnails based on number of cached files
+//$PHPTHUMB_CONFIG['cache_maxfiles'] = 200;             // delete least-recently-accessed cached thumbnails when more than [200] cached files are present (value is maximum number of cached files to keep)
 
 
 // * Source image cache configuration
@@ -182,7 +183,7 @@ $PHPTHUMB_CONFIG['border_hexcolor']     = '000000'; // Default border color - us
 $PHPTHUMB_CONFIG['background_hexcolor'] = 'FFFFFF'; // Default background color when thumbnail aspect ratio does not match fixed-dimension box - usual HTML-style hex color notation (overridden with 'bg' parameter)
 
 // * Watermark configuration
-$PHPTHUMB_CONFIG['ttf_directory'] = dirname(__FILE__).'../mpdf60/ttfonts'; // Base directory for TTF font files
+$PHPTHUMB_CONFIG['ttf_directory'] = dirname(__FILE__).'/fonts'; // Base directory for TTF font files
 //$PHPTHUMB_CONFIG['ttf_directory'] = 'c:/windows/fonts';
 
 
@@ -190,10 +191,10 @@ $PHPTHUMB_CONFIG['ttf_directory'] = dirname(__FILE__).'../mpdf60/ttfonts'; // Ba
 // You may want to pull data from a database rather than a physical file
 // If so, modify the $PHPTHUMB_CONFIG['mysql_query'] line to suit your database structure
 // Note: the data retrieved must be the actual binary data of the image, not a URL or filename
-
+$PHPTHUMB_CONFIG['mysql_extension'] = 'mysqli'; // either "mysqli" or "mysql"
 
 $PHPTHUMB_CONFIG['mysql_query'] = '';
-//$PHPTHUMB_CONFIG['mysql_query'] = 'SELECT `picture` FROM `products` WHERE (`id` = \''.mysql_escape_string(@$_GET['id']).'\')';
+//$PHPTHUMB_CONFIG['mysql_query'] = 'SELECT `picture` FROM `products` WHERE (`id` = \''.mysqli_real_escape_string(@$_GET['id']).'\')';
 
 // These 4 values must be modified if $PHPTHUMB_CONFIG['mysql_query'] is not empty, but may be ignored if $PHPTHUMB_CONFIG['mysql_query'] is blank.
 $PHPTHUMB_CONFIG['mysql_hostname'] = 'localhost';
@@ -210,9 +211,10 @@ $PHPTHUMB_CONFIG['http_user_agent'] = @$_SERVER['HTTP_USER_AGENT'];             
 
 
 // * Compatability settings
-$PHPTHUMB_CONFIG['disable_pathinfo_parsing']        = true;  // if true, $_SERVER[PATH_INFO] is not parsed. May be needed on some server configurations to allow normal behavior.
-$PHPTHUMB_CONFIG['disable_imagecopyresampled']      = false;  // if true, ImageCopyResampled is replaced with ImageCopyResampleBicubic. May be needed for buggy versions of PHP-GD.
-$PHPTHUMB_CONFIG['disable_onlycreateable_passthru'] = true;   // if true, any image that can be parsed by GetImageSize() can be passed through; if false, only images that can be converted to GD by ImageCreateFrom(JPEG|GIF|PNG) functions are allowed
+$PHPTHUMB_CONFIG['disable_pathinfo_parsing']        = true;   // if true, $_SERVER[PATH_INFO] is not parsed. May be needed on some server configurations to allow normal behavior.
+$PHPTHUMB_CONFIG['disable_imagecopyresampled']      = false;  // if true, imagecopyresampled is replaced with ImageCopyResampleBicubic. May be needed for buggy versions of PHP-GD.
+$PHPTHUMB_CONFIG['disable_onlycreateable_passthru'] = true;   // if true, any image that can be parsed by getimagesize() can be passed through; if false, only images that can be converted to GD by ImageCreateFrom(JPEG|GIF|PNG) functions are allowed
+$PHPTHUMB_CONFIG['disable_realpath']                = true;  // PHP realpath() function requires that "the running script must have executable permissions on all directories in the hierarchy, otherwise realpath() will return FALSE". Set config_disable_realpath=false to enable alternate filename-parsing that does not use realpath() function (but also does not resolve symbolic links)
 
 
 // * HTTP remote file opening settings
@@ -252,10 +254,21 @@ $PHPTHUMB_DEFAULTS_DISABLEGETPARAMS  = false; // if true, GETstring parameters w
 
 function phpThumbURL($ParameterString, $path_to_phpThumb='phpThumb.php') {
 	global $PHPTHUMB_CONFIG;
+	if (is_array($ParameterString)) {
+		$ParameterStringArray = $ParameterString;
+	} else {
+		parse_str($ParameterString, $ParameterStringArray);
+	}
 	$ParamterStringEncodedArray = array();
-	foreach (explode($PHPTHUMB_CONFIG['high_security_url_separator'], $ParameterString) as $key_value_pair) {
-		@list($key, $value) = explode('=', $key_value_pair);
-		$ParamterStringEncodedArray[] = $key.'='.rawurlencode($value);
+	foreach ($ParameterStringArray as $key => $value) {
+		if (is_array($value)) {
+			// e.g. fltr[] is passed as an array
+			foreach ($value as $subvalue) {
+				$ParamterStringEncodedArray[] = $key.'[]='.rawurlencode($subvalue);
+			}
+		} else {
+			$ParamterStringEncodedArray[] = $key.'='.rawurlencode($value);
+		}
 	}
 	$ParameterString = implode($PHPTHUMB_CONFIG['high_security_url_separator'], $ParamterStringEncodedArray);
 	return $path_to_phpThumb.'?'.$ParameterString.$PHPTHUMB_CONFIG['high_security_url_separator'].'hash='.md5($ParameterString.$PHPTHUMB_CONFIG['high_security_password']);

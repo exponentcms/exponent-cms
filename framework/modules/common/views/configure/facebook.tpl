@@ -21,8 +21,10 @@
         <h2>{'Facebook Settings'|gettext}</h2>
 	</div>
 </div>
-{control type="checkbox" name="disable_facebook_meta" label="Disable Facebook Meta Tags"|gettext value=1 checked=$config.disable_facebook_meta description='Disables \'Facebook og:xxx\' meta tags on page'|gettext}
-{control type="files" name="fbimage" subtype=fbimage label="Default Meta Image"|gettext value=$config.fbimage folder=$config.upload_folder limit=1 description='Module Default Image for social media (1200px x 630px or 600px x 315px, but larger than 200px x 200px)'|gettext}
+{group label='Facebook Meta Tags'|gettext}
+    {control type="checkbox" name="disable_facebook_meta" label="Disable Facebook Meta Tags"|gettext value=1 checked=$config.disable_facebook_meta description='Disables \'Facebook og:xxx\' meta tags on page'|gettext}
+    {control type="files" name="fbimage" subtype=fbimage label="Default Meta Image"|gettext value=$config.expFile folder=$config.upload_folder limit=1 description='Module Default Image for social media (1200px x 630px or 600px x 315px, but larger than 200px x 200px)'|gettext}
+{/group}
 {group label='Auto Facebook Status Posting'|gettext}
     {control type="checkbox" name="enable_auto_status" label="Enable Auto-Facebook Status"|gettext value=1 checked=$config.enable_auto_status description='Allows \'Facebook\'ing new items'|gettext}
     {group label='Facebook Account'|gettext}
@@ -33,7 +35,7 @@
         </blockquote>
         {control type="text" name="app_id" label="App ID"|gettext value=$config.app_id class=title}
         {control type="text" name="app_secret" label="App secret"|gettext value=$config.app_secret class=title}
-        {'Save these settings, then'|gettext} <a href="http://www.facebook.com/dialog/oauth?client_id={$config.app_id}&redirect_uri={urlencode($smarty.const.URL_FULL)}&scope=publish_stream,offline_access,publish_actions,user_photos,photo_upload,user_status,manage_pages,create_event" target="_blank">{'Establish Facebook Permissions'|gettext}</a>
+        {'Save these settings, then'|gettext} <a href="http://www.facebook.com/dialog/oauth?app_id={$config.app_id}&redirect_uri={urlencode($smarty.const.URL_FULL)}&scope=user_posts,user_events,user_photos,user_videos,manage_pages,publish_pages" target="_blank">{'Establish Facebook Permissions'|gettext}</a>
     {/group}
 {/group}
 {group label='Facebook Like Button'|gettext}

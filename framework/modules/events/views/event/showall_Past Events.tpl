@@ -21,34 +21,46 @@
 	<div class="module-actions">
         {if !$config.disable_links}
             {icon class="monthviewlink" action=showall time=$time text='Calendar View'|gettext}
-            &#160;&#160;|&#160;&#160;
+			{if !bs()}
+				{nbsp count=2}|{nbsp count=2}
+		    {/if}
             {icon class="listviewlink" action=showall view='showall_Monthly List' time=$time text='List View'|gettext}
         {/if}
 		{permissions}
             <div class="module-actions">
                 {if $permissions.manage}
-                    &#160;&#160;|&#160;&#160;
+					{if !bs()}
+						{nbsp count=2}|{nbsp count=2}
+					{/if}
                     {icon class="adminviewlink" action=showall view=showall_Administration time=$time text='Administration View'|gettext}
                     {if !$config.disabletags}
-                        &#160;&#160;|&#160;&#160;
+						{if !bs()}
+							{nbsp count=2}|{nbsp count=2}
+					    {/if}
                         {icon controller=expTag class="manage" action=manage_module model='event' text="Manage Tags"|gettext}
                     {/if}
                     {if $config.usecategories}
-                        &#160;&#160;|&#160;&#160;
+						{if !bs()}
+							{nbsp count=2}|{nbsp count=2}
+						{/if}
                         {icon controller=expCat action=manage model='event' text="Manage Categories"|gettext}
                     {/if}
                 {/if}
             </div>
         {/permissions}
-        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'}
-        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'}
+        {printer_friendly_link text='Printer-friendly'|gettext prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+        {export_pdf_link prepend='&#160;&#160;|&#160;&#160;'|not_bs}
         {permissions}
             <div class="module-actions">
-                &#160;&#160;|&#160;&#160;
+				{if !bs()}
+					{nbsp count=2}|{nbsp count=2}
+				{/if}
                 {*<span class="listviewlink">{'Past Events View'|gettext}</span>*}
                 {icon class="listviewlink" text='Past Events View'|gettext}
                 {if $permissions.manage}
-                    &#160;&#160;|&#160;&#160;
+					{if !bs()}
+						{nbsp count=2}|{nbsp count=2}
+					 {/if}
                     {icon class=delete action=delete_all_past onclick="return confirm('"|cat:("Delete All Past Events?"|gettext)|cat:"');" title="Delete All Past Events"|gettext text="Purge All Past Events"|gettext}
                     {br}
                 {/if}
@@ -84,7 +96,7 @@
 		{foreach from=$items item=item}
 			<tr class="item {cycle values="odd,even"}">
 				<td><a class="itemtitle{if $item->is_cancelled} cancelled{/if}{if !empty($item->color)} {$item->color}{/if}" href="{link action=show date_id=$item->date_id}" title="{$item->body|summarize:"html":"para"}">{$item->title}</a></td>
-				<td>
+				<td class="itemdate">
 					{if $item->is_allday == 1}
 						{$item->eventstart|format_date}
 					{else}
@@ -131,7 +143,7 @@
 {literal}
     $(".events.cal-admin").searcher({
         itemSelector: ".item",
-        textSelector: ".itemtitle",
+        textSelector: ".itemtitle, td.itemdate",
         inputSelector: "#eventsearchinput",
 		toggle: function(item, containsText) {
 			 // use a typically jQuery effect instead of simply showing/hiding the item element

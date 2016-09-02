@@ -108,6 +108,7 @@ class expPaginator {
 	public function __construct($params=array()) {
 		global $router,$db;
 
+        $this->pages_to_show = expTheme::is_mobile() ? 6 : 10; // fewer paging links for small devices
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 //		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
@@ -246,7 +247,7 @@ class expPaginator {
         if (empty($this->dontsort)) {
             if (!empty($this->categorize) && $this->categorize) {
                 expCatController::sortedByCats($this->records,$this->cats,$this->groups,$this->grouplimit);
-            } else {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
+            } elseif (empty($this->dontsortwithincat)) {  // categorized is off, so let's categorize by alpha instead for 'rolodex' type use
                 $order = $this->order;
                 if (in_array($order,array('created_at','edited_at','publish'))) {
                     if ($this->total_records && (abs($this->records[0]->$order - $this->records[count($this->records)-1]->$order)  >= (60 * 60 * 24 *365 *2))) {
@@ -374,39 +375,46 @@ class expPaginator {
 		//if ($this->total_records <= $this->limit) return true;
 		
 		$this->total_pages = ($this->limit > 0) ? ceil($this->total_records/$this->limit) : 0;
+
+        // correct current page # to be within limits of number of pages
 		if ($this->page > $this->total_pages) {
 			$this->page = $this->total_pages;
             //FIXME return 404 error for infinite page scroll plugin
             if (!empty($this->total_pages)) header(':', true, 404);
 		}
+
+        // setup the previous link
+        if ($this->page > 1) {
+            $page_params['page'] = $this->page - 1;
+            $this->previous_pagenum = $this->page - 1;
+            $this->previous_page = $router->makeLink($page_params, false, false, true);
+            if (expTheme::is_mobile())
+                $this->pages_to_show--;
+        }
+
+        // setup the next link
+        if ($this->page < $this->total_pages) {
+            $page_params['page'] = $this->page + 1;
+            $this->next_pagenum = $this->page + 1;
+            $this->next_page = $router->makeLink($page_params, false, false, true);
+            if (expTheme::is_mobile())
+                $this->pages_to_show--;
+        }
+
 		//setup the pages for the links
 		if ($this->total_pages > $this->pages_to_show) {
 			$this->first_pagelink = max(1, floor(($this->page) - ($this->pages_to_show) / 2));
 		    $this->last_pagelink = $this->first_pagelink + $this->pages_to_show - 1;
 		    if ($this->last_pagelink > $this->total_pages) {
-		        $this->first_pagelink = max(1, $this->total_pages - $this->pages_to_show);
+		        $this->first_pagelink = max(1, $this->total_pages - $this->pages_to_show) + 1;
 		        $this->last_pagelink = $this->total_pages; 
 		    }
 		} else {
 			$this->first_pagelink = 1;
 			$this->last_pagelink = $this->total_pages;
 		}
-		
-		// setup the previous link
-		if ($this->page > 1) {
-			$page_params['page'] = $this->page - 1;
-            $this->previous_pagenum = $this->page - 1;
-			$this->previous_page = $router->makeLink($page_params, false, false, true);
-		}
 
-		// setup the next link
-		if ($this->page < $this->total_pages) {
-			$page_params['page'] = $this->page + 1;
-            $this->next_pagenum = $this->page + 1;
-			$this->next_page = $router->makeLink($page_params, false, false, true);
-		}
-
-		// setup the previous 10 link
+		// setup the previous 10 'group jump' link
 		if ($this->page > $this->pages_to_show) {
 			$page_params['page'] = $this->first_pagelink - 1;
             $this->previous_shiftnum = $this->first_pagelink - 1;
@@ -415,7 +423,7 @@ class expPaginator {
 			$this->firstpage = $router->makeLink($page_params, false, false, true);
 		}
 
-		// setup the next 10 link
+		// setup the next 10 'group jump' link
 		if ($this->page < ($this->total_pages - $this->pages_to_show)) {
             $page_params['page'] = $this->last_pagelink + 1;
             $this->next_shiftnum = $this->last_pagelink + 1;
@@ -424,7 +432,7 @@ class expPaginator {
 			$this->lastpage = $router->makeLink($page_params, false, false, true);
         }
 
-		// setup the links to the pages being displayed.
+		// setup the links to the remaining pages being displayed.
 		for($i=$this->first_pagelink; $i<=$this->last_pagelink; $i++) { 
 			$page_params['page'] = $i;
 			$this->pages[$i] = $router->makeLink($page_params, false, false, true);

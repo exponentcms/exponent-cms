@@ -82,9 +82,9 @@
                         <a href="{$slide->link}">
                     {/if}
                     {if $config.quality==100}
-                        <img src="{$slide->expFile[0]->url}" class="slide-image" />
+                        <img src="{$slide->expFile[0]->url}" class="slide-image" alt="{$slide->alt}" />
                     {else}
-                        {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" far=TL f=jpeg q=$quality|default:75}
+                        {img file_id=$slide->expFile[0]->id w=$config.width|default:350 h=$config.height|default:300 class="slide-image" far=TL f=jpeg q=$quality|default:75 alt=$slide->alt}
                     {/if}
                     {if $slide->link}
                         </a>

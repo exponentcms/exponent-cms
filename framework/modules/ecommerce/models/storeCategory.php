@@ -53,9 +53,9 @@ class storeCategory extends expNestedNode {
 		}
 		
 		for ($i = 0, $iMax = count($children); $i < $iMax; $i++) {
-			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.DB_TABLE_PREFIX.'_product p JOIN '.DB_TABLE_PREFIX.'_product_storeCategories sc ';
+			$sql  = 'SELECT count(DISTINCT p.id) as c FROM '.$db->prefix.'product p JOIN '.$db->prefix.'product_storeCategories sc ';
           	$sql .= 'ON p.id = sc.product_id WHERE sc.storecategories_id IN (';
-          	$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
+          	$sql .= 'SELECT id FROM '.$db->prefix.'storeCategories WHERE rgt BETWEEN '.$children[$i]->lft.' AND '.$children[$i]->rgt.")";
 
           	$count = $db->selectObjectBySql($sql);
           	$children[$i]->product_count = $count->c;
@@ -90,16 +90,16 @@ class storeCategory extends expNestedNode {
     public function getFirstImageId() {
         global $db;
 
-        //$sql = 'SELECT DISTINCT p.* FROM '.DB_TABLE_PREFIX.'_product p ';   
-        $sql = 'SELECT DISTINCT cf.expfiles_id, exp.directory, exp.filename FROM '.DB_TABLE_PREFIX.'_product as p '; 
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expFiles cf ON p.id = cf.content_id ';           
-		$sql .= 'JOIN '.DB_TABLE_PREFIX.'_expFiles exp ON cf.expfiles_id = exp.id ';       
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories psc ON p.id = psc.product_id ';
+        //$sql = 'SELECT DISTINCT p.* FROM '.$db->prefix.'product p ';
+        $sql = 'SELECT DISTINCT cf.expfiles_id, exp.directory, exp.filename FROM '.$db->prefix.'product as p ';
+        $sql .= 'JOIN '.$db->prefix.'content_expFiles cf ON p.id = cf.content_id ';
+		$sql .= 'JOIN '.$db->prefix.'expFiles exp ON cf.expfiles_id = exp.id ';
+        $sql .= 'JOIN '.$db->prefix.'product_storeCategories psc ON p.id = psc.product_id ';
         $sql .= 'WHERE psc.storecategories_id IN (';
-        $sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->lft.' AND '.$this->rgt.')';         
-        /*$sql  = 'SELECT cf.id FROM '.DB_TABLE_PREFIX.'_storeCategories sc JOIN '.DB_TABLE_PREFIX.'_content_expFiles as cf ';
+        $sql .= 'SELECT id FROM '.$db->prefix.'storeCategories WHERE rgt BETWEEN '.$this->lft.' AND '.$this->rgt.')';
+        /*$sql  = 'SELECT cf.id FROM '.$db->prefix.'storeCategories sc JOIN '.$db->prefix.'content_expFiles as cf ';
         $sql .= 'ON cf.content_id = psc.product_id ';
-        $sql .= 'JOIN '.DB_TABLE_PREFIX.'_product_storeCategories as psc ON psc.storecategories_id = sc.id ';
+        $sql .= 'JOIN '.$db->prefix.'product_storeCategories as psc ON psc.storecategories_id = sc.id ';
         $sql .= 'WHERE sc.storecategories_id=' . $this->id . " AND cf.subtype='mainimage'";*/
         $idObjs = $db->selectObjectsBySql($sql);
 		foreach($idObjs as $item) {

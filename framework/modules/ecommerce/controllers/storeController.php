@@ -183,14 +183,14 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 
         if (empty($this->category->is_events)) {
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . DB_TABLE_PREFIX . '_product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c FROM ' . $db->prefix . 'product p ';
 
-            $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM ' . DB_TABLE_PREFIX . '_product p ';
-            $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
+            $sql_start = 'SELECT DISTINCT p.*, IF(base_price > special_price AND use_special_price=1,special_price, base_price) as price FROM ' . $db->prefix . 'product p ';
+            $sql = 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
             $sql .= 'WHERE ';
             if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
             $sql .= 'sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . DB_TABLE_PREFIX . '_storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
 
             $count_sql = $count_sql_start . $sql;
             $sql = $sql_start . $sql;
@@ -202,12 +202,12 @@ class storeController extends expController {
             if (empty($order)) $order = 'title';
             if (empty($dir)) $dir = 'ASC';
         } else { // this is an event category
-            $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-            $sql = 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+            $sql_start = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+            $count_sql_start = 'SELECT COUNT(DISTINCT p.id) as c, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+            $sql = 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE sc.storecategories_id IN (';
-            $sql .= 'SELECT id FROM ' . DB_TABLE_PREFIX . '_storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
+            $sql .= 'SELECT id FROM ' . $db->prefix . 'storeCategories WHERE rgt BETWEEN ' . $this->category->lft . ' AND ' . $this->category->rgt . ')';
             if ($this->category->hide_closed_events) {
                 $sql .= ' AND er.signup_cutoff > ' . time();
             }
@@ -242,7 +242,7 @@ class storeController extends expController {
         } else { // there are no categories
             $page = new expPaginator(array(
                 'model_field' => 'product_type',
-                'sql'         => 'SELECT * FROM ' . DB_TABLE_PREFIX . '_product WHERE 1',
+                'sql'         => 'SELECT * FROM ' . $db->prefix . 'product WHERE 1',
                 'limit'       => $limit,
                 'order'       => $order,
                 'dir'         => $dir,
@@ -260,7 +260,7 @@ class storeController extends expController {
         $ancestors = $this->category->pathToNode();
         $categories = ($this->parent == 0) ? $this->category->getTopLevel(null, false, true) : $this->category->getChildren(null, false, true);
 
-        $rerankSQL = "SELECT DISTINCT p.* FROM " . DB_TABLE_PREFIX . "_product p JOIN " . DB_TABLE_PREFIX . "_product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
+        $rerankSQL = "SELECT DISTINCT p.* FROM " . $db->prefix . "product p JOIN " . $db->prefix . "product_storeCategories sc ON p.id = sc.product_id WHERE sc.storecategories_id=" . $this->category->id . " ORDER BY rank ASC";
         //eDebug($router);
         $defaultSort = $router->current_url;
 
@@ -476,9 +476,9 @@ class storeController extends expController {
 //
 //            $category = new storeCategory($parent);
 
-            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . DB_TABLE_PREFIX . '_product p ';
-//            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_product_storeCategories sc ON p.id = sc.product_id ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_eventregistration er ON p.product_type_id = er.id ';
+            $sql = 'SELECT DISTINCT p.*, er.event_starttime, er.signup_cutoff FROM ' . $db->prefix . 'product p ';
+//            $sql .= 'JOIN ' . $db->prefix . 'product_storeCategories sc ON p.id = sc.product_id ';
+            $sql .= 'JOIN ' . $db->prefix . 'eventregistration er ON p.product_type_id = er.id ';
             $sql .= 'WHERE 1 ';
 //            $sql .= ' AND sc.storecategories_id IN (SELECT id FROM exponent_storeCategories WHERE rgt BETWEEN ' . $category->lft . ' AND ' . $category->rgt . ')';
 //            if ($category->hide_closed_events) {
@@ -640,7 +640,7 @@ class storeController extends expController {
         $out = '"id","parent_id","child_rank","title","body","model","warehouse_location","sef_url","meta_title","meta_keywords","meta_description","tax_class_id","quantity","availability_type","base_price","special_price","use_special_price","active_type","product_status_id","category1","category2","category3","category4","category5","category6","category7","category8","category9","category10","category11","category12","surcharge","category_rank","feed_title","feed_body","weight","width","height","length","image1","image2","image3","image4","image5","companies_id"' . chr(13) . chr(10);
         if (isset($this->params['applytoall']) && $this->params['applytoall'] == 1) {
             $sql = expSession::get('product_export_query');
-            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . DB_TABLE_PREFIX . '_product as p WHERE (product_type="product")';
+            if (empty($sql)) $sql = 'SELECT DISTINCT(p.id) from ' . $db->prefix . 'product as p WHERE (product_type="product")';
             //eDebug($sql);
             //expSession::set('product_export_query','');
             $prods = $db->selectArraysBySql($sql);
@@ -821,7 +821,7 @@ class storeController extends expController {
     function showallManufacturers() {
         global $db;
         expHistory::set('viewable', $this->params);
-        $sql = 'SELECT comp.* FROM ' . DB_TABLE_PREFIX . '_companies as comp JOIN ' . DB_TABLE_PREFIX . '_product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
+        $sql = 'SELECT comp.* FROM ' . $db->prefix . 'companies as comp JOIN ' . $db->prefix . 'product AS prod ON prod.companies_id = comp.id WHERE parent_id=0 GROUP BY comp.title ORDER BY comp.title;';
         $manufacturers = $db->selectObjectsBySql($sql);
         assign_to_template(array(
             'manufacturers' => $manufacturers
@@ -1071,7 +1071,7 @@ class storeController extends expController {
         $sql .= 'WHERE ';
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1)'; //' AND ' ;
         //$sql .= 'sc.storecategories_id IN (';
-        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';         
+        //$sql .= 'SELECT id FROM '.DB_TABLE_PREFIX.'_storeCategories WHERE rgt BETWEEN '.$this->category->lft.' AND '.$this->category->rgt.')';
 
         $count_sql = $count_sql_start . $sql;
         $sql = $sql_start . $sql;
@@ -1502,7 +1502,7 @@ class storeController extends expController {
         //$db->delete($product_type, 'id='.$product->product_id);
         //}
 
-        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . DB_TABLE_PREFIX . "_optiongroup WHERE product_id=" . $product->id . ")");
+        $db->delete('option', 'product_id=' . $product->id . " AND optiongroup_id IN (SELECT id from " . $db->prefix . "optiongroup WHERE product_id=" . $product->id . ")");
         $db->delete('optiongroup', 'product_id=' . $product->id);
         //die();
         $db->delete('product_storeCategories', 'product_id=' . $product->id . ' AND product_type="' . $product_type . '"');
@@ -1712,11 +1712,17 @@ class storeController extends expController {
     public function search() {
         global $db, $user;
 
-        if (INCLUDE_AJAX_SEARCH == 1) {
+        if (SAVE_SEARCH_QUERIES && INCLUDE_AJAX_SEARCH == 1) {  // only to add search query record
             $qry = trim($this->params['query']);
             if (!empty($qry)) {
-                $search = new search();
-                $r = $search->getSearchResults($this->params['query']);
+                if (INCLUDE_ANONYMOUS_SEARCH == 1 || $user->id <> 0) {
+                    $queryObj = new stdClass();
+                    $queryObj->user_id = $user->id;
+                    $queryObj->query = $qry;
+                    $queryObj->timestamp = time();
+
+                    $db->insertObject($queryObj, 'search_queries');
+                }
             }
         }
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
@@ -2495,7 +2501,7 @@ class storeController extends expController {
         }
 
         //check if there are interrupted model alias in the db
-        $res = $db->selectObjectsBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp WHERE is_processed = 0");
+        $res = $db->selectObjectsBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp WHERE is_processed = 0");
         if (!empty($res)) {
             assign_to_template(array(
                 'continue' => '1'
@@ -2513,7 +2519,7 @@ class storeController extends expController {
 
             //if go to the next processs
             if (isset($this->params['next'])) {
-                $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+                $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
                 //Update the record in the tmp table to mark it as process
                 $res->is_processed = 1;
                 $db->updateObject($res, 'model_aliases_tmp');
@@ -2525,7 +2531,7 @@ class storeController extends expController {
 
         do {
             $count = $db->countObjects('model_aliases_tmp', 'is_processed=0');
-            $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT {$index}, 1");
+            $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT {$index}, 1");
             //Validation
             //Check the field one
             if (!empty($res)) {
@@ -2611,7 +2617,7 @@ class storeController extends expController {
         $product = $db->selectObject("product", "title='{$title}'");
 
         if (!empty($product->id)) {
-            $res = $db->selectObjectBySql("SELECT * FROM ".DB_TABLE_PREFIX."_model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
+            $res = $db->selectObjectBySql("SELECT * FROM ".$db->prefix."model_aliases_tmp LIMIT " . ($index - 1) . ", 1");
             //Add the first field
             $tmp = new stdClass();
             $tmp->model = $res->field1;

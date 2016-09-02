@@ -212,9 +212,9 @@ class expRecord {
                 $records[] = new $this->classname($id);
             return $records;
         } elseif (strcasecmp($range, 'bytag') == 0) {  // return items tagged with request (id or title/sef_url)
-            if (!is_int($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
-            $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $this->tablename . ' m ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_content_expTags ct ';
+            if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expTags',"title='" . $where . "' OR sef_url='" . $where . "'");
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
+            $sql .= 'JOIN ' . $db->prefix . 'content_expTags ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.exptags_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
             if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.exptags_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
             $tag_assocs = $db->selectObjectsBySql($sql);
@@ -224,9 +224,9 @@ class expRecord {
             }
             return $records;
         } elseif (strcasecmp($range, 'bycat') == 0) {  // return items categorized/grouped under request (id or title/sef_url)
-            if (!is_int($where))  $where = $db->selectObject(DB_TABLE_PREFIX . '_expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
-            $sql = 'SELECT DISTINCT m.id FROM ' . DB_TABLE_PREFIX . '_' . $this->tablename . ' m ';
-            $sql .= 'JOIN ' . DB_TABLE_PREFIX . '_content_expCats ct ';
+            if (!is_int($where))  $where = $db->selectObject($db->prefix . 'expCats',"title='" . $where . "' OR sef_url='" . $where . "'");
+            $sql = 'SELECT DISTINCT m.id FROM ' . $db->prefix . $this->tablename . ' m ';
+            $sql .= 'JOIN ' . $db->prefix . 'content_expCats ct ';
             $sql .= 'ON m.id = ct.content_id WHERE ct.expcats_id=' . intval($where) . " AND ct.content_type='" . $this->classname . "'";
             if ($supports_revisions) $sql .= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $db->prefix . $this->tablename . "` WHERE ct.expcats_id=" . intval($where) . " AND ct.content_type='" . $this->classname . "'";
             $cat_assocs = $db->selectObjectsBySql($sql);
@@ -913,7 +913,7 @@ class expRecord {
                 $this->$type = array();
             } else {
                 $sql = 'SELECT ef.*, cef.subtype AS subtype FROM ';
-                $sql .= DB_TABLE_PREFIX . '_' . $tablename . ' ef JOIN ' . DB_TABLE_PREFIX . '_' . $content_table . ' cef ';
+                $sql .= $db->prefix . $tablename . ' ef JOIN ' . $db->prefix . $content_table . ' cef ';
                 $sql .= "ON ef.id = cef." . $tablename . "_id";
                 $sql .= " WHERE content_id=" . $this->id;
                 $sql .= " AND content_type='" . $this->classname . "'";
@@ -1024,7 +1024,7 @@ class expRecord {
                 $assocObj  = new $assoc_object(null, false, false);
                 $tablename = $this->makeManyToManyTablename($assocObj->tablename);
 
-                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->tablename . '_id from ' . DB_TABLE_PREFIX . '_' . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);
+                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->tablename . '_id from ' . $db->prefix . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')', $assocObj->default_sort_field != '' ? $assocObj->default_sort_field . " " . $assocObj->default_sort_direction : null);
                 $records = array();
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);
@@ -1048,7 +1048,7 @@ class expRecord {
                 $assocObj  = new $assoc_object(null, false, false);
                 $tablename = $this->makeManyToManyTablename($assocObj->classname);
 
-                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->classname . '_id from ' . DB_TABLE_PREFIX . '_' . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')');
+                $ret     = $db->selectObjects($assocObj->tablename, 'id IN (SELECT ' . $assocObj->classname . '_id from ' . $db->prefix . $tablename . ' WHERE ' . $this->tablename . '_id=' . $this->id . ')');
                 $records = array();
                 foreach ($ret as $record) {
                     $record_array = object2Array($record);

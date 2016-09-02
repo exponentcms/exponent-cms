@@ -25,6 +25,10 @@
             {if $permissions.create}
                 {*<a class="add" href="{link controller=$model_name action=create}">{"Create a new Tag"|gettext}</a>*}
             {/if}
+            {if $permissions.manage}
+                {icon action=import text="Import Tags"|gettext}
+                {icon action=export text="Export Tags"|gettext}
+            {/if}
         </div>
     {/permissions}
     {$page->links}

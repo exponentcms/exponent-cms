@@ -13,7 +13,7 @@
 }(function ($, undefined) {
 	"use strict";
 /*!
- * jsTree 3.3.1
+ * jsTree 3.3.2
  * http://jstree.com/
  *
  * Copyright (c) 2014 Ivan Bozhanov (http://vakata.com)
@@ -72,7 +72,7 @@
 		 * specifies the jstree version in use
 		 * @name $.jstree.version
 		 */
-		version : '3.3.1',
+		version : '3.3.2',
 		/**
 		 * holds all the default options used when creating new instances
 		 * @name $.jstree.defaults
@@ -261,7 +261,7 @@
 	 * @name $(':jstree')
 	 * @return {jQuery}
 	 */
-	$.expr[':'].jstree = $.expr.createPseudo(function(search) {
+	$.expr.pseudos.jstree = $.expr.createPseudo(function(search) {
 		return function(a) {
 			return $(a).hasClass('jstree') &&
 				$(a).data('jstree') !== undefined;
@@ -1332,6 +1332,9 @@
 		 */
 		_load_node : function (obj, callback) {
 			var s = this.settings.core.data, t;
+			var notTextOrCommentNode = function notTextOrCommentNode () {
+				return this.nodeType !== 3 && this.nodeType !== 8;
+			};
 			// use original HTML
 			if(!s) {
 				if(obj.id === $.jstree.root) {
@@ -1350,7 +1353,7 @@
 						callback.call(this, false);
 					}
 					else {
-						this[typeof d === 'string' ? '_append_html_data' : '_append_json_data'](obj, typeof d === 'string' ? $($.parseHTML(d)).filter(function () { return this.nodeType !== 3; }) : d, function (status) {
+						this[typeof d === 'string' ? '_append_html_data' : '_append_json_data'](obj, typeof d === 'string' ? $($.parseHTML(d)).filter(notTextOrCommentNode) : d, function (status) {
 							callback.call(this, status);
 						});
 					}
@@ -1374,7 +1377,7 @@
 									//return callback.call(this, this._append_json_data(obj, d));
 								}
 								if((type && type.indexOf('html') !== -1) || typeof d === "string") {
-									return this._append_html_data(obj, $($.parseHTML(d)).filter(function () { return this.nodeType !== 3; }), function (status) { callback.call(this, status); });
+									return this._append_html_data(obj, $($.parseHTML(d)).filter(notTextOrCommentNode), function (status) { callback.call(this, status); });
 									// return callback.call(this, this._append_html_data(obj, $(d)));
 								}
 								this._data.core.last_error = { 'error' : 'ajax', 'plugin' : 'core', 'id' : 'core_04', 'reason' : 'Could not load node', 'data' : JSON.stringify({ 'id' : obj.id, 'xhr' : x }) };
@@ -1402,7 +1405,7 @@
 			}
 			if(typeof s === 'string') {
 				if(obj.id === $.jstree.root) {
-					return this._append_html_data(obj, $($.parseHTML(s)).filter(function () { return this.nodeType !== 3; }), function (status) {
+					return this._append_html_data(obj, $($.parseHTML(s)).filter(notTextOrCommentNode), function (status) {
 						callback.call(this, status);
 					});
 				}
@@ -3380,7 +3383,7 @@
 								this.open_node(nodes, false, 0);
 								delete state.core.open;
 								this.set_state(state, callback);
-							}, true);
+							});
 						}
 						return false;
 					}
@@ -3606,6 +3609,8 @@
 		 * @param  {Boolean} options.no_id do not return ID
 		 * @param  {Boolean} options.no_children do not include children
 		 * @param  {Boolean} options.no_data do not include node data
+		 * @param  {Boolean} options.no_li_attr do not include LI attributes
+		 * @param  {Boolean} options.no_a_attr do not include A attributes
 		 * @param  {Boolean} options.flat return flat JSON instead of nested
 		 * @return {Object}
 		 */
@@ -3635,6 +3640,14 @@
 						tmp.state[i] = obj.state[i];
 					}
 				}
+			} else {
+				delete tmp.state;
+			}
+			if(options && options.no_li_attr) {
+				delete tmp.li_attr;
+			}
+			if(options && options.no_a_attr) {
+				delete tmp.a_attr;
 			}
 			if(options && options.no_id) {
 				delete tmp.id;
@@ -5657,6 +5670,7 @@
 		 * * `separator_after` - a boolean indicating if there should be a separator after this item
 		 * * `_disabled` - a boolean indicating if this action should be disabled
 		 * * `label` - a string - the name of the action (could be a function returning a string)
+		 * * `title` - a string - an optional tooltip for the item
 		 * * `action` - a function to be executed if this item is chosen, the function will receive 
 		 * * `icon` - a string, can be a path to an icon or a className, if using an image that is in the current directory use a `./` prefix, otherwise it will be detected as a class
 		 * * `shortcut` - keyCode which will trigger the action if the menu is open (for example `113` for rename, which equals F2)
@@ -5804,14 +5818,14 @@
 						if(!e.originalEvent || !e.originalEvent.changedTouches || !e.originalEvent.changedTouches[0]) {
 							return;
 						}
-						ex = e.pageX;
-						ey = e.pageY;
+						ex = e.originalEvent.changedTouches[0].clientX;
+						ey = e.originalEvent.changedTouches[0].clientY;
 						cto = setTimeout(function () {
 							$(e.currentTarget).trigger('contextmenu', true);
 						}, 750);
 					})
 				.on('touchmove.vakata.jstree', function (e) {
-						if(cto && e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] && (Math.abs(ex - e.pageX) > 50 || Math.abs(ey - e.pageY) > 50)) {
+						if(cto && e.originalEvent && e.originalEvent.changedTouches && e.originalEvent.changedTouches[0] && (Math.abs(ex - e.originalEvent.changedTouches[0].clientX) > 50 || Math.abs(ey - e.originalEvent.changedTouches[0].clientY) > 50)) {
 							clearTimeout(cto);
 						}
 					})
@@ -5844,7 +5858,7 @@
 			*/
 			$(document).on("context_hide.vakata.jstree", $.proxy(function (e, data) {
 				this._data.contextmenu.visible = false;
-				data.reference.removeClass('jstree-context');
+				$(data.reference).removeClass('jstree-context');
 			}, this));
 		};
 		this.teardown = function () {
@@ -5984,7 +5998,7 @@
 					}
 					sep = false;
 					str += "<"+"li class='" + (val._class || "") + (val._disabled === true || ($.isFunction(val._disabled) && val._disabled({ "item" : val, "reference" : vakata_context.reference, "element" : vakata_context.element })) ? " vakata-contextmenu-disabled " : "") + "' "+(val.shortcut?" data-shortcut='"+val.shortcut+"' ":'')+">";
-					str += "<"+"a href='#' rel='" + (vakata_context.items.length - 1) + "'>";
+					str += "<"+"a href='#' rel='" + (vakata_context.items.length - 1) + "' " + (val.title ? "title='" + val.title + "'" : "") + ">";
 					if($.vakata.context.settings.icons) {
 						str += "<"+"i ";
 						if(val.icon) {
@@ -6452,7 +6466,7 @@
 					ref = false,
 					off = false,
 					rel = false,
-					tmp, l, t, h, p, i, o, ok, t1, t2, op, ps, pr, ip, tm, is_copy;
+					tmp, l, t, h, p, i, o, ok, t1, t2, op, ps, pr, ip, tm, is_copy, pn;
 				// if we are over an instance
 				if(ins && ins._data && ins._data.dnd) {
 					marker.attr('class', 'jstree-' + ins.get_theme() + ( ins.settings.core.themes.responsive ? ' jstree-dnd-responsive' : '' ));
@@ -6538,6 +6552,11 @@
 									opento = setTimeout((function (x, z) { return function () { x.open_node(z); }; }(ins, ref)), ins.settings.dnd.open_timeout);
 								}
 								if(ok) {
+									pn = ins.get_node(p, true);
+									if (!pn.hasClass('.jstree-dnd-parent')) {
+										$('.jstree-dnd-parent').removeClass('jstree-dnd-parent');
+										pn.addClass('jstree-dnd-parent');
+									}
 									lastmv = { 'ins' : ins, 'par' : p, 'pos' : v === 'i' && ip === 'last' && i === 0 && !ins.is_loaded(tm) ? 'last' : i };
 									marker.css({ 'left' : l + 'px', 'top' : t + 'px' }).show();
 									data.helper.find('.jstree-icon').first().removeClass('jstree-er').addClass('jstree-ok');
@@ -6553,6 +6572,7 @@
 						}
 					}
 				}
+				$('.jstree-dnd-parent').removeClass('jstree-dnd-parent');
 				lastmv = false;
 				data.helper.find('.jstree-icon').removeClass('jstree-ok').addClass('jstree-er');
 				if (data.event.originalEvent && data.event.originalEvent.dataTransfer) {
@@ -6568,6 +6588,7 @@
 				data.helper.find('.jstree-icon').first().removeClass('jstree-ok').addClass('jstree-er');
 			})
 			.on('dnd_stop.vakata.jstree', function (e, data) {
+				$('.jstree-dnd-parent').removeClass('jstree-dnd-parent');
 				if(opento) { clearTimeout(opento); }
 				if(!data || !data.data || !data.data.jstree) { return; }
 				marker.hide().detach();
@@ -6770,6 +6791,7 @@
 							vakata_dnd.helper_w = vakata_dnd.helper.outerWidth();
 						}
 						vakata_dnd.is_drag = true;
+						$(vakata_dnd.target).one('click.vakata', false);
 						/**
 						 * triggered on the document when a drag starts
 						 * @event
@@ -6870,6 +6892,9 @@
 					 * @param {jQuery} helper the helper shown next to the mouse
 					 * @param {Object} event the event that caused the stop
 					 */
+					if (e.target !== vakata_dnd.target) {
+						$(vakata_dnd.target).off('click.vakata');
+					}
 					$.vakata.dnd._trigger("stop", e);
 				}
 				else {

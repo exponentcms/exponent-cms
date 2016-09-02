@@ -3,8 +3,8 @@
 // | class.upload.tr_TR.php                                                 |
 // +------------------------------------------------------------------------+
 // | Copyright (c) Volkan Metin 2008. All rights reserved.                  |
-// | Version       0.25                                                     |
-// | Last modified 19/01/2008                                               |
+// | Version       0.32                                                     |
+// | Last modified 30/08/2013                                               |
 // | Email         metinsoft@gmail.com                                      |
 // | Web           http://www.metinsoft.com                                 |
 // +------------------------------------------------------------------------+
@@ -39,47 +39,47 @@
  */
 
     $translation = array();
-    $translation['file_error']                  = 'Hata oluþtu. Lütfen tekrar deneyiniz.';
-    $translation['local_file_missing']          = 'Dosya bulunamadý.';
-    $translation['local_file_not_readable']     = 'Dosya okunamadý.';
-    $translation['uploaded_too_big_ini']        = 'Hata oluþtu (izin verilen boyuttan büyük dosya yüklemezsiniz. Ancak php.ini dosyasýndan upload_max_filesize deðerini yükselterek tekrar deneyebilirsiniz.).';
-    $translation['uploaded_too_big_html']       = 'Hata oluþtu (sayfanýzda belirttiðiniz MAX_FILE_SIZE boyutundan büyük bir dosya yüklemezsiniz.).';
-    $translation['uploaded_partial']            = 'Hata oluþtu (dosyanýn sadece bir kýsmý yüklenebildi).';
-    $translation['uploaded_missing']            = 'Hata oluþtu (dosya seçilmemiþ).';
-    $translation['uploaded_unknown']            = 'Hata oluþtu (hata tesbit edilemedi).';
-    $translation['try_again']                   = 'Hata oluþtu. Lütfen tekrar deneyiniz.';
+    $translation['file_error']                  = 'Hata oluştu. Lütfen tekrar deneyiniz.';
+    $translation['local_file_missing']          = 'Dosya bulunamadı.';
+    $translation['local_file_not_readable']     = 'Dosya okunamadı.';
+    $translation['uploaded_too_big_ini']        = 'Hata oluştu (izin verilen boyuttan büyük dosya yükleyemezsiniz. Ancak php.ini dosyasından upload_max_filesize değerini yükselterek tekrar deneyebilirsiniz.).';
+    $translation['uploaded_too_big_html']       = 'Hata oluştu (sayfanızda belirttiğiniz MAX_FILE_SIZE boyutundan büyük bir dosya yükleyemezsiniz.).';
+    $translation['uploaded_partial']            = 'Hata oluştu (dosyanın sadece bir kısmı yüklenebildi).';
+    $translation['uploaded_missing']            = 'Hata oluştu (dosya seçilmemiş).';
+    $translation['uploaded_unknown']            = 'Hata oluştu (hata tesbit edilemedi).';
+    $translation['try_again']                   = 'Hata oluştu. Lütfen tekrar deneyiniz.';
     $translation['file_too_big']                = 'Dosya izin verilenden büyük.';
-    $translation['no_mime']                     = 'Dosya türü bulunamadý.';
-    $translation['incorrect_file']              = 'Bu dosyanýn uzantýsý geçersiz.';
-    $translation['image_too_wide']              = 'Resim izin verilenden çok geniþ.';
+    $translation['no_mime']                     = 'Dosya türü bulunamadı.';
+    $translation['incorrect_file']              = 'Bu dosyanın uzantısı geçersiz.';
+    $translation['image_too_wide']              = 'Resim izin verilenden çok geniş.';
     $translation['image_too_narrow']            = 'Resim izin verilenden çok dar.';
     $translation['image_too_high']              = 'Resim izin verilenden çok uzun.';
-    $translation['image_too_short']             = 'Resim izin verilenden çok kýsa.';
-    $translation['ratio_too_high']              = 'Resim oraný çok yüksek (resim çok geniþ).';
-    $translation['ratio_too_low']               = 'Resim oraný çok düþük (resim çok uzun).';
+    $translation['image_too_short']             = 'Resim izin verilenden çok kısa.';
+    $translation['ratio_too_high']              = 'Resim oranı çok yüksek (resim çok geniş).';
+    $translation['ratio_too_low']               = 'Resim oranı çok düşük (resim çok uzun).';
     $translation['too_many_pixels']             = 'Resim izin verilenden büyük.';
     $translation['not_enough_pixels']           = 'Resim izin verilenden küçük.';
-    $translation['file_not_uploaded']           = 'Dosya yüklenemedi. Ýþlem sonlandýrýldý.';
-    $translation['already_exists']              = '%s dosyasý zaten var. Lütfen dosyanýzýn ismini deðiþtirerek tekrar deneyiniz.';
-    $translation['temp_file_missing']           = 'Temp dizini doðru belirtilmemiþ. Ýþlem sonlandýrýldý.';
-    $translation['source_missing']              = 'Dosyanýzýn içeriðinde izin vermeyen unsurlar var. Ýþlem sonlandýrýldý.';
-    $translation['destination_dir']             = 'Dosyalarýn yükleneceði dizin oluþturulamadý. Ýþlem sonlandýrýldý.';
-    $translation['destination_dir_missing']     = 'Dosyalarýn yükleneceði dizin oluþturulmamýþ. Ýþlem sonlandýrýldý.';
-    $translation['destination_path_not_dir']    = 'Dosyalarýn yükleneceði adres bir dizin deðil. Ýþlem sonlandýrýldý.';
-    $translation['destination_dir_write']       = 'Dosyalarýn yükleneceði dizinin yazma izinlerinde(CHMOD) problem var. Ýþlem sonlandýrýldý.';
-    $translation['destination_path_write']      = 'Dosyalarýn yükleneceði adresin yazma izinlerinde(CHMOD) problem var. Ýþlem sonlandýrýldý.';
-    $translation['temp_file']                   = 'Geçici dizine(temp) yazýlamýyor. Ýzinleri kontrol etmelisiniz. Ýþlem sonlandýrýldý.';
-    $translation['source_not_readable']         = 'Dosyanýn içeriði okunamadý. Ýþlem sonlandýrýldý.';
-    $translation['no_create_support']           = '%s dosyasý oluþturulamadý.';
-    $translation['create_error']                = 'Kaynaktan %s resmi oluþturulurken hata oluþtu.';
-    $translation['source_invalid']              = 'Resim dosyasý okunamadý. Dosyanýn bir resim olduðundan emin misiniz?';
-    $translation['gd_missing']                  = 'Ýþleme devam edemiyorsunuz. Bu sunucunun GD kütüphanesine ihtiyacý var.';
-    $translation['watermark_no_create_support'] = '%s resmi oluþturulamadýðý için filigran oluþturulamadý.';
-    $translation['watermark_create_error']      = '%s resmi okunamadýðý için filigran oluþturulamadý.';
-    $translation['watermark_invalid']           = 'Bilinmeyen dosya türü. Filigran oluþturulamadý.';
-    $translation['file_create']                 = '%s dosyasý oluþturulamadý.';
-    $translation['no_conversion_type']          = 'Belirtilen dosya türü dönüþtürülemedi.';
-    $translation['copy_failed']                 = 'Dosya kopyalanýrken hata oluþtu. copy() iþlemi baþarýsýz.';
-    $translation['reading_failed']              = 'Dosya okunurken hata oluþtu.';   
+    $translation['file_not_uploaded']           = 'Dosya yüklenemedi. İşlem sonlandırıldı.';
+    $translation['already_exists']              = '%s dosyası zaten var. Lütfen dosyanızın ismini değiştirerek tekrar deneyiniz.';
+    $translation['temp_file_missing']           = 'Temp dizini doğru belirtilmemiş. İşlem sonlandırıldı.';
+    $translation['source_missing']              = 'Dosyanızın içeriğinde izin vermeyen unsurlar var. İşlem sonlandırıldı.';
+    $translation['destination_dir']             = 'Dosyaların yükleneceği dizin oluşturulamadı. İşlem sonlandırıldı.';
+    $translation['destination_dir_missing']     = 'Dosyaların yükleneceği dizin oluşturulmamış. İşlem sonlandırıldı.';
+    $translation['destination_path_not_dir']    = 'Dosyaların yükleneceği adres bir dizin değil. İşlem sonlandırıldı.';
+    $translation['destination_dir_write']       = 'Dosyaların yükleneceği dizinin yazma izinlerinde(CHMOD) problem var. İşlem sonlandırıldı.';
+    $translation['destination_path_write']      = 'Dosyaların yükleneceği adresin yazma izinlerinde(CHMOD) problem var. İşlem sonlandırıldı.';
+    $translation['temp_file']                   = 'Geçici dizine (temp) yazılamıyor. İzinleri kontrol etmelisiniz. İşlem sonlandırıldı.';
+    $translation['source_not_readable']         = 'Dosyanın içeriği okunamadı. İşlem sonlandırıldı.';
+    $translation['no_create_support']           = '%s dosyası oluşturulamadı.';
+    $translation['create_error']                = 'Kaynaktan %s resmi oluşturulurken hata oluştu.';
+    $translation['source_invalid']              = 'Resim dosyası okunamadı. Dosyanın bir resim olduğundan emin misiniz?';
+    $translation['gd_missing']                  = 'Sunucuda GD kütüphanesi olmadığı için işleme devam edemiyorsunuz.';
+    $translation['watermark_no_create_support'] = '%s resmi oluşturulamadığı için filigran oluşturulamadı.';
+    $translation['watermark_create_error']      = '%s resmi okunamadığı için filigran oluşturulamadı.';
+    $translation['watermark_invalid']           = 'Bilinmeyen dosya türü. Filigran oluşturulamadı.';
+    $translation['file_create']                 = '%s dosyası oluşturulamadı.';
+    $translation['no_conversion_type']          = 'Belirtilen dosya türü dönüştürülemedi.';
+    $translation['copy_failed']                 = 'Dosya kopyalanırken hata oluştu. copy() işlemi başarısız.';
+    $translation['reading_failed']              = 'Dosya okunurken hata oluştu.';   
         
 ?>

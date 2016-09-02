@@ -35,6 +35,9 @@ class expTagController extends expController {
 	 */
     static function description() { return gt("This module is used to manage tags"); }
 
+    static function canImportData() { return true;}
+    static function canExportData() { return true;}
+
 	/**
 	 * does module have sources available?
 	 * @return bool
@@ -89,13 +92,13 @@ class expTagController extends expController {
         expHistory::set('manageable', $this->params);
         $page = new expPaginator(array(
             'model'=>$this->basemodel_name,
-            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+            'where'=>static::hasSources() ? $this->aggregateWhereClause() : null,
             'limit'=>10,
             'order'=>"title",
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->baseclassname,
             'action'=>$this->params['action'],
-            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+            'src'=>static::hasSources() == true ? $this->loc->src : null,
             'columns'=>array(
                 gt('ID#')=>'id',
                 gt('Title')=>'title',
@@ -144,7 +147,7 @@ class expTagController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'controller'=>$this->params['model'],
 //            'action'=>$this->params['action'],
-//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'src'=>static::hasSources() == true ? $this->loc->src : null,
 //            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
         ));
         if ($this->params['model'] == 'faq') {
@@ -155,13 +158,13 @@ class expTagController extends expController {
 
 //        $page = new expPaginator(array(
 //            'model'=>$this->basemodel_name,
-//            'where'=>$this->hasSources() ? $this->aggregateWhereClause() : null,
+//            'where'=>static::hasSources() ? $this->aggregateWhereClause() : null,
 //            'limit'=>50,
 //            'order'=>"title",
 //            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
 //            'controller'=>$this->baseclassname,
 //            'action'=>$this->params['action'],
-//            'src'=>$this->hasSources() == true ? $this->loc->src : null,
+//            'src'=>static::hasSources() == true ? $this->loc->src : null,
 //            'columns'=>array(gt('ID#')=>'id',gt('Title')=>'title',gt('Body')=>'body'),
 //        ));
 //
@@ -242,6 +245,102 @@ class expTagController extends expController {
             }
         }
         expHistory::returnTo('viewable');
+    }
+
+    function import() {
+        assign_to_template(array(
+            'type' => $this
+        ));
+    }
+
+    function importTags($file=null) {
+        if (empty($file->path)) {
+            $file = new stdClass();
+            $file->path = $_FILES['import_file']['tmp_name'];
+        }
+        if (empty($file->path)) {
+            echo gt('Not a Tag Import CSV File');
+            return;
+        }
+        $line_end = ini_get('auto_detect_line_endings');
+        ini_set('auto_detect_line_endings',TRUE);
+        $handle = fopen($file->path, "r");
+
+        // read in the header line
+        $header = fgetcsv($handle, 10000, ",");
+        $count = 0;
+        if (stripos($header[0], 'tag') === false) {
+            rewind($handle);
+        } else {
+            $count++;
+        }
+
+        $errorSet = array();
+
+        // read in the data lines
+        echo "<h1>", gt("Importing Tags"), "</h1>";
+        while (($row = fgetcsv($handle, 10000, ",")) !== FALSE) {
+            $count++;
+
+            $row[0] = strtolower(trim($row['0']));
+            if (empty($row['0'])) {
+                $errorSet[$count] = gt("Is empty.");
+                continue;
+            } else {
+                $newtag = new expTag($row[0]);
+                if ($newtag->id) {
+                    echo gt("Tag already existed"), ": ", $row[0], "<br/>";
+                } else {
+                    $newtag->update(array('title'=>$row[0]));
+                    echo gt("Tag successfully added"), ": <strong>", $row[0], "</strong><br/>";
+                }
+            }
+        }
+
+        fclose($handle);
+        ini_set('auto_detect_line_endings',$line_end);
+
+        if (count($errorSet)) {
+            echo "<br/><hr><br/><div style='color:red'><strong>".gt('The following records were NOT imported').":</strong><br/>";
+            foreach ($errorSet as $rownum => $err) {
+                echo "Row: ", $rownum, " -- ", $err, "<br/>";
+            }
+            echo "</div>";
+        }
+        echo "<br>";
+    }
+
+    function export() {
+        $out = gt('Tag Name (lower case)') . chr(13) . chr(10);
+        $tg = new expTag();
+        $tags = $tg->find('all');
+        set_time_limit(0);
+        foreach ($tags as $tag) {
+            $out .= $tag->title . chr(13) . chr(10);
+        }
+
+        $filename = 'tags_export_' . time() . '.csv';
+
+        ob_end_clean();
+        ob_start("ob_gzhandler");
+
+        // 'application/octet-stream' is the registered IANA type but
+        //        MSIE and Opera seems to prefer 'application/octetstream'
+        $mime_type = (EXPONENT_USER_BROWSER == 'IE' || EXPONENT_USER_BROWSER == 'OPERA') ? 'application/octetstream' : 'application/octet-stream';
+
+        header('Content-Type: ' . $mime_type);
+        header('Expires: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        // IE need specific headers
+        if (EXPONENT_USER_BROWSER == 'IE') {
+            header('Content-Disposition: inline; filename="' . $filename . '"');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Pragma: public');
+        } else {
+            header('Content-Disposition: attachment; filename="' . $filename . '"');
+            header('Pragma: no-cache');
+        }
+        echo $out;
+        exit; // Exit, since we are exporting
     }
 
 }

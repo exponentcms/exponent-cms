@@ -41,7 +41,7 @@ $.fn.elfinderdialog = function(opts) {
 			btnWidth   = 0,
 			platformWin = (window.navigator.platform.indexOf('Win') != -1),
 			
-			dialog = $('<div class="ui-front ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable std42-dialog  '+cldialog+' '+opts.cssClass+'"/>')
+			dialog = $('<div class="ui-front ui-dialog ui-widget ui-widget-content ui-corner-all ui-draggable std42-dialog touch-punch '+cldialog+' '+opts.cssClass+'"/>')
 				.hide()
 				.append(self)
 				.appendTo(parent)
@@ -50,6 +50,7 @@ $.fn.elfinderdialog = function(opts) {
 					containment : 'document',
 					stop : function(e, ui){
 						dialog.css({height : opts.height});
+						self.data('draged', true);
 					}
 				})
 				.css({
@@ -124,13 +125,13 @@ $.fn.elfinderdialog = function(opts) {
 				})
 				.on('posinit', function() {
 					var css = opts.position;
-					if (!css) {
+					if (! css && ! dialog.data('resizing')) {
 						css = {
 							top  : Math.max(0, parseInt((parent.height() - dialog.outerHeight())/2 - 42))+'px',
 							left : Math.max(0, parseInt((parent.width() - dialog.outerWidth())/2))+'px'
 						};
 					}
-					dialog.css(css);
+					css && dialog.css(css);
 				})
 				.data({modal: opts.modal})
 			;
@@ -209,7 +210,18 @@ $.fn.elfinderdialog = function(opts) {
 			dialog.resizable({
 					minWidth   : opts.minWidth,
 					minHeight  : opts.minHeight,
-					alsoResize : this
+					alsoResize : this,
+					start      : function() {
+						if (dialog.data('resizing') !== true && dialog.data('resizing')) {
+							clearTimeout(dialog.data('resizing'));
+						}
+						dialog.data('resizing', true);
+					},
+					stop       : function() {
+						dialog.data('resizing', setTimeout(function() {
+							dialog.data('resizing', false);
+						}, 200));
+					}
 				});
 		} 
 			

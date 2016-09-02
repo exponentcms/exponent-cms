@@ -71,7 +71,7 @@
                     {if !$config.displayauthor}
                         <span class="label posted">{'Posted by'|gettext}</span>
                         <a href="{link action=showall_by_author author=$item->poster|username}">{attribution user_id=$item->poster}</a>
-                        {$prepend = '&#160;&#160;|&#160;&#160;'}
+                        {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
                     {/if}
                     {if !$config.datetag}
                         {'on'|gettext} <span class="date">{$item->publish_date|format_date}</span>
@@ -80,8 +80,8 @@
                         </strong>&#160;
                     {/if}
                 </span>
-                {comments_count record=$item show=1 prepend=$prepend}
-                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'}
+                {comments_count record=$item prepend=$prepend}
+                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
             </div>
             {permissions}
                 <div class="item-actions">
@@ -109,7 +109,7 @@
                     {if $config.ffloat != "Below"}
                         {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item is_listing=1}
                     {/if}
-                    {$link = '<a href="'|cat:makeLink([controller=>blog, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:gt('(read more)')|cat:'</em></a>'}
+                    {$link = '<a href="'|cat:makeLink([controller=>blog, action=>show, title=>$item->sef_url])|cat:'"><em>'|cat:'(read more)'|gettext|cat:'</em></a>'}
                     {if $config.usebody==1}
                         {*<p>{$item->body|summarize:"html":"paralinks"}</p>*}
                         <p>{$item->body|summarize:"html":"parahtml":$link}</p>

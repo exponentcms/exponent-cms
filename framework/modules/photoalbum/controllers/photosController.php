@@ -74,8 +74,6 @@ class photosController extends expController {
     }
     
     function show() {
-//        global $db;
-
         expHistory::set('viewable', $this->params);
         
         // figure out if we're looking this up by id or title
@@ -86,6 +84,9 @@ class photosController extends expController {
             $id = $this->params['title'];
         }
         $record = new photo($id);
+        if (empty($record->id))
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+
         $config = expConfig::getConfig($record->location_data);
         if (empty($this->config))
             $this->config = $config;

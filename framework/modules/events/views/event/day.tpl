@@ -15,16 +15,17 @@
 
     {$myloc=serialize($__loc)}
 	<p class="caption">
-		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;
-		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a>&#160;&#160;&laquo;&#160;&#160;&#160;&#160;&#160;
-        <strong>{$time|format_date:"%A, %B %e, %Y"}&#160;&#160;{printer_friendly_link view='showall_Day' text=''|gettext}{export_pdf_link view='showall_Day' text=''|gettext}&#160;&#160;&#160;&#160;&raquo;&#160;&#160;
+		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp3}" rel="{$prev_timestamp3}" title="{$prev_timestamp3|format_date:"%A, %B %e, %Y"}">{$prev_timestamp3|format_date:"%a"}</a></a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp2}" rel="{$prev_timestamp2}" title="{$prev_timestamp2|format_date:"%A, %B %e, %Y"}">{$prev_timestamp2|format_date:"%a"}</a></a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$prev_timestamp}" rel="{$prev_timestamp}" title="{$prev_timestamp|format_date:"%A, %B %e, %Y"}">{$prev_timestamp|format_date:"%a"}</a></a><span class="hidden-xs">&#160;</span>&#160;&laquo;&#160;<span class="hidden-xs">&#160;&#160;&#160;&#160;</span>
+		<strong><span class="hidden-xs">{$time|format_date:"%A, %B %e, %Y"}</span><span class="visible-xs-inline">{$time|format_date:"%a"}</span></strong>&#160;&#160;{printer_friendly_link view='showall_Day' text=''}{export_pdf_link view='showall_Day' text=''}</a><span class="hidden-xs">&#160;&#160;&#160;</span>&#160;&raquo;&#160;</a><span class="hidden-xs">&#160;</span>
         <input type='hidden' id='day{$__loc->src|replace:'@':'_'}' value="{$time|format_date:"%Y%m%d"}"/>
-		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp}" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
-		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp2}" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a>&#160;&#160;&raquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp}" rel="{$next_timestamp}" title="{$next_timestamp|format_date:"%A, %B %e, %Y"}">{$next_timestamp|format_date:"%a"}</a></a><span class="hidden-xs">&#160;</span>&#160;&raquo;&#160;
+		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp2}" rel="{$next_timestamp2}" title="{$next_timestamp2|format_date:"%A, %B %e, %Y"}">{$next_timestamp2|format_date:"%a"}</a></a><span class="hidden-xs">&#160;</span>&#160;&raquo;&#160;
 		<a class="evnav module-actions" href="{link action=showall view=showall_Day time=$next_timestamp3}" rel="{$next_timestamp3}" title="{$next_timestamp3|format_date:"%A, %B %e, %Y"}">{$next_timestamp3|format_date:"%a"}</a>
 	</p>
 	<dl class="viewweek">
+		<strong>{$time|format_date:"%A, %B %e, %Y"}</strong>
         {$count=0}
 		{foreach from=$days.$time item=item}
             {$count=1}
