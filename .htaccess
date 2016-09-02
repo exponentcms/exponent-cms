@@ -1,4 +1,4 @@
-# Don't show directory directory listings.
+# Don't show directory listings.
 Options -Indexes
 
 # Route requests to Exponent.
@@ -8,36 +8,49 @@ DirectoryIndex index.php
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    # you may have to edit/uncomment the next line if running eXp from a subfolder
+#    RewriteBase /subfolder-name
+
+    # if moving eXp from a subfolder to root, edit/uncomment ONLY one of the next 3 lines
+#    Redirect 301 /testfolder http://yourdomain.org/
+#    RedirectMatch 301 ^/testfolder/$ http://yourdomain.org/
+#    RewriteRule ^testfolder/(.*)$ /$1 [R=301,NC,L]
+
     # To redirect all users to access the site WITH the 'www.' prefix,
     # (http://example.com/... will be redirected to http://www.example.com/...)
-    # adapt and uncomment the following:
-    # RewriteCond %{HTTP_HOST} ^example\.com$ [NC]
-    # RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
-    #
+    # uncomment and adapt the following:
+#     RewriteCond %{HTTP_HOST} ^example\.com$ [NC]
+#     RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+
     # To redirect all users to access the site WITHOUT the 'www.' prefix,
     # (http://www.example.com/... will be redirected to http://example.com/...)
     # uncomment and adapt the following:
-    # RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
-    # RewriteRule ^(.*)$ http://example.com/$1 [L,R=301] 
-  
+#     RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
+#     RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+# the next two lines will dish out .html pages if they exist, which may not be a desired effect!
     RewriteRule ^$ index.html [QSA]
     RewriteRule ^([^.]+)$ $1.html [QSA]
 
-    # Kludge out certain file types that we don't want to try to route thru the eXp router.
-    RewriteCond $1 !^(.*\.css|.*\.js|.*\.png|.*\.pdf|.*favicon\.ico|robots\.txt|.*\.shtml|.*\.htc) [NC]
-
-    # Kludge out image files that we don't want to try to route thru the eXp router.
-    RewriteCond $1 !^(.*\.jpg|.*\.gif|.*\.png|.*\.jpeg|.*\.tiff|.*\.bmp) [NC]
-    
-    # These rules 
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php [QSA,L]
-
     # RewriteRule ^login.php$ login/showlogin
 
+    # Kludge out certain file types that we don't want to try to route thru the eXp router.
+    RewriteCond %{REQUEST_URI} !\.(css|js|pdf|shtml|htc)$ [NC]
+    # Kludge out image files that we don't want to try to route thru the eXp router.
+    RewriteCond %{REQUEST_URI} !\.(jp?g|gif|png|tiff)$ [NC]
+    # Kludge out media files that we don't want to try to route thru the eXp router.
+    RewriteCond %{REQUEST_URI} !\.(mp3|mp4|webm|ogv|flv|f4v)$ [NC]
+    # Kludge out certain other misc files that we don't want to try to route thru the eXp router.
+    RewriteCond %{REQUEST_URI} !^/robots\.txt$ [NC]
+    RewriteCond %{REQUEST_URI} !^/favicon\.ico$ [NC]
+
+    # These rules basically state if it isn't an existing file, directory or symlink, route it to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
 ErrorDocument 403 /index.php?controller=notfound&action=handle_not_authorized&error=403
-ErrorDocument 404 /index.php?notfound&action=handle&error=404
-ErrorDocument 500 /index.php?notfound&action=handle_internal_error&error=500
+ErrorDocument 404 /index.php?controller=notfound&action=handle&error=404
+ErrorDocument 500 /index.php?controller=notfound&action=handle_internal_error&error=500
