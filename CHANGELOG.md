@@ -24,7 +24,6 @@ Version 2.3.9
   - adds form module showall view setting to prevent individual record viewing
   - adds optional lightbox (jquery colorbox) for event on event module showall Upcoming Events Headlines view
   - updates bootstrap3 show product and photoalbum showall accordion views to use colorbox lightbox instead of yui3
-  - adds jquery based bootstrap3 view for attached files in Showcase & Slideshow views
   - adds new ecommerce search setting to only return ecommerce items or products in searches if desired
   - adds external calendar event caching and/or importing
   - now returns a 403 error if attempting to 'show' a missing item
@@ -43,7 +42,7 @@ Version 2.3.9
   - !!! form module did not properly process a 'reloaded' uploadcontrol
   - !!! we now use field names in the form module showall and confirm_data views to properly process 'email' and 'image' fields
   - !!! regression fix form submission/display within multi-page datatables (user/group permissions & view event registrants)
-  - plus many, many more minor tweaks and fixes
+  - plus many, many more minor tweaks and fixes, detailed list found in [changes-v239.md](changes-v239.md)
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
