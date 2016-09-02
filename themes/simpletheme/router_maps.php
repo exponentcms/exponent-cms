@@ -59,7 +59,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
+
 //// Find blog post by the title.  URL would look like blog/my-post-title
 //$maps[] = array(
 //    'controller' => 'blog',
@@ -97,7 +97,7 @@ $maps = array();
 //        'author' => '(.*)'
 //    ),
 //);
-//
+
 //// Find filedownloads by the title.  URL would look like file/my-file-title
 //$maps[] = array(
 //    'controller' => 'filedownload',
@@ -107,7 +107,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
+
 //// Search by url.  URL would look like find/my-search-string
 //$maps[] = array(
 //    'controller' => 'search',
@@ -117,23 +117,7 @@ $maps = array();
 //        'search_string' => '(.*)'
 //    ),
 //);
-//
-//// Find products by the category title .  URL would look like /my-product-category-title
-//$maps[] = array(
-//    'controller' => 'store',
-//    'action' => 'showall',
-//    'url_parts' => array(
-//        'title' => '(.*)'  // note, if active will attempt to display ALL single parm urls as pages or store categories
-//    ),
-//);
-//// Find product by the title .  URL would look like /my-product-title
-//$maps[] = array(
-//    'controller' => 'store',
-//    'action' => 'show',
-//    'url_parts' => array(
-//        'title' => '(.*)'  // note, if active will attempt to display ALL single parm urls as pages or store products
-//    ),
-//);
+
 //// Find products by the category title .  URL would look like browse-store/my-product-category-title
 //$maps[] = array(
 //    'controller' => 'store',
@@ -152,7 +136,7 @@ $maps = array();
 //        'title' => '(.*)'
 //    ),
 //);
-//
+
 //// Find help by the version and title.  URL would look like docs/2.0.1/my-help-title
 //$maps[] = array(
 //    'controller' => 'help',
