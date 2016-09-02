@@ -179,6 +179,13 @@
     gt("tabbed");
     gt("accordion");
     gt("toggle");
+    gt("Your Comments");
+    gt("Show All Posts");
+    gt("Show Post Tags");
+    gt("Show Post Authors");
+    gt("Show Post Categories");
+    gt("Show Post Dates");
+    gt("Show Recent Post Comments");
 
 //    gt('Show my addressbook');
     gt('All Products and Categories');
