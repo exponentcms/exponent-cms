@@ -1,0 +1,27 @@
+In addition to the fixes found in the previous patches to v2.1.4, 214patch9 provides the following:
+* !!! fixes security issue with possible execution of uploaded scripts
+
+In addition to the fixes found in the previous patches to v2.1.4, 214patch8 provides the following:
+* !!! fixes security issue with database manager and unused pixidou files
+* correctly sets version patch number left out in previous patch
+* upgrade check now points to new 'master' version server
+
+In addition to the fixes found in the previous patches to v2.1.4, 214patch7 provides the following:
+* !!! Fixes anomalies introduced with cross-site security fix
+* fixes a permissions issue with navigation module
+
+In addition to the fixes found in the previous patches to v2.1.4, 214patch6 provides the following:
+* !!! Fixes cross-site security issue
+
+214patch3, 214patch4, and 214patch5 created a data corruption issue and were pulled from release
+
+In addition to the fixes found in 214patch1, 214patch2 provides the following:
+* !!!Fixes loss of admin/super-admin status when password is changed
+* !!!Fixes bug which could allow display of orders to non-admin users
+
+214patch1 fixes these issues in v214:
+* an important security fix
+* any user/group not displayed on the current permissions page (for multiple-pages of users/groups), would have their permissions erased
+* the item merge command was not working
+* several tweaks to get online donations and event registrations working (many more updates/tweaks are already in the v2.2.0 code)
+* the image editor failed to crop/resize the transparency of images
