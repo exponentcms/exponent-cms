@@ -1026,7 +1026,15 @@ class eventController extends expController {
                 return;
             }
 
+            if (bs3())
+                $css = file_get_contents(BASE . "external/bootstrap3/css/bootstrap.css");
+            elseif (bs2())
+                $css = file_get_contents(BASE . "external/bootstrap/css/bootstrap.css");
+            else
+                $css = file_get_contents(BASE . "framework/modules/events/assets/css/calendar.css");
+            $template->assign("css", $css);
             $template->assign("config", $this->config);
+            $template->assign("src", $loc->src);
 
             // format and send email
             $subject = $this->config['email_title_reminder'] . " - $title";
