@@ -354,12 +354,12 @@ class blogController extends expController {
      */
     public function meta_fb($request, $object, $canonical) {
         $metainfo = array();
+        $metainfo['type'] = 'article';
         if (!empty($object->body)) {
             $desc = str_replace('"',"'",expString::summarize($object->body,'html','para'));
         } else {
             $desc = SITE_DESCRIPTION;
         }
-        $metainfo['type'] = 'blog';
         $metainfo['title'] = substr(empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'], 0, 87);
         $metainfo['description'] = substr(empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'], 0, 199);
         $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
