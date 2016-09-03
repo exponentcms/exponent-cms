@@ -88,6 +88,7 @@
                         <blockquote>
                             {'Also used for Twitter, Pinterest, etc...'|gettext}
                         </blockquote>
+                        {*{control type="hidden" name="fb[type]" value='article'}*}
                         {control type="text" name="fb[title]" label="Meta Title"|gettext value=$record->meta_fb.title size=88 description='Override the item title for social media'|gettext}
                         {control type="textarea" name="fb[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_fb.description description='Override the item summary for social media'|gettext}
                         {control type="text" name="fb[url]" label="Meta URL"|gettext value=$record->meta_fb.url description='Canonical URL for social media if different than Canonical URL'|gettext}
@@ -97,7 +98,6 @@
                 {if !$config.disable_twitter_meta}
                     <div id="tab5" role="tabpanel" class="tab-pane fade">
                         <h2>{'Twitter Meta'|gettext}</h2>
-                        {*{control type="hidden" name="tw[type]" value='article'}*}
                         {control type="text" name="tw[title]" label="Meta Title"|gettext value=$record->meta_tw.title size=88 description='Override the item title for social media'|gettext}
                         {control type="textarea" name="tw[description]" label="Meta Description"|gettext rows=5 cols=35 size=200 value=$record->meta_tw.description description='Override the item summary for social media'|gettext}
                         {control type="text" name="tw[site]" label="Twitter Account"|gettext value=$record->meta_tw.twsite description='Must include @'|gettext}
@@ -106,7 +106,6 @@
                 {/if}
             </div>
         </div>
-	    {*<div class="loadingdiv">{"Loading File Download Item"|gettext}</div>*}
         {loading title="Loading File Download Item"|gettext}
         {control type=buttongroup submit="Save File"|gettext cancel="Cancel"|gettext}
     {/form}   
