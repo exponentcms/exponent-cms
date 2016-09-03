@@ -2,7 +2,7 @@ Program,Version,URL,Avail version,Exponent Customization Notes:
 Swiftmailer,5.4.3,swiftmailer.org,5.4.3,we add  eDebugLogger plugin & fix php 5.6 ssl issue
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
-Smarty,3.1.27,smarty.net,3.1.29,
+Smarty,3.1.27,smarty.net,3.1.30,
 phpthumb,1.7.14-201608101311,https://github.com/JamesHeinrich/phpThumb,1.7.14-201608101311,phpThumb.config.php - we also allow &amp in parsing and err command
 minify,2.3.0,github.com/mrclay/minify,2.3.0,modify config.php
 YUI2,2.9.0,developer.yahoo.com/yui/2,2.9.0,
@@ -31,14 +31,14 @@ Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea
 SimpleAjaxUploader,2.5.5,github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,4.2.0,necolas.github.com/normalize.css/,4.2.0,auto included in bootstrap 3
 MediaElement.js,2.22.1,mediaelementjs.com/,2.22.1,
-Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,4-5.3.1,
-Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,4-5.3.1,
+Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,5.3.1,
+Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,5.3.1,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
 CKEditor,4.5.10,ckeditor.com,4.5.10,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.4.2,tinymce.com,4.4.2,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+TinyMCE,4.4.3,tinymce.com,4.4.3,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
 PLUpload,2.1.9,github.com/moxiecode/plupload,2.1.9,"needed for TinyMCE Quick Upload, placed in that plugin folder"
 elFinder,2.1.14n,elfinder.org,2.1.14n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
