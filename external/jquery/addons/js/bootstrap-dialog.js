@@ -218,6 +218,8 @@
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_WIDE] = '';
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_LARGE] = 'btn-lg';
     BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
+    BootstrapDialog.BUTTONS_ORDER_CANCEL_OK = 'btns-order-cancel-ok';
+    BootstrapDialog.BUTTONS_ORDER_OK_CANCEL = 'btns-order-ok-cancel';
 
     /**
      * Default options.
@@ -238,7 +240,8 @@
         draggable: false,
         animate: true,
         description: '',
-        tabindex: -1
+        tabindex: -1,
+        btnsOrder: BootstrapDialog.BUTTONS_ORDER_CANCEL_OK
     };
 
     /**
@@ -1207,6 +1210,7 @@
             closable: false,
             draggable: false,
             buttonLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
+            buttonHotkey: null,
             callback: null
         };
 
@@ -1223,6 +1227,7 @@
         dialog.setData('callback', alertOptions.callback);
         dialog.addButton({
             label: alertOptions.buttonLabel,
+            hotkey: alertOptions.buttonHotkey,
             action: function (dialog) {
                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
                     return false;
@@ -1276,8 +1281,11 @@
             draggable: false,
             btnCancelLabel: BootstrapDialog.DEFAULT_TEXTS.CANCEL,
             btnCancelClass: null,
+            btnCancelHotkey: null,
             btnOKLabel: BootstrapDialog.DEFAULT_TEXTS.OK,
             btnOKClass: null,
+            btnOKHotkey: null,
+            btnsOrder: BootstrapDialog.defaultOptions.btnsOrder,
             callback: null
         };
         if (typeof arguments[0] === 'object' && arguments[0].constructor === {}.constructor) {
@@ -1294,9 +1302,11 @@
 
         var dialog = new BootstrapDialog(confirmOptions);
         dialog.setData('callback', confirmOptions.callback);
-        dialog.addButton({
+        
+        var buttons = [{
             label: confirmOptions.btnCancelLabel,
             cssClass: confirmOptions.btnCancelClass,
+            hotkey: confirmOptions.btnCancelHotkey,
             action: function (dialog) {
                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, false) === false) {
                     return false;
@@ -1304,10 +1314,10 @@
 
                 return dialog.close();
             }
-        });
-        dialog.addButton({
+        }, {
             label: confirmOptions.btnOKLabel,
             cssClass: confirmOptions.btnOKClass,
+            hotkey: confirmOptions.btnOKHotkey,
             action: function (dialog) {
                 if (typeof dialog.getData('callback') === 'function' && dialog.getData('callback').call(this, true) === false) {
                     return false;
@@ -1315,7 +1325,11 @@
 
                 return dialog.close();
             }
-        });
+        }];
+        if(confirmOptions.btnsOrder === BootstrapDialog.BUTTONS_ORDER_OK_CANCEL) {
+            buttons.reverse();
+        }
+        dialog.addButtons(buttons);
 
         return dialog.open();
 
