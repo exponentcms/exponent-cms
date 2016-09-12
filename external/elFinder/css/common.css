@@ -2,6 +2,11 @@
 /*            COMMON ELFINDER STUFFS         */
 /*********************************************/
 
+/* for old jQuery UI */
+.ui-front {
+    z-index: 100;
+}
+
 /* common container */
 .elfinder {
 	padding: 0;
@@ -75,6 +80,9 @@
 /* write only */
 .elfinder-wo .elfinder-perms { background-position:0 -80px;}
 
+/* volume type group */
+.elfinder-group .elfinder-perms { background-position:0 0px;}
+
 /* locked */
 .elfinder-lock {
 	background-position:0 -656px;
@@ -142,7 +150,6 @@
 	position: absolute;
 	opacity: .2;
 	filter: Alpha(Opacity=20);
-	display: none;
 }
 
 /* panels under/below cwd (for search field etc) */
@@ -155,5 +162,10 @@
 /* for html5 drag and drop */
 [draggable=true] {
 	-khtml-user-drag: element;
+}
+
+/* for place holder to content editable elements */ 
+.elfinder [contentEditable=true]:empty:not(:focus):before {
+	content:attr(data-ph);
 }
 

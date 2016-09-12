@@ -35,8 +35,8 @@ elFinder.prototype.resources = {
 		symlink    : '<span class="elfinder-symlink"/>',
 		navicon    : '<span class="elfinder-nav-icon"/>',
 		navspinner : '<span class="elfinder-navbar-spinner"/>',
-		navdir     : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree"/></div>',
-		placedir   : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}" title="{title}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree"/></div>'
+		navdir     : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree" style="display:none"/></div>',
+		placedir   : '<div class="elfinder-navbar-wrapper"><span id="{id}" class="ui-corner-all elfinder-navbar-dir {cssclass}" title="{title}"><span class="elfinder-navbar-arrow"/><span class="elfinder-navbar-icon" {style}/>{symlink}{permissions}{name}</span><div class="elfinder-navbar-subtree" style="display:none"/></div>'
 		
 	},
 	
@@ -76,7 +76,7 @@ elFinder.prototype.resources = {
 					node.removeClass('ui-front').css('position', '');
 					if (tarea) {
 						nnode.css('max-height', '');
-					} else {
+					} else if (pnode) {
 						pnode.css('width', '')
 							.parent('td').css('overflow', '');
 					}
@@ -200,12 +200,20 @@ elFinder.prototype.resources = {
 											var dirhash = data.added[0].hash,
 												newItem = cwd.find('#'+fm.cwdHash2Id(dirhash));
 											if (sel && move) {
-												fm.exec('paste', dirhash).done(function() {
-													fm.trigger('selectfiles', { files: [dirhash] });
+												fm.one(cmd+'done', function() {
+													fm.exec('paste', dirhash);
 												});
 											}
-											if (newItem.length) {
-												newItem.trigger('scrolltoview');
+											if (data && data.added && data.added[0]) {
+												fm.one(cmd+'done', function() {
+													newItem = fm.getUI('cwd').find('#'+fm.cwdHash2Id(data.added[0].hash));
+													if (newItem.length) {
+														newItem.trigger('scrolltoview');
+													} else {
+														fm.trigger('selectfiles', {files : $.map(data.added, function(f) {return f.hash;})});
+														fm.toast({msg: fm.i18n(['complete', fm.i18n('cmd'+cmd)])});
+													}
+												});
 											}
 										}
 									});

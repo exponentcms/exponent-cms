@@ -10,7 +10,6 @@
 	border-top:0 solid;
 	border-bottom:0 solid;
 	overflow:auto;
-	display:none;
 	position:relative;
 }
 
@@ -60,6 +59,18 @@
 	background-repeat:no-repeat;
 /*	border:1px solid #111;*/
 }
+.elfinder-touch .elfinder-navbar-arrow {
+	zoom: 1.3;
+	-moz-transform-origin: top left;
+	-moz-transform: scale(1.3);
+	margin-bottom: 8px;
+}
+.elfinder-ltr.elfinder-touch .elfinder-navbar-arrow {
+    margin-right: 20px;
+}
+.elfinder-rtl.elfinder-touch .elfinder-navbar-arrow {
+    margin-left: 20px;
+}
 
 .ui-state-active .elfinder-navbar-arrow { background-image:url("../img/arrows-active.png"); }
 
@@ -94,19 +105,17 @@
 .elfinder-places .elfinder-navbar-root .elfinder-navbar-icon { background-position:0 -704px; }
 
 /* root icon of each volume */
-.elfinder-tree .elfinder-navbar-root-local   .elfinder-navbar-icon { background-image:url("../img/volume_icon_local.png"); }
-.elfinder-tree .elfinder-navbar-root-ftp     .elfinder-navbar-icon { background-image:url("../img/volume_icon_ftp.png"); }
-.elfinder-tree .elfinder-navbar-root-sql     .elfinder-navbar-icon { background-image:url("../img/volume_icon_sql.png"); }
-.elfinder-tree .elfinder-navbar-root-dropbox .elfinder-navbar-icon { background-image:url("../img/volume_icon_dropbox.png"); }
-.elfinder-tree .elfinder-navbar-root-googledrive .elfinder-navbar-icon { background-image:url("../img/volume_icon_googledrive.png"); }
+.elfinder-tree .elfinder-navbar-root-local   .elfinder-navbar-icon { background-image:url("../img/volume_icon_local.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-ftp     .elfinder-navbar-icon { background-image:url("../img/volume_icon_ftp.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-sql     .elfinder-navbar-icon { background-image:url("../img/volume_icon_sql.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-dropbox .elfinder-navbar-icon { background-image:url("../img/volume_icon_dropbox.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-googledrive .elfinder-navbar-icon { background-image:url("../img/volume_icon_googledrive.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-network .elfinder-navbar-icon { background-image:url("../img/toolbar.png"); background-position: 0 -688px; }
 
 /* icon in active/hove/dropactive state */
 .ui-state-active           .elfinder-navbar-icon, 
 .elfinder-droppable-active .elfinder-navbar-icon, 
 .ui-state-hover            .elfinder-navbar-icon { background-position:0 -32px; }
-
-/* subdirs tree */
-.elfinder-navbar-subtree { display:none; }
 
 /* ltr/rtl enviroment */
 .elfinder-ltr .elfinder-navbar-subtree { margin-left:12px; }
@@ -173,7 +182,6 @@
 	top: 0px;
 	height: 100%;
 	width: 50px;
-	display: none;
 	pointer-events: none;
 }
 .elfinder-ltr .elfinder-navbar-swipe-handle {

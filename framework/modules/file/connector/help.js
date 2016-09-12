@@ -5,7 +5,7 @@
  *
  * @author Dmitry (dio) Levashov
  **/
-elFinder.prototype.commands.help = function() {
+(elFinder.prototype.commands.help = function() {
 	var fm   = this.fm,
 		self = this,
 		linktpl = '<div class="elfinder-help-link"> <a href="{url}">{link}</a></div>',
@@ -30,7 +30,7 @@ elFinder.prototype.commands.help = function() {
 			html.push('<div id="'+fm.namespace+'-help-about" class="ui-tabs-panel ui-widget-content ui-corner-bottom"><div class="elfinder-help-logo"/>');
 			html.push('<h3>elFinder for Exponent CMS</h3>');
 			html.push('<div class="'+prim+'">'+fm.i18n('webfm')+'</div>');
-			html.push('<div class="'+sec+'">'+fm.i18n('ver')+': '+fm.version+', '+fm.i18n('protocolver')+': <span id="apiver"></span></div>');
+			html.push('<div class="'+sec+'">'+fm.i18n('ver')+': '+fm.version+', '+fm.i18n('protocolver')+': <span class="apiver"></span></div>');
 			html.push('<div class="'+sec+'">jQuery/jQuery UI: '+$().jquery+'/'+$.ui.version+'</div>');
 
 			html.push(sep);
@@ -50,7 +50,11 @@ elFinder.prototype.commands.help = function() {
 			html.push(atpl[r](author, 'Naoki Sawada &lt;hypweb@gmail.com&gt;')[r](work, fm.i18n('contributor')));
 			html.push(atpl[r](author, 'Dave Leffler &lt;dleffler12@gmail.com&gt;')[r](work, fm.i18n('Exponent CMS integrator')));
 			
-			fm.i18[fm.lang].translator && html.push(atpl[r](author, fm.i18[fm.lang].translator)[r](work, fm.i18n('translator')+' ('+fm.i18[fm.lang].language+')'));
+			if (fm.i18[fm.lang].translator) {
+				$.each(fm.i18[fm.lang].translator.split(', '), function() {
+					html.push(atpl[r](author, this.trim())[r](work, fm.i18n('translator')+' ('+fm.i18[fm.lang].language+')'));
+				});
+			}
 			
 			html.push(sep);
 			html.push('<div class="'+lic+'">'+fm.i18n('icons')+': Pixelmixer, <a href="http://p.yusukekamiyamane.com" target="_blank">Fugue</a></div>');
@@ -91,7 +95,7 @@ elFinder.prototype.commands.help = function() {
 		debug = function() {
 			// debug tab
 			html.push('<div id="'+fm.namespace+'-help-debug" class="ui-tabs-panel ui-widget-content ui-corner-bottom">');
-			html.push('<div class="ui-widget-content elfinder-help-debug"></div>');
+			html.push('<div class="ui-widget-content elfinder-help-debug"><ul></ul></div>');
 			html.push('</div>');
 			// end debug
 		},
@@ -99,31 +103,53 @@ elFinder.prototype.commands.help = function() {
 			var render = function(elm, obj) {
 				$.each(obj, function(k, v) {
 					elm.append($('<dt/>').text(k));
-					if (typeof v === 'object' && ($.isPlainObject(v) || v.length)) {
+					if (typeof v === 'undefined') {
+						elm.append($('<dd/>').append($('<span/>').text('undfined')));
+					} else if (typeof v === 'object' && !v) {
+						elm.append($('<dd/>').append($('<span/>').text('null')));
+					} else if (typeof v === 'object' && ($.isPlainObject(v) || v.length)) {
 						elm.append( $('<dd/>').append(render($('<dl/>'), v)));
 					} else {
-						elm.append($('<dd/>').append($('<span/>').text((typeof v === 'object')? '[]' : (v? v : '""'))));
+						elm.append($('<dd/>').append($('<span/>').text((v && typeof v === 'object')? '[]' : (v? v : '""'))));
 					}
 				});
 				return elm;
 			},
-			target = content.find('#'+fm.namespace+'-help-debug').find('div:first').empty(),
+			cnt = debugUL.children('li').length,
+			targetL, target, tabId,
 			info;
 			
+			if (self.debug.options || self.debug.debug) {
+				if (cnt >= 5) {
+					debugUL.children('li:last').remove();
+					debugDIV.children('div:last').remove();
+				}
+
+				tabId = fm.namespace + '-help-debug-' + (+new Date());
+				targetL = $('<li/>').html('<a href="#'+tabId+'">'+self.debug.debug.cmd+'</a>').prependTo(debugUL);
+				target = $('<div id="'+tabId+'"/>');
+
+				if (self.debug.debug) {
+					info = $('<fieldset>').append($('<legend/>').text('debug'), render($('<dl/>'), self.debug.debug));
+					target.append(info);
+				}
 			if (self.debug.options) {
 				info = $('<fieldset>').append($('<legend/>').text('options'), render($('<dl/>'), self.debug.options));
 				target.append(info);
 			}
-			if (self.debug.debug) {
-				info = $('<fieldset>').append($('<legend/>').text('debug'), render($('<dl/>'), self.debug.debug));
-				target.append(info);
+
+				debugUL.after(target);
+
+				debugDIV.tabs('refresh');
+				debugUL.find('a:first').click();
 			}
 		},
-		content = '';
+		content = '',
+		debugDIV, debugUL;
 	
 	this.alwaysEnabled  = true;
 	this.updateOnSelect = false;
-	this.state = 0;
+	this.state = -1;
 	
 	this.shortcuts = [{
 		pattern     : 'f1',
@@ -160,26 +186,34 @@ elFinder.prototype.commands.help = function() {
 				
 				if (!link.hasClass('ui-tabs-selected')) {
 					link.parent().addClass('ui-tabs-selected ui-state-active').siblings().removeClass('ui-tabs-selected').removeClass('ui-state-active');
-					content.find('.ui-tabs-panel').hide().filter(link.attr('href')).show();
+					content.children('.ui-tabs-panel').hide().filter(link.attr('href')).show();
 				}
 				
 			})
 			.filter(':first').click();
 		
+		// debug
+		debugDIV = content.find('#'+fm.namespace+'-help-debug').children('div:first').tabs();
+		debugUL = debugDIV.children('ul:first');
+
 		self.debug = {};
 
-		fm.bind('open', function(e) {
+		fm.bind('backenddebug', function(e) {
 			var tabDebug = content.find('.elfinder-help-tab-debug');
+			// CAUTION: DO NOT TOUCH `e.data`
 			if (e.data && e.data.debug) {
 				tabDebug.show();
-				self.debug = { options : e.data.options, debug : e.data.debug };
-				if (self.dialog && self.dialog.is(':visible')) {
+				self.debug = { options : e.data.options, debug : $.extend({ cmd : fm.currentReqCmd }, e.data.debug) };
+				if (self.dialog/* && self.dialog.is(':visible')*/) {
 					debugRender();
 				}
-			} else {
-				tabDebug.hide();
 			}
 		});
+
+		content.find('#'+fm.namespace+'-help-about').find('.apiver').text(fm.api);
+		self.dialog = fm.dialog(content, {title : self.title, width : 530, autoOpen : false, destroyOnClose : false});
+
+		self.state = 0;
 	});
 	
 	this.getstate = function() {
@@ -187,14 +221,7 @@ elFinder.prototype.commands.help = function() {
 	};
 	
 	this.exec = function() {
-		if (!this.dialog) {
-			content.find('#apiver').text(this.fm.api);
-			this.dialog = this.fm.dialog(content, {title : this.title, width : 530, autoOpen : false, destroyOnClose : false});
-		}
-		
-		debugRender();
-
 		this.dialog.elfinderdialog('open').find('.ui-tabs-nav li a:first').click();
 	};
 
-};
+}).prototype = { forceLoad : true }; // this is required command

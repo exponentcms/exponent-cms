@@ -31,7 +31,7 @@ elFinder.prototype.commands.archive = function() {
 	this.getstate = function(sel) {
 		var sel = this.files(sel),
 			cnt = sel.length,
-			chk = (cnt && sel[0].phash && (fm.file(sel[0].phash) || {}).write && ! $.map(sel, function(f){ return f.read ? null : true }).length),
+			chk = (cnt && ! fm.isRoot(sel[0]) && (fm.file(sel[0].phash) || {}).write && ! $.map(sel, function(f){ return f.read ? null : true }).length),
 			cwdId;
 		
 		if (chk && fm.searchStatus.state > 1) {
@@ -54,7 +54,7 @@ elFinder.prototype.commands.archive = function() {
 			error && fm.error(error);
 		});
 
-		if (!(this.enabled() && cnt && mimes.length && $.inArray(mime, mimes) !== -1)) {
+		if (! (cnt && mimes.length && $.inArray(mime, mimes) !== -1)) {
 			return dfrd.reject();
 		}
 		
@@ -73,15 +73,16 @@ elFinder.prototype.commands.archive = function() {
 		self.data   = {targets : self.hashes(hashes), type : mime};
 		
 		if (fm.cwd().hash !== cwd.hash) {
-			open = fm.exec('open', cwd.hash);
+			open = fm.exec('open', cwd.hash).done(function() {
+				fm.one('cwdrender', function() {
+					fm.selectfiles({files : hashes});
+					dfrd = $.proxy(fm.res('mixin', 'make'), self)();
+				});
+			});
 		} else {
-			open = null;
-		}
-		
-		$.when(open).done(function() {
 			fm.selectfiles({files : hashes});
 			dfrd = $.proxy(fm.res('mixin', 'make'), self)();
-		});
+		}
 		
 		return dfrd;
 	}
