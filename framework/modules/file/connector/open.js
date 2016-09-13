@@ -1,11 +1,11 @@
-"use strict"
+"use strict";
 /**
  * @class  elFinder command "open"
  * Enter folder or open files in new windows
  *
  * @author Dmitry (dio) Levashov
  **/  
-elFinder.prototype.commands.open = function() {
+(elFinder.prototype.commands.open = function() {
 	this.alwaysEnabled = true;
 	
 	this._handlers = {
@@ -32,6 +32,7 @@ elFinder.prototype.commands.open = function() {
 			files = this.files(hashes),
 			cnt   = files.length,
 			thash = (typeof opts == 'object')? opts.thash : false,
+			opts  = this.options,
 			file, url, s, w, imgW, imgH, winW, winH, reg, link, html5dl, inline;
 
 		if (!cnt && !thash) {
@@ -47,7 +48,8 @@ elFinder.prototype.commands.open = function() {
 				: fm.request({
 						data   : {cmd  : 'open', target : thash || file.hash},
 						notify : {type : 'open', cnt : 1, hideCnt : true},
-						syncOnFail : true
+						syncOnFail : true,
+						lazy : false
 					});
 		}
 		
@@ -127,7 +129,7 @@ elFinder.prototype.commands.open = function() {
 				if (url === '') {
                     var form = document.createElement("form");
                     form.action = fm.options.url;
-                    form.method = 'POST';
+                    form.method = typeof opts.method === 'string' && opts.method.toLowerCase() === 'get'? 'GET' : 'POST';
                     form.target = 'new_window';
                     form.style.display = 'none';
                     var params = $.extend({}, fm.options.customData, {
@@ -167,7 +169,7 @@ elFinder.prototype.commands.open = function() {
 						dfrd.reject();
 					}
 				},
-				buttons : (fm.command('zipdl') && fm.isCommandEnabled('zipdl', fm.cwd().hash))? [
+				buttons : (fm.getCommand('zipdl') && fm.isCommandEnabled('zipdl', fm.cwd().hash))? [
 					{
 						label : 'cmddownload',
 						callback : function() {
@@ -184,4 +186,4 @@ elFinder.prototype.commands.open = function() {
 		return dfrd;
 	}
 
-};
+}).prototype = { forceLoad : true }; // this is required command

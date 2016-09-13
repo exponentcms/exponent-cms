@@ -475,6 +475,7 @@ class remove_oldfiles extends upgradescript {
             'framework/modules/twitter/assets/images/tweeted.png',
             'framework/modules/file/connector/cwd.js',
             'framework/modules/file/connector/elFinder.js',
+			'framework/modules/file/connector/elFinder.options.js',
 			// other obsolete & mis-placed views
 			'framework/core/views/popup_general.tpl',
 			'framework/core/views/popup_printerfriendly.tpl',

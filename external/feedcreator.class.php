@@ -1120,7 +1120,7 @@ class RSSCreator091 extends FeedCreator {
 	 */
 	function createFeed() {
 		$feed = "<?xml version=\"1.0\" encoding=\"".$this->encoding."\"?>\n";
-		$feed.= $this->_createGeneratorComment();
+//		$feed.= $this->_createGeneratorComment();
 		$feed.= $this->_createStylesheetReferences();
 		$feed.= "<rss version=\"".$this->RSSVersion."\" ";
         if (!empty($this->XMLNS)) {

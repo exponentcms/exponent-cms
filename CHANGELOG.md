@@ -8,6 +8,15 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.4.0
+-------------
+### Address issues in v2.3.9
+  - a
+### Known Issues
+  - eCommerce purchase-order functionality has not been tested/is not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Version 2.3.9
 -------------
 ### Address issues in v2.3.8

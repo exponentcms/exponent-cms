@@ -1,11 +1,11 @@
-"use strict"
+"use strict";
 /**
  * @class  elFinder command "quicklook"
  * Fast preview for some files types
  *
  * @author Dmitry (dio) Levashov
  **/
-elFinder.prototype.commands.quicklook = function() {
+(elFinder.prototype.commands.quicklook = function() {
 	var self       = this,
 		fm         = self.fm,
 		/**
@@ -66,12 +66,15 @@ elFinder.prototype.commands.quicklook = function() {
 		 * @return void
 		 **/
 		closedCss = function(node) {
+			var elf = fm.getUI().offset(),
+				base = node.find('.elfinder-cwd-file-wrapper'),
+				baseOffset = base.offset();
 			return {
 				opacity : 0,
-				width   : 20,//node.width(),
-				height  : fm.view == 'list' ? 1 : 20,
-				top     : node.offset().top+'px', 
-				left    : node.offset().left+'px' 
+				width   : base.width(),
+				height  : base.height(),
+				top     : baseOffset.top - elf.top,
+				left    : baseOffset.left  - elf.left
 			}
 		},
 		/**
@@ -81,14 +84,15 @@ elFinder.prototype.commands.quicklook = function() {
 		 **/
 		openedCss = function() {
 			var win = $(window);
+			var elf = fm.getUI().offset();
 			var w = Math.min(width, $(window).width()-10);
 			var h = Math.min(height, $(window).height()-80);
 			return {
 				opacity : 1,
 				width  : w,
 				height : h,
-				top    : parseInt((win.height() - h - 60)/2 + win.scrollTop()),
-				left   : parseInt((win.width() - w)/2 + win.scrollLeft())
+				top    : parseInt((win.height() - h - 60) / 2 + win.scrollTop() - elf.top),
+				left   : parseInt((win.width() - w) / 2 + win.scrollLeft() - elf.left)
 			}
 		},
 		
@@ -145,8 +149,8 @@ elFinder.prototype.commands.quicklook = function() {
 				
 				var win     = self.window,
 					full    = win.hasClass(fullscreen),
-					scroll  = 'scroll.'+fm.namespace,
-					$window = $(window);
+					$window = $(window),
+					resize  = function() { self.preview.trigger('changesize'); };
 					
 				e.stopPropagation();
 				e.preventDefault();
@@ -156,7 +160,7 @@ elFinder.prototype.commands.quicklook = function() {
 					navShow();
 					win.toggleClass(fullscreen)
 					.css(win.data('position'));
-					$window.off(scroll).trigger(self.resize).off(self.resize);
+					$window.trigger(self.resize).off(self.resize, resize);
 					navbar.off('mouseenter mouseleave');
 					cover.off(coverEv);
 				} else {
@@ -170,10 +174,7 @@ elFinder.prototype.commands.quicklook = function() {
 					})
 					.removeAttr('style');
 
-					$(window).on(self.resize, function(e) {
-						self.preview.trigger('changesize');
-					})
-					.trigger(scroll)
+					$(window).on(self.resize, resize)
 					.trigger(self.resize);
 
 					cover.on(coverEv, function(e) {
@@ -337,8 +338,9 @@ elFinder.prototype.commands.quicklook = function() {
 	
 
 	this.window = $('<div class="ui-front ui-helper-reset ui-widget elfinder-quicklook touch-punch" style="position:absolute"/>')
+		.hide()
 		.addClass(fm.UA.Touch? 'elfinder-touch' : '')
-		.click(function(e) { e.stopPropagation();  })
+		.on('click', function(e) { e.stopPropagation();  })
 		.append(
 			$('<div class="elfinder-quicklook-titlebar"/>')
 			.append(
@@ -476,11 +478,11 @@ elFinder.prototype.commands.quicklook = function() {
 				win.css('z-index', fm.zIndex + 1);
 			}
 			
-			win.appendTo('body');
+			win.appendTo(parent);
 			
 			// close window on escape
 			$(document).keydown(function(e) {
-				e.keyCode == 27 && self.opened() && win.trigger('close')
+				e.keyCode == $.ui.keyCode.ESCAPE && self.opened() && win.trigger('close')
 			})
 			
 			if ($.fn.resizable) {
@@ -542,4 +544,4 @@ elFinder.prototype.commands.quicklook = function() {
 		this.info.stop(true, true).hide();
 	};
 
-};
+}).prototype = { forceLoad : true }; // this is required command

@@ -1084,6 +1084,7 @@ abstract class expController {
             //    $rss->image->height = 64;
             $rss->ttl = $site_rss->rss_cachetime;
             $rss->link = URL_FULL;
+            $rss->language = LOCALE;
             $rss->syndicationURL = makeLink(array('module'=>$site_rss->module, 'src'=>$site_rss->src));
             if ($site_rss->rss_is_podcast) {
                 $rss->itunes = new iTunes();

@@ -607,7 +607,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 **/
 	protected function _dimensions($path, $mime) {
 		clearstatcache();
-		return strpos($mime, 'image') === 0 && ($s = getimagesize($path)) !== false 
+		return strpos($mime, 'image') === 0 && is_readable($path) && ($s = getimagesize($path)) !== false 
 			? $s[0].'x'.$s[1] 
 			: false;
 	}
@@ -646,6 +646,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	protected function _scandir($path) {
 		$files = array();
 		$cache = array();
+		$dirWritable = is_writable($path);
 		$statOwner = (!empty($this->options['statOwner']));
 		$dirItr = array();
 		$followSymLinks = $this->options['followSymLinks'];
@@ -712,6 +713,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 					//logical rights first
 					$stat['read'] = ($linkreadable || $file->isReadable())? null : false;
 					$stat['write'] = $file->isWritable()? null : false;
+					$stat['locked'] = $dirWritable? null : true;
 					
 					if (is_null($stat['read'])) {
 						$stat['size'] = $dir ? 0 : $size;
@@ -757,7 +759,7 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 	 * @author Dmitry (dio) Levashov
 	 */
 	protected function _fclose($fp, $path='') {
-		return fclose($fp);
+		return (is_resource($fp) && fclose($fp));
 	}
 	
 	/********************  file/dir manipulations *************************/
@@ -1180,7 +1182,16 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			// non UTF-8 use elFinderVolumeDriver::doSearch()
 			return parent::doSearch($path, $q, $mimes);
 		}
-
+		
+		$result = array();
+		
+		$timeout = $this->options['searchTimeout']? $this->searchStart + $this->options['searchTimeout'] : 0;
+		if ($timeout && $timeout < time()) {
+			$this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode($path)));
+			return $result;
+		}
+		elFinder::extendTimeLimit($this->options['searchTimeout'] + 30);
+		
 		$match = array();
 		try {
 			$iterator = new RecursiveIteratorIterator(
@@ -1197,6 +1208,10 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				RecursiveIteratorIterator::CATCH_GET_CHILD
 			);
 			foreach ($iterator as $key => $node) {
+				if ($timeout && ($this->error || $timeout < time())) {
+					!$this->error && $this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode($node->getPath)));
+					break;
+				}
 				if ($node->isDir()) {
 					if ($this->stripos($node->getFilename(), $q) !== false) {
 						$match[] = $key;
@@ -1207,10 +1222,13 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 			}
 		} catch (Exception $e) {}
 		
-		$result = array();
-		
 		if ($match) {
 			foreach($match as $p) {
+				if ($timeout && ($this->error || $timeout < time())) {
+					!$this->error && $this->setError(elFinder::ERROR_SEARCH_TIMEOUT, $this->path($this->encode(dirname($p))));
+					break;
+				}
+				
 				$stat = $this->stat($p);
 		
 				if (!$stat) { // invalid links
@@ -1226,8 +1244,8 @@ class elFinderVolumeLocalFileSystem extends elFinderVolumeDriver {
 				if ((!$mimes || $stat['mime'] !== 'directory')) {
 					$stat['path'] = $this->path($stat['hash']);
 					if ($this->URL && !isset($stat['url'])) {
-						$path = str_replace(DIRECTORY_SEPARATOR, '/', substr($p, strlen($this->root) + 1));
-						$stat['url'] = $this->URL . $path;
+						$_path = str_replace(DIRECTORY_SEPARATOR, '/', substr($p, strlen($this->root) + 1));
+						$stat['url'] = $this->URL . $_path;
 					}
 		
 					$result[] = $stat;

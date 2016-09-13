@@ -141,22 +141,14 @@ class filedownloadController extends expController {
     public function meta_fb($request, $object, $canonical)
     {
         $metainfo = array();
+        $metainfo['type'] = 'article';
         if (!empty($object->body)) {
             $desc = str_replace('"', "'", expString::summarize($object->body, 'html', 'para'));
         } else {
             $desc = SITE_DESCRIPTION;
         }
-        $metainfo['type'] = empty($object->meta_fb['type']) ? 'article' : $object->meta_fb['type'];
-        $metainfo['title'] = substr(
-            empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'],
-            0,
-            87
-        );
-        $metainfo['description'] = substr(
-            empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'],
-            0,
-            199
-        );
+        $metainfo['title'] = substr(empty($object->meta_fb['title']) ? $object->title : $object->meta_fb['title'], 0, 87);
+        $metainfo['description'] = substr(empty($object->meta_fb['description']) ? $desc : $object->meta_fb['description'], 0, 199);
         $metainfo['url'] = empty($object->meta_fb['url']) ? $canonical : $object->meta_fb['url'];
         $metainfo['image'] = empty($object->meta_fb['fbimage'][0]) ? '' : $object->meta_fb['fbimage'][0]->url;
         if (empty($metainfo['image'])) {
@@ -175,9 +167,9 @@ class filedownloadController extends expController {
                 }
             }
         }
-        if ($metainfo['type'] == "audio" || $metainfo['type'] == "video") {
-            $metainfo[$metainfo['type']] = $object->expFile['downloadable'][0]->url;
-        }
+        $mt = explode('/', $object->expFile['downloadable'][0]->mimetype);
+        if ($mt[0] == 'audio' || $mt[0] == 'video')  // add an audio/video attachment
+            $metainfo[$mt[0]] = $object->expFile['downloadable'][0]->url;
 
         return $metainfo;
     }

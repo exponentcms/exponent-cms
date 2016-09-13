@@ -6,12 +6,19 @@
 $.fn.elfindernavbar = function(fm, opts) {
 
 	this.not('.elfinder-navbar').each(function() {
-		var nav    = $(this).addClass('ui-state-default elfinder-navbar'),
+		var nav    = $(this).hide().addClass('ui-state-default elfinder-navbar'),
 			parent = nav.parent(),
 			wz     = parent.children('.elfinder-workzone').append(nav),
 			delta  = nav.outerHeight() - nav.height(),
 			ltr    = fm.direction == 'ltr',
-			handle, swipeHandle, autoHide, setWidth;
+			handle, swipeHandle, autoHide, setWidth,
+			setWzRect = function() {
+				var cwd = fm.getUI('cwd'),
+					wz  = fm.getUI('workzone'),
+					wzRect = wz.data('rectangle'),
+					cwdOffset = cwd.offset();
+				wz.data('rectangle', $.extend(wzRect, { cwdEdge: (fm.direction === 'ltr')? cwdOffset.left : cwdOffset.left + cwd.width() }));
+			};
 
 		fm.bind('resize', function() {
 			nav.height(wz.height() - delta);
@@ -31,7 +38,7 @@ $.fn.elfindernavbar = function(fm, opts) {
 			}
 			
 			fm.bind('load', function() {
-				swipeHandle = $('<div class="elfinder-navbar-swipe-handle"/>').appendTo(wz);
+				swipeHandle = $('<div class="elfinder-navbar-swipe-handle"/>').hide().appendTo(wz);
 				if (swipeHandle.css('pointer-events') !== 'none') {
 					swipeHandle.remove();
 					swipeHandle = null;
@@ -51,6 +58,7 @@ $.fn.elfindernavbar = function(fm, opts) {
 							fm.resources.blink(swipeHandle, 'slowonce');
 						}
 					}
+					setWzRect();
 					fm.trigger('navbar'+ mode);
 					fm.getUI('cwd').trigger('resize');
 					data.init && fm.trigger('uiautohide');
@@ -67,6 +75,7 @@ $.fn.elfindernavbar = function(fm, opts) {
 					maxWidth : opts.maxWidth || 500,
 					stop : function(e, ui) {
 						fm.storage('navbarWidth', ui.size.width);
+						setWzRect();
 					}
 				})
 				.on('resize scroll', function(e) {
@@ -97,7 +106,7 @@ $.fn.elfindernavbar = function(fm, opts) {
 		} else {
 			if (fm.UA.Mobile) {
 				nav.data('defWidth', nav.width());
-				$(window).on('resize', function(e){
+				$(window).on('resize.' + fm.namespace, function(e){
 					setWidth = nav.parent().width() / 2;
 					if (nav.data('defWidth') > setWidth) {
 						nav.width(setWidth);

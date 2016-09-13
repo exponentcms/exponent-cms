@@ -1,7 +1,7 @@
 /**
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
- * @version 2016-05-16
+ * @version 2016-09-10
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.en = {
@@ -134,9 +134,12 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdplaces'    : 'To Places', // added 28.12.2014
 			'cmdchmod'     : 'Change mode', // from v2.1 added 20.6.2015
 			'cmdopendir'   : 'Open a folder', // from v2.1 added 13.1.2016
+			'cmdcolwidth'  : 'Reset column width', // from v2.1.13 added 12.06.2016
+			'cmdfullscreen': 'Full Screen', // from v2.1.15 added 03.08.2016
+			'cmdmove'      : 'Move', // from v2.1.15 added 21.08.2016
 
 			'cmdpixlr'     : 'Edit on Pixlr',
-          'cmdlinks'     : 'Switch to Page/Module Selector',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
 
 			/*********************************** buttons ***********************************/ 
 			'btnClose'  : 'Close',
@@ -236,6 +239,11 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'sortsize'          : 'by size',
 			'sortdate'          : 'by date',
 			'sortFoldersFirst'  : 'Folders first',
+			'sortperm'          : 'by permission', // from v2.1.13 added 13.06.2016
+			'sortmode'          : 'by mode',       // from v2.1.13 added 13.06.2016
+			'sortowner'         : 'by owner',      // from v2.1.13 added 13.06.2016
+			'sortgroup'         : 'by group',      // from v2.1.13 added 13.06.2016
+			'sortAlsoTreeview'  : 'Also Treeview',  // from v2.1.15 added 01.08.2016
 
 			/********************************** new items **********************************/
 			'untitled file.txt' : 'NewFile.txt', // added 10.11.2015
@@ -349,6 +357,14 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'openMulti'       : 'Open multiple files', // from v2.1.12 added 5.14.2016
 			'openMultiConfirm': 'You are trying to open the $1 files. Are you sure you want to open in browser?', // from v2.1.12 added 5.14.2016
 			'emptySearch'     : 'Search results is empty', // from v2.1.12 added 5.16.2016
+			'editingFile'     : 'It is editing a file.', // from v2.1.13 added 6.3.2016
+			'hasSelected'     : 'You have selected $1 items.', // from v2.1.13 added 6.3.2016
+			'hasClipboard'    : 'You have $1 items in the clipboard.', // from v2.1.13 added 6.3.2016
+			'incSearchOnly'   : 'Incremental search is only from the current view.', // from v2.1.13 added 6.30.2016
+			'reinstate'       : 'Reinstate', // from v2.1.15 added 3.8.2016
+			'complete'        : '$1 complete', // from v2.1.15 added 21.8.2016
+			'contextmenu'     : 'Context menu', // from v2.1.15 added 9.9.2016
+			'pageTurning'     : 'Page turning', // from v2.1.15 added 9.10.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',

@@ -568,6 +568,11 @@ class fileController extends expController {
         global $user;
 
         if (!empty($this->params['folder']) || (defined('QUICK_UPLOAD_FOLDER') && QUICK_UPLOAD_FOLDER != '' && QUICK_UPLOAD_FOLDER != 0)) {
+            // prevent attempt to place file somewhere other than /files folder
+            if (!empty($this->params['folder']) && strpos($this->params['folder'], '..') !== false) {
+                $ar = new expAjaxReply(300, gt("File was not uploaded!"));
+                $ar->send();
+            }
             if (SITE_FILE_MANAGER == 'picker') {
                 $quikFolder = !empty($this->params['folder']) ? $this->params['folder'] :QUICK_UPLOAD_FOLDER;
                 $destDir = null;
