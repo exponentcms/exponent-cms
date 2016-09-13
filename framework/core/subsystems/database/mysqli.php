@@ -318,6 +318,8 @@ class mysqli_database extends database {
     function selectObjects($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
+        else
+            $where = $this->injectProof($where);
         if ($orderby == null)
             $orderby = '';
         else
@@ -421,7 +423,7 @@ class mysqli_database extends database {
         //$lfh = fopen($logFile, 'a');
         //fwrite($lfh, $sql . "\n");    
         //fclose($lfh);                 
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return null;
         return mysqli_fetch_object($res);
@@ -432,7 +434,7 @@ class mysqli_database extends database {
 	 * @return array
 	 */
     function selectObjectsBySql($sql) {
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return array();
         $objects = array();
@@ -573,6 +575,8 @@ class mysqli_database extends database {
     function selectObjectsIndexedArray($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
+        else
+            $where = $this->injectProof($where);
         if ($orderby == null)
             $orderby = '';
         else
@@ -646,6 +650,7 @@ class mysqli_database extends database {
      * @return object/null|void
      */
     function selectObject($table, $where) {
+        $where = $this->injectProof($where);
         $res = mysqli_query($this->connection, "SELECT * FROM `" . $this->prefix . "$table` WHERE $where LIMIT 0,1");
         if ($res == null)
             return null;
@@ -697,7 +702,7 @@ class mysqli_database extends database {
                 if ($values != ") VALUES (") {
                     $values .= ",";
                 }
-                $values .= "'" . mysqli_real_escape_string($this->connection, $val) . "'";
+                $values .= "'" . $this->escapeString($val) . "'";
             }
         }
         $sql = substr($sql, 0, -1) . substr($values, 0) . ")";
@@ -759,13 +764,13 @@ class mysqli_database extends database {
                     $val = serialize($val);   
                     $sql .= "`$var`='".$val."',";
                 } else {
-                    $sql .= "`$var`='".mysqli_real_escape_string($this->connection,$val)."',";
+                    $sql .= "`$var`='".$this->escapeString($val)."',";
                 }
             }
         }
         $sql = substr($sql, 0, -1) . " WHERE ";
         if ($where != null)
-            $sql .= $where;
+            $sql .= $this->injectProof($where);
         else
             $sql .= "`" . $identifier . "`=" . $object->$identifier;
         //if ($table == 'text') eDebug($sql,true);        
@@ -1045,6 +1050,8 @@ class mysqli_database extends database {
     function selectArrays($table, $where = null, $orderby = null) {
         if ($where == null)
             $where = "1";
+        else
+            $where = $this->injectProof($where);
         if ($orderby == null)
             $orderby = '';
         else
@@ -1071,7 +1078,7 @@ class mysqli_database extends database {
      * @return array
      */
     function selectArraysBySql($sql) {        
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return array();
         $arrays = array();
@@ -1099,6 +1106,8 @@ class mysqli_database extends database {
     function selectArray($table, $where = null, $orderby = null, $is_revisioned=false) {
         if ($where == null)
             $where = "1";
+        else
+            $where = $this->injectProof($where);
         if ($is_revisioned)
             $where.= " AND revision_id=(SELECT MAX(revision_id) FROM `" . $this->prefix . "$table` WHERE $where)";
         $orderby = empty($orderby) ? '' : "ORDER BY " . $orderby;
@@ -1124,7 +1133,10 @@ class mysqli_database extends database {
 	 * @return array
 	 */
     function selectExpObjects($table, $where=null, $classname, $get_assoc=true, $get_attached=true, $except=array(), $cascade_except=false) {
-        if ($where == null) $where = "1";        
+        if ($where == null)
+            $where = "1";
+        else
+            $where = $this->injectProof($where);
         $sql = "SELECT * FROM `" . $this->prefix . "$table` WHERE $where";
         $res = @mysqli_query($this->connection, $sql);
         if ($res == null) return array();
@@ -1148,7 +1160,7 @@ class mysqli_database extends database {
      * @return array
      */
     function selectExpObjectsBySql($sql, $classname, $get_assoc=true, $get_attached=true) {
-        $res = @mysqli_query($this->connection, $sql);
+        $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return array();
         $arrays = array();
