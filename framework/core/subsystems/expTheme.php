@@ -762,7 +762,7 @@ class expTheme
             if (!$user->isAdmin())
                 expString::sanitize($_REQUEST);
 //            } elseif (empty($_REQUEST['array_sanitized'])) {
-                $tmp =1;  //FIXME we've already sanitized at this point
+//                $tmp =1;  //FIXME we've already sanitized at this point
 //            } else {
 //                $tmp =1;  //FIXME we've already sanitized at this point
 //            }
@@ -843,7 +843,8 @@ class expTheme
 ////                $_GET[$key] = $value;
 //                $_GET[$key] = expString::sanitize($value);
 //            }
-            if (!$user->isAdmin()) expString::sanitize($_GET);
+            if (!$user->isAdmin())
+                expString::sanitize($_GET);
         }
         //if (isset($['_common'])) $actfile = "/common/actions/" . $_REQUEST['action'] . ".php";
 

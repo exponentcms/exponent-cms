@@ -198,10 +198,25 @@ class expRouter {
                 );
             }
         }
-        // conventional method to ensure the 'id' is an id
-        if (isset($_GET['id'])) {
-            $_GET['id'] = intval($_GET['id']);
+        // conventional method to ensure the 'id' is only an id
+        if (isset($_REQUEST['id'])) {
+            if (isset($_GET['id']))
+                $_GET['id'] = intval($_GET['id']);
+            if (isset($_POST['id']))
+                $_POST['id'] = intval($_POST['id']);
+
             $_REQUEST['id'] = intval($_REQUEST['id']);
+        }
+        // do the same for the other id's
+        foreach ($_REQUEST as $key=>$var) {
+            if (is_string($var) && strrpos($key,'_id',-3) !== false) {
+                if (isset($_GET[$key]))
+                    $_GET[$key] = intval($_GET[$key]);
+                if (isset($_POST[$key]))
+                    $_POST[$key] = intval($_POST[$key]);
+
+                $_REQUEST[$key] = intval($_REQUEST[$key]);
+            }
         }
         if (empty($user->id) || (!empty($user->id) && !$user->isAdmin())) {  //FIXME why would $user be empty here unless $db is down?
 //            $_REQUEST['route_sanitized'] = true;//FIXME debug test
@@ -307,14 +322,14 @@ class expRouter {
             
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
                 $this->url_type = 'base';  // no params
-            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($db->escapeString($this->sefPath),1) . "'") != null) {
+            } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
                 $this->url_type = 'page';  // single param is page name
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $this->url_type = 'post';  // params via form/post
             } else {
                 // take a peek and see if a page exists with the same name as the first value...if so we probably have a page with
                 // extra perms...like printerfriendly=1 or ajax_action=1;
-                if (($db->selectObject('section', "sef_name='" . $db->escapeString($this->url_parts[0]) . "'") != null) && (in_array(array('printerfriendly','exportaspdf','ajax_action'), $this->url_parts))) {
+                if (($db->selectObject('section', "sef_name='" . $this->url_parts[0] . "'") != null) && (in_array(array('printerfriendly','exportaspdf','ajax_action'), $this->url_parts))) {
                     $this->url_type = 'page';
                 } else {
                     $this->url_type = 'action';
@@ -547,7 +562,7 @@ class expRouter {
         } else {
             $url .= urldecode((empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI']);
         }
-        return expString::sanitize($url);
+        return expString::escape(expString::sanitize($url));
     }
 
     public static function encode($url) {
@@ -760,7 +775,7 @@ class expRouter {
         if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
         // sanitize it
         $sefPath = explode('">',$this->sefPath);  // remove any attempts to close the command
-        $this->sefPath = expString::sanitize($sefPath[0]);
+        $this->sefPath = expString::escape(expString::sanitize($sefPath[0]));
     }
 
     public function getSection() {

@@ -522,23 +522,23 @@ class expString {
             $data = self::xss_clean($data);
 
             //fixme orig exp method
-            if(0) {
-                // remove whitespaces and tags
-//            $data = strip_tags(trim($data));
-                // remove whitespaces and script tags
-                $data = self::strip_tags_content(trim($data), '<script>', true);
-//            $data = self::strip_tags_content(trim($data), '<iframe>', true);
-
-                // apply stripslashes if magic_quotes_gpc is enabled
-                if (get_magic_quotes_gpc()) {
-                    $data = stripslashes($data);
-                }
-
-                $data = self::escape($data);
-
-                // re-escape newlines
-                $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
-            }
+//            if(0) {
+//                // remove whitespaces and tags
+////            $data = strip_tags(trim($data));
+//                // remove whitespaces and script tags
+//                $data = self::strip_tags_content(trim($data), '<script>', true);
+////            $data = self::strip_tags_content(trim($data), '<iframe>', true);
+//
+//                // apply stripslashes if magic_quotes_gpc is enabled
+//                if (get_magic_quotes_gpc()) {
+//                    $data = stripslashes($data);
+//                }
+//
+//                $data = self::escape($data);
+//
+//                // re-escape newlines
+//                $data = str_replace(array('\r', '\n'), array("\r", "\n"), $data);
+//            }
         }
         return $data;
     }
