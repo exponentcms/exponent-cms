@@ -991,6 +991,21 @@ abstract class database {
 	 */
 	abstract function escapeString($string);
 
+    /**
+   	 * Unescape a string based on the database connection
+   	 * @param $string
+   	 * @return string
+   	 */
+   	function injectProof($string) {
+   	    $quotes = substr_count("'", $string);
+        if ($quotes % 2 != 0)
+            $string = $this->escapeString($string);
+        $dquotes = substr_count('"', $string);
+        if ($dquotes % 2 != 0)
+            $string = $this->escapeString($string);
+        return $string;
+    }
+
 	/**
 	 * Create a SQL "limit" phrase
 	 *

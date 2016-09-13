@@ -1,0 +1,87 @@
+In addition to the fixes found in the previous patches to v2.2.3, 214patch14 provides the following:
+* !!! fixes additional security issues with possible sql injection
+
+In addition to the fixes found in the previous patches to v2.2.3, 214patch13 provides the following:
+* !!! fixes security issue with possible sql injection
+
+In addition to the fixes found in the previous patches to v2.2.3, 214patch12 provides the following:
+* !!! fixes security issue with possible execution of uploaded scripts
+
+In addition to the fixes found in the previous patches to v2.2.3, 214patch11 provides the following:
+* !!! fixes security issue with database manager and unused pixidou files
+* regression fix some warnings in user and optiongroup models
+* regression fix unnecessary debug output when expUnserialize results don't match
+* correctly sets version patch number left out in previous patch
+* upgrade check now points to new 'master' version server
+
+In addition to the fixes found in the previous patches to v2.2.3, 214patch10 provides the following:
+* !!! Fixes anomalies introduced with cross-site security fix
+* fixes a permissions issue with navigation module
+
+In addition to the fixes found in the previous patches to v2.2.3, 214patch9 provides the following:
+* !!! Fixes cross-site security issue
+
+223patch6, and 223patch7, and 223patch8 created a data corruption issue and were pulled from release
+
+In addition to the fixes found in the previous patches to v2.2.3, 223patch5 provides the following:
+* !!!Fixes loss of admin/super-admin status when password is changed
+* !!!Fixes bug which could allow display of orders to non-admin users
+
+In addition to the fixes found in the previous patches to v2.2.3, 223patch4 provides the following:
+* Fixes a quick upload crash when quick upload resize was set
+* Fixes a form email issue when submitted with a file upload control
+* Fixes a less compilation issue for template style sheets
+* Fixes issue where we always loaded admin-global stylesheet
+* Fixes some issues with the bootstrap theme slingbar and flyout sidebar
+* Fixes loading of base system 3rd party styles including normalize (which wasn't being loaded) so they are now loaded first to be cascaded by our styles
+* Adds some session resets when clear all caches is called
+* Adds display of standalone pages for selection as default/home page
+
+In addition to the fixes found in the previous patches to v2.2.3, 223patch3 provides the following:
+* changes new privacy feature default to OFF unless set in site configuration due to sectionref issues
+* adds new upgrade script to clean up the sectionref table
+* fixes some form module submission bugs
+* fixes bootstrap navbar to work correctly w/ 2nd level children when collapsed/responsive
+* fixes default setting for noindex/nofollow being set to ON instead of OFF
+* fixes regression bug when non-admin users could NOT add new modules when granted permission
+* fixes some optional ajax pagination in events module
+* fixes manage tags bulk edit
+* fixes some IE9 crashes
+* fixes regression bug where super-admins could not see other user's files
+* fixes regression bug on add module views (standard & bootstrap) to correctly respond to selected items
+* cleans up pre-slideshow display from being offset
+
+In addition to the fixes found in 223patch1, 223patch2 provides the following:
+* Fixes several crashes introduced in patch1 due to misplaced bootstrap theme files
+* Fix page crash (slingbar) when non-admin user logged in
+* Fix page crash when displaying Event module Week view
+* Now saves LDAP password as encrypted
+* Fixes bad path for custom user profile extensions (and some other mangled paths)
+* Cleans up sample bootstrap theme views (sidebar now in 'well', flyout sidebar in all subthemes)
+* Updates Minify (minification script) to v2.1.7
+* Fixes display of non-images when browsing for a 'link' in File Manager
+* Now filters to display only images displayed in File Manager, when adding an image only file
+* Adds missing 'Field Insert' editor plugin needed for Forms Report Designs
+* Fixes ability to create online event registrations
+* Fixes mangling of wysiwyg text in saving module configurations
+* Fixes sending event reminders which wasn't working
+* Fixes date display when editing an event in a series
+* Fixes re-ranking of nested containers when one is deleted (we were leaving an empty container previously)
+* Updates generateSiteMap.php (sitemap.xml) script to optionally add images and videos
+
+223patch1 fixes these issues in v223:
+* Problem fully upgrading an EAAS module youtube to media player configuration
+* Fixes the navigation sidebar flyout view for bootstrap themes
+* Fixes the renderAction to NOT require the full view name to process correctly (can now pass url/module/headline instead of url/module/showall_headline)
+* Fixes broken pages if reCaptcha is not configured
+* Prevents adding empty searches to the search query history
+* Fixes the broken text module inline edit view
+* Adds slideshow options if photo album gallery landing page set to slideshow
+* Adds the missing toggle collapse mobile responsive layout feature of the sample bootstrap theme
+  ** Allows setting menu collapse width in theme configuration settings!
+* Adds responsive layout work-around for IE 6-8
+* Updates CKEditor to v4.2.2
+* Fixes some issues which could break an EQL (database) import during form table rebuilding
+* Fixes date output of rss feeds
+  ** Adds new 'Configure RSS Settings' button to the RSS module showall view (which displays a list of all RSS feeds on the site)
+* Makes more of the bootstrap theme buttons appear correctly as bootstrap buttons
