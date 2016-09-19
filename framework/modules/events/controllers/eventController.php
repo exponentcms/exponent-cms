@@ -1049,7 +1049,8 @@ class eventController extends expController {
             $htmlmsg = $template->render();
 
             // now the same thing for the text message
-            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $htmlmsg)));
+            $msg = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $htmlmsg); // remove any script or style blocks
+            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $msg)));
 
             // Saved.  do notifs
             $emails = array();
