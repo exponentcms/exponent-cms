@@ -209,7 +209,7 @@ class expRouter {
         }
         // do the same for the other id's
         foreach ($_REQUEST as $key=>$var) {
-            if (is_string($var) && strrpos($key,'_id',-3) !== false) {
+            if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
                 if (isset($_GET[$key]))
                     $_GET[$key] = intval($_GET[$key]);
                 if (isset($_POST[$key]))
