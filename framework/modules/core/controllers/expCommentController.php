@@ -150,7 +150,8 @@ class expCommentController extends expController {
         foreach ($comments->records as $key=>$record) {
             $commentor = new user($record->poster);
             //FIXME here is where we might sanitize the comments before displaying them
-            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+//            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+            $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
 
@@ -296,7 +297,8 @@ class expCommentController extends expController {
           foreach ($comments->records as $key=>$record) {
               $commentor = new user($record->poster);
               //FIXME here is where we might sanitize the comments before displaying them
-              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+//              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+              $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
               $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
           }
 //          if (empty($params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
@@ -348,7 +350,6 @@ class expCommentController extends expController {
         if (empty($require_approval)) {
             $this->expComment->approved=1;
         }
-        //FIXME here is where we might sanitize the comments before saving them
         $this->expComment->update($this->params);
         
         // attach the comment to the datatype it belongs to (blog, news, etc..);
@@ -413,7 +414,6 @@ class expCommentController extends expController {
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
 	    
 	    $comment = new expComment($this->params['id']);
-        //FIXME here is where we might sanitize the comments before approving them
 	    $comment->body = $this->params['body'];
 	    $comment->approved = $this->params['approved'];
 	    $comment->save();
@@ -525,7 +525,7 @@ class expCommentController extends expController {
 //	    $loc = expUnserialize($model->location_data);
 
         $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
-        $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
+        $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'content_id'=>$params['content_id'], 'content_type'=>$params['content_type'], 'id'=>$comment->id));
         
         // make the email body
         $body = '<h1>'.gt('New Comment Posted').'</h1>';
