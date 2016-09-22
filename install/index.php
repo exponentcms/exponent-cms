@@ -29,7 +29,6 @@ if (version_compare(PHP_VERSION, '5.3.1', 'lt')) {
 
 ob_start();
 
-
 // Jumpstart to Initialize the installer language before it's set to default
 if (isset($_REQUEST['lang'])) {
     $_REQUEST['sc']['LANGUAGE'] = trim($_REQUEST['lang'], "'");
@@ -42,6 +41,27 @@ if (isset($_REQUEST['sc']['LANGUAGE'])) {
 
 include_once('../exponent.php');
 expString::sanitize($_REQUEST);
+
+// Make sure our 'page' is set correctly and prevent running under most circumstances
+if (file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
+    $_REQUEST['page'] = 'upgrade-1';
+}
+if (!file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
+    $_REQUEST['page'] = 'welcome';
+}
+$page = $_REQUEST['page'];
+
+// Superadmin must be logged in to do an upgrade
+if (strpos($page, 'upgrade-') !== false && empty($user->isSuperAdmin())) {
+    header('Location: ../index.php');
+    exit();
+}
+
+// Only run installation if not already installed
+if (strpos($page, 'upgrade-') === false && !file_exists(BASE . 'install/not_configured')) {
+    header('Location: ../index.php');
+    exit();
+}
 
 // Switch to a saved profile as requested
 if (isset($_REQUEST['profile'])) {
@@ -57,13 +77,11 @@ if (isset($_REQUEST['sc'])) {
     if (file_exists("../framework/conf/config.php")) {
         // Update the config
         foreach ($_REQUEST['sc'] as $key => $value) {
-//            $value = expString::sanitize($value);
             expSettings::change($key, $value);
         }
     } else {
         // Initialize /framework/conf/config
         $values = array(
-//            'c'          => expString::sanitize($_REQUEST['sc']),
             'c'          => $_REQUEST['sc'],
             'opts'       => array(),
             'configname' => 'Default',
@@ -75,6 +93,10 @@ if (isset($_REQUEST['sc'])) {
 
 // Install a sample database as requested
 if (isset($_REQUEST['install_sample'])) {
+    if (!empty($_REQUEST['install_sample']) && (strpos($_REQUEST['install_sample'], '..') !== false || strpos($_REQUEST['install_sample'], '/') !== false)) {
+        header('Location: ../index.php');
+        exit();  // attempt to hack the site
+    }
     $eql = BASE . "themes/" . DISPLAY_THEME_REAL . "/" . $_REQUEST['install_sample'] . ".eql";
     if (!file_exists($eql)) {
         $eql = BASE . "install/samples/" . $_REQUEST['install_sample'] . ".eql";
@@ -102,27 +124,6 @@ if (isset($_REQUEST['install_sample'])) {
     } else {
 //        echo gt('Sample content was added to your database.  This content should help you learn how Exponent works, and how to use it for your website.');
     }
-}
-
-// Make sure our 'page' is set correctly
-if (file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
-    $_REQUEST['page'] = 'upgrade-1';
-}
-if (!file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
-    $_REQUEST['page'] = 'welcome';
-}
-$page = $_REQUEST['page'];
-
-// Superadmin must be logged in to do an upgrade
-if (strpos($page, 'upgrade-') !== false && empty($user->is_admin)) {
-    header('Location: ../index.php');
-    exit();
-}
-
-// Only run installation if not already installed
-if (strpos($page, 'upgrade-') === false && !file_exists(BASE . 'install/not_configured')) {
-    header('Location: ../index.php');
-    exit();
 }
 
 switch ($page) {
