@@ -75,6 +75,6 @@ if ($error) { //NOTE Shouldn't get this because of check in install-6.php unless
     } else {
         $db->insertObject($user, 'user');
     }
-    header('Location: ' . 'index.php?page=final');
+    header('Location: index.php?page=final');
 }
 ?>
