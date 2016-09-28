@@ -24,6 +24,14 @@
 
 class expHTMLEditorController extends expController
 {
+    protected $manage_permissions = array(
+        'activate' => "Activate",
+        'preview'  => "Preview Editor Toolbars"
+    );
+    public $requires_login = array(
+        'preview'=>'Preview Editor',
+    );
+
     static function displayname()
     {
         return gt("Editors");
@@ -48,11 +56,6 @@ class expHTMLEditorController extends expController
     {
         return false;
     }
-
-    protected $add_permissions = array(
-        'activate' => "Activate",
-        'preview'  => "Preview Editor Toolbars"
-    );
 
     function __construct($src = null, $params = array())
     {

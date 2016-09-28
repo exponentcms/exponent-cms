@@ -24,7 +24,6 @@
 
 class storeController extends expController {
     public $basemodel_name = 'product';
-
     public $useractions = array(
         'showall'                         => 'Products - All Products and Categories',
         'showallFeaturedProducts'         => 'Products - Only Featured',
@@ -40,7 +39,30 @@ class storeController extends expController {
         'quicklinks'                      => 'Links - User Links',
         'showGiftCards'                   => 'Gift Cards UI',
     );
-
+    protected $manage_permissions = array(
+        'batch_process'               => 'Batch capture order transactions',
+        'cleanNonUnicodeProducts'     => 'Clean all non-unicode charset products',
+        'copyProduct'                 => "Copy Product",
+//        'delete_children'             => "Delete Children",
+        'reimport'                    => 'ReImport Products',
+        'findDupes'                   => 'Fix Duplicate SEF Names',
+//        'manage_sales_reps'           => 'Manage Sales Reps',
+//        'import_external_addresses'   => 'Import addresses from other sources',
+        'showallImpropercategorized'  => 'View products in top level categories that should not be',
+        'showallUncategorized'        => 'View all uncategorized products',
+        'nonUnicodeProducts'          => 'View all non-unicode charset products',
+        'process_orders'              => 'Batch capture order transactions',
+        'processModelAliases'         => 'Process uploaded model aliases',
+        'saveModelAliases'            => 'Save uploaded model aliases',
+//        'deleteProcessedModelAliases' => 'Delete processed uploaded model aliases',
+//        'delete_model_alias'          => 'Process model aliases',
+//        'update_model_alias'          => 'Save model aliases',
+//        'edit_model_alias'            => 'Delete model aliases',
+//        'import'                      => 'Import Products',
+//        'importProduct'               => 'Import Products',
+//        'export'                      => 'Export Products',
+        'uploadModelAliases'          => 'Upload model aliases',
+    );
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -53,31 +75,6 @@ class storeController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-
-    //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    protected $add_permissions = array(
-        'copyProduct'                 => "Copy Product",
-        'delete_children'             => "Delete Children",
-        'reimport'                    => 'ReImport Products',
-        'findDupes'                   => 'Fix Duplicate SEF Names',
-        'manage_sales_reps'           => 'Manage Sales Reps',
-        'batch_process'               => 'Batch capture order transactions',
-        'process_orders'              => 'Batch capture order transactions',
-        'import_external_addresses'   => 'Import addresses from other sources',
-        'showallImpropercategorized'  => 'View products in top level categories that should not be',
-        'showallUncategorized'        => 'View all uncategorized products',
-        'nonUnicodeProducts'          => 'View all non-unicode charset products',
-        'cleanNonUnicodeProducts'     => 'Clean all non-unicode charset products',
-        'uploadModelAliases'          => 'Upload model aliases',
-        'processModelAliases'         => 'Process uploaded model aliases',
-        'saveModelAliases'            => 'Save uploaded model aliases',
-        'deleteProcessedModelAliases' => 'Delete processed uploaded model aliases',
-        'delete_model_alias'          => 'Process model aliases',
-        'update_model_alias'          => 'Save model aliases',
-        'edit_model_alias'            => 'Delete model aliases',
-        'import'                      => 'Import Products',
-        'export'                      => 'Export Products',
-    );
 
     static function displayname() {
         return gt("e-Commerce Store Front");
@@ -508,13 +505,13 @@ class storeController extends expController {
 
         /*if(isset($router->params['action']))
         {
-            $ancestors = $this->category->pathToNode();       
+            $ancestors = $this->category->pathToNode();
         }else if(isset($router->params['section']))
         {
             $current = $db->selectObject('section',' id= '.$router->params['section']);
             $ancestors[] = $current;
             if( $current->parent != -1 || $current->parent != 0 )
-            {                   
+            {
                 while ($db->selectObject('section',' id= '.$router->params['section']);)
                     if ($section->id == $id) {
                         $current = $section;
@@ -523,7 +520,7 @@ class storeController extends expController {
                 }
             }
             eDebug($sections);
-            $ancestors = $this->category->pathToNode();       
+            $ancestors = $this->category->pathToNode();
         }*/
 
         $ancestors = $this->category->pathToNode();
@@ -1274,7 +1271,7 @@ class storeController extends expController {
                     }
                 }
             }
-            //eDebug($editable_options[$group->title]);        
+            //eDebug($editable_options[$group->title]);
         }
         //die();
 
@@ -1496,7 +1493,7 @@ class storeController extends expController {
         if (empty($this->params['id'])) return false;
         $product_type = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
         $product = new $product_type($this->params['id'], true, false);
-        //eDebug($product_type);  
+        //eDebug($product_type);
         //eDebug($product, true);
         //if (!empty($product->product_type_id)) {
         //$db->delete($product_type, 'id='.$product->product_id);
@@ -1635,18 +1632,18 @@ class storeController extends expController {
     public function deleteChildren() {
         //eDebug($data[0],true);
         //if($id!=null) $this->params['id'] = $id;
-        //eDebug($this->params,true);        
+        //eDebug($this->params,true);
         $product = new product($this->params['id']);
         //$product = $product->find("first", "previous_id =" . $previous_id);
         //eDebug($product, true);
-        if (empty($product->id)) // || empty($product->previous_id)) 
+        if (empty($product->id)) // || empty($product->previous_id))
         {
             flash('error', gt('There was an error deleting the child products.'));
             expHistory::back();
         }
         $childrenToDelete = $product->find('all', 'parent_id=' . $product->id);
         foreach ($childrenToDelete as $ctd) {
-            //fwrite($lfh, "Deleting:" . $ctd->id . "\n");                             
+            //fwrite($lfh, "Deleting:" . $ctd->id . "\n");
             $ctd->delete();
         }
     }
@@ -1822,7 +1819,7 @@ class storeController extends expController {
         if (!$user->isAdmin()) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
         $sql .= " match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) AND p.parent_id=0 ";
         $sql .= " HAVING relevance > 0 ";
-        //$sql .= "GROUP BY p.id "; 
+        //$sql .= "GROUP BY p.id ";
         $sql .= "order by modelmatch,titlematch,relevance desc LIMIT 10";
 
         eDebug($sql);
@@ -1851,32 +1848,32 @@ class storeController extends expController {
         */
         /*echo "Here?";
         $inv = 30234;
-        $req = 'a29f9shsgh32hsf80s7';        
+        $req = 'a29f9shsgh32hsf80s7';
         $amt = 101.00;
         for($count=1;$count<=25;$count+=2)
-        {   
+        {
             $data[2] = $inv + $count;
             $amt += $count*$count;
-            $successSet[$count]['message'] = "Sucessfully imported row " . $count . ", order: " . $data[2] . "<br/>";                
+            $successSet[$count]['message'] = "Sucessfully imported row " . $count . ", order: " . $data[2] . "<br/>";
             $successSet[$count]['order_id'] = $data[2];
             $successSet[$count]['amount'] = $amt;
             $successSet[$count]['request_id'] = $req;
             $successSet[$count]['reference_id'] = $req;
             $successSet[$count]['authorization_code'] = $req;
-            $successSet[$count]['shipping_tracking_number'] = '1ZNF453937547';    
+            $successSet[$count]['shipping_tracking_number'] = '1ZNF453937547';
             $successSet[$count]['carrier'] = 'UPS';
         }
         for($count=2;$count<=25;$count+=2)
-        {   
-            $data[2] = $inv + $count;                
-            $amt += $count*$count;        
+        {
+            $data[2] = $inv + $count;
+            $amt += $count*$count;
             $errorSet[$count]['error_code'] = '42';
             $errorSet[$count]['message'] = "No go for some odd reason. Try again.";
             $errorSet[$count]['order_id'] = $data[2];
             $errorSet[$count]['amount'] = $amt;
         }
-        
-        assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));     
+
+        assign_to_template(array('errorSet'=>$errorSet, 'successSet'=>$successSet));
         return;*/
 
         ###########
@@ -1885,7 +1882,7 @@ class storeController extends expController {
         $template = expTemplate::get_template_for_action(new orderController(), 'setStatus', $this->loc);
 
         //eDebug($_FILES);
-        //eDebug($this->params,true); 
+        //eDebug($this->params,true);
         set_time_limit(0);
         //$file = new expFile($this->params['expFile']['batch_process_upload'][0]);
         if (!empty($_FILES['batch_upload_file']['error'])) {
@@ -1925,7 +1922,7 @@ class storeController extends expController {
 
         // read in the header line
         $data = fgetcsv($handle, 10000, ",");
-        //eDebug($data);      
+        //eDebug($data);
 //        $dataset = array();
         $carrier = '';
         if (trim($data[0]) == 'ShipmentInformationShipmentID') {
@@ -2000,8 +1997,8 @@ class storeController extends expController {
                     $result = $calc->delayed_capture($bm, $order->grand_total, $order);
                     if ($result->errorCode == 0) {
                         //we've succeeded.  transaction already created and billing info updated.
-                        //just need to set the order shipping info, check and see if we send user an email, and set statuses.  
-                        //shipping info:                                      
+                        //just need to set the order shipping info, check and see if we send user an email, and set statuses.
+                        //shipping info:
                         $successSet[$count]['order_id'] = $data[2];
                         $successSet[$count]['message'] = "Sucessfully captured order " . $data[2] . " and set shipping information.";
                         $successSet[$count]['amount'] = $order->grand_total;
@@ -2013,7 +2010,7 @@ class storeController extends expController {
                     } else {
                         //failed capture, so we report the error but still set the shipping information
                         //because it's already out the door
-                        //$failMessage = "Attempted to delay capture order " . $data[2] . " and it failed with the following error: " . $result->errorCode . " - " .$result->message;   
+                        //$failMessage = "Attempted to delay capture order " . $data[2] . " and it failed with the following error: " . $result->errorCode . " - " .$result->message;
                         //if the user seelected to set a different status for failed orders, set it here.
                         /*if(isset($this->params['order_status_fail'][0]) && $this->params['order_status_fail'][0] > -1)
                         {
@@ -2024,10 +2021,10 @@ class storeController extends expController {
                             $change->to_status_id = $this->params['order_status_fail'][0];
                             $change->orders_id = $order->id;
                             $change->save();
-                            
+
                             // update the status of the order
                             $order->order_status_id = $this->params['order_status_fail'][0];
-                            $order->save();                             
+                            $order->save();
                         }*/
                         $errorSet[$count]['error_code'] = $result->errorCode;
                         $errorSet[$count]['message'] = "Capture failed: " . $result->message . "<br/>Setting shipping information.";
@@ -2035,11 +2032,11 @@ class storeController extends expController {
                         $errorSet[$count]['amount'] = $order->grand_total;
                         $errorSet[$count]['shipping_tracking_number'] = $data[0];
                         $errorSet[$count]['carrier'] = $carrier;
-                        //continue;   
+                        //continue;
                     }
                 } else {
-                    //dont suppose we do anything here, as it may be set to approved manually 
-                    //$errorSet[$count] = "Order " . $data[2] . " does not use a billing method with delayed capture ability.";  
+                    //dont suppose we do anything here, as it may be set to approved manually
+                    //$errorSet[$count] = "Order " . $data[2] . " does not use a billing method with delayed capture ability.";
                     $successSet[$count]['message'] = 'No capture processing available for order:' . $data[2] . '. Setting shipping information.';
                     $successSet[$count]['order_id'] = $data[2];
                     $successSet[$count]['amount'] = $order->grand_total;
@@ -2126,7 +2123,7 @@ class storeController extends expController {
                 }
             }
 
-            //eDebug($product);        
+            //eDebug($product);
         }
         fclose($handle);
         ini_set('auto_detect_line_endings',$line_end);
@@ -2231,7 +2228,7 @@ class storeController extends expController {
 
         // read in the header line and discard it
         $data = fgetcsv($handle, 10000, ",");
-        //eDebug($data);      
+        //eDebug($data);
 //        $dataset = array();
 
         //mc=1, nt=2, amm=3

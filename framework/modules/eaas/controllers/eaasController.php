@@ -41,10 +41,6 @@ class eaasController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        // 'approve'=>"Approve Comments"
-    );
-
     public $tabs = array(
         'aboutus'=>'About Us', 
         'blog'=>'Blog', 
@@ -54,7 +50,6 @@ class eaasController extends expController {
         'filedownload'=>'File Downloads', 
         'news'=>'News'
     );
-
     protected $data = array();
     
     static function displayname() { return gt("Exponent as a Service"); }

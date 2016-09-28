@@ -26,10 +26,11 @@ class searchController extends expController {
         'show'=>'Show Search Form',
         'cloud'=>'Show Tag Cloud'
     );
-    protected $add_permissions = array(
-        'spider'=>'Spider Site'
+    protected $manage_permissions = array(
+        'spider'=>'Spider Site',
+        'searchQueryReport'=>'Search Query Report',
+        'topSearchReport'=>'Top Search Report',
     );
-
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -109,7 +110,7 @@ class searchController extends expController {
             'params'=>$this->params,
         ));
     }
-    
+
     public static function spider() {
         global $db;
 
@@ -136,18 +137,18 @@ class searchController extends expController {
                 $mods[$controller->searchName()] = $controller->addContentToSearch();
 		    }
 	    }
-	
+
 	    uksort($mods,'strnatcasecmp');
 	    assign_to_template(array(
             'mods'=>$mods
         ));
     }
-        
+
     public function show() {
         //no need to do anything..we're just showing the form... so far! MUAHAHAHAHAHAAA!   what?
 //        redirect_to(array("controller"=>'search',"action"=>'showall'));
     }
-    
+
     public function showall() {
 //        redirect_to(array("controller"=>'search',"action"=>'show'));
 //        $this->show();
@@ -220,26 +221,26 @@ class searchController extends expController {
         }*/
         //    $sql .= ' AND parent_id=0';
         //eDebug($sql);
-        
+
         //$res = $mod->find('all',$sql,'id',25);
         $sql = "select DISTINCT(p.id), p.title, model, sef_url, f.id as fileid from ".$db->prefix."product as p INNER JOIN ".$db->prefix."content_expfiles as cef ON p.id=cef.content_id INNER JOIN ".$db->prefix."expfiles as f ON cef.expfiles_id = f.id where match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') AND p.parent_id=0 order by match (p.title,p.model,p.body) against ('" . $this->params['query'] . "') desc LIMIT 25";
         //$res = $db->selectObjectsBySql($sql);
         //$res = $db->selectObjectBySql('SELECT * FROM `exponent_product`');
-        
+
         $ar = new expAjaxReply(200, gt('Here\'s the items you wanted'), $res);
         $ar->send();
     }
-	
+
 	public function searchQueryReport() {
 		global $db;
-		
+
 		//Instantiate the search model
 		$search = new search();
-		
+
 		//Store the keywords that returns nothing
         $badSearch = array();
 		$badSearchArr =  array();
-		
+
 		//User Records Initialization
 		$all_user  = -1;
 		$anonymous = -2;
@@ -247,33 +248,33 @@ class searchController extends expController {
 
 		$user_default = '';
 		$where = '';
-		
+
 		if(isset($this->params['user_id']) && $this->params['user_id'] != -1) {
 			$user_default = $this->params['user_id'];
 		}
-		
+
 		expHistory::set('manageable', $this->params);
 
 		$ctr  = 2;
 		$ctr2 = 0;
-		
+
 		//Getting the search users
 		$records = $db->selectObjects('search_queries');
-		
-		
+
+
 		foreach($records as $item) {
 			$u = user::getUserById($item->user_id);
 
 			if($item->user_id == 0) {
 				$item->user_id = $anonymous;
 			}
-			
+
 			if(!in_array($item->user_id, $uname['id'])) {
 				$uname['name'][$ctr] = $u->firstname . ' ' . $u->lastname;
 				$uname['id'][$ctr] = $item->user_id;
 				$ctr++;
 			}
-			
+
 			$result  = $search->getSearchResults($item->query, false, true);
 			if(empty($result) && !in_array($item->query, $badSearchArr)) {
 				$badSearchArr[] = $item->query;
@@ -281,9 +282,9 @@ class searchController extends expController {
 				$badSearch[$ctr2]['count'] = $db->countObjects("search_queries", "query='{$item->query}'");
 				$ctr2++;
 			}
-			
+
 		}
-	
+
 		//Check if the user choose from the dropdown
 		if(!empty($user_default)) {
 			if($user_default == $anonymous) {
@@ -293,7 +294,7 @@ class searchController extends expController {
 			}
 			$where .= "user_id = {$u_id}";
 		}
-	
+
 		//Get all the search query records
 		$records = $db->selectObjects('search_queries', $where);
         for ($i = 0, $iMax = count($records); $i < $iMax; $i++) {
@@ -302,7 +303,7 @@ class searchController extends expController {
 				$records[$i]->user = $u->firstname . ' ' . $u->lastname;
 			}
 		}
-		
+
         $page = new expPaginator(array(
             'records' => $records,
             'where'=>1,
@@ -328,19 +329,19 @@ class searchController extends expController {
             'user_default' => $user_default,
             'badSearch' => $badSearch
         ));
-		
+
 	}
-	
+
 	public function topSearchReport() {
 		global $db;
 		$limit = intval(TOP_SEARCH);
-		
+
 		if(empty($limit)) {
 			$limit = 10;
 		}
 
 		$count   = $db->countObjects('search_queries');
-	
+
 		$records = $db->selectObjectsBySql("SELECT COUNT(query) cnt, query FROM " .$db->prefix . "search_queries GROUP BY query ORDER BY cnt DESC LIMIT 0, {$limit}");
 
         $records_key_arr = array();
@@ -351,7 +352,7 @@ class searchController extends expController {
 		}
 		$records_key   = implode(",", $records_key_arr);
 		$records_values = implode(",", $records_values_arr);
-		
+
 		assign_to_template(array(
             'records'=>$records,
             'total'=>$count,

@@ -23,20 +23,26 @@
 
 class fileController extends expController {
     public $basemodel_name = "expFile";
-    protected $add_permissions = array(
-//        'picker'=>'Manage Files',
-        'import'=>'Import',
-        'export'=>'Export',
-    );
     protected $remove_permissions = array(
         'delete'
     );
+//    protected $manage_permissions = array(
+//        'picker'=>'Manage Files',
+//        'import'=>'Import',
+//        'export'=>'Export',
+//    );
     public $requires_login = array(
-        'picker'=>'must be logged in',
-        'editAlt'=>'must be logged in',
-        'editCat'=>'must be logged in',
-        'editShare'=>'must be logged in',
-        'editTitle'=>'must be logged in',
+        'picker'=>'You must be logged in to perform this action',
+        'adder'=>'You must be logged in to perform this action',
+        'addit'=>'You must be logged in to perform this action',
+        'batchDelete'=>'You must be logged in to perform this action',
+        'createFolder'=>'You must be logged in to perform this action',
+        'deleter'=>'You must be logged in to perform this action',
+        'deleteit'=>'You must be logged in to perform this action',
+        'edit'=>'You must be logged in to perform this action',
+        'quickUpload'=>'You must be logged in to perform this action',
+        'upload'=>'You must be logged in to perform this action',
+        'uploader'=>'You must be logged in to perform this action',
     );
 
     static function displayname() { return gt("File Manager"); }
@@ -47,20 +53,20 @@ class fileController extends expController {
         // fixes file directory issues when the old file class was used to save record
         // where the trailing forward slash was not added. This simply checks to see
         // if the trailing / is there, if not, it adds it.
-        
+
         $file = new expFile();
         $files = $file->find('all');
-        
+
         foreach ($files as $key=>$file) {
             if (substr($files[$key]->directory,-1,1)!="/") {
                 $files[$key]->directory = $files[$key]->directory.'/';
             }
             $files[$key]->save();
         }
-    
+
 //        eDebug($files,true);
     }
-    
+
     public function picker() {
 //        global $user;
 
@@ -89,7 +95,7 @@ class fileController extends expController {
             'jscats'=>json_encode($jscatarray)
         ));
     }
-    
+
     public function uploader() {
         global $user;
         //expHistory::set('manageable', $this->params);
@@ -113,14 +119,14 @@ class fileController extends expController {
             'cats'=>$catarray,
         ));
     }
-    
+
     /**
      * Returns attached file view template configuration settings template
      *
      */
     public function get_view_config() {
         global $template;
-        
+
         // set paths we will search in for the view
         $paths = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
@@ -148,7 +154,7 @@ class fileController extends expController {
             }
         }
     }
-    
+
     /**
      * Returns view template configuration settings view template
      *
@@ -331,7 +337,7 @@ class fileController extends expController {
                 $filter .= !empty($filter) ? " AND " : "";
                 $filter .= "is_image=1";
             }
-            
+
 //            $totalrecords = $this->$modelname->find('count',$filter);
 //            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             $files = $this->$modelname->find('all', $filter, $sort.' '.$dir);
@@ -364,9 +370,9 @@ class fileController extends expController {
                 'pageSize'=>$results,
                 'records'=>$files
             );
-                  
+
         }
-        
+
         echo json_encode($returnValue);
     }
 
@@ -411,8 +417,8 @@ class fileController extends expController {
             flash('error',$file->filename.' '.gt('wasn\'t deleted because you don\'t own the file.'));
         }
         redirect_to(array("controller"=>'file',"action"=>'picker',"ajax_action"=>1,"update"=>$this->params['update'],"filter"=>$this->params['filter']));
-    } 
-    
+    }
+
     public function deleter() {
 //        global $db;
 
@@ -527,7 +533,7 @@ class fileController extends expController {
     }
 
     public function upload() {
-        
+
         // upload the file, but don't save the record yet...
         if ($this->params['resize'] != 'false') {
             $maxwidth = $this->params['max_width'];
@@ -562,7 +568,7 @@ class fileController extends expController {
             echo gt('File was NOT uploaded!');
 //            flash('error',gt('File was not uploaded!'));
         }
-    } 
+    }
 
     public function quickUpload(){
         global $user;
@@ -661,10 +667,10 @@ class fileController extends expController {
             $ar = new expAjaxReply(300, gt("You didn't create this file, so you can't edit it."));
         }
         $ar->send();
-    } 
+    }
 
     public function editAlt() {
-        global $user;        
+        global $user;
         $file = new expFile($this->params['id']);
         if ($user->id==$file->poster || $user->isAdmin()) {
             $file->alt = $this->params['newValue'];
@@ -675,7 +681,7 @@ class fileController extends expController {
         }
         $ar->send();
         echo json_encode($file);  //FIXME we exit before hitting this
-    } 
+    }
 
     public function editShare() {
         global $user;

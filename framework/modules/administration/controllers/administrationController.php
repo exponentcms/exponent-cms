@@ -24,17 +24,17 @@
 
 class administrationController extends expController {
     public $basemodel_name = 'expRecord';
-    protected $add_permissions = array(
+    protected $manage_permissions = array(
+        'change'=>'Change Settings',
 	    'clear'=>'Clear Caches',  //FIXME this requires a logged in user to perform?
 	    "fix"=>"Fix Database",
 	    "install"=>"Installation",
+        'mass'=>'Mass Mailing',
+        'save'=>'Save Settings',
 	    "theme"=>"Manage Themes",
 	    'test_smtp'=>'Test SMTP Server Settings',
 	    'toggle'=>'Toggle Settings',
-        'mass'=>'Mass Mailing',
-        'update'=>'Update Settings',
-        'change'=>'Change Settings',
-        'save'=>'Save Settings',
+//        'update'=>'Update Settings',
     );
 
     static function displayname() { return gt("Administration Controls"); }
@@ -62,7 +62,7 @@ class administrationController extends expController {
 
     public function manage_unused_tables() {
         global $db;
-        
+
         expHistory::set('manageable', $this->params);
         $unused_tables = array();
         $used_tables = array();
@@ -114,12 +114,12 @@ class administrationController extends expController {
                 $unused_tables[$basename]->rows = $db->countObjects($basename);
             }
         }
-        
+
         assign_to_template(array(
             'unused_tables'=>$unused_tables
         ));
     }
-    
+
     public function delete_unused_tables() {
         global $db;
 
@@ -128,7 +128,7 @@ class administrationController extends expController {
             $basename = str_replace($db->prefix, '', $table);
             $count += $db->dropTable($basename);
         }
-        
+
         flash('message', gt('Deleted').' '.$count.' '.gt('unused tables').'.');
         expHistory::back();
     }
@@ -147,14 +147,14 @@ class administrationController extends expController {
         ));
 	}
 
-	public function fixsessions() {
-	    global $db;
-
-//		$test = $db->sql('CHECK TABLE '.$db->prefix.'sessionticket');
-		$fix = $db->sql('REPAIR TABLE '.$db->prefix.'sessionticket');
-		flash('message', gt('Sessions Table was Repaired'));
-		expHistory::back();
-	}
+//	public function fix_sessions() {
+//	    global $db;
+//
+////		$test = $db->sql('CHECK TABLE '.$db->prefix.'sessionticket');
+//		$fix = $db->sql('REPAIR TABLE '.$db->prefix.'sessionticket');
+//		flash('message', gt('Sessions Table was Repaired'));
+//		expHistory::back();
+//	}
 
 	public function fix_database() {
 	    global $db;
@@ -218,7 +218,6 @@ class administrationController extends expController {
                     $newSecRef->refcount = 1;
 //                    $newSecRef->is_original = 1;
 					$eloc = expUnserialize($container->external);
-//					$section = $db->selectObject('sectionref',"module='containermodule' AND source='".$eloc->src."'");
                     $section = $db->selectObject('sectionref',"module='container' AND source='".$eloc->src."'");
 					if (!empty($section)) {
 						$newSecRef->section = $section->id;
@@ -286,28 +285,28 @@ class administrationController extends expController {
 		}
 
         // sort the top level menus alphabetically by filename
-		ksort($menu);		
+		ksort($menu);
 		$sorted = array();
 		foreach($menu as $m) $sorted[] = $m;
-        
+
         // slingbar position
         if (isset($_COOKIE['slingbar-top'])){
             $top = $_COOKIE['slingbar-top'];
         } else {
             $top = SLINGBAR_TOP;
         }
-        
+
 		assign_to_template(array(
             'menu'=>(bs3()) ? $sorted : json_encode($sorted),
             "top"=>$top
         ));
     }
-    
+
 //    public function index() {
 //        redirect_to(array('controller'=>'administration', 'action'=>'toolbar'));
 ////        $this->toolbar();
 //    }
-    
+
     public function update_SetSlingbarPosition() {
         setcookie('slingbar-top', $this->params['top']);
         expHistory::back();
@@ -385,7 +384,7 @@ class administrationController extends expController {
         }
     	expHistory::back();
     }
-    
+
 	public function toggle_dev() {
         if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
             flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change Error Reporting settings.'));
@@ -1047,7 +1046,7 @@ class administrationController extends expController {
             'themes'=>$themes
         ));
     }
-    
+
     public function theme_switch() {
         if (!expUtil::isReallyWritable(BASE.'framework/conf/config.php')) {  // we can't write to the config.php file
             flash('error',gt('The file /framework/conf/config.php is NOT Writeable. You will be unable to change the theme.'));
@@ -1074,8 +1073,8 @@ class administrationController extends expController {
 //        expTheme::removeSmartyCache();
         expSession::clearAllUsersSessionCache();
     	expHistory::returnTo('manageable');
-    }	
-    
+    }
+
 	public function theme_preview() {
 		expSession::set('display_theme',$this->params['theme']);
 		$sv = isset($this->params['sv'])?$this->params['sv']:'';
@@ -1179,13 +1178,13 @@ class administrationController extends expController {
             '0'=>'-- '.gt('Please Select an Anti-Spam Control').' --',
             "recaptcha"=>'reCAPTCHA'
         );
-        
+
         //THEMES FOR RECAPTCHA
         $as_themes = array(
             "light"=>gt('Light (Default)'),
         	"dark"=>gt('Dark'),
         );
-        
+
         // Available Themes
         $themes = array();
         if (is_readable(BASE.'themes')) {
@@ -1243,16 +1242,16 @@ class administrationController extends expController {
         $attribution = expSettings::dropdownData('attribution');
 
         // These funcs need to be moved up in to new subsystems
-        
+
         // Date/Time Format
         $datetime_format = expSettings::dropdownData('datetime_format');
 
         // Date Format
         $date_format = expSettings::dropdownData('date_format');
-        
+
         // Time Format
         $time_format = expSettings::dropdownData('time_format');
-        
+
         // Start of Week
 //        $start_of_week = glist(expSettings::dropdownData('start_of_week'));
         $daysofweek = event::dayNames();
@@ -1260,7 +1259,7 @@ class administrationController extends expController {
 
         // File Permissions
         $file_permisions = glist(expSettings::dropdownData('file_permissions'));
-        
+
         // File Permissions
         $dir_permissions = glist(expSettings::dropdownData('dir_permissions'));
 

@@ -31,14 +31,18 @@ function compare($x, $y) {
 
 class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
-
     public $useractions = array(
         'showall'     => 'Show all events',
         'eventsCalendar'                  => 'Calendar View',
         'upcomingEvents'                  => 'Upcoming Events',
 //        'showByTitle' => "Show events by title",
     );
-
+    protected $add_permissions = array(
+//        'emailRegistrants'=> 'Email Registrants',
+    );
+    protected $manage_permissions = array(
+        'emailRegistrants'=> 'Email Registrants',
+    );
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -51,11 +55,6 @@ class eventregistrationController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-
-    protected $add_permissions = array(
-        'view_registrants'=> 'View Registrants',
-        'emailRegistrants'=> 'Email Registrants',
-    );
 
     static function displayname() {
         return gt("e-Commerce Online Event Registration");

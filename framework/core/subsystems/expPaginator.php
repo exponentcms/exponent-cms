@@ -23,14 +23,14 @@
  * and paginate them and optionally group the by category.
  * It automagically handles the calls to other pages
  * and has built-in sorting using the defined column headers.
- * 
+ *
  * Usage Example:
- *  
+ *
  * <code>
  *
  * $page = new expPaginator(array(
  *      'model'=>'faq',
- *      'where'=>1, 
+ *      'where'=>1,
  *      'limit'=>25,
  *      'order'=>'rank',
  *      'controller'=>$this->baseclassname,
@@ -38,7 +38,7 @@
  *      'columns'=>array('In FAQ'=>'include_in_faq', 'Submitted'=>'created_at', 'Submitted By'=>'submitter_name'),
  *  ));
  * </code>
- * 
+ *
  * @package Subsystems
  * @subpackage Subsystems
  */
@@ -52,7 +52,7 @@ class expPaginator {
     public $search_string = '';
 	public $sql = '';
     public $count_sql = '';
-	public $where = '';	
+	public $where = '';
 	public $controller = '';
 	public $action = '';
 	public $order = '';
@@ -91,7 +91,7 @@ class expPaginator {
 	/**#@+
      * @access public
      * @var array
-     */	
+     */
 	public $pages = array();
 	public $records = array();
     public $cats = array();
@@ -106,21 +106,21 @@ class expPaginator {
 	 * @return \expPaginator
 	 */
 	public function __construct($params=array()) {
-		global $router,$db;
+		global $router, $db;
 
         $this->pages_to_show = expTheme::is_mobile() ? 6 : 10; // fewer paging links for small devices
 		$this->where = empty($params['where']) ? null : $params['where'];
 		$this->records = empty($params['records']) ? array() : $params['records'];
 //		$this->limit = empty($params['limit']) ? 10 : $params['limit'];
-        $this->limit = empty($params['limit']) ? 0 : $params['limit'];
+        $this->limit = empty($params['limit']) ? 0 : intval($params['limit']);
         $this->page = empty($params['page']) ? 1 : intval($params['page']);
 		$this->action = empty($params['action']) ? '' : $params['action'];
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];
         $this->count_sql = empty($params['count_sql']) ? '' : $params['count_sql'];
-		$this->order = empty($params['order']) ? 'id' : $params['order'];
-		$this->dir = empty($params['dir']) ? 'ASC' : $params['dir'];
-		$this->src = empty($params['src']) ? null : $params['src'];
+		$this->order = empty($params['order']) ? 'id' : expString::escape($params['order']);
+		$this->dir = empty($params['dir']) || !in_array($params['dir'], array('ASC', 'DESC')) ? 'ASC' : $params['dir'];
+		$this->src = empty($params['src']) ? null : expString::escape($params['src']);
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
         $this->uncat = !empty($params['uncat']) ? $params['uncat'] : gt('Not Categorized');
         $this->groups = !empty($params['groups']) ? $params['groups'] : array();
@@ -137,7 +137,7 @@ class expPaginator {
             $this->model = $params['model'];
             $class = new $this->model(null, false, false);
         }
-	
+
 	    // auto-include the CSS for pagination links
 	    expCSS::pushToHead(array(
 //		    "unique"=>"pagination",
@@ -145,7 +145,7 @@ class expPaginator {
             'corecss'=>'pagination'
 		    )
 		);
-		
+
 		if ($this->limit)
             $this->start = (($this->page * $this->limit) - $this->limit);
         if ($this->start < 0)
@@ -167,12 +167,12 @@ class expPaginator {
 		        }
 		    }
 		}
-		
+
 		//setup the default ordering of records
 		// if we are in an action, see if the action is for this controller/action..if so pull the order
 		// and order direction from the request params...this is how the params are passed via the column
 		// headers.
-		$this->order_direction = $this->dir;	
+		$this->order_direction = $this->dir;
 
         // allow passing of a single order/dir as stored in config
         if (strstr($this->order," ")) {
@@ -180,6 +180,10 @@ class expPaginator {
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
+        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $this->order))
+            $this->order = 'id';
+        if (!in_array($this->order_direction, array('ASC', 'DESC')))
+            $this->order_direction = 'ASC';
         if ($this->dontsort)
             $sort = null;
         else
@@ -209,13 +213,13 @@ class expPaginator {
             //this is MUCH faster if you supply a proper count_sql param using a COUNT() function; if not,
             //we'll run the standard sql and do a queryRows with it
 			//$this->total_records = $this->count_sql == '' ? $db->queryRows($this->sql) : $db->selectValueBySql($this->count_sql); //From Merge
-                        
+
 //			$this->total_records =  $db->countObjectsBySql($this->count_sql); //$db->queryRows($this->sql); //From most current Trunk
 
             if (!empty($sort)) $this->sql .= ' ORDER BY '.$sort;
             if (!empty($this->count_sql)) $this->total_records = $db->countObjectsBySql($this->count_sql);
 			if (!empty($this->limit)) $this->sql .= ' LIMIT '.$this->start.','.$this->limit;
-			
+
 			$this->records = array();
 			if (isset($this->model) || isset($params['model_field'])) {
 			    foreach($db->selectObjectsBySql($this->sql) as $record) {
@@ -227,7 +231,7 @@ class expPaginator {
 			} else {
 			    $this->records = $db->selectObjectsBySql($this->sql);
 			}
-		}	
+		}
 
         // next we'll sort them based on categories if needed
         if (!empty($this->categorize) && $this->categorize && empty($this->dontsort))
@@ -314,7 +318,7 @@ class expPaginator {
 			$this->firstrecord = 0;
 			$this->lastrecord = 0;
 		}
-			
+
 		// get the page parameters from the router to build the links
         $page_params = $router->params;
 //		$page_params = $this->cleanParams($router->params);
@@ -343,6 +347,10 @@ class expPaginator {
                 if ($this->controller == $mod && $this->action == $router->params['action']) {
                     $this->order = isset($router->params['order']) ? $router->params['order'] : $this->order;
                     $this->order_direction = isset($router->params['dir']) ? $router->params['dir'] : $this->dir;
+                    if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $this->order))
+                        $this->order = 'id';
+                    if (!in_array($this->order_direction, array('ASC', 'DESC')))
+                        $this->order_direction = 'ASC';
                 }
             } else {
                 if (isset($params->controller)) {
@@ -353,12 +361,12 @@ class expPaginator {
             }
             $page_params['controller'] = $mod;  // we can't be passing an empty controller or module to the router
         }
-		
+
 		if (!empty($this->action))
             $page_params['action'] =  $this->action;
 		if (!empty($this->src))
             $page_params['src'] =  $this->src;
-		
+
 		if (isset($page_params['section']))
             unset($page_params['section']);
 
@@ -370,10 +378,10 @@ class expPaginator {
 
 		//build a couple more links we can use in the views.
 		$this->pagelink = $router->makeLink($page_params, false, false, true);
-		
+
 		// if don't have enough records for more than one page then we're done.
 		//if ($this->total_records <= $this->limit) return true;
-		
+
 		$this->total_pages = ($this->limit > 0) ? ceil($this->total_records/$this->limit) : 0;
 
         // correct current page # to be within limits of number of pages
@@ -407,7 +415,7 @@ class expPaginator {
 		    $this->last_pagelink = $this->first_pagelink + $this->pages_to_show - 1;
 		    if ($this->last_pagelink > $this->total_pages) {
 		        $this->first_pagelink = max(1, $this->total_pages - $this->pages_to_show) + 1;
-		        $this->last_pagelink = $this->total_pages; 
+		        $this->last_pagelink = $this->total_pages;
 		    }
 		} else {
 			$this->first_pagelink = 1;
@@ -433,19 +441,19 @@ class expPaginator {
         }
 
 		// setup the links to the remaining pages being displayed.
-		for($i=$this->first_pagelink; $i<=$this->last_pagelink; $i++) { 
+		for($i=$this->first_pagelink; $i<=$this->last_pagelink; $i++) {
 			$page_params['page'] = $i;
 			$this->pages[$i] = $router->makeLink($page_params, false, false, true);
-		} 	
+		}
 
 		$links_template = expTemplate::get_common_template('pagination_links', null, 'common');
 		$links_template->assign('page', $this);
 		$this->links = $links_template->render();
-		
+
 		$this->makeHeaderCols($page_params);  // headers for table view
-         
+
         $sortparams = array_merge($page_params, $router->params);
-		
+
 		//From Merge ****
         if (isset($router->params['page']))
             $sortparams['page'] = $router->params['page'];
@@ -454,47 +462,47 @@ class expPaginator {
         //End From Merge ****
 
 		$this->makeSortDropdown($sortparams);  // used on non-table views
-       
+
         $table_template = expTemplate::get_common_template('pagination_table', null, 'common');
         $table_template->assign('page', $this);
         $this->table = $table_template->render();  // table view
-        
+
 	}
-	
+
 	//From Merge
     private function cleanParams($params) {
         $defaultParams = array('title'=>'','module'=>'','controller'=>'','src'=>'','id'=>'','dir'=>'','_common'=>'');
         $newParams = array();
-        $func = new ReflectionClass($this);       
+        $func = new ReflectionClass($this);
         foreach ($params as $pKey=>$pVal) {
             $propname = $pKey;
             if (array_key_exists($propname,$defaultParams)) {
-                $newParams[$propname] = $params[$propname];                
-            }               
-        }        
+                $newParams[$propname] = $params[$propname];
+            }
+        }
         foreach ($func->getProperties() as $p) {
             $propname = $p->name;
             if (array_key_exists($propname,$params)) {
-                $newParams[$propname] = $params[$propname];                
-            }               
-        }        
-        
+                $newParams[$propname] = $params[$propname];
+            }
+        }
+
         return $newParams;
     }
-    
+
     public function makeHeaderCols($params) {
         global $router;
 
         if (!empty($this->columns) && is_array($this->columns)) {
             $this->header_columns = '';
-            
+
             // get the parameters used to make this page.
             if (!expTheme::inAction()) {
                 unset($params['section']);
                 if (empty($params['controller'])) $params['controller'] = $this->controller;
                 if (empty($params['action'])) $params['action'] = $this->action;
             }
-            
+
 //            $current = '';
             if (isset($params['order'])) {
                 $current = $params['order'];
@@ -502,20 +510,20 @@ class expPaginator {
             } else {
                 $current = $this->order;
             }
-            
+
             //loop over the columns and build out a list of <th>'s to be used in the page table
             foreach ($this->columns as $colname=>$col) {
                 // if this is the column we are sorting on right now we need to setup some class info
                 $class = isset($this->class) ? $this->class : 'page';
                 $params['dir'] = 'ASC';
-                
+
                 if ($col == $current) {
                     $class  = 'current '.strtolower($this->order_direction);
                     $params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
-                } 
+                }
 
                 $params['order'] = $col;
-                
+
                 $this->header_columns .= '<th class="'.$class.'">';
                 // if this column is empty then it's not supposed to be a sortable column
 
@@ -524,7 +532,7 @@ class expPaginator {
                     $this->columns[$colname] = ' ';
                 } else if($colname=="actupon") {
                     $this->header_columns .= '<input type=checkbox name=selall id=selall value=1 class="select-all"/>';
-                    
+
 //                    $js = "
 //                    YUI(EXPONENT.YUI3_CONFIG).use('node', function(Y) {
 //                        Y.all('input[type=checkbox]').on('click',function(e){
@@ -565,12 +573,12 @@ class expPaginator {
                         $this->header_columns .= '<a href="'.$router->makeLink($params, false, false, true).'" alt="sort by '.$colname.'" rel="nofollow">'.$colname.'</a>';
                     }
                 }
-                
+
                 $this->header_columns .= '</th>';
             }
         }
     }
-    
+
     //here if we want to modify the record for some reason. e.g. Using in search results w/ products
     private function runCallback() {
         foreach ($this->records as &$record) {
@@ -585,9 +593,9 @@ class expPaginator {
                     }
                 }
             }
-        }    
+        }
     }
-    
+
 	public function makeSortDropdown($params) {
 		global $router;
 
@@ -600,7 +608,7 @@ class expPaginator {
 				if (empty($params['controller'])) $params['controller'] = $this->controller;
 				if (empty($params['action'])) $params['action'] = $this->action;
 			}
-			
+
 			/*$current = '';
 			if (isset($params['order'])) {
 				$current = $params['order'];
@@ -608,7 +616,7 @@ class expPaginator {
 			} else {
 				$current = $this->order;
 			}  */
-			
+
 			//loop over the columns and build out a list of <th>'s to be used in the page table
            // eDebug($router);
             $defaultParams['controller'] = $params['controller'];
@@ -617,13 +625,13 @@ class expPaginator {
                 $defaultParams['title'] = $params['title'];
             if (isset($params['page']))
                 $defaultParams['page'] = $params['page'];
-            
+
             $this->sort_dropdown[$router->makeLink($defaultParams, false, false, true)] = "Default";
 			foreach ($this->columns as $colname=>$col) {
 				// if this is the column we are sorting on right now we need to setup some class info
 				/*$class = isset($this->class) ? $this->class : 'page';
 				$params['dir'] = 'ASC';*/
-				
+
 				/*if ($col == $current) {
 					$class  = 'current';
 					$class .= ' '.$this->order_direction;
@@ -632,27 +640,27 @@ class expPaginator {
 					} else {
 						$params['dir'] = $this->order_direction == 'ASC' ? 'DESC' : 'ASC';
 					}
-				} 
+				}
                 */
-				$params['order'] = $col;      				                        
-				
-				if (!empty($col)) {	
+				$params['order'] = $col;
+
+				if (!empty($col)) {
                     if ($colname == 'Price') {
-                        $params['dir'] = 'ASC'; 
+                        $params['dir'] = 'ASC';
                         $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Lowest to Highest";
-                        $params['dir'] = 'DESC'; 
+                        $params['dir'] = 'DESC';
                         $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Highest to Lowest";
                     } else {
-                        $params['dir'] = 'ASC'; 
+                        $params['dir'] = 'ASC';
                         $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - A-Z";
                         $params['dir'] = 'DESC';
                         $this->sort_dropdown[$router->makeLink($params, false, false, true)] = $colname . " - Z-A";
-                    }	
-				}                  								
+                    }
+				}
 			}
 		}
 	}
-	
+
     /** exdoc
      * Object/Array sorting comparison function -- sorts by a specified column in ascending order.
      * @node Subsystems:expPaginator

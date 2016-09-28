@@ -29,15 +29,13 @@ class blogController extends expController {
         'dates'=>"Show Post Dates",
         'comments'=>"Show Recent Post Comments",
     );
+    protected $manage_permissions = array(
+//        'approve'=>"Approve Comments",
+    );
     public $remove_configs = array(
 //        'categories',
 //        'ealerts'
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'approve'=>"Approve Comments",
-        'import'=>'Import Blog Items',
-        'export'=>'Export Blog Items'
-    );
 
     static function displayname() { return gt("Blog"); }
     static function description() { return gt("Run a blog on your site."); }
@@ -168,6 +166,7 @@ class blogController extends expController {
 	public function showall_by_author() {
 	    expHistory::set('viewable', $this->params);
 
+        $this->params['author'] = expString::escape($this->params['author']);
         $user = user::getUserByName($this->params['author']);
 		$page = new expPaginator(array(
             'model'=>$this->basemodel_name,
@@ -194,7 +193,7 @@ class blogController extends expController {
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
         if (empty($record->id))
-            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>expString::escape($this->params['title'])));
 
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
@@ -231,7 +230,7 @@ class blogController extends expController {
 
         // setup some objects
         $tagobj = new expTag();
-        $modelname = empty($this->params['model']) ? $this->basemodel_name : $this->params['model'];
+        $modelname = empty($this->params['model']) ? $this->basemodel_name : expString::escape($this->params['model']);
         $model = new $modelname();
 
         // start building the sql query

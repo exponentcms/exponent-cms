@@ -351,7 +351,7 @@ class mysqli_database extends database {
 	 * @param int|null $where
 	 * @return void
 	 */
-    function columnUpdate($table, $col, $val, $where=1) {         
+    function columnUpdate($table, $col, $val, $where=1) {
         $res = @mysqli_query($this->connection, "UPDATE `" . $this->prefix . "$table` SET `$col`='" . $val . "' WHERE $where");
         /*if ($res == null)
             return array();
@@ -484,8 +484,8 @@ class mysqli_database extends database {
     function selectObjectBySql($sql) {
         //$logFile = "C:\\xampp\\htdocs\\supserg\\tmp\\queryLog.txt";
         //$lfh = fopen($logFile, 'a');
-        //fwrite($lfh, $sql . "\n");    
-        //fclose($lfh);                 
+        //fwrite($lfh, $sql . "\n");
+        //fclose($lfh);
         $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return null;
@@ -740,8 +740,8 @@ class mysqli_database extends database {
 	 */
 	function lockTable($table,$lockType="WRITE") {
         $sql = "LOCK TABLES `" . $this->prefix . "$table` $lockType";
-       
-        $res = mysqli_query($this->connection, $sql); 
+
+        $res = mysqli_query($this->connection, $sql);
         return $res;
     }
 
@@ -750,11 +750,11 @@ class mysqli_database extends database {
 	 */
 	function unlockTables() {
         $sql = "UNLOCK TABLES";
-        
+
         $res = mysqli_query($this->connection, $sql);
         return $res;
     }
-    
+
 	/**
      * Insert an Object into some table in the Database
      *
@@ -768,7 +768,7 @@ class mysqli_database extends database {
      * @return int|void
      */
     function insertObject($object, $table) {
-        //if ($table=="text") eDebug($object,true); 
+        //if ($table=="text") eDebug($object,true);
         $sql = "INSERT INTO `" . $this->prefix . "$table` (";
         $values = ") VALUES (";
         foreach (get_object_vars($object) as $var => $val) {
@@ -828,7 +828,7 @@ class mysqli_database extends database {
             $object->revision_id++;
             //if ($table=="text") eDebug($object);
             $res = $this->insertObject($object, $table);
-            //if ($table=="text") eDebug($object,true); 
+            //if ($table=="text") eDebug($object,true);
             $this->trim_revisions($table, $object->$identifier, WORKFLOW_REVISION_LIMIT);
             return $res;
         }
@@ -838,7 +838,7 @@ class mysqli_database extends database {
             //if($is_revisioned && $var=='revision_id') $val++;
             if ($var{0} != '_') {
                 if (is_array($val) || is_object($val)) {
-                    $val = serialize($val);   
+                    $val = serialize($val);
                     $sql .= "`$var`='".$val."',";
                 } else {
                     $sql .= "`$var`='" . $this->escapeString($val) . "',";
@@ -850,7 +850,7 @@ class mysqli_database extends database {
             $sql .= $this->injectProof($where);
         else
             $sql .= "`" . $identifier . "`=" . $object->$identifier;
-        //if ($table == 'text') eDebug($sql,true);        
+        //if ($table == 'text') eDebug($sql,true);
         $res = (@mysqli_query($this->connection, $sql) != false);
         return $res;
     }
@@ -1109,7 +1109,7 @@ class mysqli_database extends database {
     }
 
 	/**
-	 * Unescape a string based on the database connection
+	 * Escape a string based on the database connection
 	 * @param $string
 	 * @return string
 	 */
@@ -1162,7 +1162,7 @@ class mysqli_database extends database {
      * @param string $sql The name of the table/object to look at
      * @return array
      */
-    function selectArraysBySql($sql) {        
+    function selectArraysBySql($sql) {
         $res = @mysqli_query($this->connection, $this->injectProof($sql));
         if ($res == null)
             return array();
@@ -1294,7 +1294,7 @@ class mysqli_database extends database {
 		while($row = mysqli_fetch_object($res)) {
 			$records[] = $row->Field;
 		}
-		
+
 		return $records;
 	}
 

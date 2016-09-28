@@ -21,7 +21,7 @@
  */
 
 class migrationController extends expController {
-    protected $add_permissions = array(
+    protected $manage_permissions = array(
         'analyze'=>'Analyze Data',
         'migrate'=>'Migrate Data'
     );

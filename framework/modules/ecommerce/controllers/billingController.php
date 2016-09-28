@@ -22,14 +22,15 @@
  */
 
 class billingController extends expController {
-    protected $add_permissions = array(
-        'activate'=>'Activate Payment Options'
+    protected $manage_permissions = array(
+        'select'=>'Select Feature',
+        'toggle'=>'Toggle Feature',
     );
-    
+
     static function displayname() { return gt("e-Commerce Billing Controller"); }
     static function description() { return ""; }
 	static function hasSources() { return false; }
-	
+
 	function selectBillingCalculator() {
 		$billing = new billing();
 		$billing->billingmethod->update($this->params);
@@ -45,12 +46,12 @@ class billingController extends expController {
 	}
 
 	function selectBillingOptions() {
-		
+
 	}
-	
+
 	function manage() {
 	    global $db;
-	    
+
 	    expHistory::set('manageable', $this->params);
 //	    $classes = array();
         $dir = BASE."framework/modules/ecommerce/billingcalculators";
@@ -68,7 +69,7 @@ class billingController extends expController {
                             $obj = new billingcalculator(array(
                                 'title'=>$calcobj->name(),
 //                                'user_title'=>$calcobj->title,
-                                'body'=>$calcobj->description(), 
+                                'body'=>$calcobj->description(),
                                 'calculator_name'=>$classname,
                                 'enabled'=>false));
                             $obj->save();
@@ -77,15 +78,15 @@ class billingController extends expController {
                 }
             }
         }
-        
+
         $bcalc = new billingcalculator();
         $calculators = $bcalc->find('all');
         assign_to_template(array(
             'calculators'=>$calculators
         ));
 	}
-	
-	public function activate(){	
+
+	public function activate(){
 	    if (isset($this->params['id'])) {
 	        $calc = new billingcalculator($this->params['id']);
 	        $calc->update($this->params);
@@ -121,7 +122,7 @@ class billingController extends expController {
             'title'=>static::displayname()
         ));
     }
-    
+
     public function saveconfig() {
         $calc = new billingcalculator($this->params['id']);
         $conf = serialize($calc->calculator->parseConfig($this->params));

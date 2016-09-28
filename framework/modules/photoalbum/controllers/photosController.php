@@ -28,6 +28,9 @@ class photosController extends expController {
 //        'slideshow'=>'Slideshow',
 //        //'showall_tags'=>"Tag Categories"
 //    );
+    protected $manage_permissions = array(
+        'multi'=>'Bulk Actions',
+    );
     public $remove_configs = array(
         'comments',
         'ealerts',
@@ -41,7 +44,7 @@ class photosController extends expController {
     static function displayname() { return gt("Photo Album"); }
     static function description() { return gt("Displays and manages images."); }
     static function isSearchable() { return true; }
-    
+
     public function showall() {
         expHistory::set('viewable', $this->params);
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -66,22 +69,22 @@ class photosController extends expController {
                 gt('Title')=>'title'
             ),
         ));
-                    
+
         assign_to_template(array(
             'page'=>$page,
             'params'=>$this->params,
         ));
     }
-    
+
     function show() {
         expHistory::set('viewable', $this->params);
-        
+
         // figure out if we're looking this up by id or title
         $id = null;
         if (isset($this->params['id'])) {
             $id = $this->params['id'];
         } elseif (isset($this->params['title'])) {
-            $id = $this->params['title'];
+            $id = expString::escape($this->params['title']);
         }
         $record = new photo($id);
         if (empty($record->id))
@@ -121,7 +124,7 @@ class photosController extends expController {
             'config'=>$config
         ));
     }
-    
+
     public function slideshow() {
         expHistory::set('viewable', $this->params);
         $order = isset($this->config['order']) ? $this->config['order'] : "rank";
@@ -147,7 +150,7 @@ class photosController extends expController {
             'slides'=>$page->records,
         ));
     }
-    
+
     public function showall_tags() {
         $images = $this->image->find('all');
         $used_tags = array();
@@ -160,14 +163,14 @@ class photosController extends expController {
                     $used_tags[$tag->id] = $exptag;
                     $used_tags[$tag->id]->count = 1;
                 }
-                
+
             }
         }
-        
+
         assign_to_template(array(
             'tags'=>$used_tags
         ));
-    }           
+    }
 
     /**
      * Returns rich snippet PageMap meta data
@@ -195,7 +198,7 @@ class photosController extends expController {
 
         //populate the alt tag field if the user didn't
         if (empty($this->params['alt'])) $this->params['alt'] = $this->params['title'];
-        
+
         // call expController update to save the image
         parent::update();
     }

@@ -27,6 +27,13 @@ class formsController extends expController {
         'showall'    => 'Show All Records',
         'show'       => 'Show a Single Record',
     );
+    protected $add_permissions = array(
+        'viewdata'  => "View Data",
+        'enter_data' => "Enter Data",  // slight naming variation to not fully restrict enterdata method
+    );
+    protected $manage_permissions = array(
+        'design' => 'Design Form',
+    );
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -39,10 +46,6 @@ class formsController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'viewdata'  => "View Data",
-        'enter_data' => "Enter Data"  // slight naming variation to not fully restrict enterdata method
-    );
 //    public $codequality = 'beta';
 
     static function displayname() {
@@ -81,7 +84,7 @@ class formsController extends expController {
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
                 $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
@@ -92,7 +95,7 @@ class formsController extends expController {
                 if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
                     $where = '1';
                 } elseif (!empty($this->params['filter'])) {
-                    $where = $this->params['filter'];
+                    $where = expString::escape($this->params['filter']);
                 } else {
                     $where = $this->config['report_filter'];
                 }
@@ -200,7 +203,7 @@ class formsController extends expController {
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
                 redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
@@ -710,10 +713,10 @@ class formsController extends expController {
 //                );
 
                 $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
-                if ($this->config['auto_respond_form']) 
+                if ($this->config['auto_respond_form'])
                     $tmsg .= "\n" . $emailText;
                 $hmsg = $this->config['auto_respond_body'];
-                if ($this->config['auto_respond_form']) 
+                if ($this->config['auto_respond_form'])
                     $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(
@@ -1939,6 +1942,10 @@ class formsController extends expController {
     public function import_csv_data_add() {
         global $user;
 
+        if (!empty($this->params['filename']) && (strpos($this->params['filename'], 'tmp/') === false || strpos($this->params['folder'], '..') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");

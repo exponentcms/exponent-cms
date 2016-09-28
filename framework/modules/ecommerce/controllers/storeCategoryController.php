@@ -22,18 +22,11 @@
  */
 
 class storeCategoryController extends expNestedNodeController {
-    static function displayname() {
-        return gt("e-Commerce Category Manager");
-    }
-
-    static function description() {
-        return gt("This module is for managing categories in your store.");
-    }
-
-    protected $add_permissions = array(
+    protected $manage_permissions = array(
+//        'import' => 'Import Category',
+//        'importCategory' => 'Import Category',
         'fix_categories' => 'to run this action.'
     );
-
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -48,6 +41,14 @@ class storeCategoryController extends expNestedNodeController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
+
+    static function displayname() {
+        return gt("e-Commerce Category Manager");
+    }
+
+    static function description() {
+        return gt("This module is for managing categories in your store.");
+    }
 
     static function canImportData() {
         return true;
@@ -190,18 +191,18 @@ class storeCategoryController extends expNestedNodeController {
         expHistory::set('viewable', $this->params);
         //         $category = new storeCategory();
         //         $categories = $category->getFullTree();
-        //         
+        //
         //         // foreach($categories as $i=>$val){
         //         //  if (!empty($this->values) && in_array($val->id,$this->values)) {
         //         //      $this->tags[$i]->value = true;
         //         //  } else {
         //         //      $this->tags[$i]->value = false;
         //         //  }
-        //         //  $this->tags[$i]->draggable = $this->draggable; 
-        //         //  $this->tags[$i]->checkable = $this->checkable; 
+        //         //  $this->tags[$i]->draggable = $this->draggable;
+        //         //  $this->tags[$i]->checkable = $this->checkable;
         //         // }
         //
-        // $obj = json_encode($categories);  
+        // $obj = json_encode($categories);
     }
 
     public function update() {
@@ -405,7 +406,7 @@ class storeCategoryController extends expNestedNodeController {
         // and adds the lft and rgt extents correctly for a nested set
 
         /*function nestify($categories) {
-            // Trees mapped            
+            // Trees mapped
             $trees = array();
             $trackParents = array();
             $depth=0;
@@ -439,10 +440,10 @@ class storeCategoryController extends expNestedNodeController {
                         $counter++;
                         $l--;
                     }
-                    
+
                     $categories[$key]['lft'] = $counter;
                     //???$counter++;
-                }        
+                }
                 $prevDepth=$val['depth'];
             }
 
@@ -497,7 +498,7 @@ class storeCategoryController extends expNestedNodeController {
         // eDebug(toHierarchy(nestify(flattenArray($TheTree))),1);
 
         /*$flat_fixed_cats = nestify(flattenArray($TheTree));
-                
+
         foreach ($flat_fixed_cats as $k=>$v) {
             $cat = new storeCategory($v['id']);
             $cat->lft = $v['lft'];
@@ -508,13 +509,13 @@ class storeCategoryController extends expNestedNodeController {
           */
         //-Show Array Structure--//
         // print_r($TheTree);
-        // 
-        // 
+        //
+        //
         // //--Print the Categories, and send their children to DrawBranch--//
         // //--The code below allows you to keep track of what category you're currently drawing--//
-        // 
+        //
         // printf("<ul>");
-        // 
+        //
         // foreach($TheTree as $MyNode) {
         //     printf("<li>{$MyNode['Name']}</li>");
         //     if(is_array($MyNode["Children"]) && !empty($MyNode["Children"])) {
@@ -523,17 +524,17 @@ class storeCategoryController extends expNestedNodeController {
         // }
         // printf("</ul>");
         // //--Recursive printer, should draw a child, and any of its children--//
-        // 
+        //
         // function DrawBranch($Node){
         //     printf("<ul>");
-        // 
+        //
         //     foreach($Node as $Entity) {
         //         printf("<li>{$Entity['Name']}</li>");
-        // 
+        //
         //         if(is_array($Entity["Children"]) && !empty($Entity["Children"])) {
         //             DrawBranch($Entity["Children"]);
         //         }
-        // 
+        //
         //         printf("</ul>");
         //     }
         // }

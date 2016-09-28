@@ -47,7 +47,7 @@ class expDefinableFieldController extends expController {
    	 * default view for individual field
    	 */
    	function show() {
-        assign_to_template(array('record'=>$record,'tag'=>$tag));  //FIXME $record & $tag are undefined
+//        assign_to_template(array('record'=>$record,'tag'=>$tag));  //FIXME $record & $tag are undefined
     }
 
 	/**
@@ -55,7 +55,7 @@ class expDefinableFieldController extends expController {
 	 */
 	function manage() {
         global $db;
-		
+
         expHistory::set('manageable', $this->params);
 		$fields = $db->selectObjects("expDefinableFields",'1','rank');
 		$types = expTemplate::listControlTypes();
@@ -63,10 +63,10 @@ class expDefinableFieldController extends expController {
 		array_unshift($types,'['.gt('Please Select'.']'));
         assign_to_template(array('fields'=>$fields, 'types'=>$types));
     }
-	
+
 	function edit() {
 		global $db;
-		 
+
 		$control_type = "";
 		$ctl = null;
 		if (isset($this->params['id'])) {
@@ -80,7 +80,7 @@ class expDefinableFieldController extends expController {
 		}
 		if ($control_type == "") $control_type = $this->params['control_type'];
 		$form = call_user_func(array($control_type,"form"),$ctl);
-		if ($ctl) { 
+		if ($ctl) {
 			$form->controls['identifier']->disabled = true;
 			$form->meta("id",$ctl->id);
 			$form->meta("identifier",$ctl->identifier);
@@ -91,10 +91,10 @@ class expDefinableFieldController extends expController {
 		$form->meta("type", $control_type);
 		$types = expTemplate::listControlTypes();
 
-		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));			
+		assign_to_template(array('form_html'=>$form->toHTML(), 'types'=>$types[$control_type]));
 	}
-	
-	function save() {	
+
+	function save() {
 		global $db;
 		$ctl = null;
 		$control = null;
@@ -106,30 +106,30 @@ class expDefinableFieldController extends expController {
 			}
 		}
 
-		if (call_user_func(array($_POST['control_type'],'useGeneric')) == true) { 	
+		if (call_user_func(array($_POST['control_type'],'useGeneric')) == true) {
 			$ctl = call_user_func(array('genericcontrol','update'),expString::sanitize($_POST),$ctl);
 		} else {
 			$ctl = call_user_func(array($_POST['control_type'],'update'),expString::sanitize($_POST),$ctl);
 		}
-		
+
 		if ($ctl != null) {
 			$name = substr(preg_replace('/[^A-Za-z0-9]/','_',$ctl->identifier),0,20);
-	
+
 			if (!isset($this->params['id'])) {
 				$control->name =  $name;
 			}
-	
+
             if (!empty($ctl->pattern)) $ctl->pattern = addslashes($ctl->pattern);
 			$control->data = serialize($ctl);
 			$control->type = $this->params['type'];
-			
+
 			if (isset($control->id)) {
 				$db->updateObject($control,'expDefinableFields');
 			} else {
 				$db->insertObject($control,'expDefinableFields');
 			}
 		}
-		
+
 		redirect_to(array('controller'=>'expDefinableField','action'=>'manage'));
 	}
 

@@ -38,7 +38,7 @@ class filedownloadController extends expController {
     static function displayname() { return gt("File Downloads"); }
     static function description() { return gt("Place files on your website for users to download or use as a podcast."); }
     static function isSearchable() { return true; }
-	
+
     function showall() {
         expHistory::set('viewable', $this->params);
         $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
@@ -90,21 +90,21 @@ class filedownloadController extends expController {
             flash('error', gt('There was an error while trying to download your file.  No File Specified.'));
             expHistory::back();
         }
-        
-        $fd = new filedownload($this->params['fileid']); 
+
+        $fd = new filedownload(intval($this->params['fileid']));
         if (empty($this->params['filenum'])) $this->params['filenum'] = 0;
 
         if (empty($fd->expFile['downloadable'][$this->params['filenum']]->id)) {
             flash('error', gt('There was an error while trying to download your file.  The file you were looking for could not be found.'));
             expHistory::back();
-        }        
-        
+        }
+
         $fd->downloads++;
         $fd->save();
-        
+
         // this will set the id to the id of the actual file..makes the download go right.
         $this->params['id'] = $fd->expFile['downloadable'][$this->params['filenum']]->id;
-        parent::downloadfile();        
+        parent::downloadfile();
     }
 
     /**
@@ -219,10 +219,10 @@ class filedownloadController extends expController {
 
         $fd = new filedownload();
         $items = $fd->find('all',$this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'created_at DESC', $limit);
-        
+
         //Convert the items to rss items
         $rssitems = array();
-        foreach ($items as $key => $item) { 
+        foreach ($items as $key => $item) {
             $rss_item = new FeedItem();
 
             // Add the basic data
@@ -281,7 +281,7 @@ class filedownloadController extends expController {
         }
         return $rssitems;
     }
-	
+
 }
 
 ?>

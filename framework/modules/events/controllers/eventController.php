@@ -26,8 +26,9 @@ class eventController extends expController {
     public $useractions = array(
         'showall' => 'Show Calendar',
     );
-//    public $codequality = 'beta';
-
+//    protected $manage_permissions = array(
+//        'import' => 'Import Calendar',
+//    );
     public $remove_configs = array(
         'comments',
         'ealerts',
@@ -76,7 +77,7 @@ class eventController extends expController {
 
         expHistory::set('viewable', $this->params);
         $locsql = $this->aggregateWhereClause();
-        $time = (isset($this->params['time']) ? $this->params['time'] : time());
+        $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
         assign_to_template(array(
             'time' => $time,
             'daynames' => event::dayNames(),
@@ -238,7 +239,7 @@ class eventController extends expController {
                 // added per Ignacio
                 //			$endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($startperiod, $next);
-                if (!empty($this->config['aggregate_registrations'])) 
+                if (!empty($this->config['aggregate_registrations']))
                     $regitems = eventregistrationController::getRegEventsForDates($startperiod, $next, $regcolor);
                 for ($i = 1; $i <= $totaldays; $i++) {
                     //                    $info = getdate($time);
@@ -309,7 +310,7 @@ class eventController extends expController {
                 // Grab day counts
                 $endofmonth = date('t', $time);
                 $extitems = $this->getExternalEvents($timefirst, expDateTime::endOfMonthTimestamp($timefirst));
-                if (!empty($this->config['aggregate_registrations'])) 
+                if (!empty($this->config['aggregate_registrations']))
                     $regitems = eventregistrationController::getRegEventsForDates($timefirst, expDateTime::endOfMonthTimestamp($timefirst), $regcolor);
                 for ($i = 1; $i <= $endofmonth; $i++) {
                     $start = mktime(0, 0, 0, $info['mon'], $i, $info['year']);
@@ -457,7 +458,7 @@ class eventController extends expController {
                         }
                     }
                     $items = array_merge($items, $extitem);
-                    
+
                     if (!empty($this->config['aggregate_registrations']))
                         $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                     // we need to flatten these down to simple array of events
@@ -674,7 +675,7 @@ class eventController extends expController {
             $ed = new eventdate($this->params['id']);
 //            $email_addrs = array();
             if ($ed->event->feedback_email != '') {
-                $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . $this->params['formname'], $this->loc);
+                $msgtemplate = expTemplate::get_template_for_action($this, 'email/_' . expString::escape($this->params['formname']), $this->loc);
                 $msgtemplate->assign('params', $this->params);
                 $msgtemplate->assign('event', $ed);
                 $email_addrs = explode(',', $ed->event->feedback_email);
@@ -735,7 +736,7 @@ class eventController extends expController {
                     }
 
                     if (isset($this->params['time'])) {
-                        $time = $this->params['time']; // get current month's events
+                        $time = intval($this->params['time']); // get current month's events
 //                        $dates = $db->selectObjects("eventdate",$locsql." AND (date >= ".expDateTime::startOfMonthTimestamp($time)." AND date <= ".expDateTime::endOfMonthTimestamp($time).")");
                         $dates = $ed->find('all', $locsql . " AND (date >= " . expDateTime::startOfMonthTimestamp($time) . " AND date <= " . expDateTime::endOfMonthTimestamp($time) . ")");
                     } else {
@@ -982,7 +983,7 @@ class eventController extends expController {
             $title = $this->config['feed_title'];
             $template->assign('moduletitle', $title);
 
-            $time = (isset($this->params['time']) ? $this->params['time'] : time());
+            $time = (isset($this->params['time']) ? intval($this->params['time']) : time());
             $time = (int)$time;
 
             $template->assign("time", $time);

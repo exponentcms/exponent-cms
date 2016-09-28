@@ -34,7 +34,7 @@ class expString {
      */
 	static function convertUTF($string) {
 		return $string = str_replace('?', '', htmlspecialchars($string, ENT_IGNORE, 'UTF-8'));
-	} 
+	}
 
     /**
      * Routine to check if string is valid UTF string
@@ -46,7 +46,7 @@ class expString {
 	static function validUTF($string) {
 		if(!mb_check_encoding($string, 'UTF-8') OR !($string === mb_convert_encoding(mb_convert_encoding($string, 'UTF-32', 'UTF-8' ), 'UTF-8', 'UTF-32'))) {
 			return false;
-		}		
+		}
 		return true;
 	}
 
@@ -105,9 +105,9 @@ class expString {
         $str = str_replace("¾","&#190;",$str);
 		$str = str_replace("™","&trade;", $str);
 		$str = trim($str);
-		
+
         if ($unescape) {
-			$str = stripcslashes($str);  
+			$str = stripcslashes($str);
 		} else {
 	        $str = addslashes($str);
         }
@@ -130,15 +130,15 @@ class expString {
         $str = str_replace("&quot;",'"',$str);
         $str = str_replace("&#39;","'",$str);
         $str = str_replace("&rsquo;","'",$str);
-        $str = str_replace("&lsquo;","'",$str);        
+        $str = str_replace("&lsquo;","'",$str);
         $str = str_replace("&#174;","",$str);
         $str = str_replace("�","-", $str);
-        $str = str_replace("�","-", $str); 
+        $str = str_replace("�","-", $str);
         $str = str_replace("�", '"', $str);
         $str = str_replace("&rdquo;",'"', $str);
         $str = str_replace("�", '"', $str);
         $str = str_replace("&ldquo;",'"', $str);
-        $str = str_replace("\r\n"," ",$str); 
+        $str = str_replace("\r\n"," ",$str);
         $str = str_replace("�"," 1/4",$str);
         $str = str_replace("&#188;"," 1/4", $str);
         $str = str_replace("�"," 1/2",$str);
@@ -148,9 +148,9 @@ class expString {
         $str = str_replace("�", "(TM)", $str);
         $str = str_replace("&trade;","(TM)", $str);
         $str = str_replace("&reg;","(R)", $str);
-        $str = str_replace("�","(R)",$str);        
-        $str = str_replace("&","&amp;",$str);      
-		$str = str_replace(">","&gt;",$str);      		
+        $str = str_replace("�","(R)",$str);
+        $str = str_replace("&","&amp;",$str);
+		$str = str_replace(">","&gt;",$str);
         return trim($str);
 	}
 
@@ -449,7 +449,7 @@ class expString {
 
     public static function parseAndTrimImport($str, $isHTML = false) { //�Death from above�? �
         //echo "1<br>"; eDebug($str);
-        global $db;
+//        global $db;
 
         $str = str_replace("�", "&rsquo;", $str);
         $str = str_replace("�", "&lsquo;", $str);
@@ -471,13 +471,13 @@ class expString {
         //$str = htmlspecialchars($str);
         //$str = utf8_encode($str);
 //        if (DB_ENGINE=='mysqli') {
-//	        $str = @mysqli_real_escape_string($db->connection,trim(str_replace("�", "&trade;", $str)));
+//	        $str = self::escape(trim(str_replace("�", "&trade;", $str)));
 //        } elseif(DB_ENGINE=='mysql') {
-//            $str = @mysql_real_escape_string(trim(str_replace("�", "&trade;", $str)),$db->connection);
+//            $str = self::escape(trim(str_replace("�", "&trade;", $str)));
 //        } else {
 //	        $str = trim(str_replace("�", "&trade;", $str));
 //        }
-        $str = @$db->escapeString($db->connection, trim(str_replace("�", "&trade;", $str)));
+        $str = self::escape(trim(str_replace("�", "&trade;", $str)));
         //echo "2<br>"; eDebug($str,die);
         return $str;
     }

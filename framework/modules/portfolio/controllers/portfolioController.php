@@ -27,6 +27,10 @@ class portfolioController extends expController {
         'tags'=>"Tags",
         'slideshow'=>"Slideshow"
     );
+    protected $manage_permissions = array(
+        'import'=>'Import Portfolio Items',
+        'export'=>'Export Portfolio Items'
+    );
     public $remove_configs = array(
         'comments',
         'ealerts',
@@ -34,10 +38,6 @@ class portfolioController extends expController {
         'rss',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'import'=>'Import Portfolio Items',
-        'export'=>'Export Portfolio Items'
-    );
 
     static function displayname() { return gt("Portfolio"); }
     static function description() { return gt("Display a portfolio or listing."); }

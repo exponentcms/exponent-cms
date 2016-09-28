@@ -143,7 +143,7 @@ class simplePollController extends expController {
         global $user;
 
         if (isset($this->params['choice'])) {
-            $answer = new simplepoll_answer($this->params['choice']);
+            $answer = new simplepoll_answer(intval($this->params['choice']));
             if (empty($this->config)) {
                 $this->config['anonymous_timeout'] = 5*3600;
                 $this->config['thank_you_message'] = 'Thank you for voting.';
