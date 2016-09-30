@@ -119,7 +119,7 @@ class purchaseOrderController extends expController {
 	public function getPurchaseOrderByJSON() {
 
 		if(!empty($this->params['vendor'])) {
-			$purchase_orders = $this->purchase_order->find('all', 'vendor_id=' . $this->params['vendor']);
+			$purchase_orders = $this->purchase_order->find('all', 'vendor_id=' . expString::escape($this->params['vendor']));
 		} else {
 			$purchase_orders = $this->purchase_order->find('all');
 		}

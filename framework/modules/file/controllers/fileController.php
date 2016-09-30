@@ -252,12 +252,12 @@ class fileController extends expController {
 
         // How many records to get?
         if(strlen($this->params['results']) > 0) {
-            $results = $this->params['results'];
+            $results = intval($this->params['results']);
         }
 
         // Start at which record?
         if(strlen($this->params['startIndex']) > 0) {
-            $startIndex = $this->params['startIndex'];
+            $startIndex = intval($this->params['startIndex']);
         }
 
         // Sorted?
@@ -265,7 +265,7 @@ class fileController extends expController {
             if ($this->params['sort'] == 'cat') {
                 $sort = 'id';
             } else {
-                $sort = $this->params['sort'];
+                $sort = expString::escape($this->params['sort']);
             }
 //            if ($sort = 'id') $sort = 'filename';
         }
@@ -281,6 +281,7 @@ class fileController extends expController {
         $totalrecords = 0;
 
         if (!empty($this->params['query'])) {
+            $this->params['query'] = expString::escape($this->params['query']);
             $filter = '';
             if (!$user->isAdmin()) {
                 $filter = "(poster=".$user->id." OR shared=1) AND ";

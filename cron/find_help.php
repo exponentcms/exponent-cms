@@ -39,7 +39,7 @@
         }
         if (!empty($_GET['version'])) {
             $version_title = $_GET['version'];
-            $version = $db->selectValue('help_version', 'id', 'version="' . expString::sanitize($_GET['version']) . '"');
+            $version = $db->selectValue('help_version', 'id', 'version="' . expString::escape($_GET['version']) . '"');
         }
     }
     /**

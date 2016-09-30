@@ -842,17 +842,17 @@ class usersController extends expController {
 
         // How many records to get?
         if (strlen($this->params['results']) > 0) {
-            $results = $this->params['results'];
+            $results = intval($this->params['results']);
         }
 
         // Start at which record?
         if (strlen($this->params['startIndex']) > 0) {
-            $startIndex = $this->params['startIndex'];
+            $startIndex = intval($this->params['startIndex']);
         }
 
         // Sorted?
         if (strlen($this->params['sort']) > 0) {
-            $sort = $this->params['sort'];
+            $sort = expString::escape($this->params['sort']);
             if ($sort = 'id') $sort = 'username';
         }
 
@@ -893,11 +893,10 @@ class usersController extends expController {
 
         if (!empty($this->params['query'])) {
 
-//            $this->params['query'] = $this->params['query'];
+            $this->params['query'] = expString::escape($this->params['query']);
             $totalrecords = $this->$modelname->find('count', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')");
 
             $users = $this->$modelname->find('all', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')", $sort . ' ' . $dir, $results, $startIndex);
-
             for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
                 if (ECOM == 1) {
                     $users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";

@@ -854,7 +854,7 @@ class storeController extends expController {
 //        $classname = $db->selectValue('product', 'product_type', 'id=' . $this->params['id']);
 //        $product   = new $classname($this->params['id'], true, true);
 
-        $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
+        $id = isset($this->params['title']) ? expString::escape($this->params['title']) : $this->params['id'];
         $product = new product($id);
         $product_type = new $product->product_type($product->id);
         $product_type->title = expString::parseAndTrim($product_type->title, true);
@@ -908,7 +908,7 @@ class storeController extends expController {
         //need to add a check here for child product and redirect to parent if hit directly by ID
         expHistory::set('viewable', $this->params);
 
-        $product = new product(addslashes($this->params['title']));
+        $product = new product(expString::escape($this->params['title']));
         $product_type = new $product->product_type($product->id);
         $product_type->title = expString::parseAndTrim($product_type->title, true);
         $product_type->image_alt_tag = expString::parseAndTrim($product_type->image_alt_tag, true);
@@ -952,7 +952,7 @@ class storeController extends expController {
 
         expHistory::set('viewable', $this->params);
         $product = new product();
-        $model = $product->find("first", 'model="' . $this->params['model'] . '"');
+        $model = $product->find("first", 'model="' . expString::escape($this->params['model']) . '"');
         //eDebug($model);
         $product_type = new $model->product_type($model->id);
         //eDebug($product_type);
@@ -973,7 +973,7 @@ class storeController extends expController {
         expHistory::set('viewable', $this->params);
 //        $parent = isset($this->params['cat']) ? $this->params['cat'] : expSession::get('catid');
         $catid = expSession::get('catid');
-        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? $this->params['cat'] : 0);
+        $parent = !empty($catid) ? $catid : (!empty($this->params['cat']) ? intval($this->params['cat']) : 0);
         $category = new storeCategory($parent);
         $categories = $category->getEcomSubcategories();
         $ancestors = $category->pathToNode();
@@ -1650,7 +1650,7 @@ class storeController extends expController {
 
     function searchByModelForm() {
         // get the search terms
-        $terms = $this->params['search_string'];
+        $terms = expString::escape($this->params['search_string']);
 
         $sql = "model like '%" . $terms . "%'";
 
@@ -1688,6 +1688,7 @@ class storeController extends expController {
         if (!($user->isAdmin())) $sql .= '(p.active_type=0 OR p.active_type=1) AND ';
 
         //if first character of search is a -, then we do a wild card, else from beginning
+        $this->params['query'] = expString::escape($this->params['query']);
         if ($this->params['query'][0] == '-') {
             $sql .= " p.model LIKE '%" . $this->params['query'];
         } else {
@@ -1709,6 +1710,7 @@ class storeController extends expController {
     public function search() {
         global $db, $user;
 
+        $this->params['query'] = expString::escape($this->params['query']);
         if (SAVE_SEARCH_QUERIES && INCLUDE_AJAX_SEARCH == 1) {  // only to add search query record
             $qry = trim($this->params['query']);
             if (!empty($qry)) {
@@ -1808,6 +1810,8 @@ class storeController extends expController {
      */
     public function searchNew() {
         global $db, $user;
+
+        $this->params['query'] = expString::escape($this->params['query']);
         //$this->params['query'] = str_ireplace('-','\-',$this->params['query']);
         $sql = "select DISTINCT(p.id) as id, p.title, model, sef_url, f.id as fileid, ";
         $sql .= "match (p.title,p.model,p.body) against ('" . $this->params['query'] . "*' IN BOOLEAN MODE) as relevance, ";
