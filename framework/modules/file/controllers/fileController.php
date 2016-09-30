@@ -127,6 +127,10 @@ class fileController extends expController {
     public function get_view_config() {
         global $template;
 
+        if (!empty($this->params['view']) && (strpos($this->params['view'], '..') !== false || strpos($this->params['view'], '/') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
         // set paths we will search in for the view
         $paths = array(
             BASE.'themes/'.DISPLAY_THEME.'/modules/common/views/file/configure',
@@ -162,8 +166,12 @@ class fileController extends expController {
     public function get_module_view_config() {
         global $template;
 
+        if (!empty($this->params['view']) && (strpos($this->params['view'], '..') !== false || strpos($this->params['view'], '/') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
 //        $controller = new $this->params['mod'];
-        $controller = expModules::getController($this->params['mod']);
+        $controller = expModules::getController(expString::escape($this->params['mod']));
         // set paths we will search in for the view
         $paths = array(
 //            BASE.'themes/'.DISPLAY_THEME.'/modules/'.$this->params['mod'].'/views/'.$this->params['mod'].'/configure',

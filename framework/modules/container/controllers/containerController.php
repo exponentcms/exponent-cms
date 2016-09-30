@@ -382,6 +382,9 @@ class containerController extends expController {
     }
 
     public function getactionviews() {
+        $this->params['mod'] = expString::escape($this->params['mod']);
+        $this->params['act'] = expString::escape($this->params['act']);
+        $this->params['actname'] = expString::escape($this->params['actname']);
         $views = expTemplate::get_action_views($this->params['mod'], $this->params['act'], $this->params['actname']);
         if (count($views) < 1) $views[$this->params['act']] = $this->params['actname'].' - Default View';
         echo json_encode($views);
