@@ -822,9 +822,10 @@ class administrationController extends expController {
             expValidator::failAndReturnToForm(gt('Nothing to Send!'), $post);
         }
 
-        $emailText = $this->params['body'];
-		$emailText = trim(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
+//        $emailText = $this->params['body'];
+//		$emailText = trim(strip_tags(str_replace(array("<br />","<br>","br/>"),"\n",$emailText)));
 		$emailHtml = $this->params['body'];
+        $emailText = expString::html2text($emailHtml);
 
         $from = $user->email;
 		if (empty($from)) {

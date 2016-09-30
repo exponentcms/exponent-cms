@@ -1183,7 +1183,8 @@ class eventregistrationController extends expController {
         $mail->quickBatchSend(array(
             	'headers'=>$headers,
                 'html_message'=> $this->params['email_message'],
-                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
+//                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
+                'text_message'=> expString::html2text($this->params['email_message']),
                 'to'          => $email_addy,
                 'from'        => $from,
                 'subject'     => $this->params['email_subject']

@@ -493,6 +493,19 @@ class expString {
     }
 
     /**
+     * Convert email html content to text
+     * Remove scripts, styles, tags, and convert <br> to newline
+     *
+     * @param $val
+     * @return mixed
+     */
+    public static function html2text($val) {
+        $val = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $val); // remove any script or style blocks
+        $val = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $val)));  // replace breaks with newlines
+        return $val;
+    }
+
+    /**
      * Scrub input string for possible security issues.
      *
      * @static

@@ -659,8 +659,8 @@ class formsController extends expController {
                 $msgtemplate->assign('title', $this->config['report_name']);
                 $msgtemplate->assign("is_email", 1);
                 if (!empty($referrer)) $msgtemplate->assign("referrer", $referrer);
-                $emailText = $msgtemplate->render();
-                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
+//                $emailText = $msgtemplate->render();
+//                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
                 $msgtemplate->assign("css", file_get_contents(BASE . "framework/core/assets/css/tables.css"));
                 $emailHtml = $msgtemplate->render();
 
@@ -692,7 +692,8 @@ class formsController extends expController {
                     $mail->quickSend(array(
                         //	'headers'=>$headers,
                         'html_message' => $emailHtml,
-                        "text_message" => $emailText,
+//                        "text_message" => $emailText,
+                        "text_message" => expString::html2text($emailHtml),
                         'to'           => $emaillist,
                         'from'         => array(trim($from) => $from_name),
                         'subject'      => $this->config['subject'],
@@ -712,17 +713,18 @@ class formsController extends expController {
 //                    "Content-type" => "text/html; charset=" . LANG_CHARSET
 //                );
 
-                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
-                if ($this->config['auto_respond_form'])
-                    $tmsg .= "\n" . $emailText;
+//                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
+//                if ($this->config['auto_respond_form'])
+//                    $tmsg .= "\n" . $emailText;
                 $hmsg = $this->config['auto_respond_body'];
                 if ($this->config['auto_respond_form'])
                     $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(
 //                    'headers'      => $headers,
-                    "text_message" => $tmsg,
+//                    "text_message" => $tmsg,
                     'html_message' => $hmsg,
+                    "text_message" => expString::html2text($hmsg),
                     'to'           => $db_data->email,
                     'from'         => array(trim($from) => $from_name),
                     'subject'      => $this->config['auto_respond_subject'],

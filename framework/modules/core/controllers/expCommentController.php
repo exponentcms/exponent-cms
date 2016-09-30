@@ -546,6 +546,7 @@ class expCommentController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
                 'html_message'=>$body,
+                'text_message'=>expString::html2text($body),
 			    'to'=>$tos,
 				'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,
@@ -591,6 +592,7 @@ class expCommentController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
                 'html_message'=>$body,
+                'text_message'=>expString::html2text($body),
 			    'to'=>$tos,
 			    'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,

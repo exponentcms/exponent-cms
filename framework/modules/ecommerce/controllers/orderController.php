@@ -347,7 +347,7 @@ class orderController extends expController {
 
         // build the html and text versions of the message
         $html = $template->render();
-        $txt  = strip_tags($html);
+//        $txt  = strip_tags($html);
 
         // send email invoices to the admins if needed
         if (ecomconfig::getConfig('email_invoice') == true) {
@@ -358,7 +358,8 @@ class orderController extends expController {
                 if (empty($from[0])) $from = SMTP_FROMADDRESS;
                 $mail->quickSend(array(
                     'html_message'=> $html,
-                    'text_message'=> $txt,
+//                    'text_message'=> $txt,
+                    'text_message'=> expString::html2text($html),
                     'to'          => trim($address),
                     'from'        => $from,
                     'subject'     => 'An order was placed on the ' . ecomconfig::getConfig('storename'),
@@ -377,7 +378,8 @@ class orderController extends expController {
             if (empty($from[0])) $from = SMTP_FROMADDRESS;
             $mail->quickSend(array(
                 'html_message'=> $usermsg,
-                'text_message'=> $txt,
+//                'text_message'=> $txt,
+                'text_message'=> expString::html2text($usermsg),
                 'to'          => array(trim($user->email) => trim(user::getUserAttribution($user->id))),
                 //'to'=>$order->billingmethod[0]->email,
                 'from'        => $from,
@@ -779,7 +781,8 @@ exit();
                     if (empty($from[0])) $from = SMTP_FROMADDRESS;
                     $mail->quickSend(array(
                         'html_message'=> $html,
-                        'text_message'=> str_replace("<br>", "\r\n", $template->render()),
+//                        'text_message'=> str_replace("<br>", "\r\n", $template->render()),
+                        'text_message'=> expString::html2text($html),
                         'to'          => array($email_addy => $order->billingmethod[0]->firstname . ' ' . $order->billingmethod[0]->lastname),
                         'from'        => $from,
                         'subject'     => 'The status of your order (#' . $order->invoice_id . ') has been updated on ' . ecomconfig::getConfig('storename') . '.'
@@ -856,7 +859,8 @@ exit();
             foreach ($email_addys as $email_addy) {
                 $mail->quickSend(array(
                     'html_message'=> $html,
-                    'text_message'=> str_replace("<br>", "\r\n", $template->render()),
+//                    'text_message'=> str_replace("<br>", "\r\n", $template->render()),
+                    'text_message'=> expString::html2text($html),
                     'to'          => $email_addy,
                     'from'        => $from,
                     'subject'     => $email_subject

@@ -157,6 +157,7 @@ class ealertController extends expController {
             $mail = new expMail();
             $mail->quickSend(array(
                 'html_message'=>$message->body,
+                'text_message'=>expString::html2text($message->body),
 		        'to'=>array(trim($subscriber->email) => trim(user::getUserAttribution($subscriber->id))),
                 'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 		        'subject'=>$message->subject,

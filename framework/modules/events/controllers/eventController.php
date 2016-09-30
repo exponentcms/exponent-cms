@@ -1050,8 +1050,8 @@ class eventController extends expController {
             $htmlmsg = $template->render();
 
             // now the same thing for the text message
-            $msg = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $htmlmsg); // remove any script or style blocks
-            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $msg)));
+//            $msg = preg_replace('/(<script[^>]*>.+?<\/script>|<style[^>]*>.+?<\/style>)/s', '', $htmlmsg); // remove any script or style blocks
+//            $msg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $msg)));
 
             // Saved.  do notifs
             $emails = array();
@@ -1084,7 +1084,8 @@ class eventController extends expController {
             $mail->quickSend(array(
 //                'headers'      => $headers,
                 'html_message' => $htmlmsg,
-                "text_message" => $msg,
+//                "text_message" => $msg,
+                "text_message" => expString::html2text($htmlmsg),
                 'to'           => $emails,
                 'from'         => array(trim($this->config['email_address_reminder']) => $this->config['email_from_reminder']),
                 'subject'      => $subject,

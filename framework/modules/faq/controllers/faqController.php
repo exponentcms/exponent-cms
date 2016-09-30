@@ -98,7 +98,7 @@ class faqController extends expController {
 //    }
 
 	/**
-	 *    This manage function will show the FAQs that appear for a particular module, so if you have multiple FAQs around the site, this 
+	 *    This manage function will show the FAQs that appear for a particular module, so if you have multiple FAQs around the site, this
 	 *    will let you edit each individual module's FAQs and the ranks associated with them.
 	 */
     public function manage() {
@@ -121,21 +121,21 @@ class faqController extends expController {
                 gt('Submitted By')=>'submitter_name'
             ),
         ));
-        
+
         assign_to_template(array(
             'page'=>$page
         ));
     }
-    
+
     public function ask_question() {
 //        global $user;
-        
+
         expHistory::set('editable', $this->params);
 //        if ($user->isAdmin()) {
 //            redirect_to(array('controller'=>'faq', 'action'=>'edit', 'src'=>$this->loc->src));
 //        }
     }
-    
+
     public function submit_question() {
         global $user;
 
@@ -158,6 +158,7 @@ class faqController extends expController {
             $mail = new expMail();
             $mail->quickSend(array(
                 'html_message'=>$msg,
+                'text_message'=>expString::html2text($msg),
                 'to'=>trim(empty($this->config['notification_email_address'])?SMTP_FROMADDRESS:$this->config['notification_email_address']),
                 'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
                 'subject'=>$this->config['notification_email_subject'],
@@ -166,7 +167,7 @@ class faqController extends expController {
 
         expHistory::back();
     }
-    
+
     public function update() {
         global $db;
 
@@ -212,26 +213,26 @@ class faqController extends expController {
         } else {
             expHistory::back();
         }
-        
+
     }
-    
+
     public function edit_toggle() {
         if (!empty($this->params['id'])) {
             $faq = new faq($this->params['id']);
             $faq->include_in_faq = empty($faq->include_in_faq) ? 1 : 0;
             $faq->save();
-        }        
-        
+        }
+
         expHistory::back();
     }
-    
+
     public function edit_answer() {
         expHistory::set('editable', $this->params);
         if (empty($this->params['id'])) {
             flash('error', gt('No ID was specified for the question to be answered'));
             expHistory::back();
         }
-        
+
         $faq = new faq($this->params['id']);
         $reply  = "<strong>" . gt('An answer has been posted to your question') . "</strong><h3>".$faq->question."</h3>";
         if ($faq->include_in_faq) {
@@ -239,7 +240,7 @@ class faqController extends expController {
         }
         $reply .= '<h4>' . gt('The answer to your question is'). ':</h4>'.$faq->answer;
         $reply .= '<strong>' . gt('Thank you for submitting your question!') . '</strong>';
-        
+
         $from = empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address'];
         assign_to_template(array(
             'faq'=>$faq,
@@ -247,19 +248,20 @@ class faqController extends expController {
             'from'=>$from
         ));
     }
-    
+
     public function update_answer() {
         if (empty($this->params['id'])) {
             flash('error', gt('No ID was specified for the question to be answered'));
             expHistory::back();
         }
-        
+
         $faq = new faq($this->params['id']);
 
         if (!empty($faq->submitter_email)) {
             $mail = new expMail();
             $mail->quickSend(array(
                 'html_message'=>$this->params['body'],
+                'text_message'=>expString::html2text($this->params['body']),
                 'to'=>trim($faq->submitter_email),
                 'from'=>array(empty($this->config['answer_from_address']) ? SMTP_FROMADDRESS : $this->config['answer_from_address']=>
                     empty($this->config['answer_from_name']) ? null : $this->config['answer_from_name']),

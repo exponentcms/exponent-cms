@@ -524,6 +524,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
+            'text_message' => expString::html2text($msg),
             'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('Password Reset Requested'),
@@ -568,6 +569,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
+            'text_message' => expString::html2text($msg),
             'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('The account password for') . ' ' . HOSTNAME . ' ' . gt('was reset'),
