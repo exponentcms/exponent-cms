@@ -98,7 +98,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             }
 
             $html = '
-        <div id="panel' . $uniqueid . '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel' . $uniqueid . '" aria-hidden="true">
+        <div id="panel' . $uniqueid . '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="rerank' . $uniqueid . '" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
             <form role="form" method="post" action="' . PATH_RELATIVE . '">

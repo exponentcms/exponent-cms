@@ -32,8 +32,8 @@
         {** top level container module **}
             <div class="">
             <div class="dropdown exp-container-chrome exp-container-chrome-container">
-                <a class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
-                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <a id="dropdownMenu{$top->id}" class="exp-trigger" data-toggle="dropdown" href="#">{'Container'|gettext}<i class="fa fa-caret-down fa-fw"></i></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$top->id}">
                     <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
                     <li class="divider"></li>
                     {if $user->isAdmin()}
@@ -73,7 +73,7 @@
 		{permissions}
             {if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $permissions.configure
                  || $container->permissions.manage || $container->permissions.edit || $container->permissions.delete || $container->permissions.configure)}
-                
+
                 {* repeating css and JS calls in case they only have module management, and are not admins *}
                 {*{css unique="container-newui" link="`$asset_path`css/container-newui.css"}*}
                 {css unique="container-newui" lesscss="`$asset_path`less/container-newui.less"}
@@ -87,7 +87,7 @@
                     {/if}
                     <div class="">
                         <div class="dropdown exp-container-chrome exp-container-chrome-module">
-                            <a class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
+                            <a id="dropdownMenu{$container->id}" class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
                             {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
                         </div>
                     </div>

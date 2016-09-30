@@ -12,11 +12,11 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="searchform" link="`$asset_path`css/show-form.bootstrap3.css"}
-    
+
 {/css}
- 
+
 <div class="module search show-form">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
@@ -31,8 +31,8 @@
             {*<button type="submit" class="btn btn-default">{$config.buttontext|default:"Search"|gettext}</button>*}
         {*</div>*}
         <div class="input-group form-inline">
-            <input type="text" name="search_string" id="search_string" class="form-control" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
-            <button type="submit" class="btn btn-default input-group-addon input-group-btn"><i class="fa fa-search"></i></button>
+            <input type="text" name="search_string" id="search_string" class="form-control" aria-label="{'search string'|gettext}" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
+            <button type="submit" class="btn btn-default input-group-addon input-group-btn" aria-label="{'search button'|gettext}"><i class="fa fa-search"></i></button>
         </div>
     {/form}
 </div>

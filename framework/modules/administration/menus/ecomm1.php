@@ -41,7 +41,7 @@ $recent_orders = $order->find('all', 'purchased !=0 AND order_status_id = ' . $n
 
 $items1 = array(
     array(
-        'text' => $newo . '<form role="form" id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input class="form-control" type="text" name="ordernum" id="ordernum" size="25" placeholder="' . gt(
+        'text' => $newo . '<form role="form" id="orderQuickfinder" method="POST" action="' . PATH_RELATIVE . 'index.php" enctype="multipart/form-data"><input type="hidden" name="controller" value="order"><input type="hidden" name="action" value="quickfinder"><input class="form-control" type="text" name="ordernum" id="ordernum" aria-label="'.gt('order number').'" size="25" placeholder="' . gt(
                 "Order Quickfinder"
             ) . '"></form>',
         'info' => '1',

@@ -244,7 +244,7 @@ class expTheme
         $str = '';
         if ($config['meta']['content_type']) {
             $str .= '<meta charset="' . LANG_CHARSET . XHTML_CLOSING . '>' . "\n";  // html5
-            $str .= "\t" . '<meta http-equiv="Content-Type" content="text/html; charset=' . LANG_CHARSET . '" ' . XHTML_CLOSING . '>' . "\n";  // html4 or xhtml?
+//            $str .= "\t" . '<meta http-equiv="Content-Type" content="text/html; charset=' . LANG_CHARSET . '" ' . XHTML_CLOSING . '>' . "\n";  // html4 or xhtml?
         }
         if ($config['meta']['ie_compat']) {
             // turn off ie compatibility mode which will break the display
@@ -253,7 +253,7 @@ class expTheme
         $str .= "\t" . '<title>' . $metainfo['title'] . "</title>\n";
         $locale = strtolower(str_replace('_', '-', LOCALE));
         if ($config['meta']['content_language']) {
-            $str .= "\t" . '<meta http-equiv="Content-Language" content="' . $locale . '" ' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<meta http-equiv="Content-Language" content="' . $locale . '" ' . XHTML_CLOSING . '>' . "\n";  //fixme should be in <html> tag for html5
         }
         if ($config['meta']['generator']) {
             $str .= "\t" . '<meta name="Generator" content="Exponent Content Management System - v' . expVersion::getVersion(

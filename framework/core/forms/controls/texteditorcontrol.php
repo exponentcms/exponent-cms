@@ -39,7 +39,7 @@ class texteditorcontrol extends formcontrol {
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>10000);
 	}
-	
+
 	function __construct($default="",$rows = 5,$cols = 38) {
 		$this->default = $default;
 		$this->rows = $rows;
@@ -50,7 +50,8 @@ class texteditorcontrol extends formcontrol {
 
 	function controlToHTML($name,$label) {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
-		$html .= "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$name\" name=\"$name\"";
+        $idname  = (!empty($this->id)) ? $this->id : $this->name;
+		$html .= "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
         $html .= ($this->maxlength?" maxlength=\"".$this->maxlength."\"":"");
@@ -73,7 +74,7 @@ class texteditorcontrol extends formcontrol {
         $html .= ($this->horizontal && bs3()) ? '</div>' : '';
 		return $html;
 	}
-	
+
 	static function form($object) {
 		$form = new form();
         if (empty($object)) $object = new stdClass();
@@ -103,7 +104,7 @@ class texteditorcontrol extends formcontrol {
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
 		return $form;
 	}
-	
+
     static function update($values, $object) {
 		if ($object == null) $object = new texteditorcontrol();
 		if ($values['identifier'] == "") {
@@ -125,11 +126,11 @@ class texteditorcontrol extends formcontrol {
         $object->is_hidden = !empty($values['is_hidden']);
 		return $object;
 	}
-	
+
 	static function parseData($original_name,$formvalues,$for_db = false) {
-		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($formvalues[$original_name])); 
+		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($formvalues[$original_name]));
 	}
-	
+
 }
 
 ?>

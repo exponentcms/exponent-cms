@@ -39,8 +39,8 @@
 {function name=menu level=0}
 {if is_array($data.submenu)}
     <li class="dropdown-submenu">
-        <a data-toggle="dropdown" href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
-        <ul class="dropdown-menu">
+        <a id="dropdownMenu{$data.submenu.id}" data-toggle="dropdown" href="#">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu{$data.submenu.id}">
             {foreach from=$data.submenu.itemdata item=mitem name=sbmenutwo}
                 {menu data=$mitem}
             {/foreach}
@@ -73,7 +73,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{$smarty.const.URL_FULL}">
+      <a class="navbar-brand" href="{$smarty.const.URL_FULL}" aria-label="{'Exponent Logo'|gettext}">
           {exp_include file="logo.tpl"}
       </a>
   </div>
@@ -83,8 +83,8 @@
         {foreach from=$menu item=topnav name=tbmenu}
         <ul class="nav navbar-nav{if $topnav.alignright} navbar-right{/if}">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{if $topnav.icon}<i class="fa {$topnav.icon} fa-fw"></i>{/if} {$topnav.text} <b class="caret"></b></a>
-                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                <a href="#" id="dropdownMenu{$topnav.icon}" class="dropdown-toggle" data-toggle="dropdown">{if $topnav.icon}<i class="fa {$topnav.icon} fa-fw"></i>{/if} {$topnav.text} <b class="caret"></b></a>
+                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu{$topnav.icon}">
                     {foreach from=$topnav.submenu.itemdata item=subitem name=sbmenu}
                         {menu data=$subitem}
                     {/foreach}

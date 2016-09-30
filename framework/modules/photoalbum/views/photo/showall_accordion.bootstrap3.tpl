@@ -114,7 +114,10 @@
         href: $(this).href,
         ref: $(this).rel,
         photo: true,
-        maxWidth: "100%"
+        maxWidth: "100%",
+        close:'<i class="fa fa-close" aria-label="close modal"></i>',
+        previous:'<i class="fa fa-chevron-left" aria-label="previous photo"></i>',
+        next:'<i class="fa fa-chevron-right" aria-label="next photo"></i>',
     });
 {/literal}
 {/script}
