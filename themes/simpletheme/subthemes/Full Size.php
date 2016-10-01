@@ -36,12 +36,7 @@
                 <?php expTheme::module(array("controller"=>"search","action"=>"show")) ?>
             </div>
             <div id="bd" class="yui3-g">
-                <div id="leftcol" class="yui3-u-1-4">
-                    <div class="content">
-                        <?php expTheme::module(array("controller"=>"container","action"=>"showall","view"=>"showall","source"=>"@left")); ?>
-                    </div>
-                </div>
-                <div id="centercol" class="yui3-u-3-4">
+                <div id="centercol" class="yui3-u-1">
                     <div class="content">
                         <?php expTheme::main(); ?>
                     </div>

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="<?php echo (substr(LOCALE,0,2)) ?>">
     <head>
         <?php
         expTheme::head(array(

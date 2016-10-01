@@ -166,3 +166,21 @@ span.value span.tag a:hover::before {
 span.value span.spacer {
 	display: none;
 }
+
+/* correct exp style conflict with form labels */
+label.label,
+span.label {
+	color: @textColor;
+}
+
+/* bootstrap 3 accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}

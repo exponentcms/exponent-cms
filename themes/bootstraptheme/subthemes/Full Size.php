@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-	<head>
+<html lang="<?php echo (substr(LOCALE,0,2)) ?>">
 	    <?php
             expTheme::head(array(
 //                "xhtml"=>false,
