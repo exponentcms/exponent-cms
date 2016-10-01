@@ -51,6 +51,8 @@ class texteditorcontrol extends formcontrol {
 	function controlToHTML($name,$label) {
         $html = ($this->horizontal && bs3()) ? '<div class="col-sm-10">' : '';
         $idname  = (!empty($this->id)) ? $this->id : $this->name;
+        if (empty($idname))
+            $idname = $name;
 		$html .= "<textarea class=\"textarea" . (bs3() ? " form-control" : "") . "\" id=\"$idname\" name=\"$name\"";
         if ($this->focus) $html .= " autofocus";
 		$html .= " rows=\"" . $this->rows . "\" cols=\"" . $this->cols . "\"";
