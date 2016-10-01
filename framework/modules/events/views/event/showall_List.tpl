@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="cal" link="`$asset_path`css/calendar.css"}
 
 {/css}
@@ -30,7 +30,7 @@
 	{br}{br}
 	<a href="{link action=showall view='showall_Monthly List' time=$prev_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'navigate-left-icon.png'}" title="{'Prev'|gettext}" alt="{'Prev'|gettext}" /></a>
 	<strong>{$time|format_date:"%B %Y"}</strong>
-	<a href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'navigate-right-icon.png'}" title="{'Next'|gettext}" alt="{'next'|gettext}" /></a>
+	<a href="{link action=showall view='showall_Monthly List' time=$next_timestamp}"><img style="border:none;" src="{$smarty.const.ICON_RELATIVE|cat:'navigate-right-icon.png'}" title="{'Next'|gettext}" alt="{'Next'|gettext}" /></a>
 	{br}{br}
 	{foreach from=$days item=items key=ts}
         {$none=1}

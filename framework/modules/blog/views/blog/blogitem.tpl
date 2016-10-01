@@ -72,10 +72,11 @@
                 {/if}
                 {if $record->publish_date > $smarty.now}
                     </strong>&#160;
-                {/if}
+                {/if},
             </span>
             {comments_count record=$record show=1 prepend=$prepend}
-            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+            {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
+            {tags_assigned record=$record prepend=','|cat:$prepend}
         </div>
         {permissions}
             <div class="item-actions">

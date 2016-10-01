@@ -32,11 +32,11 @@
                     {$group = 'Uncategorized'|gettext}
                 {/if}
                 {if $item->expFile[0]->image_width >= $item->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
-                <a class="colorbox" rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$item->alt|default:$item->title}">
+                <a class="colorbox" rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$item->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->alt}">
             {else}
-                <a href="{link action=show title=$item->sef_url}" title="{$item->alt|default:$item->title}">
+                <a href="{link action=show title=$item->sef_url}" title="{$record->alt}">
             {/if}
-                {img class="img-small" alt=$item->alt|default:$item->expFile[0]->alt file_id=$item->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                {img class="img-small" alt=$record->alt file_id=$item->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
             </a>
             {permissions}
                 <div class="item-actions">

@@ -71,7 +71,7 @@ function build_menu($page,$params) {
     global $sectionObj;
 
     if (!empty($page->expFile[0]->id)) {
-        $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left');
+        $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left',"alt"=>$page->text);
         $img = smarty_function_img($img_parm,$smarty);
     } elseif (bs3() && !empty($page->glyph)) {
         $img = '<i class="fa fa-fw ' . $page->glyph . '" aria-hidden="true"></i> ';

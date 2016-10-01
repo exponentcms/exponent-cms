@@ -12,18 +12,19 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="searchform" link="`$asset_path`css/show-form.css"}
-    
+
 {/css}
- 
+
 <div class="module search show-form">
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if $config.moduledescription != ""}
         {$config.moduledescription}
     {/if}
     {form action=search}
-        {control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}
+        {*{control type="search" name="search_string" id="search_string" placeholder=$config.inputtext|default:"Keywords"|gettext prepend="search"}*}
+        <input type="text" name="search_string" id="search_string" class="form-control" aria-label="{'search string'|gettext}" placeholder="{$config.inputtext|default:"Keywords"|gettext}">
         {control type="buttongroup" submit=$config.buttontext|default:"Search"|gettext}
     {/form}
 </div>

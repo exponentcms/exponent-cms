@@ -36,7 +36,7 @@ if (bs3()) {
     $admin_text = 'Admin';
     $admin_icon = 'fa-star';
 } else {
-    $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png">';
+    $admin_text = '<img src="' . $this->asset_path . 'images/admintoolbar/expbar.png" alt="' . gt('Exponent') . '">';
     $admin_icon = '';
 }
 

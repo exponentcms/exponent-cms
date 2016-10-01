@@ -34,7 +34,7 @@
     </div>
     {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
-        <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
+        <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="{'Barcode'|gettext}">
     </div>
     {/if}
     <div id="invoice-data">
@@ -137,7 +137,7 @@
                                     {icon class="edit" action=edit_address id=$order->id type='s' title='Edit Shipping Address'|gettext}
                                 {/if}
                             </div>
-                        {/permissions}   
+                        {/permissions}
                         {br}
                         <table style="width: 100%; border: 0px; text-align: left; padding: 0px; margin:0px;">
                             <tr style="border: 0px; padding: 0px; margin:0px;">
@@ -308,7 +308,7 @@
                     {permissions}
                         <div class="item-permissions">
                             {if $permissions.edit_order_item && !$pf}
-                                <th style="text-align:right;"></th>     
+                                <th style="text-align:right;"></th>
                             {/if}
                         </div>
                    {/permissions}
@@ -326,12 +326,12 @@
                     <td>
                         {$oi->getProductsName()}
                         {if $oi->opts[0]}
-                            {br}                             
+                            {br}
                             {foreach from=$oi->opts item=options}
                                 {$oi->getOption($options)}{br}
-                            {/foreach}                            
+                            {/foreach}
                         {/if}
-                        {$oi->getUserInputFields('br')} 
+                        {$oi->getUserInputFields('br')}
 						{*{if $oi->product_type == "product" || $oi->product_type == "childProduct"}*}
 							{$oi->getExtraData()}
 						{*{else}*}
@@ -443,14 +443,14 @@
         <table class="totals-info" border="0" cellspacing="0" cellpadding="0">
             <thead>
                 <tr>
-                    {if !$pf}                         
+                    {if !$pf}
                     <th>
                     {else}
                     <th  colspan=3>
-                    {/if} 
+                    {/if}
                         {"Totals"|gettext}
                     </th>
-                    {if !$pf}<th colspan="2"></th>{/if}                              
+                    {if !$pf}<th colspan="2"></th>{/if}
                </tr>
             </thead>
             <tbody>
@@ -464,8 +464,8 @@
                     <td  style="text-align:right; border-left:0px;">{$order->subtotal|number_format:2}
                     </td>
                 </tr>
-                
-                 {if (isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()) || $order->total_discounts > 0} 
+
+                 {if (isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()) || $order->total_discounts > 0}
                  <tr class="{cycle values="odd, even"}">
                     <td>
                     {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isCartDiscount()}
@@ -473,7 +473,7 @@
                     {else}
                         {"Total Cart Discounts"|gettext}
                     {/if}
-                    
+
                     </td>
                     <td style="border-right:0px">
                         {currency_symbol}
@@ -490,7 +490,7 @@
                     </td>
                     <td style="text-align:right; border-left:0px;">{$order->total|number_format:2}
                     </td>
-                </tr>   
+                </tr>
                  {/if}
                  {if !$order->shipping_taxed}
                   <tr class="{cycle values="odd, even"}">
@@ -511,12 +511,12 @@
                 {/if}
                 <tr class="{cycle values="odd, even"}">
                     <td>
-                    {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()} 
+                    {if isset($order->order_discounts[0]) && $order->order_discounts[0]->isShippingDiscount()}
                         {"Shipping & Handling (Discount Code"|gettext}: {$order->order_discounts[0]->coupon_code})
                     {else}
                         {"Shipping & Handling"|gettext}
                     {/if}
-                    
+
                     </td>
                     <td style="border-right:0px;">
                         {currency_symbol}
@@ -562,7 +562,7 @@
                     </td>
                     <td style="text-align:right; border-left:0px;">{$order->grand_total|number_format:2}
                     </td>
-                </tr>                                                                        
+                </tr>
                 {permissions}
                     <div class="item-permissions">
                         {if $permissions.edit_totals && !$pf}

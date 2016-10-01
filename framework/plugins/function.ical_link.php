@@ -69,7 +69,7 @@ function smarty_function_ical_link($params,&$smarty) {
             $link = expCore::makeLink(array('module'=>$params['module'], 'action'=>'ical', 'src'=>$params['src']));
         }
         // spit out the link
-        echo $prepend.'<a class="'.$class.'" href="'.$link.'" title="'.$title.'">'.$text.'</a>';
+        echo $prepend,'<a class="',$class,'" href="',$link,'" title="',$title,'" aria-label="',gt('iCal Feed'),'">',$text,'</a>';
     }
 }
 

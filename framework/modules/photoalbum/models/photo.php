@@ -50,6 +50,8 @@ class photo extends expRecord {
                 $this->alt = $this->expFile[0]->alt;
             } elseif (!empty($this->title)) {
                 $this->alt = $this->title;
+            } elseif (!empty($this->expFile[0]->filename)) {
+                $this->alt = $this->expFile[0]->filename;
             }
         }
     }

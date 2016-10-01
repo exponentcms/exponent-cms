@@ -66,13 +66,13 @@
         <div class="attribution">
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
-                <span class="value">{$record->$date|format_date}</span>
-                &#160;|&#160;
+                <span class="value">{$record->$date|format_date}</span>,
             {/if}
-            <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$record->downloads}</span>
-            {comments_count record=$record show=1 prepend='&#160;&#160;|&#160;&#160;'|not_bs}
-            {tags_assigned record=$record prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+            <span class="label downloads"> {'Downloads'|gettext}</span>,
+            {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
+            {comments_count record=$record show=1 prepend=$prepend}
+            {tags_assigned record=$record prepend=','|cat:$prepend}
         </div>
         <div class="bodycopy">
             {$record->body}

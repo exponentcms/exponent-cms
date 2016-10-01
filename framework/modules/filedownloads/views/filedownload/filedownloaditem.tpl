@@ -57,20 +57,19 @@
             {if !$config.datetag}
                 <span class="label dated">{'Dated'|gettext}:</span>
                 <span class="value">{$item->$date|format_date}</span>
-                &#160;|&#160;
             {/if}
             {if $item->expFile.downloadable[0]->duration}
                 <span class="label size">{'Duration'}:</span>
-                <span class="value">{$item->expFile.downloadable[0]->duration}</span>
+                <span class="value">{$item->expFile.downloadable[0]->duration}</span>,
             {else}
                 <span class="label size">{'File Size'}:</span>
-                <span class="value">{if !empty($item->expFile.downloadable[0]->filesize)}{$item->expFile.downloadable[0]->filesize|bytes}{else}{'Unknown'|gettext}{/if}</span>
+                <span class="value">{if !empty($item->expFile.downloadable[0]->filesize)}{$item->expFile.downloadable[0]->filesize|bytes}{else}{'Unknown'|gettext}{/if}</span>,
             {/if}
-            &#160;|&#160;
-            <span class="label downloads"># {'Downloads'|gettext}:</span>
             <span class="value">{$item->downloads}</span>
-            {comments_count record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
-            {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+            <span class="label downloads"> {'Downloads'|gettext}</span>,
+            {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
+            {comments_count record=$item prepend=$prepend}
+            {tags_assigned record=$item prepend=','|cat:$prepend}
         {/if}
     </div>
     {permissions}
