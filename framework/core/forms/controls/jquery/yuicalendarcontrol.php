@@ -122,7 +122,8 @@ class yuicalendarcontrol extends formcontrol
                     format: '" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."',
                     formatTime:'g:i a',
                     onChangeMonth: function(currentTime, el) {
-                        el.val(currentTime.dateFormat('" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."'));
+//                        el.val(currentTime.dateFormat('" .($this->showdate ? 'n/j/Y' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:i' : '') ."'));
+                        el.val(moment(currentTime).format('" .($this->showdate ? 'M/D/YYYY' : '') . ($this->showdate && $this->showtime ? ' ' : '') . ($this->showtime ? 'H:m' : '') ."'));
                     },
                     step: 15,
                     dayOfWeekStart: " . DISPLAY_START_OF_WEEK . ",
@@ -154,7 +155,7 @@ class yuicalendarcontrol extends formcontrol
             array(
                 "unique"   => '00yuical-' . $idname,
                 "yui3mods" => "node,event-custom",
-                "jquery"   => "jquery.datetimepicker",
+                "jquery"   => "jquery.datetimepicker,moment",
                 "content"  => $script,
             )
         );
