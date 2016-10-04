@@ -85,6 +85,8 @@ function build_menu($page,$params) {
     }
     if ((empty($page->itemdata) && empty($page->submenu) && (empty($page->type) || (!empty($page->type) && $page->type != 3))) || $page->depth + 1 == $params['length']) {  // this is a menu item
         $menu = '<li tabindex="-1"';
+        if (isset($page->depth))
+            $menu .= ' role="menuitem"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
@@ -132,7 +134,7 @@ function build_menu($page,$params) {
         $menu = '
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' pull-right ' : '') . '">';
         $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'. $menu_item . '<b class="caret"></b></a>';
-        $menu .= '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li><div class="yamm-content">';
+        $menu .= '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
         if (bs3())
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs2())
