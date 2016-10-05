@@ -52,7 +52,7 @@
             {$data.text}
         </li>
     {else}
-        <li>
+        <li role="menuitem">
             <a id="{$data.id}" href="{$data.url|default:'#'}">{if $data.icon}<i class="fa {$data.icon} fa-fw"></i>{/if} {$data.text}</a>
         </li>
     {/if}

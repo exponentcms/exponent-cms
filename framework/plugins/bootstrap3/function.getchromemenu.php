@@ -57,8 +57,8 @@ if (!function_exists('smarty_function_getchromemenu')) {
     //		$grouplink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'groupperms', '_common'=>1));
             $userlink = $router->makeLink(array('controller'=>'users', 'action'=>'userperms', 'mod'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source']));
             $grouplink = $router->makeLink(array('controller'=>'users', 'action'=>'groupperms', 'mod'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source']));
-            $list .= '<li><a href="'.$userlink.'" ><i class="fa fa-user fa-fw"></i> '.gt("User Permissions").'</a></li>';
-            $list .= '<li><a href="'.$grouplink.'" ><i class="fa fa-group fa-fw"></i> '.gt("Group Permissions").'</a></li>';
+            $list .= '<li role="menuitem"><a href="'.$userlink.'" ><i class="fa fa-user fa-fw"></i> '.gt("User Permissions").'</a></li>';
+            $list .= '<li role="menuitem"><a href="'.$grouplink.'" ><i class="fa fa-group fa-fw"></i> '.gt("Group Permissions").'</a></li>';
         }
 
         echo $list;
@@ -81,7 +81,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
             $reorder['where'] = "external='".$module->internal."'";
             $reorder['label'] = gt("Modules");
             echo '
-            <li>';
+            <li role="menuitem">';
             smarty_function_ddrerank($reorder, $smarty);
             echo '</li>
             ';
@@ -92,7 +92,7 @@ if (!function_exists('smarty_function_getchromemenu')) {
             if (!expModules::controllerExists($module->info['class'])) {
     //            $editlink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
                 $editlink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'edit', 'src'=>$module->info['source']));
-                $list .= '<li><a href="'.$editlink.'" ><i class="fa fa-gears fa-fw"></i> '.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
+                $list .= '<li role="menuitem"><a href="'.$editlink.'" ><i class="fa fa-gears fa-fw"></i> '.gt("Configure Action")." &amp; ".gt("View").'</a></li>';
             }
         }
 
@@ -105,10 +105,10 @@ if (!function_exists('smarty_function_getchromemenu')) {
                     $hcview = null;
                 }
                 $configlink = $router->makeLink(array('module'=>expModules::getControllerName($module->info['class']), 'src'=>$module->info['source'], 'action'=>'configure', 'hcview'=>$hcview));
-                $list .= '<li><a href="'.$configlink.'" class="config-mod"><i class="fa fa-gear fa-fw"></i> '.gt("Configure Settings").'</a></li>';
+                $list .= '<li role="menuitem"><a href="'.$configlink.'" class="config-mod"><i class="fa fa-gear fa-fw"></i> '.gt("Configure Settings").'</a></li>';
     //		} elseif ($module->info['hasConfig']) {  // old school module
     //			$configlink = $router->makeLink(array('module'=>$module->info['class'], 'src'=>$module->info['source'], 'action'=>'configure', '_common'=>1));
-    //			$list .= '<li><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
+    //			$list .= '<li role="menuitem"><a href="'.$configlink.'" class="config-mod">'.gt("Configure Settings").'</a></li>';
             }
         }
 
@@ -116,13 +116,13 @@ if (!function_exists('smarty_function_getchromemenu')) {
         if (!empty($module->id) && expPermissions::check('delete', $cloc)) {
     //		$deletelink = $router->makeLink(array('module'=>'containermodule', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
             $deletelink = $router->makeLink(array('controller'=>'container', 'id'=>$module->id, 'action'=>'delete', 'rerank'=>$rerank));
-            $list .= '<li><a href="'.$deletelink.'" onclick="return confirm(\''.gt("Remove this module and send the content to the Recycle Bin to be recovered later?").'\')"><i class="fa fa-times fa-fw"></i> '.gt("Remove Module").'</a></li>';
+            $list .= '<li role="menuitem"><a href="'.$deletelink.'" onclick="return confirm(\''.gt("Remove this module and send the content to the Recycle Bin to be recovered later?").'\')"><i class="fa fa-times fa-fw"></i> '.gt("Remove Module").'</a></li>';
         }
 
         // does it need a help menu item?
         if (HELP_ACTIVE) {
             $helplink = help::makeHelpLink(expModules::getControllerName($module->info['class']));
-            $list .= '<li><a href="'.$helplink.'" target="_blank"><i class="fa fa-question fa-fw"></i> '.gt("Get Help").'</a></li>';
+            $list .= '<li role="menuitem"><a href="'.$helplink.'" target="_blank"><i class="fa fa-question fa-fw"></i> '.gt("Get Help").'</a></li>';
         }
 
         $list .= '</ul>';

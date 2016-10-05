@@ -37,8 +37,8 @@
                     <li role="presentation" class="dropdown-header">({$top->scope|gettext|ucwords})</li>
                     <li class="divider"></li>
                     {if $user->isAdmin()}
-                        <li><a href="{link controller=users action=userperms mod=container}"><i class="fa fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>
-                        <li><a href="{link controller=users action=groupperms mod=container}"><i class="fa fa-group fa-fw"></i> {"Group Permissions"|gettext}</a></li>
+                        <li role="menuitem"><a href="{link controller=users action=userperms mod=container}"><i class="fa fa-user fa-fw"></i> {"User Permissions"|gettext}</a></li>
+                        <li role="menuitem"><a href="{link controller=users action=groupperms mod=container}"><i class="fa fa-group fa-fw"></i> {"Group Permissions"|gettext}</a></li>
                     {/if}
                     {foreach $containers as $container}
                         {if !empty($container->external)}
@@ -47,11 +47,11 @@
                         {/if}
                     {/foreach}
                     {capture name=rerank}{ddrerank module=container model=container where="external='`$top->internal`'" label="Modules"|gettext}{/capture}
-                    {if $smarty.capture.rerank != ""}<li>{$smarty.capture.rerank}</li>{/if}
+                    {if $smarty.capture.rerank != ""}<li role="menuitem">{$smarty.capture.rerank}</li>{/if}
                     {if ($permissions.configure || $container->permissions.configure)}
-                   		<li><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
+                   		<li role="menuitem"><a href="{link module=container src=$module->info['source'] action='configure' hcview=$top->view}" class="config-mod"><i class="fa fa-gears fa-fw"></i> {"Configure Settings"|gettext}</a></li>
                    	{/if}
-                    {if $smarty.const.HELP_ACTIVE}<li><a href="{help::makeHelpLink('container')}" target="_blank"><i class="fa fa-question fa-fw"></i> {'Get Help'|gettext}</a></li>{/if}
+                    {if $smarty.const.HELP_ACTIVE}<li role="menuitem"><a href="{help::makeHelpLink('container')}" target="_blank"><i class="fa fa-question fa-fw"></i> {'Get Help'|gettext}</a></li>{/if}
                 </ul>
             </div>
             </div>
