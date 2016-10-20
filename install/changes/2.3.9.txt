@@ -17,7 +17,7 @@ version 2.3.9
   - adds external calendar event caching and/or importing
   - now returns a 403 error if attempting to 'show' a missing item
   - now allows a CKEditor custom config.js file within theme /editors/ckeditor/config.js
-  - !!! update/include .htaccess file in ALL /tmp folders to prevent security issues, CVE-2016-7095 reported by Balison
+  - !!! update/include .htaccess file in ALL /tmp folders to prevent security issues, CVE-ID 2016-7095 reported by Balisong
   - !!! fix security issue with database managerand pixidou editor: Security Advisory XS3C-2016-05-20 & XS3C-2016-05-19 reported by Julian Held
   - !!! regression fix several minify issues
   - !!! regression fix support for single param in url to search for product
