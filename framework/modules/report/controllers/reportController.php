@@ -216,6 +216,7 @@ class reportController extends expController {
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['order_status'])) foreach ($p['order_status'] as $os) {
+            $os = expString::escape($os);
             if ($os == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -229,6 +230,7 @@ class reportController extends expController {
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['order_type'])) foreach ($p['order_type'] as $ot) {
+            $ot = expString::escape($ot);
             if ($ot == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -252,7 +254,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.invoice_id" . $operator . $p['order-range-num'];
+            $sqlwhere .= " AND o.invoice_id" . $operator . intval($p['order-range-num']);
         }
 
         if (!empty($p['order-price-num'])) {
@@ -268,20 +270,21 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . $p['order-price-num'];
+            $sqlwhere .= " AND o.grand_total" . $operator . intval($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
-            $sqlwhere .= " AND p.title LIKE '%" . $p['pnam'] . "%'";
+            $sqlwhere .= " AND p.title LIKE '%" . expString::escape($p['pnam']) . "%'";
         }
 
         if (!empty($p['sku'])) {
-            $sqlwhere .= " AND p.model LIKE '%" . $p['sku'] . "%'";
+            $sqlwhere .= " AND p.model LIKE '%" . expString::escape($p['sku']) . "%'";
         }
 
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['discounts'])) foreach ($p['discounts'] as $d) {
+            $d = expString::escape($d);
             if ($d == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -293,26 +296,27 @@ class reportController extends expController {
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
         if (!empty($p['blshpname'])) {
-            $sqlwhere .= " AND (b.firstname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR s.firstname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR b.lastname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR s.lastname LIKE '%" . $p['blshpname'] . "%')";
+            $sqlwhere .= " AND (b.firstname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR s.firstname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR b.lastname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR s.lastname LIKE '%" . expString::escape($p['blshpname']) . "%')";
         }
 
         if (!empty($p['email'])) {
-            $sqlwhere .= " AND (b.email LIKE '%" . $p['email'] . "%'";
-            $sqlwhere .= " OR s.email LIKE '%" . $p['email'] . "%')";
+            $sqlwhere .= " AND (b.email LIKE '%" . expString::escape($p['email']) . "%'";
+            $sqlwhere .= " OR s.email LIKE '%" . expString::escape($p['email']) . "%')";
         }
 
         if (!empty($p['zip'])) {
-            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . $p['zip'] . "%'";
-            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . $p['zip'] . "%'";
+            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . expString::escape($p['zip']) . "%'";
+            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . expString::escape($p['zip']) . "%'";
         }
 
         if (isset($p['state'])) {
             $inc = 0;
             $sqltmp = '';
             foreach ($p['state'] as $s) {
+                $s = expString::escape($s);
                 if ($s == -1) continue;
                 else if ($inc == 0) {
                     $inc++;
@@ -330,6 +334,7 @@ class reportController extends expController {
             $inc = 0;
             $sqltmp = '';
             foreach ($p['payment_method'] as $s) {
+                $s = expString::escape($s);
                 if ($s == -1) continue;
                 else if ($inc == 0) {
                     $inc++;

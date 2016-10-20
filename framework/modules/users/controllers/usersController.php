@@ -37,6 +37,8 @@ class usersController extends expController {
         'import'           => 'Import Users',
         'export'           => 'Export Users',
         'update'           => 'Update Users',
+        'show'             => 'Show User',
+        'showall'          => 'Show Users',
     );
 
     static function displayname() {
@@ -948,7 +950,7 @@ class usersController extends expController {
     public function viewuser() {
         global $user;
 
-        if (!empty($this->params['id'])) {
+        if (!empty($this->params['id']) && $user->isAdmin()) {
             $u = new user($this->params['id']);
         } elseif (!empty($user->id)) {
             $u = $user;
