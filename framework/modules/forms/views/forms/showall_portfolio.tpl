@@ -101,6 +101,8 @@
                     {eval var=$config.report_def}
                     {clear}
                 {/if}
+            {foreachelse}
+                <h4>{$config.no_records_msg}</h4>
             {/foreach}
         </div>
         {$page->links}
