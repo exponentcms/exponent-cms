@@ -13,7 +13,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		dateFormat : 'd. M Y H:i', // 13. Mai 2012 15:27
 		fancyDateFormat : '$1 H:i', // will produce smth like: Heute 13:25
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Fehler',
 			'errUnknown'           : 'Unbekannter Fehler.',
@@ -98,6 +98,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
                         'errNetUnMount'        : 'Kann nicht ausgeworfen werden.',
 			'errConvUTF8'          : 'Kann nicht zu UTF-8 konvertiert werden.',
 			'errFolderUpload'      : 'Versuchen Sie es mit Google Chrome, wenn Sie einen Ordner hochladen möchten.',
+            'errSearchTimeout'     : 'Zeitüberschreitung während der Suche nach "$1". Suchergebnis ist unvollständig.',
+            'errReauthRequire'     : 'Erneutes Anmelden ist erforderlich.',
 			'errLinks'             : 'Page/Module Selector is only available from within a WYSIWYG Editor.',
 
 			/******************************* commands names ********************************/
@@ -115,6 +117,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdhome'      : 'Startordner',
 			'cmdinfo'      : 'Informationen',
 			'cmdmkdir'     : 'Neuer Ordner',
+			'cmdmkdirin'   : 'In neuen Ordner',
 			'cmdmkfile'    : 'Neue Textdatei',
 			'cmdopen'      : 'Öffnen',
 			'cmdpaste'     : 'Einfügen',
@@ -132,11 +135,15 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
                         'cmdnetunmount': 'Auswerfen',
 			'cmdplaces'    : 'Orte',
 			'cmdchmod'     : 'Berechtigung ändern',
+            'cmdopendir'   : 'Einen Ordner öffnen',
+            'cmdcolwidth'  : 'Spaltenbreite zurücksetzen',
+            'cmdfullscreen': 'Vollbild',
+            'cmdmove'      : 'Verschieben',
 			'cmdpixlr'     : 'Edit on Pixlr',
-   'cmdlinks'     : 'Switch to Page/Module Selector',
+            'cmdlinks'     : 'Switch to Page/Module Selector',
 
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Schließen',
 			'btnSave'   : 'Speichern',
 			'btnRm'     : 'Entfernen',
@@ -154,6 +161,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnMime'   : 'MIME-Typ',
 			'btnFileName':'Dateiname',
 			'btnSaveClose': 'Speichern & Schließen',
+			'btnBackup' : 'Backup',
 
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Öffne Ordner',
@@ -181,6 +189,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfreaddir'  : 'Lese Ordner Informationen',
 			'ntfurl'      : 'Hole URL von Link',
 			'ntfchmod'    : 'Ändere Datei berechtigungen',
+			'ntfpreupload': 'Upload-Dateinamen überprüfen',
+			'ntfzipdl'    : 'Erstelle Datei zum Download',
 
 			/************************************ dates **********************************/
 			'dateUnknown' : 'unbekannt',
@@ -231,6 +241,11 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'sortsize'         : 'nach Größe',
 			'sortdate'         : 'nach Datum',
 			'sortFoldersFirst' : 'Ordner zuerst',
+			'sortperm'         : 'nach Berechtigung',
+			'sortmode'         : 'nach Modus',
+			'sortowner'        : 'nach Besitzer',
+			'sortgroup'        : 'nach Gruppe',
+			'sortAlsoTreeview' : 'auch Baumansicht',
 
                         /********************************** new items **********************************/
 			'untitled file.txt' : 'Neues Textdokument.txt',
@@ -335,6 +350,24 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'quality'         : 'Qualität',
 			'autoSync'        : 'Auto sync',
 			'moveUp'          : 'Nach oben bewegen',
+			'getLink'         : 'URL-Link holen',
+			'selectedItems'   : 'Ausgewählte Objekte ($1)',
+			'folderId'        : 'Ordner-ID',
+			'offlineAccess'   : 'Offline-Zugriff erlauben',
+			'reAuth'          : 'Erneut anmelden',
+			'nowLoading'      : 'Wird geladen...',
+			'openMulti'       : 'mehrere Dateien öffnen',
+			'openMultiConfirm': 'Sie versuchen, die $1 Dateien zu öffnen. Sind Sie sicher, dass sie im Browser öffnen wollen ?',
+			'emptySearch'     : 'Suchergebnisse sind leer',
+			'editingFile'     : 'Datei wird bearbeitet.',
+			'hasSelected'     : 'Sie haben $1 Objekte ausgewählt.',
+			'hasClipboard'    : 'Sie haben $1 Objekte im Clipboard.',
+			'incSearchOnly'   : 'Inkrementelle Suche bezieht sich nur auf die aktuelle Ansicht.',
+			'reinstate'       : 'Wiederherstellen',
+			'complete'        : '$1 abgeschlossen',
+			'contextmenu'     : 'Kontextmenü',
+			'pageTurning'     : 'Seite umblättern',
+			'volumeRoots'     : 'Volume-Rootverzeichnisse',
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unbekannt',

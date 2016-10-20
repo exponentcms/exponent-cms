@@ -6,7 +6,27 @@
 .elfinder-dialog-resize  { margin-top:.3em; }
 .elfinder-resize-type    { float:left; margin-bottom: .4em; }
 .elfinder-resize-control { float: left; }
-.elfinder-resize-control input[type=text] { border:1px solid #aaa; text-align: right; }
+.elfinder-resize-control input[type=text] {
+	border:1px solid #aaa;
+	text-align: right;
+	width: 4em;
+}
+.elfinder-resize-control input.elfinder-resize-bg { 
+	text-align: center;
+	width: 5em;
+	direction: ltr;
+}
+.elfinder-dialog-resize .elfinder-resize-imgrotate,
+.elfinder-dialog-resize .elfinder-resize-pallet {
+	cursor: pointer;
+}
+.elfinder-dialog-resize .elfinder-resize-picking {
+	cursor: crosshair;
+}
+.elfinder-dialog-resize .elfinder-resize-grid8 + button {
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
 .elfinder-resize-preview {
 	width:400px;
 	height:400px;
@@ -113,18 +133,20 @@
 	background:url(../img/progress.gif) center bottom repeat-x;
 }
 
-.elfinder-resize-row { margin-bottom:7px; position:relative;}
+.elfinder-resize-row { margin-bottom:9px; position:relative;}
 
 .elfinder-resize-label { float:left; width:80px; padding-top: 3px; }
 
 .elfinder-resize-checkbox-label { border: 1px solid transparent; }
 
-.elfinder-resize-reset {
-	width:16px;
-	height:16px;
-/*	border:1px solid #111;*/
-	position:absolute;
-	margin-top:-8px;
+.elfinder-dialog .elfinder-dialog-resize .elfinder-resize-whctrls {
+	margin: -20px 5px 0 5px;
+}
+.elfinder-ltr .elfinder-dialog .elfinder-dialog-resize .elfinder-resize-whctrls {
+	float: right;
+}
+.elfinder-rtl .elfinder-dialog .elfinder-dialog-resize .elfinder-resize-whctrls {
+	float: left;
 }
 
 .elfinder-dialog .elfinder-dialog-resize .ui-resizable-e,
@@ -184,7 +206,12 @@
 	width: 30px;
 	height: 30px;
 }
-
+.elfinder-touch .elfinder-dialog .elfinder-dialog-resize .elfinder-resize-preview .ui-resizable-se {
+	width: 30px;
+	height: 30px;
+	zoom: 1;
+	margin: 0;
+}
 .elfinder-dialog-resize  .ui-icon-grip-solid-vertical {
 	position:absolute;
 	top:50%;
@@ -204,15 +231,18 @@
 	float:right;
 }
 
-.elfinder-dialog-resize button.ui-button  {
-	padding: 6px 9px;
+.elfinder-dialog-resize .elfinder-resize-degree input,
+.elfinder-dialog-resize .elfinder-resize-quality input {
+	width: 2.5em;
+}
+.elfinder-dialog-resize .elfinder-resize-degree button.ui-button {
+	padding: 6px 8px;
 }
 .elfinder-dialog-resize button.ui-button span {
 	padding: 0;
 }
 
 .ui-widget-content .elfinder-dialog-resize .elfinder-resize-rotate-slider {
-	float: left;
 	width: 195px;
 	margin: 10px 7px;
 	background-color: #fafafa;

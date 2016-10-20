@@ -1,7 +1,7 @@
 /**
  * English translation
  * @author Troex Nevelin <troex@fury.scancode.ru>
- * @version 2016-09-10
+ * @version 2016-10-04
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.en = {
@@ -11,7 +11,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		dateFormat : 'M d, Y h:i A', // Mar 13, 2012 05:27 PM
 		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Error',
 			'errUnknown'           : 'Unknown error.',
@@ -53,11 +53,11 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errMkOutLink'         : 'Unable to create a link to outside the volume root.', // from v2.1 added 03.10.2015
 			'errUpload'            : 'Upload error.',  // old name - errUploadCommon
 			'errUploadFile'        : 'Unable to upload "$1".', // old name - errUpload
-			'errUploadNoFiles'     : 'No files found for upload.', 
+			'errUploadNoFiles'     : 'No files found for upload.',
 			'errUploadTotalSize'   : 'Data exceeds the maximum allowed size.', // old name - errMaxSize
 			'errUploadFileSize'    : 'File exceeds maximum allowed size.', //  old name - errFileMaxSize
-			'errUploadMime'        : 'File type not allowed.', 
-			'errUploadTransfer'    : '"$1" transfer error.', 
+			'errUploadMime'        : 'File type not allowed.',
+			'errUploadTransfer'    : '"$1" transfer error.',
 			'errUploadTemp'        : 'Unable to make temporary file for upload.', // from v2.1 added 26.09.2015
 			'errNotReplace'        : 'Object "$1" already exists at this location and can not be replaced by object with another type.', // new
 			'errReplace'           : 'Unable to replace "$1".',
@@ -141,7 +141,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Close',
 			'btnSave'   : 'Save',
 			'btnRm'     : 'Remove',
@@ -234,8 +234,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'Sat'         : 'Sat',
 
 			/******************************** sort variants ********************************/
-			'sortname'          : 'by name', 
-			'sortkind'          : 'by kind', 
+			'sortname'          : 'by name',
+			'sortkind'          : 'by kind',
 			'sortsize'          : 'by size',
 			'sortdate'          : 'by date',
 			'sortFoldersFirst'  : 'Folders first',
@@ -274,7 +274,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'List view',
 			'viewicons'       : 'Icons view',
 			'places'          : 'Places',
-			'calc'            : 'Calculate', 
+			'calc'            : 'Calculate',
 			'path'            : 'Path',
 			'aliasfor'        : 'Alias for',
 			'locked'          : 'Locked',
@@ -285,7 +285,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'yes'             : 'yes',
 			'no'              : 'no',
 			'link'            : 'Link',
-			'searcresult'     : 'Search results',  
+			'searcresult'     : 'Search results',
 			'selected'        : 'selected items',
 			'about'           : 'About',
 			'shortcuts'       : 'Shortcuts',
@@ -356,7 +356,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'nowLoading'      : 'Now loading...', // from v2.1.12 added 4.26.2016
 			'openMulti'       : 'Open multiple files', // from v2.1.12 added 5.14.2016
 			'openMultiConfirm': 'You are trying to open the $1 files. Are you sure you want to open in browser?', // from v2.1.12 added 5.14.2016
-			'emptySearch'     : 'Search results is empty', // from v2.1.12 added 5.16.2016
+			'emptySearch'     : 'Search results is empty in search target.', // from v2.1.12 added 5.16.2016
 			'editingFile'     : 'It is editing a file.', // from v2.1.13 added 6.3.2016
 			'hasSelected'     : 'You have selected $1 items.', // from v2.1.13 added 6.3.2016
 			'hasClipboard'    : 'You have $1 items in the clipboard.', // from v2.1.13 added 6.3.2016
@@ -364,10 +364,19 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'reinstate'       : 'Reinstate', // from v2.1.15 added 3.8.2016
 			'complete'        : '$1 complete', // from v2.1.15 added 21.8.2016
 			'contextmenu'     : 'Context menu', // from v2.1.15 added 9.9.2016
-			'pageTurning'     : 'Page turning', // from v2.1.15 added 9.10.2016
+			'pageTurning'     : 'Page turning', // from v2.1.15 added 10.9.2016
+			'volumeRoots'     : 'Volume roots', // from v2.1.16 added 16.9.2016
+			'reset'           : 'Reset', // from v2.1.16 added 1.10.2016
+			'bgcolor'         : 'Background color', // from v2.1.16 added 1.10.2016
+			'colorPicker'     : 'Color picker', // from v2.1.16 added 1.10.2016
+			'8pxgrid'         : '8px Grid', // from v2.1.16 added 4.10.2016
+			'enabled'         : 'Enabled', // from v2.1.16 added 4.10.2016
+			'disabled'        : 'Disabled', // from v2.1.16 added 4.10.2016
+			'emptyIncSearch'  : 'Search results is empty in current view.\\APress [Enter] to expand search target.', // from v2.1.16 added 5.10.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Unknown',
+			'kindRoot'        : 'Volume Root', // from v2.1.16 added 16.10.2016
 			'kindFolder'      : 'Folder',
 			'kindAlias'       : 'Alias',
 			'kindAliasBroken' : 'Broken alias',

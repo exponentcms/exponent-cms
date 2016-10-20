@@ -133,7 +133,6 @@
 
     <!-- elfinder custom extenstions -->
     <!--<script src="{$smarty.const.PATH_RELATIVE}external/elFinder/extensions/jplayer/elfinder.quicklook.jplayer.js"></script>-->
-    {*<script src="{$smarty.const.PATH_RELATIVE}external/editors/tinymce/tinymce.min.js"></script>*}
 </head>
 <body{if !bs3()} class="exp-skin"{/if}>
 
@@ -196,6 +195,8 @@
                                         fullPage: true,
 //                                        allowedContent: true,
                                         toolbarCanCollapse : true,
+                                        toolbarStartupExpanded : false,
+                                        extraPlugins : 'image2',
                                     });
                                 },
                                 close : function(textarea, instance) {

@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2016-09-10
+ * @version 2016-10-04
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.jp = {
@@ -355,7 +355,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'nowLoading'      : '読み込んでいます...', // from v2.1.12 added 4.26.2016
 			'openMulti'       : '複数ファイルオープン', // from v2.1.12 added 5.14.2016
 			'openMultiConfirm': '$1 個のファイルを開こうとしています。このままブラウザで開きますか？', // from v2.1.12 added 5.14.2016
-			'emptySearch'     : '検索対象に該当するアイテムはありません', // from v2.1.12 added 5.16.2016
+			'emptySearch'     : '検索対象に該当するアイテムはありません。', // from v2.1.12 added 5.16.2016
 			'editingFile'     : 'ファイルを編集中です', // from v2.1.13 added 6.3.2016
 			'hasSelected'     : '$1 個のアイテムを選択中です', // from v2.1.13 added 6.3.2016
 			'hasClipboard'    : '$1 個のアイテムがクリップボードに入っています', // from v2.1.13 added 6.3.2016
@@ -363,10 +363,19 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'reinstate'       : '元に戻す', // from v2.1.15 added 3.8.2016
 			'complete'        : '$1 完了', // from v2.1.15 added 21.8.2016
 			'contextmenu'     : 'コンテキストメニュー', // from v2.1.15 added 9.9.2016
-			'pageTurning'     : 'ページめくり', // from v2.1.15 added 9.10.2016
+			'pageTurning'     : 'ページめくり', // from v2.1.15 added 10.9.2016
+			'volumeRoots'     : 'ボリュームルート', // from v2.1.16 added 16.9.2016
+			'reset'           : 'リセット', // from v2.1.16 added 1.10.2016
+			'bgcolor'         : '背景色', // from v2.1.16 added 1.10.2016
+			'colorPicker'     : 'カラーピッカー', // from v2.1.16 added 1.10.2016
+			'8pxgrid'         : '8pxグリッド', // from v2.1.16 added 4.10.2016
+			'enabled'         : '有効', // from v2.1.16 added 4.10.2016
+			'disabled'        : '無効', // from v2.1.16 added 4.10.2016
+			'emptyIncSearch'  : '現在のビュー内に該当するアイテムはありません。\\A[Enter]キーで検索対象を拡げます。', // from v2.1.16 added 5.10.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',
+			'kindRoot'        : 'ボリュームルート', // from v2.1.16 added 16.10.2016
 			'kindFolder'      : 'フォルダー',
 			'kindAlias'       : '別名',
 			'kindAliasBroken' : '宛先不明の別名',
