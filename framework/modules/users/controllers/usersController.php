@@ -169,7 +169,7 @@ class usersController extends expController {
         if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0) {
             flash('error', gt('This site does not allow user registrations'));
             expHistory::back();
-        } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id)) {
+        } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id) && !$user->globalPerm('prevent_profile_change')) {
             flash('error', gt('You do not have permission to edit this user account'));
             expHistory::back();
         }

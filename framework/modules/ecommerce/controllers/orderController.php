@@ -49,6 +49,9 @@ class orderController extends expController {
         'show'                => 'View Orders',
         'update'                => 'update order',
     );
+    public $requires_login = array(
+        'ordersbyuser'=>'You must be logged in to view past orders',
+    );
 
     static function displayname() {
         return gt("e-Commerce Order Manager");

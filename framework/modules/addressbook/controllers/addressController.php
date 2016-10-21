@@ -34,6 +34,9 @@ class addressController extends expController {
 //        'import' => 'Import External Addresses',
         'process' => 'Import External Addresses'
     );
+    public $requires_login = array(
+        'myaddressbook'=>'You must be logged in to perform this action',
+    );
 	public $remove_configs = array(
         'aggregation',
         'categories',
@@ -81,6 +84,9 @@ class addressController extends expController {
 
 		// check if the user is logged in.
 		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
+        if (!$user->isAdmin() && $this->params['user_id'] != $user->id) {
+            unset($this->params['user_id']);
+        }
 		expHistory::set('viewable', $this->params);
 		$userid = (empty($this->params['user_id'])) ? $user->id : $this->params['user_id'];
 		assign_to_template(array(
