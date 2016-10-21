@@ -52,9 +52,12 @@ if (!file_exists("../framework/conf/config.php") && !isset($_REQUEST['page'])) {
 $page = $_REQUEST['page'];
 
 // Superadmin must be logged in to do an upgrade
-if (strpos($page, 'upgrade-') !== false && empty($user->isSuperAdmin())) {
-    header('Location: ../index.php');
-    exit();
+global $user;
+if (strpos($page, 'upgrade-') !== false) {
+    if(empty($user) || (!empty($user->id) && !$user->isSuperAdmin())) {
+        header('Location: ../index.php');
+        exit();
+    }
 }
 
 // Only run installation if not already installed
