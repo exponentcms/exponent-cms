@@ -36,9 +36,9 @@
 /*
 eventsCalendar view
 */
-.showall .events {
-    overflow : hidden;
-}
+/*.showall .events {*/
+    /*overflow : hidden;*/
+/*}*/
 
 .showall .events .event-image {
     float        : left;
@@ -54,9 +54,9 @@ eventsCalendar view
 /*
 showall_headlines view
 */
-.headlines .events {
-    overflow : hidden;
-}
+/*.headlines .events {*/
+    /*overflow : hidden;*/
+/*}*/
 
 /*
 show view
