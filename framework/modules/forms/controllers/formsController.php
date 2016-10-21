@@ -286,7 +286,7 @@ class formsController extends expController {
     }
 
     public function enterdata() {
-        if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
+        if (empty($this->config['restrict_enter']) || expPermissions::check('enter_data', $this->loc)) {
 
             global $user;
 
