@@ -33,7 +33,7 @@ class orderController extends expController {
 //        'edit_payment_info'   => 'Edit Payment Info',
 //        'edit_shipping_method'=> 'Edit Shipping Method',
 //        'edit_totals'         => 'Edit Totals',
-        'email'         => 'Send Email',
+//        'email'         => 'Send Email',
         'quickfinder'=> 'Do a quick order lookup',
         'save_payment_info'=> 'Save Payment Info',
         'save_address'=> 'Save Address',
