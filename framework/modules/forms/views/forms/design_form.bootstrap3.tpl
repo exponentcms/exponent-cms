@@ -314,7 +314,7 @@
                                                     type: "POST",
                                                     headers: { 'X-Transaction': 'Change Form Style'},
                                                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=design_form&ajax_action=1&id={/literal}{$form->id}{literal}',
-                                                    data: 'style={/literal}{$style}{literal}',
+                                                    data: 'style={/literal}{$style==1}{literal}',
                                                     success:function(msg) {
                                                         // get the (fake) control html and display it to the page
                                                         $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form
@@ -372,7 +372,7 @@
                                     type: "POST",
                                     headers: { 'X-Transaction': 'Change Form Style'},
                                     url: EXPONENT.PATH_RELATIVE+'index.php?controller=forms&action=design_form&ajax_action=1&id={/literal}{$form->id}{literal}',
-                                    data: 'style={/literal}{$style}{literal}',
+                                    data: 'style={/literal}{$style==1}{literal}',
                                     success:function(msg) {
                                         // get the (fake) control html and display it to the page
                                         $('.module.forms.design-form').replaceWith(msg);  //  update control in the displayed form

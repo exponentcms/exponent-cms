@@ -485,18 +485,23 @@ class formsController extends expController {
 //                        $responses[$col->caption . $num] = gt('No');
                         $responses[$col->name] = gt('No');
                         $captions[$col->name] = $col->caption;
-                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
+                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol' || $coltype == 'popupdatetimecontrol') {
 //                        $responses[$col->name] = $value;
                         $responses[$col->name] = $value;
                         $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'uploadcontrol') {
                         if ($newupload) {
-                            $this->params[$col->name] = PATH_RELATIVE . call_user_func(
+                            $newfile = call_user_func(
                                     array($coltype, 'moveFile'),
                                     $col->name,
                                     $_FILES,
                                     true
                                 );
+                            if (!empty($newfile)) {
+                                $this->params[$col->name] = PATH_RELATIVE . $newfile;
+                            } else {
+                                $this->params[$col->name] = "";
+                            }
                         }
                         //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
                         //eDebug($value);
@@ -678,14 +683,16 @@ class formsController extends expController {
                     $mail = new expMail();
                     if (!empty($attachments)) {
                         foreach ($attachments as $attachment) {
-                            if (strlen(PATH_RELATIVE) != 1)
-                                $attachment = str_replace(PATH_RELATIVE, '', $attachment);  // strip relative path for links coming from templates
-                            if (file_exists(BASE . $attachment)) {
+                            if (!empty($attachment)) {
+                                if (strlen(PATH_RELATIVE) != 1)
+                                    $attachment = expFile::fixName(str_replace(PATH_RELATIVE, '', $attachment));  // strip relative path for links coming from templates
+                                if (file_exists(BASE . $attachment)) {
 //                                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                            $ftype = finfo_file($finfo, $relpath . $attachment);
 //                            finfo_close($finfo);
-                                $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
+                                    $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
+                                }
                             }
                         }
                     }
