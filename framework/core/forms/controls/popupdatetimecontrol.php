@@ -175,6 +175,8 @@ class popupdatetimecontrol extends formcontrol {
      * @return string
      */
     static function templateFormat($db_data, $ctl) {
+        if (empty($db_data))
+            return gt('No Date Set');
 		if ($ctl->showtime) {
 //			return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
             $datetime = strftime(DISPLAY_DATETIME_FORMAT, $db_data);
