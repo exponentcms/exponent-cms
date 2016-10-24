@@ -166,7 +166,7 @@ class formsController extends expController {
                         'where' => 1,
 //                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
                         'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
-                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
+                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
@@ -717,7 +717,7 @@ class formsController extends expController {
 //                if ($this->config['auto_respond_form'])
 //                    $tmsg .= "\n" . $emailText;
                 $hmsg = $this->config['auto_respond_body'];
-                if ($this->config['auto_respond_form'])
+                if (!empty($this->config['auto_respond_form']))
                     $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(

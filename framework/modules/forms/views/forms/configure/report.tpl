@@ -33,4 +33,5 @@
         plugin="fieldinsert" additionalConfig="fieldinsert_list : `$fieldlist`,"
         description='Leave blank to display all fields.  Use \'Fields\' dropdown to insert fields'}
     {control type="dropdown" name="order" label="Sort records by"|gettext items=$fields value=$config.order|default:'id'}
+    {control type=radiogroup name='dir' label='Sorting Direction'|gettext default=$config.dir|default:'ASC' items='Ascending, Descending'|gettxtlist values='ASC,DESC'}
 {/group}
