@@ -26,7 +26,7 @@ Twitter-Bootstrap,3.3.7,twitter.github.com/bootstrap,3.3.7,patched bootstrap.les
 Bootswatch2,2.3.2,bootswatch.com/,2.3.2,
 Bootswatch,3.3.7,bootswatch.com/,3.3.7,change 1st line variables.less comment to output to .css file
 Font-Awesome3,3.2.1,fortawesome.github.com/Font-Awesome,3.2.1,updated FontAwesomePath in variables.less
-Font-Awesome,4.6.3,fortawesome.github.com/Font-Awesome,4.6.3,
+Font-Awesome,4.7.0,fortawesome.github.com/Font-Awesome,4.7.0,
 Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea & edit-calendar"
 SimpleAjaxUploader,2.5.5,github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,5.0.0,necolas.github.com/normalize.css/,5.0.0,auto included in bootstrap 3
