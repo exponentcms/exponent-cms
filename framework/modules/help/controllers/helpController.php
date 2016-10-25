@@ -58,6 +58,7 @@ class helpController extends expController {
                 }
             }
             if(!empty($params['version'])) {
+                $params['version'] = expString::escape($params['version']);
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
             }
             expSession::set('help-version',$version);

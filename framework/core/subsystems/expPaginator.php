@@ -118,7 +118,7 @@ class expPaginator {
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];
         $this->count_sql = empty($params['count_sql']) ? '' : $params['count_sql'];
-		$this->order = empty($params['order']) ? 'id' : expString::escape($params['order']);
+        $this->order = empty($params['order']) ? 'id' : preg_replace('/[^a-z\_]/i','',$params['order']);
 		$this->dir = empty($params['dir']) || !in_array($params['dir'], array('ASC', 'DESC')) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : expString::escape($params['src']);
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
