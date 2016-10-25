@@ -118,7 +118,8 @@ class expPaginator {
 		$this->controller = empty($params['controller']) ? '' : $params['controller'];
 		$this->sql = empty($params['sql']) ? '' : $params['sql'];
         $this->count_sql = empty($params['count_sql']) ? '' : $params['count_sql'];
-        $this->order = empty($params['order']) ? 'id' : preg_replace('/[^a-z\_]/i','',$params['order']);
+//        $this->order = empty($params['order']) ? 'id' : preg_replace('/[^a-zAZ_]/','',$params['order']);
+        $this->order = empty($params['order']) ? 'id' : expString::escape($params['order']);
 		$this->dir = empty($params['dir']) || !in_array($params['dir'], array('ASC', 'DESC')) ? 'ASC' : $params['dir'];
 		$this->src = empty($params['src']) ? null : expString::escape($params['src']);
         $this->categorize = empty($params['categorize']) ? false : $params['categorize'];
@@ -180,7 +181,8 @@ class expPaginator {
             $this->order = $orderby[0];
             $this->order_direction = $orderby[1];
         }
-        if(!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $this->order))
+        // filter out invalid order & direction
+        if(preg_match('/[^a-zA-Z_][^a-zA-Z0-9_]*/', $this->order))
             $this->order = 'id';
         if (!in_array($this->order_direction, array('ASC', 'DESC')))
             $this->order_direction = 'ASC';
