@@ -17,16 +17,19 @@
 - fix new comment notification email link; display comment author's name using site attribution setting
 - regression fix jquery/bootstrap2 date/time widget
 - regression fix display of event feedback form on event showall announcement view
+- regression fix non-admin users unable to view form enter_data when set up for restrict data entry by permissions
 
 ####v240 updates these 3rd party libraries in v239 previous releases:
 - revert bootstrap datetimepicker to v4.17.37
 - jQueryUI to v1.12.1
-- easypost library to v3.1.2
-- moment.js to v2.15.1
+- easypost library to v3.1.3
+- moment.js to v2.15.2
 - normalize.css to v5.0.0
-- mediaelement to v2.23.3
+- mediaelement to v2.23.4
 - jquery.validate to v1.15.1
+- elFinder to v2.1.16
 - phpxmlrpc to v4.1.1
+- font-awesome to v4.7.0
 
 
 ####v239patch1 adds these features to v239:
