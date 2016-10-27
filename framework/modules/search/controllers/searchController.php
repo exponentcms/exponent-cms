@@ -209,7 +209,7 @@ class searchController extends expController {
 
     // some general search stuff
     public function autocomplete() {
-        return;
+        return;  //fixme this negates the code below!
         global $db;
 
         $model = $this->params['model'];
@@ -231,7 +231,7 @@ class searchController extends expController {
         $ar->send();
     }
 
-	public function searchQueryReport() {
+	public function searchQueryReport() {  //fixme this will typically create a 500 error due to number of search query records
 		global $db;
 
 		//Instantiate the search model
@@ -259,7 +259,7 @@ class searchController extends expController {
 		$ctr2 = 0;
 
 		//Getting the search users
-		$records = $db->selectObjects('search_queries');
+		$records = $db->selectObjects('search_queries');  // note we get all records a first time?
 
 
 		foreach($records as $item) {
@@ -296,7 +296,7 @@ class searchController extends expController {
 		}
 
 		//Get all the search query records
-		$records = $db->selectObjects('search_queries', $where);
+		$records = $db->selectObjects('search_queries', $where);  // note we then get all records a 2nd time?
         for ($i = 0, $iMax = count($records); $i < $iMax; $i++) {
 			if(!empty($records[$i]->user_id)) {
 				$u = user::getUserById($records[$i]->user_id);
@@ -334,6 +334,7 @@ class searchController extends expController {
 
 	public function topSearchReport() {
 		global $db;
+
 		$limit = intval(TOP_SEARCH);
 
 		if(empty($limit)) {

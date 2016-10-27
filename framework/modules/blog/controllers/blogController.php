@@ -193,7 +193,7 @@ class blogController extends expController {
 	    $id = isset($this->params['title']) ? $this->params['title'] : $this->params['id'];
         $record = new blog($id);
         if (empty($record->id))
-            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>expString::escape($this->params['title'])));
+            redirect_to(array('controller'=>'notfound','action'=>'page_not_found','title'=>$this->params['title']));
 
 	    // since we are probably getting here via a router mapped url
 	    // some of the links (tags in particular) require a source, we will
