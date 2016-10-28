@@ -79,7 +79,7 @@
                         <tr>
                             {foreach $page->columns as $field=>$caption}
                                 <td>
-                                    {if $field|lower == 'email'}
+                                    {if $field|lower == 'email' && stripos($value, '<a ') === false}
                                         <a href="mailto:{$fields.$field}">
                                     {elseif $caption@iteration == 1 && !$config.hide_view}
                                         <a href={link action=show forms_id=$f->id id=$fields.id}>
