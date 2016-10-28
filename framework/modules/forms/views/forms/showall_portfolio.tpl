@@ -55,7 +55,7 @@
                 {/if}
             </div>
         {/permissions}
-        {$page->links}
+        {pagelinks paginate=$page top=1}
         <div style="overflow: auto; overflow-y: hidden;">
             {foreach from=$page->records item=fields key=key name=fields}
                 <div class="item-actions">
@@ -105,7 +105,7 @@
                 <h4>{$config.no_records_msg}</h4>
             {/foreach}
         </div>
-        {$page->links}
+        {pagelinks paginate=$page bottom=1}
         {if empty($f) && $permissions.configure}
             {permissions}
                 <div class="module-actions">
