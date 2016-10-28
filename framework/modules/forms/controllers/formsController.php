@@ -103,8 +103,14 @@ class formsController extends expController {
                 if (empty($this->config['column_names_list'])) {
                     //define some default columns...
                     $controls = $fc->find('all', 'forms_id=' . $f->id . ' AND is_readonly=0 AND is_static = 0', 'rank');
-                    foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
-                        $this->config['column_names_list'][] = $control->name;
+                    if (!empty($this->params['view']) && $this->params['view'] == 'showall_portfolio') {
+                        foreach ($controls as $control) {  // we need to output all columns for portfolio view
+                            $this->config['column_names_list'][] = $control->name;
+                        }
+                    } else {
+                        foreach (array_slice($controls, 0, 5) as $control) {  // default to only first 5 columns
+                            $this->config['column_names_list'][] = $control->name;
+                        }
                     }
                 }
 

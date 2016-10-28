@@ -40,7 +40,7 @@
                     {$captions.$fieldname}
                 </td>
                 <td>
-                    {if $fieldname|lower == 'email'}
+                    {if $fieldname|lower == 'email' && stripos($value, '<a ') === false}
                         <a href="mailto:{$value}">{$value}</a>
                     {elseif $fieldname|lower == 'image'}
                         {$matches = array()}
