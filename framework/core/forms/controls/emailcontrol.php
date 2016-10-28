@@ -40,7 +40,7 @@ class emailcontrol extends textcontrol {
      */
     static function templateFormat($db_data, $ctl) {
         if (isset($db_data)) {
-            if (!empty($ctl->link)) {
+            if (!empty($ctl->link) && !empty($db_data)) {
                 return '<a href="mailto:' . $db_data . '">' . $db_data . '</a>';
             } else {
                 return $db_data;
