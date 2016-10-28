@@ -191,13 +191,13 @@ class expSettings
 //                $value = str_replace(array('\r\n', '\r', '\n'), "", $value);
                 $str .= "exponent_unhtmlentities('$value')";
             } elseif (is_int($value)) {
-                $str .= "'" . $value . "'";
+                $str .= "'" . intval($value) . "'";
             } else {
                 if ($directive != 'SESSION_TIMEOUT') {
-                    $str .= "'" . str_replace("'", "\'", $value) . "'";  //FIXME is this still necessary since we stripslashes above???
+                    $str .= "'" . expString::escape(str_replace("'", "\'", $value)) . "'";  //FIXME is this still necessary since we stripslashes above???
                 } //                    $str .= "'".$value."'";
                 else {
-                    $str .= "'" . str_replace("'", '', $value) . "'";
+                    $str .= "'" . expString::escape(str_replace("'", '', $value)) . "'";
                 }
             }
             $str .= ");\n";
@@ -584,6 +584,10 @@ class expSettings
      */
     public static function activateProfile($profile)
     {
+        if (!empty($profile) && (strpos($profile, '..') !== false || strpos($profile, '/') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
         if (is_readable(BASE . "framework/conf/profiles/$profile.php") && expUtil::isReallyWritable(
                 BASE . "framework/conf"
             )

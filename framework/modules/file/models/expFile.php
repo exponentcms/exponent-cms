@@ -425,7 +425,7 @@ class expFile extends expRecord {
         //Check to see if the directory exists.  If not, create the directory structure.
         // if (!file_exists(BASE . $_destDir)) {
         //  self::makeDirectory(BASE . $_destDir);
-        // }    
+        // }
 
         // Move the temporary uploaded file into the destination directory,
         // and change the name.
@@ -734,7 +734,11 @@ class expFile extends expRecord {
      *
      */
     public static function fixName($name) {
-        return preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+        $name = preg_replace('/[^A-Za-z0-9\.]/','_',$name);
+        if ($name[0] == '.')  // attempt to upload a dot file
+            $name[0] = '_';
+        $name = str_replace('_', '..', $name);  // attempt to upload with redirection to new folder
+        return $name;
 //        return preg_replace('/[^A-Za-z0-9\.]/', '-', $name);
     }
 

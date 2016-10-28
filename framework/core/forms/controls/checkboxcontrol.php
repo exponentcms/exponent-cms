@@ -62,7 +62,7 @@ class checkboxcontrol extends formcontrol {
         if (!empty($this->_ishidden)) {
             $this->name = empty($this->name) ? $name : $this->name;
             $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : "";
-    		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.$this->value.'"';
+    		$html = '<input type="hidden"' . $idname . ' name="' . $this->name . '" value="'.(int)$this->default.'"';
     		$html .= ' />';
     		return $html;
         } else {
@@ -194,7 +194,7 @@ class checkboxcontrol extends formcontrol {
     }
 
     static function parseData($name, $values, $for_db = false) {
-        return isset($values[$name]) ? 1 : 0;
+        return (isset($values[$name]) && !empty($values[$name])) ? 1 : 0;
     }
 
     static function convertData($original_name,$formvalues) {

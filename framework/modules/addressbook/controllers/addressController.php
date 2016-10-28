@@ -22,17 +22,20 @@
  */
 
 class addressController extends expController {
-	public $useractions = array(
+//	public $useractions = array(
 //        'myaddressbook'=>'Show my addressbook'
-    );
+//    );
     protected $remove_permissions = array(
         'create',
         'edit',
         'delete'
     );
-    protected $add_permissions = array(
-        'import' => 'Import External Addresses',
-//        'export' => 'Export External Addresses'
+    protected $manage_permissions = array(
+//        'import' => 'Import External Addresses',
+        'process' => 'Import External Addresses'
+    );
+    public $requires_login = array(
+        'myaddressbook'=>'You must be logged in to perform this action',
     );
 	public $remove_configs = array(
         'aggregation',
@@ -59,7 +62,7 @@ class addressController extends expController {
 //        redirect_to(array("controller"=>'address',"action"=>'myaddressbook'));
         $this->myaddressbook();
 	}
-    
+
     public function edit()
     {
         if((isset($this->params['id']))) $record = new address(intval($this->params['id']));
@@ -75,19 +78,22 @@ class addressController extends expController {
             ));
         }
     }
-    
+
 	public function myaddressbook() {
 		global $user;
 
 		// check if the user is logged in.
 		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
+        if (!$user->isAdmin() && $this->params['user_id'] != $user->id) {
+            unset($this->params['user_id']);
+        }
 		expHistory::set('viewable', $this->params);
 		$userid = (empty($this->params['user_id'])) ? $user->id : $this->params['user_id'];
 		assign_to_template(array(
             'addresses'=>$this->address->find('all', 'user_id='.$userid)
         ));
 	}
-	
+
 	function show() {
 	    expHistory::set('viewable', $this->params);
 		assign_to_template(array(
@@ -111,7 +117,7 @@ class addressController extends expController {
 			// check to see how many other addresses this user has already.
 			$count = $this->address->find('count', 'user_id='.$user->id);
 			// if this is first address save for this user we'll make this the default
-			if ($count == 0) 
+			if ($count == 0)
             {
                 $this->params['is_default'] = 1;
                 $this->params['is_billing'] = 1;
@@ -123,22 +129,22 @@ class addressController extends expController {
 			$this->address->update($this->params);
 		}
         else { //if (ecomconfig::getConfig('allow_anonymous_checkout')){
-            //user is not logged in, but allow anonymous checkout is enabled so we'll check 
+            //user is not logged in, but allow anonymous checkout is enabled so we'll check
             //a few things that we don't check in the parent 'stuff and create a user account.
             $this->params['is_default'] = 1;
             $this->params['is_billing'] = 1;
-            $this->params['is_shipping'] = 1; 
+            $this->params['is_shipping'] = 1;
             $this->address->update($this->params);
         }
-		expHistory::back(); 
+		expHistory::back();
 	}
-	
+
 	public function delete() {
 	    global $user;
 
         $count = $this->address->find('count', 'user_id=' . $user->id);
         if($count > 1)
-        {    
+        {
             $address = new address($this->params['id']);
 	        if ($user->isAdmin() || ($user->id == $address->user_id)) {
                 if ($address->is_billing)
@@ -147,7 +153,7 @@ class addressController extends expController {
                     $billAddress->is_billing = true;
                     $billAddress->save();
                 }
-                if ($address->is_shipping) 
+                if ($address->is_shipping)
                 {
                     $shipAddress = $this->address->find('first', 'user_id=' . $user->id . " AND id != " . $address->id);
                     $shipAddress->is_shipping = true;
@@ -162,33 +168,33 @@ class addressController extends expController {
         }
 	    expHistory::back();
 	}
-    
+
     public function activate_address()
     {
         global $db, $user;
 
         $object = new stdClass();
         $object->id = $this->params['id'];
-        $db->setUniqueFlag($object, 'addresses', $this->params['is_what'], "user_id=" . $user->id);
+        $db->setUniqueFlag($object, 'addresses', expString::escape($this->params['is_what']), "user_id=" . $user->id);
         flash("message", gt("Successfully updated address."));
-        expHistory::back(); 
+        expHistory::back();
     }
-    
+
     public function manage()
     {
         expHistory::set('manageable',$this->params);
         $gc = new geoCountry();
         $countries = $gc->find('all');
-        
-        $gr = new geoRegion();             
+
+        $gr = new geoRegion();
         $regions = $gr->find('all',null,'rank asc,name asc');
-        
+
         assign_to_template(array(
             'countries'=>$countries,
             'regions'=>$regions
         ));
     }
-    
+
     public function manage_update()
     {
         global $db;
@@ -199,16 +205,16 @@ class addressController extends expController {
         foreach($this->params['country'] as $country_id=>$is_active)
         {
             $gc = new geoCountry($country_id);
-            $gc->active = true;            
-            $gc->save();            
+            $gc->active = true;
+            $gc->save();
         }
         //country default
         $db->columnUpdate('geo_country','is_default',0,'is_default=1');
         if(isset($this->params['country_default']))
         {
-            $gc = new geoCountry($this->params['country_default']);            
-            $db->setUniqueFlag($gc,'geo_country','is_default','id=' . $gc->id);    
-            $gc->refresh();            
+            $gc = new geoCountry(intval($this->params['country_default']));
+            $db->setUniqueFlag($gc,'geo_country','is_default','id=' . $gc->id);
+            $gc->refresh();
         }
         //regions
         $db->columnUpdate('geo_region','active',0,'active=1');
@@ -217,7 +223,7 @@ class addressController extends expController {
             $gr = new geoRegion($region_id);
             $gr->active = true;
             if(isset($this->params['region_rank'][$region_id])) $gr->rank = $this->params['region_rank'][$region_id];
-            $gr->save();            
+            $gr->save();
         }
         flash('message',gt('Address configurations successfully updated.'));
         redirect_to(array('controller'=>'address','action'=>'manage'));

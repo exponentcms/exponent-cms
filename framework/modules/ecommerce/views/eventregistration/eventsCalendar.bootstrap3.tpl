@@ -71,7 +71,7 @@
             {$orig_params = ['controller' => 'eventregistration', 'action' => 'eventsCalendar', 'src' => $params.src]}
         {literal}
         var orig_url_{/literal}{$name}{literal} = '{/literal}{makeLink($orig_params)}{literal}';
-        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=event&action=showall&view=month&ajax_action=1&src={/literal}{$__loc->src}{literal}";
+        var sUrl_{/literal}{$name}{literal} = EXPONENT.PATH_RELATIVE + "index.php?controller=eventregistration&action=eventsCalendar&view=month&ajax_action=1&src={/literal}{$__loc->src}{literal}";
 
         // Popup calendar
         $('#j_input{/literal}{$__loc->src|replace:'@':'_'}{literal}').datetimepicker({
@@ -98,9 +98,9 @@
                 {/literal}
             {else}
                 {if ($smarty.const.SEF_URLS == 1)} {literal}
-                    window.location = eXp.PATH_RELATIVE + 'event/showall/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
+                    window.location = eXp.PATH_RELATIVE + 'eventregistration/eventsCalendar/time/'+unixtime+'/src/{/literal}{$__loc->src}{literal}';
                 {/literal} {else} {literal}
-                    window.location = eXp.PATH_RELATIVE + 'index.php?controller=event&action=showall&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
+                    window.location = eXp.PATH_RELATIVE + 'index.php?controller=eventregistration&action=eventsCalendar&time='+unixtime+'&src={/literal}{$__loc->src}{literal}';
                 {/literal} {/if}
             {/if} {literal}
             }

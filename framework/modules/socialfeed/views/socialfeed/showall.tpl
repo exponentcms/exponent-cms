@@ -27,16 +27,16 @@
     {/if}
     <div class="channel-links">
         {if $config.socialfeed_facebook_use}
-        <a href="https://www.facebook.com/{$config.socialfeed_facebook_page_name}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/facebook.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://www.facebook.com/{$config.socialfeed_facebook_page_name}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/facebook.png" alt="{'Facebook'|gettext}"></a>&nbsp;&nbsp;&nbsp;&nbsp;
         {/if}
         {if $config.socialfeed_twitter_use}
-        <a href="https://twitter.com/{$config.socialfeed_twitter_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/twitter.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://twitter.com/{$config.socialfeed_twitter_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/twitter.png" alt="{'Twitter'|gettext}"></a>&nbsp;&nbsp;&nbsp;&nbsp;
         {/if}
         {if $config.socialfeed_instagram_use}
-        <a href="https://instagram.com/{$config.socialfeed_instagram_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/instagram.png"></a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="https://instagram.com/{$config.socialfeed_instagram_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/instagram.png" alt="{'Instagram'|gettext}"></a>&nbsp;&nbsp;&nbsp;&nbsp;
         {/if}
         {if $config.socialfeed_pinterest_use}
-        <a href="https://pinterest.com/{$config.socialfeed_pinterest_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/pinterest.png"></a>
+        <a href="https://pinterest.com/{$config.socialfeed_pinterest_username}" target="_blank" title="{'View Page'|gettext}"><img style="height:20px;" src="{$asset_path}images/pinterest.png" alt="{'Pinterest'|gettext}"></a>
         {/if}
     </div>
     <div class="shuffle">
@@ -45,9 +45,9 @@
                 <div class="item instagram">
                 <div class="item-box">
                     {if (isset($message['post_url']) && !empty($message['post_url']))}
-                        <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}"></a>
+                        <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}" alt="{'Instagram Image'|gettext}"></a>
                     {else}
-                        <img class="img-responsive" src="{$message['image_url']}">
+                        <img class="img-responsive" src="{$message['image_url']}" alt="{'Instagram Image'|gettext}">
                     {/if}
                     {if (isset($message['message']) && !empty($message['message']))} {* photo & status *}
                         <div class="fb-message post-content">
@@ -58,7 +58,7 @@
                     {/if}
                     <div class="post-footer">
                         <a href="https://instagram.com/{$config.socialfeed_instagram_username}" target="_blank" title="{'View Page'|gettext}">
-                            <img src="{$asset_path}images/instagram.png" class="pull-right" style="width: 20px;">
+                            <img src="{$asset_path}images/instagram.png" class="pull-right" style="width: 20px;" alt="{'Instagram'|gettext}">
                         </a>
                         <!-- Time -->
                         {if ($config.socialfeed_time_stamp && isset($message['created_stamp']) && !empty($message['created_stamp']))}
@@ -88,7 +88,7 @@
                     </div>
                     <div class="post-footer">
                         <a href="https://twitter.com/{$config.socialfeed_twitter_username}" target="_blank" title="{'View Page'|gettext}">
-                            <img src="{$asset_path}images/twitter.png" class="pull-right" style="width: 20px;">
+                            <img src="{$asset_path}images/twitter.png" class="pull-right" style="width: 20px;" alt="{'Twitter'|gettext}">
                         </a>
                         {if ($config.socialfeed_time_stamp && isset($message['created_stamp']) && !empty($message['created_stamp']))}
                             <div class="tw-date">{$message['created_stamp']|relative_date}</div>
@@ -103,7 +103,7 @@
                     {if (isset($message['picture']) && !empty($message['picture']))}
                         <div class="fb-pic">
                             <a href="{$message['photo_link']}" target="_blank" title="{'View Photos'|gettext}">
-                                <img class="img-responsive" src="{$message['picture']}">
+                                <img class="img-responsive" src="{$message['picture']}" alt="{'Facebook Image'|gettext}">
                             </a>
                         </div>
                     {/if}
@@ -128,7 +128,7 @@
                     {*{/if}*}
                     <div class="post-footer">
                         <a href="https://www.facebook.com/{$config.socialfeed_facebook_page_name}" target="_blank" title="{'View Page'|gettext}">
-                            <img src="{$asset_path}images/facebook.png" class="pull-right" style="width: 20px;">
+                            <img src="{$asset_path}images/facebook.png" class="pull-right" style="width: 20px;" alt="{'Facebook'|gettext}">
                         </a>
                         <!-- Time -->
                         {if ($config.socialfeed_time_stamp && isset($message['created_stamp']) && !empty($message['created_stamp']))}
@@ -149,9 +149,9 @@
                 <div class="item pinterest">
                 <div class="item-box">
                     {if (isset($message['post_url']) && !empty($message['post_url']))}
-                        <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}"></a>
+                        <a href="{$message['post_url']}" target="_blank" title="{'View Post'|gettext}"><img class="img-responsive" src="{$message['image_url']}" alt="{'Pinterest Image'|gettext}"></a>
                     {else}
-                        <img class="img-responsive" src="{$message['image_url']}">
+                        <img class="img-responsive" src="{$message['image_url']}" alt="{'Pinterest Image'|gettext}">
                     {/if}
                     {if (isset($message['description']) && !empty($message['description']))} {* pin *}
                         <div class="fb-message post-content">
@@ -162,7 +162,7 @@
                     {/if}
                     <div class="post-footer">
                         <a href="http://pinterest.com/{$config.socialfeed_pinterest_username}" target="_blank" title="{'View Page'|gettext}">
-                            <img src="{$asset_path}images/pinterest.png" class="pull-right" style="width: 20px;">
+                            <img src="{$asset_path}images/pinterest.png" class="pull-right" style="width: 20px;" alt="{'Pinterest'|gettext}">
                         </a>
                         <!-- Time -->
                         {if ($config.socialfeed_time_stamp && isset($message['created_stamp']) && !empty($message['created_stamp']))}

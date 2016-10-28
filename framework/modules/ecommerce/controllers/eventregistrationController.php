@@ -31,14 +31,18 @@ function compare($x, $y) {
 
 class eventregistrationController extends expController {
     public $basemodel_name = 'eventregistration';
-
     public $useractions = array(
         'showall'     => 'Show all events',
         'eventsCalendar'                  => 'Calendar View',
         'upcomingEvents'                  => 'Upcoming Events',
 //        'showByTitle' => "Show events by title",
     );
-
+    protected $add_permissions = array(
+//        'emailRegistrants'=> 'Email Registrants',
+    );
+    protected $manage_permissions = array(
+        'emailRegistrants'=> 'Email Registrants',
+    );
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -51,11 +55,6 @@ class eventregistrationController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','module_title','pagination','rss','tags','twitter',)
-
-    protected $add_permissions = array(
-        'view_registrants'=> 'View Registrants',
-        'emailRegistrants'=> 'Email Registrants',
-    );
 
     static function displayname() {
         return gt("e-Commerce Online Event Registration");
@@ -1184,7 +1183,8 @@ class eventregistrationController extends expController {
         $mail->quickBatchSend(array(
             	'headers'=>$headers,
                 'html_message'=> $this->params['email_message'],
-                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
+//                'text_message'=> strip_tags(str_replace("<br>", "\r\n", $this->params['email_message'])),
+                'text_message'=> expString::html2text($this->params['email_message']),
                 'to'          => $email_addy,
                 'from'        => $from,
                 'subject'     => $this->params['email_subject']

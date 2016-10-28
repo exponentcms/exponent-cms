@@ -37,7 +37,7 @@
         };
 
     this.tpl = {
-        main : '<div class="ui-helper-clearfix elfinder-info-title"><span class="elfinder-cwd-icon {class} ui-corner-all"/>{title}</div><table class="elfinder-info-tb">{content}</table>' ,
+		main       : '<div class="ui-helper-clearfix elfinder-info-title {dirclass}"><span class="elfinder-cwd-icon {class} ui-corner-all"/>{title}</div><table class="elfinder-info-tb">{content}</table>',
         itemTitle : '<strong>{name}</strong><span class="elfinder-info-kind">{kind}</span>' ,
         groupTitle : '<strong>{items}: {num}</strong>' ,
         row : '<tr><td>{label} : </td><td>{value}</td></tr>' ,
@@ -203,7 +203,7 @@
 					fm.autoSync();
 				});
 			},
-            size, tmb, file, title, dcnt;
+			size, tmb, file, title, dcnt, rdcnt;
 
         if (!cnt) {
             return $.Deferred().reject();
@@ -218,7 +218,7 @@
         if (cnt == 1) {
             file = files[0];
 
-            view = view.replace('{class}' , fm.mime2class(file.mime));
+			view  = view.replace('{dirclass}', file.csscls? fm.escape(file.csscls) : '').replace('{class}', fm.mime2class(file.mime));
 			title = tpl.itemTitle.replace('{name}', fm.escape(file.i18 || file.name)).replace('{kind}', '<span title="'+fm.escape(file.mime)+'">'+fm.mime2kind(file)+'</span>');
 
 			tmb = fm.tmb(file);
@@ -281,7 +281,7 @@
             content.push(row.replace(l , msg.modify).replace(v , fm.formatDate(file)));
             content.push(row.replace(l , msg.perms).replace(v , fm.formatPermissions(file)));
             content.push(row.replace(l , msg.locked).replace(v , file.locked ? msg.yes : msg.no));
-			//file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
+			file.owner && content.push(row.replace(l, msg.owner).replace(v, file.owner));
             file.group && content.push(row.replace(l, msg.group).replace(v, file.group));
             file.perm && content.push(row.replace(l, msg.perm).replace(v, fm.formatFileMode(file.perm)));
 
@@ -347,7 +347,9 @@
                 content.push(row.replace(l , msg.kind).replace(v , msg.files));
                 content.push(row.replace(l , msg.size).replace(v , fm.formatSize(size)));
             } else {
-                content.push(row.replace(l , msg.kind).replace(v , dcnt == cnt ? msg.folders : msg.folders + ' ' + dcnt + ', ' + msg.files + ' ' + (cnt - dcnt)));
+				rdcnt = $.map(files, function(f) { return f.mime === 'directory' && (! f.phash || f.isroot)? 1 : null ; }).length;
+				dcnt -= rdcnt;
+				content.push(row.replace(l, msg.kind).replace(v, (rdcnt === cnt || dcnt === cnt)? msg[rdcnt? 'roots' : 'folders'] : $.map({roots: rdcnt, folders: dcnt, files: cnt - rdcnt - dcnt}, function(c, t) { return c? msg[t]+' '+c : null}).join(', ')));
 				content.push(row.replace(l, msg.size).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'size')));
 				count = $.map(files, function(f) { return f.hash; });
 

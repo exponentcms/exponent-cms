@@ -32,7 +32,7 @@ class clean_file_db extends upgradescript {
 	 * name/title of upgrade script
 	 * @return string
 	 */
-	static function name() { return "Update file database by removing missing files and adding new files"; }
+	static function name() { return "Update file database by updating info, removing missing files and adding new files"; }
 
 	/**
 	 * generic description of upgrade script
@@ -56,10 +56,12 @@ class clean_file_db extends upgradescript {
 	    global $db;
 
 		$bad_count = 0;
+        $rem_count = 0;
+        $attach_count = 0;
         $new_count = 0;
-		$rem_count = 0;
+        $chg_count = 0;
 
-		// first remove files with incorrect/full directory in db (should only be relative to root
+		// first remove files with incorrect/full directory in db (should only be relative to root)
 		foreach (expFile::selectAllFiles() as $file) {
 			if (strpos($file->directory, BASE)) {
 				$delfile = new expFile($file->id);
@@ -68,32 +70,69 @@ class clean_file_db extends upgradescript {
 			}
 		}
 
-		// next remove missing files found in db
-		//FIXME should we check to see if they are being used in content_expFiles->expfiles_id??
-		foreach (expFile::selectAllFiles() as $file) {
-			if (!is_file(BASE . $file->directory . $file->filename)) {
-				$delfile = new expFile($file->id);
-				$delfile->delete();
-				$rem_count++;
-			}
-		}
+		// next remove missing files still in db
+        foreach (expFile::selectAllFiles() as $file) {
+            if (!is_file(BASE . $file->directory . $file->filename)) {
+                $delfile = new expFile($file->id);
+                $delfile->delete();
+                $rem_count++;
+            }
+        }
 
-		// finally add existing files not in db
+        // next remove missing attachment references in db
+        foreach ($db->selectObjects('content_expFiles') as $ifile) {
+            $incfile = new expFile($ifile->expfiles_id);
+            if (empty($incfile)) {  // attachment doesn't exist
+                if ($db->countObjects('content_expFiles', "expfiles_id='" . $incfile->expfiles_id . "'")) {
+                    $attach_count += $db->countObjects('content_expFiles', "expfiles_id='" .  $file->id . "'");
+                    $db->delete('content_expFiles', "expfiles_id='" .  $file->id . "'"); // remove missing attachments
+                }
+            }
+        }
+
+		// finally add existing files not in db and update existing files
 		$allfiles = expFile::listFlat(BASE.'files',true,null,array(),BASE);
 		foreach ($allfiles as $path => $file) {
 			if ($file[0] != '.') {
-				$npath = preg_replace('/' . $file . '/', '', $path, 1);
-				$dbfile = $db->selectObject('expFiles', "filename='" . $file . "' AND directory='" . $npath . "'");
+			    $nfile = str_replace(array('(',')'),array('\(','\)'),$file);
+				$npath = preg_replace('/' . $nfile . '/', '', $path, 1);  //fixme doesn't account for regex characters like (1)
+				$dbfile = $db->selectObject('expFiles', "filename='" . $nfile . "' AND directory='" . $npath . "'");
 				if (empty($dbfile)) {
 					$newfile = new expFile(array('filename' => $file, 'directory' => $npath));
 					$newfile->posted = $newfile->last_accessed = filemtime(BASE . $path);
 					$newfile->save();
 					$new_count++;
-				}
+				} else {
+                    $changed = false;
+                    $file = new expFile($dbfile->id);
+				    // update filesize, mimetype, and image size
+                    $_fileInfo = expFile::getImageInfo(BASE . $file->directory . $file->filename);
+                    $file->is_image = !empty($_fileInfo['is_image']) ? $_fileInfo['is_image'] : false;
+                    // check/update fule size
+                    if (!empty($_fileInfo['fileSize']) && $file->filesize != $_fileInfo['fileSize']) {
+                        $file->filesize = !empty($_fileInfo['fileSize']) ? $_fileInfo['fileSize'] : 0;
+                        $changed = true;
+                    }
+                    // check/update mime type
+                    if (!empty($_fileInfo['mime']) && $file->mimetype != $_fileInfo['mime']) {
+                        $file->mimetype = $_fileInfo['mime'];
+                        $changed = true;
+                    }
+                    // check/update image dimensions
+                    if (!empty($_fileInfo['is_image']) && ($file->image_width != $_fileInfo[0] || $file->image_height != $_fileInfo[1])) {
+                        $file->image_width = $_fileInfo[0];
+                        $file->image_height = $_fileInfo[1];
+                        $changed = true;
+                    }
+                    if ($changed) {
+                        $file->update();
+                        $chg_count++;
+                    }
+                }
 			}
 		}
 
-		return ($bad_count?$bad_count:gt('No'))." ".gt("files with bad paths were removed").", ".($new_count?$new_count:gt('No')).' '.gt('files were added and.').' '.($rem_count?$rem_count:gt('No')).' '.gt('files were removed from the database.');
+		return ($new_count?$new_count:gt('No')).' '.gt('files were added').', '.($chg_count?$chg_count:gt('No')).' '.gt('files were updated').', '.($attach_count?$attach_count:gt('No')).' '.gt('missing attachments were removed').', '.($bad_count?$bad_count:gt('No'))." ".gt("files with bad paths were removed").", ".gt('and').' '.($rem_count?$rem_count:gt('No')).' '.gt('missing files were removed from the database.');
 	}
 }
 

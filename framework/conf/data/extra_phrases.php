@@ -237,5 +237,7 @@
     gt("Thumbnail JPEG Quality (0 - 95)");
     gt("Do Not Follow Links?");
     gt("Do Not Index?");
+    gt("You don\'t have permission to");
+    gt("(read more)");
 
 ?>

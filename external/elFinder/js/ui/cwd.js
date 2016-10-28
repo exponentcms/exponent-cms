@@ -646,7 +646,7 @@ $.fn.elfindercwd = function(fm, options) {
 								fm.unbind('resize', attachThumbnails).bind('resize', attachThumbnails);
 							}
 							$.extend(bufferExt.attachTmbs, atmb);
-							attachThumbnails();
+							attachThumbnails(atmb);
 						}
 						
 						wrapper.trigger(scrollEvent);
@@ -938,7 +938,10 @@ $.fn.elfindercwd = function(fm, options) {
 					$.extend(bufferExt.attachTmbs, image);
 					$.each(image, chk);
 				} else {
-					$.each(bufferExt.attachTmbs, chk);
+					bufferExt.attachThumbTm && clearTimeout(bufferExt.attachThumbTm);
+					bufferExt.attachThumbTm = setTimeout(function() {
+						$.each(bufferExt.attachTmbs, chk);
+					}, 0);
 				}
 				
 				$.each(done, function(i, h) {
@@ -1246,7 +1249,10 @@ $.fn.elfindercwd = function(fm, options) {
 			content = function() {
 				var phash, emptyMethod, thtr;
 
-				wz.append(selectAllCheckbox);
+				wz.append(selectAllCheckbox).removeClass('elfinder-cwd-wrapper-empty elfinder-search-result elfinder-incsearch-result');
+				if (fm.searchStatus.state > 1 || fm.searchStatus.ininc) {
+					wz.addClass('elfinder-search-result' + (fm.searchStatus.ininc? ' elfinder-incsearch-result' : ''));
+				}
 				
 				try {
 					// to avoid problem with draggable
@@ -1887,6 +1893,7 @@ $.fn.elfindercwd = function(fm, options) {
 				sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder'+(mobile? 'LTap' : 'Drop'))+'" }', 1);
 				sheet.insertRule('.elfinder-cwd-wrapper-empty .ui-droppable-disabled .elfinder-cwd:after{ content:"'+fm.i18n('emptyFolder')+'" }', 2);
 				sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result .elfinder-cwd:after{ content:"'+fm.i18n('emptySearch')+'" }', 3);
+				sheet.insertRule('.elfinder-cwd-wrapper-empty.elfinder-search-result.elfinder-incsearch-result .elfinder-cwd:after{ content:"'+fm.i18n('emptyIncSearch')+'" }', 3);
 				if (! mobile) {
 					// make files selectable
 					cwd.selectable(selectableOption)
@@ -1936,13 +1943,14 @@ $.fn.elfindercwd = function(fm, options) {
 			.bind('search', function(e) {
 				cwdHashes = $.map(e.data.files, function(f) { return f.hash; });
 				incHashes = void 0;
+				fm.searchStatus.ininc = false;
 				content();
-				wz.addClass('elfinder-search-result');
+				//wz.addClass('elfinder-search-result');
 				fm.autoSync('stop');
 				resize();
 			})
 			.bind('searchend', function(e) {
-				wz.removeClass('elfinder-search-result elfinder-cwd-wrapper-empty');
+				//wz.removeClass('elfinder-search-result elfinder-cwd-wrapper-empty');
 				if (query || incHashes) {
 					query = '';
 					if (incHashes) {
@@ -1961,6 +1969,7 @@ $.fn.elfindercwd = function(fm, options) {
 				query = e.data.query;
 			})
 			.bind('incsearchstart', function(e) {
+				selectedFiles = [];
 				fm.lazy(function() {
 					// incremental search
 					var incquery = e.data.query || '';
@@ -1973,7 +1982,6 @@ $.fn.elfindercwd = function(fm, options) {
 						fm.trigger('incsearch', { hashes: incHashes, query: incquery })
 							.searchStatus.ininc = true;
 						content();
-						wz.addClass('elfinder-search-result');
 						fm.autoSync('stop');
 					} else {
 						fm.trigger('incsearchend');
@@ -1984,7 +1992,6 @@ $.fn.elfindercwd = function(fm, options) {
 			.bind('incsearchend', function(e) {
 				fm.searchStatus.ininc = false;
 				incHashes = void 0;
-				wz.removeClass('elfinder-search-result');
 				if (!e.data || !e.data.noupdate) {
 					content();
 				}
@@ -2058,6 +2065,7 @@ $.fn.elfindercwd = function(fm, options) {
 						;
 				add(files);
 				list && resize();
+				wrapper.trigger(scrollEvent);
 			})
 			.change(function(e) {
 				var phash = fm.cwd().hash,

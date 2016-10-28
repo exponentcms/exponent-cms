@@ -45,15 +45,15 @@
 {/if}
 {if bs3()}
 {group label='Module Visibility - Hidden'|gettext}
-	{control type=checkbox name="style[hiddenxs]" label="Hidden on Extra Small displays"|gettext value=1 checked=$config.style.hiddenxs}
-	{control type=checkbox name="style[hiddensm]" label="Hidden on Small displays"|gettext value=1 checked=$config.style.hiddensm}
-	{control type=checkbox name="style[hiddenmd]" label="Hidden on Medium displays"|gettext value=1 checked=$config.style.hiddenmd}
-	{control type=checkbox name="style[hiddenlg]" label="Hidden on Large displays"|gettext value=1 checked=$config.style.hiddenlg}
+	{control type=checkbox name="mstyle[hiddenxs]" label="Hidden on Extra Small displays"|gettext value=1 checked=$config.mstyle.hiddenxs}
+	{control type=checkbox name="mstyle[hiddensm]" label="Hidden on Small displays"|gettext value=1 checked=$config.mstyle.hiddensm}
+	{control type=checkbox name="mstyle[hiddenmd]" label="Hidden on Medium displays"|gettext value=1 checked=$config.mstyle.hiddenmd}
+	{control type=checkbox name="mstyle[hiddenlg]" label="Hidden on Large displays"|gettext value=1 checked=$config.mstyle.hiddenlg}
 {/group}
 {group label='Module Visibility - Visible'|gettext}
-	{control type=checkbox name="style[visiblexs]" label="Visible on Extra Small displays"|gettext value=1 checked=$config.style.visiblexs}
-	{control type=checkbox name="style[visiblesm]" label="Visible on Small displays"|gettext value=1 checked=$config.style.visiblesm}
-	{control type=checkbox name="style[visiblemd]" label="Visible on Medium displays"|gettext value=1 checked=$config.style.visiblemd}
-	{control type=checkbox name="style[visiblelg]" label="Visible on Large displays"|gettext value=1 checked=$config.style.visiblelg}
+	{control type=checkbox name="mstyle[visiblexs]" label="Visible on Extra Small displays"|gettext value=1 checked=$config.mstyle.visiblexs}
+	{control type=checkbox name="mstyle[visiblesm]" label="Visible on Small displays"|gettext value=1 checked=$config.mstyle.visiblesm}
+	{control type=checkbox name="mstyle[visiblemd]" label="Visible on Medium displays"|gettext value=1 checked=$config.mstyle.visiblemd}
+	{control type=checkbox name="mstyle[visiblelg]" label="Visible on Large displays"|gettext value=1 checked=$config.mstyle.visiblelg}
 {/group}
 {/if}

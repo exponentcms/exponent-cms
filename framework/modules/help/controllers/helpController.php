@@ -41,7 +41,7 @@ class helpController extends expController {
     static function displayname() { return gt("Help"); }
     static function description() { return gt("Manage Exponent CMS help files."); }
     static function isSearchable() { return true; }
-	
+
     function __construct($src=null, $params=array()) {
         parent::__construct($src,$params);
         // only set the system help version if it's not already set as a session variable
@@ -58,6 +58,7 @@ class helpController extends expController {
                 }
             }
             if(!empty($params['version'])) {
+                $params['version'] = expString::escape($params['version']);
                 $version = isset($params['version']) ? (($params['version'] == 'current') ? $version : $params['version']) : $version;
             }
             expSession::set('help-version',$version);
@@ -74,13 +75,13 @@ class helpController extends expController {
 	    //$current_version = $hv->find('first', 'is_current=1');
 	    $ref_version = $hv->find('first', 'version=\''.$this->help_version.'\'');
 
-        // pagination parameter..hard coded for now.	    
+        // pagination parameter..hard coded for now.
 		$where = $this->aggregateWhereClause();
 	    $where .= 'AND help_version_id='.(empty($ref_version->id)?'0':$ref_version->id);
         if (empty($this->params['parent'])) {
             $where .= ' AND (parent=0 OR parent IS NULL)';
         } else {
-            $where .= ' AND parent=' . $this->params['parent'];
+            $where .= ' AND parent=' . intval($this->params['parent']);
         }
 //	    $limit = 999;
 	    $order = isset($this->config['order']) ? $this->config['order'] : 'rank';
@@ -127,6 +128,7 @@ class helpController extends expController {
                 $version_id = help_version::getCurrentHelpVersionId();
             }
 	    }
+	    $this->params['title'] = expString::escape($this->params['title']);  // escape title to prevent sql injection
 	    $doc = $help->find('first', 'help_version_id='.$version_id.' AND sef_url="'.$this->params['title'].'"');
         $children = $help->find('count','parent='.$doc->id);
         if (empty($doc)) {
@@ -201,10 +203,10 @@ class helpController extends expController {
 	public function manage() {
 	    expHistory::set('manageable', $this->params);
 	    global $db;
-	    
+
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
-	    
+
 	    if (empty($current_version)) {
 	        flash('error', gt("You don't have any software versions created yet.  Please do so now."));
 	        redirect_to(array('controller'=>'help', 'action'=>'edit_version'));
@@ -218,7 +220,7 @@ class helpController extends expController {
             }
         }
 
-	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.$this->params['version'];
+	    $where = empty($this->params['version']) ? 1 : 'help_version_id='.intval($this->params['version']);
 	    $page = new expPaginator(array(
             'model'=>'help',
             'where'=>$where,
@@ -263,7 +265,7 @@ class helpController extends expController {
             $origid = $doc->id;
 	        unset($doc->id);
 	        $doc->help_version_id = $to;
-		    
+
 //	        $tmpsef = $doc->sef_url;
 //	        $doc->sef_url = "";
 //	        $doc->save();
@@ -313,10 +315,10 @@ class helpController extends expController {
      */
 	public function manage_versions() {
 	    expHistory::set('manageable', $this->params);
-	    
+
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
-	    
+
 	    $sql  = 'SELECT hv.*, COUNT(h.title) AS num_docs FROM '.DB_TABLE_PREFIX.'_help h ';
 	    $sql .= 'RIGHT JOIN '.DB_TABLE_PREFIX.'_help_version hv ON h.help_version_id=hv.id GROUP BY hv.version';
 
@@ -336,7 +338,7 @@ class helpController extends expController {
                 gt('# of Docs')=>'num_docs'
             ),
         ));
-	    
+
 	    assign_to_template(array(
             'current_version'=>$current_version,
             'page'=>$page
@@ -362,23 +364,23 @@ class helpController extends expController {
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('The version you are trying to delete could not be found'));
 	    }
-	    
+
 	    // get the version
 	    $version = new help_version($this->params['id']);
 	    if (empty($version->id)) {
 	        flash('error', gt('The version you are trying to delete could not be found'));
 	    }
-	    
+
 	    // if we have errors than lets get outta here!
 	    if (!expQueue::isQueueEmpty('error')) expHistory::back();
-	    
+
 	    // delete the version
 	    $version->delete();
-	    
+
 	    expSession::un_set('help-version');
 
 	    flash('message', gt('Deleted version').' '.$version->version.' '.gt('and all documents in that version.'));
-	    expHistory::back();	    
+	    expHistory::back();
 	}
 
     /**
@@ -388,7 +390,7 @@ class helpController extends expController {
 	    // get the current version
 	    $hv = new help_version();
 	    $current_version = $hv->find('first', 'is_current=1');
-	    
+
 	    // check to see if the we have a new current version and unset the old current version.
 	    if (!empty($this->params['is_current'])) {
 //	        $db->sql('UPDATE '.DB_TABLE_PREFIX.'_help_version set is_current=0');
@@ -402,10 +404,10 @@ class helpController extends expController {
 	    // if we don't have a current version yet so we will force this one to be it
 	    if (empty($current_version->id)) $this->params['is_current'] = 1;
 	    $version->update($this->params);
-	    
+
 	    // if this is a new version we need to copy over docs
 	    if (empty($id)) {
-	        self::copydocs($current_version->id, $version->id);	        
+	        self::copydocs($current_version->id, $version->id);
 	    }
         // let's update the search index to reflect the current help version
         searchController::spider();
@@ -536,7 +538,7 @@ class helpController extends expController {
         $section = new section(intval($sid));
 	    return $section;
 	}
-	
+
 }
 
 ?>

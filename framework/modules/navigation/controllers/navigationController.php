@@ -25,6 +25,21 @@ class navigationController extends expController {
         'showall' => 'Show Navigation',
         'breadcrumb' => 'Breadcrumb',
     );
+    protected $remove_permissions = array(
+//        'configure',
+//        'create',
+//        'delete',
+//        'edit'
+    );
+    protected $add_permissions = array(
+        'manage'    => 'Manage',
+        'view'      => "View Page"
+    );
+    protected $manage_permissions = array(
+        'move'      => 'Move Page',
+        'remove'    => 'Remove Page',
+        'reparent'    => 'Reparent Page',
+    );
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -37,15 +52,6 @@ class navigationController extends expController {
         'tags',
         'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'view' => "View Page"
-    );
-    protected $remove_permissions = array(
-//        'configure',
-//        'create',
-//        'delete',
-//        'edit'
-    );
 
     static function displayname() { return gt("Navigation"); }
 
@@ -1201,12 +1207,22 @@ class navigationController extends expController {
         expHistory::back();
     }
 
+    /**
+     * permission functions to aggregate a module's visible permissions based on add/remove permissions
+     *
+     * @return array
+     */
+    public function permissions() {
+        //set the permissions array
+        return $this->add_permissions;
+    }
+
     // create a psuedo global manage pages permission
     public static function checkPermissions($permission,$location) {
         global $exponent_permissions_r, $router;
 
         // only applies to the 'manage' method
-        if (empty($location->src) && empty($location->int) && (!empty($router->params['action']) && $router->params['action'] == 'manage') || strpos($router->current_url, 'action=manage') !== false) {
+        if (empty($location->src) && empty($location->int) && ((!empty($router->params['action']) && $router->params['action'] == 'manage') || strpos($router->current_url, 'action=manage') !== false)) {
             if (!empty($exponent_permissions_r['navigation'])) foreach ($exponent_permissions_r['navigation'] as $page) {
                 foreach ($page as $pageperm) {
                     if (!empty($pageperm['manage'])) return true;

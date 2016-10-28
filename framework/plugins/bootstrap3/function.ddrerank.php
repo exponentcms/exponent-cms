@@ -98,7 +98,7 @@ if (!function_exists('smarty_function_ddrerank')) {
             }
 
             $html = '
-        <div id="panel' . $uniqueid . '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel' . $uniqueid . '" aria-hidden="true">
+        <div id="panel' . $uniqueid . '" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="rerank' . $uniqueid . '" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
             <form role="form" method="post" action="' . PATH_RELATIVE . '">
@@ -137,7 +137,7 @@ if (!function_exists('smarty_function_ddrerank')) {
                     <input type="hidden" name="rerank[]" value="' . $item->id . '" />
                     <div class="fpdrag"></div>';
                     //Do we include the picture? It depends on if there is one set.
-                    $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1">' : '';
+                    $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' : '';
                     $html .= '<span class="title">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
                     </li>';
                 }

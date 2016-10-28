@@ -52,6 +52,11 @@ class event extends expRecord {
             //note $order is boolean for 'featured'
             //note $limit is number of days, NOT number of records
             //note $limitstart is a unixtimestamp in this instance
+            $order = expString::escape($order);
+            if ($limit !== null)
+                $limit = intval($limit);
+            if ($limitstart !== null)
+                $limitstart = intval($limitstart);
             $ed = new eventdate();
             $day = expDateTime::startOfDayTimestamp(time());
             $sort_asc = true; // For the getEventsForDates call
@@ -65,7 +70,7 @@ class event extends expRecord {
 //                $begin = $day;
 //                $end = null;
                 $items = $this->getEventsForDates($dates, $sort_asc, $order ? true : false, true);
-                
+
                 // external events
 //                $extitems = $this->getExternalEvents($begin, $end);
                 // we need to crunch these down
@@ -78,7 +83,7 @@ class event extends expRecord {
 //                    }
 //                }
 //                $items = array_merge($items, $extitem);
-                
+
                 // event registration events
 //                if (!empty($this->config['aggregate_registrations'])) $regitems = eventregistrationController::getRegEventsForDates($begin, $end, $regcolor);
                 // we need to crunch these down
@@ -89,7 +94,7 @@ class event extends expRecord {
 //                    }
 //                }
 //                $items = array_merge($items, $regitem);
-                
+
                 $items = expSorter::sort(array('array' => $items, 'sortby' => 'eventstart', 'order' => 'ASC'));
                 return $items;
             }
@@ -246,7 +251,7 @@ class event extends expRecord {
         }
         return $days;
     }
-    
+
 }
 
 ?>

@@ -1099,14 +1099,14 @@ abstract class database {
 	abstract function inError();
 
 	/**
-	 * Unescape a string based on the database connection
+	 * Escape a string based on the database connection
 	 * @param $string
 	 * @return string
 	 */
 	abstract function escapeString($string);
 
     /**
-   	 * Unescape a string based on the database connection
+   	 * Attempt to prevent a sql injection
    	 * @param $string
    	 * @return string
    	 */

@@ -38,7 +38,7 @@
     {*{if $pf && $storeConfig.enable_barcode}*}
     {if $pf && ecomconfig::getConfig('enable_barcode')}
     <div id="barcode">
-        <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="">
+        <img style="margin:10px" src="{$smarty.const.PATH_RELATIVE}external/barcode.php?barcode={$order->invoice_id}&amp;width=400&amp;height=50" alt="{'Barcode'|gettext}">
     </div>
     {/if}
     <div id="invoice-data">

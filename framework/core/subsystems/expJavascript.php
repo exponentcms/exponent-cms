@@ -41,7 +41,7 @@ class expJavascript {
         }
 		return !empty($_REQUEST['json']) ? true : false;
 	}
-	
+
 	public static function parseJSFiles() {
         global $expJS, $yui3js, $jqueryjs, $bootstrapjs, $head_config, $framework, $less_vars;
 
@@ -375,7 +375,7 @@ class expJavascript {
 
         return $scripts;
 	}
-	
+
 	public static function footJavascriptOutput() {
         global $jsForHead, $js2foot;
 
@@ -386,15 +386,15 @@ class expJavascript {
             ksort($js2foot);
             foreach($js2foot as $file){
                 $html .= $file."\r\n";
-            }            
-        } 
+            }
+        }
         if (MINIFY==1&&MINIFY_INLINE_JS==1) {
             include_once(BASE.'external/minify/min/lib/JSMin.php');
             $html = JSMin::minify($html);
         }
         return "\r\n" . $jsForHead . "\r\n" . '<script type="text/javascript" charset="utf-8">//<![CDATA['."\r\n".$html."\r\n".'//]]></script>' . "\r\n";
 	}
-	
+
     public static function pushToFoot($params) {
         global $js2foot, $yui3js, $jqueryjs, $bootstrapjs, $expJS;
 

@@ -33,7 +33,7 @@ class radiogroupcontrol extends formcontrol {
 //	var $spacing = 100;
 	var $cols = 1;
 	var $onclick = null;
-	
+
 	static function name() { return "Options - Radio Button Group"; }
 	static function isSimpleControl() { return true; }
 	static function getFieldDefinition() {
@@ -41,7 +41,7 @@ class radiogroupcontrol extends formcontrol {
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>512);
 	}
-	
+
 	function __construct($default = "", $items = array(), $flip=false, $spacing=100, $cols = 1) {
 		$this->default = $default;
 		$this->items = $items;
@@ -53,44 +53,44 @@ class radiogroupcontrol extends formcontrol {
 
 	function toHTML($label,$name) {
 		$this->id  = (empty($this->id)) ? $name : $this->id;
-		$html = "<div id=\"".$this->id."Control\" class=\"radiogroup control form-group";
+		$html = "<div role=\"radiogroup\" id=\"".$this->id."Control\" class=\"radiogroup control form-group";
 		$html .= (!empty($this->required)) ? ' required">' : '">';
         $html .= (!empty($label))?"<label class=\"control-label".($this->horizontal?' col-sm-2':'').($this->cols!=1?" show":"")."\">".$label."</label>":"";
 		$html .= $this->controlToHTML($name, $label);
         $html .= "</div>";
 		return $html;
 	}
-	
+
 	function controlToHTML($name, $label) {
         //eDebug($this->items);
         $html = '';
         $html .= ($this->horizontal) ? '<div class="col-sm-10">' : '';
 		foreach ($this->items as $rvalue=>$rlabel) {  //FJD
 			$radio = null;
-			
+
 			$checked = false;
 			if (!empty($this->checked)) {
 			    $checked = $rvalue == $this->checked ? true : false;
-			}	
+			}
 
 			$radio = new radiocontrol($checked, $rvalue, $name, $this->flip, $this->onclick);
 
             $radio->newschool = isset($this->newschool) ? $this->newschool : true;
 			$radio->value = $rvalue;
-			
+
 			$radio->checked = (isset($this->default) && $this->default==$radio->value) ? true : false;
 
             $radio->cols = $this->cols;
 
             if (!empty($this->item_descriptions) && is_array($this->item_descriptions)) $radio->description = $this->item_descriptions[$rvalue];
-			
+
             $html .= $radio->toHTML($rlabel, $name);
 		}
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         $html .= ($this->horizontal) ? '</div>' : '';
 		return $html;
 	}
-	
+
 	static function form($object) {
 		$form = new form();
         if (empty($object)) $object = new stdClass();
@@ -103,7 +103,7 @@ class radiogroupcontrol extends formcontrol {
 //			$object->spacing = 100;
 			$object->cols = 1;
 			$object->items = array();
-		} 
+		}
         if (empty($object->description)) $object->description = "";
 		$form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
 		$form->register("caption",gt('Caption'), new textcontrol($object->caption));
@@ -117,10 +117,10 @@ class radiogroupcontrol extends formcontrol {
 //		$form->register("spacing",gt('Column Spacing'), new textcontrol($object->spacing,5,false,4,"integer"));
 		if (!expJavascript::inAjaxAction())
 			$form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
-		
+
 		return $form;
 	}
-	
+
     static function update($values, $object) {
 		if ($object == null) $object = new radiogroupcontrol();
 		if ($values['identifier'] == "") {
@@ -139,7 +139,7 @@ class radiogroupcontrol extends formcontrol {
         $object->cols = !empty($values['cols']) ? 1 : 0;
 //        if (isset($values['spacing'])) $object->spacing = intval($values['spacing']);
 		$object->required = !empty($values['required']);
-		
+
 		return $object;
 	}
 }

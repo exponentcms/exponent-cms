@@ -17,8 +17,97 @@ elFinder.prototype.commands.resize = function() {
 		return !this._disabled && sel.length == 1 && sel[0].read && sel[0].write && sel[0].mime.indexOf('image/') !== -1 ? 0 : -1;
 	};
 	
+	this.resizeRequest = function(data, file, dfrd) {
+		var fm   = this.fm,
+			file = file || fm.file(data.target),
+			src  = file? fm.openUrl(file.hash) : null,
+			enabled = fm.isCommandEnabled('resize', data.target);
+		
+		if (enabled && (! file || (file && file.read && file.write && file.mime.indexOf('image/') !== -1 ))) {
+			return fm.request({
+				data : $.extend(data, {
+					cmd : 'resize'
+				}),
+				notify : {type : 'resize', cnt : 1},
+				prepare : function(data) {
+					if (data) {
+						if (data.changed && data.changed.length && data.changed[0].tmb) {
+							data.changed[0].tmb = 1;
+							if (! file) {
+								file = data.changed[0];
+								src  = fm.openUrl(file.hash);
+							}
+						}
+						if (data.added && data.added.length && data.added[0].tmb) {
+							data.added[0].tmb = 1;
+							if (! file) {
+								file = data.added[0];
+								src  = fm.openUrl(file.hash);
+							}
+						}
+					}
+				}
+			})
+			.fail(function(error) {
+				if (dfrd) {
+					dfrd.reject(error);
+				}
+			})
+			.done(function() {
+				var reload = function(url) {
+					var ifm;
+					try {
+						ifm = $('<iframe width="1" height="1" scrolling="no" frameborder="no" style="position:absolute; top:-1px; left:-1px">')
+							.attr('src', url)
+							.one('load', function() {
+								if (this.contentDocument) {
+									this.contentDocument.location.reload(true);
+									ifm.one('load', function() {
+										ifm.remove();
+									});
+								} else {
+									ifm.remove();
+								}
+							})
+							.appendTo('body');
+					} catch(e) {
+						ifm && ifm.remove();
+					}
+				},
+				url = fm.url(file.hash);
+				
+				reload(src);
+				if (url !== src) {
+					reload(url);
+				}
+				
+				dfrd && dfrd.resolve();
+			});
+		} else {
+			var error;
+			
+			if (file) {
+				if (file.mime.indexOf('image/') === -1) {
+					error = ['errResize', file.name, 'errUsupportType'];
+				} else {
+					error = ['errResize', file.name, 'errPerm'];
+				}
+			} else {
+				error = ['errResize', data.target, 'errPerm'];
+			}
+			
+			if (dfrd) {
+				dfrd.reject(error);
+			} else {
+				fm.error(error);
+			}
+			return $.Deferred().reject(error);
+		}
+	}
+	
 	this.exec = function(hashes) {
-		var fm    = this.fm,
+		var self  = this,
+			fm    = this.fm,
 			files = this.files(hashes),
 			dfrd  = $.Deferred(),
 			api2  = (fm.api > 1),
@@ -32,8 +121,11 @@ elFinder.prototype.commands.resize = function() {
 					input    = '<input type="text" size="5"/>',
 					row      = '<div class="elfinder-resize-row"/>',
 					label    = '<div class="elfinder-resize-label"/>',
-					control  = $('<div class="elfinder-resize-control"/>'),
-					preview  = $('<div class="ui-front elfinder-resize-preview"/>')
+					control  = $('<div class="elfinder-resize-control"/>')
+						.on('focus', 'input[type=text]', function() {
+							$(this).select();
+						}),
+					preview  = $('<div class="elfinder-resize-preview"/>')
 						.on('touchmove', function(e) {
 							e.stopPropagation();
 							e.preventDefault();
@@ -47,7 +139,16 @@ elFinder.prototype.commands.resize = function() {
 					uideg270 = $('<button/>').attr('title',fm.i18n('rotate-cw')).append($('<span class="elfinder-button-icon elfinder-button-icon-rotate-l"/>')),
 					uideg90  = $('<button/>').attr('title',fm.i18n('rotate-ccw')).append($('<span class="elfinder-button-icon elfinder-button-icon-rotate-r"/>')),
 					uiprop   = $('<span />'),
-					reset    = $('<div class="ui-state-default ui-corner-all elfinder-resize-reset elfinder-tabstop"><span class="ui-icon ui-icon-arrowreturnthick-1-w"/></div>'),
+					reset    = $('<button class="elfinder-resize-reset">').text(fm.i18n('reset'))
+						.on('click', function() {
+							resetView();
+						})
+						.button({
+							icons: {
+								primary: 'ui-icon-arrowrefresh-1-n'
+							},
+							text: false
+						}),
 					uitype   = $('<div class="elfinder-resize-type"/>')
 						.append('<input class="" type="radio" name="type" id="'+id+'-resize" value="resize" checked="checked" /><label for="'+id+'-resize">'+fm.i18n('resize')+'</label>',
 						'<input class="api2" type="radio" name="type" id="'+id+'-crop" value="crop" /><label class="api2" for="'+id+'-crop">'+fm.i18n('crop')+'</label>',
@@ -67,25 +168,20 @@ elFinder.prototype.commands.resize = function() {
 								uirotate.hide();
 								uicrop.hide();
 								resizable();
+								isJpeg && grid8px.insertAfter(uiresize.find('.elfinder-resize-grid8'));
 							}
 							else if (mode == 'crop') {
 								uirotate.hide();
 								uiresize.hide();
 								uicrop.show();
 								croppable();
+								isJpeg && grid8px.insertAfter(uicrop.find('.elfinder-resize-grid8'));
 							} else if (mode == 'rotate') {
 								uiresize.hide();
 								uicrop.hide();
 								uirotate.show();
 								rotateable();
 							}
-						}),
-					constr  = $('<input type="checkbox" checked="checked"/>')
-						.change(function() {
-							cratio = !!constr.prop('checked');
-							resize.fixHeight();
-							resizable(true);
-							resizable();
 						}),
 					width   = $(input)
 						.change(function() {
@@ -109,8 +205,8 @@ elFinder.prototype.commands.resize = function() {
 						}),
 					pointX  = $(input).change(function(){crop.updateView();}),
 					pointY  = $(input).change(function(){crop.updateView();}),
-					offsetX = $(input).change(function(){crop.updateView();}),
-					offsetY = $(input).change(function(){crop.updateView();}),
+					offsetX = $(input).change(function(){crop.updateView('w');}),
+					offsetY = $(input).change(function(){crop.updateView('h');}),
 					quality = isJpeg && api2?
 						$(input).val(fm.option('jpgQuality'))
 							.addClass('quality')
@@ -148,50 +244,287 @@ elFinder.prototype.commands.resize = function() {
 								}
 							})
 						.end(),
+					pickcanv,
+					pickctx,
+					pickc = {},
+					pick = function(e) {
+						var color, r, g, b, h, s, l;
+
+						try {
+							color = pickc[Math.round(e.offsetX)][Math.round(e.offsetY)];
+						} catch(e) {}
+						if (!color) return;
+
+						r = color[0]; g = color[1]; b = color[2];
+						h = color[3]; s = color[4]; l = color[5];
+
+						setbg(r, g, b, (e.type === 'click'));
+					},
+					palpick = function(e) {
+						setbg($(this).css('backgroundColor'), '', '', (e.type === 'click'));
+					},
+					setbg = function(r, g, b, off) {
+						var s, m, cc;
+						if (typeof r === 'string') {
+							g = '';
+							if (r && (s = $('<span>').css('backgroundColor', r).css('backgroundColor')) && (m = s.match(/rgb\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/i))) {
+								r = Number(m[1]);
+								g = Number(m[2]);
+								b = Number(m[3]);
+							}
+						}
+						cc = (g === '')? r : '#' + getColorCode(r, g, b);
+						bg.val(cc).css({ backgroundColor: cc, backgroundImage: 'none', color: (r+g+b < 384? '#fff' : '#000') });
+						preview.css('backgroundColor', cc);
+						if (off) {
+							imgr.off('.picker').removeClass('elfinder-resize-picking');
+							pallet.off('.picker').removeClass('elfinder-resize-picking');
+						}
+					},
+					getColorCode = function(r, g, b) {
+						return $.map([r,g,b], function(c){return ('0'+parseInt(c).toString(16)).slice(-2);}).join('');
+					},
+					picker = $('<button>').text(fm.i18n('colorPicker'))
+					.on('click', function() { 
+						imgr.on('mousemove.picker click.picker', pick).addClass('elfinder-resize-picking');
+						pallet.on('mousemove.picker click.picker', 'span', palpick).addClass('elfinder-resize-picking');
+					})
+					.button({
+						icons: {
+							primary: 'ui-icon-pin-s'
+						},
+						text: false
+					}),
+					reseter = $('<button>').text(fm.i18n('reset'))
+						.on('click', function() { 
+							setbg('', '', '', true);
+						})
+						.button({
+							icons: {
+								primary: 'ui-icon-arrowrefresh-1-n'
+							},
+							text: false
+						}),
+					bg = $('<input class="elfinder-resize-bg" type="text">')
+						.on('focus', function() {
+							$(this).attr('style', '');
+						})
+						.on('blur', function() {
+							setbg($(this).val());
+						}),
+					pallet  = $('<div class="elfinder-resize-pallet">').on('click', 'span', function() {
+						setbg($(this).css('backgroundColor'));
+					}),
 					ratio   = 1,
 					prop    = 1,
 					owidth  = 0,
 					oheight = 0,
 					cratio  = true,
+					cratioc = false,
 					pwidth  = 0,
 					pheight = 0,
 					rwidth  = 0,
 					rheight = 0,
 					rdegree = 0,
+					grid8   = true,
+					constr  = $('<button>').html(fm.i18n('aspectRatio'))
+						.on('click', function() {
+							cratio = ! cratio;
+							constr.button('option', {
+								icons : { primary: cratio? 'ui-icon-locked' : 'ui-icon-unlocked'}
+							});
+							resize.fixHeight();
+							rhandle.resizable('option', 'aspectRatio', cratio).data('uiResizable')._aspectRatio = cratio;
+						})
+						.button({
+							icons : {
+								primary: cratio? 'ui-icon-locked' : 'ui-icon-unlocked'
+							},
+							text: false
+						}),
+					constrc = $('<button>').html(fm.i18n('aspectRatio'))
+						.on('click', function() {
+							cratioc = ! cratioc;
+							constrc.button('option', {
+								icons : { primary: cratioc? 'ui-icon-locked' : 'ui-icon-unlocked'}
+							});
+							rhandlec.resizable('option', 'aspectRatio', cratioc).data('uiResizable')._aspectRatio = cratioc;
+						})
+						.button({
+							icons : {
+								primary: cratioc? 'ui-icon-locked' : 'ui-icon-unlocked'
+							},
+							text: false
+						}),
+					grid8px = $('<button>').html(fm.i18n(grid8? 'enabled' : 'disabled')).toggleClass('ui-state-active', grid8)
+						.on('click', function() {
+							grid8 = ! grid8;
+							grid8px.html(fm.i18n(grid8? 'enabled' : 'disabled')).toggleClass('ui-state-active', grid8);
+							if (grid8) {
+								width.val(round(width.val()));
+								height.val(round(height.val()));
+								offsetX.val(round(offsetX.val()));
+								offsetY.val(round(offsetY.val()));
+								pointX.val(round(pointX.val()));
+								pointY.val(round(pointY.val()));
+								if (uiresize.is(':visible')) {
+									resize.updateView(width.val(), height.val());
+								} else if (uicrop.is(':visible')) {
+									crop.updateView();
+								}
+							}
+						})
+						.button(),
 					setuprimg = function() {
 						var r_scale;
 						r_scale = Math.min(pwidth, pheight) / Math.sqrt(Math.pow(owidth, 2) + Math.pow(oheight, 2));
-						rwidth = owidth * r_scale;
-						rheight = oheight * r_scale;
+						rwidth = Math.ceil(owidth * r_scale);
+						rheight = Math.ceil(oheight * r_scale);
 						imgr.width(rwidth)
 							.height(rheight)
 							.css('margin-top', (pheight-rheight)/2 + 'px')
 							.css('margin-left', (pwidth-rwidth)/2 + 'px');
+						if (imgr.is(':visible') && bg.is(':visible')) {
+							if (file.mime !== 'image/png') {
+								preview.css('backgroundColor', bg.val());
+								setTimeout(function() {
+									if (pickcanv && pickcanv.width !== rwidth) {
+										setColorData();
+									}
+								}, 0);
+							} else {
+								bg.parent().hide();
+								pallet.hide()
+							}
+						}
 					},
 					setupimg = function() {
-
 						resize.updateView(owidth, oheight);
-
 						setuprimg();
-
 						basec
 							.width(img.width())
 							.height(img.height());
 						imgc
 							.width(img.width())
 							.height(img.height());
-						coverc
-							.width(img.width())
-							.height(img.height());
-						rhandlec
-							.width(imgc.width())
-							.height(imgc.height())
-							.offset(imgc.offset());
+						crop.updateView();
+					},
+					setColorData = function() {
+						if (pickctx) {
+							var n, w, h, r, g, b, a, s, l, hsl, hue,
+								data, scale, tx1, tx2, ty1, ty2, rgb,
+								domi = {},
+								domic = [],
+								domiv, palc,
+								rgbToHsl = function (r, g, b) {
+									var h, s, l,
+										max = Math.max(Math.max(r, g), b),
+										min = Math.min(Math.min(r, g), b);
+		
+									// Hue, 0 ~ 359
+									if (max === min) {
+										h = 0;
+									} else if (r === max) {
+										h = ((g - b) / (max - min) * 60 + 360) % 360;
+									} else if (g === max) {
+										h = (b - r) / (max - min) * 60 + 120;
+									} else if (b === max) {
+										h = (r - g) / (max - min) * 60 + 240;
+									}
+									// Saturation, 0 ~ 1
+									s = (max - min) / max;
+									// Lightness, 0 ~ 1
+									l = (r *  0.3 + g * 0.59 + b * 0.11) / 255;
+		
+									return [h, s, l, 'hsl'];
+								};
+							
+							calc:
+							try {
+								w = pickcanv.width = imgr.width();
+								h = pickcanv.height = imgr.height();
+								scale = w / owidth;
+								pickctx.scale(scale, scale);
+								pickctx.drawImage(imgr.get(0), 0, 0);
+			
+								data = pickctx.getImageData(0, 0, w, h).data;
+			
+								// Range to detect the dominant color
+								tx1 = w * .1;
+								tx2 = w * .9;
+								ty1 = h * .1;
+								ty2 = h * .9;
+			
+								for (var y = 0; y < h - 1; y++) {
+									for (var x = 0; x < w - 1; x++) {
+										n = x * 4 + y * w * 4;
+										// RGB
+										r = data[n]; g = data[n + 1]; b = data[n + 2]; a = data[n + 3];
+										// check alpha ch
+										if (a !== 255) {
+											bg.parent().hide();
+											pallet.hide();
+											break calc;
+										}
+										// HSL
+										hsl = rgbToHsl(r, g, b);
+										hue = Math.round(hsl[0]); s = Math.round(hsl[1] * 100); l = Math.round(hsl[2] * 100);
+										if (! pickc[x]) {
+											pickc[x] = {};
+										}
+										// set pickc
+										pickc[x][y] = [r, g, b, hue, s, l];
+										// detect the dominant color
+										if ((x < tx1 || x > tx2) && (y < ty1 || y > ty2)) {
+											rgb = r + ',' + g + ',' + b;
+											if (! domi[rgb]) {
+												domi[rgb] = 1;
+											} else {
+												++domi[rgb];
+											}
+										}
+									}
+								}
+								
+								if (! pallet.children(':first').length) {
+									palc = 1;
+									$.each(domi, function(c, v) {
+										domic.push({c: c, v: v});
+									});
+									$.each(domic.sort(function(a, b) {
+										return (a.v > b.v)? -1 : 1;
+									}), function() {
+										if (this.v < 2 || palc > 10) {
+											return false;
+										}
+										pallet.append($('<span style="width:20px;height:20px;display:inline-block;background-color:rgb('+this.c+');">'));
+										++palc;
+									});
+								}
+							} catch(e) {
+								picker.hide();
+								pallet.hide();
+							}
+						}
+					},
+					setupPicker = function() {
+						try {
+							pickcanv = document.createElement('canvas');
+							pickctx = pickcanv.getContext('2d');
+						} catch(e) {
+							picker.hide();
+							pallet.hide();
+						}
 					},
 					img     = $('<img/>')
 						.on('load', function() {
+							owidth  = img.get(0).width || img.width();
+							oheight = img.get(0).height || img.height();
+							
+							dMinBtn.show();
+
 							var r_scale, inputFirst,
-								imgRatio = img.height() / img.width();
+								imgRatio = oheight / owidth;
 							
 							if (imgRatio < 1 && preview.height() > preview.width() * imgRatio) {
 								preview.height(preview.width() * imgRatio);
@@ -205,14 +538,13 @@ elFinder.prototype.commands.resize = function() {
 							
 							spinner.remove();
 							
-							owidth  = img.width();
-							oheight = img.height();
 							ratio   = owidth/oheight;
 
 							rhandle.append(img.show()).show();
 							width.val(owidth);
 							height.val(oheight);
 
+							setupPicker();
 							setupimg();
 							
 							uitype[ctrgrup]('enable');
@@ -242,17 +574,16 @@ elFinder.prototype.commands.resize = function() {
 								})
 								.on('keyup', function() {
 									var $this = $(this);
-									setTimeout(function() {
-										$this.val($this.val().replace(/[^0-9]/g, ''));
-									}, 10);
+									if (! $this.hasClass('elfinder-resize-bg')) {
+										setTimeout(function() {
+											$this.val($this.val().replace(/[^0-9]/g, ''));
+										}, 10);
+									}
 								})
 								.filter(':first');
 								
 							!fm.UA.Mobile && inputFirst.focus();
 							resizable();
-							
-							reset.hover(function() { reset.toggleClass('ui-state-hover'); }).click(resetView);
-							
 						})
 						.on('error', function() {
 							spinner.text('Unable to load image').css('background', 'transparent');
@@ -260,14 +591,24 @@ elFinder.prototype.commands.resize = function() {
 					basec = $('<div/>'),
 					imgc = $('<img/>'),
 					coverc = $('<div/>'),
-					imgr = $('<img/>'),
-					round = function(v) {
-						return isJpeg? Math.round(v/8)*8 : Math.round(v);
+					imgr = $('<img class="elfinder-resize-imgrotate" />'),
+					round = function(v, max) {
+						v = grid8? Math.round(v/8)*8 : Math.round(v);
+						v = Math.max(0, v);
+						if (max && v > max) {
+							v = grid8? v - 8 : max;
+						}
+						return v;
 					},
 					resetView = function() {
 						width.val(owidth);
 						height.val(oheight);
 						resize.updateView(owidth, oheight);
+						pointX.val(0);
+						pointY.val(0);
+						offsetX.val(owidth);
+						offsetY.val(oheight);
+						crop.updateView();
 					},
 					resize = {
 						update : function() {
@@ -300,7 +641,7 @@ elFinder.prototype.commands.resize = function() {
 							var w, h;
 							if (cratio) {
 								w = width.val();
-								h = Math.round(w/ratio);
+								h = round(w/ratio);
 								resize.updateView(w, h);
 								height.val(h);
 							}
@@ -308,31 +649,38 @@ elFinder.prototype.commands.resize = function() {
 					},
 					crop = {
 						update : function() {
-							offsetX.val(round((rhandlec.data('w')||rhandlec.width())/prop));
-							offsetY.val(round((rhandlec.data('h')||rhandlec.height())/prop));
-							pointX.val(Math.round(((rhandlec.data('x')||rhandlec.offset().left)-imgc.offset().left)/prop));
-							pointY.val(Math.round(((rhandlec.data('y')||rhandlec.offset().top)-imgc.offset().top)/prop));
+							pointX.val(round(((rhandlec.data('x')||rhandlec.position().left))/prop, owidth));
+							pointY.val(round(((rhandlec.data('y')||rhandlec.position().top))/prop, oheight));
+							offsetX.val(round((rhandlec.data('w')||rhandlec.width())/prop, owidth - pointX.val()));
+							offsetY.val(round((rhandlec.data('h')||rhandlec.height())/prop, oheight - pointY.val()));
 						},
-						updateView : function() {
-							var x = parseInt(pointX.val()) * prop + imgc.offset().left;
-							var y = parseInt(pointY.val()) * prop + imgc.offset().top;
-							var w = offsetX.val() * prop;
-							var h = offsetY.val() * prop;
+						updateView : function(change) {
+							if (cratioc) {
+								var r = coverc.width() / coverc.height();
+								if (change === 'w') {
+									offsetY.val(Math.round(parseInt(offsetX.val()) / r));
+								} else if (change === 'h') {
+									offsetX.val(Math.round(parseInt(offsetY.val()) * r));
+								}
+							}
+							var x = Math.round(parseInt(pointX.val()) * prop);
+							var y = Math.round(parseInt(pointY.val()) * prop);
+							var w = Math.round(parseInt(offsetX.val()) * prop);
+							var h = Math.round(parseInt(offsetY.val()) * prop);
 							rhandlec.data({x: x, y: y, w: w, h: h})
-								.width(Math.round(w))
-								.height(Math.round(h))
-								.offset({left: Math.round(x), top: Math.round(y)});
-							coverc.width(rhandlec.width())
-								.height(rhandlec.height());
+								.width(w)
+								.height(h)
+								.css({left: x, top: y});
+							coverc.width(w)
+								.height(h);
 						},
-						resize_update : function() {
-							rhandlec.data({w: null, h: null});
+						resize_update : function(e, ui) {
+							rhandlec.data({x: ui.position.left, y: ui.position.top, w: ui.size.width, h: ui.size.height});
 							crop.update();
-							coverc.width(rhandlec.width())
-								.height(rhandlec.height());
+							crop.updateView();
 						},
-						drag_update : function() {
-							rhandlec.data({x: null, y: null});
+						drag_update : function(e, ui) {
+							rhandlec.data({x: ui.position.left, y: ui.position.top});
 							crop.update();
 						}
 					},
@@ -462,13 +810,15 @@ elFinder.prototype.commands.resize = function() {
 								rhandlec
 									.resizable({
 										containment : basec,
+										aspectRatio : cratioc,
 										resize      : crop.resize_update,
 										handles     : 'all'
 									})
 									.draggable({
 										handle      : coverc,
 										containment : imgc,
-										drag        : crop.drag_update
+										drag        : crop.drag_update,
+										stop        : crop.updateView
 									});
 								
 								dinit();
@@ -489,7 +839,7 @@ elFinder.prototype.commands.resize = function() {
 						}
 					},
 					save = function() {
-						var w, h, x, y, d, q;
+						var w, h, x, y, d, q, b = '';
 						
 						if (mode == 'resize') {
 							w = parseInt(width.val()) || 0;
@@ -509,6 +859,7 @@ elFinder.prototype.commands.resize = function() {
 							if (d == 0 || d == 360) {
 								return fm.error('errResizeNoChange');
 							}
+							b = bg.val();
 						}
 						q = quality? parseInt(quality.val()) : 0;
 						
@@ -526,68 +877,27 @@ elFinder.prototype.commands.resize = function() {
 						
 						dialog.elfinderdialog('close');
 						
-						fm.request({
-							data : {
-								cmd    : 'resize',
-								target : file.hash,
-								width  : w,
-								height : h,
-								x      : x,
-								y      : y,
-								degree : d,
-								quality: q,
-								mode   : mode
-							},
-							notify : {type : 'resize', cnt : 1},
-							prepare : function(data) {
-								if (data && data.changed && data.changed.length && data.changed[0].tmb) {
-									data.changed[0].tmb = 1;
-								}
-								if (data && data.added && data.added.length && data.added[0].tmb) {
-									data.added[0].tmb = 1;
-								}
-							}
-						})
-						.fail(function(error) {
-							dfrd.reject(error);
-						})
-						.done(function() {
-							var reload = function(url) {
-								var ifm;
-								try {
-									ifm = $('<iframe width="1" height="1" scrolling="no" frameborder="no" style="position:absolute; top:-1px; left:-1px">')
-										.attr('src', url)
-										.one('load', function() {
-											if (this.contentDocument) {
-												this.contentDocument.location.reload(true);
-												ifm.one('load', function() {
-													ifm.remove();
-												});
-											} else {
-												ifm.remove();
-											}
-										})
-										.appendTo('body');
-								} catch(e) {
-									ifm && ifm.remove();
-								}
-							},
-							url = fm.url(file.hash);
-							
-							reload(src);
-							if (url !== src) {
-								reload(url);
-							}
-							dfrd.resolve();
-						});
-						
+						self.resizeRequest({
+							target : file.hash,
+							width  : w,
+							height : h,
+							x      : x,
+							y      : y,
+							degree : d,
+							quality: q,
+							bg     : b,
+							mode   : mode
+						}, file, dfrd);
 					},
 					buttons = {},
 					hline   = 'elfinder-resize-handle-hline',
 					vline   = 'elfinder-resize-handle-vline',
 					rpoint  = 'elfinder-resize-handle-point',
-					src     = fm.openUrl(file.hash),
+					src     = fm.openUrl(file.hash, fm.isCORS? true : false),
 					dinit   = function() {
+						if (base.hasClass('elfinder-dialog-minimized')) {
+							return;
+						}
 						var dw,
 							winH  = $(window).height(),
 							winW  = $(window).width(),
@@ -635,16 +945,21 @@ elFinder.prototype.commands.resize = function() {
 							setuprimg();
 						}
 					},
-					base;
+					dMinBtn, base;
 				
+				if (fm.isCORS) {
+					img.attr('crossorigin', 'use-credentials');
+					imgc.attr('crossorigin', 'use-credentials');
+					imgr.attr('crossorigin', 'use-credentials');
+				}
 				imgr.mousedown( rotate.start );
 				$(document).mouseup( rotate.stop );
 					
 				uiresize.append(
-					$(row).append($(label).text(fm.i18n('width')), width, reset),
-					$(row).append($(label).text(fm.i18n('height')), height),
-					$(row).append($('<label class="elfinder-resize-checkbox-label"/>').text(fm.i18n('aspectRatio')).prepend(constr)),
+					$(row).append($(label).text(fm.i18n('width')), width),
+					$(row).append($(label).text(fm.i18n('height')), height, $('<div class="elfinder-resize-whctrls">').append(constr, reset)),
 					(quality? $(row).append($(label).text(fm.i18n('quality')), quality, $('<span/>').text(' (1-100)')) : $()),
+					(isJpeg? $(row).append($(label).text(fm.i18n('8pxgrid')).addClass('elfinder-resize-grid8'), grid8px) : $()),
 					$(row).append($(label).text(fm.i18n('scale')), uiprop)
 				);
 
@@ -653,19 +968,26 @@ elFinder.prototype.commands.resize = function() {
 						$(row).append($(label).text('X'), pointX),
 						$(row).append($(label).text('Y')).append(pointY),
 						$(row).append($(label).text(fm.i18n('width')), offsetX),
-						$(row).append($(label).text(fm.i18n('height')), offsetY),
-						(quality? $(row).append($(label).text(fm.i18n('quality')), quality.clone(true), $('<span/>').text(' (1-100)')) : $())
+						$(row).append($(label).text(fm.i18n('height')), offsetY, $('<div class="elfinder-resize-whctrls">').append(constrc, reset.clone(true))),
+						(quality? $(row).append($(label).text(fm.i18n('quality')), quality.clone(true), $('<span/>').text(' (1-100)')) : $()),
+						(isJpeg? $(row).append($(label).text(fm.i18n('8pxgrid')).addClass('elfinder-resize-grid8')) : $())
 					);
 					
 					uirotate.append(
-						$(row).append(
+						$(row).addClass('elfinder-resize-degree').append(
 							$(label).text(fm.i18n('rotate')),
 							degree,
 							$('<span/>').text(fm.i18n('degree')),
 							$('<div/>').append(uideg270, uideg90)[ctrgrup]()
 						),
 						$(row).css('height', '20px').append(uidegslider),
-						(quality? $(row).append($(label).text(fm.i18n('quality')), quality.clone(true), $('<span/>').text(' (1-100)')) : $())
+						(quality? $(row).addClass('elfinder-resize-quality').append(
+							$(label).text(fm.i18n('quality')),
+							quality.clone(true),
+							$('<span/>').text(' (1-100)')) : $()
+						),
+						$(row).append($(label).text(fm.i18n('bgcolor')), bg, picker, reseter),
+						$(row).css('height', '20px').append(pallet)
 					);
 					uideg270.on('click', function() {
 						rdegree = rdegree - 90;
@@ -732,6 +1054,7 @@ elFinder.prototype.commands.resize = function() {
 					resizable      : false,
 					buttons        : buttons,
 					open           : function() {
+						dMinBtn = base.find('.ui-dialog-titlebar .elfinder-titlebar-minimize').hide();
 						fm.bind('resize', dinit);
 						img.attr('src', src + (src.indexOf('?') === -1 ? '?' : '&')+'_='+Math.random());
 						imgc.attr('src', img.attr('src'));
@@ -739,7 +1062,12 @@ elFinder.prototype.commands.resize = function() {
 					},
 					close          : function() {
 						fm.unbind('resize', dinit);
-						$(this).hide().remove();
+						$(this).elfinderdialog('destroy');
+					},
+					resize         : function(e, data) {
+						if (data && data.minimize === false) {
+							dinit();
+						}
 					}
 				}).attr('id', id).parent();
 				
@@ -747,8 +1075,6 @@ elFinder.prototype.commands.resize = function() {
 				if (fm.UA.ltIE8) {
 					$('.elfinder-dialog').css('filter', '');
 				}
-				
-				reset.css('left', width.position().left + width.width() + 12);
 				
 				coverc.css({ 'opacity': 0.2, 'background-color': '#fff', 'position': 'absolute'}),
 				rhandlec.css('cursor', 'move');
@@ -758,13 +1084,9 @@ elFinder.prototype.commands.resize = function() {
 					'border-color':'#000'
 				});
 
-				imgr.css('cursor', 'pointer');
-
 				if (! api2) {
 					uitype.find('.api2').remove();
 				}
-				
-				//uitype[ctrgrup]()[ctrgrup]('disable');
 				
 				control.find('input,select').prop('disabled', true);
 

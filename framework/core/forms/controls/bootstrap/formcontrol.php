@@ -99,12 +99,13 @@ abstract class formcontrol {
                 $for = ' for="' . $this->id . '"';
             } else {
                 $divID = ' id="' . $name . 'Control"';
-                $for = '';
+//                $for = '';
+                $for = ' for="' . $name . '"';
             }
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";
             $class = empty($this->class) ? '' : $this->class;
-            if ($this->horizontal_top) 
+            if ($this->horizontal_top)
                 $class .= ' col-sm-10 ';
 
             $html = "<div" . $divID . " class=\"" . $this->type . "-control control " . (bs3()?'form-group':'control-group') . " " . $class . $disabled;

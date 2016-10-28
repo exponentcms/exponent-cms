@@ -35,8 +35,8 @@
 			{if $permissions.manage}
 				{ddrerank items=$page->records model="media" label="Media Pieces"|gettext}
 			{/if}
-		</div>	
-	{/permissions}   
+		</div>
+	{/permissions}
     {if $config.moduledescription != ""}
    		{$config.moduledescription}
    	{/if}
@@ -84,7 +84,10 @@
                 },
                 onCleanup: function(){
                     $c.hide()
-                }
+                },
+                close:'<i class="fa fa-close" aria-label="close modal"></i>',
+                previous:'<i class="fa fa-chevron-left" aria-label="previous photo"></i>',
+                next:'<i class="fa fa-chevron-right" aria-label="next photo"></i>',
             })
         });
     });

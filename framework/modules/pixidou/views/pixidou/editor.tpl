@@ -74,7 +74,7 @@
                                             <li class="yuimenuitem yuimenuitemlabel" id="saveGifTool">Save as GIF <em class="helptext">Shift + G</em></li-->
                                         </ul>
                                     </div>
-                                </div>      
+                                </div>
                             </li>
                             <li class="yuimenubaritem first-of-type"><a class="yuimenubaritemlabel" href="#edit">{'Edit'|gettext}</a>
                                 <div id="edit" class="yuimenu">
@@ -108,7 +108,7 @@
                                             <li class="yuimenuitem yuimenuitemlabel" id="rotateTool">{'Rotate'|gettext} <em class="helptext">{'Shift'|gettext} + R</em></li>
                                             <li class="yuimenuitem yuimenuitemlabel" id="tintTool">{'Tint'|gettext} <em class="helptext">{'Shift'|gettext} + T</em></li>
                                         </ul>
-                                    </div>                   
+                                    </div>
                                 </div>
                             </li>
                             <li class="yuimenubaritem"><a class="yuimenubaritemlabel" href="#help">{'Help'|gettext}</a>
@@ -125,12 +125,12 @@
                 </div>
                 <!-- /Top menu -->
             </div>
-            
+
             <div id="bd">
                 <!-- Image container, to be filled via inner HTML -->
                 <div id="imageContainer">{$image->id}</div>
                 <!-- /Image container, to be filled via inner HTML -->
-                
+
                 <!-- Upload form -->
                 <div id="uploadPanel">
                     <div class="hd">{'Choose your file to upload'|gettext}</div>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <!-- /Upload form -->
-                
+
                 <!-- Tint panel -->
                 <div id="tintPickerPanel" class="yui-picker-panel">
                     <div class="hd">{'Please choose a color'|gettext}:</div>
@@ -150,31 +150,31 @@
                     </div>
                 </div>
                 <!-- /Tint panel -->
-                
+
                 <!-- Contrast panel -->
                 <div id="contrastPanel">
                     <div class="hd">{'Adjust contrast'|gettext}</div>
                     <div class="bd">
                         <div id="contrastSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
+                            <div id="contrastSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="{'Thumb'|gettext}" /></div>
                         </div>
                         <p>Value : <span id="contrastSliderValue">0</span></p>
                     </div>
                 </div>
                 <!-- /Contrast panel -->
-                
+
                 <!-- Brightness panel -->
                 <div id="brightnessPanel">
                     <div class="hd">{'Adjust brightness'|gettext}</div>
                     <div class="bd">
                         <div id="brightnessSliderBg" class="yui-h-slider" title="Slider">
-                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="" /></div>
+                            <div id="brightnessSliderThumb" class="yui-slider-thumb"><img src="{$smarty.const.PATH_RELATIVE|cat:'framework/modules/pixidou/assets/images/thumb-n.gif'}" alt="{'Thumb'|gettext}" /></div>
                         </div>
                         <p>Value : <span id="brightnessSliderValue">0</span></p>
                     </div>
                 </div>
                 <!-- /Brightness panel -->
-                
+
                 <!-- Help About panel -->
                 <div id="aboutPanel">
                     <div class="hd">{'About'|gettext} Pixidou</div>
@@ -184,7 +184,7 @@
                                 <li class="selected"><a href="#aboutAbout"><em>{'About'|gettext}</em></a></li>
                                 <li><a href="#aboutJoin"><em>Join Pixidou</em></a></li>
                                 <li><a href="#aboutLicense"><em>License Agreement</em></a></li>
-                            </ul>           
+                            </ul>
                             <div class="yui-content">
                                 <div id="aboutAbout">
                                     <h1>Pixidou 0.1-exp - an open source AJAX image editor</h1>
@@ -208,7 +208,7 @@
                 </div>
                 <!-- /Help About panel -->
             </div>
-            
+
             <div id="ft">
                 <!-- Info panel -->
                 <div id="infoPanel">
@@ -219,7 +219,7 @@
                     </div>
                 </div>
                 <!-- /Info panel -->
-                
+
                 <!-- Actions panel -->
                 <div id="actionsPanel">
                     <button type="button" id="applyTool" name="applyTool" value="Apply">{'Apply'|gettext}</button>
@@ -228,7 +228,7 @@
                 <!-- /Actions panel -->
             </div>
         </div>
-        
+
         <!-- Combo-handled YUI JS files: -->
         <script type="text/javascript" src="http://yui.yahooapis.com/combo?2.9.0/build/utilities/utilities.js&2.9.0/build/container/container-min.js&2.9.0/build/menu/menu-min.js&2.9.0/build/button/button-min.js&2.9.0/build/slider/slider-min.js&2.9.0/build/colorpicker/colorpicker-min.js&2.9.0/build/resize/resize-min.js&2.9.0/build/imagecropper/imagecropper-min.js&2.9.0/build/json/json-min.js&2.9.0/build/selector/selector-min.js&2.9.0/build/layout/layout-min.js&2.9.0/build/tabview/tabview-min.js"></script>
         <!-- Using Local YUI JS files: -->
@@ -254,13 +254,13 @@
         <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}framework/modules/pixidou/assets/js/pixidou.js"></script>
         <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}framework/modules/pixidou/assets/js/keys.js"></script>
         <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}framework/modules/pixidou/assets/js/app.js"></script>
-        
+
         <script type="text/javascript" charset="utf-8">
             YAHOO.util.Event.onDOMReady(function(){ldelim}
                 pixidou.updateImage('{$image->filename}',{$image->image_width},{$image->image_height});
             {rdelim});
         </script>
-        
+
         <input type=hidden id="update" value="{$update}">
         <input type=hidden id="fid" value="{$image->id}">
         {*<input type=hidden id="fromCK" value="{$smarty.get.ck}">*}

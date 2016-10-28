@@ -23,6 +23,12 @@
  */
 
 class expTagController extends expController {
+    protected $manage_permissions = array(
+//        'import' => 'Import Tags',
+//        'importTags' => 'Import Tags',
+//        'export' => 'Export Tags',
+        'change' => 'Change Tags',
+    );
 	/**
 	 * name of module
 	 * @return string
@@ -59,7 +65,7 @@ class expTagController extends expController {
         if (isset($this->params['id'])) {
             $id = $this->params['id'];
         } elseif (isset($this->params['title'])) {
-            $id = $this->params['title'];
+            $id = expString::escape($this->params['title']);
             $tag = $id;
         }
 

@@ -9,6 +9,15 @@
 	left:auto;
 	right:auto;
 }
+.std42-dialog.elfinder-dialog-minimized {
+	overFlow: hidden;
+	position: relative;
+	float: left;
+	width: auto;
+}
+.elfinder-rtl .std42-dialog.elfinder-dialog-minimized {
+	float: right;
+}
 
 /* titlebar */
 .std42-dialog .ui-dialog-titlebar {
@@ -24,18 +33,104 @@
 	font-weight:normal;
 	padding:.2em 1em;
 }
+.std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar {
+	padding: 0 .5em;
+	height: 20px;
+}
+.elfinder-touch .std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar {
+	padding:.3em .5em;
+}
+.std42-dialog.ui-draggable-disabled .ui-dialog-titlebar {
+	cursor: default;
+}
 
 .std42-dialog .ui-dialog-titlebar .ui-widget-header {
 	border : none;
 	cursor: pointer;
 }
 
-.ui-dialog .ui-dialog-titlebar-close.elfinder-titlebar-full {
-	right: 2em;
+.std42-dialog .ui-dialog-titlebar span.elfinder-dialog-title {
+	display: inherit;
+	word-break: break-all;
+}
+.std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar span.elfinder-dialog-title {
+	display: list-item;
+	display: -moz-inline-box;
+	white-space: nowrap;
+	word-break: normal;
+	overflow: hidden;
+	word-wrap: normal;
+	overflow-wrap: normal;
+	max-width: -webkit-calc(100% - 24px);
+	max-width: -moz-calc(100% - 24px);
+	max-width: calc(100% - 24px);
+}
+.elfinder-touch .std42-dialog .ui-dialog-titlebar span.elfinder-dialog-title {
+	padding-top: .15em;
+}
+.elfinder-touch .std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar span.elfinder-dialog-title {
+	max-width: -webkit-calc(100% - 36px);
+	max-width: -moz-calc(100% - 36px);
+	max-width: calc(100% - 36px);
+}
+
+.std42-dialog .ui-dialog-titlebar .elfinder-titlebar-button {
+	position: relative;
+	float: left;
+	top: 10px;
+	left: -10px;
+	right: 10px;
+	width: 20px;
+	height: 20px;
+	padding:1px;
+	margin: -10px 1px 0 1px;
+	background-color: transparent;
+	background-image: none;
+}
+.elfinder-touch .std42-dialog/*:not(.elfinder-dialog-minimized)*/ .ui-dialog-titlebar .elfinder-titlebar-button {
+	transform: scale(1.1);
+	zoom: 1.1;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.std42-dialog .ui-dialog-titlebar .elfinder-titlebar-button.elfinder-titlebar-button-right {
+	float: right;
+	left: 10px;
+	right: -10px;
+}
+.std42-dialog .ui-dialog-titlebar .elfinder-titlebar-button .ui-icon {
+	width: 17px;
+	height: 17px;
+	border-width: 1px;
+	border-color: transparent;
+	opacity: .7;
+	filter:Alpha(Opacity=70);
+	-moz-border-radius: 8px; 
+	-webkit-border-radius: 8px; 
+	border-radius: 8px;
+}
+.std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar .elfinder-titlebar-button .ui-icon {
+	opacity: 1;
+	filter:Alpha(Opacity=100);	
+}
+.std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close:hover .ui-icon,
+.elfinder-mobile .std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close .ui-icon {
+	background-color: #ff6252;
+	border-color: #e5695d;
+}
+.std42-dialog .ui-dialog-titlebar .elfinder-titlebar-minimize:hover .ui-icon,
+.elfinder-mobile .std42-dialog .ui-dialog-titlebar .elfinder-titlebar-minimize .ui-icon {
+	background-color: #ffbc00;
+	border-color: #e3a40b;
+}
+.std42-dialog .ui-dialog-titlebar .elfinder-titlebar-full:hover .ui-icon,
+.elfinder-mobile .std42-dialog .ui-dialog-titlebar .elfinder-titlebar-full .ui-icon {
+	background-color: #26c82f;
+	border-color: #13ae10;
 }
 
 /* resize handle for touch devices */
-.elfinder-touch .std42-dialog.ui-dialog .ui-resizable-se {
+.elfinder-touch .std42-dialog.ui-dialog:not(ui-resizable-disabled) .ui-resizable-se {
 	width: 12px;
 	height: 12px;
 	zoom: 1.5;
@@ -45,23 +140,19 @@
 	background-position: -64px -224px;
 }
 
-.std42-dialog .ui-dialog-titlebar-close,
-.std42-dialog .ui-dialog-titlebar-close:hover { padding:1px; }
-
 .elfinder-rtl .elfinder-dialog .ui-dialog-titlebar { text-align:right; }
-.elfinder-rtl .elfinder-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close { right:auto; left:.3em; }
 
 /* content */
 .std42-dialog .ui-dialog-content {
 	padding:.3em .5em;
 	box-sizing: border-box;
 }
-.std42-dialog .ui-dialog-content,
-.std42-dialog .ui-dialog-content * {
-	-webkit-user-select:  auto !important;
-	-moz-user-select:     text !important;
-	-khtml-user-select:   text !important;
-	user-select:          text !important;
+.elfinder .std42-dialog .ui-dialog-content,
+.elfinder .std42-dialog .ui-dialog-content * {
+	-webkit-user-select:  auto;
+	-moz-user-select:     text;
+	-khtml-user-select:   text;
+	user-select:          text;
 }
 
 /* buttons */

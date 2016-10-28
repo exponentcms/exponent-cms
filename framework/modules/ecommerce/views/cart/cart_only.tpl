@@ -53,7 +53,7 @@
                     </td>
                     <td class="prodrow">
                         <a href="{link action=removeItem id=$item->id}" title="{'Remove'|gettext} {$item->product->title} {'from cart'|gettext}" onclick="return confirm('{'Are you sure you want to remove this item?'|gettext}');">
-                            <img src='{$asset_path}images/remove.png' alt=" " />
+                            <img src='{$asset_path}images/remove.png' alt="{'Remove'|gettext}" />
                         </a>
                     </td>
                 </tr>

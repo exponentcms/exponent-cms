@@ -65,7 +65,7 @@ class expCSS {
                 $css_primer[$path] = $path;
             }
         }
-        
+
          // less files to compile to css
         if (!empty($params['lesscss'])) {
             $less_array = $params['lesscss'];
@@ -102,7 +102,7 @@ class expCSS {
                 }
             }
         }
-        
+
         // css stylesheets linked in through the css plugin
         if (!empty($params['link'])){
             $params['link'] = is_array($params['link']) ? $params['link'] : array($params['link']);
@@ -110,7 +110,7 @@ class expCSS {
                 $css_links[$link] = $link;
             }
         };
-        
+
         // css hard coded in a view
         if (!empty($params['css'])){
             $tcss = trim($params['css']);
@@ -151,7 +151,7 @@ class expCSS {
         global $css_primer, $css_core, $css_links, $css_theme, $css_inline, $head_config;  // these are all used via $$key below
 
         $html = "";
-        
+
         // gather up all .css files in themes/mytheme/css/
         self::themeCSS();
 
@@ -214,7 +214,7 @@ class expCSS {
                 $html .= "\t".'<link rel="stylesheet" type="text/css" href="'.$file.'" '.XHTML_CLOSING.'>'."\r\n";
             }
         }
-        
+
         if (!empty($css_inline)) {
             $styles = "";
             $htmlcss = "";
@@ -240,12 +240,18 @@ class expCSS {
     public static function themeCSS() {
         global $css_theme, $head_config, $less_vars;
 
+//        if (!isset($less_vars['menu_width']))
+//            $less_vars['menu_width'] = 769;
+//        if (!isset($less_vars['swatch']))
+//            $less_vars['swatch'] = '';
 //        self::auto_compile_scss('external/bootstrap3/scss/test_2.scss', 'tmp/css/test.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/bootstrap.scss', 'tmp/css/testbs3.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap3/scss/newui.scss', 'tmp/css/testbs3_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap3/scss/newui_1.scss', 'tmp/css/testbs3_newui_1.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/font-awesome4/scss/font-awesome.scss', 'tmp/css/testfa4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/bootstrap.scss', 'tmp/css/testbs4.css', $less_vars);  //FIXME test
 //        self::auto_compile_scss('external/bootstrap4/scss/newui.scss', 'tmp/css/testbs4_newui.css', $less_vars);  //FIXME test
+//        self::auto_compile_scss('external/bootstrap4/scss/newui_1.scss', 'tmp/css/testbs4_newui_1.css', $less_vars);  //FIXME test
 
         // compile any theme .less files to css
 //        $less_vars =!empty($head_config['lessvars']) ? $head_config['lessvars'] : array();
@@ -287,7 +293,7 @@ class expCSS {
         }
         foreach($cssdirs as $key=>$cssdir){
             $variation = (THEME_STYLE!=''&&$key!=0)?"_".THEME_STYLE:"";
-            
+
             if (is_dir($cssdir) && is_readable($cssdir)) {
 
                 if (is_array($head_config['css_theme'])) {

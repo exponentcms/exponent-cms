@@ -51,14 +51,15 @@ class genericcontrol extends formcontrol {
         $this->placeholder = $placeholder;
         $this->pattern = $pattern;
     }
-    
+
     function toHTML($label,$name) {
         if (!empty($this->id)) {
             $divID  = ' id="'.$this->id.'Control"';
             $for = ' for="'.$this->id.'"';
         } else {
             $divID  = ' id="'.$name.'Control"';
-            $for = '';
+//            $for = '';
+            $for = ' for="' . $name . '"';
         }
 //        if ($this->required) $label = "*" . $label;
         $disabled = $this->disabled == true ? "disabled" : "";
@@ -85,7 +86,7 @@ class genericcontrol extends formcontrol {
         }
         return $html;
     }
-    
+
     function controlToHTML($name, $label) {
         $this->size = !empty($this->size) ? $this->size : 20;
         $this->name = empty($this->name) ? $name : $this->name;
@@ -156,15 +157,15 @@ class genericcontrol extends formcontrol {
         $html .= '</div>';
         return $html;
     }
-    
+
     static function parseData($name, $values, $for_db = false) {
         return isset($values[$name])?1:0;
     }
-    
+
     static function templateFormat($db_data, $ctl) {
         return ($db_data==1)?gt("Yes"):gt("No");
     }
-    
+
     static function form($object) {
         $form = new form();
         if (!isset($object->identifier)) {
@@ -173,8 +174,8 @@ class genericcontrol extends formcontrol {
             $object->default = false;
             $object->flip = false;
             $object->required = false;
-        } 
-        
+        }
+
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("default",gt('Default'), new checkboxcontrol($object->default,false));
@@ -182,10 +183,10 @@ class genericcontrol extends formcontrol {
         $form->register("required", gt('Required'), new checkboxcontrol($object->required,true));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
-        
+
         return $form;
     }
-    
+
     static function update($values, $object) {
         if ($object == null) $object = new genericcontrol();;
         if ($values['identifier'] == "") {
@@ -205,7 +206,7 @@ class genericcontrol extends formcontrol {
         $object->required = !empty($values['required']);
         return $object;
     }
-    
+
 }
 
 ?>

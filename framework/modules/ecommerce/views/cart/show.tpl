@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="cart" link="`$asset_path`css/cart.css" corecss="tables,panels,button"}
 
 {/css}
@@ -56,10 +56,10 @@
             <span style="float:right; margin-left: 18px;">{icon class=delete button=true size=large action=empty_cart onclick="return confirm('Are you sure you want to empty all items from your shopping cart?');" text='Empty Cart'|gettext}</span>
         {/if}
     </div>
-	<div id="cartbox">        
+	<div id="cartbox">
 		<div id="cart-top" width="100%" cellpadding="0" cellspacing="0">
 			<div class="cart-total-label">
-                {if $order->total_discounts > 0} 
+                {if $order->total_discounts > 0}
 			        <span class="total-label">{"Cart Items Total With Discounts"|gettext}:</span>
                 {else}
                     <span class="total-label">{"Cart Items Total"|gettext}:</span>
@@ -67,9 +67,9 @@
                 <span id="cart-total" class="carttotal">{$order->total|currency}</span>
 			</div>
 		</div>
-        
+
 		{exp_include file="cart_only.tpl"}
-        
+
         {if $items|@count gt 0}
             <table width="100%" id="cart-totals" border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                 <thead>
@@ -90,11 +90,11 @@
                         <td style="text-align:right;">{$order->subtotal|number_format:2}
                         </td>
                     </tr>
-                     {if isset($discounts[0])}                        
-                        {if $discounts[0]->isCartDiscount()} 
+                     {if isset($discounts[0])}
+                        {if $discounts[0]->isCartDiscount()}
                              <tr class="{cycle values="odd, even"}">
                                 <td class="cart-totals-title">
-                                    <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[remove coupon code]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;{"Total Discounts"|gettext}:
+                                    <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="{'Remove discount from cart'|gettext}">[remove coupon code]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;{"Total Discounts"|gettext}:
                                 </td>
                                 <td>
                                     {currency_symbol}
@@ -111,7 +111,7 @@
                                 </td>
                                 <td style="text-align:right;">{$order->total|number_format:2}
                                 </td>
-                            </tr>   
+                            </tr>
                         {/if}
                       {/if}
                       {if !$order->shipping_taxed}
@@ -135,7 +135,7 @@
                         <td class="cart-totals-title">
                             {if isset($discounts[0])}
                                 {if $discounts[0]->isShippingDiscount()}
-                                    <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="Remove discount from cart.">[{'remove coupon code'|gettext}]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;
+                                    <a style="font-weight: normal;" href="{link action=removeDiscountFromCart id=$discounts[0]->id}"  alt="{'Remove discount from cart'|gettext}">[{'remove coupon code'|gettext}]</a>&#160;(<span style="background-color:#33CC00;">{$discounts[0]->coupon_code}</span>)&#160;
                                 {/if}
                             {/if}
                             {* else *}
@@ -209,7 +209,7 @@
                         {/if}
                    {/if}
                 </tbody>
-            </table>       
+            </table>
         {/if}
 	</div>
     <div class="module-actions" style="padding:8px; 0">

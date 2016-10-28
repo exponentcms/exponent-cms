@@ -41,7 +41,7 @@ class expRouter {
     public  $url_style = '';
     public  $params = array();
     public  $sefPath = null;
-    
+
     function __construct() {
         self::getRouterMaps();
     }
@@ -54,11 +54,11 @@ class expRouter {
      * @return string
      */
     public static function cleanLink($fulllink)
-    {           
-        if(substr($fulllink, -1) == '/') $fulllink = substr($fulllink, 0, -1);  
-        return $fulllink;                                   
+    {
+        if(substr($fulllink, -1) == '/') $fulllink = substr($fulllink, 0, -1);
+        return $fulllink;
     }
-    
+
     /**
 	 * Will build url to a module/page/etc (determined by what is passed to the $params array).
 	 *
@@ -82,29 +82,29 @@ class expRouter {
         $secure = ENABLE_SSL == 1 ? $secure : false;  // check if this site can use SSL if not then force the link to not be secure
         $linkbase =  $secure ? URL_BASE_SECURE : URL_BASE;
         $linkbase .= SCRIPT_RELATIVE;
-                
-        if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {            
+
+        if (isset($params['section']) && $params['section'] == SITE_DEFAULT_SECTION) {
             return self::cleanLink($linkbase);
         }
 
         // Check to see if SEF_URLS have been turned on in the site config
         if (SEF_URLS == 1 && ($_SERVER["PHP_SELF"] == PATH_RELATIVE.'index.php' || $_SERVER["PHP_SELF"] == PATH_RELATIVE.'install/index.php') && $force_old_school == false) {
-            
-            if (isset($params['section']) && !isset($params['action'])) {                
+
+            if (isset($params['section']) && !isset($params['action'])) {
                 if (empty($params['sef_name'])) {
                     global $db;
 
                     $params['sef_name'] = $db->selectValue('section', 'sef_name', 'id='.intval($params['section']));
-                }                               
+                }
                 return self::cleanLink($linkbase.$params['sef_name']);
-            } else {                
+            } else {
                 // initialize the link
-                $link = '';               
-        
+                $link = '';
+
                 // we need to add the change the module parameter to controller if it exists
                 // we can remove this snippit once the old modules are gone.
                 if (!empty($params['module']) && empty($params['controller'])) $params['controller'] = $params['module'];
-            
+
                 // check to see if we have a router mapping for this controller/action
                 if (empty($no_map)){
                     for ($i = 0, $iMax = count($this->maps); $i < $iMax; $i++) {
@@ -130,7 +130,7 @@ class expRouter {
                 // if we found a mapping for this link then we can return it now.
                 //if ($link != '') return self::encode($linkbase.$link);
                 if ($link != '') return self::cleanLink($linkbase.$link);
-                
+
                 if (!empty($params['controller'])) $link .= $params['controller'].'/';
                 if (!empty($params['action'])) $link .= $params['action'].'/';
                 foreach ($params as $key=>$value) {
@@ -148,7 +148,7 @@ class expRouter {
                         }
                     }
                 }
-                //trim last / off                 
+                //trim last / off
                 return self::cleanLink($linkbase.$link);
             }
         } else {
@@ -164,7 +164,7 @@ class expRouter {
                             $link .= urlencode($key)."=".urlencode($value)."&";
                         } else {
                             $link .= $key."=".$value."&";
-                        }                    
+                        }
                     }
                 }
             }
@@ -209,7 +209,7 @@ class expRouter {
         }
         // do the same for the other id's
         foreach ($_REQUEST as $key=>$var) {
-            if (is_string($var) && strrpos($key,'_id',-3) !== false) {
+            if (is_string($var) && strlen($key) >= 3 && strrpos($key,'_id',-3) !== false) {
                 if (isset($_GET[$key]))
                     $_GET[$key] = intval($_GET[$key]);
                 if (isset($_POST[$key]))
@@ -235,11 +235,11 @@ class expRouter {
                 $this->isMappedURL();                       //check for a router map
                 $ret = $this->routeActionRequest();         // we didn't have a map for this URL.  Try to route it with this function.
 
-                // if this url wasn't a valid section, or action then kill it.  It might not actually be a "bad" url, 
+                // if this url wasn't a valid section, or action then kill it.  It might not actually be a "bad" url,
                 // but this is a precautionary measure against bad paths on images, css & js file, etc...with the new
                 // mod_rewrite rules these bad paths will not route thru here so we need to take them into account and
                 // deal with them accordingly.
-                if (!$ret) $this->url_type = 'malformed';  
+                if (!$ret) $this->url_type = 'malformed';
             } elseif ($this->url_type == 'post') {
                 // some forms aren't getting the controller field set right when the form is created
                 // we are putting this check here to safe guard against a controller being referred to as
@@ -254,18 +254,18 @@ class expRouter {
                 }
             }
         } elseif ($this->url_style == 'query' && SEF_URLS == 1 && !empty($_REQUEST['section']) && PRINTER_FRIENDLY != 1 && EXPORT_AS_PDF != 1) {
-            // if we hit this it's an old school url coming in and we're trying to use SEF's. 
+            // if we hit this it's an old school url coming in and we're trying to use SEF's.
             // we will send a permanent redirect so the search engines don't freak out about 2 links pointing
             // to the same page.
-            header("Location: ".$this->makeLink(array('section'=>intval($_REQUEST['section']))),TRUE,301);          
+            header("Location: ".$this->makeLink(array('section'=>intval($_REQUEST['section']))),TRUE,301);
         }
 
         // if this is a valid URL then we build out the current_url var which is used by flow, and possibly other places too
-        if ($this->url_type != 'malformed') {               
+        if ($this->url_type != 'malformed') {
             $this->current_url = $this->buildCurrentUrl();
         } else {
             // check if the URL is looking for a non-existent page or controller (we will check for bad action in renderAction())
-            // if page or controller is not found we will route to the not found controller.            
+            // if page or controller is not found we will route to the not found controller.
             $_REQUEST['controller'] = 'notfound';
             $_REQUEST['action'] = 'handle';
         }
@@ -313,13 +313,13 @@ class expRouter {
 
         if (!empty($this->sefPath)) {
             $this->url_style = 'sef';
-            $this->url_parts = explode('/', $this->sefPath);     
+            $this->url_parts = explode('/', $this->sefPath);
 
             // remove empty first and last url_parts if they exist
             //if (empty($this->url_parts[count($this->url_parts)-1])) array_pop($this->url_parts);
             if ($this->url_parts[count($this->url_parts)-1] == '') array_pop($this->url_parts);
             if (empty($this->url_parts[0])) array_shift($this->url_parts);
-            
+
             if (count($this->url_parts) < 1 || (empty($this->url_parts[0]) && count($this->url_parts) == 1) ) {
                 $this->url_type = 'base';  // no params
             } elseif (count($this->url_parts) == 1 || $db->selectObject('section', "sef_name='" . substr($this->sefPath,1) . "'") != null) {
@@ -355,14 +355,14 @@ class expRouter {
             $this->url_type = 'base';
             $this->params = array();
         }
-                              
+
         // Check if this was a printer friendly link request
-        define('PRINTER_FRIENDLY', (isset($_REQUEST['printerfriendly']) || isset($this->params['printerfriendly'])) ? 1 : 0);         
+        define('PRINTER_FRIENDLY', (isset($_REQUEST['printerfriendly']) || isset($this->params['printerfriendly'])) ? 1 : 0);
         define('EXPORT_AS_PDF', (isset($_REQUEST['exportaspdf']) || isset($this->params['exportaspdf'])) ? 1 : 0);
         define('EXPORT_AS_PDF_LANDSCAPE', (isset($_REQUEST['landscapepdf']) || isset($this->params['landscapepdf'])) ? 1 : 0);
     }
 
-    public function routePageRequest() {        
+    public function routePageRequest() {
 //        global $db;
 
         if ($this->url_type == 'base') {
@@ -370,11 +370,11 @@ class expRouter {
             if (expTheme::inAction()) {
                 $_REQUEST['section'] = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             } else {
-                $_REQUEST['section'] = SITE_DEFAULT_SECTION;  
+                $_REQUEST['section'] = SITE_DEFAULT_SECTION;
             }
         } else {
             // Try to look up the page by sef_name first.  If that doesn't exist, strip out the dashes and
-            // check the regular page names.  If that still doesn't work then we'll redirect them to the 
+            // check the regular page names.  If that still doesn't work then we'll redirect them to the
             // search module using the page name as the search string.
             $section = $this->getPageByName(substr($this->sefPath,1));
             ########################################################
@@ -383,58 +383,61 @@ class expRouter {
             /*
             $maps[] = array('controller'=>'store',
                     'action'=>'showall',
-                    'url_parts'=>array(                
+                    'url_parts'=>array(
                             'title'=>'(.*)'),
             );
             $maps[] = array('controller'=>'store',
                     'action'=>'showByTitle',
-                    'url_parts'=>array(                
+                    'url_parts'=>array(
                             'title'=>'(.*)'),
             );
             */
-            //if section is empty, we'll look for the page overrides first and route to 
+            //if section is empty, we'll look for the page overrides first and route to
             //routeActionRequest with some hand wacked variables. If we can't find an override
             //then we'll return false as usual
             // since we only received a single param and it wasn't a page, try for store category, or a product
             if (empty($section)) {
                 $sef_url = $this->url_parts[0];
                 //check for a category
-                $c = new storeCategory();                
+                $c = new storeCategory();
                 $cat = $c->findBy('sef_url', $sef_url);
                 if (empty($cat)) {
                     //check for a product
                     $p = new product();
                     $prod = $p->findBy('sef_url', $sef_url);
                     if(!empty($prod)) {
-                        //fake parts and route to action  
-                        $this->url_type = 'action';                   
+                        //fake parts and route to action
+                        $this->url_type = 'action';
                         $this->url_parts[0] = 'store'; //controller
-                        $this->url_parts[1] = 'show'; //controller
-                        $this->url_parts[2] = 'title'; //controller
-                        $this->url_parts[3] = $sef_url; //controller
+                        $this->url_parts[1] = 'show'; //action
+                        $this->url_parts[2] = 'title'; //param name
+                        $this->url_parts[3] = $sef_url; //param
                         //eDebug($this->url_parts,true);
                         $this->params = $this->convertPartsToParams();
                         return $this->routeActionRequest();
                     }
                     //else fall through
                 } else {
-                    //fake parts and route to action 
-                    $this->url_type = 'action';                                      
+                    //it's a store category
+                    //fake parts and route to action
+                    $this->url_type = 'action';
                     $this->url_parts[0] = 'store'; //controller
-                    $this->url_parts[1] = 'showall'; //controller
-                    $this->url_parts[2] = 'title'; //controller                    
-                    $this->url_parts[3] = $sef_url; //controller
+                    $this->url_parts[1] = 'showall'; //action
+                    $this->url_parts[2] = 'title'; //param name
+                    $this->url_parts[3] = $sef_url; //param
                     //eDebug($this->url_parts,true);
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
                 }
+//fixme we may want to log missed pages (no existing store cat/product) requests and set up/use a redirect table (404)??
+//fixme and we may also want to log any redirects taken??
                 return false;
             }
             #########################################################
             //if (empty($section)) return false;  //couldnt find the page..let the calling action deal with it.
             $_REQUEST['section'] = $section->id;
         }
-        
+
         expHistory::set('viewable', array('section'=>intval($_REQUEST['section'])));
         return true;
     }
@@ -448,20 +451,20 @@ class expRouter {
             $matched = true;
             $pairs = array();
             $i = 0;
-            if ($part_count == count($map['url_parts'])) {               
+            if ($part_count == count($map['url_parts'])) {
                 foreach($map['url_parts'] as $key=>$map_part) {
                     $res = preg_match("/^$map_part/", $this->url_parts[$i]);
                     if ($res != 1) {
                         $matched = false;
                         break;
-                    } 
+                    }
                     $pairs[$key] = $this->url_parts[$i];
                     $i++;
                 }
             } else {
                 $matched = false;
-            }            
-              
+            }
+
             if ($matched) {
                 // safeguard against false matches when a real action was what the user really wanted.
                 if (count($this->url_parts) >= 2 && method_exists(expModules::getController($this->url_parts[0]), $this->url_parts[1]))
@@ -470,7 +473,7 @@ class expRouter {
                 $this->url_parts = array();
                 $this->url_parts[0] = $map['controller'];
                 $this->url_parts[1] = $map['action'];
-        
+
                 if (isset($map['view'])) {
                     $this->url_parts[2] = 'view';
                     $this->url_parts[3] = $map['view'];
@@ -489,7 +492,7 @@ class expRouter {
                         $this->url_parts[] = $value;
                     }
                 }
-                
+
                 $this->params = $this->convertPartsToParams();
                 return true;
             }
@@ -500,7 +503,7 @@ class expRouter {
 
     public function routeActionRequest() {
         $return_params = array('controller'=>'','action'=>'','url_parts'=>array());
-    
+
         // If we have three url parts we assume they are controller->action->id, otherwise split them out into name<=>value pairs
         $return_params['controller'] = $this->url_parts[0]; // set the controller/module
         $return_params['action'] = $this->url_parts[1];     // set the action
@@ -525,22 +528,22 @@ class expRouter {
                     $return_params['url_parts'][$this->url_parts[$i]] = isset($this->url_parts[$i+1]) ? $this->url_parts[$i+1] : '';
                 }
             }
-        }        
+        }
 
         // Set the module or controller - this how the actual routing happens
         $_REQUEST[$requestType] = $return_params['controller']; //url_parts[0];
         $_GET[$requestType] = $return_params['controller'];
         $_POST[$requestType] = $return_params['controller'];
-    
+
         // Set the action for this module or controller
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // most of the time we can just grab the action outta the POST array since this is passed as a hidden field, 
+            // most of the time we can just grab the action outta the POST array since this is passed as a hidden field,
             // but sometimes it is actually set as the action on the form itself...then we get it from the params array instead.
             $action = !empty($_POST['action']) ? $_POST['action'] : $this->params['action'];
         } else {
             $action = $return_params['action'];
         }
-    
+
         $_REQUEST['action'] = $action;
         $_GET['action'] = $action;
         $_POST['action'] = $action;
@@ -569,7 +572,7 @@ class expRouter {
         $url = str_replace('&', 'and', $url);
         return preg_replace("/(-)$/", "", preg_replace('/(-){2,}/', '-', strtolower(preg_replace("/([^0-9a-z-_\+])/i", '-', $url))));
     }
-    
+
     public static function decode($url) {
         $url = str_replace('-', ' ', $url);
         return str_replace('+', '-', $url);
@@ -623,8 +626,8 @@ class expRouter {
             $url .= '> '.$link_text.'</a>';
             $url = str_replace('&ajax_action=1','',$url);
         }
-        
-        return $url; 
+
+        return $url;
     }
 
     public function exportAsPDFLink($link_text="Export as PDF", $class=null, $width=800, $height=600, $view='', $orientation=false, $limit='', $title_text="Export as PDF") {
@@ -695,7 +698,7 @@ class expRouter {
 
     public function getPageByName($url_name) {
         global $db;
-        
+
         $section = null;
         if (is_numeric($url_name)) {
             $section = $db->selectObject('section', 'id=' . $url_name);
@@ -717,7 +720,7 @@ class expRouter {
 #       }
         return $section;
     }
-    
+
     private function buildSEFPath () {
         // Apache
         if (strpos($_SERVER['SERVER_SOFTWARE'],'Apache') !== false || strpos($_SERVER['SERVER_SOFTWARE'],'WebServerX') !== false) {
@@ -754,12 +757,12 @@ class expRouter {
         } else {
             $this->sefPath = urldecode($_SERVER['REQUEST_URI']);
         }
-        
-        $this->sefPath = substr($this->sefPath,strlen(substr(PATH_RELATIVE,0,-1))); 
+
+        $this->sefPath = substr($this->sefPath,strlen(substr(PATH_RELATIVE,0,-1)));
         if (strpos($this->sefPath,'/index.php') === 0) {
             $this->sefPath = null;
         }
-        
+
 		//parse the ecommerce tracking code if present and include in the object
         if(isset($_SERVER['argv']) && is_array($_SERVER['argv']))
         {
@@ -768,9 +771,9 @@ class expRouter {
                 $s = explode("=",$set);
                 if($s[0] == "ectid")
                 {
-                    $this->ectid = $s[1];    
-                }   
-            }            
+                    $this->ectid = $s[1];
+                }
+            }
         }
         if (substr($this->sefPath,-1) == "/") $this->sefPath = substr($this->sefPath,0,-1);
         // sanitize it
@@ -783,7 +786,7 @@ class expRouter {
 
         if (expTheme::inAction()) {
             if (isset($_REQUEST['section'])) {
-                $section = $this->url_style=="sef" ? $this->getPageByName($_REQUEST['section'])->id : intval($_REQUEST['section']) ;
+                $section = $this->url_style=="sef" ? $this->getPageByName(expString::escape($_REQUEST['section']))->id : intval($_REQUEST['section']) ;
             } else {
                 $section = (expSession::is_set('last_section') ? expSession::get('last_section') : SITE_DEFAULT_SECTION);
             }
@@ -817,7 +820,7 @@ class expRouter {
         } else {
             define('PUBLIC_SECTION',1);
         }
-    
+
         if (isset($_REQUEST['section'])) {
             expSession::set('last_section', intval($_REQUEST['section']));
         } elseif ($section == SITE_DEFAULT_SECTION) {
@@ -827,7 +830,7 @@ class expRouter {
         }
         return $sectionObj;
     }
-    
+
     public function getRouterMaps() {
         $mapfile = BASE.'framework/core/router_maps.php';
 		if (file_exists(BASE.'themes/'.DISPLAY_THEME.'/router_maps.php')) {
@@ -837,9 +840,9 @@ class expRouter {
         include_once($mapfile);
         $this->maps = $maps;  // $maps is set by included $mapfile
     }
-    
+
     public function getTrackingId()
-    {        
+    {
         if(isset($this->ectid)) return $this->ectid;
         else return '';
     }

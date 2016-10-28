@@ -124,7 +124,7 @@ if (!function_exists('smarty_function_icon')) {
         }
 
         $linktext = $img . $text;
-        
+
         if (BTN_SIZE == 'large' || (!empty($params['size']) && $params['size'] == 'large')) {
             $btn_size = '';  // actually default size, NOT true bootstrap large
             $icon_size = 'icon-large';
@@ -171,6 +171,8 @@ if (!function_exists('smarty_function_icon')) {
         } else {
             $name = '';
         }
+        if (empty($linktext) || ctype_space($linktext))
+            $linktext = '<span class="sr-only">' . $title . '</span>';
         if(!empty($params['action']) && $params['action'] == 'scriptaction') {
             echo '<a',$name,' href="#" title="', $title, '" class=" btn ',$icon->type,' ',$btn_size,'"';
             if (!empty($onclick))

@@ -36,6 +36,10 @@ include_once('../exponent.php');
 <div class="popup_content_area">
     <?php
     $page = (isset($_REQUEST['page']) ? expString::sanitize($_REQUEST['page']) : '');
+    if (!empty($page) && (strpos($page, '..') !== false || strpos($page, '/') !== false)) {
+        header('Location: ../index.php');
+        exit();  // attempt to hack the site
+    }
     if (is_readable('popups/' . $page . '.php')) {
         include('popups/' . $page . '.php');
     }

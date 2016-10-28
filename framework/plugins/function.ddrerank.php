@@ -130,7 +130,7 @@ function smarty_function_ddrerank($params, &$smarty) {
                     <input type="hidden" name="rerank[]" value="' . $item->id . '" />
                     <div class="fpdrag"></div>';
                 //Do we include the picture? It depends on if there is one set.
-                $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1">' : '';
+                $html .= (!empty($item->expFile[0]->id) && !empty($item->expFile[0]->is_image)) ? '<img class="filepic" src="' . PATH_RELATIVE . 'thumb.php?id=' . $item->expFile[0]->id . '&w=16&h=16&zc=1" alt="item'.$item->id.'">' : '';
                 $html .= '<span class="label">' . (!empty($item->$sortfield) ? substr($item->$sortfield, 0, $stringlen) : gt('Untitled')) . '</span>
                     </li>';
                 $odd = $odd == "even" ? "odd" : "even";

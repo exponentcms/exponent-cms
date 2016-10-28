@@ -73,9 +73,9 @@
                                         {if $record->expFile[0]->image_width >= $record->expFile[0]->image_height}{$x="w"}{else}{$x="w"}{/if}
                                         <a class="colorbox" rel="lightbox[{$name}-{$group}]" href="{$smarty.const.PATH_RELATIVE}thumb.php?id={$record->expFile[0]->id}&{$x}={$config.pa_showall_enlarged}" title="{$record->alt|default:$record->title}">
                                     {else}
-                                        <a href="{link action=show title=$record->sef_url}" title="{$record->alt|default:$record->title}">
+                                        <a href="{link action=show title=$record->sef_url}" title="{$record->alt}">
                                     {/if}
-                                        {img class="img-small" alt=$record->alt|default:$record->expFile[0]->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                                        {img class="img-small" alt=$record->alt file_id=$record->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
                                     </a>
                                     {permissions}
                                         <div class="item-actions">
@@ -114,7 +114,10 @@
         href: $(this).href,
         ref: $(this).rel,
         photo: true,
-        maxWidth: "100%"
+        maxWidth: "100%",
+        close:'<i class="fa fa-close" aria-label="close modal"></i>',
+        previous:'<i class="fa fa-chevron-left" aria-label="previous photo"></i>',
+        next:'<i class="fa fa-chevron-right" aria-label="next photo"></i>',
     });
 {/literal}
 {/script}

@@ -36,11 +36,11 @@ class uploadcontrol extends formcontrol {
 			DB_FIELD_TYPE=>DB_DEF_STRING,
 			DB_FIELD_LEN=>250,);
 	}
-	
+
 	function __construct($default = "", $disabled = false) {
 		$this->disabled = $disabled;
 	}
-	
+
 	function onRegister(&$form) {
 		$form->enctype = "multipart/form-data";
 	}
@@ -76,7 +76,9 @@ class uploadcontrol extends formcontrol {
      */
     static function templateFormat($db_data, $ctl) {
         $base = str_replace(PATH_RELATIVE, '', BASE);
-        if (file_exists($base . $db_data)) {
+        if (empty($db_data)) {
+            return $db_data;
+        } elseif (file_exists($base . $db_data)) {
             // if the file exists return a link
             $baseurl = str_replace(PATH_RELATIVE, '', URL_BASE);
             return isset($db_data) ? ('<a href="' . $baseurl . $db_data . '">' . basename($db_data) . '</a>') : "";

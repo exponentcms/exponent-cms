@@ -24,13 +24,6 @@
 class taxController extends expController {
     public $basemodel_name = 'taxclass';
 
-    protected $add_permissions = array(
-        'manage_zones' => 'Manages Zones',
-        'edit_zone'    => 'Add/Edit Zone',
-        'update_zone'  => 'Update Zone',
-        'delete_zone'  => 'Delete Zone'
-    );
-
     static function displayname() {
         return gt("e-Commerce Tax Class Manager");
     }

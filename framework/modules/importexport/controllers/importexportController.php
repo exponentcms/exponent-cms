@@ -22,6 +22,13 @@
  */
 
 class importexportController extends expController {
+    protected $add_permissions = array(
+        'import' => 'Import Data',
+        'export' => 'Export Data'
+    );
+    protected $manage_permissions = array(
+        'importProduct' => 'Import Product',
+    );
     // hide the configs we don't need
     public $remove_configs = array(
         'aggregation',
@@ -35,11 +42,6 @@ class importexportController extends expController {
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
 
-    //protected $permissions = array_merge(array("test"=>'Test'), array('copyProduct'=>"Copy Product"));
-    protected $add_permissions = array(
-        'import' => 'Import Data',
-        'export' => 'Export Data'
-    );
 
     static function displayname() {
         return gt("Data Import / Export Module");
@@ -175,6 +177,11 @@ class importexportController extends expController {
         if (!count($this->params['items'])) {
             expValidator::setErrorField('items');
             expValidator::failAndReturnToForm(gt('You must select at least one item.'), $this->params);
+        }
+
+        if (!empty($this->params['filename']) && (strpos($this->params['filename'], 'tmp/') === false || strpos($this->params['folder'], '..') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
         }
 
         $filename = $this->params['filename'];
@@ -357,7 +364,7 @@ class importexportController extends expController {
 
     function validate() {
 //        global $db;
-        //eDebug($this->params,true); 
+        //eDebug($this->params,true);
         set_time_limit(0);
         //$file = new expFile($this->params['expFile']['import_file'][0]);
         if (!empty($_FILES['import_file']['error'])) {
@@ -397,117 +404,117 @@ class importexportController extends expController {
     {
         $handle = fopen($file->path, "r");
         $data = fgetcsv($handle, 10000, ",");
-        //eDebug($data);        
-        $source = '';   
+        //eDebug($data);
+        $source = '';
         foreach ($data as $key=>$value)
         {
-            $dataset[$value] = '';            
+            $dataset[$value] = '';
             if($key == 2 && $value=='Unique_Bill_Name') $source = '1';    //SMC
         }
-        
+
         //eDebug($source);
         //eDebug($dataset,true);
         $count = 1;
         $errorSet = array();
         $successSet = array();
         eDebug($dataset);
-        
+
         $extAddy = null;
         while (($data = fgetcsv($handle, 10000, ",")) !== FALSE) {
             $count++;
-            $extAddy = new external_address();             
+            $extAddy = new external_address();
             $bName = explode(' ',$data[3]);
             eDebug($bName);
             $extAddy->firstname = $bName[0];
             if(count($bName) == 3)
             {
                 $extAddy->middlename = $bName[1];
-                $extAddy->lastname = $bName[2];    
+                $extAddy->lastname = $bName[2];
             }
             else if (count($bName) ==1)
             {
                 $extAddy->middlename = '';
-                $extAddy->lastname = '';    
+                $extAddy->lastname = '';
             }
             else
             {
                 $extAddy->middlename = '';
-                $extAddy->lastname = $bName[1];        
+                $extAddy->lastname = $bName[1];
             }
-            
+
             $extAddy->organization = $data[4];
             $extAddy->address1 = $data[5];
-            $extAddy->address2 = $data[6];            
-            $extAddy->address2 = $data[6];            
-            $extAddy->city = $data[7];            
-            
+            $extAddy->address2 = $data[6];
+            $extAddy->address2 = $data[6];
+            $extAddy->city = $data[7];
+
             $s = new geoRegion();
             $state = $s->find('first','code="'.trim($data[8]).'"');
             eDebug($state);
-            $extAddy->state = $state->id;                        
-            $extAddy->zip = str_ireplace("'",'',$data[9]);            
-            $extAddy->phone = $data[20];            
-            $extAddy->email = $data[21];            
+            $extAddy->state = $state->id;
+            $extAddy->zip = str_ireplace("'",'',$data[9]);
+            $extAddy->phone = $data[20];
+            $extAddy->email = $data[21];
             $extAddy->source = $source;
-            
-            
+
+
             //shipping
             if($data[3] == $data[12] && $data[5] == $data[14] && $data[6] == $data[15])  //shipping and billing same
             {
                 $extAddy->is_billing = 1;
-                $extAddy->is_shipping = 1;            
-                $extAddy->save(false);            
+                $extAddy->is_shipping = 1;
+                $extAddy->save(false);
             }
             else
-            {                
+            {
                 $extAddy->is_billing = 1;
-                $extAddy->is_shipping = 0;            
-                $extAddy->save(false);            
-                
-                $extAddy = new external_address();             
+                $extAddy->is_shipping = 0;
+                $extAddy->save(false);
+
+                $extAddy = new external_address();
                 $sName = explode(' ',$data[12]);
                 eDebug($sName);
                 $extAddy->firstname = $sName[0];
                 if(count($sName) == 3)
                 {
                     $extAddy->middlename = $sName[1];
-                    $extAddy->lastname = $sName[2];    
+                    $extAddy->lastname = $sName[2];
                 }
                 else if (count($sName) ==1)
                 {
                     $extAddy->middlename = '';
-                    $extAddy->lastname = '';    
+                    $extAddy->lastname = '';
                 }
                 else
                 {
                     $extAddy->middlename = '';
-                    $extAddy->lastname = $sName[1];        
+                    $extAddy->lastname = $sName[1];
                 }
-                
+
                 $extAddy->organization = $data[13];
                 $extAddy->address1 = $data[14];
-                $extAddy->address2 = $data[15];                            
-                $extAddy->city = $data[16];            
-                
+                $extAddy->address2 = $data[15];
+                $extAddy->city = $data[16];
+
                 $s = new geoRegion();
                 $state = $s->find('first','code="'.trim($data[17]).'"');
                 eDebug($state);
-                $extAddy->state = $state->id;                        
-                $extAddy->zip = str_ireplace("'",'',$data[18]);            
-                $extAddy->phone = $data[20];            
-                $extAddy->email = $data[21];            
+                $extAddy->state = $state->id;
+                $extAddy->zip = str_ireplace("'",'',$data[18]);
+                $extAddy->phone = $data[20];
+                $extAddy->email = $data[21];
                 $extAddy->is_billing = 0;
                 $extAddy->is_shipping = 1;
-                $extAddy->source = $source;   
-                
+                $extAddy->source = $source;
+
                 $extAddy->save(false);
             }
-            
+
             echo "Successfully imported row " . $count . ", name: " . $extAddy->firstname . " " . $extAddy->lastname . "<br/>";
             //eDebug($product);
-        
-        }   
-        
+
+        }
+
         if(count($errorSet))
         {
             echo "<br/><hr><br/><font color='red'>The following records were NOT imported:<br/>";
@@ -524,7 +531,7 @@ class importexportController extends expController {
                 else echo "--" . $err . "<br/>";
             }
             echo "</font>";
-        }    
+        }
     }*/
 
     function importProduct($file=null) {

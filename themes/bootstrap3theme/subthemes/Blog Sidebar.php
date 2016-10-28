@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html lang="<?php echo (substr(LOCALE,0,2)) ?>">
     <head>
         <?php
         if (ENHANCED_STYLE == 1) {

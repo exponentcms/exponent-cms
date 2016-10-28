@@ -8,6 +8,27 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 
 ----------
 
+Version 2.4.0
+-------------
+### Address issues in v2.3.9, fix security vulnerabilities, and add accessibility hints
+  - adds accessibility hints for screen readers
+  - fixes numerous SQL Injection, XSS, file exploits/redirection, and RCE security vulnerabilities
+    - security fix (v2.3.0+) to prevent uploading files to wrong location, thanks to Balisong, CVE-ID 2016-7095, CVE-ID 2016-7443
+    - security fix to prevent possible sql injections, thanks to Manuel Garcia Cardenas and PKAV TEAM, CVE-ID 2016-7400
+    - security fix for rce issue, thanks to xiojunjie, CVE-ID 2016-7565
+    - security fix to prevent possible sql injections and other vulnerabilities in pixidou editor, thanks to Manuel Garcia Cardenas, CVE-2016-7452 & CVE-2016-7453
+    - security fix to prevent uploading dot files, thanks to DM_ PKAV Team & fyth
+    - security fix popup.php, thanks to DM_ PKAV Team
+    - security fix xss vulnerability in worldpay, thanks to felixk3y PKAV Team
+    - security fix xss issue with uploader, thanks to fyth 
+    - security fix to prevent possible hacking by moving security checks earlier in the install code, thanks to felixk3y PKAV Team
+    - security fix for rce issue, thanks to xiojunjie, CVE-ID 2016-7565
+  - other minor fixes and tweaks
+### Known Issues
+  - eCommerce purchase-order functionality has not been tested/is not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing
+
 Version 2.3.9
 -------------
 ### Address issues in v2.3.8
@@ -28,8 +49,8 @@ Version 2.3.9
   - adds external calendar event caching and/or importing
   - now returns a 403 error if attempting to 'show' a missing item
   - now allows a CKEditor custom config.js file within theme /editors/ckeditor/config.js
-  - !!! update/include .htaccess file in ALL /tmp folders to prevent security issues, CVE-2016-7095 reported by Balison
-  - !!! fix security issue with database managerand pixidou editor: Security Advisory XS3C-2016-05-20 & XS3C-2016-05-19 reported by Julian Held
+  - !!! update/include .htaccess file in ALL /tmp folders to prevent security issues, CVE-ID 2016-7095 reported by Balisong
+  - !!! fix security issue with database manager and pixidou editor: Security Advisory XS3C-2016-05-20 & XS3C-2016-05-19 reported by Julian Held
   - !!! regression fix several minify issues
   - !!! regression fix support for single param in url to search for product
   - !!! fix to actually skip over 'cgi-bin' for 'check permissions' upgrade scripts
@@ -151,7 +172,7 @@ Version 2.3.7
 ### Address issues in v2.3.6 esp. because it was pulled
   - !!! regression fix all styles were stripped from rich text upon save due to recent security fix
   - !!! regression fix an admin was able to possibly edit a super-admin user profile
-  - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID #2015-8684
+  - !!! security fix elFinder would allow an authenticated user to upload an xss script then execute it CVE-ID 2015-8684
   - regression fix enhanced password hash strength would break all future logins due to stored hash field not being long enough (since v2.3.5)
     -- only occurred when upgrading from a version prior to v2.3.5 and only when increasing password crypto depth above 0
   - regression fix ajax paging would add 'time' parameter twice to calendar urls
@@ -164,7 +185,7 @@ Version 2.3.7
 Version 2.3.6 - release pulled
 -------------
 ### Refine 'shipment' interface, plus address issues in v2.3.5
-  * !!! adds additional security checking for XSS vulnerabilities - CVE-2015-8667
+  * !!! adds additional security checking for XSS vulnerabilities - CVE-ID 2015-8667
   * !!! adds support for PHP v7.x
     - compatible with PHP v5.3.x, 5.4.x, 5.5.x, 5.6.x, and 7.0.x
   * !!! regression fix ALL reCaptcha responses always fail since v2.3.3
@@ -262,7 +283,7 @@ Version 2.3.3
 Version 2.3.2
 -------------
 ### Address issues in v2.3.1
-  * !!! Fixes possible cross-site security (XSS) issue, CVE-2014-6635 &CVE-2014-8690
+  * !!! Fixes possible cross-site security (XSS) issue, CVE-ID 2014-6635 & CVE-ID 2014-8690
   - adds 'freeform' (modules) menu item and icon support to bootstrap 3 menu
   - adds bootstrap 2 multi-column container module views
   - adds lightbox option to mediaplayer showall view, allows grid of icons
@@ -435,8 +456,8 @@ Version 2.2.1
 Version 2.2.0
 -------------
 ### The first 'pure 2.0' version of Exponent w/o any 1.0 modules, etc..., primarily implements Container 2.0 and integrates Twitter-Bootstrap/jQuery
-  - Fixes CVE-2013-3294 SQL Injection vulnerabilities
-  - Fixes CVE-2013-3295 Directory traversal vulnerability
+  - Fixes CVE-ID 2013-3294 SQL Injection vulnerabilities
+  - Fixes CVE-ID 2013-3295 Directory traversal vulnerability
   - Removes all the 'old school' 1.x files
     -- removes deprecated headline controller (converting them to text modules), suggest a custom text module 'headline' view be created if needed
     -- forces deprecation/removal of formmodule/formbuilder

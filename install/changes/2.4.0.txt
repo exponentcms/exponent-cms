@@ -1,0 +1,19 @@
+version 2.4.0
+### Address issues in v2.3.9, fix security vulnerabilities, and add accessibility hints
+  - adds accessibility hints for screen readers
+  - fixes numerous SQL Injection, XSS, file exploits/redirection, and RCE security vulnerabilities
+    - security fix (v2.3.0+) to prevent uploading files to wrong location, thanks to Balisong, CVE-ID 2016-7095, CVE-ID 2016-7443
+    - security fix to prevent possible sql injections, thanks to Manuel Garcia Cardenas and PKAV TEAM, CVE-ID 2016-7400
+    - security fix for rce issue, thanks to xiojunjie, CVE-ID 2016-7565
+    - security fix to prevent possible sql injections and other vulnerabilities in pixidou editor, thanks to Manuel Garcia Cardenas, CVE-2016-7452 & CVE-2016-7453
+    - security fix to prevent uploading dot files, thanks to DM_ PKAV Team & fyth
+    - security fix popup.php, thanks to DM_ PKAV Team
+    - security fix xss vulnerability in worldpay, thanks to felixk3y PKAV Team
+    - security fix xss issue with uploader, thanks to fyth
+    - security fix to prevent possible hacking by moving security checks earlier in the install code, thanks to felixk3y PKAV Team
+    - security fix for rce issue, thanks to xiojunjie, CVE-ID 2016-7565
+  - other minor fixes and tweaks
+Known Issues
+  - eCommerce purchase-order functionality has not been tested/is not be complete
+  - Item re-ranking (ddrerank) doesn't account for aggregation
+  - LDAP support may not work in all LDAP server scenarios due to limited testing

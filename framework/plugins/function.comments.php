@@ -42,7 +42,7 @@ function smarty_function_comments($params,&$smarty) {
     if ($hideform && $hidecomments) return;  // we don't need to display anything
 	$title = empty($params['title']) ? gt('Comments') : $params['title'];
 	$formtitle = empty($params['formtitle']) ? gt('Leave a comment') : $params['formtitle'];
-    $type = empty($params['type']) ? gt('Comments') : $params['type'];
+    $type = empty($params['type']) ? gt('Comment') : $params['type'];
     $ratings = !empty($params['ratings']) ? true : false;
 
     /* The global constants can be overridden by passing appropriate params */

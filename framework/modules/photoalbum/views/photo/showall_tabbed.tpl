@@ -75,7 +75,7 @@
                                 {else}
                                     <a href="{link action=show title=$item->sef_url}" title="{$item->alt|default:$item->title}">
                                 {/if}
-                                    {img class="img-small" alt=$item->alt|default:$item->expFile[0]->alt file_id=$item->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
+                                    {img class="img-small" alt=$item->alt file_id=$item->expFile[0]->id w=$config.pa_showall_thumbbox|default:"150" h=$config.pa_showall_thumbbox|default:"150" far=TL f=jpeg q=$quality|default:75}
                                 </a>
                                 {permissions}
                                     <div class="item-actions">

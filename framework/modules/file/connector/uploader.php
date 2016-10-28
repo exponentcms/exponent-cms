@@ -82,7 +82,7 @@ require_once("../../../../exponent.php");
                 }
             }
 
-            $funcNum = $_GET['CKEditorFuncNum'] ;
+            $funcNum = expString::sanitize($_GET['CKEditorFuncNum']);
             echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction(".$funcNum.", '".$url."', '".$message."');</script>";
         ?>
     </head>

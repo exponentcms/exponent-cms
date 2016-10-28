@@ -49,10 +49,11 @@
                     {/if}
                     {if $item->publish_date > $smarty.now}
                         </strong>&#160;
-                    {/if}
+                    {/if},
                 </span>
                 {comments_count record=$item prepend=$prepend}
-                {tags_assigned record=$item prepend='&#160;&#160;|&#160;&#160;'|not_bs}
+                {$prepend = '&#160;&#160;|&#160;&#160;'|not_bs}
+                {tags_assigned record=$item prepend=','|cat:$prepend}
             </div>
             {permissions}
                 <div class="item-actions">
@@ -88,7 +89,7 @@
     			{elseif $config.usebody==2}
     			{else}
     				{$item->body}
-    			{/if}			
+    			{/if}
                 {if !$config.displayauthor}
                     {$item->poster|signature}
                 {/if}

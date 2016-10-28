@@ -22,7 +22,7 @@
  */
 class recyclebinController extends expController
 {
-    protected $add_permissions = array(
+    protected $manage_permissions = array(
         'showall' => 'View Recycle Bin',
         'show' => 'View Recycle Bin',
         'remove' => 'Remove Recycle Bin Item'
@@ -97,6 +97,8 @@ class recyclebinController extends expController
     {
         global $db;
 
+        $this->params['mod'] = expString::escape($this->params['mod']);
+        $this->params['src'] = expString::escape($this->params['src']);
         $mod = expModules::getController($this->params['mod'], $this->params['src']);
         if ($mod != null) {
             $mod->delete_instance();  // delete all assoc items

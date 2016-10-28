@@ -107,7 +107,7 @@
                                 <a href="{$section->link}" class="navlink depth{$headerlevel}"title="{$section->page_title}" {if $section->new_window} target="_blank"{/if}>
                                     {$image = 0}
                                     {if (!empty($section->expFile[0]->id))}
-                                        {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1 class='img_left'}
+                                        {img h=16 w=16 zc=1 file_id=$section->expFile[0]->id return=1}
                                         {$image = 1}
                                     {elseif (bs3() && !empty($section->glyph))}
                                         <i class="icon-fixed-width {$section->glyph}"></i>

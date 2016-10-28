@@ -65,10 +65,10 @@ class donation extends product {
 
         $sql = "product_type='donation'";
         if (!empty($where)) $sql .= $where;
-        $sql .= empty($order) ? '' : ' ORDER BY ' . $order;
+        $sql .= empty($order) ? '' : ' ORDER BY ' . expString::escape($order);
 
         if (strcasecmp($range, 'all') == 0) {
-            $sql .= empty($limit) ? '' : ' LIMIT ' . $limitstart . ',' . $limit;
+            $sql .= empty($limit) ? '' : ' LIMIT ' . intval($limitstart) . ',' . intval($limit);
             return $db->selectExpObjects($this->tablename, $sql, $this->classname);
         } elseif (strcasecmp($range, 'first') == 0) {
             $sql .= ' LIMIT 0,1';

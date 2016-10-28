@@ -71,20 +71,22 @@ function build_menu($page,$params) {
     global $sectionObj;
 
     if (!empty($page->expFile[0]->id)) {
-        $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left');
+        $img_parm = array("h"=>16,"w"=>16,"zc"=>1,"file_id"=>$page->expFile[0]->id,"return"=>1,"class"=>'img_left',"alt"=>$page->text);
         $img = smarty_function_img($img_parm,$smarty);
     } elseif (bs3() && !empty($page->glyph)) {
-        $img = '<i class="fa fa-fw ' . $page->glyph . '"></i> ';
+        $img = '<i class="fa fa-fw ' . $page->glyph . '" aria-hidden="true"></i> ';
     } else {
         $img = '';
     }
     if (!empty($img) && !empty($page->glyph_only)) {
-        $menu_item = $img;
+        $menu_item = $img . '<span class="sr-only">' . $page->text . '</span>';
     } else {
         $menu_item = $img . $page->text;
     }
     if ((empty($page->itemdata) && empty($page->submenu) && (empty($page->type) || (!empty($page->type) && $page->type != 3))) || $page->depth + 1 == $params['length']) {  // this is a menu item
         $menu = '<li tabindex="-1"';
+        if (isset($page->depth))
+            $menu .= ' role="menuitem"';
         if ($sectionObj->id == $page->id) $menu .= ' class="active"';
         if ($page->url == "#") $menu .= ' class="disabled"';
         $menu .= '><a href="'.$page->url.'"'.($page->new_window?' target="_blank"':'').'>' . $menu_item . '</a></li>'."\n";
@@ -95,9 +97,9 @@ function build_menu($page,$params) {
             $menu = '<li class="dropdown';
         }
         if ($sectionObj->id == $page->id) $menu .= ' active';
-        $menu .= '"><a href="'.$page->url.'" class="dropdown-toggle" data-toggle="dropdown"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
+        $menu .= '"><a href="'.$page->url.'" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"'.($page->new_window?' target="_blank"':'').'>' . $menu_item;
         if (empty($page->depth) && $params['length'] > 1) $menu .= '<b class="caret"></b>';
-        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'">'."\n";
+        $menu .= '</a>'."\n".'<ul class="dropdown-menu'.($params['menualign']=='right'?' pull-right':'').'" role="menu" aria-labelledby="dropdownMenu' . $page->id . '">'."\n";
         if ($page->url != "#") {  // we also need a 'menu item' for active parent pages
             $topmenu = new stdClass();
             $topmenu->id = $page->id;
@@ -131,8 +133,8 @@ function build_menu($page,$params) {
         }
         $menu = '
         <li class="dropdown' . (empty($page->width) ? ' yamm-fw' : '') . ($page->class == "right" ? ' pull-right ' : '') . '">';
-        $menu .= '<a href="#" class="dropdown-toggle" data-toggle="dropdown">'. $menu_item . '<b class="caret"></b></a>';
-        $menu .= '<ul class="dropdown-menu"><li><div class="yamm-content">';
+        $menu .= '<a href="#" id="dropdownMenu' . $page->id . '" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'. $menu_item . '<b class="caret"></b></a>';
+        $menu .= '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu' . $page->id . '"><li role="menuitem"><div class="yamm-content">';
         if (bs3())
             $menu .= '<div class="row"><div class="col-sm-12">';
         elseif (bs2())
@@ -149,5 +151,5 @@ function build_menu($page,$params) {
 
     return $menu;
 }
-	
+
 ?>

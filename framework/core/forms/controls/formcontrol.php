@@ -97,7 +97,8 @@ abstract class formcontrol {
                 $for = ' for="' . $this->id . '"';
             } else {
                 $divID = ' id="' . $name . 'Control"';
-                $for = '';
+//                $for = '';
+                $for = ' for="' . $name . '"';
             }
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";

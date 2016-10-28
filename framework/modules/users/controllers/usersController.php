@@ -24,7 +24,11 @@
 
 class usersController extends expController {
     public $basemodel_name = 'user';
-    protected $add_permissions = array(
+//    protected $remove_permissions = array(
+//        'create',
+//        'edit'
+//    );
+    protected $manage_permissions = array(
         'toggle_extension' => 'Activate Extensions',
         'kill_session'     => 'End Sessions',
         'boot_user'        => 'Boot Users',
@@ -32,10 +36,9 @@ class usersController extends expController {
         'groupperms'       => 'Group Permissions',
         'import'           => 'Import Users',
         'export'           => 'Export Users',
-    );
-    protected $remove_permissions = array(
-        'create',
-        'edit'
+        'update'           => 'Update Users',
+        'show'             => 'Show User',
+        'showall'          => 'Show Users',
     );
 
     static function displayname() {
@@ -166,12 +169,12 @@ class usersController extends expController {
         if (!$user->isLoggedIn() && SITE_ALLOW_REGISTRATION == 0) {
             flash('error', gt('This site does not allow user registrations'));
             expHistory::back();
-        } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id)) {
+        } elseif (!$user->isAdmin() && ($user->isLoggedIn() && $user->id != $id) && !$user->globalPerm('prevent_profile_change')) {
             flash('error', gt('You do not have permission to edit this user account'));
             expHistory::back();
         }
 
-        // if this is a new user account we need to check the password.  
+        // if this is a new user account we need to check the password.
         // the password fields wont come thru on an edit. Otherwise we will
         // just update the existing account.
         if (!empty($id)) {
@@ -233,7 +236,7 @@ class usersController extends expController {
             if ($u->id == $user->id) expSession::triggerRefresh();
         }
 
-        // if this is a new account then we will check to see if we need to send 
+        // if this is a new account then we will check to see if we need to send
         // a welcome message or admin notification of new accounts.
         if (empty($id)) {
             // Calculate Group Memberships for newly created users.  Any groups that
@@ -491,6 +494,7 @@ class usersController extends expController {
         global $db;
 
         // find the user
+        $this->params['username'] = expString::escape($this->params['username']);
         $u = user::getUserByName($this->params['username']);
         if (empty($u)) {
             $u = user::getUserByEmail($this->params['username']);
@@ -522,6 +526,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
+            'text_message' => expString::html2text($msg),
             'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('Password Reset Requested'),
@@ -539,7 +544,7 @@ class usersController extends expController {
         global $db;
 
         $db->delete('passreset_token', 'expires < ' . time());
-        $tok = $db->selectObject('passreset_token', 'uid=' . $this->params['uid'] . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', $this->params['token']) . "'");
+        $tok = $db->selectObject('passreset_token', 'uid=' . intval($this->params['uid']) . " AND token='" . preg_replace('/[^A-Za-z0-9]/', '', expString::escape($this->params['token'])) . "'");
         if ($tok == null) {
             flash('error', gt('Your password reset request has expired.  Please try again.'));
             expHistory::back();
@@ -566,6 +571,7 @@ class usersController extends expController {
         $mail = new expMail();
         $mail->quickSend(array(
             'html_message' => $msg,
+            'text_message' => expString::html2text($msg),
             'to'           => array(trim($u->email) => trim(user::getUserAttribution($u->id))),
             'from'         => array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
             'subject'      => gt('The account password for') . ' ' . HOSTNAME . ' ' . gt('was reset'),
@@ -617,7 +623,7 @@ class usersController extends expController {
             expHistory::returnTo('editable');
         }
         //eDebug($user);
-        $u = new user($this->params['uid']);
+        $u = new user(intval($this->params['uid']));
 
         $ret = $u->setPassword($this->params['new_password1'], $this->params['new_password2']);
         //eDebug($u, true);
@@ -654,6 +660,13 @@ class usersController extends expController {
     }
 
     public function update_userpassword() {
+        global $user;
+
+        if (!$user->isAdmin() && $this->params['id'] != $user->id) {
+            flash('error', gt('You do not have permissions to change this users password.'));
+            expHistory::back();
+        }
+
         if (empty($this->params['id'])) {
             expValidator::failAndReturnToForm(gt('You must specify the user whose password you want to change'), $this->params);
         }
@@ -833,17 +846,17 @@ class usersController extends expController {
 
         // How many records to get?
         if (strlen($this->params['results']) > 0) {
-            $results = $this->params['results'];
+            $results = intval($this->params['results']);
         }
 
         // Start at which record?
         if (strlen($this->params['startIndex']) > 0) {
-            $startIndex = $this->params['startIndex'];
+            $startIndex = intval($this->params['startIndex']);
         }
 
         // Sorted?
         if (strlen($this->params['sort']) > 0) {
-            $sort = $this->params['sort'];
+            $sort = expString::escape($this->params['sort']);
             if ($sort = 'id') $sort = 'username';
         }
 
@@ -884,11 +897,10 @@ class usersController extends expController {
 
         if (!empty($this->params['query'])) {
 
-//            $this->params['query'] = $this->params['query'];
+            $this->params['query'] = expString::escape($this->params['query']);
             $totalrecords = $this->$modelname->find('count', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')");
 
             $users = $this->$modelname->find('all', (empty($filter) ? '' : $filter . " AND ") . "(username LIKE '%" . $this->params['query'] . "%' OR firstname LIKE '%" . $this->params['query'] . "%' OR lastname LIKE '%" . $this->params['query'] . "%' OR email LIKE '%" . $this->params['query'] . "%')", $sort . ' ' . $dir, $results, $startIndex);
-
             for ($i = 0, $iMax = count($users); $i < $iMax; $i++) {
                 if (ECOM == 1) {
                     $users[$i]->usernamelabel = "<a href='viewuser/{$users[$i]->id}'  class='fileinfo'>{$users[$i]->username}</a>";
@@ -938,7 +950,7 @@ class usersController extends expController {
     public function viewuser() {
         global $user;
 
-        if (!empty($this->params['id'])) {
+        if (!empty($this->params['id']) && $user->isAdmin()) {
             $u = new user($this->params['id']);
         } elseif (!empty($user->id)) {
             $u = $user;
@@ -1497,6 +1509,10 @@ class usersController extends expController {
     }
 
     public function import_users_add() {
+        if (!empty($this->params['filename']) && (strpos($this->params['filename'], 'tmp/') === false || strpos($this->params['folder'], '..') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");

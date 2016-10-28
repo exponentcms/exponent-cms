@@ -32,7 +32,7 @@ abstract class formcontrol {
     var $class = "";
 	var $default = "";
 	var $disabled = false;
-    var $required = false;  
+    var $required = false;
     var $multiple = false;
     var $flip = false;
     var $is_hidden = false;
@@ -98,7 +98,8 @@ abstract class formcontrol {
                 $for = ' for="' . $this->id . '"';
             } else {
                 $divID = ' id="' . $name . 'Control"';
-                $for = '';
+//                $for = '';
+                $for = ' for="' . $name . '"';
             }
 
             $disabled = $this->disabled != 0 ? "disabled='disabled'" : "";

@@ -19,7 +19,7 @@
 		{if ($permissions.manage || $permissions.edit || $permissions.delete || $permissions.create || $container->permissions.manage)}
 			<div id="module{$container->id}" class="exp-container-module-wrapper">
 				<div class="exp-container-chrome exp-container-chrome-module">
-                    <a class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
+                    <a id="dropdownMenu{$container->id}" class="exp-trigger" data-toggle="dropdown" href="#">{$container->info.module|gettext} <i class="fa fa-caret-down fa-fw"></i></a>
                     {nocache}{getchromemenu module=$container rank=$i+1 rerank=$rerank last=$last}{/nocache}
 				</div>
 		{/if}

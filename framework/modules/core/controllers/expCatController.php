@@ -23,6 +23,9 @@
  */
 
 class expCatController extends expController {
+    protected $manage_permissions = array(
+        'change' => 'Change Cats'
+    );
 
 	/**
 	 * name of module

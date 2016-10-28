@@ -27,6 +27,13 @@ class formsController extends expController {
         'showall'    => 'Show All Records',
         'show'       => 'Show a Single Record',
     );
+    protected $add_permissions = array(
+        'viewdata'  => "View Data",
+        'enter_data' => "Enter Data",  // slight naming variation to not fully restrict enterdata method
+    );
+    protected $manage_permissions = array(
+        'design' => 'Design Form',
+    );
     public $remove_configs = array(
         'aggregation',
         'categories',
@@ -39,10 +46,6 @@ class formsController extends expController {
         'tags',
         'twitter',
     ); // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'viewdata'  => "View Data",
-        'enter_data' => "Enter Data"  // slight naming variation to not fully restrict enterdata method
-    );
 //    public $codequality = 'beta';
 
     static function displayname() {
@@ -81,7 +84,7 @@ class formsController extends expController {
             if (!empty($this->config)) {
                 $f = $this->forms->find('first', 'id=' . $this->config['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
                 $this->get_defaults($f);
             } elseif (!empty($this->params['id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['id']);
@@ -92,7 +95,7 @@ class formsController extends expController {
                 if (empty($this->config['report_filter']) && empty($this->params['filter'])) {  // allow for param of 'filter' also
                     $where = '1';
                 } elseif (!empty($this->params['filter'])) {
-                    $where = $this->params['filter'];
+                    $where = expString::escape($this->params['filter']);
                 } else {
                     $where = $this->config['report_filter'];
                 }
@@ -163,7 +166,7 @@ class formsController extends expController {
                         'where' => 1,
 //                'limit'   => (isset($this->params['limit']) && $this->params['limit'] != '') ? $this->params['limit'] : 10,
                         'order' => (isset($this->params['order']) && $this->params['order'] != '') ? $this->params['order'] : (!empty($this->config['order']) ? $this->config['order'] : 'id'),
-                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : 'ASC',
+                        'dir' => (isset($this->params['dir']) && $this->params['dir'] != '') ? $this->params['dir'] : (!empty($this->config['dir']) ? $this->config['dir'] : 'ASC'),
                         'page' => (isset($this->params['page']) ? $this->params['page'] : 1),
                         'controller' => $this->baseclassname,
                         'action' => $this->params['action'],
@@ -200,7 +203,7 @@ class formsController extends expController {
             } elseif (!empty($this->params['forms_id'])) {
                 $f = $this->forms->find('first', 'id=' . $this->params['forms_id']);
             } elseif (!empty($this->params['title'])) {
-                $f = $this->forms->find('first', 'sef_url="' . $this->params['title'] . '"');
+                $f = $this->forms->find('first', 'sef_url="' . expString::escape($this->params['title']) . '"');
                 redirect_to(array('controller' => 'forms', 'action' => 'enterdata', 'forms_id' => $f->id));
             }
 
@@ -283,7 +286,7 @@ class formsController extends expController {
     }
 
     public function enterdata() {
-        if (empty($this->config['restrict_enter']) || expPermissions::check('enterdata', $this->loc)) {
+        if (empty($this->config['restrict_enter']) || expPermissions::check('enter_data', $this->loc)) {
 
             global $user;
 
@@ -482,18 +485,23 @@ class formsController extends expController {
 //                        $responses[$col->caption . $num] = gt('No');
                         $responses[$col->name] = gt('No');
                         $captions[$col->name] = $col->caption;
-                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol') {
+                    } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol' || $coltype == 'popupdatetimecontrol') {
 //                        $responses[$col->name] = $value;
                         $responses[$col->name] = $value;
                         $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'uploadcontrol') {
                         if ($newupload) {
-                            $this->params[$col->name] = PATH_RELATIVE . call_user_func(
+                            $newfile = call_user_func(
                                     array($coltype, 'moveFile'),
                                     $col->name,
                                     $_FILES,
                                     true
                                 );
+                            if (!empty($newfile)) {
+                                $this->params[$col->name] = PATH_RELATIVE . $newfile;
+                            } else {
+                                $this->params[$col->name] = "";
+                            }
                         }
                         //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
                         //eDebug($value);
@@ -656,8 +664,8 @@ class formsController extends expController {
                 $msgtemplate->assign('title', $this->config['report_name']);
                 $msgtemplate->assign("is_email", 1);
                 if (!empty($referrer)) $msgtemplate->assign("referrer", $referrer);
-                $emailText = $msgtemplate->render();
-                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
+//                $emailText = $msgtemplate->render();
+//                $emailText = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $emailText)));
                 $msgtemplate->assign("css", file_get_contents(BASE . "framework/core/assets/css/tables.css"));
                 $emailHtml = $msgtemplate->render();
 
@@ -675,21 +683,24 @@ class formsController extends expController {
                     $mail = new expMail();
                     if (!empty($attachments)) {
                         foreach ($attachments as $attachment) {
-                            if (strlen(PATH_RELATIVE) != 1)
-                                $attachment = str_replace(PATH_RELATIVE, '', $attachment);  // strip relative path for links coming from templates
-                            if (file_exists(BASE . $attachment)) {
+                            if (!empty($attachment)) {
+                                if (strlen(PATH_RELATIVE) != 1)
+                                    $attachment = expFile::fixName(str_replace(PATH_RELATIVE, '', $attachment));  // strip relative path for links coming from templates
+                                if (file_exists(BASE . $attachment)) {
 //                                $relpath = str_replace(PATH_RELATIVE, '', BASE);
 //                            $finfo = finfo_open(FILEINFO_MIME_TYPE);
 //                            $ftype = finfo_file($finfo, $relpath . $attachment);
 //                            finfo_close($finfo);
-                                $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
+                                    $mail->attach_file_on_disk(BASE . $attachment, expFile::getMimeType($attachment));
+                                }
                             }
                         }
                     }
                     $mail->quickSend(array(
                         //	'headers'=>$headers,
                         'html_message' => $emailHtml,
-                        "text_message" => $emailText,
+//                        "text_message" => $emailText,
+                        "text_message" => expString::html2text($emailHtml),
                         'to'           => $emaillist,
                         'from'         => array(trim($from) => $from_name),
                         'subject'      => $this->config['subject'],
@@ -709,17 +720,18 @@ class formsController extends expController {
 //                    "Content-type" => "text/html; charset=" . LANG_CHARSET
 //                );
 
-                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
-                if ($this->config['auto_respond_form']) 
-                    $tmsg .= "\n" . $emailText;
+//                $tmsg = trim(strip_tags(str_replace(array("<br />", "<br>", "br/>"), "\n", $this->config['auto_respond_body'])));
+//                if ($this->config['auto_respond_form'])
+//                    $tmsg .= "\n" . $emailText;
                 $hmsg = $this->config['auto_respond_body'];
-                if ($this->config['auto_respond_form']) 
+                if (!empty($this->config['auto_respond_form']))
                     $hmsg .= "\n" . $emailHtml;
                 $mail = new expMail();
                 $mail->quickSend(array(
 //                    'headers'      => $headers,
-                    "text_message" => $tmsg,
+//                    "text_message" => $tmsg,
                     'html_message' => $hmsg,
+                    "text_message" => expString::html2text($hmsg),
                     'to'           => $db_data->email,
                     'from'         => array(trim($from) => $from_name),
                     'subject'      => $this->config['auto_respond_subject'],
@@ -1939,6 +1951,10 @@ class formsController extends expController {
     public function import_csv_data_add() {
         global $user;
 
+        if (!empty($this->params['filename']) && (strpos($this->params['filename'], 'tmp/') === false || strpos($this->params['folder'], '..') !== false)) {
+            header('Location: ' . URL_FULL);
+            exit();  // attempt to hack the site
+        }
         $line_end = ini_get('auto_detect_line_endings');
         ini_set('auto_detect_line_endings',TRUE);
         $file = fopen(BASE . $this->params["filename"], "r");

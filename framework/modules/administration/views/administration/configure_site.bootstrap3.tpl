@@ -48,7 +48,7 @@
                     <li role="presentation"><a href="#tab16" role="tab" data-toggle="tab"><em>{"e-Commerce"|gettext}</em></a></li>
                     <li role="presentation"><a href="#tab17" role="tab" data-toggle="tab"><em>{"Profiles"|gettext}</em></a></li>
 	            {/if}
-            </ul>            
+            </ul>
             <div class="tab-content">
                 <div id="tab1" role="tabpanel" class="tab-pane fade in active">
 	                <div class="info-header">
@@ -235,8 +235,8 @@
                         {control type="number" name="sc[NEW_PASSWORD]" label="Password Crypto Depth"|gettext min=0 value=$smarty.const.NEW_PASSWORD|default:0 description='Enter \'0\' to use old md5 method'|gettext}
                         {control type="number" name="sc[MIN_PWD_LEN]" label="Minimum Password Length"|gettext min=6 value=$smarty.const.MIN_PWD_LEN|default:8}
                         {control type="number" name="sc[MIN_UPPER]" label="Password Uppercase Letters Required"|gettext min=0 value=$smarty.const.MIN_UPPER|default:0 description='Must new passwords include upper case letters?'|gettext}
-                        {control type="number" name="sc[MIN_UPPER]" label="Password Digits Required"|gettext min=0 value=$smarty.const.MIN_UPPER|default:0 description='Must new passwords include numeric characters?'|gettext}
-                        {control type="number" name="sc[MIN_UPPER]" label="Password Symbols Required"|gettext min=0 value=$smarty.const.MIN_UPPER|default:0 description='Must new passwords include symbols?'|gettext}
+                        {control type="number" name="sc[MIN_DIGITS]" label="Password Digits Required"|gettext min=0 value=$smarty.const.MIN_DIGITS|default:0 description='Must new passwords include numeric characters?'|gettext}
+                        {control type="number" name="sc[MIN_SYMBOL]" label="Password Symbols Required"|gettext min=0 value=$smarty.const.MIN_SYMBOL|default:0 description='Must new passwords include symbols?'|gettext}
                     {/group}
                     {group label='Session Timeout'|gettext}
                         {control type="checkbox" postfalse=1 name="sc[SESSION_TIMEOUT_ENABLE]" label="Enable Session Timeout?"|gettext checked=$smarty.const.SESSION_TIMEOUT_ENABLE value=1}

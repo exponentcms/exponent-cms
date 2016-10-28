@@ -24,29 +24,30 @@
 
 class expCommentController extends expController {
     public $base_class = 'expComment';
-    protected $add_permissions = array(
-        'approve'=>"Approve Comments"
-    );
-   	protected $remove_permissions = array(
+    protected $remove_permissions = array(
         'create'
+    );
+    protected $add_permissions = array(
+        'approve'=>"Approve Comments",
+        'bulk'=>"Bulk Actions"
     );
 
     static function displayname() { return gt("Comments"); }
     static function description() { return gt("Use this module to add comments to a page."); }
-    
+
 	function edit() {
 	    if (empty($this->params['content_id'])) {
 	        flash('message',gt('An error occurred: No content id set.'));
-            expHistory::back();  
-	    } 
+            expHistory::back();
+	    }
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-        
-        
+
+
 	    $id = empty($this->params['id']) ? null : $this->params['id'];
 	    $comment = new expComment($id);
         //FIXME here is where we might sanitize the comment before displaying/editing it
@@ -55,8 +56,8 @@ class expCommentController extends expController {
             'content_type'=>$this->params['content_type'],
 		    'comment'=>$comment
 		));
-	}	
-	
+	}
+
 	function manage() {
 	    expHistory::set('manageable', $this->params);
 
@@ -68,7 +69,7 @@ class expCommentController extends expController {
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    $sql  = 'SELECT c.*, cnt.* FROM '.DB_TABLE_PREFIX.'_expComments c ';
         $sql .= 'JOIN '.DB_TABLE_PREFIX.'_content_expComments cnt ON c.id=cnt.expcomments_id ';
         if (!empty($this->params['content_id']) && !empty($this->params['content_type'])) {
@@ -80,7 +81,7 @@ class expCommentController extends expController {
 
         $page = new expPaginator(array(
 //            'model'=>'expComment',
-            'sql'=>$sql, 
+            'sql'=>$sql,
             'limit'=>10,
             'order'=>$order,
             'dir'=>$dir,
@@ -115,10 +116,10 @@ class expCommentController extends expController {
 
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
-        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
-        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
-        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
-        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
+        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : intval($this->params['require_login']);
+        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : intval($this->params['require_approval']);
+        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : intval($this->params['require_notification']);
+        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : expString::escape($this->params['notification_email']);
 
 //        $sql  = 'SELECT c.*, ua.image, u.username FROM '.$db->prefix.'expComments c ';
 //        $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON c.id=cnt.expcomments_id ';
@@ -128,14 +129,14 @@ class expCommentController extends expController {
 
         $sql  = 'SELECT c.* FROM '.$db->prefix.'expComments c ';
         $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON c.id=cnt.expcomments_id ';
-        $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
+        $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
         if (!$user->isAdmin()) {
             $sql .= 'AND c.approved=1';
         }
 
         $comments = new expPaginator(array(
             //'model'=>'expComment',
-            'sql'=>$sql, 
+            'sql'=>$sql,
 //            'limit'=>999,
             'order'=>'created_at',
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
@@ -150,24 +151,25 @@ class expCommentController extends expController {
         foreach ($comments->records as $key=>$record) {
             $commentor = new user($record->poster);
             //FIXME here is where we might sanitize the comments before displaying them
-            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+//            $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+            $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
             $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
         }
 
         if (empty($this->params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
         // eDebug($sql, true);
-        
+
         // count the unapproved comments
         if ($require_approval == 1 && $user->isAdmin()) {
             $sql  = 'SELECT count(com.id) as c FROM '.$db->prefix.'expComments com ';
             $sql .= 'JOIN '.$db->prefix.'content_expComments cnt ON com.id=cnt.expcomments_id ';
-            $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".$this->params['content_type']."' ";
+            $sql .= 'WHERE cnt.content_id='.$this->params['content_id']." AND cnt.content_type='".expString::escape($this->params['content_type'])."' ";
             $sql .= 'AND com.approved=0';
             $unapproved = $db->countObjectsBySql($sql);
         } else {
             $unapproved = 0;
-        }        
-        
+        }
+
         $this->config = $this->params['config'];
         $type = !empty($this->params['type']) ? $this->params['type'] : gt('Comment');
         $ratings = !empty($this->params['ratings']) ? true : false;
@@ -176,7 +178,7 @@ class expCommentController extends expController {
             'comments'=>$comments,
             'config'=>$this->params['config'],
             'unapproved'=>$unapproved,
-			'content_id'=>$this->params['content_id'], 
+			'content_id'=>$this->params['content_id'],
 			'content_type'=>$this->params['content_type'],
 			'user'=>$user,
 			'hideform'=>$this->params['hideform'],
@@ -296,7 +298,8 @@ class expCommentController extends expController {
           foreach ($comments->records as $key=>$record) {
               $commentor = new user($record->poster);
               //FIXME here is where we might sanitize the comments before displaying them
-              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+//              $comments->records[$key]->username = $commentor->username;  //FIXME this should follow the site attribution setting
+              $comments->records[$key]->username = user::getUserAttribution($commentor->id);  // follow the site attribution setting
               $comments->records[$key]->avatar = $db->selectObject('user_avatar',"user_id='".$record->poster."'");
           }
 //          if (empty($params['config']['disable_nested_comments'])) $comments->records = self::arrangecomments($comments->records);
@@ -322,7 +325,7 @@ class expCommentController extends expController {
 
     function update() {
         global $user;
-        
+
         /* The global constants can be overridden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
@@ -337,20 +340,19 @@ class expCommentController extends expController {
         if (!(ANTI_SPAM_USERS_SKIP && $user->isLoggedIn())) {
             expValidator::check_antispam($this->params, gt('Your comment was not posted.') . ' ' . gt("Anti-spam verification failed.  Please try again. Please try again."));
         }
-        
+
         // figure out the name and email address
         if (!empty($user->id) && empty($this->params['id'])) {
             $this->params['name'] = $user->firstname." ".$user->lastname;
             $this->params['email'] = $user->email;
         }
-                        
+
         // save the comment
         if (empty($require_approval)) {
             $this->expComment->approved=1;
         }
-        //FIXME here is where we might sanitize the comments before saving them
         $this->expComment->update($this->params);
-        
+
         // attach the comment to the datatype it belongs to (blog, news, etc..);
 //        $obj = new stdClass();
 //		$obj->content_type = $this->params['content_type'];
@@ -365,7 +367,7 @@ class expCommentController extends expController {
 		    $msg .= ' '.gt('Your comment is now pending approval. You will receive an email to').' ';
 		    $msg .= $this->expComment->email.' '.gt('letting you know when it has been approved.');
 		}
-		
+
 		if ($require_notification && !$user->isAdmin()) {
 		    $this->sendNotification($this->expComment,$this->params);
 		}
@@ -374,56 +376,55 @@ class expCommentController extends expController {
         }
 
 		flash('message', $msg);
-		
+
 		expHistory::back();
 	}
-	
+
 	public function approve() {
 	    expHistory::set('editable', $this->params);
-        
-        /* The global constants can be overriden by passing appropriate params */ 
+
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('No ID supplied for comment to approve'));
 	        expHistory::back();
 	    }
-	    
+
 	    $comment = new expComment($this->params['id']);
 	    assign_to_template(array(
             'comment'=>$comment
         ));
 	}
-	
+
 	public function approve_submit() {
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('No ID supplied for comment to approve'));
 	        expHistory::back();
 	    }
-        
-        /* The global constants can be overriden by passing appropriate params */ 
+
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    $comment = new expComment($this->params['id']);
-        //FIXME here is where we might sanitize the comments before approving them
 	    $comment->body = $this->params['body'];
 	    $comment->approved = $this->params['approved'];
 	    $comment->save();
 	    expHistory::back();
 	}
-	
+
 	public function approve_toggle() {
 	    if (empty($this->params['id'])) return;
-        
-        /* The global constants can be overriden by passing appropriate params */ 
+
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
@@ -479,42 +480,42 @@ class expCommentController extends expController {
 
 	public function delete() {
 	    global $db;
-        
-        /* The global constants can be overriden by passing appropriate params */ 
+
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
 //        $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    if (empty($this->params['id'])) {
 	        flash('error', gt('Missing id for the comment you would like to delete'));
 	        expHistory::back();
 	    }
-	    
+
 	    // delete the comment
         $comment = new expComment($this->params['id']);
         $comment->delete();
-        
+
         // delete the association too
-        $db->delete($comment->attachable_table, 'expcomments_id='.$this->params['id']);        
-        
+        $db->delete($comment->attachable_table, 'expcomments_id='.$this->params['id']);
+
         // send the user back where they came from.
         expHistory::back();
 	}
-	
+
 	private function sendNotification($comment,$params) {
 //	    global $db;
 	    if (empty($comment)) return false;
-        
+
         //eDebug($comment,1);
-        /* The global constants can be overriden by passing appropriate params */ 
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    // setup some email variables.
 	    $subject = gt('Notification of a New Comment Posted to').' '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
@@ -525,8 +526,8 @@ class expCommentController extends expController {
 //	    $loc = expUnserialize($model->location_data);
 
         $posting = makelink(array('controller'=>$params['content_type'], 'action'=>'show', 'title'=>$model->sef_url));
-        $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'id'=>$comment->id));
-        
+        $editlink = makelink(array('controller'=>'expComment', 'action'=>'edit', 'content_id'=>$params['content_id'], 'content_type'=>$params['content_type'], 'id'=>$comment->id));
+
         // make the email body
         $body = '<h1>'.gt('New Comment Posted').'</h1>';
         $body .= '<h2>'.gt('Posted By').'</h2>';
@@ -540,29 +541,30 @@ class expCommentController extends expController {
         //1$body .= "<br><br>";
         $body .= '<h3>'.gt('Edit / Approve comment').'</h3>';
         $body .= '<a href="'.$editlink.'">'.$editlink.'</a>';
-        
+
         // create the mail message
-        $mail = new expMail();        
+        $mail = new expMail();
         $mail->quickSend(array(
                 'html_message'=>$body,
+                'text_message'=>expString::html2text($body),
 			    'to'=>$tos,
 				'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,
         ));
-        
+
         return true;
 	}
 
 	private function sendApprovalNotification($comment,$params) {
 	    if (empty($comment)) return false;
-        
-        /* The global constants can be overriden by passing appropriate params */ 
+
+        /* The global constants can be overriden by passing appropriate params */
         //sure wish I could do this once in the constructor. sadly $this->params[] isn't set yet
 //        $require_login = empty($this->params['require_login']) ? COMMENTS_REQUIRE_LOGIN : $this->params['require_login'];
 //        $require_approval = empty($this->params['require_approval']) ? COMMENTS_REQUIRE_APPROVAL : $this->params['require_approval'];
 //        $require_notification = empty($this->params['require_notification']) ? COMMENTS_REQUIRE_NOTIFICATION : $this->params['require_notification'];
         $notification_email = empty($this->params['notification_email']) ? COMMENTS_NOTIFICATION_EMAIL : $this->params['notification_email'];
-	    
+
 	    // setup some email variables.
 	    $subject = gt('Notification of Comment Approval on').' '.URL_BASE;
         $tos = explode(',', str_replace(' ', '', $notification_email));
@@ -587,14 +589,15 @@ class expCommentController extends expController {
         $body .= '<a href="'.$posting.'">'.$posting.'</a>';
 
         // create the mail message
-        $mail = new expMail();        
+        $mail = new expMail();
         $mail->quickSend(array(
                 'html_message'=>$body,
+                'text_message'=>expString::html2text($body),
 			    'to'=>$tos,
 			    'from'=>array(trim(SMTP_FROMADDRESS) => trim(ORGANIZATION_NAME)),
 			    'subject'=>$subject,
         ));
-        
+
         return true;
 	}
 

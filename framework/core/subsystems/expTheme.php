@@ -241,13 +241,19 @@ class expTheme
             $config['meta']['ie_compat'] = true;
         }
 
-        $str = '<title>' . $metainfo['title'] . "</title>\n";
+        $str = '';
         if ($config['meta']['content_type']) {
-            $str .= "\t" . '<meta http-equiv="Content-Type" content="text/html; charset=' . LANG_CHARSET . '" ' . XHTML_CLOSING . '>' . "\n";
+            $str .= '<meta charset="' . LANG_CHARSET . XHTML_CLOSING . '>' . "\n";  // html5
+//            $str .= "\t" . '<meta http-equiv="Content-Type" content="text/html; charset=' . LANG_CHARSET . '" ' . XHTML_CLOSING . '>' . "\n";  // html4 or xhtml?
         }
+        if ($config['meta']['ie_compat']) {
+            // turn off ie compatibility mode which will break the display
+            $str .= "\t" . '<meta http-equiv="X-UA-Compatible" content="IE=edge"' . XHTML_CLOSING . '>' . "\n";
+        }
+        $str .= "\t" . '<title>' . $metainfo['title'] . "</title>\n";
         $locale = strtolower(str_replace('_', '-', LOCALE));
         if ($config['meta']['content_language']) {
-            $str .= "\t" . '<meta content="' . $locale . '" http-equiv="Content-Language" ' . XHTML_CLOSING . '>' . "\n";
+            $str .= "\t" . '<meta http-equiv="Content-Language" content="' . $locale . '" ' . XHTML_CLOSING . '>' . "\n";  //fixme should be in <html> tag for html5
         }
         if ($config['meta']['generator']) {
             $str .= "\t" . '<meta name="Generator" content="Exponent Content Management System - v' . expVersion::getVersion(
@@ -361,9 +367,6 @@ class expTheme
             //Win 8/IE 10 work around
             $str .= "\t" . '<!--[if IE 10]><link rel="stylesheet" href="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.css" type="text/css"' . XHTML_CLOSING . '><![endif]-->' . "\n";
             $str .= "\t" . '<!--[if IE 10]><script src="' . PATH_RELATIVE . 'external/ie10-viewport-bug-workaround.js"></script><![endif]-->' . "\n";
-
-            // turn off ie compatibility mode which will break the display
-            $str .= "\t" . '<meta http-equiv="X-UA-Compatible" content="IE=edge"' . XHTML_CLOSING . '>' . "\n";
         }
 
         return $str;

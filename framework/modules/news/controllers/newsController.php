@@ -26,6 +26,14 @@ class newsController extends expController {
         'showall'=>'Show all News',
         'tags'=>"Tags",
     );
+    protected $add_permissions = array(
+        'showUnpublished'=>'View Unpublished News',
+        'showExpired'=>'View Unpublished News',
+    );
+    protected $manage_permissions = array(
+        'import'=>'Import News Items',
+        'export'=>'Export News Items'
+    );
     public $remove_configs = array(
         'categories',
         'comments',
@@ -33,11 +41,6 @@ class newsController extends expController {
 //        'facebook',
 //        'twitter',
     );  // all options: ('aggregation','categories','comments','ealerts','facebook','files','pagination','rss','tags','twitter',)
-    protected $add_permissions = array(
-        'showUnpublished'=>'View Unpublished News',
-        'import'=>'Import News Items',
-        'export'=>'Export News Items'
-    );
 
     static function displayname() { return gt("News"); }
     static function description() { return gt("Display & manage news type content on your site."); }
@@ -58,7 +61,7 @@ class newsController extends expController {
             $limit = $this->params['limit'] == 'none' ? null : $this->params['limit'];
         } else {
             $limit = (isset($this->config['limit']) && $this->config['limit'] != '') ? $this->config['limit'] : 10;
-        }       
+        }
         $order = isset($this->config['order']) ? $this->config['order'] : 'publish DESC';
 
         // pull the news posts from the database
@@ -66,7 +69,7 @@ class newsController extends expController {
 
         // merge in any RSS news and perform the sort and limit the number of posts we return to the configured amount.
         if (!empty($this->config['pull_rss'])) $items = $this->mergeRssData($items);
-        
+
         // setup the pagination object to paginate the news stories.
         $page = new expPaginator(array(
             'records'=>$items,
@@ -78,7 +81,7 @@ class newsController extends expController {
             'src'=>$this->loc->src,
             'view'=>empty($this->params['view']) ? null : $this->params['view']
         ));
-            
+
         assign_to_template(array(
             'page'=>$page,
             'items'=>$page->records,
@@ -134,7 +137,7 @@ class newsController extends expController {
         if (isset($this->params['id'])) {
             $id = $this->params['id'];
         } elseif (isset($this->params['title'])) {
-            $id = $this->params['title'];
+            $id = expString::escape($this->params['title']);
         }
 
         $record = new news($id);
@@ -176,7 +179,7 @@ class newsController extends expController {
 
     public function showUnpublished() {
         expHistory::set('viewable', $this->params);
-        
+
         // setup the where clause for looking up records.
         $where = parent::aggregateWhereClause();
         $where = "((unpublish != 0 AND unpublish < ".time().") OR (publish > ".time().")) AND ".$where;
@@ -197,38 +200,38 @@ class newsController extends expController {
                 gt('Status')=>'unpublish'
             ),
         ));
-            
+
         assign_to_template(array(
             'page'=>$page
         ));
     }
-    
+
     public function showExpired() {
         redirect_to(array('controller'=>'news', 'action'=>'showUnpublished','src'=>$this->params['src']));
     }
-    
+
 //    public function configure() {
 //        parent::configure();
 //        assign_to_template(array('sortopts'=>$this->sortopts));
 //    }
-    
-    public function saveConfig() { 
+
+    public function saveconfig() {
         if (!empty($this->params['aggregate']) || !empty($this->params['pull_rss'])) {
             if ($this->params['order'] == 'rank ASC') {
                 expValidator::failAndReturnToForm(gt('User defined ranking is not allowed when aggregating or pull RSS data feeds.'), $this->params);
             }
         }
-        
-        parent::saveConfig();
+
+        parent::saveconfig();
     }
-    
+
     public function getRSSContent($limit = 0) {
         // pull the news posts from the database
         $items = $this->news->find('all', $this->aggregateWhereClause(), isset($this->config['order']) ? $this->config['order'] : 'publish DESC', $limit);
 
         //Convert the newsitems to rss items
         $rssitems = array();
-        foreach ($items as $key => $item) { 
+        foreach ($items as $key => $item) {
             $rss_item = new FeedItem();
             $rss_item->title = expString::convertSmartQuotes($item->title);
             $rss_item->link = $rss_item->guid = makeLink(array('controller'=>'news', 'action'=>'show', 'title'=>$item->sef_url));
@@ -252,7 +255,7 @@ class newsController extends expController {
      * @return array
      */
     private function mergeRssData($items) {
-        if (!empty($this->config['pull_rss'])) {    
+        if (!empty($this->config['pull_rss'])) {
             $RSS = new SimplePie();
 	        $RSS->set_cache_location(BASE.'tmp/rsscache');  // default is ./cache
 //	        $RSS->set_cache_duration(3600);  // default is 3600

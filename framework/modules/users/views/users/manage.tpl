@@ -55,7 +55,7 @@
                         {/if}
                     </td>
                     <td>
-                        {permissions level=$smarty.const.UILEVEL_PERMISSIONS}
+                        {permissions}
                             <div class="item-actions">
                                 {icon img="edit.png" class=edit action=edituser record=$user}
                                 {icon img="change_password.png" class=password action=change_password record=$user title="Change this users password"|gettext}

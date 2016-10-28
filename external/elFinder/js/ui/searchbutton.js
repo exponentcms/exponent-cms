@@ -105,6 +105,9 @@ $.fn.elfindersearchbutton = function(cmd) {
 							if (val.length === 0 || val.length >= isopts.minlen) {
 								(incVal !== val) && fm.trigger('incsearchstart', { query: val });
 								incVal = val;
+								if (val === '' && fm.searchStatus.state > 1 && fm.searchStatus.query) {
+									input.val(fm.searchStatus.query).select();
+								} 
 							}
 						}, isopts.wait));
 					}

@@ -144,7 +144,7 @@ class elFinder {
 		'search'    => array('q' => true, 'mimes' => false, 'target' => false),
 		'info'      => array('targets' => true, 'compare' => false),
 		'dim'       => array('target' => true),
-		'resize'    => array('target' => true, 'width' => true, 'height' => true, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false),
+		'resize'    => array('target' => true, 'width' => false, 'height' => false, 'mode' => false, 'x' => false, 'y' => false, 'degree' => false, 'quality' => false, 'bg' => false),
 		'netmount'  => array('protocol' => true, 'host' => true, 'path' => false, 'port' => false, 'user' => false, 'pass' => false, 'alias' => false, 'options' => false),
 		'url'       => array('target' => true, 'options' => false),
 		'callback'  => array('node' => true, 'json' => false, 'bind' => false, 'done' => false),
@@ -296,6 +296,7 @@ class elFinder {
 	const ERROR_ARC_SYMLINKS      = 'errArcSymlinks';
 	const ERROR_ARC_MAXSIZE       = 'errArcMaxSize';
 	const ERROR_RESIZE            = 'errResize';
+	const ERROR_RESIZESIZE        = 'errResizeSize';
 	const ERROR_UNSUPPORT_TYPE    = 'errUsupportType';
 	const ERROR_CONV_UTF8         = 'errConvUTF8';
 	const ERROR_NOT_UTF8_CONTENT  = 'errNotUTF8Content';
@@ -677,11 +678,29 @@ class elFinder {
 			}
 		}
 		
+		$result = null;
+		
 		// call pre handlers for this command
 		$args['sessionCloseEarlier'] = isset($this->sessionUseCmds[$cmd])? false : $this->sessionCloseEarlier;
 		if (!empty($this->listeners[$cmd.'.pre'])) {
+			$_break = false;
 			foreach ($this->listeners[$cmd.'.pre'] as $handler) {
-				call_user_func_array($handler, array($cmd, &$args, $this, $dstVolume));
+				$_res = call_user_func_array($handler, array($cmd, &$args, $this, $dstVolume));
+				if (is_array($_res)) {
+					if (! empty($_res['preventexec'])) {
+						$result = array('error' => true);
+						if ($cmd === 'upload' & ! empty($args['node'])) {
+							$result['callback'] = array(
+								'node' => $args['node'],
+								'bind' => $cmd
+							);
+						}
+						if (! empty($_res['results']) && is_array($_res['results'])) {
+							$result = array_merge($result, $_res['results']);
+						}
+						break;
+					}
+				}
 			}
 		}
 		
@@ -697,13 +716,15 @@ class elFinder {
 			elFinder::extendTimeLimit(300);
 		}
 		
-		try {
-			$result = $this->$cmd($args);
-		} catch (Exception $e) {
-			$result = array(
-				'error' => htmlspecialchars($e->getMessage()),
-				'sync' => true
-			);
+		if (! is_array($result)) {
+			try {
+				$result = $this->$cmd($args);
+			} catch (Exception $e) {
+				$result = array(
+					'error' => htmlspecialchars($e->getMessage()),
+					'sync' => true
+				);
+			}
 		}
 		
 		// check change dstDir
@@ -1749,7 +1770,7 @@ class elFinder {
 	 * @author Naoki Sawada
 	 */
 	protected function detectFileExtension($path) {
-		static $type, $finfo;
+		static $type, $finfo, $volume;
 		if (!$type) {
 			$keys = array_keys($this->volumes);
 			$volume = $this->volumes[$keys[0]];
@@ -2617,18 +2638,22 @@ class elFinder {
 	 **/
 	protected function resize($args) {
 		$target = $args['target'];
-		$width  = $args['width'];
-		$height = $args['height'];
+		$width  = (int)$args['width'];
+		$height = (int)$args['height'];
 		$x      = (int)$args['x'];
 		$y      = (int)$args['y'];
 		$mode   = $args['mode'];
-		$bg     = null;
+		$bg     = $args['bg'];
 		$degree = (int)$args['degree'];
 		$quality= (int)$args['quality'];
 		
 		if (($volume = $this->volume($target)) == false
 		|| ($file = $volume->file($target)) == false) {
 			return array('error' => $this->error(self::ERROR_RESIZE, '#'.$target, self::ERROR_FILE_NOT_FOUND));
+		}
+		
+		if ($mode !== 'rotate' && ($width < 1 || $height < 1)) {
+			return array('error' => $this->error(self::ERROR_RESIZESIZE));
 		}
 
 		return ($file = $volume->resize($target, $width, $height, $x, $y, $mode, $bg, $degree, $quality))
@@ -2676,6 +2701,13 @@ class elFinder {
 		if ($done || ! $this->callbackWindowURL) {
 			$script = '';
 			if ($node) {
+				if ($bind) {
+					$trigger = 'elf.trigger(\''.$bind.'\', data);';
+					$triggerdone = 'elf.trigger(\''.$bind.'done\');';
+					$triggerfail = 'elf.trigger(\''.$bind.'fail\', data);';
+				} else {
+					$trigger = $triggerdone = $triggerfail = '';
+				}
 				$script .= '
 					var w = window.opener || window.parent || window;
 					try {
@@ -2683,17 +2715,15 @@ class elFinder {
 						if (elf) {
 							var data = '.$json.';
 							if (data.error) {
+								'.$triggerfail.'
 								elf.error(data.error);
 							} else {
 								data.warning && elf.error(data.warning);
 								data.removed && data.removed.length && elf.remove(data);
 								data.added   && data.added.length   && elf.add(data);
-								data.changed && data.changed.length && elf.change(data);';
-				if ($bind) {
-					$script .= '
-								elf.trigger(\''.$bind.'\', data);';
-				}
-				$script .= '
+								data.changed && data.changed.length && elf.change(data);
+								'.$trigger.'
+								'.$triggerdone.'
 								data.sync && elf.sync();
 							}
 						}

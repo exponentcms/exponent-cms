@@ -29,12 +29,6 @@ if ($.ui) {
 			return origin( t, event );
 		};
 	}
-	if (! $.ui.keyCode.F10) {
-		$.ui.keyCode.F10 = navigator.userAgent.indexOf('Mac') !== -1 ? 109 : 121;
-	}
-	if (! $.ui.keyCode.RIGHTOPTION) {
-		$.ui.keyCode.RIGHTOPTION = navigator.userAgent.indexOf('Mac') !== -1 ? 61 : 93;
-	}
 }
 })();
 
@@ -249,7 +243,7 @@ $.fn.elfinder = function(o) {
 		
 		var cmd = typeof(o) == 'string' ? o : '';
 		if (!this.elfinder) {
-			new elFinder(this, typeof(o) == 'object' ? o : {})
+			new elFinder(this, typeof(o) == 'object' ? o : {});
 		}
 		
 		switch(cmd) {
@@ -295,4 +289,4 @@ $.fn.elfUiWidgetInstance = function(name) {
 		}
 		return null;
 	}
-}
+};

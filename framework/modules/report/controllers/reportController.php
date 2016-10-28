@@ -22,18 +22,23 @@
  */
 
 class reportController extends expController {
-    protected $add_permissions = array(
-        'build_report' => 'Manage',
+    protected $manage_permissions = array(
+        'abandoned_carts' => 'Abandoned Carts Report',
+        'batch_export' => 'Export Products',
         'cart_summary' => 'View Cart Summary Report',
+        'current_carts' => 'Current Carts Report',
         'dashboard' => 'View the e-Commerce Dashboard',
-        'order_report' => 'Generate Order Report',
-        'product_report' => 'Generate Product Report',
+        'download' => 'Download Report',
         'generateOrderReport' => 'View Order Report',
         'generateProductReport' => 'View Product Report',
+        'order_report' => 'Generate Order Report',
+        'payment_report' => 'Generate Payment Report',
         'print_orders' => 'Print Orders',
-        'batch_export' => 'Export Products',
+        'product_report' => 'Generate Product Report',
+        'purge_abandoned_carts' => 'Purge Abandoned Carts',
         'show_payment_summary' => 'Show Payment Summary',
-        'export_order_items' => 'Export Order Items File');
+        'status_export' => 'Export Status',
+    );
 
     static function displayname() {
         return gt("Ecom Report Builder");
@@ -211,6 +216,7 @@ class reportController extends expController {
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['order_status'])) foreach ($p['order_status'] as $os) {
+            $os = expString::escape($os);
             if ($os == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -224,6 +230,7 @@ class reportController extends expController {
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['order_type'])) foreach ($p['order_type'] as $ot) {
+            $ot = expString::escape($ot);
             if ($ot == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -247,7 +254,7 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.invoice_id" . $operator . $p['order-range-num'];
+            $sqlwhere .= " AND o.invoice_id" . $operator . intval($p['order-range-num']);
         }
 
         if (!empty($p['order-price-num'])) {
@@ -263,20 +270,21 @@ class reportController extends expController {
                     $operator = '=';
                     break;
             }
-            $sqlwhere .= " AND o.grand_total" . $operator . $p['order-price-num'];
+            $sqlwhere .= " AND o.grand_total" . $operator . intval($p['order-price-num']);
         }
 
         if (!empty($p['pnam'])) {
-            $sqlwhere .= " AND p.title LIKE '%" . $p['pnam'] . "%'";
+            $sqlwhere .= " AND p.title LIKE '%" . expString::escape($p['pnam']) . "%'";
         }
 
         if (!empty($p['sku'])) {
-            $sqlwhere .= " AND p.model LIKE '%" . $p['sku'] . "%'";
+            $sqlwhere .= " AND p.model LIKE '%" . expString::escape($p['sku']) . "%'";
         }
 
         $inc = 0;
         $sqltmp = '';
         if (!empty($p['discounts'])) foreach ($p['discounts'] as $d) {
+            $d = expString::escape($d);
             if ($d == -1) continue;
             else if ($inc == 0) {
                 $inc++;
@@ -288,26 +296,27 @@ class reportController extends expController {
         if (!empty($sqltmp)) $sqlwhere .= $sqltmp .= ")";
 
         if (!empty($p['blshpname'])) {
-            $sqlwhere .= " AND (b.firstname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR s.firstname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR b.lastname LIKE '%" . $p['blshpname'] . "%'";
-            $sqlwhere .= " OR s.lastname LIKE '%" . $p['blshpname'] . "%')";
+            $sqlwhere .= " AND (b.firstname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR s.firstname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR b.lastname LIKE '%" . expString::escape($p['blshpname']) . "%'";
+            $sqlwhere .= " OR s.lastname LIKE '%" . expString::escape($p['blshpname']) . "%')";
         }
 
         if (!empty($p['email'])) {
-            $sqlwhere .= " AND (b.email LIKE '%" . $p['email'] . "%'";
-            $sqlwhere .= " OR s.email LIKE '%" . $p['email'] . "%')";
+            $sqlwhere .= " AND (b.email LIKE '%" . expString::escape($p['email']) . "%'";
+            $sqlwhere .= " OR s.email LIKE '%" . expString::escape($p['email']) . "%')";
         }
 
         if (!empty($p['zip'])) {
-            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . $p['zip'] . "%'";
-            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . $p['zip'] . "%'";
+            if ($p['bl-sp-zip'] == 'b') $sqlwhere .= " AND b.zip LIKE '%" . expString::escape($p['zip']) . "%'";
+            else if ($p['bl-sp-zip'] == 's') $sqlwhere .= " AND s.zip LIKE '%" . expString::escape($p['zip']) . "%'";
         }
 
         if (isset($p['state'])) {
             $inc = 0;
             $sqltmp = '';
             foreach ($p['state'] as $s) {
+                $s = expString::escape($s);
                 if ($s == -1) continue;
                 else if ($inc == 0) {
                     $inc++;
@@ -325,6 +334,7 @@ class reportController extends expController {
             $inc = 0;
             $sqltmp = '';
             foreach ($p['payment_method'] as $s) {
+                $s = expString::escape($s);
                 if ($s == -1) continue;
                 else if ($inc == 0) {
                     $inc++;
@@ -339,13 +349,13 @@ class reportController extends expController {
         //echo $sql . $sqlwhere . "<br>";
         /*
         Need: order, orderitems, order status, ordertype, billingmethods, geo region, shipping methods, products
-            [date-startdate] => 
-            [time-h-startdate] => 
-            [time-m-startdate] => 
+            [date-startdate] =>
+            [time-h-startdate] =>
+            [time-m-startdate] =>
             [ampm-startdate] => am
-            [date-enddate] => 
-            [time-h-enddate] =>     
-            [time-m-enddate] => 
+            [date-enddate] =>
+            [time-h-enddate] =>
+            [time-m-enddate] =>
             [ampm-enddate] => am
             [order_status] => Array
                 (
@@ -361,20 +371,20 @@ class reportController extends expController {
                 )
 
             [order-range-op] => e
-            [order-range-num] => 
+            [order-range-num] =>
             [order-price-op] => l
-            [order-price-num] => 
-            [pnam] => 
-            [sku] => 
+            [order-price-num] =>
+            [pnam] =>
+            [sku] =>
             [discounts] => Array
                 (
                     [0] => -1
                 )
 
-            [blshpname] => 
-            [email] => 
+            [blshpname] =>
+            [email] =>
             [bl-sp-zip] => s
-            [zip] => 
+            [zip] =>
             [bl-sp-state] => s
             [state] => Array
                 (
@@ -393,8 +403,8 @@ class reportController extends expController {
         //$order = 'id';
         //$prod = new product();
         // $order = new order();
-        //$items = $prod->find('all', 1, 'id DESC',25);  
-        //$items = $order->find('all', 1, 'id DESC',25);  
+        //$items = $prod->find('all', 1, 'id DESC',25);
+        //$items = $order->find('all', 1, 'id DESC',25);
         //$res = $mod->find('all',$sql,'id',25);
 
         //eDebug($items);
@@ -458,7 +468,7 @@ class reportController extends expController {
         }
 
         /*$geo = new geoRegion();
-        $geos = $geo->find('all');        
+        $geos = $geo->find('all');
         $states = array();
         $states[-1] = gt('--Any--');
         foreach ($geos as $skey=>$state)
@@ -473,7 +483,7 @@ class reportController extends expController {
 
         //eDebug(mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 //        $prev_month = strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
-        //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));  
+        //eDebug(strftime("%A, %d %B %Y", mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y"))));
 //        $now_date = strftime("%A, %d %B %Y");
         $prev_month = strftime(DISPLAY_DATE_FORMAT, mktime(0, 0, 0, (strftime("%m") - 1), 1, strftime("%Y")));
         $now_date = strftime(DISPLAY_DATE_FORMAT);
@@ -501,7 +511,7 @@ class reportController extends expController {
         $p = $this->params;
 
         //eDebug();
-        //build 
+        //build
         $start_sql = "SELECT DISTINCT(o.id), ";
         $count_sql = "SELECT COUNT(DISTINCT(o.id)) as c, ";
         $sql = "o.invoice_id, FROM_UNIXTIME(o.purchased,'%c/%e/%y %h:%i:%s %p') as purchased_date, b.firstname as bfirst, b.lastname as blast, concat('".expCore::getCurrencySymbol()."',format(o.grand_total,2)) as grand_total, os.title as status_title, ot.title as order_type";
@@ -685,7 +695,7 @@ class reportController extends expController {
         if (isset($p['payment_method'])) {
             $inc = 0;
             $sqltmp = '';
-            //get each calculator's id  
+            //get each calculator's id
 
             foreach ($p['payment_method'] as $s) {
                 if ($s == -1) continue;
@@ -710,13 +720,13 @@ class reportController extends expController {
         //echo $sql . $sqlwhere . "<br>";
         /*
         Need: order, orderitems, order status, ordertype, billingmethods, geo region, shipping methods, products
-            [date-startdate] => 
-            [time-h-startdate] => 
-            [time-m-startdate] => 
+            [date-startdate] =>
+            [time-h-startdate] =>
+            [time-m-startdate] =>
             [ampm-startdate] => am
-            [date-enddate] => 
-            [time-h-enddate] =>     
-            [time-m-enddate] => 
+            [date-enddate] =>
+            [time-h-enddate] =>
+            [time-m-enddate] =>
             [ampm-enddate] => am
             [order_status] => Array
                 (
@@ -732,20 +742,20 @@ class reportController extends expController {
                 )
 
             [order-range-op] => e
-            [order-range-num] => 
+            [order-range-num] =>
             [order-price-op] => l
-            [order-price-num] => 
-            [pnam] => 
-            [sku] => 
+            [order-price-num] =>
+            [pnam] =>
+            [sku] =>
             [discounts] => Array
                 (
                     [0] => -1
                 )
 
-            [blshpname] => 
-            [email] => 
+            [blshpname] =>
+            [email] =>
             [bl-sp-zip] => s
-            [zip] => 
+            [zip] =>
             [bl-sp-state] => s
             [state] => Array
                 (
@@ -772,11 +782,11 @@ class reportController extends expController {
         //$order = 'id';
         //$prod = new product();
         // $order = new order();
-        //$items = $prod->find('all', 1, 'id DESC',25);  
-        //$items = $order->find('all', 1, 'id DESC',25);  
+        //$items = $prod->find('all', 1, 'id DESC',25);
+        //$items = $order->find('all', 1, 'id DESC',25);
         //$res = $mod->find('all',$sql,'id',25);
         //eDebug($items);
-        //eDebug($sql . $sqlwhere); 
+        //eDebug($sql . $sqlwhere);
 
         $page = new expPaginator(array(
             //'model'=>'order',
@@ -803,7 +813,7 @@ class reportController extends expController {
             ),
         ));
 
-        //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010  
+        //strftime("%a %d-%m-%Y", get_first_day(3, 1, 2007)); Thursday, 1 April 2010
         //$d_month_previous = date('n', mktime(0,0,0,(strftime("%m")-1),1,strftime("%Y")));
 
         $action_items = array(
@@ -944,7 +954,7 @@ class reportController extends expController {
         unset($item);
         foreach ($items as $item) {
             $line = '';
-            //$line = expString::outputField("SMC Inventory - Laurie");         
+            //$line = expString::outputField("SMC Inventory - Laurie");
             $line .= expString::outputField($item['model']);
             //$line.= expString::outputField($item['name']);
             $line .= expString::outputField($item['qty']);
@@ -1160,9 +1170,9 @@ class reportController extends expController {
         //expSession::set('product_export_query', "SELECT  DISTINCT(p.id) FROM `exponent_product` p WHERE (title like '%Velcro%' OR feed_title like '%Velcro%' OR title like '%Multicam%' OR feed_title like '%Multicam%') AND parent_id = 0");
 
         $product = new product();
-        //$items = $product->find('all', '', 'id', 25);     
-        //$page = new expPaginator();   
-        //eDebug($page,true);   
+        //$items = $product->find('all', '', 'id', 25);
+        //$page = new expPaginator();
+        //eDebug($page,true);
         $page = new expPaginator(array(
 //            'model'      => 'product',
             //'records'=>$items,
@@ -1197,7 +1207,7 @@ class reportController extends expController {
             'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
             'columns'=>array(
                 'Customer'=>'lastname',
-                'Invoice #'=>'invoice_id', 
+                'Invoice #'=>'invoice_id',
                 'Total'=>'total',
                 'Date Purchased'=>'purchased',
                 'Status'=>'order_status_id',
@@ -1211,16 +1221,16 @@ class reportController extends expController {
             'page'         => $page,
             'action_items' => $action_items
         ));
-        // 
-        //     
-        // assign_to_template(array('page'=>$page)); 
+        //
+        //
+        // assign_to_template(array('page'=>$page));
     }
 
     /**
      * @deprecated 2.3.3 moved to expString
      */
     public static function parseAndTrimExport($str, $isHTML = false) { //�Death from above�? �
-        //echo "1<br>"; eDebug($str); 
+        //echo "1<br>"; eDebug($str);
 
         $str = str_replace("�", "&rsquo;", $str);
         $str = str_replace("�", "&lsquo;", $str);
@@ -1268,7 +1278,7 @@ class reportController extends expController {
         $str = str_replace("\,", ",", $str);
         $str = str_replace('""', '"', $str); //do this no matter what...in case someone added a quote in a non HTML field
         if (!$isHTML) {
-            //if HTML, then leave the single quotes alone, otheriwse replace w/ special Char            
+            //if HTML, then leave the single quotes alone, otheriwse replace w/ special Char
             $str = str_replace('"', "&quot;", $str);
         }
         $str = str_replace("�", "&#188;", $str);
@@ -1303,7 +1313,7 @@ class reportController extends expController {
         $str = str_replace("�", "&rdquo;", $str);
         $str = str_replace("�", "&ldquo;", $str);
         $str = str_replace("\r\n", " ", $str);
-        //$str = str_replace(",","\,",$str); 
+        //$str = str_replace(",","\,",$str);
 
         $str = str_replace('\"', "&quot;", $str);
         $str = str_replace('"', "&quot;", $str);
@@ -1539,14 +1549,14 @@ class reportController extends expController {
         //check query password to avoid DDOS
         /*
             * condition  = new
-            * description      
-            * id - SKU      
-            * link      
-            * price      
-            * title      
-            * brand - manufacturer      
-            * image link - fullsized image, up to 10, comma seperated          
-            * product type - category - "Electronics > Audio > Audio Accessories MP3 Player Accessories","Health & Beauty > Healthcare > Biometric Monitors > Pedometers"      
+            * description
+            * id - SKU
+            * link
+            * price
+            * title
+            * brand - manufacturer
+            * image link - fullsized image, up to 10, comma seperated
+            * product type - category - "Electronics > Audio > Audio Accessories MP3 Player Accessories","Health & Beauty > Healthcare > Biometric Monitors > Pedometers"
          */
         $out = '"id","condition","description","like","price","title","brand","image link","product type"' . chr(13) . chr(10);
 
@@ -1730,45 +1740,45 @@ class reportController extends expController {
         eDebug(date('Y-m-d'), true);
         // eDebug($this->tend);
         eDebug(date('Y-m-d, g:i:s A', $this->tend));
-        $allOrderCount = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend,null,null,null,true,false,$except,true);            
+        $allOrderCount = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend,null,null,null,true,false,$except,true);
         $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
         $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         //$sql .= " AND o.user_id != 0 AND o.order_type_id = 1";
-        
+
         eDebug($sql);
         $allCartsWithItems = $db->countObjectsBySql($sql);
-        
+
         $sql = "SELECT COUNT(DISTINCT(`orders_id`)) as c FROM " . $db->prefix . "orderitems oi ";
         $sql .= "JOIN " . $db->prefix . "orders o ON  oi.orders_id = o.id ";
         $sql .= "WHERE o.created_at >= " . $this->tstart . " AND o.created_at <= " . $this->tend;
         eDebug($sql);
         $realUserCartsWithItems = $db->countObjectsBySql($sql);
-                
-        $ordersInCheckout = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend . " AND user_id != 0",null,null,null,true,false,$except,true);            
-        
-        //$ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend . " AND user_id != 0 AND order_type_id = 1",null,null,null,true,false,$except,true);     
-        //$ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend . " AND user_id != 0",null,null,null,true,false,$except,true);     
-        $ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);     
-        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);     
-               
-        eDebug("All:" . $allOrderCount);    
-        eDebug("Carts w/ Items:" . $allCartsWithItems);           
-        eDebug("Carts w/ Items in Checkout:" . $ordersInCheckout);           
-        eDebug("Purchased:" . $ordersPurchased);  
-        
+
+        $ordersInCheckout = $this->o->find('count','created_at >= ' . $this->tstart . ' AND created_at <= ' . $this->tend . " AND user_id != 0",null,null,null,true,false,$except,true);
+
+        //$ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend . " AND user_id != 0 AND order_type_id = 1",null,null,null,true,false,$except,true);
+        //$ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend . " AND user_id != 0",null,null,null,true,false,$except,true);
+        $ordersPurchased = $this->o->find('count','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);
+        $orders = $this->o->find('all','purchased >= ' . $this->tstart . ' AND purchased <= ' . $this->tend,null,null,null,true,false,$except,true);
+
+        eDebug("All:" . $allOrderCount);
+        eDebug("Carts w/ Items:" . $allCartsWithItems);
+        eDebug("Carts w/ Items in Checkout:" . $ordersInCheckout);
+        eDebug("Purchased:" . $ordersPurchased);
+
         $totalAbandoned = ($allCartsWithItems - $ordersPurchased) / $allCartsWithItems;
         $checkoutAbandoned = ($ordersInCheckout - $ordersPurchased) / $ordersInCheckout;
         eDebug("Total Abandoned: " . $totalAbandoned);
         eDebug("Checkout Abandoned: " . $checkoutAbandoned);
-        
-        
-  
-        
+
+
+
+
         $quickrange = array(0=>'Last 24 Hours',1=>'Last 7 Days',2=>'Last 30 Days');
         $quickrange_default = isset($this->params['quickrange']) ? $this->params['quickrange'] : 0;
         assign_to_template(array('orders'=>$oar,'quickrange'=>$quickrange,'quickrange_default'=>$quickrange_default));
-        assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm)); 
+        assign_to_template(array('prev_month'=>$this->prev_month, 'now_date'=>$this->now_date, 'now_hour'=>$this->now_hour, 'now_min'=>$this->now_min, 'now_ampm'=>$this->now_ampm, 'prev_hour'=>$this->prev_hour, 'prev_min'=>$this->prev_min, 'prev_ampm'=>$this->prev_ampm));
         */
     }
 
@@ -1885,7 +1895,7 @@ class reportController extends expController {
         /*eDebug(BASE . "tmp/export.csv");
         $db->sql($sql);
         eDebug($db->error());*/
-        /*OPTIONALLY ENCLOSED BY '" . '"' . 
+        /*OPTIONALLY ENCLOSED BY '" . '"' .
         "' ESCAPED BY '\\'
         LINES TERMINATED BY '" . '\\n' .
         "' */
@@ -2016,7 +2026,7 @@ class reportController extends expController {
         /*eDebug(BASE . "tmp/export.csv");
         $db->sql($sql);
         eDebug($db->error());*/
-        /*OPTIONALLY ENCLOSED BY '" . '"' . 
+        /*OPTIONALLY ENCLOSED BY '" . '"' .
         "' ESCAPED BY '\\'
         LINES TERMINATED BY '" . '\\n' .
         "' */

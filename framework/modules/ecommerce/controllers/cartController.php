@@ -74,12 +74,12 @@ class cartController extends expController {
                 if (in_array($qkey, $this->params['prod-check'])) {
                     //this might not be working...FJD
                     $child = new $product_type($qkey);
-                    /*if ($quantity < $child->minimum_order_quantity)                       
+                    /*if ($quantity < $child->minimum_order_quantity)
                     {
-                        flash('message', $child->title . " - " . $child->model . " has a minimum order quantity of " . $child->minimum_order_quantity . 
+                        flash('message', $child->title . " - " . $child->model . " has a minimum order quantity of " . $child->minimum_order_quantity .
                         '. Your quantity has been adjusted accordingly.');
                         $quantity = $child->minimum_order_quantity;
-                        
+
                     }*/
                     $this->params['children'][$qkey] = $quantity;
                 }
@@ -171,7 +171,7 @@ class cartController extends expController {
             $item    = new orderitem($id);
             $updates = new stdClass();
             if (!empty($item->id)) {
-                //$newqty = $item->product->updateQuantity($this->params['value']);                  
+                //$newqty = $item->product->updateQuantity($this->params['value']);
                 $newqty = $item->product->updateQuantity($this->params['value']);
                 if ($newqty > $item->product->quantity) {
                     if ($item->product->availability_type == 1) {
@@ -217,10 +217,10 @@ class cartController extends expController {
                     if ($orderItem->product_id == $item->product_id) $qCheck += $orderItem->quantity;
                 }
                 //eDebug("Done",true);
-                //}                           
-                /*eDebug($item->quantity);   
-                eDebug($item->product->quantity); 
-                eDebug($qCheck);                  
+                //}
+                /*eDebug($item->quantity);
+                eDebug($item->product->quantity);
+                eDebug($qCheck);
                 eDebug($newqty,true);  */
                 //check minimum quantity
                 $qtyMessage = '';
@@ -243,7 +243,7 @@ class cartController extends expController {
                         //$updates->message = 'Only '.$item->product->quantity.' '.$item->products_name.' are currently in stock. Shipping may be delayed on the other '.$diff;
                     } elseif ($item->product->availability_type == 2) {
                         flash('error', $item->products_name . ' ' . gt('only has') . ' ' . $item->product->quantity . ' ' . gt('on hand. You can not add any more than that to your cart.'));
-                        /*$updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.';                        
+                        /*$updates->message = $item->products_name.' only has '.$item->product->quantity.' on hand. You can not add any more to your cart.';
                         $updates->cart_total = '$'.number_format($order->getCartTotal(), 2);
                         $updates->item_total = '$'.number_format($item->quantity*$item->products_price, 2);
                         $updates->item_id = $id;
@@ -302,7 +302,7 @@ class cartController extends expController {
 
             //eDebug($order,true);
             //check to see if we have calculate shipping yet - if shipping_total_before_discounts is set
-            //to something other than 0, then we have, but we'll set the estimtae to shipping_total to 
+            //to something other than 0, then we have, but we'll set the estimtae to shipping_total to
             //accomodate any applied discounts
             //if (!empty($order->shipping_total_before_discounts))
             //{
@@ -310,7 +310,7 @@ class cartController extends expController {
             //}
             //otherwise we'll grab an estimate
             //else
-            //{    
+            //{
             //$estimated_shipping = shipping::estimateShipping($order);
             /* $shipping = new shipping();
           $shipping->getRates();
@@ -332,7 +332,7 @@ class cartController extends expController {
                 ));
                 $discounts = null;
             } else {
-                // get all current discount codes that are valid and applied                
+                // get all current discount codes that are valid and applied
                 $discounts = $order->validateDiscounts();
             }
         } else {
@@ -703,7 +703,7 @@ class cartController extends expController {
         if (empty($result->errorCode)) {
             // if ($result->errorCode === "0" || $result->errorCode === 0)
             // {
-            // save out the cart total to the database		
+            // save out the cart total to the database
             $billing->billingmethod->update(array('billing_cost'=> $order->grand_total));
 
             // set the invoice number and purchase date in the order table..this finializes the order
@@ -1069,11 +1069,11 @@ class cartController extends expController {
         //this will change once we allow more than one coupon code
 
         $discount = new discounts();
-        $discount = $discount->getCouponByName($this->params['coupon_code']);
+        $discount = $discount->getCouponByName(expString::escape($this->params['coupon_code']));
 
         if (empty($discount)) {
             flash('error', gt("This discount code you entered does not exist."));
-            //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));       
+            //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
             expHistory::back();
         }
 
@@ -1100,7 +1100,7 @@ class cartController extends expController {
         } else {
             flash('error', $validateDiscountMessage);
         }
-        //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));                           
+        //redirect_to(array('controller'=>'cart', 'action'=>'checkout'));
         expHistory::back();
     }
 
@@ -1141,11 +1141,11 @@ class cartController extends expController {
     //this is ran after we alter the quantity of the cart, including
     //delete items or runing the updatequantity action
     private function rebuildCart() {
-        //group items by type and id               
+        //group items by type and id
         //since we can have the same product in different items (options and quantity discount)
         //remove items and readd?
         global $order;
-        //eDebug($order,true); 
+        //eDebug($order,true);
         $items = $order->orderitem;
         foreach ($order->orderitem as $item) {
             $item->delete();
@@ -1185,12 +1185,12 @@ class cartController extends expController {
         }
         $order->save();
         /*eDebug($items);
-        
-        
-        $options = array();  
+
+
+        $options = array();
         foreach ($this->optiongroup as $og) {
             if ($og->required && empty($params['options'][$og->id][0])) {
-                
+
                 flash('error', $this->title.' '.gt('requires some options to be selected before you can add it to your cart.'));
                 redirect_to(array('controller'=>store, 'action'=>'show', 'id'=>$this->id));
             }
@@ -1198,7 +1198,7 @@ class cartController extends expController {
                 foreach ($params['options'][$og->id] as $opt_id) {
                     $selected_option = new option($opt_id);
                     $cost = $selected_option->modtype == '$' ? $selected_option->amount :  $this->getBasePrice() * ($selected_option->amount * .01);
-                    $cost = $selected_option->updown == '+' ? $cost : $cost * -1;                      
+                    $cost = $selected_option->updown == '+' ? $cost : $cost * -1;
                     $price += $cost;
                     $options[] = array($selected_option->id,$selected_option->title,$selected_option->modtype,$selected_option->updown,$selected_option->amount);
                 }
@@ -1212,7 +1212,7 @@ class cartController extends expController {
         //eDebug($item, true);
         $item->products_price = $price;
         $item->options = serialize($options);
-        
+
         $sm = $order->getCurrentShippingMethod();
         $item->shippingmethods_id = $sm->id;
         $item->save();                            */
