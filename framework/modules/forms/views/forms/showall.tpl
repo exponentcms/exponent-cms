@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {foreach $page->records as $ukey=>$fields}
+                    {foreach $page->records as $ukey=>$fields}
                         <tr>
                             {foreach $page->columns as $field=>$caption}
                                 <td>

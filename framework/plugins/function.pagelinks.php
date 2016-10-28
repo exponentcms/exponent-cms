@@ -36,7 +36,7 @@
 function smarty_function_pagelinks($params, &$smarty) {
     $config = $smarty->getTemplateVars('config');
     if (!empty($params['more']) && (!empty($config['pagelinks']) && $config['pagelinks'] != "Disable page links")) {
-//        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
+//        if ($params['paginate']->total_pages < 2 && $config['multipageonly'] == 1) {
 //        } else {
             $text  = !empty($params['text']) ? $params['text'] : 'More ...';
             $title = !empty($params['title']) ? $params['title'] : $text;
@@ -47,17 +47,17 @@ function smarty_function_pagelinks($params, &$smarty) {
         }
 //        }
     } elseif (empty($config['pagelinks']) || (!empty($config['pagelinks']) && $config['pagelinks'] == "Top and Bottom")) {
-        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
+        if ($params['paginate']->total_pages < 2 && $config['multipageonly'] == 1) {
         } else {
             echo $params['paginate']->links;
         }
     } else if (!empty($params['top']) && (!empty($config['pagelinks']) && $config['pagelinks'] == "Top Only")) {
-        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
+        if ($params['paginate']->total_pages < 2 && $config['multipageonly'] == 1) {
         } else {
             echo $params['paginate']->links;
         }
     } else if (!empty($params['bottom']) && (!empty($config['pagelinks']) && $config['pagelinks'] == "Bottom Only")) {
-        if ($params['paginate']->total_pages == 1 && $config['multipageonly'] == 1) {
+        if ($params['paginate']->total_pages < 2 && $config['multipageonly'] == 1) {
         } else {
             echo $params['paginate']->links;
         }
