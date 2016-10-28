@@ -22,7 +22,9 @@
     {/css}
 
     <div class="module forms showall">
+        {if !empty($title)}
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
+        {/if}
         {if $description != ""}
             {$description}
         {/if}

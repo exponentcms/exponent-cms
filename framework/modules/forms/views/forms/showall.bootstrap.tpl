@@ -22,7 +22,9 @@
     {/css}
 
     <div class="module forms showall">
+        {if !empty($title)}
         <{$config.item_level|default:'h2'}>{$title}</{$config.item_level|default:'h2'}>
+        {/if}
         {if $description != ""}
             {$description}
         {/if}
@@ -75,7 +77,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                {foreach $page->records as $ukey=>$fields}
+                    {foreach $page->records as $ukey=>$fields}
                         <tr>
                             {foreach $page->columns as $field=>$caption}
                                 <td>
