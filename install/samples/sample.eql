@@ -244,7 +244,7 @@ RECORD:O:8:"stdClass":16:{s:2:"id";s:2:"19";s:5:"title";s:12:"First Monday";s:4:
 
 TABLE:eventdate
 TABLEDEF:a:4:{s:2:"id";a:3:{i:0;i:101;i:3;b:1;i:4;b:1;}s:8:"event_id";a:2:{i:0;i:101;i:3;b:0;}s:4:"date";a:2:{i:0;i:105;i:3;b:0;}s:13:"location_data";a:3:{i:0;i:102;i:1;i:200;i:3;b:0;}}
-RECORD:O:8:"stdClass":4:{s:2:"id";s:3:"186";s:8:"event_id";s:2:"20";s:4:"date";s:10:"1477872000";s:13:"location_data";s:96:"O:8:"stdClass":3:{s:3:"mod";s:5:"event";s:3:"src";s:20:"@random48e7cc857e641";s:3:"int";s:0:"";}";}
+RECORD:O:8:"stdClass":4:{s:2:"id";s:3:"186";s:8:"event_id";s:2:"20";s:4:"date";s:10:"1477612800";s:13:"location_data";s:96:"O:8:"stdClass":3:{s:3:"mod";s:5:"event";s:3:"src";s:20:"@random48e7cc857e641";s:3:"int";s:0:"";}";}
 RECORD:O:8:"stdClass":4:{s:2:"id";s:3:"185";s:8:"event_id";s:2:"19";s:4:"date";s:10:"1543795200";s:13:"location_data";s:96:"O:8:"stdClass":3:{s:3:"mod";s:5:"event";s:3:"src";s:20:"@random48e7cc857e641";s:3:"int";s:0:"";}";}
 RECORD:O:8:"stdClass":4:{s:2:"id";s:3:"184";s:8:"event_id";s:2:"19";s:4:"date";s:10:"1541376000";s:13:"location_data";s:96:"O:8:"stdClass":3:{s:3:"mod";s:5:"event";s:3:"src";s:20:"@random48e7cc857e641";s:3:"int";s:0:"";}";}
 RECORD:O:8:"stdClass":4:{s:2:"id";s:3:"183";s:8:"event_id";s:2:"19";s:4:"date";s:10:"1538352000";s:13:"location_data";s:96:"O:8:"stdClass":3:{s:3:"mod";s:5:"event";s:3:"src";s:20:"@random48e7cc857e641";s:3:"int";s:0:"";}";}
@@ -284,7 +284,7 @@ RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"3";s:5:"title";s:5:"PDF's";s:7:"sef_url";
 RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"4";s:5:"title";s:5:"Doc's";s:7:"sef_url";s:5:"doc-s";s:4:"rank";s:1:"6";s:6:"module";s:12:"filedownload";s:5:"color";s:0:"";}
 RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"5";s:5:"title";s:18:"Without Attachment";s:7:"sef_url";s:18:"without-attachment";s:4:"rank";s:1:"7";s:6:"module";s:9:"portfolio";s:5:"color";s:0:"";}
 RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"6";s:5:"title";s:15:"With Attachment";s:7:"sef_url";s:15:"with-attachment";s:4:"rank";s:1:"8";s:6:"module";s:9:"portfolio";s:5:"color";s:0:"";}
-RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"7";s:5:"title";s:13:"Special Event";s:7:"sef_url";s:35:"special-event-1358484908-0.33479500";s:4:"rank";s:1:"3";s:6:"module";s:5:"event";s:5:"color";s:7:"#0000FF";}
+RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"7";s:5:"title";s:13:"Special Event";s:7:"sef_url";s:13:"special-event";s:4:"rank";s:1:"3";s:6:"module";s:5:"event";s:5:"color";s:7:"#0000FF";}
 RECORD:O:8:"stdClass":6:{s:2:"id";s:1:"8";s:5:"title";s:7:"Flowers";s:7:"sef_url";s:7:"flowers";s:4:"rank";s:1:"2";s:6:"module";s:5:"photo";s:5:"color";s:0:"";}
 
 TABLE:expComments
