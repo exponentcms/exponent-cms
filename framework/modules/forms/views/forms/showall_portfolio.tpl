@@ -104,7 +104,7 @@
                     {clear}
                 {/if}
             {foreachelse}
-                <h4>{$config.no_records_msg}</h4>
+                <h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4>
             {/foreach}
         </div>
         {pagelinks paginate=$page bottom=1}
