@@ -374,12 +374,30 @@ function smarty_function_control($params, &$smarty) {
                     } else {
                         // include the library and show the form control
 //                        require_once(BASE . 'external/recaptchalib.php');
-                        require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
+//                        require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                         $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                         echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
-                        echo '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
-                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
+                        //create unique recaptcha blocks
+                        $randomNumber = mt_rand(10000000, 99999999);
+                        echo '<div class="g-recaptcha" id="recaptcha-block-'.$randomNumber.'" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+//                        echo '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
                         echo '<p>', gt('Fill out the above security question to submit your form.'), '</p>';
+                        $content = "
+                            var captcha;
+                            var myCallBack = function() {
+                                var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
+                                for (i = 0; i < recaptchas.length; i++) {
+                                    captcha = grecaptcha.render(recaptchas[i].id, {
+                                      'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                      'theme'   : '" . $re_theme . "'
+                                    });
+                                }
+                            };";
+                        expJavascript::pushToFoot(array(
+                            "unique"=>'recaptcha',
+                            "content"=>$content,
+                            "src"=>"https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                         ));
                     }
                     return;
                 } elseif (ANTI_SPAM_CONTROL == 0) {
@@ -552,9 +570,9 @@ function smarty_function_control($params, &$smarty) {
         }
 
         /*$labelclass = isset($params['labelclass']) ? ' '.$params['labelclass'] : '';
-        
+
         //container for the control set, including labelSpan and input
-        if($params['type']!='hidden') echo '<label id="'.$control->id.'Control" class="control">'; 
+        if($params['type']!='hidden') echo '<label id="'.$control->id.'Control" class="control">';
 
 
         //Write out the label for this control if the user specified a label and there is no label position or position is set to left
@@ -569,7 +587,7 @@ function smarty_function_control($params, &$smarty) {
         } else {
             $params['label'] = null;
         }
-        //write out the control itself...and then we're done. 
+        //write out the control itself...and then we're done.
         if (isset($params['model'])) {
             $control_output = $control->toHTML($params['label'], $params['model'] . '[' . $params['name'] . ']');
         } else {
@@ -584,7 +602,7 @@ function smarty_function_control($params, &$smarty) {
         if (isset($params['label']) && $params['labelpos'] == 'right') {
             echo '<span class="label'.$labelclass.'">'.$params['label'].'</span>';
         }
-        
+
         //close the control container div
         if($params['type']!='hidden'){ echo '</label>'; }
         */
