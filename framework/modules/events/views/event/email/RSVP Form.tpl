@@ -16,9 +16,16 @@
 <div class="events email rsvp">
     {group label="RSVP to this Event"|gettext}
         {form action=send_feedback}
+            {if !empty($event->event->title)}
+                {$title = $event->event->title}
+            {elseif !empty($event->title)}
+                {$title = $event->title}
+            {else}
+                {$title = ''}
+            {/if}
             {control type=hidden name=formname value=$feedback_form}
             {control type=hidden name=id value=$event->id}
-            {control type=hidden name=subject value="RSVP for {$event->event->title}"}
+            {control type=hidden name=subject value="RSVP for `$title`"}
             {control type=text name=name label="Your Name"|gettext}
             {control type=email name=email label="Your Email Address"|gettext}
             {control type=tel name=phone label="Your Phone"|gettext}
