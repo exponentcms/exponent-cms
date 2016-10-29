@@ -107,6 +107,7 @@ class yuicalendarcontrol extends formcontrol
         $date_input = new textcontrol($default);
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
+        $date_input->description = $this->description;
 //        $date_input->disabled = 'disabled';
         $html = "<!-- cke lazy -->";
         $html .= $date_input->toHTML(null, $name);
@@ -203,11 +204,14 @@ class yuicalendarcontrol extends formcontrol
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption    = "";
+            $object->description = "";
             $object->showtime   = true;
 //            $object->is_hidden  = false;
         }
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
@@ -229,6 +233,7 @@ class yuicalendarcontrol extends formcontrol
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
+        $object->description = $values['description'];
         $object->showtime   = !empty($values['showtime']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;

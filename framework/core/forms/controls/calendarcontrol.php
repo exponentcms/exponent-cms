@@ -110,6 +110,7 @@ class calendarcontrol extends formcontrol {
         </div>
         <div style=\"clear:both\"></div>
         ";
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
 
         $script = "
         YUI(EXPONENT.YUI3_CONFIG).use('*', function(Y) {
@@ -306,11 +307,13 @@ class calendarcontrol extends formcontrol {
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->showtime = true;
         }
-
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit","",new buttongroupcontrol(gt('Save'),"",gt('Cancel'),"",'editable'));
@@ -330,6 +333,7 @@ class calendarcontrol extends formcontrol {
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
+        $object->description = $values['description'];
         $object->showtime   = !empty($values['showtime']);
         return $object;
     }

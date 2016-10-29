@@ -104,13 +104,14 @@ class yuicalendarcontrol extends formcontrol
         }
 
         $date_input = new hiddenfieldcontrol($default);
-        if ($this->horizontal) 
+        if ($this->horizontal)
             $date_input->horizontal_top = true;
 //        $date_input->id = $idname;
 //        $date_input->name = $idname;
 //        $date_input->disabled = 'disabled';
 //        $html = "<!-- cke lazy -->";
         $html = '<div class="input-group input-append" id="'.$idname.'dateRangePicker">'.$date_input->toHTML(null, $name).'</div>';
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
 //        $html .= "
 //        <div style=\"clear:both\"></div>
 //        ";
@@ -179,11 +180,14 @@ class yuicalendarcontrol extends formcontrol
         if (!isset($object->identifier)) {
             $object->identifier = "";
             $object->caption    = "";
+            $object->description = "";
             $object->showtime   = true;
 //            $object->is_hidden  = false;
         }
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime",gt('Show Time'), new checkboxcontrol($object->showtime,false));
 //        $form->register("is_hidden", gt('Make this a hidden field on initial entry'), new checkboxcontrol(!empty($object->is_hidden),false));
         if (!expJavascript::inAjaxAction())
@@ -205,6 +209,7 @@ class yuicalendarcontrol extends formcontrol
         }
         $object->identifier = $values['identifier'];
         $object->caption    = $values['caption'];
+        $object->description = $values['description'];
         $object->showtime   = !empty($values['showtime']);
 //        $object->is_hidden  = isset($values['is_hidden']);
         return $object;
