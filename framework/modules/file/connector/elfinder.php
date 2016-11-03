@@ -226,7 +226,7 @@ class elFinderSimpleLogger
         }
     }
 
-} // END class 
+} // END class
 //$logger = new elFinderSimpleLogger(BASE.'tmp/elfinder.log');
 
 /**
@@ -279,7 +279,7 @@ class elFinderTestACL
         return true;
     }
 
-} // END class 
+} // END class
 //$acl = new elFinderTestACL();
 
 /**
@@ -370,9 +370,9 @@ $opts = array(
             'accessControl'   => 'access',
             // 'accessControl' => array($acl, 'fsAccess'),
             // 'accessControlData' => array('uid' => 1),
-            'uploadDeny'      => array('all'),
             'uploadAllow'     => array('all'),
-            'uploadOrder'     => 'deny,allow',
+            'uploadDeny'      => array('application/x-shockwave-flash'),
+            'uploadOrder'     => 'allow,deny',
             'uploadOverwrite' => true,
 //            'uploadMaxSize'   => '128m',
             // 'copyOverwrite' => false,
