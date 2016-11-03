@@ -39,6 +39,7 @@ class usersController extends expController {
         'update'           => 'Update Users',
         'show'             => 'Show User',
         'showall'          => 'Show Users',
+        'getUsersByJSON'   => 'Get Users',
     );
 
     static function displayname() {
