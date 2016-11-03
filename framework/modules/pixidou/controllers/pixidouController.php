@@ -25,7 +25,7 @@ class pixidouController extends expController {
 	public $cacheDir = "tmp/pixidou/";
     public $requires_login = array(
         'editor'=>'You must be logged in to perform this action',
-        'exitEditor'=>'You must be logged in to perform this action',
+        'exiteditor'=>'You must be logged in to perform this action',
     );
 
     static function displayname() { return gt("Pixidou Image Editor"); }

@@ -25,12 +25,12 @@ class navigationController extends expController {
         'showall' => 'Show Navigation',
         'breadcrumb' => 'Breadcrumb',
     );
-    protected $remove_permissions = array(
+//    protected $remove_permissions = array(
 //        'configure',
 //        'create',
 //        'delete',
 //        'edit'
-    );
+//    );
     protected $add_permissions = array(
         'manage'    => 'Manage',
         'view'      => "View Page"
