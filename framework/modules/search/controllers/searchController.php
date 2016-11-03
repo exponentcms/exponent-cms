@@ -58,7 +58,7 @@ class searchController extends expController {
         if (get_magic_quotes_gpc()) {
             $terms = stripslashes($terms);
         }
-        $terms = htmlspecialchars($terms);
+        $terms = expString::escape(htmlspecialchars($terms));
 
         if ($router->current_url == substr(URL_FULL, 0, -1)) {  // give us a user friendly url
             unset($router->params['int']);
