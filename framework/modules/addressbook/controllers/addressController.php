@@ -32,9 +32,16 @@ class addressController extends expController {
     );
     protected $manage_permissions = array(
 //        'import' => 'Import External Addresses',
-        'process' => 'Import External Addresses'
+        'process' => 'Import External Addresses',
+        'edit_country' => 'Edit Country',
+        'delete_country' => 'Delete Country',
+        'update_country' => 'Update Country',
+        'edit_region' => 'Edit Region',
+        'delete_region' => 'Delete Region',
+        'update_region' => 'Update Region',
     );
     public $requires_login = array(
+        'edit'=>'You must be logged in to perform this action',
         'myaddressbook'=>'You must be logged in to perform this action',
     );
 	public $remove_configs = array(
@@ -65,8 +72,18 @@ class addressController extends expController {
 
     public function edit()
     {
-        if((isset($this->params['id']))) $record = new address(intval($this->params['id']));
-        else $record = null;
+        global $user;
+
+        $id = !empty($this->params['id']) ? $this->params['id'] : null;
+
+        // check to see if we should be editing.  You either need to be an admin, or editing own account.
+        if ($user->isAdmin() || ($user->id == $id)) {
+            $record = new address($id);
+        } else {
+            flash('error', gt('You do not have the proper permissions to edit this address'));
+            expHistory::back();
+        }
+
         $config = ecomconfig::getConfig('address_allow_admins_all');
         assign_to_template(array(
             'record'=>$record,
@@ -83,7 +100,7 @@ class addressController extends expController {
 		global $user;
 
 		// check if the user is logged in.
-		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));
+		expQueue::flashIfNotLoggedIn('message',gt('You must be logged in to manage your address book.'));  //fixme is this redundant to common routine?
         if (!$user->isAdmin() && $this->params['user_id'] != $user->id) {
             unset($this->params['user_id']);
         }
