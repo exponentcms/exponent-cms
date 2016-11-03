@@ -39,6 +39,8 @@ class navigationController extends expController {
         'move'      => 'Move Page',
         'remove'    => 'Remove Page',
         'reparent'    => 'Reparent Page',
+        'dragndroprerank'    => 'Rerank Page',
+        'dragndroprerank2'    => 'Rerank Page',
     );
     public $remove_configs = array(
         'aggregation',
@@ -858,8 +860,8 @@ class navigationController extends expController {
     public static function DragnDropReRank() {
         global $db, $router;
 
-        $move   = $router->params['move'];
-        $target = $router->params['target'];
+        $move   = intval($router->params['move']);
+        $target = intval($router->params['target']);
         $type   = $router->params['type'];
         $targSec = $db->selectObject("section","id=".$target);
 //        $targSec  = new section($target);
