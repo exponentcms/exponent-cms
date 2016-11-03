@@ -62,6 +62,8 @@ class expHTMLEditorController extends expController
         parent:: __construct($src, $params);
         if (empty($this->params['editor'])) {
             $this->params['editor'] = SITE_WYSIWYG_EDITOR;
+        } else {
+            $this->params['editor'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['editor']);
         }
     }
 
@@ -171,7 +173,7 @@ class expHTMLEditorController extends expController
                 $demo->skin = 'lightgray';
             }
         } else {
-            $demo = self::getEditorSettings($this->params['id'], expString::escape($this->params['editor']));
+            $demo = self::getEditorSettings($this->params['id'], $this->params['editor']);
         }
         assign_to_template(
             array(
