@@ -28,7 +28,7 @@ class expRatingController extends expController {
     static function displayname() { return gt("Ratings Manager"); }
     static function description() { return gt("This module is for managing ratings on records"); }
     static function hasSources() { return false; }
-	
+
 	function __construct($src=null, $params=array()) {
         global $user;
 	    parent::__construct($src, $params);
@@ -40,7 +40,9 @@ class expRatingController extends expController {
      */
     function update() {
         global $db, $user;
-        	
+
+        $this->params['content_type'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['content_type']);
+        $this->params['subtype'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['subtype']);
         $this->params['id'] = $db->selectValue('content_expRatings','expratings_id',"content_id='".$this->params['content_id']."' AND content_type='".$this->params['content_type']."' AND subtype='".$this->params['subtype']."' AND poster='".$user->id."'");
         $msg = gt('Thank you for your rating');
         $rating = new expRating($this->params);
@@ -59,11 +61,11 @@ class expRatingController extends expController {
 
         $ar = new expAjaxReply(200,$msg);
         $ar->send();
-		
+
         // flash('message', $msg);
         // expHistory::back();
 	}
-	
+
 }
 
 ?>
