@@ -2133,6 +2133,7 @@ exit();
 //        global $db, $user;
         global $db;
 
+        $this->params['query'] = expString::escape($this->params['query']);
         $sql = "select DISTINCT(a.id) as id, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "addresses as a "; //R JOIN " .
         //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";
@@ -2156,6 +2157,7 @@ exit();
 //        global $db, $user;
         global $db;
 
+        $this->params['query'] = expString::escape($this->params['query']);
         $sql = "select DISTINCT(a.id) as id, a.source as source, a.firstname as firstname, a.middlename as middlename, a.lastname as lastname, a.organization as organization, a.email as email ";
         $sql .= "from " . $db->prefix . "external_addresses as a "; //R JOIN " .
         //$db->prefix . "billingmethods as bm ON bm.addresses_id=a.id ";

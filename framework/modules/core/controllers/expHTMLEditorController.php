@@ -171,7 +171,7 @@ class expHTMLEditorController extends expController
                 $demo->skin = 'lightgray';
             }
         } else {
-            $demo = self::getEditorSettings($this->params['id'], $this->params['editor']);
+            $demo = self::getEditorSettings($this->params['id'], expString::escape($this->params['editor']));
         }
         assign_to_template(
             array(
