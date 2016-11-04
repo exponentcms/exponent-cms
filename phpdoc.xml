@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpdoc>
-    <title>Exponent v2.4.1</title>
+    <title>Exponent v2.4.0</title>
     <parser>
         <default-package-name>Framework</default-package-name>
         <target>../exponent-api/phpdoc</target>
