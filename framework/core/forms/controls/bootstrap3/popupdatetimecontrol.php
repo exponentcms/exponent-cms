@@ -80,20 +80,35 @@ class popupdatetimecontrol extends formcontrol
             $this->default = time();
         }
 
-        if ($this->default == null) {
-            $myval = strftime(DISPLAY_DATE_FORMAT, time());
-        } else {
-            if (is_string($this->default))
-                $this->default = strtotime($this->default);
-            if ($this->showtime) {
-                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
-                        DISPLAY_TIME_FORMAT,
-                        $this->default
-                    );
-            } else {
-                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default);
-            }
+//        if ($this->default == null) {
+//            $myval = strftime(DISPLAY_DATE_FORMAT, time());
+//        } else {
+//            if (is_string($this->default))
+//                $this->default = strtotime($this->default);
+//            if ($this->showtime) {
+//                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
+//                        DISPLAY_TIME_FORMAT,
+//                        $this->default
+//                    );
+//            } else {
+//                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default);
+//            }
+//        }
+        if (empty($this->default)) {
+            $myval = time();
         }
+        if (is_numeric($this->default)) {
+            if ($this->showdate && !$this->showtime) {
+                $myval = date('n/j/Y', $this->default);
+            } elseif (!$this->showdate && $this->showtime) {
+                $myval = date('H:i', $this->default);
+            } else {
+                $myval = date('n/j/Y H:i', $this->default);
+            }
+        } else {
+            $myval = $this->default;
+        }
+
         $date_input = new textcontrol($myval);
         $date_input->id = $idname;
         $date_input->name = $idname;
