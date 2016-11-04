@@ -579,16 +579,17 @@ class expRouter {
     public function buildCurrentUrl() {
         $url =  URL_BASE;
         if ($this->url_style == 'sef') {
-            if (count($this->params) > 2) {
-                $url .= substr(PATH_RELATIVE,0,-1).'/'.$this->params['controller'].'/'.$this->params['action'];
-                foreach ($this->params as $key=>$value) {
-                    if ($key != 'controller' && $key != 'action') {
-                        $url .= '/' . $key . '/' . $value;
-                    }
-                }
-            } else {
-                $url .= substr(PATH_RELATIVE,0,-1).$this->sefPath;  //fixme do we need to clean this up?
-            }
+//            if (count($this->params) > 2) {
+//                $url .= substr(PATH_RELATIVE,0,-1).'/'.$this->params['controller'].'/'.$this->params['action'];
+//                foreach ($this->params as $key=>$value) {
+//                    if ($key != 'controller' && $key != 'action') {
+//                        $url .= '/' . $key . '/' . $value;
+//                    }
+//                }
+//            } else {
+//                $url .= substr(PATH_RELATIVE,0,-1).$this->sefPath;  //fixme do we need to clean this up?
+//            }
+            $url = $this->makeLink($this->params);  // build a clean url
         } else {
             $url .= urldecode((empty($_SERVER['REQUEST_URI'])) ? $_ENV['REQUEST_URI'] : $_SERVER['REQUEST_URI']);
         }
