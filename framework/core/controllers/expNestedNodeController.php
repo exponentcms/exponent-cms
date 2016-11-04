@@ -28,12 +28,12 @@ class expNestedNodeController extends expController {
 
 	function edit() {
 //		global $db;
-		if (empty($this->params['id'])) { 
+		if (empty($this->params['id'])) {
 			//$parent = new $this->basemodel_name($this->params['parent_id']);
-			$node = new $this->basemodel_name(array('parent_id'=>$this->params['parent'])); 
-		} else { 
+			$node = new $this->basemodel_name(array('parent_id'=>$this->params['parent']));
+		} else {
 			$node = new $this->basemodel_name($this->params['id']);
-		}	
+		}
 
 		assign_to_template(array(
             'node'=>$node
@@ -45,12 +45,14 @@ class expNestedNodeController extends expController {
 		$node->delete();
 		redirect_to(array('controller'=>$this->classname, 'action'=>'manage'));
 	}
-	
+
 	function reorder() {
 		if (empty($this->params['type']))
             return false;
-	
+
+        $this->params['move']   = intval($this->params['move']);
 		$movenode = new $this->basemodel_name($this->params['move']);
+        $this->params['target'] = intval($this->params['target']);
 		switch($this->params['type']) {
             case 'b':  // process jstree data
 			case 'addbefore':
@@ -76,8 +78,8 @@ class expNestedNodeController extends expController {
 //		$nodes = $db->selectNestedTree($this->model_table);
         $nodes = expNestedNode::getTree($this->model_table);
 		foreach($nodes as $i=>$val){
-			$nodes[$i]->draggable = true; 
-			$nodes[$i]->pickable = true; 
+			$nodes[$i]->draggable = true;
+			$nodes[$i]->pickable = true;
 		}
 		assign_to_template(array(
             'nodes'=>$nodes
