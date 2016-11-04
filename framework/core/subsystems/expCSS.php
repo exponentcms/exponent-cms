@@ -123,10 +123,15 @@ class expCSS {
         }
 
         // if within an ajax call, immediately output the css
-        //FIXME we ONLY output corecss, links, and inline styles in $params['css']... with less processing
+        //FIXME we ONLY output primercss, corecss, links, and inline styles in $params['css']... with less processing
         if (expJavascript::inAjaxAction()) {
             // we make several assumptions since we are only running a single action
 		    echo "<div class=\"io-execute-response\">";
+            if (!empty($css_primer)){
+                foreach ($css_primer as $path) {
+                    echo '<link rel="stylesheet" type="text/css" href="',$path,'">' . "\r\n";
+                }
+            }
             if (!empty($css_core)){
                 foreach ($css_core as $path) {
                     echo '<link rel="stylesheet" type="text/css" href="',$path,'">' . "\r\n";

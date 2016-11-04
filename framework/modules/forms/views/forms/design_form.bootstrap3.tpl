@@ -182,6 +182,17 @@
                                     success:function(msg) {
                                         // get the (fake) control html and display it to the page
                                         $(ctl).closest('.item').replaceWith(msg);  //  update control in the displayed form
+                                        // we need to run javascript and push the css to head
+                                        $(ctl).closest('.item').find('script').each(function(k, n){
+                                            if(!$(n).attr('src')){
+                                                eval($(n).html);
+                                            } else {
+                                                $.getScript($(n).attr('src'));
+                                            };
+                                        });
+                                        $(ctl).closest('.item').find('link').each(function(k, n){
+                                            $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
+                                        });
                                         $('#abc123 .delete').attr('onClick', '');  // remove delete button non-ajax onClick action
                                     }
                                 });
@@ -270,6 +281,17 @@
                                     // get the (fake) control html and display it to the page
                                     // we then need to remove it from the display
                                     $(evt.item).replaceWith(msg);  //  add control to the displayed form
+                                    // we need to run javascript and push the css to head
+                                    $(evt.item).find('script').each(function(k, n){
+                                        if(!$(n).attr('src')){
+                                            eval($(n).html);
+                                        } else {
+                                            $.getScript($(n).attr('src'));
+                                        };
+                                    });
+                                    $(evt.item).find('link').each(function(k, n){
+                                        $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
+                                    });
                                     $('#abc123 .delete').attr('onClick', '');
                                     // we need to check if there is an empty item on the abc123 form and if so delete it
                                     $('#abc123 .item.empty').remove();
@@ -323,6 +345,17 @@
                                             }
                                             // get the (fake) control html and display it to the page
                                             $(evt.item).replaceWith(msg);  //  add control to the displayed form
+                                            // we need to run javascript and push the css to head
+                                            $(evt.item).find('script').each(function(k, n){
+                                                if(!$(n).attr('src')){
+                                                    eval($(n).html);
+                                                } else {
+                                                    $.getScript($(n).attr('src'));
+                                                };
+                                            });
+                                            $(evt.item).find('link').each(function(k, n){
+                                                $("head").append("  <link href=\"" + $(n).attr('href') + "\" rel=\"stylesheet\" type=\"text/css\" />");
+                                            });
                                             $('#abc123 .delete').attr('onClick', '');
                                             // we need to check if there is an empty item on the abc123 form and if so delete it
                                             $('#abc123 .item.empty').remove();

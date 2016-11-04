@@ -737,7 +737,7 @@ class expFile extends expRecord {
         $name = preg_replace('/[^A-Za-z0-9\.]/','_',$name);
         if ($name[0] == '.')  // attempt to upload a dot file
             $name[0] = '_';
-        $name = str_replace('_', '..', $name);  // attempt to upload with redirection to new folder
+        $name = str_replace('..', '_', $name);  // attempt to upload with redirection to new folder
         return $name;
 //        return preg_replace('/[^A-Za-z0-9\.]/', '-', $name);
     }

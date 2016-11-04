@@ -53,8 +53,9 @@ $page = $_REQUEST['page'];
 
 // Superadmin must be logged in to do an upgrade
 global $user;
+$tmp = strpos($page, 'upgrade-');
 if (strpos($page, 'upgrade-') !== false) {
-    if(empty($user) || (!empty($user->id) && !$user->isSuperAdmin())) {
+    if(empty($user) || empty($user->id) || (!empty($user->id) && !$user->isSuperAdmin())) {
         header('Location: ../index.php');
         exit();
     }

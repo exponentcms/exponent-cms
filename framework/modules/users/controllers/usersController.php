@@ -39,6 +39,7 @@ class usersController extends expController {
         'update'           => 'Update Users',
         'show'             => 'Show User',
         'showall'          => 'Show Users',
+        'getUsersByJSON'   => 'Get Users',
     );
 
     static function displayname() {
@@ -780,7 +781,7 @@ class usersController extends expController {
 
         $group = new group();
         if (!empty($this->params['redirect'])) {
-            $this->params['redirect'] = $db->selectValue('section', 'sef_name', 'id=' . $this->params['redirect']);
+            $this->params['redirect'] = $db->selectValue('section', 'sef_name', 'id=' . intval($this->params['redirect']));
         }
         $group->update($this->params);
         expHistory::back();

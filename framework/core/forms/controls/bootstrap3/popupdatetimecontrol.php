@@ -80,23 +80,39 @@ class popupdatetimecontrol extends formcontrol
             $this->default = time();
         }
 
-        if ($this->default == null) {
-            $myval = strftime(DISPLAY_DATE_FORMAT, time());
-        } else {
-            if (is_string($this->default))
-                $this->default = strtotime($this->default);
-            if ($this->showtime) {
-                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
-                        DISPLAY_TIME_FORMAT,
-                        $this->default
-                    );
-            } else {
-                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default);
-            }
+//        if ($this->default == null) {
+//            $myval = strftime(DISPLAY_DATE_FORMAT, time());
+//        } else {
+//            if (is_string($this->default))
+//                $this->default = strtotime($this->default);
+//            if ($this->showtime) {
+//                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default) . ' ' . strftime(
+//                        DISPLAY_TIME_FORMAT,
+//                        $this->default
+//                    );
+//            } else {
+//                $myval = strftime(DISPLAY_DATE_FORMAT, $this->default);
+//            }
+//        }
+        if (empty($this->default)) {
+            $myval = time();
         }
+        if (is_numeric($this->default)) {
+            if ($this->showdate && !$this->showtime) {
+                $myval = date('n/j/Y', $this->default);
+            } elseif (!$this->showdate && $this->showtime) {
+                $myval = date('H:i', $this->default);
+            } else {
+                $myval = date('n/j/Y H:i', $this->default);
+            }
+        } else {
+            $myval = $this->default;
+        }
+
         $date_input = new textcontrol($myval);
         $date_input->id = $idname;
         $date_input->name = $idname;
+        $date_input->description = $this->description;
         $date_input->append = 'calendar';
         if ($this->horizontal)
             $date_input->horizontal_top = true;
@@ -188,10 +204,13 @@ class popupdatetimecontrol extends formcontrol
             $object = new stdClass();
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->showtime = true;
         }
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
@@ -212,6 +231,7 @@ class popupdatetimecontrol extends formcontrol
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->showtime = !empty($values['showtime']);
         return $object;
     }

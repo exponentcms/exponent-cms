@@ -117,6 +117,7 @@
                 {$feedback_form = $item->feedback_form}
             {/if}
             {if !empty($feedback_form)}
+                {$event = $item}
                 {toggle unique=$name|cat:$item->id collapsed=1 title='Click to open'|gettext|cat:' '|cat:$feedback_form}
                     {include file="email/$feedback_form.tpl"}
                 {/toggle}

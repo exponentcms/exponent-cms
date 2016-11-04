@@ -509,8 +509,8 @@ class expString {
      * Scrub input string for possible security issues.
      *
      * @static
-     * @param $data string
-     * @return string
+     * @param $data string|array
+     * @return string|array
      */
     public static function sanitize(&$data) {
 //        return $data;

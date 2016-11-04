@@ -16,7 +16,11 @@
 {uniqueid prepend="countdown" assign="name"}
 
 {css unique="countdown" link="`$asset_path`css/countdown.css"}
-
+{literal}
+    #note{
+    	max-width: 100%;
+    }
+{/literal}
 {/css}
 
 <div class="module countdown show show_circles">
@@ -24,7 +28,7 @@
     {if $moduletitle && !($config.hidemoduletitle xor $smarty.const.INVERT_HIDE_TITLE)}<{$config.heading_level|default:'h1'}>{$moduletitle}</{$config.heading_level|default:'h1'}>{/if}
     {if !$config}
         <strong style="color:red">{"To Display the 'Countdown' Module, you MUST First 'Configure Settings'"|gettext|cat:"!"}</strong>
-    {else}    
+    {else}
         {if $config.title}<h2 class="clocktitle">{$config.title}</h2>{/if}
         {$date = explode('/',$config['date-count'])}
         {if $config['ampm-count'] == 'pm'}{$hour = $config['time-h-count'] + 12}{else}{$hour = $config['time-h-count']}{/if}

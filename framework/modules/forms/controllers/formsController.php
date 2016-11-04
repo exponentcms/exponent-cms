@@ -392,14 +392,31 @@ class formsController extends expController {
                             // skip it for logged on users based on config
                         } else {
                             // include the library and show the form control
-                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
+//                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
                             $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
-                            $antispam .= '<div class="g-recaptcha" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
-                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=' . LOCALE . '" async defer></script>';
+                            //create unique recaptcha blocks
+                            $randomNumber = mt_rand(10000000, 99999999);
+                            $antispam .= '<div class="g-recaptcha" id="recaptcha-block-'.$randomNumber.'" data-sitekey="' . RECAPTCHA_PUB_KEY . '" data-theme="' . $re_theme . '"></div>';
+//                            $antispam .= '<script type="text/javascript" src="https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=' . LOCALE . '" async defer></script>';
                             $antispam .= '<p>' . gt('Fill out the above security question to submit your form.') . '</p>';
                         }
-                    }
+                        $content = "
+                            var captcha;
+                            var myCallBack = function() {
+                                var recaptchas = document.querySelectorAll('div[id^=recaptcha-block-]');
+                                for (i = 0; i < recaptchas.length; i++) {
+                                    captcha = grecaptcha.render(recaptchas[i].id, {
+                                      'sitekey' : '" . RECAPTCHA_PUB_KEY . "',
+                                      'theme'   : '" . $re_theme . "'
+                                    });
+                                }
+                            };";
+                        expJavascript::pushToFoot(array(
+                            "unique"=>'recaptcha',
+                            "content"=>$content,
+                            "src"=>"https://www.google.com/recaptcha/api.js?onload=myCallBack&render=explicit&hl=" . LOCALE
+                         ));                    }
                     $form->register(uniqid(''), '', new htmlcontrol($antispam));
                 }
 
@@ -1483,7 +1500,7 @@ class formsController extends expController {
      *
      * @param      $items
      *
-     * @param null $rptcols
+     * @param array|null $rptcols
      *
      * @return string
      */

@@ -135,6 +135,7 @@ class popupdatetimecontrol extends formcontrol
             #	$html .= '<input type="hidden" name="'.$name.'_enabled" value="1" />';
         }
         $html .= '<a class="module-actions" style="z-index:999;" href="javascript:void(0);" id="J_popup_closeable_' . $idname . '">' . $img . '</a>';
+        if (!empty($this->description)) $html .= "<div class=\"".(bs3()?"help-block":"control-desc")."\">".$this->description."</div>";
 
 //        $script = "
 //            EXPONENT.YUI3_CONFIG.modules = {
@@ -265,10 +266,13 @@ class popupdatetimecontrol extends formcontrol
             $object = new stdClass();
             $object->identifier = "";
             $object->caption = "";
+            $object->description = "";
             $object->showtime = true;
         }
+        if (empty($object->description)) $object->description = "";
         $form->register("identifier", gt('Identifier/Field'), new textcontrol($object->identifier));
         $form->register("caption", gt('Caption'), new textcontrol($object->caption));
+        $form->register("description", gt('Control Description'), new textcontrol($object->description));
         $form->register("showtime", gt('Show Time'), new checkboxcontrol($object->showtime, false));
         if (!expJavascript::inAjaxAction())
             $form->register("submit", "", new buttongroupcontrol(gt('Save'), "", gt('Cancel'), "", 'editable'));
@@ -289,6 +293,7 @@ class popupdatetimecontrol extends formcontrol
         }
         $object->identifier = $values['identifier'];
         $object->caption = $values['caption'];
+        $object->description = $values['description'];
         $object->showtime = !empty($values['showtime']);
         return $object;
     }

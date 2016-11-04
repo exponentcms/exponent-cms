@@ -62,6 +62,8 @@ class expHTMLEditorController extends expController
         parent:: __construct($src, $params);
         if (empty($this->params['editor'])) {
             $this->params['editor'] = SITE_WYSIWYG_EDITOR;
+        } else {
+            $this->params['editor'] = preg_replace("/[^[:alnum:][:space:]]/u", '', $this->params['editor']);
         }
     }
 

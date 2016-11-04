@@ -27,6 +27,7 @@ if (!defined('EXPONENT')) exit('');
  */
 class textcontrol extends formcontrol {
 
+    var $filter = '';
     var $caption = "";
     var $placeholder = "";
     var $pattern = "";
