@@ -32,14 +32,14 @@ class notfoundController extends expController {
     static function hasSources() { return false; }
     static function hasViews() { return false; }
     static function hasContent() { return false; }
-    
+
     public function handle() {
         global $router;
 
-        $args = array_merge(array('controller'=>'notfound', 'action'=>'page_not_found'), $router->url_parts);   
+        $args = array_merge(array('controller'=>'notfound', 'action'=>'page_not_found'), $router->url_parts);
         header("Refresh: 0; url=".$router->makeLink($args), false, 404);
     }
-    
+
     public function page_not_found() {
         global $router;
 
@@ -60,7 +60,7 @@ class notfoundController extends expController {
         if (get_magic_quotes_gpc()) {
             $terms = stripslashes($terms);
         }
-        $terms = htmlspecialchars($terms);
+        $terms = expString::escape(htmlspecialchars($terms));
 
         // check for server requested error documents here instead of treating them as a search request
         if ($terms == SITE_404_FILE) {
