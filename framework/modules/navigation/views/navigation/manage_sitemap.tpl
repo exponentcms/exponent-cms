@@ -50,11 +50,11 @@
     <div id="navmanager-tabs" class="yui-navset exp-skin-tabview hide">
    	    <ul class="yui-nav">
            	<li class="selected"><a href="#tab1"><em>{'Site Map'|gettext}</em></a></li>
-   	        <li><a href="#tab2"><em>{'Standalone Pages'|gettext}</em></a></li>
+            {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<li><a href="#tab3"><em>{'Page Redirection'|gettext}</em></a></li>{/if}
    	    </ul>
    	    <div class="yui-content">
             <div id="tab1">
-
                 <table class="table table-responsive table-striped table-condensed">
                     <thead>
                         <th>
@@ -224,7 +224,7 @@
                     </tbody>
                 </table>
             </div>
-
+            {if $canManageStandalones}
             <div id="tab2">
                 <table class="table table-responsive table-striped table-condensed">
                     <thead>
@@ -379,6 +379,8 @@
                     </tbody>
                 </table>
             </div>
+            {/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3">{exp_include file="manage_redirection.tpl"}</div>{/if}
         </div>
    	</div>
    	{loading title='Loading Pages'|gettext}

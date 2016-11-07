@@ -167,12 +167,12 @@ class expCore
      */
     public static function makeSefUrl($title, $model)
     {
-        global $db, $router;
+        global $db;
 
         if (!empty($title)) {
-            $sef_name = $router->encode($title);
+            $sef_name = expRouter::encode($title);
         } else {
-            $sef_name = $router->encode('Untitled');
+            $sef_name = expRouter::encode('Untitled');
         }
 //        $dupe = $db->selectValue($model, 'sef_name', 'sef_name="' . $sef_name . '"');
         $dupe = $db->selectValue($model, 'sef_url', 'sef_url="' . $sef_name . '"');

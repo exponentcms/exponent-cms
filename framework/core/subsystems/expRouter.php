@@ -381,7 +381,7 @@ class expRouter {
      * @return bool
      */
     public function routePageRequest() {
-//        global $db;
+        global $db, $user;
 
         if ($this->url_type == 'base') {
             // if we made it in here this is a request for http://www.baseurl.com
@@ -447,9 +447,53 @@ class expRouter {
                     $this->params = $this->convertPartsToParams();
                     return $this->routeActionRequest();
                 }
-//fixme we may want to log missed pages (no existing store cat/product) requests and set up/use a redirect table (404)??
-//fixme and we may also want to log any redirects taken from that table??
-                return false;
+                if (HANDLE_PAGE_REDIRECTION) {
+                    // we've been unable to find the requested page, product, or store category, now we first check our redirect table
+                    $page_redirect = $db->selectObject('redirect_map', "old_sef_name='" . $sef_url . "'");
+                    //fixme we may want to trim the redirect log here?
+                    if (REDIRECTION_LOG_LIMIT) {
+                        $db->delete('redirect', "timestamp < UNIX_TIMESTAMP(DATE_SUB(NOW(), INTERVAL " . REDIRECTION_LOG_LIMIT . " DAY))");
+                    }
+                    // if found, log redirect and perform redirection
+                    $redirectObject = new stdClass();
+                    $redirectObject->missed_sef_name = $sef_url;
+                    $redirectObject->timestamp = time();
+                    $redirectObject->referer = empty($_SERVER['HTTP_REFERER']) ? null : $_SERVER['HTTP_REFERER'];
+                    $redirectObject->cookieUID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
+                    $redirectObject->user_id = $user->id;
+                    $redirectObject->user_address = $_SERVER['REMOTE_ADDR'];
+                    $redirectObject->user_agent = $_SERVER['HTTP_USER_AGENT'];
+                    $redirectObject->session_id = $_COOKIE['PHPSESSID'];
+                    if (!empty($page_redirect)) {
+                        if (empty($page_redirect->type) || $page_redirect->type == 'url') {
+                            $redirectObject->redirected = true;
+                            $redirectObject->new_sef_name = $page_redirect->new_sef_name;
+                            $db->insertObject($redirectObject, 'redirect');
+                            //fixme do we need to warn them we're leaving the site???
+                            header("Location: " . $page_redirect->new_sef_name, TRUE);
+                        } else {
+                            $section = $this->getPageByName($page_redirect->new_sef_name);
+                            if (empty($section)) {
+                                $db->insertObject($redirectObject, 'redirect'); // original requested page
+                                $redirectObject->missed_sef_name = $page_redirect->new_sef_name;
+                                $redirectObject->timestamp = time();
+                                $db->insertObject($redirectObject, 'redirect'); // missing redirected page
+                                return false;
+                            } else {
+                                $redirectObject->redirected = true;
+                                $redirectObject->new_sef_name = $page_redirect->new_sef_name;
+                                $db->insertObject($redirectObject, 'redirect');
+                                $_REQUEST['section'] = $section->id;
+                                //log redirect took place
+                                header("Location: " . $this->makeLink(array('section' => intval($_REQUEST['section']))), TRUE, $page_redirect->type);
+                            }
+                        }
+                    } else {
+                        // if not found, only log missed page
+                        $db->insertObject($redirectObject, 'redirect');
+                        return false;
+                    }
+                }
             }
             #########################################################
             //if (empty($section)) return false;  //couldnt find the page..let the calling action deal with it.

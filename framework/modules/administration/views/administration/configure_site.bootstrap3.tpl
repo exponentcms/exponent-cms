@@ -296,6 +296,8 @@
                     {control type="text" name="sc[SITE_404_TITLE]" label='Page Title For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_TITLE}
                     {control type="html" name="sc[SITE_404_HTML]" label='\'Not Found\' (404) Error Message'|gettext value=$smarty.const.SITE_404_HTML}
                     {control type="text" name="sc[SITE_404_FILE]" label='Server Default Page For \'Not Found\' (404) Error'|gettext value=$smarty.const.SITE_404_FILE description='If your server sends 404 errors to a default page, enter it here (missing.html, etc...)'|gettext}
+                    {control type="checkbox" postfalse=1 name="sc[HANDLE_PAGE_REDIRECTION]" label="Handle Page Not Found Redirection?"|gettext checked=$smarty.const.HANDLE_PAGE_REDIRECTION value=1}
+                    {control type="number" name="sc[REDIRECTION_LOG_LIMIT]" label="Maximum Redirection Log Age (in days)"|gettext min=0 value=$smarty.const.REDIRECTION_LOG_LIMIT|default:0 description='Enter \'0\' to keep full log'|gettext}
                     {control type="html" name="sc[SITE_403_REAL_HTML]" label='\'Access Denied\' (403) Error Message'|gettext value=$smarty.const.SITE_403_REAL_HTML}
                     {control type="text" name="sc[SITE_403_FILE]" label='Server Default Page For \'Access Denied\' (403) Error'|gettext value=$smarty.const.SITE_403_FILE description='If your server sends 403 errors to a default page, enter it here (forbidden.html, etc...)'|gettext}
                     {control type="text" name="sc[SITE_500_FILE]" label='Server Default Page For \'Server Internal Error\' (500) Error'|gettext value=$smarty.const.SITE_500_FILE description='If your server sends 500 errors to a default page, enter it here (internal_error.html, etc...)'|gettext}

@@ -39,11 +39,11 @@
     <div id="navmanager-tabs" class="">
    	    <ul class="nav nav-tabs" role="tablist">
            	<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Site Map'|gettext}</em></a></li>
-   	        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>
+            {if $canManageStandalones}<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Page Redirection'|gettext}</em></a></li>{/if}
    	    </ul>
    	    <div class="tab-content">
            	<div id="tab1" role="tabpanel" class="tab-pane fade in active">
-
                 <table class="table table-responsive table-striped table-condensed">
                     <thead>
                         <th>
@@ -213,7 +213,7 @@
                     </tbody>
                 </table>
             </div>
-
+            {if $canManageStandalones}
             <div id="tab2" role="tabpanel" class="tab-pane fade">
                 <table class="table table-responsive table-striped table-condensed">
                     <thead>
@@ -368,6 +368,8 @@
                     </tbody>
                 </table>
             </div>
+            {/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3" role="tabpanel" class="tab-pane fade">{exp_include file="manage_redirection.tpl"}</div>{/if}
         </div>
    	</div>
    	{loading title='Loading Pages'|gettext}

@@ -57,12 +57,12 @@ class section extends expRecord {
      */
     public function makeSefUrl()
     {
-        global $db, $router;
+        global $db;
 
         if (!empty($this->name)) {
-            $sef_name = $router->encode($this->name);
+            $sef_name = expRouter::encode($this->name);
         } else {
-            $sef_name = $router->encode('Untitled');
+            $sef_name = expRouter::encode('Untitled');
         }
         $dupe = $db->selectValue($this->tablename, 'sef_name', 'sef_name="' . $sef_name . '"');
         if (!empty($dupe)) {

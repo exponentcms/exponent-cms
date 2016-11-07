@@ -198,7 +198,7 @@ class expPaginator {
         else
             $limit = $this->limit;
 
-		if (isset($params['records'])) { // if we pass $params['records'], we WANT to hit this
+		if (!empty($this->records)) { // if we pass $params['records'], we WANT to hit this
 		    // sort the records that were passed in to us
             if (!empty($sort))
                 usort($this->records,array('expPaginator', strtolower($this->order_direction)));
@@ -309,7 +309,7 @@ class expPaginator {
             }
         }
 
-        if (isset($params['records']))
+        if (!empty($this->records))
             $this->runCallback(); // isset($params['records']) added to correct search for products.
 
         //eDebug($this->records);
@@ -585,10 +585,11 @@ class expPaginator {
         }
     }
 
-    //here if we want to modify the record for some reason. e.g. Using in search results w/ products
+    // here if we want to modify the record for some reason. e.g. Using in search results w/ products or formatting a value
     private function runCallback() {
         foreach ($this->records as &$record) {
             if (isset($record->ref_type)) {
+                // search record
                 $refType = $record->ref_type;
                 if (class_exists($record->ref_type)) {
                     $type = new $refType();
@@ -597,6 +598,13 @@ class expPaginator {
                         $item = new $type($record->original_id);
                         $item->paginationCallback($record);
                     }
+                }
+            } elseif (!empty($this->model)) {
+                // non-search record
+                $classinfo = new ReflectionClass($this->model);
+                if ($classinfo->hasMethod('paginationCallback')) {
+                    $item = new $this->model($record->id);
+                    $item->paginationCallback($record);
                 }
             }
         }

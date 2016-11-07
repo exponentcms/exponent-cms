@@ -795,12 +795,12 @@ class expRecord {
      * make an sef_url for item
      */
     public function makeSefUrl() {
-        global $db, $router;
+        global $db;
 
         if (!empty($this->title)) {
-			$this->sef_url = $router->encode($this->title);
+			$this->sef_url = expRouter::encode($this->title);
 		} else {
-			$this->sef_url = $router->encode('Untitled');
+			$this->sef_url = expRouter::encode('Untitled');
 		}
         $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'"' . $this->grouping_sql);
 		if (!empty($dupe)) {
