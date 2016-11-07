@@ -263,7 +263,8 @@ class mysqli_database extends database {
         }
 
         //Add any new indexes & keys to the table
-        $sql = "ALTER" . (empty($aggressive) ? "" : " IGNORE") . " TABLE `" . $this->prefix . "$tablename` ";
+//        $sql = "ALTER" . (empty($aggressive) ? "" : " IGNORE") . " TABLE `" . $this->prefix . "$tablename` ";
+        $sql = "ALTER TABLE `" . $this->prefix . "$tablename` ";
 
         $sep = false;
         if (count($primary)) {
