@@ -12,7 +12,7 @@
  * GPL: http://www.gnu.org/licenses/gpl.txt
  *
  *}
- 
+
 {css unique="accordion" corecss="accordion"}
 
 {/css}
@@ -40,6 +40,7 @@
             <div id="item{$item->id}" class="panel item{if !$item->approved && $smarty.const.ENABLE_WORKFLOW} unapproved{/if}">
                 <div class="hd"><a href="#" class="{if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}collapse{else}expand{/if}" title="{'Collapse/Expand'|gettext}"><h2>{if $item->title ==""}&#160;{else}{$item->title}{/if}</h2></a></div>
                 <div class="piece bd {if $config.initial_view==2||($config.initial_view==3&&$smarty.foreach.items.iteration==1)}expanded{else}collapsed{/if}">
+                    <ul><li>
                     {permissions}
                         <div class="item-actions">
                             {if $permissions.edit || ($permissions.create && $item->poster == $user->id)}
@@ -70,6 +71,7 @@
                             {filedisplayer view="`$config.filedisplay`" files=$item->expFile record=$item}
                         {/if}
                     </div>
+                    </li></ul>
                     {clear}
                 </div>
             </div>
