@@ -153,11 +153,11 @@ class yuicalendarcontrol extends formcontrol {
         return $html;
     }
 
-    static function parseData($original_name, $formvalues) {
-        if (!empty($formvalues[$original_name]) && is_string($formvalues[$original_name])) {
-            return strtotime($formvalues[$original_name]);
-        } elseif (is_int($formvalues[$original_name])) {
-            return $formvalues[$original_name];
+    static function parseData($name, $values, $for_db = false) {
+        if (!empty($values[$name]) && is_string($values[$name])) {
+            return strtotime($values[$name]);
+        } elseif (is_int($values[$name])) {
+            return $values[$name];
         } else {
             return 0;
         }

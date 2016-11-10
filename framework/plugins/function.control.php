@@ -369,13 +369,13 @@ function smarty_function_control($params, &$smarty) {
                         echo '<h2 style="color:red">', gt('reCaptcha configuration is missing the public key.'), '</h2>';
                         return;
                     }
+                    $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                     if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
                         // skip it for logged on users based on config
                     } else {
                         // include the library and show the form control
 //                        require_once(BASE . 'external/recaptchalib.php');
 //                        require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
-                        $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                         echo '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                         //create unique recaptcha blocks
                         $randomNumber = mt_rand(10000000, 99999999);

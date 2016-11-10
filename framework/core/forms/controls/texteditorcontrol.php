@@ -129,8 +129,12 @@ class texteditorcontrol extends formcontrol {
 		return $object;
 	}
 
-	static function parseData($original_name,$formvalues,$for_db = false) {
-		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($formvalues[$original_name]));
+//    static function parseData($original_name,$values,$for_db = false) {
+//   		return str_replace(array("\r\n","\n","\r"),'<br />', htmlspecialchars($values[$original_name]));
+//   	}
+
+    static function templateFormat($db_data, $ctl) {
+		return str_replace(array("\r\n","\n","\r",'\r\n','\n','\r'),'<br />', htmlspecialchars($db_data));
 	}
 
 }

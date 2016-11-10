@@ -154,12 +154,12 @@ class yuidatetimecontrol extends formcontrol
         //$form->addScript('datetime_disable',PATH_RELATIVE.'subsystems/forms/controls/datetimecontrol.js');
 //    }
 
-    static function parseData($original_name, $formvalues)
+    static function parseData($name, $values, $for_db = false)
     {
-        if (!isset($formvalues[$original_name])) {
-            $date = yuicalendarcontrol::parseData($original_name . 'date', $formvalues);
-            if (isset($formvalues[$original_name . 'time']))
-                $time = datetimecontrol::parseData($original_name . 'time', $formvalues);
+        if (!isset($values[$name])) {
+            $date = yuicalendarcontrol::parseData($name . 'date', $values);
+            if (isset($values[$name . 'time']))
+                $time = datetimecontrol::parseData($name . 'time', $values);
             else
                 $time = 0;
             return $date + $time;
@@ -174,7 +174,7 @@ class yuidatetimecontrol extends formcontrol
         /*
         if ($ctl->showdate && $ctl->showtime) {
             return strftime(DISPLAY_DATETIME_FORMAT,$db_data);
-        } 
+        }
         elseif ($ctl->showdate) {
             return strftime(DISPLAY_DATE_FORMAT, $db_data);
         }
@@ -196,7 +196,7 @@ class yuidatetimecontrol extends formcontrol
             $object->caption = "";
             $object->showdate = true;
             $object->showtime = true;
-        } 
+        }
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
         $form->register("showdate",gt('Show Date'), new checkboxcontrol($object->showdate,false));
@@ -210,7 +210,7 @@ class yuidatetimecontrol extends formcontrol
     static function update($values, $object)
     {
         /*
-        if ($object == null) { 
+        if ($object == null) {
             $object = new datetimecontrol();
             $object->default = 0; //This will force the control to always show the current time as default
         }

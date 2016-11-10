@@ -40,7 +40,7 @@ class listbuildercontrol extends formcontrol {
         else $this->default = array();
 
 		$this->size = $size;
-        
+
 		if ($source !== null) {
 			if (is_array($source)) $this->source = $source;
 			else $this->source = array($source);
@@ -99,10 +99,10 @@ class listbuildercontrol extends formcontrol {
 		    $divID  = '';
 		    $for = '';
 		}
-		
+
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
-		 
+
 		$html = "<div".$divID." class=\"".$this->type."-control control ".$class.$disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
@@ -120,7 +120,7 @@ class listbuildercontrol extends formcontrol {
 			$html .= (!empty($label)) ? "<label".$for." class=\"label\">".$labeltag."</label>" : "";
 		}
 		//$html .= "</label>";
-		$html .= "</div>";			
+		$html .= "</div>";
         expJavascript::pushToFoot(array(
             "unique"=>'listbuildercontrol',
             "src"=> PATH_RELATIVE . 'framework/core/forms/controls/listbuildercontrol.js'
@@ -155,10 +155,11 @@ class listbuildercontrol extends formcontrol {
 		$form->addScript("listbuilder",PATH_RELATIVE."framework/core/forms/controls/listbuildercontrol.js");
 	}
 
-	static function parseData($formvalues, $name, $forceindex = false) {
+//	static function parseData($values, $name, $forceindex = false) { //FIXME params reversed!!! 3rd param normally $for_db
+    static function parseData($name, $values, $forceindex = false) { // 3rd param normally $for_db
 		$values = array();
-		if ($formvalues[$name] == "") return array();
-		foreach (explode("|!|",$formvalues[$name]) as $value) {
+		if ($values[$name] == "") return array();
+		foreach (explode("|!|",$values[$name]) as $value) {
 			if ($value != "") {
 				if (!$forceindex) {
 					$values[] = $value;

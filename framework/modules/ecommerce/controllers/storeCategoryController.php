@@ -209,7 +209,8 @@ class storeCategoryController extends expNestedNodeController {
         $product_types = ecomconfig::getConfig('product_types');
 
         foreach ($product_types as $value) {
-            $this->params["{$value}s"] = listbuildercontrol::parseData($this->params, "{$value}s_list");
+//            $this->params["{$value}s"] = listbuildercontrol::parseData($this->params, "{$value}s_list");
+            $this->params["{$value}s"] = listbuildercontrol::parseData("{$value}s_list", $this->params);
         }
 
         $curcat = new storeCategory($this->params);

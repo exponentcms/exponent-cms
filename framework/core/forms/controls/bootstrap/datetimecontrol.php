@@ -122,29 +122,29 @@ class datetimecontrol extends formcontrol {
         $form->addScript('datetime_disable', PATH_RELATIVE . 'framework/core/forms/controls/datetimecontrol.js');
     }
 
-    static function parseData($original_name, $formvalues, $for_db = false) {
+    static function parseData($name, $values, $for_db = false) {
         $time = 0;
-        if (isset($formvalues[$original_name]) && is_int($formvalues[$original_name]))
-            $time = $formvalues[$original_name];
-        if (isset($formvalues[$original_name . "_month"]))
-            $time = mktime(8, 0, 0, $formvalues[$original_name . '_month'], $formvalues[$original_name . '_day'], $formvalues[$original_name . '_year']) - 8 * 3600;
-        if (isset($formvalues[$original_name . "_hour"])) {
-            if ($formvalues[$original_name . '_hour'] == 12 && $formvalues[$original_name . '_ampm'] == 'am') {
+        if (isset($values[$name]) && is_int($values[$name]))
+            $time = $values[$name];
+        if (isset($values[$name . "_month"]))
+            $time = mktime(8, 0, 0, $values[$name . '_month'], $values[$name . '_day'], $values[$name . '_year']) - 8 * 3600;
+        if (isset($values[$name . "_hour"])) {
+            if ($values[$name . '_hour'] == 12 && $values[$name . '_ampm'] == 'am') {
                 // 12 am (right after midnight) is 0:xx
-                $formvalues[$original_name . '_hour'] = 0;
-            } else if ($formvalues[$original_name . '_hour'] != 12 && $formvalues[$original_name . '_ampm'] == 'pm') {
+                $values[$name . '_hour'] = 0;
+            } else if ($values[$name . '_hour'] != 12 && $values[$name . '_ampm'] == 'pm') {
                 // 1:00 pm to 11:59 pm shifts 12 hours
-                $formvalues[$original_name . '_hour'] += 12;
+                $values[$name . '_hour'] += 12;
             }
 
-            $time += $formvalues[$original_name . '_hour'] * 3600 + $formvalues[$original_name . '_minute'] * 60;
+            $time += $values[$name . '_hour'] * 3600 + $values[$name . '_minute'] * 60;
         }
 
         return $time;
     }
 
-    static function convertData($original_name,$formvalues) {
-		return (isset($formvalues[$original_name])?strtotime($formvalues[$original_name]):"");
+    static function convertData($name,$values) {
+		return (isset($values[$name])?strtotime($values[$name]):"");
 	}
 
     /**

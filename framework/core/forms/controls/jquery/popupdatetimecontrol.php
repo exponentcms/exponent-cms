@@ -215,16 +215,16 @@ class popupdatetimecontrol extends formcontrol
         return $html;
     }
 
-    static function parseData($original_name, $formvalues)
+    static function parseData($name, $values, $for_db = false)
     {
-//        if (!isset($formvalues[$original_name . '_disabled'])) {
-////			return strtotime($formvalues[$original_name]);
-//            return $formvalues[$original_name];
+//        if (!isset($values[$name . '_disabled'])) {
+////			return strtotime($values[$name]);
+//            return $values[$name];
 //        } else {
 //            return 0;
 //        }
-        if (!empty($formvalues[$original_name])) {
-            return strtotime($formvalues[$original_name]);
+        if (!empty($values[$name])) {
+            return strtotime($values[$name]);
         } else {
             return 0;
         }

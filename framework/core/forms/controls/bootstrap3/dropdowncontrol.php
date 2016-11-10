@@ -40,7 +40,7 @@ class dropdowncontrol extends formcontrol {
             DB_FIELD_TYPE=>DB_DEF_STRING,
             DB_FIELD_LEN=>255);
     }
-    
+
     function __construct($default = "",$items = array(), $include_blank = false, $multiple=false) {
         $this->default = $default;
         $this->items = $items;
@@ -48,7 +48,7 @@ class dropdowncontrol extends formcontrol {
         $this->required = false;
         $this->multiple = $multiple;
     }
-    
+
     function controlToHTML($name,$label=null) {
         $idname  = (!empty($this->id)) ? ' id="'.$this->id.'"' : (!empty($name)?' id="'.$name.'"':"");
         $disabled = $this->disabled != false ? "disabled" : "";
@@ -93,13 +93,13 @@ class dropdowncontrol extends formcontrol {
             }
             $html .= '>' . $caption . '</option>';
         }
-        $html .= '</select>';             
+        $html .= '</select>';
         if (!empty($this->description)) $html .= "<div class=\"help-block\">".$this->description."</div>";
         $html .= '</div>';
 
         return $html;
     }
-    
+
     static function form($object) {
         $form = new form();
         if (empty($object)) $object = new stdClass();
@@ -111,7 +111,7 @@ class dropdowncontrol extends formcontrol {
             $object->size = 1;
             $object->items = array();
             $object->required = false;
-        } 
+        }
         if (empty($object->description)) $object->description = "";
         $form->register("identifier",gt('Identifier/Field'),new textcontrol($object->identifier));
         $form->register("caption",gt('Caption'), new textcontrol($object->caption));
@@ -124,7 +124,7 @@ class dropdowncontrol extends formcontrol {
             $form->register("submit","",new buttongroupcontrol(gt('Save'),'',gt('Cancel'),"",'editable'));
         return $form;
     }
-    
+
     static function update($values, $object) {
         if ($values['identifier'] == "") {
             $post = expString::sanitize($_POST);
@@ -137,7 +137,8 @@ class dropdowncontrol extends formcontrol {
         $object->caption = $values['caption'];
         $object->description = $values['description'];
         $object->default = $values['default'];
-        $object->items = listbuildercontrol::parseData($values,'items',true);
+//        $object->items = listbuildercontrol::parseData($values,'items',true);
+        $object->items = listbuildercontrol::parseData('items', $values, true);
         if (isset($values['size'])) $object->size = (intval($values['size']) <= 0)?1:intval($values['size']);
         $object->required = !empty($values['required']);
         return $object;

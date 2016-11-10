@@ -37,7 +37,7 @@
                     {if !bs()}
                         &#160;&#160;|&#160;&#160;
                     {/if}
-                    {icon class="downloadfile" action=export_csv id=$form->id text="Export CSV"|gettext}
+                    {icon class="downloadfile" action=export_csv id=$form->id text="Export as CSV"|gettext}
                     {if $permissions.manage && !bs()}
                         &#160;&#160;|&#160;&#160;
                     {/if}
