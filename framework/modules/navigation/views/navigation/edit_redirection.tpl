@@ -21,7 +21,7 @@
         {control type="hidden" name="id" value=$record->id}
         {control type="text" name="old_sef_name" label="Redirect From"|gettext value=$record->old_sef_name|default:$sef_name}
         {control type="text" name="new_sef_name" label="Redirect To"|gettext value=$record->new_sef_name}
-        {control type="dropdown" name="type" label="HTTP Status Code"|gettext items="Moved Permanently (301),Moved Temporarly (307),Custom URL"|gettxtlist values="'301,307,url" value=$record->type|default:301}
+        {control type="dropdown" name="type" label="HTTP Status Code"|gettext items="Moved Permanently (301),Moved Temporarly (307),Custom URL"|gettxtlist values="301,307,url" value=$record->type|default:301}
         {control type="buttongroup" submit="Submit"|gettext cancel="Cancel"|gettext}
     {/form}
 </div>
