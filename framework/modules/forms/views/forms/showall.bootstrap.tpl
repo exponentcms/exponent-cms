@@ -58,7 +58,7 @@
                     {if !empty($filtered)}
                         {br}
                         {icon class="view" action=showall id=$f->id text='View All Records'|gettext|cat:" (`$count`)" title='View all records'|gettext}
-                        <span style="background-color: yellow; font-weight: bold;margin-bottom: 5px;padding: 4px;border: black 1px solid;">{'Records Filtered'|gettext}: '{$filtered}'</span>
+                        <span style="background-color: yellow; font-weight: bold;margin-bottom: 5px;padding: 4px;border: black 1px solid;">{'Records Filtered'|gettext} ({$page->total_records}) : '{$filtered}'</span>
                     {/if}
                 {/if}
             </div>
