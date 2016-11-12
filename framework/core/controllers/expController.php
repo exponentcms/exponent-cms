@@ -772,7 +772,7 @@ abstract class expController {
         $rank = 1;
         foreach ($this->params['rerank'] as $id) {
             $modelname = $this->params['model'];
-            $obj = new $modelname($id);
+            $obj = new $modelname(intval($id));
             $obj->rank = $rank;
             $obj->save(false, true);
             $rank++;

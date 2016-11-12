@@ -189,7 +189,8 @@ class formsController extends expController {
                         "page" => $page,
                         "title" => !empty($this->config['report_name']) ? $this->config['report_name'] : '',
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
-                        "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : ''
+                        "filtered" => !empty($this->config['report_filter']) ? $this->config['report_filter'] : '',
+                        "count" => $f->countRecords(),
                     )
                 );
             }
@@ -259,7 +260,6 @@ class formsController extends expController {
                     }
                 }
 
-                $count = $f->countRecords();
                 assign_to_template(
                     array(
                         //            "backlink"=>expHistory::getLastNotEditable(),
@@ -274,7 +274,7 @@ class formsController extends expController {
                         "description" => !empty($this->config['report_desc']) ? $this->config['report_desc'] : null,
                         'fields' => $fields,
                         'captions' => $captions,
-                        "count"       => $count,
+                        "count"       => $f->countRecords(),
                         'is_email' => 0,
                         "css" => file_get_contents(BASE . "framework/core/assets/css/tables.css"),
                     )
@@ -388,12 +388,12 @@ class formsController extends expController {
                         if (!defined('RECAPTCHA_PUB_KEY')) {
                             $antispam .= '<h2 style="color:red">' . gt('reCaptcha configuration is missing the public key.') . '</h2>';
                         }
+                        $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                         if ($user->isLoggedIn() && ANTI_SPAM_USERS_SKIP == 1) {
                             // skip it for logged on users based on config
                         } else {
                             // include the library and show the form control
 //                            require_once(BASE . 'external/ReCaptcha/autoload.php');  //FIXME not sure we need this here
-                            $re_theme = (RECAPTCHA_THEME == 'dark') ? 'dark' : 'light';
                             $antispam .= '<input type="hidden" class="hiddenRecaptcha required" name="hiddenRecaptcha" id="hiddenRecaptcha">';
                             //create unique recaptcha blocks
                             $randomNumber = mt_rand(10000000, 99999999);
@@ -451,7 +451,6 @@ class formsController extends expController {
                     $form->controls['submit']->disabled = true;
                     $formmsg .= gt('There are no actions assigned to this form. Select "Configure Settings" then either select "Email Form Data" and/or "Save Submissions to Database".');
                 }
-                $count = $f->countRecords();
                 if ($formmsg) {
                     flash('notice', $formmsg);
                 }
@@ -460,7 +459,7 @@ class formsController extends expController {
                     "description" => $this->config['description'],
                     "form_html"   => $form->toHTML(),
                     "form"        => $f,
-                    "count"       => $count,
+                    "count"       => $f->countRecords(),
 //                    'paged'       => $paged,
                 ));
             }
@@ -471,10 +470,13 @@ class formsController extends expController {
         }
     }
 
+    /**
+     * Form data is parsed and displayed for confirmation before entering into database and/pr sending email
+     *  used for only initial entry
+     */
     public function confirm_data() {
         $f = new forms($this->params['id']);
         $cols = $f->forms_control;
-        $counts = array();
         $responses = array();
         $captions = array();
 
@@ -484,12 +486,14 @@ class formsController extends expController {
             $coldata = new ReflectionClass($coldef);
             if (empty($coldef->is_hidden)) {
                 $coltype = $coldata->getName();
+                // first we clean up the entered data //fixme these should probably be FALSE!
                 if ($coltype == 'uploadcontrol' && !empty($_FILES)) {
                     $newupload = true;
-                    $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);
+                    $value = call_user_func(array($coltype, 'parseData'), $col->name, $_FILES, true);  // this will move the new file
                 } else {
                     $value = call_user_func(array($coltype, 'parseData'), $col->name, $this->params, true);
                 }
+                // then we format it for display
                 $value = call_user_func(array($coltype, 'templateFormat'), $value, $coldef);  // convert parsed value to user readable
                 //eDebug($value);
 //                $counts[$col->caption] = isset($counts[$col->caption]) ? $counts[$col->caption] + 1 : 1;
@@ -506,14 +510,13 @@ class formsController extends expController {
                 } else {
                     if ($coltype == 'checkboxcontrol') {
 //                        $responses[$col->caption . $num] = gt('No');
-                        $responses[$col->name] = gt('No');
+                        $responses[$col->name] = gt('No');  // default for checkboxes is No
                         $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'datetimecontrol' || $coltype == 'calendarcontrol' || $coltype == 'popupdatetimecontrol') {
-//                        $responses[$col->name] = $value;
-                        $responses[$col->name] = $value;
+                        $responses[$col->name] = $value;  // allows for a default phrase for no date entered
                         $captions[$col->name] = $col->caption;
                     } elseif ($coltype == 'uploadcontrol') {
-                        if ($newupload) {
+                        if ($newupload) {  //note: an uploaded file is returned in $_FILEs, NOT in the control name
                             $newfile = call_user_func(
                                     array($coltype, 'moveFile'),
                                     $col->name,
@@ -526,7 +529,7 @@ class formsController extends expController {
                                 $this->params[$col->name] = "";
                             }
                         }
-                        //            $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
+//                        $value = call_user_func(array($coltype,'buildDownloadLink'),$this->params[$col->name],$_FILES[$col->name]['name'],true);
                         //eDebug($value);
 //                        $responses[$col->caption . $num] = $_FILES[$col->name]['name'];
 //                        $responses[$col->name] = $_FILES[$col->name]['name'];
@@ -535,7 +538,7 @@ class formsController extends expController {
                         $captions[$col->name] = $col->caption;
                     } elseif ($coltype != 'htmlcontrol' && $coltype != 'pagecontrol') {
 //                        $responses[$col->caption . $num] = '';
-                        $responses[$col->name] = '';
+                        $responses[$col->name] = '';  // all other empty controls have empty value
                         $captions[$col->name] = $col->caption;
                     }
                 }
@@ -561,9 +564,13 @@ class formsController extends expController {
         ));
     }
 
+    /**
+     * Form data is parsed and entered into database and/or email is sent
+     *  used for both initial entry and editing records
+     */
     public function submit_data() {
         // Check for form errors
-        $this->params['manual_redirect'] = true;
+        $this->params['manual_redirect'] = true;  //fixme is this desired effect or should we go back to the failed form?
         if (!expValidator::check_antispam($this->params)) {
             flash('error', gt('Security Validation Failed'));
             expHistory::back();
@@ -585,7 +592,14 @@ class formsController extends expController {
             $def = call_user_func(array($control_type, "getFieldDefinition"));
             if ($def != null) {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
-                $value = stripslashes(expString::escape($emailValue));
+//                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
+//                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
+                if (get_class($ctl) == 'texteditorcontrol') {
+                    $value = expString::escape($emailValue); //fixme does this need to occur later?
+                    $value = str_replace(array('\r\n','\n','\r'),array("\r\n","\n","\r"),$value);
+                } else {
+                    $value = stripslashes(expString::escape($emailValue));  //fixme does this need to occur later?
+                }
 
                 //eDebug($value);
                 $varname = $c->name;
@@ -610,7 +624,7 @@ class formsController extends expController {
         if (!isset($this->params['data_id']) || (isset($this->params['data_id']) && expPermissions::check("editdata", $f->loc))) {
             if (!empty($f->is_saved)) {
                 if (isset($this->params['data_id'])) {
-                    //if this is an edit we remove the record and insert a new one.
+                    //if this is an edit we remove the record and insert a new one, keeping some original data
                     $olddata = $f->getRecord($this->params['data_id']);
                     $db_data->ip = $olddata->ip;
                     $db_data->user_id = $olddata->user_id;

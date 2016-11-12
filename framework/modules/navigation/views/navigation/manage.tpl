@@ -33,10 +33,12 @@
 	    <ul class="yui-nav">
         	<li class="selected"><a href="#tab1"><em>{'Menu Hierarchy'|gettext}</em></a></li>
 	        {if $canManageStandalones}<li><a href="#tab2"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<li><a href="#tab3"><em>{'Page Redirection'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="yui-content">
         	<div id="tab1">{exp_include file="manage_hierarchy.tpl"}</div>
 	        {if $canManageStandalones}<div id="tab2">{exp_include file="manage_standalone.tpl"}</div>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3">{exp_include file="manage_redirection.tpl"}</div>{/if}
 	    </div>
 	</div>
 	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}

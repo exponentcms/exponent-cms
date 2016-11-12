@@ -62,7 +62,7 @@ class migrationController extends expController {
 //        'containermodule',    // not really deprecated, but must be in this list to skip processing?
 //        'navigationmodule',   // views are still used, so modules need to be imported?
         'loginmodule',
-        'searchmodule',  
+        'searchmodule',
         'imagemanagermodule',
         'imageworkshopmodule',
          'inboxmodule',
@@ -156,12 +156,11 @@ class migrationController extends expController {
 			foreach($this->params['pages'] as $pageid) {
 				$page = $old_db->selectObject('section', 'id='.$pageid);
 				// make sure the SEF name is valid
-				global $router;
 				if (empty($page->sef_name)) {
 					if (isset($page->name)) {
-						$page->sef_name = $router->encode($page->name);
+						$page->sef_name = expRouter::encode($page->name);
 					} else {
-						$page->sef_name = $router->encode('Untitled');
+						$page->sef_name = expRouter::encode('Untitled');
 					}
 				}
 				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
@@ -184,12 +183,11 @@ class migrationController extends expController {
 				$db->delete('section','id='.$pageid);
 				$page = $old_db->selectObject('section', 'id='.$pageid);
 				// make sure the SEF name is valid
-				global $router;
 				if (empty($page->sef_name)) {
 					if (isset($page->name)) {
-						$page->sef_name = $router->encode($page->name);
+						$page->sef_name = expRouter::encode($page->name);
 					} else {
-						$page->sef_name = $router->encode('Untitled');
+						$page->sef_name = expRouter::encode('Untitled');
 					}
 				}
 				$dupe = $db->selectValue('section', 'sef_name', 'sef_name="'.$page->sef_name.'"');
@@ -211,7 +209,7 @@ class migrationController extends expController {
 		if (isset($this->params['copy_permissions'])) {
 			$db->delete('userpermission',"module = 'navigation' AND source = ''");
 			$db->delete('grouppermission',"module = 'navigation' AND source = ''");
-			
+
 			$users = $db->selectObjects('user','id > 1');
 			foreach($users as $user) {
 				$pages = $old_db->selectObjects('userpermission',"uid='".$user->id."' AND module = 'navigationmodule' AND source = ''");
@@ -223,7 +221,7 @@ class migrationController extends expController {
 						 }
 					}
 				}
-			}		
+			}
 			$groups = $db->selectObjects('group','1');
 			foreach($groups as $group) {
 				$pages = $old_db->selectObjects('grouppermission',"gid='".$group->id."' AND module = 'navigationmodule' AND source = ''");
@@ -235,7 +233,7 @@ class migrationController extends expController {
 						 }
 					}
 				}
-			}		
+			}
 		}
 
         flash('message', $successful.' '.gt('pages were imported from').' '.$this->config['database'].$del_pages);
@@ -388,7 +386,7 @@ class migrationController extends expController {
             $db->delete('forms_control');
             @$this->msg['clearedcontent']++;
         }
-		
+
 		if (!empty($this->params['replace'])) {
 			foreach($this->params['replace'] as $replace) {
 				switch ($replace) {
@@ -722,7 +720,7 @@ class migrationController extends expController {
 					$gfailed++;
 				} else {
 					$gsuccessful++;
-				}				
+				}
 			}
 		}
 		if (!empty($this->params['rep_groups'])) {
@@ -734,10 +732,10 @@ class migrationController extends expController {
 					$gfailed++;
 				} else {
 					$gsuccessful++;
-				}				
+				}
 			}
 		}
-		
+
         $successful = 0;
         $failed     = 0;
 		if (!empty($this->params['users'])) {
@@ -748,7 +746,7 @@ class migrationController extends expController {
 					$failed++;
 				} else {
 					$successful++;
-				}				
+				}
 			}
 		}
 		if (!empty($this->params['rep_users'])) {
@@ -760,7 +758,7 @@ class migrationController extends expController {
 					$failed++;
 				} else {
 					$successful++;
-				}				
+				}
 			}
 		}
 	    $users = new stdClass();
@@ -789,7 +787,7 @@ class migrationController extends expController {
 				}
 			}
 		}
-		
+
         flash('message', $successful.' '.gt('users and').' '.$gsuccessful.' '.gt('groups were imported from').' '.$this->config['database']);
         if ($failed > 0 || $gfailed > 0) {
 			$msg = '';
@@ -1313,7 +1311,7 @@ class migrationController extends expController {
 							@$this->msg['migrated'][$iloc->mod]['name'] = $this->new_modules[$iloc->mod];
 							$file = new expFile($ri['file_id']);
 							$filedownload->attachItem($file,'downloadable');
-							// default is to create with current time						
+							// default is to create with current time
 							$filedownload->created_at = $ri['posted'];
 							$filedownload->migrated_at = $ri['edited'];
                             $filedownload->publish = $ri['posted'];
@@ -1397,7 +1395,7 @@ class migrationController extends expController {
 								$photo->attachItem($file,'');
 								$photo->created_at = $gi['posted'];
 								$photo->migrated_at = $gi['posted'];
-								$photo->update(array("validate"=>false));								
+								$photo->update(array("validate"=>false));
                                 $photo->update($params);  // save gallery name as category
 							}
 						}
@@ -1558,7 +1556,7 @@ class migrationController extends expController {
                         $post->title = (!empty($bi['title'])) ? $bi['title'] : gt('Untitled');
                         $post->body = (!empty($bi['body'])) ? $bi['body'] : gt('(empty)');
                         $post->save();
-						// default is to create with current time						
+						// default is to create with current time
                         $post->created_at = $bi['posted'];
                         $post->migrated_at = $bi['edited'];
                         $post->update();
@@ -1731,7 +1729,7 @@ class migrationController extends expController {
                         $listing->poster = 1;
                         $listing->body = "<p>".$li['summary']."</p>".$li['body'];
                         $listing->save();
-						// default is to create with current time						
+						// default is to create with current time
 //                        $listing->created_at = time();
 //                        $listing->migrated_at = time();
 //                        $listing->update();
@@ -1876,7 +1874,7 @@ class migrationController extends expController {
 							$newcompany->body = $oldcompany->contact_info;
 							$newcompany->location_data = $banner->location_data;
 							$newcompany->save();
-						}						
+						}
 						$banner->companies_id = $newcompany->id;
 						$banner->clicks = 0;
 						foreach($oldclicks as $click) {
@@ -2577,7 +2575,7 @@ class migrationController extends expController {
 	 * @return void
 	 */
 	function saveconfig() {
-        
+
         // unset some unneeded params
         unset(
             $this->params['module'],
@@ -2595,7 +2593,7 @@ class migrationController extends expController {
             $this->params['__utmli'],
             $this->params['__cfduid']
         );
-        
+
         // setup and save the config
         $config = new expConfig($this->loc);
         $config->update(array('config'=>$this->params));
@@ -2620,7 +2618,7 @@ class migrationController extends expController {
         };
 		echo "<a class=\"".$btn_class."\" href=\"".expCore::makeLink(array('controller'=>'migration','action'=>'manage_users'))."\">".gt('Next Step -> Migrate Users & Groups')."</a>";
     }
-	
+
 	/**
 	 * connect to old site's database
 	 *
@@ -2660,7 +2658,7 @@ class migrationController extends expController {
 	private function fix_database() {
 		// let's test the connection
 		$old_db = $this->connect();
-		
+
 		print_r("<h2>".gt('We\'re connected to the Old Database!')."</h2><br><br><h3>".gt('Running several checks and fixes on the old database')."<br>".gt('to enhance Migration.')."</h3><br>");
 
 		print_r("<pre>");
@@ -2677,7 +2675,7 @@ class migrationController extends expController {
 			}
 		}
 		print_r("</pre>");
-	
+
 		print_r("<pre>");
 	// upgrade sectionref's that point to missing sections (pages)
 		print_r("<strong>".gt('Searching for sectionrefs pointing to missing sections/pages')." <br>".gt('to fix for the Recycle Bin')."</strong><br><br>");

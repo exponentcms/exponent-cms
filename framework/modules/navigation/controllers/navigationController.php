@@ -575,12 +575,12 @@ class navigationController extends expController {
      * @deprecated 2.0.0 this only for deprecated templates
      */
     function process_subsections($parent_section, $subtpl) {
-        global $db, $router;
+        global $db;
 
         $section              = new stdClass();
         $section->parent      = $parent_section->id;
         $section->name        = $subtpl->name;
-        $section->sef_name    = $router->encode($section->name);
+        $section->sef_name    = expRouter::encode($section->name);
         $section->subtheme    = $subtpl->subtheme;
         $section->active      = $subtpl->active;
         $section->public      = $subtpl->public;
@@ -743,6 +743,7 @@ class navigationController extends expController {
             'user'                 => $user,
 //            'canManagePagesets'    => $user->isAdmin(),
 //            'templates'            => $db->selectObjects('section_template', 'parent=0'),
+            'redirects'            => $db->selectObjects('redirect_map'),
         ));
     }
 
@@ -765,11 +766,89 @@ class navigationController extends expController {
             }
         }
         assign_to_template(array(
+            'canManageStandalones' => self::canManageStandalones(),
             'sasections'   => $db->selectObjects('section', 'parent=-1'),
             'sections'     => $navsections,
             'current'      => $current,
             'canManage'    => ((isset($user->is_acting_admin) && $user->is_acting_admin == 1) ? 1 : 0),
+            'redirects'    => $db->selectObjects('redirect_map'),
         ));
+    }
+
+    public function manage_redirection_log() {
+        global $db;
+
+//        $records = $db->selectObjects('redirect');
+//        foreach ($records as $key=>$record) {
+//            $records[$key]->timestamp = expDateTime::format_date($record->timestamp, DISPLAY_DATETIME_FORMAT);
+//            if ($record->redirected) {
+//                $records[$key]->redirected = gt('Yes');
+//            } else {
+//                $records[$key]->redirected = '';
+//            }
+//        }
+        $redirect = new redirect();
+        $page = new expPaginator(array(
+            'model'=>'redirect',
+            'records' => $redirect->find('all'),
+            'limit'=>isset($this->config['limit']) ? $this->config['limit'] : 10,
+            'order'=>(isset($this->params['order']) ? $this->params['order'] : 'timestamp'),
+            'dir'=>(isset($this->params['dir']) ? $this->params['dir'] : 'DESC'),
+            'page'=>(isset($this->params['page']) ? $this->params['page'] : 1),
+            'controller'=>$this->baseclassname,
+            'action'=>$this->params['action'],
+            'src'=>$this->loc->src,
+            'columns'=>array(
+                gt('Request')=>'missed_sef_name|controller=navigation,action=edit_redirection,showby=missed_sef_name',
+                gt('Date')=>'timestamp',
+//                gt('Redirected')=>'redirected',
+                gt('Redirected To')=>'new_sef_name',
+            ),
+          ));
+
+        assign_to_template(array(
+            'page'     => $page,
+        ));
+    }
+
+    public function edit_redirection() {
+        global $db, $router;
+
+        expHistory::set('editable', $this->params);
+        if (isset($this->params['id'])) {
+            $record = $db->selectObject('redirect_map', 'id=' . $this->params['id']);
+        } elseif (isset($this->params['missed_sef_name'])) {
+            $sef_name = expRouter::encode($this->params['missed_sef_name']);
+            $record = $db->selectObject('redirect_map', "old_sef_name='" . $sef_name ."'");
+        } else {
+            $record = null;
+        }
+        assign_to_template(array(
+            'record'     => $record,
+        ));
+    }
+
+    public function update_redirection() {
+        global $db;
+
+        $obj = new stdClass();
+        $obj->old_sef_name = $this->params['old_sef_name'];
+        $obj->new_sef_name = $this->params['new_sef_name'];
+        $obj->type = $this->params['type'];
+        if (empty($this->params['id'])) {
+            $db->insertObject($obj, 'redirect_map');
+        } else {
+            $obj->id = $this->params['id'];
+            $db->updateObject($obj, 'redirect_map');
+        }
+        expHistory::back();
+    }
+
+    public function delete_redirection() {
+        global $db;
+
+        $db->delete('redirect_map', 'id=' . $this->params['id']);
+        expHistory::back();
     }
 
     /**
@@ -1148,8 +1227,8 @@ class navigationController extends expController {
     }
 
     function update() {
-        parent::update();
         expSession::clearAllUsersSessionCache('navigation');
+        parent::update();
     }
 
     function move_standalone() {

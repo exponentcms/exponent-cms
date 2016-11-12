@@ -41,7 +41,7 @@ class listbuildercontrol extends formcontrol {
         else $this->default = array();
 
 		$this->size = $size;
-        
+
 		if ($source !== null) {
 			if (is_array($source)) $this->source = $source;
 			else $this->source = array($source);
@@ -105,10 +105,10 @@ class listbuildercontrol extends formcontrol {
 		    $divID  = '';
 		    $for = '';
 		}
-		
+
 		$disabled = $this->disabled != 0 ? "disabled" : "";
 		$class = empty($this->class) ? '' : $this->class;
-		 
+
 		$html = "<div".$divID." class=\"".$this->type."-control control form-group ".$class.$disabled;
 		$html .= !empty($this->required) ? ' required">' : '">';
 		//$html .= "<label>";
@@ -186,19 +186,20 @@ class listbuildercontrol extends formcontrol {
         }
 	}
 
-	static function parseData($formvalues, $name, $forceindex = false) {
+//	static function parseData($values, $name, $forceindex = false) { //FIXME params reversed!!! 3rd param normally $for_db
+    static function parseData($name, $values, $forceindex = false) { // 3rd param normally $for_db
 		$values = array();
-		if ($formvalues[$name] == "") return array();
-        if (is_array($formvalues[$name])) {
+		if ($values[$name] == "") return array();
+        if (is_array($values[$name])) {
             if (!$forceindex) {
-                $values = $formvalues[$name];
+                $values = $values[$name];
             } else {
-                foreach ($formvalues[$name] as $value) {
+                foreach ($values[$name] as $value) {
                     $values[$value] = $value;
                 }
             }
         } else {
-            foreach (explode("|!|",$formvalues[$name]) as $value) {
+            foreach (explode("|!|",$values[$name]) as $value) {
                 if ($value != "") {
                     if (!$forceindex) {
                         $values[] = $value;

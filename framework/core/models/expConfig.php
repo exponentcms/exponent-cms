@@ -34,7 +34,7 @@ class expConfig extends expRecord {
         } else {
             parent::__construct($params);
         }
-				
+
 		// treat the loc data like an id - if the location data come thru as an object we need to look up the record
             //         if (!empty($params->src)) {
             //             echo "1";
@@ -68,14 +68,15 @@ class expConfig extends expRecord {
      */
     public function update($params=array()) {
         foreach($params['config'] as $key => $value) {
-            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
+//            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($params['config'],$key,true);
+            if (substr($key,-5) == '_list') $params['config'][$key] = listbuildercontrol::parseData($key, $params['config'], true);
         }
         if(is_array($params['config'])) {
             $params['config'] = serialize($params['config']);
         }
         parent::update($params);
     }
-    
+
 	public function beforeSave() {
 	    // one last check to make sure the data is in the proper format.
 		$this->location_data = (is_object($this->location_data)) ? serialize($this->location_data) : $this->location_data;

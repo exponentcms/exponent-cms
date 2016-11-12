@@ -789,7 +789,8 @@ class administrationController extends expController {
             }
         } else {
             if(!empty($this->params['group_list'])) {
-                foreach (listbuildercontrol::parseData($this->params,'grouplist') as $group_id) {
+//                foreach (listbuildercontrol::parseData($this->params,'grouplist') as $group_id) {
+                foreach (listbuildercontrol::parseData('grouplist', $this->params) as $group_id) {
                    $grpusers = group::getUsersInGroup($group_id);
                    foreach ($grpusers as $u) {
                        $emaillist[$u->email] = user::getUserAttribution($u->id);
@@ -797,13 +798,15 @@ class administrationController extends expController {
                 }
             }
             if(!empty($this->params['user_list'])) {
-                foreach (listbuildercontrol::parseData($this->params,'user_list') as $user_id) {
+//                foreach (listbuildercontrol::parseData($this->params,'user_list') as $user_id) {
+                foreach (listbuildercontrol::parseData('user_list', $this->params) as $user_id) {
                     $u = user::getUserById($user_id);
                     $emaillist[$u->email] = user::getUserAttribution($u->id);
                 }
             }
             if(!empty($this->params['address_list'])) {
-                foreach (listbuildercontrol::parseData($this->params,'address_list') as $email) {
+//                foreach (listbuildercontrol::parseData($this->params,'address_list') as $email) {
+                foreach (listbuildercontrol::parseData('address_list', $this->params) as $email) {
                     $emaillist[] = $email;
                 }
             }

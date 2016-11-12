@@ -57,7 +57,7 @@ class fix_sef_urls extends upgradescript {
 	 * @return bool
 	 */
 	function upgrade() {
-        global $db, $router;
+        global $db;
 
         // first get all the system models
         $models = expModules::initializeModels();
@@ -94,7 +94,7 @@ class fix_sef_urls extends upgradescript {
                             }
                             // also check for valid sef url
                             if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, $opts))) {
-                                $item->sef_url = $router->encode($item->sef_url);
+                                $item->sef_url = expRouter::encode($item->sef_url);
                                 // we need to test for uniqueness or update will fail
                                 $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="'.$item->sef_url.'"' . $opts['grouping_sql']);
                         		if (!empty($dupe)) {
@@ -120,7 +120,7 @@ class fix_sef_urls extends upgradescript {
                         }
                         // also check for valid sef url
                         if (!is_bool(expValidator::is_valid_sef_name('sef_url', $item, array()))) {
-                            $item->sef_url = $router->encode($item->sef_url);
+                            $item->sef_url = expRouter::encode($item->sef_url);
                             // we need to test for uniqueness or update will fail
                             $dupe = $db->selectValue($model->tablename, 'sef_url', 'sef_url="'.$item->sef_url.'"');
                     		if (!empty($dupe)) {

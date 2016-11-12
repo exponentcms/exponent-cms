@@ -33,10 +33,12 @@
 	    <ul class="nav nav-tabs" role="tablist">
         	<li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><em>{'Menu Hierarchy'|gettext}</em></a></li>
 	        {if $canManageStandalones}<li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><em>{'Standalone Pages'|gettext}</em></a></li>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<li role="presentation"><a href="#tab3" role="tab" data-toggle="tab"><em>{'Page Redirection'|gettext}</em></a></li>{/if}
 	    </ul>
 	    <div class="tab-content">
         	<div id="tab1" role="tabpanel" class="tab-pane fade in active">{exp_include file="manage_hierarchy.tpl"}</div>
 	        {if $canManageStandalones}<div id="tab2" role="tabpanel" class="tab-pane fade">{exp_include file="manage_standalone.tpl"}</div>{/if}
+            {if $smarty.const.HANDLE_PAGE_REDIRECTION}<div id="tab3" role="tabpanel" class="tab-pane fade">{exp_include file="manage_redirection.tpl"}</div>{/if}
 	    </div>
 	</div>
 	{*<div class="loadingdiv">{'Loading Pages'|gettext}</div>*}

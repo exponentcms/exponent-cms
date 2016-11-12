@@ -152,23 +152,23 @@ class uploadcontrol extends formcontrol {
     /**
      * Moves the uploaded file into our file system, NOT the database
      *
-     * @param $original_name
-     * @param $formvalues
+     * @param $name
+     * @param $values
      *
      * @return string   The full directory and filename of the uploaded file
      */
-    static function parseData($original_name,$formvalues) {
-        if (is_array($formvalues[$original_name])) {
-            $file = $formvalues[$original_name]['name'];
+    static function parseData($name,$values, $for_db = false) {
+        if (is_array($values[$name])) {
+            $file = $values[$name]['name'];
 //            return '<a href="'.URL_FULL.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
         } else {
-            if (!empty($formvalues['isedit']) && !empty($_FILES[$original_name]['name'])) {
-//                $file = $_FILES[$original_name]['name'];
-                $file = PATH_RELATIVE . self::moveFile($original_name, $_FILES);
-            } elseif (!empty($formvalues['registration']) && !empty($_FILES['registrant']['name'])) {
-                 $file = PATH_RELATIVE . self::moveRegistrationFile($original_name, $_FILES['registrant'], $formvalues['registration']);
+            if (!empty($values['isedit']) && !empty($_FILES[$name]['name'])) {
+//                $file = $_FILES[$name]['name'];
+                $file = PATH_RELATIVE . self::moveFile($name, $_FILES);
+            } elseif (!empty($values['registration']) && !empty($_FILES['registrant']['name'])) {
+                 $file = PATH_RELATIVE . self::moveRegistrationFile($name, $_FILES['registrant'], $values['registration']);
             } else {
-                $file = $formvalues[$original_name];
+                $file = $values[$name];
    //            return '<a href="'.URL_BASE.$file.'">'.basename($file).'</a>';  //FIXME this shouldn't be a link
             }
         }

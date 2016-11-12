@@ -26,8 +26,8 @@ class expCat extends expRecord {
 	public $table = 'expCats';
 	public $attachable_table = 'content_expCats';
     protected $attachable_item_types = array(
-        //'content_expFiles'=>'expFile', 
-        //'content_expTags'=>'expTag', 
+        //'content_expFiles'=>'expFile',
+        //'content_expTags'=>'expTag',
         //'content_expComments'=>'expComment',
         //'content_expSimpleNote'=>'expSimpleNote',
     );
@@ -69,9 +69,9 @@ class expCat extends expRecord {
 //        global $db, $router;
 //
 //        if (!empty($this->title)) {
-//			$this->sef_url = $router->encode($this->title);
+//			$this->sef_url = expRouter::encode($this->title);
 //		} else {
-//			$this->sef_url = $router->encode('Untitled');
+//			$this->sef_url = expRouter::encode('Untitled');
 //		}
 //        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url.'" AND module="'.$this->module.'"');
 //		if (!empty($dupe)) {

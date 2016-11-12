@@ -36,10 +36,10 @@ class help extends expRecord {
         if (!empty($this->location_data)) $this->loc = expUnserialize($this->location_data);
         if (!empty($this->help_version_id)) $this->grouping_sql = " AND help_version_id='".$this->help_version_id."'";
     }
-    
-    // public function beforeSave($params=array()) {  
+
+    // public function beforeSave($params=array()) {
     //     eDebug($this,1);
-    //     //$this->save(true);  
+    //     //$this->save(true);
     // }
 
     /**
@@ -111,9 +111,9 @@ class help extends expRecord {
 //		global $router, $db;
 //
 //        if (isset($this->title)) {
-//			$this->sef_url = $router->encode($this->title);
+//			$this->sef_url = expRouter::encode($this->title);
 //		} else {
-//			$this->sef_url = $router->encode('Untitled');
+//			$this->sef_url = expRouter::encode('Untitled');
 //		}
 //        $dupe = $db->selectValue($this->tablename, 'sef_url', 'sef_url="'.$this->sef_url." AND help_version_id='".$this->help_version_id."'");
 //		if (!empty($dupe)) {
@@ -267,7 +267,7 @@ class help extends expRecord {
     public static function makeHelpLink($module) {
         // make sure the module name is in the right format.
         $module = expModules::getControllerName($module);
-        
+
         // figure out which version we're on
 //        $full_version = EXPONENT_VERSION_MAJOR.'.'.EXPONENT_VERSION_MINOR.'.'.EXPONENT_VERSION_REVISION;
         $full_version = expVersion::getVersion(true,false,false);
@@ -276,7 +276,7 @@ class help extends expRecord {
         $link .= 'docs';
         $link .= '/'.$full_version;
         $link .= '/'.$module;
-        
+
         return $link;
     }
 

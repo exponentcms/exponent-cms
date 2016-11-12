@@ -40,7 +40,8 @@ function smarty_function_link($params,&$smarty) {
 	    foreach ($params['parse_attrs'] as $key => $value) {
 	        $params[$key] = $value;
 	        if ($params['showby']) {
-	            $params[$params['showby']] = $record->$params['showby'];
+                $prop = $params['showby'];
+	            $params[$prop] = $record->$prop;
 	            unset($params['showby']);
 	        }
 	    }
@@ -52,14 +53,14 @@ function smarty_function_link($params,&$smarty) {
 	// if the module wasn't passed in we will assume it is the same as the module for this view
 	if (!isset($params['module']) && !isset($params['controller'])) {
 	    $params['module'] = $loc->mod;
-	} 
-	
+	}
+
 	// make sure the module isn't really a controller
 	if (!empty($params['module']) && expModules::controllerExists(!empty($params['module']))) {
 		$params['controller'] = $params['module'];
 		unset ($params['module']);
 	}
-	
+
 	// guess the src if it is not set
 	if (!isset($params['src'])) {
         if (!empty($params['controller']) || @call_user_func(array(expModules::getModuleClassName($loc->mod),'hasSources'))) {
@@ -68,7 +69,7 @@ function smarty_function_link($params,&$smarty) {
             $params['src'] = $loc->src;
         }
 	}
-	
+
 	// grab the int value
 	if (!isset($params['int'])) $params['int'] = $loc->int;
 
