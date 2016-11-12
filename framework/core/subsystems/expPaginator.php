@@ -206,9 +206,9 @@ class expPaginator {
 		} elseif (!empty($class)) { //where clause     //FJD: was $this->class, but wasn't working...
 			$this->total_records = $class->find('count', $this->where);
             $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
-		} elseif (!empty($this->where)) { //from Merge....where clause
-			$this->total_records = $class->find('count', $this->where);
-            $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
+//		} elseif (!empty($this->where)) { //from Merge....where clause  //fixme this breaks since you need a $class here and we've already handled that above
+//			$this->total_records = $class->find('count', $this->where);
+//            $this->records = $class->find('all', $this->where, $sort, $limit, $this->start);
 		} else { //sql clause  //FIXME we don't get attachments in this approach
 			//$records = $db->selectObjectsBySql($this->sql);
 			//$this->total_records = count($records);
