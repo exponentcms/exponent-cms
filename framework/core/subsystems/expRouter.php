@@ -485,7 +485,7 @@ class expRouter {
                                 $redirectObject->new_sef_name = $page_redirect->new_sef_name;
                                 $db->insertObject($redirectObject, 'redirect');
                                 $_REQUEST['section'] = $section->id;
-                                $type = !empty($page_redirect->type) ? $page_redirect->type : 200;
+                                $type = !empty($page_redirect->type) ? intval($page_redirect->type) : 200;
                                 header("Location: " . $this->makeLink(array('section' => intval($_REQUEST['section']))), TRUE, $type);
                             }
                         }
