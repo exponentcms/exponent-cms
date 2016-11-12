@@ -25,7 +25,7 @@
             {'This would especially be desired if a page is renamed.'|gettext}
         </blockquote>
 		{icon class="add" action=edit_redirection text='Create a New Page Redirection'|gettext}
-        {icon class="manage" action=manage_redirection_log text='Display Page Redirections'|gettext}
+        {icon class="manage" action=manage_redirection_log text='Display Redirected Pages'|gettext}
 	</div>
     <table cellpadding="2" cellspacing="0" border="0" width="100%" class="exp-skin-table">
         <thead>
