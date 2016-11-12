@@ -825,6 +825,7 @@ class navigationController extends expController {
         }
         assign_to_template(array(
             'record'     => $record,
+            'sef_name'   => $sef_name,
         ));
     }
 

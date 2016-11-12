@@ -480,12 +480,13 @@ class expRouter {
                                 $db->insertObject($redirectObject, 'redirect'); // missing redirected page
                                 return false;
                             } else {
+                                //log redirect took place
                                 $redirectObject->redirected = true;
                                 $redirectObject->new_sef_name = $page_redirect->new_sef_name;
                                 $db->insertObject($redirectObject, 'redirect');
                                 $_REQUEST['section'] = $section->id;
-                                //log redirect took place
-                                header("Location: " . $this->makeLink(array('section' => intval($_REQUEST['section']))), TRUE, $page_redirect->type);
+                                $type = !empty($page_redirect->type) ? $page_redirect->type : 200;
+                                header("Location: " . $this->makeLink(array('section' => intval($_REQUEST['section']))), TRUE, $type);
                             }
                         }
                     } else {
