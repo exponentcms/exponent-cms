@@ -19,6 +19,7 @@
 
 <div class="module navigation manage-redirection-log">
     <h2>{'Page Redirection Log'|gettext}</h2>
+    {if $page->total_records}{icon class="delete" action=delete_redirection_log text='Delete Page Redirection Log'|gettext onclick="return confirm('"|cat:("Delete the entire log?"|gettext)|cat:"');"}{/if}
     {$page->links}
     <div class="exp-ecom-table">
         {$page->table}

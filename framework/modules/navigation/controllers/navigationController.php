@@ -750,7 +750,7 @@ class navigationController extends expController {
     public function manage_sitemap() {
         global $db, $user, $sectionObj, $sections;
 
-        expHistory::set('viewable', $this->params);
+        expHistory::set('manageable', $this->params);
         $id      = $sectionObj->id;
         $current = null;
         // all we need to do is determine the current section
@@ -776,7 +776,7 @@ class navigationController extends expController {
     }
 
     public function manage_redirection_log() {
-        global $db;
+//        global $db;
 
 //        $records = $db->selectObjects('redirect');
 //        foreach ($records as $key=>$record) {
@@ -787,6 +787,7 @@ class navigationController extends expController {
 //                $records[$key]->redirected = '';
 //            }
 //        }
+        expHistory::set('manageable', $this->params);
         $redirect = new redirect();
         $page = new expPaginator(array(
             'model'=>'redirect',
@@ -809,6 +810,13 @@ class navigationController extends expController {
         assign_to_template(array(
             'page'     => $page,
         ));
+    }
+
+    public function delete_redirection_log() {
+        global $db;
+
+        $db->delete('redirect');
+        expHistory::back();
     }
 
     public function edit_redirection() {
