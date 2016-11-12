@@ -477,7 +477,6 @@ class formsController extends expController {
     public function confirm_data() {
         $f = new forms($this->params['id']);
         $cols = $f->forms_control;
-        $counts = array();
         $responses = array();
         $captions = array();
 
@@ -593,8 +592,8 @@ class formsController extends expController {
             $def = call_user_func(array($control_type, "getFieldDefinition"));
             if ($def != null) {
                 $emailValue = htmlspecialchars_decode(call_user_func(array($control_type, 'parseData'), $c->name, $this->params, true));
-                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
-                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
+//                if ($emailValue !== $this->params[$c->name])  //fixme should this be done, isn't data already parsed? only when editing an existing record
+//                    eLog($emailValue.' : '.$this->params[$c->name], 'Mismatch');
                 if (get_class($ctl) == 'texteditorcontrol') {
                     $value = expString::escape($emailValue); //fixme does this need to occur later?
                     $value = str_replace(array('\r\n','\n','\r'),array("\r\n","\n","\r"),$value);
