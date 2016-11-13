@@ -1358,7 +1358,7 @@ class expFile extends expRecord {
 
     static function recurse_copy($src, $dst) {
         $dir = opendir($src);
-        @mkdir($dst,DIR_DEFAULT_MODE_STR);
+        @mkdir($dst, octdec(DIR_DEFAULT_MODE_STR + 0));
         while (false !== ($file = readdir($dir))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($src . '/' . $file)) {

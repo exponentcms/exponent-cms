@@ -83,7 +83,7 @@ function logger($cmd, $result, $args, $elfinder)
         $log = sprintf("[%s] %s: %s \n", date('r'), strtoupper($cmd), var_export($result, true));
         $logfile = BASE . 'tmp/elfinder.log';
         $dir = dirname($logfile);
-        if (!is_dir($dir) && !mkdir($dir,DIR_DEFAULT_MODE_STR)) {
+        if (!is_dir($dir) && !mkdir($dir, octdec(DIR_DEFAULT_MODE_STR + 0))) {
             return;
         }
         if (($fp = fopen($logfile, 'a'))) {
@@ -156,7 +156,7 @@ class elFinderSimpleLogger
         $this->file = $path;
         $dir = dirname($path);
         if (!is_dir($dir)) {
-            mkdir($dir,DIR_DEFAULT_MODE_STR);
+            mkdir($dir, octdec(DIR_DEFAULT_MODE_STR + 0));
         }
     }
 

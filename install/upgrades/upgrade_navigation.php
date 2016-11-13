@@ -160,7 +160,7 @@ class upgrade_navigation extends upgradescript {
         $dst = THEME_ABSOLUTE."modules/navigation/views/navigation";
         if (is_dir($src) && expUtil::isReallyWritable($dst)) {
             $dir = opendir($src);
-            if (!file_exists($dst)) @mkdir($dst,DIR_DEFAULT_MODE_STR,true);
+            if (!file_exists($dst)) @mkdir($dst, octdec(DIR_DEFAULT_MODE_STR + 0),true);
             while(false !== ( $file = readdir($dir)) ) {
                 if (( $file != '.' ) && ( $file != '..' )) {
                     if (!file_exists($dst . '/showall_' . $file)) copy($src . '/' . $file,$dst . '/showall_' . $file);

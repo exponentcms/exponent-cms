@@ -430,7 +430,7 @@ class expCSS {
                                 if (!is_dir($css_loc['dirname'])) {
                                     if (mkdir(
                                         $css_loc['dirname'],
-                                        DIR_DEFAULT_MODE_STR
+                                        octdec(DIR_DEFAULT_MODE_STR + 0)
                                     ) === false) {
                                         flash('error', gt('Less compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
                                         return false;
@@ -514,7 +514,7 @@ class expCSS {
                                 if (!is_dir($css_loc['dirname'])) {
                                     if (mkdir(
                                         $css_loc['dirname'],
-                                        DIR_DEFAULT_MODE_STR
+                                        octdec(DIR_DEFAULT_MODE_STR + 0)
                                     ) === false) {
                                         flash('error', gt('Less compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
                                         return false;
@@ -622,7 +622,7 @@ class expCSS {
                                 if (!is_dir($css_loc['dirname'])) {
                                     if (mkdir(
                                         $css_loc['dirname'],
-                                        DIR_DEFAULT_MODE_STR
+                                        octdec(DIR_DEFAULT_MODE_STR + 0)
                                     ) === false) {
                                         flash('error', gt('SCSS compiler') . ': ' . gt('unable to create css folder') . ': ' . $css_loc['dirname'] );
                                         return false;
