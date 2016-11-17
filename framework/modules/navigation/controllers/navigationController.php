@@ -776,17 +776,6 @@ class navigationController extends expController {
     }
 
     public function manage_redirection_log() {
-//        global $db;
-
-//        $records = $db->selectObjects('redirect');
-//        foreach ($records as $key=>$record) {
-//            $records[$key]->timestamp = expDateTime::format_date($record->timestamp, DISPLAY_DATETIME_FORMAT);
-//            if ($record->redirected) {
-//                $records[$key]->redirected = gt('Yes');
-//            } else {
-//                $records[$key]->redirected = '';
-//            }
-//        }
         expHistory::set('manageable', $this->params);
         $redirect = new redirect();
         $page = new expPaginator(array(
@@ -800,7 +789,7 @@ class navigationController extends expController {
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'columns'=>array(
-                gt('Request')=>'missed_sef_name|controller=navigation,action=edit_redirection,showby=missed_sef_name',
+                gt('Requested')=>'missed_sef_name|controller=navigation,action=edit_redirection,showby=missed_sef_name',
                 gt('Date')=>'timestamp',
 //                gt('Redirected')=>'redirected',
                 gt('Redirected To')=>'new_sef_name',

@@ -459,6 +459,7 @@ class expRouter {
                     $redirectObject->missed_sef_name = $sef_url;
                     $redirectObject->timestamp = time();
                     $redirectObject->referer = empty($_SERVER['HTTP_REFERER']) ? null : $_SERVER['HTTP_REFERER'];
+                    $redirectObject->url_request = empty($_SERVER['REQUEST_URI']) ? null : $_SERVER['REQUEST_URI'];
                     $redirectObject->cookieUID = (empty($_COOKIE['UserUID'])) ? expSession::getTicketString() : $_COOKIE['UserUID'];
                     $redirectObject->user_id = $user->id;
                     $redirectObject->user_address = $_SERVER['REMOTE_ADDR'];

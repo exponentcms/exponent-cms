@@ -51,6 +51,9 @@ return array(
 	'referer'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>1000),
+    'url_request'=>array(
+   		DB_FIELD_TYPE=>DB_DEF_STRING,
+   		DB_FIELD_LEN=>1000),
 	'cookieUID'=>array(
 		DB_FIELD_TYPE=>DB_DEF_STRING,
 		DB_FIELD_LEN=>100,
