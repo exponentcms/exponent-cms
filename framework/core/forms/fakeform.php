@@ -77,7 +77,7 @@ class fakeform extends form {
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms',
             "jquery"  => 1,
-            "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/dev/polyfiller.js',
+            "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
             "content" => $ws_load,
         ));
 		foreach ($this->scripts as $script)
@@ -117,7 +117,7 @@ class fakeform extends form {
             $html .= '<div class="row">';
 
         $html .= "<div class=\"item-actions".($this->controls[$name]->horizontal&&bs3()?' col-sm-12':'')."\">";
-        
+
         //build edit button
         if (!$this->controls[$name]->_readonly) {
             //$html .= '<a href="?module='.$module.'&action=edit_control&id='.$this->controls[$name]->_id.'&form_id='.$form_id.'">';
@@ -252,7 +252,7 @@ class fakeform extends form {
             ));
         }
     }
-    
+
 }
 
 ?>

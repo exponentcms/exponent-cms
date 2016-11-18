@@ -141,7 +141,7 @@
 		var t4 = t3[0].slice(0, t3[0].lastIndexOf("/") + 1);
 		path = t2[0] + '?f=' + t4 + 'shims/';
 	} else {
-		path = path.split('?')[0].slice(0, path.lastIndexOf("/") + 1) + 'shims/';
+		path = path.split('?')[0].slice(0, path.lastIndexOf("/") + 1) + 'shims/';  //orig
 	}
 
 	function create(name){

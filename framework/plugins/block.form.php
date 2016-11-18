@@ -28,7 +28,7 @@
  * Type:     block<br>
  * Name:     form<br>
  * Purpose:  Set up a form block
- * 
+ *
  * @param $params
  * @param $content
  * @param \Smarty $smarty
@@ -98,7 +98,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
         expJavascript::pushToFoot(array(
             "unique"  => 'html5forms',
             "jquery"  => 1,
-            "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/dev/polyfiller.js',
+            "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
             "content" => $ws_load,
         ));
         if (!empty($params['paged'])) {
@@ -239,7 +239,7 @@ function smarty_block_form($params,$content,&$smarty, &$repeat) {
 
 		//echo the innards
 	} else {
-		echo $content;	
+		echo $content;
 		echo '</form>';
 	}
 }

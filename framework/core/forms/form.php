@@ -51,7 +51,7 @@ class form extends baseform {
 			$this->div_to_update = $div_to_update;
 		}
 	}
-	
+
 	function secure() {
 //		$this->action = (ENABLE_SSL ? SSL_URL : '') . SCRIPT_RELATIVE . SCRIPT_FILENAME;
         $this->action = SCRIPT_RELATIVE . SCRIPT_FILENAME;
@@ -137,7 +137,7 @@ class form extends baseform {
 			$name = uniqid("");
 		if (in_array($name,$this->controlIdx))
 			return false;
-		
+
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
@@ -176,7 +176,7 @@ class form extends baseform {
 			$name = uniqid("");
 		if (in_array($name,$this->controlIdx))
 			return false;
-		
+
         if ($this->horizontal)
 			$control->horizontal = true;
 		if (!empty($params)) {
@@ -214,21 +214,21 @@ class form extends baseform {
             if (empty($this->controls["submit"])) $this->controls["submit"] = new stdClass();
 			$this->controls["submit"]->validateJS = "validate(this.form)";
 		}
-	
+
 		// Persistent Form Data extension
 		$formError = "";
 		if (expSession::is_set("last_POST")) {
 			// We have cached POST data.  Use it to update defaults.
 			$last_POST = expSession::get("last_POST");
-			
+
 			foreach (array_keys($this->controls) as $name) {
 				// may need to look to control a la parseData
 				$this->controls[$name]->default = @$last_POST[$name];
 				$this->controls[$name]->inError = 1; // Status flag for controls that need to do some funky stuff.
 			}
-			
+
 			$formError = @$last_POST['_formError'];
-			
+
 			//expSession::un_set("last_POST");
 		}
 
@@ -277,7 +277,7 @@ class form extends baseform {
 		expJavascript::pushToFoot(array(
 			"unique"  => 'html5forms',
 	 	    "jquery"  => 1,
-		    "src"     => PATH_RELATIVE . 'external/webshim-1.15.10/js-webshim/dev/polyfiller.js',
+		    "src"     => PATH_RELATIVE . 'external/webshim-1.16.0/js-webshim/dev/polyfiller.js',
 			"content" => $ws_load,
 	    ));
 		foreach ($this->scripts as $script) $html .= "<script type=\"text/javascript\" src=\"".$script."\"></script>\r\n";
@@ -450,14 +450,14 @@ class form extends baseform {
         }
 		return $html;
 	}
-	
+
 	/*
 	function mergeFormBefore($before_name,$form) {
-		
+
 	}
-	
+
 	function mergeFormAfter($after_name,$form) {
-	
+
 	}
 	*/
 }
