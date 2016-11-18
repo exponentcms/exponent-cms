@@ -617,6 +617,7 @@ class remove_oldfiles extends upgradescript {
             'external/swiftmailer-5.4.0/',
 			'external/swiftmailer-5.4.1/',
 			'external/swiftmailer-5.4.2/',
+            'external/webshims-1.15.10/',
             'external/yui3/',
             'external/lissa/',
             'external/yui/build/',
@@ -640,7 +641,7 @@ class remove_oldfiles extends upgradescript {
         }
 
 		return ($files_removed?$files_removed:gt('No'))." ".gt("obsolete files and folders were removed.");
-		
+
 	}
 }
 
