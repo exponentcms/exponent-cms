@@ -41,7 +41,7 @@ class addressController extends expController {
         'update_region' => 'Update Region',
     );
     public $requires_login = array(
-        'edit'=>'You must be logged in to perform this action',
+//        'edit'=>'You must be logged in to perform this action',
         'myaddressbook'=>'You must be logged in to perform this action',
     );
 	public $remove_configs = array(

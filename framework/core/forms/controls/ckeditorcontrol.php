@@ -32,6 +32,9 @@ class ckeditorcontrol extends formcontrol {
     var $maxchars;
     var $toolbar;
     var $tb_collapsed = false;
+    var $lazyload;
+    var $plugin;
+    var $additionalConfig;
 
     static function name() {
         return "CKEditor";
@@ -57,13 +60,13 @@ class ckeditorcontrol extends formcontrol {
         if (is_file(BASE . $css)) {
             $contentCSS = "contentsCss : '" . PATH_RELATIVE . $css . "',";
         }
-        
+
         if (is_file(BASE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js')) {
             $configjs = "customConfig : '" . PATH_RELATIVE . 'themes/' . DISPLAY_THEME . '/editors/ckeditor/config.js' . "',";
         } else {
             $configjs = "";
         }
-        
+
         if ($this->toolbar === '') {
 //            $settings = $db->selectObject('htmleditor_ckeditor', 'active=1');
             $settings = expHTMLEditorController::getActiveEditorSettings('ckeditor');
@@ -104,7 +107,7 @@ class ckeditorcontrol extends formcontrol {
         // make sure the (custom) skin exists
         if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
-              if ($this->toolbar === 'basic') {
+            if ($this->toolbar === 'basic') {
                 $tb = "
                 toolbar : [
                     ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']

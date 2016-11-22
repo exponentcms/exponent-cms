@@ -32,6 +32,9 @@ class ckeditorcontrol extends formcontrol {
     var $maxchars;
     var $toolbar;
     var $tb_collapsed = false;
+    var $lazyload;
+    var $plugin;
+    var $additionalConfig;
 
     static function name() {
         return "CKEditor";
@@ -104,7 +107,7 @@ class ckeditorcontrol extends formcontrol {
         // make sure the (custom) skin exists
         if (empty($skin) || !is_dir(BASE . 'external/editors/ckeditor/skins/' . $skin)) $skin = 'kama';
         if (empty($tb)) {
-              if ($this->toolbar === 'basic') {
+            if ($this->toolbar === 'basic') {
                 $tb = "
                 toolbar : [
                     ['Bold','Italic','Underline','RemoveFormat','-','NumberedList','BulletedList','-','Link','Unlink','-','About']

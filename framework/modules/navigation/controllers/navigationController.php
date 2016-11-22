@@ -750,7 +750,7 @@ class navigationController extends expController {
     public function manage_sitemap() {
         global $db, $user, $sectionObj, $sections;
 
-        expHistory::set('viewable', $this->params);
+        expHistory::set('manageable', $this->params);
         $id      = $sectionObj->id;
         $current = null;
         // all we need to do is determine the current section
@@ -776,17 +776,7 @@ class navigationController extends expController {
     }
 
     public function manage_redirection_log() {
-        global $db;
-
-//        $records = $db->selectObjects('redirect');
-//        foreach ($records as $key=>$record) {
-//            $records[$key]->timestamp = expDateTime::format_date($record->timestamp, DISPLAY_DATETIME_FORMAT);
-//            if ($record->redirected) {
-//                $records[$key]->redirected = gt('Yes');
-//            } else {
-//                $records[$key]->redirected = '';
-//            }
-//        }
+        expHistory::set('manageable', $this->params);
         $redirect = new redirect();
         $page = new expPaginator(array(
             'model'=>'redirect',
@@ -799,7 +789,7 @@ class navigationController extends expController {
             'action'=>$this->params['action'],
             'src'=>$this->loc->src,
             'columns'=>array(
-                gt('Request')=>'missed_sef_name|controller=navigation,action=edit_redirection,showby=missed_sef_name',
+                gt('Requested')=>'missed_sef_name|controller=navigation,action=edit_redirection,showby=missed_sef_name',
                 gt('Date')=>'timestamp',
 //                gt('Redirected')=>'redirected',
                 gt('Redirected To')=>'new_sef_name',
@@ -809,6 +799,13 @@ class navigationController extends expController {
         assign_to_template(array(
             'page'     => $page,
         ));
+    }
+
+    public function delete_redirection_log() {
+        global $db;
+
+        $db->delete('redirect');
+        expHistory::back();
     }
 
     public function edit_redirection() {

@@ -546,7 +546,7 @@ class expSettings
         if (!file_exists(BASE . "framework/conf/profiles")) {
             @mkdir(
                 BASE . "framework/conf/profiles",
-                DIR_DEFAULT_MODE_STR,
+                octdec(DIR_DEFAULT_MODE_STR + 0),
                 true
             );
         }

@@ -35,6 +35,9 @@ class tinymcecontrol extends formcontrol
     var $maxchars;
     var $toolbar;
     var $tb_collapsed = false;
+    var $lazyload;
+    var $plugin;
+    var $additionalConfig;
 
     static function name()
     {
