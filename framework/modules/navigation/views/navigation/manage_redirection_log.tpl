@@ -15,12 +15,8 @@
 
 {css unique="redirect-log" corecss="button,tables"}
 {literal}
-    .name {
-        /*display: block;*/
-    }
-
-    .name:hover .details {
-        display:block;
+    .details {
+        display:none;
         position: absolute;
         background: inherit;
         border: 1px solid black;
@@ -28,8 +24,9 @@
         border-radius: 4px;
     }
 
-    .details {
-        display:none;
+
+    td.name:hover > .details {
+        display:block;
     }
 {/literal}
 {/css}
