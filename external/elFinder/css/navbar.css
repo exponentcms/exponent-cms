@@ -29,9 +29,9 @@
 .elfinder-navbar-wrapper, .elfinder-place-wrapper { }
 
 /* folder */
-.elfinder-navbar-dir { 
-	position:relative; 
-	display:block; 
+.elfinder-navbar-dir {
+	position:relative;
+	display:block;
 	white-space:nowrap;
 	padding:3px 12px;
 	margin: 0;
@@ -118,11 +118,13 @@
 .elfinder-tree .elfinder-navbar-root-sql     .elfinder-navbar-icon { background-image:url("../img/volume_icon_sql.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-dropbox .elfinder-navbar-icon { background-image:url("../img/volume_icon_dropbox.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-googledrive .elfinder-navbar-icon { background-image:url("../img/volume_icon_googledrive.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-onedrive .elfinder-navbar-icon { background-image:url("../img/volume_icon_onedrive.png"); background-position:0 0; }
+.elfinder-tree .elfinder-navbar-root-box .elfinder-navbar-icon { background-image:url("../img/volume_icon_box.png"); background-position:0 0; }
 .elfinder-tree .elfinder-navbar-root-network .elfinder-navbar-icon { background-image:url("../img/toolbar.png"); background-position: 0 -688px; }
 
 /* icon in active/hove/dropactive state */
-.ui-state-active           .elfinder-navbar-icon, 
-.elfinder-droppable-active .elfinder-navbar-icon, 
+.ui-state-active           .elfinder-navbar-icon,
+.elfinder-droppable-active .elfinder-navbar-icon,
 .ui-state-hover            .elfinder-navbar-icon { background-position:0 -32px; }
 
 /* ltr/rtl enviroment */
@@ -131,7 +133,7 @@
 
 
 /* spinner */
-.elfinder-navbar-spinner { 
+.elfinder-navbar-spinner {
 	width:14px;
 	height:14px;
 	position:absolute;

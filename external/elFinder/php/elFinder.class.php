@@ -26,6 +26,13 @@ class elFinder {
 	protected $volumes = array();
 	
 	/**
+	 * elFinder instance
+	 * 
+	 * @var object
+	 */
+	public static $instance = null;
+	
+	/**
 	 * Network mount drivers
 	 * 
 	 * @var array
@@ -228,6 +235,13 @@ class elFinder {
 	protected $uploadDebug = '';
 	
 	/**
+	 * Max allowed numbar of @var targets (0 - no limit)
+	 * 
+	 * @var integer
+	 */
+	public $maxTargets = 1000;
+	
+	/**
 	 * Errors from PHP
 	 *
 	 * @var array
@@ -303,18 +317,17 @@ class elFinder {
 	const ERROR_NETMOUNT          = 'errNetMount';
 	const ERROR_NETUNMOUNT        = 'errNetUnMount';
 	const ERROR_NETMOUNT_NO_DRIVER = 'errNetMountNoDriver';
-	const ERROR_NETMOUNT_FAILED       = 'errNetMountFailed';
-
-	const ERROR_SESSION_EXPIRES 	= 'errSessionExpires';
-
-	const ERROR_CREATING_TEMP_DIR 	= 'errCreatingTempDir';
-	const ERROR_FTP_DOWNLOAD_FILE 	= 'errFtpDownloadFile';
-	const ERROR_FTP_UPLOAD_FILE 	= 'errFtpUploadFile';
-	const ERROR_FTP_MKDIR 		= 'errFtpMkdir';
-	const ERROR_ARCHIVE_EXEC 	= 'errArchiveExec';
-	const ERROR_EXTRACT_EXEC 	= 'errExtractExec';
+	const ERROR_NETMOUNT_FAILED   = 'errNetMountFailed';
+	const ERROR_SESSION_EXPIRES   = 'errSessionExpires';
+	const ERROR_CREATING_TEMP_DIR = 'errCreatingTempDir';
+	const ERROR_FTP_DOWNLOAD_FILE = 'errFtpDownloadFile';
+	const ERROR_FTP_UPLOAD_FILE   = 'errFtpUploadFile';
+	const ERROR_FTP_MKDIR         = 'errFtpMkdir';
+	const ERROR_ARCHIVE_EXEC      = 'errArchiveExec';
+	const ERROR_EXTRACT_EXEC      = 'errExtractExec';
 	const ERROR_SEARCH_TIMEOUT    = 'errSearchTimeout';    // 'Timed out while searching "$1". Search result is partial.'
-	const ERROR_REAUTH_REQUIRE  = 'errReauthRequire';  // 'Re-authorization is required.'
+	const ERROR_REAUTH_REQUIRE    = 'errReauthRequire';  // 'Re-authorization is required.'
+	const ERROR_MAX_TARGTES       = 'errMaxTargets'; // 'Max number of selectable items is $1.'
 
 	/**
 	 * Constructor
@@ -324,12 +337,40 @@ class elFinder {
 	 */
 	public function __construct($opts) {
 		// set error handler of WARNING, NOTICE
-		set_error_handler('elFinder::phpErrorHandler', E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE);
+		$errLevel = E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE | E_STRICT | E_RECOVERABLE_ERROR;
+		if (defined('E_DEPRECATED')) {
+			$errLevel |= E_DEPRECATED | E_USER_DEPRECATED;
+		}
+		set_error_handler('elFinder::phpErrorHandler', $errLevel);
+		
+		// convert PATH_INFO to GET query
+		if (! empty($_SERVER['PATH_INFO'])) {
+			$_ps = explode('/', trim($_SERVER['PATH_INFO'], '/'));
+			if (! isset($_GET['cmd'])) {
+				$_cmd = $_ps[0];
+				if (isset($this->commands[$_cmd])) {
+					$_GET['cmd'] = $_cmd;
+					$_i = 1;
+					foreach(array_keys($this->commands[$_cmd]) as $_k) {
+						if (isset($_ps[$_i])) {
+							if (! isset($_GET[$_k])) {
+								$_GET[$_k] = $_ps[$_i];
+							}
+						} else {
+							break;
+						}
+					}
+				}
+			}
+		}
+		
+		// set elFinder instance
+		elFinder::$instance = $this;
 		
 		// setup debug mode
 		$this->debug = (isset($opts['debug']) && $opts['debug'] ? true : false);
 		if ($this->debug) {
-			error_reporting(-1);
+			error_reporting(defined('ELFINDER_DEBUG_ERRORLEVEL')? ELFINDER_DEBUG_ERRORLEVEL : -1);
 			ini_set('diaplay_errors', '1');
 		}
 
@@ -372,6 +413,7 @@ class elFinder {
 		$this->timeout = (isset($opts['timeout']) ? $opts['timeout'] : 0);
 		$this->uploadTempPath = (isset($opts['uploadTempPath']) ? $opts['uploadTempPath'] : '');
 		$this->callbackWindowURL = (isset($opts['callbackWindowURL']) ? $opts['callbackWindowURL'] : '');
+		$this->maxTargets = (isset($opts['maxTargets']) ? intval($opts['maxTargets']) : $this->maxTargets);
 		elFinder::$commonTempPath = (isset($opts['commonTempPath']) ? $opts['commonTempPath'] : './.tmp');
 		if (!is_writable(elFinder::$commonTempPath)) {
 			elFinder::$commonTempPath = '';
@@ -734,14 +776,22 @@ class elFinder {
 		}
 		
 		foreach ($this->volumes as $volume) {
-			if (isset($result['removed'])) {
-				$result['removed'] = array_merge($result['removed'], $volume->removed());
+			$removed = $volume->removed();
+			if (! empty($removed)) {
+				if (! isset($result['removed'])) {
+					$result['removed'] = array();
+				}
+				$result['removed'] = array_merge($result['removed'], $removed);
 				if (! $changeDst && $dst && $dstVolume && $volume === $dstVolume) {
 					$changeDst = true;
 				}
 			}
-			if (isset($result['added'])) {
-				$result['added'] = array_merge($result['added'], $volume->added());
+			$added = $volume->added();
+			if (! empty($added)) {
+				if (! isset($result['added'])) {
+					$result['added'] = array();
+				}
+				$result['added'] = array_merge($result['added'], $added);
 				if (! $changeDst && $dst && $dstVolume && $volume === $dstVolume) {
 					$changeDst = true;
 				}
@@ -806,6 +856,7 @@ class elFinder {
 		
 		foreach ($this->volumes as $volume) {
 			$volume->umount();
+			$volume->__destruct();
 		}
 		
 		if (!empty($result['callback'])) {
@@ -829,6 +880,21 @@ class elFinder {
 			return false;
 		}
 		return $volume->realpath($hash);
+	}
+	
+	/**
+	 * Update sesstion value of a NetVolume option
+	 * 
+	 * @param string $netKey
+	 * @param string $optionKey
+	 * @param mixed  $val
+	 */
+	public function updateNetVolumeOption($netKey, $optionKey, $val) {
+		$netVolumes = $this->getNetVolumes();
+		if (is_string($netKey) && isset($netVolumes[$netKey]) && is_string($optionKey)) {
+			$netVolumes[$netKey][$optionKey] = $val;
+			$this->saveNetVolumes($netVolumes);
+		}
 	}
 	
 	/**
@@ -1120,6 +1186,7 @@ class elFinder {
 			$result['uplMaxSize'] = ini_get('upload_max_filesize');
 			$result['uplMaxFile'] = ini_get('max_file_uploads');
 			$result['netDrivers'] = array_keys(self::$netDrivers);
+			$result['maxTargets'] = $this->maxTargets;
 			if ($volume) {
 				$result['cwd']['root'] = $volume->root();
 			}
@@ -1195,6 +1262,8 @@ class elFinder {
 		$targets = $args['targets'];
 		
 		foreach ($targets as $target) {
+			elFinder::extendTimeLimit();
+			
 			if (($volume = $this->volume($target)) != false
 			&& (($tmb = $volume->tmb($target)) != false)) {
 				$result['images'][$target] = $tmb;
@@ -1491,6 +1560,8 @@ class elFinder {
 		$suffix  = empty($args['suffix']) ? 'copy' : $args['suffix'];
 		
 		foreach ($targets as $target) {
+			elFinder::extendTimeLimit();
+			
 			if (($volume = $this->volume($target)) == false
 			|| ($src = $volume->file($target)) == false) {
 				$result['warning'] = $this->error(self::ERROR_COPY, '#'.$target, self::ERROR_FILE_NOT_FOUND);
@@ -1520,6 +1591,8 @@ class elFinder {
 		$result  = array('removed' => array());
 		
 		foreach ($targets as $target) {
+			elFinder::extendTimeLimit();
+			
 			if (($volume = $this->volume($target)) == false) {
 				$result['warning'] = $this->error(self::ERROR_RM, '#'.$target, self::ERROR_FILE_NOT_FOUND);
 				return $result;
@@ -1543,7 +1616,7 @@ class elFinder {
 	* @param  resource $fp
 	* @return string or bool(false)
 	* @retval string contents
-	* @retval false  error
+	* @rettval false  error
 	* @author Naoki Sawada
 	**/
 	protected function get_remote_contents( &$url, $timeout = 30, $redirect_max = 5, $ua = 'Mozilla/5.0', $fp = null ) {
@@ -1882,6 +1955,8 @@ class elFinder {
 		$files = array();
 		$errors = array();
 		foreach($targets as $target) {
+			elFinder::extendTimeLimit();
+			
 			$file = $volume->chmod($target, $mode);
 			if ($file) {
 				$files = array_merge($files, is_array($file)? $file : array($file));
@@ -2364,6 +2439,8 @@ class elFinder {
 		}
 		
 		foreach ($targets as $target) {
+			elFinder::extendTimeLimit();
+			
 			if (($srcVolume = $this->volume($target)) == false) {
 				$result['warning'] = $this->error($error, '#'.$target, self::ERROR_FILE_NOT_FOUND);
 				break;
@@ -3125,5 +3202,132 @@ class elFinder {
 			set_time_limit($time);
 		}
 	}
+	
+	/**
+	 * Return bytes from php.ini value
+	 * 
+	 * @param string $iniName
+	 * @param string $val
+	 * @return number
+	 */
+	public static function getIniBytes($iniName = '', $val = '') {
+		if ($iniName !== '') {
+			$val = ini_get($iniName);
+			if ($val === false) {
+				return 0;
+			}
+		}
+		$val = trim($val, "bB \t\n\r\0\x0B");
+		$last = strtolower($val[strlen($val) - 1]);
+		switch($last) {
+			case 't':
+				$val *= 1024;
+			case 'g':
+				$val *= 1024;
+			case 'm':
+				$val *= 1024;
+			case 'k':
+				$val *= 1024;
+		}
+		return (int)$val;
+	}
 
+	/**
+	 * Get script url.
+	 * 
+	 * @return string full URL
+	 * 
+	 * @author Naoki Sawada
+	 */
+	public static function getConnectorUrl() {
+		$https = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off');
+		$url = ($https ? 'https://' : 'http://')
+			.$_SERVER['SERVER_NAME']                                              // host
+			.(((! $https && $_SERVER['SERVER_PORT'] == 80) || ($https && $_SERVER['SERVER_PORT'] == 443)) ? '' : (':' . $_SERVER['SERVER_PORT']))  // port
+			.$_SERVER['REQUEST_URI'];                                             // path & query
+		list($url) = explode('?', $url);
+		
+		return $url;
+	}
+
+	/**
+	 * Get stream resource pointer by URL
+	 * 
+	 * @param array  $data  array('target'=>'URL', 'headers' => array())
+	 * @param number $redirectLimit
+	 * @return resource|boolean
+	 * 
+	 * @author Naoki Sawada
+	 */
+	public static function getStreamByUrl($data, $redirectLimit = 5) {
+		if (isset($data['target'])) {
+			$data = array(
+				'cnt' => 0,
+				'url' => $data['target'],
+				'headers' => isset($data['headers'])? $data['headers'] : array(),
+				'cookies' => array(),
+			);
+		}
+		if ($data['cnt'] > $redirectLimit) {
+			return false;
+		}
+		$dlurl = $data['url'];
+		$data['url'] = '';
+		$headers = $data['headers'];
+	
+		if ($dlurl) {
+			$url = parse_url($dlurl);
+			$cookies = array();
+			if ($data['cookies']) {
+				foreach ($data['cookies'] as $d => $c) {
+					if (strpos($url['host'], $d) !== false) {
+						$cookies[] = $c;
+					}
+				}
+			}
+
+			$query = isset($url['query']) ? '?'.$url['query'] : '';
+			$stream = stream_socket_client('ssl://'.$url['host'].':443');
+			stream_set_timeout($stream, 300);
+			fputs($stream, "GET {$url['path']}{$query} HTTP/1.1\r\n");
+			fputs($stream, "Host: {$url['host']}\r\n");
+			foreach($headers as $header) {
+				fputs($stream, trim($header, "\r\n")."\r\n");
+			}
+			fputs($stream, "Connection: Close\r\n");
+			if ($cookies) {
+				fputs($stream, 'Cookie: '.implode('; ', $cookies)."\r\n");
+			}
+			fputs($stream, "\r\n");
+			while (($res = trim(fgets($stream))) !== '') {
+				// find redirect
+				if (preg_match('/^Location: (.+)$/', $res, $m)) {
+					$data['url'] = $m[1];
+				}
+				// fetch cookie
+				if (strpos($res, 'Set-Cookie:') === 0) {
+					$domain = $url['host'];
+					if (preg_match('/^Set-Cookie:(.+)(?:domain=\s*([^ ;]+))?/i', $res, $c1)) {
+						if (!empty($c1[2])) {
+							$domain = trim($c1[2]);
+						}
+						if (preg_match('/([^ ]+=[^;]+)/', $c1[1], $c2)) {
+							$data['cookies'][$domain] = $c2[1];
+						}
+					}
+				}
+			}
+			if ($data['url']) {
+				++$data['cnt'];
+				fclose($stream);
+
+				return self::getStreamByUrl($data, $redirectLimit);
+			}
+
+			return $stream;
+		}
+	
+		return false;
+	}
+	
 } // END class

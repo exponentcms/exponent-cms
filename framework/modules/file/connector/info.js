@@ -23,6 +23,7 @@
             kind : fm.i18n('kind') ,
             files : fm.i18n('files') ,
             folders : fm.i18n('folders') ,
+			roots    : fm.i18n('volumeRoots'),
             items : fm.i18n('items') ,
             yes : fm.i18n('yes') ,
             no : fm.i18n('no') ,
@@ -203,7 +204,7 @@
 					fm.autoSync();
 				});
 			},
-			size, tmb, file, title, dcnt, rdcnt;
+            size, tmb, file, title, dcnt, rdcnt, path;
 
         if (!cnt) {
             return $.Deferred().reject();
@@ -234,7 +235,18 @@
 
             content.push(row.replace(l , msg.size).replace(v , size));
             file.alias && content.push(row.replace(l , msg.aliasfor).replace(v , file.alias));
-            content.push(row.replace(l , msg.path).replace(v , fm.escape(fm.path(file.hash , true))));
+			if (path = fm.path(file.hash, true)) {
+				content.push(row.replace(l, msg.path).replace(v, fm.escape(path)));
+			} else {
+				content.push(row.replace(l, msg.path).replace(v, tpl.spinner.replace('{text}', msg.calc).replace('{name}', 'path')));
+				reqs.push(fm.path(file.hash, true, {notify: null})
+				.fail(function() {
+					replSpinner(msg.unknown, 'path');
+				})
+				.done(function(path) {
+					replSpinner(path, 'path');
+				}));
+			}
 			if (file.read) {
 				var href,
 				name_esc = fm.escape(file.name);

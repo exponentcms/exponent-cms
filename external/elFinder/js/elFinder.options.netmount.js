@@ -1,0 +1,73 @@
+/*
+ * Copyright (c) 2016.  OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
+
+/**
+ * Default elFinder config of commandsOptions.netmount
+ *
+ * @type  Object
+ */
+
+elFinder.prototype._options.commandsOptions.netmount = {
+	ftp: {
+		name : 'FTP',
+		inputs: {
+			host     : $('<input type="text"/>'),
+			port     : $('<input type="text" placeholder="21"/>'),
+			path     : $('<input type="text" value="/"/>'),
+			user     : $('<input type="text"/>'),
+			pass     : $('<input type="password"/>'),
+			encoding : $('<input type="text" placeholder="Optional"/>'),
+			locale   : $('<input type="text" placeholder="Optional"/>')
+		}
+	},
+	dropbox: {
+		name : 'Dropbox.com',
+		inputs: {
+			host     : $('<span><span class="elfinder-info-spinner"/></span></span><input type="hidden"/>'),
+			path     : $('<input type="text" value="/"/>'),
+			user     : $('<input type="hidden"/>'),
+			pass     : $('<input type="hidden"/>')
+		},
+		select: function(fm){
+			var self = this;
+			if (self.inputs.host.find('span').length) {
+				fm.request({
+					data : {cmd : 'netmount', protocol: 'dropbox', host: 'dropbox.com', user: 'init', pass: 'init', options: {url: fm.uploadURL, id: fm.id}},
+					preventDefault : true
+				}).done(function(data){
+					self.inputs.host.find('span').removeClass("elfinder-info-spinner");
+					self.inputs.host.find('span').html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1,'Dropbox.com');}));
+				}).fail(function(){});
+			}
+		},
+		done: function(fm, data){
+			var self = this;
+			if (data.mode == 'makebtn') {
+				self.inputs.host.find('span').removeClass("elfinder-info-spinner");
+				self.inputs.host.find('input').hover(function(){$(this).toggleClass("ui-state-hover");});
+				self.inputs.host[1].value = "";
+			} else {
+				self.inputs.host.find('span').removeClass("elfinder-info-spinner");
+				self.inputs.host.find('span').html("Dropbox.com");
+				self.inputs.host[1].value = "dropbox";
+				self.inputs.user.val("done");
+				self.inputs.pass.val("done");
+			}
+		}
+	},
+	googledrive: elFinder.prototype.makeNetmountOptionOauth('googledrive', 'Google Drive', 'Google'),
+	onedrive: elFinder.prototype.makeNetmountOptionOauth('onedrive', 'One Drive', 'OneDrive'),
+	box: elFinder.prototype.makeNetmountOptionOauth('box', 'Box', 'Box', true)
+};

@@ -127,7 +127,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					});
 			},
 			base, cwd,
-			nodes, selected, subnodes, subselected,
+			nodes, selected, subnodes, subselected, autoSyncStop,
 
 			autoToggle = function() {
 				var evTouchStart = 'touchstart.contextmenuAutoToggle';
@@ -249,6 +249,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					}),
 					evts;
 
+				autoSyncStop = true;
 				fm.autoSync('stop');
 				fm.toFront(menu);
 				base.width(bwidth);
@@ -275,6 +276,7 @@ $.fn.elfindercontextmenu = function(fm) {
 			
 			close = function() {
 				$(document).off('keydown.' + fm.namespace, keyEvts);
+				currentType = null;
 				
 				if (menu.is(':visible') || menu.children().length) {
 					menu.removeAttr('style').hide().empty().removeData('submenuKeep');
@@ -297,7 +299,8 @@ $.fn.elfindercontextmenu = function(fm) {
 					}
 				}
 				
-				fm.autoSync();
+				autoSyncStop && fm.searchStatus.state < 1 && ! fm.searchStatus.ininc && fm.autoSync();
+				autoSyncStop = false;
 			},
 			
 			create = function(type, targets) {
@@ -306,6 +309,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					cmdMap = {}, disabled = [], isCwd = (targets[0].indexOf(fm.cwd().volumeid, 0) === 0),
 					selcnt = 0;
 
+				currentType = type;
 				if (menu.data('cmdMaps')) {
 					$.each(menu.data('cmdMaps'), function(i, v){
 						if (targets[0].indexOf(i, 0) == 0) {
@@ -321,7 +325,7 @@ $.fn.elfindercontextmenu = function(fm) {
 					}
 				}
 				if (type === 'navbar') {
-					fm.select({selected: targets});
+					fm.select({selected: targets, origin: 'navbar'});
 				}
 
 				selcnt = fm.selected().length;
@@ -498,6 +502,7 @@ $.fn.elfindercontextmenu = function(fm) {
 			},
 			
 			createFromRaw = function(raw) {
+				currentType = 'raw';
 				$.each(raw, function(i, data) {
 					var node;
 					
@@ -514,7 +519,9 @@ $.fn.elfindercontextmenu = function(fm) {
 					}
 				});
 				nodes = menu.children('div.'+cmItem);
-			};
+			},
+			
+			currentType = null;
 		
 		fm.one('load', function() {
 			base = fm.getUI();
@@ -549,10 +556,9 @@ $.fn.elfindercontextmenu = function(fm) {
 				}
 			})
 			.one('destroy', function() { menu.remove(); })
-			.bind('disable select', function(){
-				// 'mouseEvInternal' for Firefox's bug (maybe)
-				! menu.data('mouseEvInternal') && close();
-				menu.data('mouseEvInternal', false);
+			.bind('disable', close)
+			.bind('select', function(){
+				(currentType === 'files') && close();
 			})
 			.getUI().click(close);
 		})

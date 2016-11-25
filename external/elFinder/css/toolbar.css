@@ -2,8 +2,8 @@
 /*               TOOLBAR STYLES              */
 /*********************************************/
 /* toolbar container */
-.elfinder-toolbar { 
-	padding:4px 0 3px 0; 
+.elfinder-toolbar {
+	padding:4px 0 3px 0;
 	border-left:0 solid transparent;
 	border-top:0 solid transparent;
 	border-right:0 solid transparent;
@@ -24,7 +24,7 @@
 
 /* button */
 .elfinder .elfinder-button {
-	width:16px;
+	/*width:16px;*/
 	height:16px;
 	margin:0;
 	padding:4px;
@@ -35,29 +35,31 @@
 	-webkit-box-sizing: content-box;
 	-moz-box-sizing: content-box;
 	box-sizing: content-box;
+	line-height: 1;
+	cursor: default;
 }
 .elfinder-touch .elfinder-button {
-	width:20px;
+	/*width:20px;*/
 	height:20px;
 }
 
 .elfinder .ui-icon-search { cursor:pointer;}
 
 .elfinder-button:first-child {
-	-moz-border-radius-topleft: 4px; 
-	-webkit-border-top-left-radius: 4px; 
+	-moz-border-radius-topleft: 4px;
+	-webkit-border-top-left-radius: 4px;
 	border-top-left-radius: 4px;
-	-moz-border-radius-bottomleft: 4px; 
-	-webkit-border-bottom-left-radius: 4px; 
+	-moz-border-radius-bottomleft: 4px;
+	-webkit-border-bottom-left-radius: 4px;
 	border-bottom-left-radius: 4px;
 }
 
 .elfinder-button:last-child {
-	-moz-border-radius-topright: 4px; 
-	-webkit-border-top-right-radius: 4px; 
+	-moz-border-radius-topright: 4px;
+	-webkit-border-top-right-radius: 4px;
 	border-top-right-radius: 4px;
-	-moz-border-radius-bottomright: 4px; 
-	-webkit-border-bottom-right-radius: 4px; 
+	-moz-border-radius-bottomright: 4px;
+	-webkit-border-bottom-right-radius: 4px;
 	border-bottom-right-radius: 4px;
 }
 
@@ -78,7 +80,8 @@
 
 /* change icon opacity^ not button */
 .elfinder .elfinder-button.ui-state-disabled { opacity:1; filter:Alpha(Opacity=100);}
-.elfinder .elfinder-button.ui-state-disabled .elfinder-button-icon { opacity:.4; filter:Alpha(Opacity=40);}
+.elfinder .elfinder-button.ui-state-disabled .elfinder-button-icon,
+.elfinder .elfinder-button.ui-state-disabled .elfinder-button-text { opacity:.4; filter:Alpha(Opacity=40);}
 
 /* rtl enviroment */
 .elfinder-rtl .elfinder-buttonset { float:right; }
@@ -87,14 +90,25 @@
 .elfinder-button-icon {
 	width:16px;
 	height:16px;
-	display:block;
+	/*display:block;*/
+	display:inline-block;
 	background:url('../img/toolbar.png')  no-repeat;
+}
+.elfinder-button-text {
+	position: relative;
+	display: inline-block;
+	top: -4px;
+	margin: 0 2px;
+	font-size: 12px;
 }
 
 .elfinder-touch .elfinder-button-icon {
 	zoom: 1.25;
 	-moz-transform-origin: top left;
 	-moz-transform: scale(1.25);
+}
+.elfinder-touch .elfinder-button-text {
+	top: -5px;
 }
 
 /* buttons icons */
@@ -105,7 +119,7 @@
 .elfinder-button-icon-dir       { background-position: 0  -16px; }
 .elfinder-button-icon-opendir   { background-position: 0  -32px; }
 .elfinder-button-icon-reload    { background-position: 0 -160px; }
-.elfinder-button-icon-open      { background-position: 0 -176px; } 
+.elfinder-button-icon-open      { background-position: 0 -176px; }
 .elfinder-button-icon-mkdir     { background-position: 0 -192px; }
 .elfinder-button-icon-mkfile    { background-position: 0 -208px; }
 .elfinder-button-icon-rm        { background-position: 0 -224px; }
@@ -220,6 +234,7 @@
 	font-size: 8pt;
 	text-align: center;
 	width: 100%;
+	overflow: hidden;
 }
 
 .elfinder .elfinder-button-search .elfinder-button-menu div {
@@ -266,7 +281,7 @@
 	height:18px;
 	top: 50%;
 	margin:-8px 4px 0 4px;
-	opacity: .6; 
+	opacity: .6;
 	filter:Alpha(Opacity=60);
 }
 .elfinder-button-search .ui-checkboxradio-icon {
