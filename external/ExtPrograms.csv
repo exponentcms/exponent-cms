@@ -1,5 +1,5 @@
 Program,Version,URL,Avail version,Exponent Customization Notes:
-Swiftmailer,5.4.3,swiftmailer.org,5.4.3,we add  eDebugLogger plugin & fix php 5.6 ssl issue
+Swiftmailer,5.4.4,swiftmailer.org,5.4.4,we add  eDebugLogger plugin & fix php 5.6 ssl issue
 ups-php,0.2,code.google.com/p/ups-php,0.2,"updated/fixed xml, etc… to work"
 fedex-php,16.0.0,https://www.fedex.com/wpor/web/jsp/drclinks.jsp?links=wss/getstarted.html,16.0.0,copy/edit RateAvailableServicesWebClient.php into fedexshippingcalculator->getRates()
 Smarty,3.1.27,smarty.net,3.1.30,
@@ -31,16 +31,16 @@ Adminer,4.2.5,www.adminer.org,4.2.5,"customized plugsins: tinymce, edit-textarea
 SimpleAjaxUploader,2.5.5,github.com/LPology/Simple-Ajax-Uploader,2.5.5,also converted to yui module 2.5.3
 normalize.css,5.0.0,necolas.github.com/normalize.css/,5.0.0,auto included in bootstrap 3
 MediaElement.js,2.23.4,mediaelementjs.com/,2.23.4,
-Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,5.4.1,
-Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,5.4.1,
+Facebook PHP SDK3,3.2.3,github.com/facebook/facebook-php-sdk,5.4.2,
+Facebook PHP SDK4,4.0.23,github.com/facebook/facebook-php-sdk-v4,5.4.2,
 Respond,1.4.2,github.com/scottjehl/Respond,1.4.2,IE6-8 shim
 html5shiv,3.7.3,github.com/aFarkas/html5shiv,3.7.3,IE6-8 shim
 csshover.htc,3.11,peterned.home.xs4all.nl/csshover.html,3.11,IE6 shim
 excanvas,r3,code.google.com/p/explorercanvas/,r3,IE6-8 shim needed by TimesCircle
-CKEditor,4.5.11,ckeditor.com,4.6.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
-TinyMCE,4.4.3,tinymce.com,4.4.3,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
-PLUpload,2.1.9,github.com/moxiecode/plupload,2.1.9,"needed for TinyMCE Quick Upload, placed in that plugin folder"
-elFinder,2.1.16n,elfinder.org,2.1.18n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
+CKEditor,4.6.0,ckeditor.com,4.6.0,"add fieldinsert (exp), tableresize, sourcedialog, image2 & imageupload widgets & kama skin"
+TinyMCE,4.5.0,tinymce.com,4.5.0,"add fieldinsert (exp) & quickupload plugins, & xenmce skin"
+PLUpload,2.2.1,github.com/moxiecode/plupload,2.2.1,"needed for TinyMCE Quick Upload, placed in that plugin folder"
+elFinder,2.1.18n,elfinder.org,2.1.18n,"use https://github.com/nao-pon/elFinder, customized in /framework with Exponent php classes and .js files"
 jQuery1,1.12.4,jquery.com,1.12.4,v1.11.3 still needed for old firefox
 jQuery,2.2.4,jquery.com,2.2.4,
 jQuery Migrate,1.4.1,jquery.com,1.4.1,renamed to migrate.js for easy loading as an addon
@@ -62,7 +62,7 @@ colorbox,1.6.4,www.jacklmoore.com/colorbox,1.6.4,using style #5 renamed to jquer
 Searcher,0.3.0,github.com/lloiser/jquery-searcher/,0.3.0,
 DateTimePicker,2.5.4exp,xdsoft.net/jqplugins/datetimepicker/,2.5.4,we add .js auto-close on inline date select and extra 'reset' work & remove .css z-index issue
 Bootstrap DateTimePicker,4.17.37,github.com/Eonasdan/bootstrap-datetimepicker,4.17.43,patch for 'today' in side-by-side view
-moment.js,2.16.0,github.com/moment/moment,2.16.0,needed for Bootstrap DateTimePicker
+moment.js,2.17.0,github.com/moment/moment,2.17.0,needed for Bootstrap DateTimePicker
 strength-meter,1.1.3,github.com/kartik-v/strength-meter,1.1.3,
 Sortable,1.4.2exp,github.com/RubaXa/Sortable,1.4.2,patched with dragout fix
 jstree,3.3.3,github.com/vakata/jstree,3.3.3,added nav menu icons to stylesheet
