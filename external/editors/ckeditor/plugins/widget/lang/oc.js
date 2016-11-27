@@ -1,16 +1,6 @@
-/*
- * Copyright (c) 2016.  OIC Group, Inc.
- *
- * This file is part of Exponent
- *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * GPL: http://www.gnu.org/licenses/gpl.txt
- *
+/**
+ * @license Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ * For licensing, see LICENSE.md or http://ckeditor.com/license
  */
 CKEDITOR.plugins.setLang( 'widget', 'oc', {
 	'move': 'Clicar e lisar per desplaçar',
