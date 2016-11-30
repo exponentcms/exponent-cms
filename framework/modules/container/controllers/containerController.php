@@ -158,7 +158,7 @@ class containerController extends expController {
 //                    'hasConfig'           => $db->tableExists($modclass . "_config")  //FIXME old school config
                 );
             } else {
-                $containers[$i]->output = sprintf(gt('The module "%s" was not found in the system'), $location->mod);
+                $containers[$i]->output = sprintf(gt("The module '%s' was not found in the system"), $location->mod);
                 $containers[$i]->info = array(
                     'module'              => sprintf(gt('Unknown: %s'), $location->mod),
                     'source'              => $location->src,

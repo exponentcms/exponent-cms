@@ -1425,7 +1425,7 @@ class expTheme
 //					call_user_func(array($module,"show"),$view,$loc,$title);
 //				}
             } else {
-                echo sprintf(gt('The module "%s" was not found in the system.'), $module);
+                echo sprintf(gt("The module '%s' was not found in the system"), $module);
                 return false;
             }
         }
