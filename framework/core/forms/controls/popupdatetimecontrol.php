@@ -160,10 +160,10 @@ class popupdatetimecontrol extends formcontrol {
 		return $html;
 	}
 
-	static function parseData($original_name,$formvalues) {
-		if (!isset($formvalues[$original_name.'_disabled'])) {
-//			return strtotime($formvalues[$original_name]);
-			return $formvalues[$original_name];
+	static function parseData($values, $name, $for_db = false) {
+		if (!isset($values[$name.'_disabled'])) {
+//			return strtotime($values[$name]);
+			return $values[$name];
 		} else return 0;
 	}
 
