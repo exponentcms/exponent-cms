@@ -130,10 +130,25 @@ class ckeditorcontrol extends formcontrol {
 //                    { name: 'colors' },
 //                    { name: 'about' }
 //                ],";
-                $tb = '';
+                $tb = '';  // auto-generate toolbar
             }
         } else {
-            $tb = "toolbar : [".$tb."],";
+            if (!empty($this->plugin)) {
+                $tbc = ',[';
+                $plugs = explode(',',trim($this->plugin));
+                $first = true;
+                foreach ($plugs as $key=>$plug) {
+                    if (!$first)
+                        $tbc .= ',';
+                    $first = false;
+                    $tbc .= "'" . $plug . "'";
+                }
+//                $tbc .= ",'Fields','fieldinsert'";
+                $tbc .= ']';
+            } else {
+                $tbc = '';
+            }
+            $tb = "toolbar : [".$tb.$tbc."],";
         }
         if (MOBILE) {
             $tb .= "

@@ -11,7 +11,7 @@
 	text-align: right;
 	width: 4em;
 }
-.elfinder-resize-control input.elfinder-resize-bg { 
+.elfinder-resize-control input.elfinder-resize-bg {
 	text-align: center;
 	width: 5em;
 	direction: ltr;
@@ -171,10 +171,10 @@
 	width: 10px;
 	height: 10px;
 }
-.elfinder-dialog .elfinder-dialog-resize .ui-resizable-se { 
-	background:transparent; 
-	bottom:0; 
-	right:0; 
+.elfinder-dialog .elfinder-dialog-resize .ui-resizable-se {
+	background:transparent;
+	bottom:0;
+	right:0;
 	margin-right:-7px;
 	margin-bottom:-7px;
 }
@@ -326,9 +326,9 @@ div.elfinder-cwd-wrapper-list tr.ui-state-default td span.ui-icon {
 
 .elfinder-help .ui-priority-primary { margin-bottom:7px;}
 
-.elfinder-help-team { 
-	clear: both; 
-	text-align:right; 
+.elfinder-help-team {
+	clear: both;
+	text-align:right;
 	border-bottom:1px solid #ccc;
 	margin:.5em 0;
 	font-size:.9em;
@@ -424,6 +424,14 @@ div.elfinder-cwd-wrapper-list tr.ui-state-default td span.ui-icon {
   /*font-size: 1.2em;*/
 }
 
+/********************** COMMAND "INFO" ****************************/
+.elfinder-info-title .elfinder-cwd-bgurl:after {
+	left: -28px;
+}
+.elfinder-info-title .elfinder-cwd-icon-video:after {
+	left: -7px;
+}
+
 /********************** COMMAND "UPLOAD" ****************************/
 .elfinder-upload-dialog-wrapper .elfinder-upload-dirselect {
 	position: absolute;
@@ -433,7 +441,7 @@ div.elfinder-cwd-wrapper-list tr.ui-state-default td span.ui-icon {
 	padding: 10px;
 	border: none;
 	overflow: hidden;
-	cursor: pointer; 
+	cursor: pointer;
 }
 .elfinder-ltr .elfinder-upload-dialog-wrapper .elfinder-upload-dirselect {
 	left: 2px;

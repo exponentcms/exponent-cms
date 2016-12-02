@@ -266,7 +266,7 @@ function renderAction(array $parms=array()) {
     if (expModules::controllerExists($fullControllerName)) {
         $controllerClass = new ReflectionClass($fullControllerName);
     } else {
-        return sprintf(gt('The module "%s" was not found in the system'), $parms['controller']);
+        return sprintf(gt("The module '%s' was not found in the system"), $parms['controller']);
     }
 
     if (isset($parms['view'])) $parms['view'] = urldecode($parms['view']);

@@ -183,6 +183,8 @@ elFinder.prototype._options = {
 			folders  : false,
 			// action after callback (""/"close"/"destroy")
 			oncomplete : '',
+			// get path before callback call
+			getPath    : true, 
 			// get image sizes before callback call
 			getImgSize : false
 		},
@@ -195,7 +197,7 @@ elFinder.prototype._options = {
 		},
 		// "upload" command options.
 		upload : {
-			// Open system OS upload dialog: 'button' OR Open elFinder upload dialog: 'uploadbutton'
+			// Open elFinder upload dialog: 'button' OR Open system OS upload dialog: 'uploadbutton'
 			ui : 'button'
 		},
 		// "download" command options.
@@ -205,7 +207,8 @@ elFinder.prototype._options = {
 		// "quicklook" command options.
 		quicklook : {
 			autoplay : true,
-			jplayer  : 'extensions/jplayer',
+			width    : 450,
+			height   : 300,
 			// MIME types to use Google Docs online viewer
 			// Example ['application/pdf', 'image/tiff', 'application/vnd.ms-office', 'application/msword', 'application/vnd.ms-word', 'application/vnd.ms-excel', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
 			googleDocsMimes : []
@@ -334,128 +337,6 @@ elFinder.prototype._options = {
 			// Enable automatic switching function ["New Folder" / "Into New Folder"] of toolbar buttton
 			intoNewFolderToolbtn: false,
 		},
-		netmount: {
-			ftp: {
-				name : 'FTP',
-				inputs: {
-					host     : $('<input type="text"/>'),
-					port     : $('<input type="text" placeholder="21"/>'),
-					path     : $('<input type="text" value="/"/>'),
-					user     : $('<input type="text"/>'),
-					pass     : $('<input type="password"/>'),
-					encoding : $('<input type="text" placeholder="Optional"/>'),
-					locale   : $('<input type="text" placeholder="Optional"/>')
-				}
-			},
-			dropbox: {
-				name : 'Dropbox.com',
-				inputs: {
-					host     : $('<span><span class="elfinder-info-spinner"/></span></span><input type="hidden"/>'),
-					path     : $('<input type="text" value="/"/>'),
-					user     : $('<input type="hidden"/>'),
-					pass     : $('<input type="hidden"/>')
-				},
-				select: function(fm){
-					var self = this;
-					if (self.inputs.host.find('span').length) {
-						fm.request({
-							data : {cmd : 'netmount', protocol: 'dropbox', host: 'dropbox.com', user: 'init', pass: 'init', options: {url: fm.uploadURL, id: fm.id}},
-							preventDefault : true
-						}).done(function(data){
-							self.inputs.host.find('span').removeClass("elfinder-info-spinner");
-							self.inputs.host.find('span').html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1,'Dropbox.com');}));
-						}).fail(function(){});
-					}					
-				},
-				done: function(fm, data){
-					var self = this;
-					if (data.mode == 'makebtn') {
-						self.inputs.host.find('span').removeClass("elfinder-info-spinner");
-						self.inputs.host.find('input').hover(function(){$(this).toggleClass("ui-state-hover");});
-						self.inputs.host[1].value = "";
-					} else {
-						self.inputs.host.find('span').removeClass("elfinder-info-spinner");
-						self.inputs.host.find('span').html("Dropbox.com");
-						self.inputs.host[1].value = "dropbox";
-						self.inputs.user.val("done");
-						self.inputs.pass.val("done");
-					}
-				}
-			},
-			googledrive: {
-				name : 'GoogleDrive',
-				inputs: {
-					offline  : $('<input type="checkbox"/>').on('change', function() {
-						$(this).parents('table.elfinder-netmount-tb').find('select:first').trigger('change', 'reset');
-					}),
-					host     : $('<span><span class="elfinder-info-spinner"/></span><input type="hidden"/>'),
-					path     : $('<input type="text" value="root"/>'),
-					user     : $('<input type="hidden"/>'),
-					pass     : $('<input type="hidden"/>')
-				},
-				select: function(fm, ev, data){
-					var f = this.inputs, oline = f.offline,
-						data = data || null;
-					if ($(f.host[0]).find('span.elfinder-info-spinner').length || data === 'reset') {
-						if (oline.parent().children().length === 1) {
-							f.path.parent().prev().html(fm.i18n('folderId'));
-							oline.attr('title', fm.i18n('offlineAccess'));
-							oline.uniqueId().after($('<label/>').attr('for', oline.attr('id')).html(' '+fm.i18n('offlineAccess')));
-						}
-						$(f.host[0]).empty().addClass('elfinder-info-spinner')
-							.parent().find('span.elfinder-button-icon').remove();
-						fm.request({
-							data : {cmd : 'netmount', protocol: 'googledrive', host: 'google.com', user: 'init', options: {id: fm.id, offline: oline.prop('checked')? 1:0, pass: f.host[1].value}},
-							preventDefault : true
-						}).done(function(data){
-							$(f.host[0]).removeClass("elfinder-info-spinner").html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1,'Google.com');}));
-						}).fail(function(){});
-					} else {
-						oline.parent().parent()[f.user.val()? 'hide':'show']();
-					}
-				},
-				done: function(fm, data){
-					var f = this.inputs, p = this.protocol;
-					if (data.mode == 'makebtn') {
-						$(f.host[0]).removeClass('elfinder-info-spinner');
-						f.host.find('input').hover(function(){$(this).toggleClass('ui-state-hover');});
-						$(f.host[1]).val('');
-						f.path.val('root').next().remove();
-						f.user.val('');
-						f.pass.val('');
-						f.offline.parent().parent().show();
-					} else {
-						$(f.host[0]).html('Google.com&nbsp;').removeClass('elfinder-info-spinner');
-						if (data.reset) {
-							p.trigger('change', 'reset');
-							return;
-						}
-						$(f.host[0]).parent().append($('<span class="elfinder-button-icon elfinder-button-icon-reload" title="'+fm.i18n('reAuth')+'">')
-							.on('click', function() {
-								$(f.host[1]).val('reauth');
-								p.trigger('change', 'reset');
-							}));
-						$(f.host[1]).val('googledrive');
-						if (data.folders) {
-							f.path.next().remove().end().after(
-								$('<div/>').append(
-									$('<select class="ui-corner-all" style="max-width:200px;">').append(
-										$($.map(data.folders, function(n,i){return '<option value="'+i+'">'+fm.escape(n)+'</option>'}).join(''))
-									).on('change', function(){f.path.val($(this).val());})
-								)
-							);
-						}
-						f.user.val('done');
-						f.pass.val('done');
-						f.offline.parent().parent().hide();
-					}
-				},
-				fail: function(fm, err){
-					this.protocol.trigger('change', 'reset');
-				}
-			}
-		},
-
 		help : {view : ['about', 'shortcuts', 'help', 'debug']}
 	},
 	
@@ -528,6 +409,10 @@ elFinder.prototype._options = {
 			['fullscreen'],
 			// extra options
 			{
+				// also displays the text label on the button (true / false)
+				displayTextLabel: false,
+				// Exclude `displayTextLabel` setting UA type
+				labelExcludeUA: ['Mobile'],
 				// auto hide on initial open
 				autoHideUA: ['Mobile']
 			}
@@ -878,7 +763,7 @@ elFinder.prototype._options = {
 	 */
 	contextmenu : {
 		// navbarfolder menu
-		navbar : ['open', 'download', '|', 'upload', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
+		navbar : ['open', 'download', '|', 'upload', 'mkdir', '|', 'copy', 'cut', 'paste', 'duplicate', '|', 'rm', '|', 'rename', '|', 'archive', '|', 'places', 'info', 'chmod', 'netunmount'],
 		// current directory menu
 		cwd    : ['reload', 'back', '|', 'upload', 'mkdir', 'mkfile', 'paste', '|', 'view', 'sort', 'colwidth', '|', 'info', '|', 'fullscreen'],
 		// current directory file menu
@@ -893,6 +778,14 @@ elFinder.prototype._options = {
 	 * @default  false
 	 */
 	enableAlways : false,
+	
+	/**
+	 * elFinder node enable by mouse over
+	 * 
+	 * @type     Bool
+	 * @default  true
+	 */
+	enableByMouseOver : true,
 
 	/**
 	 * Show window close confirm dialog
@@ -903,6 +796,19 @@ elFinder.prototype._options = {
 	 * @default  ['hasNotifyDialog', 'editingFile']
 	 */
 	windowCloseConfirm : ['hasNotifyDialog', 'editingFile'],
+
+	/**
+	 * Function decoding 'raw' string converted to unicode
+	 * It is used instead of fm.decodeRawString(str)
+	 * 
+	 * @type Null|Function
+	 */
+	rawStringDecoder : typeof Encoding === 'object' && $.isFunction(Encoding.convert)? function(str) {
+		return Encoding.convert(str, {
+			to: 'UNICODE',
+			type: 'string'
+		});
+	} : null,
 
 	/**
 	 * Debug config

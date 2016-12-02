@@ -105,7 +105,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				// stop loading on change file if not loaded yet
 				preview.one('change', function() {
 					jqxhr.state() == 'pending' && jqxhr.reject();
-				});
+				}).addClass('elfinder-overflow-auto');
 				
 				jqxhr = fm.request({
 					data           : {cmd : 'get', target  : file.hash, current : file.phash, conv : 1},
@@ -196,7 +196,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 				e.stopImmediatePropagation();
 				preview.one('change', function() {
 					node.off('load').remove();
-				});
+				}).addClass('elfinder-overflow-auto');
 				
 				node = $('<iframe class="elfinder-quicklook-preview-pdf"/>')
 					.hide()
@@ -468,12 +468,7 @@ elFinder.prototype.commands.quicklook.plugins = [
 								}
 								if (filenames && filenames.length) {
 									filenames = $.map(filenames, function(str) {
-										try {
-											str = decodeURIComponent(escape(str));
-										} catch(e) {
-											str = escape(str);
-										}
-										return str;
+										return fm.decodeRawString(str);
 									});
 									filenames.sort();
 									loading.remove();
@@ -516,29 +511,41 @@ elFinder.prototype.commands.quicklook.plugins = [
 	function(ql) {
 		var fm      = ql.fm,
 			mimes   = ql.options.googleDocsMimes || [],
-			preview = ql.preview;
+			preview = ql.preview,
+			win     = ql.window,
+			navi    = ql.navbar,
+			node;
 			
 		preview.on('update', function(e) {
-			var win  = ql.window,
-				file = e.file, node, loading;
+			var win     = ql.window,
+				file    = e.file,
+				setNavi = function() {
+					navi.css('bottom', win.hasClass('elfinder-quicklook-fullscreen')? '56px' : '');
+				},
+				loading;
 			
 			if ($.inArray(file.mime, mimes) !== -1) {
 				if (file.url == '1') {
 					$('<div class="elfinder-quicklook-info-data"><button class="elfinder-info-button">'+fm.i18n('getLink')+'</button></div>').appendTo(ql.info.find('.elfinder-quicklook-info'))
 					.on('click', function() {
-						$(this).html('<span class="elfinder-info-spinner">');
+						var self = $(this);
+						self.html('<span class="elfinder-info-spinner">');
 						fm.request({
 							data : {cmd : 'url', target : file.hash},
 							preventDefault : true
 						})
 						.always(function() {
-							$(this).html('');
+							self.html('');
 						})
 						.done(function(data) {
 							var rfile = fm.file(file.hash);
-							ql.value.url = rfile.url = data.url || '';
-							if (ql.value.url) {
-								preview.trigger($.Event('update', {file : ql.value}));
+							file.url = rfile.url = data.url || '';
+							if (file.url) {
+								preview.trigger({
+									type: 'update',
+									file: file,
+									forceUpdate: true
+								});
 							}
 						});
 					});
@@ -546,9 +553,11 @@ elFinder.prototype.commands.quicklook.plugins = [
 				if (file.url !== '' && file.url != '1') {
 					e.stopImmediatePropagation();
 					preview.one('change', function() {
+						win.off('viewchange.googledocs');
 						loading.remove();
 						node.off('load').remove();
-					});
+						node = null;
+					}).addClass('elfinder-overflow-auto');
 					
 					loading = $('<div class="elfinder-quicklook-info-data"> '+fm.i18n('nowLoading')+'<span class="elfinder-info-spinner"></div>').appendTo(ql.info.find('.elfinder-quicklook-info'));
 					
@@ -560,7 +569,10 @@ elFinder.prototype.commands.quicklook.plugins = [
 							loading.remove();
 							$(this).css('background-color', '#fff').show();
 						})
-						.attr('src', 'http://docs.google.com/gview?embedded=true&url=' + encodeURIComponent(fm.convAbsUrl(fm.url(file.hash))));
+						.attr('src', '//docs.google.com/gview?embedded=true&url=' + encodeURIComponent(fm.convAbsUrl(fm.url(file.hash))));
+					
+					win.on('viewchange.googledocs', setNavi);
+					setNavi();
 				}
 			}
 			

@@ -257,20 +257,20 @@ class calendarcontrol extends formcontrol {
         return $html;
     }
 
-    static function parseData($original_name, $formvalues) {
-        if (!empty($formvalues['date-'.$original_name])) {
-            $date = strtotime($formvalues['date-'.$original_name]);
+    static function parseData($values, $name, $for_db = false) {
+        if (!empty($values['date-'.$name])) {
+            $date = strtotime($values['date-'.$name]);
             $time = 0;
-            if (isset($formvalues['time-h-'.$original_name])) {
-                if ($formvalues['time-h-'.$original_name] == 12 && $formvalues['ampm-'.$original_name] == 'am') {
+            if (isset($values['time-h-'.$name])) {
+                if ($values['time-h-'.$name] == 12 && $values['ampm-'.$name] == 'am') {
                     // 12 am (right after midnight) is 0:xx
-                    $formvalues['time-h-'.$original_name] = 0;
-                } else if ($formvalues['time-h-'.$original_name] != 12 && $formvalues['ampm-'.$original_name] == 'pm') {
+                    $values['time-h-'.$name] = 0;
+                } else if ($values['time-h-'.$name] != 12 && $values['ampm-'.$name] == 'pm') {
                     // 1:00 pm to 11:59 pm shifts 12 hours
-                    $formvalues['time-h-'.$original_name] += 12;
+                    $values['time-h-'.$name] += 12;
                 }
 
-                $time += $formvalues['time-h-'.$original_name] * 3600 + $formvalues['time-m-'.$original_name] * 60;
+                $time += $values['time-h-'.$name] * 3600 + $values['time-m-'.$name] * 60;
             }
 
             return $date + $time;

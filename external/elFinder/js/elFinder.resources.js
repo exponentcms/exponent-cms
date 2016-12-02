@@ -62,8 +62,11 @@ elFinder.prototype.resources = {
 			var fm   = this.fm,
 				cmd  = this.name,
 				wz   = fm.getUI('workzone'),
-				cwd  = fm.getUI('cwd'),
-				tarea= (fm.storage('view') != 'list'),
+				org  = (this.origin && this.origin === 'navbar')? 'tree' : 'cwd',
+				ui   = fm.getUI(org),
+				tree = (org === 'tree'),
+				find = tree? 'navHash2Id' : 'cwdHash2Id',
+				tarea= (! tree && fm.storage('view') != 'list'),
 				sel  = fm.selected(),
 				move = this.move || false,
 				empty= wz.hasClass('elfinder-cwd-wrapper-empty'),
@@ -83,6 +86,7 @@ elFinder.prototype.resources = {
 				}, colwidth,
 				dfrd = $.Deferred()
 					.fail(function(error) {
+						dstCls && dst.attr('class', dstCls);
 						empty && wz.addClass('elfinder-cwd-wrapper-empty');
 						if (sel) {
 							move && fm.trigger('unlockfiles', {files: sel});
@@ -93,17 +97,17 @@ elFinder.prototype.resources = {
 					})
 					.always(function() {
 						rest();
-						input.remove();
-						node.remove();
+						cleanup();
 						fm.enable();
 						fm.trigger('resMixinMake');
 					}),
 				id    = 'tmp_'+parseInt(Math.random()*100000),
-				phash = fm.cwd().hash,
+				phash = tree? fm.file(sel[0]).hash : fm.cwd().hash,
 				date = new Date(),
 				file   = {
 					hash  : id,
-					name  : fm.uniqueName(this.prefix),
+					phash : phash,
+					name  : fm.uniqueName(this.prefix, phash),
 					mime  : this.mime,
 					read  : true,
 					write : true,
@@ -111,7 +115,7 @@ elFinder.prototype.resources = {
 					move  : move
 				},
 				data = this.data || {},
-				node = cwd.trigger('create.'+fm.namespace, file).find('#'+fm.cwdHash2Id(id))
+				node = ui.trigger('create.'+fm.namespace, file).find('#'+fm[find](id))
 					.on('unselect.'+fm.namespace, function() {
 						setTimeout(function() {
 							input && input.blur();
@@ -119,10 +123,17 @@ elFinder.prototype.resources = {
 					}),
 				nnode, pnode,
 				overlay = fm.getUI('overlay'),
+				cleanup = function() {
+					fm.unbind('resize', resize);
+					input.remove();
+					if (tree) {
+						node.closest('.elfinder-navbar-wrapper').remove();
+					}
+					node.remove();
+				},
 				cancel = function(e) { 
 					if (! inError) {
-						input.remove();
-						node.remove();
+						cleanup();
 						e.stopPropagation();
 						dfrd.reject();
 					}
@@ -181,7 +192,7 @@ elFinder.prototype.resources = {
 							$.when(cut)
 							.done(function() {
 								rest();
-								parent.html(fm.escape(name));
+								input.hide().before($('<span>').text(name));
 
 								fm.lockfiles({files : [id]});
 
@@ -192,29 +203,52 @@ elFinder.prototype.resources = {
 										syncOnFail  : true
 									})
 									.fail(function(error) {
-										dfrd.reject(error);
+										fm.unlockfiles({files : [id]});
+										inError = true;
+										input.show().prev().remove();
+										fm.error(error, {modal: true, close: select});
 									})
 									.done(function(data) {
 										dfrd.resolve(data);
-										if (data.added && data.added[0]) {
-											var dirhash = data.added[0].hash,
-												newItem = cwd.find('#'+fm.cwdHash2Id(dirhash));
+										if (data && data.added && data.added[0]) {
+											var item    = data.added[0],
+												dirhash = item.hash,
+												newItem = ui.find('#'+fm[find](dirhash));
 											if (sel && move) {
 												fm.one(cmd+'done', function() {
 													fm.exec('paste', dirhash);
 												});
 											}
-											if (data && data.added && data.added[0]) {
-												fm.one(cmd+'done', function() {
-													newItem = fm.getUI('cwd').find('#'+fm.cwdHash2Id(data.added[0].hash));
-													if (newItem.length) {
-														newItem.trigger('scrolltoview');
-													} else {
-														fm.trigger('selectfiles', {files : $.map(data.added, function(f) {return f.hash;})});
-														fm.toast({msg: fm.i18n(['complete', fm.i18n('cmd'+cmd)])});
-													}
-												});
-											}
+											fm.one(cmd+'done', function() {
+												var acts = {
+														'directory' : { cmd: 'open', msg: 'cmdopendir' },
+														'text/plain': { cmd: 'edit', msg: 'cmdedit' },
+														'default'   : { cmd: 'open', msg: 'cmdopen' }
+													},
+													act, extNode;
+												newItem = ui.find('#'+fm[find](item.hash));
+												if (data.added.length === 1) {
+													act = acts[item.mime] || acts.default;
+													extNode = $('<div/>').append(
+														$('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all elfinder-tabstop"><span class="ui-button-text">'
+															+fm.i18n(act.msg)
+															+'</span></button>')
+														.on('mouseenter mouseleave', function(e) { 
+															$(this).toggleClass('ui-state-hover', e.type == 'mouseenter');
+														})
+														.on('click', function() {
+															fm.exec(act.cmd, item.hash);
+														})
+													);
+												}
+												if (newItem.length) {
+													newItem.trigger('scrolltoview');
+													! move && extNode && fm.toast({msg: fm.i18n(['complete', fm.i18n('cmd'+cmd)]), extNode: extNode});
+												} else {
+													fm.trigger('selectfiles', {files : $.map(data.added, function(f) {return f.hash;})});
+													! move && fm.toast({msg: fm.i18n(['complete', fm.i18n('cmd'+cmd)]), extNode: extNode});
+												}
+											});
 										}
 									});
 							})
@@ -233,24 +267,54 @@ elFinder.prototype.resources = {
 					input.select().focus();
 					input[0].setSelectionRange && input[0].setSelectionRange(0, name.length);
 				},
-				inError = false;
+				resize = function() {
+					node.trigger('scrolltoview');
+				},
+				inError = false,
+				// for tree
+				dst, dstCls, collapsed, expanded, arrow, subtree;
 
-			if (this.disabled() || !node.length) {
+			if ((! tree && this.disabled()) || !node.length) {
 				return dfrd.reject();
 			}
 
-			empty && wz.removeClass('elfinder-cwd-wrapper-empty');
-			nnode = node.find('.elfinder-cwd-filename');
-			pnode = nnode.parent();
-			node.css('position', 'relative').addClass('ui-front');
-			if (tarea) {
-				nnode.css('max-height', 'none');
+			if (tree) {
+				dst = $('#'+fm[find](phash));
+				collapsed = fm.res('class', 'navcollapse');
+				expanded  = fm.res('class', 'navexpand');
+				arrow = fm.res('class', 'navarrow');
+				subtree = fm.res('class', 'navsubtree');
+				
+				node.closest('.'+subtree).show();
+				if (! dst.hasClass(collapsed)) {
+					dstCls = dst.attr('class');
+					dst.addClass(collapsed+' '+expanded+' elfinder-subtree-loaded');
+				}
+				if (dst.is('.'+collapsed+':not(.'+expanded+')')) {
+					dst.children('.'+arrow).click().data('dfrd').done(function() {
+						if (input.val() === file.name) {
+							input.val(fm.uniqueName(this.prefix, phash)).select().focus();
+						}
+					}.bind(this));
+				}
+				nnode = node.contents().filter(function(){ return this.nodeType==3 && $(this).parent().attr('id') === fm.navHash2Id(file.hash); });
+				nnode.replaceWith(input.val(file.name));
 			} else {
-				colwidth = pnode.width();
-				pnode.width(colwidth - 15)
-					.parent('td').css('overflow', 'visible');
+				empty && wz.removeClass('elfinder-cwd-wrapper-empty');
+				nnode = node.find('.elfinder-cwd-filename');
+				pnode = nnode.parent();
+				node.css('position', 'relative').addClass('ui-front');
+				if (tarea) {
+					nnode.css('max-height', 'none');
+				} else {
+					colwidth = pnode.width();
+					pnode.width(colwidth - 15)
+						.parent('td').css('overflow', 'visible');
+				}
+				nnode.empty('').append(input.val(file.name));
 			}
-			nnode.empty('').append(input.val(file.name));
+			
+			fm.bind('resize', resize);
 			
 			input.trigger('keyup');
 			select();
@@ -260,9 +324,15 @@ elFinder.prototype.resources = {
 		}
 	},
 	blink: function(elm, mode) {
+		var acts = {
+			slowonce : function(){elm.hide().delay(250).fadeIn(750).delay(500).fadeOut(3500);},
+			lookme   : function(){elm.show().fadeOut(500).fadeIn(750);}
+		}, func;
 		mode = mode || 'slowonce';
-		if (mode === 'slowonce') {
-			elm.stop(true, true).delay(250).fadeIn(750).delay(500).fadeOut(3500);
-		}
+		
+		func = acts[mode] || acts['lookme'];
+		
+		elm.stop(true, true);
+		func();
 	}
 };

@@ -21,6 +21,7 @@ elFinder.prototype.commands.resize = function() {
 		var fm   = this.fm,
 			file = file || fm.file(data.target),
 			src  = file? fm.openUrl(file.hash) : null,
+			tmb  = file? file.tmb : null,
 			enabled = fm.isCommandEnabled('resize', data.target);
 		
 		if (enabled && (! file || (file && file.read && file.write && file.mime.indexOf('image/') !== -1 ))) {
@@ -30,22 +31,23 @@ elFinder.prototype.commands.resize = function() {
 				}),
 				notify : {type : 'resize', cnt : 1},
 				prepare : function(data) {
+					var newfile;
 					if (data) {
-						if (data.changed && data.changed.length && data.changed[0].tmb) {
-							data.changed[0].tmb = 1;
-							if (! file) {
-								file = data.changed[0];
-								src  = fm.openUrl(file.hash);
-							}
-						}
 						if (data.added && data.added.length && data.added[0].tmb) {
-							data.added[0].tmb = 1;
-							if (! file) {
-								file = data.added[0];
-								src  = fm.openUrl(file.hash);
+							newfile = data.added[0];
+						} else if (data.changed && data.changed.length && data.changed[0].tmb) {
+							newfile = data.changed[0];
+						}
+						if (newfile) {
+							file = newfile;
+							src = fm.openUrl(file.hash);
+							if (file.tmb && file.tmb != '1' && (file.tmb === tmb)) {
+								file.tmb = '';
+								return;
 							}
 						}
 					}
+					tmb = '';
 				}
 			})
 			.fail(function(error) {
@@ -54,31 +56,20 @@ elFinder.prototype.commands.resize = function() {
 				}
 			})
 			.done(function() {
-				var reload = function(url) {
-					var ifm;
-					try {
-						ifm = $('<iframe width="1" height="1" scrolling="no" frameborder="no" style="position:absolute; top:-1px; left:-1px">')
-							.attr('src', url)
-							.one('load', function() {
-								if (this.contentDocument) {
-									this.contentDocument.location.reload(true);
-									ifm.one('load', function() {
-										ifm.remove();
-									});
-								} else {
-									ifm.remove();
-								}
-							})
-							.appendTo('body');
-					} catch(e) {
-						ifm && ifm.remove();
-					}
-				},
-				url = fm.url(file.hash);
+				var url = (file.url != '1')? fm.url(file.hash) : '';
 				
-				reload(src);
-				if (url !== src) {
-					reload(url);
+				// need tmb reload
+				if (tmb) {
+					fm.one('resizedone', function() {
+						fm.reloadContents(fm.tmb(file).url).done(function() {
+							fm.trigger('tmbreload', {files: [ {hash: file.hash, tmb: tmb} ]});
+						});
+					});
+				}
+				
+				fm.reloadContents(src);
+				if (url && url !== src) {
+					fm.reloadContents(url);
 				}
 				
 				dfrd && dfrd.resolve();

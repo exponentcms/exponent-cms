@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2016.  OIC Group, Inc.
+ *
+ * This file is part of Exponent
+ *
+ * Exponent is free software; you can redistribute
+ * it and/or modify it under the terms of the GNU
+ * General Public License as published by the Free
+ * Software Foundation; either version 2 of the
+ * License, or (at your option) any later version.
+ *
+ * GPL: http://www.gnu.org/licenses/gpl.txt
+ *
+ */
+
+.scayt-lang-list > div
+{
+    padding-bottom: 6px !important;
+}
+
+.scayt-lang-list > div input
+{
+    margin-right: 4px;
+}
+
+#scayt_about_
+{
+    width: 190px;
+    margin: 30px auto 0 auto;
+}
+
+.cke_dialog_contents_body div[name=dictionaries] .cke_dialog_ui_hbox_last > a.cke_dialog_ui_button
+{
+    margin-top: 0;
+}

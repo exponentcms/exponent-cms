@@ -2,7 +2,7 @@
  * Japanese translation
  * @author Tomoaki Yoshida <info@yoshida-studio.jp>
  * @author Naoki Sawada <hypweb@gmail.com>
- * @version 2016-10-04
+ * @version 2016-11-13
  */
 if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
 	elFinder.prototype.i18.jp = {
@@ -98,7 +98,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errConvUTF8'          : 'UTF-8 に変換できませんでした', // from v2.1 added 08.04.2014
 			'errFolderUpload'      : 'フォルダをアップロードしたいのであれば、Google Chrome を使用してください', // from v2.1 added 26.6.2015
 			'errSearchTimeout'     : '"$1"を検索中にタイムアウトしました。検索結果は部分的です。', // from v2.1 added 12.1.2016
-			'errReauthRequire'     : '再認可が必要です', // from v2.1.10 added 3.24.2016
+			'errReauthRequire'     : '再認可が必要です', // from v2.1.10 added 24.3.2016
+			'errMaxTargets'        : '選択可能な最大アイテム数は $1 個です', // from v2.1.17 added 17.10.2016
 
 			/******************************* commands names ********************************/
 			'cmdarchive'   : 'アーカイブ作成',
@@ -180,14 +181,16 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfresize'   : 'リサイズしています',
 			'ntfsmth'     : '処理をしています',
 			'ntfloadimg'  : 'イメージを読み込んでいます',
-			'ntfnetmount' : 'ネットワークボリュームをマウントしています', // added 18.04.2012
-			'ntfnetunmount': 'ネットワークボリュームをアンマウントしています', // from v2.1 added 30.04.2012
+			'ntfnetmount' : 'ネットボリュームをマウント中', // added 18.04.2012
+			'ntfnetunmount': 'ネットボリュームをアンマウント中', // from v2.1 added 30.04.2012
 			'ntfdim'      : '画像サイズを取得しています', // added 20.05.2013
 			'ntfreaddir'  : 'ホルダ情報を読み取っています', // from v2.1 added 01.07.2013
 			'ntfurl'      : 'リンクURLを取得しています', // from v2.1 added 11.03.2014
 			'ntfchmod'    : 'ファイル属性を変更しています', // from v2.1 added 20.6.2015
-			'ntfpreupload': 'アップロードファイル名を検証しています', // from v2.1 added 31.11.2015
-			'ntfzipdl'    : 'ダウンロード用ファイルを作成しています', // from v2.1.7 added 23.1.2016
+			'ntfpreupload': 'アップロードファイル名を検証中', // from v2.1 added 31.11.2015
+			'ntfzipdl'    : 'ダウンロード用ファイルを作成中', // from v2.1.7 added 23.1.2016
+			'ntfparents'  : 'パス情報を取得しています', // from v2.1.17 added 2.11.2016
+			'ntfchunkmerge': 'アップロード済みファイルを処理中', // from v2.1.17 added 2.11.2016
 
 			/************************************ dates **********************************/
 			'dateUnknown' : '不明',
@@ -330,7 +333,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'pass'                : 'パスワード', // added 18.04.2012
 			'confirmUnmount'      : '$1をアンマウントしますか?',  // from v2.1 added 30.04.2012
 			'dropFilesBrowser': 'ブラウザからファイルをドロップまたは貼り付け', // from v2.1 added 30.05.2012
-			'dropPasteFiles'  : 'ファイル,URLリストをドロップまたは貼り付け', // from v2.1 added 07.04.2014
+			'dropPasteFiles'  : 'ここにファイルをドロップ または URLリスト, 画像(クリップボード) を貼り付け', // from v2.1 added 07.04.2014
 			'encoding'        : '文字コード', // from v2.1 added 19.12.2014
 			'locale'          : 'ロケール',   // from v2.1 added 19.12.2014
 			'searchTarget'    : '検索範囲: $1',                // from v2.1 added 22.5.2015
@@ -372,6 +375,8 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'enabled'         : '有効', // from v2.1.16 added 4.10.2016
 			'disabled'        : '無効', // from v2.1.16 added 4.10.2016
 			'emptyIncSearch'  : '現在のビュー内に該当するアイテムはありません。\\A[Enter]キーで検索対象を拡げます。', // from v2.1.16 added 5.10.2016
+			'textLabel'       : 'テキストラベル', // from v2.1.17 added 13.10.2016
+			'minsLeft'        : '残り$1分', // from v2.1.17 added 13.11.2016
 
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : '不明',

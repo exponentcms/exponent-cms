@@ -24,11 +24,11 @@
 	border-left:0 solid transparent;
 	border-top:0 solid transparent;
 	border-right:0 solid transparent;
-	-moz-border-radius-bottomleft: 0; 
-	-webkit-border-bottom-left-radius: 0; 
-	border-bottom-left-radius: 0; 
-	-moz-border-radius-bottomright: 0; 
-	-webkit-border-bottom-right-radius: 0; 
+	-moz-border-radius-bottomleft: 0;
+	-webkit-border-bottom-left-radius: 0;
+	border-bottom-left-radius: 0;
+	-moz-border-radius-bottomright: 0;
+	-webkit-border-bottom-right-radius: 0;
 	border-bottom-right-radius: 0;
 	font-weight:normal;
 	padding:.2em 1em;
@@ -105,13 +105,13 @@
 	border-color: transparent;
 	opacity: .7;
 	filter:Alpha(Opacity=70);
-	-moz-border-radius: 8px; 
-	-webkit-border-radius: 8px; 
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
 	border-radius: 8px;
 }
 .std42-dialog.elfinder-dialog-minimized .ui-dialog-titlebar .elfinder-titlebar-button .ui-icon {
 	opacity: 1;
-	filter:Alpha(Opacity=100);	
+	filter:Alpha(Opacity=100);
 }
 .std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close:hover .ui-icon,
 .elfinder-mobile .std42-dialog .ui-dialog-titlebar .ui-dialog-titlebar-close .ui-icon {
@@ -168,7 +168,7 @@
 .std42-dialog .ui-dialog-buttonpane button span { padding:2px 9px; }
 .std42-dialog .ui-dialog-buttonpane button span.ui-icon { padding: 2px; }
 
-.elfinder-dialog .ui-resizable-e, 
+.elfinder-dialog .ui-resizable-e,
 .elfinder-dialog .ui-resizable-s { width:0; height:0;}
 
 .std42-dialog .ui-button input { cursor: pointer;}
@@ -178,13 +178,13 @@
 	position:absolute;
 	width:32px;
 	height:32px;
-	left:12px;
+	left:10px;
 	top:50%;
 	margin-top:-15px;
 	background:url("../img/dialogs.png") 0 0 no-repeat;
 }
 
-.elfinder-rtl .elfinder-dialog-icon { left:auto; right:12px;}
+.elfinder-rtl .elfinder-dialog-icon { left:auto; right:10px;}
 
 
 
@@ -206,13 +206,13 @@
 	border-bottom:1px solid #ccc;
 	position:relative;
 	padding:.5em;
-	
+
 	text-align:center;
 	overflow:hidden;
 }
 
-.elfinder-ltr .elfinder-notify { padding-left:30px; }
-.elfinder-rtl .elfinder-notify { padding-right:30px; }
+.elfinder-ltr .elfinder-notify { padding-left:36px; }
+.elfinder-rtl .elfinder-notify { padding-right:36px; }
 
 .elfinder-notify:last-child { border:0 solid; }
 
@@ -233,13 +233,13 @@
 }
 
 .elfinder-notify-progressbar, .elfinder-notify-progress {
-	-moz-border-radius: 2px; 
-	-webkit-border-radius: 2px; 
+	-moz-border-radius: 2px;
+	-webkit-border-radius: 2px;
 	border-radius: 2px;
 }
 
 /* icons */
-.elfinder-dialog-icon-open, 
+.elfinder-dialog-icon-open,
 .elfinder-dialog-icon-readdir,
 .elfinder-dialog-icon-file        { background-position: 0 -225px; }
 .elfinder-dialog-icon-reload      { background-position: 0 -225px; }
@@ -311,12 +311,12 @@
 .elfinder-info-tb span { float:left;}
 .elfinder-info-tb a { outline: none; text-decoration:underline; }
 .elfinder-info-tb a:hover { text-decoration:none; }
-.elfinder-info-spinner { 
+.elfinder-info-spinner {
 	width:14px;
 	height:14px;
 	float:left;
 	background: url("../img/spinner-mini.gif") center center no-repeat;
-	margin:0 5px; 
+	margin:0 5px;
 }
 
 .elfinder-netmount-tb { margin:0 auto; }
@@ -332,11 +332,15 @@ button.elfinder-info-button {
 /*********************** UPLOAD DIALOG **************************/
 
 .elfinder-upload-dropbox {
+	display: table-cell;
 	text-align:center;
-	padding:2em 0;
+	vertical-align: middle;
+	padding:0.5em;
 	border:3px dashed #aaa;
-	height: 1em;
+	width: 9999px;
+	height: 80px;
 	overflow: hidden;
+	word-break: keep-all;
 }
 
 .elfinder-upload-dropbox.ui-state-hover {
