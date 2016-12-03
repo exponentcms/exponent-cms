@@ -82,10 +82,10 @@ jquery.history.js,1.8b2,github.com/browserstate/history.js/,1.8b2,
 Webshim,1.16.0,github.com/aFarkas/webshim,1.16.0,
 ,,,,
 "Optional, not included",,,,
-dompdf,0.6.2exp,github.com/dompdf/dompdf,0.7.0,"optional, patched to display our images and not break on bad tables"
-mPDF,6.0.0/5.7.4,github.com/mpdf/mpdf,6.1.2/5.7.4,optional
+dompdf,0.6.2exp/0.7.0exp,github.com/dompdf/dompdf,0.7.0,"optional, patched to display our images and not break on bad tables"
+mPDF,6.1.2/6.0.0/5.7.4,github.com/mpdf/mpdf,6.1.2,optional
 HTML2PDF,4.6.1,github.com/spipu/html2pdf,4.6.1,"optional, we tweak tcpdfConfig.php"
-TCPDF,6.2.12,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
+TCPDF,6.2.13,sourceforge.net/projects/tcpdf,6.2.13,"optional, used by HTML2PDF"
 Kint,1.0.10,github.com/raveren/kint,1.0.10,"optional, for formatted edebug output"
 ,,,,
 Not included yet,,,,

@@ -313,7 +313,7 @@
                    <div id="alt-control-pdf" class="alt-control">
                        <div class="control"><label class="label">{'PDF Generation Engine'|gettext}</label></div>
                        <div class="alt-body">
-                           {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF v5,mPDF v6,dompdf v0.6,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expDOMPDF,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
+                           {control type=radiogroup columns=4 name="sc[HTMLTOPDF_ENGINE]" items="None,mPDF v5,mPDF v6,mPDF v6.1,dompdf v0.6,dompdf v0.7,HTML2PDF,WKHTMLtoPDF"|gettxtlist values="none,expMPDF,expMPDF6,expMPDF61,expDOMPDF,expDOMPDF070,expHTML2PDF,expWKPDF" default=$smarty.const.HTMLTOPDF_ENGINE|default:"none"}
                            <div id="none-div" class="alt-item" style="display:none;">
                                <blockquote>
                                {'Export as PDF will be unavailable since there is no PDF Generation Engine installed and configured.'|gettext}
@@ -333,7 +333,7 @@
                                    {'MPDF v5 is an optional package, but a preferred generator. To obtain it, you must first download, then install it using one of the methods below.'|gettext}
                                    <ol>
                                        <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v5.7.4a.zip" target="_blank">v5.7.4a.zip</a>
-                                           {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
+                                           {'and then extract it on your server into the \'external\' folder and rename the folder to \'MPDF57\'.'|gettext}</li>
                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf57a.zip/download" target="_blank">mpdf57a.zip</a>.
                                            {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
                                    </ol>
@@ -353,14 +353,14 @@
                                    {'MPDF v6 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                    <ol>
                                        <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.0.0.zip" target="_blank">MPDF60.zip</a>
-                                           {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
+                                           {'and then extract it on your server into the \'external\' folder and rename the folder to \'mpdf6\'.'|gettext}</li>
                                        <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf60a.zip/download" target="_blank">mpdf60a.zip</a>.
                                            {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
                                    </ol>
                                </blockquote>
                            </div>
                            <div id="expMPDF61-div" class="alt-item" style="display:none;">
-                               {if !file_exists("`$smarty.const.BASE`external/mpdf-6.1.1/mpdf.php")}
+                               {if !file_exists("`$smarty.const.BASE`external/mpdf61/mpdf.php")}
                                    <div style="color:#ff0000;font-weight:bold;">
                                        {'mPDF v6.1 is NOT installed!'|gettext}
                                    </div>
@@ -372,8 +372,10 @@
                                <blockquote>
                                    {'MPDF v6.1 is an optional package, but the preferred generator.  To obtain it, you must first download, then install it using the method below.'|gettext}
                                    <ol>
-                                       <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.1.1.zip" target="_blank">MPDF6.1.1.zip</a>
-                                           {'and then extract it on your server into the \'external\' folder.'|gettext}</li>
+                                       <li>{'Download the basic library'|gettext} <a href="https://github.com/mpdf/mpdf/archive/v6.1.2.zip" target="_blank">MPDF6.1.2.zip</a>
+                                           {'and then extract it on your server into the \'external\' folder and rename the folder to \'mpdf61\'.'|gettext}</li>
+                                       <li>{'(or) Download the Exponent Extension package'|gettext} <a href="http://sourceforge.net/projects/exponentcms/files/Add-ons/mpdf61.zip/download" target="_blank">mpdf61.zip</a>.
+                                           {'and then'|gettext} <a href="install_extension">{'Install New Extension'|gettext}</a> {'on your server with \'Patch Exponent CMS\' checked.'|gettext}</li>
                                    </ol>
                                </blockquote>
                            </div>
