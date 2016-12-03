@@ -102,10 +102,11 @@
                                     {icon img='arrow_merge.png' title="Merged Content"|gettext}
                                 {/if}
                             {/if}
-                            {icon action=edit record=$item}
+                            {icon action=edit record=$item date_id=$item->date_id}
+                            {icon action=copy record=$item date_id=$item->date_id}
                         {/if}
                         {if $permissions.delete || ($permissions.create && $item->poster == $user->id)}
-                            {icon action=delete record=$item}
+                            {icon action=delete record=$item date_id=$item->date_id}
                         {/if}
                     </div>
                 {/if}
