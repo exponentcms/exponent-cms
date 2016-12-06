@@ -11,7 +11,11 @@ For a more detailed changelog visit [https://github.com/exponentcms/exponent-cms
 Version 2.4.1
 -------------
 ### Address issues in v2.4.0, fix security vulnerabilities, and accessibility hints
-  - 
+  - continues to address security vulnerabilities
+  - adds optional page redirection support
+  - adds support for more optional export to pdf engines
+  - fixes a number of issues
+  - updates most 3rd party libraries
 ### Known Issues
   - eCommerce purchase-order functionality has not been tested/is not be complete
   - Item re-ranking (ddrerank) doesn't account for aggregation
