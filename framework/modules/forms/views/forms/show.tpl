@@ -60,7 +60,11 @@
             </span>
             {clear}
         {/if}
-        {if empty($config.report_def)}
+        {if !empty($config.report_def)}
+            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
+            {eval var=$config.report_def}
+            {clear}{br}
+        {else}
             <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                 <thead>
                     <tr>
@@ -98,10 +102,6 @@
                     {/foreach}
                 </tbody>
             </table>
-        {else}
-            <{$config.heading_level|default:'h2'}>{$title}</{$config.heading_level|default:'h2'}>
-            {eval var=$config.report_def}
-            {clear}{br}
         {/if}
         {if !empty($referrer)}
             <p>{'Referrer'|gettext}: {$referrer}</p>

@@ -70,7 +70,13 @@
                         {icon class=delete action=delete forms_id=$f->id id=$fields.id title='Delete this record'|gettext}
                     {/if}
                 </div>
-                {if empty($config.report_def)}
+                {if !empty($config.report_def_showall)}
+                    {eval var=$config.report_def_showall}
+                    {clear}
+                {elseif !empty($config.report_def)}
+                    {eval var=$config.report_def}
+                    {clear}
+                {else}
                     <table border="0" cellspacing="0" cellpadding="0" class="exp-skin-table">
                         <tbody>
                             {foreach from=$fields key=fieldname item=value}
@@ -101,9 +107,6 @@
                             {/foreach}
                         </tbody>
                     </table>
-                {else}
-                    {eval var=$config.report_def}
-                    {clear}
                 {/if}
             {foreachelse}
                 <h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4>
