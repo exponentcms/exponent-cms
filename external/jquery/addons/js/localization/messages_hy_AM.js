@@ -31,5 +31,5 @@ $.extend( $.validator.messages, {
 	max: $.validator.format( "Ներմուծեք թիվ, որը փոքր կամ հավասար է {0}֊ին" ),
 	min: $.validator.format( "Ներմուծեք թիվ, որը մեծ կամ հավասար է {0}֊ին" )
 } );
-
+return $;
 }));

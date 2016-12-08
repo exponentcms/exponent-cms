@@ -32,5 +32,5 @@ $.extend( $.validator.messages, {
 	max: $.validator.format( "請輸入不大於 {0} 的數值" ),
 	min: $.validator.format( "請輸入不小於 {0} 的數值" )
 } );
-
+return $;
 }));

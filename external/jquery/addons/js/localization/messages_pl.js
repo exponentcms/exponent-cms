@@ -32,5 +32,5 @@ $.extend( $.validator.messages, {
 	min: $.validator.format( "Proszę o podanie wartości większej bądź równej {0}." ),
 	pattern: $.validator.format( "Pole zawiera niedozwolone znaki." )
 } );
-
+return $;
 }));

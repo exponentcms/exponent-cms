@@ -31,5 +31,5 @@ $.extend( $.validator.messages, {
 	max: $.validator.format( "Si us plau, escriu un valor menor o igual a {0}." ),
 	min: $.validator.format( "Si us plau, escriu un valor major o igual a {0}." )
 } );
-
+return $;
 }));

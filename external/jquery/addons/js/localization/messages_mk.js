@@ -31,5 +31,5 @@ $.extend( $.validator.messages, {
 	max: $.validator.format( "Внесете вредност помала или еднаква на {0}." ),
 	min: $.validator.format( "Внесете вредност поголема или еднаква на {0}" )
 } );
-
+return $;
 }));

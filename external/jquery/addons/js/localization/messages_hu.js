@@ -30,5 +30,5 @@ $.extend( $.validator.messages, {
 	remote: "Kérem javítsa ki ezt a mezőt.",
 	dateISO: "Kérem írjon be egy érvényes dátumot (ISO)."
 } );
-
+return $;
 }));

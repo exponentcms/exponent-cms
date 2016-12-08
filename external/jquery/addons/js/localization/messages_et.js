@@ -29,5 +29,5 @@ $.extend( $.validator.messages, {
 	min: $.validator.format( "Palun sisestage väärtus, mis on suurem või võrdne arvuga {0}." ),
 	creditcard: "Palun sisestage korrektne krediitkaardi number."
 } );
-
+return $;
 }));
