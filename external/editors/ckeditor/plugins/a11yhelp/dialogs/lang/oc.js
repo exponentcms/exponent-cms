@@ -1,17 +1,7 @@
-/*
- * Copyright (c) 2016.  OIC Group, Inc.
- *
- * This file is part of Exponent
- *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * GPL: http://www.gnu.org/licenses/gpl.txt
- *
- */
+﻿/*
+ Copyright (c) 2003-2016, CKSource - Frederico Knabben. All rights reserved.
+ For licensing, see LICENSE.md or http://ckeditor.com/license
+*/
 CKEDITOR.plugins.setLang("a11yhelp","oc",{title:"Instruccions d'accessibilitat",contents:"Contengut de l'ajuda. Per tampar aquesta fenèstra, quichatz sus la tòca Escap.",legend:[{name:"General",items:[{name:"Barra d'aisinas de l'editor",legend:"Quichar sus ${toolbarFocus} per accedir a la barra d'aisinas. Se desplaçar cap al groupe seguent o precedent de la barra d'aisinas amb las tòcas Tab e Maj+Tab. Se desplaçar cap al boton seguent o precedent de la barra d'aisinas amb las tòcas Sageta dreita e Sageta esquèrra. Quichar sus la barra d'espaci o la tòca Entrada per activer lo boton de barra d'aisinas."},
 {name:"Fenèstra de l'editor",legend:"Dins una bóstia de dialòg, quichar sus Tab per passar a l'element seguent, quichar sus Maj+Tab per passar a l'element precedent, quichar sus Entrada per validar, quichar sus Escap per anullar. Quand una bóstia de dialòg possedís des onglets, la lista pòt èsser atenta amb Alt+F10 o amb Tab. Dins la lista dels onglets, se desplaçar cap al seguent e lo precedent amb las tòcas Sageta dreita e Sageta esquèrra respectivament."},{name:"Menú contextual de l'editor",legend:"Quichar sus ${contextMenu} o sus la tòca Menú per dobrir lo menú contextual. Se desplaçar ensuite cap a l'opcion seguenta del menú amb las tòcas Tab o Sageta bas. Se desplaçar cap a l'opcion precedenta amb las tòcas Maj+Tab o Sageta naut. Quichar sus la barra d'espaci o la tòca Entrada per seleccionar l'opcion del menu. Quichar sus la barra d'espaci, la tòca Entrada o Sageta dreita per dobrir lo sosmenú de l'opcion seleccionada. Tornar a l'element de menú parent amb la tòca Escap o Sageta esquèrra. Tampar lo menú contextual amb Escap."},
 {name:"Zòna de lista de l'editor",legend:"Dins una lista en menú desenrotlant, se desplaçar cap a l'element seguent de la lista amb las tòcas Tab o Sageta bas. Se desplaçar cap a l'element precedent de la lista amb las tòcas Maj+Tab o Sageta naut. Quichar sus la barra d'espaci o sus Entrada per seleccionar l'opcion dins la lista. Quichar sus Escap per tampar lo menú desenrotlant."},{name:"Barra del camin d'elements de l'editor",legend:"Quichar sus ${elementsPathFocus} per naviguer cap a la barra del fial d'Ariana dels elements. Se desplaçar cap al boton de l'element seguent amb las tòcas Tab o Sageta dreita. Se desplaçar cap al boton precedent amb las tòcas Maj+Tab o Sageta esquèrra. Quichar sus la barra d'espaci o sus Entrada per seleccionar l'element dins l'editor."}]},

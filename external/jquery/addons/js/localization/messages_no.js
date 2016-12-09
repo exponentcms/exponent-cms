@@ -31,5 +31,5 @@ $.extend( $.validator.messages, {
 	min: $.validator.format( "Angi en verdi som er st&oslash;rre eller lik {0}." ),
 	creditcard: "Angi et gyldig kredittkortnummer."
 } );
-
+return $;
 }));

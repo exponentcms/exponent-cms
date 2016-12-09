@@ -122,6 +122,8 @@
                                 </td>
                             </div>
                         </tr>
+                    {foreachelse}
+                        <tr><h4>{$config.no_records_msg|default:"No Records Found"|gettext}</h4></tr>
                     {/foreach}
                 </tbody>
             </table>

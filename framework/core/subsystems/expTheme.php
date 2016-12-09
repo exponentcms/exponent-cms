@@ -243,7 +243,7 @@ class expTheme
 
         $str = '';
         if ($config['meta']['content_type']) {
-            $str .= '<meta charset="' . LANG_CHARSET . XHTML_CLOSING . '>' . "\n";  // html5
+            $str .= '<meta charset="' . LANG_CHARSET . XHTML_CLOSING . '">' . "\n";  // html5
 //            $str .= "\t" . '<meta http-equiv="Content-Type" content="text/html; charset=' . LANG_CHARSET . '" ' . XHTML_CLOSING . '>' . "\n";  // html4 or xhtml?
         }
         if ($config['meta']['ie_compat']) {

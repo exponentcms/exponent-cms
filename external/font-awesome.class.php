@@ -1,14 +1,16 @@
 <?php
-/* 
+/*
  * SMK Font Awesome
  *
- * Get font awesome class names in an array or json format. 
+ * Get font awesome class names in an array or json format.
  *
  * -------------------------------------------------------------------------------------
  * @Author: Smartik
  * @Author URI: http://smartik.ws/
  * @Copyright: (c) 2014 Smartik. All rights reserved
  * @License: MIT
+ *
+ * Modified for Exponent CMS to provide additional functionality
  * -------------------------------------------------------------------------------------
  *
  *
@@ -32,7 +34,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 			$pattern = '/\.('. $class_prefix .'(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
 
 			preg_match_all($pattern, $css, $matches, PREG_SET_ORDER);
-			
+
 			$icons = array();
 			foreach ($matches as $match) {
 				$icons[$match[1]] = $match[2];
@@ -42,7 +44,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		}
 
 		//------------------------------------//--------------------------------------//
-		
+
 		/**
 		 * Sort array by key name
 		 *
@@ -50,7 +52,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * @return array
 		 */
 		public function sortByName($array){
-			
+
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
@@ -60,7 +62,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		}
 
 		//------------------------------------//--------------------------------------//
-		
+
 		/**
 		 * Get only HTML class key(class) => value(class), no unicode. 'fa-calendar' => 'fa-calendar',
 		 *
@@ -68,7 +70,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * @return array
 		 */
 		public function onlyClass($array){
-			
+
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
@@ -81,7 +83,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		}
 
 		//------------------------------------//--------------------------------------//
-		
+
 		/**
 		 * Get only the unicode key, no HTML class. '\f073' => '\f073',
 		 *
@@ -89,7 +91,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * @return array
 		 */
 		public function onlyUnicode($array){
-			
+
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 
@@ -102,7 +104,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		}
 
 		//------------------------------------//--------------------------------------//
-		
+
 		/**
 		 * Readable class name. Ex: fa-video-camera => Video Camera
 		 *
@@ -111,7 +113,7 @@ if( ! class_exists('Smk_FontAwesome') ){
 		 * @return array
 		 */
 		public function readableName($array, $class_prefix = 'fa-'){
-			
+
 			if( ! is_array($array) )
 				return false;//Do not proceed if is not array
 

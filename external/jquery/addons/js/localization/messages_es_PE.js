@@ -35,5 +35,5 @@ $.extend( $.validator.messages, {
 	nieES: "Por favor, escriba un NIE válido.",
 	cifES: "Por favor, escriba un CIF válido."
 } );
-
+return $;
 }));

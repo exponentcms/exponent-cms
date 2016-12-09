@@ -496,6 +496,7 @@ class expRouter {
                         return false;
                     }
                 }
+                return false;
             }
             #########################################################
             //if (empty($section)) return false;  //couldnt find the page..let the calling action deal with it.

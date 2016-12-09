@@ -57,5 +57,5 @@ $.extend( $.validator.messages, {
 	cifES: "Veuillez fournir un numéro CIF valide.",
 	postalCodeCA: "Veuillez fournir un code postal valide."
 } );
-
+return $;
 }));
