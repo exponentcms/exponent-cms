@@ -16,8 +16,9 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
-		<title>{$smarty.const.SITE_TITLE} -- {'Archived Content'|gettext}</title>
-		<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}" />
+		{*<meta http-equiv="Content-Type" content="text/html; charset={$smarty.const.LANG_CHARSET}" />*}
+        <meta charset="{$smarty.const.LANG_CHARSET}">
+        <title>{$smarty.const.SITE_TITLE} -- {'Archived Content'|gettext}</title>
         <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 		<link rel="stylesheet" href="{$smarty.const.THEME_RELATIVE}style.css" />
 		<link rel="stylesheet" href="{$smarty.const.THEME_RELATIVE}editor.css" />
