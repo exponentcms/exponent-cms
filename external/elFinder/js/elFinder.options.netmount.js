@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2016.  OIC Group, Inc.
- *
- * This file is part of Exponent
- *
- * Exponent is free software; you can redistribute
- * it and/or modify it under the terms of the GNU
- * General Public License as published by the Free
- * Software Foundation; either version 2 of the
- * License, or (at your option) any later version.
- *
- * GPL: http://www.gnu.org/licenses/gpl.txt
- *
- */
-
 /**
  * Default elFinder config of commandsOptions.netmount
  *
@@ -50,7 +35,7 @@ elFinder.prototype._options.commandsOptions.netmount = {
 					self.inputs.host.find('span').removeClass("elfinder-info-spinner");
 					self.inputs.host.find('span').html(data.body.replace(/\{msg:([^}]+)\}/g, function(whole,s1){return fm.i18n(s1,'Dropbox.com');}));
 				}).fail(function(){});
-			}
+			}					
 		},
 		done: function(fm, data){
 			var self = this;

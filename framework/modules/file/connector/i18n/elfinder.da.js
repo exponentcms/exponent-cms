@@ -3,7 +3,15 @@
  * @author Mark Topper (webman.io)
  * @version 2014-12-19
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.da = {
 		translator : 'Mark Topper (webman.io)',
 		language   : 'Language of translation in Danish',
@@ -11,7 +19,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		dateFormat : 'd.m.Y H:i',
 		fancyDateFormat : '$1 H:i',
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Fejl',
 			'errUnknown'           : 'Ukendt fejl.',
@@ -125,7 +133,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
             'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Luk',
 			'btnSave'   : 'Gem',
 			'btnRm'     : 'Slet',
@@ -134,7 +142,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnNo'     : 'Nej',
 			'btnYes'    : 'Ja',
 			'btnMount'  : 'Mount',
-			
+
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Åben mappe',
 			'ntffile'     : 'Åben fil',
@@ -157,7 +165,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfloadimg'  : 'Loader billede',
 			'ntfnetmount' : 'Montere netværks volume', // added 18.04.2012
 			'ntfdim'      : 'Acquiring image dimension',
-			
+
 			/************************************ dates **********************************/
 			'dateUnknown' : 'Ukendt',
 			'Today'       : 'I dag',
@@ -186,28 +194,28 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'October'     : 'Oktober',
 			'November'    : 'November',
 			'December'    : 'December',
-			'Sunday'      : 'Søndag', 
-			'Monday'      : 'Mandag', 
-			'Tuesday'     : 'Tirsdag', 
-			'Wednesday'   : 'Onsdag', 
-			'Thursday'    : 'Torsdag', 
-			'Friday'      : 'Fredag', 
+			'Sunday'      : 'Søndag',
+			'Monday'      : 'Mandag',
+			'Tuesday'     : 'Tirsdag',
+			'Wednesday'   : 'Onsdag',
+			'Thursday'    : 'Torsdag',
+			'Friday'      : 'Fredag',
 			'Saturday'    : 'Lørdag',
-			'Sun'         : 'Søn', 
-			'Mon'         : 'Man', 
-			'Tue'         : 'Tir', 
-			'Wed'         : 'Ons', 
-			'Thu'         : 'Tor', 
-			'Fri'         : 'Fre', 
+			'Sun'         : 'Søn',
+			'Mon'         : 'Man',
+			'Tue'         : 'Tir',
+			'Wed'         : 'Ons',
+			'Thu'         : 'Tor',
+			'Fri'         : 'Fre',
 			'Sat'         : 'Lør',
-			
+
 			/******************************** sort variants ********************************/
-			'sortname'          : 'efter navn', 
-			'sortkind'          : 'efter type', 
+			'sortname'          : 'efter navn',
+			'sortkind'          : 'efter type',
 			'sortsize'          : 'efter størrelse',
 			'sortdate'          : 'efter dato',
 			'sortFoldersFirst'  : 'Mapper først', // added 22.06.2012
-			
+
 			/********************************** messages **********************************/
 			'confirmReq'      : 'Bekræftelse påkrævet',
 			'confirmRm'       : 'Er du sikker på du vil slette valgte filer?<br/>Dette kan ikke blive fortrudt!',
@@ -230,7 +238,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'Liste visning',
 			'viewicons'       : 'Ikon visning',
 			'places'          : 'Plaseringer',
-			'calc'            : 'Udregn', 
+			'calc'            : 'Udregn',
 			'path'            : 'Sti',
 			'aliasfor'        : 'Alias for',
 			'locked'          : 'Låst',
@@ -241,7 +249,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'yes'             : 'ja',
 			'no'              : 'nej',
 			'link'            : 'Link',
-			'searcresult'     : 'Søge resultater',  
+			'searcresult'     : 'Søge resultater',
 			'selected'        : 'valgte varer',
 			'about'           : 'Om',
 			'shortcuts'       : 'Genveje',
@@ -285,7 +293,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'port'                : 'Port', // added 18.04.2012
 			'user'                : 'Bruger', // added 18.04.2012
 			'pass'                : 'Kodeord', // added 18.04.2012
-			
+
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Ukendt',
 			'kindFolder'      : 'Mappe',
@@ -366,4 +374,4 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Ogg video'
 		}
 	};
-}
+}));

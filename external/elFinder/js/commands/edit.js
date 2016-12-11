@@ -12,6 +12,20 @@ elFinder.prototype.commands.edit = function() {
 		rtrim = function(str){
 			return str.replace(/\s+$/, '');
 		},
+		getEncSelect = function(heads) {
+			var sel = $('<select class="ui-corner-all"/>'),
+				hval;
+			if (heads) {
+				$.each(heads, function(i, head) {
+					hval = fm.escape(head.value);
+					sel.append('<option value="'+hval+'">'+(head.caption? fm.escape(head.caption) : hval)+'</option>');
+				});
+			}
+			$.each(self.options.encodings, function(i, v) {
+				sel.append('<option value="'+v+'">'+v+'</option>');
+			});
+			return sel;
+		},
 	
 		/**
 		 * Return files acceptable to edit
@@ -36,47 +50,36 @@ elFinder.prototype.commands.edit = function() {
 		 * @param  String  content  file content
 		 * @return $.Deferred
 		 **/
-		dialog = function(id, file, content) {
+		dialog = function(id, file, content, encoding) {
 
 			var dfrd = $.Deferred(),
-				ta   = $('<textarea class="elfinder-file-edit '+fm.res('class', 'editing')+'" rows="20" id="'+id+'-ta">'+fm.escape(content)+'</textarea>'),
+				stateChange = function() {
+					if (selEncoding) {
+						if (changed()) {
+							selEncoding.attr('title', fm.i18n('saveAsEncoding')).addClass('elfinder-edit-changed');
+						} else {
+							selEncoding.attr('title', fm.i18n('openAsEncoding')).removeClass('elfinder-edit-changed');
+						}
+					}
+				},
+				ta   = $('<textarea class="elfinder-file-edit '+fm.res('class', 'editing')+'" rows="20" id="'+id+'-ta">'+fm.escape(content)+'</textarea>')
+					.on('input propertychange', stateChange),
 				old  = ta.val(),
 				save = function() {
 					ta.editor && ta.editor.save(ta[0], ta.editor.instance);
 					old = ta.val();
-					dfrd.notifyWith(ta);
+					dfrd.notifyWith(ta, [selEncoding? selEncoding.val():void(0)]);
 				},
 				cancel = function() {
-					var close = function(){
-						dfrd.reject();
-						ta.elfinderdialog('close');
-					};
-					fm.toggleMaximize($(this).closest('.ui-dialog'), false);
-					ta.editor && ta.editor.save(ta[0], ta.editor.instance);
-					if (rtrim(old) !== rtrim(ta.val())) {
-						old = ta.val();
-						fm.confirm({
-							title  : self.title,
-							text   : 'confirmNotSave',
-							accept : {
-								label    : 'btnSaveClose',
-								callback : function() {
-									save();
-									close();
-								}
-							},
-							cancel : {
-								label    : 'btnClose',
-								callback : close
-							}
-						});
-					} else {
-						close();
-					}
+					ta.elfinderdialog('close');
 				},
 				savecl = function() {
 					save();
 					cancel();
+				},
+				changed = function() {
+					ta.editor && ta.editor.save(ta[0], ta.editor.instance);
+					return  (rtrim(old) !== rtrim(ta.val()));
 				},
 				opts = {
 					title   : fm.escape(file.name),
@@ -85,14 +88,14 @@ elFinder.prototype.commands.edit = function() {
 					allowMaximize : true,
 					btnHoverFocus : false,
 					closeOnEscape : false,
-					close   : function() { 
-						var $this = $(this),
-						close = function(){
+					close   : function() {
+						var close = function(){
+							dfrd.reject();
 							ta.editor && ta.editor.close(ta[0], ta.editor.instance);
-							$this.elfinderdialog('destroy');
+							ta.elfinderdialog('destroy');
 						};
-						ta.editor && ta.editor.save(ta[0], ta.editor.instance);
-						if (rtrim(old) !== rtrim(ta.val())) {
+						fm.toggleMaximize($(this).closest('.ui-dialog'), false);
+						if (changed()) {
 							fm.confirm({
 								title  : self.title,
 								text   : 'confirmNotSave',
@@ -112,16 +115,44 @@ elFinder.prototype.commands.edit = function() {
 							close();
 						}
 					},
-					open    : function() { 
+					open    : function() {
+						var heads = (encoding && encoding !== 'unknown')? [{value: encoding}] : [],
+							loadRes;
+						if (content === '' || ! encoding || encoding !== 'UTF-8') {
+							heads.push({value: 'UTF-8'});
+						}
+						selEncoding = getEncSelect(heads).on('touchstart', function(e) {
+							// for touch punch event handler
+							e.stopPropagation();
+						}).on('change', function() {
+							// reload to change encoding if not edited
+							if (! changed() && rtrim(ta.val()) !== '') {
+								cancel();
+								edit(file, $(this).val());
+							}
+						}).on('mouseover', stateChange);
+						ta.parent().prev().find('.elfinder-titlebar-button:last')
+							.after($('<span class="elfinder-titlebar-button-right"/>').append(selEncoding));
+						
 						fm.disable();
 						ta.focus(); 
 						ta[0].setSelectionRange && ta[0].setSelectionRange(0, 0);
 						if (ta.editor) {
-							ta.editor.instance = ta.editor.load(ta[0]) || null;
-							ta.editor.focus(ta[0], ta.editor.instance);
+							loadRes = ta.editor.load(ta[0]) || null;
+							if (loadRes && loadRes.done) {
+								loadRes.done(function(instance) {
+									ta.editor.instance = instance;
+									ta.editor.focus(ta[0], ta.editor.instance);
+								});
+							} else {
+								ta.editor.instance = loadRes;
+								ta.editor.focus(ta[0], ta.editor.instance);
+							}
 						}
+					},
+					resize : function(e, data) {
+						ta.editor && ta.editor.resize(ta[0], ta.editor.instance, e, data || {});
 					}
-					
 				},
 				mimeMatch = function(fileMime, editorMimes){
 					editorMimes = editorMimes || mimes.concat('text/');
@@ -150,7 +181,8 @@ elFinder.prototype.commands.edit = function() {
 						}
 					}
 					return false;
-				};
+				},
+				selEncoding;
 				
 				ta.getContent = function() {
 					return ta.val();
@@ -166,11 +198,13 @@ elFinder.prototype.commands.edit = function() {
 							save     : editor.save,
 							close    : typeof editor.close == 'function' ? editor.close : function() {},
 							focus    : typeof editor.focus == 'function' ? editor.focus : function() {},
+							resize   : typeof editor.resize == 'function' ? editor.resize : function() {},
 							instance : null,
 							doSave   : save,
 							doCancel : cancel,
 							doClose  : savecl,
-							file     : file
+							file     : file,
+							fm       : fm
 						};
 						
 						return false;
@@ -229,14 +263,14 @@ elFinder.prototype.commands.edit = function() {
 		 * @param  String  file hash
 		 * @return jQuery.Deferred
 		 **/
-		edit = function(file, doconv) {
+		edit = function(file, conv) {
 			var hash   = file.hash,
 				opts   = fm.options,
 				dfrd   = $.Deferred(), 
 				data   = {cmd : 'file', target : hash},
-				id    = 'edit-'+fm.namespace+'-'+file.hash,
-				d = fm.getUI().find('#'+id),
-				conv   = !doconv? 0 : 1,
+				id     = 'edit-'+fm.namespace+'-'+file.hash,
+				d      = fm.getUI().find('#'+id),
+				conv   = !conv? 0 : conv,
 				error;
 			
 			
@@ -253,34 +287,49 @@ elFinder.prototype.commands.edit = function() {
 			
 			fm.request({
 				data   : {cmd : 'get', target  : hash, conv : conv},
-				notify : {type : 'file', cnt : 1},
-				syncOnFail : true
+				notify : {type : 'file', cnt : 1}
 			})
 			.done(function(data) {
+				var selEncoding;
 				if (data.doconv) {
 					fm.confirm({
 						title  : self.title,
-						text   : 'confirmConvUTF8',
+						text   : data.doconv === 'unknown'? 'confirmNonUTF8' : 'confirmConvUTF8',
 						accept : {
 							label    : 'btnConv',
 							callback : function() {  
-								dfrd = edit(file, 1);
+								dfrd = edit(file, selEncoding.val());
 							}
 						},
 						cancel : {
 							label    : 'btnCancel',
 							callback : function() { dfrd.reject(); }
+						},
+						optionsCallback : function(options) {
+							options.create = function() {
+								var base = $('<div class="elfinder-dialog-confirm-encoding"/>'),
+									head = {value: data.doconv},
+									detected;
+								
+								if (data.doconv === 'unknown') {
+									head.caption = '-';
+								}
+								selEncoding = getEncSelect([head]);
+								$(this).next().find('.ui-dialog-buttonset')
+									.prepend(base.append($('<label>'+fm.i18n('encoding')+' </label>').append(selEncoding)));
+							}
 						}
 					});
 				} else {
-					dialog(id, file, data.content)
-						.progress(function() {
+					dialog(id, file, data.content, data.encoding)
+						.progress(function(encoding) {
 							var ta = this;
 							fm.request({
 								options : {type : 'post'},
 								data : {
 									cmd     : 'put',
 									target  : hash,
+									encoding : encoding || data.encoding,
 									content : ta.getContent()
 								},
 								notify : {type : 'save', cnt : 1},
@@ -301,7 +350,10 @@ elFinder.prototype.commands.edit = function() {
 				}
 			})
 			.fail(function(error) {
+				var err = $.isArray(error)? error[0] : error;
+				(err !== 'errConvUTF8') && fm.sync();
 				dfrd.reject(error);
+				
 			});
 
 			return dfrd.promise();

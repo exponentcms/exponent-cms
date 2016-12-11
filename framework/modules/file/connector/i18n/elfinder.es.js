@@ -5,7 +5,15 @@
  * @author Adrià Vilanova <me@avm99963.tk>
  * @version 2016-03-19
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.es = {
 		translator : 'Julián Torres &lt;julian.torres@pabernosmatao.com&gt;, Luis Faura &lt;luis@luisfaura.es&gt;',
 		language   : 'Español internacional',
@@ -13,7 +21,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		dateFormat : 'M d, Y h:i A', // Mar 13, 2012 05:27 PM
 		fancyDateFormat : '$1 h:i A', // will produce smth like: Today 12:25 PM
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Error',
 			'errUnknown'           : 'Error desconocido.',
@@ -59,7 +67,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errUploadTotalSize'   : 'El tamaño de los datos excede el máximo permitido.', // old name - errMaxSize
 			'errUploadFileSize'    : 'El tamaño del archivo excede el máximo permitido.', //  old name - errFileMaxSize
 			'errUploadMime'        : 'Tipo de archivo no permitido.',
-			'errUploadTransfer'    : 'Error al transferir "$1".', 
+			'errUploadTransfer'    : 'Error al transferir "$1".',
 			'errUploadTemp'        : 'No se ha podido crear el archivo temporal para la subida.', // from v2.1 added 26.09.2015
 			'errNotReplace'        : 'El objeto "$1" ya existe y no puede ser reemplazado por otro con otro tipo.', // new
 			'errReplace'           : 'No se puede reemplazar "$1".',
@@ -138,7 +146,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Cerrar',
 			'btnSave'   : 'Guardar',
 			'btnRm'     : 'Eliminar',
@@ -266,7 +274,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'ver como lista',
 			'viewicons'       : 'Ver como iconos',
 			'places'          : 'Lugares',
-			'calc'            : 'Calcular', 
+			'calc'            : 'Calcular',
 			'path'            : 'Ruta',
 			'aliasfor'        : 'Alias para',
 			'locked'          : 'Bloqueado',
@@ -277,7 +285,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'yes'             : 'sí',
 			'no'              : 'no',
 			'link'            : 'Enlace',
-			'searcresult'     : 'Resultados de la búsqueda',  
+			'searcresult'     : 'Resultados de la búsqueda',
 			'selected'        : 'elementos seleccionados',
 			'about'           : 'Acerca',
 			'shortcuts'       : 'Accesos directos',
@@ -424,5 +432,5 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Película Ogg'
 		}
 	};
-}
+}));
 

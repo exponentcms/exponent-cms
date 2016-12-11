@@ -5,7 +5,7 @@
  **/
 $.fn.elfinderworkzone = function(fm) {
 	var cl = 'elfinder-workzone';
-
+	
 	this.not('.'+cl).each(function() {
 		var wz     = $(this).addClass(cl),
 			wdelta = wz.outerHeight(true) - wz.height(),
@@ -13,19 +13,19 @@ $.fn.elfinderworkzone = function(fm) {
 			parent = wz.parent(),
 			fitsize = function() {
 				var height = parent.height() - wdelta,
-					ovf    = parent.css('overflow'),
+					style  = parent.attr('style'),
 					curH   = Math.round(wz.height());
-
+	
 				parent.css('overflow', 'hidden')
 					.children(':visible:not(.'+cl+')').each(function() {
 						var ch = $(this);
-
+		
 						if (ch.css('position') != 'absolute' && ch.css('position') != 'fixed') {
 							height -= ch.outerHeight(true);
 						}
 					});
-				parent.css('overflow', ovf);
-
+				parent.attr('style', style || '');
+				
 				height = Math.max(0, Math.round(height));
 				if (prevH !== height || curH !== height) {
 					prevH  = Math.round(wz.height());
@@ -33,9 +33,15 @@ $.fn.elfinderworkzone = function(fm) {
 					fm.trigger('wzresize');
 				}
 			};
-
+			
 		parent.add(window).on('resize.' + fm.namespace, fitsize);
-		fm.bind('uiresize', fitsize);
+		fm.one('cssloaded', function() {
+			var old = wdelta;
+			wdelta = wz.outerHeight(true) - wz.height();
+			if (old !== wdelta) {
+				fm.trigger('uiresize');
+			}
+		}).bind('uiresize', fitsize);
 	});
 	return this;
 };

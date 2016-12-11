@@ -3,7 +3,15 @@
  * @author Régis Guyomarch <regisg@gmail.com>, Benoit Delachaux <benorde33@gmail.com>
  * @version 2014-12-19
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.fr = {
 		translator : 'Régis Guyomarch &lt;regisg@gmail.com&gt;, Benoit Delachaux &lt;benorde33@gmail.com&gt;',
 		language   : 'française',
@@ -11,7 +19,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 		dateFormat : 'd M, Y H:i',
 		fancyDateFormat : '$1 H:i',
 		messages   : {
-			
+
 			/********************************** errors **********************************/
 			'error'                : 'Erreur',
 			'errUnknown'           : 'Erreur inconnue.',
@@ -56,7 +64,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errUploadTotalSize'   : 'Les données dépassent la taille maximale allouée.',
 			'errUploadFileSize'    : 'Le fichier dépasse la taille maximale allouée.',
 			'errUploadMime'        : 'Type de fichier non autorisé.',
-			'errUploadTransfer'    : '"$1" erreur transfert.', 
+			'errUploadTransfer'    : '"$1" erreur transfert.',
 			'errNotReplace'        : 'L\'objet "$1" existe déjà à cet endroit et ne peut être remplacé par un objet d\'un type différent.', // new
 			'errReplace'           : 'Impossible de remplacer "$1".', // added 11.08.1013
 			'errSave'              : 'Impossible de sauvegarder "$1".',
@@ -83,7 +91,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'errNetMount'          : 'Impossible de monter "$1".', // added 17.04.2012
 			'errNetMountNoDriver'  : 'Protocol non supporté.',     // added 17.04.2012
 			'errNetMountFailed'    : 'Echec du montage.',         // added 17.04.2012
-			'errNetMountHostReq'   : 'Hôte requis.', // added 18.04.2012			
+			'errNetMountHostReq'   : 'Hôte requis.', // added 18.04.2012
 			'errSessionExpires'    : 'Votre session a expiré en raison de son inactivité',
 			'errCreatingTempDir'   : 'Impossible de créer le répertoire temporaire : "$1"',
 			'errFtpDownloadFile'   : 'Impossible de télécharger le file depuis l\'accès FTP : "$1"',
@@ -134,7 +142,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
             'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Fermer',
 			'btnSave'   : 'Sauvegarder',
 			'btnRm'     : 'Supprimer',
@@ -153,7 +161,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'btnFileName':'Nom du fichier',  // from v2.1 added 22.5.2015
 			'btnSaveClose': 'Enregistrer & Ferme', // from v2.1 added 12.6.2015
 			'btnBackup' : 'Sauvegarde', // fromv2.1 added 28.11.2015
-			
+
 			/******************************** notifications ********************************/
 			'ntfopen'     : 'Ouvrir le dossier',
 			'ntffile'     : 'Ouvrir le fichier',
@@ -174,14 +182,14 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'ntfresize'   : 'Re-tailler les images',
 			'ntfsmth'     : 'Fait quelque chose',
 			'ntfloadimg'  : 'Chargement de l\' image',
-			'ntfnetmount' : 'Monte le volume réseau', // added 18.04.2012			
+			'ntfnetmount' : 'Monte le volume réseau', // added 18.04.2012
 			'ntfdim'      : 'Calcule la dimension de l\'image', // added 20.05.2013
 			'ntfreaddir'  : 'Lecture des informations du dossier', // from v2.1 added 01.07.2013
 			'ntfurl'      : 'Récupération de l’URL du lien', // from v2.1 added 11.03.2014
 			'ntfchmod'    : 'Changement de mode', // from v2.1 added 20.6.2015
 			'ntfpreupload': 'Vérification du nom du fichier envoyé', // from v2.1 added 31.11.2015
 			'ntfzipdl'    : 'Création d’un fichier pour le téléchargement', // from v2.1.7 added 23.1.2016
-			
+
 			/************************************ dates **********************************/
 			'dateUnknown' : 'Inconnue',
 			'Today'       : 'Aujourd\'hui',
@@ -226,12 +234,12 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'Sat'         : 'Sam',
 
 			/******************************** sort variants ********************************/
-			'sortname'          : 'par nom', 
-			'sortkind'          : 'par type', 
+			'sortname'          : 'par nom',
+			'sortkind'          : 'par type',
 			'sortsize'          : 'par taille',
 			'sortdate'          : 'par date',
 			'sortFoldersFirst'  : 'Dossiers en premier',
-			
+
 			/********************************** messages **********************************/
 			'confirmReq'      : 'Confirmation requise',
 			'confirmRm'       : 'Êtes-vous certain de vouloir supprimer les fichiers?<br/>Cela ne peut être annulé!',
@@ -254,7 +262,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'Vue listing',
 			'viewicons'       : 'Vue icônes',
 			'places'          : 'Places',
-			'calc'            : 'Calculer', 
+			'calc'            : 'Calculer',
 			'path'            : 'Chemin',
 			'aliasfor'        : 'Raccourcis pour',
 			'locked'          : 'Verrouiller',
@@ -265,7 +273,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'yes'             : 'oui',
 			'no'              : 'non',
 			'link'            : 'Lien',
-			'searcresult'     : 'Résultat de la recherche',  
+			'searcresult'     : 'Résultat de la recherche',
 			'selected'        : 'Éléments sélectionnés',
 			'about'           : 'À propos',
 			'shortcuts'       : 'Raccourcis',
@@ -330,7 +338,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'moveUp'          : 'Déplacer vers le haut',  // from v2.1.6 added 18.1.2016
 			'getLink'         : 'Obtenir le lien d’URL', // from v2.1.7 added 9.2.2016
 			'selectedItems'   : 'Éléments sélectionnés ($1)', // from v2.1.7 added 2.19.2016
-			
+
 			/********************************** mimetypes **********************************/
 			'kindUnknown'     : 'Inconnu',
 			'kindFolder'      : 'Dossier',
@@ -411,4 +419,4 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Vidéo Ogg'
 		}
 	};
-}
+}));

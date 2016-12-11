@@ -2308,7 +2308,7 @@ abstract class elFinderVolumeDriver {
 			return $this->setError(elFinder::ERROR_PERM_DENIED);
 		}
 		
-		return $this->convEncOut($this->_getContents($this->convEncIn($this->decode($hash))));
+		return $this->_getContents($this->convEncIn($this->decode($hash), true));
 	}
 	
 	/**
@@ -2864,7 +2864,7 @@ abstract class elFinderVolumeDriver {
 	/***************** server encoding support *******************/
 	
 	/**
-	 * Return parent directory path (with convert encording)
+	 * Return parent directory path (with convert encoding)
 	 *
 	 * @param  string  $path  file path
 	 * @return string
@@ -2875,7 +2875,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return file name (with convert encording)
+	 * Return file name (with convert encoding)
 	 *
 	 * @param  string  $path  file path
 	 * @return string
@@ -2886,7 +2886,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Join dir name and file name and return full path. (with convert encording)
+	 * Join dir name and file name and return full path. (with convert encoding)
 	 * Some drivers (db) use int as path - so we give to concat path to driver itself
 	 *
 	 * @param  string  $dir   dir path
@@ -2899,7 +2899,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return normalized path (with convert encording)
+	 * Return normalized path (with convert encoding)
 	 *
 	 * @param  string  $path  file path
 	 * @return string
@@ -2910,7 +2910,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return file path related to root dir (with convert encording)
+	 * Return file path related to root dir (with convert encoding)
 	 *
 	 * @param  string  $path  file path
 	 * @return string
@@ -2921,7 +2921,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Convert path related to root dir into real path (with convert encording)
+	 * Convert path related to root dir into real path (with convert encoding)
 	 *
 	 * @param  string  $path  rel file path
 	 * @return string
@@ -2932,7 +2932,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return true if $path is children of $parent (with convert encording)
+	 * Return true if $path is children of $parent (with convert encoding)
 	 *
 	 * @param  string  $path    path to check
 	 * @param  string  $parent  parent path
@@ -2944,7 +2944,7 @@ abstract class elFinderVolumeDriver {
 	}
 
 	/**
-	 * Open file and return file pointer (with convert encording)
+	 * Open file and return file pointer (with convert encoding)
 	 *
 	 * @param  string $path file path
 	 * @param string $mode
@@ -2957,7 +2957,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Close opened file (with convert encording)
+	 * Close opened file (with convert encoding)
 	 * 
 	 * @param  resource  $fp    file pointer
 	 * @param  string    $path  file path
@@ -2969,7 +2969,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Create new file and write into it from file pointer. (with convert encording)
+	 * Create new file and write into it from file pointer. (with convert encoding)
 	 * Return new file path or false on error.
 	 *
 	 * @param  resource  $fp   file pointer
@@ -2984,7 +2984,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return true if path is dir and has at least one childs directory (with convert encording)
+	 * Return true if path is dir and has at least one childs directory (with convert encoding)
 	 *
 	 * @param  string  $path  dir path
 	 * @return bool
@@ -3006,7 +3006,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Return files list in directory (with convert encording)
+	 * Return files list in directory (with convert encoding)
 	 *
 	 * @param  string  $path  dir path
 	 * @return array
@@ -3017,7 +3017,7 @@ abstract class elFinderVolumeDriver {
 	}
 	
 	/**
-	 * Create symlink (with convert encording)
+	 * Create symlink (with convert encoding)
 	 *
 	 * @param  string  $source     file to link to
 	 * @param  string  $targetDir  folder to create link in
@@ -3341,10 +3341,11 @@ abstract class elFinderVolumeDriver {
 	 * 
 	 * @param  array  $hashes  target hashes
 	 * @param  string $dir     destination directory (for recurcive)
+	 * @param  string $canLink it can use link() (for recurcive)
 	 * @return string|false    saved path name
 	 * @author Naoki Sawada
 	 */
-	protected function getItemsInHand($hashes, $dir = null) {
+	protected function getItemsInHand($hashes, $dir = null, $canLink = null) {
 		static $totalSize = 0;
 		if (is_null($dir)) {
 			$totalSize = 0;
@@ -3356,6 +3357,9 @@ abstract class elFinderVolumeDriver {
 				return false;
 			}
 			register_shutdown_function(array($this, 'rmdirRecursive'), $dir);
+		}
+		if (is_null($canLink)) {
+			$canLink = ($this instanceof elFinderVolumeLocalFileSystem);
 		}
 		elFinder::extendTimeLimit();
 		$res = true;
@@ -3386,7 +3390,7 @@ abstract class elFinderVolumeDriver {
 					}
 				}
 				if (($res = mkdir($target, 0700, true)) && $chashes) {
-					$res = $this->getItemsInHand($chashes, $target);
+					$res = $this->getItemsInHand($chashes, $target, $canLink);
 				}
 				if (!$res) {
 					break;
@@ -3394,13 +3398,17 @@ abstract class elFinderVolumeDriver {
 				!empty($file['ts']) && touch($target, $file['ts']);
 			} else {
 				$path = $this->decode($hash);
-				if ($fp = $this->fopenCE($path)) {
-					if ($tfp = fopen($target, 'wb')) {
-						$totalSize += stream_copy_to_stream($fp, $tfp);
-						fclose($tfp);
+				if (! $canLink || ! ($canLink = link($path, $target))) {
+					if ($fp = $this->fopenCE($path)) {
+						if ($tfp = fopen($target, 'wb')) {
+							$totalSize += stream_copy_to_stream($fp, $tfp);
+							fclose($tfp);
+						}
+						!empty($file['ts']) && touch($target, $file['ts']);
+						$this->fcloseCE($fp, $path);
 					}
-					!empty($file['ts']) && touch($target, $file['ts']);
-					$this->fcloseCE($fp, $path);
+				} else {
+					$totalSize += filesize($path);
 				}
 				if ($this->options['maxArcFilesSize'] > 0 && $this->options['maxArcFilesSize'] < $totalSize) {
 					$res = $this->setError(elFinder::ERROR_ARC_MAXSIZE);
@@ -4180,7 +4188,9 @@ abstract class elFinderVolumeDriver {
 		if ($res = $this->convEncOut($this->_copy($this->convEncIn($src), $this->convEncIn($dst), $this->convEncIn($name)))) {
 			$path = is_string($res)? $res : $this->joinPathCE($dst, $name);
 			$this->clearcache();
-			$this->added[] = $this->stat($path);
+			if ($this->ARGS['cmd'] !== 'duplicate') {
+				$this->added[] = $this->stat($path);
+			}
 			return $path;
 		}
 

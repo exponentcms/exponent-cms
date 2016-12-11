@@ -145,7 +145,7 @@ class elFinder {
 		'paste'     => array('dst' => true, 'targets' => true, 'cut' => false, 'mimes' => false, 'renames' => false, 'hashes' => false, 'suffix' => false),
 		'upload'    => array('target' => true, 'FILES' => true, 'mimes' => false, 'html' => false, 'upload' => false, 'name' => false, 'upload_path' => false, 'chunk' => false, 'cid' => false, 'node' => false, 'renames' => false, 'hashes' => false, 'suffix' => false, 'mtime' => false),
 		'get'       => array('target' => true, 'conv' => false),
-		'put'       => array('target' => true, 'content' => '', 'mimes' => false),
+		'put'       => array('target' => true, 'content' => '', 'mimes' => false, 'encoding' => false),
 		'archive'   => array('targets' => true, 'type' => true, 'mimes' => false, 'name' => false),
 		'extract'   => array('target' => true, 'mimes' => false, 'makedir' => false),
 		'search'    => array('q' => true, 'mimes' => false, 'target' => false),
@@ -725,7 +725,6 @@ class elFinder {
 		// call pre handlers for this command
 		$args['sessionCloseEarlier'] = isset($this->sessionUseCmds[$cmd])? false : $this->sessionCloseEarlier;
 		if (!empty($this->listeners[$cmd.'.pre'])) {
-			$_break = false;
 			foreach ($this->listeners[$cmd.'.pre'] as $handler) {
 				$_res = call_user_func_array($handler, array($cmd, &$args, $this, $dstVolume));
 				if (is_array($_res)) {
@@ -2493,6 +2492,7 @@ class elFinder {
 	protected function get($args) {
 		$target = $args['target'];
 		$volume = $this->volume($target);
+		$enc = false;
 		
 		if (!$volume || ($file = $volume->file($target)) == false) {
 			return array('error' => $this->error(self::ERROR_OPEN, '#'.$target, self::ERROR_FILE_NOT_FOUND));
@@ -2502,28 +2502,88 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_OPEN, $volume->path($target), $volume->error()));
 		}
 		
-		if ($args['conv'] && function_exists('mb_detect_encoding') && function_exists('mb_convert_encoding')) {
-			$mime = isset($file['mime'])? $file['mime'] : '';
-			if ($mime && strtolower(substr($mime, 0, 4)) === 'text') {
-				if ($enc = mb_detect_encoding ( $content , mb_detect_order(), true)) {
-					if (strtolower($enc) !== 'utf-8') {
-						$content = mb_convert_encoding($content, 'UTF-8', $enc);
+		$mime = isset($file['mime'])? $file['mime'] : '';
+		if ($mime && strtolower(substr($mime, 0, 4)) === 'text') {
+			$enc = '';
+			if (! $args['conv'] || $args['conv'] == '1') {
+				// detect encoding
+				if ($content === '') {
+					$enc = '';
+				} else {
+					if (function_exists('mb_detect_encoding')) {
+						if ($enc = mb_detect_encoding($content , mb_detect_order(), true)) {
+							$encu = strtoupper($enc);
+							if ($encu === 'UTF-8' || $encu === 'ASCII') {
+								$enc = '';
+							}
+						} else {
+							$enc = 'unknown';
+						}
+					} else if (! preg_match('//u', $content)) {
+						$enc = 'unknown';
 					}
+					if ($enc === 'unknown') {
+						$enc = $volume->getOption('encoding');
+						if (! $enc || strtoupper($enc) === 'UTF-8') {
+							$enc = 'unknown';
+						}
+					}
+					if ($enc && $enc !== 'unknown') {
+						$utf8 = iconv($enc, 'UTF-8', $content);
+						if ($utf8 === false && function_exists('mb_convert_encoding')) {
+							$utf8 = mb_convert_encoding($content, 'UTF-8', $enc);
+							if (mb_convert_encoding($utf8, $enc, 'UTF-8') !== $content) {
+								$enc = 'unknown';
+							}
+						} else {
+							if ($utf8 === false || iconv('UTF-8', $enc, $utf8) !== $content) {
+								$enc = 'unknown';
+							}
+						}
+						if ($enc !== 'unknown') {
+							$content = $utf8;
+						}
+					}
+					if ($enc) {
+						if ($args['conv'] == '1') {
+							$args['conv'] = '';
+							if ($enc === 'unknown') {
+								$content = false;
+							}
+						} else if ($enc === 'unknown') {
+							return array('doconv' => $enc);
+						}
+					}
+				}
+			} 
+			if ($args['conv']) {
+				$enc = $args['conv'];
+				if (strtoupper($enc) !== 'UTF-8') {
+					$_content = $content;
+					$content = iconv($enc, 'UTF-8', $content);
+					if ($content === false && function_exists('mb_convert_encoding')) {
+						$content = mb_convert_encoding($_content, 'UTF-8', $enc);
+					}
+				} else {
+					$enc = '';
 				}
 			}
 		}
 		
-		$json = json_encode($content);
-
-		if ($json === false || strlen($json) < strlen($content)) {
-			if ($args['conv']) {
-				return array('error' => $this->error(self::ERROR_CONV_UTF8,self::ERROR_NOT_UTF8_CONTENT, $volume->path($target)));
-			} else {
-				return array('doconv' => true);
+		if ($enc !== false) {
+			if ($content !== false) {
+				$json = json_encode($content);
+			}
+			if ($content === false || $json === false || strlen($json) < strlen($content)) {
+				return array('error' => $this->error(self::ERROR_CONV_UTF8, self::ERROR_NOT_UTF8_CONTENT, $volume->path($target)));
 			}
 		}
 		
-		return array('content' => $content);
+		$res = array('content' => $content);
+		if ($enc) {
+			$res['encoding'] = $enc;
+		}
+		return $res;
 	}
 
 	/**
@@ -2541,6 +2601,15 @@ class elFinder {
 			return array('error' => $this->error(self::ERROR_SAVE, '#'.$target, self::ERROR_FILE_NOT_FOUND));
 		}
 		
+		if (! empty($args['encoding'])) {
+			$content = iconv('UTF-8', $args['encoding'], $args['content']);
+			if ($content === false && function_exists('mb_detect_encoding')) {
+				$content = mb_convert_encoding($args['content'], $args['encoding'], 'UTF-8');
+			}
+			if ($content !== false) {
+				$args['content'] = $content;
+			}
+		}
 		if (($file = $volume->putContents($target, $args['content'])) == false) {
 			return array('error' => $this->error(self::ERROR_SAVE, $volume->path($target), $volume->error()));
 		}
@@ -3328,6 +3397,53 @@ class elFinder {
 		}
 	
 		return false;
+	}
+	
+	/**
+	 * Call curl_exec() with supported redirect on `safe_mode` or `open_basedir`
+	 *
+	 * @param resource    $curl
+	 * @param array       $options
+	 * @param array       $headers
+	 *
+	 * @throws \Exception
+	 *
+	 * @return mixed
+	 * 
+	 * @author Naoki Sawada
+	 */
+	public static function curlExec($curl, $options = array(), $headers = array()) {
+		if ($followLocation = (!ini_get('safe_mode') && !ini_get('open_basedir'))) {
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+		}
+		
+		if ($options) {
+			curl_setopt_array($curl, $options);
+		}
+		
+		if ($headers) {
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+		}
+		
+		$result = curl_exec($curl);
+		
+		if (! $followLocation && $redirect = curl_getinfo($curl, CURLINFO_REDIRECT_URL)) {
+			if ($stream = self::getStreamByUrl(array('target' => $redirect, 'headers' => $headers))) {
+				$result = stream_get_contents($stream);
+			}
+		}
+		
+		if ($result === false) {
+			if (curl_errno($curl)) {
+				throw new \Exception('curl_exec() failed: '.curl_error($curl));
+			} else {
+				throw new \Exception('curl_exec(): empty response');
+			}
+		}
+		
+		curl_close($curl);
+		
+		return $result;
 	}
 	
 } // END class

@@ -4,7 +4,7 @@
  *
  * @author Dmitry (dio) Levashov
  **/
-window.elFinder = function(node, opts) {
+var elFinder = function(node, opts) {
 	//this.time('load');
 	
 	var self = this,
@@ -476,6 +476,39 @@ window.elFinder = function(node, opts) {
 	 * @type Object
 	 **/
 	this.options = $.extend(true, {}, this._options, opts||{});
+	
+	// auto load required CSS
+	if (this.options.cssAutoLoad) {
+		(function(fm) {
+			var myTag = $('head > script[src$="js/elfinder.min.js"],script[src$="js/elfinder.full.js"]:first'),
+				baseUrl, hide, fi, cnt;
+			if (myTag.length) {
+				// hide elFinder node while css loading
+				hide = $('<style>.elfinder{visibility:hidden;overflow:hidden}</style>');
+				
+				$('head').append(hide);
+				baseUrl = myTag.attr('src').replace(/js\/[^\/]+$/, '');
+				fm.loadCss([baseUrl+'css/elfinder.min.css', baseUrl+'css/theme.css']);
+				
+				// additional CSS files
+				if ($.isArray(fm.options.cssAutoLoad)) {
+					fm.loadCss(fm.options.cssAutoLoad);
+				}
+				
+				// check css loaded and remove hide
+				cnt = 1000; // timeout 10 secs
+				fi = setInterval(function() {
+					if (--cnt > 0 && node.css('visibility') !== 'hidden') {
+						clearInterval(fi);
+						hide.remove();
+						fm.trigger('cssloaded');
+					}
+				}, 10);
+			} else {
+				fm.options.cssAutoLoad = false;
+			}
+		})(this);
+	}
 	
 	/**
 	 * Volume option to set the properties of the root Stat
@@ -1265,34 +1298,6 @@ window.elFinder = function(node, opts) {
 			params.current = file.phash;
 		}
 		return this.options.url + (this.options.url.indexOf('?') === -1 ? '?' : '&') + $.param(params, true);
-	};
-	
-	/**
-	 * Convert from relative URL to abstract URL based on current URL
-	 * 
-	 * @param  String  URL
-	 * @return String
-	 */
-	this.convAbsUrl = function(url) {
-		if (url.match(/^http/i)) {
-			return url;
-		}
-		if (url.substr(0,2) === '//') {
-			return window.location.protocol + url;
-		}
-		var root = window.location.protocol + '//' + window.location.host,
-			reg  = /[^\/]+\/\.\.\//,
-			ret;
-		if (url.substr(0, 1) === '/') {
-			ret = root + url;
-		} else {
-			ret = root + window.location.pathname.replace(/\/[^\/]+$/, '/') + url;
-		}
-		ret = ret.replace('/./', '/');
-		while(reg.test(ret)) {
-			ret = ret.replace(reg, '');
-		}
-		return ret;
 	};
 	
 	/**
@@ -2725,9 +2730,10 @@ window.elFinder = function(node, opts) {
 		resizeTm,
 		resize = function(e) {
 			if (e.target === window && e.data && e.data.elm) {
+				var elm = e.data.elm;
 				resizeTm && clearTimeout(resizeTm);
 				resizeTm = setTimeout(function() {
-					e.data.elm.trigger('resize', {maximize: 'on'});
+					elm.trigger('resize', {maximize: 'on'});
 				}, 100);
 			}
 		},
@@ -2911,7 +2917,7 @@ window.elFinder = function(node, opts) {
 	// bind core event handlers
 	this
 		.enable(function() {
-			if (!enabled && self.visible() && self.ui.overlay.is(':hidden')) {
+			if (!enabled && self.visible() && self.ui.overlay.is(':hidden') && ! node.children('.elfinder-dialog').find('.'+self.res('class', 'editing')).length) {
 				enabled = true;
 				document.activeElement && document.activeElement.blur();
 				node.removeClass('elfinder-disabled');
@@ -3177,6 +3183,7 @@ window.elFinder = function(node, opts) {
 		notify : this.dialog('', {
 			cssClass      : 'elfinder-dialog-notify',
 			position      : this.options.notifyDialog.position,
+			absolute      : true,
 			resizable     : false,
 			autoOpen      : false,
 			closeOnEscape : false,
@@ -3274,50 +3281,6 @@ window.elFinder = function(node, opts) {
 			});
 		});
 	
-	// send initial request and start to pray >_<
-	this.trigger('init')
-		.request({
-			data        : {cmd : 'open', target : self.startDir(), init : 1, tree : this.ui.tree ? 1 : 0}, 
-			preventDone : true,
-			notify      : {type : 'open', cnt : 1, hideCnt : true},
-			freeze      : true
-		})
-		.fail(function() {
-			self.trigger('fail').disable().lastDir('');
-			listeners = {};
-			shortcuts = {};
-			$(document).add(node).off('.'+namespace);
-			self.trigger = function() { };
-		})
-		.done(function(data) {
-			// detect elFinder node z-index
-			var ni = node.css('z-index');
-			if (ni && ni !== 'auto' && ni !== 'inherit') {
-				self.zIndex = ni;
-			} else {
-				node.parents().each(function(i, n) {
-					var z = $(n).css('z-index');
-					if (z !== 'auto' && z !== 'inherit' && (z = parseInt(z))) {
-						self.zIndex = z;
-						return false;
-					}
-				});
-			}
-			
-			self.load().debug('api', self.api);
-			open(data);
-			self.trigger('open', data);
-			
-			if (inFrame && self.options.enableAlways) {
-				$(window).focus();
-			}
-		});
-	
-	// update ui's size after init
-	this.one('load', function() {
-		node.trigger('resize');
-	});
-
 	(function(){
 		var tm;
 		$(window).on('resize.' + namespace, function(e){
@@ -3678,8 +3641,60 @@ window.elFinder = function(node, opts) {
 		});
 	}
 	
+	// trigger event cssloaded if cddAutoLoad disabled
+	if (! this.options.cssAutoLoad) {
+		this.trigger('cssloaded');
+	}
+	
+	// send initial request and start to pray >_<
+	this.trigger('init')
+		.request({
+			data        : {cmd : 'open', target : self.startDir(), init : 1, tree : this.ui.tree ? 1 : 0}, 
+			preventDone : true,
+			notify      : {type : 'open', cnt : 1, hideCnt : true},
+			freeze      : true
+		})
+		.fail(function() {
+			self.trigger('fail').disable().lastDir('');
+			listeners = {};
+			shortcuts = {};
+			$(document).add(node).off('.'+namespace);
+			self.trigger = function() { };
+		})
+		.done(function(data) {
+			// detect elFinder node z-index
+			var ni = node.css('z-index');
+			if (ni && ni !== 'auto' && ni !== 'inherit') {
+				self.zIndex = ni;
+			} else {
+				node.parents().each(function(i, n) {
+					var z = $(n).css('z-index');
+					if (z !== 'auto' && z !== 'inherit' && (z = parseInt(z))) {
+						self.zIndex = z;
+						return false;
+					}
+				});
+			}
+			
+			self.load().debug('api', self.api);
+			// update ui's size after init
+			node.trigger('resize');
+			// initial open
+			open(data);
+			self.trigger('open', data);
+			
+			if (inFrame && self.options.enableAlways) {
+				$(window).focus();
+			}
+		});
+	
 	// self.timeEnd('load'); 
 
+};
+
+//register elFinder to global scope
+if (typeof toGlobal === 'undefined' || toGlobal) {
+	window.elFinder = elFinder;
 }
 
 /**
@@ -4300,9 +4315,8 @@ elFinder.prototype = {
 				target      = (data.target || self.cwd().hash),
 				chunkEnable = (self.option('uploadMaxConn', target) != -1),
 				multiMax    = Math.min(5, Math.max(1, self.option('uploadMaxConn', target))),
-				timeout     = 30000, // 30 sec
 				retryWait   = 10000, // 10 sec
-				retryMax    = 18, // 10 sec * 18 = 180 sec (Max 3 mins)
+				retryMax    = 30, // 10 sec * 30 = 300 secs (Max 5 mins)
 				retry       = 0,
 				dfrd   = $.Deferred()
 					.fail(function(error) {
@@ -4350,7 +4364,8 @@ elFinder.prototype = {
 				formData    = new FormData(),
 				files       = data.input ? data.input.files : self.uploads.checkFile(data, self, target), 
 				cnt         = data.checked? (isDataType? files[0].length : files.length) : files.length,
-				loaded      = 0, prev,
+				loaded      = 0,
+				prev        = 0,
 				filesize    = 0,
 				notify      = false,
 				notifyElm   = self.ui.notify,
@@ -4379,6 +4394,7 @@ elFinder.prototype = {
 						self.notify({type : 'upload', cnt : cnt, progress : loaded - prev, size : size,
 							cancel: function() {
 								node.trigger('uploadabort');
+								dfrd.resolve();
 							}
 						});
 						prev = loaded;
@@ -4388,6 +4404,25 @@ elFinder.prototype = {
 							cancelToggle(cancelBtn && loaded < size);
 						}
 					}, self.options.notifyDelay);
+				},
+				doRetry = function() {
+					if (retry++ <= retryMax) {
+						if (checkNotify() && prev) {
+							self.notify({type : 'upload', cnt : 0, progress : 0, size : prev});
+						}
+						xhr.quiet = true;
+						xhr.abort();
+						prev = loaded = 0;
+						setTimeout(function() {
+							if (! abort) {
+								xhr.open('POST', self.uploadURL, true);
+								xhr.send(formData);
+							}
+						}, retryWait);
+					} else {
+						node.trigger('uploadabort');
+						dfrd.reject(['errAbort', 'errTimeout']);
+					}
 				},
 				renames = (data.renames || null),
 				hashes = (data.hashes || null),
@@ -4414,29 +4449,13 @@ elFinder.prototype = {
 							errors.push('errFolderUpload');
 							dfrd.reject(['errAbort', 'errFolderUpload']);
 						} else {
-							if (retry++ <= retryMax) {
-								setTimeout(function() {
-									if (! abort) {
-										filesize = 0;
-										xhr.open('POST', self.uploadURL, true);
-										xhr.timeout = timeout;
-										xhr.send(formData);
-									}
-								}, retryWait);
-							} else {
-								node.trigger('uploadabort');
-								dfrd.reject(['errAbort']);
-							}
+							doRetry();
 						}
 					}
 				} else {
 					node.trigger('uploadabort');
 					dfrd.reject('errConnect');
 				}
-			}, false);
-			
-			xhr.addEventListener('abort', function() {
-				dfrd.reject(['errConnect', 'errAbort']);
 			}, false);
 			
 			xhr.addEventListener('load', function(e) {
@@ -4449,9 +4468,6 @@ elFinder.prototype = {
 						error = 'errConnect';
 					}
 				} else {
-					if (xhr.readyState != 4) {
-						error = ['errConnect', 'errTimeout']; // am i right?
-					}
 					if (!xhr.responseText) {
 						error = ['errResponse', 'errDataEmpty'];
 					}
@@ -4524,7 +4540,7 @@ elFinder.prototype = {
 			xhr.upload.addEventListener('progress', function(e) {
 				var curr;
 
-				if (e.lengthComputable && !chunkMerge) {
+				if (e.lengthComputable && !chunkMerge && xhr.readyState < 2) {
 					
 					loaded = e.loaded;
 
@@ -4539,7 +4555,6 @@ elFinder.prototype = {
 					}
 					
 					if (!filesize) {
-						retry && (loaded = 0);
 						filesize = e.total;
 						if (!loaded) {
 							loaded = parseInt(filesize * 0.05);
@@ -4800,7 +4815,6 @@ elFinder.prototype = {
 				}
 				
 				xhr.open('POST', self.uploadURL, true);
-				xhr.timeout = timeout;
 				
 				// set request headers
 				if (fm.customHeaders) {
@@ -4843,7 +4857,6 @@ elFinder.prototype = {
 						formData.append('chunk', file._chunkmerged);
 						formData.append('upload[]', file._name);
 						formData.append('mtime[]', file._mtime);
-						xhr.timeout = 0;
 					} else {
 						if (file._chunkfail) {
 							formData.append('upload[]', 'chunkfail');
@@ -5786,6 +5799,10 @@ elFinder.prototype = {
 			}
 		}
 		
+		if (opts.optionsCallback && $.isFunction(opts.optionsCallback)) {
+			opts.optionsCallback(options);
+		}
+		
 		return this.dialog('<span class="elfinder-dialog-icon elfinder-dialog-icon-confirm"/>' + this.i18n(opts.text), options);
 	},
 	
@@ -6431,6 +6448,34 @@ elFinder.prototype = {
 		return newItem;
 	},
 	
+	/**
+	 * Convert from relative URL to abstract URL based on current URL
+	 * 
+	 * @param  String  URL
+	 * @return String
+	 */
+	convAbsUrl : function(url) {
+		if (url.match(/^http/i)) {
+			return url;
+		}
+		if (url.substr(0,2) === '//') {
+			return window.location.protocol + url;
+		}
+		var root = window.location.protocol + '//' + window.location.host,
+			reg  = /[^\/]+\/\.\.\//,
+			ret;
+		if (url.substr(0, 1) === '/') {
+			ret = root + url;
+		} else {
+			ret = root + window.location.pathname.replace(/\/[^\/]+$/, '/') + url;
+		}
+		ret = ret.replace('/./', '/');
+		while(reg.test(ret)) {
+			ret = ret.replace(reg, '');
+		}
+		return ret;
+	},
+	
 	navHash2Id : function(hash) {
 		return this.navPrefix + hash;
 	},
@@ -6459,6 +6504,70 @@ elFinder.prototype = {
 		return document.elementFromPoint(rect.left, rect.top)? true : false;
 	},
 	
+	/**
+	 * Load JavaScript files
+	 * 
+	 * @param  Array    urls      to load JavaScript file URLs
+	 * @param  Function callback  call back function on script loaded
+	 * @param  Object   opts      Additional options to $.ajax
+	 * @param  Object   check     { obj: (Object)ParentObject, name: (String)"Attribute name", timeout: (Integer)milliseconds }
+	 * @return elFinder
+	 */
+	loadScript : function(urls, callback, opts, check) {
+		var defOpts = {
+				dataType : 'script',
+				cache    : true
+			},
+			success = null;
+		if ($.isFunction(callback)) {
+			success = function() {
+				if (check) {
+					if (typeof check.obj[check.name] === 'undefined') {
+						var cnt = check.timeout? (check.timeout / 10) : 1000; // timeout 10 secs
+						var fi = setInterval(function() {
+							if (--cnt > 0 && typeof check.obj[check.name] !== 'undefined') {
+								clearInterval(fi);
+								callback();
+							}
+						}, 10);
+					} else {
+						callback();
+					}
+				} else {
+					callback();
+				}
+			}
+		}
+		opts = $.isPlainObject(opts)? $.extend(defOpts, opts) : defOpts;
+		(function appendScript() {
+			$.ajax($.extend(opts, {
+				url: urls.shift(),
+				success: urls.length? appendScript : success
+			}));
+		})();
+		return this;
+	},
+	
+	/**
+	 * Load CSS files
+	 * 
+	 * @param  Array    to load CSS file URLs
+	 * @return elFinder
+	 */
+	loadCss : function(urls) {
+		var self = this;
+		if (typeof urls === 'string') {
+			urls = [ urls ];
+		}
+		$.each(urls, function(i, url) {
+			url = self.convAbsUrl(url).replace(/^https?:/i, '');
+			if (! $("head > link[href='+url+']").length) {
+				$('head').append('<link rel="stylesheet" type="text/css" href="' + url + '" />');
+			}
+		});
+		return this;
+	},
+	
 	log : function(m) { window.console && window.console.log && window.console.log(m); return this; },
 	
 	debug : function(type, m) {
@@ -6478,7 +6587,7 @@ elFinder.prototype = {
 	timeEnd : function(l) { window.console && window.console.timeEnd && window.console.timeEnd(l); }
 	
 
-}
+};
 
 /**
  * for conpat ex. ie8...

@@ -20,18 +20,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      {*<meta http-equiv="content-type" content="text/html; charset=utf-8" />*}
+    <meta charset="{$smarty.const.LANG_CHARSET}">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
     <title>{'File Manager'|gettext}  |  Exponent CMS</title>
-
-    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
-    <!--[if lt IE 9]>
-        <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
-    <![endif]-->
-    <!--[if gte IE 9]><!-->
-        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
-    <!--<![endif]-->
-    <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
+    <meta name="Generator" content="Exponent Content Management System - v{expVersion::getVersion(true)}"/>
 
     <link rel="stylesheet" href="{$smarty.const.JQUERY_RELATIVE}css/smoothness/jquery-ui.min.css" type="text/css" media="screen" title="no title" charset="utf-8">
 
@@ -51,6 +44,15 @@
 
     {*<link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder/css/theme.css" type="text/css">  *}{* default OSX theme *}
     <link rel="stylesheet" href="{$smarty.const.PATH_RELATIVE}external/elFinder{$smarty.const.ELFINDER_THEME}/css/theme.css" type="text/css">
+
+    <script type="text/javascript" src="{$smarty.const.PATH_RELATIVE}exponent.js2.php"></script>
+    <!--[if lt IE 9]>
+        <script src="{$smarty.const.JQUERY_SCRIPT}" charset="utf-8"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+        <script src="{$smarty.const.JQUERY2_SCRIPT}" charset="utf-8"></script>
+    <!--<![endif]-->
+    <script src="{$smarty.const.JQUERYUI_SCRIPT}" type="text/javascript" charset="utf-8"></script>
 
     <!-- elfinder core -->
     <script src="{$smarty.const.PATH_RELATIVE}external/elFinder/js/elFinder.js"></script>

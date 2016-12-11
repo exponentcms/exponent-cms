@@ -317,7 +317,7 @@ elFinder.prototype.commands.resize = function() {
 					rwidth  = 0,
 					rheight = 0,
 					rdegree = 0,
-					grid8   = true,
+					grid8   = isJpeg? true : false,
 					constr  = $('<button>').html(fm.i18n('aspectRatio'))
 						.on('click', function() {
 							cratio = ! cratio;
@@ -587,7 +587,7 @@ elFinder.prototype.commands.resize = function() {
 						v = grid8? Math.round(v/8)*8 : Math.round(v);
 						v = Math.max(0, v);
 						if (max && v > max) {
-							v = grid8? v - 8 : max;
+							v = grid8? Math.floor(max/8)*8 : max;
 						}
 						return v;
 					},
@@ -639,25 +639,39 @@ elFinder.prototype.commands.resize = function() {
 						}
 					},
 					crop = {
-						update : function() {
+						update : function(change) {
 							pointX.val(round(((rhandlec.data('x')||rhandlec.position().left))/prop, owidth));
 							pointY.val(round(((rhandlec.data('y')||rhandlec.position().top))/prop, oheight));
-							offsetX.val(round((rhandlec.data('w')||rhandlec.width())/prop, owidth - pointX.val()));
-							offsetY.val(round((rhandlec.data('h')||rhandlec.height())/prop, oheight - pointY.val()));
+							if (change !== 'xy') {
+								offsetX.val(round((rhandlec.data('w')||rhandlec.width())/prop, owidth - pointX.val()));
+								offsetY.val(round((rhandlec.data('h')||rhandlec.height())/prop, oheight - pointY.val()));
+							}
 						},
 						updateView : function(change) {
+							var r, x, y, w, h;
+							
+							pointX.val(round(pointX.val(), owidth - (grid8? 8 : 1)));
+							pointY.val(round(pointY.val(), oheight - (grid8? 8 : 1)));
+							offsetX.val(round(offsetX.val(), owidth - pointX.val()));
+							offsetY.val(round(offsetY.val(), oheight - pointY.val()));
+							
 							if (cratioc) {
-								var r = coverc.width() / coverc.height();
+								r = coverc.width() / coverc.height();
 								if (change === 'w') {
-									offsetY.val(Math.round(parseInt(offsetX.val()) / r));
+									offsetY.val(round(parseInt(offsetX.val()) / r));
 								} else if (change === 'h') {
-									offsetX.val(Math.round(parseInt(offsetY.val()) * r));
+									offsetX.val(round(parseInt(offsetY.val()) * r));
 								}
 							}
-							var x = Math.round(parseInt(pointX.val()) * prop);
-							var y = Math.round(parseInt(pointY.val()) * prop);
-							var w = Math.round(parseInt(offsetX.val()) * prop);
-							var h = Math.round(parseInt(offsetY.val()) * prop);
+							x = Math.round(parseInt(pointX.val()) * prop);
+							y = Math.round(parseInt(pointY.val()) * prop);
+							if (change !== 'xy') {
+								w = Math.round(parseInt(offsetX.val()) * prop);
+								h = Math.round(parseInt(offsetY.val()) * prop);
+							} else {
+								w = rhandlec.data('w');
+								h = rhandlec.data('h');
+							}
 							rhandlec.data({x: x, y: y, w: w, h: h})
 								.width(w)
 								.height(h)
@@ -672,7 +686,7 @@ elFinder.prototype.commands.resize = function() {
 						},
 						drag_update : function(e, ui) {
 							rhandlec.data({x: ui.position.left, y: ui.position.top});
-							crop.update();
+							crop.update('xy');
 						}
 					},
 					rotate = {
@@ -809,7 +823,7 @@ elFinder.prototype.commands.resize = function() {
 										handle      : coverc,
 										containment : imgc,
 										drag        : crop.drag_update,
-										stop        : crop.updateView
+										stop        : function() { crop.updateView('xy'); }
 									});
 								
 								dinit();
@@ -1056,7 +1070,7 @@ elFinder.prototype.commands.resize = function() {
 						$(this).elfinderdialog('destroy');
 					},
 					resize         : function(e, data) {
-						if (data && data.minimize === false) {
+						if (data && data.minimize === 'off') {
 							dinit();
 						}
 					}

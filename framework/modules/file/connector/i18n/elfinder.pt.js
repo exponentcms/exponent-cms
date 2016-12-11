@@ -5,7 +5,15 @@
  * @author Fernando H. Bandeira <fernando.bandeira94@gmail.com>
  * @version 2016-04-28
  */
-if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object') {
+(function(root, factory) {
+	if (typeof define === 'function' && define.amd) {
+		define(['elfinder'], factory);
+	} else if (typeof exports !== 'undefined') {
+		module.exports = factory(require('elfinder'));
+	} else {
+		factory(root.elFinder);
+	}
+}(this, function(elFinder) {
 	elFinder.prototype.i18.pt_BR = {
 		translator : 'Leandro Carvalho &lt;contato@leandrowebdev.net&gt;, Wesley Osorio&lt;wesleyfosorio@hotmail.com&gt;, Fernando H. Bandeira &lt;fernando.bandeira94@gmail.com&gt;',
 		language   : 'Português',
@@ -139,7 +147,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'cmdpixlr'     : 'Edit on Pixlr',
             'cmdlinks'     : 'Switch to Page/Module Selector',
 
-			/*********************************** buttons ***********************************/ 
+			/*********************************** buttons ***********************************/
 			'btnClose'  : 'Fechar',
 			'btnSave'   : 'Salvar',
 			'btnRm'     : 'Remover',
@@ -232,12 +240,12 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'Sat'         : 'Sáb',
 
 			/******************************** sort variants ********************************/
-			'sortname'          : 'por nome', 
-			'sortkind'          : 'por tipo', 
+			'sortname'          : 'por nome',
+			'sortkind'          : 'por tipo',
 			'sortsize'          : 'por tam.',
 			'sortdate'          : 'por data',
 			'sortFoldersFirst'  : 'Pastas primeiro',
-			
+
 			/********************************** new items **********************************/
 			'untitled file.txt' : 'NovoArquivo.txt', // added 10.11.2015
 			'untitled folder'   : 'NovaPasta',   // added 10.11.2015
@@ -267,7 +275,7 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'viewlist'        : 'Exibir como lista',
 			'viewicons'       : 'Exibir como ícones',
 			'places'          : 'Lugares',
-			'calc'            : 'Calcular', 
+			'calc'            : 'Calcular',
 			'path'            : 'Caminho',
 			'aliasfor'        : 'Alias para',
 			'locked'          : 'Bloqueado',
@@ -429,4 +437,5 @@ if (elFinder && elFinder.prototype && typeof(elFinder.prototype.i18) == 'object'
 			'kindVideoOGG'    : 'Video Ogg'
 		}
 	};
-}
+}));
+

@@ -25,7 +25,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 				});
 			} else if (opts == 'close' || opts == 'destroy') {
 				dialog.stop(true);
-				dialog.css('display') != 'none' && dialog.hide().trigger('close');
+				dialog.is(':visible') && dialog.hide().trigger('close');
 				opts == 'destroy' && dialog.remove();
 			} else if (opts == 'toTop') {
 				dialog.trigger('totop');
@@ -141,6 +141,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 										dialog.hasClass('ui-resizable') && dialog.resizable('disable');
 									} catch(e) {}
 									if (typeof elm.data('style') === 'undefined') {
+										self.height(self.height());
 										elm.data('style', self.attr('style') || '');
 									}
 									self.css('width', '100%').css('height', dialog.height() - dialog.children('.ui-dialog-titlebar').outerHeight(true) - buttonpane.outerHeight(true));
@@ -152,6 +153,7 @@ $.fn.elfinderdialog = function(opts, fm) {
 										dialog.hasClass('ui-resizable') && dialog.resizable('enable');
 									} catch(e) {}
 								}
+								dialog.trigger('resize');
 							}
 						});
 						titlebar.prepend($('<span class="ui-widget-header ui-corner-all elfinder-titlebar-button elfinder-titlebar-full"><span class="ui-icon ui-icon-plusthick"/></span>')
@@ -184,14 +186,21 @@ $.fn.elfinderdialog = function(opts, fm) {
 									$this.removeData('style').show();
 									titlebar.children('.elfinder-titlebar-full').show();
 									dialog.children('.ui-widget-content').slideDown('fast', function() {
+										var eData;
 										if (this === dialog.children('.ui-widget-content:first').get(0)) {
+											if (dialog.find('.'+fm.res('class', 'editing'))) {
+												fm.disable();
+											}
+											eData = { minimize: 'off' };
 											if (! dialog.hasClass('elfinder-maximized')) {
 												try {
 													dialog.hasClass('ui-draggable') && dialog.draggable('enable');
 													dialog.hasClass('ui-resizable') && dialog.resizable('enable');
 												} catch(e) {}
+											} else {
+												eData.maximize = 'on';
 											}
-											dialog.trigger('resize', { minimize: false });
+											dialog.trigger('resize', eData);
 										}
 									});
 								} else {
@@ -204,13 +213,13 @@ $.fn.elfinderdialog = function(opts, fm) {
 									w = dialog.width();
 									dialog.children('.ui-widget-content').slideUp('fast', function() {
 										if (this === dialog.children('.ui-widget-content:first').get(0)) {
+											dialog.trigger('resize', { minimize: 'on' });
 											dialog.attr('style', '').css({ maxWidth: w})
 												.addClass('elfinder-dialog-minimized')
 												.one('mousedown.minimize', function(e) {
 													$this.trigger('mousedown');
 												})
 												.appendTo(fm.getUI('bottomtray'));
-											dialog.trigger('resize', { minimize: true });
 										}
 									});
 								}
@@ -331,6 +340,9 @@ $.fn.elfinderdialog = function(opts, fm) {
 							left : Math.max(0, parseInt((elfNode.width() - dialog.outerWidth())/2))+'px'
 						};
 					}
+					if (opts.absolute) {
+						css.position = 'absolute';
+					}
 					css && dialog.css(css);
 				})
 				.on('resize', function(e, data) {
@@ -394,12 +406,10 @@ $.fn.elfinderdialog = function(opts, fm) {
 				.data({modal: opts.modal})
 			;
 		
-		dialog.trigger('posinit');
-
 		dialog.prepend(titlebar);
 
 		makeHeaderBtn();
-		
+
 		$.each(opts.buttons, function(name, cb) {
 			var button = $('<button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only '
 					+'elfinder-btncnt-'+(btnCnt++)+' '
@@ -428,11 +438,12 @@ $.fn.elfinderdialog = function(opts, fm) {
 			}
 		}
 		
+		dialog.trigger('posinit').data('margin-y', self.outerHeight(true) - self.height());
+		
 		if (opts.resizable && $.fn.resizable) {
 			dialog.resizable({
 				minWidth   : opts.minWidth,
 				minHeight  : opts.minHeight,
-				alsoResize : this,
 				start      : function() {
 					if (dialog.data('resizing') !== true && dialog.data('resizing')) {
 						clearTimeout(dialog.data('resizing'));
@@ -443,6 +454,14 @@ $.fn.elfinderdialog = function(opts, fm) {
 					dialog.data('resizing', setTimeout(function() {
 						dialog.data('resizing', false);
 					}, 200));
+				},
+				resize     : function(e, ui) {
+					var oh = 0;
+					dialog.children('.ui-widget-header,.ui-dialog-buttonpane').each(function() {
+						oh += $(this).outerHeight(true);
+					});
+					self.height(ui.size.height - oh - dialog.data('margin-y'));
+					dialog.trigger('resize');
 				}
 			});
 		} 
@@ -469,6 +488,7 @@ $.fn.elfinderdialog.defaults = {
 	buttons   : {},
 	btnHoverFocus : true,
 	position  : null,
+	absolute  : false,
 	width     : 320,
 	height    : 'auto',
 	minWidth  : 200,

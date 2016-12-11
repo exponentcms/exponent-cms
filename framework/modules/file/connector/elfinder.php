@@ -34,13 +34,24 @@ ini_set('max_file_uploads', FM_SIMLIMIT); // allow uploading up to FM_SIMLIMIT f
 
 include BASE . 'external/elFinder/php/elFinderConnector.class.php';
 include BASE . 'external/elFinder/php/elFinder.class.php';
+
+//include BASE . 'external/elFinder/php/libs/GdBmp.php';  // will also autoload if needed
+//include BASE . 'external/elFinder/php/plugins/AutoResize/plugin.php'; // will also autoload if needed
+//include BASE . 'external/elFinder/php/plugins/AutoRotate/plugin.php';
+//include BASE . 'external/elFinder/php/plugins/Normalizer/plugin.php';
+//include BASE . 'external/elFinder/php/plugins/Sanitizer/plugin.php';
+//include BASE . 'external/elFinder/php/plugins/Watermark/plugin.php';
+//include BASE . 'external/elFinder/php/elFinderSessionInterface.php'; // will also autoload if needed
+//include BASE . 'external/elFinder/php/elFinderSession.php'; // will also autoload if needed
+
 include BASE . 'framework/modules/file/connector/elFinderExponent.class.php'; // our custom elFinder object
+
 include BASE . 'external/elFinder/php/elFinderVolumeDriver.class.php';
 include BASE . 'external/elFinder/php/elFinderVolumeLocalFileSystem.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeMySQL.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeFTP.class.php';
 //include BASE . 'external/elFinder/php/elFinderVolumeS3.class.php';
-include BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFInder volume driver
+include BASE . 'framework/modules/file/connector/elFinderVolumeExponent.class.php'; // our custom elFinder volume driver
 
 define('ELFINDER_IMG_PARENT_URL', PATH_RELATIVE . 'external/elFinder/');
 
@@ -320,6 +331,7 @@ $opts = array(
             'maxHeight'  => UPLOAD_WIDTH,
             'quality'    => THUMB_QUALITY, // JPEG image save quality
             'targetType' => IMG_GIF | IMG_JPG | IMG_PNG | IMG_WBMP, // Target image formats ( bit-field )
+//            'forceEffect'    => false,      // For change quality of small images
 //            'preserveExif'   => false,      // Preserve EXIF data (Imagick only)
         ),
 //        'Watermark' => array(
