@@ -54,6 +54,8 @@ if ((!empty($_FILES['file']) && ($_FILES['file'] == "none")) OR (empty($_FILES['
         $ar = new expAjaxReply(300, gt("The file is zero length."));
 //            } else if (($_FILES['file']["type"] != "image/pjpeg") AND ($_FILES['file']["type"] != "image/jpeg") AND ($_FILES['file']["type"] != "image/png")) {
 //                $message = gt("The image must be in either JPG or PNG format. Please upload a JPG or PNG instead.");
+    } elseif (preg_match("/([^\w\s\d\-_~,;:\[\]\(\).])|([\.]{2,})/", $_FILES['file']['name'])) {
+        $ar = new expAjaxReply(300, gt("Invalid file name."));
     } else {
         if (!is_uploaded_file($_FILES['file']["tmp_name"])) {
             $ar = new expAjaxReply(300, gt("You may be attempting to hack our server."));
