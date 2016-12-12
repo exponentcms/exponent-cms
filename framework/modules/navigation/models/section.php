@@ -151,7 +151,7 @@ class section extends expRecord {
                     // Need to check and see if the internal_id is pointing at an external link.
 //                    $dest = $db->selectObject('section', 'id=' . $child->internal_id);
                     $dest = $sect->find('first','id=' . $child->internal_id);
-                    if ($dest->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $dest->id))) {
+                    if (!empty($dest->id) && ($dest->public == 1 || expPermissions::check('view', expCore::makeLocation('navigation', '', $dest->id)))) {
                         if (!empty($dest->alias_type) && $dest->alias_type == 1) {
                             // This internal alias is pointing at an external alias.
                             // Use the external_link of the destination section for the link
