@@ -305,8 +305,8 @@ $opts = array(
     'locale' => LOCALE . '.' . LANG_CHARSET,
     'bind'   => array(
         // '*' => 'logger',
-        'mkdir mkfile rename duplicate upload rm paste' => 'logger',
-//        'mkdir mkfile rename duplicate upload rm paste' => array($logger, 'log'),
+        'mkdir mkfile rename duplicate upload rm paste' => 'logger', // use function style logger
+//        'mkdir mkfile rename duplicate upload rm paste' => array($logger, 'log'), // use class style logger
 //        'upload.pre mkdir.pre mkfile.pre rename.pre archive.pre ls.pre' => array(
 //            'Plugin.Normalizer.cmdPreprocess',
 //            'Plugin.Sanitizer.cmdPreprocess',

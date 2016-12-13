@@ -920,13 +920,14 @@ class expFile extends expRecord {
      * @return null|resource|string
      * @node Model:expFile
      */
-    public static function openImageFile($filename) {
+    public static function openImageFile($filename, $sizeinfo=null) {
         if (!EXPONENT_HAS_GD) return null;
 
-        $sizeinfo = @getimagesize($filename);
+        if ($sizeinfo == null)
+            $sizeinfo = @getimagesize($filename);
         $info = gd_info();
 
-        if ($sizeinfo['mime'] == 'image/jpeg' && $info['JPG Support'] == true) {
+        if ($sizeinfo['mime'] == 'image/jpeg' && ($info['JPG Support'] == true || $info['JPEG Support'] == true)) {
             $img = imagecreatefromjpeg($filename);
         } else if ($sizeinfo['mime'] == 'image/png' && $info['PNG Support'] == true) {
             $img = imagecreatefrompng($filename);
@@ -961,7 +962,7 @@ class expFile extends expRecord {
             return null;
         }
         $info = gd_info();
-        if (strpos($info['GD Version'], '2.0') !== false) {
+        if (strpos($info['GD Version'], '2.') !== false) {
             $img = imagecreatetruecolor($w, $h);
 
             if (function_exists('imagesavealpha')) {
@@ -980,12 +981,27 @@ class expFile extends expRecord {
         copy($this->path, $destination . $this->filename);
     }
 
+    /**
+     * Copy and resize and image
+     *
+     * @param $dest
+     * @param $src
+     * @param $dst_x
+     * @param $dst_y
+     * @param $src_x
+     * @param $src_y
+     * @param $dst_w
+     * @param $dst_h
+     * @param $src_w
+     * @param $src_h
+     * @return bool|null
+     */
     public static function imageCopyresized($dest, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h) {
         if (!EXPONENT_HAS_GD) {
             return null;
         }
         $info = gd_info();
-        if (strpos($info['GD Version'], '2.0') !== false) {
+        if (strpos($info['GD Version'], '2.') !== false) {
             return imagecopyresampled($dest, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
         } else {
             return imagecopyresized($dest, $src, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
@@ -1238,6 +1254,13 @@ class expFile extends expRecord {
         return $thumb;
     }
 
+    /**
+     * Rotate an image file
+     *
+     * @param $filename
+     * @param $degrees
+     * @return array|null|resource|string
+     */
     public static function imageRotate($filename, $degrees) {
         $sizeinfo = self::getImageInfo($filename);
         if (!is_array($sizeinfo)) {
@@ -1254,7 +1277,14 @@ class expFile extends expRecord {
         return imagerotate($original, $degrees, $color);
     }
 
-    public static function imageFlip($filename, $is_horizontal) {
+    /**
+     * Flip an image file
+     *
+     * @param $filename
+     * @param bool $is_horizontal
+     * @return array|null|resource|string
+     */
+    public static function imageFlip($filename, $is_horizontal=false) {
         $sizeinfo = self::getImageInfo($filename);
         if (!is_array($sizeinfo)) {
             return $sizeinfo;
@@ -1296,9 +1326,7 @@ class expFile extends expRecord {
     }
 
     /** exdoc
-     *
-     * @state <b>UNDOCUMENTED</b>
-     * @node  Undocumented
+     * Output an image based on its mimetype
      *
      * @param      $img
      * @param      $sizeinfo
@@ -1312,14 +1340,12 @@ class expFile extends expRecord {
         } else if ($sizeinfo['mime'] == 'image/png') {
             ($filename != null) ? imagepng($img, $filename) : imagepng($img);
         } else if ($sizeinfo['mime'] == 'image/gif') {
-            ($filename != null) ? imagepng($img, $filename) : imagepng($img);
+            ($filename != null) ? imagegif($img, $filename) : imagegif($img);
         }
     }
 
     /** exdoc
-     *
-     * @state <b>UNDOCUMENTED</b>
-     * @node Undocumented
+     * Create a captcha type image from a string
      *
      * @param $w
      * @param $h
@@ -1356,6 +1382,13 @@ class expFile extends expRecord {
         }
     }
 
+    /**
+     * Recursively copy file(s)
+     *
+     * @param $src
+     * @param $dst
+     * @return bool
+     */
     static function recurse_copy($src, $dst) {
         $dir = opendir($src);
         @mkdir($dst, octdec(DIR_DEFAULT_MODE_STR + 0));
