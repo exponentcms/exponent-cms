@@ -352,9 +352,12 @@ class fileController extends expController {
 //            $files = $this->$modelname->find('all',$filter,$sort.' '.$dir, $results, $startIndex);
             $files = $this->$modelname->find('all', $filter, $sort.' '.$dir);
 
+            $querycat = !empty($this->params['cat']) ? $this->params['cat'] : '0';
             $groupedfiles = array();
             foreach ($files as $key=>$file) {
-                if (empty($file->expCat[0]->title)) {
+                $filecat = !empty($file->expCat[0]->id) ? $file->expCat[0]->id : 0;
+//                if (empty($file->expCat[0]->title)) {
+                if (($querycat == $filecat || $querycat == -1)) {
                     $totalrecords++;
                     if (count($groupedfiles) < ($startIndex + $results)) {
                         $groupedfiles[$key] = $files[$key];
