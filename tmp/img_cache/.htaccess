@@ -1,5 +1,5 @@
 # secure directory by disabling script execution
-AddHandler cgi-script .php .php3 .php4 .php5 .php7 .phtml .pl .py .jsp .asp .htm .html .shtml .sh .cgi
+AddHandler cgi-script .php .phps .php3 .php4 .php5 .php7 .phtml .pl .py .jsp .asp .htm .html .shtml .sh .cgi
 Options -ExecCGI
 
 <Files *>
@@ -12,6 +12,6 @@ Options -ExecCGI
     allow from all
 </FilesMatch>
 
-<FilesMatch "\.(php|phps|pl|py|jsp|asp|htm|html|shtml|sh|cgi|txt)$">
+<FilesMatch "\.(php|phps|php3|php4|php5|php7|pl|py|jsp|asp|htm|html|shtml|sh|cgi|txt)$">
     ForceType text/plain
 </FilesMatch>
